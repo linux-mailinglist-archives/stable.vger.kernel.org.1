@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88B417C9AC0
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 534E17C9AC3
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:25:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbjJOSXn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:23:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58792 "EHLO
+        id S229522AbjJOSZ3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:25:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSXm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:23:42 -0400
+        with ESMTP id S229518AbjJOSZ2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:25:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AEF4B7
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:23:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60990C433C7;
-        Sun, 15 Oct 2023 18:23:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A5CAAB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:25:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60D4C433C7;
+        Sun, 15 Oct 2023 18:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697394220;
-        bh=qf9fDJHXtvzSEXC5gE0PifPrl37cGtsNEKROtd2cf2Q=;
+        s=korg; t=1697394326;
+        bh=p+eA49CjjoxdZtkkg4nsKm/vaCYMg19n6OQZKQaQjyo=;
         h=Subject:To:Cc:From:Date:From;
-        b=JgObMnA7u3UHK26/+P3IQ2Lc3L0+PuoTHCsOpJzinoJn0YnymJLOZbebkKg345C2c
-         Q6xUFRCJISb4eIGga0u5K6hzVsw5Kmo+BSo6m24ZEjNoSLUpLRCqpGNdcJ8Zi4MGe1
-         ARmg2Jgk2vE9cAv+pQ3x0u3ZowXoUwdlEXd1VzkA=
-Subject: FAILED: patch "[PATCH] nfp: flower: avoid rmmod nfp crash issues" failed to apply to 5.15-stable tree
-To:     yanguo.li@corigine.com, davem@davemloft.net,
-        louis.peens@corigine.com
+        b=xc22OBDlaTYiEQdiE2y7zYmWR7vX8a2x9I1IfOUCIrH8zJrdt4vh9RanE7r9B6BaF
+         TfWcVrUlYDGPrevvL/MQep6/uH8UxnrYeXlu5/GWr02SRqhn+qpt6mp7oZqfZlhbeA
+         4UleV3TFD6e2NLQt1rhkLoP/e3fqI2YmlnTb3MLg=
+Subject: FAILED: patch "[PATCH] dma-buf: add dma_fence_timestamp helper" failed to apply to 5.15-stable tree
+To:     christian.koenig@amd.com, Yunxiang.Li@amd.com,
+        alexander.deucher@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:23:36 +0200
-Message-ID: <2023101535-blighted-moneyless-5873@gregkh>
+Date:   Sun, 15 Oct 2023 20:25:22 +0200
+Message-ID: <2023101522-oven-reformat-207c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -52,18 +52,29 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 14690995c14109852c7ba6e316045c02e4254272
+git cherry-pick -x b83ce9cb4a465b8f9a3fa45561b721a9551f60e3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101535-blighted-moneyless-5873@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101522-oven-reformat-207c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-14690995c141 ("nfp: flower: avoid rmmod nfp crash issues")
-29c691347e38 ("nfp: flower: add infrastructure for pre_tun rework")
-59080da09038 ("nfp: add support to offload tc action to hardware")
-bbab5f9332ee ("nfp: refactor policer config to support ingress/egress meter")
-144d4c9e800d ("flow_offload: reject to offload tc actions in offload drivers")
+b83ce9cb4a46 ("dma-buf: add dma_fence_timestamp helper")
+f781f661e8c9 ("dma-buf: keep the signaling time of merged fences v3")
+bafaf67c42f4 ("Revert "drm/sched: Use parent fence instead of finished"")
+e4dc45b1848b ("drm/sched: Use parent fence instead of finished")
+c85d00d4fd8b ("dma-buf: set signaling bit for the stub fence")
+bbd60fee2d21 ("dma-buf: revert "return only unsignaled fences in dma_fence_unwrap_for_each v3"")
+245a4a7b531c ("dma-buf: generalize dma_fence unwrap & merging v3")
+01357a5a45ed ("dma-buf: cleanup dma_fence_unwrap implementation")
+f778f405faa2 ("dma-buf/sync_file: cleanup fence merging a bit")
+21d139d73f77 ("dma-buf/sync-file: fix logic error in new fence merge code")
+519f490db07e ("dma-buf/sync-file: fix warning about fence containers")
+64a8f92fd783 ("dma-buf: add dma_fence_unwrap v2")
+caaf2ae712b7 ("dma-buf: Add dma_fence_array_for_each (v2)")
+1d51775cd3f5 ("dma-buf: add dma_resv selftest v4")
+bcf26654a38f ("drm/sched: fix the bug of time out calculation(v4)")
+992c238188a8 ("dma-buf: nuke seqno-fence")
 
 thanks,
 
@@ -71,273 +82,123 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 14690995c14109852c7ba6e316045c02e4254272 Mon Sep 17 00:00:00 2001
-From: Yanguo Li <yanguo.li@corigine.com>
-Date: Mon, 9 Oct 2023 13:21:55 +0200
-Subject: [PATCH] nfp: flower: avoid rmmod nfp crash issues
+From b83ce9cb4a465b8f9a3fa45561b721a9551f60e3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Date: Fri, 8 Sep 2023 10:27:23 +0200
+Subject: [PATCH] dma-buf: add dma_fence_timestamp helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-When there are CT table entries, and you rmmod nfp, the following
-events can happen:
+When a fence signals there is a very small race window where the timestamp
+isn't updated yet. sync_file solves this by busy waiting for the
+timestamp to appear, but on other ocassions didn't handled this
+correctly.
 
-task1：
-    nfp_net_pci_remove
-          ↓
-    nfp_flower_stop->(asynchronous)tcf_ct_flow_table_cleanup_work(3)
-          ↓
-    nfp_zone_table_entry_destroy(1)
+Provide a dma_fence_timestamp() helper function for this and use it in
+all appropriate cases.
 
-task2：
-    nfp_fl_ct_handle_nft_flow(2)
+Another alternative would be to grab the spinlock when that happens.
 
-When the execution order is (1)->(2)->(3), it will crash. Therefore, in
-the function nfp_fl_ct_del_flow, nf_flow_table_offload_del_cb needs to
-be executed synchronously.
+v2 by teddy: add a wait parameter to wait for the timestamp to show up, in case
+   the accurate timestamp is needed and/or the timestamp is not based on
+   ktime (e.g. hw timestamp)
+v3 chk: drop the parameter again for unified handling
 
-At the same time, in order to solve the deadlock problem and the problem
-of rtnl_lock sometimes failing, replace rtnl_lock with the private
-nfp_fl_lock.
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: 1774baa64f93 ("drm/scheduler: Change scheduled fence track v2")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20230929104725.2358-1-christian.koenig@amd.com
 
-Fixes: 7cc93d888df7 ("nfp: flower-ct: remove callback delete deadlock")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yanguo Li <yanguo.li@corigine.com>
-Signed-off-by: Louis Peens <louis.peens@corigine.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/cmsg.c b/drivers/net/ethernet/netronome/nfp/flower/cmsg.c
-index f21cf1f40f98..153533cd8f08 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/cmsg.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/cmsg.c
-@@ -210,6 +210,7 @@ nfp_flower_cmsg_merge_hint_rx(struct nfp_app *app, struct sk_buff *skb)
- 	unsigned int msg_len = nfp_flower_cmsg_get_data_len(skb);
- 	struct nfp_flower_cmsg_merge_hint *msg;
- 	struct nfp_fl_payload *sub_flows[2];
-+	struct nfp_flower_priv *priv;
- 	int err, i, flow_cnt;
- 
- 	msg = nfp_flower_cmsg_get_data(skb);
-@@ -228,14 +229,15 @@ nfp_flower_cmsg_merge_hint_rx(struct nfp_app *app, struct sk_buff *skb)
- 		return;
- 	}
- 
--	rtnl_lock();
-+	priv = app->priv;
-+	mutex_lock(&priv->nfp_fl_lock);
- 	for (i = 0; i < flow_cnt; i++) {
- 		u32 ctx = be32_to_cpu(msg->flow[i].host_ctx);
- 
- 		sub_flows[i] = nfp_flower_get_fl_payload_from_ctx(app, ctx);
- 		if (!sub_flows[i]) {
- 			nfp_flower_cmsg_warn(app, "Invalid flow in merge hint\n");
--			goto err_rtnl_unlock;
-+			goto err_mutex_unlock;
+diff --git a/drivers/dma-buf/dma-fence-unwrap.c b/drivers/dma-buf/dma-fence-unwrap.c
+index c625bb2b5d56..628af51c81af 100644
+--- a/drivers/dma-buf/dma-fence-unwrap.c
++++ b/drivers/dma-buf/dma-fence-unwrap.c
+@@ -76,16 +76,11 @@ struct dma_fence *__dma_fence_unwrap_merge(unsigned int num_fences,
+ 		dma_fence_unwrap_for_each(tmp, &iter[i], fences[i]) {
+ 			if (!dma_fence_is_signaled(tmp)) {
+ 				++count;
+-			} else if (test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT,
+-					    &tmp->flags)) {
+-				if (ktime_after(tmp->timestamp, timestamp))
+-					timestamp = tmp->timestamp;
+ 			} else {
+-				/*
+-				 * Use the current time if the fence is
+-				 * currently signaling.
+-				 */
+-				timestamp = ktime_get();
++				ktime_t t = dma_fence_timestamp(tmp);
++
++				if (ktime_after(t, timestamp))
++					timestamp = t;
+ 			}
  		}
  	}
+diff --git a/drivers/dma-buf/sync_file.c b/drivers/dma-buf/sync_file.c
+index af57799c86ce..2e9a316c596a 100644
+--- a/drivers/dma-buf/sync_file.c
++++ b/drivers/dma-buf/sync_file.c
+@@ -268,13 +268,10 @@ static int sync_fill_fence_info(struct dma_fence *fence,
+ 		sizeof(info->driver_name));
  
-@@ -244,8 +246,8 @@ nfp_flower_cmsg_merge_hint_rx(struct nfp_app *app, struct sk_buff *skb)
- 	if (err == -ENOMEM)
- 		nfp_flower_cmsg_warn(app, "Flow merge memory fail.\n");
+ 	info->status = dma_fence_get_status(fence);
+-	while (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags) &&
+-	       !test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags))
+-		cpu_relax();
+ 	info->timestamp_ns =
+-		test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags) ?
+-		ktime_to_ns(fence->timestamp) :
+-		ktime_set(0, 0);
++		dma_fence_is_signaled(fence) ?
++			ktime_to_ns(dma_fence_timestamp(fence)) :
++			ktime_set(0, 0);
  
--err_rtnl_unlock:
--	rtnl_unlock();
-+err_mutex_unlock:
-+	mutex_unlock(&priv->nfp_fl_lock);
+ 	return info->status;
  }
+diff --git a/drivers/gpu/drm/scheduler/sched_main.c b/drivers/gpu/drm/scheduler/sched_main.c
+index 506371c42745..5a3a622fc672 100644
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -929,7 +929,7 @@ drm_sched_get_cleanup_job(struct drm_gpu_scheduler *sched)
  
- static void
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-index 2643c4b3ff1f..2967bab72505 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
-@@ -2131,8 +2131,6 @@ nfp_fl_ct_offload_nft_flow(struct nfp_fl_ct_zone_entry *zt, struct flow_cls_offl
- 	struct nfp_fl_ct_flow_entry *ct_entry;
- 	struct netlink_ext_ack *extack = NULL;
- 
--	ASSERT_RTNL();
--
- 	extack = flow->common.extack;
- 	switch (flow->command) {
- 	case FLOW_CLS_REPLACE:
-@@ -2178,9 +2176,13 @@ int nfp_fl_ct_handle_nft_flow(enum tc_setup_type type, void *type_data, void *cb
- 
- 	switch (type) {
- 	case TC_SETUP_CLSFLOWER:
--		rtnl_lock();
-+		while (!mutex_trylock(&zt->priv->nfp_fl_lock)) {
-+			if (!zt->nft) /* avoid deadlock */
-+				return err;
-+			msleep(20);
-+		}
- 		err = nfp_fl_ct_offload_nft_flow(zt, flow);
--		rtnl_unlock();
-+		mutex_unlock(&zt->priv->nfp_fl_lock);
- 		break;
- 	default:
- 		return -EOPNOTSUPP;
-@@ -2208,6 +2210,7 @@ int nfp_fl_ct_del_flow(struct nfp_fl_ct_map_entry *ct_map_ent)
- 	struct nfp_fl_ct_flow_entry *ct_entry;
- 	struct nfp_fl_ct_zone_entry *zt;
- 	struct rhashtable *m_table;
-+	struct nf_flowtable *nft;
- 
- 	if (!ct_map_ent)
- 		return -ENOENT;
-@@ -2226,8 +2229,12 @@ int nfp_fl_ct_del_flow(struct nfp_fl_ct_map_entry *ct_map_ent)
- 		if (ct_map_ent->cookie > 0)
- 			kfree(ct_map_ent);
- 
--		if (!zt->pre_ct_count) {
--			zt->nft = NULL;
-+		if (!zt->pre_ct_count && zt->nft) {
-+			nft = zt->nft;
-+			zt->nft = NULL; /* avoid deadlock */
-+			nf_flow_table_offload_del_cb(nft,
-+						     nfp_fl_ct_handle_nft_flow,
-+						     zt);
- 			nfp_fl_ct_clean_nft_entries(zt);
+ 		if (next) {
+ 			next->s_fence->scheduled.timestamp =
+-				job->s_fence->finished.timestamp;
++				dma_fence_timestamp(&job->s_fence->finished);
+ 			/* start TO timer for next job */
+ 			drm_sched_start_timeout(sched);
  		}
- 		break;
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/main.h b/drivers/net/ethernet/netronome/nfp/flower/main.h
-index 40372545148e..2b7c947ff4f2 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/main.h
-+++ b/drivers/net/ethernet/netronome/nfp/flower/main.h
-@@ -297,6 +297,7 @@ struct nfp_fl_internal_ports {
-  * @predt_list:		List to keep track of decap pretun flows
-  * @neigh_table:	Table to keep track of neighbor entries
-  * @predt_lock:		Lock to serialise predt/neigh table updates
-+ * @nfp_fl_lock:	Lock to protect the flow offload operation
-  */
- struct nfp_flower_priv {
- 	struct nfp_app *app;
-@@ -339,6 +340,7 @@ struct nfp_flower_priv {
- 	struct list_head predt_list;
- 	struct rhashtable neigh_table;
- 	spinlock_t predt_lock; /* Lock to serialise predt/neigh table updates */
-+	struct mutex nfp_fl_lock; /* Protect the flow operation */
- };
- 
- /**
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/metadata.c b/drivers/net/ethernet/netronome/nfp/flower/metadata.c
-index 0f06ef6e24bf..80e4675582bf 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/metadata.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/metadata.c
-@@ -528,6 +528,8 @@ int nfp_flower_metadata_init(struct nfp_app *app, u64 host_ctx_count,
- 	if (err)
- 		goto err_free_stats_ctx_table;
- 
-+	mutex_init(&priv->nfp_fl_lock);
-+
- 	err = rhashtable_init(&priv->ct_zone_table, &nfp_zone_table_params);
- 	if (err)
- 		goto err_free_merge_table;
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/offload.c b/drivers/net/ethernet/netronome/nfp/flower/offload.c
-index c153f0575b92..0aceef9fe582 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/offload.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/offload.c
-@@ -1009,8 +1009,6 @@ int nfp_flower_merge_offloaded_flows(struct nfp_app *app,
- 	u64 parent_ctx = 0;
- 	int err;
- 
--	ASSERT_RTNL();
--
- 	if (sub_flow1 == sub_flow2 ||
- 	    nfp_flower_is_merge_flow(sub_flow1) ||
- 	    nfp_flower_is_merge_flow(sub_flow2))
-@@ -1727,19 +1725,30 @@ static int
- nfp_flower_repr_offload(struct nfp_app *app, struct net_device *netdev,
- 			struct flow_cls_offload *flower)
- {
-+	struct nfp_flower_priv *priv = app->priv;
-+	int ret;
-+
- 	if (!eth_proto_is_802_3(flower->common.protocol))
- 		return -EOPNOTSUPP;
- 
-+	mutex_lock(&priv->nfp_fl_lock);
- 	switch (flower->command) {
- 	case FLOW_CLS_REPLACE:
--		return nfp_flower_add_offload(app, netdev, flower);
-+		ret = nfp_flower_add_offload(app, netdev, flower);
-+		break;
- 	case FLOW_CLS_DESTROY:
--		return nfp_flower_del_offload(app, netdev, flower);
-+		ret = nfp_flower_del_offload(app, netdev, flower);
-+		break;
- 	case FLOW_CLS_STATS:
--		return nfp_flower_get_stats(app, netdev, flower);
-+		ret = nfp_flower_get_stats(app, netdev, flower);
-+		break;
- 	default:
--		return -EOPNOTSUPP;
-+		ret = -EOPNOTSUPP;
-+		break;
- 	}
-+	mutex_unlock(&priv->nfp_fl_lock);
-+
-+	return ret;
+diff --git a/include/linux/dma-fence.h b/include/linux/dma-fence.h
+index 0d678e9a7b24..ebe78bd3d121 100644
+--- a/include/linux/dma-fence.h
++++ b/include/linux/dma-fence.h
+@@ -568,6 +568,25 @@ static inline void dma_fence_set_error(struct dma_fence *fence,
+ 	fence->error = error;
  }
  
- static int nfp_flower_setup_tc_block_cb(enum tc_setup_type type,
-@@ -1778,6 +1787,7 @@ static int nfp_flower_setup_tc_block(struct net_device *netdev,
- 	repr_priv = repr->app_priv;
- 	repr_priv->block_shared = f->block_shared;
- 	f->driver_block_list = &nfp_block_cb_list;
-+	f->unlocked_driver_cb = true;
- 
- 	switch (f->command) {
- 	case FLOW_BLOCK_BIND:
-@@ -1876,6 +1886,8 @@ nfp_flower_setup_indr_tc_block(struct net_device *netdev, struct Qdisc *sch, str
- 	     nfp_flower_internal_port_can_offload(app, netdev)))
- 		return -EOPNOTSUPP;
- 
-+	f->unlocked_driver_cb = true;
++/**
++ * dma_fence_timestamp - helper to get the completion timestamp of a fence
++ * @fence: fence to get the timestamp from.
++ *
++ * After a fence is signaled the timestamp is updated with the signaling time,
++ * but setting the timestamp can race with tasks waiting for the signaling. This
++ * helper busy waits for the correct timestamp to appear.
++ */
++static inline ktime_t dma_fence_timestamp(struct dma_fence *fence)
++{
++	if (WARN_ON(!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags)))
++		return ktime_get();
 +
- 	switch (f->command) {
- 	case FLOW_BLOCK_BIND:
- 		cb_priv = nfp_flower_indr_block_cb_priv_lookup(app, netdev);
-diff --git a/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c b/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c
-index 99052a925d9e..e7180b4793c7 100644
---- a/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c
-+++ b/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c
-@@ -523,25 +523,31 @@ int nfp_flower_setup_qos_offload(struct nfp_app *app, struct net_device *netdev,
- {
- 	struct netlink_ext_ack *extack = flow->common.extack;
- 	struct nfp_flower_priv *fl_priv = app->priv;
-+	int ret;
- 
- 	if (!(fl_priv->flower_ext_feats & NFP_FL_FEATS_VF_RLIM)) {
- 		NL_SET_ERR_MSG_MOD(extack, "unsupported offload: loaded firmware does not support qos rate limit offload");
- 		return -EOPNOTSUPP;
- 	}
- 
-+	mutex_lock(&fl_priv->nfp_fl_lock);
- 	switch (flow->command) {
- 	case TC_CLSMATCHALL_REPLACE:
--		return nfp_flower_install_rate_limiter(app, netdev, flow,
--						       extack);
-+		ret = nfp_flower_install_rate_limiter(app, netdev, flow, extack);
-+		break;
- 	case TC_CLSMATCHALL_DESTROY:
--		return nfp_flower_remove_rate_limiter(app, netdev, flow,
--						      extack);
-+		ret = nfp_flower_remove_rate_limiter(app, netdev, flow, extack);
-+		break;
- 	case TC_CLSMATCHALL_STATS:
--		return nfp_flower_stats_rate_limiter(app, netdev, flow,
--						     extack);
-+		ret = nfp_flower_stats_rate_limiter(app, netdev, flow, extack);
-+		break;
- 	default:
--		return -EOPNOTSUPP;
-+		ret = -EOPNOTSUPP;
-+		break;
- 	}
-+	mutex_unlock(&fl_priv->nfp_fl_lock);
++	while (!test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags))
++		cpu_relax();
 +
-+	return ret;
- }
- 
- /* Offload tc action, currently only for tc police */
++	return fence->timestamp;
++}
++
+ signed long dma_fence_wait_timeout(struct dma_fence *,
+ 				   bool intr, signed long timeout);
+ signed long dma_fence_wait_any_timeout(struct dma_fence **fences,
 
