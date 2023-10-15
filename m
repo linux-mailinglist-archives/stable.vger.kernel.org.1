@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1571B7C9A9A
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:09:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4FD27C9A9B
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjJOSJB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:09:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42516 "EHLO
+        id S229603AbjJOSJE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:09:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSJA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:09:00 -0400
+        with ESMTP id S229518AbjJOSJE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:09:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA7FDB7
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:08:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA83C433C7;
-        Sun, 15 Oct 2023 18:08:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 689B9AB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:09:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E43C433C8;
+        Sun, 15 Oct 2023 18:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393338;
-        bh=E8xJR2bnR0nwpTc92z4KM81SU02eH603ZM5hKLrcD94=;
+        s=korg; t=1697393342;
+        bh=NAzvR/nTQ4tzi9k7fLgrKjJYSv4gqm2usQPPUTTY7Ps=;
         h=Subject:To:Cc:From:Date:From;
-        b=XJD4ycl9E+Dyd80RPjoIQZ25Tk9pZSHche2vb28mZ/nqqtOX2BhKyYX4MJ26Pf+ZA
-         VZ4Xc5CplTEgx0VSZOMHASAA97BRdz2XD2lzEtJLzpmTTjYf04i6ntm66HJD2Z14eP
-         FYgPVtwA2VxYGvV9Zfaz3pj9DKpauatvhQOui9HM=
-Subject: FAILED: patch "[PATCH] usb: hub: Guard against accesses to uninitialized BOS" failed to apply to 5.10-stable tree
+        b=gkAVWvWKWYcJU057jRJdPhsyjKspyK3U175Ev3WpSqbwj0S+S+aHXojnQi/iUPGsj
+         RxQjwCgK3MYRS6zaHx02MqgCxTcQGkCJnTT7g5nI1ImEmLob3hHgJp9Kt+Uu8UTfAT
+         h2eJTksClR5SSWfPQpygAvNPRUlZWGZ3B3BJYfeA=
+Subject: FAILED: patch "[PATCH] usb: hub: Guard against accesses to uninitialized BOS" failed to apply to 5.4-stable tree
 To:     ricardo.canuelo@collabora.com, gregkh@linuxfoundation.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:08:48 +0200
-Message-ID: <2023101548-guidable-approach-14ef@gregkh>
+Date:   Sun, 15 Oct 2023 20:08:50 +0200
+Message-ID: <2023101550-bountiful-matriarch-1441@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x f74a7afc224acd5e922c7a2e52244d891bbe44ee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101548-guidable-approach-14ef@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101550-bountiful-matriarch-1441@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
