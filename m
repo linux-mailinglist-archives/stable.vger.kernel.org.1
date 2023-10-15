@@ -2,155 +2,219 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 380077C9AB5
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FD9F7C9AB6
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:19:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229772AbjJOSS1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:18:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48850 "EHLO
+        id S229522AbjJOSTo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:19:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSS0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:18:26 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32015B7
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:18:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6E8C433C9;
-        Sun, 15 Oct 2023 18:18:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393904;
-        bh=r2+hoAsTSmcLqEeIdUjCNnSwF1kzbmT1vIxZyYSjY5M=;
-        h=Subject:To:Cc:From:Date:From;
-        b=t+TbnKksqOfkdsXA0iYANHCvLNA7NzNTFfDiaw4sC0kFKd4HZPCszBTh7+OrPsTTx
-         IaVl8cJc8JeDhXGC1HyZqrgSTcAg24ZB3Y6y2ceTjIzufwB/M5IuAxjrqM7vWl25Fw
-         p4yiTG5JEv3g2qqG8Xi3JIa2nG8+t6ypSM7yjPJc=
-Subject: FAILED: patch "[PATCH] x86/alternatives: Disable KASAN in apply_alternatives()" failed to apply to 4.19-stable tree
-To:     kirill.shutemov@linux.intel.com, fei.yang@intel.com,
-        mingo@kernel.org, peterz@infradead.org,
-        torvalds@linux-foundation.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:17:54 +0200
-Message-ID: <2023101554-babied-exemption-cde9@gregkh>
+        with ESMTP id S229518AbjJOSTn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:19:43 -0400
+Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4518AAB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:19:41 -0700 (PDT)
+Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-3ae35773a04so2472834b6e.0
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:19:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1697393980; x=1697998780; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=a6mA2F8mED9/ON7OwUZheCdmHZleiGWu5tUnFCrNYxw=;
+        b=vVKat9FrseM8yWoAsrT79b6j4TI1Cms/L+zVevb8hpVoLptrSIuaSdyZw3+TdLGFK2
+         wGEluht7rEMasfaol8Gvt8ZmwdFW6uzuGEYuEaHsU3/4wpZr6njytf3isngK4rdr0BHa
+         LTsR682+NoyNx4iKFmSgwtZ8Oo61WYpJ8JZHdWKHNfO0dtKWfsaEC84hAB/qXusta3j9
+         +ZwIMz7yjow07riFVEnr89Dx6wkidZqGx7N1GyuAPQilsKAkA7Rp4uE0dx/zt57va8DE
+         Pq7leKBAv9zwJc7Dfl5WQg27aVEW7+n1AT+X5AhqlFUDS+jv84kvwEmlkJ0pOANRN0H5
+         NIRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697393980; x=1697998780;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a6mA2F8mED9/ON7OwUZheCdmHZleiGWu5tUnFCrNYxw=;
+        b=kc1eQG0rBzNjxc4asKFkiMHF/rIhpR3D+sfOTXjVcSr0EmCxktLJCfLfU2xNqFJU03
+         DUEnH2HUPqvQfwj4YcT9pXF88jU5s8p5yFhyHT+YqKS9rNbUoDaNuYtWUlyk7A/gLLRP
+         9CXd/rnTZYBmqcabybSC1HZoIHaGAgxhfBbBFbs01jwkKfgq7wTC9zneR7ychto/lzeq
+         j2SwVa4sNgPka2XPp+XI3bQdKYm7BgDOgz3/16fN7mmyXJJW06+fUC5rhBo9qv7mzmh/
+         D7zpiJq+pSF75kXfVr91zd1E1xPpp3P31+XYxdn5ica/jPoVhL45UuU5NlygbMRX9d7k
+         i9Gw==
+X-Gm-Message-State: AOJu0YwxylwGI2kKIskf5EUNiBZPfROoSdZxoW8jNCqdCoxdR2i1Bvsz
+        nyPih/fT8ms/zu10+JDCeZeDynvOioSoCAjwDHR6Fw==
+X-Google-Smtp-Source: AGHT+IHuku4l4tDedvatljERlVnCU425XcXHE1Kl4tBBbvAJBtk4Anvr1UmMAvLeCzdqQXvQW7wC3w==
+X-Received: by 2002:aca:2409:0:b0:3a7:215c:e34 with SMTP id n9-20020aca2409000000b003a7215c0e34mr33245455oic.15.1697393980182;
+        Sun, 15 Oct 2023 11:19:40 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id pv16-20020a17090b3c9000b00263154aab24sm3334489pjb.57.2023.10.15.11.19.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Oct 2023 11:19:39 -0700 (PDT)
+Message-ID: <652c2d3b.170a0220.53882.9efc@mx.google.com>
+Date:   Sun, 15 Oct 2023 11:19:39 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v6.1.58
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable
+Subject: stable/linux-6.1.y build: 19 builds: 0 failed, 19 passed,
+ 1 warning (v6.1.58)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable/linux-6.1.y build: 19 builds: 0 failed, 19 passed, 1 warning (v6.1.5=
+8)
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.1.y/ke=
+rnel/v6.1.58/
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Tree: stable
+Branch: linux-6.1.y
+Git Describe: v6.1.58
+Git Commit: adc4d740ad9ec780657327c69ab966fa4fdf0e8e
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x d35652a5fc9944784f6f50a5c979518ff8dacf61
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101554-babied-exemption-cde9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Warnings Detected:
 
-Possible dependencies:
+arc:
 
-d35652a5fc99 ("x86/alternatives: Disable KASAN in apply_alternatives()")
-6becb5026b81 ("x86/alternative: Make debug-alternative selective")
-ac0ee0a9560c ("x86/alternatives: Teach text_poke_bp() to patch Jcc.d32 instructions")
-5d1dd961e743 ("x86/alternatives: Add alt_instr.flags")
-931ab63664f0 ("x86/ibt: Implement FineIBT")
-b341b20d648b ("x86: Add prefix symbols for function padding")
-3b6c1747da48 ("x86/retpoline: Add SKL retthunk retpolines")
-52354973573c ("x86/asm: Provide ALTERNATIVE_3")
-eaf44c816ed8 ("x86/modules: Add call patching")
-e81dc127ef69 ("x86/callthunks: Add call patching for call depth tracking")
-80e4c1cd42ff ("x86/retbleed: Add X86_FEATURE_CALL_DEPTH")
-bea75b33895f ("x86/Kconfig: Introduce function padding")
-8f7c0d8b23c3 ("x86/Kconfig: Add CONFIG_CALL_THUNKS")
-8eb5d34e77c6 ("x86/asm: Differentiate between code and function alignment")
-d49a0626216b ("arch: Introduce CONFIG_FUNCTION_ALIGNMENT")
-8afc66e8d43b ("Merge tag 'kbuild-v6.1' of git://git.kernel.org/pub/scm/linux/kernel/git/masahiroy/linux-kbuild")
+arm64:
 
-thanks,
+arm:
 
-greg k-h
+i386:
 
------------------- original commit in Linus's tree ------------------
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-From d35652a5fc9944784f6f50a5c979518ff8dacf61 Mon Sep 17 00:00:00 2001
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Date: Thu, 12 Oct 2023 13:04:24 +0300
-Subject: [PATCH] x86/alternatives: Disable KASAN in apply_alternatives()
+riscv:
 
-Fei has reported that KASAN triggers during apply_alternatives() on
-a 5-level paging machine:
+x86_64:
 
-	BUG: KASAN: out-of-bounds in rcu_is_watching()
-	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
-	...
-	__asan_load4()
-	rcu_is_watching()
-	trace_hardirqs_on()
-	text_poke_early()
-	apply_alternatives()
-	...
 
-On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
-gets patched. It includes KASAN code, where KASAN_SHADOW_START depends on
-__VIRTUAL_MASK_SHIFT, which is defined with cpu_feature_enabled().
+Warnings summary:
 
-KASAN gets confused when apply_alternatives() patches the
-KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
-static, by replacing __VIRTUAL_MASK_SHIFT with 56, works around the issue.
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
-Fix it for real by disabling KASAN while the kernel is patching alternatives.
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-[ mingo: updated the changelog ]
+Detailed per-defconfig build reports:
 
-Fixes: 6657fca06e3f ("x86/mm: Allow to boot without LA57 if CONFIG_X86_5LEVEL=y")
-Reported-by: Fei Yang <fei.yang@intel.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231012100424.1456-1-kirill.shutemov@linux.intel.com
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
 
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 517ee01503be..73be3931e4f0 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -403,6 +403,17 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
- 	u8 insn_buff[MAX_PATCH_LEN];
- 
- 	DPRINTK(ALT, "alt table %px, -> %px", start, end);
-+
-+	/*
-+	 * In the case CONFIG_X86_5LEVEL=y, KASAN_SHADOW_START is defined using
-+	 * cpu_feature_enabled(X86_FEATURE_LA57) and is therefore patched here.
-+	 * During the process, KASAN becomes confused seeing partial LA57
-+	 * conversion and triggers a false-positive out-of-bound report.
-+	 *
-+	 * Disable KASAN until the patching is complete.
-+	 */
-+	kasan_disable_current();
-+
- 	/*
- 	 * The scan order should be from start to end. A later scanned
- 	 * alternative code can overwrite previously scanned alternative code.
-@@ -452,6 +463,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
- 
- 		text_poke_early(instr, insn_buff, insn_buff_sz);
- 	}
-+
-+	kasan_enable_current();
- }
- 
- static inline bool is_jcc32(struct insn *insn)
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
 
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
