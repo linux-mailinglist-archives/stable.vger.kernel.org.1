@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 787E47C9A90
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 727B17C9A91
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230153AbjJOSGh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:06:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57162 "EHLO
+        id S230156AbjJOSGm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:06:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229704AbjJOSGg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:36 -0400
+        with ESMTP id S229704AbjJOSGl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E5BAC1
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2581C433C7;
-        Sun, 15 Oct 2023 18:06:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2A37AB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF87C433C7;
+        Sun, 15 Oct 2023 18:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393194;
-        bh=vU4ozGQaDuA3U6Cya7tsOFbksJfr1HQuzUK08/ISs+w=;
+        s=korg; t=1697393199;
+        bh=Ev900uOFunGcr/MjIdcpeESE0Pc3uwzRYWNZye+jjk0=;
         h=Subject:To:Cc:From:Date:From;
-        b=Gtsu3IufxtUtVmCr7YVKW8tzrzhVh+eUgVkJME5JGuJnHvVgZcLd0FgWL3JUvbwxe
-         jzraVOFlJq7Ot5b7MAzF8IOCRkUKc0KmO12+acqhjzUCNIYlTGjCXsf0ZFm2GPdnfK
-         aEz1Ao7BArH7ABlc+bfYEdYj+JO5wgLp0uiGIHPg=
-Subject: FAILED: patch "[PATCH] xhci: track port suspend state correctly in unsuccessful" failed to apply to 4.14-stable tree
-To:     mathias.nyman@linux.intel.com, gregkh@linuxfoundation.org,
-        quic_wcheng@quicinc.com
+        b=UG+YxYpI7jBEfI1o8HfPOITg++M/S5AYiFITwRvf3+4tE3MtErhtvftxRcqgUfRpP
+         CD+os8fuwiCqMa5+rjSZ1ElY9tOBt4YAyvJPlJG0usM8uHJ4Y9zTFBE0ZqP8yBpwNY
+         yU+oaTFSKodKt0UM4F14ZP8AUQRap/8FREJIO9y8=
+Subject: FAILED: patch "[PATCH] xhci: Clear EHB bit only at end of interrupt handler" failed to apply to 6.1-stable tree
+To:     lukas@wunner.de, gregkh@linuxfoundation.org,
+        mathias.nyman@linux.intel.com, peter.chen@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:06:19 +0200
-Message-ID: <2023101519-had-wrath-b7ca@gregkh>
+Date:   Sun, 15 Oct 2023 20:06:36 +0200
+Message-ID: <2023101536-existing-google-76ef@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x d7cdfc319b2bcf6899ab0a05eec0958bc802a9a1
+git cherry-pick -x 15f3ef070933817fac2bcbdb9c85bff9e54e9f80
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101519-had-wrath-b7ca@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101536-existing-google-76ef@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,74 +68,87 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d7cdfc319b2bcf6899ab0a05eec0958bc802a9a1 Mon Sep 17 00:00:00 2001
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-Date: Fri, 15 Sep 2023 17:31:06 +0300
-Subject: [PATCH] xhci: track port suspend state correctly in unsuccessful
- resume cases
+From 15f3ef070933817fac2bcbdb9c85bff9e54e9f80 Mon Sep 17 00:00:00 2001
+From: Lukas Wunner <lukas@wunner.de>
+Date: Fri, 15 Sep 2023 17:31:07 +0300
+Subject: [PATCH] xhci: Clear EHB bit only at end of interrupt handler
 
-xhci-hub.c tracks suspended ports in a suspended_port bitfield.
-This is checked when responding to a Get_Status(PORT) request to see if a
-port in running U0 state was recently resumed, and adds the required
-USB_PORT_STAT_C_SUSPEND change bit in those cases.
+The Event Handler Busy bit shall be cleared by software when the Event
+Ring is empty.  The xHC is thereby informed that it may raise another
+interrupt once it has enqueued new events (sec 4.17.2).
 
-The suspended_port bit was left uncleared if a device is disconnected
-during suspend. The bit remained set even when a new device was connected
-and enumerated. The set bit resulted in a incorrect Get_Status(PORT)
-response with a bogus USB_PORT_STAT_C_SUSPEND change
-bit set once the new device reached U0 link state.
+However since commit dc0ffbea5729 ("usb: host: xhci: update event ring
+dequeue pointer on purpose"), the EHB bit is already cleared after half
+a segment has been processed.
 
-USB_PORT_STAT_C_SUSPEND change bit is only used for USB2 ports, but
-xhci-hub keeps track of both USB2 and USB3 suspended ports.
+As a result, spurious interrupts may occur:
 
-Cc: stable@vger.kernel.org
-Reported-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Closes: https://lore.kernel.org/linux-usb/d68aa806-b26a-0e43-42fb-b8067325e967@quicinc.com/
-Fixes: 1d5810b6923c ("xhci: Rework port suspend structures for limited ports.")
-Tested-by: Wesley Cheng <quic_wcheng@quicinc.com>
+- xhci_irq() processes half a segment, clears EHB, continues processing
+  remaining events.
+- xHC enqueues new events.  Because EHB has been cleared, xHC sets
+  Interrupt Pending bit.  Interrupt moderation countdown begins.
+- Meanwhile xhci_irq() continues processing events.  Interrupt
+  moderation countdown reaches zero, so an MSI interrupt is signaled.
+- xhci_irq() empties the Event Ring, clears EHB again and is done.
+- Because an MSI interrupt has been signaled, xhci_irq() is run again.
+  It discovers there's nothing to do and returns IRQ_NONE.
+
+Avoid by clearing the EHB bit only at the end of xhci_irq().
+
+Fixes: dc0ffbea5729 ("usb: host: xhci: update event ring dequeue pointer on purpose")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Cc: stable@vger.kernel.org # v5.5+
+Cc: Peter Chen <peter.chen@kernel.org>
 Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20230915143108.1532163-3-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20230915143108.1532163-4-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-index 0054d02239e2..0df5d807a77e 100644
---- a/drivers/usb/host/xhci-hub.c
-+++ b/drivers/usb/host/xhci-hub.c
-@@ -1062,19 +1062,19 @@ static void xhci_get_usb3_port_status(struct xhci_port *port, u32 *status,
- 		*status |= USB_PORT_STAT_C_CONFIG_ERROR << 16;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 98389b568633..3e5dc0723a8f 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -2996,7 +2996,8 @@ static int xhci_handle_event(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
+  */
+ static void xhci_update_erst_dequeue(struct xhci_hcd *xhci,
+ 				     struct xhci_interrupter *ir,
+-				     union xhci_trb *event_ring_deq)
++				     union xhci_trb *event_ring_deq,
++				     bool clear_ehb)
+ {
+ 	u64 temp_64;
+ 	dma_addr_t deq;
+@@ -3017,12 +3018,13 @@ static void xhci_update_erst_dequeue(struct xhci_hcd *xhci,
+ 			return;
  
- 	/* USB3 specific wPortStatus bits */
--	if (portsc & PORT_POWER) {
-+	if (portsc & PORT_POWER)
- 		*status |= USB_SS_PORT_STAT_POWER;
--		/* link state handling */
--		if (link_state == XDEV_U0)
--			bus_state->suspended_ports &= ~(1 << portnum);
--	}
- 
--	/* remote wake resume signaling complete */
--	if (bus_state->port_remote_wakeup & (1 << portnum) &&
-+	/* no longer suspended or resuming */
-+	if (link_state != XDEV_U3 &&
- 	    link_state != XDEV_RESUME &&
- 	    link_state != XDEV_RECOVERY) {
--		bus_state->port_remote_wakeup &= ~(1 << portnum);
--		usb_hcd_end_port_resume(&hcd->self, portnum);
-+		/* remote wake resume signaling complete */
-+		if (bus_state->port_remote_wakeup & (1 << portnum)) {
-+			bus_state->port_remote_wakeup &= ~(1 << portnum);
-+			usb_hcd_end_port_resume(&hcd->self, portnum);
-+		}
-+		bus_state->suspended_ports &= ~(1 << portnum);
+ 		/* Update HC event ring dequeue pointer */
+-		temp_64 &= ERST_PTR_MASK;
++		temp_64 &= ERST_DESI_MASK;
+ 		temp_64 |= ((u64) deq & (u64) ~ERST_PTR_MASK);
  	}
  
- 	xhci_hub_report_usb3_link_state(xhci, status, portsc);
-@@ -1131,6 +1131,7 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
- 			usb_hcd_end_port_resume(&port->rhub->hcd->self, portnum);
- 		}
- 		port->rexit_active = 0;
-+		bus_state->suspended_ports &= ~(1 << portnum);
- 	}
+ 	/* Clear the event handler busy flag (RW1C) */
+-	temp_64 |= ERST_EHB;
++	if (clear_ehb)
++		temp_64 |= ERST_EHB;
+ 	xhci_write_64(xhci, temp_64, &ir->ir_set->erst_dequeue);
  }
  
+@@ -3103,7 +3105,7 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ 	while (xhci_handle_event(xhci, ir) > 0) {
+ 		if (event_loop++ < TRBS_PER_SEGMENT / 2)
+ 			continue;
+-		xhci_update_erst_dequeue(xhci, ir, event_ring_deq);
++		xhci_update_erst_dequeue(xhci, ir, event_ring_deq, false);
+ 		event_ring_deq = ir->event_ring->dequeue;
+ 
+ 		/* ring is half-full, force isoc trbs to interrupt more often */
+@@ -3113,7 +3115,7 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ 		event_loop = 0;
+ 	}
+ 
+-	xhci_update_erst_dequeue(xhci, ir, event_ring_deq);
++	xhci_update_erst_dequeue(xhci, ir, event_ring_deq, true);
+ 	ret = IRQ_HANDLED;
+ 
+ out:
 
