@@ -2,56 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B4EF7C9B3F
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 22:09:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 297A97C9B49
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 22:13:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbjJOUJu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 16:09:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49710 "EHLO
+        id S230243AbjJOUNF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 16:13:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOUJu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 16:09:50 -0400
+        with ESMTP id S230200AbjJOUNA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 16:13:00 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1505AB7
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 13:09:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D35FC1
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 13:12:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697400588; x=1728936588;
+  t=1697400779; x=1728936779;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FuU1WtCDGINOGUXrF8dYq4ERdx37eIk1k1IYnNPuXsw=;
-  b=Ghucqkpe0JVKkSkKPg07Tx5/YT8vzCiVFC7nTG1TdQIEkpav/HJkI0cS
-   SfxNm6cNqYdc0p3pUZJBejIyBSiqlesw228XOdRUDcaaSCPKNAC7/J9RQ
-   E/mbNHOS36ahRoJcKkduzUi++uJiLCv6eHhIXEzXsC9iCCPg9IFaN7L9U
-   bGT3XRSU3ZaFYku+X2P6z/WPVMHkV8lSRrSFeJDQ3RBBNCTIUifsadP8V
-   /mTTyn6GtH7glueIGNeTBT9KHrhNFEc6mnFap7ZyNd8RRg9ZtFu8Jo2vw
-   JMGhUbi9zJU8tz+lDNlfOn4pCS20G6SmF2ErdAJB3ocUXFeQKXgNcin4l
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="375781340"
+  bh=NkCbrEiug2KsgjLzXCsjRyZc0UhEJoIpDQ8KQuaTSu8=;
+  b=VjWZk9FhdH0sLf0ko7TyTmcfGcic0hsifrTp/GLeMX8MpnfGG1jPJIDF
+   WQWKYODCYoUxaNsO7fDLiAiIqnu6PHrmIGX+PZ15amMqgNM+OfY6TTmJr
+   5SIJiSoBRvk0ASNPciFSgfCH+6y6UxwqpDIYbq02FJVFbpPnVAhMCq4zM
+   jZfg/F4BBSqgM39KH+WNAFxz4zu/nQwsNLCAksTjUq+2PX18rOIYbI6g6
+   gOSlFeK0wT8Z90GWIwJ2nP9IwRfuOWXK55+n6wvNjYkqsKb8o64yg2h4h
+   GsqiBoSY5wUl9nXiU/5u8knN1RUnx4yfd3q2rJEn5UaIX+EOBlNsRlU9i
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="375781411"
 X-IronPort-AV: E=Sophos;i="6.03,226,1694761200"; 
-   d="scan'208";a="375781340"
+   d="scan'208";a="375781411"
 Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2023 13:09:47 -0700
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2023 13:12:58 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="705353705"
+X-IronPort-AV: E=McAfee;i="6600,9927,10863"; a="705353893"
 X-IronPort-AV: E=Sophos;i="6.03,226,1694761200"; 
-   d="scan'208";a="705353705"
+   d="scan'208";a="705353893"
 Received: from bmihaile-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.249.37.165])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2023 13:09:45 -0700
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Oct 2023 13:12:56 -0700
 Received: by box.shutemov.name (Postfix, from userid 1000)
-        id 76E3210A1BD; Sun, 15 Oct 2023 23:09:42 +0300 (+03)
+        id 2DFAF10A1BD; Sun, 15 Oct 2023 23:12:54 +0300 (+03)
 From:   "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 To:     stable@vger.kernel.org
 Cc:     "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
         Fei Yang <fei.yang@intel.com>, Ingo Molnar <mingo@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
         Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1.y] x86/alternatives: Disable KASAN in apply_alternatives()
-Date:   Sun, 15 Oct 2023 23:09:08 +0300
-Message-ID: <20231015200908.3254-1-kirill.shutemov@linux.intel.com>
+Subject: [PATCH 5.15.y] x86/alternatives: Disable KASAN in apply_alternatives()
+Date:   Sun, 15 Oct 2023 23:12:51 +0300
+Message-ID: <20231015201251.4987-1-kirill.shutemov@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <2023101547-captivate-regress-4cb0@gregkh>
-References: <2023101547-captivate-regress-4cb0@gregkh>
+In-Reply-To: <2023101550-ranger-imaginary-2bed@gregkh>
+References: <2023101550-ranger-imaginary-2bed@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -104,10 +104,10 @@ Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
  1 file changed, 13 insertions(+)
 
 diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index d1d92897ed6b..46b7ee0ab01a 100644
+index 43dd7f281a21..c9e3246bf4f3 100644
 --- a/arch/x86/kernel/alternative.c
 +++ b/arch/x86/kernel/alternative.c
-@@ -270,6 +270,17 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+@@ -269,6 +269,17 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
  	u8 insn_buff[MAX_PATCH_LEN];
  
  	DPRINTK("alt table %px, -> %px", start, end);
@@ -125,7 +125,7 @@ index d1d92897ed6b..46b7ee0ab01a 100644
  	/*
  	 * The scan order should be from start to end. A later scanned
  	 * alternative code can overwrite previously scanned alternative code.
-@@ -337,6 +348,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
+@@ -336,6 +347,8 @@ void __init_or_module noinline apply_alternatives(struct alt_instr *start,
  next:
  		optimize_nops(instr, a->instrlen);
  	}
@@ -133,7 +133,7 @@ index d1d92897ed6b..46b7ee0ab01a 100644
 +	kasan_enable_current();
  }
  
- static inline bool is_jcc32(struct insn *insn)
+ #if defined(CONFIG_RETPOLINE) && defined(CONFIG_STACK_VALIDATION)
 -- 
 2.41.0
 
