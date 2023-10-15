@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F11557C9A97
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:07:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 147637C9A99
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:08:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230188AbjJOSHE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:07:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49916 "EHLO
+        id S229559AbjJOSIy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:08:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230204AbjJOSHE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:07:04 -0400
+        with ESMTP id S229518AbjJOSIx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:08:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67D4EB7
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:07:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B934C433C9;
-        Sun, 15 Oct 2023 18:07:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1975AAB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:08:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35C4C433C8;
+        Sun, 15 Oct 2023 18:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393222;
-        bh=cNAenrheYcjubVnTAqi6pPm0jmg7ccLpGujmwdZHLRM=;
+        s=korg; t=1697393331;
+        bh=ctpNXYwC/qlJfTo2budJiva1QNcSWnh0BKc5RTdlCQ0=;
         h=Subject:To:Cc:From:Date:From;
-        b=poYLU7Nd+hERz9NRM1yEDMmocrNPDGZVf27Z5d4kz3HkW++Oz/HTlzhf6joEWCO7A
-         Q63T9pjSApS1pD90gIlEguXHdrewPacgBbw1vIIH1cFJzbzLJFjVHs/dRx4KSrRILv
-         AVbe2qOG/o/3ol9d8DJ7ez/TBkkf12auyCLlgrkk=
-Subject: FAILED: patch "[PATCH] xhci: Clear EHB bit only at end of interrupt handler" failed to apply to 4.14-stable tree
-To:     lukas@wunner.de, gregkh@linuxfoundation.org,
-        mathias.nyman@linux.intel.com, peter.chen@kernel.org
+        b=dW7zPCjKc4r+aMSGsqEy0it8vKunibKLLg+0auQpJxBZPYv0zJKPHBxf60L3QkEpG
+         97oO6EP1xy4CTxBECrL2JC8ua4RyLp4c+y2vUnrYCgkVxJiCM4dFCCj4RZrTEr9tpa
+         4gr/+Vm1Ym1hRTfpAarxflHC9EFZAsvlPzNvdCzY=
+Subject: FAILED: patch "[PATCH] usb: hub: Guard against accesses to uninitialized BOS" failed to apply to 5.15-stable tree
+To:     ricardo.canuelo@collabora.com, gregkh@linuxfoundation.org,
+        stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:06:49 +0200
-Message-ID: <2023101549-kudos-jitters-a76f@gregkh>
+Date:   Sun, 15 Oct 2023 20:08:46 +0200
+Message-ID: <2023101546-blinker-remote-0be1@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 15f3ef070933817fac2bcbdb9c85bff9e54e9f80
+git cherry-pick -x f74a7afc224acd5e922c7a2e52244d891bbe44ee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101549-kudos-jitters-a76f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101546-blinker-remote-0be1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,87 +68,131 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 15f3ef070933817fac2bcbdb9c85bff9e54e9f80 Mon Sep 17 00:00:00 2001
-From: Lukas Wunner <lukas@wunner.de>
-Date: Fri, 15 Sep 2023 17:31:07 +0300
-Subject: [PATCH] xhci: Clear EHB bit only at end of interrupt handler
+From f74a7afc224acd5e922c7a2e52244d891bbe44ee Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
+Date: Wed, 30 Aug 2023 12:04:18 +0200
+Subject: [PATCH] usb: hub: Guard against accesses to uninitialized BOS
+ descriptors
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The Event Handler Busy bit shall be cleared by software when the Event
-Ring is empty.  The xHC is thereby informed that it may raise another
-interrupt once it has enqueued new events (sec 4.17.2).
+Many functions in drivers/usb/core/hub.c and drivers/usb/core/hub.h
+access fields inside udev->bos without checking if it was allocated and
+initialized. If usb_get_bos_descriptor() fails for whatever
+reason, udev->bos will be NULL and those accesses will result in a
+crash:
 
-However since commit dc0ffbea5729 ("usb: host: xhci: update event ring
-dequeue pointer on purpose"), the EHB bit is already cleared after half
-a segment has been processed.
+BUG: kernel NULL pointer dereference, address: 0000000000000018
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 5 PID: 17818 Comm: kworker/5:1 Tainted: G W 5.15.108-18910-gab0e1cb584e1 #1 <HASH:1f9e 1>
+Hardware name: Google Kindred/Kindred, BIOS Google_Kindred.12672.413.0 02/03/2021
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:hub_port_reset+0x193/0x788
+Code: 89 f7 e8 20 f7 15 00 48 8b 43 08 80 b8 96 03 00 00 03 75 36 0f b7 88 92 03 00 00 81 f9 10 03 00 00 72 27 48 8b 80 a8 03 00 00 <48> 83 78 18 00 74 19 48 89 df 48 8b 75 b0 ba 02 00 00 00 4c 89 e9
+RSP: 0018:ffffab740c53fcf8 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffffa1bc5f678000 RCX: 0000000000000310
+RDX: fffffffffffffdff RSI: 0000000000000286 RDI: ffffa1be9655b840
+RBP: ffffab740c53fd70 R08: 00001b7d5edaa20c R09: ffffffffb005e060
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+R13: ffffab740c53fd3e R14: 0000000000000032 R15: 0000000000000000
+FS: 0000000000000000(0000) GS:ffffa1be96540000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000018 CR3: 000000022e80c005 CR4: 00000000003706e0
+Call Trace:
+hub_event+0x73f/0x156e
+? hub_activate+0x5b7/0x68f
+process_one_work+0x1a2/0x487
+worker_thread+0x11a/0x288
+kthread+0x13a/0x152
+? process_one_work+0x487/0x487
+? kthread_associate_blkcg+0x70/0x70
+ret_from_fork+0x1f/0x30
 
-As a result, spurious interrupts may occur:
+Fall back to a default behavior if the BOS descriptor isn't accessible
+and skip all the functionalities that depend on it: LPM support checks,
+Super Speed capabilitiy checks, U1/U2 states setup.
 
-- xhci_irq() processes half a segment, clears EHB, continues processing
-  remaining events.
-- xHC enqueues new events.  Because EHB has been cleared, xHC sets
-  Interrupt Pending bit.  Interrupt moderation countdown begins.
-- Meanwhile xhci_irq() continues processing events.  Interrupt
-  moderation countdown reaches zero, so an MSI interrupt is signaled.
-- xhci_irq() empties the Event Ring, clears EHB again and is done.
-- Because an MSI interrupt has been signaled, xhci_irq() is run again.
-  It discovers there's nothing to do and returns IRQ_NONE.
-
-Avoid by clearing the EHB bit only at the end of xhci_irq().
-
-Fixes: dc0ffbea5729 ("usb: host: xhci: update event ring dequeue pointer on purpose")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Cc: stable@vger.kernel.org # v5.5+
-Cc: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20230915143108.1532163-4-mathias.nyman@linux.intel.com
+Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
+Cc: stable <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230830100418.1952143-1-ricardo.canuelo@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 98389b568633..3e5dc0723a8f 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2996,7 +2996,8 @@ static int xhci_handle_event(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
-  */
- static void xhci_update_erst_dequeue(struct xhci_hcd *xhci,
- 				     struct xhci_interrupter *ir,
--				     union xhci_trb *event_ring_deq)
-+				     union xhci_trb *event_ring_deq,
-+				     bool clear_ehb)
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 3c54b218301c..0ff47eeffb49 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -151,6 +151,10 @@ int usb_device_supports_lpm(struct usb_device *udev)
+ 	if (udev->quirks & USB_QUIRK_NO_LPM)
+ 		return 0;
+ 
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return 0;
++
+ 	/* USB 2.1 (and greater) devices indicate LPM support through
+ 	 * their USB 2.0 Extended Capabilities BOS descriptor.
+ 	 */
+@@ -327,6 +331,10 @@ static void usb_set_lpm_parameters(struct usb_device *udev)
+ 	if (!udev->lpm_capable || udev->speed < USB_SPEED_SUPER)
+ 		return;
+ 
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return;
++
+ 	hub = usb_hub_to_struct_hub(udev->parent);
+ 	/* It doesn't take time to transition the roothub into U0, since it
+ 	 * doesn't have an upstream link.
+@@ -2704,13 +2712,17 @@ int usb_authorize_device(struct usb_device *usb_dev)
+ static enum usb_ssp_rate get_port_ssp_rate(struct usb_device *hdev,
+ 					   u32 ext_portstatus)
  {
- 	u64 temp_64;
- 	dma_addr_t deq;
-@@ -3017,12 +3018,13 @@ static void xhci_update_erst_dequeue(struct xhci_hcd *xhci,
- 			return;
+-	struct usb_ssp_cap_descriptor *ssp_cap = hdev->bos->ssp_cap;
++	struct usb_ssp_cap_descriptor *ssp_cap;
+ 	u32 attr;
+ 	u8 speed_id;
+ 	u8 ssac;
+ 	u8 lanes;
+ 	int i;
  
- 		/* Update HC event ring dequeue pointer */
--		temp_64 &= ERST_PTR_MASK;
-+		temp_64 &= ERST_DESI_MASK;
- 		temp_64 |= ((u64) deq & (u64) ~ERST_PTR_MASK);
- 	}
++	if (!hdev->bos)
++		goto out;
++
++	ssp_cap = hdev->bos->ssp_cap;
+ 	if (!ssp_cap)
+ 		goto out;
  
- 	/* Clear the event handler busy flag (RW1C) */
--	temp_64 |= ERST_EHB;
-+	if (clear_ehb)
-+		temp_64 |= ERST_EHB;
- 	xhci_write_64(xhci, temp_64, &ir->ir_set->erst_dequeue);
+@@ -4215,8 +4227,15 @@ static void usb_enable_link_state(struct usb_hcd *hcd, struct usb_device *udev,
+ 		enum usb3_link_state state)
+ {
+ 	int timeout;
+-	__u8 u1_mel = udev->bos->ss_cap->bU1devExitLat;
+-	__le16 u2_mel = udev->bos->ss_cap->bU2DevExitLat;
++	__u8 u1_mel;
++	__le16 u2_mel;
++
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return;
++
++	u1_mel = udev->bos->ss_cap->bU1devExitLat;
++	u2_mel = udev->bos->ss_cap->bU2DevExitLat;
+ 
+ 	/* If the device says it doesn't have *any* exit latency to come out of
+ 	 * U1 or U2, it's probably lying.  Assume it doesn't implement that link
+diff --git a/drivers/usb/core/hub.h b/drivers/usb/core/hub.h
+index 37897afd1b64..d44dd7f6623e 100644
+--- a/drivers/usb/core/hub.h
++++ b/drivers/usb/core/hub.h
+@@ -153,7 +153,7 @@ static inline int hub_is_superspeedplus(struct usb_device *hdev)
+ {
+ 	return (hdev->descriptor.bDeviceProtocol == USB_HUB_PR_SS &&
+ 		le16_to_cpu(hdev->descriptor.bcdUSB) >= 0x0310 &&
+-		hdev->bos->ssp_cap);
++		hdev->bos && hdev->bos->ssp_cap);
  }
  
-@@ -3103,7 +3105,7 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 	while (xhci_handle_event(xhci, ir) > 0) {
- 		if (event_loop++ < TRBS_PER_SEGMENT / 2)
- 			continue;
--		xhci_update_erst_dequeue(xhci, ir, event_ring_deq);
-+		xhci_update_erst_dequeue(xhci, ir, event_ring_deq, false);
- 		event_ring_deq = ir->event_ring->dequeue;
- 
- 		/* ring is half-full, force isoc trbs to interrupt more often */
-@@ -3113,7 +3115,7 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
- 		event_loop = 0;
- 	}
- 
--	xhci_update_erst_dequeue(xhci, ir, event_ring_deq);
-+	xhci_update_erst_dequeue(xhci, ir, event_ring_deq, true);
- 	ret = IRQ_HANDLED;
- 
- out:
+ static inline unsigned hub_power_on_good_delay(struct usb_hub *hub)
 
