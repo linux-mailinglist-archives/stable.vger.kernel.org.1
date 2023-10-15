@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19CC27C9ABF
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88B417C9AC0
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjJOSXg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:23:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58742 "EHLO
+        id S229772AbjJOSXn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:23:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSXg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:23:36 -0400
+        with ESMTP id S229518AbjJOSXm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:23:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D363C1
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:23:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81EDC433C8;
-        Sun, 15 Oct 2023 18:23:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AEF4B7
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:23:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60990C433C7;
+        Sun, 15 Oct 2023 18:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697394214;
-        bh=E/jZlhh2LBLKR51SIfT6JvnO1EiPNt6RSv6ej65zUAs=;
+        s=korg; t=1697394220;
+        bh=qf9fDJHXtvzSEXC5gE0PifPrl37cGtsNEKROtd2cf2Q=;
         h=Subject:To:Cc:From:Date:From;
-        b=po29yQ/d7eU++skif/a4cMX0vs+N8QYL/Z6f5GWQO0vTKWFneb0JNBv3VmPqEsBHX
-         WmN6N9k7chbP6jQMVOh+f7dpWz2peYDzEp3VToto4fuTsRU+hJqu5PCGoPD/k5rw6d
-         t4sx+CXCAiDrTO/x6H8tn3OUp60hTSBl+07btUnQ=
-Subject: FAILED: patch "[PATCH] block: Don't invalidate pagecache for invalid falloc modes" failed to apply to 4.14-stable tree
-To:     sarthakkukreti@chromium.org, axboe@kernel.dk, djwong@kernel.org,
-        hch@lst.de, snitzer@kernel.org
+        b=JgObMnA7u3UHK26/+P3IQ2Lc3L0+PuoTHCsOpJzinoJn0YnymJLOZbebkKg345C2c
+         Q6xUFRCJISb4eIGga0u5K6hzVsw5Kmo+BSo6m24ZEjNoSLUpLRCqpGNdcJ8Zi4MGe1
+         ARmg2Jgk2vE9cAv+pQ3x0u3ZowXoUwdlEXd1VzkA=
+Subject: FAILED: patch "[PATCH] nfp: flower: avoid rmmod nfp crash issues" failed to apply to 5.15-stable tree
+To:     yanguo.li@corigine.com, davem@davemloft.net,
+        louis.peens@corigine.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:23:18 +0200
-Message-ID: <2023101517-patriarch-reuse-cc1c@gregkh>
+Date:   Sun, 15 Oct 2023 20:23:36 +0200
+Message-ID: <2023101535-blighted-moneyless-5873@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -43,42 +43,27 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1364a3c391aedfeb32aa025303ead3d7c91cdf9d
+git cherry-pick -x 14690995c14109852c7ba6e316045c02e4254272
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101517-patriarch-reuse-cc1c@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101535-blighted-moneyless-5873@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-1364a3c391ae ("block: Don't invalidate pagecache for invalid falloc modes")
-05bdb9965305 ("block: replace fmode_t with a block-specific type for block open flags")
-5e4ea834676e ("block: remove unused fmode_t arguments from ioctl handlers")
-cfb425761c79 ("block: move a few internal definitions out of blkdev.h")
-99b07780814e ("rnbd-srv: replace sess->open_flags with a "bool readonly"")
-658afed19cee ("mtd: block: use a simple bool to track open for write")
-7d9d7d59d44b ("nvme: replace the fmode_t argument to the nvme ioctl handlers with a simple bool")
-2e80089c1824 ("scsi: replace the fmode_t argument to scsi_ioctl with a simple bool")
-5f4eb9d5413f ("scsi: replace the fmode_t argument to scsi_cmd_allowed with a simple bool")
-81b1fb7d17c0 ("fs: remove sb->s_mode")
-3f0b3e785e8b ("block: add a sb_open_mode helper")
-2736e8eeb0cc ("block: use the holder as indication for exclusive opens")
-2ef789288afd ("btrfs: don't pass a holder for non-exclusive blkdev_get_by_path")
-29499ab060fe ("bcache: don't pass a stack address to blkdev_get_by_path")
-c889d0793d9d ("swsusp: don't pass a stack address to blkdev_get_by_path")
-ae220766d87c ("block: remove the unused mode argument to ->release")
-d32e2bf83791 ("block: pass a gendisk to ->open")
-444aa2c58cb3 ("block: pass a gendisk on bdev_check_media_change")
-7ae24fcee992 ("cdrom: remove the unused mode argument to cdrom_release")
-473399b50de1 ("cdrom: remove the unused mode argument to cdrom_ioctl")
+14690995c141 ("nfp: flower: avoid rmmod nfp crash issues")
+29c691347e38 ("nfp: flower: add infrastructure for pre_tun rework")
+59080da09038 ("nfp: add support to offload tc action to hardware")
+bbab5f9332ee ("nfp: refactor policer config to support ingress/egress meter")
+144d4c9e800d ("flow_offload: reject to offload tc actions in offload drivers")
 
 thanks,
 
@@ -86,69 +71,273 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1364a3c391aedfeb32aa025303ead3d7c91cdf9d Mon Sep 17 00:00:00 2001
-From: Sarthak Kukreti <sarthakkukreti@chromium.org>
-Date: Wed, 11 Oct 2023 13:12:30 -0700
-Subject: [PATCH] block: Don't invalidate pagecache for invalid falloc modes
+From 14690995c14109852c7ba6e316045c02e4254272 Mon Sep 17 00:00:00 2001
+From: Yanguo Li <yanguo.li@corigine.com>
+Date: Mon, 9 Oct 2023 13:21:55 +0200
+Subject: [PATCH] nfp: flower: avoid rmmod nfp crash issues
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Only call truncate_bdev_range() if the fallocate mode is supported. This
-fixes a bug where data in the pagecache could be invalidated if the
-fallocate() was called on the block device with an invalid mode.
+When there are CT table entries, and you rmmod nfp, the following
+events can happen:
 
-Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
+task1：
+    nfp_net_pci_remove
+          ↓
+    nfp_flower_stop->(asynchronous)tcf_ct_flow_table_cleanup_work(3)
+          ↓
+    nfp_zone_table_entry_destroy(1)
+
+task2：
+    nfp_fl_ct_handle_nft_flow(2)
+
+When the execution order is (1)->(2)->(3), it will crash. Therefore, in
+the function nfp_fl_ct_del_flow, nf_flow_table_offload_del_cb needs to
+be executed synchronously.
+
+At the same time, in order to solve the deadlock problem and the problem
+of rtnl_lock sometimes failing, replace rtnl_lock with the private
+nfp_fl_lock.
+
+Fixes: 7cc93d888df7 ("nfp: flower-ct: remove callback delete deadlock")
 Cc: stable@vger.kernel.org
-Reported-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Fixes: line?  I've never seen those wrapped.
-Link: https://lore.kernel.org/r/20231011201230.750105-1-sarthakkukreti@chromium.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Yanguo Li <yanguo.li@corigine.com>
+Signed-off-by: Louis Peens <louis.peens@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 
-diff --git a/block/fops.c b/block/fops.c
-index acff3d5d22d4..73e42742543f 100644
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -772,24 +772,35 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/cmsg.c b/drivers/net/ethernet/netronome/nfp/flower/cmsg.c
+index f21cf1f40f98..153533cd8f08 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/cmsg.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/cmsg.c
+@@ -210,6 +210,7 @@ nfp_flower_cmsg_merge_hint_rx(struct nfp_app *app, struct sk_buff *skb)
+ 	unsigned int msg_len = nfp_flower_cmsg_get_data_len(skb);
+ 	struct nfp_flower_cmsg_merge_hint *msg;
+ 	struct nfp_fl_payload *sub_flows[2];
++	struct nfp_flower_priv *priv;
+ 	int err, i, flow_cnt;
  
- 	filemap_invalidate_lock(inode->i_mapping);
+ 	msg = nfp_flower_cmsg_get_data(skb);
+@@ -228,14 +229,15 @@ nfp_flower_cmsg_merge_hint_rx(struct nfp_app *app, struct sk_buff *skb)
+ 		return;
+ 	}
  
--	/* Invalidate the page cache, including dirty pages. */
--	error = truncate_bdev_range(bdev, file_to_blk_mode(file), start, end);
--	if (error)
--		goto fail;
+-	rtnl_lock();
++	priv = app->priv;
++	mutex_lock(&priv->nfp_fl_lock);
+ 	for (i = 0; i < flow_cnt; i++) {
+ 		u32 ctx = be32_to_cpu(msg->flow[i].host_ctx);
+ 
+ 		sub_flows[i] = nfp_flower_get_fl_payload_from_ctx(app, ctx);
+ 		if (!sub_flows[i]) {
+ 			nfp_flower_cmsg_warn(app, "Invalid flow in merge hint\n");
+-			goto err_rtnl_unlock;
++			goto err_mutex_unlock;
+ 		}
+ 	}
+ 
+@@ -244,8 +246,8 @@ nfp_flower_cmsg_merge_hint_rx(struct nfp_app *app, struct sk_buff *skb)
+ 	if (err == -ENOMEM)
+ 		nfp_flower_cmsg_warn(app, "Flow merge memory fail.\n");
+ 
+-err_rtnl_unlock:
+-	rtnl_unlock();
++err_mutex_unlock:
++	mutex_unlock(&priv->nfp_fl_lock);
+ }
+ 
+ static void
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
+index 2643c4b3ff1f..2967bab72505 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/conntrack.c
+@@ -2131,8 +2131,6 @@ nfp_fl_ct_offload_nft_flow(struct nfp_fl_ct_zone_entry *zt, struct flow_cls_offl
+ 	struct nfp_fl_ct_flow_entry *ct_entry;
+ 	struct netlink_ext_ack *extack = NULL;
+ 
+-	ASSERT_RTNL();
 -
-+	/*
-+	 * Invalidate the page cache, including dirty pages, for valid
-+	 * de-allocate mode calls to fallocate().
-+	 */
- 	switch (mode) {
- 	case FALLOC_FL_ZERO_RANGE:
- 	case FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE:
-+		error = truncate_bdev_range(bdev, file_to_blk_mode(file), start, end);
-+		if (error)
-+			goto fail;
-+
- 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
- 					     len >> SECTOR_SHIFT, GFP_KERNEL,
- 					     BLKDEV_ZERO_NOUNMAP);
+ 	extack = flow->common.extack;
+ 	switch (flow->command) {
+ 	case FLOW_CLS_REPLACE:
+@@ -2178,9 +2176,13 @@ int nfp_fl_ct_handle_nft_flow(enum tc_setup_type type, void *type_data, void *cb
+ 
+ 	switch (type) {
+ 	case TC_SETUP_CLSFLOWER:
+-		rtnl_lock();
++		while (!mutex_trylock(&zt->priv->nfp_fl_lock)) {
++			if (!zt->nft) /* avoid deadlock */
++				return err;
++			msleep(20);
++		}
+ 		err = nfp_fl_ct_offload_nft_flow(zt, flow);
+-		rtnl_unlock();
++		mutex_unlock(&zt->priv->nfp_fl_lock);
  		break;
- 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE:
-+		error = truncate_bdev_range(bdev, file_to_blk_mode(file), start, end);
-+		if (error)
-+			goto fail;
-+
- 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
- 					     len >> SECTOR_SHIFT, GFP_KERNEL,
- 					     BLKDEV_ZERO_NOFALLBACK);
+ 	default:
+ 		return -EOPNOTSUPP;
+@@ -2208,6 +2210,7 @@ int nfp_fl_ct_del_flow(struct nfp_fl_ct_map_entry *ct_map_ent)
+ 	struct nfp_fl_ct_flow_entry *ct_entry;
+ 	struct nfp_fl_ct_zone_entry *zt;
+ 	struct rhashtable *m_table;
++	struct nf_flowtable *nft;
+ 
+ 	if (!ct_map_ent)
+ 		return -ENOENT;
+@@ -2226,8 +2229,12 @@ int nfp_fl_ct_del_flow(struct nfp_fl_ct_map_entry *ct_map_ent)
+ 		if (ct_map_ent->cookie > 0)
+ 			kfree(ct_map_ent);
+ 
+-		if (!zt->pre_ct_count) {
+-			zt->nft = NULL;
++		if (!zt->pre_ct_count && zt->nft) {
++			nft = zt->nft;
++			zt->nft = NULL; /* avoid deadlock */
++			nf_flow_table_offload_del_cb(nft,
++						     nfp_fl_ct_handle_nft_flow,
++						     zt);
+ 			nfp_fl_ct_clean_nft_entries(zt);
+ 		}
  		break;
- 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
-+		error = truncate_bdev_range(bdev, file_to_blk_mode(file), start, end);
-+		if (error)
-+			goto fail;
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/main.h b/drivers/net/ethernet/netronome/nfp/flower/main.h
+index 40372545148e..2b7c947ff4f2 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/main.h
++++ b/drivers/net/ethernet/netronome/nfp/flower/main.h
+@@ -297,6 +297,7 @@ struct nfp_fl_internal_ports {
+  * @predt_list:		List to keep track of decap pretun flows
+  * @neigh_table:	Table to keep track of neighbor entries
+  * @predt_lock:		Lock to serialise predt/neigh table updates
++ * @nfp_fl_lock:	Lock to protect the flow offload operation
+  */
+ struct nfp_flower_priv {
+ 	struct nfp_app *app;
+@@ -339,6 +340,7 @@ struct nfp_flower_priv {
+ 	struct list_head predt_list;
+ 	struct rhashtable neigh_table;
+ 	spinlock_t predt_lock; /* Lock to serialise predt/neigh table updates */
++	struct mutex nfp_fl_lock; /* Protect the flow operation */
+ };
+ 
+ /**
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/metadata.c b/drivers/net/ethernet/netronome/nfp/flower/metadata.c
+index 0f06ef6e24bf..80e4675582bf 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/metadata.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/metadata.c
+@@ -528,6 +528,8 @@ int nfp_flower_metadata_init(struct nfp_app *app, u64 host_ctx_count,
+ 	if (err)
+ 		goto err_free_stats_ctx_table;
+ 
++	mutex_init(&priv->nfp_fl_lock);
 +
- 		error = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
- 					     len >> SECTOR_SHIFT, GFP_KERNEL);
- 		break;
+ 	err = rhashtable_init(&priv->ct_zone_table, &nfp_zone_table_params);
+ 	if (err)
+ 		goto err_free_merge_table;
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/offload.c b/drivers/net/ethernet/netronome/nfp/flower/offload.c
+index c153f0575b92..0aceef9fe582 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/offload.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/offload.c
+@@ -1009,8 +1009,6 @@ int nfp_flower_merge_offloaded_flows(struct nfp_app *app,
+ 	u64 parent_ctx = 0;
+ 	int err;
+ 
+-	ASSERT_RTNL();
+-
+ 	if (sub_flow1 == sub_flow2 ||
+ 	    nfp_flower_is_merge_flow(sub_flow1) ||
+ 	    nfp_flower_is_merge_flow(sub_flow2))
+@@ -1727,19 +1725,30 @@ static int
+ nfp_flower_repr_offload(struct nfp_app *app, struct net_device *netdev,
+ 			struct flow_cls_offload *flower)
+ {
++	struct nfp_flower_priv *priv = app->priv;
++	int ret;
++
+ 	if (!eth_proto_is_802_3(flower->common.protocol))
+ 		return -EOPNOTSUPP;
+ 
++	mutex_lock(&priv->nfp_fl_lock);
+ 	switch (flower->command) {
+ 	case FLOW_CLS_REPLACE:
+-		return nfp_flower_add_offload(app, netdev, flower);
++		ret = nfp_flower_add_offload(app, netdev, flower);
++		break;
+ 	case FLOW_CLS_DESTROY:
+-		return nfp_flower_del_offload(app, netdev, flower);
++		ret = nfp_flower_del_offload(app, netdev, flower);
++		break;
+ 	case FLOW_CLS_STATS:
+-		return nfp_flower_get_stats(app, netdev, flower);
++		ret = nfp_flower_get_stats(app, netdev, flower);
++		break;
+ 	default:
+-		return -EOPNOTSUPP;
++		ret = -EOPNOTSUPP;
++		break;
+ 	}
++	mutex_unlock(&priv->nfp_fl_lock);
++
++	return ret;
+ }
+ 
+ static int nfp_flower_setup_tc_block_cb(enum tc_setup_type type,
+@@ -1778,6 +1787,7 @@ static int nfp_flower_setup_tc_block(struct net_device *netdev,
+ 	repr_priv = repr->app_priv;
+ 	repr_priv->block_shared = f->block_shared;
+ 	f->driver_block_list = &nfp_block_cb_list;
++	f->unlocked_driver_cb = true;
+ 
+ 	switch (f->command) {
+ 	case FLOW_BLOCK_BIND:
+@@ -1876,6 +1886,8 @@ nfp_flower_setup_indr_tc_block(struct net_device *netdev, struct Qdisc *sch, str
+ 	     nfp_flower_internal_port_can_offload(app, netdev)))
+ 		return -EOPNOTSUPP;
+ 
++	f->unlocked_driver_cb = true;
++
+ 	switch (f->command) {
+ 	case FLOW_BLOCK_BIND:
+ 		cb_priv = nfp_flower_indr_block_cb_priv_lookup(app, netdev);
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c b/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c
+index 99052a925d9e..e7180b4793c7 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/qos_conf.c
+@@ -523,25 +523,31 @@ int nfp_flower_setup_qos_offload(struct nfp_app *app, struct net_device *netdev,
+ {
+ 	struct netlink_ext_ack *extack = flow->common.extack;
+ 	struct nfp_flower_priv *fl_priv = app->priv;
++	int ret;
+ 
+ 	if (!(fl_priv->flower_ext_feats & NFP_FL_FEATS_VF_RLIM)) {
+ 		NL_SET_ERR_MSG_MOD(extack, "unsupported offload: loaded firmware does not support qos rate limit offload");
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	mutex_lock(&fl_priv->nfp_fl_lock);
+ 	switch (flow->command) {
+ 	case TC_CLSMATCHALL_REPLACE:
+-		return nfp_flower_install_rate_limiter(app, netdev, flow,
+-						       extack);
++		ret = nfp_flower_install_rate_limiter(app, netdev, flow, extack);
++		break;
+ 	case TC_CLSMATCHALL_DESTROY:
+-		return nfp_flower_remove_rate_limiter(app, netdev, flow,
+-						      extack);
++		ret = nfp_flower_remove_rate_limiter(app, netdev, flow, extack);
++		break;
+ 	case TC_CLSMATCHALL_STATS:
+-		return nfp_flower_stats_rate_limiter(app, netdev, flow,
+-						     extack);
++		ret = nfp_flower_stats_rate_limiter(app, netdev, flow, extack);
++		break;
+ 	default:
+-		return -EOPNOTSUPP;
++		ret = -EOPNOTSUPP;
++		break;
+ 	}
++	mutex_unlock(&fl_priv->nfp_fl_lock);
++
++	return ret;
+ }
+ 
+ /* Offload tc action, currently only for tc police */
 
