@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F36D67C9ABE
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19CC27C9ABF
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:23:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbjJOSXb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:23:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58108 "EHLO
+        id S229704AbjJOSXg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:23:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSXb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:23:31 -0400
+        with ESMTP id S229518AbjJOSXg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:23:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4985BAB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:23:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E09CC433C9;
-        Sun, 15 Oct 2023 18:23:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D363C1
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:23:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81EDC433C8;
+        Sun, 15 Oct 2023 18:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697394210;
-        bh=qcfwoWi4vVvpHH2FZMaGG0iinG+c2heoUDnBM1QE2gQ=;
+        s=korg; t=1697394214;
+        bh=E/jZlhh2LBLKR51SIfT6JvnO1EiPNt6RSv6ej65zUAs=;
         h=Subject:To:Cc:From:Date:From;
-        b=AeYeM6G9ZKCi6Gm1wZZr/i2W/7ZQS+kvg0EVDsDbkItHBFdzAo1ymGfME5KmbQKBH
-         E2Hra+AMVjcnZpBhHY3TlcfISh6aK9lrJ9nrpsDIKFbpdIQtIBiE5Jox5uHkco57rd
-         PKOxq6wR1JE2SCPV4j9Kp7hhltRQnIqxKnTgq1BE=
-Subject: FAILED: patch "[PATCH] block: Don't invalidate pagecache for invalid falloc modes" failed to apply to 4.19-stable tree
+        b=po29yQ/d7eU++skif/a4cMX0vs+N8QYL/Z6f5GWQO0vTKWFneb0JNBv3VmPqEsBHX
+         WmN6N9k7chbP6jQMVOh+f7dpWz2peYDzEp3VToto4fuTsRU+hJqu5PCGoPD/k5rw6d
+         t4sx+CXCAiDrTO/x6H8tn3OUp60hTSBl+07btUnQ=
+Subject: FAILED: patch "[PATCH] block: Don't invalidate pagecache for invalid falloc modes" failed to apply to 4.14-stable tree
 To:     sarthakkukreti@chromium.org, axboe@kernel.dk, djwong@kernel.org,
         hch@lst.de, snitzer@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:23:16 +0200
-Message-ID: <2023101516-genetics-gratify-225c@gregkh>
+Date:   Sun, 15 Oct 2023 20:23:18 +0200
+Message-ID: <2023101517-patriarch-reuse-cc1c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1364a3c391aedfeb32aa025303ead3d7c91cdf9d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101516-genetics-gratify-225c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101517-patriarch-reuse-cc1c@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
