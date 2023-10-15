@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ACD07C9AC7
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFD487C9AC8
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:29:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbjJOS3R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:29:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
+        id S229659AbjJOS3W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:29:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOS3Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:29:16 -0400
+        with ESMTP id S229518AbjJOS3V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:29:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3B28AB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:29:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04129C433C7;
-        Sun, 15 Oct 2023 18:29:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63822AB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:29:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43B0C433C8;
+        Sun, 15 Oct 2023 18:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697394555;
-        bh=h5V5CzacQofr/2J68XAUrLagUuo89FjOuesxrq60gY4=;
+        s=korg; t=1697394560;
+        bh=szJrUW3ujIEl8DKd2C2rqpZUJ5yAjj3zYfHV2d7V0ms=;
         h=Subject:To:Cc:From:Date:From;
-        b=sNWaNnYTDPE+v12rmMADuh8/kZE6ssJhRP/MjPdY0TLCRNhYqu2HsPT80U/KfOEuC
-         yb/EsRCi4brng1ynrUCJx8TeKrLBzcx8yMZ4/SriHFm8hNaAoU1F0ZTBBm2jRImmtb
-         F3xUB+XzKKZkh7p6QnnYAANWER0gqF6qmHC9vFEs=
-Subject: FAILED: patch "[PATCH] riscv: Remove duplicate objcopy flag" failed to apply to 5.15-stable tree
+        b=b4eTeyksSJX0wyFekrgAxZvQlTTGggl3EO4Zn4BPlqhSj0EcTlfBxRF4Edi3FvhpH
+         pdgyPEvqadPAVEvQ/9/HBHiYcOyIDysdwSNimzstWk/M3hUz4/mDRJdjIH6JAyh1wF
+         zVWsHbsD1fVOcRtWrEvuAD///I9i5ZUTc3WuNb5Q=
+Subject: FAILED: patch "[PATCH] riscv: Remove duplicate objcopy flag" failed to apply to 5.10-stable tree
 To:     songshuaishuai@tinylab.org, palmer@rivosinc.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:29:09 +0200
-Message-ID: <2023101509-important-machine-b165@gregkh>
+Date:   Sun, 15 Oct 2023 20:29:10 +0200
+Message-ID: <2023101510-cork-decade-3bfd@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 505b02957e74f0c5c4655647ccb04bdc945d18f6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101509-important-machine-b165@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101510-cork-decade-3bfd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
