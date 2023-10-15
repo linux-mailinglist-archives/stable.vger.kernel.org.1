@@ -2,130 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0B997C9806
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 07:31:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9CE37C9888
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 12:03:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233518AbjJOFbP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 01:31:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48192 "EHLO
+        id S229731AbjJOKD2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 06:03:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233489AbjJOFbO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 01:31:14 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27EA7DA
-        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 22:31:13 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a7cfdacf8fso34561387b3.0
-        for <stable@vger.kernel.org>; Sat, 14 Oct 2023 22:31:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697347872; x=1697952672; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DtQNq1gvU7zKIF2fj6mC9r8wogeTbs5S7+1Rv7+FYSI=;
-        b=cRE3Sr3+OGdFuWvguBdI5OkXvOUa5OUmqnv1HRzc08keZpseXTEon9fGopA41Kej9u
-         1DTwftREYU8G49bl6e+bbdrc6RsrIWIwkAoUOZ16LzvQw64NzJ0q00XhnefI0HTsdYf6
-         w7O1QdWTxNQVIGjOy5FaKH5SzmVgAKVvzyu1T33WplM4BWa7vsWFC15C4Ev4w/W1lr37
-         jJVCMjdYD1Jg8yfu3k+f9pc8aFcDyE+EE1rMl/k74nT7T+YI06m5+jIDVnlmIC8SvOSN
-         v/gmUOKor4Tr2gCS+uo5rbcPkSei7DUSOcPps56uUYT7zpDfFKAhmPZOcXtDxdxyPvFp
-         tpjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697347872; x=1697952672;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DtQNq1gvU7zKIF2fj6mC9r8wogeTbs5S7+1Rv7+FYSI=;
-        b=I7gwlfoOGRy5epvFFaL86OOQgZ/HPTSdlapBWw8aFCRJVg1FHBPhD3U3RIOu+jyomZ
-         s/CNZjpwXSGooas+dPJpJNnDjLq1SSLWKZKuYDx40F1qPOcvhAvrk7gUuVgV2E0fCdHh
-         q40HOFJMN6JIyeSfl3GMUd+BwuXR5HuCkWQlBSrOqWKHpBHFjXBYNnGYMbsBgyCJ3Ir3
-         /uBn0faKryd2PJVvoNkSjWTIS7PrGBZR6liXAvO5CmTfOszdsS8+q6Z4L/ukP5GwUjTo
-         LCK3wQ0WWWA8SgBPHWFDjMdwtJ03vt70NGZ7XZgwVZujYvXjWCsNql3e/PesD06Mkb2i
-         KqrA==
-X-Gm-Message-State: AOJu0Yw4hkYyuJTA07pmsBE6vx7LkGk0iuxVbkgSX5D6vRQMuRoUYVcE
-        9Ohlg+vYqGHEZXv7ez5bHgHaFcdd2Gs=
-X-Google-Smtp-Source: AGHT+IGyTMj9xW6ygP/QELMefFgrSubEY2BZNwMNN0MbjEe1WhMGqnMJcu80hthoO2uZPZUq/od869Qq9A8=
-X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
- (user=badhri job=sendgmr) by 2002:a25:aa83:0:b0:d8a:fcdb:d670 with SMTP id
- t3-20020a25aa83000000b00d8afcdbd670mr125664ybi.1.1697347872345; Sat, 14 Oct
- 2023 22:31:12 -0700 (PDT)
-Date:   Sun, 15 Oct 2023 05:31:08 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-Message-ID: <20231015053108.2349570-1-badhri@google.com>
-Subject: [PATCH v2] usb: typec: tcpm: Add additional checks for contaminant
-From:   Badhri Jagan Sridharan <badhri@google.com>
-To:     gregkh@linuxfoundation.org, linux@roeck-us.net,
-        heikki.krogerus@linux.intel.com
-Cc:     kyletso@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Badhri Jagan Sridharan <badhri@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229641AbjJOKD1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 06:03:27 -0400
+Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E404D9;
+        Sun, 15 Oct 2023 03:03:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1697364199;
+        bh=Xywli/LLxATt1O56BUYkhx2IGYH2bax1grDbXN8Buis=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=sDuOhglIKCdliRZ0/i8KqEi7rn3qNl+rXH6Mp2V9SMyf4iBHENwSIq1yvPlM1JVqK
+         DIg/BAChEgmcGyuPmeD8N8zWcT7CIP/wOVZg/DNy/LzgxfcY7h7Gm/0F+as8NWSzsq
+         pqHfvQWeEEt6Gc+HC6WxCCdiVd+3P5ayvIRf2SOZOi7qzWziVyV7o6CNMKaGY+dG6w
+         mp1y8EIF3SKVdqN2pCsKB2x8IW/MxY5ho4XbO2uK7indpFxsQKrvKsbPsSxpYBGPlL
+         ps0oGYQ3nHY9Y1vBDXtgY5FOOLRlMH6M8PLfXUfNCNJbc037yfzLPGqZoV3Y0ECKuP
+         6kKd0P2wkNjTA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4S7bRC4lP5z4wcZ;
+        Sun, 15 Oct 2023 21:03:19 +1100 (AEDT)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org,
+        maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.ibm.com,
+        stable@vger.kernel.org, Naveen N Rao <naveen@kernel.org>
+In-Reply-To: <20230929172337.7906-1-atrajeev@linux.vnet.ibm.com>
+References: <20230929172337.7906-1-atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH 1/2] powerpc/platforms/pseries: Fix STK_PARAM access in the hcall tracing code
+Message-Id: <169736402374.957740.1615846713594615509.b4-ty@ellerman.id.au>
+Date:   Sun, 15 Oct 2023 21:00:23 +1100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When transitioning from SNK_DEBOUNCED to unattached, its worthwhile to
-check for contaminant to mitigate wakeups.
+On Fri, 29 Sep 2023 22:53:36 +0530, Athira Rajeev wrote:
+> In powerpc pseries system, below behaviour is observed while
+> enabling tracing on hcall:
+> 	# cd /sys/kernel/debug/tracing/
+> 	# cat events/powerpc/hcall_exit/enable
+> 	0
+> 	# echo 1 > events/powerpc/hcall_exit/enable
+> 
+> [...]
 
-```
-[81334.219571] Start toggling
-[81334.228220] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.305147] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.305162] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.305187] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81334.475515] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81334.486480] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81334.486495] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81334.486515] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81334.506621] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81334.506640] Start toggling
-[81334.516972] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.592759] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.592773] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.592792] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81334.762940] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81334.773557] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81334.773570] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81334.773588] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81334.793672] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81334.793681] Start toggling
-[81334.801840] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.878655] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.878672] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.878696] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81335.048968] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81335.060684] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81335.060754] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81335.060775] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81335.080884] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81335.080900] Start toggling
-```
+Applied to powerpc/fixes.
 
-Cc: stable@vger.kernel.org
-Fixes: 599f008c257d ("usb: typec: tcpm: Add callbacks to mitigate wakeups due to contaminant")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
----
- drivers/usb/typec/tcpm/tcpm.c | 2 ++
- 1 file changed, 2 insertions(+)
+[1/2] powerpc/platforms/pseries: Fix STK_PARAM access in the hcall tracing code
+      https://git.kernel.org/powerpc/c/3b678768c0458e6d8d45fadf61423e44effed4cb
+[2/2] powerpc/platforms/pseries: Remove unused r0 in the hcall tracing code
+      https://git.kernel.org/powerpc/c/dfb5f8cbd5992d5769edfd3e059fad9e0b8bdafb
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 6e843c511b85..1c7e8dc5282d 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3903,6 +3903,8 @@ static void run_state_machine(struct tcpm_port *port)
- 		port->potential_contaminant = ((port->enter_state == SRC_ATTACH_WAIT &&
- 						port->state == SRC_UNATTACHED) ||
- 					       (port->enter_state == SNK_ATTACH_WAIT &&
-+						port->state == SNK_UNATTACHED) ||
-+					       (port->enter_state == SNK_DEBOUNCED &&
- 						port->state == SNK_UNATTACHED));
- 
- 	port->enter_state = port->state;
-
-base-commit: 1034cc423f1b4a7a9a56d310ca980fcd2753e11d
--- 
-2.42.0.655.g421f12c284-goog
-
+cheers
