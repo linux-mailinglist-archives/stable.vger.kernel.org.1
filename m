@@ -2,39 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 225D47C9A7E
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 19:57:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26B057C9A80
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 19:59:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjJOR54 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 13:57:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54084 "EHLO
+        id S229559AbjJOR7m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 13:59:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOR5y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 13:57:54 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 647B7AB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 10:57:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B05C433C8;
-        Sun, 15 Oct 2023 17:57:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697392673;
-        bh=jJSy9KPyMsjuhdvctlFEKRV7xhiY30NEP3YyVNyf7sk=;
-        h=Subject:To:Cc:From:Date:From;
-        b=chFCeZ/gBkKtFbdsu8XdlkCB4XT52axbqbRomlDqwlKD6rzfQg2JO6he9zW3sEgVq
-         /IT/ziigvoh/gAtWKjNaTF2MhFptVJHBy7jcslTIt+3nzCMeezWpK83XbJdS0mlKlu
-         EfOzE+RYE1useEKwzmuJvMbHfpDHmWGi8dXvUMJM=
-Subject: FAILED: patch "[PATCH] ovl: fix regression in showing lowerdir mount option" failed to apply to 6.5-stable tree
-To:     amir73il@gmail.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 19:57:44 +0200
-Message-ID: <2023101544-ensnare-grain-3f88@gregkh>
+        with ESMTP id S229518AbjJOR7m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 13:59:42 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A40AB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 10:59:40 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-536ef8a7dcdso6004a12.0
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 10:59:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697392778; x=1697997578; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GoXsgJJ21m2pTS0JXP5H9mz5VnmfvA1QDP4HFkDfg8I=;
+        b=tdl1yJ18y09pUoQCC9VLILF6P6jr2OYZN2t7XyTrAEzU9yBzK6u1psUALYdBMP41JG
+         XOc8mPVS5h8sJGaVMUWMTdcZPen+uzh4Ff+UktjKZ8imHi+UEv1U6ULeo+YsVobXedjR
+         S95tk6zYh2hcS/TGeUExPZfC0UDLDIC76vFe0L0TF+emEileZge3FXYqNGxpEJjSGyHB
+         lZILKxTtLxVMNVKlzNfgbLs3OCUPr2R3h/SAPz7DKh7HwmxSK1acqRxuyWAWWgeluHhe
+         MNdrKttfMWk6nh/IhMiB8HJF5iHslazpsTqiR/HbPaJ/v5WmO62g4TVLD8N+Vi5rbD5o
+         BIsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697392778; x=1697997578;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GoXsgJJ21m2pTS0JXP5H9mz5VnmfvA1QDP4HFkDfg8I=;
+        b=iJ/Z/SOI6Nx12kJH4DhxEYTQIEWOwLUfN0UaL+SVPqjaG0GG8V+LhiZoKVt1aNmgVx
+         hMEqOJrhJNS15IT5XjRUSb463bHEGhrC1+Iyb7Dxm4VtcyxYo9SQuUqufb6T3tPxnaVH
+         U1klyUujSrCTiVCWpQhNtgJkhAe5znh7hpOKX9RSoAk56OIXYmbD7hi1TaA+clDfoVv8
+         7Akp6J74wCoGlirJZmRuDyHM9j1rCACD3L3FgzKSAREmcqH8POHiE+Tc4IjzyQE6XxmP
+         hJWUDouhjbdrTgxY/HAqOxXqkjh8YvJ3ZuN1NdeC1qv3mhVtK+Pux0Wlj4TzKtB+4jmt
+         7D3Q==
+X-Gm-Message-State: AOJu0YwTF+Lnvt9XjInyitI9WNo13NRFMeI1B7VLHm4gbOnItHOyaI2b
+        WqD0P2G+V4mjBrvRvl/okr5GNXGTG0eiroRCJGceVA==
+X-Google-Smtp-Source: AGHT+IEc72G92Ay7Jor1qXeXCYca2EmQ32QifiPi3MFWNhCc9tFTuEoJ+puwmVtEMPlREyewYE4EheuxyGkazFqLLu8=
+X-Received: by 2002:a50:a45d:0:b0:538:7038:6bdf with SMTP id
+ v29-20020a50a45d000000b0053870386bdfmr101716edb.1.1697392778442; Sun, 15 Oct
+ 2023 10:59:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20231013214414.3482322-1-prohr@google.com> <2023101505-speed-procreate-347d@gregkh>
+In-Reply-To: <2023101505-speed-procreate-347d@gregkh>
+From:   =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
+Date:   Sun, 15 Oct 2023 10:59:21 -0700
+Message-ID: <CANP3RGfU9+GuMm+K8hohxxCndLNy925CTMHKXhiFkjwgojbzwA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 0/3] net: add sysctl accept_ra_min_lft
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Patrick Rohr <prohr@google.com>, stable@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>,
+        Lorenzo Colitti <lorenzo@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,161 +70,18 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, Oct 15, 2023 at 10:46=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Fri, Oct 13, 2023 at 02:44:11PM -0700, Patrick Rohr wrote:
+> > I am following up on https://lore.kernel.org/stable/20230925211034.9053=
+20-1-prohr@google.com/ with
+> > cherry-picks for 5.10.198. I have run our test suite with the changes a=
+pplied and all relevant tests
+> > passed.
+>
+> All now queued up, thanks.
+>
+> greg k-h
 
-The patch below does not apply to the 6.5-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
-git checkout FETCH_HEAD
-git cherry-pick -x 32db510708507f6133f496ff385cbd841d8f9098
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101544-ensnare-grain-3f88@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 32db510708507f6133f496ff385cbd841d8f9098 Mon Sep 17 00:00:00 2001
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Wed, 11 Oct 2023 17:07:03 +0300
-Subject: [PATCH] ovl: fix regression in showing lowerdir mount option
-
-Before commit b36a5780cb44 ("ovl: modify layer parameter parsing"),
-spaces and commas in lowerdir mount option value used to be escaped using
-seq_show_option().
-
-In current upstream, when lowerdir value has a space, it is not escaped
-in /proc/mounts, e.g.:
-
-  none /mnt overlay rw,relatime,lowerdir=l l,upperdir=u,workdir=w 0 0
-
-which results in broken output of the mount utility:
-
-  none on /mnt type overlay (rw,relatime,lowerdir=l)
-
-Store the original lowerdir mount options before unescaping and show
-them using the same escaping used for seq_show_option() in addition to
-escaping the colon separator character.
-
-Fixes: b36a5780cb44 ("ovl: modify layer parameter parsing")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-
-diff --git a/Documentation/filesystems/overlayfs.rst b/Documentation/filesystems/overlayfs.rst
-index cdefbe73d85c..5b93268e400f 100644
---- a/Documentation/filesystems/overlayfs.rst
-+++ b/Documentation/filesystems/overlayfs.rst
-@@ -339,6 +339,18 @@ The specified lower directories will be stacked beginning from the
- rightmost one and going left.  In the above example lower1 will be the
- top, lower2 the middle and lower3 the bottom layer.
- 
-+Note: directory names containing colons can be provided as lower layer by
-+escaping the colons with a single backslash.  For example:
-+
-+  mount -t overlay overlay -olowerdir=/a\:lower\:\:dir /merged
-+
-+Since kernel version v6.5, directory names containing colons can also
-+be provided as lower layer using the fsconfig syscall from new mount api:
-+
-+  fsconfig(fs_fd, FSCONFIG_SET_STRING, "lowerdir", "/a:lower::dir", 0);
-+
-+In the latter case, colons in lower layer directory names will be escaped
-+as an octal characters (\072) when displayed in /proc/self/mountinfo.
- 
- Metadata only copy up
- ---------------------
-diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
-index 17c74ef4f089..8b6bae320e8a 100644
---- a/fs/overlayfs/params.c
-+++ b/fs/overlayfs/params.c
-@@ -192,7 +192,8 @@ static ssize_t ovl_parse_param_split_lowerdirs(char *str)
- 
- 	for (s = d = str;; s++, d++) {
- 		if (*s == '\\') {
--			s++;
-+			/* keep esc chars in split lowerdir */
-+			*d++ = *s++;
- 		} else if (*s == ':') {
- 			bool next_colon = (*(s + 1) == ':');
- 
-@@ -267,7 +268,7 @@ static void ovl_unescape(char *s)
- 	}
- }
- 
--static int ovl_mount_dir(const char *name, struct path *path)
-+static int ovl_mount_dir(const char *name, struct path *path, bool upper)
- {
- 	int err = -ENOMEM;
- 	char *tmp = kstrdup(name, GFP_KERNEL);
-@@ -276,7 +277,7 @@ static int ovl_mount_dir(const char *name, struct path *path)
- 		ovl_unescape(tmp);
- 		err = ovl_mount_dir_noesc(tmp, path);
- 
--		if (!err && path->dentry->d_flags & DCACHE_OP_REAL) {
-+		if (!err && upper && path->dentry->d_flags & DCACHE_OP_REAL) {
- 			pr_err("filesystem on '%s' not supported as upperdir\n",
- 			       tmp);
- 			path_put_init(path);
-@@ -297,7 +298,7 @@ static int ovl_parse_param_upperdir(const char *name, struct fs_context *fc,
- 	struct path path;
- 	char *dup;
- 
--	err = ovl_mount_dir(name, &path);
-+	err = ovl_mount_dir(name, &path, true);
- 	if (err)
- 		return err;
- 
-@@ -500,7 +501,7 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
- 		l = &ctx->lower[nr];
- 		memset(l, 0, sizeof(*l));
- 
--		err = ovl_mount_dir_noesc(dup_iter, &l->path);
-+		err = ovl_mount_dir(dup_iter, &l->path, false);
- 		if (err)
- 			goto out_put;
- 
-@@ -979,16 +980,23 @@ int ovl_show_options(struct seq_file *m, struct dentry *dentry)
- 	struct super_block *sb = dentry->d_sb;
- 	struct ovl_fs *ofs = OVL_FS(sb);
- 	size_t nr, nr_merged_lower = ofs->numlayer - ofs->numdatalayer;
--	char **lowerdatadirs = &ofs->config.lowerdirs[nr_merged_lower];
--
--	/* lowerdirs[] starts from offset 1 */
--	seq_printf(m, ",lowerdir=%s", ofs->config.lowerdirs[1]);
--	/* dump regular lower layers */
--	for (nr = 2; nr < nr_merged_lower; nr++)
--		seq_printf(m, ":%s", ofs->config.lowerdirs[nr]);
--	/* dump data lower layers */
--	for (nr = 0; nr < ofs->numdatalayer; nr++)
--		seq_printf(m, "::%s", lowerdatadirs[nr]);
-+
-+	/*
-+	 * lowerdirs[] starts from offset 1, then
-+	 * >= 0 regular lower layers prefixed with : and
-+	 * >= 0 data-only lower layers prefixed with ::
-+	 *
-+	 * we need to escase comma and space like seq_show_option() does and
-+	 * we also need to escape the colon separator from lowerdir paths.
-+	 */
-+	seq_puts(m, ",lowerdir=");
-+	for (nr = 1; nr < ofs->numlayer; nr++) {
-+		if (nr > 1)
-+			seq_putc(m, ':');
-+		if (nr >= nr_merged_lower)
-+			seq_putc(m, ':');
-+		seq_escape(m, ofs->config.lowerdirs[nr], ":, \t\n\\");
-+	}
- 	if (ofs->config.upperdir) {
- 		seq_show_option(m, "upperdir", ofs->config.upperdir);
- 		seq_show_option(m, "workdir", ofs->config.workdir);
-
+Great!  Thank you.
