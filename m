@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18A6B7C9AAF
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 176087C9AB0
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:17:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbjJOSRs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:17:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44518 "EHLO
+        id S229559AbjJOSR6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:17:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSRr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:17:47 -0400
+        with ESMTP id S229518AbjJOSR5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:17:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D991C1
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:17:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBBEC433C7;
-        Sun, 15 Oct 2023 18:17:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95012AB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:17:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76516C433C7;
+        Sun, 15 Oct 2023 18:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393864;
-        bh=MDSsdpn7w3XpSqIRjVz9acj7KqE1nU4oet4E6aIGQMo=;
+        s=korg; t=1697393875;
+        bh=/9pVqyII018TKBIEgEdl6gD1WJ2S5sTKEkFnUyJ+3Bo=;
         h=Subject:To:Cc:From:Date:From;
-        b=NaoyGp4vjhAPq1TLdLbn21/CooFiIFyOadZMwSL03Za44nzho7TYvcxm7GYQ/bppR
-         2Dj+flOy9Mm2LwmyNb5rvL8iBzvECKvHTnkj5UzehcY2EZjZyAQDdG79XQHqWXaEzV
-         MEOTLgdwA7khC3pAic56xMggrIs9DakLoH92oIWQ=
-Subject: FAILED: patch "[PATCH] x86/cpu: Fix AMD erratum #1485 on Zen4-based CPUs" failed to apply to 4.19-stable tree
+        b=pKTgSfkPulIDswIX2ZKacMHH70TeHthp4dSe2xXaV5d9o3YLOlzqZ61L9Uvwpy/xH
+         Wj2yb/uVLYqI7xt0X2Bm+EfiHiQBqE47ndodxRNUJXZKImjIDnPpn1Sn5AfVfqt1RK
+         Rd8lL7wNgbzQixCpF6FXDsGhYFT7Eiy1pallywiI=
+Subject: FAILED: patch "[PATCH] x86/cpu: Fix AMD erratum #1485 on Zen4-based CPUs" failed to apply to 4.14-stable tree
 To:     bp@alien8.de, rene@exactcode.de, stable@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:17:27 +0200
-Message-ID: <2023101527-arrogant-overdue-b9b4@gregkh>
+Date:   Sun, 15 Oct 2023 20:17:28 +0200
+Message-ID: <2023101528-jawed-shelving-071a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x f454b18e07f518bcd0c05af17a2239138bff52de
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101527-arrogant-overdue-b9b4@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101528-jawed-shelving-071a@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
