@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E5957C9AB4
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:18:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 380077C9AB5
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:18:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbjJOSSX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:18:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38530 "EHLO
+        id S229772AbjJOSS1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:18:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSSW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:18:22 -0400
+        with ESMTP id S229518AbjJOSS0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:18:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAB25AB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:18:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2965BC433C8;
-        Sun, 15 Oct 2023 18:18:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32015B7
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:18:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6E8C433C9;
+        Sun, 15 Oct 2023 18:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393900;
-        bh=Tw9onu5ne1KAH9QHJCDHdVOsP3jwukuT24IOpsOpdd8=;
+        s=korg; t=1697393904;
+        bh=r2+hoAsTSmcLqEeIdUjCNnSwF1kzbmT1vIxZyYSjY5M=;
         h=Subject:To:Cc:From:Date:From;
-        b=pcD4IBbKBn2msP2pbwIy87wejneMgf7lRsMmqwySikiK30SrdO6yxrcfIhH+40B8O
-         rfe4yY14jDMCXzHtUyU8ttioD1H2026igYpfn6xadb7JsNS59aVBS54X/jKJD8uLzz
-         TR30lHRtMnXbfXe/f7nIBk9niRnCcQUScTKOivxQ=
-Subject: FAILED: patch "[PATCH] x86/alternatives: Disable KASAN in apply_alternatives()" failed to apply to 5.4-stable tree
+        b=t+TbnKksqOfkdsXA0iYANHCvLNA7NzNTFfDiaw4sC0kFKd4HZPCszBTh7+OrPsTTx
+         IaVl8cJc8JeDhXGC1HyZqrgSTcAg24ZB3Y6y2ceTjIzufwB/M5IuAxjrqM7vWl25Fw
+         p4yiTG5JEv3g2qqG8Xi3JIa2nG8+t6ypSM7yjPJc=
+Subject: FAILED: patch "[PATCH] x86/alternatives: Disable KASAN in apply_alternatives()" failed to apply to 4.19-stable tree
 To:     kirill.shutemov@linux.intel.com, fei.yang@intel.com,
         mingo@kernel.org, peterz@infradead.org,
         torvalds@linux-foundation.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:17:53 +0200
-Message-ID: <2023101553-croak-cognition-2613@gregkh>
+Date:   Sun, 15 Oct 2023 20:17:54 +0200
+Message-ID: <2023101554-babied-exemption-cde9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x d35652a5fc9944784f6f50a5c979518ff8dacf61
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101553-croak-cognition-2613@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101554-babied-exemption-cde9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
