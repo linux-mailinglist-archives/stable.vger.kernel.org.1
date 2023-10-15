@@ -2,219 +2,158 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FD9F7C9AB6
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:19:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 500837C9AB7
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229522AbjJOSTo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:19:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52192 "EHLO
+        id S229559AbjJOSTu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:19:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSTn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:19:43 -0400
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4518AAB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:19:41 -0700 (PDT)
-Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-3ae35773a04so2472834b6e.0
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:19:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1697393980; x=1697998780; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=a6mA2F8mED9/ON7OwUZheCdmHZleiGWu5tUnFCrNYxw=;
-        b=vVKat9FrseM8yWoAsrT79b6j4TI1Cms/L+zVevb8hpVoLptrSIuaSdyZw3+TdLGFK2
-         wGEluht7rEMasfaol8Gvt8ZmwdFW6uzuGEYuEaHsU3/4wpZr6njytf3isngK4rdr0BHa
-         LTsR682+NoyNx4iKFmSgwtZ8Oo61WYpJ8JZHdWKHNfO0dtKWfsaEC84hAB/qXusta3j9
-         +ZwIMz7yjow07riFVEnr89Dx6wkidZqGx7N1GyuAPQilsKAkA7Rp4uE0dx/zt57va8DE
-         Pq7leKBAv9zwJc7Dfl5WQg27aVEW7+n1AT+X5AhqlFUDS+jv84kvwEmlkJ0pOANRN0H5
-         NIRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697393980; x=1697998780;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a6mA2F8mED9/ON7OwUZheCdmHZleiGWu5tUnFCrNYxw=;
-        b=kc1eQG0rBzNjxc4asKFkiMHF/rIhpR3D+sfOTXjVcSr0EmCxktLJCfLfU2xNqFJU03
-         DUEnH2HUPqvQfwj4YcT9pXF88jU5s8p5yFhyHT+YqKS9rNbUoDaNuYtWUlyk7A/gLLRP
-         9CXd/rnTZYBmqcabybSC1HZoIHaGAgxhfBbBFbs01jwkKfgq7wTC9zneR7ychto/lzeq
-         j2SwVa4sNgPka2XPp+XI3bQdKYm7BgDOgz3/16fN7mmyXJJW06+fUC5rhBo9qv7mzmh/
-         D7zpiJq+pSF75kXfVr91zd1E1xPpp3P31+XYxdn5ica/jPoVhL45UuU5NlygbMRX9d7k
-         i9Gw==
-X-Gm-Message-State: AOJu0YwxylwGI2kKIskf5EUNiBZPfROoSdZxoW8jNCqdCoxdR2i1Bvsz
-        nyPih/fT8ms/zu10+JDCeZeDynvOioSoCAjwDHR6Fw==
-X-Google-Smtp-Source: AGHT+IHuku4l4tDedvatljERlVnCU425XcXHE1Kl4tBBbvAJBtk4Anvr1UmMAvLeCzdqQXvQW7wC3w==
-X-Received: by 2002:aca:2409:0:b0:3a7:215c:e34 with SMTP id n9-20020aca2409000000b003a7215c0e34mr33245455oic.15.1697393980182;
-        Sun, 15 Oct 2023 11:19:40 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id pv16-20020a17090b3c9000b00263154aab24sm3334489pjb.57.2023.10.15.11.19.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Oct 2023 11:19:39 -0700 (PDT)
-Message-ID: <652c2d3b.170a0220.53882.9efc@mx.google.com>
-Date:   Sun, 15 Oct 2023 11:19:39 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229518AbjJOSTu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:19:50 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F2FAB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:19:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82ADC433C8;
+        Sun, 15 Oct 2023 18:19:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1697393988;
+        bh=4CDzhmhaQUeBlhIQ1XVZ9QK6vh63Rmy1pHxSWk3LDL0=;
+        h=Subject:To:Cc:From:Date:From;
+        b=cSlzjhBNxJLgapxSj/lQsPPeMiKGH3GFWgMLxRgnpp0Mj2qeDy/F+UURZmK4LNxBb
+         WBoaVqcBEe6clQ7JfrpAkWbffIYbhVzeI699d76ZydJ/zmPoeGW8tVlH6NQ6sTx2Jh
+         AT6ztgkkrkqPEe/KaqWefyKvP0UFQxXpspNfw7Nc=
+Subject: FAILED: patch "[PATCH] powerpc/47x: Fix 47x syscall return crash" failed to apply to 5.15-stable tree
+To:     mpe@ellerman.id.au, christophe.leroy@csgroup.eu,
+        eajames@linux.ibm.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 15 Oct 2023 20:19:44 +0200
+Message-ID: <2023101544-licking-mutation-b95d@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v6.1.58
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable
-Subject: stable/linux-6.1.y build: 19 builds: 0 failed, 19 passed,
- 1 warning (v6.1.58)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-6.1.y build: 19 builds: 0 failed, 19 passed, 1 warning (v6.1.5=
-8)
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.1.y/ke=
-rnel/v6.1.58/
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Tree: stable
-Branch: linux-6.1.y
-Git Describe: v6.1.58
-Git Commit: adc4d740ad9ec780657327c69ab966fa4fdf0e8e
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 7 unique architectures
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Warnings Detected:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x f0eee815babed70a749d2496a7678be5b45b4c14
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101544-licking-mutation-b95d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
+Possible dependencies:
 
 
-Warnings summary:
 
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+thanks,
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+greg k-h
 
-Detailed per-defconfig build reports:
+------------------ original commit in Linus's tree ------------------
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
+From f0eee815babed70a749d2496a7678be5b45b4c14 Mon Sep 17 00:00:00 2001
+From: Michael Ellerman <mpe@ellerman.id.au>
+Date: Tue, 10 Oct 2023 22:47:50 +1100
+Subject: [PATCH] powerpc/47x: Fix 47x syscall return crash
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
+Eddie reported that newer kernels were crashing during boot on his 476
+FSP2 system:
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
+  kernel tried to execute user page (b7ee2000) - exploit attempt? (uid: 0)
+  BUG: Unable to handle kernel instruction fetch
+  Faulting instruction address: 0xb7ee2000
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  BE PAGE_SIZE=4K FSP-2
+  Modules linked in:
+  CPU: 0 PID: 61 Comm: mount Not tainted 6.1.55-d23900f.ppcnf-fsp2 #1
+  Hardware name: ibm,fsp2 476fpe 0x7ff520c0 FSP-2
+  NIP:  b7ee2000 LR: 8c008000 CTR: 00000000
+  REGS: bffebd83 TRAP: 0400   Not tainted (6.1.55-d23900f.ppcnf-fs p2)
+  MSR:  00000030 <IR,DR>  CR: 00001000  XER: 20000000
+  GPR00: c00110ac bffebe63 bffebe7e bffebe88 8c008000 00001000 00000d12 b7ee2000
+  GPR08: 00000033 00000000 00000000 c139df10 48224824 1016c314 10160000 00000000
+  GPR16: 10160000 10160000 00000008 00000000 10160000 00000000 10160000 1017f5b0
+  GPR24: 1017fa50 1017f4f0 1017fa50 1017f740 1017f630 00000000 00000000 1017f4f0
+  NIP [b7ee2000] 0xb7ee2000
+  LR [8c008000] 0x8c008000
+  Call Trace:
+  Instruction dump:
+  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+  ---[ end trace 0000000000000000 ]---
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+The problem is in ret_from_syscall where the check for
+icache_44x_need_flush is done. When the flush is needed the code jumps
+out-of-line to do the flush, and then intends to jump back to continue
+the syscall return.
 
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+However the branch back to label 1b doesn't return to the correct
+location, instead branching back just prior to the return to userspace,
+causing bogus register values to be used by the rfi.
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+The breakage was introduced by commit 6f76a01173cc
+("powerpc/syscall: implement system call entry/exit logic in C for PPC32") which
+inadvertently removed the "1" label and reused it elsewhere.
 
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
+Fix it by adding named local labels in the correct locations. Note that
+the return label needs to be outside the ifdef so that CONFIG_PPC_47x=n
+compiles.
 
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
+Fixes: 6f76a01173cc ("powerpc/syscall: implement system call entry/exit logic in C for PPC32")
+Cc: stable@vger.kernel.org # v5.12+
+Reported-by: Eddie James <eajames@linux.ibm.com>
+Tested-by: Eddie James <eajames@linux.ibm.com>
+Link: https://lore.kernel.org/linuxppc-dev/fdaadc46-7476-9237-e104-1d2168526e72@linux.ibm.com/
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://msgid.link/20231010114750.847794-1-mpe@ellerman.id.au
 
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 9692acb0361f..7eda33a24bb4 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -137,8 +137,9 @@ ret_from_syscall:
+ 	lis	r4,icache_44x_need_flush@ha
+ 	lwz	r5,icache_44x_need_flush@l(r4)
+ 	cmplwi	cr0,r5,0
+-	bne-	2f
++	bne-	.L44x_icache_flush
+ #endif /* CONFIG_PPC_47x */
++.L44x_icache_flush_return:
+ 	kuep_unlock
+ 	lwz	r4,_LINK(r1)
+ 	lwz	r5,_CCR(r1)
+@@ -172,10 +173,11 @@ syscall_exit_finish:
+ 	b	1b
+ 
+ #ifdef CONFIG_44x
+-2:	li	r7,0
++.L44x_icache_flush:
++	li	r7,0
+ 	iccci	r0,r0
+ 	stw	r7,icache_44x_need_flush@l(r4)
+-	b	1b
++	b	.L44x_icache_flush_return
+ #endif  /* CONFIG_44x */
+ 
+ 	.globl	ret_from_fork
 
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
