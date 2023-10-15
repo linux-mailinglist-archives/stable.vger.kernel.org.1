@@ -2,43 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D187C9A89
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D3F97C9A8B
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbjJOSFm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:05:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35522 "EHLO
+        id S229659AbjJOSGS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:06:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSFl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:05:41 -0400
+        with ESMTP id S229518AbjJOSGR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:06:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 045EFAB;
-        Sun, 15 Oct 2023 11:05:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3A1C433C8;
-        Sun, 15 Oct 2023 18:05:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98B46C1
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:06:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8F0C433C8;
+        Sun, 15 Oct 2023 18:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393139;
-        bh=HpTssnw808tqyXU+S4wRgjbl0jPobHnxdkz7GjEtVrA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=B1rfmrKADKsgDbhInnYFLX7527o+RDe3hlzlDMGg50D+gkhPtzUuIHt1ZJjDe1oh6
-         epthc8AeC7U6Gdms7Eg0wWUvZFlrU2UjyUpujqY8OJ1n7YNcwfLc7vo5DZBUVsM1bv
-         FRnA8pjkUTQ7Rv43POvIvmckURug/xAMuB6S2/oI=
-Date:   Sun, 15 Oct 2023 20:05:31 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Prashanth K <quic_prashk@quicinc.com>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Hongyu Xie <xy521521@gmail.com>,
-        Mathias Nyman <mathias.nyman@intel.com>, stable@kernel.org,
-        Hongyu Xie <xiehongyu1@kylinos.cn>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: Re: [v2] xhci: Keep interrupt disabled in initialization until host
- is running.
-Message-ID: <2023101524-subzero-trance-587d@gregkh>
-References: <1697177797-18070-1-git-send-email-quic_prashk@quicinc.com>
+        s=korg; t=1697393176;
+        bh=KpZNCINbwutG/x8ymO3LdvfTe0UMaHVvqOuTM7dMGfg=;
+        h=Subject:To:Cc:From:Date:From;
+        b=pYfwGHKfnhKgI5K6vbVfF+57pZB9jY9LQWilZEeRNVAlMhaOMX6m4B51mtHAnM7x8
+         d9X4qNqJWM6rHpUAmWAM+J4pN/iOFTYJicGJGE9ZxaWRUCzlNX/AnPviWi/twB9v7p
+         baAXkwsqa6ROwWj9WEJoJfJEH5cZ473ZkyblzO2w=
+Subject: FAILED: patch "[PATCH] xhci: track port suspend state correctly in unsuccessful" failed to apply to 6.1-stable tree
+To:     mathias.nyman@linux.intel.com, gregkh@linuxfoundation.org,
+        quic_wcheng@quicinc.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 15 Oct 2023 20:06:13 +0200
+Message-ID: <2023101513-igloo-irregular-e6de@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1697177797-18070-1-git-send-email-quic_prashk@quicinc.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -49,12 +43,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 13, 2023 at 11:46:37AM +0530, Prashanth K wrote:
-> From: Hongyu Xie <xy521521@gmail.com>
-> 
-> [ Upstream commit a808925075fb750804a60ff0710614466c396db4 ]
-> 
 
-Now queued up, thanks.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x d7cdfc319b2bcf6899ab0a05eec0958bc802a9a1
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101513-igloo-irregular-e6de@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From d7cdfc319b2bcf6899ab0a05eec0958bc802a9a1 Mon Sep 17 00:00:00 2001
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Date: Fri, 15 Sep 2023 17:31:06 +0300
+Subject: [PATCH] xhci: track port suspend state correctly in unsuccessful
+ resume cases
+
+xhci-hub.c tracks suspended ports in a suspended_port bitfield.
+This is checked when responding to a Get_Status(PORT) request to see if a
+port in running U0 state was recently resumed, and adds the required
+USB_PORT_STAT_C_SUSPEND change bit in those cases.
+
+The suspended_port bit was left uncleared if a device is disconnected
+during suspend. The bit remained set even when a new device was connected
+and enumerated. The set bit resulted in a incorrect Get_Status(PORT)
+response with a bogus USB_PORT_STAT_C_SUSPEND change
+bit set once the new device reached U0 link state.
+
+USB_PORT_STAT_C_SUSPEND change bit is only used for USB2 ports, but
+xhci-hub keeps track of both USB2 and USB3 suspended ports.
+
+Cc: stable@vger.kernel.org
+Reported-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Closes: https://lore.kernel.org/linux-usb/d68aa806-b26a-0e43-42fb-b8067325e967@quicinc.com/
+Fixes: 1d5810b6923c ("xhci: Rework port suspend structures for limited ports.")
+Tested-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20230915143108.1532163-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index 0054d02239e2..0df5d807a77e 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -1062,19 +1062,19 @@ static void xhci_get_usb3_port_status(struct xhci_port *port, u32 *status,
+ 		*status |= USB_PORT_STAT_C_CONFIG_ERROR << 16;
+ 
+ 	/* USB3 specific wPortStatus bits */
+-	if (portsc & PORT_POWER) {
++	if (portsc & PORT_POWER)
+ 		*status |= USB_SS_PORT_STAT_POWER;
+-		/* link state handling */
+-		if (link_state == XDEV_U0)
+-			bus_state->suspended_ports &= ~(1 << portnum);
+-	}
+ 
+-	/* remote wake resume signaling complete */
+-	if (bus_state->port_remote_wakeup & (1 << portnum) &&
++	/* no longer suspended or resuming */
++	if (link_state != XDEV_U3 &&
+ 	    link_state != XDEV_RESUME &&
+ 	    link_state != XDEV_RECOVERY) {
+-		bus_state->port_remote_wakeup &= ~(1 << portnum);
+-		usb_hcd_end_port_resume(&hcd->self, portnum);
++		/* remote wake resume signaling complete */
++		if (bus_state->port_remote_wakeup & (1 << portnum)) {
++			bus_state->port_remote_wakeup &= ~(1 << portnum);
++			usb_hcd_end_port_resume(&hcd->self, portnum);
++		}
++		bus_state->suspended_ports &= ~(1 << portnum);
+ 	}
+ 
+ 	xhci_hub_report_usb3_link_state(xhci, status, portsc);
+@@ -1131,6 +1131,7 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
+ 			usb_hcd_end_port_resume(&port->rhub->hcd->self, portnum);
+ 		}
+ 		port->rexit_active = 0;
++		bus_state->suspended_ports &= ~(1 << portnum);
+ 	}
+ }
+ 
+
