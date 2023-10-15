@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA9547C9AA0
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6334B7C9AA1
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:12:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229559AbjJOSMB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:12:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42424 "EHLO
+        id S229641AbjJOSME (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:12:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSMA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:12:00 -0400
+        with ESMTP id S229518AbjJOSMD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:12:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57C52AB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:11:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B17C433C8;
-        Sun, 15 Oct 2023 18:11:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49EEFAB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:12:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8D2C433C8;
+        Sun, 15 Oct 2023 18:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697393519;
-        bh=cM5AozsYeDecSomiAU9RuMVoEvLvOE1UtnvrxAq4beY=;
+        s=korg; t=1697393521;
+        bh=uR52r+GDzdKqbzimzu3qupiL0JUK0s1qvD/UtNeSCmc=;
         h=Subject:To:Cc:From:Date:From;
-        b=k2nrHiMSGg0GVw5Q+L0De1i2z+YM7DuDk5rsvir3o3h1O1K4dok2RFWMcpXcXX/kb
-         a8p0DBYFpwaTy5C3JDAVjBpyJVJlAYy3/Xc0e1kZZXcqGIcCDwhEb5pwpUN7JQtfDa
-         Vq6QrzX5qsSQa9RMnOY6B6pxE071YxaUpzBrVLLo=
-Subject: FAILED: patch "[PATCH] iio: adc: ad7192: Correct reference voltage" failed to apply to 5.15-stable tree
+        b=Wg6T7/sgOy+1Ojjsug9BytFuH805RmYjBEF5dxpKzjvbxs/tonKXS6KkKpuMm4zAB
+         Qselu5pJwwtKzkKUw4E0/SXYhKdhigF58QmxWR0Kmd8yiBC2EOad0yTTaEb09W3P6r
+         EHdeHyi7lnXCoHu8l8A6RzF9MjJvxY4YvOkTrZJo=
+Subject: FAILED: patch "[PATCH] iio: adc: ad7192: Correct reference voltage" failed to apply to 5.10-stable tree
 To:     alisa.roman@analog.com, Jonathan.Cameron@huawei.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:11:47 +0200
-Message-ID: <2023101547-shell-ranger-ff53@gregkh>
+Date:   Sun, 15 Oct 2023 20:11:48 +0200
+Message-ID: <2023101548-small-pretender-0da8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7e7dcab620cd6d34939f615cac63fc0ef7e81c72
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101547-shell-ranger-ff53@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101548-small-pretender-0da8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
