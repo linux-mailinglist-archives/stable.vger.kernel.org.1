@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8441B7C9ACD
-	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79B567C9ACF
+	for <lists+stable@lfdr.de>; Sun, 15 Oct 2023 20:36:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbjJOSfc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 14:35:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40286 "EHLO
+        id S229518AbjJOSgt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 14:36:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjJOSfc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:35:32 -0400
+        with ESMTP id S229649AbjJOSgs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 14:36:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA1C4AB
-        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:35:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDD9C433C7;
-        Sun, 15 Oct 2023 18:35:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CD5DAB
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 11:36:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93A2C433C8;
+        Sun, 15 Oct 2023 18:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697394930;
-        bh=P3/AN0DzmY/GFzkk0Eu+geilov88I+dO3oU733pwm1s=;
+        s=korg; t=1697395006;
+        bh=69BsjIOX5R8jyogLLfgeDp3WVOd068v/B5Izg2Pr6zk=;
         h=Subject:To:Cc:From:Date:From;
-        b=bKhUwzS0cYuk/v6mSNAPZE5+N7yd3PSzn06R9kzMaUSWIN0lJVd7JRzCiEof4XjNV
-         R2znE1WrSd8UMsiX/aHtM5neESutEfgSjBs4RTsDhniti8KL5opycU1FYYh/jEOO47
-         J4VMZb2YQt8r2uVnYakZUNkFChwpDlF1OHPjNsVo=
-Subject: FAILED: patch "[PATCH] iio: cros_ec: fix an use-after-free in" failed to apply to 6.1-stable tree
-To:     tzungbi@kernel.org, Jonathan.Cameron@huawei.com,
-        groeck@chromium.org, swboyd@chromium.org
+        b=FYx/WTgJ9YlR4PlGNJLh6rUIJLwHjywHwJEJycCCzGuCaX6jH/zR/3DDZQZTIhd39
+         DqVWWbD6NuUhCFgdrQqmiL3frIfkM7l5b6pCzumrIBmhaCAgMBb4FnGGwmOpQDgvUL
+         ROZTjaXv7dAADR0JJsZHKWt5/Ubx30yo3px9BQ1I=
+Subject: FAILED: patch "[PATCH] ovl: fix regression in parsing of mount options with escaped" failed to apply to 6.5-stable tree
+To:     amir73il@gmail.com, ryan.hendrickson@alum.mit.edu
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 15 Oct 2023 20:35:26 +0200
-Message-ID: <2023101526-sweep-stray-4f99@gregkh>
+Date:   Sun, 15 Oct 2023 20:36:43 +0200
+Message-ID: <2023101542-semisweet-rogue-1c44@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7771c8c80d62ad065637ef74ed2962983f6c5f6d
+git cherry-pick -x c34706acf40b43dd31f67c92c5a95d39666a1eb3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101526-sweep-stray-4f99@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023101542-semisweet-rogue-1c44@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,67 +66,74 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7771c8c80d62ad065637ef74ed2962983f6c5f6d Mon Sep 17 00:00:00 2001
-From: Tzung-Bi Shih <tzungbi@kernel.org>
-Date: Tue, 29 Aug 2023 11:06:22 +0800
-Subject: [PATCH] iio: cros_ec: fix an use-after-free in
- cros_ec_sensors_push_data()
+From c34706acf40b43dd31f67c92c5a95d39666a1eb3 Mon Sep 17 00:00:00 2001
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Thu, 12 Oct 2023 16:08:28 +0300
+Subject: [PATCH] ovl: fix regression in parsing of mount options with escaped
+ comma
 
-cros_ec_sensors_push_data() reads `indio_dev->active_scan_mask` and
-calls iio_push_to_buffers_with_timestamp() without making sure the
-`indio_dev` stays in buffer mode.  There is a race if `indio_dev` exits
-buffer mode right before cros_ec_sensors_push_data() accesses them.
+Ever since commit 91c77947133f ("ovl: allow filenames with comma"), the
+following example was legit overlayfs mount options:
 
-An use-after-free on `indio_dev->active_scan_mask` was observed.  The
-call trace:
-[...]
- _find_next_bit
- cros_ec_sensors_push_data
- cros_ec_sensorhub_event
- blocking_notifier_call_chain
- cros_ec_irq_thread
+  mount -t overlay overlay -o 'lowerdir=/tmp/a\,b/lower' /mnt
 
-It was caused by a race condition: one thread just freed
-`active_scan_mask` at [1]; while another thread tried to access the
-memory at [2].
+The conversion to new mount api moved to using the common helper
+generic_parse_monolithic() and discarded the specialized ovl_next_opt()
+option separator.
 
-Fix it by calling iio_device_claim_buffer_mode() to ensure the
-`indio_dev` can't exit buffer mode during cros_ec_sensors_push_data().
+Bring back ovl_next_opt() and use vfs_parse_monolithic_sep() to fix the
+regression.
 
-[1]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/industrialio-buffer.c#L1189
-[2]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c#L198
+Reported-by: Ryan Hendrickson <ryan.hendrickson@alum.mit.edu>
+Closes: https://lore.kernel.org/r/8da307fb-9318-cf78-8a27-ba5c5a0aef6d@alum.mit.edu/
+Fixes: 1784fbc2ed9c ("ovl: port to new mount api")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 
-Cc: stable@vger.kernel.org
-Fixes: aa984f1ba4a4 ("iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO")
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20230829030622.1571852-1-tzungbi@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index b72d39fc2434..6bfe5d6847e7 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -190,8 +190,11 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
- 	/*
- 	 * Ignore samples if the buffer is not set: it is needed if the ODR is
- 	 * set but the buffer is not enabled yet.
-+	 *
-+	 * Note: iio_device_claim_buffer_mode() returns -EBUSY if the buffer
-+	 * is not enabled.
- 	 */
--	if (!iio_buffer_enabled(indio_dev))
-+	if (iio_device_claim_buffer_mode(indio_dev) < 0)
- 		return 0;
+diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
+index 95b751507ac8..17c74ef4f089 100644
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -157,6 +157,34 @@ const struct fs_parameter_spec ovl_parameter_spec[] = {
+ 	{}
+ };
  
- 	out = (s16 *)st->samples;
-@@ -210,6 +213,7 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
- 	iio_push_to_buffers_with_timestamp(indio_dev, st->samples,
- 					   timestamp + delta);
- 
-+	iio_device_release_buffer_mode(indio_dev);
- 	return 0;
++static char *ovl_next_opt(char **s)
++{
++	char *sbegin = *s;
++	char *p;
++
++	if (sbegin == NULL)
++		return NULL;
++
++	for (p = sbegin; *p; p++) {
++		if (*p == '\\') {
++			p++;
++			if (!*p)
++				break;
++		} else if (*p == ',') {
++			*p = '\0';
++			*s = p + 1;
++			return sbegin;
++		}
++	}
++	*s = NULL;
++	return sbegin;
++}
++
++static int ovl_parse_monolithic(struct fs_context *fc, void *data)
++{
++	return vfs_parse_monolithic_sep(fc, data, ovl_next_opt);
++}
++
+ static ssize_t ovl_parse_param_split_lowerdirs(char *str)
+ {
+ 	ssize_t nr_layers = 1, nr_colons = 0;
+@@ -682,6 +710,7 @@ static int ovl_reconfigure(struct fs_context *fc)
  }
- EXPORT_SYMBOL_GPL(cros_ec_sensors_push_data);
+ 
+ static const struct fs_context_operations ovl_context_ops = {
++	.parse_monolithic = ovl_parse_monolithic,
+ 	.parse_param = ovl_parse_param,
+ 	.get_tree    = ovl_get_tree,
+ 	.reconfigure = ovl_reconfigure,
 
