@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB1987CB0FA
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 19:05:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D8937CB100
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 19:06:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234546AbjJPRFq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 13:05:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41372 "EHLO
+        id S234199AbjJPRGP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 13:06:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234547AbjJPRFY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 13:05:24 -0400
+        with ESMTP id S234424AbjJPRFj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 13:05:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 178842D74
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 10:02:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C92C433C7;
-        Mon, 16 Oct 2023 17:02:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CFCE3245
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 10:03:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 275C0C433C8;
+        Mon, 16 Oct 2023 17:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697475731;
-        bh=Cr/WKqaWjw62PAFlI5Q9yZuDtc3aus5qxX6u9XpKiI4=;
+        s=korg; t=1697475788;
+        bh=c0eHrb6crqy42yUx6a/Ikws4QNYgC0BkPqi+pVK4sNY=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=axYCOLvJ/ewXMtghMZFuyrskr4inxA4EYTCp9A0EvP/iLJSOwtYDT03uKhL7gEP/d
-         fDfGl6TpYyGPFFXoDQJwExa79I8t+N4zNAbFjAI9sv8NPJP+h5kc9u2kaS8f7Bdc3D
-         lg1sTXLb6uKe2hjGBs33umXLHesW7b5gDkAOIg3A=
-Date:   Mon, 16 Oct 2023 19:02:08 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Haiyang Zhang <haiyangz@microsoft.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "patches@lists.linux.dev" <patches@lists.linux.dev>,
-        Simon Horman <horms@kernel.org>,
-        Shradha Gupta <shradhagupta@linux.microsoft.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 001/131] net: mana: Fix TX CQE error handling
-Message-ID: <2023101659-bronco-maybe-0dc7@gregkh>
-References: <20231016084000.050926073@linuxfoundation.org>
- <20231016084000.092429858@linuxfoundation.org>
- <PH7PR21MB31164DEC6C6E7FBBC7CAE008CAD7A@PH7PR21MB3116.namprd21.prod.outlook.com>
- <2023101613-verbalize-runaround-f67f@gregkh>
- <PH7PR21MB311624F90B8FC50D05200712CAD7A@PH7PR21MB3116.namprd21.prod.outlook.com>
+        b=EJPGXs243U/HoNMe26JuSdmLRAwbpbisODmV/3gSVGw7DDmLCHF1OBvlJ7X3FPaST
+         IjuyCZkwWPhDWfjSnCMLr94StBx3+fjC3G3Gh6CdPva0376k4iFfXb6K9jQCgXT+dX
+         6swpygw3FJQhdNKjGFUYYJ9Alg6GlsM8M3BHdObg=
+Date:   Mon, 16 Oct 2023 19:03:05 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     fei.yang@intel.com
+Cc:     intel-xe@lists.freedesktop.org, lucas.demarchi@intel.com,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] x86/alternatives: Disable KASAN in
+ apply_alternatives()
+Message-ID: <2023101650-monogamy-bobbing-33f9@gregkh>
+References: <20231016154025.3358622-1-fei.yang@intel.com>
+ <20231016154025.3358622-2-fei.yang@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PH7PR21MB311624F90B8FC50D05200712CAD7A@PH7PR21MB3116.namprd21.prod.outlook.com>
+In-Reply-To: <20231016154025.3358622-2-fei.yang@intel.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -52,108 +49,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 03:35:27PM +0000, Haiyang Zhang wrote:
+On Mon, Oct 16, 2023 at 08:40:24AM -0700, fei.yang@intel.com wrote:
+> From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
 > 
+> Fei has reported that KASAN triggers during apply_alternatives() on
+> a 5-level paging machine:
 > 
-> > -----Original Message-----
-> > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Sent: Monday, October 16, 2023 10:47 AM
-> > To: Haiyang Zhang <haiyangz@microsoft.com>
-> > Cc: stable@vger.kernel.org; patches@lists.linux.dev; Simon Horman
-> > <horms@kernel.org>; Shradha Gupta <shradhagupta@linux.microsoft.com>;
-> > Paolo Abeni <pabeni@redhat.com>; Sasha Levin <sashal@kernel.org>
-> > Subject: Re: [PATCH 6.1 001/131] net: mana: Fix TX CQE error handling
-> > 
-> > On Mon, Oct 16, 2023 at 02:35:15PM +0000, Haiyang Zhang wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > Sent: Monday, October 16, 2023 4:40 AM
-> > > > To: stable@vger.kernel.org
-> > > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>;
-> > > > patches@lists.linux.dev; Haiyang Zhang <haiyangz@microsoft.com>;
-> > Simon
-> > > > Horman <horms@kernel.org>; Shradha Gupta
-> > > > <shradhagupta@linux.microsoft.com>; Paolo Abeni
-> > <pabeni@redhat.com>;
-> > > > Sasha Levin <sashal@kernel.org>
-> > > > Subject: [PATCH 6.1 001/131] net: mana: Fix TX CQE error handling
-> > > >
-> > > > 6.1-stable review patch.  If anyone has any objections, please let me know.
-> > > >
-> > > > ------------------
-> > > >
-> > > > From: Haiyang Zhang <haiyangz@microsoft.com>
-> > > >
-> > > > [ Upstream commit b2b000069a4c307b09548dc2243f31f3ca0eac9c ]
-> > > >
-> > > > For an unknown TX CQE error type (probably from a newer hardware),
-> > > > still free the SKB, update the queue tail, etc., otherwise the
-> > > > accounting will be wrong.
-> > > >
-> > > > Also, TX errors can be triggered by injecting corrupted packets, so
-> > > > replace the WARN_ONCE to ratelimited error logging.
-> > > >
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure
-> > Network
-> > > > Adapter (MANA)")
-> > > > Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-> > > > Reviewed-by: Simon Horman <horms@kernel.org>
-> > > > Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> > > > Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-> > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > > ---
-> > > >  drivers/net/ethernet/microsoft/mana/mana_en.c | 16 ++++++++++------
-> > > >  1 file changed, 10 insertions(+), 6 deletions(-)
-> > > >
-> > > > diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > > > b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > > > index 4f4204432aaa3..23ce26b8295dc 100644
-> > > > --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > > > +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > > > @@ -1003,16 +1003,20 @@ static void mana_poll_tx_cq(struct mana_cq
-> > > > *cq)
-> > > >  		case CQE_TX_VPORT_IDX_OUT_OF_RANGE:
-> > > >  		case CQE_TX_VPORT_DISABLED:
-> > > >  		case CQE_TX_VLAN_TAGGING_VIOLATION:
-> > > > -			WARN_ONCE(1, "TX: CQE error %d: ignored.\n",
-> > > > -				  cqe_oob->cqe_hdr.cqe_type);
-> > > > +			if (net_ratelimit())
-> > > > +				netdev_err(ndev, "TX: CQE error %d\n",
-> > > > +					   cqe_oob->cqe_hdr.cqe_type);
-> > > > +
-> > > >  			break;
-> > > >
-> > > >  		default:
-> > > > -			/* If the CQE type is unexpected, log an error, assert,
-> > > > -			 * and go through the error path.
-> > > > +			/* If the CQE type is unknown, log an error,
-> > > > +			 * and still free the SKB, update tail, etc.
-> > > >  			 */
-> > > > -			WARN_ONCE(1, "TX: Unexpected CQE type %d: HW
-> > > > BUG?\n",
-> > > > -				  cqe_oob->cqe_hdr.cqe_type);
-> > > > +			if (net_ratelimit())
-> > > > +				netdev_err(ndev, "TX: unknown CQE
-> > > > type %d\n",
-> > > > +					   cqe_oob->cqe_hdr.cqe_type);
-> > > > +
-> > > >  			return;
-> > >
-> > > This should be changed to "break", because we should "still free the SKB,
-> > update
-> > > the queue tail, etc., otherwise the accounting will be wrong":
-> > 
-> > Is that an issue in Linus's tree, or is this unique to the stable
-> > backport?
+> 	BUG: KASAN: out-of-bounds in rcu_is_watching()
+> 	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
+> 	...
+> 	__asan_load4()
+> 	rcu_is_watching()
+> 	trace_hardirqs_on()
+> 	text_poke_early()
+> 	apply_alternatives()
+> 	...
 > 
-> It's just a stable backporting issue.
+> On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
+> gets patched. It includes KASAN code, where KASAN_SHADOW_START depends on
+> __VIRTUAL_MASK_SHIFT, which is defined with cpu_feature_enabled().
 > 
-> Linus's tree is fine:
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=b2b000069a4c307b09548dc2243f31f3ca0eac9c
+> KASAN gets confused when apply_alternatives() patches the
+> KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
+> static, by replacing __VIRTUAL_MASK_SHIFT with 56, works around the issue.
+> 
+> Fix it for real by disabling KASAN while the kernel is patching alternatives.
+> 
+> [ mingo: updated the changelog ]
+> 
+> Fixes: 6657fca06e3f ("x86/mm: Allow to boot without LA57 if CONFIG_X86_5LEVEL=y")
+> Reported-by: Fei Yang <fei.yang@intel.com>
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Cc: Linus Torvalds <torvalds@linux-foundation.org>
+> Cc: stable@vger.kernel.org
+> Link: https://lore.kernel.org/r/20231012100424.1456-1-kirill.shutemov@linux.intel.com
+> (cherry picked from commit d35652a5fc9944784f6f50a5c979518ff8dacf61)
+> ---
+>  arch/x86/kernel/alternative.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
 
-Thanks, I've fixed this up now.
+What stable tree(s) is this for?
+
+thanks,
 
 greg k-h
