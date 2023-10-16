@@ -2,150 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A85D57CA110
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 09:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A32037C9F4A
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 08:11:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229501AbjJPHzw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 03:55:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54654 "EHLO
+        id S230525AbjJPGLB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 02:11:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231722AbjJPHzw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 03:55:52 -0400
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 030F2DE
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 00:55:49 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2AFF740E01AA;
-        Mon, 16 Oct 2023 07:55:48 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-        reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-        by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id v7XoXMhNayxI; Mon, 16 Oct 2023 07:55:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-        t=1697442946; bh=fz6hqbd0QgB2y+oYQqWyczsjsdibvqvcbH4mVBPq9Yc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eLsuZDZA3k+xx+HEcy+KHESchlPmHrkQvGfxMFa5++NPo/Onj4068u7nGPDSXnkqj
-         3mAWkdkI6iKLCCCZUBy2jCsXfNCdZ8gJ7LD5iFYy/kSaDO1xt6yjsCJT5tSaIUPuUO
-         T3Ff8QO//lmADvOX+gsFg1zqG9NPLFaSzR7RUiaHvoeVPjllphdSDi2G9+OkiWIoGw
-         nyhTnCaTkH8S2i0yKaGqE+nka6krsEfAezof8KOIpOr+FBGd9t7xfdDD++obhfXZfr
-         Xps8NA3657aHKC+43v8MJIVHIN6IqlCPlX+7L6P/nq2XoEtT5gsrsnGzYf1PS/e0fF
-         Y2vsob05pB0I96Xnz/8oR7HugZ/rMsPadnwzKaQq8BxX6MltgPZU6sepYdGroAAWBZ
-         fVl//RKzpe4BlyX+AKdPey/ysBU+EOY6PLS//5hnRWhJ5+5q5fOgbVRCWWTzR8R6uJ
-         NDubQ4r7maO8OxQuLFIbIEdnkPfSKV5BFAZICeevaHY+sH27J6wCAY5fm4oTlQWq6+
-         KWrhqChcgbc82v4h+yD8cdK8BLxsMTm5aJcV9KOCJwY1NiasUt7Vo8mXp7L2PRX96F
-         veCMDGS3qw88nWI2vOXV6UtI0lkHmp9FmxhcROxrL/y7y1XemF4Qupn1snjkYZL8kI
-         wHmkTKQHHinmQy++BRZHcsxk=
-Received: from zn.tnic (pd953036a.dip0.t-ipconnect.de [217.83.3.106])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-        (No client certificate requested)
-        by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id E84CE40E014B;
-        Mon, 16 Oct 2023 07:55:41 +0000 (UTC)
-Date:   Mon, 16 Oct 2023 09:55:37 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     gregkh@linuxfoundation.org
-Cc:     rene@exactcode.de, stable@kernel.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] x86/cpu: Fix AMD erratum #1485 on
- Zen4-based CPUs" failed to apply to 4.14-stable tree
-Message-ID: <20231016075537.GBZSzseVhKAg9674XP@fat_crate.local>
-References: <2023101528-jawed-shelving-071a@gregkh>
+        with ESMTP id S229953AbjJPGLA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 02:11:00 -0400
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BFA95
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 23:10:52 -0700 (PDT)
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20231016061048epoutp01589b678937da6a762ba3f6d7d05df006~OgaN096f52141021410epoutp01X
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 06:10:48 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20231016061048epoutp01589b678937da6a762ba3f6d7d05df006~OgaN096f52141021410epoutp01X
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1697436648;
+        bh=FgxNYSSeGvlU+AaHBZbNV92eyyDkZgy9stIj+3PKOsE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=X4whoqlaABfCS9waM7H/+vSMVzeChK4xY5Qjk1/fUELc3vIsL8JQVrCI4zTOaPMla
+         YNm2jvJnMsi7sQhntH6INg5cu898iSSqp46Y08R/QjBo1rwfa8M0HcwAGf3xz2twZP
+         JUN6ZD0SkgLbGfm2GP7mfdDgBjUtpRBj+n+eLy98=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+        epcas5p1.samsung.com (KnoxPortal) with ESMTP id
+        20231016061048epcas5p1d6c33706134827eed6e1e1284c6153f0~OgaNbFJGQ2961229612epcas5p1T;
+        Mon, 16 Oct 2023 06:10:48 +0000 (GMT)
+Received: from epsmges5p3new.samsung.com (unknown [182.195.38.179]) by
+        epsnrtp3.localdomain (Postfix) with ESMTP id 4S86DQ6mjYz4x9Q2; Mon, 16 Oct
+        2023 06:10:46 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+        epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        82.A9.09672.5E3DC256; Mon, 16 Oct 2023 15:10:45 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+        20231016060514epcas5p2ab38287c243a9539736453b4cb34e447~OgVWhTVjQ1821118211epcas5p21;
+        Mon, 16 Oct 2023 06:05:14 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20231016060514epsmtrp1f7b32ea1f5bc7a03f359f8575fcc9222~OgVWgjHMm1604916049epsmtrp1W;
+        Mon, 16 Oct 2023 06:05:14 +0000 (GMT)
+X-AuditID: b6c32a4b-39fff700000025c8-fb-652cd3e5dec7
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        9D.6C.08755.A92DC256; Mon, 16 Oct 2023 15:05:14 +0900 (KST)
+Received: from ubuntu.. (unknown [109.105.118.54]) by epsmtip2.samsung.com
+        (KnoxPortal) with ESMTPA id
+        20231016060513epsmtip2096c73e8a0eba6304e4f7bff8f2f8e56~OgVVTnw5k1727517275epsmtip2g;
+        Mon, 16 Oct 2023 06:05:12 +0000 (GMT)
+From:   Min Li <min15.li@samsung.com>
+To:     axboe@kernel.dk, hch@lst.de, dlemoal@kernel.org
+Cc:     gregkh@linuxfoundation.org, kch@nvidia.com,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        min15.li@samsung.com, stable@vger.kernel.org, willy@infradead.org
+Subject: Re: [PATCH v5] block: add check that partition length needs to be
+ aligned with block size
+Date:   Mon, 16 Oct 2023 14:03:11 +0000
+Message-Id: <20231016140311.32367-1-min15.li@samsung.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230629073322.GB19464@lst.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2023101528-jawed-shelving-071a@gregkh>
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrHJsWRmVeSWpSXmKPExsWy7bCmuu7TyzqpBg9Oa1usvtvPZvFgv71F
+        8+L1bBZzX19isVi5+iiTxdOrs5gs9t7Stri8aw6bxfJVHUwWZyd8YLVYsPERo8XvH3PYHHg8
+        Nq/Q8rh8ttRj06pONo/9c9ewe+y+2cDm0dv8js2jb8sqRo/Pm+QCOKKybTJSE1NSixRS85Lz
+        UzLz0m2VvIPjneNNzQwMdQ0tLcyVFPISc1NtlVx8AnTdMnOATlVSKEvMKQUKBSQWFyvp29kU
+        5ZeWpCpk5BeX2CqlFqTkFJgU6BUn5haX5qXr5aWWWBkaGBiZAhUmZGdcP2ZbIFTRss+ngZG7
+        i5GTQ0LARGLp3U3sXYxcHEICuxklzr9/wAzhfGKUOPt6IxuE841R4sHc1cwwLddu/oOq2sso
+        senAMqj+54wSk24+BcpwcLAJKEtsW+oD0iAiYCzx/+0kVpAaZoENjBLz7vxnAkkIC6RIXP76
+        lRXEZhFQlWj7/4kRxOYVsJSYte8nI8Q2eYn9B8+CbeYU0JHo+X+PDaJGUOLkzCcsIDYzUE3z
+        1tlQ183kkDgzRxnCdpHYcvkfK4QtLPHq+BZ2CFtK4mV/GzvInRICxRIvf4RBhGskdn+7zQRh
+        W0tsW7+OCaSEWUBTYv0ufYiwrMTUU+uYILbySfT+fgJVziuxYx6MrSTx98I5qOslJBbvfwh1
+        gYfExf5esIuFBOol1v5oY5zAqDALyTOzkDwzC2HzAkbmVYySqQXFuempxaYFxnmp5fD4Tc7P
+        3cQITrha3jsYHz34oHeIkYmD8RCjBAezkghverBOqhBvSmJlVWpRfnxRaU5q8SFGU2BoT2SW
+        Ek3OB6b8vJJ4QxNLAxMzMzMTS2MzQyVx3tetc1OEBNITS1KzU1MLUotg+pg4OKUamPrN78zt
+        ubXjwQTWIpHdCfqbd8ndPmP7K+rjOYdrLP+5DFZHPQk3ef6nMuyB1tuJKccXsFb68Cbm+WiL
+        FG/cVHTr+MKDfO1/nHhO69syzWgrz/K/rXC9fE7hjMIz//ekandcMJ260WTb+jklxWzP9Er1
+        NTfcYG6tsprQ4nnoRMP1w2qOxz7k3Fp8MnHK9kvVEnxvLPX/fNM+wfJuj8aTR/NuMXOu7K34
+        0Py8esNZpzTr04fSfZ+vMVN/9Y+nJmQJh++k667W0yv37bzZ+83R37TibBznw7OvNQuWfGEx
+        4E9oW9b9K+971PXgv0ZJyhEV6Ql3ZnK8U9RoTT0fXy3Z4iW+XH3u502p66KKi5dwdSmxFGck
+        GmoxFxUnAgBYKN0fQQQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrOLMWRmVeSWpSXmKPExsWy7bCSvO6sSzqpBkve81msvtvPZvFgv71F
+        8+L1bBZzX19isVi5+iiTxdOrs5gs9t7Stri8aw6bxfJVHUwWZyd8YLVYsPERo8XvH3PYHHg8
+        Nq/Q8rh8ttRj06pONo/9c9ewe+y+2cDm0dv8js2jb8sqRo/Pm+QCOKK4bFJSczLLUov07RK4
+        Mq4fsy0QqmjZ59PAyN3FyMkhIWAice3mP+YuRi4OIYHdjBLfPk1khEhISJyf94sNwhaWWPnv
+        OTtE0VNGiYd/JzB1MXJwsAkoS2xb6gNSIyJgLnFl121GkBpmgR2MEm/WbWEBSQgLJEnM+dkK
+        NohFQFWi7f8nsAW8ApYSs/b9hFomL7H/4FlmEJtTQEei5/89sHohAW2J1/O7WSDqBSVOznwC
+        ZjMD1Tdvnc08gVFgFpLULCSpBYxMqxglUwuKc9Nziw0LDPNSy/WKE3OLS/PS9ZLzczcxguNC
+        S3MH4/ZVH/QOMTJxMB5ilOBgVhLhTQ/WSRXiTUmsrEotyo8vKs1JLT7EKM3BoiTOK/6iN0VI
+        ID2xJDU7NbUgtQgmy8TBKdXA5Jo59TTnI8kJE5Q5RTaIRM48r57fnLS8ksVospoOj25I+4qI
+        h9pLdljtnLb5y1pN8T/ODipqx57nX+01Snr89E3G1dP6N23FmBmnx6w0uj3p5QwTZvXnom03
+        ubLfP3Ke5h+rcmj69G0XNv0XPlgl4RjP2ac+de7WRabPo8/JHJ8m7Ri4bv+KmMx/3N9/d3zz
+        kHohlNbtsP/SvkkFKQb7Z+wrfKKm9n3PzpLpPbcXHI5Y0PJSkkN5y2W5Za8erPWKDtxd4RHg
+        k29wpGzWbf6YEsZD0TNMMtiSXU2u7n0cv3/u/wMdydElSl/K+pdan5+Szdi08VdGXt2sZ19v
+        3EwwfFL83mnjH7endUtka8IZFZVYijMSDbWYi4oTAfyIjkP6AgAA
+X-CMS-MailID: 20231016060514epcas5p2ab38287c243a9539736453b4cb34e447
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20231016060514epcas5p2ab38287c243a9539736453b4cb34e447
+References: <20230629073322.GB19464@lst.de>
+        <CGME20231016060514epcas5p2ab38287c243a9539736453b4cb34e447@epcas5p2.samsung.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=BAYES_00,DATE_IN_FUTURE_06_12,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
-Date: Sat, 7 Oct 2023 12:57:02 +0200
-Subject: [PATCH] x86/cpu: Fix AMD erratum #1485 on Zen4-based CPUs
-MIME-Version: 1.0
-Content-Type: text/plain; charset=3DUTF-8
-Content-Transfer-Encoding: 8bit
+Thanks
 
-Upstream commit f454b18e07f518bcd0c05af17a2239138bff52de.
-
-Fix erratum #1485 on Zen4 parts where running with STIBP disabled can
-cause an #UD exception. The performance impact of the fix is negligible.
-
-Reported-by: Ren=C3=A9 Rebe <rene@exactcode.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Ren=C3=A9 Rebe <rene@exactcode.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/D99589F4-BC5D-430B-87B2-72C20370CF57@exac=
-tcode.com
----
- arch/x86/include/asm/msr-index.h | 4 ++++
- arch/x86/kernel/cpu/amd.c        | 9 +++++++++
- 2 files changed, 13 insertions(+)
-
-diff --git a/arch/x86/include/asm/msr-index.h b/arch/x86/include/asm/msr-=
-index.h
-index 3a1e43588685..a10cd3fef963 100644
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -442,6 +442,10 @@
-=20
- #define MSR_AMD64_VIRT_SPEC_CTRL	0xc001011f
-=20
-+/* Zen4 */
-+#define MSR_ZEN4_BP_CFG			0xc001102e
-+#define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
-+
- /* Fam 17h MSRs */
- #define MSR_F17H_IRPERF			0xc00000e9
-=20
-diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-index e0c9ede0196a..96305270c435 100644
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -24,6 +24,7 @@
-=20
- static const int amd_erratum_383[];
- static const int amd_erratum_400[];
-+static const int amd_erratum_1485[];
- static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erra=
-tum);
-=20
- /*
-@@ -974,6 +975,10 @@ static void init_amd(struct cpuinfo_x86 *c)
- 	/* AMD CPUs don't reset SS attributes on SYSRET, Xen does. */
- 	if (!cpu_has(c, X86_FEATURE_XENPV))
- 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
-+
-+	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
-+	    cpu_has_amd_erratum(c, amd_erratum_1485))
-+		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
- }
-=20
- #ifdef CONFIG_X86_32
-@@ -1102,6 +1107,10 @@ static const int amd_erratum_383[] =3D
- 	AMD_OSVW_ERRATUM(3, AMD_MODEL_RANGE(0x10, 0, 0, 0xff, 0xf));
-=20
-=20
-+static const int amd_erratum_1485[] =3D
-+	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x19, 0x10, 0x0, 0x1f, 0xf),
-+			   AMD_MODEL_RANGE(0x19, 0x60, 0x0, 0xaf, 0xf));
-+
- static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erra=
-tum)
- {
- 	int osvw_id =3D *erratum++;
---=20
-2.42.0.rc0.25.ga82fb66fed25
-
-
---=20
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Min li
