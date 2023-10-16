@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9132B7CA316
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:00:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A3587CA23B
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:47:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232532AbjJPJAv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:00:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46638 "EHLO
+        id S232836AbjJPIr1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233188AbjJPJAn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:00:43 -0400
+        with ESMTP id S232911AbjJPIrV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:47:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34346EB
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:00:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7790AC433C7;
-        Mon, 16 Oct 2023 09:00:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D50FB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:47:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D35A4C433C8;
+        Mon, 16 Oct 2023 08:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446840;
-        bh=b8h75ZluMTsXUdXieMAXoFOaQRmk27ZQyzbfbL3gq30=;
+        s=korg; t=1697446038;
+        bh=seH/Tsp/EbwnXbsp0suNg1alV1ao5VUSxZYZ2b0bND4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1HXcXvvGjZiOGDdfGYqlDYsIQJZyghBjTl/WNsI8/sKK6CCLyFozzy4QpuEkn3hlV
-         qBd027E7CIy8bQtLt/oZGFxv4rIQAa5LsxVWacMbIF6drSSEl7MLgfTZMMmBFrC3k6
-         +l74fNpWHH1eTdqBEVTOCWsNqe5NNEUK1zxY/klM=
+        b=EdXnEFYC64ASFLDUSKQ1A0ZdSZsMbxrQfP++6fjzlLbD/aJFR6djUsery1J+pCAiN
+         +rUKFbVKaCcuJGN9pO/I31mInFK7vRSjfs65wguKNiCd1FoxYLiBOTfOjYrjkwb7OQ
+         o3TWIpAQXg8YexvP2LrSMoSYniQFFGpKefcp52Jw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Andrea Merello <andrea.merello@iit.it>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 081/131] iio: imu: bno055: Fix missing Kconfig dependencies
+        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.15 065/102] libceph: use kernel_connect()
 Date:   Mon, 16 Oct 2023 10:41:04 +0200
-Message-ID: <20231016084002.072652205@linuxfoundation.org>
+Message-ID: <20231016083955.436150336@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +49,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Jordan Rife <jrife@google.com>
 
-commit c9b9cfe7d342683f624a89c3b617be18aff879e8 upstream.
+commit 7563cf17dce0a875ba3d872acdc63a78ea344019 upstream.
 
-This driver uses IIO triggered buffers so it needs to select them in
-Kconfig.
+Direct calls to ops->connect() can overwrite the address parameter when
+used in conjunction with BPF SOCK_ADDR hooks. Recent changes to
+kernel_connect() ensure that callers are insulated from such side
+effects. This patch wraps the direct call to ops->connect() with
+kernel_connect() to prevent unexpected changes to the address passed to
+ceph_tcp_connect().
 
-on riscv-32bit:
+This change was originally part of a larger patch targeting the net tree
+addressing all instances of unprotected calls to ops->connect()
+throughout the kernel, but this change was split up into several patches
+targeting various trees.
 
-/opt/crosstool/gcc-13.2.0-nolibc/riscv32-linux/bin/riscv32-linux-ld: drivers/iio/imu/bno055/bno055.o: in function `.L367':
-bno055.c:(.text+0x2c96): undefined reference to `devm_iio_triggered_buffer_setup_ext'
-
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Closes: https://lore.kernel.org/linux-next/40566b4b-3950-81fe-ff14-871d8c447627@infradead.org/
-Fixes: 4aefe1c2bd0c ("iio: imu: add Bosch Sensortec BNO055 core driver")
-Cc: Andrea Merello <andrea.merello@iit.it>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20230903113052.846298-1-jic23@kernel.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/netdev/20230821100007.559638-1-jrife@google.com/
+Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Signed-off-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/bno055/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ net/ceph/messenger.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/imu/bno055/Kconfig b/drivers/iio/imu/bno055/Kconfig
-index fa79b1ac4f85..83e53acfbe88 100644
---- a/drivers/iio/imu/bno055/Kconfig
-+++ b/drivers/iio/imu/bno055/Kconfig
-@@ -2,6 +2,8 @@
+--- a/net/ceph/messenger.c
++++ b/net/ceph/messenger.c
+@@ -454,8 +454,8 @@ int ceph_tcp_connect(struct ceph_connect
+ 	set_sock_callbacks(sock, con);
  
- config BOSCH_BNO055
- 	tristate
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 
- config BOSCH_BNO055_SERIAL
- 	tristate "Bosch BNO055 attached via UART"
--- 
-2.42.0
-
+ 	con_sock_state_connecting(con);
+-	ret = sock->ops->connect(sock, (struct sockaddr *)&ss, sizeof(ss),
+-				 O_NONBLOCK);
++	ret = kernel_connect(sock, (struct sockaddr *)&ss, sizeof(ss),
++			     O_NONBLOCK);
+ 	if (ret == -EINPROGRESS) {
+ 		dout("connect %s EINPROGRESS sk_state = %u\n",
+ 		     ceph_pr_addr(&con->peer_addr),
 
 
