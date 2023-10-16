@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 906AD7CA31A
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FE4C7CA23D
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:47:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233212AbjJPJBD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46758 "EHLO
+        id S232764AbjJPIri (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:47:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233228AbjJPJA4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:00:56 -0400
+        with ESMTP id S232905AbjJPIrd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:47:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82933112
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:00:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBAD5C433C7;
-        Mon, 16 Oct 2023 09:00:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 372EE9B
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:47:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45C87C433C7;
+        Mon, 16 Oct 2023 08:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446848;
-        bh=iouAMJIADPpZvs5F62ci4apHzb0d961hhQ2S4yhBsX0=;
+        s=korg; t=1697446050;
+        bh=ylfjCr0YfR0pUW63ms83f37UZY3pNB0WVvsggqwsAUY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K7YFXCy2OaJzAcnqGM8nm0pkVWCAdFjDg7n4EYXy3bM2z9GPMP9BVwhC0eOf9wM7P
-         JgleZhHel+Or7WUyCCBXSAdcL4k/sVu0ZKwBlcXBbrJhv3WYdm1zLJ+w+Dq2+oeyed
-         Vohz1LDDno7M1q4bERE0XiZtFMU8cZ6Qfhy5HuyM=
+        b=N/ECLEczu4GCPH9DaULMHtfpwOMHCzsqa215v522rbrJ5ZBXnQuMdVBW3V2WBjEVQ
+         kwPoiKR9fkkjBkik9VIl4CR0u+jfXf/EqBasuo/TX5OQazbU81uhZms67nbp6T4fg/
+         /fEncReeUUWw0aQ6sgGTwl8NRoVJroUg8A1ZAfqg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Philipp Rossak <embed3d@gmail.com>,
-        Haibo Chen <haibo.chen@nxp.com>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 082/131] iio: adc: imx8qxp: Fix address for command buffer registers
-Date:   Mon, 16 Oct 2023 10:41:05 +0200
-Message-ID: <20231016084002.097352848@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.15 067/102] ceph: fix type promotion bug on 32bit systems
+Date:   Mon, 16 Oct 2023 10:41:06 +0200
+Message-ID: <20231016083955.488097101@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,60 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Rossak <embed3d@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 850101b3598277794f92a9e363a60a66e0d42890 upstream.
+commit 07bb00ef00ace88dd6f695fadbba76565756e55c upstream.
 
-The ADC Command Buffer Register high and low are currently pointing to
-the wrong address and makes it impossible to perform correct
-ADC measurements over all channels.
+In this code "ret" is type long and "src_objlen" is unsigned int.  The
+problem is that on 32bit systems, when we do the comparison signed longs
+are type promoted to unsigned int.  So negative error codes from
+do_splice_direct() are treated as success instead of failure.
 
-According to the datasheet of the imx8qxp the ADC_CMDL register starts
-at address 0x100 and the ADC_CMDH register starts at address 0x104.
-
-This bug seems to be in the kernel since the introduction of this
-driver.
-
-This can be observed by checking all raw voltages of the adc and they
-are all nearly identical:
-
-cat /sys/bus/iio/devices/iio\:device0/in_voltage*_raw
-3498
-3494
-3491
-3491
-3489
-3490
-3490
-3490
-
-Fixes: 1e23dcaa1a9fa ("iio: imx8qxp-adc: Add driver support for NXP IMX8QXP ADC")
-Signed-off-by: Philipp Rossak <embed3d@gmail.com>
-Acked-by: Haibo Chen <haibo.chen@nxp.com>
-Link: https://lore.kernel.org/r/20230904220204.23841-1-embed3d@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable@vger.kernel.org
+Fixes: 1b0c3b9f91f0 ("ceph: re-org copy_file_range and fix some error paths")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/imx8qxp-adc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ceph/file.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/imx8qxp-adc.c
-+++ b/drivers/iio/adc/imx8qxp-adc.c
-@@ -38,8 +38,8 @@
- #define IMX8QXP_ADR_ADC_FCTRL		0x30
- #define IMX8QXP_ADR_ADC_SWTRIG		0x34
- #define IMX8QXP_ADR_ADC_TCTRL(tid)	(0xc0 + (tid) * 4)
--#define IMX8QXP_ADR_ADC_CMDH(cid)	(0x100 + (cid) * 8)
--#define IMX8QXP_ADR_ADC_CMDL(cid)	(0x104 + (cid) * 8)
-+#define IMX8QXP_ADR_ADC_CMDL(cid)	(0x100 + (cid) * 8)
-+#define IMX8QXP_ADR_ADC_CMDH(cid)	(0x104 + (cid) * 8)
- #define IMX8QXP_ADR_ADC_RESFIFO		0x300
- #define IMX8QXP_ADR_ADC_TST		0xffc
- 
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -2436,7 +2436,7 @@ static ssize_t __ceph_copy_file_range(st
+ 		ret = do_splice_direct(src_file, &src_off, dst_file,
+ 				       &dst_off, src_objlen, flags);
+ 		/* Abort on short copies or on error */
+-		if (ret < src_objlen) {
++		if (ret < (long)src_objlen) {
+ 			dout("Failed partial copy (%zd)\n", ret);
+ 			goto out;
+ 		}
 
 
