@@ -2,120 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62B4C7CB6C3
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 00:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D034F7CB6FA
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 01:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233806AbjJPW4g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 18:56:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55926 "EHLO
+        id S232457AbjJPX2j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 19:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232345AbjJPW4g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 18:56:36 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60A37B4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 15:56:33 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-59b5a586da6so37610657b3.1
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 15:56:33 -0700 (PDT)
+        with ESMTP id S232172AbjJPX2i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 19:28:38 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 553599B
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 16:28:37 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5a7af53bde4so79995627b3.0
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 16:28:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697496992; x=1698101792; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1697498916; x=1698103716; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=3smAdDTzn2P0VCmFOhSk5tC42b6tLqqxOm7kRDHbaEo=;
-        b=L/kZ6nCreQEjcpsRdlbqgYnKkLDwU+nq36sodt9Y2vDq/z7Sd3mJbx7dEkH2tO8wcE
-         EIUjne6Nq77Z1yw88d/3yJ/gDKAjgfPgFPIbDWy3F1BIl+OQexKZcYptDtCzpbbSpmfI
-         UHRlM6l5oe+odETxmoC5kOqD0QZloG4xkzlX6L6fWEDeuOYqvE6VwSDGbopNKirFEg9G
-         Ga70PgeOgzdc7fuFlTLRnNSoUOhU/9+GIUm9efhTN1nZWYCQ18+1cbQLF3fe9fmDAwV5
-         /Xa9HbYb15jpMnmKLh5QI2s7cn+C20q4BRkIO0r+faeCP+9AAVcFflw5QwLBdCS+eaen
-         cJbQ==
+        bh=yCEoGPg5XicSC5Xjwme8YYz464nUUt8cFx09Ne//9NU=;
+        b=ASkD4ICkNVi+O94JqJrR8DnsayeEq73xP3M5R7bBfWmbQM1F6sFEWiJXhTH3EHBWQZ
+         5rxSGXBaavHWVYd65p/6oSIMvyx1RnaSEnS+qc/1Fbl6MpdNbELqFc1gmDBxPR/NinzC
+         UXKPORQFpfC4tFbkWYLOBBs0BKBjTEPGhH2zf3rWYTQ6iZ/TRGvoxzOUIwTIgvYur+AA
+         g3MAC6PlywziwDbEtxMq42FCLiV0lyi/8NaRWGKzF7QVOffUGWZlbeHwg+2r2uqi1cs9
+         NbGo1L6jL3Zraq9ldMJ1EpbkHwXHdvdQt+7x6bqo4yYmdLJMt+a6O3/nrcfGzhosX8K1
+         Z4RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697496992; x=1698101792;
+        d=1e100.net; s=20230601; t=1697498916; x=1698103716;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=3smAdDTzn2P0VCmFOhSk5tC42b6tLqqxOm7kRDHbaEo=;
-        b=qJfqCY/2LVpmB8Tm2TTlBc9Wfcl2NyWUZM1yz1QC9HnKYxUKcf6VX8uSNT384JiKz8
-         60aROy64gFmgNEvX2oCUgNqythPmnA8oqk3bM7mRpBTenXeNla5A9egNqItWePgJ+oMe
-         zFWleq3kYoEbUT+6rsGwjRVNFguN5EiJSIO9MXfVJNZQ9LK+dpSAC1Jiad+ACGgQHmDK
-         LfQvGCoIZGidYCisgncrAhzH3Sc9RPanFTLwa5WI+2gMH70dsmkCPDO/N2mhIWT3LEa2
-         b+i/j7cTYEJl1USaL7ZPtZMw9GSyPtNMBRgrrd9tCl2XtarXZ+EWD1LNHVydaD/66L2d
-         O4qQ==
-X-Gm-Message-State: AOJu0YzfoDveRFt1KgoBRT0y/GGED/F3PvqaCdAz7jRFlQyLm48EO+0V
-        NJYSFWocj0cvD4sa3KbddSCVbJoftvNMsbw=
-X-Google-Smtp-Source: AGHT+IH5eUfE57xNCRlerq+1ZHFC/TYz3mYH4cw8P3ZRB9L9IsWtGcb0/cu8cD63zfhQ4OYODSU/yt3GyB3bgd0=
+        bh=yCEoGPg5XicSC5Xjwme8YYz464nUUt8cFx09Ne//9NU=;
+        b=h35gvpj0uazKVxFUv0Gr6Ma24W8s1xd2bypTJzOvNDIgWyXE/SI9ESZu7cwvBoVyFn
+         C9RIM2ecQSH/KhndJsqYWmaZTs/Kulzhnp6ukF6zCLQtLxHy/+F7afd58U7KO32g4p8Q
+         okgVoiq529fy5ofTuHYjrt/M3LLUDmgq6jKZI3y/goNVEc8NWXxCLC83C0PsDMjktP9S
+         eS+UgFUrY3Vonw4a8dzDsWtLvslDBRv27+aXEBBxb6ZQqScZwrqkawv04D8ah5iCCJGA
+         2qULuYHyEy//iOSmQHi6OXXHGFmkD+5jq+2PSh324lijKxtQfCr/ALEygDPNE1pXufMl
+         Z9Yg==
+X-Gm-Message-State: AOJu0YztCekvs+3gBHVvGgG3t8gPf7NMWmI4XR1DJzMMpKV+osZvjgG0
+        RavPF+dPldhev9ghRRo8JyfDstmA3mMTV3I=
+X-Google-Smtp-Source: AGHT+IGJR7NB1mIcK2dsdanuV4sAi/wWrSH1AH60bsH/QvglRjccxlpkobERrOhFRQqULXMQNqylQTWSsGTdcH0=
 X-Received: from rdbabiera.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:18a8])
- (user=rdbabiera job=sendgmr) by 2002:a05:690c:2f05:b0:5a8:207a:143a with SMTP
- id ev5-20020a05690c2f0500b005a8207a143amr7161ywb.0.1697496992644; Mon, 16 Oct
- 2023 15:56:32 -0700 (PDT)
-Date:   Mon, 16 Oct 2023 22:56:18 +0000
+ (user=rdbabiera job=sendgmr) by 2002:a0d:cc16:0:b0:59b:f138:c845 with SMTP id
+ o22-20020a0dcc16000000b0059bf138c845mr15744ywd.2.1697498916624; Mon, 16 Oct
+ 2023 16:28:36 -0700 (PDT)
+Date:   Mon, 16 Oct 2023 23:28:17 +0000
 Mime-Version: 1.0
 X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1930; i=rdbabiera@google.com;
- h=from:subject; bh=ShV0SNy5JY0KPfr6JnaQ4ZB+BHZ8LD1b/XS6KEqWo7g=;
- b=owGbwMvMwCFW0bfok0KS4TbG02pJDKm6+yetf9DyVb/nUv+2mz3Xus5nHHTe6zTd7F9ceuG7o
- GsJXhXXO0pZGMQ4GGTFFFl0/fMMblxJ3TKHs8YYZg4rE8gQBi5OAZjI1CxGhtZdD5P+T18qu06n
- WnLD/Gl5dz4cClJk/7am+ufHBB0//9cMfzi6dWdWJ67TcXW5HK309eu7Ncn9ig3nJvMWvirj2VW 8mgUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3512; i=rdbabiera@google.com;
+ h=from:subject; bh=nfiKb/BBwAYP9K/Daob1zJwyNTpgKdrEc4lVQIZP2tI=;
+ b=owGbwMvMwCFW0bfok0KS4TbG02pJDKm6xwWErj4wXHDBu6b4tkhJoFZfTeVGo8rshLuF+SfuW
+ 1ydv7mwo5SFQYyDQVZMkUXXP8/gxpXULXM4a4xh5rAygQxh4OIUgIlIazIyLPyWYig+afb73RX6
+ PyocNVLubrgmMFNXduP0WwFOmkITqxgZ3u5OKVu5Trj47Nb9n+1Ckrif1p8uaNasLNtUdXTyy7P ibAA=
 X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-Message-ID: <20231016225617.3182108-2-rdbabiera@google.com>
-Subject: [PATCH v1] usb: typec: altmodes/displayport: verify compatible
- source/sink role combination
+Message-ID: <20231016232816.3355132-2-rdbabiera@google.com>
+Subject: [PATCH v1] usb: typec: tcpm: only discover modes the port supports
+ svids for
 From:   RD Babiera <rdbabiera@google.com>
-To:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org
-Cc:     badhri@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>,
+To:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+        linux@roeck-us.net
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        badhri@google.com, RD Babiera <rdbabiera@google.com>,
         stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-DisplayPort Alt Mode CTS test 10.3.8 states that both sides of the
-connection shall be compatible with one another such that the connection
-is not Source to Source or Sink to Sink.
+DisplayPort Alt Mode CTS test 10.3.1 verifies that the device can
+recognize the DP SVID in arbitrary locations within the Discover SVIDs
+response message. The test expects that the TCPM sends Discover Modes for
+the DisplayPort SVID first, but fails because the TCPM sends
+Discover Modes for all SVIDs regardless of whether or not the port
+supports them.
 
-The DisplayPort driver currently checks for a compatible pin configuration
-that resolves into a source and sink combination. The CTS test is designed
-to send a Discover Modes message that has a compatible pin configuration
-but advertises the same port capability as the device; the current check
-fails this.
+After discovering the port partner's SVIDs, skip to the first SVID
+supported by the device when preparing the Discover Modes request. If
+other modes need to be discovered after the first Discover Modes message
+is returned, skip over SVIDs not supported by the device.
 
-Verify that the port and port partner resolve into a valid source and sink
-combination before checking for a compatible pin configuration.
-
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
 Cc: stable@vger.kernel.org
 Signed-off-by: RD Babiera <rdbabiera@google.com>
 ---
- drivers/usb/typec/altmodes/displayport.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/typec/tcpm/tcpm.c | 46 +++++++++++++++++++++++++++++++----
+ 1 file changed, 41 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index 718da02036d8..3b35a6b8cb72 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -575,9 +575,18 @@ int dp_altmode_probe(struct typec_altmode *alt)
- 	struct fwnode_handle *fwnode;
- 	struct dp_altmode *dp;
- 	int ret;
-+	int port_cap, partner_cap;
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 6e843c511b85..96636a6f1f7c 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1543,6 +1543,38 @@ static bool svdm_consume_svids(struct tcpm_port *port, const u32 *p, int cnt)
+ 	return false;
+ }
  
- 	/* FIXME: Port can only be DFP_U. */
- 
-+	/* Make sure that the port and partner can resolve into source and sink */
-+	port_cap = DP_CAP_CAPABILITY(port->vdo);
-+	partner_cap = DP_CAP_CAPABILITY(alt->vdo);
-+	if (!((port_cap & DP_CAP_DFP_D) && (partner_cap & DP_CAP_UFP_D)) &&
-+	    !((port_cap & DP_CAP_UFP_D) && (partner_cap & DP_CAP_DFP_D))) {
-+		return -ENODEV;
-+	}
++static bool svdm_port_supports_svid(struct tcpm_port *port, u16 svid)
++{
++	int i;
 +
- 	/* Make sure we have compatiple pin configurations */
- 	if (!(DP_CAP_PIN_ASSIGN_DFP_D(port->vdo) &
- 	      DP_CAP_PIN_ASSIGN_UFP_D(alt->vdo)) &&
++	for (i = 0; i < ALTMODE_DISCOVERY_MAX; i++) {
++		struct typec_altmode *altmode = port->port_altmode[i];
++
++		if (!altmode)
++			return false;
++		if (altmode->svid == svid)
++			return true;
++	}
++	return false;
++}
++
++/*
++ * This helper will continue to return the next supported SVID that the port
++ * needs to send DISCOVER_MODES to until the pmdata->svid_index is incremented after
++ * svdm_consume_modes() in tcpm_pd_svdm().
++ */
++static int svdm_get_next_supported_svid(struct tcpm_port *port, struct pd_mode_data *pmdata)
++{
++	while (pmdata->svid_index < pmdata->nsvids) {
++		u16 svid = pmdata->svids[pmdata->svid_index];
++
++		if (svdm_port_supports_svid(port, svid))
++			return svid;
++		pmdata->svid_index++;
++	}
++	return 0;
++}
++
+ static void svdm_consume_modes(struct tcpm_port *port, const u32 *p, int cnt)
+ {
+ 	struct pd_mode_data *pmdata = &port->mode_data;
+@@ -1705,9 +1737,11 @@ static int tcpm_pd_svdm(struct tcpm_port *port, struct typec_altmode *adev,
+ 			if (svdm_consume_svids(port, p, cnt)) {
+ 				response[0] = VDO(USB_SID_PD, 1, svdm_version, CMD_DISCOVER_SVID);
+ 				rlen = 1;
+-			} else if (modep->nsvids && supports_modal(port)) {
+-				response[0] = VDO(modep->svids[0], 1, svdm_version,
+-						  CMD_DISCOVER_MODES);
++			} else if (modep->nsvids && supports_modal(port) &&
++				   svdm_get_next_supported_svid(port, modep)) {
++				u16 svid = svdm_get_next_supported_svid(port, modep);
++
++				response[0] = VDO(svid, 1, svdm_version, CMD_DISCOVER_MODES);
+ 				rlen = 1;
+ 			}
+ 			break;
+@@ -1715,8 +1749,10 @@ static int tcpm_pd_svdm(struct tcpm_port *port, struct typec_altmode *adev,
+ 			/* 6.4.4.3.3 */
+ 			svdm_consume_modes(port, p, cnt);
+ 			modep->svid_index++;
+-			if (modep->svid_index < modep->nsvids) {
+-				u16 svid = modep->svids[modep->svid_index];
++			if (modep->svid_index < modep->nsvids &&
++			    svdm_get_next_supported_svid(port, modep)) {
++				u16 svid = svdm_get_next_supported_svid(port, modep);
++
+ 				response[0] = VDO(svid, 1, svdm_version, CMD_DISCOVER_MODES);
+ 				rlen = 1;
+ 			} else {
 
 base-commit: d0d27ef87e1ca974ed93ed4f7d3c123cbd392ba6
 -- 
