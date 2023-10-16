@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBE8B7CA35F
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 306607CA258
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233385AbjJPJFE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:05:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54868 "EHLO
+        id S232900AbjJPItE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:49:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233406AbjJPJFC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:05:02 -0400
+        with ESMTP id S232932AbjJPItC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3753F3
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:04:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B76C433BA;
-        Mon, 16 Oct 2023 09:04:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5599AF5
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7CCC433C8;
+        Mon, 16 Oct 2023 08:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447097;
-        bh=TU3AEMhg/zO4PWGNsAcnHTTJeCMNI+aTJpvbvSrOlQI=;
+        s=korg; t=1697446139;
+        bh=NzOtwo/i2nhwP5zMqPGkren+/YdDjKqB+rwYImBwJws=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p3gcUd6zE767rnXqOXm6a0gcIqsjT+NixmDmtjR1elyyWSaUoQmeYggD1+dE7ouAr
-         5lOOLFbYzBmJjjHykagc6amp47bNFP0sRdTHFVBrlz3ZbA7ND/TLAjyynctgLg+dzU
-         8eHHsPf76+S0SNP9jCT4ixhsPLKchskAnlJsD9R4=
+        b=qxZyQ41BsE3SUm61DtdrU8c5meanwJiZ4pY8v3FZ+2I5X9TRzillMWWgAWMcbYSS8
+         r1pPGVA2u2adbVnGc40MtLUA+HvzCR44tSv1VawtAjPEDU3xNPzT0fdfTKVTE0PAAG
+         bgjxSjZ69GHa40fYukoOjPmMCmfVKA4/UTdroUc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 091/131] drm/amdgpu: add missing NULL check
-Date:   Mon, 16 Oct 2023 10:41:14 +0200
-Message-ID: <20231016084002.327678213@linuxfoundation.org>
+        Dharma Balasubiramani <dharma.b@microchip.com>,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH 5.15 076/102] counter: microchip-tcb-capture: Fix the use of internal GCLK logic
+Date:   Mon, 16 Oct 2023 10:41:15 +0200
+Message-ID: <20231016083955.723339543@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,36 +51,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Dharma Balasubiramani <dharma.b@microchip.com>
 
-commit ff89f064dca38e2203790bf876cc7756b8ab2961 upstream.
+commit df8fdd01c98b99d04915c04f3a5ce73f55456b7c upstream.
 
-bo->tbo.resource can easily be NULL here.
+As per the datasheet, the clock selection Bits 2:0 – TCCLKS[2:0] should
+be set to 0 while using the internal GCLK (TIMER_CLOCK1).
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2902
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-CC: stable@vger.kernel.org
+Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
+Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
+Link: https://lore.kernel.org/r/20230905100835.315024-1-dharma.b@microchip.com
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |    2 +-
+ drivers/counter/microchip-tcb-capture.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -220,7 +220,7 @@ static inline bool amdgpu_bo_in_cpu_visi
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
- 	struct amdgpu_res_cursor cursor;
- 
--	if (bo->tbo.resource->mem_type != TTM_PL_VRAM)
-+	if (!bo->tbo.resource || bo->tbo.resource->mem_type != TTM_PL_VRAM)
- 		return false;
- 
- 	amdgpu_res_first(bo->tbo.resource, 0, amdgpu_bo_size(bo), &cursor);
+--- a/drivers/counter/microchip-tcb-capture.c
++++ b/drivers/counter/microchip-tcb-capture.c
+@@ -99,7 +99,7 @@ static int mchp_tc_count_function_write(
+ 		priv->qdec_mode = 0;
+ 		/* Set highest rate based on whether soc has gclk or not */
+ 		bmr &= ~(ATMEL_TC_QDEN | ATMEL_TC_POSEN);
+-		if (priv->tc_cfg->has_gclk)
++		if (!priv->tc_cfg->has_gclk)
+ 			cmr |= ATMEL_TC_TIMER_CLOCK2;
+ 		else
+ 			cmr |= ATMEL_TC_TIMER_CLOCK1;
 
 
