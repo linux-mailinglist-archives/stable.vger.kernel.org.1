@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19E5F7CA25C
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD7907CA332
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:02:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232911AbjJPItP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46728 "EHLO
+        id S233242AbjJPJCZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:02:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232903AbjJPItN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:13 -0400
+        with ESMTP id S233409AbjJPJCG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:02:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20EBAEA
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 467ECC433CB;
-        Mon, 16 Oct 2023 08:49:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6938F9
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:02:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B25AC433C7;
+        Mon, 16 Oct 2023 09:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446149;
-        bh=eo9lxUtvMdwO/nsicjZY6vkuYPh6fZdDRTDT0cNV+/U=;
+        s=korg; t=1697446923;
+        bh=aSPR0PcbeXtXpgBTBKqkszRniGlFSKCIf341qGi0pKs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kwziRdWvPOgksY8Q9/O5oPm5oGRvXbJgOttXFhpLe/RZOznH58+qFd7wv/wt5lw8V
-         /WmEGdF6Y6vTwCnXO+t5JmW+gTsV8s6vGsiUomVIkznqerAobnohPJK5zHL2SiAUbb
-         4UjEcgk+YWM8yPVXDWNpB9veqIQlHxWjQsZS3hPA=
+        b=Oi7bMgfw9gWWOFno1zMIWPfXSvbdkZSRWPa9pRqKMdcSyqFFt2q5j4vtRDcSxF3SO
+         /MEzWQJVv5ljiSol/8D5BlGhKyIeasHBrSRu4TMsdSBofAePzzOHs8RajRYeuTSxF6
+         bsv0YrWfAEgJAcXOk3MplBc4394oueBCNcEICNbw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingxing Luo <xingxing.luo@unisoc.com>
-Subject: [PATCH 5.15 054/102] usb: musb: Modify the "HWVers" register address
+        patches@lists.linux.dev,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 070/131] dmaengine: stm32-dma: fix residue in case of MDMA chaining
 Date:   Mon, 16 Oct 2023 10:40:53 +0200
-Message-ID: <20231016083955.141675051@linuxfoundation.org>
+Message-ID: <20231016084001.804115920@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,40 +50,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingxing Luo <xingxing.luo@unisoc.com>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-commit 6658a62e1ddf726483cb2d8bf45ea3f9bd533074 upstream.
+commit 67e13e89742c3b21ce177f612bf9ef32caae6047 upstream.
 
-musb HWVers rgister address is not 0x69, if we operate the
-wrong address 0x69, it will cause a kernel crash, because
-there is no register corresponding to this address in the
-additional control register of musb. In fact, HWVers has
-been defined in musb_register.h, and the name is
-"MUSB_HWVERS", so We need to use this macro instead of 0x69.
+In case of MDMA chaining, DMA is configured in Double-Buffer Mode (DBM)
+with two periods, but if transfer has been prepared with _prep_slave_sg(),
+the transfer is not marked cyclic (=!chan->desc->cyclic). However, as DBM
+is activated for MDMA chaining, residue computation must take into account
+cyclic constraints.
 
-Fixes: c2365ce5d5a0 ("usb: musb: replace hard coded registers with defines")
+With only two periods in MDMA chaining, and no update due to Transfer
+Complete interrupt masked, n_sg is always 0. If DMA current memory address
+(depending on SxCR.CT and SxM0AR/SxM1AR) does not correspond, it means n_sg
+should be increased.
+Then, the residue of the current period is the one read from SxNDTR and
+should not be overwritten with the full period length.
+
+Fixes: 723795173ce1 ("dmaengine: stm32-dma: add support to trigger STM32 MDMA")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Xingxing Luo <xingxing.luo@unisoc.com>
-Link: https://lore.kernel.org/r/20230922075929.31074-1-xingxing.luo@unisoc.com
+Link: https://lore.kernel.org/r/20231004155024.2609531-2-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_debugfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/stm32-dma.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/musb/musb_debugfs.c
-+++ b/drivers/usb/musb/musb_debugfs.c
-@@ -39,7 +39,7 @@ static const struct musb_register_map mu
- 	{ "IntrUsbE",	MUSB_INTRUSBE,	8 },
- 	{ "DevCtl",	MUSB_DEVCTL,	8 },
- 	{ "VControl",	0x68,		32 },
--	{ "HWVers",	0x69,		16 },
-+	{ "HWVers",	MUSB_HWVERS,	16 },
- 	{ "LinkInfo",	MUSB_LINKINFO,	8 },
- 	{ "VPLen",	MUSB_VPLEN,	8 },
- 	{ "HS_EOF1",	MUSB_HS_EOF1,	8 },
+diff --git a/drivers/dma/stm32-dma.c b/drivers/dma/stm32-dma.c
+index 7427acc82259..0b30151fb45c 100644
+--- a/drivers/dma/stm32-dma.c
++++ b/drivers/dma/stm32-dma.c
+@@ -1389,11 +1389,12 @@ static size_t stm32_dma_desc_residue(struct stm32_dma_chan *chan,
+ 
+ 	residue = stm32_dma_get_remaining_bytes(chan);
+ 
+-	if (chan->desc->cyclic && !stm32_dma_is_current_sg(chan)) {
++	if ((chan->desc->cyclic || chan->trig_mdma) && !stm32_dma_is_current_sg(chan)) {
+ 		n_sg++;
+ 		if (n_sg == chan->desc->num_sgs)
+ 			n_sg = 0;
+-		residue = sg_req->len;
++		if (!chan->trig_mdma)
++			residue = sg_req->len;
+ 	}
+ 
+ 	/*
+@@ -1403,7 +1404,7 @@ static size_t stm32_dma_desc_residue(struct stm32_dma_chan *chan,
+ 	 * residue = remaining bytes from NDTR + remaining
+ 	 * periods/sg to be transferred
+ 	 */
+-	if (!chan->desc->cyclic || n_sg != 0)
++	if ((!chan->desc->cyclic && !chan->trig_mdma) || n_sg != 0)
+ 		for (i = n_sg; i < desc->num_sgs; i++)
+ 			residue += desc->sg_req[i].len;
+ 
+-- 
+2.42.0
+
 
 
