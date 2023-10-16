@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D69F7CAC71
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 852F77CAC7C
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:55:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233743AbjJPOyh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:54:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44468 "EHLO
+        id S233757AbjJPOzW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:55:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233739AbjJPOyh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:54:37 -0400
+        with ESMTP id S233752AbjJPOzV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:55:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DB7DAB
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:54:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC768C433C7;
-        Mon, 16 Oct 2023 14:54:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1DB6B4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:55:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41CCC433C7;
+        Mon, 16 Oct 2023 14:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697468075;
-        bh=Bfts6BPuEzuocBFAlPre5UxCP6CKiqwqGjCZV6KjIRw=;
+        s=korg; t=1697468119;
+        bh=6B02Pn2IJViyGc81ef/UjWQwdkpbdrLfRs8QKQKDL2g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Pp+TK/rqeoi93Abq11zMqy4QJbMnELOXlsPLXqMY8YZjHz+M6ePn5AHfzUZ1uVFNt
-         ysg35W4ZxZJ3vYGzocoJ8VcuN7LGWI1SdbM44JNW8ixIz6cHtY5Q/TNtCE4Ci4Ka3p
-         sNNYUglGpVA5TK9x864k94nyx1V4xnaYrHEEo/cg=
+        b=ClBGYwGgUWleOW8kAmAxo1+2YSddqIw1gpccgYr5FcibxNqIpx+RiKrHAimA7/F31
+         5uHnZvhC1tgBGVais3pJ8OqiEsEIVACjas9xcbyVc25EXbsyIkcLRm2VRx41OlFyZR
+         1nENRFoIUczMCL7Ae3khdJKZ1XAO/EEk65ih52iY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Balcanquall <alex@alexbal.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.5 143/191] thunderbolt: Restart XDomain discovery handshake after failure
-Date:   Mon, 16 Oct 2023 10:42:08 +0200
-Message-ID: <20231016084018.722622103@linuxfoundation.org>
+        patches@lists.linux.dev, Naveen N Rao <naveen@kernel.org>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.5 144/191] powerpc/pseries: Fix STK_PARAM access in the hcall tracing code
+Date:   Mon, 16 Oct 2023 10:42:09 +0200
+Message-ID: <20231016084018.744228426@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -53,135 +54,131 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-commit 308092d080852f8997126e5b3507536162416f4a upstream.
+commit 3b678768c0458e6d8d45fadf61423e44effed4cb upstream.
 
-Alex reported that after rebooting the other host the peer-to-peer link
-does not come up anymore. The reason for this is that the host that was
-not rebooted tries to send the UUID request only 10 times according to
-the USB4 Inter-Domain spec and gives up if it does not get reply. Then
-when the other side is actually ready it cannot get the link established
-anymore. The USB4 Inter-Domain spec requires that the discovery protocol
-is restarted in that case so implement this now.
+In powerpc pseries system, below behaviour is observed while
+enabling tracing on hcall:
+  # cd /sys/kernel/debug/tracing/
+  # cat events/powerpc/hcall_exit/enable
+  0
+  # echo 1 > events/powerpc/hcall_exit/enable
 
-Reported-by: Alex Balcanquall <alex@alexbal.com>
-Fixes: 8e1de7042596 ("thunderbolt: Add support for XDomain lane bonding")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+  # ls
+  -bash: fork: Bad address
+
+Above is from power9 lpar with latest kernel. Past this, softlockup
+is observed. Initially while attempting via perf_event_open to
+use "PERF_TYPE_TRACEPOINT", kernel panic was observed.
+
+perf config used:
+================
+  memset(&pe[1],0,sizeof(struct perf_event_attr));
+  pe[1].type=PERF_TYPE_TRACEPOINT;
+  pe[1].size=96;
+  pe[1].config=0x26ULL; /* 38 raw_syscalls/sys_exit */
+  pe[1].sample_type=0; /* 0 */
+  pe[1].read_format=PERF_FORMAT_TOTAL_TIME_ENABLED|PERF_FORMAT_TOTAL_TIME_RUNNING|PERF_FORMAT_ID|PERF_FORMAT_GROUP|0x10ULL; /* 1f */
+  pe[1].inherit=1;
+  pe[1].precise_ip=0; /* arbitrary skid */
+  pe[1].wakeup_events=0;
+  pe[1].bp_type=HW_BREAKPOINT_EMPTY;
+  pe[1].config1=0x1ULL;
+
+Kernel panic logs:
+==================
+
+  Kernel attempted to read user page (8) - exploit attempt? (uid: 0)
+  BUG: Kernel NULL pointer dereference on read at 0x00000008
+  Faulting instruction address: 0xc0000000004c2814
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+  Modules linked in: nfnetlink bonding tls rfkill sunrpc dm_service_time dm_multipath pseries_rng xts vmx_crypto xfs libcrc32c sd_mod t10_pi crc64_rocksoft crc64 sg ibmvfc scsi_transport_fc ibmveth dm_mirror dm_region_hash dm_log dm_mod fuse
+  CPU: 0 PID: 1431 Comm: login Not tainted 6.4.0+ #1
+  Hardware name: IBM,8375-42A POWER9 (raw) 0x4e0202 0xf000005 of:IBM,FW950.30 (VL950_892) hv:phyp pSeries
+  NIP page_remove_rmap+0x44/0x320
+  LR  wp_page_copy+0x384/0xec0
+  Call Trace:
+    0xc00000001416e400 (unreliable)
+    wp_page_copy+0x384/0xec0
+    __handle_mm_fault+0x9d4/0xfb0
+    handle_mm_fault+0xf0/0x350
+    ___do_page_fault+0x48c/0xc90
+    hash__do_page_fault+0x30/0x70
+    do_hash_fault+0x1a4/0x330
+    data_access_common_virt+0x198/0x1f0
+   --- interrupt: 300 at 0x7fffae971abc
+
+git bisect tracked this down to below commit:
+'commit baa49d81a94b ("powerpc/pseries: hvcall stack frame overhead")'
+
+This commit changed STACK_FRAME_OVERHEAD (112 ) to
+STACK_FRAME_MIN_SIZE (32 ) since 32 bytes is the minimum size
+for ELFv2 stack. With the latest kernel, when running on ELFv2,
+STACK_FRAME_MIN_SIZE is used to allocate stack size.
+
+During plpar_hcall_trace, first call is made to HCALL_INST_PRECALL
+which saves the registers and allocates new stack frame. In the
+plpar_hcall_trace code, STK_PARAM is accessed at two places.
+  1. To save r4: std     r4,STK_PARAM(R4)(r1)
+  2. To access r4 back: ld      r12,STK_PARAM(R4)(r1)
+
+HCALL_INST_PRECALL precall allocates a new stack frame. So all
+the stack parameter access after the precall, needs to be accessed
+with +STACK_FRAME_MIN_SIZE. So the store instruction should be:
+  std     r4,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1)
+
+If the "std" is not updated with STACK_FRAME_MIN_SIZE, we will
+end up with overwriting stack contents and cause corruption.
+But instead of updating 'std', we can instead remove it since
+HCALL_INST_PRECALL already saves it to the correct location.
+
+similarly load instruction should be:
+  ld      r12,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1)
+
+Fix the load instruction to correctly access the stack parameter
+with +STACK_FRAME_MIN_SIZE and remove the store of r4 since the
+precall saves it correctly.
+
+Cc: stable@vger.kernel.org # v6.2+
+Fixes: baa49d81a94b ("powerpc/pseries: hvcall stack frame overhead")
+Co-developed-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230929172337.7906-1-atrajeev@linux.vnet.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/xdomain.c |   58 +++++++++++++++++++++++++++++-------------
- 1 file changed, 41 insertions(+), 17 deletions(-)
+ arch/powerpc/platforms/pseries/hvCall.S |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -703,6 +703,27 @@ out_unlock:
- 	mutex_unlock(&xdomain_lock);
- }
+--- a/arch/powerpc/platforms/pseries/hvCall.S
++++ b/arch/powerpc/platforms/pseries/hvCall.S
+@@ -185,7 +185,6 @@ _GLOBAL_TOC(plpar_hcall)
+ plpar_hcall_trace:
+ 	HCALL_INST_PRECALL(R5)
  
-+static void start_handshake(struct tb_xdomain *xd)
-+{
-+	xd->state = XDOMAIN_STATE_INIT;
-+	queue_delayed_work(xd->tb->wq, &xd->state_work,
-+			   msecs_to_jiffies(XDOMAIN_SHORT_TIMEOUT));
-+}
-+
-+/* Can be called from state_work */
-+static void __stop_handshake(struct tb_xdomain *xd)
-+{
-+	cancel_delayed_work_sync(&xd->properties_changed_work);
-+	xd->properties_changed_retries = 0;
-+	xd->state_retries = 0;
-+}
-+
-+static void stop_handshake(struct tb_xdomain *xd)
-+{
-+	cancel_delayed_work_sync(&xd->state_work);
-+	__stop_handshake(xd);
-+}
-+
- static void tb_xdp_handle_request(struct work_struct *work)
- {
- 	struct xdomain_request_work *xw = container_of(work, typeof(*xw), work);
-@@ -765,6 +786,15 @@ static void tb_xdp_handle_request(struct
- 	case UUID_REQUEST:
- 		tb_dbg(tb, "%llx: received XDomain UUID request\n", route);
- 		ret = tb_xdp_uuid_response(ctl, route, sequence, uuid);
-+		/*
-+		 * If we've stopped the discovery with an error such as
-+		 * timing out, we will restart the handshake now that we
-+		 * received UUID request from the remote host.
-+		 */
-+		if (!ret && xd && xd->state == XDOMAIN_STATE_ERROR) {
-+			dev_dbg(&xd->dev, "restarting handshake\n");
-+			start_handshake(xd);
-+		}
- 		break;
+-	std	r4,STK_PARAM(R4)(r1)
+ 	mr	r0,r4
  
- 	case LINK_STATE_STATUS_REQUEST:
-@@ -1521,6 +1551,13 @@ static void tb_xdomain_queue_properties_
- 			   msecs_to_jiffies(XDOMAIN_SHORT_TIMEOUT));
- }
+ 	mr	r4,r5
+@@ -197,7 +196,7 @@ plpar_hcall_trace:
  
-+static void tb_xdomain_failed(struct tb_xdomain *xd)
-+{
-+	xd->state = XDOMAIN_STATE_ERROR;
-+	queue_delayed_work(xd->tb->wq, &xd->state_work,
-+			   msecs_to_jiffies(XDOMAIN_DEFAULT_TIMEOUT));
-+}
-+
- static void tb_xdomain_state_work(struct work_struct *work)
- {
- 	struct tb_xdomain *xd = container_of(work, typeof(*xd), state_work.work);
-@@ -1547,7 +1584,7 @@ static void tb_xdomain_state_work(struct
- 		if (ret) {
- 			if (ret == -EAGAIN)
- 				goto retry_state;
--			xd->state = XDOMAIN_STATE_ERROR;
-+			tb_xdomain_failed(xd);
- 		} else {
- 			tb_xdomain_queue_properties_changed(xd);
- 			if (xd->bonding_possible)
-@@ -1612,7 +1649,7 @@ static void tb_xdomain_state_work(struct
- 		if (ret) {
- 			if (ret == -EAGAIN)
- 				goto retry_state;
--			xd->state = XDOMAIN_STATE_ERROR;
-+			tb_xdomain_failed(xd);
- 		} else {
- 			xd->state = XDOMAIN_STATE_ENUMERATED;
- 		}
-@@ -1623,6 +1660,8 @@ static void tb_xdomain_state_work(struct
- 		break;
+ 	HVSC
  
- 	case XDOMAIN_STATE_ERROR:
-+		dev_dbg(&xd->dev, "discovery failed, stopping handshake\n");
-+		__stop_handshake(xd);
- 		break;
+-	ld	r12,STK_PARAM(R4)(r1)
++	ld	r12,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1)
+ 	std	r4,0(r12)
+ 	std	r5,8(r12)
+ 	std	r6,16(r12)
+@@ -297,7 +296,6 @@ _GLOBAL_TOC(plpar_hcall9)
+ plpar_hcall9_trace:
+ 	HCALL_INST_PRECALL(R5)
  
- 	default:
-@@ -1833,21 +1872,6 @@ static void tb_xdomain_release(struct de
- 	kfree(xd);
- }
+-	std	r4,STK_PARAM(R4)(r1)
+ 	mr	r0,r4
  
--static void start_handshake(struct tb_xdomain *xd)
--{
--	xd->state = XDOMAIN_STATE_INIT;
--	queue_delayed_work(xd->tb->wq, &xd->state_work,
--			   msecs_to_jiffies(XDOMAIN_SHORT_TIMEOUT));
--}
--
--static void stop_handshake(struct tb_xdomain *xd)
--{
--	cancel_delayed_work_sync(&xd->properties_changed_work);
--	cancel_delayed_work_sync(&xd->state_work);
--	xd->properties_changed_retries = 0;
--	xd->state_retries = 0;
--}
--
- static int __maybe_unused tb_xdomain_suspend(struct device *dev)
- {
- 	stop_handshake(tb_to_xdomain(dev));
+ 	mr	r4,r5
 
 
