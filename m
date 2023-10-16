@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2A977CA344
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:03:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 817187CA27C
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233128AbjJPJDS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:03:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33238 "EHLO
+        id S232804AbjJPIun (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:50:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233135AbjJPJDR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:03:17 -0400
+        with ESMTP id S232605AbjJPIum (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:50:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C38F0
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:03:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B08C433C7;
-        Mon, 16 Oct 2023 09:03:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21CCAE3
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:50:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EC2C433C9;
+        Mon, 16 Oct 2023 08:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446995;
-        bh=kyHx+oxDdKnnTpXqZ6zvn0PEl1W+xJuMTHyN6XWOt9U=;
+        s=korg; t=1697446239;
+        bh=JSrck4Jqxtt5CH5buV8+NW3BTHpcb3W+dpESBzwdVlw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E9BFd/t0Kvwdbz0iQ8sMu2x5bmkTk/CR2kDxbBN3f78/ohbfzAZWvZFwc17f8s7TY
-         4o97kH+8M+3dY6OxQUZBXWZXQTMXYC6eVgxg6j2GJvHpMEoH1u4M7Dq5DN+xZ6uZxD
-         LELCXy+TS/7sox8jfP1DaDZnmzPp6EeMWq6Ci4i4=
+        b=Ft/yq3P0xzx44QrjmrVyhKlDRNCWPQQNcaVrkcDt9lPJkvJYUxrRTQQai3ZbGBt0K
+         5seGOs5wl029B9CZ7Qj6QQNF7isUhnInfXOza29cuaTZiNpOqVCEmyPaEP68U3RMzA
+         KUfp/UKZ/7B1WMLDswBF2u89Ozc1B8Zlte4vDOec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rijo Thomas <Rijo-john.Thomas@amd.com>,
-        Sumit Garg <sumit.garg@linaro.org>,
-        Jens Wiklander <jens.wiklander@linaro.org>
-Subject: [PATCH 6.1 111/131] tee: amdtee: fix use-after-free vulnerability in amdtee_close_session
-Date:   Mon, 16 Oct 2023 10:41:34 +0200
-Message-ID: <20231016084002.826209209@linuxfoundation.org>
+        patches@lists.linux.dev, ruanjinjie@huawei.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Morse <james.morse@arm.com>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15 096/102] arm64: armv8_deprecated move emulation functions
+Date:   Mon, 16 Oct 2023 10:41:35 +0200
+Message-ID: <20231016083956.256593417@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,85 +54,446 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rijo Thomas <Rijo-john.Thomas@amd.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit f4384b3e54ea813868bb81a861bf5b2406e15d8f upstream.
+commit 25eeac0cfe7c97ade1be07340e11e7143aab57a6 upstream.
 
-There is a potential race condition in amdtee_close_session that may
-cause use-after-free in amdtee_open_session. For instance, if a session
-has refcount == 1, and one thread tries to free this session via:
+Subsequent patches will rework the logic in armv8_deprecated.c.
 
-    kref_put(&sess->refcount, destroy_session);
+In preparation for subsequent changes, this patch moves the emulation
+logic earlier in the file, and moves the infrastructure later in the
+file. This will make subsequent diffs simpler and easier to read.
 
-the reference count will get decremented, and the next step would be to
-call destroy_session(). However, if in another thread,
-amdtee_open_session() is called before destroy_session() has completed
-execution, alloc_session() may return 'sess' that will be freed up
-later in destroy_session() leading to use-after-free in
-amdtee_open_session.
+This is purely a move. There should be no functional change as a result
+of this patch.
 
-To fix this issue, treat decrement of sess->refcount and removal of
-'sess' from session list in destroy_session() as a critical section, so
-that it is executed atomically.
-
-Fixes: 757cc3e9ff1d ("tee: add AMD-TEE driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
-Reviewed-by: Sumit Garg <sumit.garg@linaro.org>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20221019144123.612388-8-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tee/amdtee/core.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/arm64/kernel/armv8_deprecated.c |  394 +++++++++++++++++------------------
+ 1 file changed, 197 insertions(+), 197 deletions(-)
 
---- a/drivers/tee/amdtee/core.c
-+++ b/drivers/tee/amdtee/core.c
-@@ -217,12 +217,12 @@ unlock:
- 	return rc;
- }
+--- a/arch/arm64/kernel/armv8_deprecated.c
++++ b/arch/arm64/kernel/armv8_deprecated.c
+@@ -52,203 +52,6 @@ struct insn_emulation {
+ 	int max;
+ };
  
-+/* mutex must be held by caller */
- static void destroy_session(struct kref *ref)
- {
- 	struct amdtee_session *sess = container_of(ref, struct amdtee_session,
- 						   refcount);
+-static LIST_HEAD(insn_emulation);
+-static int nr_insn_emulated __initdata;
+-static DEFINE_RAW_SPINLOCK(insn_emulation_lock);
+-static DEFINE_MUTEX(insn_emulation_mutex);
+-
+-static void register_emulation_hooks(struct insn_emulation *insn)
+-{
+-	struct undef_hook *hook;
+-
+-	BUG_ON(!insn->hooks);
+-
+-	for (hook = insn->hooks; hook->instr_mask; hook++)
+-		register_undef_hook(hook);
+-
+-	pr_notice("Registered %s emulation handler\n", insn->name);
+-}
+-
+-static void remove_emulation_hooks(struct insn_emulation *insn)
+-{
+-	struct undef_hook *hook;
+-
+-	BUG_ON(!insn->hooks);
+-
+-	for (hook = insn->hooks; hook->instr_mask; hook++)
+-		unregister_undef_hook(hook);
+-
+-	pr_notice("Removed %s emulation handler\n", insn->name);
+-}
+-
+-static void enable_insn_hw_mode(void *data)
+-{
+-	struct insn_emulation *insn = (struct insn_emulation *)data;
+-	if (insn->set_hw_mode)
+-		insn->set_hw_mode(true);
+-}
+-
+-static void disable_insn_hw_mode(void *data)
+-{
+-	struct insn_emulation *insn = (struct insn_emulation *)data;
+-	if (insn->set_hw_mode)
+-		insn->set_hw_mode(false);
+-}
+-
+-/* Run set_hw_mode(mode) on all active CPUs */
+-static int run_all_cpu_set_hw_mode(struct insn_emulation *insn, bool enable)
+-{
+-	if (!insn->set_hw_mode)
+-		return -EINVAL;
+-	if (enable)
+-		on_each_cpu(enable_insn_hw_mode, (void *)insn, true);
+-	else
+-		on_each_cpu(disable_insn_hw_mode, (void *)insn, true);
+-	return 0;
+-}
+-
+-/*
+- * Run set_hw_mode for all insns on a starting CPU.
+- * Returns:
+- *  0 		- If all the hooks ran successfully.
+- * -EINVAL	- At least one hook is not supported by the CPU.
+- */
+-static int run_all_insn_set_hw_mode(unsigned int cpu)
+-{
+-	int rc = 0;
+-	unsigned long flags;
+-	struct insn_emulation *insn;
+-
+-	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
+-	list_for_each_entry(insn, &insn_emulation, node) {
+-		bool enable = (insn->current_mode == INSN_HW);
+-		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
+-			pr_warn("CPU[%u] cannot support the emulation of %s",
+-				cpu, insn->name);
+-			rc = -EINVAL;
+-		}
+-	}
+-	raw_spin_unlock_irqrestore(&insn_emulation_lock, flags);
+-	return rc;
+-}
+-
+-static int update_insn_emulation_mode(struct insn_emulation *insn,
+-				       enum insn_emulation_mode prev)
+-{
+-	int ret = 0;
+-
+-	switch (prev) {
+-	case INSN_UNDEF: /* Nothing to be done */
+-		break;
+-	case INSN_EMULATE:
+-		remove_emulation_hooks(insn);
+-		break;
+-	case INSN_HW:
+-		if (!run_all_cpu_set_hw_mode(insn, false))
+-			pr_notice("Disabled %s support\n", insn->name);
+-		break;
+-	}
+-
+-	switch (insn->current_mode) {
+-	case INSN_UNDEF:
+-		break;
+-	case INSN_EMULATE:
+-		register_emulation_hooks(insn);
+-		break;
+-	case INSN_HW:
+-		ret = run_all_cpu_set_hw_mode(insn, true);
+-		if (!ret)
+-			pr_notice("Enabled %s support\n", insn->name);
+-		break;
+-	}
+-
+-	return ret;
+-}
+-
+-static void __init register_insn_emulation(struct insn_emulation *insn)
+-{
+-	unsigned long flags;
+-
+-	insn->min = INSN_UNDEF;
+-
+-	switch (insn->status) {
+-	case INSN_DEPRECATED:
+-		insn->current_mode = INSN_EMULATE;
+-		/* Disable the HW mode if it was turned on at early boot time */
+-		run_all_cpu_set_hw_mode(insn, false);
+-		insn->max = INSN_HW;
+-		break;
+-	case INSN_OBSOLETE:
+-		insn->current_mode = INSN_UNDEF;
+-		insn->max = INSN_EMULATE;
+-		break;
+-	}
+-
+-	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
+-	list_add(&insn->node, &insn_emulation);
+-	nr_insn_emulated++;
+-	raw_spin_unlock_irqrestore(&insn_emulation_lock, flags);
+-
+-	/* Register any handlers if required */
+-	update_insn_emulation_mode(insn, INSN_UNDEF);
+-}
+-
+-static int emulation_proc_handler(struct ctl_table *table, int write,
+-				  void *buffer, size_t *lenp,
+-				  loff_t *ppos)
+-{
+-	int ret = 0;
+-	struct insn_emulation *insn = container_of(table->data, struct insn_emulation, current_mode);
+-	enum insn_emulation_mode prev_mode = insn->current_mode;
+-
+-	mutex_lock(&insn_emulation_mutex);
+-	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+-
+-	if (ret || !write || prev_mode == insn->current_mode)
+-		goto ret;
+-
+-	ret = update_insn_emulation_mode(insn, prev_mode);
+-	if (ret) {
+-		/* Mode change failed, revert to previous mode. */
+-		insn->current_mode = prev_mode;
+-		update_insn_emulation_mode(insn, INSN_UNDEF);
+-	}
+-ret:
+-	mutex_unlock(&insn_emulation_mutex);
+-	return ret;
+-}
+-
+-static void __init register_insn_emulation_sysctl(void)
+-{
+-	unsigned long flags;
+-	int i = 0;
+-	struct insn_emulation *insn;
+-	struct ctl_table *insns_sysctl, *sysctl;
+-
+-	insns_sysctl = kcalloc(nr_insn_emulated + 1, sizeof(*sysctl),
+-			       GFP_KERNEL);
+-	if (!insns_sysctl)
+-		return;
+-
+-	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
+-	list_for_each_entry(insn, &insn_emulation, node) {
+-		sysctl = &insns_sysctl[i];
+-
+-		sysctl->mode = 0644;
+-		sysctl->maxlen = sizeof(int);
+-
+-		sysctl->procname = insn->name;
+-		sysctl->data = &insn->current_mode;
+-		sysctl->extra1 = &insn->min;
+-		sysctl->extra2 = &insn->max;
+-		sysctl->proc_handler = emulation_proc_handler;
+-		i++;
+-	}
+-	raw_spin_unlock_irqrestore(&insn_emulation_lock, flags);
+-
+-	register_sysctl("abi", insns_sysctl);
+-}
+-
+ /*
+  *  Implement emulation of the SWP/SWPB instructions using load-exclusive and
+  *  store-exclusive.
+@@ -608,6 +411,203 @@ static struct insn_emulation insn_setend
+ 	.set_hw_mode = setend_set_hw_mode,
+ };
  
--	mutex_lock(&session_list_mutex);
- 	list_del(&sess->list_node);
- 	mutex_unlock(&session_list_mutex);
- 	kfree(sess);
-@@ -272,7 +272,8 @@ int amdtee_open_session(struct tee_conte
- 	if (arg->ret != TEEC_SUCCESS) {
- 		pr_err("open_session failed %d\n", arg->ret);
- 		handle_unload_ta(ta_handle);
--		kref_put(&sess->refcount, destroy_session);
-+		kref_put_mutex(&sess->refcount, destroy_session,
-+			       &session_list_mutex);
- 		goto out;
- 	}
- 
-@@ -290,7 +291,8 @@ int amdtee_open_session(struct tee_conte
- 		pr_err("reached maximum session count %d\n", TEE_NUM_SESSIONS);
- 		handle_close_session(ta_handle, session_info);
- 		handle_unload_ta(ta_handle);
--		kref_put(&sess->refcount, destroy_session);
-+		kref_put_mutex(&sess->refcount, destroy_session,
-+			       &session_list_mutex);
- 		rc = -ENOMEM;
- 		goto out;
- 	}
-@@ -331,7 +333,7 @@ int amdtee_close_session(struct tee_cont
- 	handle_close_session(ta_handle, session_info);
- 	handle_unload_ta(ta_handle);
- 
--	kref_put(&sess->refcount, destroy_session);
-+	kref_put_mutex(&sess->refcount, destroy_session, &session_list_mutex);
- 
- 	return 0;
- }
++static LIST_HEAD(insn_emulation);
++static int nr_insn_emulated __initdata;
++static DEFINE_RAW_SPINLOCK(insn_emulation_lock);
++static DEFINE_MUTEX(insn_emulation_mutex);
++
++static void register_emulation_hooks(struct insn_emulation *insn)
++{
++	struct undef_hook *hook;
++
++	BUG_ON(!insn->hooks);
++
++	for (hook = insn->hooks; hook->instr_mask; hook++)
++		register_undef_hook(hook);
++
++	pr_notice("Registered %s emulation handler\n", insn->name);
++}
++
++static void remove_emulation_hooks(struct insn_emulation *insn)
++{
++	struct undef_hook *hook;
++
++	BUG_ON(!insn->hooks);
++
++	for (hook = insn->hooks; hook->instr_mask; hook++)
++		unregister_undef_hook(hook);
++
++	pr_notice("Removed %s emulation handler\n", insn->name);
++}
++
++static void enable_insn_hw_mode(void *data)
++{
++	struct insn_emulation *insn = (struct insn_emulation *)data;
++	if (insn->set_hw_mode)
++		insn->set_hw_mode(true);
++}
++
++static void disable_insn_hw_mode(void *data)
++{
++	struct insn_emulation *insn = (struct insn_emulation *)data;
++	if (insn->set_hw_mode)
++		insn->set_hw_mode(false);
++}
++
++/* Run set_hw_mode(mode) on all active CPUs */
++static int run_all_cpu_set_hw_mode(struct insn_emulation *insn, bool enable)
++{
++	if (!insn->set_hw_mode)
++		return -EINVAL;
++	if (enable)
++		on_each_cpu(enable_insn_hw_mode, (void *)insn, true);
++	else
++		on_each_cpu(disable_insn_hw_mode, (void *)insn, true);
++	return 0;
++}
++
++/*
++ * Run set_hw_mode for all insns on a starting CPU.
++ * Returns:
++ *  0 		- If all the hooks ran successfully.
++ * -EINVAL	- At least one hook is not supported by the CPU.
++ */
++static int run_all_insn_set_hw_mode(unsigned int cpu)
++{
++	int rc = 0;
++	unsigned long flags;
++	struct insn_emulation *insn;
++
++	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
++	list_for_each_entry(insn, &insn_emulation, node) {
++		bool enable = (insn->current_mode == INSN_HW);
++		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
++			pr_warn("CPU[%u] cannot support the emulation of %s",
++				cpu, insn->name);
++			rc = -EINVAL;
++		}
++	}
++	raw_spin_unlock_irqrestore(&insn_emulation_lock, flags);
++	return rc;
++}
++
++static int update_insn_emulation_mode(struct insn_emulation *insn,
++				       enum insn_emulation_mode prev)
++{
++	int ret = 0;
++
++	switch (prev) {
++	case INSN_UNDEF: /* Nothing to be done */
++		break;
++	case INSN_EMULATE:
++		remove_emulation_hooks(insn);
++		break;
++	case INSN_HW:
++		if (!run_all_cpu_set_hw_mode(insn, false))
++			pr_notice("Disabled %s support\n", insn->name);
++		break;
++	}
++
++	switch (insn->current_mode) {
++	case INSN_UNDEF:
++		break;
++	case INSN_EMULATE:
++		register_emulation_hooks(insn);
++		break;
++	case INSN_HW:
++		ret = run_all_cpu_set_hw_mode(insn, true);
++		if (!ret)
++			pr_notice("Enabled %s support\n", insn->name);
++		break;
++	}
++
++	return ret;
++}
++
++static void __init register_insn_emulation(struct insn_emulation *insn)
++{
++	unsigned long flags;
++
++	insn->min = INSN_UNDEF;
++
++	switch (insn->status) {
++	case INSN_DEPRECATED:
++		insn->current_mode = INSN_EMULATE;
++		/* Disable the HW mode if it was turned on at early boot time */
++		run_all_cpu_set_hw_mode(insn, false);
++		insn->max = INSN_HW;
++		break;
++	case INSN_OBSOLETE:
++		insn->current_mode = INSN_UNDEF;
++		insn->max = INSN_EMULATE;
++		break;
++	}
++
++	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
++	list_add(&insn->node, &insn_emulation);
++	nr_insn_emulated++;
++	raw_spin_unlock_irqrestore(&insn_emulation_lock, flags);
++
++	/* Register any handlers if required */
++	update_insn_emulation_mode(insn, INSN_UNDEF);
++}
++
++static int emulation_proc_handler(struct ctl_table *table, int write,
++				  void *buffer, size_t *lenp,
++				  loff_t *ppos)
++{
++	int ret = 0;
++	struct insn_emulation *insn = container_of(table->data, struct insn_emulation, current_mode);
++	enum insn_emulation_mode prev_mode = insn->current_mode;
++
++	mutex_lock(&insn_emulation_mutex);
++	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
++
++	if (ret || !write || prev_mode == insn->current_mode)
++		goto ret;
++
++	ret = update_insn_emulation_mode(insn, prev_mode);
++	if (ret) {
++		/* Mode change failed, revert to previous mode. */
++		insn->current_mode = prev_mode;
++		update_insn_emulation_mode(insn, INSN_UNDEF);
++	}
++ret:
++	mutex_unlock(&insn_emulation_mutex);
++	return ret;
++}
++
++static void __init register_insn_emulation_sysctl(void)
++{
++	unsigned long flags;
++	int i = 0;
++	struct insn_emulation *insn;
++	struct ctl_table *insns_sysctl, *sysctl;
++
++	insns_sysctl = kcalloc(nr_insn_emulated + 1, sizeof(*sysctl),
++			       GFP_KERNEL);
++	if (!insns_sysctl)
++		return;
++
++	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
++	list_for_each_entry(insn, &insn_emulation, node) {
++		sysctl = &insns_sysctl[i];
++
++		sysctl->mode = 0644;
++		sysctl->maxlen = sizeof(int);
++
++		sysctl->procname = insn->name;
++		sysctl->data = &insn->current_mode;
++		sysctl->extra1 = &insn->min;
++		sysctl->extra2 = &insn->max;
++		sysctl->proc_handler = emulation_proc_handler;
++		i++;
++	}
++	raw_spin_unlock_irqrestore(&insn_emulation_lock, flags);
++
++	register_sysctl("abi", insns_sysctl);
++}
++
+ /*
+  * Invoked as core_initcall, which guarantees that the instruction
+  * emulation is ready for userspace.
 
 
