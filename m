@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0F5E7CA245
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC1DA7CA327
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:01:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232630AbjJPIsV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:48:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35036 "EHLO
+        id S233293AbjJPJB4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:01:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230090AbjJPIsT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:48:19 -0400
+        with ESMTP id S233310AbjJPJBg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:01:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60666A1
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:48:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5586C433C7;
-        Mon, 16 Oct 2023 08:48:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 132DE12B
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:01:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03213C433B9;
+        Mon, 16 Oct 2023 09:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446098;
-        bh=x+v/ccWTJwEIDQzUSEFFW8UcF9CYjOObsL2yZsIEFCs=;
+        s=korg; t=1697446886;
+        bh=9VuxhNIvitKS1iZ0b+01fjaesg+EQzoix2WntiX6MLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dl0aBTqhuXc3lEKa9BCecjTs06uKglvwroYpYv/Xx7/qIDOnyJ6h4cGM/+OsCr6n/
-         JduCUDvJK8bbSZq/trbiaikpLFlDRpxyO9RAVYk/K2jx5hSH7iq1XA4rQNaK7NYGHI
-         yRqdSX2sG5O5zsCL8DKdDa9ImfBNPV2t32cOuDs0=
+        b=c7eTBsgXlsNo4VDYNF79jboWyk17zlaKNQWdXrWIVI2j6jM71CNH2xvo7r57Tg5OF
+         btJ4YJyjH3wJ4ghdAWTzzHepOD2UsL0MyOC8zGC+A2zv47S3296jsbtLUJt/vLoB9m
+         2VrrslL6UL3FUHL1EnkgaM9qqZCarDeKBOcBUgqQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Szilard Fabian <szfabian@bluemarch.art>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 071/102] Input: i8042 - add Fujitsu Lifebook E5411 to i8042 quirk table
+        patches@lists.linux.dev,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 087/131] iio: addac: Kconfig: update ad74413r selections
 Date:   Mon, 16 Oct 2023 10:41:10 +0200
-Message-ID: <20231016083955.593028584@linuxfoundation.org>
+Message-ID: <20231016084002.221307207@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,51 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Szilard Fabian <szfabian@bluemarch.art>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 80f39e1c27ba9e5a1ea7e68e21c569c9d8e46062 upstream.
+commit b120dd3a15582fb7a959cecb05e4d9814fcba386 upstream.
 
-In the initial boot stage the integrated keyboard of Fujitsu Lifebook E5411
-refuses to work and it's not possible to type for example a dm-crypt
-passphrase without the help of an external keyboard.
+Building ad74413r without selecting IIO_BUFFER and
+IIO_TRIGGERED_BUFFER generates error with respect to the iio trigger
+functions that are used within the driver.
+Update the Kconfig accordingly.
 
-i8042.nomux kernel parameter resolves this issue but using that a PS/2
-mouse is detected. This input device is unused even when the i2c-hid-acpi
-kernel module is blacklisted making the integrated ELAN touchpad
-(04F3:308A) not working at all.
-
-Since the integrated touchpad is managed by the i2c_designware input
-driver in the Linux kernel and you can't find a PS/2 mouse port on the
-computer I think it's safe to not use the PS/2 mouse port at all.
-
-Signed-off-by: Szilard Fabian <szfabian@bluemarch.art>
-Link: https://lore.kernel.org/r/20231004011749.101789-1-szfabian@bluemarch.art
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: fea251b6a5db ("iio: addac: add AD74413R driver")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Link: https://lore.kernel.org/r/20230912085421.51102-1-antoniu.miclaus@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/iio/addac/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -610,6 +610,14 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
- 	},
- 	{
-+		/* Fujitsu Lifebook E5411 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU CLIENT COMPUTING LIMITED"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E5411"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
-+	{
- 		/* Gigabyte M912 */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
+--- a/drivers/iio/addac/Kconfig
++++ b/drivers/iio/addac/Kconfig
+@@ -10,6 +10,8 @@ config AD74413R
+ 	depends on GPIOLIB && SPI
+ 	select REGMAP_SPI
+ 	select CRC8
++	select IIO_BUFFER
++	select IIO_TRIGGERED_BUFFER
+ 	help
+ 	  Say yes here to build support for Analog Devices AD74412R/AD74413R
+ 	  quad-channel software configurable input/output solution.
 
 
