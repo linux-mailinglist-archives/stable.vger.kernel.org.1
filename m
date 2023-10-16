@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1EB97CA335
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FAE77CA38A
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232649AbjJPJC2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:02:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41420 "EHLO
+        id S231967AbjJPJHx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:07:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233223AbjJPJCR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:02:17 -0400
+        with ESMTP id S232648AbjJPIqN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:46:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0046BF2
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:02:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19B09C433C7;
-        Mon, 16 Oct 2023 09:02:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B4F0E6
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:46:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50885C433C8;
+        Mon, 16 Oct 2023 08:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446935;
-        bh=kUZceZ+21J2njF36RXROmt73kTmzX/fyq43l4mSxlyc=;
+        s=korg; t=1697445969;
+        bh=MkPz1B069qjXTm/hyglTzJIa2QgTx/F+loJiRKzOBhs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eT6WxS3ymO+WoPMwhnuz0/J0EJEoPIbiOmqYvnU01fGDC6lckarVyRE7mcH2mCMsp
-         /N4vspawurx/kbFXdG/HlkSMBly8cg5qTlI1n8U/He8DLcCApQT0nwc23RtR7mHsn1
-         ZYH10BVCp4f2vfDEkZd59TiEgaY0eq/AopJjPxgM=
+        b=kLVgQh++535TfYGQfNdHadqP5DvEiOQE2O5zpQNQpsOrwIpUfyOoThEKVQydQbQJV
+         OA4qEVkJkBLGAsDub34L13Sig/UFNqqV+k5K8Qlyr+FnP4N/Pt9XNl0kzNuxaOxigd
+         JjId5IB2GOA8C3dR14y892c1OH07lw800rlhHuQI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Halil Pasic <pasic@linux.ibm.com>,
-        Nils Hoppmann <niho@linux.ibm.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        Dust Li <dust.li@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/131] net/smc: Fix pos miscalculation in statistics
+        patches@lists.linux.dev,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.15 047/102] dmaengine: stm32-mdma: abort resume if no ongoing transfer
 Date:   Mon, 16 Oct 2023 10:40:46 +0200
-Message-ID: <20231016084001.632609399@linuxfoundation.org>
+Message-ID: <20231016083954.951857406@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,95 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nils Hoppmann <niho@linux.ibm.com>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-[ Upstream commit a950a5921db450c74212327f69950ff03419483a ]
+commit 81337b9a72dc58a5fa0ae8a042e8cb59f9bdec4a upstream.
 
-SMC_STAT_PAYLOAD_SUB(_smc_stats, _tech, key, _len, _rc) will calculate
-wrong bucket positions for payloads of exactly 4096 bytes and
-(1 << (m + 12)) bytes, with m == SMC_BUF_MAX - 1.
+chan->desc can be null, if transfer is terminated when resume is called,
+leading to a NULL pointer when retrieving the hwdesc.
+To avoid this case, check that chan->desc is not null and channel is
+disabled (transfer previously paused or terminated).
 
-Intended bucket distribution:
-Assume l == size of payload, m == SMC_BUF_MAX - 1.
-
-Bucket 0                : 0 < l <= 2^13
-Bucket n, 1 <= n <= m-1 : 2^(n+12) < l <= 2^(n+13)
-Bucket m                : l > 2^(m+12)
-
-Current solution:
-_pos = fls64((l) >> 13)
-[...]
-_pos = (_pos < m) ? ((l == 1 << (_pos + 12)) ? _pos - 1 : _pos) : m
-
-For l == 4096, _pos == -1, but should be _pos == 0.
-For l == (1 << (m + 12)), _pos == m, but should be _pos == m - 1.
-
-In order to avoid special treatment of these corner cases, the
-calculation is adjusted. The new solution first subtracts the length by
-one, and then calculates the correct bucket by shifting accordingly,
-i.e. _pos = fls64((l - 1) >> 13), l > 0.
-This not only fixes the issues named above, but also makes the whole
-bucket assignment easier to follow.
-
-Same is done for SMC_STAT_RMB_SIZE_SUB(_smc_stats, _tech, k, _len),
-where the calculation of the bucket position is similar to the one
-named above.
-
-Fixes: e0e4b8fa5338 ("net/smc: Add SMC statistics support")
-Suggested-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Nils Hoppmann <niho@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231004163531.2864160-1-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/smc_stats.h | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/dma/stm32-mdma.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/smc/smc_stats.h b/net/smc/smc_stats.h
-index 4dbc237b7c19e..ee22d6f9a86aa 100644
---- a/net/smc/smc_stats.h
-+++ b/net/smc/smc_stats.h
-@@ -93,13 +93,14 @@ do { \
- 	typeof(_smc_stats) stats = (_smc_stats); \
- 	typeof(_tech) t = (_tech); \
- 	typeof(_len) l = (_len); \
--	int _pos = fls64((l) >> 13); \
-+	int _pos; \
- 	typeof(_rc) r = (_rc); \
- 	int m = SMC_BUF_MAX - 1; \
- 	this_cpu_inc((*stats).smc[t].key ## _cnt); \
--	if (r <= 0) \
-+	if (r <= 0 || l <= 0) \
- 		break; \
--	_pos = (_pos < m) ? ((l == 1 << (_pos + 12)) ? _pos - 1 : _pos) : m; \
-+	_pos = fls64((l - 1) >> 13); \
-+	_pos = (_pos <= m) ? _pos : m; \
- 	this_cpu_inc((*stats).smc[t].key ## _pd.buf[_pos]); \
- 	this_cpu_add((*stats).smc[t].key ## _bytes, r); \
- } \
-@@ -139,9 +140,12 @@ while (0)
- do { \
- 	typeof(_len) _l = (_len); \
- 	typeof(_tech) t = (_tech); \
--	int _pos = fls((_l) >> 13); \
-+	int _pos; \
- 	int m = SMC_BUF_MAX - 1; \
--	_pos = (_pos < m) ? ((_l == 1 << (_pos + 12)) ? _pos - 1 : _pos) : m; \
-+	if (_l <= 0) \
-+		break; \
-+	_pos = fls((_l - 1) >> 13); \
-+	_pos = (_pos <= m) ? _pos : m; \
- 	this_cpu_inc((*(_smc_stats)).smc[t].k ## _rmbsize.buf[_pos]); \
- } \
- while (0)
--- 
-2.40.1
-
+--- a/drivers/dma/stm32-mdma.c
++++ b/drivers/dma/stm32-mdma.c
+@@ -1206,6 +1206,10 @@ static int stm32_mdma_resume(struct dma_
+ 	unsigned long flags;
+ 	u32 status, reg;
+ 
++	/* Transfer can be terminated */
++	if (!chan->desc || (stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & STM32_MDMA_CCR_EN))
++		return -EPERM;
++
+ 	hwdesc = chan->desc->node[chan->curr_hwdesc].hwdesc;
+ 
+ 	spin_lock_irqsave(&chan->vchan.lock, flags);
 
 
