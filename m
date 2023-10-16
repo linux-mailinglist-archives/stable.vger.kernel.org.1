@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C925C7CABF8
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 182587CABF9
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232660AbjJPOsB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:48:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54788 "EHLO
+        id S233450AbjJPOsL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:48:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233445AbjJPOsA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:48:00 -0400
+        with ESMTP id S232202AbjJPOsK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:48:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27653D9
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:47:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEE9C433C8;
-        Mon, 16 Oct 2023 14:47:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DE89AB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:48:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B884C433C7;
+        Mon, 16 Oct 2023 14:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697467678;
-        bh=oM/5y5gOJ54aAdnm5fcAkU28nZSp4AFA0LrolkueaKY=;
+        s=korg; t=1697467689;
+        bh=MhKO85ljGZNyFH57705miLzNWqvFo5Vs05NCQcdPVGY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h3T3VOds46KSPOhPKcQktBNEUyrVi0i9DOOmY/PqLwUlUpz6dxCYhcVMn39ErjU8S
-         U/15vA6V9Az9oG02szOXzzMWF74oozTvXX4F7frdvEVcATftXbP4UjTZXNOtaimMl6
-         NlOAZ0OZTU0otA9QVOhrK8qyatnIBukEYnzoBhLo=
+        b=NvKrYFIndBXCiye2KZyqmqUWO/8u2F5m6ZVlAqBT803mBATwkeYO/0p6Aji2aYNRc
+         54ScMHwW11spR5bj8WXnwJ8NXxsX4bWKUE3g+vnTbt4tDRrsRnTVnut84KQR5vP3sO
+         KL5sLmrlCnK7tUvjPGHuI8ODH2QbYk7IGhhUz3dQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>,
+        Sabrina Dubroca <sd@queasysnail.net>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 070/191] net: refine debug info in skb_checksum_help()
-Date:   Mon, 16 Oct 2023 10:40:55 +0200
-Message-ID: <20231016084017.042273697@linuxfoundation.org>
+Subject: [PATCH 6.5 071/191] octeontx2-pf: mcs: update PN only when update_pn is true
+Date:   Mon, 16 Oct 2023 10:40:56 +0200
+Message-ID: <20231016084017.066067048@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -55,54 +56,55 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
 
-[ Upstream commit 26c29961b142444cd99361644c30fa1e9b3da6be ]
+[ Upstream commit 4dcf38ae3ca16b8872f151d46ba5ac28dd580b60 ]
 
-syzbot uses panic_on_warn.
+When updating SA, update the PN only when the update_pn flag is true.
+Otherwise, the PN will be reset to its previous value using the
+following command and this should not happen:
+$ ip macsec set macsec0 tx sa 0 on
 
-This means that the skb_dump() I added in the blamed commit are
-not even called.
-
-Rewrite this so that we get the needed skb dump before syzbot crashes.
-
-Fixes: eeee4b77dc52 ("net: add more debug info in skb_checksum_help()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20231006173355.2254983-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c54ffc73601c ("octeontx2-pf: mcs: Introduce MACSEC hardware offloading")
+Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ .../ethernet/marvell/octeontx2/nic/cn10k_macsec.c   | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 69a3e544676c4..968be1c20ca1f 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3285,15 +3285,19 @@ int skb_checksum_help(struct sk_buff *skb)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+index 59b138214af2f..6cc7a78968fc1 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k_macsec.c
+@@ -1357,10 +1357,12 @@ static int cn10k_mdo_upd_txsa(struct macsec_context *ctx)
  
- 	offset = skb_checksum_start_offset(skb);
- 	ret = -EINVAL;
--	if (WARN_ON_ONCE(offset >= skb_headlen(skb))) {
-+	if (unlikely(offset >= skb_headlen(skb))) {
- 		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
-+		WARN_ONCE(true, "offset (%d) >= skb_headlen() (%u)\n",
-+			  offset, skb_headlen(skb));
- 		goto out;
- 	}
- 	csum = skb_checksum(skb, offset, skb->len - offset, 0);
+ 	if (netif_running(secy->netdev)) {
+ 		/* Keys cannot be changed after creation */
+-		err = cn10k_write_tx_sa_pn(pfvf, txsc, sa_num,
+-					   sw_tx_sa->next_pn);
+-		if (err)
+-			return err;
++		if (ctx->sa.update_pn) {
++			err = cn10k_write_tx_sa_pn(pfvf, txsc, sa_num,
++						   sw_tx_sa->next_pn);
++			if (err)
++				return err;
++		}
  
- 	offset += skb->csum_offset;
--	if (WARN_ON_ONCE(offset + sizeof(__sum16) > skb_headlen(skb))) {
-+	if (unlikely(offset + sizeof(__sum16) > skb_headlen(skb))) {
- 		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
-+		WARN_ONCE(true, "offset+2 (%zu) > skb_headlen() (%u)\n",
-+			  offset + sizeof(__sum16), skb_headlen(skb));
- 		goto out;
- 	}
- 	ret = skb_ensure_writable(skb, offset + sizeof(__sum16));
+ 		err = cn10k_mcs_link_tx_sa2sc(pfvf, secy, txsc,
+ 					      sa_num, sw_tx_sa->active);
+@@ -1529,6 +1531,9 @@ static int cn10k_mdo_upd_rxsa(struct macsec_context *ctx)
+ 		if (err)
+ 			return err;
+ 
++		if (!ctx->sa.update_pn)
++			return 0;
++
+ 		err = cn10k_mcs_write_rx_sa_pn(pfvf, rxsc, sa_num,
+ 					       rx_sa->next_pn);
+ 		if (err)
 -- 
 2.40.1
 
