@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1AB27CA261
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D754C7CA334
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:02:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232849AbjJPItS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:49:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40128 "EHLO
+        id S233188AbjJPJC2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:02:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232918AbjJPItR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:17 -0400
+        with ESMTP id S233263AbjJPJCO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:02:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1606E3
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E31DC433C8;
-        Mon, 16 Oct 2023 08:49:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D3F1111
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:02:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64977C433C7;
+        Mon, 16 Oct 2023 09:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446155;
-        bh=wRcGOit23q8WOgZ2CyxngDL8uPsO+W88/XCWa/yzNGw=;
+        s=korg; t=1697446932;
+        bh=Znsvx5aQvIBd9OH4W0W/roDbyiR/Ux+oCDX9LGfndTY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=04Bn6L+TuyfRB2QLomAzS3gEQEVsb6b4OyaRRNGGJFdZEeG/sR+6bv2NB9dHw7mR5
-         +8KVdWJ2Z0DY2djY7DUlv/bt3IUkjIuLU7cs09pz/8hE08hJyyI141WlYEug5C6vJ7
-         5bvwNRxYi9yVohzLJ9nWKcN+I9DN9FlKef29+cTg=
+        b=JGya0ix9gn1MtvETCK72watCqZnNhRG3Qai0/j7SrWTu38vV+SthjCJh4ZOhjfQ6g
+         mAkk2X/a42dYB6xPBiEzqp5aGy0WsBLbNZUVWdVMUcaICXZXBtDF04JJnBXMSVbJ25
+         oGSy0h97zMOd8donPRCqjynRlvw1R0KNDSfUh0WI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lakshmi Yadlapati <lakshmiy@us.ibm.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 056/102] iio: pressure: dps310: Adjust Timeout Settings
+        patches@lists.linux.dev,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.1 072/131] dmaengine: stm32-mdma: set in_flight_bytes in case CRQA flag is set
 Date:   Mon, 16 Oct 2023 10:40:55 +0200
-Message-ID: <20231016083955.193708375@linuxfoundation.org>
+Message-ID: <20231016084001.851364831@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +50,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-commit 901a293fd96fb9bab843ba4cc7be3094a5aa7c94 upstream.
+commit 584970421725b7805db84714b857851fdf7203a9 upstream.
 
-The DPS310 sensor chip has been encountering intermittent errors while
-reading the sensor device across various system designs. This issue causes
-the chip to become "stuck," preventing the indication of "ready" status
-for pressure and temperature measurements in the MEAS_CFG register.
+CRQA flag is set by hardware when the channel request become active and
+the channel is enabled. It is cleared by hardware, when the channel request
+is completed.
+So when it is set, it means MDMA is transferring bytes.
+This information is useful in case of STM32 DMA and MDMA chaining,
+especially when the user pauses DMA before stopping it, to trig one last
+MDMA transfer to get the latest bytes of the SRAM buffer to the
+destination buffer.
+STM32 DCMI driver can then use this to know if the last MDMA transfer in
+case of chaining is done.
 
-To address this issue, this commit fixes the timeout settings to improve
-sensor stability:
-- After sending a reset command to the chip, the timeout has been extended
-  from 2.5 ms to 15 ms, aligning with the DPS310 specification.
-- The read timeout value of the MEAS_CFG register has been adjusted from
-  20ms to 30ms to match the specification.
-
-Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
-Fixes: 7b4ab4abcea4 ("iio: pressure: dps310: Reset chip after timeout")
-Link: https://lore.kernel.org/r/20230829180222.3431926-2-lakshmiy@us.ibm.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 696874322771 ("dmaengine: stm32-mdma: add support to be triggered by STM32 DMA")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231004163531.2864160-3-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/dps310.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/dma/stm32-mdma.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -57,8 +57,8 @@
- #define  DPS310_RESET_MAGIC	0x09
- #define DPS310_COEF_BASE	0x10
+--- a/drivers/dma/stm32-mdma.c
++++ b/drivers/dma/stm32-mdma.c
+@@ -1319,7 +1319,8 @@ static int stm32_mdma_slave_config(struc
  
--/* Make sure sleep time is <= 20ms for usleep_range */
--#define DPS310_POLL_SLEEP_US(t)		min(20000, (t) / 8)
-+/* Make sure sleep time is <= 30ms for usleep_range */
-+#define DPS310_POLL_SLEEP_US(t)		min(30000, (t) / 8)
- /* Silently handle error in rate value here */
- #define DPS310_POLL_TIMEOUT_US(rc)	((rc) <= 0 ? 1000000 : 1000000 / (rc))
+ static size_t stm32_mdma_desc_residue(struct stm32_mdma_chan *chan,
+ 				      struct stm32_mdma_desc *desc,
+-				      u32 curr_hwdesc)
++				      u32 curr_hwdesc,
++				      struct dma_tx_state *state)
+ {
+ 	struct stm32_mdma_device *dmadev = stm32_mdma_get_dev(chan);
+ 	struct stm32_mdma_hwdesc *hwdesc;
+@@ -1343,6 +1344,10 @@ static size_t stm32_mdma_desc_residue(st
+ 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
+ 	residue += cbndtr & STM32_MDMA_CBNDTR_BNDT_MASK;
  
-@@ -402,8 +402,8 @@ static int dps310_reset_wait(struct dps3
- 	if (rc)
- 		return rc;
++	state->in_flight_bytes = 0;
++	if (chan->chan_config.m2m_hw && (cisr & STM32_MDMA_CISR_CRQA))
++		state->in_flight_bytes = cbndtr & STM32_MDMA_CBNDTR_BNDT_MASK;
++
+ 	if (!chan->mem_burst)
+ 		return residue;
  
--	/* Wait for device chip access: 2.5ms in specification */
--	usleep_range(2500, 12000);
-+	/* Wait for device chip access: 15ms in specification */
-+	usleep_range(15000, 55000);
- 	return 0;
- }
+@@ -1372,11 +1377,10 @@ static enum dma_status stm32_mdma_tx_sta
  
+ 	vdesc = vchan_find_desc(&chan->vchan, cookie);
+ 	if (chan->desc && cookie == chan->desc->vdesc.tx.cookie)
+-		residue = stm32_mdma_desc_residue(chan, chan->desc,
+-						  chan->curr_hwdesc);
++		residue = stm32_mdma_desc_residue(chan, chan->desc, chan->curr_hwdesc, state);
+ 	else if (vdesc)
+-		residue = stm32_mdma_desc_residue(chan,
+-						  to_stm32_mdma_desc(vdesc), 0);
++		residue = stm32_mdma_desc_residue(chan, to_stm32_mdma_desc(vdesc), 0, state);
++
+ 	dma_set_residue(state, residue);
+ 
+ 	spin_unlock_irqrestore(&chan->vchan.lock, flags);
 
 
