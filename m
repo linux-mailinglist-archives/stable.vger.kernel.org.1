@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 145F27CA2A8
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:52:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB8927CA1F8
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:43:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230502AbjJPIwl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:52:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58718 "EHLO
+        id S232521AbjJPInz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:43:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232568AbjJPIwl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:52:41 -0400
+        with ESMTP id S232599AbjJPIny (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:43:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B3F4E5
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:52:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F79C433C9;
-        Mon, 16 Oct 2023 08:52:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AF2B9B
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:43:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0672C433C8;
+        Mon, 16 Oct 2023 08:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446358;
-        bh=lChw5twFn5K9onv4h2HMtZ7EXvTcbsp0FWPRBCTDHIw=;
+        s=korg; t=1697445832;
+        bh=CpKEZxQcYPLi2S7ZqI9hIVWZ2nRZ0kju7NVCZyMzqzI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=djCfytItkZkLXRaH0fmBH7yxFf7zCjhfZOqZsBoL7dLj6g0D6ZPpFP5n8BxZb9C4H
-         jp6/7wsMNu7nefBBUpid3m/Rghfuil/DYa4VQFer/UkCugBFFZNvBxG5iHIhH1JSOX
-         9Is/fXsR+f03fU3dIrIwqYWlcCbcGbW0anVCCbIU=
+        b=QHfXd6DLGG/rU3Um0FED8p/MLeMm/ZoaweRSS5LDSn+dBPHRdZvmjKWbLutPmQ6pu
+         mrcNkZ5+ubG9d3oMhu5o/BckOUuMLXhANPW5ee/R95WuAY0aIhQgLslQBrwlbjjwXA
+         NgDuPkL4zaBoalezu8la9GnhaBIixS5QB33TvX7c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christos Skevis <xristos.thes@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 019/131] ALSA: usb-audio: Fix microphone sound on Nexigo webcam.
+        patches@lists.linux.dev, Benjamin Block <bblock@linux.ibm.com>,
+        Bean Huo <beanhuo@micron.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 003/102] scsi: core: Rename scsi_mq_done() into scsi_done() and export it
 Date:   Mon, 16 Oct 2023 10:40:02 +0200
-Message-ID: <20231016084000.544990387@linuxfoundation.org>
+Message-ID: <20231016083953.782206819@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,139 +52,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christos Skevis <xristos.thes@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 4a63e68a295187ae3c1cb3fa0c583c96a959714f upstream.
+[ Upstream commit a710eacb9d13cb5d9eb5341ebc6fc8f7b96f8c6f ]
 
-I own an external usb Webcam, model NexiGo N930AF, which had low mic volume and
-inconsistent sound quality. Video works as expected.
+Since the removal of the legacy block layer there is only one completion
+function left in the SCSI core, namely scsi_mq_done(). Rename it into
+scsi_done(). Export that function to allow SCSI LLDs to call it directly.
 
-(snip)
-[  +0.047857] usb 5-1: new high-speed USB device number 2 using xhci_hcd
-[  +0.003406] usb 5-1: New USB device found, idVendor=1bcf, idProduct=2283, bcdDevice=12.17
-[  +0.000007] usb 5-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  +0.000004] usb 5-1: Product: NexiGo N930AF FHD Webcam
-[  +0.000003] usb 5-1: Manufacturer: SHENZHEN AONI ELECTRONIC CO., LTD
-[  +0.000004] usb 5-1: SerialNumber: 20201217011
-[  +0.003900] usb 5-1: Found UVC 1.00 device NexiGo N930AF FHD Webcam (1bcf:2283)
-[  +0.025726] usb 5-1: 3:1: cannot get usb sound sample rate freq at ep 0x86
-[  +0.071482] usb 5-1: 3:2: cannot get usb sound sample rate freq at ep 0x86
-[  +0.004679] usb 5-1: 3:3: cannot get usb sound sample rate freq at ep 0x86
-[  +0.051607] usb 5-1: Warning! Unlikely big volume range (=4096), cval->res is probably wrong.
-[  +0.000005] usb 5-1: [7] FU [Mic Capture Volume] ch = 1, val = 0/4096/1
-
-Set up quirk cval->res to 16 for 256 levels,
-Set GET_SAMPLE_RATE quirk flag to stop trying to get the sample rate.
-Confirmed that happened anyway later due to the backoff mechanism, after 3 failures
-
-All audio stream on device interfaces share the same values,
-apart from wMaxPacketSize and tSamFreq :
-
-(snip)
-Interface Descriptor:
-      bLength                 9
-      bDescriptorType         4
-      bInterfaceNumber        3
-      bAlternateSetting       3
-      bNumEndpoints           1
-      bInterfaceClass         1 Audio
-      bInterfaceSubClass      2 Streaming
-      bInterfaceProtocol      0
-      iInterface              0
-      AudioStreaming Interface Descriptor:
-        bLength                 7
-        bDescriptorType        36
-        bDescriptorSubtype      1 (AS_GENERAL)
-        bTerminalLink           8
-        bDelay                  1 frames
-        wFormatTag         0x0001 PCM
-      AudioStreaming Interface Descriptor:
-        bLength                11
-        bDescriptorType        36
-        bDescriptorSubtype      2 (FORMAT_TYPE)
-        bFormatType             1 (FORMAT_TYPE_I)
-        bNrChannels             1
-        bSubframeSize           2
-        bBitResolution         16
-        bSamFreqType            1 Discrete
-        tSamFreq[ 0]        44100
-      Endpoint Descriptor:
-        bLength                 9
-        bDescriptorType         5
-        bEndpointAddress     0x86  EP 6 IN
-        bmAttributes            5
-          Transfer Type            Isochronous
-          Synch Type               Asynchronous
-          Usage Type               Data
-        wMaxPacketSize     0x005c  1x 92 bytes
-        bInterval               4
-        bRefresh                0
-        bSynchAddress           0
-        AudioStreaming Endpoint Descriptor:
-          bLength                 7
-          bDescriptorType        37
-          bDescriptorSubtype      1 (EP_GENERAL)
-          bmAttributes         0x01
-            Sampling Frequency
-          bLockDelayUnits         0 Undefined
-          wLockDelay         0x0000
-(snip)
-
-Based on the usb data about manufacturer, SPCA2281B3 is the most likely controller IC
-Manufacturer does not provide link for datasheet nor detailed specs.
-No way to confirm if the firmware supports any other way of getting the sample rate.
-
-Testing patch provides consistent good sound recording quality and volume range.
-
-(snip)
-[  +0.045764] usb 5-1: new high-speed USB device number 2 using xhci_hcd
-[  +0.106290] usb 5-1: New USB device found, idVendor=1bcf, idProduct=2283, bcdDevice=12.17
-[  +0.000006] usb 5-1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-[  +0.000004] usb 5-1: Product: NexiGo N930AF FHD Webcam
-[  +0.000003] usb 5-1: Manufacturer: SHENZHEN AONI ELECTRONIC CO., LTD
-[  +0.000004] usb 5-1: SerialNumber: 20201217011
-[  +0.043700] usb 5-1: set resolution quirk: cval->res = 16
-[  +0.002585] usb 5-1: Found UVC 1.00 device NexiGo N930AF FHD Webcam (1bcf:2283)
-
-Signed-off-by: Christos Skevis <xristos.thes@gmail.com>
-Link: https://lore.kernel.org/r/20231006155330.399393-1-xristos.thes@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20211007202923.2174984-3-bvanassche@acm.org
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: e193b7955dfa ("RDMA/srp: Do not call scsi_done() from srp_abort()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer.c  |    7 +++++++
- sound/usb/quirks.c |    2 ++
- 2 files changed, 9 insertions(+)
+ drivers/scsi/scsi_lib.c  | 5 +++--
+ include/scsi/scsi_cmnd.h | 2 ++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -1204,6 +1204,13 @@ static void volume_control_quirks(struct
- 			cval->res = 16;
- 		}
- 		break;
-+	case USB_ID(0x1bcf, 0x2283): /* NexiGo N930AF FHD Webcam */
-+		if (!strcmp(kctl->id.name, "Mic Capture Volume")) {
-+			usb_audio_info(chip,
-+				"set resolution quirk: cval->res = 16\n");
-+			cval->res = 16;
-+		}
-+		break;
- 	}
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 7bdaa6b757cd4..3dbfd15e6fe79 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1576,7 +1576,7 @@ static blk_status_t scsi_prepare_cmd(struct request *req)
+ 	return scsi_cmd_to_driver(cmd)->init_command(cmd);
  }
  
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2175,6 +2175,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_FIXED_RATE),
- 	DEVICE_FLG(0x0ecb, 0x2069, /* JBL Quantum810 Wireless */
- 		   QUIRK_FLAG_FIXED_RATE),
-+	DEVICE_FLG(0x1bcf, 0x2283, /* NexiGo N930AF FHD Webcam */
-+		   QUIRK_FLAG_GET_SAMPLE_RATE),
+-static void scsi_mq_done(struct scsi_cmnd *cmd)
++void scsi_done(struct scsi_cmnd *cmd)
+ {
+ 	switch (cmd->submitter) {
+ 	case SUBMITTED_BY_BLOCK_LAYER:
+@@ -1594,6 +1594,7 @@ static void scsi_mq_done(struct scsi_cmnd *cmd)
+ 	trace_scsi_dispatch_cmd_done(cmd);
+ 	blk_mq_complete_request(scsi_cmd_to_rq(cmd));
+ }
++EXPORT_SYMBOL(scsi_done);
  
- 	/* Vendor matches */
- 	VENDOR_FLG(0x045e, /* MS Lifecam */
+ static void scsi_mq_put_budget(struct request_queue *q, int budget_token)
+ {
+@@ -1694,7 +1695,7 @@ static blk_status_t scsi_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	scsi_set_resid(cmd, 0);
+ 	memset(cmd->sense_buffer, 0, SCSI_SENSE_BUFFERSIZE);
+ 	cmd->submitter = SUBMITTED_BY_BLOCK_LAYER;
+-	cmd->scsi_done = scsi_mq_done;
++	cmd->scsi_done = scsi_done;
+ 
+ 	blk_mq_start_request(req);
+ 	reason = scsi_dispatch_cmd(cmd);
+diff --git a/include/scsi/scsi_cmnd.h b/include/scsi/scsi_cmnd.h
+index 0823bad7b0c90..e1180771604d7 100644
+--- a/include/scsi/scsi_cmnd.h
++++ b/include/scsi/scsi_cmnd.h
+@@ -172,6 +172,8 @@ static inline struct scsi_driver *scsi_cmd_to_driver(struct scsi_cmnd *cmd)
+ 	return *(struct scsi_driver **)rq->rq_disk->private_data;
+ }
+ 
++void scsi_done(struct scsi_cmnd *cmd);
++
+ extern void scsi_finish_command(struct scsi_cmnd *cmd);
+ 
+ extern void *scsi_kmap_atomic_sg(struct scatterlist *sg, int sg_count,
+-- 
+2.40.1
+
 
 
