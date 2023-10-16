@@ -2,127 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F6437C9D8A
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 04:52:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 536B17C9D95
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 05:04:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231366AbjJPCwg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 15 Oct 2023 22:52:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36324 "EHLO
+        id S230478AbjJPDEn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 15 Oct 2023 23:04:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231314AbjJPCwf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 22:52:35 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2095.outbound.protection.outlook.com [40.107.237.95])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3955C5;
-        Sun, 15 Oct 2023 19:52:31 -0700 (PDT)
+        with ESMTP id S229600AbjJPDEm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 15 Oct 2023 23:04:42 -0400
+Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2119.outbound.protection.outlook.com [40.107.114.119])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B78DFC5
+        for <stable@vger.kernel.org>; Sun, 15 Oct 2023 20:04:39 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=kqSTKr3+fE/CkkfVMZ4LgjOrVXG+M87OSfpr88XpEWm105BXP7j3L/TuG/U5uXpPCAKeE3oGppVKiDRfxo2YWtooLVO2MLeE1pXoFL192jG53zXzJJYk5bUFhoNwOH1/QEN8OUdkfdlGHxN+rEV9mj9KL3vDaHmwmYj5OPj9YPoxYPvSHX2I9GHf1hrE5DrXI2KaBdNhFmgkYt3P4wF/beNg//A2S5ao1gozgadpPUtODEqmV42uXNcpUeuFCCV7XahnPvOE1idBw5vN0g9bpzrOLClYI5J0vfWX7XHQdyJriBtYKx606lwixE1Ico2dqSSo0dzAkwIgzV0RaxunQw==
+ b=ncBx5ZHZoJufR/KMbE5egzsPVCf6Wx3DZKgPupBAGxuxWu/4imbC3VFiOYUFwNZpX8wjBm/xwzTpsBY0fPIb2jkwzt8fe550yODLeCWJMKbeuyr2//SF8ACnhHwBmDh2e/fn6l+WhD39/qWX3Jv0hfunMXI92f80Yc7HKRtXHoS/Ni5xIWUL1f3A9uAeS9a2cpKKdFWU986aIeiteKzTFAgS7u6Nm12zGsWW9y0JloxEKbqMGnkxFla7CVCXns4RhOkz7OH1FnbFc0Mj2WZAB9JfVEX6UI2Zawc6Sw9FmA5MX6sSKwiOhmANoaK/Xe3B9x2h+zbR/tZIyKkZumkjjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fFlL/Dj9GQlR+7Kqfq/QEtuet6VaNfOxK6QNhKupZGA=;
- b=RS+PV4g0p/a7lY5pUad8T3wGlkETOHyDuHa2SpFhpiUmT2mYWuPeVrfENdNyCyDUnhQ727koq5bn97gWWGVyZ9z4mF/Xx7Mzx11ll1RQX43Jg7sux0NnRJtUiQvfJhUvErFBuxagj4V76YDUZRTtIaSgHoS4GIzxl6KuJ3jBZBq7cP+fin4AHMe4sYpSIX8IhhS8FKpU/iQZf6ZlynN2rp392FA4PJu0UlkPxK8WoM1By/DcrTMbQOrlGRcV68kAO2+7QzDkfRQt8WyU5dfYgkgxmJKP8mSnPxrhovJ/12JMySj6sIEtduxCSeCOAraY0M/S/eZ/5aQsnVFJWaDN9w==
+ bh=2oP6aN+Qj3eOx59SoPjjdYyblalibJR1uMdSjCbKt+0=;
+ b=PR6XBwi3lXS3Q3HFfkmj4V1Ppz6iShhdH6ti/IlJ3jy1MQE537xH6QxK6yxEJ1+lDzgAs/9DxXxZiCGVccTOQBMZnjwOx1qAR6pO13Ei9zk0LJtgsVOCZOvLIh2RxaLzQnix01EsFDOPQgo5UD4DO3UoK1jSvbmHdnU9Vef0hIbV2dKg6z6AztOvSa1A2Duv/itMmh3GFqyiQyi6jcwV3jpRTFYfdjC0LBfLRAYAFAQ81HpfufIj8zWl6PFb4RH9Ur7eae/krCQmc+T+v3uyrFEcCH1bpBN2nmkfkv1Xy/XwwkPQwFiPpxtHvF4lgut9/IqYWSgN5ZW7oMPNh3xylw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=amperemail.onmicrosoft.com; dkim=pass
- header.d=amperemail.onmicrosoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fFlL/Dj9GQlR+7Kqfq/QEtuet6VaNfOxK6QNhKupZGA=;
- b=b49oe9p5H2nPaXE320J4ZvhAuGGFgGgTsTg9AHmP0EP7W1JGB6L1Pg+Lffh5dmlQENw/JfvFTLKeA/FZL/Ai6MsuxdiSrrOlrc8SbVLJajewxHSQgCUnC7tt8qzQp+skXqcNseo/G5tJyzmM2KvBtCrYrUS3VBzcHKHd92PaKnY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
-Received: from SA1PR01MB8131.prod.exchangelabs.com (2603:10b6:806:325::8) by
- CH0PR01MB7049.prod.exchangelabs.com (2603:10b6:610:10a::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6886.35; Mon, 16 Oct 2023 02:52:29 +0000
-Received: from SA1PR01MB8131.prod.exchangelabs.com
- ([fe80::5dd0:9039:f27d:884c]) by SA1PR01MB8131.prod.exchangelabs.com
- ([fe80::5dd0:9039:f27d:884c%7]) with mapi id 15.20.6863.043; Mon, 16 Oct 2023
- 02:52:29 +0000
-Message-ID: <4999b3d9-e299-6c0b-0a08-11b33d06a636@amperemail.onmicrosoft.com>
-Date:   Mon, 16 Oct 2023 09:52:17 +0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v1] i2c: designware: Disable TX_EMPTY irq while waiting
- for block length byte
-Content-Language: en-US
-To:     Yann Sionneau <ysionneau@kalrayinc.com>,
-        Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
-        linux-kernel@vger.kernel.org, linux-i2c@vger.kernel.org
-Cc:     patches@amperecomputing.com, jarkko.nikula@linux.intel.com,
-        andriy.shevchenko@linux.intel.com, mika.westerberg@linux.intel.com,
-        jsd@semihalf.com, chuong@os.amperecomputing.com,
-        darren@os.amperecomputing.com, stable@vger.kernel.org
-References: <20230929035356.6435-1-tamnguyenchi@os.amperecomputing.com>
- <9e737b85-95bb-66cd-301c-3a2d1d41f4c8@kalrayinc.com>
-From:   Tam Chi Nguyen <tamnguyenchi@amperemail.onmicrosoft.com>
-In-Reply-To: <9e737b85-95bb-66cd-301c-3a2d1d41f4c8@kalrayinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SG3P274CA0018.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::30)
- To SA1PR01MB8131.prod.exchangelabs.com (2603:10b6:806:325::8)
+ bh=2oP6aN+Qj3eOx59SoPjjdYyblalibJR1uMdSjCbKt+0=;
+ b=YanglMU61p4hQO/y38en/xt8T36x9ZQDFpyZaCFdu4juEFg0bz/2uWldfXdCrm6iks786QJ8M4s+RHd5EsfBFD8XTvzxg++aTKUgsLZnRpJCWzdGJqa9M85wnjmQXGslbsMKRoJwsXIVRZoWtAg2Ho0fmm+0Qnq8IdJBEMSeJCk=
+Received: from TYBPR01MB5341.jpnprd01.prod.outlook.com
+ (2603:1096:404:8028::13) by TYWPR01MB8837.jpnprd01.prod.outlook.com
+ (2603:1096:400:168::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.35; Mon, 16 Oct
+ 2023 03:04:36 +0000
+Received: from TYBPR01MB5341.jpnprd01.prod.outlook.com
+ ([fe80::1dc4:e923:9916:c0f7]) by TYBPR01MB5341.jpnprd01.prod.outlook.com
+ ([fe80::1dc4:e923:9916:c0f7%7]) with mapi id 15.20.6886.034; Mon, 16 Oct 2023
+ 03:04:36 +0000
+From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+To:     Sasha Levin <sashal@kernel.org>
+CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: backport a patch of ravb for v5.10 and v5.4
+Thread-Topic: backport a patch of ravb for v5.10 and v5.4
+Thread-Index: Adn/2cQgEdmlpKFOSjuBOB6BJ3HKHA==
+Date:   Mon, 16 Oct 2023 03:04:36 +0000
+Message-ID: <TYBPR01MB53411662F810BAA815FAF968D8D7A@TYBPR01MB5341.jpnprd01.prod.outlook.com>
+Accept-Language: ja-JP, en-US
+Content-Language: ja-JP
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYBPR01MB5341:EE_|TYWPR01MB8837:EE_
+x-ms-office365-filtering-correlation-id: a1d16695-dd90-4ead-e5e0-08dbcdf4a158
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: fvyef1W3JWPnYEHxarYjcKspffeUWmAfyHqSJFy2pcWtADvRddPEab0WNKVHIUfHzRuqCoTlpLRXHyF3fE+R5rudXSmL1vNHcndg8ly7UAmejGf6Np3ckdt/xZV8gl9S2ajuRPg0PWgCq1wRzkP/4EWDRNMDqR6SAzEK78eEHkIazWxvnGUaWW97x87y5YC/Yl0pkbgZU1+SELtpiQN40Llno9J1ER/WIjwuKzmTX7lztDLjz3iHDUfz24AqGP9ZAu3Py7Yu2l4IeNpmJWo0T74v8uFFclxs1ZvxHnD+G1oP/exr9DkA9kAw3k+dpkpR17KP5mE3ZTuj0ZXmShJTTXZ/xRIhYcogs7kSMY6m+wUaSn9/Bv4G91d3I4eIkI2M09UKkgj9cuUWpKBv3XmmP3tdRnJImrTda8Icrj8/1g+pApSL8/MMaOAHOLppPNBRsPX6Y4PhQMey/itTeNA+mW9H7J9m6R9t4ozY8JbmuGRAGZdINfcJVw5GpBS9fE0FD3v3f90Iz3oEjO5NHQ5C20g5useWdEWpgPEw9GklQ9Q1AnhBUDQearyAMThM4kmjfDBQ1BN7pJZynvoRrhDcV5ErBOqa0MozSjM2vCxY8/4=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYBPR01MB5341.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(376002)(396003)(136003)(39860400002)(346002)(230922051799003)(451199024)(186009)(64100799003)(1800799009)(52536014)(55016003)(38070700005)(8936002)(8676002)(4326008)(71200400001)(33656002)(5660300002)(38100700002)(122000001)(83380400001)(41300700001)(478600001)(86362001)(966005)(2906002)(316002)(7696005)(6506007)(9686003)(66946007)(54906003)(66556008)(66476007)(66446008)(64756008)(76116006)(6916009);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?1q+VpOnNsZOswzNgpeZJ1REwL7lL97WbLMBV/bjaV8rCbchcAfcFs2SFhN3t?=
+ =?us-ascii?Q?8tihjrgM8tx0rt/+hbt5uWxi+YwypP3VtuZPAPajjGsoYadd2tGyeb+BGw1V?=
+ =?us-ascii?Q?JONlUgNvwrE3nHNcX84CmLjcd0jgt0GUXu20XqG8c8XhzIQP2OO4wYQrJcnj?=
+ =?us-ascii?Q?nIgHt91IFVg4A10jqj4tJTvD5O2DbvATWmBetzagcMr8z0oAk9VoTTPL2TWA?=
+ =?us-ascii?Q?2sShQ0pY8I7kKmjyBsbEU9Hk/zBbtT/cyD7vi6YPKnLG4EnBKbmvZZu9crsM?=
+ =?us-ascii?Q?rj+HJqTgrisAeOqJOy6UcXc+098xXtzgkcHRtRagfyFrXKq6Jbv3Q9wlNNyP?=
+ =?us-ascii?Q?NyDMvx8WNCU5TsC0tPbEtBcM2ggcjiFB69+V5mzqvNO8n8ThMWJi9UW32jLn?=
+ =?us-ascii?Q?DawTErUUoGbPNfboQDUpdZ9PC6syrBI919oTmcYkxxRORHBNx9b8gS20Q/86?=
+ =?us-ascii?Q?7T2V8v8xvKfvm1zyUJ0SQx+zCzSkRoS2ZbjXm6kglOypfRllfYyDqZCXZOtp?=
+ =?us-ascii?Q?YqdkM8QXnrfrdib+qPSuHDVJ3XJBT/H952juCCos8vUhUjPn1XFiMcgOWvAn?=
+ =?us-ascii?Q?GonK5CfI8NEH108n92c2aumLU2Mlo3rnym1oxLliru7d2vP+q7CxJGZ1p//f?=
+ =?us-ascii?Q?d4rDDpLsWG4kmDhb4iFhj4S6yMGIEvJ9BPBrtv8VD9qTYW4GTCmy1BS8m0Dr?=
+ =?us-ascii?Q?0xT+37o8qcBU8uX5rV4jdwyfoBABCfgdTLUTKcRMCv/IjBuNlwfX1h3YqK8p?=
+ =?us-ascii?Q?+yoON9gej8PU78omwkOT6d6ISq8t6xFDSv01FcfqvpuKRJK/BFEW3FwfRchk?=
+ =?us-ascii?Q?f7GK8XXtddDdF6UbRfxzBVTq0Gk0oQ+ZvHI0O+9pGuDsfYC3rvLmAc5XGonN?=
+ =?us-ascii?Q?a14F5ShTR79xdEEZLXWxy6zbfzD2b7TYDYLe/mxrbDvc4GmyH2Zl+u7S4ViA?=
+ =?us-ascii?Q?ye00rJQT8i4TXy0VwSJCThD1WzLJeBDFzV5EyDEKJBWGEO+EsoVmbEFoglKm?=
+ =?us-ascii?Q?+kzORiLPPfWEWJfauaEFwbftpfOSuoA7+xhde/oJSJOxzkgoRxFISN6laRpx?=
+ =?us-ascii?Q?auNnllmVr2anD1CyzBEk7bgrD/pFB3voEsuQEmmAAphUR+l/FDDLzz/SLiIn?=
+ =?us-ascii?Q?9RwKK6R2HiOhLVovwD++cVy9p1/c9MVSqwG7muQRrWh9hN8tw05TWxEW2kah?=
+ =?us-ascii?Q?Y5tfXMruktbVhPnsppQfKmnRk7XvrgzHBPKFMHqfjNPmavivq34OLnuADCeg?=
+ =?us-ascii?Q?Bz+DJXpxffutR30kouHIniqfB6FNlzEBIntH4tt1Wn9iJB488IYFEQGLKcEF?=
+ =?us-ascii?Q?8jb/qrM5QodqRDlFUNZ0JA7te/HgnKyHKntXxhvQjKaSPwchh7j5x+9UxI5F?=
+ =?us-ascii?Q?8y47rEoz37Q2hHJFLkANk249afkyA5Zb0WcruED+I//fT+4cBe/0Ozq6aYxz?=
+ =?us-ascii?Q?sNb6iOj4GzUVN9FZnFJcOvaAuIcU2kIv5/oBraBdQjxjeln1oFBXyqkePUk7?=
+ =?us-ascii?Q?leTiIlwapBncslUhKfvjCvDFhYiL6DiaMq7QDAe7Tn3pIfcFst8vFNDLOUWT?=
+ =?us-ascii?Q?Br61736+eNMFUkkjwBw/+Gmipdpzft/uNYfxzAAmq9IMn//UhbNsxmmRIlRv?=
+ =?us-ascii?Q?zD/xGUUG6QoyrqKZYxq8KX647tasWqzY8Pn8yxbN/PWR5vxD0+mE0LUsJbuJ?=
+ =?us-ascii?Q?U/ncWQ=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA1PR01MB8131:EE_|CH0PR01MB7049:EE_
-X-MS-Office365-Filtering-Correlation-Id: 17373cfb-83ae-42f1-f115-08dbcdf2f002
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Yw2xoagi1hvlLCiBE6Xvuu690+7O8BcSgaKXVLznNw4VP762eiWdY+LY66Q33nYYhvdtJWmO5wO8z2KsGPttCVwHkLe5O0REjyvDCeGDSd11veWkmXhKUBO2KFAbd3uZ8m5FgHosmwIo567b1CJ3Dq+BvSF41DdmDx0nBcd8RO0WhBQHH188u19vyAypunIkm4gyZNCwo7H46R0Cc+38NclPetAPDEMmmgFuvcOQCjo2TiRTmFGvnnc3zt1vQbVx6mchEWbYwLI9ya/X2q0VFh375HRyCmNUSpF5ELdn9y3ohn0LLhG9fSepzZTPZQhyOvcC1jwOoGcxcQJmLYCrMv99ZwQDOG5w4QXahkw7krKA4BGA1U3xFFIDtO2jV9QfxlyCttDtUohL+C01mZ53BIqKljKJt7Wlw7xKMArYuPB0Y/sybl0H6u9IkzJ1qo7WdpN/lKUMWyaAzRhGhC8xdFWkZ3cbxHk2KMki72QTbTy4o0ei2ZbNWBJPeDMttbZIf3rREwMWZbk3gR9qVooct/aPIEr/GA1+d12ZZpXep6rvwZIE5BTzmnaOL7F7rv3M/YWyWNCdqmX3VlSK6Z/jyQ5Zc2ZiOVYVTu3I5zwR+5Xgu7JVGV+OGU0OP7aJ0Tjk
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR01MB8131.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(39850400004)(366004)(376002)(346002)(136003)(396003)(230922051799003)(186009)(1800799009)(64100799003)(451199024)(478600001)(6486002)(6666004)(66946007)(110136005)(66556008)(66476007)(316002)(26005)(42882007)(53546011)(2616005)(6506007)(6512007)(4326008)(8676002)(8936002)(2906002)(5660300002)(41300700001)(31696002)(83380400001)(83170400001)(38100700002)(31686004)(43740500002);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N0FCVW5FSUFaRjl5VWhJWGpYdWs5OEZqZUVod29UM0N1WmgvNlB5MmtYT1N1?=
- =?utf-8?B?dExDbURiMnUxUWpoVW5YR2lNelB3d08wMnI0MGk2ZldrTW9LTUVkZjdEZnRv?=
- =?utf-8?B?Qm5ST1FCc0ZzMitnSVRLb3luc0hnUXBhc1hmRytmNm1lSzN1UjltdC9RbmFV?=
- =?utf-8?B?TndIaHdKd3hEQUpwZVdrVVhQeWxFM0FNdk1hUzdSRy9pSm0yOUpDc2NtNFVD?=
- =?utf-8?B?WExLaU1uRzhsM0RRTWEvN0tmMWdSMDg1WkhoalExdmNtbjRxQUNYNGtuL0NZ?=
- =?utf-8?B?SHRnUS9hbjNuZHZuR3B0UDNlejhXSVU1a1ljc2FDbDRyM0dzVWhqazF6ckdj?=
- =?utf-8?B?UmtUZmxQcno2UjV0ajJGL2dkZ1Q3em1BbmJndFB4cVVhRStRckpmajNHb2JN?=
- =?utf-8?B?QVNINWc2OUcxbGUvQVRSRFNhUjM2dUpPTFdiQmUydnh1dlhGc0g0elA1VjVJ?=
- =?utf-8?B?emVYSmh5NUMxZ0k1MytvNFVkK25FWjdGY2llbFc0aUR6WFp4cVJBSXR4dy9Q?=
- =?utf-8?B?M0R2bjUxQWNqcGhjOFZuWTBUaXZxeUY3ajBxeVBnNXFsK1psV0pWdkJWQVpL?=
- =?utf-8?B?WTRWTnBkTVlHTTUwMDNKeS81WmFERHBYZ25Ub2ZoM05sdFJ5UHBubW1wKzhu?=
- =?utf-8?B?dkRXNFBOekpUOUNpWDBqOEpDbjJOSVRIT0xXK1llSzFIcTFMMXJSNmRRMGdV?=
- =?utf-8?B?SUZyRmpxQXk3UmZuSkNXd0hycHZkdVhKRU9RNEUrUWpza3JCM3V0TXY0RG9C?=
- =?utf-8?B?UVNDTG9jeEVrUnJ4bmNzWjQ2S0JzR2hneENEOWs2V1RiMkRBZC8wT1lOQkF0?=
- =?utf-8?B?V1FDTkhmMHd5Vkl5Y3RBbG1ha3k3WE1Cd2s2ZUw5Q0lkKytzSFdnZkZNWU5G?=
- =?utf-8?B?MWtPVXlFeVloY3NycW9BczFueUo5QWNGaGl1U2paLzJycGtPQUhHZENKdWM3?=
- =?utf-8?B?ZnZSRSs0NXp4K0JNVFBEMTExaklLTDQ1cHFLSjl4UkZjN2FPM2NsTUFJd3Vw?=
- =?utf-8?B?aStaeUloeElhdFJUaTZ5SEE2R0RIeVdOdU9iNEp6QWRXOXpnL1Q1cjRUa2pY?=
- =?utf-8?B?QmFmemhma05LY1BDaExQeGwzVTZmYThDeW5La0hIQzU0QlhNNjZ1SC9JaEpB?=
- =?utf-8?B?Y0ltU1pUWjhBQjhxMVdIWjFQOWlwUWQvRFZUSFJTS3V4ZElHT1Jzc1dBU2lQ?=
- =?utf-8?B?K2hzTVo4SGc3SmUrVmxYT0FZOG4wK0R5b3RJTzlZcTQrb3g3R1NlZzIzMVVC?=
- =?utf-8?B?bGQ2VEZVUmJiYTFJWS9NWlMzOGV2L2NqNmJRVFYyczFlVkRTUkQ2dk83SjNk?=
- =?utf-8?B?MjQ0azUwMVlPaitqT3NrWlF1RllaMVZGSmxIQzdaUE5JbGpaS0FwWEV3aHgr?=
- =?utf-8?B?Q1RWNW9xb1VzemFrUWx6UUxsMFZ5ZDE5SXI5V0pUa2wyYlVFNlk4VDFubGlt?=
- =?utf-8?B?V1NtNlJRWHhiZ3NDQnI5eUJ1dFE3Zk9zUHRwdTlSRUxIb0Z0NmtTV0VMdXNp?=
- =?utf-8?B?bHJEK0xRVFgzV2pCV2ZMcGdOaC9aZGF2bTd1LzJ5MHU4bzI4UXRzczRETEhq?=
- =?utf-8?B?ZFVIdDZHQzhHZ1AwTW44TXdnVTkwME9pVlg5elh1T3VHczdEZFNPVzd0ZTV1?=
- =?utf-8?B?cnE3N0w4N1oxeFJjWU5tZFdqZjBZaHdHVEt4ZUt0bXFvRm9ob3VQdVh2S2pR?=
- =?utf-8?B?aTNZaGhpbWQ1aUNsSy9TZ1Y3ZWlsbm1LUHVmazEwWTkxZkVuMDNzT0tqajBr?=
- =?utf-8?B?UnZDQWhtZVdpOS9KZzZvbmJ6NFBIbEo1U0cwa1d3WFJXd2p2SHFza2dXQjdo?=
- =?utf-8?B?U3pSOWVtZ0RUNGVUNCtEZ2xKVmhhNUVRSW9SMWwxWWs1dWNrWnNNNVdsU1Bs?=
- =?utf-8?B?VncyNk5CWGw1eGptZjk0a2NSa0VJR0o0MSs4Wk9tWkpnUEtJNkVBRERpNE1l?=
- =?utf-8?B?SGNoMGJGZUY3WFdGc2tNOGdwdkdsbkF2ellRMEV4UDVmWTFCQkdNK21Qbm05?=
- =?utf-8?B?MjhuL2RFOUFjdXlJRzlHdkRBYzVWUEhWcktyU0FWMGZmWnJhelhhR1c2VjFp?=
- =?utf-8?B?T0JNaHpQa2JuQVY0OW01Zm41RzBMT2hkeUVYUnJCeStSTWxLUHo5WVIwOXVV?=
- =?utf-8?B?bnFHa1N6K1luc0RVYm52VnRzNzZYUXVvU21kRnZPbGdUdmN1ZnNPUnJiYklW?=
- =?utf-8?Q?rpe9xIC3wYjHORiyMuRsR3w96YsInyn8dS7GUs3AdeC/?=
-X-OriginatorOrg: amperemail.onmicrosoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 17373cfb-83ae-42f1-f115-08dbcdf2f002
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR01MB8131.prod.exchangelabs.com
+X-OriginatorOrg: renesas.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2023 02:52:29.6768
+X-MS-Exchange-CrossTenant-AuthSource: TYBPR01MB5341.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1d16695-dd90-4ead-e5e0-08dbcdf4a158
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Oct 2023 03:04:36.5577
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8SJjf0lwiqmaRis2dAnsFfWXVi5D1qOZX71YUuN0mSluVxVV1wk8CVdzGdDihAdyp4bPuVZOyb53ty28Jhoe371/oCUzNzkDBq2lp6algV/AQw74Id+RgKY4ea8eUrFf
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR01MB7049
-X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: xpJVlbV99D1dNHp5usW4jfuVyKFWDewxsbUbZWuPnuDmYrMaWnCNAPOrtnximdCbvpVgw5GMiT7ldLLeMfgZyJoMWrXoRNxKhj7B3OktPa2vxFxOkGezM9KlGmJEXoq8
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB8837
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -131,71 +119,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hello Sasha,
 
-On 10/3/2023 15:11, Yann Sionneau wrote:
-> Hi Tam,
->
-> On 9/29/23 05:53, Tam Nguyen wrote:
->> During SMBus block data read process, we have seen high interrupt rate
->> because of TX_EMPTY irq status while waiting for block length byte (the
->> first data byte after the address phase). The interrupt handler does not
->> do anything because the internal state is kept as 
->> STATUS_WRITE_IN_PROGRESS.
->> Hence, we should disable TX_EMPTY irq until I2C DW receives first data
->> byte from I2C device, then re-enable it.
->>
->> It takes 0.789 ms for host to receive data length from slave.
->> Without the patch, i2c_dw_isr is called 99 times by TX_EMPTY interrupt.
->> And it is none after applying the patch.
->>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Chuong Tran <chuong@os.amperecomputing.com>
->> Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
->> ---
->>   drivers/i2c/busses/i2c-designware-master.c | 13 +++++++++++++
->>   1 file changed, 13 insertions(+)
->>
->> diff --git a/drivers/i2c/busses/i2c-designware-master.c 
->> b/drivers/i2c/busses/i2c-designware-master.c
->> index 55ea91a63382..2152b1f9b27c 100644
->> --- a/drivers/i2c/busses/i2c-designware-master.c
->> +++ b/drivers/i2c/busses/i2c-designware-master.c
->> @@ -462,6 +462,13 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
->>           if (buf_len > 0 || flags & I2C_M_RECV_LEN) {
->>               /* more bytes to be written */
->>               dev->status |= STATUS_WRITE_IN_PROGRESS;
->> +            /*
->> +             * In I2C_FUNC_SMBUS_BLOCK_DATA case, there is no data
->> +             * to send before receiving data length from slave.
->> +             * Disable TX_EMPTY while waiting for data length byte
->> +             */
->> +            if (flags & I2C_M_RECV_LEN)
->> +                intr_mask &= ~DW_IC_INTR_TX_EMPTY;
->>               break;
->>           } else
->>               dev->status &= ~STATUS_WRITE_IN_PROGRESS;
->> @@ -485,6 +492,7 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev, u8 len)
->>   {
->>       struct i2c_msg *msgs = dev->msgs;
->>       u32 flags = msgs[dev->msg_read_idx].flags;
->> +    u32 intr_mask;
->>         /*
->>        * Adjust the buffer length and mask the flag
->> @@ -495,6 +503,11 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev, u8 len)
->>       msgs[dev->msg_read_idx].len = len;
->>       msgs[dev->msg_read_idx].flags &= ~I2C_M_RECV_LEN;
->>   +    /* Re-enable TX_EMPTY interrupt. */
->> +    regmap_read(dev->map, DW_IC_INTR_MASK, &intr_mask);
->> +    intr_mask |= DW_IC_INTR_TX_EMPTY;
->> +    regmap_write(dev->map, DW_IC_INTR_MASK, intr_mask);
->> +
->>       return len;
->>   }
->
-> I tested this patch on Kalray k200 and k200lp boards (Coolidge SoC, 
-> kvx arch). With this patch all our CI pipelines are green.
->
-Thank you for your time to test this patch.
+Thank you for backporting the latest ravb patches for stable.
+I found one of patches [1] was queued into v5.10 and v5.4 [2].
+However, another patch [3] was not queued into them. I guess
+that this is because conflict happens.
 
-> Tested-by: Yann Sionneau <ysionneau@kalrayinc.com>
->
+The reason for the conflict is that the condition in the following
+line is diffetent:
+---
+v5.10 or v5.4:
+	if (priv->chip_id !=3D RCAR_GEN2) {
+
+mainline:
+	if (info->multi_irqs) {
+---
+
+However, this difference can be ignored when backporting. For your
+reference, I wrote a sample patch at the end of this email. Would
+you backport such a patch to v5.10 and v5.4? I would appreciate it
+if you could let me know if there is an official way to request one.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3De6864af61493113558c502b5cd0d754c19b93277
+[2] https://www.spinics.net/lists/stable-commits/msg319990.html
+    https://www.spinics.net/lists/stable-commits/msg320008.html
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/comm=
+it/?id=3D3971442870713de527684398416970cf025b4f89
+
+---
+ drivers/net/ethernet/renesas/ravb_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/etherne=
+t/renesas/ravb_main.c
+index a59da6a11976..f218bacec001 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1706,6 +1706,8 @@ static int ravb_close(struct net_device *ndev)
+ 			of_phy_deregister_fixed_link(np);
+ 	}
+=20
++	cancel_work_sync(&priv->work);
++
+ 	if (priv->chip_id !=3D RCAR_GEN2) {
+ 		free_irq(priv->tx_irqs[RAVB_NC], ndev);
+ 		free_irq(priv->rx_irqs[RAVB_NC], ndev);
+--=20
+2.25.1
+
