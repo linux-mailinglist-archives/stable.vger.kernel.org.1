@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 961917CB29F
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 20:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03E877CB2A8
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 20:41:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231508AbjJPSic (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 14:38:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56570 "EHLO
+        id S231221AbjJPSlm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 14:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229459AbjJPSib (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 14:38:31 -0400
+        with ESMTP id S233068AbjJPSll (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 14:41:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B692A2;
-        Mon, 16 Oct 2023 11:38:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC918C433C9;
-        Mon, 16 Oct 2023 18:38:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68D85EB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 11:41:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 833DAC433C7;
+        Mon, 16 Oct 2023 18:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697481509;
-        bh=YExw+GAqn4opXUVoMjmRPaySlTaXfXqS/xmEwKVX8Yc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QAKxCOyFqPhYhJl8OnqLscZ1iDKHs8vRdivM2NMy8WET5fCShM0n34q0pfLDekhpB
-         j9d0oW3l7YFFgBcBFnE1B9W7nN2WBFxAda0+sL+Q3O71X8NETFx5Oe42HervGmIDMG
-         ZkMvlvcZZtRGibzicPguCquF64hL3BzMrz9VxSFqRe+ntnEb13heIW06G4BbV5ikOx
-         ssLbnHe5OuVyNrUqL6SJDCF/5PAlXS1Ev0/A4fZnbMnNBcQEsnIE1ur2tk3pxZRgfS
-         iUj1G71Tf68Qpx6GCjJ2I5DBtOn7w2NNwmqG/ZMemDlr/CEhiMTpwLJfzdI5wxTxrf
-         p8ECEOk6Wy6TQ==
-From:   SeongJae Park <sj@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, damon@lists.linux.dev,
-        SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.5 000/191] 6.5.8-rc1 review
-Date:   Mon, 16 Oct 2023 18:38:26 +0000
-Message-Id: <20231016183826.98728-1-sj@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
-References: 
+        s=k20201202; t=1697481700;
+        bh=4lLBztM/xqv8MyrTOgkSgKcP2BzPDhrLJvms1pcmm50=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=h8ovcYnalVcdKBkp84orNs+pZE+ZWUzik3f9rQoZqsY+CeBfcdO3Gvcpm9bELelxd
+         JzhNxOQ9djLJZZFhqBYP4xDxiQhTaZe9zR12Gap5QiK9ew/Jh/UTJXtE0UcQgB3adp
+         EXVQ5Bes8tScK2YuGeUXEYiwfXTsFWAAvjIeWvv90/gqZNE+p+1Z7gBCxIA1igriEu
+         zDTQj7ZlKdeGl2yPnwR7JxVfmE6eFgN0p25nQUaFRjrd++Q0D94DRPLugUTZ971oS4
+         OekCDSgosnjbnO+Dv1XPdWseEClHst9u9VB08Jfo1CLeIJQKFUpszeuc1hoNhG7Ltr
+         WNSefOdr+6k9A==
+Date:   Mon, 16 Oct 2023 12:41:37 -0600
+From:   Keith Busch <kbusch@kernel.org>
+To:     Kanchan Joshi <joshi.k@samsung.com>
+Cc:     hch@lst.de, axboe@kernel.dk, sagi@grimberg.me,
+        linux-nvme@lists.infradead.org, gost.dev@samsung.com,
+        vincentfu@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] nvme: remove unprivileged passthrough support
+Message-ID: <ZS2D4VixIYfMQMwg@kbusch-mbp.dhcp.thefacebook.com>
+References: <CGME20231016061151epcas5p1a0e18162b362ffbea754157e99f88995@epcas5p1.samsung.com>
+ <20231016060519.231880-1-joshi.k@samsung.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231016060519.231880-1-joshi.k@samsung.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,65 +49,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
-
-On Mon, 16 Oct 2023 10:39:45 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
-> This is the start of the stable review cycle for the 6.5.8 release.
-> There are 191 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Mon, Oct 16, 2023 at 11:35:19AM +0530, Kanchan Joshi wrote:
+> Passthrough has got a hole that can be exploited to cause kernel memory
+> corruption. This is about making the device do larger DMA into
+> short meta/data buffer owned by kernel [1].
 > 
-> Responses should be made by Wed, 18 Oct 2023 08:39:48 +0000.
-> Anything received after that time might be too late.
+> As a stopgap measure, disable the support of unprivileged passthrough.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.8-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
+> This patch brings back coarse-granular CAP_SYS_ADMIN checks by reverting
+> following patches:
+> 
+> - 7d9d7d59d44 ("nvme: replace the fmode_t argument to the nvme ioctl handlers with a simple bool")
+> - 313c08c72ee ("nvme: don't allow unprivileged passthrough on partitions")
+> - 6f99ac04c46 ("nvme: consult the CSE log page for unprivileged passthrough")
+> - ea43fceea41 ("nvme: allow unprivileged passthrough of Identify Controller")
+> - e4fbcf32c86 ("nvme: identify-namespace without CAP_SYS_ADMIN")
+> - 855b7717f44 ("nvme: fine-granular CAP_SYS_ADMIN for nvme io commands")
+> 
+> [1] https://lore.kernel.org/linux-nvme/20231013051458.39987-1-joshi.k@samsung.com/
+> 
+> CC: stable@vger.kernel.org # 6.2
+> Fixes: 855b7717f44b1 ("nvme: fine-granular CAP_SYS_ADMIN for nvme io commands")
+> 
+> Suggested-by: Christoph Hellwig <hch@lst.de>
+> Signed-off-by: Kanchan Joshi <joshi.k@samsung.com>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
 
-Tested-by: SeongJae Park <sj@kernel.org>
-
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] 128a14e9d36d ("Linux 6.5.8-rc1")
-
-Thanks,
-SJ
-
-[...]
-
----
-
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: debugfs_rm_non_contexts.sh
-ok 8 selftests: damon: sysfs.sh
-ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 10 selftests: damon: reclaim.sh
-ok 11 selftests: damon: lru_sort.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_i386_idle_flag.sh
-ok 13 selftests: damon-tests: build_i386_highpte.sh
-ok 14 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
-_remote_run_corr.sh SUCCESS
+Applied for nvme-6.6.
