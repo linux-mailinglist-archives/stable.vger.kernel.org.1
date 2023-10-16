@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D95D77CA338
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78BE77CA26C
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233254AbjJPJCe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:02:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41334 "EHLO
+        id S232963AbjJPItm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:49:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233374AbjJPJC2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:02:28 -0400
+        with ESMTP id S232770AbjJPItl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D078410E
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:02:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2088DC433C7;
-        Mon, 16 Oct 2023 09:02:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5D9E3
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3757C433BB;
+        Mon, 16 Oct 2023 08:49:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446945;
-        bh=BvQHC1WOOVmR5TDmBJx52GB9LG2QWAqc+bXH2S+v2z0=;
+        s=korg; t=1697446179;
+        bh=Lk1/ElLZNDQJ9YVE7ttJqPou7L4aBrnwsQFpCcP4fuM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qrEU7UV3GC61cVabUMlQRGv2e/T2Yw8JQVAhsWI0nUecKrlVgSI5tB9xLy46uvM6W
-         +qPtDeWOGmreKUMJ35V9AIJwgzlq96268q7xkukxn0P2rcO9KVLyO9dmZhCokz9FUj
-         /n5nIELislPLZwsCcg9BC+cDzCcdqswlmkug7A1g=
+        b=sL4CYTP+LP7sPzbPxoNCEnPwRwyifdBDcSSWInTtPZyg0+sZTZphrc9xIIv7ds3d/
+         9h6QjOZP0tTDQKBZ+f9XAGYshxJa4HnoxYHh6EJn9RDG+D153u/wYZRZJNOjRPeZlo
+         +5jmpKQsw826cHPeG+q4M/FPId5g86bg9SvIFbD4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eddie James <eajames@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 6.1 102/131] powerpc/47x: Fix 47x syscall return crash
-Date:   Mon, 16 Oct 2023 10:41:25 +0200
-Message-ID: <20231016084002.597741280@linuxfoundation.org>
+        patches@lists.linux.dev, ruanjinjie@huawei.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Alexandru Elisei <alexandru.elisei@arm.com>,
+        Amit Daniel Kachhap <amit.kachhap@arm.com>,
+        James Morse <james.morse@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.15 087/102] arm64: consistently pass ESR_ELx to die()
+Date:   Mon, 16 Oct 2023 10:41:26 +0200
+Message-ID: <20231016083956.013270018@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,96 +56,175 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit f0eee815babed70a749d2496a7678be5b45b4c14 upstream.
+commit 0f2cb928a1547ae8f89e80a4b8df2c6c02ae5f96 upstream.
 
-Eddie reported that newer kernels were crashing during boot on his 476
-FSP2 system:
+Currently, bug_handler() and kasan_handler() call die() with '0' as the
+'err' value, whereas die_kernel_fault() passes the ESR_ELx value.
 
-  kernel tried to execute user page (b7ee2000) - exploit attempt? (uid: 0)
-  BUG: Unable to handle kernel instruction fetch
-  Faulting instruction address: 0xb7ee2000
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  BE PAGE_SIZE=4K FSP-2
-  Modules linked in:
-  CPU: 0 PID: 61 Comm: mount Not tainted 6.1.55-d23900f.ppcnf-fsp2 #1
-  Hardware name: ibm,fsp2 476fpe 0x7ff520c0 FSP-2
-  NIP:  b7ee2000 LR: 8c008000 CTR: 00000000
-  REGS: bffebd83 TRAP: 0400   Not tainted (6.1.55-d23900f.ppcnf-fs p2)
-  MSR:  00000030 <IR,DR>  CR: 00001000  XER: 20000000
-  GPR00: c00110ac bffebe63 bffebe7e bffebe88 8c008000 00001000 00000d12 b7ee2000
-  GPR08: 00000033 00000000 00000000 c139df10 48224824 1016c314 10160000 00000000
-  GPR16: 10160000 10160000 00000008 00000000 10160000 00000000 10160000 1017f5b0
-  GPR24: 1017fa50 1017f4f0 1017fa50 1017f740 1017f630 00000000 00000000 1017f4f0
-  NIP [b7ee2000] 0xb7ee2000
-  LR [8c008000] 0x8c008000
-  Call Trace:
-  Instruction dump:
-  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-  ---[ end trace 0000000000000000 ]---
+For consistency, this patch ensures we always pass the ESR_ELx value to
+die(). As this is only called for exceptions taken from kernel mode,
+there should be no user-visible change as a result of this patch.
 
-The problem is in ret_from_syscall where the check for
-icache_44x_need_flush is done. When the flush is needed the code jumps
-out-of-line to do the flush, and then intends to jump back to continue
-the syscall return.
+For UNDEFINED exceptions, I've had to modify do_undefinstr() and its
+callers to pass the ESR_ELx value. In all cases the ESR_ELx value had
+already been read and was available.
 
-However the branch back to label 1b doesn't return to the correct
-location, instead branching back just prior to the return to userspace,
-causing bogus register values to be used by the rfi.
-
-The breakage was introduced by commit 6f76a01173cc
-("powerpc/syscall: implement system call entry/exit logic in C for PPC32") which
-inadvertently removed the "1" label and reused it elsewhere.
-
-Fix it by adding named local labels in the correct locations. Note that
-the return label needs to be outside the ifdef so that CONFIG_PPC_47x=n
-compiles.
-
-Fixes: 6f76a01173cc ("powerpc/syscall: implement system call entry/exit logic in C for PPC32")
-Cc: stable@vger.kernel.org # v5.12+
-Reported-by: Eddie James <eajames@linux.ibm.com>
-Tested-by: Eddie James <eajames@linux.ibm.com>
-Link: https://lore.kernel.org/linuxppc-dev/fdaadc46-7476-9237-e104-1d2168526e72@linux.ibm.com/
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://msgid.link/20231010114750.847794-1-mpe@ellerman.id.au
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Amit Daniel Kachhap <amit.kachhap@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20220913101732.3925290-4-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/entry_32.S |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/arm64/include/asm/exception.h |    2 +-
+ arch/arm64/kernel/entry-common.c   |   14 +++++++-------
+ arch/arm64/kernel/traps.c          |   14 +++++++-------
+ 3 files changed, 15 insertions(+), 15 deletions(-)
 
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -135,8 +135,9 @@ ret_from_syscall:
- 	lis	r4,icache_44x_need_flush@ha
- 	lwz	r5,icache_44x_need_flush@l(r4)
- 	cmplwi	cr0,r5,0
--	bne-	2f
-+	bne-	.L44x_icache_flush
- #endif /* CONFIG_PPC_47x */
-+.L44x_icache_flush_return:
- 	kuep_unlock
- 	lwz	r4,_LINK(r1)
- 	lwz	r5,_CCR(r1)
-@@ -170,10 +171,11 @@ syscall_exit_finish:
- 	b	1b
+--- a/arch/arm64/include/asm/exception.h
++++ b/arch/arm64/include/asm/exception.h
+@@ -58,7 +58,7 @@ asmlinkage void call_on_irq_stack(struct
+ asmlinkage void asm_exit_to_user_mode(struct pt_regs *regs);
  
- #ifdef CONFIG_44x
--2:	li	r7,0
-+.L44x_icache_flush:
-+	li	r7,0
- 	iccci	r0,r0
- 	stw	r7,icache_44x_need_flush@l(r4)
--	b	1b
-+	b	.L44x_icache_flush_return
- #endif  /* CONFIG_44x */
+ void do_mem_abort(unsigned long far, unsigned long esr, struct pt_regs *regs);
+-void do_undefinstr(struct pt_regs *regs);
++void do_undefinstr(struct pt_regs *regs, unsigned long esr);
+ void do_bti(struct pt_regs *regs);
+ void do_debug_exception(unsigned long addr_if_watchpoint, unsigned long esr,
+ 			struct pt_regs *regs);
+--- a/arch/arm64/kernel/entry-common.c
++++ b/arch/arm64/kernel/entry-common.c
+@@ -371,11 +371,11 @@ static void noinstr el1_pc(struct pt_reg
+ 	exit_to_kernel_mode(regs);
+ }
  
- 	.globl	ret_from_fork
+-static void noinstr el1_undef(struct pt_regs *regs)
++static void noinstr el1_undef(struct pt_regs *regs, unsigned long esr)
+ {
+ 	enter_from_kernel_mode(regs);
+ 	local_daif_inherit(regs);
+-	do_undefinstr(regs);
++	do_undefinstr(regs, esr);
+ 	local_daif_mask();
+ 	exit_to_kernel_mode(regs);
+ }
+@@ -417,7 +417,7 @@ asmlinkage void noinstr el1h_64_sync_han
+ 		break;
+ 	case ESR_ELx_EC_SYS64:
+ 	case ESR_ELx_EC_UNKNOWN:
+-		el1_undef(regs);
++		el1_undef(regs, esr);
+ 		break;
+ 	case ESR_ELx_EC_BREAKPT_CUR:
+ 	case ESR_ELx_EC_SOFTSTP_CUR:
+@@ -554,11 +554,11 @@ static void noinstr el0_sp(struct pt_reg
+ 	exit_to_user_mode(regs);
+ }
+ 
+-static void noinstr el0_undef(struct pt_regs *regs)
++static void noinstr el0_undef(struct pt_regs *regs, unsigned long esr)
+ {
+ 	enter_from_user_mode(regs);
+ 	local_daif_restore(DAIF_PROCCTX);
+-	do_undefinstr(regs);
++	do_undefinstr(regs, esr);
+ 	exit_to_user_mode(regs);
+ }
+ 
+@@ -639,7 +639,7 @@ asmlinkage void noinstr el0t_64_sync_han
+ 		el0_pc(regs, esr);
+ 		break;
+ 	case ESR_ELx_EC_UNKNOWN:
+-		el0_undef(regs);
++		el0_undef(regs, esr);
+ 		break;
+ 	case ESR_ELx_EC_BTI:
+ 		el0_bti(regs);
+@@ -755,7 +755,7 @@ asmlinkage void noinstr el0t_32_sync_han
+ 	case ESR_ELx_EC_CP14_MR:
+ 	case ESR_ELx_EC_CP14_LS:
+ 	case ESR_ELx_EC_CP14_64:
+-		el0_undef(regs);
++		el0_undef(regs, esr);
+ 		break;
+ 	case ESR_ELx_EC_CP15_32:
+ 	case ESR_ELx_EC_CP15_64:
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -486,7 +486,7 @@ void arm64_notify_segfault(unsigned long
+ 	force_signal_inject(SIGSEGV, code, addr, 0);
+ }
+ 
+-void do_undefinstr(struct pt_regs *regs)
++void do_undefinstr(struct pt_regs *regs, unsigned long esr)
+ {
+ 	/* check for AArch32 breakpoint instructions */
+ 	if (!aarch32_break_handler(regs))
+@@ -496,7 +496,7 @@ void do_undefinstr(struct pt_regs *regs)
+ 		return;
+ 
+ 	if (!user_mode(regs))
+-		die("Oops - Undefined instruction", regs, 0);
++		die("Oops - Undefined instruction", regs, esr);
+ 
+ 	force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc, 0);
+ }
+@@ -755,7 +755,7 @@ void do_cp15instr(unsigned long esr, str
+ 		hook_base = cp15_64_hooks;
+ 		break;
+ 	default:
+-		do_undefinstr(regs);
++		do_undefinstr(regs, esr);
+ 		return;
+ 	}
+ 
+@@ -770,7 +770,7 @@ void do_cp15instr(unsigned long esr, str
+ 	 * EL0. Fall back to our usual undefined instruction handler
+ 	 * so that we handle these consistently.
+ 	 */
+-	do_undefinstr(regs);
++	do_undefinstr(regs, esr);
+ }
+ NOKPROBE_SYMBOL(do_cp15instr);
+ #endif
+@@ -790,7 +790,7 @@ void do_sysinstr(unsigned long esr, stru
+ 	 * back to our usual undefined instruction handler so that we handle
+ 	 * these consistently.
+ 	 */
+-	do_undefinstr(regs);
++	do_undefinstr(regs, esr);
+ }
+ NOKPROBE_SYMBOL(do_sysinstr);
+ 
+@@ -966,7 +966,7 @@ static int bug_handler(struct pt_regs *r
+ {
+ 	switch (report_bug(regs->pc, regs)) {
+ 	case BUG_TRAP_TYPE_BUG:
+-		die("Oops - BUG", regs, 0);
++		die("Oops - BUG", regs, esr);
+ 		break;
+ 
+ 	case BUG_TRAP_TYPE_WARN:
+@@ -1034,7 +1034,7 @@ static int kasan_handler(struct pt_regs
+ 	 * This is something that might be fixed at some point in the future.
+ 	 */
+ 	if (!recover)
+-		die("Oops - KASAN", regs, 0);
++		die("Oops - KASAN", regs, esr);
+ 
+ 	/* If thread survives, skip over the brk instruction and continue: */
+ 	arm64_skip_faulting_instruction(regs, AARCH64_INSN_SIZE);
 
 
