@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC9D67CAC18
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E42CF7CAC1A
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:49:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232635AbjJPOtY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:49:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35546 "EHLO
+        id S233618AbjJPOt2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:49:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233584AbjJPOtY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:49:24 -0400
+        with ESMTP id S233597AbjJPOt1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:49:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF33F0
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:49:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15F2C433C9;
-        Mon, 16 Oct 2023 14:49:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4AFBB4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:49:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8764C433C7;
+        Mon, 16 Oct 2023 14:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697467762;
-        bh=Y7XqvhHbM9WJ8/QqG9bw8Hi3z6CPYEMg+RhmWDmkj1k=;
+        s=korg; t=1697467765;
+        bh=ihgZXAE+594DZFNUJHEUjY2CJ3tVrqSjM46qNrP9R/w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QZ6t67X2qxnAv43vOoZYvdX89Z6gJ1bwu+dydjOjIbAgJJnFXVMp4zynLFkKD9Cn1
-         HtAdwJL8qF51dAwH+d8WKsjPeZ27uhmU5QdXhdYAhx75X0+0ZmYu08NNarXOEsn9Bk
-         clu1i5DwkFo7EFkUYPCKt8ldCjvX1focNg1zmV/g=
+        b=KvN+O1P8iY3MQtA//d/UxO47szbJS0qwPm1NgFM0bHtZcYGkkRrO2xAnGF7kNRDK0
+         vAwozwlITCx4Frsk3Qx6HpqIjLwhtkNbcoagCBgNmP53dFxVNTMCYtAWm5FxKXDlyS
+         9sPRKtBRdTkcAiYfKM0YURPDpupwElv56zg7Sv38=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
         Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
         Sergey Shtylyov <s.shtylyov@omp.ru>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 060/191] ravb: Fix up dma_free_coherent() call in ravb_remove()
-Date:   Mon, 16 Oct 2023 10:40:45 +0200
-Message-ID: <20231016084016.802646738@linuxfoundation.org>
+Subject: [PATCH 6.5 061/191] ravb: Fix use-after-free issue in ravb_tx_timeout_work()
+Date:   Mon, 16 Oct 2023 10:40:46 +0200
+Message-ID: <20231016084016.825207415@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -58,44 +58,51 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit e6864af61493113558c502b5cd0d754c19b93277 ]
+[ Upstream commit 3971442870713de527684398416970cf025b4f89 ]
 
-In ravb_remove(), dma_free_coherent() should be call after
-unregister_netdev(). Otherwise, this controller is possible to use
-the freed buffer.
+The ravb_stop() should call cancel_work_sync(). Otherwise,
+ravb_tx_timeout_work() is possible to use the freed priv after
+ravb_remove() was called like below:
+
+CPU0			CPU1
+			ravb_tx_timeout()
+ravb_remove()
+unregister_netdev()
+free_netdev(ndev)
+// free priv
+			ravb_tx_timeout_work()
+			// use priv
+
+unregister_netdev() will call .ndo_stop() so that ravb_stop() is
+called. And, after phy_stop() is called, netif_carrier_off()
+is also called. So that .ndo_tx_timeout() will not be called
+after phy_stop().
 
 Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Reported-by: Zheng Wang <zyytlz.wz@163.com>
+Closes: https://lore.kernel.org/netdev/20230725030026.1664873-1-zyytlz.wz@163.com/
 Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20231005011201.14368-2-yoshihiro.shimoda.uh@renesas.com
+Link: https://lore.kernel.org/r/20231005011201.14368-3-yoshihiro.shimoda.uh@renesas.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 4d6b3b7d6abb3..49726183d264b 100644
+index 49726183d264b..ef8f205f8ce1f 100644
 --- a/drivers/net/ethernet/renesas/ravb_main.c
 +++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2892,8 +2892,6 @@ static int ravb_remove(struct platform_device *pdev)
- 	clk_disable_unprepare(priv->gptp_clk);
- 	clk_disable_unprepare(priv->refclk);
+@@ -2168,6 +2168,8 @@ static int ravb_close(struct net_device *ndev)
+ 			of_phy_deregister_fixed_link(np);
+ 	}
  
--	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
--			  priv->desc_bat_dma);
- 	/* Set reset mode */
- 	ravb_write(ndev, CCC_OPC_RESET, CCC);
- 	unregister_netdev(ndev);
-@@ -2901,6 +2899,8 @@ static int ravb_remove(struct platform_device *pdev)
- 		netif_napi_del(&priv->napi[RAVB_NC]);
- 	netif_napi_del(&priv->napi[RAVB_BE]);
- 	ravb_mdio_release(priv);
-+	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
-+			  priv->desc_bat_dma);
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	reset_control_assert(priv->rstc);
++	cancel_work_sync(&priv->work);
++
+ 	if (info->multi_irqs) {
+ 		free_irq(priv->tx_irqs[RAVB_NC], ndev);
+ 		free_irq(priv->rx_irqs[RAVB_NC], ndev);
 -- 
 2.40.1
 
