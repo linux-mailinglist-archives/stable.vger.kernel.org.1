@@ -2,39 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 320F27CAC19
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:49:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15FDA7CAC45
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:52:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233630AbjJPOtP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46494 "EHLO
+        id S231302AbjJPOwW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:52:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233584AbjJPOtL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:49:11 -0400
+        with ESMTP id S229848AbjJPOwW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:52:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D30D9B4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:49:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E50B4C433C9;
-        Mon, 16 Oct 2023 14:49:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AB04AB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:52:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13D8C433C8;
+        Mon, 16 Oct 2023 14:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697467749;
-        bh=PepiDM5cOJNBLkaO0kQJFGNGItszCPsxAQWkD48xwcs=;
+        s=korg; t=1697467940;
+        bh=q0VM/riT0s38dZGFBsSTNN6Xru6X+oiPOxiA2Nd7T3U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HPa/PnmKBrIPXl/bZ4MkyyelKkf+Gn1nlgLXtOIRzkZX2mbQNvXiN49V43/7CqkG6
-         fxBbwpjrfask9hZGzY8s9Rf/pjXHJA90Jqh3Zw/l87kUMctNpx0TkBWi3eWnGxfC7q
-         UXB1YyOwXVh5yd/2T18hax+Y0jnlQunfiz95AoYk=
+        b=k25zbEKJTQMJP9yzk0+02tw9HqtPp/WBM/kC40hdBCSkNpjBKi2q7xVH5c6fGOTUB
+         u6c4gc6MiuO8KYwqlYaONZVj3Z2G/w8iJWF3w7Rq2xBI9B4OF0g2cxdBEhzow6lRo3
+         ggXXiJCzwbFiApXcpUuMiy9Lu8UqmW0prkaXfoLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Halil Pasic <pasic@linux.ibm.com>,
-        Nils Hoppmann <niho@linux.ibm.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>,
-        Dust Li <dust.li@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 083/191] net/smc: Fix pos miscalculation in statistics
-Date:   Mon, 16 Oct 2023 10:41:08 +0200
-Message-ID: <20231016084017.338219288@linuxfoundation.org>
+Subject: [PATCH 6.5 084/191] net: tcp: fix crashes trying to free half-baked MTU probes
+Date:   Mon, 16 Oct 2023 10:41:09 +0200
+Message-ID: <20231016084017.360802920@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -57,89 +54,35 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Nils Hoppmann <niho@linux.ibm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit a950a5921db450c74212327f69950ff03419483a ]
+[ Upstream commit 71c299c711d1f44f0bf04f1fea66baad565240f1 ]
 
-SMC_STAT_PAYLOAD_SUB(_smc_stats, _tech, key, _len, _rc) will calculate
-wrong bucket positions for payloads of exactly 4096 bytes and
-(1 << (m + 12)) bytes, with m == SMC_BUF_MAX - 1.
+tcp_stream_alloc_skb() initializes the skb to use tcp_tsorted_anchor
+which is a union with the destructor. We need to clean that
+TCP-iness up before freeing.
 
-Intended bucket distribution:
-Assume l == size of payload, m == SMC_BUF_MAX - 1.
-
-Bucket 0                : 0 < l <= 2^13
-Bucket n, 1 <= n <= m-1 : 2^(n+12) < l <= 2^(n+13)
-Bucket m                : l > 2^(m+12)
-
-Current solution:
-_pos = fls64((l) >> 13)
-[...]
-_pos = (_pos < m) ? ((l == 1 << (_pos + 12)) ? _pos - 1 : _pos) : m
-
-For l == 4096, _pos == -1, but should be _pos == 0.
-For l == (1 << (m + 12)), _pos == m, but should be _pos == m - 1.
-
-In order to avoid special treatment of these corner cases, the
-calculation is adjusted. The new solution first subtracts the length by
-one, and then calculates the correct bucket by shifting accordingly,
-i.e. _pos = fls64((l - 1) >> 13), l > 0.
-This not only fixes the issues named above, but also makes the whole
-bucket assignment easier to follow.
-
-Same is done for SMC_STAT_RMB_SIZE_SUB(_smc_stats, _tech, k, _len),
-where the calculation of the bucket position is similar to the one
-named above.
-
-Fixes: e0e4b8fa5338 ("net/smc: Add SMC statistics support")
-Suggested-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: Nils Hoppmann <niho@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 736013292e3c ("tcp: let tcp_mtu_probe() build headless packets")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20231010173651.3990234-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_stats.h | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/ipv4/tcp_output.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/smc/smc_stats.h b/net/smc/smc_stats.h
-index aa8928975cc63..9d32058db2b5d 100644
---- a/net/smc/smc_stats.h
-+++ b/net/smc/smc_stats.h
-@@ -92,13 +92,14 @@ do { \
- 	typeof(_smc_stats) stats = (_smc_stats); \
- 	typeof(_tech) t = (_tech); \
- 	typeof(_len) l = (_len); \
--	int _pos = fls64((l) >> 13); \
-+	int _pos; \
- 	typeof(_rc) r = (_rc); \
- 	int m = SMC_BUF_MAX - 1; \
- 	this_cpu_inc((*stats).smc[t].key ## _cnt); \
--	if (r <= 0) \
-+	if (r <= 0 || l <= 0) \
- 		break; \
--	_pos = (_pos < m) ? ((l == 1 << (_pos + 12)) ? _pos - 1 : _pos) : m; \
-+	_pos = fls64((l - 1) >> 13); \
-+	_pos = (_pos <= m) ? _pos : m; \
- 	this_cpu_inc((*stats).smc[t].key ## _pd.buf[_pos]); \
- 	this_cpu_add((*stats).smc[t].key ## _bytes, r); \
- } \
-@@ -138,9 +139,12 @@ while (0)
- do { \
- 	typeof(_len) _l = (_len); \
- 	typeof(_tech) t = (_tech); \
--	int _pos = fls((_l) >> 13); \
-+	int _pos; \
- 	int m = SMC_BUF_MAX - 1; \
--	_pos = (_pos < m) ? ((_l == 1 << (_pos + 12)) ? _pos - 1 : _pos) : m; \
-+	if (_l <= 0) \
-+		break; \
-+	_pos = fls((_l - 1) >> 13); \
-+	_pos = (_pos <= m) ? _pos : m; \
- 	this_cpu_inc((*(_smc_stats)).smc[t].k ## _rmbsize.buf[_pos]); \
- } \
- while (0)
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 37fd9537423f1..a8f58f5e99a77 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2441,6 +2441,7 @@ static int tcp_mtu_probe(struct sock *sk)
+ 
+ 	/* build the payload, and be prepared to abort if this fails. */
+ 	if (tcp_clone_payload(sk, nskb, probe_size)) {
++		tcp_skb_tsorted_anchor_cleanup(nskb);
+ 		consume_skb(nskb);
+ 		return -1;
+ 	}
 -- 
 2.40.1
 
