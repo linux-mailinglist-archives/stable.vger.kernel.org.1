@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 672137CA348
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E2E97CA27E
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:50:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232828AbjJPJD7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:03:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47290 "EHLO
+        id S230093AbjJPIut (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:50:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233131AbjJPJD6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:03:58 -0400
+        with ESMTP id S232803AbjJPIus (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:50:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1979DDE
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:03:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDBFC433C9;
-        Mon, 16 Oct 2023 09:03:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECF07DC
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:50:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28F3C433C8;
+        Mon, 16 Oct 2023 08:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447035;
-        bh=L9rtt5Fh1c15dr3cXWNSQJuTqPv4KJRxdRnKZlVAgvY=;
+        s=korg; t=1697446246;
+        bh=BheVWXfkIQULV4XL1wRKyjNV+reOSuYFRshnIYf5wdA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wpd7O5iXUN4kVQ/XbpBihAwIma7XSF+2pq3UJFmcC985d2khCIuFNupoij8qf3M1W
-         74uE+FDlXJ9J4BSucNHbJ7D/3Bi+uxAikZdsc7/UJA0trwiwR72karoHmwTcV0KNSW
-         0t7AwT+TR3DnGcfra103SsHzoP2McvsgeStIs4Cg=
+        b=jSNn7fbE0rcnsAZN0i017ToaRJDtrsal0nYBm6mY1ISE3FE2/47RbOmBhRdu6ZZFo
+         g4Gw9Yja795QnQZvXwkhGt+zlQWAAFkt5DDatsz9BOughUqZe+Xg72s9wrD/of27Qe
+         W5i6mOmKjJbGKOq71HKoOybjMGUfnwJ9OZyO82rk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sili Luo <rootlab@huawei.com>,
-        Jeremy Kerr <jk@codeconstruct.com.au>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 112/131] mctp: perform route lookups under a RCU read-side lock
-Date:   Mon, 16 Oct 2023 10:41:35 +0200
-Message-ID: <20231016084002.850409519@linuxfoundation.org>
+        patches@lists.linux.dev, ruanjinjie@huawei.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Morse <james.morse@arm.com>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15 097/102] arm64: armv8_deprecated: move aarch32 helper earlier
+Date:   Mon, 16 Oct 2023 10:41:36 +0200
+Message-ID: <20231016083956.283536871@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,88 +54,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 5093bbfc10ab6636b32728e35813cbd79feb063c upstream.
+commit 0c5f416219da3795dc8b33e5bb7865a6b3c4e55c upstream.
 
-Our current route lookups (mctp_route_lookup and mctp_route_lookup_null)
-traverse the net's route list without the RCU read lock held. This means
-the route lookup is subject to preemption, resulting in an potential
-grace period expiry, and so an eventual kfree() while we still have the
-route pointer.
+Subsequent patches will rework the logic in armv8_deprecated.c.
 
-Add the proper read-side critical section locks around the route
-lookups, preventing premption and a possible parallel kfree.
+In preparation for subsequent changes, this patch moves some shared logic
+earlier in the file. This will make subsequent diffs simpler and easier to
+read.
 
-The remaining net->mctp.routes accesses are already under a
-rcu_read_lock, or protected by the RTNL for updates.
+At the same time, drop the `__kprobes` annotation from
+aarch32_check_condition(), as this is only used for traps from compat
+userspace, and has no risk of recursion within kprobes. As this is the
+last kprobes annotation in armve8_deprecated.c, we no longer need to
+include <asm/kprobes.h>.
 
-Based on an analysis from Sili Luo <rootlab@huawei.com>, where
-introducing a delay in the route lookup could cause a UAF on
-simultaneous sendmsg() and route deletion.
-
-Reported-by: Sili Luo <rootlab@huawei.com>
-Fixes: 889b7da23abf ("mctp: Add initial routing framework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/29c4b0e67dc1bf3571df3982de87df90cae9b631.1696837310.git.jk@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20221019144123.612388-9-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mctp/route.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ arch/arm64/kernel/armv8_deprecated.c |   39 +++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -737,6 +737,8 @@ struct mctp_route *mctp_route_lookup(str
- {
- 	struct mctp_route *tmp, *rt = NULL;
+--- a/arch/arm64/kernel/armv8_deprecated.c
++++ b/arch/arm64/kernel/armv8_deprecated.c
+@@ -17,7 +17,6 @@
+ #include <asm/sysreg.h>
+ #include <asm/system_misc.h>
+ #include <asm/traps.h>
+-#include <asm/kprobes.h>
  
-+	rcu_read_lock();
-+
- 	list_for_each_entry_rcu(tmp, &net->mctp.routes, list) {
- 		/* TODO: add metrics */
- 		if (mctp_rt_match_eid(tmp, dnet, daddr)) {
-@@ -747,21 +749,29 @@ struct mctp_route *mctp_route_lookup(str
- 		}
- 	}
+ #define CREATE_TRACE_POINTS
+ #include "trace-events-emulation.h"
+@@ -52,6 +51,25 @@ struct insn_emulation {
+ 	int max;
+ };
  
-+	rcu_read_unlock();
++#define ARM_OPCODE_CONDTEST_FAIL   0
++#define ARM_OPCODE_CONDTEST_PASS   1
++#define ARM_OPCODE_CONDTEST_UNCOND 2
 +
- 	return rt;
++#define	ARM_OPCODE_CONDITION_UNCOND	0xf
++
++static unsigned int aarch32_check_condition(u32 opcode, u32 psr)
++{
++	u32 cc_bits  = opcode >> 28;
++
++	if (cc_bits != ARM_OPCODE_CONDITION_UNCOND) {
++		if ((*aarch32_opcode_cond_checks[cc_bits])(psr))
++			return ARM_OPCODE_CONDTEST_PASS;
++		else
++			return ARM_OPCODE_CONDTEST_FAIL;
++	}
++	return ARM_OPCODE_CONDTEST_UNCOND;
++}
++
+ /*
+  *  Implement emulation of the SWP/SWPB instructions using load-exclusive and
+  *  store-exclusive.
+@@ -138,25 +156,6 @@ static int emulate_swpX(unsigned int add
+ 	return res;
  }
  
- static struct mctp_route *mctp_route_lookup_null(struct net *net,
- 						 struct net_device *dev)
- {
--	struct mctp_route *rt;
-+	struct mctp_route *tmp, *rt = NULL;
-+
-+	rcu_read_lock();
- 
--	list_for_each_entry_rcu(rt, &net->mctp.routes, list) {
--		if (rt->dev->dev == dev && rt->type == RTN_LOCAL &&
--		    refcount_inc_not_zero(&rt->refs))
--			return rt;
-+	list_for_each_entry_rcu(tmp, &net->mctp.routes, list) {
-+		if (tmp->dev->dev == dev && tmp->type == RTN_LOCAL &&
-+		    refcount_inc_not_zero(&tmp->refs)) {
-+			rt = tmp;
-+			break;
-+		}
- 	}
- 
--	return NULL;
-+	rcu_read_unlock();
-+
-+	return rt;
- }
- 
- static int mctp_do_fragment_route(struct mctp_route *rt, struct sk_buff *skb,
+-#define ARM_OPCODE_CONDTEST_FAIL   0
+-#define ARM_OPCODE_CONDTEST_PASS   1
+-#define ARM_OPCODE_CONDTEST_UNCOND 2
+-
+-#define	ARM_OPCODE_CONDITION_UNCOND	0xf
+-
+-static unsigned int __kprobes aarch32_check_condition(u32 opcode, u32 psr)
+-{
+-	u32 cc_bits  = opcode >> 28;
+-
+-	if (cc_bits != ARM_OPCODE_CONDITION_UNCOND) {
+-		if ((*aarch32_opcode_cond_checks[cc_bits])(psr))
+-			return ARM_OPCODE_CONDTEST_PASS;
+-		else
+-			return ARM_OPCODE_CONDTEST_FAIL;
+-	}
+-	return ARM_OPCODE_CONDTEST_UNCOND;
+-}
+-
+ /*
+  * swp_handler logs the id of calling process, dissects the instruction, sanity
+  * checks the memory location, calls emulate_swpX for the actual operation and
 
 
