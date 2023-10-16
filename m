@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FC57CA20E
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA1B7CA2DD
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:56:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231803AbjJPIpU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33376 "EHLO
+        id S232643AbjJPI4R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:56:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232590AbjJPIpT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:45:19 -0400
+        with ESMTP id S232955AbjJPI4R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:56:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B2CDDC
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:45:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C82C433C7;
-        Mon, 16 Oct 2023 08:45:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 120CEAB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:56:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A50C433C7;
+        Mon, 16 Oct 2023 08:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445917;
-        bh=6BtfgaXFzKikIq7aTaLEdFu3oXTHQMNHPrx+En19wio=;
+        s=korg; t=1697446575;
+        bh=A5mls/8dRFPqXILX1eIbb3xsSID2SxyDwrcrQprmz00=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=am3SD5EQ2fKwtkSVzVf5QEAHelN4F0UTycPWDh4WQ6tyN2msOiEiq1SE9ujKQdU5q
-         X5xDcsba0cVLCW/1HTp64OzmdNl68OeVdVWx/STOJeOhIU38HPvKmPz7ovz3t8Y0Ip
-         G6kYIM9nObHFms5bGle13n1ZX8j5xASiT8ELbQK8=
+        b=ACQ0QdmKehEi+gQul3XyQ7QGHgs+pv4LvcxyImNMsF9oych9KvxaqPf/W+iCAPwtY
+         dZiXYNYZSGzfZ//w4sDJjIOGxMv5TTehv0QrtZWtgdZcdx2XKp2OdmnJZ7YFRtFc0S
+         rLqjp1ZxhPcdlNSrvU3h391KIdHxSyKKLi6ACGmg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kory Maincent <kory.maincent@bootlin.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 037/102] ethtool: Fix mod state of verbose no_mask bitset
+        patches@lists.linux.dev,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Zack Rusin <zackr@vmware.com>, Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 6.1 053/131] drm/vmwgfx: fix typo of sizeof argument
 Date:   Mon, 16 Oct 2023 10:40:36 +0200
-Message-ID: <20231016083954.689738238@linuxfoundation.org>
+Message-ID: <20231016084001.390712886@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,106 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kory Maincent <kory.maincent@bootlin.com>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-[ Upstream commit 108a36d07c01edbc5942d27c92494d1c6e4d45a0 ]
+[ Upstream commit 39465cac283702a7d4a507a558db81898029c6d3 ]
 
-A bitset without mask in a _SET request means we want exactly the bits in
-the bitset to be set. This works correctly for compact format but when
-verbose format is parsed, ethnl_update_bitset32_verbose() only sets the
-bits present in the request bitset but does not clear the rest. The commit
-6699170376ab fixes this issue by clearing the whole target bitmap before we
-start iterating. The solution proposed brought an issue with the behavior
-of the mod variable. As the bitset is always cleared the old val will
-always differ to the new val.
+Since size of 'header' pointer and '*header' structure is equal on 64-bit
+machines issue probably didn't cause any wrong behavior. But anyway,
+fixing typo is required.
 
-Fix it by adding a new temporary variable which save the state of the old
-bitmap.
-
-Fixes: 6699170376ab ("ethtool: fix application of verbose no_mask bitset")
-Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231009133645.44503-1-kory.maincent@bootlin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7a73ba7469cb ("drm/vmwgfx: Use TTM handles instead of SIDs as user-space surface handles.")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230905100203.1716731-1-konstantin.meskhidze@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/bitset.c | 32 ++++++++++++++++++++++++++------
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
-index 0515d6604b3b9..883ed9be81f9f 100644
---- a/net/ethtool/bitset.c
-+++ b/net/ethtool/bitset.c
-@@ -431,8 +431,10 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 			      ethnl_string_array_t names,
- 			      struct netlink_ext_ack *extack, bool *mod)
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 58ca9adf09871..7e59469e1cb9f 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1614,7 +1614,7 @@ static int vmw_cmd_tex_state(struct vmw_private *dev_priv,
  {
-+	u32 *orig_bitmap, *saved_bitmap = NULL;
- 	struct nlattr *bit_attr;
- 	bool no_mask;
-+	bool dummy;
- 	int rem;
- 	int ret;
- 
-@@ -448,8 +450,22 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 	}
- 
- 	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
--	if (no_mask)
--		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
-+	if (no_mask) {
-+		unsigned int nwords = DIV_ROUND_UP(nbits, 32);
-+		unsigned int nbytes = nwords * sizeof(u32);
-+
-+		/* The bitmap size is only the size of the map part without
-+		 * its mask part.
-+		 */
-+		saved_bitmap = kcalloc(nwords, sizeof(u32), GFP_KERNEL);
-+		if (!saved_bitmap)
-+			return -ENOMEM;
-+		memcpy(saved_bitmap, bitmap, nbytes);
-+		ethnl_bitmap32_clear(bitmap, 0, nbits, &dummy);
-+		orig_bitmap = saved_bitmap;
-+	} else {
-+		orig_bitmap = bitmap;
-+	}
- 
- 	nla_for_each_nested(bit_attr, tb[ETHTOOL_A_BITSET_BITS], rem) {
- 		bool old_val, new_val;
-@@ -458,13 +474,14 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 		if (nla_type(bit_attr) != ETHTOOL_A_BITSET_BITS_BIT) {
- 			NL_SET_ERR_MSG_ATTR(extack, bit_attr,
- 					    "only ETHTOOL_A_BITSET_BITS_BIT allowed in ETHTOOL_A_BITSET_BITS");
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto out;
- 		}
- 		ret = ethnl_parse_bit(&idx, &new_val, nbits, bit_attr, no_mask,
- 				      names, extack);
- 		if (ret < 0)
--			return ret;
--		old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
-+			goto out;
-+		old_val = orig_bitmap[idx / 32] & ((u32)1 << (idx % 32));
- 		if (new_val != old_val) {
- 			if (new_val)
- 				bitmap[idx / 32] |= ((u32)1 << (idx % 32));
-@@ -474,7 +491,10 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
- 		}
- 	}
- 
--	return 0;
-+	ret = 0;
-+out:
-+	kfree(saved_bitmap);
-+	return ret;
- }
- 
- static int ethnl_compact_sanity_checks(unsigned int nbits,
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSetTextureState);
+ 	SVGA3dTextureState *last_state = (SVGA3dTextureState *)
+-	  ((unsigned long) header + header->size + sizeof(header));
++	  ((unsigned long) header + header->size + sizeof(*header));
+ 	SVGA3dTextureState *cur_state = (SVGA3dTextureState *)
+ 		((unsigned long) header + sizeof(*cmd));
+ 	struct vmw_resource *ctx;
 -- 
 2.40.1
 
