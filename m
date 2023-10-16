@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AEF77CAC56
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 161AD7CAC66
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233616AbjJPOxM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:53:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49286 "EHLO
+        id S233686AbjJPOyH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:54:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233095AbjJPOxL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:53:11 -0400
+        with ESMTP id S233707AbjJPOyG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:54:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3409E8
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:53:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CD3C433C7;
-        Mon, 16 Oct 2023 14:53:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 451FCD9
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:54:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDCBC433CA;
+        Mon, 16 Oct 2023 14:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697467990;
-        bh=/1jEnoi0XQIJrazBkUo7fxDZ+xlzSVBde+vYAefnlgE=;
+        s=korg; t=1697468044;
+        bh=keGMwBChcctvJKXNnHiG7p1O4BKbwInx2+3M/kfTSco=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VcROBUN2gssnPZk629U6gfgqyY9B8vHOZF2DOKVMZFNTdww/7DU5CLUzkOr89aGf4
-         JGR85WR6j03Jmdu7QH/OJBKvWP6kyF4tbiYd+LAtB7oKZxigrGciQYmsQh3FPbcL23
-         v96YYjlMb/LctEbPLksQm6umxUipt7idg3pO2h+8=
+        b=CaHuU/qR1SjTLwElM8QUr+Te47YopgK30T6E6ihs/WLXRQQiA6RYqx5ORsmKuouJV
+         +jeZg+AV0PjtBY0XQxQQlqfhSkxcFJT7p8m2UnzRw9eZJQvMZN8w1mXwyhT0nmhOYX
+         wfyqbGImh9CRT4hWhNuI5Q2W3m5mZaA0mc2xvPGw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-        Chandrakant Minajigi <Chandrakant.Minajigi@analog.com>,
-        Stable@vger.kernel.org,
+        Antoniu Miclaus <antoniu.miclaus@analog.com>,
+        Nuno Sa <nuno.sa@analog.com>, Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.5 113/191] iio: dac: ad3552r: Correct device IDs
-Date:   Mon, 16 Oct 2023 10:41:38 +0200
-Message-ID: <20231016084018.023246847@linuxfoundation.org>
+Subject: [PATCH 6.5 114/191] iio: admv1013: add mixer_vgate corner cases
+Date:   Mon, 16 Oct 2023 10:41:39 +0200
+Message-ID: <20231016084018.045249575@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -56,37 +55,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 9a85653ed3b9a9b7b31d95a34b64b990c3d33ca1 upstream.
+commit 287d998af24326b009ae0956820a3188501b34a0 upstream.
 
-Device IDs for AD3542R and AD3552R were swapped leading to unintended
-collection of DAC output ranges being used for each design.
-Change device ID values so they are correct for each DAC chip.
+Include the corner cases in the computation of the MIXER_VGATE register
+value.
 
-Fixes: 8f2b54824b28 ("drivers:iio:dac: Add AD3552R driver support")
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Reported-by: Chandrakant Minajigi <Chandrakant.Minajigi@analog.com>
-Link: https://lore.kernel.org/r/011f480220799fbfabdd53896f8a2f251ad995ad.1691091324.git.marcelo.schmitt1@gmail.com
+According to the datasheet: The MIXER_VGATE values follows the VCM such
+as, that for a 0V to 1.8V VCM, MIXER_VGATE = 23.89 VCM + 81, and for a >
+1.8V to 2.6V VCM, MIXER_VGATE = 23.75 VCM + 1.25.
+
+Fixes: da35a7b526d9 ("iio: frequency: admv1013: add support for ADMV1013")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20230807143806.6954-1-antoniu.miclaus@analog.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ad3552r.c |    4 ++--
+ drivers/iio/frequency/admv1013.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/dac/ad3552r.c
-+++ b/drivers/iio/dac/ad3552r.c
-@@ -140,8 +140,8 @@ enum ad3552r_ch_vref_select {
- };
+--- a/drivers/iio/frequency/admv1013.c
++++ b/drivers/iio/frequency/admv1013.c
+@@ -351,9 +351,9 @@ static int admv1013_update_mixer_vgate(s
+ 	if (vcm < 0)
+ 		return vcm;
  
- enum ad3542r_id {
--	AD3542R_ID = 0x4008,
--	AD3552R_ID = 0x4009,
-+	AD3542R_ID = 0x4009,
-+	AD3552R_ID = 0x4008,
- };
- 
- enum ad3552r_ch_output_range {
+-	if (vcm < 1800000)
++	if (vcm <= 1800000)
+ 		mixer_vgate = (2389 * vcm / 1000000 + 8100) / 100;
+-	else if (vcm > 1800000 && vcm < 2600000)
++	else if (vcm > 1800000 && vcm <= 2600000)
+ 		mixer_vgate = (2375 * vcm / 1000000 + 125) / 100;
+ 	else
+ 		return -EINVAL;
 
 
