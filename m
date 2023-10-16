@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A49757CA209
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:44:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 512297CA2D8
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:55:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230331AbjJPIoy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:44:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56336 "EHLO
+        id S232787AbjJPIzr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:55:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232568AbjJPIox (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:44:53 -0400
+        with ESMTP id S230418AbjJPIzq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:55:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98033E3
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:44:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B16C433CB;
-        Mon, 16 Oct 2023 08:44:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E4C4DE
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:55:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DD0C433C7;
+        Mon, 16 Oct 2023 08:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445891;
-        bh=lfDWf1QgwA4e6rvs5r06fw0PTLvSwX6kcy1BrSeQ8O4=;
+        s=korg; t=1697446543;
+        bh=ChXtLErRlVRgVJ8YSAI2dgr7DdVA9YiDGAZ09Iyy6gE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YmcGNNGvpzxPPwbG60iRScveQdSiEhQM0gRBoQQRteiyCFqfEoPCJcxCdHJkyJdAe
-         j8rrBXPBmWejyubU2WWqNQoRrviCcBDGDEkbylfoxGO99p9TZYhLfuSHdCYdXDBfc5
-         YWzSaGeaK3vL7vkJ4SiEb8ciFXfE3i1L+fWJ6/e4=
+        b=VjTz+5RxtrjLZvX6IL/ZfJC9opP1WPrUEVRbRG852xEgQkPB1pXt/jB0MREFeMtqt
+         qWurP1yQhBd48jV1rBrM84tU/kQV0uzBhz07g+W0qPkq5fxuGQ9mfogRdgg3WFEFTQ
+         RREIE8INBlxOHGNxB7XB6evfU1NAtVSW5eJL5Y0I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/102] net: macsec: indicate next pn update when offloading
+Subject: [PATCH 6.1 048/131] ieee802154: ca8210: Fix a potential UAF in ca8210_probe
 Date:   Mon, 16 Oct 2023 10:40:31 +0200
-Message-ID: <20231016083954.556834789@linuxfoundation.org>
+Message-ID: <20231016084001.267991955@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,75 +50,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 0412cc846a1ef38697c3f321f9b174da91ecd3b5 ]
+[ Upstream commit f990874b1c98fe8e57ee9385669f501822979258 ]
 
-Indicate next PN update using update_pn flag in macsec_context.
-Offloaded MACsec implementations does not know whether or not the
-MACSEC_SA_ATTR_PN attribute was passed for an SA update and assume
-that next PN should always updated, but this is not always true.
+If of_clk_add_provider() fails in ca8210_register_ext_clock(),
+it calls clk_unregister() to release priv->clk and returns an
+error. However, the caller ca8210_probe() then calls ca8210_remove(),
+where priv->clk is freed again in ca8210_unregister_ext_clock(). In
+this case, a use-after-free may happen in the second time we call
+clk_unregister().
 
-The PN can be reset to its initial value using the following command:
-$ ip macsec set macsec0 tx sa 0 off #octeontx2-pf case
+Fix this by removing the first clk_unregister(). Also, priv->clk could
+be an error code on failure of clk_register_fixed_rate(). Use
+IS_ERR_OR_NULL to catch this case in ca8210_unregister_ext_clock().
 
-Or, the update PN command will succeed even if the driver does not support
-PN updates.
-$ ip macsec set macsec0 tx sa 0 pn 1 on #mscc phy driver case
-
-Comparing the initial PN with the new PN value is not a solution. When
-the user updates the PN using its initial value the command will
-succeed, even if the driver does not support it. Like this:
-$ ip macsec add macsec0 tx sa 0 pn 1 on key 00 \
-ead3664f508eb06c40ac7104cdae4ce5
-$ ip macsec set macsec0 tx sa 0 pn 1 on #mlx5 case
-
-Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: e0a8c918daa5 ("net: phy: mscc: macsec: reject PN update requests")
+Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Message-ID: <20231007033049.22353-1-dinghao.liu@zju.edu.cn>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 2 ++
- include/net/macsec.h | 1 +
- 2 files changed, 3 insertions(+)
+ drivers/net/ieee802154/ca8210.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 21f41f25a8abe..07c822c301185 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -2410,6 +2410,7 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index d0b5129439ed6..c2201e0adc46c 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -2740,7 +2740,6 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
+ 	struct device_node *np = spi->dev.of_node;
+ 	struct ca8210_priv *priv = spi_get_drvdata(spi);
+ 	struct ca8210_platform_data *pdata = spi->dev.platform_data;
+-	int ret = 0;
  
- 		ctx.sa.assoc_num = assoc_num;
- 		ctx.sa.tx_sa = tx_sa;
-+		ctx.sa.update_pn = !!prev_pn.full64;
- 		ctx.secy = secy;
+ 	if (!np)
+ 		return -EFAULT;
+@@ -2757,18 +2756,8 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
+ 		dev_crit(&spi->dev, "Failed to register external clk\n");
+ 		return PTR_ERR(priv->clk);
+ 	}
+-	ret = of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
+-	if (ret) {
+-		clk_unregister(priv->clk);
+-		dev_crit(
+-			&spi->dev,
+-			"Failed to register external clock as clock provider\n"
+-		);
+-	} else {
+-		dev_info(&spi->dev, "External clock set as clock provider\n");
+-	}
  
- 		ret = macsec_offload(ops->mdo_upd_txsa, &ctx);
-@@ -2503,6 +2504,7 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
+-	return ret;
++	return of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
+ }
  
- 		ctx.sa.assoc_num = assoc_num;
- 		ctx.sa.rx_sa = rx_sa;
-+		ctx.sa.update_pn = !!prev_pn.full64;
- 		ctx.secy = secy;
+ /**
+@@ -2780,8 +2769,8 @@ static void ca8210_unregister_ext_clock(struct spi_device *spi)
+ {
+ 	struct ca8210_priv *priv = spi_get_drvdata(spi);
  
- 		ret = macsec_offload(ops->mdo_upd_rxsa, &ctx);
-diff --git a/include/net/macsec.h b/include/net/macsec.h
-index d6fa6b97f6efa..0dc4303329391 100644
---- a/include/net/macsec.h
-+++ b/include/net/macsec.h
-@@ -240,6 +240,7 @@ struct macsec_context {
- 	struct macsec_secy *secy;
- 	struct macsec_rx_sc *rx_sc;
- 	struct {
-+		bool update_pn;
- 		unsigned char assoc_num;
- 		u8 key[MACSEC_MAX_KEY_LEN];
- 		union {
+-	if (!priv->clk)
+-		return
++	if (IS_ERR_OR_NULL(priv->clk))
++		return;
+ 
+ 	of_clk_del_provider(spi->dev.of_node);
+ 	clk_unregister(priv->clk);
 -- 
 2.40.1
 
