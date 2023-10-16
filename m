@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 852F77CAC7C
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:55:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22EEF7CAC89
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:56:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233757AbjJPOzW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:55:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35560 "EHLO
+        id S233674AbjJPO4H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:56:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233752AbjJPOzV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:55:21 -0400
+        with ESMTP id S233786AbjJPO4E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:56:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1DB6B4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:55:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41CCC433C7;
-        Mon, 16 Oct 2023 14:55:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BE54E8
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:56:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECFDC433C8;
+        Mon, 16 Oct 2023 14:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697468119;
-        bh=6B02Pn2IJViyGc81ef/UjWQwdkpbdrLfRs8QKQKDL2g=;
+        s=korg; t=1697468161;
+        bh=OunGrd/6mPzJfsaqQLPImuoYP8kFD7O7gVliSpyMXgI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ClBGYwGgUWleOW8kAmAxo1+2YSddqIw1gpccgYr5FcibxNqIpx+RiKrHAimA7/F31
-         5uHnZvhC1tgBGVais3pJ8OqiEsEIVACjas9xcbyVc25EXbsyIkcLRm2VRx41OlFyZR
-         1nENRFoIUczMCL7Ae3khdJKZ1XAO/EEk65ih52iY=
+        b=gv2wFcxpQBXKOnVHwX0VjjIwINADG7mvSGAGD+0X8PIrgxGzEzK94lmvHwoOntfj7
+         sxG+J3ke0ju/Cxo+BzWw/9T70uurFdfAeYhDOe/B0jxmABJ/zKyH+Mmve0y5gmUMAb
+         ivaTGW1xr3crq+PQSZlmUwJR3/hNxf+72vYjGAGA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Naveen N Rao <naveen@kernel.org>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.5 144/191] powerpc/pseries: Fix STK_PARAM access in the hcall tracing code
-Date:   Mon, 16 Oct 2023 10:42:09 +0200
-Message-ID: <20231016084018.744228426@linuxfoundation.org>
+        patches@lists.linux.dev, Eddie James <eajames@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 6.5 145/191] powerpc/47x: Fix 47x syscall return crash
+Date:   Mon, 16 Oct 2023 10:42:10 +0200
+Message-ID: <20231016084018.768009643@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -39,6 +39,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,131 +55,92 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 3b678768c0458e6d8d45fadf61423e44effed4cb upstream.
+commit f0eee815babed70a749d2496a7678be5b45b4c14 upstream.
 
-In powerpc pseries system, below behaviour is observed while
-enabling tracing on hcall:
-  # cd /sys/kernel/debug/tracing/
-  # cat events/powerpc/hcall_exit/enable
-  0
-  # echo 1 > events/powerpc/hcall_exit/enable
+Eddie reported that newer kernels were crashing during boot on his 476
+FSP2 system:
 
-  # ls
-  -bash: fork: Bad address
-
-Above is from power9 lpar with latest kernel. Past this, softlockup
-is observed. Initially while attempting via perf_event_open to
-use "PERF_TYPE_TRACEPOINT", kernel panic was observed.
-
-perf config used:
-================
-  memset(&pe[1],0,sizeof(struct perf_event_attr));
-  pe[1].type=PERF_TYPE_TRACEPOINT;
-  pe[1].size=96;
-  pe[1].config=0x26ULL; /* 38 raw_syscalls/sys_exit */
-  pe[1].sample_type=0; /* 0 */
-  pe[1].read_format=PERF_FORMAT_TOTAL_TIME_ENABLED|PERF_FORMAT_TOTAL_TIME_RUNNING|PERF_FORMAT_ID|PERF_FORMAT_GROUP|0x10ULL; /* 1f */
-  pe[1].inherit=1;
-  pe[1].precise_ip=0; /* arbitrary skid */
-  pe[1].wakeup_events=0;
-  pe[1].bp_type=HW_BREAKPOINT_EMPTY;
-  pe[1].config1=0x1ULL;
-
-Kernel panic logs:
-==================
-
-  Kernel attempted to read user page (8) - exploit attempt? (uid: 0)
-  BUG: Kernel NULL pointer dereference on read at 0x00000008
-  Faulting instruction address: 0xc0000000004c2814
+  kernel tried to execute user page (b7ee2000) - exploit attempt? (uid: 0)
+  BUG: Unable to handle kernel instruction fetch
+  Faulting instruction address: 0xb7ee2000
   Oops: Kernel access of bad area, sig: 11 [#1]
-  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-  Modules linked in: nfnetlink bonding tls rfkill sunrpc dm_service_time dm_multipath pseries_rng xts vmx_crypto xfs libcrc32c sd_mod t10_pi crc64_rocksoft crc64 sg ibmvfc scsi_transport_fc ibmveth dm_mirror dm_region_hash dm_log dm_mod fuse
-  CPU: 0 PID: 1431 Comm: login Not tainted 6.4.0+ #1
-  Hardware name: IBM,8375-42A POWER9 (raw) 0x4e0202 0xf000005 of:IBM,FW950.30 (VL950_892) hv:phyp pSeries
-  NIP page_remove_rmap+0x44/0x320
-  LR  wp_page_copy+0x384/0xec0
+  BE PAGE_SIZE=4K FSP-2
+  Modules linked in:
+  CPU: 0 PID: 61 Comm: mount Not tainted 6.1.55-d23900f.ppcnf-fsp2 #1
+  Hardware name: ibm,fsp2 476fpe 0x7ff520c0 FSP-2
+  NIP:  b7ee2000 LR: 8c008000 CTR: 00000000
+  REGS: bffebd83 TRAP: 0400   Not tainted (6.1.55-d23900f.ppcnf-fs p2)
+  MSR:  00000030 <IR,DR>  CR: 00001000  XER: 20000000
+  GPR00: c00110ac bffebe63 bffebe7e bffebe88 8c008000 00001000 00000d12 b7ee2000
+  GPR08: 00000033 00000000 00000000 c139df10 48224824 1016c314 10160000 00000000
+  GPR16: 10160000 10160000 00000008 00000000 10160000 00000000 10160000 1017f5b0
+  GPR24: 1017fa50 1017f4f0 1017fa50 1017f740 1017f630 00000000 00000000 1017f4f0
+  NIP [b7ee2000] 0xb7ee2000
+  LR [8c008000] 0x8c008000
   Call Trace:
-    0xc00000001416e400 (unreliable)
-    wp_page_copy+0x384/0xec0
-    __handle_mm_fault+0x9d4/0xfb0
-    handle_mm_fault+0xf0/0x350
-    ___do_page_fault+0x48c/0xc90
-    hash__do_page_fault+0x30/0x70
-    do_hash_fault+0x1a4/0x330
-    data_access_common_virt+0x198/0x1f0
-   --- interrupt: 300 at 0x7fffae971abc
+  Instruction dump:
+  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+  ---[ end trace 0000000000000000 ]---
 
-git bisect tracked this down to below commit:
-'commit baa49d81a94b ("powerpc/pseries: hvcall stack frame overhead")'
+The problem is in ret_from_syscall where the check for
+icache_44x_need_flush is done. When the flush is needed the code jumps
+out-of-line to do the flush, and then intends to jump back to continue
+the syscall return.
 
-This commit changed STACK_FRAME_OVERHEAD (112 ) to
-STACK_FRAME_MIN_SIZE (32 ) since 32 bytes is the minimum size
-for ELFv2 stack. With the latest kernel, when running on ELFv2,
-STACK_FRAME_MIN_SIZE is used to allocate stack size.
+However the branch back to label 1b doesn't return to the correct
+location, instead branching back just prior to the return to userspace,
+causing bogus register values to be used by the rfi.
 
-During plpar_hcall_trace, first call is made to HCALL_INST_PRECALL
-which saves the registers and allocates new stack frame. In the
-plpar_hcall_trace code, STK_PARAM is accessed at two places.
-  1. To save r4: std     r4,STK_PARAM(R4)(r1)
-  2. To access r4 back: ld      r12,STK_PARAM(R4)(r1)
+The breakage was introduced by commit 6f76a01173cc
+("powerpc/syscall: implement system call entry/exit logic in C for PPC32") which
+inadvertently removed the "1" label and reused it elsewhere.
 
-HCALL_INST_PRECALL precall allocates a new stack frame. So all
-the stack parameter access after the precall, needs to be accessed
-with +STACK_FRAME_MIN_SIZE. So the store instruction should be:
-  std     r4,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1)
+Fix it by adding named local labels in the correct locations. Note that
+the return label needs to be outside the ifdef so that CONFIG_PPC_47x=n
+compiles.
 
-If the "std" is not updated with STACK_FRAME_MIN_SIZE, we will
-end up with overwriting stack contents and cause corruption.
-But instead of updating 'std', we can instead remove it since
-HCALL_INST_PRECALL already saves it to the correct location.
-
-similarly load instruction should be:
-  ld      r12,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1)
-
-Fix the load instruction to correctly access the stack parameter
-with +STACK_FRAME_MIN_SIZE and remove the store of r4 since the
-precall saves it correctly.
-
-Cc: stable@vger.kernel.org # v6.2+
-Fixes: baa49d81a94b ("powerpc/pseries: hvcall stack frame overhead")
-Co-developed-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Fixes: 6f76a01173cc ("powerpc/syscall: implement system call entry/exit logic in C for PPC32")
+Cc: stable@vger.kernel.org # v5.12+
+Reported-by: Eddie James <eajames@linux.ibm.com>
+Tested-by: Eddie James <eajames@linux.ibm.com>
+Link: https://lore.kernel.org/linuxppc-dev/fdaadc46-7476-9237-e104-1d2168526e72@linux.ibm.com/
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230929172337.7906-1-atrajeev@linux.vnet.ibm.com
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://msgid.link/20231010114750.847794-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/hvCall.S |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/powerpc/kernel/entry_32.S |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/hvCall.S
-+++ b/arch/powerpc/platforms/pseries/hvCall.S
-@@ -185,7 +185,6 @@ _GLOBAL_TOC(plpar_hcall)
- plpar_hcall_trace:
- 	HCALL_INST_PRECALL(R5)
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -138,8 +138,9 @@ ret_from_syscall:
+ 	lis	r4,icache_44x_need_flush@ha
+ 	lwz	r5,icache_44x_need_flush@l(r4)
+ 	cmplwi	cr0,r5,0
+-	bne-	2f
++	bne-	.L44x_icache_flush
+ #endif /* CONFIG_PPC_47x */
++.L44x_icache_flush_return:
+ 	kuep_unlock
+ 	lwz	r4,_LINK(r1)
+ 	lwz	r5,_CCR(r1)
+@@ -173,10 +174,11 @@ syscall_exit_finish:
+ 	b	1b
  
--	std	r4,STK_PARAM(R4)(r1)
- 	mr	r0,r4
+ #ifdef CONFIG_44x
+-2:	li	r7,0
++.L44x_icache_flush:
++	li	r7,0
+ 	iccci	r0,r0
+ 	stw	r7,icache_44x_need_flush@l(r4)
+-	b	1b
++	b	.L44x_icache_flush_return
+ #endif  /* CONFIG_44x */
  
- 	mr	r4,r5
-@@ -197,7 +196,7 @@ plpar_hcall_trace:
- 
- 	HVSC
- 
--	ld	r12,STK_PARAM(R4)(r1)
-+	ld	r12,STACK_FRAME_MIN_SIZE+STK_PARAM(R4)(r1)
- 	std	r4,0(r12)
- 	std	r5,8(r12)
- 	std	r6,16(r12)
-@@ -297,7 +296,6 @@ _GLOBAL_TOC(plpar_hcall9)
- plpar_hcall9_trace:
- 	HCALL_INST_PRECALL(R5)
- 
--	std	r4,STK_PARAM(R4)(r1)
- 	mr	r0,r4
- 
- 	mr	r4,r5
+ 	.globl	ret_from_fork
 
 
