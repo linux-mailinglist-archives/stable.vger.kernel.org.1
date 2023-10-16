@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3999B7CA263
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 038C27CA268
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232867AbjJPItV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:49:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40162 "EHLO
+        id S232912AbjJPItb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:49:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232785AbjJPItU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:20 -0400
+        with ESMTP id S232915AbjJPIt3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACCBEDC
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68211C433C8;
-        Mon, 16 Oct 2023 08:49:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B769CB4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04760C433CB;
+        Mon, 16 Oct 2023 08:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446159;
-        bh=sN4LaBx+uVWuWRvBUGQ4o4NvCDB+QURU76RYTP0yumM=;
+        s=korg; t=1697446165;
+        bh=OvCtJMTKeMVdE3fTnUbkWB+VrjDZ2BRmlsUfSwhKPWA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U7WbVom4DgMuurYTtfC5Ijf9HgBqLISwkCvP6Ql8HRue3QhhER7u7ahyLuvBrvvo1
-         cq2Sj8AFgUlSRx+5nKRsGpU/rgM3m6H/aOgyqV2MKKfHNobr0CLS0VTLw561yXZw4P
-         q6fs5nuxrmLY6no2M0y/ys6lUYabc4OMmfJL1Mr4=
+        b=xzDNdeCbum2c5cIFsJceDynrzoq8SFontV/hUNKnPM50+ueTC4RNCegtu3U422hKd
+         pNnmL3116l7i5yy8SqpNLbT2qzPXfHgLGNft9vzwM17w/dOjAmekRoCPLUeATfJxuO
+         8AjhZqBm8nZv5gbC3ZB+ttFOIepvbwdGb1NC3z+c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Zangerl <az@breathe-safe.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 057/102] iio: pressure: ms5611: ms5611_prom_is_valid false negative bug
-Date:   Mon, 16 Oct 2023 10:40:56 +0200
-Message-ID: <20231016083955.219725433@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 058/102] drm/amdgpu: add missing NULL check
+Date:   Mon, 16 Oct 2023 10:40:57 +0200
+Message-ID: <20231016083955.246359336@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
 References: <20231016083953.689300946@linuxfoundation.org>
@@ -39,6 +39,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,50 +55,32 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Alexander Zangerl <az@breathe-safe.com>
+From: Christian König <christian.koenig@amd.com>
 
-commit fd39d9668f2ce9f4b05ad55e8c8d80c098073e0b upstream.
+commit ff89f064dca38e2203790bf876cc7756b8ab2961 upstream.
 
-The ms5611 driver falsely rejects lots of MS5607-02BA03-50 chips
-with "PROM integrity check failed" because it doesn't accept a prom crc
-value of zero as legitimate.
+bo->tbo.resource can easily be NULL here.
 
-According to the datasheet for this chip (and the manufacturer's
-application note about the PROM CRC), none of the possible values for the
-CRC are excluded - but the current code in ms5611_prom_is_valid() ends with
-
-return crc_orig != 0x0000 && crc == crc_orig
-
-Discussed with the driver author (Tomasz Duszynski) and he indicated that
-at that time (2015) he was dealing with some faulty chip samples which
-returned blank data under some circumstances and/or followed example code
-which indicated CRC zero being bad.
-
-As far as I can tell this exception should not be applied anymore; We've
-got a few hundred custom boards here with this chip where large numbers
-of the prom have a legitimate CRC value 0, and do work fine, but which the
-current driver code wrongly rejects.
-
-Signed-off-by: Alexander Zangerl <az@breathe-safe.com>
-Fixes: c0644160a8b5 ("iio: pressure: add support for MS5611 pressure and temperature sensor")
-Link: https://lore.kernel.org/r/2535-1695168070.831792@Ze3y.dhYT.s3fx
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2902
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/ms5611_core.c |    2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/pressure/ms5611_core.c
-+++ b/drivers/iio/pressure/ms5611_core.c
-@@ -76,7 +76,7 @@ static bool ms5611_prom_is_valid(u16 *pr
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
+@@ -221,7 +221,7 @@ static inline bool amdgpu_bo_in_cpu_visi
+ 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
+ 	struct amdgpu_res_cursor cursor;
  
- 	crc = (crc >> 12) & 0x000F;
+-	if (bo->tbo.resource->mem_type != TTM_PL_VRAM)
++	if (!bo->tbo.resource || bo->tbo.resource->mem_type != TTM_PL_VRAM)
+ 		return false;
  
--	return crc_orig != 0x0000 && crc == crc_orig;
-+	return crc == crc_orig;
- }
- 
- static int ms5611_read_prom(struct iio_dev *indio_dev)
+ 	amdgpu_res_first(bo->tbo.resource, 0, amdgpu_bo_size(bo), &cursor);
 
 
