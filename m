@@ -2,100 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6C6E7CA6D5
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 13:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 826597CA6DF
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 13:41:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231442AbjJPLkL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 07:40:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38832 "EHLO
+        id S233099AbjJPLlM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 07:41:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230343AbjJPLkK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 07:40:10 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA0FE1;
-        Mon, 16 Oct 2023 04:40:09 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3af5b5d7f16so2690949b6e.0;
-        Mon, 16 Oct 2023 04:40:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697456408; x=1698061208;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tE3/kt7VPkaFdquQYklg8hmYnVUnseOhnUoih4hEER0=;
-        b=niR7CETXWTyqnpbNTQM9R9+3O+nRq6tX0tsjHqc2tVbuAFnQi+cOo9rrR2OLF/pQ46
-         TJUuRlGdyNA3XTF2M+IVi/VGLj6Z8YO3sMCaUpiI0zTW1YoYj9z/BcsICKblFfN05X5H
-         AjpJiWb3Iv28bNQk/wS3Zs6x/YqEsLfNFHiBWDW6fTxG07ddinrh5kSnCJU7V0X40/w0
-         21MhQkYkmnudyJMsAI6TsTnQYr10QelHYtWE/JgQvgy9inaCzwK5sY+Twlhyoc8b5A+1
-         VYyzDlZRSiWT/7auq/hyn/i66KxiIQkIXa1ypWBVyW4z0cu3tDC4mRFShE3q8yoxmSts
-         4lpw==
-X-Gm-Message-State: AOJu0YwFc7pb36RIyBJcIwaA9nspD8RUVxMQ/xYZJISiuLanKn8GDcW0
-        ZpS+FgQ38Q3QDMheovVEjbU=
-X-Google-Smtp-Source: AGHT+IHxDYPzvNS3lWU1QsDc586Js06uUe+5oigcPknJIMbnR2FqVnBRnij03C711FQbvHhcLy3Xug==
-X-Received: by 2002:a05:6808:1582:b0:3af:7db8:21ad with SMTP id t2-20020a056808158200b003af7db821admr43196719oiw.33.1697456408615;
-        Mon, 16 Oct 2023 04:40:08 -0700 (PDT)
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id f18-20020aa79d92000000b006bc3e8f58besm3726935pfq.56.2023.10.16.04.40.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Oct 2023 04:40:08 -0700 (PDT)
-Date:   Mon, 16 Oct 2023 08:40:00 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-        s=2023; t=1697456403;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=tE3/kt7VPkaFdquQYklg8hmYnVUnseOhnUoih4hEER0=;
-        b=Tly0eZsWl0PYDKWvqPHKOAbv1/wJr0yDXEHYhkZ22t59XEtf39mUTX2rsE3I8NMi/l8Imm
-        DxJB6uyPhef6JqSNZkl2HldM1Pc0VLw9mdmCFqUjI7PLcHw9RmuN6szKNdpLAlHzbK+SlR
-        k6fNy9Q1OOmMHt13hU4tozESfZFEfYt1SuaivIwbZ8IRu68vUvoDVxB3FaEqZVNy1vhEJk
-        OjWnBbKUsoyps9G66fCr+VsusMr4lBdsvuOSVBA4nZMjKzCrzd4jwosP9ZCYr8y/wFctcG
-        OWKN6CpEfRsmrYu6+0uzOpVfIEXeeTQmzVpYx5BEth+yddX/k7RiYRU+0Xe+Pw==
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-From:   "Ricardo B. Marliere" <ricardo@marliere.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.1 000/131] 6.1.59-rc1 review
-Message-ID: <pocozopagkwaphxqyupnpuntzxsb47ws6s7nzmawhnqa5brzph@ku2y2aucxs3l>
-References: <20231016084000.050926073@linuxfoundation.org>
+        with ESMTP id S233134AbjJPLlJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 07:41:09 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7565DC;
+        Mon, 16 Oct 2023 04:41:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510BDC433C8;
+        Mon, 16 Oct 2023 11:41:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697456466;
+        bh=Y58rCXuF/l5eSXkcjq2QOHO2o9mynnSscDqicFlbC74=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=bzj10yoU16IONm22GE6uQ4TJX7JU2wL8tAmfHBHqpKSsrPERv3w/IoQQm2x+1xOzi
+         wjdl5dyndgqfIeo5fj1Sfmh5Q9MW7DNTgfgXCf3GXnksOpz3ZtU9yg3p+gLghSR99R
+         yxZsbbpKuzcBDt1fee7kqrwycAunZ0/tHLIp0vCf9u4HPaQ11bKtOX2+JdqrQU1sz4
+         1p50qvGFjti2HRLlvjYibJWMoS6Uun8VrCtKe8rHO70LIGVfYAMrFj9NoUUx5jT23g
+         TtXA6lKdKanO1dcEmZjlpzHefmHxpRmSdgqVovZHQq+yKZ4Fj00lTHo78KAv9VW/Ke
+         xtWCdlkq62DDw==
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Date:   Mon, 16 Oct 2023 13:41:01 +0200
+From:   Michael Walle <mwalle@kernel.org>
+To:     =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc:     Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ajay Singh <ajay.kathat@microchip.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] wifi: wilc1000: use vmm_table as array in wilc struct
+In-Reply-To: <20231016-wilc1000_tx_oops-v2-1-8d1982a29ef1@bootlin.com>
+References: <20231016-wilc1000_tx_oops-v2-1-8d1982a29ef1@bootlin.com>
+Message-ID: <f286d5e476c78b29e1e6bbad641644e1@kernel.org>
+X-Sender: mwalle@kernel.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 23/10/16 10:39AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.59 release.
-> There are 131 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Am 2023-10-16 10:29, schrieb Alexis Lothoré:
+> From: Ajay Singh <ajay.kathat@microchip.com>
 > 
-> Responses should be made by Wed, 18 Oct 2023 08:39:40 +0000.
-> Anything received after that time might be too late.
+> Enabling KASAN and running some iperf tests raises some memory issues 
+> with
+> vmm_table:
+> 
+> BUG: KASAN: slab-out-of-bounds in wilc_wlan_handle_txq+0x6ac/0xdb4
+> Write of size 4 at addr c3a61540 by task wlan0-tx/95
+> 
+> KASAN detects that we are writing data beyond range allocated to 
+> vmm_table.
+> There is indeed a mismatch between the size passed to allocator in
+> wilc_wlan_init, and the range of possible indexes used later: 
+> allocation
+> size is missing a multiplication by sizeof(u32)
+> 
+> Fixes: 40b717bfcefa ("wifi: wilc1000: fix DMA on stack objects")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-No regressions on my system:
+Reviewed-by: Michael Walle <mwalle@kernel.org>
 
-08:35:39 rbmarliere@debian ~
-$ dmesg -lerr
-08:35:42 rbmarliere@debian ~
-$ uname -a
-Linux debian 6.1.59-rc1+ #1 SMP PREEMPT_DYNAMIC Mon Oct 16 07:46:20 -03 2023 x86_64 GNU/Linux
-
-1 build warning:
-vmlinux.o: warning: objtool: set_ftrace_ops_ro+0x23: relocation to !ENDBR: kexec_mark_crashkres+0xe7
-
-
-Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
+-michael
