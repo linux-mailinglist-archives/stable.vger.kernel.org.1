@@ -2,38 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 577547CA337
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:02:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3535A7CA290
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:51:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232773AbjJPJCd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:02:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46696 "EHLO
+        id S230331AbjJPIvb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:51:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233360AbjJPJCY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:02:24 -0400
+        with ESMTP id S232910AbjJPIva (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:51:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D816FE
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:02:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30FEC433C9;
-        Mon, 16 Oct 2023 09:02:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70AD3AB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:51:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8534BC433C8;
+        Mon, 16 Oct 2023 08:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446942;
-        bh=FOPVgJ0iDm/wxOVvpo87H/ff+aUwGBJ81yZ995h/KO4=;
+        s=korg; t=1697446289;
+        bh=1cBf4OmucXBNM3SCZrS4/Xr0bJmu3lwIPRvL6qy8wTE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gam0k1RPqki/mxMhzj9w1gRbdnHplR7Uv8Xpmh8OQk8Cif9ln1I6ZFvcrq9tr542k
-         ARUmsXl6OBT/xoN4oFJCY/+1bin0fIMDYa7kRpDE7LCMgfKQn2zsv+1p38xM1xHdvi
-         4NwfPkoc68Jv9PlrXmzwvxEQEH+r0spGNMgvxrPE=
+        b=bL6VrYL3tbiJNBBYdgEnUFlGkXdgMPvradmlfGSLJsTDr+QbvG2AOIezCscyo0rOE
+         rKW6shO7ovJtZ131tRhvx4oKGK44xkWLuBiRYvNyUHwJL49oZqf6BOgLIbw6rCcf6H
+         5lnGch+M+j3ZVcWI78/rJvrTA/ECJ42bCp4IZ6KE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Balcanquall <alex@alexbal.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.1 101/131] thunderbolt: Restart XDomain discovery handshake after failure
+        patches@lists.linux.dev, ruanjinjie@huawei.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Alexandru Elisei <alexandru.elisei@arm.com>,
+        Amit Daniel Kachhap <amit.kachhap@arm.com>,
+        James Morse <james.morse@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.15 085/102] arm64: report EL1 UNDEFs better
 Date:   Mon, 16 Oct 2023 10:41:24 +0200
-Message-ID: <20231016084002.573466487@linuxfoundation.org>
+Message-ID: <20231016083955.960659978@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,139 +56,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 308092d080852f8997126e5b3507536162416f4a upstream.
+commit b502c87d2a26c349acbc231ff2acd6f17147926b upstream.
 
-Alex reported that after rebooting the other host the peer-to-peer link
-does not come up anymore. The reason for this is that the host that was
-not rebooted tries to send the UUID request only 10 times according to
-the USB4 Inter-Domain spec and gives up if it does not get reply. Then
-when the other side is actually ready it cannot get the link established
-anymore. The USB4 Inter-Domain spec requires that the discovery protocol
-is restarted in that case so implement this now.
+If an UNDEFINED exception is taken from EL1, and do_undefinstr() doesn't
+find any suitable undef_hook, it will call:
 
-Reported-by: Alex Balcanquall <alex@alexbal.com>
-Fixes: 8e1de7042596 ("thunderbolt: Add support for XDomain lane bonding")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+	BUG_ON(!user_mode(regs))
+
+... and the kernel will report a failure witin do_undefinstr() rather
+than reporting the original context that the UNDEFINED exception was
+taken from. The pt_regs and ESR value reported within the BUG() handler
+will be from within do_undefinstr() and the code dump will be for the
+BRK in BUG_ON(), which isn't sufficient to debug the cause of the
+original exception.
+
+This patch makes the reporting better by having do_undefinstr() call
+die() directly in this case to report the original context from which
+the UNDEFINED exception was taken.
+
+Prior to this patch, an undefined instruction is reported as:
+
+| kernel BUG at arch/arm64/kernel/traps.c:497!
+| Internal error: Oops - BUG: 0 [#1] PREEMPT SMP
+| Modules linked in:
+| CPU: 0 PID: 0 Comm: swapper Not tainted 5.19.0-rc3-00127-geff044f1b04e-dirty #3
+| Hardware name: linux,dummy-virt (DT)
+| pstate: 000000c5 (nzcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : do_undefinstr+0x28c/0x2ac
+| lr : do_undefinstr+0x298/0x2ac
+| sp : ffff800009f63bc0
+| x29: ffff800009f63bc0 x28: ffff800009f73c00 x27: ffff800009644a70
+| x26: ffff8000096778a8 x25: 0000000000000040 x24: 0000000000000000
+| x23: 00000000800000c5 x22: ffff800009894060 x21: ffff800009f63d90
+| x20: 0000000000000000 x19: ffff800009f63c40 x18: 0000000000000006
+| x17: 0000000000403000 x16: 00000000bfbfd000 x15: ffff800009f63830
+| x14: ffffffffffffffff x13: 0000000000000000 x12: 0000000000000019
+| x11: 0101010101010101 x10: 0000000000161b98 x9 : 0000000000000000
+| x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+| x5 : ffff800009f761d0 x4 : 0000000000000000 x3 : ffff80000a2b80f8
+| x2 : 0000000000000000 x1 : ffff800009f73c00 x0 : 00000000800000c5
+| Call trace:
+|  do_undefinstr+0x28c/0x2ac
+|  el1_undef+0x2c/0x4c
+|  el1h_64_sync_handler+0x84/0xd0
+|  el1h_64_sync+0x64/0x68
+|  setup_arch+0x550/0x598
+|  start_kernel+0x88/0x6ac
+|  __primary_switched+0xb8/0xc0
+| Code: 17ffff95 a9425bf5 17ffffb8 a9025bf5 (d4210000)
+
+With this patch applied, an undefined instruction is reported as:
+
+| Internal error: Oops - Undefined instruction: 0 [#1] PREEMPT SMP
+| Modules linked in:
+| CPU: 0 PID: 0 Comm: swapper Not tainted 5.19.0-rc3-00128-gf27cfcc80e52-dirty #5
+| Hardware name: linux,dummy-virt (DT)
+| pstate: 800000c5 (Nzcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : setup_arch+0x550/0x598
+| lr : setup_arch+0x50c/0x598
+| sp : ffff800009f63d90
+| x29: ffff800009f63d90 x28: 0000000081000200 x27: ffff800009644a70
+| x26: ffff8000096778c8 x25: 0000000000000040 x24: 0000000000000000
+| x23: 0000000000000100 x22: ffff800009f69a58 x21: ffff80000a2b80b8
+| x20: 0000000000000000 x19: 0000000000000000 x18: 0000000000000006
+| x17: 0000000000403000 x16: 00000000bfbfd000 x15: ffff800009f63830
+| x14: ffffffffffffffff x13: 0000000000000000 x12: 0000000000000019
+| x11: 0101010101010101 x10: 0000000000161b98 x9 : 0000000000000000
+| x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+| x5 : 0000000000000008 x4 : 0000000000000010 x3 : 0000000000000000
+| x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+| Call trace:
+|  setup_arch+0x550/0x598
+|  start_kernel+0x88/0x6ac
+|  __primary_switched+0xb8/0xc0
+| Code: b4000080 90ffed80 912ac000 97db745f (00000000)
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Amit Daniel Kachhap <amit.kachhap@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20220913101732.3925290-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/xdomain.c |   58 +++++++++++++++++++++++++++++-------------
- 1 file changed, 41 insertions(+), 17 deletions(-)
+ arch/arm64/kernel/traps.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/xdomain.c
-+++ b/drivers/thunderbolt/xdomain.c
-@@ -704,6 +704,27 @@ out_unlock:
- 	mutex_unlock(&xdomain_lock);
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -495,7 +495,9 @@ void do_undefinstr(struct pt_regs *regs)
+ 	if (call_undef_hook(regs) == 0)
+ 		return;
+ 
+-	BUG_ON(!user_mode(regs));
++	if (!user_mode(regs))
++		die("Oops - Undefined instruction", regs, 0);
++
+ 	force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc, 0);
  }
- 
-+static void start_handshake(struct tb_xdomain *xd)
-+{
-+	xd->state = XDOMAIN_STATE_INIT;
-+	queue_delayed_work(xd->tb->wq, &xd->state_work,
-+			   msecs_to_jiffies(XDOMAIN_SHORT_TIMEOUT));
-+}
-+
-+/* Can be called from state_work */
-+static void __stop_handshake(struct tb_xdomain *xd)
-+{
-+	cancel_delayed_work_sync(&xd->properties_changed_work);
-+	xd->properties_changed_retries = 0;
-+	xd->state_retries = 0;
-+}
-+
-+static void stop_handshake(struct tb_xdomain *xd)
-+{
-+	cancel_delayed_work_sync(&xd->state_work);
-+	__stop_handshake(xd);
-+}
-+
- static void tb_xdp_handle_request(struct work_struct *work)
- {
- 	struct xdomain_request_work *xw = container_of(work, typeof(*xw), work);
-@@ -766,6 +787,15 @@ static void tb_xdp_handle_request(struct
- 	case UUID_REQUEST:
- 		tb_dbg(tb, "%llx: received XDomain UUID request\n", route);
- 		ret = tb_xdp_uuid_response(ctl, route, sequence, uuid);
-+		/*
-+		 * If we've stopped the discovery with an error such as
-+		 * timing out, we will restart the handshake now that we
-+		 * received UUID request from the remote host.
-+		 */
-+		if (!ret && xd && xd->state == XDOMAIN_STATE_ERROR) {
-+			dev_dbg(&xd->dev, "restarting handshake\n");
-+			start_handshake(xd);
-+		}
- 		break;
- 
- 	case LINK_STATE_STATUS_REQUEST:
-@@ -1522,6 +1552,13 @@ static void tb_xdomain_queue_properties_
- 			   msecs_to_jiffies(XDOMAIN_SHORT_TIMEOUT));
- }
- 
-+static void tb_xdomain_failed(struct tb_xdomain *xd)
-+{
-+	xd->state = XDOMAIN_STATE_ERROR;
-+	queue_delayed_work(xd->tb->wq, &xd->state_work,
-+			   msecs_to_jiffies(XDOMAIN_DEFAULT_TIMEOUT));
-+}
-+
- static void tb_xdomain_state_work(struct work_struct *work)
- {
- 	struct tb_xdomain *xd = container_of(work, typeof(*xd), state_work.work);
-@@ -1548,7 +1585,7 @@ static void tb_xdomain_state_work(struct
- 		if (ret) {
- 			if (ret == -EAGAIN)
- 				goto retry_state;
--			xd->state = XDOMAIN_STATE_ERROR;
-+			tb_xdomain_failed(xd);
- 		} else {
- 			tb_xdomain_queue_properties_changed(xd);
- 			if (xd->bonding_possible)
-@@ -1613,7 +1650,7 @@ static void tb_xdomain_state_work(struct
- 		if (ret) {
- 			if (ret == -EAGAIN)
- 				goto retry_state;
--			xd->state = XDOMAIN_STATE_ERROR;
-+			tb_xdomain_failed(xd);
- 		} else {
- 			xd->state = XDOMAIN_STATE_ENUMERATED;
- 		}
-@@ -1624,6 +1661,8 @@ static void tb_xdomain_state_work(struct
- 		break;
- 
- 	case XDOMAIN_STATE_ERROR:
-+		dev_dbg(&xd->dev, "discovery failed, stopping handshake\n");
-+		__stop_handshake(xd);
- 		break;
- 
- 	default:
-@@ -1793,21 +1832,6 @@ static void tb_xdomain_release(struct de
- 	kfree(xd);
- }
- 
--static void start_handshake(struct tb_xdomain *xd)
--{
--	xd->state = XDOMAIN_STATE_INIT;
--	queue_delayed_work(xd->tb->wq, &xd->state_work,
--			   msecs_to_jiffies(XDOMAIN_SHORT_TIMEOUT));
--}
--
--static void stop_handshake(struct tb_xdomain *xd)
--{
--	cancel_delayed_work_sync(&xd->properties_changed_work);
--	cancel_delayed_work_sync(&xd->state_work);
--	xd->properties_changed_retries = 0;
--	xd->state_retries = 0;
--}
--
- static int __maybe_unused tb_xdomain_suspend(struct device *dev)
- {
- 	stop_handshake(tb_to_xdomain(dev));
+ NOKPROBE_SYMBOL(do_undefinstr);
 
 
