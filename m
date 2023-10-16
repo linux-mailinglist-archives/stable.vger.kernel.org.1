@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 048077CA339
+	by mail.lfdr.de (Postfix) with ESMTP id ECE157CA33A
 	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbjJPJCg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:02:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55410 "EHLO
+        id S232836AbjJPJCi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:02:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232757AbjJPJCc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:02:32 -0400
+        with ESMTP id S233322AbjJPJCf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:02:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9F33E1
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:02:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172A3C433C7;
-        Mon, 16 Oct 2023 09:02:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DECB1F9
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:02:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E34C433C7;
+        Mon, 16 Oct 2023 09:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446950;
-        bh=vm099ejbfuBUF7TSGNvggBdxEO+er0/N1dqFzJgCBbo=;
+        s=korg; t=1697446953;
+        bh=t+9d9SRsIuZ/NpUubCXl0BQZH0yw7iV8wRDa6WJsoEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NIB9X9J17FG8O1dgPBmLqhyYE1LXhgh5BSq31Fu4WmKvod/7zK2A2wBUpBsdU9L6y
-         vPeWQS/g8rq2RdhgCPtPQVo0nhvMuMcOsQSziV+cBEer1IBFHOCaM4SCkUoMI4DiR2
-         KkUC4fyFyAtoRd0/aun22JGTKe+mmdGhpbAS7Cyc=
+        b=LEILiopEJHR2pyPYtyR5hiIG1s3gdQ16JxP6nYMQu6AaU2wk30IGeum1uN1OwMMst
+         t/jye3iMkOnkgKDTmdaifKJJurw70mQDxd3npKpuRS3maD7i9iLdDfBTSmRFE9gcII
+         qzz6udhj3s8cFjI9PhkdrnGBSakrjV+8ucERuqdM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
         Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.1 103/131] libceph: use kernel_connect()
-Date:   Mon, 16 Oct 2023 10:41:26 +0200
-Message-ID: <20231016084002.623693930@linuxfoundation.org>
+Subject: [PATCH 6.1 104/131] ceph: fix incorrect revoked caps assert in ceph_fill_file_size()
+Date:   Mon, 16 Oct 2023 10:41:27 +0200
+Message-ID: <20231016084002.648998183@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
 References: <20231016084000.050926073@linuxfoundation.org>
@@ -53,46 +54,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit 7563cf17dce0a875ba3d872acdc63a78ea344019 upstream.
+commit 15c0a870dc44ed14e01efbdd319d232234ee639f upstream.
 
-Direct calls to ops->connect() can overwrite the address parameter when
-used in conjunction with BPF SOCK_ADDR hooks. Recent changes to
-kernel_connect() ensure that callers are insulated from such side
-effects. This patch wraps the direct call to ops->connect() with
-kernel_connect() to prevent unexpected changes to the address passed to
-ceph_tcp_connect().
-
-This change was originally part of a larger patch targeting the net tree
-addressing all instances of unprotected calls to ops->connect()
-throughout the kernel, but this change was split up into several patches
-targeting various trees.
+When truncating the inode the MDS will acquire the xlock for the
+ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
+But when the client just releases and flushes the 'Fw' caps to MDS,
+for exmaple, and once the MDS receives the caps flushing msg it
+just thought the revocation has finished. Then the MDS will continue
+truncating the inode and then issued the truncate notification to
+all the clients. While just before the clients receives the cap
+flushing ack they receive the truncation notification, the clients
+will detecte that the 'issued | dirty' is still holding the 'Fw'
+caps.
 
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/20230821100007.559638-1-jrife@google.com/
-Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Signed-off-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Link: https://tracker.ceph.com/issues/56693
+Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
 Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/messenger.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ceph/inode.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/net/ceph/messenger.c
-+++ b/net/ceph/messenger.c
-@@ -454,8 +454,8 @@ int ceph_tcp_connect(struct ceph_connect
- 	set_sock_callbacks(sock, con);
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -655,9 +655,7 @@ int ceph_fill_file_size(struct inode *in
+ 			ci->i_truncate_seq = truncate_seq;
  
- 	con_sock_state_connecting(con);
--	ret = sock->ops->connect(sock, (struct sockaddr *)&ss, sizeof(ss),
--				 O_NONBLOCK);
-+	ret = kernel_connect(sock, (struct sockaddr *)&ss, sizeof(ss),
-+			     O_NONBLOCK);
- 	if (ret == -EINPROGRESS) {
- 		dout("connect %s EINPROGRESS sk_state = %u\n",
- 		     ceph_pr_addr(&con->peer_addr),
+ 			/* the MDS should have revoked these caps */
+-			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
+-					       CEPH_CAP_FILE_RD |
+-					       CEPH_CAP_FILE_WR |
++			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
+ 					       CEPH_CAP_FILE_LAZYIO));
+ 			/*
+ 			 * If we hold relevant caps, or in the case where we're
 
 
