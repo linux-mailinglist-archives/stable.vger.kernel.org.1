@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C94B7CA30A
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E0567CA237
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:47:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbjJPJAX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:00:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
+        id S232889AbjJPIrR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:47:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232955AbjJPJAX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:00:23 -0400
+        with ESMTP id S232828AbjJPIrJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:47:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CF8EE8
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:00:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EA39C433C7;
-        Mon, 16 Oct 2023 09:00:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEE0A100
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:47:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1427C433C8;
+        Mon, 16 Oct 2023 08:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446819;
-        bh=cAXqurstSNEZ91zZfhhPe0uazvMDom3ZbtilpkjvhsQ=;
+        s=korg; t=1697446027;
+        bh=D/DD6p8aJu2p43d1jK04WO5V7PJdcnirepauJJKRvV4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JXF3f8qcZ/LD9vHcZky6FR9SzVFWV84U125Ye+6ImfhTQrTBQFklYar+EzZJ1tq99
-         x1Wpdzi7VEv7Ad8Nb5XMBCcZ1bNMM9cgMcj+LSC9aEEKh3HgyQHv3T3SNEM3qgsOU+
-         bCKuy60ZX4VnVcjYYFMTx74JB9+O9Z3wIQWG2bqQ=
+        b=dqTemZ3Xt4cfU5yHjP4UPqVh1oJD79bfQA+j0p6KslV3dv4XIBVEotj6mBPyis6ON
+         NzgAVaCMnIbLSUNK29egR9P7x48NoLeWuDtXL8i8js8VHn2EVUMfEH6Fy00WaJIR8V
+         +abaG4gZOEgiVt6oaGqKAmApLG0t9mfDCNo/RMes=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingxing Luo <xingxing.luo@unisoc.com>
-Subject: [PATCH 6.1 078/131] usb: musb: Get the musb_qh poniter after musb_giveback
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+        Jose Javier Rodriguez Barbarin 
+        <JoseJavier.Rodriguez@duagon.com>
+Subject: [PATCH 5.15 062/102] mcb: remove is_added flag from mcb_device struct
 Date:   Mon, 16 Oct 2023 10:41:01 +0200
-Message-ID: <20231016084001.997706991@linuxfoundation.org>
+Message-ID: <20231016083955.356970762@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,56 +51,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingxing Luo <xingxing.luo@unisoc.com>
+From: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
 
-commit 33d7e37232155aadebe4145dcc592f00dabd7a2b upstream.
+commit 0f28ada1fbf0054557cddcdb93ad17f767105208 upstream.
 
-When multiple threads are performing USB transmission, musb->lock will be
-unlocked when musb_giveback is executed. At this time, qh may be released
-in the dequeue process in other threads, resulting in a wild pointer, so
-it needs to be here get qh again, and judge whether qh is NULL, and when
-dequeue, you need to set qh to NULL.
+When calling mcb_bus_add_devices(), both mcb devices and the mcb
+bus will attempt to attach a device to a driver because they share
+the same bus_type. This causes an issue when trying to cast the
+container of the device to mcb_device struct using to_mcb_device(),
+leading to a wrong cast when the mcb_bus is added. A crash occurs
+when freing the ida resources as the bus numbering of mcb_bus gets
+confused with the is_added flag on the mcb_device struct.
 
-Fixes: dbac5d07d13e ("usb: musb: host: don't start next rx urb if current one failed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xingxing Luo <xingxing.luo@unisoc.com>
-Link: https://lore.kernel.org/r/20230919033055.14085-1-xingxing.luo@unisoc.com
+The only reason for this cast was to keep an is_added flag on the
+mcb_device struct that does not seem necessary. The function
+device_attach() handles already bound devices and the mcb subsystem
+does nothing special with this is_added flag so remove it completely.
+
+Fixes: 18d288198099 ("mcb: Correctly initialize the bus's device")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Co-developed-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Signed-off-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Link: https://lore.kernel.org/r/20230906114901.63174-2-JoseJavier.Rodriguez@duagon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_host.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/mcb/mcb-core.c  |   10 +++-------
+ drivers/mcb/mcb-parse.c |    2 --
+ include/linux/mcb.h     |    1 -
+ 3 files changed, 3 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/musb/musb_host.c
-+++ b/drivers/usb/musb/musb_host.c
-@@ -321,10 +321,16 @@ static void musb_advance_schedule(struct
- 	musb_giveback(musb, urb, status);
- 	qh->is_ready = ready;
+--- a/drivers/mcb/mcb-core.c
++++ b/drivers/mcb/mcb-core.c
+@@ -387,17 +387,13 @@ EXPORT_SYMBOL_NS_GPL(mcb_free_dev, MCB);
  
-+	/*
-+	 * musb->lock had been unlocked in musb_giveback, so qh may
-+	 * be freed, need to get it again
-+	 */
-+	qh = musb_ep_get_qh(hw_ep, is_in);
-+
- 	/* reclaim resources (and bandwidth) ASAP; deschedule it, and
- 	 * invalidate qh as soon as list_empty(&hep->urb_list)
- 	 */
--	if (list_empty(&qh->hep->urb_list)) {
-+	if (qh && list_empty(&qh->hep->urb_list)) {
- 		struct list_head	*head;
- 		struct dma_controller	*dma = musb->dma_controller;
+ static int __mcb_bus_add_devices(struct device *dev, void *data)
+ {
+-	struct mcb_device *mdev = to_mcb_device(dev);
+ 	int retval;
  
-@@ -2398,6 +2404,7 @@ static int musb_urb_dequeue(struct usb_h
- 		 * and its URB list has emptied, recycle this qh.
- 		 */
- 		if (ready && list_empty(&qh->hep->urb_list)) {
-+			musb_ep_set_qh(qh->hw_ep, is_in, NULL);
- 			qh->hep->hcpriv = NULL;
- 			list_del(&qh->ring);
- 			kfree(qh);
+-	if (mdev->is_added)
+-		return 0;
+-
+ 	retval = device_attach(dev);
+-	if (retval < 0)
++	if (retval < 0) {
+ 		dev_err(dev, "Error adding device (%d)\n", retval);
+-
+-	mdev->is_added = true;
++		return retval;
++	}
+ 
+ 	return 0;
+ }
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -99,8 +99,6 @@ static int chameleon_parse_gdd(struct mc
+ 	mdev->mem.end = mdev->mem.start + size - 1;
+ 	mdev->mem.flags = IORESOURCE_MEM;
+ 
+-	mdev->is_added = false;
+-
+ 	ret = mcb_device_register(bus, mdev);
+ 	if (ret < 0)
+ 		goto err;
+--- a/include/linux/mcb.h
++++ b/include/linux/mcb.h
+@@ -63,7 +63,6 @@ static inline struct mcb_bus *to_mcb_bus
+ struct mcb_device {
+ 	struct device dev;
+ 	struct mcb_bus *bus;
+-	bool is_added;
+ 	struct mcb_driver *driver;
+ 	u16 id;
+ 	int inst;
 
 
