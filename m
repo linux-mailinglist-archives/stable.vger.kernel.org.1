@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B48F7CA22F
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:47:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EFA47CA308
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:00:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232532AbjJPIrI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:47:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40524 "EHLO
+        id S233028AbjJPJAT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:00:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232884AbjJPIrB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:47:01 -0400
+        with ESMTP id S229668AbjJPJAN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:00:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DC04107
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:46:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD59C433C8;
-        Mon, 16 Oct 2023 08:46:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20027DE
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:00:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FED3C433C7;
+        Mon, 16 Oct 2023 09:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446019;
-        bh=Ih7Y+gIH611j1XiCwRDTqh+YLB+CAI2+memE6Pkdi8Y=;
+        s=korg; t=1697446811;
+        bh=AFijQH0RNESVRMHId0gEuB2waGs2b3DafDZMK7JCJag=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AurZXSutn97jAHsTWsfEAUr9zwGXV6JW1JDUNcWvLlH1UW6TD6/9Qq4YAZbkLxC+b
-         L1ATbnLdOxusXxbvjX4ydcSOwixz0354vqplrrbxyW9jXmmGa4LzYlU8PJfJwp8zbx
-         vvzpkxaXdY7v+GvQRlUWB/zh2ShwbcE6dtt67I6k=
+        b=BOdCe6ZAz01XlaQ6X+B0ciXYdKI6kYjdVcm9r8rBM3uSLwDc+gSc7XfKrnqR3iqjb
+         eDAq4XZLDfwYhT3Uizjl4BmDLeMWEcR3eRl9h+vlP1xnh98orbCHRP4qLLMYdggP0a
+         cYVZTteXDIT34PXJmYfSO8ALRyggaQ7aNkVK7+VA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 060/102] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA
+        patches@lists.linux.dev, Pavel Machek <pavel@denx.de>,
+        Xiaolei Wang <xiaolei.wang@windriver.com>,
+        Roger Quadros <rogerq@kernel.org>,
+        Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.1 076/131] usb: cdns3: Modify the return value of cdns_set_active () to void when CONFIG_PM_SLEEP is disabled
 Date:   Mon, 16 Oct 2023 10:40:59 +0200
-Message-ID: <20231016083955.302767973@linuxfoundation.org>
+Message-ID: <20231016084001.947083568@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-commit c1ed72171ed580fbf159e703b77685aa4b0d0df5 upstream.
+commit 9f35d612da5592f1bf1cae44ec1e023df37bea12 upstream.
 
-Like various other ASUS ExpertBook-s, the ASUS ExpertBook B1402CBA
-has an ACPI DSDT table that describes IRQ 1 as ActiveLow while
-the kernel overrides it to EdgeHigh.
+The return type of cdns_set_active () is inconsistent
+depending on whether CONFIG_PM_SLEEP is enabled, so the
+return value is modified to void type.
 
-This prevents the keyboard from working. To fix this issue, add this laptop
-to the skip_override_table so that the kernel does not override IRQ 1.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217901
+Reported-by: Pavel Machek <pavel@denx.de>
+Closes: https://lore.kernel.org/all/ZP7lIKUzD68XA91j@duo.ucw.cz/
+Fixes: 2319b9c87fe2 ("usb: cdns3: Put the cdns set active part outside the spin lock")
 Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Pavel Machek <pavel@denx.de>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20230926075333.1791011-1-xiaolei.wang@windriver.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/cdns3/core.h |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -433,6 +433,13 @@ static const struct dmi_system_id lenovo
- 		},
- 	},
- 	{
-+		.ident = "Asus ExpertBook B1402CBA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B1402CBA"),
-+		},
-+	},
-+	{
- 		.ident = "LENOVO IdeaPad Flex 5 16ALC7",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
+--- a/drivers/usb/cdns3/core.h
++++ b/drivers/usb/cdns3/core.h
+@@ -131,8 +131,7 @@ void cdns_set_active(struct cdns *cdns,
+ #else /* CONFIG_PM_SLEEP */
+ static inline int cdns_resume(struct cdns *cdns)
+ { return 0; }
+-static inline int cdns_set_active(struct cdns *cdns, u8 set_active)
+-{ return 0; }
++static inline void cdns_set_active(struct cdns *cdns, u8 set_active) { }
+ static inline int cdns_suspend(struct cdns *cdns)
+ { return 0; }
+ #endif /* CONFIG_PM_SLEEP */
 
 
