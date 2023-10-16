@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 306607CA258
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94EE47CA336
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:02:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232900AbjJPItE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:49:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46780 "EHLO
+        id S233255AbjJPJCa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:02:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232932AbjJPItC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:02 -0400
+        with ESMTP id S233340AbjJPJCV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:02:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5599AF5
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A7CCC433C8;
-        Mon, 16 Oct 2023 08:48:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB86EB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:02:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC5EC433C9;
+        Mon, 16 Oct 2023 09:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446139;
-        bh=NzOtwo/i2nhwP5zMqPGkren+/YdDjKqB+rwYImBwJws=;
+        s=korg; t=1697446938;
+        bh=u/twJOzuDdkjoh3v7rrhvMJkphHCSG3t1ZRJf958IPs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qxZyQ41BsE3SUm61DtdrU8c5meanwJiZ4pY8v3FZ+2I5X9TRzillMWWgAWMcbYSS8
-         r1pPGVA2u2adbVnGc40MtLUA+HvzCR44tSv1VawtAjPEDU3xNPzT0fdfTKVTE0PAAG
-         bgjxSjZ69GHa40fYukoOjPmMCmfVKA4/UTdroUc8=
+        b=zaN2LVJKV9MKJ9KogK0kkXMc6jobi07uK2RsCd7x7Qu4dUyfNZW+CBlDf39b5N6Mm
+         /L4sql9h/O3RA11WnDx3RTxvVtggyKGhyHDHS/EEqhoJm9KtF11O8Z7tGt7ONgDWdW
+         GPszXgrjCFp0em0JXCGx+E875casxTl3ZngOy5io=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dharma Balasubiramani <dharma.b@microchip.com>,
-        William Breathitt Gray <william.gray@linaro.org>
-Subject: [PATCH 5.15 076/102] counter: microchip-tcb-capture: Fix the use of internal GCLK logic
+        patches@lists.linux.dev, Charlene Liu <charlene.liu@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Tom Chung <chiahsuan.chung@amd.com>,
+        Daniel Miess <daniel.miess@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.1 092/131] drm/amd/display: Dont set dpms_off for seamless boot
 Date:   Mon, 16 Oct 2023 10:41:15 +0200
-Message-ID: <20231016083955.723339543@linuxfoundation.org>
+Message-ID: <20231016084002.353509339@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,36 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dharma Balasubiramani <dharma.b@microchip.com>
+From: Daniel Miess <daniel.miess@amd.com>
 
-commit df8fdd01c98b99d04915c04f3a5ce73f55456b7c upstream.
+commit 23645bca98304a2772f0de96f97370dd567d0ae6 upstream.
 
-As per the datasheet, the clock selection Bits 2:0 – TCCLKS[2:0] should
-be set to 0 while using the internal GCLK (TIMER_CLOCK1).
+[Why]
+eDPs fail to light up with seamless boot enabled
 
-Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
-Link: https://lore.kernel.org/r/20230905100835.315024-1-dharma.b@microchip.com
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+[How]
+When seamless boot is enabled don't configure dpms_off
+in disable_vbios_mode_if_required.
+
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/microchip-tcb-capture.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -99,7 +99,7 @@ static int mchp_tc_count_function_write(
- 		priv->qdec_mode = 0;
- 		/* Set highest rate based on whether soc has gclk or not */
- 		bmr &= ~(ATMEL_TC_QDEN | ATMEL_TC_POSEN);
--		if (priv->tc_cfg->has_gclk)
-+		if (!priv->tc_cfg->has_gclk)
- 			cmr |= ATMEL_TC_TIMER_CLOCK2;
- 		else
- 			cmr |= ATMEL_TC_TIMER_CLOCK1;
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1183,6 +1183,9 @@ static void disable_vbios_mode_if_requir
+ 		if (stream == NULL)
+ 			continue;
+ 
++		if (stream->apply_seamless_boot_optimization)
++			continue;
++
+ 		// only looking for first odm pipe
+ 		if (pipe->prev_odm_pipe)
+ 			continue;
 
 
