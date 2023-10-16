@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F627CA285
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AC397CA351
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232524AbjJPIvC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:51:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47342 "EHLO
+        id S233309AbjJPJEX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:04:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232785AbjJPIvB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:51:01 -0400
+        with ESMTP id S233224AbjJPJES (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:04:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC396A1
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:50:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D11C433C7;
-        Mon, 16 Oct 2023 08:50:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A00EDE
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:04:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9E3C433C9;
+        Mon, 16 Oct 2023 09:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446259;
-        bh=HYx6n0tgdhb7cQcXU6lZI/10zOc7k+Gz1nHzY4ptRlA=;
+        s=korg; t=1697447057;
+        bh=J35BMIZV7Mw39lQfUSHXQ7qxPGE0T9hx7CGGKjOffE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=evV6p5shadUjlMOB/BgOKIRTvoQeXteADg14dkuZGIpaPuoskq4j9KvDvb9VA4yfS
-         bgjBMo+e3iZjOPezeDdkNErlgmgsC8MyrqXG/rUXQU1ut8BDDtsF9AgGdNI2ved4XI
-         4PJ3PyeycrCe5WpGfpCgUqjyx17szYSLE7XmRv54=
+        b=RjcDv5u+Ajs4pXpdmwdABIP6zZBTbN/HsNwU0yfzmnyaXJ62c2Q3qVgu+mQFQ1+Zx
+         Z1AT1QsBGmN7CKlTSHFySUiBS7CgdOGWXzyhQ/8BbjCvwU3C3QkTV5E3OqrBSX6VmP
+         hrKJTNx8COGlwrfc1E7yC6aeRFcambAiOhOmPm5w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
-Subject: [PATCH 5.15 101/102] usb: hub: Guard against accesses to uninitialized BOS descriptors
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 117/131] pinctrl: avoid unsafe code pattern in find_pinctrl()
 Date:   Mon, 16 Oct 2023 10:41:40 +0200
-Message-ID: <20231016083956.396560680@linuxfoundation.org>
+Message-ID: <20231016084002.974374011@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,131 +50,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit f74a7afc224acd5e922c7a2e52244d891bbe44ee upstream.
+commit c153a4edff6ab01370fcac8e46f9c89cca1060c2 upstream.
 
-Many functions in drivers/usb/core/hub.c and drivers/usb/core/hub.h
-access fields inside udev->bos without checking if it was allocated and
-initialized. If usb_get_bos_descriptor() fails for whatever
-reason, udev->bos will be NULL and those accesses will result in a
-crash:
+The code in find_pinctrl() takes a mutex and traverses a list of pinctrl
+structures. Later the caller bumps up reference count on the found
+structure. Such pattern is not safe as pinctrl that was found may get
+deleted before the caller gets around to increasing the reference count.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000018
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 5 PID: 17818 Comm: kworker/5:1 Tainted: G W 5.15.108-18910-gab0e1cb584e1 #1 <HASH:1f9e 1>
-Hardware name: Google Kindred/Kindred, BIOS Google_Kindred.12672.413.0 02/03/2021
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:hub_port_reset+0x193/0x788
-Code: 89 f7 e8 20 f7 15 00 48 8b 43 08 80 b8 96 03 00 00 03 75 36 0f b7 88 92 03 00 00 81 f9 10 03 00 00 72 27 48 8b 80 a8 03 00 00 <48> 83 78 18 00 74 19 48 89 df 48 8b 75 b0 ba 02 00 00 00 4c 89 e9
-RSP: 0018:ffffab740c53fcf8 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffffa1bc5f678000 RCX: 0000000000000310
-RDX: fffffffffffffdff RSI: 0000000000000286 RDI: ffffa1be9655b840
-RBP: ffffab740c53fd70 R08: 00001b7d5edaa20c R09: ffffffffb005e060
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
-R13: ffffab740c53fd3e R14: 0000000000000032 R15: 0000000000000000
-FS: 0000000000000000(0000) GS:ffffa1be96540000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000018 CR3: 000000022e80c005 CR4: 00000000003706e0
-Call Trace:
-hub_event+0x73f/0x156e
-? hub_activate+0x5b7/0x68f
-process_one_work+0x1a2/0x487
-worker_thread+0x11a/0x288
-kthread+0x13a/0x152
-? process_one_work+0x487/0x487
-? kthread_associate_blkcg+0x70/0x70
-ret_from_fork+0x1f/0x30
+Fix this by taking the reference count in find_pinctrl(), while it still
+holds the mutex.
 
-Fall back to a default behavior if the BOS descriptor isn't accessible
-and skip all the functionalities that depend on it: LPM support checks,
-Super Speed capabilitiy checks, U1/U2 states setup.
-
-Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
-Cc: stable <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230830100418.1952143-1-ricardo.canuelo@collabora.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/ZQs1RgTKg6VJqmPs@google.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   25 ++++++++++++++++++++++---
- drivers/usb/core/hub.h |    2 +-
- 2 files changed, 23 insertions(+), 4 deletions(-)
+ drivers/pinctrl/core.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -150,6 +150,10 @@ int usb_device_supports_lpm(struct usb_d
- 	if (udev->quirks & USB_QUIRK_NO_LPM)
- 		return 0;
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1007,17 +1007,20 @@ static int add_setting(struct pinctrl *p
  
-+	/* Skip if the device BOS descriptor couldn't be read */
-+	if (!udev->bos)
-+		return 0;
-+
- 	/* USB 2.1 (and greater) devices indicate LPM support through
- 	 * their USB 2.0 Extended Capabilities BOS descriptor.
- 	 */
-@@ -326,6 +330,10 @@ static void usb_set_lpm_parameters(struc
- 	if (!udev->lpm_capable || udev->speed < USB_SPEED_SUPER)
- 		return;
- 
-+	/* Skip if the device BOS descriptor couldn't be read */
-+	if (!udev->bos)
-+		return;
-+
- 	hub = usb_hub_to_struct_hub(udev->parent);
- 	/* It doesn't take time to transition the roothub into U0, since it
- 	 * doesn't have an upstream link.
-@@ -2698,13 +2706,17 @@ out_authorized:
- static enum usb_ssp_rate get_port_ssp_rate(struct usb_device *hdev,
- 					   u32 ext_portstatus)
+ static struct pinctrl *find_pinctrl(struct device *dev)
  {
--	struct usb_ssp_cap_descriptor *ssp_cap = hdev->bos->ssp_cap;
-+	struct usb_ssp_cap_descriptor *ssp_cap;
- 	u32 attr;
- 	u8 speed_id;
- 	u8 ssac;
- 	u8 lanes;
- 	int i;
+-	struct pinctrl *p;
++	struct pinctrl *entry, *p = NULL;
  
-+	if (!hdev->bos)
-+		goto out;
+ 	mutex_lock(&pinctrl_list_mutex);
+-	list_for_each_entry(p, &pinctrl_list, node)
+-		if (p->dev == dev) {
+-			mutex_unlock(&pinctrl_list_mutex);
+-			return p;
 +
-+	ssp_cap = hdev->bos->ssp_cap;
- 	if (!ssp_cap)
- 		goto out;
++	list_for_each_entry(entry, &pinctrl_list, node) {
++		if (entry->dev == dev) {
++			p = entry;
++			kref_get(&p->users);
++			break;
+ 		}
++	}
  
-@@ -4186,8 +4198,15 @@ static void usb_enable_link_state(struct
- 		enum usb3_link_state state)
- {
- 	int timeout, ret;
--	__u8 u1_mel = udev->bos->ss_cap->bU1devExitLat;
--	__le16 u2_mel = udev->bos->ss_cap->bU2DevExitLat;
-+	__u8 u1_mel;
-+	__le16 u2_mel;
-+
-+	/* Skip if the device BOS descriptor couldn't be read */
-+	if (!udev->bos)
-+		return;
-+
-+	u1_mel = udev->bos->ss_cap->bU1devExitLat;
-+	u2_mel = udev->bos->ss_cap->bU2DevExitLat;
- 
- 	/* If the device says it doesn't have *any* exit latency to come out of
- 	 * U1 or U2, it's probably lying.  Assume it doesn't implement that link
---- a/drivers/usb/core/hub.h
-+++ b/drivers/usb/core/hub.h
-@@ -141,7 +141,7 @@ static inline int hub_is_superspeedplus(
- {
- 	return (hdev->descriptor.bDeviceProtocol == USB_HUB_PR_SS &&
- 		le16_to_cpu(hdev->descriptor.bcdUSB) >= 0x0310 &&
--		hdev->bos->ssp_cap);
-+		hdev->bos && hdev->bos->ssp_cap);
+ 	mutex_unlock(&pinctrl_list_mutex);
+-	return NULL;
++	return p;
  }
  
- static inline unsigned hub_power_on_good_delay(struct usb_hub *hub)
+ static void pinctrl_free(struct pinctrl *p, bool inlist);
+@@ -1126,7 +1129,6 @@ struct pinctrl *pinctrl_get(struct devic
+ 	p = find_pinctrl(dev);
+ 	if (p) {
+ 		dev_dbg(dev, "obtain a copy of previously claimed pinctrl\n");
+-		kref_get(&p->users);
+ 		return p;
+ 	}
+ 
 
 
