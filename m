@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 817007CA307
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D55AF7CA22E
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:47:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233095AbjJPJAN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:00:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36678 "EHLO
+        id S232757AbjJPIrC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233100AbjJPJAK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:00:10 -0400
+        with ESMTP id S232790AbjJPIq5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:46:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D76BDE
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:00:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A01F0C433BA;
-        Mon, 16 Oct 2023 09:00:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91BF6EA
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:46:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A711DC433C9;
+        Mon, 16 Oct 2023 08:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446807;
-        bh=NPzX27RL8S7/R5xGQVfFUhJ051WKT4Ht+3PGl6MEqW8=;
+        s=korg; t=1697446016;
+        bh=tpBvzq18nGnPCfqlgPg1nR1iz45Ujn64m4+Yql6siBk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fiUgIFTLLQAe1pi7KIm02bwkdjN7KqfwjzkgTPqdggxTEzANx+RdJqHDGfMwjVJbW
-         sdQHql/dlGUngzqIXKaZHzY6oRGh14GjZyrl40892uJxsw4dbyanWtNlXrl8iI+TMn
-         xdwVyjQRDFJIvZIfaJmrbe5j1fbLcl+0cGCZcRzc=
+        b=n6zeAWXAGp44sEC7dzcGY4l824Xrwjj2Ck2HxdZ3ULScFucXUJTbE8iIinJvPTPDw
+         GtA/BZMbcPu120FLezm0sN2BB3ttvEepn/95/e1jfBHFqiDQZVozimMxas6L4/D5FO
+         dGey3kjB8vtqaepnRxavqaILEzF32f7mTsNwr5S4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kenta Sato <tosainu.maple@gmail.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 075/131] usb: dwc3: Soft reset phy on probe for host
+        patches@lists.linux.dev, Charlene Liu <charlene.liu@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Tom Chung <chiahsuan.chung@amd.com>,
+        Daniel Miess <daniel.miess@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 5.15 059/102] drm/amd/display: Dont set dpms_off for seamless boot
 Date:   Mon, 16 Oct 2023 10:40:58 +0200
-Message-ID: <20231016084001.922945828@linuxfoundation.org>
+Message-ID: <20231016083955.275113355@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,86 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Daniel Miess <daniel.miess@amd.com>
 
-commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b upstream.
+commit 23645bca98304a2772f0de96f97370dd567d0ae6 upstream.
 
-When there's phy initialization, we need to initiate a soft-reset
-sequence. That's done through USBCMD.HCRST in the xHCI driver and its
-initialization, However, the dwc3 driver may modify core configs before
-the soft-reset. This may result in some connection instability. So,
-ensure the phy is ready before the controller updates the GCTL.PRTCAPDIR
-or other settings by issuing phy soft-reset.
+[Why]
+eDPs fail to light up with seamless boot enabled
 
-Note that some host-mode configurations may not expose device registers
-to initiate the controller soft-reset (via DCTL.CoreSftRst). So we reset
-through GUSB3PIPECTL and GUSB2PHYCFG instead.
+[How]
+When seamless boot is enabled don't configure dpms_off
+in disable_vbios_mode_if_required.
 
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
-Reported-by: Kenta Sato <tosainu.maple@gmail.com>
-Closes: https://lore.kernel.org/linux-usb/ZPUciRLUcjDywMVS@debian.me/
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Tested-by: Kenta Sato <tosainu.maple@gmail.com>
-Link: https://lore.kernel.org/r/70aea513215d273669152696cc02b20ddcdb6f1a.1694564261.git.Thinh.Nguyen@synopsys.com
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -279,9 +279,46 @@ int dwc3_core_soft_reset(struct dwc3 *dw
- 	 * XHCI driver will reset the host block. If dwc3 was configured for
- 	 * host-only mode or current role is host, then we can return early.
- 	 */
--	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
-+	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
- 		return 0;
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1023,6 +1023,9 @@ static void disable_vbios_mode_if_requir
+ 		if (stream == NULL)
+ 			continue;
  
-+	/*
-+	 * If the dr_mode is host and the dwc->current_dr_role is not the
-+	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
-+	 * isn't executed yet. Ensure the phy is ready before the controller
-+	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
-+	 * the phy.
-+	 *
-+	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
-+	 * is port index. If this is a multiport host, then we need to reset
-+	 * all active ports.
-+	 */
-+	if (dwc->dr_mode == USB_DR_MODE_HOST) {
-+		u32 usb3_port;
-+		u32 usb2_port;
++		if (stream->apply_seamless_boot_optimization)
++			continue;
 +
-+		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
-+		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
-+
-+		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
-+		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
-+
-+		/* Small delay for phy reset assertion */
-+		usleep_range(1000, 2000);
-+
-+		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
-+
-+		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
-+
-+		/* Wait for clock synchronization */
-+		msleep(50);
-+		return 0;
-+	}
-+
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
- 	reg |= DWC3_DCTL_CSFTRST;
- 	reg &= ~DWC3_DCTL_RUN_STOP;
+ 		// only looking for first odm pipe
+ 		if (pipe->prev_odm_pipe)
+ 			continue;
 
 
