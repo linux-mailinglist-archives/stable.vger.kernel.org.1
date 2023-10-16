@@ -2,107 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC9477CA195
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F3EA7CA18F
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:28:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230209AbjJPI3U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:29:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41834 "EHLO
+        id S229666AbjJPI2t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:28:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230112AbjJPI3U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:29:20 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53B5B4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:29:15 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1qsIyQ-0004tj-Aq; Mon, 16 Oct 2023 10:29:14 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.94.2)
-        (envelope-from <ore@pengutronix.de>)
-        id 1qsIyP-0022WN-Ru; Mon, 16 Oct 2023 10:29:13 +0200
-Received: from ore by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ore@pengutronix.de>)
-        id 1qsIyP-00EiFK-Pb; Mon, 16 Oct 2023 10:29:13 +0200
-Date:   Mon, 16 Oct 2023 10:29:13 +0200
-From:   Oleksij Rempel <o.rempel@pengutronix.de>
-To:     Maciej =?utf-8?Q?=C5=BBenczykowski?= <maze@google.com>
-Cc:     stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Lunn <andrew@lunn.ch>, Patrick Rohr <prohr@google.com>
-Subject: Re: USB_NET_AX8817X dependency on AX88796B_PHY
-Message-ID: <20231016082913.GB3502392@pengutronix.de>
-References: <CANP3RGdzJ7RYWkMT_zNXbg0FyPcCF4rixABvF0++OR-2gpEtow@mail.gmail.com>
- <CANP3RGe82EQhdKd_sc7kWDm2jqx1jTa-Rnj23xBSVpFvK_-T2Q@mail.gmail.com>
+        with ESMTP id S229574AbjJPI2s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:28:48 -0400
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::222])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8372A1;
+        Mon, 16 Oct 2023 01:28:45 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0DF594000E;
+        Mon, 16 Oct 2023 08:28:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1697444924;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=SVxISp8EXisyvjENbAcGjSMMTvh4tZlsbQG1yYDAdZ0=;
+        b=BSPXJVwX5YVN5V39vWwzgM8VgRieb1KreLtKFZHvCcHcZQAX74m393ugWyZWSJhPA4z6Ii
+        mjJVi5I2z11VmdhhwjZX/8tUhrYM02lbDkemLGRWm0yk8SiL/4HlYqc++Ec80X6FWL3FS1
+        HK1VEilQaX0k3PciT650WUqBW5lR6fs/i0HFFx28Gg82QIdA/QRjVHj52ZinkFMgc9O+bk
+        xlV4wcIDQJXISdC9WaVc2JV+9hlRv9kQoI0HK6Jx8nvpv5M8LEmG2+LAumIO2I0R0DFufM
+        i57mWA/9dtul5a9Z2wuFzK2tqLcg2a2HGg/CAXxZdWmtPpzh+R6Y3FBpugxHnA==
+From:   =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Date:   Mon, 16 Oct 2023 10:29:52 +0200
+Subject: [PATCH v2] wifi: wilc1000: use vmm_table as array in wilc struct
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANP3RGe82EQhdKd_sc7kWDm2jqx1jTa-Rnj23xBSVpFvK_-T2Q@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-Id: <20231016-wilc1000_tx_oops-v2-1-8d1982a29ef1@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAH/0LGUC/2WNQQ6CMBBFr0JmbU2nFRVW3sMQImWUSbBDWoIYw
+ t2tJK5cvpf89xeIFJgilNkCgSaOLD6B2WXgupt/kOI2MRhtLGo06sW9Q611Pc61yBBVfnZUIJG
+ lwkKaDYHuPG/Ja5W44zhKeG8PE37tL2b/YxMqVPZ0xIaaIjeH9tKIjD37vZMnVOu6fgBHdRWEs
+ gAAAA==
+To:     Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Kalle Valo <kvalo@kernel.org>,
+        Michael Walle <mwalle@kernel.org>
+Cc:     linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ajay Singh <ajay.kathat@microchip.com>, stable@vger.kernel.org,
+        =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+X-Mailer: b4 0.12.3
+X-GND-Sasl: alexis.lothore@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Oct 15, 2023 at 03:13:26PM -0700, Maciej Żenczykowski wrote:
-> On Sun, Oct 15, 2023 at 2:55 PM Maciej Żenczykowski <maze@google.com> wrote:
-> And actually looking longer at the logs:
-> 
-> usb 1-5: new high-speed USB device number 9 using xhci_hcd
-> usb 1-5: New USB device found, idVendor=0b95, idProduct=772b, bcdDevice= 0.02
-> usb 1-5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
-> usb 1-5: Product: AX88772C
-> usb 1-5: Manufacturer: ASIX Elec. Corp.
-> usb 1-5: SerialNumber: 000002
-> asix 1-5:1.0 (unnamed net_device) (uninitialized): PHY
-> [usb-001:009:10] driver [Asix Electronics AX88772C] (irq=POLL)
-> Asix Electronics AX88772C usb-001:009:10: attached PHY driver
-> (mii_bus:phy_addr=usb-001:009:10, irq=POLL)
-> asix 1-5:1.0 eth0: register 'asix' at usb-0000:00:14.0-5, ASIX
-> AX88772B USB 2.0 Ethernet, 14:ae:85:70:44:29
-> asix 1-5:1.0 enx14ae85704429: renamed from eth0
-> asix 1-5:1.0 enx14ae85704429: configuring for phy/internal link mode
-> usb 1-5: USB disconnect, device number 9
-> asix 1-5:1.0 enx14ae85704429: unregister 'asix' usb-0000:00:14.0-5,
-> ASIX AX88772B USB 2.0 Ethernet
-> 
-> It looks like the rest of that patch is needed too, since it is a AX88772C phy.
-> 
-> This means even with the option manually enabled, we'd still need to
-> cherrypick dde25846925765a88df8964080098174495c1f10
-> "net: usb/phy: asix: add support for ax88772A/C PHYs"
-> since apparently this is simply new(ish) hardware with built-in x88772C PHY.
+From: Ajay Singh <ajay.kathat@microchip.com>
 
+Enabling KASAN and running some iperf tests raises some memory issues with
+vmm_table:
 
-As far as I see, you are not using clean mainline stable kernel. All changes
-which make your kernel to need an external PHY driver are _not_ in v5.10.198.
+BUG: KASAN: slab-out-of-bounds in wilc_wlan_handle_txq+0x6ac/0xdb4
+Write of size 4 at addr c3a61540 by task wlan0-tx/95
 
-You will need to cherrypick at least 28 last patches from this stack:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/drivers/net/usb/asix_devices.c?h=v6.6-rc6
+KASAN detects that we are writing data beyond range allocated to vmm_table.
+There is indeed a mismatch between the size passed to allocator in
+wilc_wlan_init, and the range of possible indexes used later: allocation
+size is missing a multiplication by sizeof(u32)
 
-and some from here too:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/drivers/net/usb/usbnet.c?h=v6.6-rc6
+Fixes: 40b717bfcefa ("wifi: wilc1000: fix DMA on stack objects")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+---
+Changes in v2:
+- keep dedicated dynamic allocation for vmm_table
+- Link to v1: https://lore.kernel.org/r/20231013-wilc1000_tx_oops-v1-1-3761beb9524d@bootlin.com
+---
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
-Oleksij
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+index 58bbf50081e4..e4113f2dfadf 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -1492,7 +1492,7 @@ int wilc_wlan_init(struct net_device *dev)
+ 	}
+ 
+ 	if (!wilc->vmm_table)
+-		wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE, GFP_KERNEL);
++		wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE * sizeof(u32), GFP_KERNEL);
+ 
+ 	if (!wilc->vmm_table) {
+ 		ret = -ENOBUFS;
+
+---
+base-commit: ea12d85cbfd6b08fff40a4fefccc011b6cfadf8e
+change-id: 20231012-wilc1000_tx_oops-58ce91ee3e93
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
