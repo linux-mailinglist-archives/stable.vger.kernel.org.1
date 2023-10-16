@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FAE77CA38A
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFC1A7CA301
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:59:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231967AbjJPJHx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:07:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59024 "EHLO
+        id S232675AbjJPI7y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:59:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232648AbjJPIqN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:46:13 -0400
+        with ESMTP id S229621AbjJPI7x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:59:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B4F0E6
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:46:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50885C433C8;
-        Mon, 16 Oct 2023 08:46:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5984E5
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:59:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C98C433CA;
+        Mon, 16 Oct 2023 08:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445969;
-        bh=MkPz1B069qjXTm/hyglTzJIa2QgTx/F+loJiRKzOBhs=;
+        s=korg; t=1697446792;
+        bh=bDYN3m7yb+FXHIvErx+VlK6Ia6QyUhP8fnfNQC9RywM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kLVgQh++535TfYGQfNdHadqP5DvEiOQE2O5zpQNQpsOrwIpUfyOoThEKVQydQbQJV
-         OA4qEVkJkBLGAsDub34L13Sig/UFNqqV+k5K8Qlyr+FnP4N/Pt9XNl0kzNuxaOxigd
-         JjId5IB2GOA8C3dR14y892c1OH07lw800rlhHuQI=
+        b=mibNLEqTen0yNkaYuTA6bCBWt98H4xpAT5bPdG0WZlj6lq0PRI1D+KrUXSGOG1p9K
+         ofDrkwVJZ7yzSFsNeMK6IrnnReFR4/5Rox2PqdsNQpmGdcdIGtK8K/nC2gWmXYgqV2
+         O+p6hXRazpKpl2PW9nZeSuqDu0hSHjQK9THsl+OI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.15 047/102] dmaengine: stm32-mdma: abort resume if no ongoing transfer
-Date:   Mon, 16 Oct 2023 10:40:46 +0200
-Message-ID: <20231016083954.951857406@linuxfoundation.org>
+        patches@lists.linux.dev, Ralph Siemsen <ralph.siemsen@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 064/131] pinctrl: renesas: rzn1: Enable missing PINMUX
+Date:   Mon, 16 Oct 2023 10:40:47 +0200
+Message-ID: <20231016084001.657054349@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +52,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Ralph Siemsen <ralph.siemsen@linaro.org>
 
-commit 81337b9a72dc58a5fa0ae8a042e8cb59f9bdec4a upstream.
+[ Upstream commit f055ff23c331f28aa4ace4b72dc56f63b9a726c8 ]
 
-chan->desc can be null, if transfer is terminated when resume is called,
-leading to a NULL pointer when retrieving the hwdesc.
-To avoid this case, check that chan->desc is not null and channel is
-disabled (transfer previously paused or terminated).
+Enable pin muxing (eg. programmable function), so that the RZ/N1 GPIO
+pins will be configured as specified by the pinmux in the DTS.
 
-Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231004163531.2864160-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This used to be enabled implicitly via CONFIG_GENERIC_PINMUX_FUNCTIONS,
+however that was removed, since the RZ/N1 driver does not call any of
+the generic pinmux functions.
+
+Fixes: 1308fb4e4eae14e6 ("pinctrl: rzn1: Do not select GENERIC_PIN{CTRL_GROUPS,MUX_FUNCTIONS}")
+Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20231004200008.1306798-1-ralph.siemsen@linaro.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/stm32-mdma.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pinctrl/renesas/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/dma/stm32-mdma.c
-+++ b/drivers/dma/stm32-mdma.c
-@@ -1206,6 +1206,10 @@ static int stm32_mdma_resume(struct dma_
- 	unsigned long flags;
- 	u32 status, reg;
+diff --git a/drivers/pinctrl/renesas/Kconfig b/drivers/pinctrl/renesas/Kconfig
+index 0903a0a418319..1ef8759802618 100644
+--- a/drivers/pinctrl/renesas/Kconfig
++++ b/drivers/pinctrl/renesas/Kconfig
+@@ -240,6 +240,7 @@ config PINCTRL_RZN1
+ 	depends on OF
+ 	depends on ARCH_RZN1 || COMPILE_TEST
+ 	select GENERIC_PINCONF
++	select PINMUX
+ 	help
+ 	  This selects pinctrl driver for Renesas RZ/N1 devices.
  
-+	/* Transfer can be terminated */
-+	if (!chan->desc || (stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & STM32_MDMA_CCR_EN))
-+		return -EPERM;
-+
- 	hwdesc = chan->desc->node[chan->curr_hwdesc].hwdesc;
- 
- 	spin_lock_irqsave(&chan->vchan.lock, flags);
+-- 
+2.40.1
+
 
 
