@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FCE77CA31F
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:01:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFCF37CA269
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233407AbjJPJBZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:01:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43204 "EHLO
+        id S232944AbjJPItc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:49:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233232AbjJPJBD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:01:03 -0400
+        with ESMTP id S232915AbjJPItb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB04DFD
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:00:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D6AC433C9;
-        Mon, 16 Oct 2023 09:00:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0A14E5
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E080C433C9;
+        Mon, 16 Oct 2023 08:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446857;
-        bh=3+tcf1VHEyV9h75f4EkPAI97MVylMXczmHbSdbW4ahk=;
+        s=korg; t=1697446168;
+        bh=37MZiQbcJRjSr7GL246vjmLQD2FO58qTrf9q8shB5Do=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MvWVJ2/7SEXsURyVM+uYF5302/hefPzM/JV5Qr6t5nY3a3NBCqO8f744ZIwg29hKF
-         oT040v6ezgvozbDXEKaBw2dTfsB/W8bwHanpySPBK0HiCm4dzPq1fN/Wce31BNIGSY
-         CRB40Ko7B5k/hsf6jNYNxfa2qsNpJgwliX7URci8=
+        b=idycwlXEf3uil02y8JI3yZcWnCrNqUv2JxZFvow2HknBlCCfVPSlpPdlGGFajOI6b
+         ANNQYSeXYMiNatecirT/qff0ECvAHa2pH2zfDkjx1E7b3LJHYlUauOeTohOEOtc2mB
+         QE855hKdQ59PkDfM6v0Vq2+OtHASO4CuhrvkzmII=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
-        Simon Horman <horms@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 065/131] nfc: nci: assert requested protocol is valid
+        patches@lists.linux.dev, Wesley Cheng <quic_wcheng@quicinc.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 049/102] usb: xhci: xhci-ring: Use sysdev for mapping bounce buffer
 Date:   Mon, 16 Oct 2023 10:40:48 +0200
-Message-ID: <20231016084001.681074298@linuxfoundation.org>
+Message-ID: <20231016083955.005305326@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +49,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Cline <jeremy@jcline.org>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 354a6e707e29cb0c007176ee5b8db8be7bd2dee0 ]
+commit 41a43013d2366db5b88b42bbcd8e8f040b6ccf21 upstream.
 
-The protocol is used in a bit mask to determine if the protocol is
-supported. Assert the provided protocol is less than the maximum
-defined so it doesn't potentially perform a shift-out-of-bounds and
-provide a clearer error for undefined protocols vs unsupported ones.
+As mentioned in:
+  commit 474ed23a6257 ("xhci: align the last trb before link if it is
+easily splittable.")
 
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reported-and-tested-by: syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0839b78e119aae1fec78
-Signed-off-by: Jeremy Cline <jeremy@jcline.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231009200054.82557-1-jeremy@jcline.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A bounce buffer is utilized for ensuring that transfers that span across
+ring segments are aligned to the EP's max packet size.  However, the device
+that is used to map the DMA buffer to is currently using the XHCI HCD,
+which does not carry any DMA operations in certain configrations.
+Migration to using the sysdev entry was introduced for DWC3 based
+implementations where the IOMMU operations are present.
+
+Replace the reference to the controller device to sysdev instead.  This
+allows the bounce buffer to be properly mapped to any implementations that
+have an IOMMU involved.
+
+cc: stable@vger.kernel.org
+Fixes: 4c39d4b949d3 ("usb: xhci: use bus->sysdev for DMA configuration")
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20230915143108.1532163-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/host/xhci-ring.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 4ffdf2f45c444..7535afd1537e9 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -908,6 +908,11 @@ static int nci_activate_target(struct nfc_dev *nfc_dev,
- 		return -EINVAL;
- 	}
- 
-+	if (protocol >= NFC_PROTO_MAX) {
-+		pr_err("the requested nfc protocol is invalid\n");
-+		return -EINVAL;
-+	}
-+
- 	if (!(nci_target->supported_protocols & (1 << protocol))) {
- 		pr_err("target does not support the requested protocol 0x%x\n",
- 		       protocol);
--- 
-2.40.1
-
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -772,7 +772,7 @@ static void xhci_giveback_urb_in_irq(str
+ static void xhci_unmap_td_bounce_buffer(struct xhci_hcd *xhci,
+ 		struct xhci_ring *ring, struct xhci_td *td)
+ {
+-	struct device *dev = xhci_to_hcd(xhci)->self.controller;
++	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_segment *seg = td->bounce_seg;
+ 	struct urb *urb = td->urb;
+ 	size_t len;
+@@ -3521,7 +3521,7 @@ static u32 xhci_td_remainder(struct xhci
+ static int xhci_align_td(struct xhci_hcd *xhci, struct urb *urb, u32 enqd_len,
+ 			 u32 *trb_buff_len, struct xhci_segment *seg)
+ {
+-	struct device *dev = xhci_to_hcd(xhci)->self.controller;
++	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	unsigned int unalign;
+ 	unsigned int max_pkt;
+ 	u32 new_buff_len;
 
 
