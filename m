@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B4B07CA28C
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29DA77CA358
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:04:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232986AbjJPIvO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:51:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56744 "EHLO
+        id S233218AbjJPJEr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:04:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232968AbjJPIvO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:51:14 -0400
+        with ESMTP id S230330AbjJPJEq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:04:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3DA8E3
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:51:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0969BC433C7;
-        Mon, 16 Oct 2023 08:51:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C722AB4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:04:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3EDC433CB;
+        Mon, 16 Oct 2023 09:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446272;
-        bh=X3AoZ/Ib7EGx0gj3QsuUKnFdHJPbrv+K4/5x3WPSV8Y=;
+        s=korg; t=1697447084;
+        bh=5LcrqAJDF8+kEYcqpAgJiNKg0LgLUtTxa76cHIU3lS0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vPdaRdccB8WqDC1PDoZmc2R9g0YGfR4TBf+kY6ZfQRobhJyjXFUKWFjytjD+0LSjU
-         SHieWiBObOxB2MsYNEDoNn+7JJ6nZ4KHdgUWhwbP/7ggTIlV3eHofBK6htiqsN+PIa
-         C61S9I9Vpg0wilu7jXvJ3c2umYZm7+vmJUmDlbN8=
+        b=tORUzncB4IlkKVdHIoMl+iDF0/wPcPuc32u3Ps8tylLJ3E84sAEJcuZjmiH1n2ldK
+         xYMN+1e3tBzvwljciuFpRBww0jk4l4I3rcpT8UUKvH4qAnjUCdd5yKvWG+eEKwcNxJ
+         j046YMsFjCO6fJXlnDS4sQTaE4Vck8F3O6ox11GE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
-        Eugen Hristev <eugen.hristev@collabora.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/102] dmaengine: mediatek: Fix deadlock caused by synchronize_irq()
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+        Jose Javier Rodriguez Barbarin 
+        <JoseJavier.Rodriguez@duagon.com>
+Subject: [PATCH 6.1 098/131] mcb: remove is_added flag from mcb_device struct
 Date:   Mon, 16 Oct 2023 10:41:21 +0200
-Message-ID: <20231016083955.880797164@linuxfoundation.org>
+Message-ID: <20231016084002.500538437@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,57 +51,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
 
-[ Upstream commit 01f1ae2733e2bb4de92fefcea5fda847d92aede1 ]
+commit 0f28ada1fbf0054557cddcdb93ad17f767105208 upstream.
 
-The synchronize_irq(c->irq) will not return until the IRQ handler
-mtk_uart_apdma_irq_handler() is completed. If the synchronize_irq()
-holds a spin_lock and waits the IRQ handler to complete, but the
-IRQ handler also needs the same spin_lock. The deadlock will happen.
-The process is shown below:
+When calling mcb_bus_add_devices(), both mcb devices and the mcb
+bus will attempt to attach a device to a driver because they share
+the same bus_type. This causes an issue when trying to cast the
+container of the device to mcb_device struct using to_mcb_device(),
+leading to a wrong cast when the mcb_bus is added. A crash occurs
+when freing the ida resources as the bus numbering of mcb_bus gets
+confused with the is_added flag on the mcb_device struct.
 
-          cpu0                        cpu1
-mtk_uart_apdma_device_pause() | mtk_uart_apdma_irq_handler()
-  spin_lock_irqsave()         |
-                              |   spin_lock_irqsave()
-  //hold the lock to wait     |
-  synchronize_irq()           |
+The only reason for this cast was to keep an is_added flag on the
+mcb_device struct that does not seem necessary. The function
+device_attach() handles already bound devices and the mcb subsystem
+does nothing special with this is_added flag so remove it completely.
 
-This patch reorders the synchronize_irq(c->irq) outside the spin_lock
-in order to mitigate the bug.
-
-Fixes: 9135408c3ace ("dmaengine: mediatek: Add MediaTek UART APDMA support")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Eugen Hristev <eugen.hristev@collabora.com>
-Link: https://lore.kernel.org/r/20230806032511.45263-1-duoming@zju.edu.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 18d288198099 ("mcb: Correctly initialize the bus's device")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Co-developed-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Signed-off-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Link: https://lore.kernel.org/r/20230906114901.63174-2-JoseJavier.Rodriguez@duagon.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mediatek/mtk-uart-apdma.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/mcb/mcb-core.c  |   10 +++-------
+ drivers/mcb/mcb-parse.c |    2 --
+ include/linux/mcb.h     |    1 -
+ 3 files changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/dma/mediatek/mtk-uart-apdma.c b/drivers/dma/mediatek/mtk-uart-apdma.c
-index a1517ef1f4a01..0acf6a92a4ad3 100644
---- a/drivers/dma/mediatek/mtk-uart-apdma.c
-+++ b/drivers/dma/mediatek/mtk-uart-apdma.c
-@@ -451,9 +451,8 @@ static int mtk_uart_apdma_device_pause(struct dma_chan *chan)
- 	mtk_uart_apdma_write(c, VFF_EN, VFF_EN_CLR_B);
- 	mtk_uart_apdma_write(c, VFF_INT_EN, VFF_INT_EN_CLR_B);
+--- a/drivers/mcb/mcb-core.c
++++ b/drivers/mcb/mcb-core.c
+@@ -387,17 +387,13 @@ EXPORT_SYMBOL_NS_GPL(mcb_free_dev, MCB);
  
--	synchronize_irq(c->irq);
+ static int __mcb_bus_add_devices(struct device *dev, void *data)
+ {
+-	struct mcb_device *mdev = to_mcb_device(dev);
+ 	int retval;
+ 
+-	if (mdev->is_added)
+-		return 0;
 -
- 	spin_unlock_irqrestore(&c->vc.lock, flags);
-+	synchronize_irq(c->irq);
+ 	retval = device_attach(dev);
+-	if (retval < 0)
++	if (retval < 0) {
+ 		dev_err(dev, "Error adding device (%d)\n", retval);
+-
+-	mdev->is_added = true;
++		return retval;
++	}
  
  	return 0;
  }
--- 
-2.40.1
-
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -99,8 +99,6 @@ static int chameleon_parse_gdd(struct mc
+ 	mdev->mem.end = mdev->mem.start + size - 1;
+ 	mdev->mem.flags = IORESOURCE_MEM;
+ 
+-	mdev->is_added = false;
+-
+ 	ret = mcb_device_register(bus, mdev);
+ 	if (ret < 0)
+ 		goto err;
+--- a/include/linux/mcb.h
++++ b/include/linux/mcb.h
+@@ -63,7 +63,6 @@ static inline struct mcb_bus *to_mcb_bus
+ struct mcb_device {
+ 	struct device dev;
+ 	struct mcb_bus *bus;
+-	bool is_added;
+ 	struct mcb_driver *driver;
+ 	u16 id;
+ 	int inst;
 
 
