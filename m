@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49BEE7CAC9C
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D9317CACA4
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233773AbjJPO4c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:56:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53280 "EHLO
+        id S233799AbjJPO5g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:57:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233830AbjJPO4a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:56:30 -0400
+        with ESMTP id S233816AbjJPO5g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:57:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F964E3
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:56:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5749CC433C9;
-        Mon, 16 Oct 2023 14:56:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C8CEE1
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:57:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EEAC433C8;
+        Mon, 16 Oct 2023 14:57:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697468187;
-        bh=X+NSZ6BDVkYsFYBh6oyNxQSAGdMYv8jaUj4VHriCXhs=;
+        s=korg; t=1697468254;
+        bh=eDD+9em70tHi18ff63gGf3Jr8E7jfn0aAfgNEjunhq0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qYm9ooVSo4fCdaOGETeGpQNR6599Te/PYpInSXuItaAUJQiio/IPYUoa3UsMiMTxK
-         pQ5PdUMApAbdr3L86ZAgSRl6i0xknpQvuZC8EzdEhYocXKzRl3CJP3BgusQhAqaTLj
-         EZC0wCeNLIXgN1w95BsDRm6QrUs8qgpsMCJVOMQo=
+        b=SRRWsqqf2O4hMIeg+r2E3heNsq+8QyNcLUoByMzjrhN+nzLqs1KJ+7W23io1OLWWq
+         LSZb/GQl7kmLC8ELoeSVQHvG7wkXugMmnTKdcmPnpI7+2PJOdiA85iwpznvkDBrUD2
+         dzpyIx1IBN6nLe8L1473p2Z6dXAYABSiGbaLLlUs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guo Ren <guoren@kernel.org>,
-        Jiexun Wang <wangjiexun@tinylab.org>,
-        Samuel Holland <samuel@sholland.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.5 172/191] RISC-V: Fix wrong use of CONFIG_HAVE_SOFTIRQ_ON_OWN_STACK
-Date:   Mon, 16 Oct 2023 10:42:37 +0200
-Message-ID: <20231016084019.390188715@linuxfoundation.org>
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Douglas Gilbert <dgilbert@interlog.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.5 173/191] usb: typec: ucsi: Fix missing link removal
+Date:   Mon, 16 Oct 2023 10:42:38 +0200
+Message-ID: <20231016084019.413828292@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -55,60 +54,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jiexun Wang <wangjiexun@tinylab.org>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-commit 07a27665754bf649b5de8e55c655e4d6837406be upstream.
+commit dddb91cde52b4a57fa06a332b230fca3b11b885f upstream.
 
-If configuration options SOFTIRQ_ON_OWN_STACK and PREEMPT_RT
-are enabled simultaneously under RISC-V architecture,
-it will result in a compilation failure:
+The link between the partner device and its USB Power
+Delivery instance was never removed which prevented the
+device from being released. Removing the link always when
+the partner is unregistered.
 
-arch/riscv/kernel/irq.c:64:6: error: redefinition of 'do_softirq_own_stack'
-   64 | void do_softirq_own_stack(void)
-      |      ^~~~~~~~~~~~~~~~~~~~
-In file included from ./arch/riscv/include/generated/asm/softirq_stack.h:1,
-                 from arch/riscv/kernel/irq.c:15:
-./include/asm-generic/softirq_stack.h:8:20: note: previous definition of 'do_softirq_own_stack' was here
-    8 | static inline void do_softirq_own_stack(void)
-      |                    ^~~~~~~~~~~~~~~~~~~~
-
-After changing CONFIG_HAVE_SOFTIRQ_ON_OWN_STACK to CONFIG_SOFTIRQ_ON_OWN_STACK,
-compilation can be successful.
-
-Fixes: dd69d07a5a6c ("riscv: stack: Support HAVE_SOFTIRQ_ON_OWN_STACK")
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Jiexun Wang <wangjiexun@tinylab.org>
-Reviewed-by: Samuel Holland <samuel@sholland.org>
-Link: https://lore.kernel.org/r/20230913052940.374686-1-wangjiexun@tinylab.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: b04e1747fbcc ("usb: typec: ucsi: Register USB Power Delivery Capabilities")
+Cc: stable <stable@kernel.org>
+Reported-by: Douglas Gilbert <dgilbert@interlog.com>
+Closes: https://lore.kernel.org/linux-usb/ZSUMXdw9nanHtnw2@kuha.fi.intel.com/
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231010141749.3912016-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/irq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/kernel/irq.c b/arch/riscv/kernel/irq.c
-index a8efa053c4a5..9cc0a7669271 100644
---- a/arch/riscv/kernel/irq.c
-+++ b/arch/riscv/kernel/irq.c
-@@ -60,7 +60,7 @@ static void init_irq_stacks(void)
- }
- #endif /* CONFIG_VMAP_STACK */
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 509c67c94a70..61b64558f96c 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -787,6 +787,7 @@ static void ucsi_unregister_partner(struct ucsi_connector *con)
  
--#ifdef CONFIG_HAVE_SOFTIRQ_ON_OWN_STACK
-+#ifdef CONFIG_SOFTIRQ_ON_OWN_STACK
- void do_softirq_own_stack(void)
- {
- #ifdef CONFIG_IRQ_STACKS
-@@ -92,7 +92,7 @@ void do_softirq_own_stack(void)
- #endif
- 		__do_softirq();
- }
--#endif /* CONFIG_HAVE_SOFTIRQ_ON_OWN_STACK */
-+#endif /* CONFIG_SOFTIRQ_ON_OWN_STACK */
+ 	typec_set_mode(con->port, TYPEC_STATE_SAFE);
  
- #else
- static void init_irq_stacks(void) {}
++	typec_partner_set_usb_power_delivery(con->partner, NULL);
+ 	ucsi_unregister_partner_pdos(con);
+ 	ucsi_unregister_altmodes(con, UCSI_RECIPIENT_SOP);
+ 	typec_unregister_partner(con->partner);
 -- 
 2.42.0
 
