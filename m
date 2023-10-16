@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 363947CA281
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A1F7CA34F
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:04:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232861AbjJPIuz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:50:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38600 "EHLO
+        id S233053AbjJPJER (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:04:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232785AbjJPIuy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:50:54 -0400
+        with ESMTP id S233251AbjJPJEP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:04:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D96E4B4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:50:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1924C433C8;
-        Mon, 16 Oct 2023 08:50:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73730E1
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:04:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6964C433C7;
+        Mon, 16 Oct 2023 09:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446253;
-        bh=RuFrLPpmiTVTHA8O2mdYvDV9O54DjeYoy2cRFuVSjuo=;
+        s=korg; t=1697447054;
+        bh=pZK+6REqwJIGTPeVVlKK6BA0nkkJqnWmmk088iQGPbA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=agq8MrH3WtO3qCDXE2MlhMwuaUipq6maaj3aE44U/jaQVdM40wBAz5CJd/Q6gH7GC
-         eG24t2bl4qLiS7cWPFEVprDWvfomLN29yDsXz3W2W6lrxS3LCKlidTqmQgtw8gqSF4
-         VmgFkZ7YGijhDMV8AxU1lZFLiVsmpvR/eV+wPV3o=
+        b=gdV40HUZrVCMHlDGxC4Pt4PP3mr6QrJxCAmhFXLmBuJ3FwP634+LuOiOKq8zGQ830
+         1XN77i1s3A7Jtg8yZQIc72VeiP5KTx6H2q167R51+eu6UW/4qtWw3aL5ASvrUBoW14
+         XKmAP22Tn2kvUGc+8GEeExLvgjGWormuqh6sGLVg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, ruanjinjie@huawei.com,
-        Ren Zhijie <renzhijie2@huawei.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 5.15 099/102] arm64: armv8_deprecated: fix unused-function error
-Date:   Mon, 16 Oct 2023 10:41:38 +0200
-Message-ID: <20231016083956.343823709@linuxfoundation.org>
+        patches@lists.linux.dev, Yunxiang Li <Yunxiang.Li@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 116/131] dma-buf: add dma_fence_timestamp helper
+Date:   Mon, 16 Oct 2023 10:41:39 +0200
+Message-ID: <20231016084002.950884888@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +51,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ren Zhijie <renzhijie2@huawei.com>
+From: Christian König <christian.koenig@amd.com>
 
-commit 223d3a0d30b6e9f979f5642e430e1753d3e29f89 upstream.
+commit b83ce9cb4a465b8f9a3fa45561b721a9551f60e3 upstream.
 
-If CONFIG_SWP_EMULATION is not set and
-CONFIG_CP15_BARRIER_EMULATION is not set,
-aarch64-linux-gnu complained about unused-function :
+When a fence signals there is a very small race window where the timestamp
+isn't updated yet. sync_file solves this by busy waiting for the
+timestamp to appear, but on other ocassions didn't handled this
+correctly.
 
-arch/arm64/kernel/armv8_deprecated.c:67:21: error: ‘aarch32_check_condition’ defined but not used [-Werror=unused-function]
- static unsigned int aarch32_check_condition(u32 opcode, u32 psr)
-                     ^~~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
+Provide a dma_fence_timestamp() helper function for this and use it in
+all appropriate cases.
 
-To fix this warning, modify aarch32_check_condition() with __maybe_unused.
+Another alternative would be to grab the spinlock when that happens.
 
-Fixes: 0c5f416219da ("arm64: armv8_deprecated: move aarch32 helper earlier")
-Signed-off-by: Ren Zhijie <renzhijie2@huawei.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20221124022429.19024-1-renzhijie2@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+v2 by teddy: add a wait parameter to wait for the timestamp to show up, in case
+   the accurate timestamp is needed and/or the timestamp is not based on
+   ktime (e.g. hw timestamp)
+v3 chk: drop the parameter again for unified handling
+
+Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: 1774baa64f93 ("drm/scheduler: Change scheduled fence track v2")
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+CC: stable@vger.kernel.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20230929104725.2358-1-christian.koenig@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/armv8_deprecated.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma-buf/dma-fence-unwrap.c     |   13 ++++---------
+ drivers/dma-buf/sync_file.c            |    9 +++------
+ drivers/gpu/drm/scheduler/sched_main.c |    2 +-
+ include/linux/dma-fence.h              |   19 +++++++++++++++++++
+ 4 files changed, 27 insertions(+), 16 deletions(-)
 
---- a/arch/arm64/kernel/armv8_deprecated.c
-+++ b/arch/arm64/kernel/armv8_deprecated.c
-@@ -64,7 +64,7 @@ struct insn_emulation {
+--- a/drivers/dma-buf/dma-fence-unwrap.c
++++ b/drivers/dma-buf/dma-fence-unwrap.c
+@@ -76,16 +76,11 @@ struct dma_fence *__dma_fence_unwrap_mer
+ 		dma_fence_unwrap_for_each(tmp, &iter[i], fences[i]) {
+ 			if (!dma_fence_is_signaled(tmp)) {
+ 				++count;
+-			} else if (test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT,
+-					    &tmp->flags)) {
+-				if (ktime_after(tmp->timestamp, timestamp))
+-					timestamp = tmp->timestamp;
+ 			} else {
+-				/*
+-				 * Use the current time if the fence is
+-				 * currently signaling.
+-				 */
+-				timestamp = ktime_get();
++				ktime_t t = dma_fence_timestamp(tmp);
++
++				if (ktime_after(t, timestamp))
++					timestamp = t;
+ 			}
+ 		}
+ 	}
+--- a/drivers/dma-buf/sync_file.c
++++ b/drivers/dma-buf/sync_file.c
+@@ -268,13 +268,10 @@ static int sync_fill_fence_info(struct d
+ 		sizeof(info->driver_name));
  
- #define	ARM_OPCODE_CONDITION_UNCOND	0xf
+ 	info->status = dma_fence_get_status(fence);
+-	while (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags) &&
+-	       !test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags))
+-		cpu_relax();
+ 	info->timestamp_ns =
+-		test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags) ?
+-		ktime_to_ns(fence->timestamp) :
+-		ktime_set(0, 0);
++		dma_fence_is_signaled(fence) ?
++			ktime_to_ns(dma_fence_timestamp(fence)) :
++			ktime_set(0, 0);
  
--static unsigned int aarch32_check_condition(u32 opcode, u32 psr)
-+static unsigned int __maybe_unused aarch32_check_condition(u32 opcode, u32 psr)
- {
- 	u32 cc_bits  = opcode >> 28;
+ 	return info->status;
+ }
+--- a/drivers/gpu/drm/scheduler/sched_main.c
++++ b/drivers/gpu/drm/scheduler/sched_main.c
+@@ -841,7 +841,7 @@ drm_sched_get_cleanup_job(struct drm_gpu
  
+ 		if (next) {
+ 			next->s_fence->scheduled.timestamp =
+-				job->s_fence->finished.timestamp;
++				dma_fence_timestamp(&job->s_fence->finished);
+ 			/* start TO timer for next job */
+ 			drm_sched_start_timeout(sched);
+ 		}
+--- a/include/linux/dma-fence.h
++++ b/include/linux/dma-fence.h
+@@ -548,6 +548,25 @@ static inline void dma_fence_set_error(s
+ 	fence->error = error;
+ }
+ 
++/**
++ * dma_fence_timestamp - helper to get the completion timestamp of a fence
++ * @fence: fence to get the timestamp from.
++ *
++ * After a fence is signaled the timestamp is updated with the signaling time,
++ * but setting the timestamp can race with tasks waiting for the signaling. This
++ * helper busy waits for the correct timestamp to appear.
++ */
++static inline ktime_t dma_fence_timestamp(struct dma_fence *fence)
++{
++	if (WARN_ON(!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags)))
++		return ktime_get();
++
++	while (!test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags))
++		cpu_relax();
++
++	return fence->timestamp;
++}
++
+ signed long dma_fence_wait_timeout(struct dma_fence *,
+ 				   bool intr, signed long timeout);
+ signed long dma_fence_wait_any_timeout(struct dma_fence **fences,
 
 
