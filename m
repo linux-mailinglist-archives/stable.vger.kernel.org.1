@@ -2,76 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 854627CA6B5
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 13:28:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6C6E7CA6D5
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 13:40:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230090AbjJPL20 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 07:28:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39974 "EHLO
+        id S231442AbjJPLkL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 07:40:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230017AbjJPL2Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 07:28:25 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8979C8E;
-        Mon, 16 Oct 2023 04:28:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B521C433C8;
-        Mon, 16 Oct 2023 11:28:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697455704;
-        bh=A5cUwPAsu3oksXhFl3oa+u3vGrczDMCN23UrhSj9K+o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ANdei5ZgS5hh8GiV0Sn5KlfXvQDndrXD/HZQbhlKSCnodHzXM8r3BePaCcWUxAk8j
-         AkzqA4kBLR77RPdnbcHLRgZPWIgGbtKYqoJ1T6lvLo0qCIvg+o/b/CkAyrlum4RU4f
-         MyTNz3xH0YZc5Wy0a4tynECi5TpEOqxp1T7w2mCSi8e3A6PfNwGvmWMuDudc6c8nkH
-         xRhahEnAp+PfH5XJsu2wY7pn3Fuj1wkVLcWMFV9/3JflkkbS01kcEFG3F/NzEh6H9R
-         I1wivZbLz178pKipPjrPmJHN5mEHhIuYGO2/O9OUZojMIniW9kAu0FBM0L5xsgRDAZ
-         EdALH4UXHkxWA==
-Date:   Mon, 16 Oct 2023 13:28:19 +0200
-From:   Simon Horman <horms@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Samuel Ortiz <sameo@linux.intel.com>,
-        Frederic Danis <frederic.danis@linux.intel.com>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        =?utf-8?B?6buE5oCd6IGq?= <huangsicong@iie.ac.cn>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH net-next] nfc: nci: fix possible NULL pointer dereference
- in send_acknowledge()
-Message-ID: <20231016112819.GL1501712@kernel.org>
-References: <20231013184129.18738-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S230343AbjJPLkK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 07:40:10 -0400
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AA0FE1;
+        Mon, 16 Oct 2023 04:40:09 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3af5b5d7f16so2690949b6e.0;
+        Mon, 16 Oct 2023 04:40:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697456408; x=1698061208;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=tE3/kt7VPkaFdquQYklg8hmYnVUnseOhnUoih4hEER0=;
+        b=niR7CETXWTyqnpbNTQM9R9+3O+nRq6tX0tsjHqc2tVbuAFnQi+cOo9rrR2OLF/pQ46
+         TJUuRlGdyNA3XTF2M+IVi/VGLj6Z8YO3sMCaUpiI0zTW1YoYj9z/BcsICKblFfN05X5H
+         AjpJiWb3Iv28bNQk/wS3Zs6x/YqEsLfNFHiBWDW6fTxG07ddinrh5kSnCJU7V0X40/w0
+         21MhQkYkmnudyJMsAI6TsTnQYr10QelHYtWE/JgQvgy9inaCzwK5sY+Twlhyoc8b5A+1
+         VYyzDlZRSiWT/7auq/hyn/i66KxiIQkIXa1ypWBVyW4z0cu3tDC4mRFShE3q8yoxmSts
+         4lpw==
+X-Gm-Message-State: AOJu0YwFc7pb36RIyBJcIwaA9nspD8RUVxMQ/xYZJISiuLanKn8GDcW0
+        ZpS+FgQ38Q3QDMheovVEjbU=
+X-Google-Smtp-Source: AGHT+IHxDYPzvNS3lWU1QsDc586Js06uUe+5oigcPknJIMbnR2FqVnBRnij03C711FQbvHhcLy3Xug==
+X-Received: by 2002:a05:6808:1582:b0:3af:7db8:21ad with SMTP id t2-20020a056808158200b003af7db821admr43196719oiw.33.1697456408615;
+        Mon, 16 Oct 2023 04:40:08 -0700 (PDT)
+Received: from mail.marliere.net ([24.199.118.162])
+        by smtp.gmail.com with ESMTPSA id f18-20020aa79d92000000b006bc3e8f58besm3726935pfq.56.2023.10.16.04.40.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Oct 2023 04:40:08 -0700 (PDT)
+Date:   Mon, 16 Oct 2023 08:40:00 -0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+        s=2023; t=1697456403;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=tE3/kt7VPkaFdquQYklg8hmYnVUnseOhnUoih4hEER0=;
+        b=Tly0eZsWl0PYDKWvqPHKOAbv1/wJr0yDXEHYhkZ22t59XEtf39mUTX2rsE3I8NMi/l8Imm
+        DxJB6uyPhef6JqSNZkl2HldM1Pc0VLw9mdmCFqUjI7PLcHw9RmuN6szKNdpLAlHzbK+SlR
+        k6fNy9Q1OOmMHt13hU4tozESfZFEfYt1SuaivIwbZ8IRu68vUvoDVxB3FaEqZVNy1vhEJk
+        OjWnBbKUsoyps9G66fCr+VsusMr4lBdsvuOSVBA4nZMjKzCrzd4jwosP9ZCYr8y/wFctcG
+        OWKN6CpEfRsmrYu6+0uzOpVfIEXeeTQmzVpYx5BEth+yddX/k7RiYRU+0Xe+Pw==
+Authentication-Results: ORIGINATING;
+        auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
+From:   "Ricardo B. Marliere" <ricardo@marliere.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.1 000/131] 6.1.59-rc1 review
+Message-ID: <pocozopagkwaphxqyupnpuntzxsb47ws6s7nzmawhnqa5brzph@ku2y2aucxs3l>
+References: <20231016084000.050926073@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231013184129.18738-1-krzysztof.kozlowski@linaro.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_INVALID,
+        DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 13, 2023 at 08:41:29PM +0200, Krzysztof Kozlowski wrote:
-> Handle memory allocation failure from nci_skb_alloc() (calling
-> alloc_skb()) to avoid possible NULL pointer dereference.
+On 23/10/16 10:39AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.59 release.
+> There are 131 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Reported-by: 黄思聪 <huangsicong@iie.ac.cn>
-> Fixes: 391d8a2da787 ("NFC: Add NCI over SPI receive")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Responses should be made by Wed, 18 Oct 2023 08:39:40 +0000.
+> Anything received after that time might be too late.
 
-Thanks,
+No regressions on my system:
 
-I agree that nci_skb_alloc() may turn NULL and that this
-is an appropriate way to handle that.
+08:35:39 rbmarliere@debian ~
+$ dmesg -lerr
+08:35:42 rbmarliere@debian ~
+$ uname -a
+Linux debian 6.1.59-rc1+ #1 SMP PREEMPT_DYNAMIC Mon Oct 16 07:46:20 -03 2023 x86_64 GNU/Linux
 
-As an aside, I observe that the return value of send_acknowledge()
-is not checked. But I don't think that affects the correctness of this
-change.
+1 build warning:
+vmlinux.o: warning: objtool: set_ftrace_ops_ro+0x23: relocation to !ENDBR: kexec_mark_crashkres+0xe7
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+
+Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
