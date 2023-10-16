@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCD477CAB50
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:24:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 994777CAB52
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:24:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232509AbjJPOYi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:24:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40090 "EHLO
+        id S233542AbjJPOYp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:24:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232381AbjJPOYh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:24:37 -0400
+        with ESMTP id S232381AbjJPOYo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:24:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7842D83
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:24:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB37EC433C7;
-        Mon, 16 Oct 2023 14:24:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B73FB9C
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:24:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0154DC433C8;
+        Mon, 16 Oct 2023 14:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697466276;
-        bh=7GucFv4ZVS5fCm3Pt9Uu8dOkjKvDy94tficb1jso9bk=;
+        s=korg; t=1697466282;
+        bh=fXg2AvPP9TtMPnyzyVSvkvccHVpVDmqDkRwM9ez17L0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bjg6/ZLyeu+TD+X8Q/rsd48Zdg1Qc4hBqvrtdcO7KwCabcX2XxRrXDCYknc00H71O
-         FsrL43OacfBbljOPjLH15g6KpLHfCEXcxIQiWQe7Skg3bCj9bJoVi6hPDJRzxoF22p
-         Iz/MCeNm77+foqH9u34o/PMPATq7g1vBXizf6xVI=
+        b=Mc3k78vKihQrs4iRnFy2SQjj1KRRbsLdF/KQOhKUSz4Bwqbmr7UP6N/6HYqWfwUWi
+         24Mws7dTF8lOKfb1kmHI3q/lm5Ce9zmBXZUT1pLBmcQl4LhnjC/47hUCMbGVCgwN1l
+         cTAlbYci01lo1UzjaTXpbcmj2COsbfd9fVBNMLuw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sven Frotscher <sven.frotscher@gmail.com>,
+        patches@lists.linux.dev, Matthias Reichl <hias@horus.com>,
         Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.5 019/191] ASoC: amd: yc: Fix non-functional mic on Lenovo 82YM
-Date:   Mon, 16 Oct 2023 10:40:04 +0200
-Message-ID: <20231016084015.850933469@linuxfoundation.org>
+Subject: [PATCH 6.5 020/191] ASoC: hdmi-codec: Fix broken channel map reporting
+Date:   Mon, 16 Oct 2023 10:40:05 +0200
+Message-ID: <20231016084015.873958228@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -53,40 +53,59 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Sven Frotscher <sven.frotscher@gmail.com>
+From: Matthias Reichl <hias@horus.com>
 
-commit 1948fa64727685ac3f6584755212e2e738b6b051 upstream.
+commit b84b53149476b22cc3b8677b771fb4cf06d1d455 upstream.
 
-Like the Lenovo 82TL, 82V2, 82QF and 82UG, the 82YM (Yoga 7 14ARP8)
-requires an entry in the quirk list to enable the internal microphone.
-The latter two received similar fixes in commit 1263cc0f414d
-("ASoC: amd: yc: Fix non-functional mic on Lenovo 82QF and 82UG").
+Commit 4e0871333661 ("ASoC: hdmi-codec: fix channel info for
+compressed formats") accidentally changed hcp->chmap_idx from
+ca_id, the CEA channel allocation ID, to idx, the index to
+the table of channel mappings ordered by preference.
 
-Fixes: c008323fe361 ("ASoC: amd: yc: Fix a non-functional mic on Lenovo 82SJ")
+This resulted in wrong channel maps being reported to userspace,
+eg for 5.1 "FL,FR,LFE,FC" was reported instead of the expected
+"FL,FR,LFE,FC,RL,RR":
+
+~ # speaker-test -c 6 -t sine
+...
+ 0 - Front Left
+ 3 - Front Center
+ 1 - Front Right
+ 2 - LFE
+ 4 - Unknown
+ 5 - Unknown
+
+~ # amixer cget iface=PCM,name='Playback Channel Map' | grep ': values'
+  : values=3,4,8,7,0,0,0,0
+
+Switch this back to ca_id in case of PCM audio so the correct channel
+map is reported again and set it to HDMI_CODEC_CHMAP_IDX_UNKNOWN in
+case of non-PCM audio so the PCM channel map control returns "Unknown"
+channels (value 0).
+
+Fixes: 4e0871333661 ("ASoC: hdmi-codec: fix channel info for compressed formats")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sven Frotscher <sven.frotscher@gmail.com>
-Link: https://lore.kernel.org/r/20230927223758.18870-1-sven.frotscher@gmail.com
+Signed-off-by: Matthias Reichl <hias@horus.com>
+Link: https://lore.kernel.org/r/20230929195027.97136-1-hias@horus.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/codecs/hdmi-codec.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -238,6 +238,13 @@ static const struct dmi_system_id yc_acp
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "82YM"),
-+		}
-+	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
- 			DMI_MATCH(DMI_PRODUCT_NAME, "82UG"),
- 		}
- 	},
+--- a/sound/soc/codecs/hdmi-codec.c
++++ b/sound/soc/codecs/hdmi-codec.c
+@@ -531,7 +531,10 @@ static int hdmi_codec_fill_codec_params(
+ 	hp->sample_rate = sample_rate;
+ 	hp->channels = channels;
+ 
+-	hcp->chmap_idx = idx;
++	if (pcm_audio)
++		hcp->chmap_idx = ca_id;
++	else
++		hcp->chmap_idx = HDMI_CODEC_CHMAP_IDX_UNKNOWN;
+ 
+ 	return 0;
+ }
 
 
