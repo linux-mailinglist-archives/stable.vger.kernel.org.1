@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F9B57CA324
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:01:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAF5B7CA243
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233232AbjJPJBu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:01:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43258 "EHLO
+        id S232026AbjJPIsC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233251AbjJPJB0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:01:26 -0400
+        with ESMTP id S232630AbjJPIsB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:48:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ABB4133
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:01:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F35C433C9;
-        Mon, 16 Oct 2023 09:01:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D7A5DC
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:48:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49E92C433C8;
+        Mon, 16 Oct 2023 08:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446879;
-        bh=hwN6UfTEC+otDkZ/xQwUKFtLCUArO4zwMevrsevcR6U=;
+        s=korg; t=1697446079;
+        bh=St97f8IAL/WAsqngMui5qpT3sFtIauZZ+zonSYYiJec=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y6lxN7dPgBqnqUah1dqoKpDfBH/FaOhmx+04j0luAUlKr7CSdqTWSPiQBgabWhSSW
-         lBzMbXT1SS7gJsPUsz6kCdAblvsUnqIRzKc/Ga2BYCsMj9wXfFg7psrloj9c1om8fj
-         T/uOW+hlKcgQWr+wAl72zN1B10ZEB6+ffHKjfLLk=
+        b=qR/5J5B/1/CBJ39g9KjW9G1lM/JNSra7DjY4yzvuMsiNXaNhC85ivmC/kG8G5Qkan
+         rzobdp+XFE3A7ku/70YArggWwHlOmYEeaX9TsvJYwrxC5HIDy52pbPvYh7hpAe0Kzc
+         cwX30vlEjgXRafcLsFBqMslEMgewmf6ggwwx3R4Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lakshmi Yadlapati <lakshmiy@us.ibm.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 085/131] iio: pressure: dps310: Adjust Timeout Settings
+        patches@lists.linux.dev, Thorsten Leemhuis <linux@leemhuis.info>,
+        Jeffery Miller <jefferymiller@google.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 069/102] Input: psmouse - fix fast_reconnect function for PS/2 mode
 Date:   Mon, 16 Oct 2023 10:41:08 +0200
-Message-ID: <20231016084002.170767680@linuxfoundation.org>
+Message-ID: <20231016083955.540687790@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +50,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
+From: Jeffery Miller <jefferymiller@google.com>
 
-commit 901a293fd96fb9bab843ba4cc7be3094a5aa7c94 upstream.
+commit e2cb5cc822b6c9ee72c56ce1d81671b22c05406a upstream.
 
-The DPS310 sensor chip has been encountering intermittent errors while
-reading the sensor device across various system designs. This issue causes
-the chip to become "stuck," preventing the indication of "ready" status
-for pressure and temperature measurements in the MEAS_CFG register.
+When the SMBus connection is attempted psmouse_smbus_init() sets
+the fast_reconnect pointer to psmouse_smbus_reconnecti(). If SMBus
+initialization fails, elantech_setup_ps2() and synaptics_init_ps2() will
+fallback to PS/2 mode, replacing the psmouse private data. This can cause
+issues on resume, since psmouse_smbus_reconnect() expects to find an
+instance of struct psmouse_smbus_dev in psmouse->private.
 
-To address this issue, this commit fixes the timeout settings to improve
-sensor stability:
-- After sending a reset command to the chip, the timeout has been extended
-  from 2.5 ms to 15 ms, aligning with the DPS310 specification.
-- The read timeout value of the MEAS_CFG register has been adjusted from
-  20ms to 30ms to match the specification.
+The issue was uncovered when in 92e24e0e57f7 ("Input: psmouse - add
+delay when deactivating for SMBus mode") psmouse_smbus_reconnect()
+started attempting to use more of the data structure. The commit was
+since reverted, not because it was at fault, but because there was found
+a better way of doing what it was attempting to do.
 
-Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
-Fixes: 7b4ab4abcea4 ("iio: pressure: dps310: Reset chip after timeout")
-Link: https://lore.kernel.org/r/20230829180222.3431926-2-lakshmiy@us.ibm.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fix the problem by resetting the fast_reconnect pointer in psmouse
+structure in elantech_setup_ps2() and synaptics_init_ps2() when the PS/2
+mode is used.
+
+Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
+Tested-by: Thorsten Leemhuis <linux@leemhuis.info>
+Signed-off-by: Jeffery Miller <jefferymiller@google.com>
+Fixes: bf232e460a35 ("Input: psmouse-smbus - allow to control psmouse_deactivate")
+Link: https://lore.kernel.org/r/20231005002249.554877-1-jefferymiller@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/dps310.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/input/mouse/elantech.c  |    1 +
+ drivers/input/mouse/synaptics.c |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -57,8 +57,8 @@
- #define  DPS310_RESET_MAGIC	0x09
- #define DPS310_COEF_BASE	0x10
+--- a/drivers/input/mouse/elantech.c
++++ b/drivers/input/mouse/elantech.c
+@@ -2114,6 +2114,7 @@ static int elantech_setup_ps2(struct psm
+ 	psmouse->protocol_handler = elantech_process_byte;
+ 	psmouse->disconnect = elantech_disconnect;
+ 	psmouse->reconnect = elantech_reconnect;
++	psmouse->fast_reconnect = NULL;
+ 	psmouse->pktsize = info->hw_version > 1 ? 6 : 4;
  
--/* Make sure sleep time is <= 20ms for usleep_range */
--#define DPS310_POLL_SLEEP_US(t)		min(20000, (t) / 8)
-+/* Make sure sleep time is <= 30ms for usleep_range */
-+#define DPS310_POLL_SLEEP_US(t)		min(30000, (t) / 8)
- /* Silently handle error in rate value here */
- #define DPS310_POLL_TIMEOUT_US(rc)	((rc) <= 0 ? 1000000 : 1000000 / (rc))
- 
-@@ -402,8 +402,8 @@ static int dps310_reset_wait(struct dps3
- 	if (rc)
- 		return rc;
- 
--	/* Wait for device chip access: 2.5ms in specification */
--	usleep_range(2500, 12000);
-+	/* Wait for device chip access: 15ms in specification */
-+	usleep_range(15000, 55000);
  	return 0;
- }
- 
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -1622,6 +1622,7 @@ static int synaptics_init_ps2(struct psm
+ 	psmouse->set_rate = synaptics_set_rate;
+ 	psmouse->disconnect = synaptics_disconnect;
+ 	psmouse->reconnect = synaptics_reconnect;
++	psmouse->fast_reconnect = NULL;
+ 	psmouse->cleanup = synaptics_reset;
+ 	/* Synaptics can usually stay in sync without extra help */
+ 	psmouse->resync_time = 0;
 
 
