@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CF4A7CA213
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCABE7CA2E4
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230104AbjJPIpk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:45:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34178 "EHLO
+        id S233064AbjJPI4m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:56:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232630AbjJPIpj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:45:39 -0400
+        with ESMTP id S229784AbjJPI4m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:56:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A10D7DE
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:45:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C0EC433CA;
-        Mon, 16 Oct 2023 08:45:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC46B4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:56:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD45AC433C7;
+        Mon, 16 Oct 2023 08:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445937;
-        bh=W9FvXo8DAglxJAKQxi6Fk8Uf4CIRUZfaYGGvP4B+6U4=;
+        s=korg; t=1697446600;
+        bh=+AWHaNNqxNavaOoXgtSGZ38lVioovkm9C8PW65WzNY0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lm2UhS3F4hsSQIUS5kNKygfNq6Ph3oC99oXGPs7DrUIzB2c/7y9tSf63ghS8BXXug
-         2l6IvpOpmVJzbboui5iezTgT1xapiAkemX8xUJmQGJpAf8YE9B+NGldpt/Wb0tZpu0
-         cY4d+ij2nh9DIL/AAYiBZFI6CZgQQL21LmxOtUcE=
+        b=wmEGWJhyErhmKtBH2qXujkyxnqs2x71xxNiOE96m/we+l6u5Lct5S+6chLKVMzrEE
+         c+rh1ECmA+lxU3+I+d13LYUhzKY5QDgK2QhwuNT+KXxIN9uuOYpfj37QbMCVhRyEj7
+         bYwPosAo41yT4AaH1oB9Vwl5uSsXJqHk0AZSkWJY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
-        Simon Horman <horms@kernel.org>,
+        patches@lists.linux.dev,
+        "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>,
+        Sabrina Dubroca <sd@queasysnail.net>,
         Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 040/102] nfc: nci: assert requested protocol is valid
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 056/131] net: macsec: indicate next pn update when offloading
 Date:   Mon, 16 Oct 2023 10:40:39 +0200
-Message-ID: <20231016083954.769951064@linuxfoundation.org>
+Message-ID: <20231016084001.464217217@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,47 +52,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Cline <jeremy@jcline.org>
+From: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
 
-[ Upstream commit 354a6e707e29cb0c007176ee5b8db8be7bd2dee0 ]
+[ Upstream commit 0412cc846a1ef38697c3f321f9b174da91ecd3b5 ]
 
-The protocol is used in a bit mask to determine if the protocol is
-supported. Assert the provided protocol is less than the maximum
-defined so it doesn't potentially perform a shift-out-of-bounds and
-provide a clearer error for undefined protocols vs unsupported ones.
+Indicate next PN update using update_pn flag in macsec_context.
+Offloaded MACsec implementations does not know whether or not the
+MACSEC_SA_ATTR_PN attribute was passed for an SA update and assume
+that next PN should always updated, but this is not always true.
 
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reported-and-tested-by: syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0839b78e119aae1fec78
-Signed-off-by: Jeremy Cline <jeremy@jcline.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231009200054.82557-1-jeremy@jcline.org
+The PN can be reset to its initial value using the following command:
+$ ip macsec set macsec0 tx sa 0 off #octeontx2-pf case
+
+Or, the update PN command will succeed even if the driver does not support
+PN updates.
+$ ip macsec set macsec0 tx sa 0 pn 1 on #mscc phy driver case
+
+Comparing the initial PN with the new PN value is not a solution. When
+the user updates the PN using its initial value the command will
+succeed, even if the driver does not support it. Like this:
+$ ip macsec add macsec0 tx sa 0 pn 1 on key 00 \
+ead3664f508eb06c40ac7104cdae4ce5
+$ ip macsec set macsec0 tx sa 0 pn 1 on #mlx5 case
+
+Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: e0a8c918daa5 ("net: phy: mscc: macsec: reject PN update requests")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/macsec.c | 2 ++
+ include/net/macsec.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 7b6cf9a44aea7..643dfc90b0636 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -908,6 +908,11 @@ static int nci_activate_target(struct nfc_dev *nfc_dev,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 578f470e9fad9..81453e84b6413 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -2384,6 +2384,7 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
  
-+	if (protocol >= NFC_PROTO_MAX) {
-+		pr_err("the requested nfc protocol is invalid\n");
-+		return -EINVAL;
-+	}
-+
- 	if (!(nci_target->supported_protocols & (1 << protocol))) {
- 		pr_err("target does not support the requested protocol 0x%x\n",
- 		       protocol);
+ 		ctx.sa.assoc_num = assoc_num;
+ 		ctx.sa.tx_sa = tx_sa;
++		ctx.sa.update_pn = !!prev_pn.full64;
+ 		ctx.secy = secy;
+ 
+ 		ret = macsec_offload(ops->mdo_upd_txsa, &ctx);
+@@ -2477,6 +2478,7 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
+ 
+ 		ctx.sa.assoc_num = assoc_num;
+ 		ctx.sa.rx_sa = rx_sa;
++		ctx.sa.update_pn = !!prev_pn.full64;
+ 		ctx.secy = secy;
+ 
+ 		ret = macsec_offload(ops->mdo_upd_rxsa, &ctx);
+diff --git a/include/net/macsec.h b/include/net/macsec.h
+index 5b9c61c4d3a62..65c93959c2dc5 100644
+--- a/include/net/macsec.h
++++ b/include/net/macsec.h
+@@ -257,6 +257,7 @@ struct macsec_context {
+ 	struct macsec_secy *secy;
+ 	struct macsec_rx_sc *rx_sc;
+ 	struct {
++		bool update_pn;
+ 		unsigned char assoc_num;
+ 		u8 key[MACSEC_MAX_KEY_LEN];
+ 		union {
 -- 
 2.40.1
 
