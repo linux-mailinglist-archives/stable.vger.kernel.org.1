@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E29A7CA21E
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 978587CA2ED
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:57:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbjJPIqI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:46:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38284 "EHLO
+        id S233118AbjJPI5t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:57:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232646AbjJPIqH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:46:07 -0400
+        with ESMTP id S233212AbjJPI5r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:57:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F0C7E6
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:46:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1E9C433C9;
-        Mon, 16 Oct 2023 08:46:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6ED8EA
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:57:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7A9C433C8;
+        Mon, 16 Oct 2023 08:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445965;
-        bh=0gEanIYEskvmAWxEHdmmCDb8jxKV/JMCi3HdIbCrE+0=;
+        s=korg; t=1697446664;
+        bh=mMbDdsJQsr266syWP8a2RO3+dIT0l4bgHB2nq8Jmd8c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dwvbd+modG8acUfhwfqrG8/RZNmnnfaW+2kGHYcmLnYS3Ix/k6Sv0FQ+peRPHAPE5
-         +c7L6TvpX2aAXGdFUsaPaeS1JStfNN7yCLUCM+9ngyTI++FmBrsHIFEY822dKk4JC8
-         gFO16x0aggMmniC/1auUbJHJMcXO75IcKC8E/F/A=
+        b=SN1WA/mOHGVYrv4UwKLYD6wk8Ftv358PqFDMAG029Ji5pU5AY9F3h97C/B63/ajJ0
+         dQ//4fEUSDjRT/h3EJ4gldx+YA56WI04oIR4jn5XhciEqfp2nkaq9DmzrJkV8jlHbp
+         E6iRgAcR4A2rRIaYC+lW2c634Vrbc7QHv1kq42VU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.15 046/102] media: mtk-jpeg: Fix use after free bug due to uncanceled work
+        patches@lists.linux.dev, Kory Maincent <kory.maincent@bootlin.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/131] ethtool: Fix mod state of verbose no_mask bitset
 Date:   Mon, 16 Oct 2023 10:40:45 +0200
-Message-ID: <20231016083954.926023717@linuxfoundation.org>
+Message-ID: <20231016084001.608228012@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +51,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-commit c677d7ae83141d390d1253abebafa49c962afb52 upstream.
+[ Upstream commit 108a36d07c01edbc5942d27c92494d1c6e4d45a0 ]
 
-In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
-mtk_jpeg_job_timeout_work. Then mtk_jpeg_dec_device_run
-and mtk_jpeg_enc_device_run may be called to start the
-work.
-If we remove the module which will call mtk_jpeg_remove
-to make cleanup, there may be a unfinished work. The
-possible sequence is as follows, which will cause a
-typical UAF bug.
+A bitset without mask in a _SET request means we want exactly the bits in
+the bitset to be set. This works correctly for compact format but when
+verbose format is parsed, ethnl_update_bitset32_verbose() only sets the
+bits present in the request bitset but does not clear the rest. The commit
+6699170376ab fixes this issue by clearing the whole target bitmap before we
+start iterating. The solution proposed brought an issue with the behavior
+of the mod variable. As the bitset is always cleared the old val will
+always differ to the new val.
 
-Fix it by canceling the work before cleanup in the mtk_jpeg_remove
+Fix it by adding a new temporary variable which save the state of the old
+bitmap.
 
-CPU0                  CPU1
-
-                    |mtk_jpeg_job_timeout_work
-mtk_jpeg_remove     |
-  v4l2_m2m_release  |
-    kfree(m2m_dev); |
-                    |
-                    | v4l2_m2m_get_curr_priv
-                    |   m2m_dev->curr_ctx //use
-Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6699170376ab ("ethtool: fix application of verbose no_mask bitset")
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231009133645.44503-1-kory.maincent@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mtk-jpeg/mtk_jpeg_core.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ethtool/bitset.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
---- a/drivers/media/platform/mtk-jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mtk-jpeg/mtk_jpeg_core.c
-@@ -1455,6 +1455,7 @@ static int mtk_jpeg_remove(struct platfo
+diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
+index 0515d6604b3b9..883ed9be81f9f 100644
+--- a/net/ethtool/bitset.c
++++ b/net/ethtool/bitset.c
+@@ -431,8 +431,10 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 			      ethnl_string_array_t names,
+ 			      struct netlink_ext_ack *extack, bool *mod)
  {
- 	struct mtk_jpeg_dev *jpeg = platform_get_drvdata(pdev);
++	u32 *orig_bitmap, *saved_bitmap = NULL;
+ 	struct nlattr *bit_attr;
+ 	bool no_mask;
++	bool dummy;
+ 	int rem;
+ 	int ret;
  
-+	cancel_delayed_work_sync(&jpeg->job_timeout_work);
- 	pm_runtime_disable(&pdev->dev);
- 	video_unregister_device(jpeg->vdev);
- 	v4l2_m2m_release(jpeg->m2m_dev);
+@@ -448,8 +450,22 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 	}
+ 
+ 	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
+-	if (no_mask)
+-		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
++	if (no_mask) {
++		unsigned int nwords = DIV_ROUND_UP(nbits, 32);
++		unsigned int nbytes = nwords * sizeof(u32);
++
++		/* The bitmap size is only the size of the map part without
++		 * its mask part.
++		 */
++		saved_bitmap = kcalloc(nwords, sizeof(u32), GFP_KERNEL);
++		if (!saved_bitmap)
++			return -ENOMEM;
++		memcpy(saved_bitmap, bitmap, nbytes);
++		ethnl_bitmap32_clear(bitmap, 0, nbits, &dummy);
++		orig_bitmap = saved_bitmap;
++	} else {
++		orig_bitmap = bitmap;
++	}
+ 
+ 	nla_for_each_nested(bit_attr, tb[ETHTOOL_A_BITSET_BITS], rem) {
+ 		bool old_val, new_val;
+@@ -458,13 +474,14 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 		if (nla_type(bit_attr) != ETHTOOL_A_BITSET_BITS_BIT) {
+ 			NL_SET_ERR_MSG_ATTR(extack, bit_attr,
+ 					    "only ETHTOOL_A_BITSET_BITS_BIT allowed in ETHTOOL_A_BITSET_BITS");
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out;
+ 		}
+ 		ret = ethnl_parse_bit(&idx, &new_val, nbits, bit_attr, no_mask,
+ 				      names, extack);
+ 		if (ret < 0)
+-			return ret;
+-		old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
++			goto out;
++		old_val = orig_bitmap[idx / 32] & ((u32)1 << (idx % 32));
+ 		if (new_val != old_val) {
+ 			if (new_val)
+ 				bitmap[idx / 32] |= ((u32)1 << (idx % 32));
+@@ -474,7 +491,10 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 		}
+ 	}
+ 
+-	return 0;
++	ret = 0;
++out:
++	kfree(saved_bitmap);
++	return ret;
+ }
+ 
+ static int ethnl_compact_sanity_checks(unsigned int nbits,
+-- 
+2.40.1
+
 
 
