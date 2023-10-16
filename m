@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5E2A7CA2DE
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 932D87CA2E3
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:56:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233030AbjJPI4W (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:56:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55372 "EHLO
+        id S233036AbjJPI4k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:56:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60416 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233042AbjJPI4V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:56:21 -0400
+        with ESMTP id S229784AbjJPI4j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:56:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A8C8B4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:56:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7774BC433C8;
-        Mon, 16 Oct 2023 08:56:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0FE4E5
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:56:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89C5C433C8;
+        Mon, 16 Oct 2023 08:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446579;
-        bh=cOOInIcMJZRNywHlUMjJaFUj9CaUcD7Ia+nwQR6i1xY=;
+        s=korg; t=1697446597;
+        bh=ahue3Cg2KDW4TU61ELAGNIHYcUJaxc+fJq8fogKzNkw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0+C6BHQIJOxsoGNBjbGHMT+gkn1sRdwT7F/m74AIGCW3YLlUtPtvUwGCUYLGdA1DV
-         0FA1FgtGUeBFc9PTiq2fHfOi0b1q70puB65hKnZwu3pdO5cmO8wg3/kgB5tz1FaxS9
-         Zr0G+8Hk4DVWXkwx7CVrUsuYUoYJvacBDscRYzAE=
+        b=DhqpIcxxD4rCin/H+5yzAoFaXYd+t/TQSWxc0ncEy4RkzlDUaTcsTEvu0kJRtFsi/
+         O+GGxP0lhTly8qnwIbysTQ38evOsKm+9uATGp/ACb6epiS7oaHOqysJcYsfMQdxVIA
+         rd4HfLq71MXrgqfi5BqIeAnBjyFODnQT81joEq54=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Vernet <void@manifault.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/131] bpf: Fix verifier log for async callback return values
-Date:   Mon, 16 Oct 2023 10:40:37 +0200
-Message-ID: <20231016084001.415002078@linuxfoundation.org>
+Subject: [PATCH 6.1 055/131] net: refine debug info in skb_checksum_help()
+Date:   Mon, 16 Oct 2023 10:40:38 +0200
+Message-ID: <20231016084001.440100088@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
 References: <20231016084000.050926073@linuxfoundation.org>
@@ -54,58 +55,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: David Vernet <void@manifault.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 829955981c557c7fc7416581c4cd68a8a0c28620 ]
+[ Upstream commit 26c29961b142444cd99361644c30fa1e9b3da6be ]
 
-The verifier, as part of check_return_code(), verifies that async
-callbacks such as from e.g. timers, will return 0. It does this by
-correctly checking that R0->var_off is in tnum_const(0), which
-effectively checks that it's in a range of 0. If this condition fails,
-however, it prints an error message which says that the value should
-have been in (0x0; 0x1). This results in possibly confusing output such
-as the following in which an async callback returns 1:
+syzbot uses panic_on_warn.
 
-  At async callback the register R0 has value (0x1; 0x0) should have been in (0x0; 0x1)
+This means that the skb_dump() I added in the blamed commit are
+not even called.
 
-The fix is easy -- we should just pass the tnum_const(0) as the correct
-range to verbose_invalid_scalar(), which will then print the following:
+Rewrite this so that we get the needed skb dump before syzbot crashes.
 
-  At async callback the register R0 has value (0x1; 0x0) should have been in (0x0; 0x0)
-
-Fixes: bfc6bb74e4f1 ("bpf: Implement verifier support for validation of async callbacks.")
-Signed-off-by: David Vernet <void@manifault.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20231009161414.235829-1-void@manifault.com
+Fixes: eeee4b77dc52 ("net: add more debug info in skb_checksum_help()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20231006173355.2254983-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/dev.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 3052680201e57..eb3f52be115d6 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -10778,7 +10778,7 @@ static int check_return_code(struct bpf_verifier_env *env)
- 	struct tnum enforce_attach_type_range = tnum_unknown;
- 	const struct bpf_prog *prog = env->prog;
- 	struct bpf_reg_state *reg;
--	struct tnum range = tnum_range(0, 1);
-+	struct tnum range = tnum_range(0, 1), const_0 = tnum_const(0);
- 	enum bpf_prog_type prog_type = resolve_prog_type(env->prog);
- 	int err;
- 	struct bpf_func_state *frame = env->cur_state->frame[0];
-@@ -10826,8 +10826,8 @@ static int check_return_code(struct bpf_verifier_env *env)
- 			return -EINVAL;
- 		}
+diff --git a/net/core/dev.c b/net/core/dev.c
+index a2e3c6470ab3f..5374761f5af2c 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3274,15 +3274,19 @@ int skb_checksum_help(struct sk_buff *skb)
  
--		if (!tnum_in(tnum_const(0), reg->var_off)) {
--			verbose_invalid_scalar(env, reg, &range, "async callback", "R0");
-+		if (!tnum_in(const_0, reg->var_off)) {
-+			verbose_invalid_scalar(env, reg, &const_0, "async callback", "R0");
- 			return -EINVAL;
- 		}
- 		return 0;
+ 	offset = skb_checksum_start_offset(skb);
+ 	ret = -EINVAL;
+-	if (WARN_ON_ONCE(offset >= skb_headlen(skb))) {
++	if (unlikely(offset >= skb_headlen(skb))) {
+ 		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
++		WARN_ONCE(true, "offset (%d) >= skb_headlen() (%u)\n",
++			  offset, skb_headlen(skb));
+ 		goto out;
+ 	}
+ 	csum = skb_checksum(skb, offset, skb->len - offset, 0);
+ 
+ 	offset += skb->csum_offset;
+-	if (WARN_ON_ONCE(offset + sizeof(__sum16) > skb_headlen(skb))) {
++	if (unlikely(offset + sizeof(__sum16) > skb_headlen(skb))) {
+ 		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
++		WARN_ONCE(true, "offset+2 (%zu) > skb_headlen() (%u)\n",
++			  offset + sizeof(__sum16), skb_headlen(skb));
+ 		goto out;
+ 	}
+ 	ret = skb_ensure_writable(skb, offset + sizeof(__sum16));
 -- 
 2.40.1
 
