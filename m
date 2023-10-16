@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 012537CACAC
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:58:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38CAD7CAC99
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233841AbjJPO6L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:58:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42534 "EHLO
+        id S233814AbjJPO4f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:56:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233466AbjJPO6L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:58:11 -0400
+        with ESMTP id S233799AbjJPO4e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:56:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA926AB
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:58:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBCCC433C7;
-        Mon, 16 Oct 2023 14:58:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBFD8EE
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:56:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09928C433C7;
+        Mon, 16 Oct 2023 14:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697468287;
-        bh=CJ0YD7BWlS7Du92oIv/5SV1t4+hN2zFZ4VDycHEx0WM=;
+        s=korg; t=1697468192;
+        bh=UhQx8wkFMMiYM+dGxZ6I454AtmRVA3bFfGjTVREraF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iItQI5If5w6kN0sPECN7NfeC/NkIfu3Y7BftqhI33Nbic5X4dEGM3jllKUrGXzY5Y
-         XL5qguKU4IywGISvjhE6dUnwccOCBcBEKx0XSCBonzMCfrgc9qTAlOV/pTOAZb1iIw
-         Wbw2Lk+kR+pl1yqtdWwYUV4Wsg6SH9o8lh5Z693Q=
+        b=CYmn63v39bl44qrkR/KHviIevtD4j4VXxsk0TlJT3v4lKX3241XacD+qM/nrBTM4r
+         GHINrIHkgtDa2CyckofRsGdBBipAkd/LfoIgOrEvQ+WrKO4792stkQ46JWcJP7LaGD
+         C1ekj5QBdO87q3UEZjbUWUH5RwaC+YQ2u8sLR+3Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Javier Carrasco <javier.carrasco@wolfvision.net>,
-        stable <stable@kernel.org>, Matthias Kaehlcke <mka@chromium.org>
-Subject: [PATCH 6.5 180/191] usb: misc: onboard_hub: add support for Microchip USB2412 USB 2.0 hub
-Date:   Mon, 16 Oct 2023 10:42:45 +0200
-Message-ID: <20231016084019.575683212@linuxfoundation.org>
+        patches@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>,
+        Ashok Raj <ashok.raj@intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.5 181/191] Revert "x86/smp: Put CPUs into INIT on shutdown if possible"
+Date:   Mon, 16 Oct 2023 10:42:46 +0200
+Message-ID: <20231016084019.598367157@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -54,46 +54,182 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco@wolfvision.net>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-commit e59e38158c61162f2e8beb4620df21a1585117df upstream.
+commit fbe1bf1e5ff1e3b298420d7a8434983ef8d72bd1 upstream.
 
-The USB2412 is a 2-Port USB 2.0 hub controller that provides a reset pin
-and a single 3v3 powre source, which makes it suitable to be controlled
-by the onboard_hub driver.
+This reverts commit 45e34c8af58f23db4474e2bfe79183efec09a18b, and the
+two subsequent fixes to it:
 
-This hub has the same reset timings as USB2514/2517 and the same
-onboard hub specific-data can be reused for USB2412.
+  3f874c9b2aae ("x86/smp: Don't send INIT to non-present and non-booted CPUs")
+  b1472a60a584 ("x86/smp: Don't send INIT to boot CPU")
 
-Signed-off-by: Javier Carrasco <javier.carrasco@wolfvision.net>
-Cc: stable <stable@kernel.org>
-Acked-by: Matthias Kaehlcke <mka@chromium.org>
-Link: https://lore.kernel.org/r/20230911-topic-2412_onboard_hub-v1-1-7704181ddfff@wolfvision.net
+because it seems to result in hung machines at shutdown.  Particularly
+some Dell machines, but Thomas says
+
+ "The rest seems to be Lenovo and Sony with Alderlake/Raptorlake CPUs -
+  at least that's what I could figure out from the various bug reports.
+
+  I don't know which CPUs the DELL machines have, so I can't say it's a
+  pattern.
+
+  I agree with the revert for now"
+
+Ashok Raj chimes in:
+
+ "There was a report (probably this same one), and it turns out it was a
+  bug in the BIOS SMI handler.
+
+  The client BIOS's were waiting for the lowest APICID to be the SMI
+  rendevous master. If this is MeteorLake, the BSP wasn't the one with
+  the lowest APIC and it triped here.
+
+  The BIOS change is also being pushed to others for assimilation :)
+
+  Server BIOS's had this correctly for a while now"
+
+and it does look likely to be some bad interaction between SMI and the
+non-BSP cores having put into INIT (and thus unresponsive until reset).
+
+Link: https://bbs.archlinux.org/viewtopic.php?pid=2124429
+Link: https://www.reddit.com/r/openSUSE/comments/16qq99b/tumbleweed_shutdown_did_not_finish_completely/
+Link: https://forum.artixlinux.org/index.php/topic,5997.0.html
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2241279
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ashok Raj <ashok.raj@intel.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/onboard_usb_hub.c |    1 +
- drivers/usb/misc/onboard_usb_hub.h |    1 +
- 2 files changed, 2 insertions(+)
+ arch/x86/include/asm/smp.h |    2 --
+ arch/x86/kernel/smp.c      |   39 +++++++--------------------------------
+ arch/x86/kernel/smpboot.c  |   27 ---------------------------
+ 3 files changed, 7 insertions(+), 61 deletions(-)
 
---- a/drivers/usb/misc/onboard_usb_hub.c
-+++ b/drivers/usb/misc/onboard_usb_hub.c
-@@ -409,6 +409,7 @@ static void onboard_hub_usbdev_disconnec
- static const struct usb_device_id onboard_hub_id_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_GENESYS, 0x0608) }, /* Genesys Logic GL850G USB 2.0 */
- 	{ USB_DEVICE(VENDOR_ID_GENESYS, 0x0610) }, /* Genesys Logic GL852G USB 2.0 */
-+	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2412) }, /* USB2412 USB 2.0 */
- 	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2514) }, /* USB2514B USB 2.0 */
- 	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2517) }, /* USB2517 USB 2.0 */
- 	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x0411) }, /* RTS5411 USB 3.1 */
---- a/drivers/usb/misc/onboard_usb_hub.h
-+++ b/drivers/usb/misc/onboard_usb_hub.h
-@@ -35,6 +35,7 @@ static const struct onboard_hub_pdata vi
- };
+--- a/arch/x86/include/asm/smp.h
++++ b/arch/x86/include/asm/smp.h
+@@ -134,8 +134,6 @@ void native_send_call_func_ipi(const str
+ void native_send_call_func_single_ipi(int cpu);
+ void x86_idle_thread_init(unsigned int cpu, struct task_struct *idle);
  
- static const struct of_device_id onboard_hub_match[] = {
-+	{ .compatible = "usb424,2412", .data = &microchip_usb424_data, },
- 	{ .compatible = "usb424,2514", .data = &microchip_usb424_data, },
- 	{ .compatible = "usb424,2517", .data = &microchip_usb424_data, },
- 	{ .compatible = "usb451,8140", .data = &ti_tusb8041_data, },
+-bool smp_park_other_cpus_in_init(void);
+-
+ void smp_store_boot_cpu_info(void);
+ void smp_store_cpu_info(int id);
+ 
+--- a/arch/x86/kernel/smp.c
++++ b/arch/x86/kernel/smp.c
+@@ -131,7 +131,7 @@ static int smp_stop_nmi_callback(unsigne
+ }
+ 
+ /*
+- * Disable virtualization, APIC etc. and park the CPU in a HLT loop
++ * this function calls the 'stop' function on all other CPUs in the system.
+  */
+ DEFINE_IDTENTRY_SYSVEC(sysvec_reboot)
+ {
+@@ -172,17 +172,13 @@ static void native_stop_other_cpus(int w
+ 	 * 2) Wait for all other CPUs to report that they reached the
+ 	 *    HLT loop in stop_this_cpu()
+ 	 *
+-	 * 3) If the system uses INIT/STARTUP for CPU bringup, then
+-	 *    send all present CPUs an INIT vector, which brings them
+-	 *    completely out of the way.
++	 * 3) If #2 timed out send an NMI to the CPUs which did not
++	 *    yet report
+ 	 *
+-	 * 4) If #3 is not possible and #2 timed out send an NMI to the
+-	 *    CPUs which did not yet report
+-	 *
+-	 * 5) Wait for all other CPUs to report that they reached the
++	 * 4) Wait for all other CPUs to report that they reached the
+ 	 *    HLT loop in stop_this_cpu()
+ 	 *
+-	 * #4 can obviously race against a CPU reaching the HLT loop late.
++	 * #3 can obviously race against a CPU reaching the HLT loop late.
+ 	 * That CPU will have reported already and the "have all CPUs
+ 	 * reached HLT" condition will be true despite the fact that the
+ 	 * other CPU is still handling the NMI. Again, there is no
+@@ -198,7 +194,7 @@ static void native_stop_other_cpus(int w
+ 		/*
+ 		 * Don't wait longer than a second for IPI completion. The
+ 		 * wait request is not checked here because that would
+-		 * prevent an NMI/INIT shutdown in case that not all
++		 * prevent an NMI shutdown attempt in case that not all
+ 		 * CPUs reach shutdown state.
+ 		 */
+ 		timeout = USEC_PER_SEC;
+@@ -206,27 +202,7 @@ static void native_stop_other_cpus(int w
+ 			udelay(1);
+ 	}
+ 
+-	/*
+-	 * Park all other CPUs in INIT including "offline" CPUs, if
+-	 * possible. That's a safe place where they can't resume execution
+-	 * of HLT and then execute the HLT loop from overwritten text or
+-	 * page tables.
+-	 *
+-	 * The only downside is a broadcast MCE, but up to the point where
+-	 * the kexec() kernel brought all APs online again an MCE will just
+-	 * make HLT resume and handle the MCE. The machine crashes and burns
+-	 * due to overwritten text, page tables and data. So there is a
+-	 * choice between fire and frying pan. The result is pretty much
+-	 * the same. Chose frying pan until x86 provides a sane mechanism
+-	 * to park a CPU.
+-	 */
+-	if (smp_park_other_cpus_in_init())
+-		goto done;
+-
+-	/*
+-	 * If park with INIT was not possible and the REBOOT_VECTOR didn't
+-	 * take all secondary CPUs offline, try with the NMI.
+-	 */
++	/* if the REBOOT_VECTOR didn't work, try with the NMI */
+ 	if (!cpumask_empty(&cpus_stop_mask)) {
+ 		/*
+ 		 * If NMI IPI is enabled, try to register the stop handler
+@@ -249,7 +225,6 @@ static void native_stop_other_cpus(int w
+ 			udelay(1);
+ 	}
+ 
+-done:
+ 	local_irq_save(flags);
+ 	disable_local_APIC();
+ 	mcheck_cpu_clear(this_cpu_ptr(&cpu_info));
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -1346,33 +1346,6 @@ void arch_thaw_secondary_cpus_end(void)
+ 	cache_aps_init();
+ }
+ 
+-bool smp_park_other_cpus_in_init(void)
+-{
+-	unsigned int cpu, this_cpu = smp_processor_id();
+-	unsigned int apicid;
+-
+-	if (apic->wakeup_secondary_cpu_64 || apic->wakeup_secondary_cpu)
+-		return false;
+-
+-	/*
+-	 * If this is a crash stop which does not execute on the boot CPU,
+-	 * then this cannot use the INIT mechanism because INIT to the boot
+-	 * CPU will reset the machine.
+-	 */
+-	if (this_cpu)
+-		return false;
+-
+-	for_each_cpu_and(cpu, &cpus_booted_once_mask, cpu_present_mask) {
+-		if (cpu == this_cpu)
+-			continue;
+-		apicid = apic->cpu_present_to_apicid(cpu);
+-		if (apicid == BAD_APICID)
+-			continue;
+-		send_init_sequence(apicid);
+-	}
+-	return true;
+-}
+-
+ /*
+  * Early setup to make printk work.
+  */
 
 
