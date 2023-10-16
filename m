@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C4347CA211
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:45:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CF4A7CA213
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:45:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231971AbjJPIpa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:45:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39108 "EHLO
+        id S230104AbjJPIpk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:45:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbjJPIp3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:45:29 -0400
+        with ESMTP id S232630AbjJPIpj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:45:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB557ED
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:45:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093F6C433C8;
-        Mon, 16 Oct 2023 08:45:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A10D7DE
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:45:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C0EC433CA;
+        Mon, 16 Oct 2023 08:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445927;
-        bh=ld/Bj85i6O8OPRXIPxDWNKczASZfh/4jfEhUqxFFIAM=;
+        s=korg; t=1697445937;
+        bh=W9FvXo8DAglxJAKQxi6Fk8Uf4CIRUZfaYGGvP4B+6U4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K+V1fl2XvYREhRgaK8Cst9NM44E3sjom1bdorkhu9Vn4hNHN6/YmuCa7roq57/7+N
-         W+1JcrrGeyCi22X9DkQMX15qt54GLShhU7OcI8LYDeUJ3ahOU1YlqsmolM3fU9lIvd
-         A1hEWiuI3yi9XXIOHrcCPtuNik4rRJMjbUpFhapQ=
+        b=lm2UhS3F4hsSQIUS5kNKygfNq6Ph3oC99oXGPs7DrUIzB2c/7y9tSf63ghS8BXXug
+         2l6IvpOpmVJzbboui5iezTgT1xapiAkemX8xUJmQGJpAf8YE9B+NGldpt/Wb0tZpu0
+         cY4d+ij2nh9DIL/AAYiBZFI6CZgQQL21LmxOtUcE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ralph Siemsen <ralph.siemsen@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 039/102] pinctrl: renesas: rzn1: Enable missing PINMUX
-Date:   Mon, 16 Oct 2023 10:40:38 +0200
-Message-ID: <20231016083954.743552596@linuxfoundation.org>
+        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 040/102] nfc: nci: assert requested protocol is valid
+Date:   Mon, 16 Oct 2023 10:40:39 +0200
+Message-ID: <20231016083954.769951064@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
 References: <20231016083953.689300946@linuxfoundation.org>
@@ -56,41 +56,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ralph Siemsen <ralph.siemsen@linaro.org>
+From: Jeremy Cline <jeremy@jcline.org>
 
-[ Upstream commit f055ff23c331f28aa4ace4b72dc56f63b9a726c8 ]
+[ Upstream commit 354a6e707e29cb0c007176ee5b8db8be7bd2dee0 ]
 
-Enable pin muxing (eg. programmable function), so that the RZ/N1 GPIO
-pins will be configured as specified by the pinmux in the DTS.
+The protocol is used in a bit mask to determine if the protocol is
+supported. Assert the provided protocol is less than the maximum
+defined so it doesn't potentially perform a shift-out-of-bounds and
+provide a clearer error for undefined protocols vs unsupported ones.
 
-This used to be enabled implicitly via CONFIG_GENERIC_PINMUX_FUNCTIONS,
-however that was removed, since the RZ/N1 driver does not call any of
-the generic pinmux functions.
-
-Fixes: 1308fb4e4eae14e6 ("pinctrl: rzn1: Do not select GENERIC_PIN{CTRL_GROUPS,MUX_FUNCTIONS}")
-Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20231004200008.1306798-1-ralph.siemsen@linaro.org
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0839b78e119aae1fec78
+Signed-off-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231009200054.82557-1-jeremy@jcline.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pinctrl/renesas/Kconfig b/drivers/pinctrl/renesas/Kconfig
-index 9a72999084b36..ba7224a4c352d 100644
---- a/drivers/pinctrl/renesas/Kconfig
-+++ b/drivers/pinctrl/renesas/Kconfig
-@@ -228,6 +228,7 @@ config PINCTRL_RZN1
- 	depends on OF
- 	depends on ARCH_RZN1 || COMPILE_TEST
- 	select GENERIC_PINCONF
-+	select PINMUX
- 	help
- 	  This selects pinctrl driver for Renesas RZ/N1 devices.
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 7b6cf9a44aea7..643dfc90b0636 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -908,6 +908,11 @@ static int nci_activate_target(struct nfc_dev *nfc_dev,
+ 		return -EINVAL;
+ 	}
  
++	if (protocol >= NFC_PROTO_MAX) {
++		pr_err("the requested nfc protocol is invalid\n");
++		return -EINVAL;
++	}
++
+ 	if (!(nci_target->supported_protocols & (1 << protocol))) {
+ 		pr_err("target does not support the requested protocol 0x%x\n",
+ 		       protocol);
 -- 
 2.40.1
 
