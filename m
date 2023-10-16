@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA3537CA1F2
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 562257CA2C4
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:54:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229784AbjJPInl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:43:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47850 "EHLO
+        id S233046AbjJPIyQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:54:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232545AbjJPInj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:43:39 -0400
+        with ESMTP id S233069AbjJPIyO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:54:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 919E3DC
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:43:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7771C433C9;
-        Mon, 16 Oct 2023 08:43:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EB3AB4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:54:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8507AC433C7;
+        Mon, 16 Oct 2023 08:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445814;
-        bh=45Qu/UZ6qaRFfb0CfUw32eXejFL689pHWy3cKnA+UKg=;
+        s=korg; t=1697446452;
+        bh=xlKFqWPcM2i46klT6sRsCwqbGyaNCTyojNc8DbZewhg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kFGGwIFAjnpeCqQ5vivj55W+YIffiSRWkJN8YhHJIE/+Obz7K1ChuNvjiO50oFQUT
-         gXIzGKguOAHW7x/mviqfuHMAMPXW3QClb/GHoIuJqaZUHe2LJzsyyNLcqy8uNfWsho
-         zHix8lm4ap3AYVNr0+py/3oEtLOFvXLlB4VBWpYY=
+        b=uzVItt2QGjsIsax9qb8megVuuuiROroJ/aEHYyYO50jnpTrTWba3lK5jCP2G98sye
+         XMlWZmoyvf9lL+CtwAcPTTT8lBdf201m3iNrFi8GE03ztoyc+Lz9QD1JiW4GPUXCF+
+         BLob99Dp5g88A4j9v1wN0Cw4VUzrOkyKC9XIdm6k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, WhaleChang <whalechang@google.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 015/102] ALSA: usb-audio: Fix microphone sound on Opencomm2 Headset
+        patches@lists.linux.dev, Mark Pearson <mpearson@lenovo.com>,
+        Kailang Yang <kailang@realtek.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 031/131] ALSA: hda/realtek - ALC287 I2S speaker platform support
 Date:   Mon, 16 Oct 2023 10:40:14 +0200
-Message-ID: <20231016083954.093784205@linuxfoundation.org>
+Message-ID: <20231016084000.839364036@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +50,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WhaleChang <whalechang@google.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit 6a83d6f3bb3c329a73e3483651fb77b78bac1878 upstream.
+[ Upstream commit e43252db7e207a2e194e6a4883a43a31a776a968 ]
 
-When a Opencomm2 Headset is connected to a Bluetooth USB dongle,
-the audio playback functions properly, but the microphone does not work.
+0x17 was only speaker pin, DAC assigned will be 0x03. Headphone
+assigned to 0x02.
+Playback via headphone will get EQ filter processing. So,it needs to
+swap DAC.
 
-In the dmesg logs, there are messages indicating that the init_pitch
-function fails when the capture process begins.
-
-The microphone only functions when the ep pitch control is not set.
-
-Toggling the pitch control off bypasses the init_piatch function
-and allows the microphone to work.
-
-Signed-off-by: WhaleChang <whalechang@google.com>
-Link: https://lore.kernel.org/r/20231006044852.4181022-1-whalechang@google.com
+Tested-by: Mark Pearson <mpearson@lenovo.com>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/r/4e4cfa1b3b4c46838aecafc6e8b6f876@realtek.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: d93eeca627db ("ALSA: hda/realtek - ALC287 merge RTK codec with CS CS35L41 AMP")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1725,7 +1725,11 @@ void snd_usb_audioformat_attributes_quir
- 		/* mic works only when ep packet size is set to wMaxPacketSize */
- 		fp->attributes |= UAC_EP_CS_ATTR_FILL_MAX;
- 		break;
--
-+	case USB_ID(0x3511, 0x2b1e): /* Opencomm2 UC USB Bluetooth dongle */
-+		/* mic works only when ep pitch control is not set */
-+		if (stream == SNDRV_PCM_STREAM_CAPTURE)
-+			fp->attributes &= ~UAC_EP_CS_ATTR_PITCH_CONTROL;
-+		break;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 44dc19c095e25..f619ad52b6a10 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6985,6 +6985,27 @@ static void alc295_fixup_dell_inspiron_top_speakers(struct hda_codec *codec,
  	}
  }
  
++/* Forcibly assign NID 0x03 to HP while NID 0x02 to SPK */
++static void alc287_fixup_bind_dacs(struct hda_codec *codec,
++				    const struct hda_fixup *fix, int action)
++{
++	struct alc_spec *spec = codec->spec;
++	static const hda_nid_t conn[] = { 0x02, 0x03 }; /* exclude 0x06 */
++	static const hda_nid_t preferred_pairs[] = {
++		0x17, 0x02, 0x21, 0x03, 0
++	};
++
++	if (action != HDA_FIXUP_ACT_PRE_PROBE)
++		return;
++
++	snd_hda_override_conn_list(codec, 0x17, ARRAY_SIZE(conn), conn);
++	spec->gen.preferred_dacs = preferred_pairs;
++	spec->gen.auto_mute_via_amp = 1;
++	snd_hda_codec_write_cache(codec, 0x14, 0, AC_VERB_SET_PIN_WIDGET_CONTROL,
++			    0x0); /* Make sure 0x14 was disable */
++}
++
++
+ enum {
+ 	ALC269_FIXUP_GPIO2,
+ 	ALC269_FIXUP_SONY_VAIO,
+@@ -7245,6 +7266,7 @@ enum {
+ 	ALC287_FIXUP_CS35L41_I2C_2_THINKPAD_ACPI,
+ 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
+ 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
++	ALC287_FIXUP_THINKPAD_I2S_SPK,
+ };
+ 
+ /* A special fixup for Lenovo C940 and Yoga Duet 7;
+@@ -9324,6 +9346,10 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC245_FIXUP_HP_GPIO_LED
+ 	},
++	[ALC287_FIXUP_THINKPAD_I2S_SPK] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc287_fixup_bind_dacs,
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+@@ -10432,6 +10458,10 @@ static const struct snd_hda_pin_quirk alc269_pin_fixup_tbl[] = {
+ 		{0x17, 0x90170111},
+ 		{0x19, 0x03a11030},
+ 		{0x21, 0x03211020}),
++	SND_HDA_PIN_QUIRK(0x10ec0287, 0x17aa, "Lenovo", ALC287_FIXUP_THINKPAD_I2S_SPK,
++		{0x17, 0x90170110},
++		{0x19, 0x03a11030},
++		{0x21, 0x03211020}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0286, 0x1025, "Acer", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE,
+ 		{0x12, 0x90a60130},
+ 		{0x17, 0x90170110},
+-- 
+2.40.1
+
 
 
