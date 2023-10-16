@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E90967CAC67
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:54:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718607CAC95
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:56:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233707AbjJPOyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37004 "EHLO
+        id S233795AbjJPO41 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:56:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233720AbjJPOyJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:54:09 -0400
+        with ESMTP id S233831AbjJPO40 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:56:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E53ED9
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:54:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82282C433C7;
-        Mon, 16 Oct 2023 14:54:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50D88E8
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:56:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B3EC433C7;
+        Mon, 16 Oct 2023 14:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697468047;
-        bh=GYl4ajNhhX8wTzhy8Bdbh+dhaPIx5ieHn4Il4k2HD2Y=;
+        s=korg; t=1697468185;
+        bh=8pDQA6Z7QmUFH6ZYqyPPzxeP3wiJRl3uhP6QdKqVInA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g2BbAyxm+F4Ix4jXw5APkb1enbmx6njr7oL246/N5VOedTrMRQ7kDPUDpan19Yf0W
-         czgsEucP044nvvqUqWlBELlcgs4YYQGon05GIdRUL2ruxRIshMwxi0ClnIfTcUh8kK
-         9Mp+VrlEpChKwKQYZSbvN2akVsONAwSx+7QZmnLE=
+        b=Lk7bn28JWJKAbN0lkofVsg4ysGo+cwM9HqGafNQEPDj6OMSd4dBvrfaua743Vxptr
+         XFAHLGgq+PoNjmZuIiiUfXV2GJlSUaD702qlNtTwHzxwcsfscz2MqbLY2PfdiJ9bky
+         6p2eXq7L02t4DSYoVcUMMLu7519VzTu0SA2dbTa0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Marek=20=C5=A0anta?= <teslan223@gmail.com>,
+        patches@lists.linux.dev, David Binderman <dcb314@hotmail.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.5 141/191] thunderbolt: Check that lane 1 is in CL0 before enabling lane bonding
-Date:   Mon, 16 Oct 2023 10:42:06 +0200
-Message-ID: <20231016084018.676323532@linuxfoundation.org>
+Subject: [PATCH 6.5 142/191] thunderbolt: Correct TMU mode initialization from hardware
+Date:   Mon, 16 Oct 2023 10:42:07 +0200
+Message-ID: <20231016084018.699562068@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -39,7 +38,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -57,39 +55,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit a9fdf5f933a6f2b358fad0194b1287b67f6704b1 upstream.
+commit e19f714ea63f861d95d3d92d45d5fd5ca2e05c8c upstream.
 
-Marek reported that when BlackMagic UltraStudio device is connected the
-kernel repeatedly tries to enable lane bonding without success making
-the device non-functional. It looks like the device does not have lane 1
-connected at all so even though it is enabled we should not try to bond
-the lanes. For this reason check that lane 1 is in fact CL0 (connected,
-active) before attempting to bond the lanes.
+David reported that cppcheck found following possible copy & paste
+error from tmu_mode_init():
 
-Reported-by: Marek Šanta <teslan223@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217737
+  tmu.c:385:50: style: Expression is always false because 'else if' condition matches previous condition at line 383. [multiCondition]
+
+And indeed this is a bug. Fix it to use correct index
+(TB_SWITCH_TMU_MODE_HIFI_UNI).
+
+Reported-by: David Binderman <dcb314@hotmail.com>
+Fixes: d49b4f043d63 ("thunderbolt: Add support for enhanced uni-directional TMU mode")
 Cc: stable@vger.kernel.org
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/switch.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/thunderbolt/tmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -2724,6 +2724,13 @@ int tb_switch_lane_bonding_enable(struct
- 	    !tb_port_is_width_supported(down, TB_LINK_WIDTH_DUAL))
- 		return 0;
- 
-+	/*
-+	 * Both lanes need to be in CL0. Here we assume lane 0 already be in
-+	 * CL0 and check just for lane 1.
-+	 */
-+	if (tb_wait_for_port(down->dual_link_port, false) <= 0)
-+		return -ENOTCONN;
-+
- 	ret = tb_port_lane_bonding_enable(up);
- 	if (ret) {
- 		tb_port_warn(up, "failed to enable lane bonding\n");
+diff --git a/drivers/thunderbolt/tmu.c b/drivers/thunderbolt/tmu.c
+index 747f88703d5c..11f2aec2a5d3 100644
+--- a/drivers/thunderbolt/tmu.c
++++ b/drivers/thunderbolt/tmu.c
+@@ -382,7 +382,7 @@ static int tmu_mode_init(struct tb_switch *sw)
+ 		} else if (ucap && tb_port_tmu_is_unidirectional(up)) {
+ 			if (tmu_rates[TB_SWITCH_TMU_MODE_LOWRES] == rate)
+ 				sw->tmu.mode = TB_SWITCH_TMU_MODE_LOWRES;
+-			else if (tmu_rates[TB_SWITCH_TMU_MODE_LOWRES] == rate)
++			else if (tmu_rates[TB_SWITCH_TMU_MODE_HIFI_UNI] == rate)
+ 				sw->tmu.mode = TB_SWITCH_TMU_MODE_HIFI_UNI;
+ 		} else if (rate) {
+ 			sw->tmu.mode = TB_SWITCH_TMU_MODE_HIFI_BI;
+-- 
+2.42.0
+
 
 
