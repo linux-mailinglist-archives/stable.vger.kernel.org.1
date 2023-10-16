@@ -2,48 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECF447CA227
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E8837CA2D5
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:55:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232663AbjJPIqr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:46:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41284 "EHLO
+        id S231803AbjJPIzd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:55:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232675AbjJPIqp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:46:45 -0400
+        with ESMTP id S233110AbjJPIzc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:55:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9BDE3
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:46:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F1AC433C8;
-        Mon, 16 Oct 2023 08:46:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A65A8F2
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:55:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A0A3C433C7;
+        Mon, 16 Oct 2023 08:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446001;
-        bh=0i0di8uSyi+0S9oMWmX67FxkK0LZrH+oXycM3G0EJoE=;
+        s=korg; t=1697446529;
+        bh=hQ3Hik0hClGfYzKvYtJolF4ZUB5bQYj9aBBumITfZRs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bs/znIj3ua/cXUwzd75T+4W7z/3I7JyFZMCDRTzgHTPY3GChXMJPzw7YMTeRSjK/w
-         MLCEImGhQCndXhNVM5iosQsQzMuqAs91opuOd9wz/R47jHHGNOC+Vg6Qhn0NKz+Ftu
-         XDYVo5LXR+qTQAnZWn7LeQZaECdrwuAmetkODdr4=
+        b=u9f26amho/Ri9Q7dTkRY4zo6jmbf2+Qjkgvi6guj/jdn/zOLIApCnfXqATNx74J+W
+         +00K5Scmyyr6xSVkUJeluPqAp4nBdqBEwCWeMX9zXe6czJEKYoY0Kehv/7lSx0vzkd
+         7bDK09vriPDE/hXKL4+y8x3am36lbyfNcGyN7qio=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pu Lehui <pulehui@huawei.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/102] riscv, bpf: Factor out emit_call for kernel and bpf context
-Date:   Mon, 16 Oct 2023 10:40:27 +0200
-Message-ID: <20231016083954.454043019@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 045/131] arm64: dts: mediatek: mt8195: Set DSU PMU status to fail
+Date:   Mon, 16 Oct 2023 10:40:28 +0200
+Message-ID: <20231016084001.193039571@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,119 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Lehui <pulehui@huawei.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit 0fd1fd0104954380477353aea29c347e85dff16d ]
+[ Upstream commit d192615c307ec9f74cd0582880ece698533eb99b ]
 
-The current emit_call function is not suitable for kernel function call as
-it store return value to bpf R0 register. We can separate it out for common
-use. Meanwhile, simplify judgment logic, that is, fixed function address
-can use jal or auipc+jalr, while the unfixed can use only auipc+jalr.
+The DSU PMU allows monitoring performance events in the DSU cluster,
+which is done by configuring and reading back values from the DSU PMU
+system registers. However, for write-access to be allowed by ELs lower
+than EL3, the EL3 firmware needs to update the setting on the ACTLR3_EL3
+register, as it is disallowed by default.
 
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Acked-by: Björn Töpel <bjorn@rivosinc.com>
-Link: https://lore.kernel.org/bpf/20230215135205.1411105-3-pulehui@huaweicloud.com
-Stable-dep-of: 2f1b0d3d7331 ("riscv, bpf: Sign-extend return values")
+That configuration is not done on the firmware used by the MT8195 SoC,
+as a consequence, booting a MT8195-based machine like
+mt8195-cherry-tomato-r2 with CONFIG_ARM_DSU_PMU enabled hangs the kernel
+just as it writes to the CLUSTERPMOVSCLR_EL1 register, since the
+instruction faults to EL3, and BL31 apparently just re-runs the
+instruction over and over.
+
+Mark the DSU PMU node in the Devicetree with status "fail", as the
+machine doesn't have a suitable firmware to make use of it from the
+kernel, and allowing its driver to probe would hang the kernel.
+
+Fixes: 37f2582883be ("arm64: dts: Add mediatek SoC mt8195 and evaluation board")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230720200753.322133-1-nfraprado@collabora.com
+Link: https://lore.kernel.org/r/20231003-mediatek-fixes-v6-7-v1-5-dad7cd62a8ff@collabora.com
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/net/bpf_jit_comp64.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index 2e3f1a626a3af..5fc1386bf311d 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -413,12 +413,12 @@ static void emit_sext_32_rd(u8 *rd, struct rv_jit_context *ctx)
- 	*rd = RV_REG_T2;
- }
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 2c2b946b614bf..ef2764a595eda 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -229,6 +229,7 @@ dsu-pmu {
+ 		interrupts = <GIC_SPI 18 IRQ_TYPE_LEVEL_HIGH 0>;
+ 		cpus = <&cpu0>, <&cpu1>, <&cpu2>, <&cpu3>,
+ 		       <&cpu4>, <&cpu5>, <&cpu6>, <&cpu7>;
++		status = "fail";
+ 	};
  
--static int emit_jump_and_link(u8 rd, s64 rvoff, bool force_jalr,
-+static int emit_jump_and_link(u8 rd, s64 rvoff, bool fixed_addr,
- 			      struct rv_jit_context *ctx)
- {
- 	s64 upper, lower;
- 
--	if (rvoff && is_21b_int(rvoff) && !force_jalr) {
-+	if (rvoff && fixed_addr && is_21b_int(rvoff)) {
- 		emit(rv_jal(rd, rvoff >> 1), ctx);
- 		return 0;
- 	} else if (in_auipc_jalr_range(rvoff)) {
-@@ -439,24 +439,17 @@ static bool is_signed_bpf_cond(u8 cond)
- 		cond == BPF_JSGE || cond == BPF_JSLE;
- }
- 
--static int emit_call(bool fixed, u64 addr, struct rv_jit_context *ctx)
-+static int emit_call(u64 addr, bool fixed_addr, struct rv_jit_context *ctx)
- {
- 	s64 off = 0;
- 	u64 ip;
--	u8 rd;
--	int ret;
- 
- 	if (addr && ctx->insns) {
- 		ip = (u64)(long)(ctx->insns + ctx->ninsns);
- 		off = addr - ip;
- 	}
- 
--	ret = emit_jump_and_link(RV_REG_RA, off, !fixed, ctx);
--	if (ret)
--		return ret;
--	rd = bpf_to_rv_reg(BPF_REG_0, ctx);
--	emit_mv(rd, RV_REG_A0, ctx);
--	return 0;
-+	return emit_jump_and_link(RV_REG_RA, off, fixed_addr, ctx);
- }
- 
- int bpf_jit_emit_insn(const struct bpf_insn *insn, struct rv_jit_context *ctx,
-@@ -750,7 +743,7 @@ int bpf_jit_emit_insn(const struct bpf_insn *insn, struct rv_jit_context *ctx,
- 	/* JUMP off */
- 	case BPF_JMP | BPF_JA:
- 		rvoff = rv_offset(i, off, ctx);
--		ret = emit_jump_and_link(RV_REG_ZERO, rvoff, false, ctx);
-+		ret = emit_jump_and_link(RV_REG_ZERO, rvoff, true, ctx);
- 		if (ret)
- 			return ret;
- 		break;
-@@ -869,17 +862,20 @@ int bpf_jit_emit_insn(const struct bpf_insn *insn, struct rv_jit_context *ctx,
- 	/* function call */
- 	case BPF_JMP | BPF_CALL:
- 	{
--		bool fixed;
-+		bool fixed_addr;
- 		u64 addr;
- 
- 		mark_call(ctx);
--		ret = bpf_jit_get_func_addr(ctx->prog, insn, extra_pass, &addr,
--					    &fixed);
-+		ret = bpf_jit_get_func_addr(ctx->prog, insn, extra_pass,
-+					    &addr, &fixed_addr);
- 		if (ret < 0)
- 			return ret;
--		ret = emit_call(fixed, addr, ctx);
-+
-+		ret = emit_call(addr, fixed_addr, ctx);
- 		if (ret)
- 			return ret;
-+
-+		emit_mv(bpf_to_rv_reg(BPF_REG_0, ctx), RV_REG_A0, ctx);
- 		break;
- 	}
- 	/* tail call */
-@@ -894,7 +890,7 @@ int bpf_jit_emit_insn(const struct bpf_insn *insn, struct rv_jit_context *ctx,
- 			break;
- 
- 		rvoff = epilogue_offset(ctx);
--		ret = emit_jump_and_link(RV_REG_ZERO, rvoff, false, ctx);
-+		ret = emit_jump_and_link(RV_REG_ZERO, rvoff, true, ctx);
- 		if (ret)
- 			return ret;
- 		break;
+ 	dmic_codec: dmic-codec {
 -- 
 2.40.1
 
