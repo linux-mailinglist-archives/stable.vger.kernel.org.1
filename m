@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 038C27CA268
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B3E27CA303
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:00:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232912AbjJPItb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:49:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58926 "EHLO
+        id S232693AbjJPJAF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:00:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232915AbjJPIt3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:29 -0400
+        with ESMTP id S229459AbjJPJAE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:00:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B769CB4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04760C433CB;
-        Mon, 16 Oct 2023 08:49:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3884EAB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:00:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73393C433C7;
+        Mon, 16 Oct 2023 09:00:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446165;
-        bh=OvCtJMTKeMVdE3fTnUbkWB+VrjDZ2BRmlsUfSwhKPWA=;
+        s=korg; t=1697446802;
+        bh=ELMXLznA0CZOPQAn2q4lHMJAeR6NnlmQHRn+1Papu9I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xzDNdeCbum2c5cIFsJceDynrzoq8SFontV/hUNKnPM50+ueTC4RNCegtu3U422hKd
-         pNnmL3116l7i5yy8SqpNLbT2qzPXfHgLGNft9vzwM17w/dOjAmekRoCPLUeATfJxuO
-         8AjhZqBm8nZv5gbC3ZB+ttFOIepvbwdGb1NC3z+c=
+        b=vm57N6Wr5HJpnOyE1N4qTIOH7SkQfaR7Ey/3GB4z8LODowLri3KMpDtcQEO0qAcel
+         0z46SyMcAM46dYTqTZZfXRw1wSQmy5jwfK8D64jBYNBn+cXx2CMI+jj7M3oJl/djxh
+         HtWn2IxgB6NvNzv8aJegOEY1q9iauFeRw/2s2PZE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 058/102] drm/amdgpu: add missing NULL check
+        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+        Peter Korsgaard <peter@korsgaard.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 074/131] net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read
 Date:   Mon, 16 Oct 2023 10:40:57 +0200
-Message-ID: <20231016083955.246359336@linuxfoundation.org>
+Message-ID: <20231016084001.898606450@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,36 +52,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit ff89f064dca38e2203790bf876cc7756b8ab2961 upstream.
+commit 8f8abb863fa5a4cc18955c6a0e17af0ded3e4a76 upstream.
 
-bo->tbo.resource can easily be NULL here.
+syzbot has found an uninit-value bug triggered by the dm9601 driver [1].
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2902
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-CC: stable@vger.kernel.org
+This error happens because the variable res is not updated if the call
+to dm_read_shared_word returns an error. In this particular case -EPROTO
+was returned and res stayed uninitialized.
+
+This can be avoided by checking the return value of dm_read_shared_word
+and propagating the error if the read operation failed.
+
+[1] https://syzkaller.appspot.com/bug?extid=1f53a30781af65d2c955
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reported-and-tested-by: syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Fixes: d0374f4f9c35cdfbee0 ("USB: Davicom DM9601 usbnet driver")
+Link: https://lore.kernel.org/r/20231009-topic-dm9601_uninit_mdio_read-v2-1-f2fe39739b6c@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/dm9601.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -221,7 +221,7 @@ static inline bool amdgpu_bo_in_cpu_visi
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->tbo.bdev);
- 	struct amdgpu_res_cursor cursor;
+--- a/drivers/net/usb/dm9601.c
++++ b/drivers/net/usb/dm9601.c
+@@ -222,13 +222,18 @@ static int dm9601_mdio_read(struct net_d
+ 	struct usbnet *dev = netdev_priv(netdev);
  
--	if (bo->tbo.resource->mem_type != TTM_PL_VRAM)
-+	if (!bo->tbo.resource || bo->tbo.resource->mem_type != TTM_PL_VRAM)
- 		return false;
+ 	__le16 res;
++	int err;
  
- 	amdgpu_res_first(bo->tbo.resource, 0, amdgpu_bo_size(bo), &cursor);
+ 	if (phy_id) {
+ 		netdev_dbg(dev->net, "Only internal phy supported\n");
+ 		return 0;
+ 	}
+ 
+-	dm_read_shared_word(dev, 1, loc, &res);
++	err = dm_read_shared_word(dev, 1, loc, &res);
++	if (err < 0) {
++		netdev_err(dev->net, "MDIO read error: %d\n", err);
++		return err;
++	}
+ 
+ 	netdev_dbg(dev->net,
+ 		   "dm9601_mdio_read() phy_id=0x%02x, loc=0x%02x, returns=0x%04x\n",
 
 
