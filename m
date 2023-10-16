@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BA57CA244
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:48:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1EEA7CA325
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:01:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232521AbjJPIsH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58220 "EHLO
+        id S233493AbjJPJBx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:01:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232630AbjJPIsH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:48:07 -0400
+        with ESMTP id S233433AbjJPJB3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:01:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85569DC
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:48:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0020C433C9;
-        Mon, 16 Oct 2023 08:48:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F4A3126
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:01:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0094C433C8;
+        Mon, 16 Oct 2023 09:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446085;
-        bh=MfVCDFtrVGX9XELgWEwOaoPTjGCKLYWkBKqIEgYY5d8=;
+        s=korg; t=1697446882;
+        bh=Gy1KjtCEWGkbP3RT4DMnMUhTicYLSCU8AbF4nNO3r9s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0RpLHI9Lp9xphO2D7sOJBDdAyW8owkYUt3OWwVQwUTnhVpb9HCbrXBbpIJ4KYx63W
-         vSLtBf1yvTVI/GhkPoTjAn3EOdSqUuTOjV/cJ8oBHQTRw2hrHyXZezOiObMSmFSMBY
-         om6rjr4/cz8JFjxybbYPSdmJWCQxNrEGqIJJLMNE=
+        b=D1NuiIusyV/zvB6Gj9PbO/UhVqAcV6mChaztnSNONxP/W5I2dascurwoJ5EK8fBLS
+         HQ63qNnaWbtaNEjrMOIwedG5XZ1LiolDaufJYvNVpkXl4vqp9yosbdhhyeZnd46MmU
+         KX/egv+VRaXSwU24kUlgQ85nQv+kGpjSrKJ5i5Ws=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthias Berndt <matthias_berndt@gmx.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 070/102] Input: xpad - add PXN V900 support
+        patches@lists.linux.dev, Alexander Zangerl <az@breathe-safe.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 086/131] iio: pressure: ms5611: ms5611_prom_is_valid false negative bug
 Date:   Mon, 16 Oct 2023 10:41:09 +0200
-Message-ID: <20231016083955.566713716@linuxfoundation.org>
+Message-ID: <20231016084002.195592880@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,42 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Berndt <matthias_berndt@gmx.de>
+From: Alexander Zangerl <az@breathe-safe.com>
 
-commit a65cd7ef5a864bdbbe037267c327786b7759d4c6 upstream.
+commit fd39d9668f2ce9f4b05ad55e8c8d80c098073e0b upstream.
 
-Add VID and PID to the xpad_device table to allow driver to use the PXN
-V900 steering wheel, which is XTYPE_XBOX360 compatible in xinput mode.
+The ms5611 driver falsely rejects lots of MS5607-02BA03-50 chips
+with "PROM integrity check failed" because it doesn't accept a prom crc
+value of zero as legitimate.
 
-Signed-off-by: Matthias Berndt <matthias_berndt@gmx.de>
-Link: https://lore.kernel.org/r/4932699.31r3eYUQgx@fedora
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+According to the datasheet for this chip (and the manufacturer's
+application note about the PROM CRC), none of the possible values for the
+CRC are excluded - but the current code in ms5611_prom_is_valid() ends with
+
+return crc_orig != 0x0000 && crc == crc_orig
+
+Discussed with the driver author (Tomasz Duszynski) and he indicated that
+at that time (2015) he was dealing with some faulty chip samples which
+returned blank data under some circumstances and/or followed example code
+which indicated CRC zero being bad.
+
+As far as I can tell this exception should not be applied anymore; We've
+got a few hundred custom boards here with this chip where large numbers
+of the prom have a legitimate CRC value 0, and do work fine, but which the
+current driver code wrongly rejects.
+
+Signed-off-by: Alexander Zangerl <az@breathe-safe.com>
+Fixes: c0644160a8b5 ("iio: pressure: add support for MS5611 pressure and temperature sensor")
+Link: https://lore.kernel.org/r/2535-1695168070.831792@Ze3y.dhYT.s3fx
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/pressure/ms5611_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -254,6 +254,7 @@ static const struct xpad_device {
- 	{ 0x1038, 0x1430, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
- 	{ 0x1038, 0x1431, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
- 	{ 0x11c9, 0x55f0, "Nacon GC-100XF", 0, XTYPE_XBOX360 },
-+	{ 0x11ff, 0x0511, "PXN V900", 0, XTYPE_XBOX360 },
- 	{ 0x1209, 0x2882, "Ardwiino Controller", 0, XTYPE_XBOX360 },
- 	{ 0x12ab, 0x0004, "Honey Bee Xbox360 dancepad", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
- 	{ 0x12ab, 0x0301, "PDP AFTERGLOW AX.1", 0, XTYPE_XBOX360 },
-@@ -449,6 +450,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOXONE_VENDOR(0x0f0d),		/* Hori Controllers */
- 	XPAD_XBOX360_VENDOR(0x1038),		/* SteelSeries Controllers */
- 	XPAD_XBOX360_VENDOR(0x11c9),		/* Nacon GC100XF */
-+	XPAD_XBOX360_VENDOR(0x11ff),		/* PXN V900 */
- 	XPAD_XBOX360_VENDOR(0x1209),		/* Ardwiino Controllers */
- 	XPAD_XBOX360_VENDOR(0x12ab),		/* X-Box 360 dance pads */
- 	XPAD_XBOX360_VENDOR(0x1430),		/* RedOctane X-Box 360 controllers */
+--- a/drivers/iio/pressure/ms5611_core.c
++++ b/drivers/iio/pressure/ms5611_core.c
+@@ -76,7 +76,7 @@ static bool ms5611_prom_is_valid(u16 *pr
+ 
+ 	crc = (crc >> 12) & 0x000F;
+ 
+-	return crc_orig != 0x0000 && crc == crc_orig;
++	return crc == crc_orig;
+ }
+ 
+ static int ms5611_read_prom(struct iio_dev *indio_dev)
 
 
