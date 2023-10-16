@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C1BD7CAC65
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E90967CAC67
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:54:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbjJPOyG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:54:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60114 "EHLO
+        id S233707AbjJPOyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:54:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233724AbjJPOyF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:54:05 -0400
+        with ESMTP id S233720AbjJPOyJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:54:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58FDA95
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:54:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E447C433C8;
-        Mon, 16 Oct 2023 14:54:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E53ED9
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:54:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82282C433C7;
+        Mon, 16 Oct 2023 14:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697468042;
-        bh=LVt2xTFG9NNjl5L+W1PcIXulP40ZCr+TOz0kWHcv8Q8=;
+        s=korg; t=1697468047;
+        bh=GYl4ajNhhX8wTzhy8Bdbh+dhaPIx5ieHn4Il4k2HD2Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m5P19ul//WMRz+5sZ4motjDeku2aLrMGcQACn1C0yplYnUnS5tOWesKKC5SbViUz/
-         YxsjjIU0dpX/K9EszuAFH60FFm15dw1TUtgyDzKuOREQ5QvbOi07TIsaBGEUoMIeMo
-         8gF8ry5PcfoxpAGsoJqmJcw1NNzerDbXrpXPRQmY=
+        b=g2BbAyxm+F4Ix4jXw5APkb1enbmx6njr7oL246/N5VOedTrMRQ7kDPUDpan19Yf0W
+         czgsEucP044nvvqUqWlBELlcgs4YYQGon05GIdRUL2ruxRIshMwxi0ClnIfTcUh8kK
+         9Mp+VrlEpChKwKQYZSbvN2akVsONAwSx+7QZmnLE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
-        Konrad J Hambrick <kjhambrick@gmail.com>,
-        Calvin Walton <calvin.walton@kepstin.ca>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Marek=20=C5=A0anta?= <teslan223@gmail.com>,
         Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.5 140/191] thunderbolt: Workaround an IOMMU fault on certain systems with Intel Maple Ridge
-Date:   Mon, 16 Oct 2023 10:42:05 +0200
-Message-ID: <20231016084018.653817164@linuxfoundation.org>
+Subject: [PATCH 6.5 141/191] thunderbolt: Check that lane 1 is in CL0 before enabling lane bonding
+Date:   Mon, 16 Oct 2023 10:42:06 +0200
+Message-ID: <20231016084018.676323532@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -40,6 +39,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
         DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -57,226 +57,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit 582620d9f6b352552bc9a3316fe2b1c3acd8742d upstream.
+commit a9fdf5f933a6f2b358fad0194b1287b67f6704b1 upstream.
 
-On some systems the IOMMU blocks the first couple of driver ready
-messages to the connection manager firmware as can be seen in below
-excerpts:
+Marek reported that when BlackMagic UltraStudio device is connected the
+kernel repeatedly tries to enable lane bonding without success making
+the device non-functional. It looks like the device does not have lane 1
+connected at all so even though it is enabled we should not try to bond
+the lanes. For this reason check that lane 1 is in fact CL0 (connected,
+active) before attempting to bond the lanes.
 
-  thunderbolt 0000:06:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0010 address=0xbb0e3400 flags=0x0020]
-
-or
-
-  DMAR: DRHD: handling fault status reg 2
-  DMAR: [DMA Write] Request device [04:00.0] PASID ffffffff fault addr 69974000 [fault reason 05] PTE Write access is not set
-
-The reason is unknown and hard to debug because we were not able to
-reproduce this locally. This only happens on certain systems with Intel
-Maple Ridge Thunderbolt controller. If there is a device connected when
-the driver is loaded the issue does not happen either. Only when there
-is nothing connected (so typically when the system is booted up).
-
-We can work this around by sending the driver ready several times. After
-a couple of retries the message goes through and the controller works
-just fine. For this reason make the number of retries a parameter for
-icm_request() and then for Maple Ridge (and Titan Ridge as they us the
-same function but this should not matter) increase number of retries
-while shortening the timeout accordingly.
-
-Reported-by: Werner Sembach <wse@tuxedocomputers.com>
-Reported-by: Konrad J Hambrick <kjhambrick@gmail.com>
-Reported-by: Calvin Walton <calvin.walton@kepstin.ca>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=214259
+Reported-by: Marek Šanta <teslan223@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217737
 Cc: stable@vger.kernel.org
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/icm.c |   40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/thunderbolt/switch.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/thunderbolt/icm.c
-+++ b/drivers/thunderbolt/icm.c
-@@ -41,6 +41,7 @@
- #define PHY_PORT_CS1_LINK_STATE_SHIFT	26
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -2724,6 +2724,13 @@ int tb_switch_lane_bonding_enable(struct
+ 	    !tb_port_is_width_supported(down, TB_LINK_WIDTH_DUAL))
+ 		return 0;
  
- #define ICM_TIMEOUT			5000	/* ms */
-+#define ICM_RETRIES			3
- #define ICM_APPROVE_TIMEOUT		10000	/* ms */
- #define ICM_MAX_LINK			4
- 
-@@ -296,10 +297,9 @@ static bool icm_copy(struct tb_cfg_reque
- 
- static int icm_request(struct tb *tb, const void *request, size_t request_size,
- 		       void *response, size_t response_size, size_t npackets,
--		       unsigned int timeout_msec)
-+		       int retries, unsigned int timeout_msec)
- {
- 	struct icm *icm = tb_priv(tb);
--	int retries = 3;
- 
- 	do {
- 		struct tb_cfg_request *req;
-@@ -410,7 +410,7 @@ static int icm_fr_get_route(struct tb *t
- 		return -ENOMEM;
- 
- 	ret = icm_request(tb, &request, sizeof(request), switches,
--			  sizeof(*switches), npackets, ICM_TIMEOUT);
-+			  sizeof(*switches), npackets, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		goto err_free;
- 
-@@ -463,7 +463,7 @@ icm_fr_driver_ready(struct tb *tb, enum
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -488,7 +488,7 @@ static int icm_fr_approve_switch(struct
- 	memset(&reply, 0, sizeof(reply));
- 	/* Use larger timeout as establishing tunnels can take some time */
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_APPROVE_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_APPROVE_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -515,7 +515,7 @@ static int icm_fr_add_switch_key(struct
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -543,7 +543,7 @@ static int icm_fr_challenge_switch_key(s
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -577,7 +577,7 @@ static int icm_fr_approve_xdomain_paths(
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1020,7 +1020,7 @@ icm_tr_driver_ready(struct tb *tb, enum
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, 20000);
-+			  1, 10, 2000);
- 	if (ret)
- 		return ret;
- 
-@@ -1053,7 +1053,7 @@ static int icm_tr_approve_switch(struct
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_APPROVE_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_APPROVE_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1081,7 +1081,7 @@ static int icm_tr_add_switch_key(struct
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1110,7 +1110,7 @@ static int icm_tr_challenge_switch_key(s
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1144,7 +1144,7 @@ static int icm_tr_approve_xdomain_paths(
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1170,7 +1170,7 @@ static int icm_tr_xdomain_tear_down(stru
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1496,7 +1496,7 @@ icm_ar_driver_ready(struct tb *tb, enum
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1522,7 +1522,7 @@ static int icm_ar_get_route(struct tb *t
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1543,7 +1543,7 @@ static int icm_ar_get_boot_acl(struct tb
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1604,7 +1604,7 @@ static int icm_ar_set_boot_acl(struct tb
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1626,7 +1626,7 @@ icm_icl_driver_ready(struct tb *tb, enum
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, 20000);
-+			  1, ICM_RETRIES, 20000);
- 	if (ret)
- 		return ret;
- 
-@@ -2298,7 +2298,7 @@ static int icm_usb4_switch_op(struct tb_
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
++	/*
++	 * Both lanes need to be in CL0. Here we assume lane 0 already be in
++	 * CL0 and check just for lane 1.
++	 */
++	if (tb_wait_for_port(down->dual_link_port, false) <= 0)
++		return -ENOTCONN;
++
+ 	ret = tb_port_lane_bonding_enable(up);
+ 	if (ret) {
+ 		tb_port_warn(up, "failed to enable lane bonding\n");
 
 
