@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDAF57CAC6D
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 090587CAC47
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233188AbjJPOyd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:54:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43782 "EHLO
+        id S229848AbjJPOw2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:52:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233731AbjJPOyc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:54:32 -0400
+        with ESMTP id S233586AbjJPOw2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:52:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 949B195
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:54:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A6CC433C9;
-        Mon, 16 Oct 2023 14:54:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E57F8B9
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:52:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3218BC433C9;
+        Mon, 16 Oct 2023 14:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697468069;
-        bh=EkKje32AL6Jzh8jfUZArxJsBusLYW0R59L3Zzihxi6c=;
+        s=korg; t=1697467946;
+        bh=ORuumQl1TpS8ypfMcDVU+P0ZtLmzHiNhxlrWHnZGJtI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TqWq1q763imXPP4/qS+9J8SLN5rl5I3pHJ+JuNUkhYw01RhIGL1d9Nj6xtnWuf4bj
-         3vt/7o+4rRgoInk+qVdYb7YtJl6onHjRTRmerUTktHlKw2kqA9NlADJnRgP7d3nRzq
-         cI1T2WSQTfHG+KH8Nx77LYsxI3gcxV4aXEDrkP1E=
+        b=YsM17lmQsONNk4NtoC+udFNkVjl1e1LlII+TeegDD8KygmFLdaef7wID9UIos8bnx
+         Yly3mxM19F2Y5sLMgWbkScEFVxV2MRjxVCVAsvn3lrY33ovuNLaa3i6lW1777w/oaX
+         DATjBeH5NtHocnEi9qZjcfclSYMa0ZrnndiqpPXk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         AngeloGioacchino Del Regno 
         <angelogioacchino.delregno@collabora.com>,
         Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH 6.5 120/191] arm64: dts: mediatek: mt8195-demo: fix the memory size to 8GB
-Date:   Mon, 16 Oct 2023 10:41:45 +0200
-Message-ID: <20231016084018.180336764@linuxfoundation.org>
+Subject: [PATCH 6.5 121/191] arm64: dts: mediatek: mt8195-demo: update and reorder reserved memory regions
+Date:   Mon, 16 Oct 2023 10:41:46 +0200
+Message-ID: <20231016084018.203747323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -57,33 +57,86 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Macpaul Lin <macpaul.lin@mediatek.com>
 
-commit 25389c03c21c9587dd21c768d1cbfa514a3ca211 upstream.
+commit 6cd2a30b96a4b2d270bc1ef1611429dc3fa63327 upstream.
 
-The onboard dram of mt8195-demo board is 8GB.
+The dts file of the MediaTek MT8195 demo board has been updated to include
+new reserved memory regions.
+These reserved memory regions are:
+ - SCP
+ - VPU,
+ - Sound DMA
+ - APU.
+
+These regions are defined with the "shared-dma-pool" compatible property.
+In addition, the existing reserved memory regions have been reordered by
+their addresses to improve readability and maintainability of the DTS
+file.
 
 Cc: stable@vger.kernel.org      # 6.1, 6.4, 6.5
-Fixes: 6147314aeedc ("arm64: dts: mediatek: Add device-tree for MT8195 Demo board")
+Fixes: e4a417520101 ("arm64: dts: mediatek: mt8195-demo: fix the memory size of node secmon")
 Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
 Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230905034511.11232-1-macpaul.lin@mediatek.com
-Link: https://lore.kernel.org/r/20231003-mediatek-fixes-v6-7-v1-2-dad7cd62a8ff@collabora.com
+Link: https://lore.kernel.org/r/20230905034511.11232-2-macpaul.lin@mediatek.com
+Link: https://lore.kernel.org/r/20231003-mediatek-fixes-v6-7-v1-3-dad7cd62a8ff@collabora.com
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8195-demo.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8195-demo.dts |   37 +++++++++++++++++++++------
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
 --- a/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
 +++ b/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
-@@ -48,7 +48,7 @@
+@@ -56,13 +56,8 @@
+ 		#size-cells = <2>;
+ 		ranges;
  
- 	memory@40000000 {
- 		device_type = "memory";
--		reg = <0 0x40000000 0 0x80000000>;
-+		reg = <0 0x40000000 0x2 0x00000000>;
+-		/* 2 MiB reserved for ARM Trusted Firmware (BL31) */
+-		bl31_secmon_reserved: secmon@54600000 {
+-			no-map;
+-			reg = <0 0x54600000 0x0 0x200000>;
+-		};
+-
+-		/* 12 MiB reserved for OP-TEE (BL32)
++		/*
++		 * 12 MiB reserved for OP-TEE (BL32)
+ 		 * +-----------------------+ 0x43e0_0000
+ 		 * |      SHMEM 2MiB       |
+ 		 * +-----------------------+ 0x43c0_0000
+@@ -75,6 +70,34 @@
+ 			no-map;
+ 			reg = <0 0x43200000 0 0x00c00000>;
+ 		};
++
++		scp_mem: memory@50000000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0x50000000 0 0x2900000>;
++			no-map;
++		};
++
++		vpu_mem: memory@53000000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0x53000000 0 0x1400000>; /* 20 MB */
++		};
++
++		/* 2 MiB reserved for ARM Trusted Firmware (BL31) */
++		bl31_secmon_mem: memory@54600000 {
++			no-map;
++			reg = <0 0x54600000 0x0 0x200000>;
++		};
++
++		snd_dma_mem: memory@60000000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0x60000000 0 0x1100000>;
++			no-map;
++		};
++
++		apu_mem: memory@62000000 {
++			compatible = "shared-dma-pool";
++			reg = <0 0x62000000 0 0x1400000>; /* 20 MB */
++		};
  	};
+ };
  
- 	reserved-memory {
 
 
