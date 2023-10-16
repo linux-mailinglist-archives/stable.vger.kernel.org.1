@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2289B7CA377
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:06:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 631DB7CA363
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:05:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232778AbjJPJGQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:06:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49946 "EHLO
+        id S233553AbjJPJFU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:05:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233445AbjJPJF7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:05:59 -0400
+        with ESMTP id S233482AbjJPJFN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:05:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C47D610B
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:05:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0AFC433C9;
-        Mon, 16 Oct 2023 09:05:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB90106
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:05:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157CAC433CA;
+        Mon, 16 Oct 2023 09:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447157;
-        bh=VrhvyE5sI/23x2bz0AWFAXzoc1lQjEpgCeo5/BfsKpg=;
+        s=korg; t=1697447104;
+        bh=DnrxZOcOeN0JvuIwwRtVJmJX5JzWofOS2bcHD5ia65w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n6hJSMttk+/g5gMXgew3L7yOfyrFztZ2F7shKqaJJy4gycV5X5ZUWTn9gtVtqamBA
-         JaxUPIFBmRKpYrVBcQEuYwkHFNcNV10p1ZeJLyJTNhDgmzGTUVZEfaYY8uM3rRQ+Ij
-         PtXfyD8H2LA3zR1DVffghiKQHBHPeRWNitTn5kjQ=
+        b=H4g2x6xyXsEM6hjSK8QL/hZFKopQ2+L3ekk81pvjxkpCjJ1q8j6lavo2pVqt4IG3e
+         Jcg4dwFlZi6PTy0f7vc+phV7GQqMZcLg54V2YJM7djBDrpXBeyG+DCRGFtWrQVCQe2
+         WbPZof27YBoZY5Ut5D0/KLcuXt5IfE2wpw9g27EE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
-        Eugen Hristev <eugen.hristev@collabora.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/131] dmaengine: mediatek: Fix deadlock caused by synchronize_irq()
-Date:   Mon, 16 Oct 2023 10:41:51 +0200
-Message-ID: <20231016084003.250951332@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 129/131] powerpc/8xx: Fix pte_access_permitted() for PAGE_NONE
+Date:   Mon, 16 Oct 2023 10:41:52 +0200
+Message-ID: <20231016084003.277298987@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
 References: <20231016084000.050926073@linuxfoundation.org>
@@ -54,51 +55,60 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 01f1ae2733e2bb4de92fefcea5fda847d92aede1 ]
+[ Upstream commit 5d9cea8a552ee122e21fbd5a3c5d4eb85f648e06 ]
 
-The synchronize_irq(c->irq) will not return until the IRQ handler
-mtk_uart_apdma_irq_handler() is completed. If the synchronize_irq()
-holds a spin_lock and waits the IRQ handler to complete, but the
-IRQ handler also needs the same spin_lock. The deadlock will happen.
-The process is shown below:
+On 8xx, PAGE_NONE is handled by setting _PAGE_NA instead of clearing
+_PAGE_USER.
 
-          cpu0                        cpu1
-mtk_uart_apdma_device_pause() | mtk_uart_apdma_irq_handler()
-  spin_lock_irqsave()         |
-                              |   spin_lock_irqsave()
-  //hold the lock to wait     |
-  synchronize_irq()           |
+But then pte_user() returns 1 also for PAGE_NONE.
 
-This patch reorders the synchronize_irq(c->irq) outside the spin_lock
-in order to mitigate the bug.
+As _PAGE_NA prevent reads, add a specific version of pte_read()
+that returns 0 when _PAGE_NA is set instead of always returning 1.
 
-Fixes: 9135408c3ace ("dmaengine: mediatek: Add MediaTek UART APDMA support")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Eugen Hristev <eugen.hristev@collabora.com>
-Link: https://lore.kernel.org/r/20230806032511.45263-1-duoming@zju.edu.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 351750331fc1 ("powerpc/mm: Introduce _PAGE_NA")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/57bcfbe578e43123f9ed73e040229b80f1ad56ec.1695659959.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/mediatek/mtk-uart-apdma.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h | 7 +++++++
+ arch/powerpc/include/asm/nohash/pgtable.h    | 2 ++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/dma/mediatek/mtk-uart-apdma.c b/drivers/dma/mediatek/mtk-uart-apdma.c
-index a1517ef1f4a01..0acf6a92a4ad3 100644
---- a/drivers/dma/mediatek/mtk-uart-apdma.c
-+++ b/drivers/dma/mediatek/mtk-uart-apdma.c
-@@ -451,9 +451,8 @@ static int mtk_uart_apdma_device_pause(struct dma_chan *chan)
- 	mtk_uart_apdma_write(c, VFF_EN, VFF_EN_CLR_B);
- 	mtk_uart_apdma_write(c, VFF_INT_EN, VFF_INT_EN_CLR_B);
+diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+index 1a89ebdc3acc9..0238e6bd0d6c1 100644
+--- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+@@ -94,6 +94,13 @@ static inline pte_t pte_wrprotect(pte_t pte)
  
--	synchronize_irq(c->irq);
--
- 	spin_unlock_irqrestore(&c->vc.lock, flags);
-+	synchronize_irq(c->irq);
+ #define pte_wrprotect pte_wrprotect
  
- 	return 0;
++static inline int pte_read(pte_t pte)
++{
++	return (pte_val(pte) & _PAGE_RO) != _PAGE_NA;
++}
++
++#define pte_read pte_read
++
+ static inline int pte_write(pte_t pte)
+ {
+ 	return !(pte_val(pte) & _PAGE_RO);
+diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+index d9067dfc531cc..3d7dce90863c2 100644
+--- a/arch/powerpc/include/asm/nohash/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/pgtable.h
+@@ -25,7 +25,9 @@ static inline int pte_write(pte_t pte)
+ 	return pte_val(pte) & _PAGE_RW;
  }
+ #endif
++#ifndef pte_read
+ static inline int pte_read(pte_t pte)		{ return 1; }
++#endif
+ static inline int pte_dirty(pte_t pte)		{ return pte_val(pte) & _PAGE_DIRTY; }
+ static inline int pte_special(pte_t pte)	{ return pte_val(pte) & _PAGE_SPECIAL; }
+ static inline int pte_none(pte_t pte)		{ return (pte_val(pte) & ~_PTE_NONE_MASK) == 0; }
 -- 
 2.40.1
 
