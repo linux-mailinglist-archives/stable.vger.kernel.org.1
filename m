@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2C137CA340
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A028C7CA279
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:50:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232903AbjJPJDC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:03:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47234 "EHLO
+        id S232931AbjJPIu0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:50:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232757AbjJPJDC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:03:02 -0400
+        with ESMTP id S232968AbjJPIuZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:50:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7070695
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:03:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 567A4C433C9;
-        Mon, 16 Oct 2023 09:02:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 480299B
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:50:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBE4C433C7;
+        Mon, 16 Oct 2023 08:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446980;
-        bh=f996JVZa/G85TKq3EYaBFSTVfKeFOb9OGz86qFew4i4=;
+        s=korg; t=1697446222;
+        bh=bx6x2FcOgULfs1uZEVbNAaKauaNUHHD/xDngZpa9WK4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eBBFFqPt4zKnhByjR0KxyEUbn0TmNRGtgZNUFjgRHtSVNW8vE0tDA2q4fZBWn1NDj
-         4jXS72os120TasDlSgUjjFaBYfyhhV/0feqSRHDjGOC/iByLWqywoPTWbwZbO/80ky
-         /2g4iDgfAQheflIGeEOePnE1aPnSLDpBjTBxWLXY=
+        b=foZABHOwjqDFO6sofYsqzBqakhfIkxUdq7SPh98USGOeErAcFMFwQXnRTjeBP7yDB
+         9qv7+N4hZh30QY4ZTmoJQPMDT9IQCS54uXJGlxFVVsqunvd7cfZIf65nXSeGOr29MT
+         l8+0tf5EVYTPltaU4BNFOabsobAVXw1ksnlx9xz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Michael Smith <1973.mjsmith@gmail.com>
-Subject: [PATCH 6.1 110/131] Input: goodix - ensure int GPIO is in input for gpio_count == 1 && gpio_int_idx == 0 case
+        patches@lists.linux.dev, ruanjinjie@huawei.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Morse <james.morse@arm.com>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15 094/102] arm64: rework EL0 MRS emulation
 Date:   Mon, 16 Oct 2023 10:41:33 +0200
-Message-ID: <20231016084002.799586927@linuxfoundation.org>
+Message-ID: <20231016083956.202811803@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,91 +54,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 423622a90abb243944d1517b9f57db53729e45c4 upstream.
+commit f5962add74b61f8ae31c6311f75ca35d7e1d2d8f upstream.
 
-Add a special case for gpio_count == 1 && gpio_int_idx == 0 to
-goodix_add_acpi_gpio_mappings().
+On CPUs without FEAT_IDST, ID register emulation is slower than it needs
+to be, as all threads contend for the same lock to perform the
+emulation. This patch reworks the emulation to avoid this unnecessary
+contention.
 
-It seems that on newer x86/ACPI devices the reset and irq GPIOs are no
-longer listed as GPIO resources instead there is only 1 GpioInt resource
-and _PS0 does the whole reset sequence for us.
+On CPUs with FEAT_IDST (which is mandatory from ARMv8.4 onwards), EL0
+accesses to ID registers result in a SYS trap, and emulation of these is
+handled with a sys64_hook. These hooks are statically allocated, and no
+locking is required to iterate through the hooks and perform the
+emulation, allowing emulation to occur in parallel with no contention.
 
-This means that we must call acpi_device_fix_up_power() on these devices
-to ensure that the chip is reset before we try to use it.
+On CPUs without FEAT_IDST, EL0 accesses to ID registers result in an
+UNDEFINED exception, and emulation of these accesses is handled with an
+undef_hook. When an EL0 MRS instruction is trapped to EL1, the kernel
+finds the relevant handler by iterating through all of the undef_hooks,
+requiring undef_lock to be held during this lookup.
 
-This part was already fixed in commit 3de93e6ed2df ("Input: goodix - call
-acpi_device_fix_up_power() in some cases") by adding a call to
-acpi_device_fix_up_power() to the generic "Unexpected ACPI resources"
-catch all.
+This locking is only required to safely traverse the list of undef_hooks
+(as it can be concurrently modified), and the actual emulation of the
+MRS does not require any mutual exclusion. This locking is an
+unfortunate bottleneck, especially given that MRS emulation is enabled
+unconditionally and is never disabled.
 
-But it turns out that this case on some hw needs some more special
-handling. Specifically the firmware may bootup with the IRQ pin in
-output mode. The reset sequence from ACPI _PS0 (executed by
-acpi_device_fix_up_power()) should put the pin in input mode,
-but the GPIO subsystem has cached the direction at bootup, causing
-request_irq() to fail due to gpiochip_lock_as_irq() failure:
+This patch reworks the non-FEAT_IDST MRS emulation logic so that it can
+be invoked directly from do_el0_undef(). This removes the bottleneck,
+allowing MRS traps to be handled entirely in parallel, and is a stepping
+stone to making all of the undef_hooks lock-free.
 
-[    9.119864] Goodix-TS i2c-GDIX1002:00: Unexpected ACPI resources: gpio_count 1, gpio_int_idx 0
-[    9.317443] Goodix-TS i2c-GDIX1002:00: ID 911, version: 1060
-[    9.321902] input: Goodix Capacitive TouchScreen as /devices/pci0000:00/0000:00:17.0/i2c_designware.4/i2c-5/i2c-GDIX1002:00/input/input8
-[    9.327840] gpio gpiochip0: (INT3453:00): gpiochip_lock_as_irq: tried to flag a GPIO set as output for IRQ
-[    9.327856] gpio gpiochip0: (INT3453:00): unable to lock HW IRQ 26 for IRQ
-[    9.327861] genirq: Failed to request resources for GDIX1002:00 (irq 131) on irqchip intel-gpio
-[    9.327912] Goodix-TS i2c-GDIX1002:00: request IRQ failed: -5
+I've tested this in a 64-vCPU VM on a 64-CPU ThunderX2 host, with a
+benchmark which spawns a number of threads which each try to read
+ID_AA64ISAR0_EL1 1000000 times. This is vastly more contention than will
+ever be seen in realistic usage, but clearly demonstrates the removal of
+the bottleneck:
 
-Fix this by adding a special case for gpio_count == 1 && gpio_int_idx == 0
-which adds an ACPI GPIO lookup table for the int GPIO even though we cannot
-use it for reset purposes (as there is no reset GPIO).
+  | Threads || Time (seconds)                       |
+  |         || Before           || After            |
+  |         || Real   | System  || Real   | System  |
+  |---------++--------+---------++--------+---------|
+  |       1 ||   0.29 |    0.20 ||   0.24 |    0.12 |
+  |       2 ||   0.35 |    0.51 ||   0.23 |    0.27 |
+  |       4 ||   1.08 |    3.87 ||   0.24 |    0.56 |
+  |       8 ||   4.31 |   33.60 ||   0.24 |    1.11 |
+  |      16 ||   9.47 |  149.39 ||   0.23 |    2.15 |
+  |      32 ||  19.07 |  605.27 ||   0.24 |    4.38 |
+  |      64 ||  65.40 | 3609.09 ||   0.33 |   11.27 |
 
-Adding the lookup will make the gpiod_int = gpiod_get(..., GPIOD_IN) call
-succeed, which will explicitly set the direction to input fixing the issue.
+Aside from the speedup, there should be no functional change as a result
+of this patch.
 
-Note this re-uses the acpi_goodix_int_first_gpios[] lookup table, since
-there is only 1 GPIO in the ACPI resources the reset entry in that
-lookup table will amount to a no-op.
-
-Reported-and-tested-by: Michael Smith <1973.mjsmith@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231003215144.69527-1-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20221019144123.612388-6-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/goodix.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/arm64/include/asm/cpufeature.h |    3 ++-
+ arch/arm64/kernel/cpufeature.c      |   23 +++++------------------
+ arch/arm64/kernel/traps.c           |    3 +++
+ 3 files changed, 10 insertions(+), 19 deletions(-)
 
---- a/drivers/input/touchscreen/goodix.c
-+++ b/drivers/input/touchscreen/goodix.c
-@@ -900,6 +900,25 @@ static int goodix_add_acpi_gpio_mappings
- 		dev_info(dev, "No ACPI GpioInt resource, assuming that the GPIO order is reset, int\n");
- 		ts->irq_pin_access_method = IRQ_PIN_ACCESS_ACPI_GPIO;
- 		gpio_mapping = acpi_goodix_int_last_gpios;
-+	} else if (ts->gpio_count == 1 && ts->gpio_int_idx == 0) {
-+		/*
-+		 * On newer devices there is only 1 GpioInt resource and _PS0
-+		 * does the whole reset sequence for us.
-+		 */
-+		acpi_device_fix_up_power(ACPI_COMPANION(dev));
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -808,7 +808,8 @@ static inline bool system_supports_tlb_r
+ 		cpus_have_const_cap(ARM64_HAS_TLB_RANGE);
+ }
+ 
+-extern int do_emulate_mrs(struct pt_regs *regs, u32 sys_reg, u32 rt);
++int do_emulate_mrs(struct pt_regs *regs, u32 sys_reg, u32 rt);
++bool try_emulate_mrs(struct pt_regs *regs, u32 isn);
+ 
+ static inline u32 id_aa64mmfr0_parange_to_phys_shift(int parange)
+ {
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -3106,35 +3106,22 @@ int do_emulate_mrs(struct pt_regs *regs,
+ 	return rc;
+ }
+ 
+-static int emulate_mrs(struct pt_regs *regs, u32 insn)
++bool try_emulate_mrs(struct pt_regs *regs, u32 insn)
+ {
+ 	u32 sys_reg, rt;
+ 
++	if (compat_user_mode(regs) || !aarch64_insn_is_mrs(insn))
++		return false;
 +
-+		/*
-+		 * Before the _PS0 call the int GPIO may have been in output
-+		 * mode and the call should have put the int GPIO in input mode,
-+		 * but the GPIO subsys cached state may still think it is
-+		 * in output mode, causing gpiochip_lock_as_irq() failure.
-+		 *
-+		 * Add a mapping for the int GPIO to make the
-+		 * gpiod_int = gpiod_get(..., GPIOD_IN) call succeed,
-+		 * which will explicitly set the direction to input.
-+		 */
-+		ts->irq_pin_access_method = IRQ_PIN_ACCESS_NONE;
-+		gpio_mapping = acpi_goodix_int_first_gpios;
- 	} else {
- 		dev_warn(dev, "Unexpected ACPI resources: gpio_count %d, gpio_int_idx %d\n",
- 			 ts->gpio_count, ts->gpio_int_idx);
+ 	/*
+ 	 * sys_reg values are defined as used in mrs/msr instruction.
+ 	 * shift the imm value to get the encoding.
+ 	 */
+ 	sys_reg = (u32)aarch64_insn_decode_immediate(AARCH64_INSN_IMM_16, insn) << 5;
+ 	rt = aarch64_insn_decode_register(AARCH64_INSN_REGTYPE_RT, insn);
+-	return do_emulate_mrs(regs, sys_reg, rt);
+-}
+-
+-static struct undef_hook mrs_hook = {
+-	.instr_mask = 0xffff0000,
+-	.instr_val  = 0xd5380000,
+-	.pstate_mask = PSR_AA32_MODE_MASK,
+-	.pstate_val = PSR_MODE_EL0t,
+-	.fn = emulate_mrs,
+-};
+-
+-static int __init enable_mrs_emulation(void)
+-{
+-	register_undef_hook(&mrs_hook);
+-	return 0;
++	return do_emulate_mrs(regs, sys_reg, rt) == 0;
+ }
+ 
+-core_initcall(enable_mrs_emulation);
+-
+ enum mitigation_state arm64_get_meltdown_state(void)
+ {
+ 	if (__meltdown_safe)
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -499,6 +499,9 @@ void do_el0_undef(struct pt_regs *regs,
+ 	if (user_insn_read(regs, &insn))
+ 		goto out_err;
+ 
++	if (try_emulate_mrs(regs, insn))
++		return;
++
+ 	if (call_undef_hook(regs, insn) == 0)
+ 		return;
+ 
 
 
