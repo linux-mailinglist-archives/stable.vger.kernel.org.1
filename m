@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF5F7CA2E6
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:56:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60E467CA215
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:45:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232108AbjJPI46 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:56:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49494 "EHLO
+        id S230219AbjJPIpr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:45:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233042AbjJPI45 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:56:57 -0400
+        with ESMTP id S231149AbjJPIpq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:45:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7232B4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:56:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F3EC433C7;
-        Mon, 16 Oct 2023 08:56:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA95A1
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:45:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40986C433C7;
+        Mon, 16 Oct 2023 08:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446615;
-        bh=/NSwK1Orh/KHe+dZQaWWpItwHqFwweYp/HNZKAHhIVQ=;
+        s=korg; t=1697445943;
+        bh=Pp3Y0FnLckvBzveMfajO0zi/VguKIBimVVHQwaLCwFg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p1Xwki5GnNuw92a7i+3+J5ePG1acinAe2qrLTqx2iwbJNZ7v6WDkIJCOBs4f1pijM
-         1g16DqRViIa//HwLvHFFWPpeCCjh/9tm6cR9NnB5QDsL/RtwScvfYueGTVU+jogF/U
-         aPiw7Gik7uJmpNusH/FqmC0KEnbiBaYqq47yEh94=
+        b=TKc822TDgpva1dqexEfP+bhr2rlWEaQMbHxRGUaHM/peTGKrj7M6t6/ofyG43qrfa
+         fmwnUeJ9cv0KFGoCSi0VrlzoMzyirtYtwscXBci90gI8lL1nppq0fd8nxAvROAyLD3
+         j2vKyoWTTT0v0Tqp560E2Xm/8/Xn810gzxbX/+a4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Lieven Hey <lieven.hey@kdab.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/131] net/mlx5e: macsec: use update_pn flag instead of PN comparation
+Subject: [PATCH 5.15 042/102] perf inject: Fix GEN_ELF_TEXT_OFFSET for jit
 Date:   Mon, 16 Oct 2023 10:40:41 +0200
-Message-ID: <20231016084001.511834177@linuxfoundation.org>
+Message-ID: <20231016083954.821877131@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,55 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit fde2f2d7f23d39f2fc699ba6d91ac3f4a2e637ca ]
+[ Upstream commit 89b15d00527b7825ff19130ed83478e80e3fae99 ]
 
-When updating the SA, use the new update_pn flags instead of comparing the
-new PN with the initial one.
+When a program header was added, it moved the text section but
+GEN_ELF_TEXT_OFFSET was not updated.
 
-Comparing the initial PN value with the new value will allow the user
-to update the SA using the initial PN value as a parameter like this:
-$ ip macsec add macsec0 tx sa 0 pn 1 on key 00 \
-ead3664f508eb06c40ac7104cdae4ce5
-$ ip macsec set macsec0 tx sa 0 pn 1 off
+Fix by adding the program header size and aligning.
 
-Fixes: 8ff0ac5be144 ("net/mlx5: Add MACsec offload Tx command support")
-Fixes: aae3454e4d4c ("net/mlx5e: Add MACsec offload Rx command support")
-Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Lieven Hey <lieven.hey@kdab.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20221014170905.64069-7-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/genelf.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-index 0f8f3ce35537d..a7832a0180ee6 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/macsec.c
-@@ -611,7 +611,7 @@ static int mlx5e_macsec_upd_txsa(struct macsec_context *ctx)
- 		goto out;
- 	}
+diff --git a/tools/perf/util/genelf.h b/tools/perf/util/genelf.h
+index ac638945b4cb0..159c69bcc33e6 100644
+--- a/tools/perf/util/genelf.h
++++ b/tools/perf/util/genelf.h
+@@ -2,6 +2,8 @@
+ #ifndef __GENELF_H__
+ #define __GENELF_H__
  
--	if (tx_sa->next_pn != ctx_tx_sa->next_pn_halves.lower) {
-+	if (ctx->sa.update_pn) {
- 		netdev_err(netdev, "MACsec offload: update TX sa %d PN isn't supported\n",
- 			   assoc_num);
- 		err = -EINVAL;
-@@ -1016,7 +1016,7 @@ static int mlx5e_macsec_upd_rxsa(struct macsec_context *ctx)
- 		goto out;
- 	}
++#include <linux/math.h>
++
+ /* genelf.c */
+ int jit_write_elf(int fd, uint64_t code_addr, const char *sym,
+ 		  const void *code, int csize, void *debug, int nr_debug_entries,
+@@ -73,6 +75,6 @@ int jit_add_debug_info(Elf *e, uint64_t code_addr, void *debug, int nr_debug_ent
+ #endif
  
--	if (rx_sa->next_pn != ctx_rx_sa->next_pn_halves.lower) {
-+	if (ctx->sa.update_pn) {
- 		netdev_err(ctx->netdev,
- 			   "MACsec offload update RX sa %d PN isn't supported\n",
- 			   assoc_num);
+ /* The .text section is directly after the ELF header */
+-#define GEN_ELF_TEXT_OFFSET sizeof(Elf_Ehdr)
++#define GEN_ELF_TEXT_OFFSET round_up(sizeof(Elf_Ehdr) + sizeof(Elf_Phdr), 16)
+ 
+ #endif
 -- 
 2.40.1
 
