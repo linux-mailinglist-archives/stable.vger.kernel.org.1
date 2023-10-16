@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E50C7CA37C
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 947B07CA2CC
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:54:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232900AbjJPJGn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:06:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42062 "EHLO
+        id S232633AbjJPIy5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:54:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232719AbjJPJGm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:06:42 -0400
+        with ESMTP id S229666AbjJPIy4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:54:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55F3095
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:06:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F78C433BB;
-        Mon, 16 Oct 2023 09:06:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 937B9AB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:54:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B536AC433C8;
+        Mon, 16 Oct 2023 08:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447201;
-        bh=nbIHYK8/C75qW4v+2T5Wend5VeTD3PTdLoMdrv+3iXs=;
+        s=korg; t=1697446494;
+        bh=GLG5J/NH2zcGw2HfIai20G4BNGRYo/8sR3f9USHvXRw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hf89dokdLYtO9yCEQsh79qABizlCqaeycq2C1jnw7iAy4fzeiCp2gjW4OuWVyJnwX
-         vfWDz7FDMpf+OH5oWixCyu7768dFcK78A3u3nu9ppDm9VeKGR8gqHrnhcSlDh1VzIq
-         xqCo5fGY0dn+PqPPGdeqfphUBzmHsqXDFXE2FjhI=
+        b=ys2YC+ySQz+wFbTs85/0L9+cIZteArLTKAVV1anvVN7/c3Zbi4BVm15TqZAv+ikJt
+         c1fCvaQvyWPZjR8aIIuCnM3JecLh4ji9Ra7LPyinF/c08+oqloi/NXP9N+7jkybF+2
+         QrP1yfN6h3xMbb4/PFWMH0T2bft3CHD+Q4jxJIfo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alvin Lee <alvin.lee2@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Samson Tam <samson.tam@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.5 012/191] drm/amd/display: apply edge-case DISPCLK WDIVIDER changes to master OTG pipes only
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.1 014/131] arm64: dts: qcom: sm8150: extend the size of the PDC resource
 Date:   Mon, 16 Oct 2023 10:39:57 +0200
-Message-ID: <20231016084015.689108768@linuxfoundation.org>
+Message-ID: <20231016084000.422407556@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
-References: <20231016084015.400031271@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,76 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samson Tam <samson.tam@amd.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit b206011bf05069797df1f4c5ce639398728978e2 upstream.
+commit cf5716acbfc6190b3f97f4614affdf5991aed7b2 upstream.
 
-[Why]
-The edge-case DISPCLK WDIVIDER changes call stream_enc functions.
-But with MPC pipes, downstream pipes have null stream_enc and will
- cause crash.
+Follow the example of other platforms and extend the PDC resource region
+to 0x30000, so that the PDC driver can read the PDC_VERSION register.
 
-[How]
-Only call stream_enc functions for pipes that are OTG master.
-
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Samson Tam <samson.tam@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Fixes: 397ad94668c1 ("arm64: dts: qcom: sm8150: Add pdc interrupt controller node")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230905-topic-sm8x50-upstream-pdc-ver-v4-2-fc633c7df84b@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c |    4 ++--
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c |    4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8150.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c
-@@ -157,7 +157,7 @@ void dcn20_update_clocks_update_dentist(
- 			int32_t N;
- 			int32_t j;
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -3701,7 +3701,7 @@
  
--			if (!pipe_ctx->stream)
-+			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
- 				continue;
- 			/* Virtual encoders don't have this function */
- 			if (!stream_enc->funcs->get_fifo_cal_average_level)
-@@ -188,7 +188,7 @@ void dcn20_update_clocks_update_dentist(
- 			int32_t N;
- 			int32_t j;
- 
--			if (!pipe_ctx->stream)
-+			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
- 				continue;
- 			/* Virtual encoders don't have this function */
- 			if (!stream_enc->funcs->get_fifo_cal_average_level)
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
-@@ -355,7 +355,7 @@ static void dcn32_update_clocks_update_d
- 			int32_t N;
- 			int32_t j;
- 
--			if (!pipe_ctx->stream)
-+			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
- 				continue;
- 			/* Virtual encoders don't have this function */
- 			if (!stream_enc->funcs->get_fifo_cal_average_level)
-@@ -401,7 +401,7 @@ static void dcn32_update_clocks_update_d
- 			int32_t N;
- 			int32_t j;
- 
--			if (!pipe_ctx->stream)
-+			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
- 				continue;
- 			/* Virtual encoders don't have this function */
- 			if (!stream_enc->funcs->get_fifo_cal_average_level)
+ 		pdc: interrupt-controller@b220000 {
+ 			compatible = "qcom,sm8150-pdc", "qcom,pdc";
+-			reg = <0 0x0b220000 0 0x400>;
++			reg = <0 0x0b220000 0 0x30000>;
+ 			qcom,pdc-ranges = <0 480 94>, <94 609 31>,
+ 					  <125 63 1>;
+ 			#interrupt-cells = <2>;
 
 
