@@ -2,208 +2,224 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C8747CA4D9
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 12:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E3547CA4D8
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 12:10:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230177AbjJPKKf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 06:10:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50018 "EHLO
+        id S230090AbjJPKK2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 06:10:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232133AbjJPKKe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 06:10:34 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A78883;
-        Mon, 16 Oct 2023 03:10:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
- t=1697451004; x=1698055804; i=linosanfilippo@gmx.de;
- bh=L341XeVnPnSSuucfm8gEM6lOvZc0P3FGdj7nOTjmjP0=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=eXaOxyLFxAGAmIPbSlWvS9Bv1nAhEXirTAfedxV0wnRi8P7xz8AaPmqM71ycA1GCnrju3xpGwM1
- rbL+eKHVbeHqGyrbhHCkeAiyALJIzNV7e9td5PuaEq6P6tkL/oTlFXkz1jCHIsnpnElfZbULS2Usl
- jnDvZOcdKkb5mzmTyfuTKGMegpieifthwDQ9u91tvy/6i2NRLdvx0/HoeiY/sMAkBXJMIalDtbdRj
- dYBX/MHBUSp6lSCw0cCpfsGXXFOcAfuUdw8sJEXNt4oL7JYIQ7DFptpSsmn5CrYQMglMu25bTbyKU
- k6WHs73nVAFK+RWL9yf6Wa75msyGPzqbZa7Q==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.2.42] ([84.162.21.41]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MOzSu-1rB6uW2DoS-00PLxj; Mon, 16
- Oct 2023 12:10:04 +0200
-Message-ID: <ac48dd6e-5f08-4372-ba2e-2f161978f1f3@gmx.de>
-Date:   Mon, 16 Oct 2023 12:10:02 +0200
+        with ESMTP id S230177AbjJPKK1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 06:10:27 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37E3AB4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 03:10:24 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-27d329a704bso1567436a91.0
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 03:10:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1697451023; x=1698055823; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=OV0/vp2JLloE16OGp3S3+1gYp9ziEvAvECew4ib32Ws=;
+        b=jXQF+oMgmdIoUsgBm3hziQU3HHOOTSJY6HwjInUrXyqVx3zyin60+Buzj89FL3l+jA
+         CYwID/93gjuUlq+wlI9xRkHAZi6SB/hDxR9r2I2B0yVJjPu2ukMeke/6bmYkKTQyP0D7
+         de8RfZmEC6ynQz/n/i25Se0g82gUHvtsaf5/ncO1QBhfWsBEwWDFNDwnko9EjMKI4UvK
+         N46RJ+qrZENt2/ZrPQfMGJf0F8jwtjLW3nWuRCO0mvzCK5hxqRmHw8YbSOMCq2CkZI4J
+         MiwEJfC/2s9HghHuMpAHaseP14wtpSAvRo6KOymjwxkVVC5RNuO6SsSbErP1aj+VhPlI
+         RNwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697451023; x=1698055823;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OV0/vp2JLloE16OGp3S3+1gYp9ziEvAvECew4ib32Ws=;
+        b=ftramGW48nKuOE7zsXatOpuTnFUPXXXGbuuKQwfnLmo3/sTmmUo9sfvgiCdoGeJKo4
+         UdSsS8QFnWtMcEMPhcXQSDzfvuybJFxu6nXRywOiHyShfha0ZMLSMDGJTPT0fI1VkaGa
+         HN3v1LNQP9nGokmZA6a7ob64qjT6hAjkW9JwRcVuXH1O7G2DcFw2tOE79TJZ3qWbDV1r
+         aqhkiOJ+0U7KrZPFkHzH7tHP7FVLoiAleYl2JHeNnyMHPTV5nimxIr7Suo/ZtMo6ejFL
+         cy8W3SHNXArNb9J5iFUqTdzmCuk9BMX1R6JoyOr5LwLD2wTloDtT5b8JehwQ1A/gDpWW
+         Tj4A==
+X-Gm-Message-State: AOJu0YxDh2KRsWg1Rcw4FXes8u7AH6NchX0+ajebo6pxOAJ8WhbEIXCo
+        m7SS+jR4m9a+SKTTZMEhlHJu9KC8eKK/w/IU2iPL4Q==
+X-Google-Smtp-Source: AGHT+IE/tggILTZQwbnMFEHOx0F4zDXCX/A+5BsWoQx7/sd25JOupkmrvIh6vFRVEke+X4BWujTqSw==
+X-Received: by 2002:a17:90b:14a:b0:27d:e73:3077 with SMTP id em10-20020a17090b014a00b0027d0e733077mr10868732pjb.1.1697451023195;
+        Mon, 16 Oct 2023 03:10:23 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id h12-20020a17090adb8c00b0027d219d3ac6sm4362813pjv.47.2023.10.16.03.10.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Oct 2023 03:10:22 -0700 (PDT)
+Message-ID: <652d0c0e.170a0220.cc9bb.c8ac@mx.google.com>
+Date:   Mon, 16 Oct 2023 03:10:22 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/6] serial: core: fix sanitizing check for RTS
- settings
-Content-Language: en-US
-To:     =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jirislaby@kernel.org>, shawnguo@kernel.org,
-        s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
-        alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        Lukas Wunner <lukas@wunner.de>, p.rosenberger@kunbus.com,
-        stable@vger.kernel.org
-References: <20231011181544.7893-1-l.sanfilippo@kunbus.com>
- <20231011181544.7893-4-l.sanfilippo@kunbus.com>
- <40e4c6b1-e217-2926-a351-bf685a5b775f@linux.intel.com>
- <da9a9d10-2568-4960-b9f8-9d43cbc1b295@kunbus.com>
- <63b62f6c-d97d-8d45-1612-968ef74b6365@linux.intel.com>
- <b06c2fcd-02c0-464b-a7e8-4dfbf9e2befc@gmx.de>
- <fe473887-3aa0-9a32-53d2-a39ce5247ccb@linux.intel.com>
-From:   Lino Sanfilippo <LinoSanfilippo@gmx.de>
-In-Reply-To: <fe473887-3aa0-9a32-53d2-a39ce5247ccb@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ORhRzJZg8wY+08udyEK6cZ6i8r27p6VIpt3xbEERnKIeMBztY8t
- 2IRl3nfjg12x/y5MYwmyHa4vksWyfUl3cye0ErrBEp3sdPB6NDCZ+EwdBWebzB9ztzxr7SF
- sWAhHJSKVxnwL58cIp7AmH0LLp4t3E/hb8v5L0Ohg1b+APxLhEhOsR0sYH2Pl29U72xMsMM
- WtYnEgZ7RANqv/02t2HKw==
-UI-OutboundReport: notjunk:1;M01:P0:7z5GCjWqsrQ=;IT40LDxHrpLISXGcwLqXM+1rw3F
- oIWc9qwWf9NG4KWL6mgxjs+h0Kx4r5J+LYOeHG978EJ4BHXNMRZisrFFfFIcYTK59mgGhQkv8
- L1pxDFYXztFR7qBJW4l7ZYSSAAnU2iM4EbWsTSTJfliifcOaaNToBcChAUUS9MA280WiP+GMr
- ZE5H5iuRqsmA5q5Z/SxIsMbPlkXaC/7KwXBMNbnFgmI90uk4pVBwhcOe1OlEEiqlKhYHPFv+D
- BTK2YG5jC+XQ2z/fOuGsKNZu3mvDkVb3pUvuyraQzFtvRLmCI3U5Nzn1G+ulyQjLyrjMjs3f8
- RU04us6qxlhULwhgTU7vRbDgkx7hpPMlaAi3/lx4nzccEL4rj+dDNgsaDVLWL4DR5ghV1Dh9X
- ZcxVIKe6N9+wPbbp8KB/w6tvJQ8tr5WqZtcSuPHaTlA4ClEaGpNMy/girVtKLXU0UzVMHVlVd
- UK6PtagIynUd2ppiG2o5qttRthMhCUu9PQxOABBigk9PdwOVNg9gBFD4N49EHhr+tWb45JAPQ
- XAatuoCPe3DgO9GisMC9EDeBPi2fw8TWEUtqfg1NWvO+ohHWI0lFuU/1SdjYHDuxLbLpUdcCT
- FpB5G+MDogLBwqNwwcWjlmmhZ7eODOfW53sh04OiWD0PIkD+gdMGtv52YQA+xgVXrzmHKyRFP
- pw7ks3uUE5K4/RD6ymEKQu12rpcRS8Tq3rqh8PowvhsCUGTQTCJh0Xf3JEJAgSo60/OpW7MOD
- kSaTIP4R6zJhQQalfgAcoa+iAfwzRO9+36KjGN9z7VMBtiOUsb2OCh6dneCcqU7aPIk//J4dw
- FEBeqxkdHW7KkpDvIEIcCA2hFy3awasbi/8ZBIh7dEELcB1ZzEMQfowR8HODD0oOWIrjsjHmP
- 2vyIUTw1cFgc9ZJu4hh2SHb1cQdPnS+zW/d41xAdZDTONekVJPReMbB4lw9nC2MkajsYebazP
- K6gvvA==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Kernelci-Kernel: v6.1.58-132-g9b707223d2e98
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.58-132-g9b707223d2e98)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
+1.58-132-g9b707223d2e98)
+
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.58-132-g9b707223d2e98/
+
+Tree: stable-rc
+Branch: linux-6.1.y
+Git Describe: v6.1.58-132-g9b707223d2e98
+Git Commit: 9b707223d2e986b8728181d9fb2547d1bbf8c23a
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
 
 
-On 16.10.23 12:05, Ilpo J=C3=A4rvinen wrote:
-> On Sat, 14 Oct 2023, Lino Sanfilippo wrote:
->> On 13.10.23 12:24, Ilpo J=C3=A4rvinen wrote:
->>> On Thu, 12 Oct 2023, Lino Sanfilippo wrote:
->>>> On 12.10.23 15:10, Ilpo J=C3=A4rvinen wrote:
->>>>> On Wed, 11 Oct 2023, Lino Sanfilippo wrote:
->>>>>
->>>>>> Among other things uart_sanitize_serial_rs485() tests the sanity of=
- the RTS
->>>>>> settings in a RS485 configuration that has been passed by userspace=
-.
->>>>>> If RTS-on-send and RTS-after-send are both set or unset the configu=
-ration
->>>>>> is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
->>>>>>
->>>>>> This however makes only sense if both RTS modes are actually suppor=
-ted by
->>>>>> the driver.
->>>>>>
->>>>>> With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code=
- does
->>>>>> take the driver support into account but only checks if one of both=
- RTS
->>>>>> modes are supported. This may lead to the errorneous result of RTS-=
-on-send
->>>>>> being set even if only RTS-after-send is supported.
->>>>>>
->>>>>> Fix this by changing the implemented logic: First clear all unsuppo=
-rted
->>>>>> flags in the RS485 configuration, then adjust an invalid RTS settin=
-g by
->>>>>> taking into account which RTS mode is supported.
->>>>>>
->>>>>> Cc: stable@vger.kernel.org
->>>>>> Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
->>>>>> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
->>>>>> ---
->>>>>>  drivers/tty/serial/serial_core.c | 28 ++++++++++++++++++----------
->>>>>>  1 file changed, 18 insertions(+), 10 deletions(-)
->>>>>>
->>>>>> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/=
-serial_core.c
->>>>>> index 697c36dc7ec8..f4feebf8200f 100644
->>>>>> --- a/drivers/tty/serial/serial_core.c
->>>>>> +++ b/drivers/tty/serial/serial_core.c
->>>>>> @@ -1370,19 +1370,27 @@ static void uart_sanitize_serial_rs485(stru=
-ct uart_port *port, struct serial_rs4
->>>>>>               return;
->>>>>>       }
->>>>>>
->>>>>> +     rs485->flags &=3D supported_flags;
->>>>>> +
->>>>>>       /* Pick sane settings if the user hasn't */
->>>>>> -     if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_A=
-FTER_SEND)) &&
->>>>>> -         !(rs485->flags & SER_RS485_RTS_ON_SEND) =3D=3D
->>>>>> +     if (!(rs485->flags & SER_RS485_RTS_ON_SEND) =3D=3D
->>>>>>           !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
->>>>>> -             dev_warn_ratelimited(port->dev,
->>>>>> -                     "%s (%d): invalid RTS setting, using RTS_ON_S=
-END instead\n",
->>>>>> -                     port->name, port->line);
->>>>>> -             rs485->flags |=3D SER_RS485_RTS_ON_SEND;
->>>>>> -             rs485->flags &=3D ~SER_RS485_RTS_AFTER_SEND;
->>>>>> -             supported_flags |=3D SER_RS485_RTS_ON_SEND|SER_RS485_=
-RTS_AFTER_SEND;
->>>>>> -     }
->>>>>> +             if (supported_flags & SER_RS485_RTS_ON_SEND) {
->>>>>> +                     rs485->flags |=3D SER_RS485_RTS_ON_SEND;
->>>>>> +                     rs485->flags &=3D ~SER_RS485_RTS_AFTER_SEND;
->>>>>>
->>>>>> -     rs485->flags &=3D supported_flags;
->>>>>> +                     dev_warn_ratelimited(port->dev,
->>>>>> +                             "%s (%d): invalid RTS setting, using =
-RTS_ON_SEND instead\n",
->>>>>> +                             port->name, port->line);
->>>>>> +             } else {
->>>>>> +                     rs485->flags |=3D SER_RS485_RTS_AFTER_SEND;
->>>>>> +                     rs485->flags &=3D ~SER_RS485_RTS_ON_SEND;
->>>>>
->>>>> So if neither of the flags is supported, what will happen? You might=
- want
->>>>> add if after that else?
->>>>>
->>>>
->>>> I would consider this a bug in the driver, as at least one of both mo=
-des
->>>> has to be supported. If the driver does not have at least one of both=
- flags
->>>> set in rs485_supported.flags we could print a warning though. Would y=
-ou prefer that?
->>>
->>> 8250_exar.c needs to fixed then?
->> I was taking these as things one can
->>> "configure" even if when there's support only for a one of them there'=
-s
->>> not that much to configure. As there was neither in 8250_exar's code, =
-I
->>> didn't add either flag.
->>
->>> But I suppose your interpretation of those flag makes more sense.
->>
->> IMHO this is consistent with what we have in uart_get_rs485_mode(). Thi=
-s function
->> ensures that we have at least one RTS mode set (with default to RTS_ON_=
-SEND). So
->> concerning 8250_exar.c, I think it should be fixed (havent noticed the =
-missing
->> RTS mode though until you mentioned it). Would you like to provide a fi=
-x for this
->> or shall I include one into the next version of this series?
->
-> Just create that fix yourself thank you and include it into your series,
-> I'm busy with other stuff currently.
->
->
+Warnings summary:
 
-Sure, will do.
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
-BR,
-Lino
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
