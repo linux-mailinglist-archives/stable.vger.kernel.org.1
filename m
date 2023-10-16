@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F587CA23C
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 906AD7CA31A
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:01:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232773AbjJPIrd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:47:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36064 "EHLO
+        id S233212AbjJPJBD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:01:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232953AbjJPIr2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:47:28 -0400
+        with ESMTP id S233228AbjJPJA4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:00:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B832DF4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:47:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BECC433C9;
-        Mon, 16 Oct 2023 08:47:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82933112
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:00:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBAD5C433C7;
+        Mon, 16 Oct 2023 09:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446047;
-        bh=trcx7UD1TxpifE54Fo32xNdO0o8USq3+QhyG8dIIXh0=;
+        s=korg; t=1697446848;
+        bh=iouAMJIADPpZvs5F62ci4apHzb0d961hhQ2S4yhBsX0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QRlYlzx2cn2XXtz769nJ+TLUylggyirkYT4GPlN/82X8f0ln8w3DhBS89Z0V4LjZ/
-         tKrsPSslhtU4LqsUMvmrO1yXMNygVY4wzKbjBZgM/mmOTp6uPaFdqZ2Ovp6qQIezhZ
-         Jmbn009m3uOP7iyYc+ghqNaUwRP0Wg0259gRW9mc=
+        b=K7YFXCy2OaJzAcnqGM8nm0pkVWCAdFjDg7n4EYXy3bM2z9GPMP9BVwhC0eOf9wM7P
+         JgleZhHel+Or7WUyCCBXSAdcL4k/sVu0ZKwBlcXBbrJhv3WYdm1zLJ+w+Dq2+oeyed
+         Vohz1LDDno7M1q4bERE0XiZtFMU8cZ6Qfhy5HuyM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
-        Milind Changire <mchangir@redhat.com>,
-        Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.15 066/102] ceph: fix incorrect revoked caps assert in ceph_fill_file_size()
+        patches@lists.linux.dev, Philipp Rossak <embed3d@gmail.com>,
+        Haibo Chen <haibo.chen@nxp.com>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 082/131] iio: adc: imx8qxp: Fix address for command buffer registers
 Date:   Mon, 16 Oct 2023 10:41:05 +0200
-Message-ID: <20231016083955.462315509@linuxfoundation.org>
+Message-ID: <20231016084002.097352848@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,48 +50,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Philipp Rossak <embed3d@gmail.com>
 
-commit 15c0a870dc44ed14e01efbdd319d232234ee639f upstream.
+commit 850101b3598277794f92a9e363a60a66e0d42890 upstream.
 
-When truncating the inode the MDS will acquire the xlock for the
-ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
-But when the client just releases and flushes the 'Fw' caps to MDS,
-for exmaple, and once the MDS receives the caps flushing msg it
-just thought the revocation has finished. Then the MDS will continue
-truncating the inode and then issued the truncate notification to
-all the clients. While just before the clients receives the cap
-flushing ack they receive the truncation notification, the clients
-will detecte that the 'issued | dirty' is still holding the 'Fw'
-caps.
+The ADC Command Buffer Register high and low are currently pointing to
+the wrong address and makes it impossible to perform correct
+ADC measurements over all channels.
 
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/56693
-Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+According to the datasheet of the imx8qxp the ADC_CMDL register starts
+at address 0x100 and the ADC_CMDH register starts at address 0x104.
+
+This bug seems to be in the kernel since the introduction of this
+driver.
+
+This can be observed by checking all raw voltages of the adc and they
+are all nearly identical:
+
+cat /sys/bus/iio/devices/iio\:device0/in_voltage*_raw
+3498
+3494
+3491
+3491
+3489
+3490
+3490
+3490
+
+Fixes: 1e23dcaa1a9fa ("iio: imx8qxp-adc: Add driver support for NXP IMX8QXP ADC")
+Signed-off-by: Philipp Rossak <embed3d@gmail.com>
+Acked-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://lore.kernel.org/r/20230904220204.23841-1-embed3d@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/inode.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/iio/adc/imx8qxp-adc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -647,9 +647,7 @@ int ceph_fill_file_size(struct inode *in
- 			ci->i_truncate_seq = truncate_seq;
+--- a/drivers/iio/adc/imx8qxp-adc.c
++++ b/drivers/iio/adc/imx8qxp-adc.c
+@@ -38,8 +38,8 @@
+ #define IMX8QXP_ADR_ADC_FCTRL		0x30
+ #define IMX8QXP_ADR_ADC_SWTRIG		0x34
+ #define IMX8QXP_ADR_ADC_TCTRL(tid)	(0xc0 + (tid) * 4)
+-#define IMX8QXP_ADR_ADC_CMDH(cid)	(0x100 + (cid) * 8)
+-#define IMX8QXP_ADR_ADC_CMDL(cid)	(0x104 + (cid) * 8)
++#define IMX8QXP_ADR_ADC_CMDL(cid)	(0x100 + (cid) * 8)
++#define IMX8QXP_ADR_ADC_CMDH(cid)	(0x104 + (cid) * 8)
+ #define IMX8QXP_ADR_ADC_RESFIFO		0x300
+ #define IMX8QXP_ADR_ADC_TST		0xffc
  
- 			/* the MDS should have revoked these caps */
--			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
--					       CEPH_CAP_FILE_RD |
--					       CEPH_CAP_FILE_WR |
-+			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
- 					       CEPH_CAP_FILE_LAZYIO));
- 			/*
- 			 * If we hold relevant caps, or in the case where we're
 
 
