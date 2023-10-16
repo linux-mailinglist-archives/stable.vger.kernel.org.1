@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 932D87CA2E3
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C4347CA211
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:45:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233036AbjJPI4k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:56:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60416 "EHLO
+        id S231971AbjJPIpa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:45:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229784AbjJPI4j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:56:39 -0400
+        with ESMTP id S229666AbjJPIp3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:45:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0FE4E5
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:56:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E89C5C433C8;
-        Mon, 16 Oct 2023 08:56:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB557ED
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:45:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093F6C433C8;
+        Mon, 16 Oct 2023 08:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446597;
-        bh=ahue3Cg2KDW4TU61ELAGNIHYcUJaxc+fJq8fogKzNkw=;
+        s=korg; t=1697445927;
+        bh=ld/Bj85i6O8OPRXIPxDWNKczASZfh/4jfEhUqxFFIAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DhqpIcxxD4rCin/H+5yzAoFaXYd+t/TQSWxc0ncEy4RkzlDUaTcsTEvu0kJRtFsi/
-         O+GGxP0lhTly8qnwIbysTQ38evOsKm+9uATGp/ACb6epiS7oaHOqysJcYsfMQdxVIA
-         rd4HfLq71MXrgqfi5BqIeAnBjyFODnQT81joEq54=
+        b=K+V1fl2XvYREhRgaK8Cst9NM44E3sjom1bdorkhu9Vn4hNHN6/YmuCa7roq57/7+N
+         W+1JcrrGeyCi22X9DkQMX15qt54GLShhU7OcI8LYDeUJ3ahOU1YlqsmolM3fU9lIvd
+         A1hEWiuI3yi9XXIOHrcCPtuNik4rRJMjbUpFhapQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Ralph Siemsen <ralph.siemsen@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/131] net: refine debug info in skb_checksum_help()
+Subject: [PATCH 5.15 039/102] pinctrl: renesas: rzn1: Enable missing PINMUX
 Date:   Mon, 16 Oct 2023 10:40:38 +0200
-Message-ID: <20231016084001.440100088@linuxfoundation.org>
+Message-ID: <20231016083954.743552596@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ralph Siemsen <ralph.siemsen@linaro.org>
 
-[ Upstream commit 26c29961b142444cd99361644c30fa1e9b3da6be ]
+[ Upstream commit f055ff23c331f28aa4ace4b72dc56f63b9a726c8 ]
 
-syzbot uses panic_on_warn.
+Enable pin muxing (eg. programmable function), so that the RZ/N1 GPIO
+pins will be configured as specified by the pinmux in the DTS.
 
-This means that the skb_dump() I added in the blamed commit are
-not even called.
+This used to be enabled implicitly via CONFIG_GENERIC_PINMUX_FUNCTIONS,
+however that was removed, since the RZ/N1 driver does not call any of
+the generic pinmux functions.
 
-Rewrite this so that we get the needed skb dump before syzbot crashes.
-
-Fixes: eeee4b77dc52 ("net: add more debug info in skb_checksum_help()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20231006173355.2254983-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1308fb4e4eae14e6 ("pinctrl: rzn1: Do not select GENERIC_PIN{CTRL_GROUPS,MUX_FUNCTIONS}")
+Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20231004200008.1306798-1-ralph.siemsen@linaro.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/pinctrl/renesas/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index a2e3c6470ab3f..5374761f5af2c 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3274,15 +3274,19 @@ int skb_checksum_help(struct sk_buff *skb)
+diff --git a/drivers/pinctrl/renesas/Kconfig b/drivers/pinctrl/renesas/Kconfig
+index 9a72999084b36..ba7224a4c352d 100644
+--- a/drivers/pinctrl/renesas/Kconfig
++++ b/drivers/pinctrl/renesas/Kconfig
+@@ -228,6 +228,7 @@ config PINCTRL_RZN1
+ 	depends on OF
+ 	depends on ARCH_RZN1 || COMPILE_TEST
+ 	select GENERIC_PINCONF
++	select PINMUX
+ 	help
+ 	  This selects pinctrl driver for Renesas RZ/N1 devices.
  
- 	offset = skb_checksum_start_offset(skb);
- 	ret = -EINVAL;
--	if (WARN_ON_ONCE(offset >= skb_headlen(skb))) {
-+	if (unlikely(offset >= skb_headlen(skb))) {
- 		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
-+		WARN_ONCE(true, "offset (%d) >= skb_headlen() (%u)\n",
-+			  offset, skb_headlen(skb));
- 		goto out;
- 	}
- 	csum = skb_checksum(skb, offset, skb->len - offset, 0);
- 
- 	offset += skb->csum_offset;
--	if (WARN_ON_ONCE(offset + sizeof(__sum16) > skb_headlen(skb))) {
-+	if (unlikely(offset + sizeof(__sum16) > skb_headlen(skb))) {
- 		DO_ONCE_LITE(skb_dump, KERN_ERR, skb, false);
-+		WARN_ONCE(true, "offset+2 (%zu) > skb_headlen() (%u)\n",
-+			  offset + sizeof(__sum16), skb_headlen(skb));
- 		goto out;
- 	}
- 	ret = skb_ensure_writable(skb, offset + sizeof(__sum16));
 -- 
 2.40.1
 
