@@ -2,39 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECE157CA33A
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 810187CA26D
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:49:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232836AbjJPJCi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:02:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41376 "EHLO
+        id S232770AbjJPItq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233322AbjJPJCf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:02:35 -0400
+        with ESMTP id S232969AbjJPItp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:49:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DECB1F9
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:02:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E34C433C7;
-        Mon, 16 Oct 2023 09:02:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5297FF0
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:49:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BF4C433C8;
+        Mon, 16 Oct 2023 08:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446953;
-        bh=t+9d9SRsIuZ/NpUubCXl0BQZH0yw7iV8wRDa6WJsoEA=;
+        s=korg; t=1697446183;
+        bh=qd3jOytxBJZ6fszjgO2djwiKdp5bzrnZhQJskZff/jc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LEILiopEJHR2pyPYtyR5hiIG1s3gdQ16JxP6nYMQu6AaU2wk30IGeum1uN1OwMMst
-         t/jye3iMkOnkgKDTmdaifKJJurw70mQDxd3npKpuRS3maD7i9iLdDfBTSmRFE9gcII
-         qzz6udhj3s8cFjI9PhkdrnGBSakrjV+8ucERuqdM=
+        b=aqWL0sSnKqtJFfa1cgO30RPtt8LuZGoTGCnsBpBlmtN2JEi5kRz359MumRCSxiJcn
+         qnwEUWqrioinNdOCASiG6uCFOgI241G3jlzkFWhnVi1y+mFGHOAsg6qplhX46qg0da
+         crlIhWW9iP4Q7T+RzOWp4TVXr5iij8llPiINtG0Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
-        Milind Changire <mchangir@redhat.com>,
-        Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.1 104/131] ceph: fix incorrect revoked caps assert in ceph_fill_file_size()
+        patches@lists.linux.dev, ruanjinjie@huawei.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Alexandru Elisei <alexandru.elisei@arm.com>,
+        Amit Daniel Kachhap <amit.kachhap@arm.com>,
+        James Morse <james.morse@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.15 088/102] arm64: rework FPAC exception handling
 Date:   Mon, 16 Oct 2023 10:41:27 +0200
-Message-ID: <20231016084002.648998183@linuxfoundation.org>
+Message-ID: <20231016083956.040164316@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,48 +56,174 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 15c0a870dc44ed14e01efbdd319d232234ee639f upstream.
+commit a1fafa3b24a70461bbf3e5c0770893feb0a49292 upstream.
 
-When truncating the inode the MDS will acquire the xlock for the
-ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
-But when the client just releases and flushes the 'Fw' caps to MDS,
-for exmaple, and once the MDS receives the caps flushing msg it
-just thought the revocation has finished. Then the MDS will continue
-truncating the inode and then issued the truncate notification to
-all the clients. While just before the clients receives the cap
-flushing ack they receive the truncation notification, the clients
-will detecte that the 'issued | dirty' is still holding the 'Fw'
-caps.
+If an FPAC exception is taken from EL1, the entry code will call
+do_ptrauth_fault(), where due to:
 
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/56693
-Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+	BUG_ON(!user_mode(regs))
+
+... the kernel will report a problem within do_ptrauth_fault() rather
+than reporting the original context the FPAC exception was taken from.
+The pt_regs and ESR value reported will be from within
+do_ptrauth_fault() and the code dump will be for the BRK in BUG_ON(),
+which isn't sufficient to debug the cause of the original exception.
+
+This patch makes the reporting better by having separate EL0 and EL1
+FPAC exception handlers, with the latter calling die() directly to
+report the original context the FPAC exception was taken from.
+
+Note that we only need to prevent kprobes of the EL1 FPAC handler, since
+the EL0 FPAC handler cannot be called recursively.
+
+For consistency with do_el0_svc*(), I've named the split functions
+do_el{0,1}_fpac() rather than do_el{0,1}_ptrauth_fault(). I've also
+clarified the comment to not imply there are casues other than FPAC
+exceptions.
+
+Prior to this patch FPAC exceptions are reported as:
+
+| kernel BUG at arch/arm64/kernel/traps.c:517!
+| Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+| Modules linked in:
+| CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.19.0-rc3-00130-g9c8a180a1cdf-dirty #12
+| Hardware name: FVP Base RevC (DT)
+| pstate: 00400009 (nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : do_ptrauth_fault+0x3c/0x40
+| lr : el1_fpac+0x34/0x54
+| sp : ffff80000a3bbc80
+| x29: ffff80000a3bbc80 x28: ffff0008001d8000 x27: 0000000000000000
+| x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+| x23: 0000000020400009 x22: ffff800008f70fa4 x21: ffff80000a3bbe00
+| x20: 0000000072000000 x19: ffff80000a3bbcb0 x18: fffffbfffda37000
+| x17: 3120676e696d7573 x16: 7361202c6e6f6974 x15: 0000000081a90000
+| x14: 0040000000000041 x13: 0040000000000001 x12: ffff000001a90000
+| x11: fffffbfffda37480 x10: 0068000000000703 x9 : 0001000080000000
+| x8 : 0000000000090000 x7 : 0068000000000f03 x6 : 0060000000000783
+| x5 : ffff80000a3bbcb0 x4 : ffff0008001d8000 x3 : 0000000072000000
+| x2 : 0000000000000000 x1 : 0000000020400009 x0 : ffff80000a3bbcb0
+| Call trace:
+|  do_ptrauth_fault+0x3c/0x40
+|  el1h_64_sync_handler+0xc4/0xd0
+|  el1h_64_sync+0x64/0x68
+|  test_pac+0x8/0x10
+|  smp_init+0x7c/0x8c
+|  kernel_init_freeable+0x128/0x28c
+|  kernel_init+0x28/0x13c
+|  ret_from_fork+0x10/0x20
+| Code: 97fffe5e a8c17bfd d50323bf d65f03c0 (d4210000)
+
+With this patch applied FPAC exceptions are reported as:
+
+| Internal error: Oops - FPAC: 0000000072000000 [#1] PREEMPT SMP
+| Modules linked in:
+| CPU: 0 PID: 1 Comm: swapper/0 Not tainted 5.19.0-rc3-00132-g78846e1c4757-dirty #11
+| Hardware name: FVP Base RevC (DT)
+| pstate: 20400009 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : test_pac+0x8/0x10
+| lr : 0x0
+| sp : ffff80000a3bbe00
+| x29: ffff80000a3bbe00 x28: 0000000000000000 x27: 0000000000000000
+| x26: 0000000000000000 x25: 0000000000000000 x24: 0000000000000000
+| x23: ffff80000a2c8000 x22: 0000000000000000 x21: 0000000000000000
+| x20: ffff8000099fa5b0 x19: ffff80000a007000 x18: fffffbfffda37000
+| x17: 3120676e696d7573 x16: 7361202c6e6f6974 x15: 0000000081a90000
+| x14: 0040000000000041 x13: 0040000000000001 x12: ffff000001a90000
+| x11: fffffbfffda37480 x10: 0068000000000703 x9 : 0001000080000000
+| x8 : 0000000000090000 x7 : 0068000000000f03 x6 : 0060000000000783
+| x5 : ffff80000a2c6000 x4 : ffff0008001d8000 x3 : ffff800009f88378
+| x2 : 0000000000000000 x1 : 0000000080210000 x0 : ffff000001a90000
+| Call trace:
+|  test_pac+0x8/0x10
+|  smp_init+0x7c/0x8c
+|  kernel_init_freeable+0x128/0x28c
+|  kernel_init+0x28/0x13c
+|  ret_from_fork+0x10/0x20
+| Code: d50323bf d65f03c0 d503233f aa1f03fe (d50323bf)
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: Amit Daniel Kachhap <amit.kachhap@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20220913101732.3925290-5-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/inode.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/include/asm/exception.h |    3 ++-
+ arch/arm64/kernel/entry-common.c   |    4 ++--
+ arch/arm64/kernel/traps.c          |   16 ++++++++++------
+ 3 files changed, 14 insertions(+), 9 deletions(-)
 
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -655,9 +655,7 @@ int ceph_fill_file_size(struct inode *in
- 			ci->i_truncate_seq = truncate_seq;
+--- a/arch/arm64/include/asm/exception.h
++++ b/arch/arm64/include/asm/exception.h
+@@ -71,7 +71,8 @@ void bad_el0_sync(struct pt_regs *regs,
+ void do_cp15instr(unsigned long esr, struct pt_regs *regs);
+ void do_el0_svc(struct pt_regs *regs);
+ void do_el0_svc_compat(struct pt_regs *regs);
+-void do_ptrauth_fault(struct pt_regs *regs, unsigned long esr);
++void do_el0_fpac(struct pt_regs *regs, unsigned long esr);
++void do_el1_fpac(struct pt_regs *regs, unsigned long esr);
+ void do_serror(struct pt_regs *regs, unsigned long esr);
+ void do_notify_resume(struct pt_regs *regs, unsigned long thread_flags);
  
- 			/* the MDS should have revoked these caps */
--			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
--					       CEPH_CAP_FILE_RD |
--					       CEPH_CAP_FILE_WR |
-+			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
- 					       CEPH_CAP_FILE_LAZYIO));
- 			/*
- 			 * If we hold relevant caps, or in the case where we're
+--- a/arch/arm64/kernel/entry-common.c
++++ b/arch/arm64/kernel/entry-common.c
+@@ -394,7 +394,7 @@ static void noinstr el1_fpac(struct pt_r
+ {
+ 	enter_from_kernel_mode(regs);
+ 	local_daif_inherit(regs);
+-	do_ptrauth_fault(regs, esr);
++	do_el1_fpac(regs, esr);
+ 	local_daif_mask();
+ 	exit_to_kernel_mode(regs);
+ }
+@@ -601,7 +601,7 @@ static void noinstr el0_fpac(struct pt_r
+ {
+ 	enter_from_user_mode(regs);
+ 	local_daif_restore(DAIF_PROCCTX);
+-	do_ptrauth_fault(regs, esr);
++	do_el0_fpac(regs, esr);
+ 	exit_to_user_mode(regs);
+ }
+ 
+--- a/arch/arm64/kernel/traps.c
++++ b/arch/arm64/kernel/traps.c
+@@ -509,16 +509,20 @@ void do_bti(struct pt_regs *regs)
+ }
+ NOKPROBE_SYMBOL(do_bti);
+ 
+-void do_ptrauth_fault(struct pt_regs *regs, unsigned long esr)
++void do_el0_fpac(struct pt_regs *regs, unsigned long esr)
++{
++	force_signal_inject(SIGILL, ILL_ILLOPN, regs->pc, esr);
++}
++
++void do_el1_fpac(struct pt_regs *regs, unsigned long esr)
+ {
+ 	/*
+-	 * Unexpected FPAC exception or pointer authentication failure in
+-	 * the kernel: kill the task before it does any more harm.
++	 * Unexpected FPAC exception in the kernel: kill the task before it
++	 * does any more harm.
+ 	 */
+-	BUG_ON(!user_mode(regs));
+-	force_signal_inject(SIGILL, ILL_ILLOPN, regs->pc, esr);
++	die("Oops - FPAC", regs, esr);
+ }
+-NOKPROBE_SYMBOL(do_ptrauth_fault);
++NOKPROBE_SYMBOL(do_el1_fpac);
+ 
+ #define __user_cache_maint(insn, address, res)			\
+ 	if (address >= user_addr_max()) {			\
 
 
