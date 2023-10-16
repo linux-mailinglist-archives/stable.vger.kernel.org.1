@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B51127CAC70
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 854767CAC46
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:52:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233738AbjJPOyf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:54:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43858 "EHLO
+        id S233430AbjJPOw0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:52:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233743AbjJPOye (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:54:34 -0400
+        with ESMTP id S229848AbjJPOwZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:52:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A571A95
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:54:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA1DC433CC;
-        Mon, 16 Oct 2023 14:54:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 829A795
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:52:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9577AC433C9;
+        Mon, 16 Oct 2023 14:52:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697468072;
-        bh=jFNqmFYoymMg2QBQFFPwuGOYENu3/ufQDM/wfi5/NR8=;
+        s=korg; t=1697467943;
+        bh=q72QzUHmL7bZIamL0Umi4sCnBFtrEnJZFOnVkbFkUQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Scb4ORs8Brhushd6TEBwTtRG40/Q3zqcycv+PiNnSh6LEb6a6gy82iSxANLKIwl3t
-         eFBBiqLbOiLkRFfoprAGzHUDeevwTPV0312fOAJRV7X5BitoYuq2G0oxogO5Fxzl+s
-         zC9tpgX2WOMYAheCwVULz/tSnCbiaJX93OeOl2Og=
+        b=ch2n1Su73ctXWYf+N+7t5f5RqoHAZBqR5+CbSGMO1rC6bBgC4hNW811xh5zp8EEqu
+         HWjKSK7fUA+fwiU6ZtCxbwsjbvi6R0fgVgg8BlBMlnMluL0BVP63ntXLCDbs8VNCff
+         7drUmzJlSF5mbYcn9td1mk8jYD8HIHj81tCWDQwE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
+        patches@lists.linux.dev, Philipp Rossak <embed3d@gmail.com>,
+        Haibo Chen <haibo.chen@nxp.com>, Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.5 111/191] iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()
-Date:   Mon, 16 Oct 2023 10:41:36 +0200
-Message-ID: <20231016084017.977611793@linuxfoundation.org>
+Subject: [PATCH 6.5 112/191] iio: adc: imx8qxp: Fix address for command buffer registers
+Date:   Mon, 16 Oct 2023 10:41:37 +0200
+Message-ID: <20231016084018.000410041@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -55,68 +54,56 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Philipp Rossak <embed3d@gmail.com>
 
-commit 7771c8c80d62ad065637ef74ed2962983f6c5f6d upstream.
+commit 850101b3598277794f92a9e363a60a66e0d42890 upstream.
 
-cros_ec_sensors_push_data() reads `indio_dev->active_scan_mask` and
-calls iio_push_to_buffers_with_timestamp() without making sure the
-`indio_dev` stays in buffer mode.  There is a race if `indio_dev` exits
-buffer mode right before cros_ec_sensors_push_data() accesses them.
+The ADC Command Buffer Register high and low are currently pointing to
+the wrong address and makes it impossible to perform correct
+ADC measurements over all channels.
 
-An use-after-free on `indio_dev->active_scan_mask` was observed.  The
-call trace:
-[...]
- _find_next_bit
- cros_ec_sensors_push_data
- cros_ec_sensorhub_event
- blocking_notifier_call_chain
- cros_ec_irq_thread
+According to the datasheet of the imx8qxp the ADC_CMDL register starts
+at address 0x100 and the ADC_CMDH register starts at address 0x104.
 
-It was caused by a race condition: one thread just freed
-`active_scan_mask` at [1]; while another thread tried to access the
-memory at [2].
+This bug seems to be in the kernel since the introduction of this
+driver.
 
-Fix it by calling iio_device_claim_buffer_mode() to ensure the
-`indio_dev` can't exit buffer mode during cros_ec_sensors_push_data().
+This can be observed by checking all raw voltages of the adc and they
+are all nearly identical:
 
-[1]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/industrialio-buffer.c#L1189
-[2]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c#L198
+cat /sys/bus/iio/devices/iio\:device0/in_voltage*_raw
+3498
+3494
+3491
+3491
+3489
+3490
+3490
+3490
 
-Cc: stable@vger.kernel.org
-Fixes: aa984f1ba4a4 ("iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO")
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20230829030622.1571852-1-tzungbi@kernel.org
+Fixes: 1e23dcaa1a9fa ("iio: imx8qxp-adc: Add driver support for NXP IMX8QXP ADC")
+Signed-off-by: Philipp Rossak <embed3d@gmail.com>
+Acked-by: Haibo Chen <haibo.chen@nxp.com>
+Link: https://lore.kernel.org/r/20230904220204.23841-1-embed3d@gmail.com
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/iio/adc/imx8qxp-adc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -190,8 +190,11 @@ int cros_ec_sensors_push_data(struct iio
- 	/*
- 	 * Ignore samples if the buffer is not set: it is needed if the ODR is
- 	 * set but the buffer is not enabled yet.
-+	 *
-+	 * Note: iio_device_claim_buffer_mode() returns -EBUSY if the buffer
-+	 * is not enabled.
- 	 */
--	if (!iio_buffer_enabled(indio_dev))
-+	if (iio_device_claim_buffer_mode(indio_dev) < 0)
- 		return 0;
+--- a/drivers/iio/adc/imx8qxp-adc.c
++++ b/drivers/iio/adc/imx8qxp-adc.c
+@@ -38,8 +38,8 @@
+ #define IMX8QXP_ADR_ADC_FCTRL		0x30
+ #define IMX8QXP_ADR_ADC_SWTRIG		0x34
+ #define IMX8QXP_ADR_ADC_TCTRL(tid)	(0xc0 + (tid) * 4)
+-#define IMX8QXP_ADR_ADC_CMDH(cid)	(0x100 + (cid) * 8)
+-#define IMX8QXP_ADR_ADC_CMDL(cid)	(0x104 + (cid) * 8)
++#define IMX8QXP_ADR_ADC_CMDL(cid)	(0x100 + (cid) * 8)
++#define IMX8QXP_ADR_ADC_CMDH(cid)	(0x104 + (cid) * 8)
+ #define IMX8QXP_ADR_ADC_RESFIFO		0x300
+ #define IMX8QXP_ADR_ADC_TST		0xffc
  
- 	out = (s16 *)st->samples;
-@@ -210,6 +213,7 @@ int cros_ec_sensors_push_data(struct iio
- 	iio_push_to_buffers_with_timestamp(indio_dev, st->samples,
- 					   timestamp + delta);
- 
-+	iio_device_release_buffer_mode(indio_dev);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(cros_ec_sensors_push_data);
 
 
