@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A03C87CABD3
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:46:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC0ED7CABD7
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:46:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232375AbjJPOqA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:46:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35092 "EHLO
+        id S232392AbjJPOqH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:46:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232675AbjJPOqA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:46:00 -0400
+        with ESMTP id S232675AbjJPOqF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:46:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66493ED
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:45:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E98C433C8;
-        Mon, 16 Oct 2023 14:45:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DF0BD9
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:46:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B289C433C9;
+        Mon, 16 Oct 2023 14:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697467558;
-        bh=qxJ7pPRJLtWSyEZVzdfunYjUlzwJzYgfCsDa+Ef+yMQ=;
+        s=korg; t=1697467564;
+        bh=5WZg74VBBpZ9VwR2VcQpRp0XwPKRTCs1rwdPEHPUkE0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GQzfFaO4vNDFYvOpRryY08uB5xEDuhnPDOYpWCXnPsREKNtpDUy08htCwynZgzZL9
-         gcm4q//iFRJuRf9PK+oUHXZg+psHIdvo51/lR3uywdHyh1WjnYcUYYpf83hJBItdoW
-         prdqHgmj4NEN48IxcNSR0OYydtmZGmO+jhrQZn/U=
+        b=OOtivadUKKjwcX6nEaiZtGnPByWig68eWiCjefFlGSlJYnSVj4Mwu6UFth/Mf/wtS
+         YggfUmgGhd0XvubX5OIMiPmKJ+VCFVMWqSJu/MfXNmXM/7NlS/xiLRNYQnmz/O8O0N
+         GljcBOVmlH0fK37C4+E0icocu8GoENE19uaYFHWc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hal Feng <hal.feng@starfivetech.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        patches@lists.linux.dev, Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 043/191] pinctrl: starfive: jh7110: Fix failure to set irq after CONFIG_PM is enabled
-Date:   Mon, 16 Oct 2023 10:40:28 +0200
-Message-ID: <20231016084016.413947551@linuxfoundation.org>
+Subject: [PATCH 6.5 044/191] drm/msm/dp: do not reinitialize phy unless retry during link training
+Date:   Mon, 16 Oct 2023 10:40:29 +0200
+Message-ID: <20231016084016.438074928@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -54,47 +56,72 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Hal Feng <hal.feng@starfivetech.com>
+From: Kuogee Hsieh <quic_khsieh@quicinc.com>
 
-[ Upstream commit 8406d6b5916663b4edc604b3effbf4935b61c2da ]
+[ Upstream commit 0c1a2e69bcb506f48ebf94bd199bab0b93f66da2 ]
 
-The issue was found when we enabled CONFIG_PM and tested edge events using
-libgpiod.
+DP PHY re-initialization done using dp_ctrl_reinitialize_mainlink() will
+cause PLL unlocked initially and then PLL gets locked at the end of
+initialization. PLL_UNLOCKED interrupt will fire during this time if the
+interrupt mask is enabled.
 
-> # gpiomon -r gpiochip0 55
-> gpiomon: error waiting for events: Permission denied
+However currently DP driver link training implementation incorrectly
+re-initializes PHY unconditionally during link training as the PHY was
+already configured in dp_ctrl_enable_mainlink_clocks().
 
-`gpiomon` will call irq_chip_pm_get() and then call pm_runtime_resume_and_get()
-if (IS_ENABLED(CONFIG_PM) && sfp->gc.irq.domain->pm_dev).
-pm_runtime_resume_and_get() will fail if the runtime pm of pinctrl device
-is disabled.
+Fix this by re-initializing the PHY only if the previous link training
+failed.
 
-As we expect the pinctrl driver can be always working and never suspend
-during runtime, unset sfp->gc.irq.domain->pm_dev to make sure
-pm_runtime_resume_and_get() won't be called when setting irq.
+[drm:dp_aux_isr] *ERROR* Unexpected DP AUX IRQ 0x01000000 when not busy
 
-Fixes: 447976ab62c5 ("pinctrl: starfive: Add StarFive JH7110 sys controller driver")
-Signed-off-by: Hal Feng <hal.feng@starfivetech.com>
-Link: https://lore.kernel.org/r/20230905122105.117000-2-hal.feng@starfivetech.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/30
+Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Tested-by: Abhinav Kumar <quic_abhinavk@quicinc.com> # sc7280
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/551847/
+Link: https://lore.kernel.org/r/1691533190-19335-1-git-send-email-quic_khsieh@quicinc.com
+[quic_abhinavk@quicinc.com: added line break in commit text]
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_ctrl.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c b/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
-index 5fe729b4a03de..72747ad497b5e 100644
---- a/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
-+++ b/drivers/pinctrl/starfive/pinctrl-starfive-jh7110.c
-@@ -968,8 +968,6 @@ int jh7110_pinctrl_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(dev, ret, "could not register gpiochip\n");
+diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+index a7a5c7e0ab923..77a8d9366ed7b 100644
+--- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
++++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+@@ -1774,13 +1774,6 @@ int dp_ctrl_on_link(struct dp_ctrl *dp_ctrl)
+ 		return rc;
  
--	irq_domain_set_pm_device(sfp->gc.irq.domain, dev);
+ 	while (--link_train_max_retries) {
+-		rc = dp_ctrl_reinitialize_mainlink(ctrl);
+-		if (rc) {
+-			DRM_ERROR("Failed to reinitialize mainlink. rc=%d\n",
+-					rc);
+-			break;
+-		}
 -
- 	dev_info(dev, "StarFive GPIO chip registered %d GPIOs\n", sfp->gc.ngpio);
+ 		training_step = DP_TRAINING_NONE;
+ 		rc = dp_ctrl_setup_main_link(ctrl, &training_step);
+ 		if (rc == 0) {
+@@ -1832,6 +1825,12 @@ int dp_ctrl_on_link(struct dp_ctrl *dp_ctrl)
+ 			/* stop link training before start re training  */
+ 			dp_ctrl_clear_training_pattern(ctrl);
+ 		}
++
++		rc = dp_ctrl_reinitialize_mainlink(ctrl);
++		if (rc) {
++			DRM_ERROR("Failed to reinitialize mainlink. rc=%d\n", rc);
++			break;
++		}
+ 	}
  
- 	return pinctrl_enable(sfp->pctl);
+ 	if (ctrl->link->sink_request & DP_TEST_LINK_PHY_TEST_PATTERN)
 -- 
 2.40.1
 
