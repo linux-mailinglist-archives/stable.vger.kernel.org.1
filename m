@@ -2,44 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 678697CA375
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 019BD7CA29A
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233435AbjJPJGO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:06:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38098 "EHLO
+        id S232971AbjJPIv6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:51:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232900AbjJPJGI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:06:08 -0400
+        with ESMTP id S232968AbjJPIv5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:51:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF59FEE
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:06:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D65C433C8;
-        Mon, 16 Oct 2023 09:06:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66631EB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:51:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611ADC433C7;
+        Mon, 16 Oct 2023 08:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447165;
-        bh=PVZGknIGjWUEqTR95INB/ZGx0N/sjips6r3Hd5UwSXk=;
+        s=korg; t=1697446314;
+        bh=M6PPYZnovKUe7LLl/984rTCZsohWyxkuBfHbflnLxT4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G/G5W2Cdr/ghzPuLvB7g/Xcf8phJPXgpyoNqiRepraE699TtF8aulTh8aWk+0MH34
-         1rCmpQqXU1OYEgZ5aQIQuXf2tz3AFWBpDNnmMBv577z3jrDNOhgXi9bfqhdQJxOcAG
-         Jy89Sc9BdET20ByfSR5mWYGLrw5XIdrFmQWoujzg=
+        b=ILekZtRo5NP4gIg+5LVIwDJpp/MASTrWZnNZM0Ql+CdtNoK8b9Av2PcsR2vBqk/Bf
+         DepFlR0ifaAjlhaHh4BKtl2TrUVQhsSfUvA9tAQ0VCfAFgNZ/7oIEQVKrR6cjpfQIc
+         e1R1L8lXe2FJh2wdYX5U5cBqu2vU/9GrIRFwNdsM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Tejas Upadhyay <tejas.upadhyay@intel.com>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>,
+        =?UTF-8?q?Tapani=20P=C3=A4lli?= <tapani.palli@intel.com>,
+        Mark Janes <mark.janes@intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 001/191] net: stmmac: remove unneeded stmmac_poll_controller
+Subject: [PATCH 6.1 003/131] drm/i915: Dont set PIPE_CONTROL_FLUSH_L3 for aux inval
 Date:   Mon, 16 Oct 2023 10:39:46 +0200
-Message-ID: <20231016084015.436294403@linuxfoundation.org>
+Message-ID: <20231016084000.144614991@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
-References: <20231016084015.400031271@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,118 +62,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Nirmoy Das <nirmoy.das@intel.com>
 
-[ Upstream commit 3eef8555891026628aa1cc6dbc01db86df88aa26 ]
+[ Upstream commit 128c20eda73bd3e78505c574fb17adb46195c98b ]
 
-Using netconsole netpoll_poll_dev could be called from interrupt
-context, thus using disable_irq() would cause the following kernel
-warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
+PIPE_CONTROL_FLUSH_L3 is not needed for aux invalidation
+so don't set that.
 
-  BUG: sleeping function called from invalid context at kernel/irq/manage.c:137
-  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksoftirqd/0
-  CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00075-g816b502b2298-dirty #117
-  Hardware name: aml (r1) (DT)
-  Call trace:
-   dump_backtrace+0x0/0x270
-   show_stack+0x14/0x20
-   dump_stack_lvl+0x8c/0xac
-   dump_stack+0x18/0x30
-   ___might_sleep+0x150/0x194
-   __might_sleep+0x64/0xbc
-   synchronize_irq+0x8c/0x150
-   disable_irq+0x2c/0x40
-   stmmac_poll_controller+0x140/0x1a0
-   netpoll_poll_dev+0x6c/0x220
-   netpoll_send_skb+0x308/0x390
-   netpoll_send_udp+0x418/0x760
-   write_msg+0x118/0x140 [netconsole]
-   console_unlock+0x404/0x500
-   vprintk_emit+0x118/0x250
-   dev_vprintk_emit+0x19c/0x1cc
-   dev_printk_emit+0x90/0xa8
-   __dev_printk+0x78/0x9c
-   _dev_warn+0xa4/0xbc
-   ath10k_warn+0xe8/0xf0 [ath10k_core]
-   ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
-   ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
-   __napi_poll+0x58/0x1f4
-   net_rx_action+0x504/0x590
-   _stext+0x1b8/0x418
-   run_ksoftirqd+0x74/0xa4
-   smpboot_thread_fn+0x210/0x3c0
-   kthread+0x1fc/0x210
-   ret_from_fork+0x10/0x20
-
-Since [0] .ndo_poll_controller is only needed if driver doesn't or
-partially use NAPI. Because stmmac does so, stmmac_poll_controller
-can be removed fixing the above warning.
-
-[0] commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
-
-Cc: <stable@vger.kernel.org> # 5.15.x
-Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/1c156a6d8c9170bd6a17825f2277115525b4d50f.1696429960.git.repk@triplefau.lt
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 78a6ccd65fa3 ("drm/i915/gt: Ensure memory quiesced before invalidation")
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Prathap Kumar Valsan <prathap.kumar.valsan@intel.com>
+Cc: Tapani Pälli <tapani.palli@intel.com>
+Cc: Mark Janes <mark.janes@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Acked-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Tested-by: Tapani Pälli <tapani.palli@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230926142401.25687-1-nirmoy.das@intel.com
+(cherry picked from commit 03d681412b38558aefe4fb0f46e36efa94bb21ef)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 30 -------------------
- 1 file changed, 30 deletions(-)
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 6931973028aef..e840cadb2d75a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5940,33 +5940,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
- 	return IRQ_HANDLED;
- }
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index cc84685368715..efc22f9b17f07 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -235,8 +235,17 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 		u32 flags = 0;
+ 		u32 *cs;
  
--#ifdef CONFIG_NET_POLL_CONTROLLER
--/* Polling receive - used by NETCONSOLE and other diagnostic tools
-- * to allow network I/O with interrupts disabled.
-- */
--static void stmmac_poll_controller(struct net_device *dev)
--{
--	struct stmmac_priv *priv = netdev_priv(dev);
--	int i;
--
--	/* If adapter is down, do nothing */
--	if (test_bit(STMMAC_DOWN, &priv->state))
--		return;
--
--	if (priv->plat->multi_msi_en) {
--		for (i = 0; i < priv->plat->rx_queues_to_use; i++)
--			stmmac_msi_intr_rx(0, &priv->dma_conf.rx_queue[i]);
--
--		for (i = 0; i < priv->plat->tx_queues_to_use; i++)
--			stmmac_msi_intr_tx(0, &priv->dma_conf.tx_queue[i]);
--	} else {
--		disable_irq(dev->irq);
--		stmmac_interrupt(dev->irq, dev);
--		enable_irq(dev->irq);
--	}
--}
--#endif
--
- /**
-  *  stmmac_ioctl - Entry point for the Ioctl
-  *  @dev: Device pointer.
-@@ -6802,9 +6775,6 @@ static const struct net_device_ops stmmac_netdev_ops = {
- 	.ndo_eth_ioctl = stmmac_ioctl,
- 	.ndo_setup_tc = stmmac_setup_tc,
- 	.ndo_select_queue = stmmac_select_queue,
--#ifdef CONFIG_NET_POLL_CONTROLLER
--	.ndo_poll_controller = stmmac_poll_controller,
--#endif
- 	.ndo_set_mac_address = stmmac_set_mac_address,
- 	.ndo_vlan_rx_add_vid = stmmac_vlan_rx_add_vid,
- 	.ndo_vlan_rx_kill_vid = stmmac_vlan_rx_kill_vid,
++		/*
++		 * L3 fabric flush is needed for AUX CCS invalidation
++		 * which happens as part of pipe-control so we can
++		 * ignore PIPE_CONTROL_FLUSH_L3. Also PIPE_CONTROL_FLUSH_L3
++		 * deals with Protected Memory which is not needed for
++		 * AUX CCS invalidation and lead to unwanted side effects.
++		 */
++		if (mode & EMIT_FLUSH)
++			flags |= PIPE_CONTROL_FLUSH_L3;
++
+ 		flags |= PIPE_CONTROL_TILE_CACHE_FLUSH;
+-		flags |= PIPE_CONTROL_FLUSH_L3;
+ 		flags |= PIPE_CONTROL_RENDER_TARGET_CACHE_FLUSH;
+ 		flags |= PIPE_CONTROL_DEPTH_CACHE_FLUSH;
+ 		/* Wa_1409600907:tgl,adl-p */
 -- 
 2.40.1
 
