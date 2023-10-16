@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1BAD7CAC27
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64F4E7CACBD
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 17:00:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233628AbjJPOuG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:50:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41662 "EHLO
+        id S233843AbjJPPAm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 11:00:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232959AbjJPOuF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:50:05 -0400
+        with ESMTP id S233853AbjJPPAl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 11:00:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5097DB4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:50:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69BD8C433C8;
-        Mon, 16 Oct 2023 14:50:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 493B4E1
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 08:00:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A109C433C9;
+        Mon, 16 Oct 2023 15:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697467804;
-        bh=vzPSnOqMhc6YMbplDSRQd2RCS1U7NN4b7o0SwldkvS8=;
+        s=korg; t=1697468439;
+        bh=kGR1skr61veVC77vc3gHjj/WfBko9d0UoYjc7Agww+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IYAWAykH41baP47tnJ+rNb28U+alK93h5ECJwGGLu9+Wbu/hGAw+pw0pCHk8mRgn/
-         h8BBFm6emOCeQqP38x7KWrQmw4K7gekeC1qLxxAb6vp5IQxmdGmEhXpqImB/i84Rz+
-         NAGCHDB9zTb2w6ODsFeWIO1XwseBlouRA9oAoSms=
+        b=Q+7mU62AojO/hTmp6GCf9byYpBQLl04kdGPIVhNcAb5bBpp/fR0B1aitYC8IOWWL4
+         NfbT+Vqc2dNzaeO3ff17n69Hr8od+SCyr60CY3Z189pdb7rk305t4GOiGaAnCgl3JP
+         YWpeCivvNOP1tFytrC5bybk6Ttw+ZU0MoC3KSAjI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.5 098/191] dmaengine: stm32-mdma: set in_flight_bytes in case CRQA flag is set
-Date:   Mon, 16 Oct 2023 10:41:23 +0200
-Message-ID: <20231016084017.678103893@linuxfoundation.org>
+        patches@lists.linux.dev, Wesley Cheng <quic_wcheng@quicinc.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.5 099/191] usb: xhci: xhci-ring: Use sysdev for mapping bounce buffer
+Date:   Mon, 16 Oct 2023 10:41:24 +0200
+Message-ID: <20231016084017.701325205@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -54,68 +53,54 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit 584970421725b7805db84714b857851fdf7203a9 upstream.
+commit 41a43013d2366db5b88b42bbcd8e8f040b6ccf21 upstream.
 
-CRQA flag is set by hardware when the channel request become active and
-the channel is enabled. It is cleared by hardware, when the channel request
-is completed.
-So when it is set, it means MDMA is transferring bytes.
-This information is useful in case of STM32 DMA and MDMA chaining,
-especially when the user pauses DMA before stopping it, to trig one last
-MDMA transfer to get the latest bytes of the SRAM buffer to the
-destination buffer.
-STM32 DCMI driver can then use this to know if the last MDMA transfer in
-case of chaining is done.
+As mentioned in:
+  commit 474ed23a6257 ("xhci: align the last trb before link if it is
+easily splittable.")
 
-Fixes: 696874322771 ("dmaengine: stm32-mdma: add support to be triggered by STM32 DMA")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231004163531.2864160-3-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+A bounce buffer is utilized for ensuring that transfers that span across
+ring segments are aligned to the EP's max packet size.  However, the device
+that is used to map the DMA buffer to is currently using the XHCI HCD,
+which does not carry any DMA operations in certain configrations.
+Migration to using the sysdev entry was introduced for DWC3 based
+implementations where the IOMMU operations are present.
+
+Replace the reference to the controller device to sysdev instead.  This
+allows the bounce buffer to be properly mapped to any implementations that
+have an IOMMU involved.
+
+cc: stable@vger.kernel.org
+Fixes: 4c39d4b949d3 ("usb: xhci: use bus->sysdev for DMA configuration")
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20230915143108.1532163-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/stm32-mdma.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/usb/host/xhci-ring.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/stm32-mdma.c
-+++ b/drivers/dma/stm32-mdma.c
-@@ -1319,7 +1319,8 @@ static int stm32_mdma_slave_config(struc
- 
- static size_t stm32_mdma_desc_residue(struct stm32_mdma_chan *chan,
- 				      struct stm32_mdma_desc *desc,
--				      u32 curr_hwdesc)
-+				      u32 curr_hwdesc,
-+				      struct dma_tx_state *state)
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -798,7 +798,7 @@ static void xhci_giveback_urb_in_irq(str
+ static void xhci_unmap_td_bounce_buffer(struct xhci_hcd *xhci,
+ 		struct xhci_ring *ring, struct xhci_td *td)
  {
- 	struct stm32_mdma_device *dmadev = stm32_mdma_get_dev(chan);
- 	struct stm32_mdma_hwdesc *hwdesc;
-@@ -1343,6 +1344,10 @@ static size_t stm32_mdma_desc_residue(st
- 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
- 	residue += cbndtr & STM32_MDMA_CBNDTR_BNDT_MASK;
- 
-+	state->in_flight_bytes = 0;
-+	if (chan->chan_config.m2m_hw && (cisr & STM32_MDMA_CISR_CRQA))
-+		state->in_flight_bytes = cbndtr & STM32_MDMA_CBNDTR_BNDT_MASK;
-+
- 	if (!chan->mem_burst)
- 		return residue;
- 
-@@ -1372,11 +1377,10 @@ static enum dma_status stm32_mdma_tx_sta
- 
- 	vdesc = vchan_find_desc(&chan->vchan, cookie);
- 	if (chan->desc && cookie == chan->desc->vdesc.tx.cookie)
--		residue = stm32_mdma_desc_residue(chan, chan->desc,
--						  chan->curr_hwdesc);
-+		residue = stm32_mdma_desc_residue(chan, chan->desc, chan->curr_hwdesc, state);
- 	else if (vdesc)
--		residue = stm32_mdma_desc_residue(chan,
--						  to_stm32_mdma_desc(vdesc), 0);
-+		residue = stm32_mdma_desc_residue(chan, to_stm32_mdma_desc(vdesc), 0, state);
-+
- 	dma_set_residue(state, residue);
- 
- 	spin_unlock_irqrestore(&chan->vchan.lock, flags);
+-	struct device *dev = xhci_to_hcd(xhci)->self.controller;
++	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_segment *seg = td->bounce_seg;
+ 	struct urb *urb = td->urb;
+ 	size_t len;
+@@ -3469,7 +3469,7 @@ static u32 xhci_td_remainder(struct xhci
+ static int xhci_align_td(struct xhci_hcd *xhci, struct urb *urb, u32 enqd_len,
+ 			 u32 *trb_buff_len, struct xhci_segment *seg)
+ {
+-	struct device *dev = xhci_to_hcd(xhci)->self.controller;
++	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	unsigned int unalign;
+ 	unsigned int max_pkt;
+ 	u32 new_buff_len;
 
 
