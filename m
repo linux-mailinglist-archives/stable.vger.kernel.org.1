@@ -2,134 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1606A7CA02E
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 09:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77B007CA068
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 09:19:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231722AbjJPHNh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 03:13:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53954 "EHLO
+        id S232282AbjJPHTD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 03:19:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231671AbjJPHNg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 03:13:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC83AD;
-        Mon, 16 Oct 2023 00:13:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 14A24C433C7;
-        Mon, 16 Oct 2023 07:13:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697440414;
-        bh=xNlXAuE+bCPUAWJr1nwMfcT6VUi0d0nMbIyJW/0hZW8=;
-        h=From:Date:Subject:To:Cc:Reply-To:From;
-        b=PcjYNHTjD/zqBiMcLKzPl6308JDp1LgAibKKMuFEsec11g5fAofXcmS5E3JbMI0mi
-         0zg+X8vMWKbomehNTxU7efFC8Ym3+Yvc531ud2TSlUs0uoG6+kBNKQ1RnEmnq+S0ix
-         XA6AgGhwyjkT/+wdFOp5xkCgTjZ/Niyye89F7uhCvoCDfZmYZ2kl95zVB4qXUj5Pxk
-         i6TaPDnRL2zkQcHFfkgm1DtdaSzBOx21E+OQAg9lBU++5ZikE2PmyXlBx3R39a82yj
-         uQGi7K9hx/tHN5cJfYeDAA6CjeMxzlyx68cGXHLHUdehH/gtGU4bG0l2JqoDb40071
-         85I0VkblLnygg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.lore.kernel.org (Postfix) with ESMTP id EA340CDB465;
-        Mon, 16 Oct 2023 07:13:33 +0000 (UTC)
-From:   Janne Grunau via B4 Relay <devnull+j.jannau.net@kernel.org>
-Date:   Mon, 16 Oct 2023 09:13:08 +0200
-Subject: [PATCH] Bluetooth: hci_bcm4377: Mark bcm4378/bcm4387 as
- BROKEN_LE_CODED
+        with ESMTP id S232210AbjJPHTC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 03:19:02 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12DD4AD
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 00:18:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1697440696;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ZMH50QiNx/RpA27e+HDzQ/UaGOzrlDiikAqZXGGX460=;
+        b=Ur0DbJybhqotFRfJiDCJqswfi0TofjzHP73iZ15XkeXJh5N90h7Wi8cRYhOZH8yalY8hkz
+        XVPpiRlIKgh0tgMTmq5lDQbic0reyGJc9tlG7qRyMz/2yEOjDQvD+0gbzqpGX4RvqlQbbR
+        ohuJw/7wwQF6AYugTXQFE6jp55AAqSI=
+Received: from mail-ua1-f70.google.com (mail-ua1-f70.google.com
+ [209.85.222.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-563-dgpiWRcMMoK3NWP6EGAlkQ-1; Mon, 16 Oct 2023 03:18:10 -0400
+X-MC-Unique: dgpiWRcMMoK3NWP6EGAlkQ-1
+Received: by mail-ua1-f70.google.com with SMTP id a1e0cc1a2514c-7abda79fc74so958789241.2
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 00:18:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697440689; x=1698045489;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:reply-to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZMH50QiNx/RpA27e+HDzQ/UaGOzrlDiikAqZXGGX460=;
+        b=aZBeGSGVelaxdFRsHC3Wzwtt29eobc0LKkmrW0a54wfN4okEMYSJGoRnEW2tTV846u
+         5MLE4x9ekZf5C6hTRAOzdtikpJJpFtZdpZzt1VEMtCS3IH32/m/o0lFhHPzrQ1H1kbxK
+         2lI4AIJNmY/UCsLFYK0mHwq6m1kp2+ALjBVCuOFey+Q8Gcp3RUWZQzphRJGqlEPIYKc8
+         IFQPbJlYVq+kCbQcQ9zErmES9gPGlwoARCzdj90QhS5jiXu74S+R798sTorhlmYqniXr
+         molOPQwheHmXvp7kgURk187wvXRjM6FDCqVk8p1lprsPqRMPxzIihRV+LGUSxGm9lkPm
+         Qymw==
+X-Gm-Message-State: AOJu0Yw8OvTwGQj7dF4623g3zuHu3zSVbbOGKUJ2JDsAwcwIh5WyyA0P
+        pKJZssWjs338SrURPyn/4IhKJvNstMztJrTGjG6+zDKE+XYPQy5TVgKfR1zyodV32RaDi2wiV5X
+        uooPF9dJJ1+1e4uLH
+X-Received: by 2002:a05:6102:3188:b0:457:b01c:4a8e with SMTP id c8-20020a056102318800b00457b01c4a8emr8522093vsh.7.1697440689469;
+        Mon, 16 Oct 2023 00:18:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFrYKoQ8rnr5V8nFuKW8RRuaP7a7IwQbOXpJHv3bolS3RrOuy5SapWm+qgVLdmd8Y1bvVE4YA==
+X-Received: by 2002:a05:6102:3188:b0:457:b01c:4a8e with SMTP id c8-20020a056102318800b00457b01c4a8emr8522084vsh.7.1697440689214;
+        Mon, 16 Oct 2023 00:18:09 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:59e:9d80:527b:9dff:feef:3874? ([2a01:e0a:59e:9d80:527b:9dff:feef:3874])
+        by smtp.gmail.com with ESMTPSA id p17-20020ae9f311000000b00772662b7804sm2784186qkg.100.2023.10.16.00.18.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Oct 2023 00:18:08 -0700 (PDT)
+Message-ID: <6b9b570c-8d73-eb64-40a7-fe7492e68be5@redhat.com>
+Date:   Mon, 16 Oct 2023 09:18:04 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Reply-To: eric.auger@redhat.com
+Subject: Re: [RESEND PATCH v2] vhost: Allow null msg.size on
+ VHOST_IOTLB_INVALIDATE
+Content-Language: en-US
+To:     eric.auger.pro@gmail.com, elic@nvidia.com, mail@anirudhrb.com,
+        jasowang@redhat.com, mst@redhat.com, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, netdev@vger.kernel.org,
+        virtualization@lists.linux-foundation.org, kvmarm@lists.linux.dev
+Cc:     stable@vger.kernel.org
+References: <20230927140544.205088-1-eric.auger@redhat.com>
+From:   Eric Auger <eric.auger@redhat.com>
+In-Reply-To: <20230927140544.205088-1-eric.auger@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231016-bt-bcm4377-quirk-broken-le-coded-v1-1-52ea69d3c979@jannau.net>
-X-B4-Tracking: v=1; b=H4sIAIPiLGUC/x3NywrCMBBG4Vcps3YgaWovvoq4aJJfHaqJTlSE0
- nc3uPw256xUoIJCh2YlxUeK5FRhdw2F65wuYInV1JrWWWN79i/24d65YeDnW3Rhr3lB4hs45Ij
- I+2nqxxEudLOhmnkozvL9L46nbfsB4PTdgHIAAAA=
-To:     Hector Martin <marcan@marcan.st>, Sven Peter <sven@svenpeter.dev>,
-        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc:     Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
-        regressions@lists.linux.dev, stable@vger.kernel.org
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2372; i=j@jannau.net;
- h=from:subject:message-id; bh=tGCXqB0xwKnmC4wp0Z2D26g3zMlTAh/Veq7m/j3H66A=;
- b=owGbwMvMwCG2UNrmdq9+ahrjabUkhlSdR3N8Ll/eFrPoypqAqzppXl93h7Rt0NBQeXLi9fkna
- 0KuBzFEdJSyMIhxMMiKKbIkab/sYFhdoxhT+yAMZg4rE8gQBi5OAZiIsDUjQ98EJ1aXF7zHfXwE
- Hc/YvDj59n/7livy05TF44sudn3dVMzIsITZmXeuLEvwp6v/0hZNCFrCdki8cunOZ5O0uEWPph6
- /yAsA
-X-Developer-Key: i=j@jannau.net; a=openpgp;
- fpr=8B336A6BE4E5695E89B8532B81E806F586338419
-X-Endpoint-Received: by B4 Relay for j@jannau.net/default with auth_id=62
-X-Original-From: Janne Grunau <j@jannau.net>
-Reply-To: <j@jannau.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Janne Grunau <j@jannau.net>
+Hi,
 
-bcm4378 and bcm4387 claim to support LE Coded PHY but fail to pair
-(reliably) with BLE devices if it is enabled.
-On bcm4378 pairing usually succeeds after 2-3 tries. On bcm4387
-pairing appears to be completely broken.
+On 9/27/23 16:05, Eric Auger wrote:
+> Commit e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb
+> entries") Forbade vhost iotlb msg with null size to prevent entries
+> with size = start = 0 and last = ULONG_MAX to end up in the iotlb.
+>
+> Then commit 95932ab2ea07 ("vhost: allow batching hint without size")
+> only applied the check for VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE
+> message types to fix a regression observed with batching hit.
+>
+> Still, the introduction of that check introduced a regression for
+> some users attempting to invalidate the whole ULONG_MAX range by
+> setting the size to 0. This is the case with qemu/smmuv3/vhost
+> integration which does not work anymore. It Looks safe to partially
+> revert the original commit and allow VHOST_IOTLB_INVALIDATE messages
+> with null size. vhost_iotlb_del_range() will compute a correct end
+> iova. Same for vhost_vdpa_iotlb_unmap().
+>
+> Signed-off-by: Eric Auger <eric.auger@redhat.com>
+> Fixes: e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb entries")
+> Cc: stable@vger.kernel.org # v5.17+
+> Acked-by: Jason Wang <jasowang@redhat.com>
+Gentle Ping.
 
-Cc: stable@vger.kernel.org # 6.4.y+
-Link: https://discussion.fedoraproject.org/t/mx-master-3-bluetooth-mouse-doesnt-connect/87072/33
-Link: https://github.com/AsahiLinux/linux/issues/177
-Fixes: 288c90224eec ("Bluetooth: Enable all supported LE PHY by default")
-Signed-off-by: Janne Grunau <j@jannau.net>
----
- drivers/bluetooth/hci_bcm4377.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Thanks
 
-diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4377.c
-index 19ad0e788646..a61757835695 100644
---- a/drivers/bluetooth/hci_bcm4377.c
-+++ b/drivers/bluetooth/hci_bcm4377.c
-@@ -512,6 +512,7 @@ struct bcm4377_hw {
- 	unsigned long disable_aspm : 1;
- 	unsigned long broken_ext_scan : 1;
- 	unsigned long broken_mws_transport_config : 1;
-+	unsigned long broken_le_coded : 1;
- 
- 	int (*send_calibration)(struct bcm4377_data *bcm4377);
- 	int (*send_ptb)(struct bcm4377_data *bcm4377,
-@@ -2372,6 +2373,8 @@ static int bcm4377_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		set_bit(HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG, &hdev->quirks);
- 	if (bcm4377->hw->broken_ext_scan)
- 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
-+	if (bcm4377->hw->broken_le_coded)
-+		set_bit(HCI_QUIRK_BROKEN_LE_CODED, &hdev->quirks);
- 
- 	pci_set_drvdata(pdev, bcm4377);
- 	hci_set_drvdata(hdev, bcm4377);
-@@ -2461,6 +2464,7 @@ static const struct bcm4377_hw bcm4377_hw_variants[] = {
- 		.bar0_core2_window2 = 0x18107000,
- 		.has_bar0_core2_window2 = true,
- 		.broken_mws_transport_config = true,
-+		.broken_le_coded = true,
- 		.send_calibration = bcm4378_send_calibration,
- 		.send_ptb = bcm4378_send_ptb,
- 	},
-@@ -2474,6 +2478,7 @@ static const struct bcm4377_hw bcm4377_hw_variants[] = {
- 		.has_bar0_core2_window2 = true,
- 		.clear_pciecfg_subsystem_ctrl_bit19 = true,
- 		.broken_mws_transport_config = true,
-+		.broken_le_coded = true,
- 		.send_calibration = bcm4387_send_calibration,
- 		.send_ptb = bcm4378_send_ptb,
- 	},
-
----
-base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
-change-id: 20231016-bt-bcm4377-quirk-broken-le-coded-599688e3c4a0
-
-Best regards,
--- 
-Janne Grunau <j@jannau.net>
+Eric
+> ---
+>  drivers/vhost/vhost.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+> index c71d573f1c94..e0c181ad17e3 100644
+> --- a/drivers/vhost/vhost.c
+> +++ b/drivers/vhost/vhost.c
+> @@ -1458,9 +1458,7 @@ ssize_t vhost_chr_write_iter(struct vhost_dev *dev,
+>  		goto done;
+>  	}
+>  
+> -	if ((msg.type == VHOST_IOTLB_UPDATE ||
+> -	     msg.type == VHOST_IOTLB_INVALIDATE) &&
+> -	     msg.size == 0) {
+> +	if (msg.type == VHOST_IOTLB_UPDATE && msg.size == 0) {
+>  		ret = -EINVAL;
+>  		goto done;
+>  	}
 
