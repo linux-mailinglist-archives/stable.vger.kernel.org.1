@@ -2,48 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75E3E7CA20C
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEA007CA2DC
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:56:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232568AbjJPIpK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47788 "EHLO
+        id S233015AbjJPI4J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:56:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232580AbjJPIpI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:45:08 -0400
+        with ESMTP id S232955AbjJPI4I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:56:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97D08A2
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:45:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDE3C433CA;
-        Mon, 16 Oct 2023 08:45:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DE54AB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:56:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369D5C433C7;
+        Mon, 16 Oct 2023 08:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445907;
-        bh=SC/6PPLmqvq91BE50NcoYBuNoeAmo8QSe7wzMSvO6sw=;
+        s=korg; t=1697446566;
+        bh=Dv2rUziEcxPwLRNwXwFacAa6lXJB8twmJi8iSJKqyB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lBlWL3VkGJQCcmt2SQ5pjbPA31idSG9RScEGQoNE71Nys4hUOJMfBPe0r/OgIhZbF
-         p/IAgKsq9gtQRYiJgNgeY0cBZqEuko8/LdYjL2eGDd/HTc8q0C8Qi6q/YwXLD4Nkio
-         53TzlB9sNbut3HImAbzSeFsjIn4CJkQx8sCGe4ks=
+        b=KN7kbF+yKsEMxbFf9BN16jSmt40PPLAZ5C2WQh3SWRggPUb6sS82RreahPsQ5E58s
+         +q7c6LudBJQHMGK3tscXKZmDdaGMqpQ8h7hxnhCDJYHGQdOjAM18sRteMAYDPYr4LS
+         AX41g3TE0ddyqHLNS5MAtUb7e2Fp3FRvaRmVQ31A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Charlotte Tan <charlotte@extrahop.com>,
-        Adham Faris <afaris@nvidia.com>, Aya Levin <ayal@nvidia.com>,
-        Tariq Toukan <tariqt@nvidia.com>,
-        Moshe Shemesh <moshe@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Will Mortensen <will@extrahop.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/102] net/mlx5e: Again mutually exclude RX-FCS and RX-port-timestamp
-Date:   Mon, 16 Oct 2023 10:40:34 +0200
-Message-ID: <20231016083954.638250986@linuxfoundation.org>
+Subject: [PATCH 6.1 052/131] riscv, bpf: Sign-extend return values
+Date:   Mon, 16 Oct 2023 10:40:35 +0200
+Message-ID: <20231016084001.365687034@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,59 +52,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Mortensen <will@extrahop.com>
+From: Björn Töpel <bjorn@rivosinc.com>
 
-[ Upstream commit da6192ca72d5ad913d109d43dc896290ad05d98f ]
+[ Upstream commit 2f1b0d3d733169eb11680bfa97c266ae5e757148 ]
 
-Commit 1e66220948df8 ("net/mlx5e: Update rx ring hw mtu upon each rx-fcs
-flag change") seems to have accidentally inverted the logic added in
-commit 0bc73ad46a76 ("net/mlx5e: Mutually exclude RX-FCS and
-RX-port-timestamp").
+The RISC-V architecture does not expose sub-registers, and hold all
+32-bit values in a sign-extended format [1] [2]:
 
-The impact of this is a little unclear since it seems the FCS scattered
-with RX-FCS is (usually?) correct regardless.
+  | The compiler and calling convention maintain an invariant that all
+  | 32-bit values are held in a sign-extended format in 64-bit
+  | registers. Even 32-bit unsigned integers extend bit 31 into bits
+  | 63 through 32. Consequently, conversion between unsigned and
+  | signed 32-bit integers is a no-op, as is conversion from a signed
+  | 32-bit integer to a signed 64-bit integer.
 
-Fixes: 1e66220948df8 ("net/mlx5e: Update rx ring hw mtu upon each rx-fcs flag change")
-Tested-by: Charlotte Tan <charlotte@extrahop.com>
-Reviewed-by: Charlotte Tan <charlotte@extrahop.com>
-Cc: Adham Faris <afaris@nvidia.com>
-Cc: Aya Levin <ayal@nvidia.com>
-Cc: Tariq Toukan <tariqt@nvidia.com>
-Cc: Moshe Shemesh <moshe@nvidia.com>
-Cc: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Will Mortensen <will@extrahop.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20231006053706.514618-1-will@extrahop.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+While BPF, on the other hand, exposes sub-registers, and use
+zero-extension (similar to arm64/x86).
+
+This has led to some subtle bugs, where a BPF JITted program has not
+sign-extended the a0 register (return value in RISC-V land), passed
+the return value up the kernel, e.g.:
+
+  | int from_bpf(void);
+  |
+  | long foo(void)
+  | {
+  |    return from_bpf();
+  | }
+
+Here, a0 would be 0xffff_ffff, instead of the expected
+0xffff_ffff_ffff_ffff.
+
+Internally, the RISC-V JIT uses a5 as a dedicated register for BPF
+return values.
+
+Keep a5 zero-extended, but explicitly sign-extend a0 (which is used
+outside BPF land). Now that a0 (RISC-V ABI) and a5 (BPF ABI) differs,
+a0 is only moved to a5 for non-BPF native calls (BPF_PSEUDO_CALL).
+
+Fixes: 2353ecc6f91f ("bpf, riscv: add BPF JIT for RV64G")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://github.com/riscv/riscv-isa-manual/releases/download/riscv-isa-release-056b6ff-2023-10-02/unpriv-isa-asciidoc.pdf # [2]
+Link: https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/download/draft-20230929-e5c800e661a53efe3c2678d71a306323b60eb13b/riscv-abi.pdf # [2]
+Link: https://lore.kernel.org/bpf/20231004120706.52848-2-bjorn@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/net/bpf_jit_comp64.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index fdc4a5a80da41..923be5fb7d216 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -3373,13 +3373,14 @@ static int set_feature_rx_fcs(struct net_device *netdev, bool enable)
- 	struct mlx5e_channels *chs = &priv->channels;
- 	struct mlx5e_params new_params;
- 	int err;
-+	bool rx_ts_over_crc = !enable;
+diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
+index 69ebab81d9352..8f5d3c57d58ad 100644
+--- a/arch/riscv/net/bpf_jit_comp64.c
++++ b/arch/riscv/net/bpf_jit_comp64.c
+@@ -236,7 +236,7 @@ static void __build_epilogue(bool is_tail_call, struct rv_jit_context *ctx)
+ 	emit_addi(RV_REG_SP, RV_REG_SP, stack_adjust, ctx);
+ 	/* Set return value. */
+ 	if (!is_tail_call)
+-		emit_mv(RV_REG_A0, RV_REG_A5, ctx);
++		emit_addiw(RV_REG_A0, RV_REG_A5, 0, ctx);
+ 	emit_jalr(RV_REG_ZERO, is_tail_call ? RV_REG_T3 : RV_REG_RA,
+ 		  is_tail_call ? 4 : 0, /* skip TCC init */
+ 		  ctx);
+@@ -1038,7 +1038,8 @@ int bpf_jit_emit_insn(const struct bpf_insn *insn, struct rv_jit_context *ctx,
+ 		if (ret)
+ 			return ret;
  
- 	mutex_lock(&priv->state_lock);
- 
- 	new_params = chs->params;
- 	new_params.scatter_fcs_en = enable;
- 	err = mlx5e_safe_switch_params(priv, &new_params, mlx5e_set_rx_port_ts_wrap,
--				       &new_params.scatter_fcs_en, true);
-+				       &rx_ts_over_crc, true);
- 	mutex_unlock(&priv->state_lock);
- 	return err;
- }
+-		emit_mv(bpf_to_rv_reg(BPF_REG_0, ctx), RV_REG_A0, ctx);
++		if (insn->src_reg != BPF_PSEUDO_CALL)
++			emit_mv(bpf_to_rv_reg(BPF_REG_0, ctx), RV_REG_A0, ctx);
+ 		break;
+ 	}
+ 	/* tail call */
 -- 
 2.40.1
 
