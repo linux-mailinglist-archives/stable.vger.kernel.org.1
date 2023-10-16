@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DBC07CA36A
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:05:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 083717CA36B
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232757AbjJPJFx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:05:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35040 "EHLO
+        id S233244AbjJPJF4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:05:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233412AbjJPJFd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:05:33 -0400
+        with ESMTP id S233295AbjJPJFh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:05:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80834FE
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:05:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62EF8C433C7;
-        Mon, 16 Oct 2023 09:05:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05BA7EB
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:05:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C684C433C7;
+        Mon, 16 Oct 2023 09:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447129;
-        bh=VU/H3JBm9wBiWwSyIrFNF/jNku0wKoatv3vzkzUWzdM=;
+        s=korg; t=1697447135;
+        bh=3EtLUt5w2ei8zO/F3fgLVx2FBnUEi0otFsehyT1h8G4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dfeTIe7owpZRp03wovd1xJ52OU4/nr2jataS//B6BiLY+quRpr+MAnXrhPdJKxy0o
-         rpmGFzzIXCsl0y7aORJMg36ETgUIpe8axakgwpC6PSg8EfsZvBw+n6ekcJwyl3aycT
-         UbT2VCZv9YX4Fr3wuW7vhYnBLmQz7pRjzU/+rmXE=
+        b=EOEC1H317sD1nnvYeS4NPcmjXnQloPuQrFbGTvDt82A6jz2qJyNKW83EP+bpfJc6X
+         ZZqcC7ycqWkc2G3mdxhnse18IfTP6tMtd85uDbaMD3F30iaGZJoaq8mgicB61XbdvW
+         /iZ2wYsyTq44s9m0r7WbIY8MGtzgDMpa5MWwEynw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, RD Babiera <rdbabiera@google.com>,
+        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
         Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 121/131] usb: typec: altmodes/displayport: Signal hpd low when exiting mode
-Date:   Mon, 16 Oct 2023 10:41:44 +0200
-Message-ID: <20231016084003.072906693@linuxfoundation.org>
+Subject: [PATCH 6.1 122/131] usb: typec: ucsi: Clear EVENT_PENDING bit if ucsi_send_command fails
+Date:   Mon, 16 Oct 2023 10:41:45 +0200
+Message-ID: <20231016084003.097214179@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
 References: <20231016084000.050926073@linuxfoundation.org>
@@ -53,41 +53,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-commit 89434b069e460967624903b049e5cf5c9e6b99b9 upstream.
+commit a00e197daec52bcd955e118f5f57d706da5bfe50 upstream.
 
-Upon receiving an ACK for a sent EXIT_MODE message, the DisplayPort
-driver currently resets the status and configuration of the port partner.
-The hpd signal is not updated despite being part of the status, so the
-Display stack can still transmit video despite typec_altmode_exit placing
-the lanes in a Safe State.
+Currently if ucsi_send_command() fails, then we bail out without
+clearing EVENT_PENDING flag. So when the next connector change
+event comes, ucsi_connector_change() won't queue the con->work,
+because of which none of the new events will be processed.
 
-Set hpd to low when a sent EXIT_MODE message is ACK'ed.
+Fix this by clearing EVENT_PENDING flag if ucsi_send_command()
+fails.
 
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
+Cc: stable@vger.kernel.org # 5.16
+Fixes: 512df95b9432 ("usb: typec: ucsi: Better fix for missing unplug events issue")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
 Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231009210057.3773877-2-rdbabiera@google.com
+Link: https://lore.kernel.org/r/1694423055-8440-1-git-send-email-quic_prashk@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/typec/ucsi/ucsi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -301,6 +301,11 @@ static int dp_altmode_vdm(struct typec_a
- 		case CMD_EXIT_MODE:
- 			dp->data.status = 0;
- 			dp->data.conf = 0;
-+			if (dp->hpd) {
-+				drm_connector_oob_hotplug_event(dp->connector_fwnode);
-+				dp->hpd = false;
-+				sysfs_notify(&dp->alt->dev.kobj, "displayport", "hpd");
-+			}
- 			break;
- 		case DP_CMD_STATUS_UPDATE:
- 			dp->data.status = *vdo;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -785,6 +785,7 @@ static void ucsi_handle_connector_change
+ 	if (ret < 0) {
+ 		dev_err(ucsi->dev, "%s: GET_CONNECTOR_STATUS failed (%d)\n",
+ 			__func__, ret);
++		clear_bit(EVENT_PENDING, &con->ucsi->flags);
+ 		goto out_unlock;
+ 	}
+ 
 
 
