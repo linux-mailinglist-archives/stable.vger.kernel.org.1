@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15FDA7CAC45
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:52:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24B047CAC1F
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:49:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231302AbjJPOwW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:52:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49652 "EHLO
+        id S232929AbjJPOtr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:49:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229848AbjJPOwW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:52:22 -0400
+        with ESMTP id S232202AbjJPOtq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:49:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AB04AB
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:52:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13D8C433C8;
-        Mon, 16 Oct 2023 14:52:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C102E1
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:49:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46461C433C8;
+        Mon, 16 Oct 2023 14:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697467940;
-        bh=q0VM/riT0s38dZGFBsSTNN6Xru6X+oiPOxiA2Nd7T3U=;
+        s=korg; t=1697467784;
+        bh=5TyEPIcUQ+iItZmLLsDe8SokU01PoIrFbr0UOQosYM4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k25zbEKJTQMJP9yzk0+02tw9HqtPp/WBM/kC40hdBCSkNpjBKi2q7xVH5c6fGOTUB
-         u6c4gc6MiuO8KYwqlYaONZVj3Z2G/w8iJWF3w7Rq2xBI9B4OF0g2cxdBEhzow6lRo3
-         ggXXiJCzwbFiApXcpUuMiy9Lu8UqmW0prkaXfoLs=
+        b=rmb4u4tTk+h2Ps36tjWyOLk61ZgLB86wIu6Y2ykYC9k2kiSuSQJ5FrH0oL9zmvcWu
+         5BiQjKqvMcmnKlZlM7THVUmkK2qyZ4tYkAK0hMz5HYsxEygEngNkWLuvzpzv3HV8EQ
+         EjcKq973omNAwXwjwvdo8CYye9x2qxt+PEULTFB4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Ralph Siemsen <ralph.siemsen@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 084/191] net: tcp: fix crashes trying to free half-baked MTU probes
-Date:   Mon, 16 Oct 2023 10:41:09 +0200
-Message-ID: <20231016084017.360802920@linuxfoundation.org>
+Subject: [PATCH 6.5 085/191] pinctrl: renesas: rzn1: Enable missing PINMUX
+Date:   Mon, 16 Oct 2023 10:41:10 +0200
+Message-ID: <20231016084017.383499735@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -54,35 +56,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ralph Siemsen <ralph.siemsen@linaro.org>
 
-[ Upstream commit 71c299c711d1f44f0bf04f1fea66baad565240f1 ]
+[ Upstream commit f055ff23c331f28aa4ace4b72dc56f63b9a726c8 ]
 
-tcp_stream_alloc_skb() initializes the skb to use tcp_tsorted_anchor
-which is a union with the destructor. We need to clean that
-TCP-iness up before freeing.
+Enable pin muxing (eg. programmable function), so that the RZ/N1 GPIO
+pins will be configured as specified by the pinmux in the DTS.
 
-Fixes: 736013292e3c ("tcp: let tcp_mtu_probe() build headless packets")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231010173651.3990234-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This used to be enabled implicitly via CONFIG_GENERIC_PINMUX_FUNCTIONS,
+however that was removed, since the RZ/N1 driver does not call any of
+the generic pinmux functions.
+
+Fixes: 1308fb4e4eae14e6 ("pinctrl: rzn1: Do not select GENERIC_PIN{CTRL_GROUPS,MUX_FUNCTIONS}")
+Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20231004200008.1306798-1-ralph.siemsen@linaro.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_output.c | 1 +
+ drivers/pinctrl/renesas/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 37fd9537423f1..a8f58f5e99a77 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2441,6 +2441,7 @@ static int tcp_mtu_probe(struct sock *sk)
+diff --git a/drivers/pinctrl/renesas/Kconfig b/drivers/pinctrl/renesas/Kconfig
+index 77730dc548ed3..c8d519ca53eb7 100644
+--- a/drivers/pinctrl/renesas/Kconfig
++++ b/drivers/pinctrl/renesas/Kconfig
+@@ -235,6 +235,7 @@ config PINCTRL_RZN1
+ 	depends on OF
+ 	depends on ARCH_RZN1 || COMPILE_TEST
+ 	select GENERIC_PINCONF
++	select PINMUX
+ 	help
+ 	  This selects pinctrl driver for Renesas RZ/N1 devices.
  
- 	/* build the payload, and be prepared to abort if this fails. */
- 	if (tcp_clone_payload(sk, nskb, probe_size)) {
-+		tcp_skb_tsorted_anchor_cleanup(nskb);
- 		consume_skb(nskb);
- 		return -1;
- 	}
 -- 
 2.40.1
 
