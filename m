@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E3C07CA251
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5993E7CA32B
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:02:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232778AbjJPIsv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:48:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41974 "EHLO
+        id S233256AbjJPJCF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:02:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232861AbjJPIsu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:48:50 -0400
+        with ESMTP id S233414AbjJPJBv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:01:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B59A5E3
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:48:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CE6C433C8;
-        Mon, 16 Oct 2023 08:48:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E3412D
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:01:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D12C433C7;
+        Mon, 16 Oct 2023 09:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446128;
-        bh=ltj4Bn4esdd/ob/xvoLMQJ52etyYY9LeeZbWRhK8fh8=;
+        s=korg; t=1697446897;
+        bh=QbdKdrSA1LmCLbCIlnXdTHK0KVfeSeuhyPE+5AuS7to=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=knjQSVCk64mzc0f8J8BcSJ4qPd2P5p/8koF+B03dpigHqMcdiXfvAblRqpyGXn6S+
-         4Bcnc9ZCiu2c/FiL6q/Xb/AOMEEEIjCy2rLufuJXK4c2TDZouo36vn5qxEqfNGRljg
-         5eCCxVFPPSD1nMYR037NeoxevujE4rC0uJlM4u/8=
+        b=qK2ZY8dY1hOTjP+TO4eUVjP1BmJu7zKkpzEKT6A+WCHwXVX0/CidowiBl1shkEN9n
+         cqt8ZYDPzCDg7H90wN0vAu4U1z94Yl0+OEAbKOrLaS91kPNw4XFu5UtbozfNHLv8yC
+         EILsddixpRysNkEj2xnvp4hwJiUERsIBdQh82A6c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Firo Yang <firo.yang@suse.com>,
-        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-        Tejun Heo <tj@kernel.org>
-Subject: [PATCH 5.15 074/102] cgroup: Remove duplicates in cgroup v1 tasks file
+        patches@lists.linux.dev, Simon Ser <contact@emersion.fr>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>, Lyude Paul <lyude@redhat.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Imre Deak <imre.deak@intel.com>
+Subject: [PATCH 6.1 090/131] drm/atomic-helper: relax unregistered connector check
 Date:   Mon, 16 Oct 2023 10:41:13 +0200
-Message-ID: <20231016083955.670797927@linuxfoundation.org>
+Message-ID: <20231016084002.295704670@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +53,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Koutný <mkoutny@suse.com>
+From: Simon Ser <contact@emersion.fr>
 
-commit 1ca0b605150501b7dc59f3016271da4eb3e96fce upstream.
+commit 2b7947bd32e243c52870d54141d3b4ea6775e63d upstream.
 
-One PID may appear multiple times in a preloaded pidlist.
-(Possibly due to PID recycling but we have reports of the same
-task_struct appearing with different PIDs, thus possibly involving
-transfer of PID via de_thread().)
+The driver might pull connectors which weren't submitted by
+user-space into the atomic state. For instance,
+intel_dp_mst_atomic_master_trans_check() pulls in connectors
+sharing the same DP-MST stream. However, if the connector is
+unregistered, this later fails with:
 
-Because v1 seq_file iterator uses PIDs as position, it leads to
-a message:
-> seq_file: buggy .next function kernfs_seq_next did not update position index
+    [  559.425658] i915 0000:00:02.0: [drm:drm_atomic_helper_check_modeset] [CONNECTOR:378:DP-7] is not registered
 
-Conservative and quick fix consists of removing duplicates from `tasks`
-file (as opposed to removing pidlists altogether). It doesn't affect
-correctness (it's sufficient to show a PID once), performance impact
-would be hidden by unconditional sorting of the pidlist already in place
-(asymptotically).
+Skip the unregistered connector check to allow user-space to turn
+off connectors one-by-one.
 
-Link: https://lore.kernel.org/r/20230823174804.23632-1-mkoutny@suse.com/
-Suggested-by: Firo Yang <firo.yang@suse.com>
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+See this wlroots issue:
+https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/3407
+
+Previous discussion:
+https://lore.kernel.org/intel-gfx/Y6GX7z17WmDSKwta@ideak-desk.fi.intel.com/
+
+Signed-off-by: Simon Ser <contact@emersion.fr>
 Cc: stable@vger.kernel.org
+Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231005131623.114379-1-contact@emersion.fr
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup-v1.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_atomic_helper.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
---- a/kernel/cgroup/cgroup-v1.c
-+++ b/kernel/cgroup/cgroup-v1.c
-@@ -365,10 +365,9 @@ static int pidlist_array_load(struct cgr
- 	}
- 	css_task_iter_end(&it);
- 	length = n;
--	/* now sort & (if procs) strip out duplicates */
-+	/* now sort & strip out duplicates (tgids or recycled thread PIDs) */
- 	sort(array, length, sizeof(pid_t), cmppid, NULL);
--	if (type == CGROUP_FILE_PROCS)
--		length = pidlist_uniq(array, length);
-+	length = pidlist_uniq(array, length);
+--- a/drivers/gpu/drm/drm_atomic_helper.c
++++ b/drivers/gpu/drm/drm_atomic_helper.c
+@@ -290,7 +290,8 @@ static int
+ update_connector_routing(struct drm_atomic_state *state,
+ 			 struct drm_connector *connector,
+ 			 struct drm_connector_state *old_connector_state,
+-			 struct drm_connector_state *new_connector_state)
++			 struct drm_connector_state *new_connector_state,
++			 bool added_by_user)
+ {
+ 	const struct drm_connector_helper_funcs *funcs;
+ 	struct drm_encoder *new_encoder;
+@@ -339,9 +340,13 @@ update_connector_routing(struct drm_atom
+ 	 * there's a chance the connector may have been destroyed during the
+ 	 * process, but it's better to ignore that then cause
+ 	 * drm_atomic_helper_resume() to fail.
++	 *
++	 * Last, we want to ignore connector registration when the connector
++	 * was not pulled in the atomic state by user-space (ie, was pulled
++	 * in by the driver, e.g. when updating a DP-MST stream).
+ 	 */
+ 	if (!state->duplicated && drm_connector_is_unregistered(connector) &&
+-	    crtc_state->active) {
++	    added_by_user && crtc_state->active) {
+ 		drm_dbg_atomic(connector->dev,
+ 			       "[CONNECTOR:%d:%s] is not registered\n",
+ 			       connector->base.id, connector->name);
+@@ -620,7 +625,10 @@ drm_atomic_helper_check_modeset(struct d
+ 	struct drm_connector *connector;
+ 	struct drm_connector_state *old_connector_state, *new_connector_state;
+ 	int i, ret;
+-	unsigned int connectors_mask = 0;
++	unsigned int connectors_mask = 0, user_connectors_mask = 0;
++
++	for_each_oldnew_connector_in_state(state, connector, old_connector_state, new_connector_state, i)
++		user_connectors_mask |= BIT(i);
  
- 	l = cgroup_pidlist_find_create(cgrp, type);
- 	if (!l) {
+ 	for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
+ 		bool has_connectors =
+@@ -685,7 +693,8 @@ drm_atomic_helper_check_modeset(struct d
+ 		 */
+ 		ret = update_connector_routing(state, connector,
+ 					       old_connector_state,
+-					       new_connector_state);
++					       new_connector_state,
++					       BIT(i) & user_connectors_mask);
+ 		if (ret)
+ 			return ret;
+ 		if (old_connector_state->crtc) {
 
 
