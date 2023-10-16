@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D6037CAC2E
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DED087CAC3C
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 16:51:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229459AbjJPOut (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 10:50:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44442 "EHLO
+        id S232135AbjJPOvi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 10:51:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233095AbjJPOus (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:50:48 -0400
+        with ESMTP id S233669AbjJPOvg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 10:51:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C17095
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:50:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB662C433C8;
-        Mon, 16 Oct 2023 14:50:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D8B4F7
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 07:51:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD20C433C8;
+        Mon, 16 Oct 2023 14:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697467846;
-        bh=k9SMxqJPvzKSpmzpXvVLrqDoAu+f+jYjoT9FPPeTzAE=;
+        s=korg; t=1697467893;
+        bh=koJMdPqJwytjhgUurmOgV2SJHSKa7PX4/C8Fe48hFiU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KBN1+WbUBgQRVhe8LHCFbONsBRuqmxpC3UJ7IwO/kfvsOPYqpIfE416ExGZwXhpzg
-         nGLVb9XBaliTNHh/Hf49+MorcRodU1Wq7pCCIYxhK436TXeD9GA8HeM+ZQoIq6ttv7
-         +ady0YYO8+Iye+5vCFWucCHAkxwtZ2wIpx0My2IU=
+        b=WPT2eyETK/lIrnLATPa+YVouKBBvVZjb8IlFkbqLQiaTzSGOnkep5gzVfdFfzcaX5
+         wuai6qJyba1//EofjXiMQi+jwiqbzJ0Ulby3PXAn0zk3i3PZt3ZS/0htK2JeEUkB+z
+         Nuw0EE0+mOv54/OvQB/XH9CM1qCDqL+z0r2xAsFY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergei Trofimovich <slyich@gmail.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
+        Simon Horman <horms@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 086/191] af_packet: Fix fortified memcpy() without flex array.
-Date:   Mon, 16 Oct 2023 10:41:11 +0200
-Message-ID: <20231016084017.406411246@linuxfoundation.org>
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Subject: [PATCH 6.5 087/191] nfc: nci: assert requested protocol is valid
+Date:   Mon, 16 Oct 2023 10:41:12 +0200
+Message-ID: <20231016084017.428141759@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
 References: <20231016084015.400031271@linuxfoundation.org>
@@ -55,74 +56,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jeremy Cline <jeremy@jcline.org>
 
-[ Upstream commit e2bca4870fdaf855651ee80b083d892599c5d982 ]
+[ Upstream commit 354a6e707e29cb0c007176ee5b8db8be7bd2dee0 ]
 
-Sergei Trofimovich reported a regression [0] caused by commit a0ade8404c3b
-("af_packet: Fix warning of fortified memcpy() in packet_getname().").
+The protocol is used in a bit mask to determine if the protocol is
+supported. Assert the provided protocol is less than the maximum
+defined so it doesn't potentially perform a shift-out-of-bounds and
+provide a clearer error for undefined protocols vs unsupported ones.
 
-It introduced a flex array sll_addr_flex in struct sockaddr_ll as a
-union-ed member with sll_addr to work around the fortified memcpy() check.
-
-However, a userspace program uses a struct that has struct sockaddr_ll in
-the middle, where a flex array is illegal to exist.
-
-  include/linux/if_packet.h:24:17: error: flexible array member 'sockaddr_ll::<unnamed union>::<unnamed struct>::sll_addr_flex' not at end of 'struct packet_info_t'
-     24 |                 __DECLARE_FLEX_ARRAY(unsigned char, sll_addr_flex);
-        |                 ^~~~~~~~~~~~~~~~~~~~
-
-To fix the regression, let's go back to the first attempt [1] telling
-memcpy() the actual size of the array.
-
-Reported-by: Sergei Trofimovich <slyich@gmail.com>
-Closes: https://github.com/NixOS/nixpkgs/pull/252587#issuecomment-1741733002 [0]
-Link: https://lore.kernel.org/netdev/20230720004410.87588-3-kuniyu@amazon.com/ [1]
-Fixes: a0ade8404c3b ("af_packet: Fix warning of fortified memcpy() in packet_getname().")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20231009153151.75688-1-kuniyu@amazon.com
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0839b78e119aae1fec78
+Signed-off-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231009200054.82557-1-jeremy@jcline.org
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/if_packet.h | 6 +-----
- net/packet/af_packet.c         | 7 ++++++-
- 2 files changed, 7 insertions(+), 6 deletions(-)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/uapi/linux/if_packet.h b/include/uapi/linux/if_packet.h
-index 4d0ad22f83b56..9efc42382fdb9 100644
---- a/include/uapi/linux/if_packet.h
-+++ b/include/uapi/linux/if_packet.h
-@@ -18,11 +18,7 @@ struct sockaddr_ll {
- 	unsigned short	sll_hatype;
- 	unsigned char	sll_pkttype;
- 	unsigned char	sll_halen;
--	union {
--		unsigned char	sll_addr[8];
--		/* Actual length is in sll_halen. */
--		__DECLARE_FLEX_ARRAY(unsigned char, sll_addr_flex);
--	};
-+	unsigned char	sll_addr[8];
- };
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index fff755dde30d6..6c9592d051206 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -909,6 +909,11 @@ static int nci_activate_target(struct nfc_dev *nfc_dev,
+ 		return -EINVAL;
+ 	}
  
- /* Packet types */
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index a2935bd18ed98..a39b2a0dd5425 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -3605,7 +3605,12 @@ static int packet_getname(struct socket *sock, struct sockaddr *uaddr,
- 	if (dev) {
- 		sll->sll_hatype = dev->type;
- 		sll->sll_halen = dev->addr_len;
--		memcpy(sll->sll_addr_flex, dev->dev_addr, dev->addr_len);
++	if (protocol >= NFC_PROTO_MAX) {
++		pr_err("the requested nfc protocol is invalid\n");
++		return -EINVAL;
++	}
 +
-+		/* Let __fortify_memcpy_chk() know the actual buffer size. */
-+		memcpy(((struct sockaddr_storage *)sll)->__data +
-+		       offsetof(struct sockaddr_ll, sll_addr) -
-+		       offsetofend(struct sockaddr_ll, sll_family),
-+		       dev->dev_addr, dev->addr_len);
- 	} else {
- 		sll->sll_hatype = 0;	/* Bad: we have no ARPHRD_UNSPEC */
- 		sll->sll_halen = 0;
+ 	if (!(nci_target->supported_protocols & (1 << protocol))) {
+ 		pr_err("target does not support the requested protocol 0x%x\n",
+ 		       protocol);
 -- 
 2.40.1
 
