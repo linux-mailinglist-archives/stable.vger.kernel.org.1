@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E43B57CA383
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:07:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 398C97CA1F7
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:43:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233310AbjJPJHS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:07:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52270 "EHLO
+        id S232026AbjJPIny (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:43:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233252AbjJPJHR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:07:17 -0400
+        with ESMTP id S232527AbjJPInv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:43:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0647CE8
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:07:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC83C433C7;
-        Mon, 16 Oct 2023 09:07:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A19A7ED
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:43:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EC3C433C7;
+        Mon, 16 Oct 2023 08:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447235;
-        bh=P0FWg8A+To99wqREMN4xG1K51nR52MNIHUH4IWL/GLg=;
+        s=korg; t=1697445829;
+        bh=Ec32+jUwwAxt+/Alr0B7JWyE34e+P2EQ41tDOZ1d5eo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PSlC/Mu/GP1HRJacHso0OpRkg6wuOtqC0lUyvs1CzJnAU/2Lrwq/eJWyKtaeOB2N9
-         LSxCIuqk+273Oq7kGNDzy9NbJLpwgiabwExX5TscDWIPxdrYM8HnKa4cZDpZIQSG3Q
-         KKTvgv276kCz1Vui7C67/wJ6JxHgf9nggu6HureI=
+        b=WE89DRUCZf4gz5l03f6Ohca0S/V5EMJPLVJkyPEOFwVbzd+GseQhrOC4SC+TxGNn1
+         cqEFkCqRcht/lx/JWDYFOk/VsjQv95XA6l6U/nEuYkZOizBddqf5VVTlemVmI5ejD0
+         0KiGs77/wnnCCCqn3LfBZWkigRp06Y8kEdFF67gM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ondrej Zary <linux@zary.sk>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.5 015/191] ata: pata_parport: implement set_devctl
-Date:   Mon, 16 Oct 2023 10:40:00 +0200
-Message-ID: <20231016084015.758562187@linuxfoundation.org>
+        patches@lists.linux.dev, Hannes Reinecke <hare@suse.com>,
+        Ming Lei <ming.lei@redhat.com>, Christoph Hellwig <hch@lst.de>,
+        Benjamin Block <bblock@linux.ibm.com>,
+        Bean Huo <beanhuo@micron.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 002/102] scsi: core: Use a structure member to track the SCSI command submitter
+Date:   Mon, 16 Oct 2023 10:40:01 +0200
+Message-ID: <20231016083953.755131616@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
-References: <20231016084015.400031271@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +54,176 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Zary <linux@zary.sk>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit d2302427c12277929c9f390adeda19fbf403c0bb upstream.
+[ Upstream commit bf23e619039d360d503b7282d030daf2277a5d47 ]
 
-Add missing ops->sff_set_devctl implementation.
+Conditional statements are faster than indirect calls. Use a structure
+member to track the SCSI command submitter such that later patches can call
+scsi_done(scmd) instead of scmd->scsi_done(scmd).
 
-Fixes: 246a1c4c6b7f ("ata: pata_parport: add driver (PARIDE replacement)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ondrej Zary <linux@zary.sk>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The asymmetric behavior that scsi_send_eh_cmnd() sets the submission
+context to the SCSI error handler and that it does not restore the
+submission context to the SCSI core is retained.
+
+Link: https://lore.kernel.org/r/20211007202923.2174984-2-bvanassche@acm.org
+Cc: Hannes Reinecke <hare@suse.com>
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
+Reviewed-by: Bean Huo <beanhuo@micron.com>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: e193b7955dfa ("RDMA/srp: Do not call scsi_done() from srp_abort()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_parport/pata_parport.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/scsi/scsi_error.c | 17 ++++++-----------
+ drivers/scsi/scsi_lib.c   | 10 ++++++++++
+ drivers/scsi/scsi_priv.h  |  1 +
+ include/scsi/scsi_cmnd.h  |  7 +++++++
+ 4 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/ata/pata_parport/pata_parport.c b/drivers/ata/pata_parport/pata_parport.c
-index 258d189f42e5..cf87bbb52f1f 100644
---- a/drivers/ata/pata_parport/pata_parport.c
-+++ b/drivers/ata/pata_parport/pata_parport.c
-@@ -51,6 +51,13 @@ static void pata_parport_dev_select(struct ata_port *ap, unsigned int device)
- 	ata_sff_pause(ap);
- }
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index dd9f5778f687d..18b99240a9062 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -50,8 +50,6 @@
  
-+static void pata_parport_set_devctl(struct ata_port *ap, u8 ctl)
-+{
-+	struct pi_adapter *pi = ap->host->private_data;
-+
-+	pi->proto->write_regr(pi, 1, 6, ctl);
-+}
-+
- static bool pata_parport_devchk(struct ata_port *ap, unsigned int device)
+ #include <asm/unaligned.h>
+ 
+-static void scsi_eh_done(struct scsi_cmnd *scmd);
+-
+ /*
+  * These should *probably* be handled by the host itself.
+  * Since it is allowed to sleep, it probably should.
+@@ -542,7 +540,8 @@ enum scsi_disposition scsi_check_sense(struct scsi_cmnd *scmd)
+ 		/* handler does not care. Drop down to default handling */
+ 	}
+ 
+-	if (scmd->cmnd[0] == TEST_UNIT_READY && scmd->scsi_done != scsi_eh_done)
++	if (scmd->cmnd[0] == TEST_UNIT_READY &&
++	    scmd->submitter != SUBMITTED_BY_SCSI_ERROR_HANDLER)
+ 		/*
+ 		 * nasty: for mid-layer issued TURs, we need to return the
+ 		 * actual sense data without any recovery attempt.  For eh
+@@ -804,7 +803,7 @@ static enum scsi_disposition scsi_eh_completed_normally(struct scsi_cmnd *scmd)
+  * scsi_eh_done - Completion function for error handling.
+  * @scmd:	Cmd that is done.
+  */
+-static void scsi_eh_done(struct scsi_cmnd *scmd)
++void scsi_eh_done(struct scsi_cmnd *scmd)
  {
- 	struct pi_adapter *pi = ap->host->private_data;
-@@ -252,6 +259,7 @@ static struct ata_port_operations pata_parport_port_ops = {
- 	.hardreset		= NULL,
+ 	struct completion *eh_action;
  
- 	.sff_dev_select		= pata_parport_dev_select,
-+	.sff_set_devctl		= pata_parport_set_devctl,
- 	.sff_check_status	= pata_parport_check_status,
- 	.sff_check_altstatus	= pata_parport_check_altstatus,
- 	.sff_tf_load		= pata_parport_tf_load,
+@@ -1104,7 +1103,7 @@ static enum scsi_disposition scsi_send_eh_cmnd(struct scsi_cmnd *scmd,
+ 	shost->eh_action = &done;
+ 
+ 	scsi_log_send(scmd);
+-	scmd->scsi_done = scsi_eh_done;
++	scmd->submitter = SUBMITTED_BY_SCSI_ERROR_HANDLER;
+ 
+ 	/*
+ 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
+@@ -1131,6 +1130,7 @@ static enum scsi_disposition scsi_send_eh_cmnd(struct scsi_cmnd *scmd,
+ 	if (rtn) {
+ 		if (timeleft > stall_for) {
+ 			scsi_eh_restore_cmnd(scmd, &ses);
++
+ 			timeleft -= stall_for;
+ 			msleep(jiffies_to_msecs(stall_for));
+ 			goto retry;
+@@ -2360,11 +2360,6 @@ void scsi_report_device_reset(struct Scsi_Host *shost, int channel, int target)
+ }
+ EXPORT_SYMBOL(scsi_report_device_reset);
+ 
+-static void
+-scsi_reset_provider_done_command(struct scsi_cmnd *scmd)
+-{
+-}
+-
+ /**
+  * scsi_ioctl_reset: explicitly reset a host/bus/target/device
+  * @dev:	scsi_device to operate on
+@@ -2401,7 +2396,7 @@ scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
+ 	scsi_init_command(dev, scmd);
+ 	scmd->cmnd = scsi_req(rq)->cmd;
+ 
+-	scmd->scsi_done		= scsi_reset_provider_done_command;
++	scmd->submitter = SUBMITTED_BY_SCSI_RESET_IOCTL;
+ 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
+ 
+ 	scmd->cmd_len			= 0;
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 5525e6ffee537..7bdaa6b757cd4 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -1578,6 +1578,15 @@ static blk_status_t scsi_prepare_cmd(struct request *req)
+ 
+ static void scsi_mq_done(struct scsi_cmnd *cmd)
+ {
++	switch (cmd->submitter) {
++	case SUBMITTED_BY_BLOCK_LAYER:
++		break;
++	case SUBMITTED_BY_SCSI_ERROR_HANDLER:
++		return scsi_eh_done(cmd);
++	case SUBMITTED_BY_SCSI_RESET_IOCTL:
++		return;
++	}
++
+ 	if (unlikely(blk_should_fake_timeout(scsi_cmd_to_rq(cmd)->q)))
+ 		return;
+ 	if (unlikely(test_and_set_bit(SCMD_STATE_COMPLETE, &cmd->state)))
+@@ -1684,6 +1693,7 @@ static blk_status_t scsi_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 
+ 	scsi_set_resid(cmd, 0);
+ 	memset(cmd->sense_buffer, 0, SCSI_SENSE_BUFFERSIZE);
++	cmd->submitter = SUBMITTED_BY_BLOCK_LAYER;
+ 	cmd->scsi_done = scsi_mq_done;
+ 
+ 	blk_mq_start_request(req);
+diff --git a/drivers/scsi/scsi_priv.h b/drivers/scsi/scsi_priv.h
+index 6d9152031a403..b7f9631493522 100644
+--- a/drivers/scsi/scsi_priv.h
++++ b/drivers/scsi/scsi_priv.h
+@@ -84,6 +84,7 @@ void scsi_eh_ready_devs(struct Scsi_Host *shost,
+ int scsi_eh_get_sense(struct list_head *work_q,
+ 		      struct list_head *done_q);
+ int scsi_noretry_cmd(struct scsi_cmnd *scmd);
++void scsi_eh_done(struct scsi_cmnd *scmd);
+ 
+ /* scsi_lib.c */
+ extern int scsi_maybe_unblock_host(struct scsi_device *sdev);
+diff --git a/include/scsi/scsi_cmnd.h b/include/scsi/scsi_cmnd.h
+index 685249233f2fe..0823bad7b0c90 100644
+--- a/include/scsi/scsi_cmnd.h
++++ b/include/scsi/scsi_cmnd.h
+@@ -65,6 +65,12 @@ struct scsi_pointer {
+ #define SCMD_STATE_COMPLETE	0
+ #define SCMD_STATE_INFLIGHT	1
+ 
++enum scsi_cmnd_submitter {
++	SUBMITTED_BY_BLOCK_LAYER = 0,
++	SUBMITTED_BY_SCSI_ERROR_HANDLER = 1,
++	SUBMITTED_BY_SCSI_RESET_IOCTL = 2,
++} __packed;
++
+ struct scsi_cmnd {
+ 	struct scsi_request req;
+ 	struct scsi_device *device;
+@@ -90,6 +96,7 @@ struct scsi_cmnd {
+ 	unsigned char prot_op;
+ 	unsigned char prot_type;
+ 	unsigned char prot_flags;
++	enum scsi_cmnd_submitter submitter;
+ 
+ 	unsigned short cmd_len;
+ 	enum dma_data_direction sc_data_direction;
 -- 
-2.42.0
+2.40.1
 
 
 
