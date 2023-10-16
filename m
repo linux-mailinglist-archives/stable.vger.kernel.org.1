@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82BE37CA352
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:04:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B12F47CA374
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233209AbjJPJEY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:04:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41614 "EHLO
+        id S230056AbjJPJGM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:06:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233291AbjJPJEW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:04:22 -0400
+        with ESMTP id S232745AbjJPJGC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:06:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DAE5E8
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:04:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E599C433CA;
-        Mon, 16 Oct 2023 09:04:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56406AD
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:06:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943DEC433C7;
+        Mon, 16 Oct 2023 09:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447060;
-        bh=C4fWrygokFTgACE3bkVZ+so8ShlcpIhlpPFjJlmvx1o=;
+        s=korg; t=1697447161;
+        bh=5z/n5An2VhHKcKevhD0VjJftjH+MD6eR1M9/51F7cGM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gBSzy6h4967p0dK5L37nGzEVSrcBM0/rNu0p6l22FDmxbDiBeUCTWz10gHUdwLEga
-         3zJKDSzpB4vgMBt1WCrkrRosR2ea6cZ7womiXRA1FgwOhDfswP15ScANT0L/Uyv4AT
-         V9PdS8d/VECxHPVd1+vCBfUw6FJwVz+jPum/Xppo=
+        b=g9TTYFlyjguoo5HvGrZ2HrvA1K3zPqzG8JvAm1hSKhcyqY0fY49r7gWEInQ9cUU6J
+         ROhuzbHV9cGNK8dG0uBfoRiYwFu552k3/y5Xq8BfPfJpfup05HHadwrWP9FefNMrwn
+         8iPfVieurOJNtSaeCVqz4QpkYbqmYKTmj8YNwvoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peter Wang <peter.wang@mediatek.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 118/131] scsi: ufs: core: Correct clear TM error log
-Date:   Mon, 16 Oct 2023 10:41:41 +0200
-Message-ID: <20231016084002.998556905@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+        William Breathitt Gray <william.gray@linaro.org>
+Subject: [PATCH 6.1 119/131] counter: chrdev: fix getting array extensions
+Date:   Mon, 16 Oct 2023 10:41:42 +0200
+Message-ID: <20231016084003.024645449@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
 References: <20231016084000.050926073@linuxfoundation.org>
@@ -55,33 +54,55 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-commit a20c4350c6a12405b7f732b3ee6801ffe2cc45ce upstream.
+commit 3170256d7bc1ef81587caf4b83573eb1f5bb4fb6 upstream.
 
-The clear TM function error log status was inverted.
+When trying to watch a component array extension, and the array isn't the
+first extended element, it fails as the type comparison is always done on
+the 1st element. Fix it by indexing the 'ext' array.
 
-Fixes: 4693fad7d6d4 ("scsi: ufs: core: Log error handler activity")
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20231003022002.25578-1-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Stanley Chu <stanley.chu@mediatek.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Example on a dummy struct counter_comp:
+static struct counter_comp dummy[] = {
+	COUNTER_COMP_DIRECTION(..),
+	...,
+	COUNTER_COMP_ARRAY_CAPTURE(...),
+};
+static struct counter_count dummy_cnt = {
+	...
+	.ext = dummy,
+	.num_ext = ARRAY_SIZE(dummy),
+}
+
+Currently, counter_get_ext() returns -EINVAL when trying to add a watch
+event on one of the capture array element in such example.
+
+Fixes: d2011be1e22f ("counter: Introduce the COUNTER_COMP_ARRAY component type")
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20230829134029.2402868-2-fabrice.gasnier@foss.st.com
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/counter/counter-chrdev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6749,7 +6749,7 @@ static int ufshcd_clear_tm_cmd(struct uf
- 			mask, 0, 1000, 1000);
+diff --git a/drivers/counter/counter-chrdev.c b/drivers/counter/counter-chrdev.c
+index 80acdf62794a..afc94d0062b1 100644
+--- a/drivers/counter/counter-chrdev.c
++++ b/drivers/counter/counter-chrdev.c
+@@ -247,8 +247,8 @@ static int counter_get_ext(const struct counter_comp *const ext,
+ 		if (*id == component_id)
+ 			return 0;
  
- 	dev_err(hba->dev, "Clearing task management function with tag %d %s\n",
--		tag, err ? "succeeded" : "failed");
-+		tag, err < 0 ? "failed" : "succeeded");
+-		if (ext->type == COUNTER_COMP_ARRAY) {
+-			element = ext->priv;
++		if (ext[*ext_idx].type == COUNTER_COMP_ARRAY) {
++			element = ext[*ext_idx].priv;
  
- out:
- 	return err;
+ 			if (component_id - *id < element->length)
+ 				return 0;
+-- 
+2.42.0
+
 
 
