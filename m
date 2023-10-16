@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEF0C7CA38B
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FCE77CA31F
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:01:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230455AbjJPJHy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:07:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46376 "EHLO
+        id S233407AbjJPJBZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232734AbjJPIqS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:46:18 -0400
+        with ESMTP id S233232AbjJPJBD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:01:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F326F9
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:46:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B03C433C9;
-        Mon, 16 Oct 2023 08:46:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB04DFD
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:00:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D6AC433C9;
+        Mon, 16 Oct 2023 09:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445973;
-        bh=2FV6gitFNP99iKQNjWHOGvGJOHNX5d/GeR/ZaN80H5s=;
+        s=korg; t=1697446857;
+        bh=3+tcf1VHEyV9h75f4EkPAI97MVylMXczmHbSdbW4ahk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Clg2qXRW1HXoiRkQBzpjJl2FQEHyhzNmX+P8IqvjUmzURONCQXHYvc9pPoShEKAcl
-         DbGi286eSIPKPcEkPp7F9GnFQoO94y3JjEczV/9P+W4Vb2wfE8+nTKP7tWvvJ4i0JT
-         YFCgTA0Z9RYb9iOukt4jaV9FwPLcLzHZ3yHD5K+E=
+        b=MvWVJ2/7SEXsURyVM+uYF5302/hefPzM/JV5Qr6t5nY3a3NBCqO8f744ZIwg29hKF
+         oT040v6ezgvozbDXEKaBw2dTfsB/W8bwHanpySPBK0HiCm4dzPq1fN/Wce31BNIGSY
+         CRB40Ko7B5k/hsf6jNYNxfa2qsNpJgwliX7URci8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Hongyu Xie <xiehongyu1@kylinos.cn>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
-        Prashanth K <quic_prashk@quicinc.com>
-Subject: [PATCH 5.15 048/102] xhci: Keep interrupt disabled in initialization until host is running.
-Date:   Mon, 16 Oct 2023 10:40:47 +0200
-Message-ID: <20231016083954.978292229@linuxfoundation.org>
+        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 065/131] nfc: nci: assert requested protocol is valid
+Date:   Mon, 16 Oct 2023 10:40:48 +0200
+Message-ID: <20231016084001.681074298@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,95 +52,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongyu Xie <xy521521@gmail.com>
+From: Jeremy Cline <jeremy@jcline.org>
 
-commit a808925075fb750804a60ff0710614466c396db4 upstream.
+[ Upstream commit 354a6e707e29cb0c007176ee5b8db8be7bd2dee0 ]
 
-irq is disabled in xhci_quiesce(called by xhci_halt, with bit:2 cleared
-in USBCMD register), but xhci_run(called by usb_add_hcd) re-enable it.
-It's possible that you will receive thousands of interrupt requests
-after initialization for 2.0 roothub. And you will get a lot of
-warning like, "xHCI dying, ignoring interrupt. Shouldn't IRQs be
-disabled?". This amount of interrupt requests will cause the entire
-system to freeze.
-This problem was first found on a device with ASM2142 host controller
-on it.
+The protocol is used in a bit mask to determine if the protocol is
+supported. Assert the provided protocol is less than the maximum
+defined so it doesn't potentially perform a shift-out-of-bounds and
+provide a clearer error for undefined protocols vs unsupported ones.
 
-[tidy up old code while moving it, reword header -Mathias]
-
-Cc: stable@kernel.org
-Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20220623111945.1557702-2-mathias.nyman@linux.intel.com
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0839b78e119aae1fec78
+Signed-off-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231009200054.82557-1-jeremy@jcline.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c |   35 ++++++++++++++++++++++-------------
- 1 file changed, 22 insertions(+), 13 deletions(-)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -611,8 +611,27 @@ static int xhci_init(struct usb_hcd *hcd
- 
- static int xhci_run_finished(struct xhci_hcd *xhci)
- {
-+	unsigned long	flags;
-+	u32		temp;
-+
-+	/*
-+	 * Enable interrupts before starting the host (xhci 4.2 and 5.5.2).
-+	 * Protect the short window before host is running with a lock
-+	 */
-+	spin_lock_irqsave(&xhci->lock, flags);
-+
-+	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Enable interrupts");
-+	temp = readl(&xhci->op_regs->command);
-+	temp |= (CMD_EIE);
-+	writel(temp, &xhci->op_regs->command);
-+
-+	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Enable primary interrupter");
-+	temp = readl(&xhci->ir_set->irq_pending);
-+	writel(ER_IRQ_ENABLE(temp), &xhci->ir_set->irq_pending);
-+
- 	if (xhci_start(xhci)) {
- 		xhci_halt(xhci);
-+		spin_unlock_irqrestore(&xhci->lock, flags);
- 		return -ENODEV;
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 4ffdf2f45c444..7535afd1537e9 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -908,6 +908,11 @@ static int nci_activate_target(struct nfc_dev *nfc_dev,
+ 		return -EINVAL;
  	}
- 	xhci->shared_hcd->state = HC_STATE_RUNNING;
-@@ -623,6 +642,9 @@ static int xhci_run_finished(struct xhci
  
- 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
- 			"Finished xhci_run for USB3 roothub");
++	if (protocol >= NFC_PROTO_MAX) {
++		pr_err("the requested nfc protocol is invalid\n");
++		return -EINVAL;
++	}
 +
-+	spin_unlock_irqrestore(&xhci->lock, flags);
-+
- 	return 0;
- }
- 
-@@ -671,19 +693,6 @@ int xhci_run(struct usb_hcd *hcd)
- 	temp |= (xhci->imod_interval / 250) & ER_IRQ_INTERVAL_MASK;
- 	writel(temp, &xhci->ir_set->irq_control);
- 
--	/* Set the HCD state before we enable the irqs */
--	temp = readl(&xhci->op_regs->command);
--	temp |= (CMD_EIE);
--	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
--			"// Enable interrupts, cmd = 0x%x.", temp);
--	writel(temp, &xhci->op_regs->command);
--
--	temp = readl(&xhci->ir_set->irq_pending);
--	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
--			"// Enabling event ring interrupter %p by writing 0x%x to irq_pending",
--			xhci->ir_set, (unsigned int) ER_IRQ_ENABLE(temp));
--	writel(ER_IRQ_ENABLE(temp), &xhci->ir_set->irq_pending);
--
- 	if (xhci->quirks & XHCI_NEC_HOST) {
- 		struct xhci_command *command;
- 
+ 	if (!(nci_target->supported_protocols & (1 << protocol))) {
+ 		pr_err("target does not support the requested protocol 0x%x\n",
+ 		       protocol);
+-- 
+2.40.1
+
 
 
