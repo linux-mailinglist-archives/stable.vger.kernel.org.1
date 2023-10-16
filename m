@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 613F17CA35A
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0717CA28D
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233263AbjJPJEv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:04:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54740 "EHLO
+        id S232929AbjJPIvW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:51:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233276AbjJPJEu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:04:50 -0400
+        with ESMTP id S229848AbjJPIvV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:51:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADD01B4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:04:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C59F9C433C8;
-        Mon, 16 Oct 2023 09:04:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB02B4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:51:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AD6C433C9;
+        Mon, 16 Oct 2023 08:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447087;
-        bh=u4jGVE1+/OcE0Wv+SxcDJtd5eGKq+kc2bIxZI7cwP+4=;
+        s=korg; t=1697446278;
+        bh=ausUvg5r0XEZz7yqKG9aTK5gXv8Nhhsr0XESIRfohA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vqGWPASqPxBDC8NCJzEsw6fGswU+EYmTc7NaKMcGpd20xQKUqvj1Qs/daGKcN+HnJ
-         AL7pli9e4J3cGCajODLC43oV+1UfCj/20oPNYJ0Aaa2kGxq6JcT+u5/4ZLthT7l6Jv
-         4S36V1KnPkQ/xmuLtaDTJn7BzsVRRc9NwjVtxg/E=
+        b=vsrPPPNPU+01O9M9qepZ6uDzC/R8wWKhrfA7joNVRW/QyiBO6O6JvVpSVKD8aHiAW
+         LIlxobzF6OvPGjJmHKLp3Xp+iof76jCbi8or+peK9M230/Bya7sv6KuC4b2CzZZuTv
+         dnMH1xANj+nuP6bpjZjdY9+S0Rc8nVQMmPT/SZyA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
-        Konrad J Hambrick <kjhambrick@gmail.com>,
-        Calvin Walton <calvin.walton@kepstin.ca>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.1 099/131] thunderbolt: Workaround an IOMMU fault on certain systems with Intel Maple Ridge
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 083/102] powerpc/8xx: Fix pte_access_permitted() for PAGE_NONE
 Date:   Mon, 16 Oct 2023 10:41:22 +0200
-Message-ID: <20231016084002.525035640@linuxfoundation.org>
+Message-ID: <20231016083955.907088323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,232 +51,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 582620d9f6b352552bc9a3316fe2b1c3acd8742d upstream.
+[ Upstream commit 5d9cea8a552ee122e21fbd5a3c5d4eb85f648e06 ]
 
-On some systems the IOMMU blocks the first couple of driver ready
-messages to the connection manager firmware as can be seen in below
-excerpts:
+On 8xx, PAGE_NONE is handled by setting _PAGE_NA instead of clearing
+_PAGE_USER.
 
-  thunderbolt 0000:06:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0010 address=0xbb0e3400 flags=0x0020]
+But then pte_user() returns 1 also for PAGE_NONE.
 
-or
+As _PAGE_NA prevent reads, add a specific version of pte_read()
+that returns 0 when _PAGE_NA is set instead of always returning 1.
 
-  DMAR: DRHD: handling fault status reg 2
-  DMAR: [DMA Write] Request device [04:00.0] PASID ffffffff fault addr 69974000 [fault reason 05] PTE Write access is not set
-
-The reason is unknown and hard to debug because we were not able to
-reproduce this locally. This only happens on certain systems with Intel
-Maple Ridge Thunderbolt controller. If there is a device connected when
-the driver is loaded the issue does not happen either. Only when there
-is nothing connected (so typically when the system is booted up).
-
-We can work this around by sending the driver ready several times. After
-a couple of retries the message goes through and the controller works
-just fine. For this reason make the number of retries a parameter for
-icm_request() and then for Maple Ridge (and Titan Ridge as they us the
-same function but this should not matter) increase number of retries
-while shortening the timeout accordingly.
-
-Reported-by: Werner Sembach <wse@tuxedocomputers.com>
-Reported-by: Konrad J Hambrick <kjhambrick@gmail.com>
-Reported-by: Calvin Walton <calvin.walton@kepstin.ca>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=214259
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 351750331fc1 ("powerpc/mm: Introduce _PAGE_NA")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/57bcfbe578e43123f9ed73e040229b80f1ad56ec.1695659959.git.christophe.leroy@csgroup.eu
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/icm.c |   40 ++++++++++++++++++++--------------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h | 7 +++++++
+ arch/powerpc/include/asm/nohash/pgtable.h    | 2 ++
+ 2 files changed, 9 insertions(+)
 
---- a/drivers/thunderbolt/icm.c
-+++ b/drivers/thunderbolt/icm.c
-@@ -41,6 +41,7 @@
- #define PHY_PORT_CS1_LINK_STATE_SHIFT	26
+diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+index 1a89ebdc3acc9..0238e6bd0d6c1 100644
+--- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+@@ -94,6 +94,13 @@ static inline pte_t pte_wrprotect(pte_t pte)
  
- #define ICM_TIMEOUT			5000	/* ms */
-+#define ICM_RETRIES			3
- #define ICM_APPROVE_TIMEOUT		10000	/* ms */
- #define ICM_MAX_LINK			4
+ #define pte_wrprotect pte_wrprotect
  
-@@ -296,10 +297,9 @@ static bool icm_copy(struct tb_cfg_reque
- 
- static int icm_request(struct tb *tb, const void *request, size_t request_size,
- 		       void *response, size_t response_size, size_t npackets,
--		       unsigned int timeout_msec)
-+		       int retries, unsigned int timeout_msec)
++static inline int pte_read(pte_t pte)
++{
++	return (pte_val(pte) & _PAGE_RO) != _PAGE_NA;
++}
++
++#define pte_read pte_read
++
+ static inline int pte_write(pte_t pte)
  {
- 	struct icm *icm = tb_priv(tb);
--	int retries = 3;
- 
- 	do {
- 		struct tb_cfg_request *req;
-@@ -410,7 +410,7 @@ static int icm_fr_get_route(struct tb *t
- 		return -ENOMEM;
- 
- 	ret = icm_request(tb, &request, sizeof(request), switches,
--			  sizeof(*switches), npackets, ICM_TIMEOUT);
-+			  sizeof(*switches), npackets, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		goto err_free;
- 
-@@ -463,7 +463,7 @@ icm_fr_driver_ready(struct tb *tb, enum
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -488,7 +488,7 @@ static int icm_fr_approve_switch(struct
- 	memset(&reply, 0, sizeof(reply));
- 	/* Use larger timeout as establishing tunnels can take some time */
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_APPROVE_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_APPROVE_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -515,7 +515,7 @@ static int icm_fr_add_switch_key(struct
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -543,7 +543,7 @@ static int icm_fr_challenge_switch_key(s
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -577,7 +577,7 @@ static int icm_fr_approve_xdomain_paths(
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1022,7 +1022,7 @@ icm_tr_driver_ready(struct tb *tb, enum
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, 20000);
-+			  1, 10, 2000);
- 	if (ret)
- 		return ret;
- 
-@@ -1055,7 +1055,7 @@ static int icm_tr_approve_switch(struct
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_APPROVE_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_APPROVE_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1083,7 +1083,7 @@ static int icm_tr_add_switch_key(struct
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1112,7 +1112,7 @@ static int icm_tr_challenge_switch_key(s
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1146,7 +1146,7 @@ static int icm_tr_approve_xdomain_paths(
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1172,7 +1172,7 @@ static int icm_tr_xdomain_tear_down(stru
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1498,7 +1498,7 @@ icm_ar_driver_ready(struct tb *tb, enum
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1524,7 +1524,7 @@ static int icm_ar_get_route(struct tb *t
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1545,7 +1545,7 @@ static int icm_ar_get_boot_acl(struct tb
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1606,7 +1606,7 @@ static int icm_ar_set_boot_acl(struct tb
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
-@@ -1628,7 +1628,7 @@ icm_icl_driver_ready(struct tb *tb, enum
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, 20000);
-+			  1, ICM_RETRIES, 20000);
- 	if (ret)
- 		return ret;
- 
-@@ -2300,7 +2300,7 @@ static int icm_usb4_switch_op(struct tb_
- 
- 	memset(&reply, 0, sizeof(reply));
- 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
--			  1, ICM_TIMEOUT);
-+			  1, ICM_RETRIES, ICM_TIMEOUT);
- 	if (ret)
- 		return ret;
- 
+ 	return !(pte_val(pte) & _PAGE_RO);
+diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+index ac75f4ab0dba1..7ad1d1b042a60 100644
+--- a/arch/powerpc/include/asm/nohash/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/pgtable.h
+@@ -45,7 +45,9 @@ static inline int pte_write(pte_t pte)
+ 	return pte_val(pte) & _PAGE_RW;
+ }
+ #endif
++#ifndef pte_read
+ static inline int pte_read(pte_t pte)		{ return 1; }
++#endif
+ static inline int pte_dirty(pte_t pte)		{ return pte_val(pte) & _PAGE_DIRTY; }
+ static inline int pte_special(pte_t pte)	{ return pte_val(pte) & _PAGE_SPECIAL; }
+ static inline int pte_none(pte_t pte)		{ return (pte_val(pte) & ~_PTE_NONE_MASK) == 0; }
+-- 
+2.40.1
+
 
 
