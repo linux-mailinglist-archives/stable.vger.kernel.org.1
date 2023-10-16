@@ -2,43 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 398C97CA1F7
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5763A7CA384
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:07:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232026AbjJPIny (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:43:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47898 "EHLO
+        id S230413AbjJPJH0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:07:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232527AbjJPInv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:43:51 -0400
+        with ESMTP id S232911AbjJPJHZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:07:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A19A7ED
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:43:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EC3C433C7;
-        Mon, 16 Oct 2023 08:43:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2896EE1
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:07:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C106C433C8;
+        Mon, 16 Oct 2023 09:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445829;
-        bh=Ec32+jUwwAxt+/Alr0B7JWyE34e+P2EQ41tDOZ1d5eo=;
+        s=korg; t=1697447241;
+        bh=myP3QksoNPoTDkzX22TW16QhCDWysfYIzWiE6ljmchA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WE89DRUCZf4gz5l03f6Ohca0S/V5EMJPLVJkyPEOFwVbzd+GseQhrOC4SC+TxGNn1
-         cqEFkCqRcht/lx/JWDYFOk/VsjQv95XA6l6U/nEuYkZOizBddqf5VVTlemVmI5ejD0
-         0KiGs77/wnnCCCqn3LfBZWkigRp06Y8kEdFF67gM=
+        b=0ghV1qQKl2sjaEek+X8E7eN/NPynZXn81ZAj/DwcRzILMg+2kzbdEIJaZwzcymO6X
+         higbHOm9fjlyRz+nrWBmNyWzM1gjnoLcIaUuXTxs0RPkhDN8Sfm4wif6Zc6am6cv1y
+         VIbbT/zPxJr2gLqy/+AItsQnI6hZQV/L4y7dre1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hannes Reinecke <hare@suse.com>,
-        Ming Lei <ming.lei@redhat.com>, Christoph Hellwig <hch@lst.de>,
-        Benjamin Block <bblock@linux.ibm.com>,
-        Bean Huo <beanhuo@micron.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/102] scsi: core: Use a structure member to track the SCSI command submitter
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.5 016/191] HID: logitech-hidpp: Fix kernel crash on receiver USB disconnect
 Date:   Mon, 16 Oct 2023 10:40:01 +0200
-Message-ID: <20231016083953.755131616@linuxfoundation.org>
+Message-ID: <20231016084015.781725137@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
+References: <20231016084015.400031271@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,176 +49,181 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit bf23e619039d360d503b7282d030daf2277a5d47 ]
+commit dac501397b9d81e4782232c39f94f4307b137452 upstream.
 
-Conditional statements are faster than indirect calls. Use a structure
-member to track the SCSI command submitter such that later patches can call
-scsi_done(scmd) instead of scmd->scsi_done(scmd).
+hidpp_connect_event() has *four* time-of-check vs time-of-use (TOCTOU)
+races when it races with itself.
 
-The asymmetric behavior that scsi_send_eh_cmnd() sets the submission
-context to the SCSI error handler and that it does not restore the
-submission context to the SCSI core is retained.
+hidpp_connect_event() primarily runs from a workqueue but it also runs
+on probe() and if a "device-connected" packet is received by the hw
+when the thread running hidpp_connect_event() from probe() is waiting on
+the hw, then a second thread running hidpp_connect_event() will be
+started from the workqueue.
 
-Link: https://lore.kernel.org/r/20211007202923.2174984-2-bvanassche@acm.org
-Cc: Hannes Reinecke <hare@suse.com>
-Cc: Ming Lei <ming.lei@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Benjamin Block <bblock@linux.ibm.com>
-Reviewed-by: Bean Huo <beanhuo@micron.com>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: e193b7955dfa ("RDMA/srp: Do not call scsi_done() from srp_abort()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This opens the following races (note the below code is simplified):
+
+1. Retrieving + printing the protocol (harmless race):
+
+	if (!hidpp->protocol_major) {
+		hidpp_root_get_protocol_version()
+		hidpp->protocol_major = response.rap.params[0];
+	}
+
+We can actually see this race hit in the dmesg in the abrt output
+attached to rhbz#2227968:
+
+[ 3064.624215] logitech-hidpp-device 0003:046D:4071.0049: HID++ 4.5 device connected.
+[ 3064.658184] logitech-hidpp-device 0003:046D:4071.0049: HID++ 4.5 device connected.
+
+Testing with extra logging added has shown that after this the 2 threads
+take turn grabbing the hw access mutex (send_mutex) so they ping-pong
+through all the other TOCTOU cases managing to hit all of them:
+
+2. Updating the name to the HIDPP name (harmless race):
+
+	if (hidpp->name == hdev->name) {
+		...
+		hidpp->name = new_name;
+	}
+
+3. Initializing the power_supply class for the battery (problematic!):
+
+hidpp_initialize_battery()
+{
+        if (hidpp->battery.ps)
+                return 0;
+
+	probe_battery(); /* Blocks, threads take turns executing this */
+
+	hidpp->battery.desc.properties =
+		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
+
+	hidpp->battery.ps =
+		devm_power_supply_register(&hidpp->hid_dev->dev,
+					   &hidpp->battery.desc, cfg);
+}
+
+4. Creating delayed input_device (potentially problematic):
+
+	if (hidpp->delayed_input)
+		return;
+
+	hidpp->delayed_input = hidpp_allocate_input(hdev);
+
+The really big problem here is 3. Hitting the race leads to the following
+sequence:
+
+	hidpp->battery.desc.properties =
+		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
+
+	hidpp->battery.ps =
+		devm_power_supply_register(&hidpp->hid_dev->dev,
+					   &hidpp->battery.desc, cfg);
+
+	...
+
+	hidpp->battery.desc.properties =
+		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
+
+	hidpp->battery.ps =
+		devm_power_supply_register(&hidpp->hid_dev->dev,
+					   &hidpp->battery.desc, cfg);
+
+So now we have registered 2 power supplies for the same battery,
+which looks a bit weird from userspace's pov but this is not even
+the really big problem.
+
+Notice how:
+
+1. This is all devm-maganaged
+2. The hidpp->battery.desc struct is shared between the 2 power supplies
+3. hidpp->battery.desc.properties points to the result from the second
+   devm_kmemdup()
+
+This causes a use after free scenario on USB disconnect of the receiver:
+1. The last registered power supply class device gets unregistered
+2. The memory from the last devm_kmemdup() call gets freed,
+   hidpp->battery.desc.properties now points to freed memory
+3. The first registered power supply class device gets unregistered,
+   this involves sending a remove uevent to userspace which invokes
+   power_supply_uevent() to fill the uevent data
+4. power_supply_uevent() uses hidpp->battery.desc.properties which
+   now points to freed memory leading to backtraces like this one:
+
+Sep 22 20:01:35 eric kernel: BUG: unable to handle page fault for address: ffffb2140e017f08
+...
+Sep 22 20:01:35 eric kernel: Workqueue: usb_hub_wq hub_event
+Sep 22 20:01:35 eric kernel: RIP: 0010:power_supply_uevent+0xee/0x1d0
+...
+Sep 22 20:01:35 eric kernel:  ? asm_exc_page_fault+0x26/0x30
+Sep 22 20:01:35 eric kernel:  ? power_supply_uevent+0xee/0x1d0
+Sep 22 20:01:35 eric kernel:  ? power_supply_uevent+0x10d/0x1d0
+Sep 22 20:01:35 eric kernel:  dev_uevent+0x10f/0x2d0
+Sep 22 20:01:35 eric kernel:  kobject_uevent_env+0x291/0x680
+Sep 22 20:01:35 eric kernel:  power_supply_unregister+0x8e/0xa0
+Sep 22 20:01:35 eric kernel:  release_nodes+0x3d/0xb0
+Sep 22 20:01:35 eric kernel:  devres_release_group+0xfc/0x130
+Sep 22 20:01:35 eric kernel:  hid_device_remove+0x56/0xa0
+Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
+Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
+Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
+Sep 22 20:01:35 eric kernel:  ? __queue_work+0x1df/0x440
+Sep 22 20:01:35 eric kernel:  hid_destroy_device+0x4b/0x60
+Sep 22 20:01:35 eric kernel:  logi_dj_remove+0x9a/0x100 [hid_logitech_dj 5c91534a0ead2b65e04dd799a0437e3b99b21bc4]
+Sep 22 20:01:35 eric kernel:  hid_device_remove+0x44/0xa0
+Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
+Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
+Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
+Sep 22 20:01:35 eric kernel:  ? __queue_work+0x1df/0x440
+Sep 22 20:01:35 eric kernel:  hid_destroy_device+0x4b/0x60
+Sep 22 20:01:35 eric kernel:  usbhid_disconnect+0x47/0x60 [usbhid 727dcc1c0b94e6b4418727a468398ac3bca492f3]
+Sep 22 20:01:35 eric kernel:  usb_unbind_interface+0x90/0x270
+Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
+Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
+Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
+Sep 22 20:01:35 eric kernel:  ? kobject_put+0xa0/0x1d0
+Sep 22 20:01:35 eric kernel:  usb_disable_device+0xcd/0x1e0
+Sep 22 20:01:35 eric kernel:  usb_disconnect+0xde/0x2c0
+Sep 22 20:01:35 eric kernel:  usb_disconnect+0xc3/0x2c0
+Sep 22 20:01:35 eric kernel:  hub_event+0xe80/0x1c10
+
+There have been quite a few bug reports (see Link tags) about this crash.
+
+Fix all the TOCTOU issues, including the really bad power-supply related
+system crash on USB disconnect, by making probe() use the workqueue for
+running hidpp_connect_event() too, so that it can never run more then once.
+
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227221
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227968
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227968
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2242189
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217412#c58
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231005182638.3776-1-hdegoede@redhat.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_error.c | 17 ++++++-----------
- drivers/scsi/scsi_lib.c   | 10 ++++++++++
- drivers/scsi/scsi_priv.h  |  1 +
- include/scsi/scsi_cmnd.h  |  7 +++++++
- 4 files changed, 24 insertions(+), 11 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index dd9f5778f687d..18b99240a9062 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -50,8 +50,6 @@
- 
- #include <asm/unaligned.h>
- 
--static void scsi_eh_done(struct scsi_cmnd *scmd);
--
- /*
-  * These should *probably* be handled by the host itself.
-  * Since it is allowed to sleep, it probably should.
-@@ -542,7 +540,8 @@ enum scsi_disposition scsi_check_sense(struct scsi_cmnd *scmd)
- 		/* handler does not care. Drop down to default handling */
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4515,7 +4515,8 @@ static int hidpp_probe(struct hid_device
+ 			goto hid_hw_init_fail;
  	}
  
--	if (scmd->cmnd[0] == TEST_UNIT_READY && scmd->scsi_done != scsi_eh_done)
-+	if (scmd->cmnd[0] == TEST_UNIT_READY &&
-+	    scmd->submitter != SUBMITTED_BY_SCSI_ERROR_HANDLER)
- 		/*
- 		 * nasty: for mid-layer issued TURs, we need to return the
- 		 * actual sense data without any recovery attempt.  For eh
-@@ -804,7 +803,7 @@ static enum scsi_disposition scsi_eh_completed_normally(struct scsi_cmnd *scmd)
-  * scsi_eh_done - Completion function for error handling.
-  * @scmd:	Cmd that is done.
-  */
--static void scsi_eh_done(struct scsi_cmnd *scmd)
-+void scsi_eh_done(struct scsi_cmnd *scmd)
- {
- 	struct completion *eh_action;
+-	hidpp_connect_event(hidpp);
++	schedule_work(&hidpp->work);
++	flush_work(&hidpp->work);
  
-@@ -1104,7 +1103,7 @@ static enum scsi_disposition scsi_send_eh_cmnd(struct scsi_cmnd *scmd,
- 	shost->eh_action = &done;
- 
- 	scsi_log_send(scmd);
--	scmd->scsi_done = scsi_eh_done;
-+	scmd->submitter = SUBMITTED_BY_SCSI_ERROR_HANDLER;
- 
- 	/*
- 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
-@@ -1131,6 +1130,7 @@ static enum scsi_disposition scsi_send_eh_cmnd(struct scsi_cmnd *scmd,
- 	if (rtn) {
- 		if (timeleft > stall_for) {
- 			scsi_eh_restore_cmnd(scmd, &ses);
-+
- 			timeleft -= stall_for;
- 			msleep(jiffies_to_msecs(stall_for));
- 			goto retry;
-@@ -2360,11 +2360,6 @@ void scsi_report_device_reset(struct Scsi_Host *shost, int channel, int target)
- }
- EXPORT_SYMBOL(scsi_report_device_reset);
- 
--static void
--scsi_reset_provider_done_command(struct scsi_cmnd *scmd)
--{
--}
--
- /**
-  * scsi_ioctl_reset: explicitly reset a host/bus/target/device
-  * @dev:	scsi_device to operate on
-@@ -2401,7 +2396,7 @@ scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
- 	scsi_init_command(dev, scmd);
- 	scmd->cmnd = scsi_req(rq)->cmd;
- 
--	scmd->scsi_done		= scsi_reset_provider_done_command;
-+	scmd->submitter = SUBMITTED_BY_SCSI_RESET_IOCTL;
- 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
- 
- 	scmd->cmd_len			= 0;
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 5525e6ffee537..7bdaa6b757cd4 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -1578,6 +1578,15 @@ static blk_status_t scsi_prepare_cmd(struct request *req)
- 
- static void scsi_mq_done(struct scsi_cmnd *cmd)
- {
-+	switch (cmd->submitter) {
-+	case SUBMITTED_BY_BLOCK_LAYER:
-+		break;
-+	case SUBMITTED_BY_SCSI_ERROR_HANDLER:
-+		return scsi_eh_done(cmd);
-+	case SUBMITTED_BY_SCSI_RESET_IOCTL:
-+		return;
-+	}
-+
- 	if (unlikely(blk_should_fake_timeout(scsi_cmd_to_rq(cmd)->q)))
- 		return;
- 	if (unlikely(test_and_set_bit(SCMD_STATE_COMPLETE, &cmd->state)))
-@@ -1684,6 +1693,7 @@ static blk_status_t scsi_queue_rq(struct blk_mq_hw_ctx *hctx,
- 
- 	scsi_set_resid(cmd, 0);
- 	memset(cmd->sense_buffer, 0, SCSI_SENSE_BUFFERSIZE);
-+	cmd->submitter = SUBMITTED_BY_BLOCK_LAYER;
- 	cmd->scsi_done = scsi_mq_done;
- 
- 	blk_mq_start_request(req);
-diff --git a/drivers/scsi/scsi_priv.h b/drivers/scsi/scsi_priv.h
-index 6d9152031a403..b7f9631493522 100644
---- a/drivers/scsi/scsi_priv.h
-+++ b/drivers/scsi/scsi_priv.h
-@@ -84,6 +84,7 @@ void scsi_eh_ready_devs(struct Scsi_Host *shost,
- int scsi_eh_get_sense(struct list_head *work_q,
- 		      struct list_head *done_q);
- int scsi_noretry_cmd(struct scsi_cmnd *scmd);
-+void scsi_eh_done(struct scsi_cmnd *scmd);
- 
- /* scsi_lib.c */
- extern int scsi_maybe_unblock_host(struct scsi_device *sdev);
-diff --git a/include/scsi/scsi_cmnd.h b/include/scsi/scsi_cmnd.h
-index 685249233f2fe..0823bad7b0c90 100644
---- a/include/scsi/scsi_cmnd.h
-+++ b/include/scsi/scsi_cmnd.h
-@@ -65,6 +65,12 @@ struct scsi_pointer {
- #define SCMD_STATE_COMPLETE	0
- #define SCMD_STATE_INFLIGHT	1
- 
-+enum scsi_cmnd_submitter {
-+	SUBMITTED_BY_BLOCK_LAYER = 0,
-+	SUBMITTED_BY_SCSI_ERROR_HANDLER = 1,
-+	SUBMITTED_BY_SCSI_RESET_IOCTL = 2,
-+} __packed;
-+
- struct scsi_cmnd {
- 	struct scsi_request req;
- 	struct scsi_device *device;
-@@ -90,6 +96,7 @@ struct scsi_cmnd {
- 	unsigned char prot_op;
- 	unsigned char prot_type;
- 	unsigned char prot_flags;
-+	enum scsi_cmnd_submitter submitter;
- 
- 	unsigned short cmd_len;
- 	enum dma_data_direction sc_data_direction;
--- 
-2.40.1
-
+ 	if (will_restart) {
+ 		/* Reset the HID node state */
 
 
