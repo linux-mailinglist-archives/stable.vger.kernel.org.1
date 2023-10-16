@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 613E27CA28E
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A42FA7CA35C
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:04:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229848AbjJPIv3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:51:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
+        id S233346AbjJPJE4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:04:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232953AbjJPIv1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:51:27 -0400
+        with ESMTP id S233281AbjJPJEz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:04:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1211E8
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:51:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5B7C433C8;
-        Mon, 16 Oct 2023 08:51:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AE41E8
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:04:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7FBC433C8;
+        Mon, 16 Oct 2023 09:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446285;
-        bh=ppVkYyojaBkwMT7JMrl2dXMdn2aEAzaCHeyU9e9ZNBY=;
+        s=korg; t=1697447093;
+        bh=7mc9VAzeKZJ7oESzRg53cNugw+7RP8KNodwTqEU/DXE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TpHyRJU+BMH4MUIeXbVZ5y5kTGcMjSX6JaiBWb0puyNCfDCrW68oGoMgeO6n8v0IN
-         imqt2NIuRYjXQswtgPNzcf3g7e5AKZAPuEEAa3xkJk+aUGBS9YtmdcCh6XR8pld0ja
-         c/3ryaQaHc3UOwdo0eoh/Maa43xG5WaXTjweH8ak=
+        b=JIGhqIX6y0OsR5VW0EUMWk+zC4cfU70OwQEaT8c25tfEhnY7biePQeSlF7OFYlBba
+         JHKw2CEzDaG/bWR259jCNOkI1NLOEaXNhx9L2uCVSuWrCbL2Ep7jh5dRricGBPRzb0
+         74ItgsR9lvpI7PKPBoDAxASzlObFZ3YhZBlp0ilo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 084/102] powerpc/64e: Fix wrong test in __ptep_test_and_clear_young()
+        =?UTF-8?q?Marek=20=C5=A0anta?= <teslan223@gmail.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.1 100/131] thunderbolt: Check that lane 1 is in CL0 before enabling lane bonding
 Date:   Mon, 16 Oct 2023 10:41:23 +0200
-Message-ID: <20231016083955.933451534@linuxfoundation.org>
+Message-ID: <20231016084002.548939875@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-References: <20231016083953.689300946@linuxfoundation.org>
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+References: <20231016084000.050926073@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,56 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 5ea0bbaa32e8f54e9a57cfee4a3b8769b80be0d2 ]
+commit a9fdf5f933a6f2b358fad0194b1287b67f6704b1 upstream.
 
-Commit 45201c879469 ("powerpc/nohash: Remove hash related code from
-nohash headers.") replaced:
+Marek reported that when BlackMagic UltraStudio device is connected the
+kernel repeatedly tries to enable lane bonding without success making
+the device non-functional. It looks like the device does not have lane 1
+connected at all so even though it is enabled we should not try to bond
+the lanes. For this reason check that lane 1 is in fact CL0 (connected,
+active) before attempting to bond the lanes.
 
-  if ((pte_val(*ptep) & (_PAGE_ACCESSED | _PAGE_HASHPTE)) == 0)
-	return 0;
-
-By:
-
-  if (pte_young(*ptep))
-	return 0;
-
-But it should be:
-
-  if (!pte_young(*ptep))
-	return 0;
-
-Fix it.
-
-Fixes: 45201c879469 ("powerpc/nohash: Remove hash related code from nohash headers.")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/8bb7f06494e21adada724ede47a4c3d97e879d40.1695659959.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Marek Šanta <teslan223@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217737
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/nohash/64/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thunderbolt/switch.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
-index 2225991c69b55..6ad4714352c7a 100644
---- a/arch/powerpc/include/asm/nohash/64/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
-@@ -209,7 +209,7 @@ static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
- {
- 	unsigned long old;
- 
--	if (pte_young(*ptep))
-+	if (!pte_young(*ptep))
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -2763,6 +2763,13 @@ int tb_switch_lane_bonding_enable(struct
+ 	    !tb_port_is_width_supported(down, 2))
  		return 0;
- 	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
- 	return (old & _PAGE_ACCESSED) != 0;
--- 
-2.40.1
-
+ 
++	/*
++	 * Both lanes need to be in CL0. Here we assume lane 0 already be in
++	 * CL0 and check just for lane 1.
++	 */
++	if (tb_wait_for_port(down->dual_link_port, false) <= 0)
++		return -ENOTCONN;
++
+ 	ret = tb_port_lane_bonding_enable(up);
+ 	if (ret) {
+ 		tb_port_warn(up, "failed to enable lane bonding\n");
 
 
