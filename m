@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 894BE7CA2E2
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:56:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EAC57CA2EF
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:58:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233003AbjJPI4b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:56:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41882 "EHLO
+        id S232839AbjJPI6G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:58:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232955AbjJPI4b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:56:31 -0400
+        with ESMTP id S231795AbjJPI6F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:58:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4D56DE
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:56:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BF9C433C9;
-        Mon, 16 Oct 2023 08:56:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F6BFB4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:58:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1546FC433C8;
+        Mon, 16 Oct 2023 08:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446587;
-        bh=DS2p/sC1CiCfUBsqjuxNX8wbKIvyk/Ac0kb6NFbuvAQ=;
+        s=korg; t=1697446683;
+        bh=MnkTaBb/QNk2x7zaIxNlBYj3Tr/qX8zCz29Oyr25hRU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kaPB7eJcfNkKkWg8MusavxLr8iJTNbv0WitqS0XCoTEy4OUKL4d7AbikEqucahBiU
-         tXs0kUXvIQy6Ups2HejTn3MGp+TiwyrTHp22R7U3vdGWaJxNN18us30k8gJInwbplW
-         4QOvsR8GA5CZopcXF7+iGa0cxlJl48MQF6FSrEVw=
+        b=MDVssqgGHRUkl2VCMenhpNqx8CB0XIXx+FBDi83co5SbbPaDe8Ze0akHrMTMqP8aL
+         NuGbKaVVHId66ZttVtEzqfEwSKLqnckkNCOiy30wJMXG833Ks6uTmpA816+BORrX/D
+         I7N/yuavjvTUQxHa7avq6CVQPqiHbYX14CKimPBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
+        patches@lists.linux.dev, Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Vinod Polimera <quic_vpolimer@quicinc.com>,
+        Stephen Boyd <swboyd@chromium.org>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Nia Espera <nespera@igalia.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/131] drm/msm/dpu: change _dpu_plane_calc_bw() to use u64 to avoid overflow
-Date:   Mon, 16 Oct 2023 10:40:20 +0200
-Message-ID: <20231016084000.989943447@linuxfoundation.org>
+Subject: [PATCH 6.1 038/131] drm/msm/dp: Add newlines to debug printks
+Date:   Mon, 16 Oct 2023 10:40:21 +0200
+Message-ID: <20231016084001.017295443@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
 References: <20231016084000.050926073@linuxfoundation.org>
@@ -56,65 +57,41 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit 95e681ca3b65e4ce3d2537b47672d787b7d30375 ]
+[ Upstream commit eba8c99a0fc45da1c8d5b5f5bd1dc2e79229a767 ]
 
-_dpu_plane_calc_bw() uses integer variables to calculate the bandwidth
-used during plane bandwidth calculations. However for high resolution
-displays this overflows easily and leads to below errors
+These debug printks are missing newlines, causing drm debug logs to be
+hard to read. Add newlines so that the messages are on their own line.
 
-[dpu error]crtc83 failed performance check -7
-
-Promote the intermediate variables to u64 to avoid overflow.
-
-changes in v2:
-	- change to u64 where actually needed in the math
-
-Fixes: c33b7c0389e1 ("drm/msm/dpu: add support for clk and bw scaling for display")
+Cc: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Cc: Vinod Polimera <quic_vpolimer@quicinc.com>
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Fixes: 601f0479c583 ("drm/msm/dp: add logs across DP driver for ease of debugging")
+Fixes: cd779808cccd ("drm/msm/dp: Add basic PSR support for eDP")
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reported-by: Nia Espera <nespera@igalia.com>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/32
-Tested-by: Nia Espera <nespera@igalia.com>
-Patchwork: https://patchwork.freedesktop.org/patch/556288/
-Link: https://lore.kernel.org/r/20230908012616.20654-1-quic_abhinavk@quicinc.com
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/554533/
+Link: https://lore.kernel.org/r/20230825230109.2264345-1-swboyd@chromium.org
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_link.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-index 3fbda2a1f77fc..62d48c0f905e4 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-@@ -142,6 +142,7 @@ static void _dpu_plane_calc_bw(struct drm_plane *plane,
- 	const struct dpu_format *fmt = NULL;
- 	struct dpu_kms *dpu_kms = _dpu_plane_get_kms(plane);
- 	int src_width, src_height, dst_height, fps;
-+	u64 plane_pixel_rate, plane_bit_rate;
- 	u64 plane_prefill_bw;
- 	u64 plane_bw;
- 	u32 hw_latency_lines;
-@@ -164,13 +165,12 @@ static void _dpu_plane_calc_bw(struct drm_plane *plane,
- 	scale_factor = src_height > dst_height ?
- 		mult_frac(src_height, 1, dst_height) : 1;
+diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
+index 36bb6191d2f03..cb66d1126ea96 100644
+--- a/drivers/gpu/drm/msm/dp/dp_link.c
++++ b/drivers/gpu/drm/msm/dp/dp_link.c
+@@ -1068,7 +1068,7 @@ int dp_link_process_request(struct dp_link *dp_link)
+ 		}
+ 	}
  
--	plane_bw =
--		src_width * mode->vtotal * fps * fmt->bpp *
--		scale_factor;
-+	plane_pixel_rate = src_width * mode->vtotal * fps;
-+	plane_bit_rate = plane_pixel_rate * fmt->bpp;
- 
--	plane_prefill_bw =
--		src_width * hw_latency_lines * fps * fmt->bpp *
--		scale_factor * mode->vtotal;
-+	plane_bw = plane_bit_rate * scale_factor;
-+
-+	plane_prefill_bw = plane_bw * hw_latency_lines;
- 
- 	if ((vbp+vpw) > hw_latency_lines)
- 		do_div(plane_prefill_bw, (vbp+vpw));
+-	drm_dbg_dp(link->drm_dev, "sink request=%#x",
++	drm_dbg_dp(link->drm_dev, "sink request=%#x\n",
+ 				dp_link->sink_request);
+ 	return ret;
+ }
 -- 
 2.40.1
 
