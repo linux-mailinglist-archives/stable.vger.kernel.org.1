@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2ED67CA208
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:44:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A49757CA209
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:44:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230017AbjJPIot (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56220 "EHLO
+        id S230331AbjJPIoy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:44:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232661AbjJPIor (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:44:47 -0400
+        with ESMTP id S232568AbjJPIox (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:44:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 116D2F4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:44:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB95C433C7;
-        Mon, 16 Oct 2023 08:44:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98033E3
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:44:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B16C433CB;
+        Mon, 16 Oct 2023 08:44:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697445883;
-        bh=Oft6CxfQUwePK6Nh9YW+khL6/NIkLoRKu7hF9PwkQ5U=;
+        s=korg; t=1697445891;
+        bh=lfDWf1QgwA4e6rvs5r06fw0PTLvSwX6kcy1BrSeQ8O4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wNt1I4lBrYt9rCcaC9oBYh13ynR4CfoeqGD3/42SSozzs6VgZ6DgviuHxi+H2lxxV
-         O9oA4XB/FQqbzEG/M6H2JMrhFNt/BqU4R2r+5/wv5WZjj2KVlukGE7ksCsuTOkoSjE
-         iWLv8NKJ2N3XB7gkhx9+WDdaUbb049EjEhRjrE8I=
+        b=YmcGNNGvpzxPPwbG60iRScveQdSiEhQM0gRBoQQRteiyCFqfEoPCJcxCdHJkyJdAe
+         j8rrBXPBmWejyubU2WWqNQoRrviCcBDGDEkbylfoxGO99p9TZYhLfuSHdCYdXDBfc5
+         YWzSaGeaK3vL7vkJ4SiEb8ciFXfE3i1L+fWJ6/e4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Vernet <void@manifault.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev,
+        "Radu Pirea (NXP OSS)" <radu-nicolae.pirea@oss.nxp.com>,
+        Sabrina Dubroca <sd@queasysnail.net>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/102] bpf: Fix verifier log for async callback return values
-Date:   Mon, 16 Oct 2023 10:40:30 +0200
-Message-ID: <20231016083954.530459731@linuxfoundation.org>
+Subject: [PATCH 5.15 032/102] net: macsec: indicate next pn update when offloading
+Date:   Mon, 16 Oct 2023 10:40:31 +0200
+Message-ID: <20231016083954.556834789@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
 References: <20231016083953.689300946@linuxfoundation.org>
@@ -54,58 +56,71 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: David Vernet <void@manifault.com>
+From: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
 
-[ Upstream commit 829955981c557c7fc7416581c4cd68a8a0c28620 ]
+[ Upstream commit 0412cc846a1ef38697c3f321f9b174da91ecd3b5 ]
 
-The verifier, as part of check_return_code(), verifies that async
-callbacks such as from e.g. timers, will return 0. It does this by
-correctly checking that R0->var_off is in tnum_const(0), which
-effectively checks that it's in a range of 0. If this condition fails,
-however, it prints an error message which says that the value should
-have been in (0x0; 0x1). This results in possibly confusing output such
-as the following in which an async callback returns 1:
+Indicate next PN update using update_pn flag in macsec_context.
+Offloaded MACsec implementations does not know whether or not the
+MACSEC_SA_ATTR_PN attribute was passed for an SA update and assume
+that next PN should always updated, but this is not always true.
 
-  At async callback the register R0 has value (0x1; 0x0) should have been in (0x0; 0x1)
+The PN can be reset to its initial value using the following command:
+$ ip macsec set macsec0 tx sa 0 off #octeontx2-pf case
 
-The fix is easy -- we should just pass the tnum_const(0) as the correct
-range to verbose_invalid_scalar(), which will then print the following:
+Or, the update PN command will succeed even if the driver does not support
+PN updates.
+$ ip macsec set macsec0 tx sa 0 pn 1 on #mscc phy driver case
 
-  At async callback the register R0 has value (0x1; 0x0) should have been in (0x0; 0x0)
+Comparing the initial PN with the new PN value is not a solution. When
+the user updates the PN using its initial value the command will
+succeed, even if the driver does not support it. Like this:
+$ ip macsec add macsec0 tx sa 0 pn 1 on key 00 \
+ead3664f508eb06c40ac7104cdae4ce5
+$ ip macsec set macsec0 tx sa 0 pn 1 on #mlx5 case
 
-Fixes: bfc6bb74e4f1 ("bpf: Implement verifier support for validation of async callbacks.")
-Signed-off-by: David Vernet <void@manifault.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20231009161414.235829-1-void@manifault.com
+Signed-off-by: Radu Pirea (NXP OSS) <radu-nicolae.pirea@oss.nxp.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: e0a8c918daa5 ("net: phy: mscc: macsec: reject PN update requests")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/macsec.c | 2 ++
+ include/net/macsec.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index ecf4332ff312f..a4be7c1c11aaf 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -9570,7 +9570,7 @@ static int check_return_code(struct bpf_verifier_env *env)
- 	struct tnum enforce_attach_type_range = tnum_unknown;
- 	const struct bpf_prog *prog = env->prog;
- 	struct bpf_reg_state *reg;
--	struct tnum range = tnum_range(0, 1);
-+	struct tnum range = tnum_range(0, 1), const_0 = tnum_const(0);
- 	enum bpf_prog_type prog_type = resolve_prog_type(env->prog);
- 	int err;
- 	struct bpf_func_state *frame = env->cur_state->frame[0];
-@@ -9608,8 +9608,8 @@ static int check_return_code(struct bpf_verifier_env *env)
- 			return -EINVAL;
- 		}
+diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
+index 21f41f25a8abe..07c822c301185 100644
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -2410,6 +2410,7 @@ static int macsec_upd_txsa(struct sk_buff *skb, struct genl_info *info)
  
--		if (!tnum_in(tnum_const(0), reg->var_off)) {
--			verbose_invalid_scalar(env, reg, &range, "async callback", "R0");
-+		if (!tnum_in(const_0, reg->var_off)) {
-+			verbose_invalid_scalar(env, reg, &const_0, "async callback", "R0");
- 			return -EINVAL;
- 		}
- 		return 0;
+ 		ctx.sa.assoc_num = assoc_num;
+ 		ctx.sa.tx_sa = tx_sa;
++		ctx.sa.update_pn = !!prev_pn.full64;
+ 		ctx.secy = secy;
+ 
+ 		ret = macsec_offload(ops->mdo_upd_txsa, &ctx);
+@@ -2503,6 +2504,7 @@ static int macsec_upd_rxsa(struct sk_buff *skb, struct genl_info *info)
+ 
+ 		ctx.sa.assoc_num = assoc_num;
+ 		ctx.sa.rx_sa = rx_sa;
++		ctx.sa.update_pn = !!prev_pn.full64;
+ 		ctx.secy = secy;
+ 
+ 		ret = macsec_offload(ops->mdo_upd_rxsa, &ctx);
+diff --git a/include/net/macsec.h b/include/net/macsec.h
+index d6fa6b97f6efa..0dc4303329391 100644
+--- a/include/net/macsec.h
++++ b/include/net/macsec.h
+@@ -240,6 +240,7 @@ struct macsec_context {
+ 	struct macsec_secy *secy;
+ 	struct macsec_rx_sc *rx_sc;
+ 	struct {
++		bool update_pn;
+ 		unsigned char assoc_num;
+ 		u8 key[MACSEC_MAX_KEY_LEN];
+ 		union {
 -- 
 2.40.1
 
