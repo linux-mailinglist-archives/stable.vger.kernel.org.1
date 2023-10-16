@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E63B7CA2EC
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E29A7CA21E
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232685AbjJPI5p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:57:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38692 "EHLO
+        id S229784AbjJPIqI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:46:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233228AbjJPI5n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:57:43 -0400
+        with ESMTP id S232646AbjJPIqH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:46:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A72FA95
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:57:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E365CC433C9;
-        Mon, 16 Oct 2023 08:57:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F0C7E6
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:46:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1E9C433C9;
+        Mon, 16 Oct 2023 08:46:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446661;
-        bh=F6OJ582vYZDWZBD8TnkjrSGqrfqTUSNto9wNBaqK2f8=;
+        s=korg; t=1697445965;
+        bh=0gEanIYEskvmAWxEHdmmCDb8jxKV/JMCi3HdIbCrE+0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q+lsw1KSLwA7zU1iRF3zwPnnFW792U46PtyPSEFXygVHasHDABVBjloKVZlp2Qv1l
-         CaVw4Nnh6PUyQCxxq9NYnpctIqVWXBnTp3b3A59S5i5FML1QySIMmDKZ1gZmYbiExL
-         DJcCSWbLi/tlc8tbw8ujF6GoYj/Ue5KtoVz8DICY=
+        b=Dwvbd+modG8acUfhwfqrG8/RZNmnnfaW+2kGHYcmLnYS3Ix/k6Sv0FQ+peRPHAPE5
+         +c7L6TvpX2aAXGdFUsaPaeS1JStfNN7yCLUCM+9ngyTI++FmBrsHIFEY822dKk4JC8
+         gFO16x0aggMmniC/1auUbJHJMcXO75IcKC8E/F/A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sili Luo <rootlab@huawei.com>,
-        Eric Dumazet <edumazet@google.com>, Willy Tarreau <w@1wt.eu>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/131] net: nfc: fix races in nfc_llcp_sock_get() and nfc_llcp_sock_get_sn()
-Date:   Mon, 16 Oct 2023 10:40:44 +0200
-Message-ID: <20231016084001.584163584@linuxfoundation.org>
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.15 046/102] media: mtk-jpeg: Fix use after free bug due to uncanceled work
+Date:   Mon, 16 Oct 2023 10:40:45 +0200
+Message-ID: <20231016083954.926023717@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,134 +53,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 31c07dffafce914c1d1543c135382a11ff058d93 ]
+commit c677d7ae83141d390d1253abebafa49c962afb52 upstream.
 
-Sili Luo reported a race in nfc_llcp_sock_get(), leading to UAF.
+In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
+mtk_jpeg_job_timeout_work. Then mtk_jpeg_dec_device_run
+and mtk_jpeg_enc_device_run may be called to start the
+work.
+If we remove the module which will call mtk_jpeg_remove
+to make cleanup, there may be a unfinished work. The
+possible sequence is as follows, which will cause a
+typical UAF bug.
 
-Getting a reference on the socket found in a lookup while
-holding a lock should happen before releasing the lock.
+Fix it by canceling the work before cleanup in the mtk_jpeg_remove
 
-nfc_llcp_sock_get_sn() has a similar problem.
+CPU0                  CPU1
 
-Finally nfc_llcp_recv_snl() needs to make sure the socket
-found by nfc_llcp_sock_from_sn() does not disappear.
-
-Fixes: 8f50020ed9b8 ("NFC: LLCP late binding")
-Reported-by: Sili Luo <rootlab@huawei.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Willy Tarreau <w@1wt.eu>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231009123110.3735515-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+                    |mtk_jpeg_job_timeout_work
+mtk_jpeg_remove     |
+  v4l2_m2m_release  |
+    kfree(m2m_dev); |
+                    |
+                    | v4l2_m2m_get_curr_priv
+                    |   m2m_dev->curr_ctx //use
+Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/llcp_core.c | 30 ++++++++++++------------------
- 1 file changed, 12 insertions(+), 18 deletions(-)
+ drivers/media/platform/mtk-jpeg/mtk_jpeg_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index 6705bb895e239..1dac28136e6a3 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -203,17 +203,13 @@ static struct nfc_llcp_sock *nfc_llcp_sock_get(struct nfc_llcp_local *local,
- 
- 		if (tmp_sock->ssap == ssap && tmp_sock->dsap == dsap) {
- 			llcp_sock = tmp_sock;
-+			sock_hold(&llcp_sock->sk);
- 			break;
- 		}
- 	}
- 
- 	read_unlock(&local->sockets.lock);
- 
--	if (llcp_sock == NULL)
--		return NULL;
--
--	sock_hold(&llcp_sock->sk);
--
- 	return llcp_sock;
- }
- 
-@@ -346,7 +342,8 @@ static int nfc_llcp_wks_sap(const char *service_name, size_t service_name_len)
- 
- static
- struct nfc_llcp_sock *nfc_llcp_sock_from_sn(struct nfc_llcp_local *local,
--					    const u8 *sn, size_t sn_len)
-+					    const u8 *sn, size_t sn_len,
-+					    bool needref)
+--- a/drivers/media/platform/mtk-jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mtk-jpeg/mtk_jpeg_core.c
+@@ -1455,6 +1455,7 @@ static int mtk_jpeg_remove(struct platfo
  {
- 	struct sock *sk;
- 	struct nfc_llcp_sock *llcp_sock, *tmp_sock;
-@@ -382,6 +379,8 @@ struct nfc_llcp_sock *nfc_llcp_sock_from_sn(struct nfc_llcp_local *local,
+ 	struct mtk_jpeg_dev *jpeg = platform_get_drvdata(pdev);
  
- 		if (memcmp(sn, tmp_sock->service_name, sn_len) == 0) {
- 			llcp_sock = tmp_sock;
-+			if (needref)
-+				sock_hold(&llcp_sock->sk);
- 			break;
- 		}
- 	}
-@@ -423,7 +422,8 @@ u8 nfc_llcp_get_sdp_ssap(struct nfc_llcp_local *local,
- 		 * to this service name.
- 		 */
- 		if (nfc_llcp_sock_from_sn(local, sock->service_name,
--					  sock->service_name_len) != NULL) {
-+					  sock->service_name_len,
-+					  false) != NULL) {
- 			mutex_unlock(&local->sdp_lock);
- 
- 			return LLCP_SAP_MAX;
-@@ -824,16 +824,7 @@ static struct nfc_llcp_sock *nfc_llcp_connecting_sock_get(struct nfc_llcp_local
- static struct nfc_llcp_sock *nfc_llcp_sock_get_sn(struct nfc_llcp_local *local,
- 						  const u8 *sn, size_t sn_len)
- {
--	struct nfc_llcp_sock *llcp_sock;
--
--	llcp_sock = nfc_llcp_sock_from_sn(local, sn, sn_len);
--
--	if (llcp_sock == NULL)
--		return NULL;
--
--	sock_hold(&llcp_sock->sk);
--
--	return llcp_sock;
-+	return nfc_llcp_sock_from_sn(local, sn, sn_len, true);
- }
- 
- static const u8 *nfc_llcp_connect_sn(const struct sk_buff *skb, size_t *sn_len)
-@@ -1298,7 +1289,8 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
- 			}
- 
- 			llcp_sock = nfc_llcp_sock_from_sn(local, service_name,
--							  service_name_len);
-+							  service_name_len,
-+							  true);
- 			if (!llcp_sock) {
- 				sap = 0;
- 				goto add_snl;
-@@ -1318,6 +1310,7 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
- 
- 				if (sap == LLCP_SAP_MAX) {
- 					sap = 0;
-+					nfc_llcp_sock_put(llcp_sock);
- 					goto add_snl;
- 				}
- 
-@@ -1335,6 +1328,7 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
- 
- 			pr_debug("%p %d\n", llcp_sock, sap);
- 
-+			nfc_llcp_sock_put(llcp_sock);
- add_snl:
- 			sdp = nfc_llcp_build_sdres_tlv(tid, sap);
- 			if (sdp == NULL)
--- 
-2.40.1
-
++	cancel_delayed_work_sync(&jpeg->job_timeout_work);
+ 	pm_runtime_disable(&pdev->dev);
+ 	video_unregister_device(jpeg->vdev);
+ 	v4l2_m2m_release(jpeg->m2m_dev);
 
 
