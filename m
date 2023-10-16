@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DE0B7CA299
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 678697CA375
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:06:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232956AbjJPIv4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:51:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53894 "EHLO
+        id S233435AbjJPJGO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:06:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232971AbjJPIvw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:51:52 -0400
+        with ESMTP id S232900AbjJPJGI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:06:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCD1EB4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:51:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7553C433C8;
-        Mon, 16 Oct 2023 08:51:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF59FEE
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:06:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D65C433C8;
+        Mon, 16 Oct 2023 09:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446310;
-        bh=IZm8e/wzdySO+GBFf77qSThZ6SlahBtFdSzDDjeVV18=;
+        s=korg; t=1697447165;
+        bh=PVZGknIGjWUEqTR95INB/ZGx0N/sjips6r3Hd5UwSXk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sOiK4yn3lUDZI8cMPAGGI2OcE96rZjPUOU+Q+ILPt9+HQEQtaC33aF1E8PuVW8v1C
-         KG2d6GSYHAsZ5jh6s9tYV6xgBG84367rhYtMP4OtE9WlRpeD2J7zLtBrs1OmBLwGHX
-         cjaTP33RnPoEoBqYqfF2hCVxpe1X+lur1U1Z2N0o=
+        b=G/G5W2Cdr/ghzPuLvB7g/Xcf8phJPXgpyoNqiRepraE699TtF8aulTh8aWk+0MH34
+         1rCmpQqXU1OYEgZ5aQIQuXf2tz3AFWBpDNnmMBv577z3jrDNOhgXi9bfqhdQJxOcAG
+         Jy89Sc9BdET20ByfSR5mWYGLrw5XIdrFmQWoujzg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
+        Simon Horman <horms@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/131] mptcp: fix delegated action races
-Date:   Mon, 16 Oct 2023 10:39:45 +0200
-Message-ID: <20231016084000.118767283@linuxfoundation.org>
+Subject: [PATCH 6.5 001/191] net: stmmac: remove unneeded stmmac_poll_controller
+Date:   Mon, 16 Oct 2023 10:39:46 +0200
+Message-ID: <20231016084015.436294403@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
+References: <20231016084015.400031271@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,203 +51,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit a5efdbcece83af94180e8d7c0a6e22947318499d ]
+[ Upstream commit 3eef8555891026628aa1cc6dbc01db86df88aa26 ]
 
-The delegated action infrastructure is prone to the following
-race: different CPUs can try to schedule different delegated
-actions on the same subflow at the same time.
+Using netconsole netpoll_poll_dev could be called from interrupt
+context, thus using disable_irq() would cause the following kernel
+warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
 
-Each of them will check different bits via mptcp_subflow_delegate(),
-and will try to schedule the action on the related per-cpu napi
-instance.
+  BUG: sleeping function called from invalid context at kernel/irq/manage.c:137
+  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksoftirqd/0
+  CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00075-g816b502b2298-dirty #117
+  Hardware name: aml (r1) (DT)
+  Call trace:
+   dump_backtrace+0x0/0x270
+   show_stack+0x14/0x20
+   dump_stack_lvl+0x8c/0xac
+   dump_stack+0x18/0x30
+   ___might_sleep+0x150/0x194
+   __might_sleep+0x64/0xbc
+   synchronize_irq+0x8c/0x150
+   disable_irq+0x2c/0x40
+   stmmac_poll_controller+0x140/0x1a0
+   netpoll_poll_dev+0x6c/0x220
+   netpoll_send_skb+0x308/0x390
+   netpoll_send_udp+0x418/0x760
+   write_msg+0x118/0x140 [netconsole]
+   console_unlock+0x404/0x500
+   vprintk_emit+0x118/0x250
+   dev_vprintk_emit+0x19c/0x1cc
+   dev_printk_emit+0x90/0xa8
+   __dev_printk+0x78/0x9c
+   _dev_warn+0xa4/0xbc
+   ath10k_warn+0xe8/0xf0 [ath10k_core]
+   ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
+   ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
+   __napi_poll+0x58/0x1f4
+   net_rx_action+0x504/0x590
+   _stext+0x1b8/0x418
+   run_ksoftirqd+0x74/0xa4
+   smpboot_thread_fn+0x210/0x3c0
+   kthread+0x1fc/0x210
+   ret_from_fork+0x10/0x20
 
-Depending on the timing, both can observe an empty delegated list
-node, causing the same entry to be added simultaneously on two different
-lists.
+Since [0] .ndo_poll_controller is only needed if driver doesn't or
+partially use NAPI. Because stmmac does so, stmmac_poll_controller
+can be removed fixing the above warning.
 
-The root cause is that the delegated actions infra does not provide
-a single synchronization point. Address the issue reserving an additional
-bit to mark the subflow as scheduled for delegation. Acquiring such bit
-guarantee the caller to own the delegated list node, and being able to
-safely schedule the subflow.
+[0] commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
 
-Clear such bit only when the subflow scheduling is completed, ensuring
-proper barrier in place.
-
-Additionally swap the meaning of the delegated_action bitmask, to allow
-the usage of the existing helper to set multiple bit at once.
-
-Fixes: bcd97734318d ("mptcp: use delegate action to schedule 3rd ack retrans")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231004-send-net-20231004-v1-1-28de4ac663ae@kernel.org
+Cc: <stable@vger.kernel.org> # 5.15.x
+Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/1c156a6d8c9170bd6a17825f2277115525b4d50f.1696429960.git.repk@triplefau.lt
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c | 28 ++++++++++++++--------------
- net/mptcp/protocol.h | 35 ++++++++++++-----------------------
- net/mptcp/subflow.c  | 10 ++++++++--
- 3 files changed, 34 insertions(+), 39 deletions(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 30 -------------------
+ 1 file changed, 30 deletions(-)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index b6e0579e72644..881e05193ac97 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3456,24 +3456,21 @@ static void schedule_3rdack_retransmission(struct sock *ssk)
- 	sk_reset_timer(ssk, &icsk->icsk_delack_timer, timeout);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 6931973028aef..e840cadb2d75a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5940,33 +5940,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
+ 	return IRQ_HANDLED;
  }
  
--void mptcp_subflow_process_delegated(struct sock *ssk)
-+void mptcp_subflow_process_delegated(struct sock *ssk, long status)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
- 	struct sock *sk = subflow->conn;
- 
--	if (test_bit(MPTCP_DELEGATE_SEND, &subflow->delegated_status)) {
-+	if (status & BIT(MPTCP_DELEGATE_SEND)) {
- 		mptcp_data_lock(sk);
- 		if (!sock_owned_by_user(sk))
- 			__mptcp_subflow_push_pending(sk, ssk);
- 		else
- 			__set_bit(MPTCP_PUSH_PENDING, &mptcp_sk(sk)->cb_flags);
- 		mptcp_data_unlock(sk);
--		mptcp_subflow_delegated_done(subflow, MPTCP_DELEGATE_SEND);
- 	}
--	if (test_bit(MPTCP_DELEGATE_ACK, &subflow->delegated_status)) {
-+	if (status & BIT(MPTCP_DELEGATE_ACK))
- 		schedule_3rdack_retransmission(ssk);
--		mptcp_subflow_delegated_done(subflow, MPTCP_DELEGATE_ACK);
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-/* Polling receive - used by NETCONSOLE and other diagnostic tools
+- * to allow network I/O with interrupts disabled.
+- */
+-static void stmmac_poll_controller(struct net_device *dev)
+-{
+-	struct stmmac_priv *priv = netdev_priv(dev);
+-	int i;
+-
+-	/* If adapter is down, do nothing */
+-	if (test_bit(STMMAC_DOWN, &priv->state))
+-		return;
+-
+-	if (priv->plat->multi_msi_en) {
+-		for (i = 0; i < priv->plat->rx_queues_to_use; i++)
+-			stmmac_msi_intr_rx(0, &priv->dma_conf.rx_queue[i]);
+-
+-		for (i = 0; i < priv->plat->tx_queues_to_use; i++)
+-			stmmac_msi_intr_tx(0, &priv->dma_conf.tx_queue[i]);
+-	} else {
+-		disable_irq(dev->irq);
+-		stmmac_interrupt(dev->irq, dev);
+-		enable_irq(dev->irq);
 -	}
- }
- 
- static int mptcp_hash(struct sock *sk)
-@@ -3981,14 +3978,17 @@ static int mptcp_napi_poll(struct napi_struct *napi, int budget)
- 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
- 
- 		bh_lock_sock_nested(ssk);
--		if (!sock_owned_by_user(ssk) &&
--		    mptcp_subflow_has_delegated_action(subflow))
--			mptcp_subflow_process_delegated(ssk);
--		/* ... elsewhere tcp_release_cb_override already processed
--		 * the action or will do at next release_sock().
--		 * In both case must dequeue the subflow here - on the same
--		 * CPU that scheduled it.
--		 */
-+		if (!sock_owned_by_user(ssk)) {
-+			mptcp_subflow_process_delegated(ssk, xchg(&subflow->delegated_status, 0));
-+		} else {
-+			/* tcp_release_cb_override already processed
-+			 * the action or will do at next release_sock().
-+			 * In both case must dequeue the subflow here - on the same
-+			 * CPU that scheduled it.
-+			 */
-+			smp_wmb();
-+			clear_bit(MPTCP_DELEGATE_SCHEDULED, &subflow->delegated_status);
-+		}
- 		bh_unlock_sock(ssk);
- 		sock_put(ssk);
- 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 91d89a0aeb586..4ec8e0a81b5a4 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -430,9 +430,11 @@ struct mptcp_delegated_action {
- 
- DECLARE_PER_CPU(struct mptcp_delegated_action, mptcp_delegated_actions);
- 
--#define MPTCP_DELEGATE_SEND		0
--#define MPTCP_DELEGATE_ACK		1
-+#define MPTCP_DELEGATE_SCHEDULED	0
-+#define MPTCP_DELEGATE_SEND		1
-+#define MPTCP_DELEGATE_ACK		2
- 
-+#define MPTCP_DELEGATE_ACTIONS_MASK	(~BIT(MPTCP_DELEGATE_SCHEDULED))
- /* MPTCP subflow context */
- struct mptcp_subflow_context {
- 	struct	list_head node;/* conn_list of subflows */
-@@ -543,23 +545,24 @@ mptcp_subflow_get_mapped_dsn(const struct mptcp_subflow_context *subflow)
- 	return subflow->map_seq + mptcp_subflow_get_map_offset(subflow);
- }
- 
--void mptcp_subflow_process_delegated(struct sock *ssk);
-+void mptcp_subflow_process_delegated(struct sock *ssk, long actions);
- 
- static inline void mptcp_subflow_delegate(struct mptcp_subflow_context *subflow, int action)
- {
-+	long old, set_bits = BIT(MPTCP_DELEGATE_SCHEDULED) | BIT(action);
- 	struct mptcp_delegated_action *delegated;
- 	bool schedule;
- 
- 	/* the caller held the subflow bh socket lock */
- 	lockdep_assert_in_softirq();
- 
--	/* The implied barrier pairs with mptcp_subflow_delegated_done(), and
--	 * ensures the below list check sees list updates done prior to status
--	 * bit changes
-+	/* The implied barrier pairs with tcp_release_cb_override()
-+	 * mptcp_napi_poll(), and ensures the below list check sees list
-+	 * updates done prior to delegated status bits changes
- 	 */
--	if (!test_and_set_bit(action, &subflow->delegated_status)) {
--		/* still on delegated list from previous scheduling */
--		if (!list_empty(&subflow->delegated_node))
-+	old = set_mask_bits(&subflow->delegated_status, 0, set_bits);
-+	if (!(old & BIT(MPTCP_DELEGATE_SCHEDULED))) {
-+		if (WARN_ON_ONCE(!list_empty(&subflow->delegated_node)))
- 			return;
- 
- 		delegated = this_cpu_ptr(&mptcp_delegated_actions);
-@@ -584,20 +587,6 @@ mptcp_subflow_delegated_next(struct mptcp_delegated_action *delegated)
- 	return ret;
- }
- 
--static inline bool mptcp_subflow_has_delegated_action(const struct mptcp_subflow_context *subflow)
--{
--	return !!READ_ONCE(subflow->delegated_status);
 -}
+-#endif
 -
--static inline void mptcp_subflow_delegated_done(struct mptcp_subflow_context *subflow, int action)
--{
--	/* pairs with mptcp_subflow_delegate, ensures delegate_node is updated before
--	 * touching the status bit
--	 */
--	smp_wmb();
--	clear_bit(action, &subflow->delegated_status);
--}
--
- int mptcp_is_enabled(const struct net *net);
- unsigned int mptcp_get_add_addr_timeout(const struct net *net);
- int mptcp_is_checksum_enabled(const struct net *net);
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index b93b08a75017b..d611783c2601f 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1886,9 +1886,15 @@ static void subflow_ulp_clone(const struct request_sock *req,
- static void tcp_release_cb_override(struct sock *ssk)
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
-+	long status;
- 
--	if (mptcp_subflow_has_delegated_action(subflow))
--		mptcp_subflow_process_delegated(ssk);
-+	/* process and clear all the pending actions, but leave the subflow into
-+	 * the napi queue. To respect locking, only the same CPU that originated
-+	 * the action can touch the list. mptcp_napi_poll will take care of it.
-+	 */
-+	status = set_mask_bits(&subflow->delegated_status, MPTCP_DELEGATE_ACTIONS_MASK, 0);
-+	if (status)
-+		mptcp_subflow_process_delegated(ssk, status);
- 
- 	tcp_release_cb(ssk);
- }
+ /**
+  *  stmmac_ioctl - Entry point for the Ioctl
+  *  @dev: Device pointer.
+@@ -6802,9 +6775,6 @@ static const struct net_device_ops stmmac_netdev_ops = {
+ 	.ndo_eth_ioctl = stmmac_ioctl,
+ 	.ndo_setup_tc = stmmac_setup_tc,
+ 	.ndo_select_queue = stmmac_select_queue,
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-	.ndo_poll_controller = stmmac_poll_controller,
+-#endif
+ 	.ndo_set_mac_address = stmmac_set_mac_address,
+ 	.ndo_vlan_rx_add_vid = stmmac_vlan_rx_add_vid,
+ 	.ndo_vlan_rx_kill_vid = stmmac_vlan_rx_kill_vid,
 -- 
 2.40.1
 
