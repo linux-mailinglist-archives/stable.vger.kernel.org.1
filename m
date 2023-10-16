@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0A1F7CA34F
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 253717CA284
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:51:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233053AbjJPJER (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 05:04:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37340 "EHLO
+        id S232874AbjJPIu7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:50:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233251AbjJPJEP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:04:15 -0400
+        with ESMTP id S232971AbjJPIu6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:50:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73730E1
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:04:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6964C433C7;
-        Mon, 16 Oct 2023 09:04:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8A9FE6
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:50:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374AFC433C9;
+        Mon, 16 Oct 2023 08:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697447054;
-        bh=pZK+6REqwJIGTPeVVlKK6BA0nkkJqnWmmk088iQGPbA=;
+        s=korg; t=1697446256;
+        bh=A/8p6tcMQGJIoXO8r43NTI1S5R9Si3JGRNQy+H15JUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gdV40HUZrVCMHlDGxC4Pt4PP3mr6QrJxCAmhFXLmBuJ3FwP634+LuOiOKq8zGQ830
-         1XN77i1s3A7Jtg8yZQIc72VeiP5KTx6H2q167R51+eu6UW/4qtWw3aL5ASvrUBoW14
-         XKmAP22Tn2kvUGc+8GEeExLvgjGWormuqh6sGLVg=
+        b=MavFkskaLdYDzz1w+a4jhmxtEi/CJx6DB7DKhsN/2MK0CI6RiXST74PajrkDn5n5p
+         8A6eC68cT4dgdIdqmwwiAZkrE5mNC7+dxjkr4Oo9wEPHskSDPCKvJ0tO+aboFKY5qJ
+         czt3U+fZfZD5ounjrX00lqp4/MyOYXJit6HuesGI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yunxiang Li <Yunxiang.Li@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 116/131] dma-buf: add dma_fence_timestamp helper
+        patches@lists.linux.dev, Joel Fernandes <joel@joelfernandes.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.15 100/102] Revert "kernel/sched: Modify initial boot task idle setup"
 Date:   Mon, 16 Oct 2023 10:41:39 +0200
-Message-ID: <20231016084002.950884888@linuxfoundation.org>
+Message-ID: <20231016083956.370044054@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,123 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit b83ce9cb4a465b8f9a3fa45561b721a9551f60e3 upstream.
+This reverts commit 3569ad59664f9fa3ba1d02a78810773b7f49702b which is
+commit cff9b2332ab762b7e0586c793c431a8f2ea4db04 upstream.
 
-When a fence signals there is a very small race window where the timestamp
-isn't updated yet. sync_file solves this by busy waiting for the
-timestamp to appear, but on other ocassions didn't handled this
-correctly.
+Joel writes:
+	Let us drop this patch because it caused new tasks-RCU warnings (both
+	normal and rude tasks RCU) in my stable test rig. We are discussing
+	the "right fix" and at that time a backport can be done.
 
-Provide a dma_fence_timestamp() helper function for this and use it in
-all appropriate cases.
-
-Another alternative would be to grab the spinlock when that happens.
-
-v2 by teddy: add a wait parameter to wait for the timestamp to show up, in case
-   the accurate timestamp is needed and/or the timestamp is not based on
-   ktime (e.g. hw timestamp)
-v3 chk: drop the parameter again for unified handling
-
-Signed-off-by: Yunxiang Li <Yunxiang.Li@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Fixes: 1774baa64f93 ("drm/scheduler: Change scheduled fence track v2")
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-CC: stable@vger.kernel.org
-Link: https://patchwork.freedesktop.org/patch/msgid/20230929104725.2358-1-christian.koenig@amd.com
+Reported-by: Joel Fernandes <joel@joelfernandes.org>
+Link: https://lore.kernel.org/r/CAEXW_YT6bH70M1TF2TttB-_kP=RUv_1nsy_sHYi6_0oCrX3mVQ@mail.gmail.com
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/dma-fence-unwrap.c     |   13 ++++---------
- drivers/dma-buf/sync_file.c            |    9 +++------
- drivers/gpu/drm/scheduler/sched_main.c |    2 +-
- include/linux/dma-fence.h              |   19 +++++++++++++++++++
- 4 files changed, 27 insertions(+), 16 deletions(-)
+ kernel/sched/core.c |    2 +-
+ kernel/sched/idle.c |    1 -
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/dma-buf/dma-fence-unwrap.c
-+++ b/drivers/dma-buf/dma-fence-unwrap.c
-@@ -76,16 +76,11 @@ struct dma_fence *__dma_fence_unwrap_mer
- 		dma_fence_unwrap_for_each(tmp, &iter[i], fences[i]) {
- 			if (!dma_fence_is_signaled(tmp)) {
- 				++count;
--			} else if (test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT,
--					    &tmp->flags)) {
--				if (ktime_after(tmp->timestamp, timestamp))
--					timestamp = tmp->timestamp;
- 			} else {
--				/*
--				 * Use the current time if the fence is
--				 * currently signaling.
--				 */
--				timestamp = ktime_get();
-+				ktime_t t = dma_fence_timestamp(tmp);
-+
-+				if (ktime_after(t, timestamp))
-+					timestamp = t;
- 			}
- 		}
- 	}
---- a/drivers/dma-buf/sync_file.c
-+++ b/drivers/dma-buf/sync_file.c
-@@ -268,13 +268,10 @@ static int sync_fill_fence_info(struct d
- 		sizeof(info->driver_name));
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8725,7 +8725,7 @@ void __init init_idle(struct task_struct
+ 	 * PF_KTHREAD should already be set at this point; regardless, make it
+ 	 * look like a proper per-CPU kthread.
+ 	 */
+-	idle->flags |= PF_KTHREAD | PF_NO_SETAFFINITY;
++	idle->flags |= PF_IDLE | PF_KTHREAD | PF_NO_SETAFFINITY;
+ 	kthread_set_per_cpu(idle, cpu);
  
- 	info->status = dma_fence_get_status(fence);
--	while (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags) &&
--	       !test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags))
--		cpu_relax();
- 	info->timestamp_ns =
--		test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags) ?
--		ktime_to_ns(fence->timestamp) :
--		ktime_set(0, 0);
-+		dma_fence_is_signaled(fence) ?
-+			ktime_to_ns(dma_fence_timestamp(fence)) :
-+			ktime_set(0, 0);
+ #ifdef CONFIG_SMP
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -397,7 +397,6 @@ EXPORT_SYMBOL_GPL(play_idle_precise);
  
- 	return info->status;
- }
---- a/drivers/gpu/drm/scheduler/sched_main.c
-+++ b/drivers/gpu/drm/scheduler/sched_main.c
-@@ -841,7 +841,7 @@ drm_sched_get_cleanup_job(struct drm_gpu
- 
- 		if (next) {
- 			next->s_fence->scheduled.timestamp =
--				job->s_fence->finished.timestamp;
-+				dma_fence_timestamp(&job->s_fence->finished);
- 			/* start TO timer for next job */
- 			drm_sched_start_timeout(sched);
- 		}
---- a/include/linux/dma-fence.h
-+++ b/include/linux/dma-fence.h
-@@ -548,6 +548,25 @@ static inline void dma_fence_set_error(s
- 	fence->error = error;
- }
- 
-+/**
-+ * dma_fence_timestamp - helper to get the completion timestamp of a fence
-+ * @fence: fence to get the timestamp from.
-+ *
-+ * After a fence is signaled the timestamp is updated with the signaling time,
-+ * but setting the timestamp can race with tasks waiting for the signaling. This
-+ * helper busy waits for the correct timestamp to appear.
-+ */
-+static inline ktime_t dma_fence_timestamp(struct dma_fence *fence)
-+{
-+	if (WARN_ON(!test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags)))
-+		return ktime_get();
-+
-+	while (!test_bit(DMA_FENCE_FLAG_TIMESTAMP_BIT, &fence->flags))
-+		cpu_relax();
-+
-+	return fence->timestamp;
-+}
-+
- signed long dma_fence_wait_timeout(struct dma_fence *,
- 				   bool intr, signed long timeout);
- signed long dma_fence_wait_any_timeout(struct dma_fence **fences,
+ void cpu_startup_entry(enum cpuhp_state state)
+ {
+-	current->flags |= PF_IDLE;
+ 	arch_cpu_idle_prepare();
+ 	cpuhp_online_idle(state);
+ 	while (1)
 
 
