@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 248517CA2CB
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:54:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E50C7CA37C
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 11:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230514AbjJPIyy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:54:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52888 "EHLO
+        id S232900AbjJPJGn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 05:06:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229666AbjJPIyy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:54:54 -0400
+        with ESMTP id S232719AbjJPJGm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 05:06:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E18F2E5
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:54:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8354FC433C9;
-        Mon, 16 Oct 2023 08:54:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55F3095
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 02:06:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F78C433BB;
+        Mon, 16 Oct 2023 09:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446490;
-        bh=+9hqlE3XXXThv/HN9dOwSH2vixCkQgdvtwfzC8oFQF4=;
+        s=korg; t=1697447201;
+        bh=nbIHYK8/C75qW4v+2T5Wend5VeTD3PTdLoMdrv+3iXs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HmLauG5WrndsFQGTN3IRogFfRTsDPjCebDz2skyCu/0s3IHRiZwY7+CNIeK8hDZgK
-         ByWuxm+hWhUZcpKesNkhsV3vnYG3sNll7A1mKfP61A/aLE5ouQ27mHYetPVYxg1V/G
-         cToOGWRs1CrmzeU/LuuRTFpLBFZIzXyyolxCR1eM=
+        b=hf89dokdLYtO9yCEQsh79qABizlCqaeycq2C1jnw7iAy4fzeiCp2gjW4OuWVyJnwX
+         vfWDz7FDMpf+OH5oWixCyu7768dFcK78A3u3nu9ppDm9VeKGR8gqHrnhcSlDh1VzIq
+         xqCo5fGY0dn+PqPPGdeqfphUBzmHsqXDFXE2FjhI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
-        Jordan Rife <jrife@google.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 013/131] net: prevent address rewrite in kernel_bind()
-Date:   Mon, 16 Oct 2023 10:39:56 +0200
-Message-ID: <20231016084000.397920112@linuxfoundation.org>
+        patches@lists.linux.dev, Alvin Lee <alvin.lee2@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Samson Tam <samson.tam@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.5 012/191] drm/amd/display: apply edge-case DISPCLK WDIVIDER changes to master OTG pipes only
+Date:   Mon, 16 Oct 2023 10:39:57 +0200
+Message-ID: <20231016084015.689108768@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
+References: <20231016084015.400031271@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,93 +53,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Samson Tam <samson.tam@amd.com>
 
-commit c889a99a21bf124c3db08d09df919f0eccc5ea4c upstream.
+commit b206011bf05069797df1f4c5ce639398728978e2 upstream.
 
-Similar to the change in commit 0bdf399342c5("net: Avoid address
-overwrite in kernel_connect"), BPF hooks run on bind may rewrite the
-address passed to kernel_bind(). This change
+[Why]
+The edge-case DISPCLK WDIVIDER changes call stream_enc functions.
+But with MPC pipes, downstream pipes have null stream_enc and will
+ cause crash.
 
-1) Makes a copy of the bind address in kernel_bind() to insulate
-   callers.
-2) Replaces direct calls to sock->ops->bind() in net with kernel_bind()
+[How]
+Only call stream_enc functions for pipes that are OTG master.
 
-Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Samson Tam <samson.tam@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_sync.c |    4 ++--
- net/rds/tcp_connect.c           |    2 +-
- net/rds/tcp_listen.c            |    2 +-
- net/socket.c                    |    6 +++++-
- 4 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c |    4 ++--
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/netfilter/ipvs/ip_vs_sync.c
-+++ b/net/netfilter/ipvs/ip_vs_sync.c
-@@ -1441,7 +1441,7 @@ static int bind_mcastif_addr(struct sock
- 	sin.sin_addr.s_addr  = addr;
- 	sin.sin_port         = 0;
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn20/dcn20_clk_mgr.c
+@@ -157,7 +157,7 @@ void dcn20_update_clocks_update_dentist(
+ 			int32_t N;
+ 			int32_t j;
  
--	return sock->ops->bind(sock, (struct sockaddr*)&sin, sizeof(sin));
-+	return kernel_bind(sock, (struct sockaddr *)&sin, sizeof(sin));
- }
+-			if (!pipe_ctx->stream)
++			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
+ 				continue;
+ 			/* Virtual encoders don't have this function */
+ 			if (!stream_enc->funcs->get_fifo_cal_average_level)
+@@ -188,7 +188,7 @@ void dcn20_update_clocks_update_dentist(
+ 			int32_t N;
+ 			int32_t j;
  
- static void get_mcast_sockaddr(union ipvs_sockaddr *sa, int *salen,
-@@ -1548,7 +1548,7 @@ static int make_receive_sock(struct netn
+-			if (!pipe_ctx->stream)
++			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
+ 				continue;
+ 			/* Virtual encoders don't have this function */
+ 			if (!stream_enc->funcs->get_fifo_cal_average_level)
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn32/dcn32_clk_mgr.c
+@@ -355,7 +355,7 @@ static void dcn32_update_clocks_update_d
+ 			int32_t N;
+ 			int32_t j;
  
- 	get_mcast_sockaddr(&mcast_addr, &salen, &ipvs->bcfg, id);
- 	sock->sk->sk_bound_dev_if = dev->ifindex;
--	result = sock->ops->bind(sock, (struct sockaddr *)&mcast_addr, salen);
-+	result = kernel_bind(sock, (struct sockaddr *)&mcast_addr, salen);
- 	if (result < 0) {
- 		pr_err("Error binding to the multicast addr\n");
- 		goto error;
---- a/net/rds/tcp_connect.c
-+++ b/net/rds/tcp_connect.c
-@@ -145,7 +145,7 @@ int rds_tcp_conn_path_connect(struct rds
- 		addrlen = sizeof(sin);
- 	}
+-			if (!pipe_ctx->stream)
++			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
+ 				continue;
+ 			/* Virtual encoders don't have this function */
+ 			if (!stream_enc->funcs->get_fifo_cal_average_level)
+@@ -401,7 +401,7 @@ static void dcn32_update_clocks_update_d
+ 			int32_t N;
+ 			int32_t j;
  
--	ret = sock->ops->bind(sock, addr, addrlen);
-+	ret = kernel_bind(sock, addr, addrlen);
- 	if (ret) {
- 		rdsdebug("bind failed with %d at address %pI6c\n",
- 			 ret, &conn->c_laddr);
---- a/net/rds/tcp_listen.c
-+++ b/net/rds/tcp_listen.c
-@@ -304,7 +304,7 @@ struct socket *rds_tcp_listen_init(struc
- 		addr_len = sizeof(*sin);
- 	}
- 
--	ret = sock->ops->bind(sock, (struct sockaddr *)&ss, addr_len);
-+	ret = kernel_bind(sock, (struct sockaddr *)&ss, addr_len);
- 	if (ret < 0) {
- 		rdsdebug("could not bind %s listener socket: %d\n",
- 			 isv6 ? "IPv6" : "IPv4", ret);
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -3454,7 +3454,11 @@ static long compat_sock_ioctl(struct fil
- 
- int kernel_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- {
--	return sock->ops->bind(sock, addr, addrlen);
-+	struct sockaddr_storage address;
-+
-+	memcpy(&address, addr, addrlen);
-+
-+	return sock->ops->bind(sock, (struct sockaddr *)&address, addrlen);
- }
- EXPORT_SYMBOL(kernel_bind);
- 
+-			if (!pipe_ctx->stream)
++			if (!resource_is_pipe_type(pipe_ctx, OTG_MASTER))
+ 				continue;
+ 			/* Virtual encoders don't have this function */
+ 			if (!stream_enc->funcs->get_fifo_cal_average_level)
 
 
