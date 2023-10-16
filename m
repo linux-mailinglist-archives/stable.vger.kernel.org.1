@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7E4F7CA2C3
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B25147CA1F1
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232905AbjJPIyM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:54:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53064 "EHLO
+        id S230152AbjJPInf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:43:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233046AbjJPIyL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:54:11 -0400
+        with ESMTP id S232521AbjJPInd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:43:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66096EB
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:54:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AE2C433C8;
-        Mon, 16 Oct 2023 08:54:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E00D9B
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:43:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F726C433CA;
+        Mon, 16 Oct 2023 08:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446449;
-        bh=P5CW07p7sdbG6sdw+jFaxPcJX7RS1VZXS3X575/2EGU=;
+        s=korg; t=1697445811;
+        bh=tGXywBlPSzZ1eHkYzCboLo9uzU5IPvKsdqtpZlNENiw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bwxholyKoJMzLOklA/kfymzgStN3Ydfiui/FWMGFWeoqYTjiZ7BGQrJ2bH7avOdhz
-         eXfQh2edQ5Y5y/P+CCuIAKNEGsYA36WBGERUGPesQfm18ZVIY9hDXROYymJ/3B1F5R
-         87ElwbxKPQ8DEBjqm7t0YKkx5aGvlPP6UANA/MQ0=
+        b=ub/xvAQM4ZqxDf2U/OwUk6xHV8MYfZVFK4EkjseoLf5yppq15VEslD7WGsdhntJBf
+         uNbZwv7PCrqDKifcH+Vod533ndP+Z9jLl0qwgIRtHyRYtCHruRKocOdJo850Iur8EN
+         rtg9fqsgx1Av0dSk0hCAjc4NNnsY80sagTfK/tT8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fabian Vogt <fabian@ritter-vogt.de>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/131] ALSA: hda/realtek: Add quirk for mute LEDs on HP ENVY x360 15-eu0xxx
+        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
+        Jordan Rife <jrife@google.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 014/102] net: prevent address rewrite in kernel_bind()
 Date:   Mon, 16 Oct 2023 10:40:13 +0200
-Message-ID: <20231016084000.814945853@linuxfoundation.org>
+Message-ID: <20231016083954.068287018@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-References: <20231016084000.050926073@linuxfoundation.org>
+In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
+References: <20231016083953.689300946@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,62 +51,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabian Vogt <fabian@ritter-vogt.de>
+From: Jordan Rife <jrife@google.com>
 
-[ Upstream commit c99c26b16c1544534ebd6a5f27a034f3e44d2597 ]
+commit c889a99a21bf124c3db08d09df919f0eccc5ea4c upstream.
 
-The LED for the mic mute button is controlled by GPIO2.
-The mute button LED is slightly more complex, it's controlled by two bits
-in coeff 0x0b.
+Similar to the change in commit 0bdf399342c5("net: Avoid address
+overwrite in kernel_connect"), BPF hooks run on bind may rewrite the
+address passed to kernel_bind(). This change
 
-Signed-off-by: Fabian Vogt <fabian@ritter-vogt.de>
-Link: https://lore.kernel.org/r/2693091.mvXUDI8C0e@fabians-envy
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: d93eeca627db ("ALSA: hda/realtek - ALC287 merge RTK codec with CS CS35L41 AMP")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) Makes a copy of the bind address in kernel_bind() to insulate
+   callers.
+2) Replaces direct calls to sock->ops->bind() in net with kernel_bind()
+
+Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
+Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+Cc: stable@vger.kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/netfilter/ipvs/ip_vs_sync.c |    4 ++--
+ net/rds/tcp_connect.c           |    2 +-
+ net/rds/tcp_listen.c            |    2 +-
+ net/socket.c                    |    6 +++++-
+ 4 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 39d2ac6ae99a8..44dc19c095e25 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7244,6 +7244,7 @@ enum {
- 	ALC236_FIXUP_DELL_DUAL_CODECS,
- 	ALC287_FIXUP_CS35L41_I2C_2_THINKPAD_ACPI,
- 	ALC245_FIXUP_HP_MUTE_LED_COEFBIT,
-+	ALC245_FIXUP_HP_X360_MUTE_LEDS,
- };
+--- a/net/netfilter/ipvs/ip_vs_sync.c
++++ b/net/netfilter/ipvs/ip_vs_sync.c
+@@ -1441,7 +1441,7 @@ static int bind_mcastif_addr(struct sock
+ 	sin.sin_addr.s_addr  = addr;
+ 	sin.sin_port         = 0;
  
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -9317,6 +9318,12 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc245_fixup_hp_mute_led_coefbit,
- 	},
-+	[ALC245_FIXUP_HP_X360_MUTE_LEDS] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc245_fixup_hp_mute_led_coefbit,
-+		.chained = true,
-+		.chain_id = ALC245_FIXUP_HP_GPIO_LED
-+	},
- };
+-	return sock->ops->bind(sock, (struct sockaddr*)&sin, sizeof(sin));
++	return kernel_bind(sock, (struct sockaddr *)&sin, sizeof(sin));
+ }
  
- static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-@@ -9552,6 +9559,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8870, "HP ZBook Fury 15.6 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x8873, "HP ZBook Studio 15.6 Inch G8 Mobile Workstation PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x887a, "HP Laptop 15s-eq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
-+	SND_PCI_QUIRK(0x103c, 0x888a, "HP ENVY x360 Convertible 15-eu0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
- 	SND_PCI_QUIRK(0x103c, 0x888d, "HP ZBook Power 15.6 inch G8 Mobile Workstation PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8895, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_SPEAKERS_MICMUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8896, "HP EliteBook 855 G8 Notebook PC", ALC285_FIXUP_HP_MUTE_LED),
--- 
-2.40.1
-
+ static void get_mcast_sockaddr(union ipvs_sockaddr *sa, int *salen,
+@@ -1548,7 +1548,7 @@ static int make_receive_sock(struct netn
+ 
+ 	get_mcast_sockaddr(&mcast_addr, &salen, &ipvs->bcfg, id);
+ 	sock->sk->sk_bound_dev_if = dev->ifindex;
+-	result = sock->ops->bind(sock, (struct sockaddr *)&mcast_addr, salen);
++	result = kernel_bind(sock, (struct sockaddr *)&mcast_addr, salen);
+ 	if (result < 0) {
+ 		pr_err("Error binding to the multicast addr\n");
+ 		goto error;
+--- a/net/rds/tcp_connect.c
++++ b/net/rds/tcp_connect.c
+@@ -142,7 +142,7 @@ int rds_tcp_conn_path_connect(struct rds
+ 		addrlen = sizeof(sin);
+ 	}
+ 
+-	ret = sock->ops->bind(sock, addr, addrlen);
++	ret = kernel_bind(sock, addr, addrlen);
+ 	if (ret) {
+ 		rdsdebug("bind failed with %d at address %pI6c\n",
+ 			 ret, &conn->c_laddr);
+--- a/net/rds/tcp_listen.c
++++ b/net/rds/tcp_listen.c
+@@ -301,7 +301,7 @@ struct socket *rds_tcp_listen_init(struc
+ 		addr_len = sizeof(*sin);
+ 	}
+ 
+-	ret = sock->ops->bind(sock, (struct sockaddr *)&ss, addr_len);
++	ret = kernel_bind(sock, (struct sockaddr *)&ss, addr_len);
+ 	if (ret < 0) {
+ 		rdsdebug("could not bind %s listener socket: %d\n",
+ 			 isv6 ? "IPv6" : "IPv4", ret);
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -3400,7 +3400,11 @@ static long compat_sock_ioctl(struct fil
+ 
+ int kernel_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
+ {
+-	return sock->ops->bind(sock, addr, addrlen);
++	struct sockaddr_storage address;
++
++	memcpy(&address, addr, addrlen);
++
++	return sock->ops->bind(sock, (struct sockaddr *)&address, addrlen);
+ }
+ EXPORT_SYMBOL(kernel_bind);
+ 
 
 
