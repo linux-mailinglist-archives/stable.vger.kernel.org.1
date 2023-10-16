@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E58207CA22A
-	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:46:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59DBC7CA206
+	for <lists+stable@lfdr.de>; Mon, 16 Oct 2023 10:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232749AbjJPIqv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 04:46:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40898 "EHLO
+        id S232605AbjJPIor (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 04:44:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232763AbjJPIqu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:46:50 -0400
+        with ESMTP id S232568AbjJPIog (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 04:44:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44AA6E8
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:46:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E31C433C8;
-        Mon, 16 Oct 2023 08:46:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F3DD9B
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 01:44:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B686C433C9;
+        Mon, 16 Oct 2023 08:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697446007;
-        bh=+947HVVnI9nlDJ4nTyv/eWxtWGPmA3x0abXFWXXFVdI=;
+        s=korg; t=1697445874;
+        bh=sIYxOth2Dg98zUHYXpL8BzT/jN19Sbn0YRrYXgXkkVE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JXquw1ae6dDsL6YrjSqL4CNk3Q4gX4okh56k3bJf89zRAbPic19PKUQR20e6jP61U
-         4NW2toH4iBSFE7p94EWU9oO4og4UKtaO8iebJk21axpWbtoRlcpxnFwkEQzH98Blzo
-         fokYY6M9FMpDM6Ftn8PDKx17ylc8YGyy8ljeGyt8=
+        b=1AVkeDp9hgyng5834tOX58+kjFL3Sj+kI6rRXe/mUY3H/WoR+n7xwFlcleM0NvMCB
+         rg5C2EQbyi55jmWLG9r4CmBrGxg6dOOkFVZW37ST79ZCRqzbBJS1OzC404x+DkD2fl
+         5EGrTRmiXOeAKRJ7Txj8xLDBIp7OIcDHLwIG10Mg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Nia Espera <nespera@igalia.com>,
         Abhinav Kumar <quic_abhinavk@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 020/102] drm/msm/dsi: fix irq_of_parse_and_map() error checking
-Date:   Mon, 16 Oct 2023 10:40:19 +0200
-Message-ID: <20231016083954.226580193@linuxfoundation.org>
+Subject: [PATCH 5.15 021/102] drm/msm/dpu: change _dpu_plane_calc_bw() to use u64 to avoid overflow
+Date:   Mon, 16 Oct 2023 10:40:20 +0200
+Message-ID: <20231016083954.252327031@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
 References: <20231016083953.689300946@linuxfoundation.org>
@@ -55,43 +56,65 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit 6a1d4c7976dd1ee7c9f80bc8e62801ec7b1f2f58 ]
+[ Upstream commit 95e681ca3b65e4ce3d2537b47672d787b7d30375 ]
 
-The irq_of_parse_and_map() function returns zero on error.  It
-never returns negative error codes.  Fix the check.
+_dpu_plane_calc_bw() uses integer variables to calculate the bandwidth
+used during plane bandwidth calculations. However for high resolution
+displays this overflows easily and leads to below errors
 
-Fixes: a689554ba6ed ("drm/msm: Initial add DSI connector support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/557715/
-Link: https://lore.kernel.org/r/4f3c5c98-04f7-43f7-900f-5d7482c83eef@moroto.mountain
+[dpu error]crtc83 failed performance check -7
+
+Promote the intermediate variables to u64 to avoid overflow.
+
+changes in v2:
+	- change to u64 where actually needed in the math
+
+Fixes: c33b7c0389e1 ("drm/msm/dpu: add support for clk and bw scaling for display")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reported-by: Nia Espera <nespera@igalia.com>
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/32
+Tested-by: Nia Espera <nespera@igalia.com>
+Patchwork: https://patchwork.freedesktop.org/patch/556288/
+Link: https://lore.kernel.org/r/20230908012616.20654-1-quic_abhinavk@quicinc.com
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index b577fed38c6d4..85dec6167e0b6 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -1917,10 +1917,9 @@ int msm_dsi_host_init(struct msm_dsi *msm_dsi)
- 	}
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+index 59390dc3d1b8c..9c30ab106b0a1 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+@@ -158,6 +158,7 @@ static void _dpu_plane_calc_bw(struct drm_plane *plane,
+ 	const struct dpu_format *fmt = NULL;
+ 	struct dpu_kms *dpu_kms = _dpu_plane_get_kms(plane);
+ 	int src_width, src_height, dst_height, fps;
++	u64 plane_pixel_rate, plane_bit_rate;
+ 	u64 plane_prefill_bw;
+ 	u64 plane_bw;
+ 	u32 hw_latency_lines;
+@@ -180,13 +181,12 @@ static void _dpu_plane_calc_bw(struct drm_plane *plane,
+ 	scale_factor = src_height > dst_height ?
+ 		mult_frac(src_height, 1, dst_height) : 1;
  
- 	msm_host->irq = irq_of_parse_and_map(pdev->dev.of_node, 0);
--	if (msm_host->irq < 0) {
--		ret = msm_host->irq;
--		dev_err(&pdev->dev, "failed to get irq: %d\n", ret);
--		return ret;
-+	if (!msm_host->irq) {
-+		dev_err(&pdev->dev, "failed to get irq\n");
-+		return -EINVAL;
- 	}
+-	plane_bw =
+-		src_width * mode->vtotal * fps * fmt->bpp *
+-		scale_factor;
++	plane_pixel_rate = src_width * mode->vtotal * fps;
++	plane_bit_rate = plane_pixel_rate * fmt->bpp;
  
- 	/* do not autoenable, will be enabled later */
+-	plane_prefill_bw =
+-		src_width * hw_latency_lines * fps * fmt->bpp *
+-		scale_factor * mode->vtotal;
++	plane_bw = plane_bit_rate * scale_factor;
++
++	plane_prefill_bw = plane_bw * hw_latency_lines;
+ 
+ 	if ((vbp+vpw) > hw_latency_lines)
+ 		do_div(plane_prefill_bw, (vbp+vpw));
 -- 
 2.40.1
 
