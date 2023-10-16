@@ -2,117 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE15F7CB6B8
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 00:52:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 62B4C7CB6C3
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 00:56:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231560AbjJPWwL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 16 Oct 2023 18:52:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44174 "EHLO
+        id S233806AbjJPW4g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 16 Oct 2023 18:56:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232896AbjJPWwK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 18:52:10 -0400
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8919095;
-        Mon, 16 Oct 2023 15:52:08 -0700 (PDT)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39GLH7hi016583;
-        Mon, 16 Oct 2023 22:51:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=qcppdkim1;
- bh=aTf3anfLH8/yKr6bETOnY4WCnCGyzbit9cJjSDMWkw0=;
- b=nwLgnPAttkUiCNQTVJraOAOXNEaU3VI5na8RhOUuB0J704jXlifrRKlSzw2ZOs+MjJSR
- /3fptKrT1KHj+TqPbLp1k7Q3QOz+MAL9OOmQ2orY7zjOwaW7Ihv+jjMHmHgliebNGEmi
- ktOkrc8PcKcpgCcDUAyPt5NydFmQ8WVLzZArGjUhAmwf1IvAG+94MqZHCQ/oQcAeMfm6
- SchpP8+oGDLQtvcd7yQpcDgFmsD3cnUzp5TLbp6yWvGz6kve8jGvjQ3LU+ez7ukykvFg
- mmJFy1HsZLdkl0cVFPL0zlLGpwmOqap75o/0FgNauHrMXuoBzaxhYDuhBmDjTZN6ElER Hg== 
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3ts0xkt649-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 16 Oct 2023 22:51:58 +0000
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-        by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39GMplUK012901
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 16 Oct 2023 22:51:47 GMT
-Received: from [10.48.240.22] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Mon, 16 Oct
- 2023 15:51:47 -0700
-Message-ID: <32ab8646-d41d-4dd2-a8c8-93845f198462@quicinc.com>
-Date:   Mon, 16 Oct 2023 15:51:46 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: wilc1000: use vmm_table as array in wilc struct
-Content-Language: en-US
-To:     =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-        Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-        Kalle Valo <kvalo@kernel.org>,
-        Michael Walle <mwalle@kernel.org>
-CC:     <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Ajay Singh <ajay.kathat@microchip.com>,
-        <stable@vger.kernel.org>
-References: <20231016-wilc1000_tx_oops-v2-1-8d1982a29ef1@bootlin.com>
- <bb95048f-2540-4d42-abb2-3132d33cd6c3@quicinc.com>
- <74eac5f2-228b-4775-a101-53b2fdd5bf86@bootlin.com>
-From:   Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <74eac5f2-228b-4775-a101-53b2fdd5bf86@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.49.16.6]
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: MGT4cR8Hr7M8hEnoqiQSu19wzUAKNlZz
-X-Proofpoint-ORIG-GUID: MGT4cR8Hr7M8hEnoqiQSu19wzUAKNlZz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-16_12,2023-10-12_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
- spamscore=0 priorityscore=1501 mlxlogscore=679 impostorscore=0
- malwarescore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 mlxscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310160199
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232345AbjJPW4g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 16 Oct 2023 18:56:36 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60A37B4
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 15:56:33 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-59b5a586da6so37610657b3.1
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 15:56:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697496992; x=1698101792; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3smAdDTzn2P0VCmFOhSk5tC42b6tLqqxOm7kRDHbaEo=;
+        b=L/kZ6nCreQEjcpsRdlbqgYnKkLDwU+nq36sodt9Y2vDq/z7Sd3mJbx7dEkH2tO8wcE
+         EIUjne6Nq77Z1yw88d/3yJ/gDKAjgfPgFPIbDWy3F1BIl+OQexKZcYptDtCzpbbSpmfI
+         UHRlM6l5oe+odETxmoC5kOqD0QZloG4xkzlX6L6fWEDeuOYqvE6VwSDGbopNKirFEg9G
+         Ga70PgeOgzdc7fuFlTLRnNSoUOhU/9+GIUm9efhTN1nZWYCQ18+1cbQLF3fe9fmDAwV5
+         /Xa9HbYb15jpMnmKLh5QI2s7cn+C20q4BRkIO0r+faeCP+9AAVcFflw5QwLBdCS+eaen
+         cJbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697496992; x=1698101792;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3smAdDTzn2P0VCmFOhSk5tC42b6tLqqxOm7kRDHbaEo=;
+        b=qJfqCY/2LVpmB8Tm2TTlBc9Wfcl2NyWUZM1yz1QC9HnKYxUKcf6VX8uSNT384JiKz8
+         60aROy64gFmgNEvX2oCUgNqythPmnA8oqk3bM7mRpBTenXeNla5A9egNqItWePgJ+oMe
+         zFWleq3kYoEbUT+6rsGwjRVNFguN5EiJSIO9MXfVJNZQ9LK+dpSAC1Jiad+ACGgQHmDK
+         LfQvGCoIZGidYCisgncrAhzH3Sc9RPanFTLwa5WI+2gMH70dsmkCPDO/N2mhIWT3LEa2
+         b+i/j7cTYEJl1USaL7ZPtZMw9GSyPtNMBRgrrd9tCl2XtarXZ+EWD1LNHVydaD/66L2d
+         O4qQ==
+X-Gm-Message-State: AOJu0YzfoDveRFt1KgoBRT0y/GGED/F3PvqaCdAz7jRFlQyLm48EO+0V
+        NJYSFWocj0cvD4sa3KbddSCVbJoftvNMsbw=
+X-Google-Smtp-Source: AGHT+IH5eUfE57xNCRlerq+1ZHFC/TYz3mYH4cw8P3ZRB9L9IsWtGcb0/cu8cD63zfhQ4OYODSU/yt3GyB3bgd0=
+X-Received: from rdbabiera.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:18a8])
+ (user=rdbabiera job=sendgmr) by 2002:a05:690c:2f05:b0:5a8:207a:143a with SMTP
+ id ev5-20020a05690c2f0500b005a8207a143amr7161ywb.0.1697496992644; Mon, 16 Oct
+ 2023 15:56:32 -0700 (PDT)
+Date:   Mon, 16 Oct 2023 22:56:18 +0000
+Mime-Version: 1.0
+X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1930; i=rdbabiera@google.com;
+ h=from:subject; bh=ShV0SNy5JY0KPfr6JnaQ4ZB+BHZ8LD1b/XS6KEqWo7g=;
+ b=owGbwMvMwCFW0bfok0KS4TbG02pJDKm6+yetf9DyVb/nUv+2mz3Xus5nHHTe6zTd7F9ceuG7o
+ GsJXhXXO0pZGMQ4GGTFFFl0/fMMblxJ3TKHs8YYZg4rE8gQBi5OAZjI1CxGhtZdD5P+T18qu06n
+ WnLD/Gl5dz4cClJk/7am+ufHBB0//9cMfzi6dWdWJ67TcXW5HK309eu7Ncn9ig3nJvMWvirj2VW 8mgUA
+X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
+Message-ID: <20231016225617.3182108-2-rdbabiera@google.com>
+Subject: [PATCH v1] usb: typec: altmodes/displayport: verify compatible
+ source/sink role combination
+From:   RD Babiera <rdbabiera@google.com>
+To:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org
+Cc:     badhri@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/16/2023 2:23 PM, Alexis Lothoré wrote:
-> Hello Jeff,
-> 
-> On 10/16/23 17:26, Jeff Johnson wrote:
->> On 10/16/2023 1:29 AM, Alexis Lothoré wrote:
->>> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c
->>> b/drivers/net/wireless/microchip/wilc1000/wlan.c
->>> index 58bbf50081e4..e4113f2dfadf 100644
->>> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
->>> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
->>> @@ -1492,7 +1492,7 @@ int wilc_wlan_init(struct net_device *dev)
->>>        }
->>>          if (!wilc->vmm_table)
->>> -        wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE, GFP_KERNEL);
->>> +        wilc->vmm_table = kzalloc(WILC_VMM_TBL_SIZE * sizeof(u32), GFP_KERNEL);
->>
->> this is probably OK since the values are constant, but kcalloc() is generally
->> preferred
-> 
-> Ok, I can submit a new version with kcalloc. One thing that I do not understand
-> however is why checkpatch.pl remains silent on this one. I guess it should raise
-> the ALLOC_WITH_MULTIPLY warning here. I tried to dive into the script to
-> understand why, but I drowned in regexes (and Perl, with which I am not familiar
-> with). Could it be because of both sides being constant ?
+DisplayPort Alt Mode CTS test 10.3.8 states that both sides of the
+connection shall be compatible with one another such that the connection
+is not Source to Source or Sink to Sink.
 
-I also drown when looking at checkpatch.pl -- so many "write-only" 
-regexes! But I think the following is what excludes your patch:
-$r1 =~ /^[A-Z_][A-Z0-9_]*$
+The DisplayPort driver currently checks for a compatible pin configuration
+that resolves into a source and sink combination. The CTS test is designed
+to send a Discover Modes message that has a compatible pin configuration
+but advertises the same port capability as the device; the current check
+fails this.
 
-It is a compile-time constant so the compiler can flag on overflow, so 
-it's your call to modify or not.
+Verify that the port and port partner resolve into a valid source and sink
+combination before checking for a compatible pin configuration.
 
-/jeff
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+---
+ drivers/usb/typec/altmodes/displayport.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index 718da02036d8..3b35a6b8cb72 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -575,9 +575,18 @@ int dp_altmode_probe(struct typec_altmode *alt)
+ 	struct fwnode_handle *fwnode;
+ 	struct dp_altmode *dp;
+ 	int ret;
++	int port_cap, partner_cap;
+ 
+ 	/* FIXME: Port can only be DFP_U. */
+ 
++	/* Make sure that the port and partner can resolve into source and sink */
++	port_cap = DP_CAP_CAPABILITY(port->vdo);
++	partner_cap = DP_CAP_CAPABILITY(alt->vdo);
++	if (!((port_cap & DP_CAP_DFP_D) && (partner_cap & DP_CAP_UFP_D)) &&
++	    !((port_cap & DP_CAP_UFP_D) && (partner_cap & DP_CAP_DFP_D))) {
++		return -ENODEV;
++	}
++
+ 	/* Make sure we have compatiple pin configurations */
+ 	if (!(DP_CAP_PIN_ASSIGN_DFP_D(port->vdo) &
+ 	      DP_CAP_PIN_ASSIGN_UFP_D(alt->vdo)) &&
+
+base-commit: d0d27ef87e1ca974ed93ed4f7d3c123cbd392ba6
+-- 
+2.42.0.655.g421f12c284-goog
+
