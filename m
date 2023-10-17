@@ -2,89 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B41D67CBAA0
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 08:13:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A2847CBC3C
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 09:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234446AbjJQGNl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 02:13:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48138 "EHLO
+        id S234599AbjJQH3c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 03:29:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234440AbjJQGNl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 02:13:41 -0400
-Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6781B0
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 23:13:39 -0700 (PDT)
-Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2c50cd16f3bso45962731fa.2
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 23:13:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697523218; x=1698128018; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PrU5F1bkeMRXYqVBf2Cia9LhULD3R/o5tbScjMTV1EE=;
-        b=A3k9Sz59vkGpN4V1/Ym2EFfdP3wjxIBGXzuyPtzH65ub3PnS37WkOAR4c0LKo5RJwZ
-         zdJTHbWU5beJg3pZ7+mRm/ylYDHE4qKF0TfwK4km4SLGsXAyllwPY/3HPR/8Jh6mPO05
-         JLBIVZR+0X+nqVfPisVmg/qj4i2/tPs60YlYkONHWAP63KGRARUoVCHEuPdkUkQnu/+d
-         ADKTjOCSBoXtUiRCTcI4Kjly3ZNuZpxAaUofQa8hYDbTaEd3ic2HMqrf6+FrxzRmzslz
-         cyoAFa084tyClUZDFWsFdSUsx4ShfP6NTPiB1hgAMzee5i4DfdvAjnfH6PNhGbYuP5Ke
-         ypQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697523218; x=1698128018;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PrU5F1bkeMRXYqVBf2Cia9LhULD3R/o5tbScjMTV1EE=;
-        b=Rv6uOc8v8U0An/3YYxbZvAz5dVHEY8i6quW00Kr4CNdoFyf9QoZ5JoIf5IZ2M6uYFX
-         405hFcgt0OEWYZpCC/3flTE6ZpnqrjbDBhe3FcxY0+44x79zPPfYh1Bu3naYpZkH5Nqv
-         mVw1JT2ClcXuALl6Spko8MYTOtLxeVb33LIp1itV2QhgUU/CUTNRbXWvutSvBrqQ2Usa
-         izuQ/KOe6/wQPxGYAMS6i23m1N1wdTfYO1XmgH+h52GOPT2dnUSC1ERa57DDubVq4bSF
-         hldpeDrUFj8LltvUKFuH1I7Q0W+vxJPb0BBvnKuaa6Cg0bEQIpyvrWJaZf7XQx65dkr0
-         yN8Q==
-X-Gm-Message-State: AOJu0YzprGZKrneJ6Aa4v8mP/7LG0q1k6oBKOHRe9OIcnzyOO7Tux1OR
-        EqS/niX1vDb4OU22gEMck6i5dGEBN8rouJv1s7M=
-X-Google-Smtp-Source: AGHT+IFzgW6u6TtjDdSph95Upq8dw97wURcnv9OuHYddB3zyqXzRhjQnpvdxFBpbTt+PQYDOxPppivyPzvvLZQADLr4=
-X-Received: by 2002:a2e:bea5:0:b0:2c3:c75e:18cf with SMTP id
- a37-20020a2ebea5000000b002c3c75e18cfmr1090897ljr.0.1697523217484; Mon, 16 Oct
- 2023 23:13:37 -0700 (PDT)
+        with ESMTP id S234641AbjJQH3a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 03:29:30 -0400
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23A2BF2
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 00:29:25 -0700 (PDT)
+Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
+        by cmsmtp with ESMTPS
+        id sWRAqaCG4OFScseW4qZSHg; Tue, 17 Oct 2023 07:29:24 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTPS
+        id seW3q4CUXYl3UseW3qgQcy; Tue, 17 Oct 2023 07:29:23 +0000
+X-Authority-Analysis: v=2.4 cv=HdoH8wI8 c=1 sm=1 tr=0 ts=652e37d3
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=nVRhpLHY2Gk3QZ1Fk7gA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=gdSZ8J7VlPPv7NrYIB84zZHVdrpdCDfCf/PUphb8FMk=; b=WWPW8BcIOioFpyzVNjW+pqRjXt
+        xpQti3YNFJtNaXd9WHTYZAc6FU6a0Wo0KGN0RTnPETQx5vEdCnL/TTjE2dv8DADsk+ixVCVNli16b
+        89ePiOFA5D+nJXl4/lXeAJAe/G/OfVOpfPSE8+DghMhdtYTdMQ1Gf/LMnFkIC6fTANOAvBxepgWgz
+        K6sOCIQw62yk7+ihf5znoYEPm6e4vkKZmKpp5CmtU1V65mxIzEFrS1PQfh3i2VqMzcCz5R+LEt1N6
+        hxAxjCJovW2fj1OCkFdSHecaHo5cqUvUQpeJjHxWcgSn6J9W2VZHuRbsdE1EXXCRtSrJCqIFJmwSh
+        kujegF3Q==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:51574 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.1)
+        (envelope-from <re@w6rz.net>)
+        id 1qseW0-001WUJ-2Z;
+        Tue, 17 Oct 2023 01:29:20 -0600
+Subject: Re: [PATCH 6.5 000/191] 6.5.8-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20231016084015.400031271@linuxfoundation.org>
+In-Reply-To: <20231016084015.400031271@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <cebdc3ca-679e-6897-ad35-b6a3ef42ce8c@w6rz.net>
+Date:   Tue, 17 Oct 2023 00:29:14 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-From:   Shyam Prasad N <nspmangalore@gmail.com>
-Date:   Tue, 17 Oct 2023 11:43:26 +0530
-Message-ID: <CANT5p=rReboKPbEySnZsFAn8Zv2ZzgQQ8LhyTxkt538QgyxB7A@mail.gmail.com>
-Subject: [request for patch inclusion to 5.15 stable] cifs: fix mid leak
- during reconnection after timeout threshold
-To:     Greg KH <gregkh@linuxfoundation.org>,
-        Stable <stable@vger.kernel.org>
-Cc:     Steve French <smfrench@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1qseW0-001WUJ-2Z
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:51574
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org:  HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfIR89MhQl8B8d6Uio0MlLHc8vgPEq+3Wl/uXZGXoV2nPiFVIPdBrk9LFzAtoBvUPKPYCYPfuDIs/nr84EmGvgWYTegAVwmyo311foCfnQG7aHAmfkDnI
+ cUyKD7IjnpBt+yA9D+Inez+0R+aW4N0WiKlF+bEdRZ0ntWtxr+t8Ur0dprM9UhLp/hBdXQwOFfGw7w==
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+On 10/16/23 1:39 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.8 release.
+> There are 191 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 18 Oct 2023 08:39:48 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.8-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-It recently came to my attention that this patch:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/patch/?id=69cba9d3c1284e0838ae408830a02c4a063104bc
-[Upstream commit 69cba9d3c1284e0838ae408830a02c4a063104bc]
-... which is marked with Fixes tag for a change that went into 5.9
-kernel, was taken into 6.4 and 6.1 stable trees.
-However, I do not see this in the 5.15 stable tree.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-I got emails about this fix being taken to the 6.4 and 6.1 stable. But
-I do not see any communication about 5.15 kernel.
+Tested-by: Ron Economos <re@w6rz.net>
 
-Was this missed? Or is there something in the process that I missed?
-Based on the kernel documentation about commit tags, I assumed that
-for commits that have the "Fixes: " tag, it was not necessary to add
-the "CC: stable" as well.
-Please let me know if that understanding is wrong.
-
-Regarding this particular fix, I discussed this with Steve, and he
-agrees that this fix needs to go into all stable kernels as well.
-
--- 
-Regards,
-Shyam
