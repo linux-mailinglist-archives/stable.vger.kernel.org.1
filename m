@@ -2,104 +2,222 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC2417CC95D
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 19:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93ADB7CCAA2
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 20:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343863AbjJQRBr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 13:01:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45246 "EHLO
+        id S1343900AbjJQS2L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 14:28:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234917AbjJQRBq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 13:01:46 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA6D100
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 10:01:38 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-5892832f8daso5381323a12.0
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 10:01:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697562098; x=1698166898; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZVk6JqAcC96nmoEP5CbFtt2U7U2MiyM1ZZJce8WrKz4=;
-        b=G5ULKFtg0ez6pC9GOWvrrq2GlC7ePiLyqC4ez3/nelOGioEcz+v23Vq385dwByUMez
-         Gq5zm1/f3o9EFYbGTrYL7X56WvtfEoLKnlaOLb9ALXarT6qQAtt1uoIxjqpsfuIJ3LuD
-         VlpsLyzwZWK0B7vjzmkSx23Xpf8z6XnRpA4J8iRGGauqTi+MMNibxEZLtJE3Waglo4do
-         LuPMAVj1Io8jXMW/RTDvPiYG8lZtVqqarCekq/W3oKolyxhyljYLgek2v8lo3467uosU
-         mwxeToUbtScM6YDiiutsp6AK1vQEuk7HGqO6mMiRqaMYYONbLsuWvaiDEMt95m37bvnx
-         Dk8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697562098; x=1698166898;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZVk6JqAcC96nmoEP5CbFtt2U7U2MiyM1ZZJce8WrKz4=;
-        b=KkJVxcz+YONGYXVs5i8xuJ82i/SQC0CrebDzcLIRCRoRy7EKS3mMrbkFkx4QSSeeT4
-         VE+qEIvbOflaLhybXIx5O0X8ypUVT6bCzhyd1n3H3OV0hP/6p0K2ojdDzvnCXme5CJOP
-         i74jhjFN6Am1QvH/ibMkWCSLbagE/y6VRMXJ//1BGtD2mcx0aspbB6XdqgvjFvJgWicg
-         jRaPq1FzgqAIPeA5oYhIr7xOXXMi2FGotuj3dNCh47li627klRQ9H2oqgOshLzPBWNZt
-         3k+8r96x7RHEqCSt4uZs0i6zAlBgZ3TJ8cB7hCteyah7kncOqMhjAMvPDGUN2QgNEbAG
-         a4+Q==
-X-Gm-Message-State: AOJu0YyJZDF00a6w3NmQqb7tc9I1bRuabdlkRCEGuoHRXHzuEPk966Bw
-        +bqF+wQv3Gxzp0FrPkfocy9ZfR0jEM/W+PstwxlXhA==
-X-Google-Smtp-Source: AGHT+IFDk7hkhX1JWt5UM3OF7m5iDhCPicJKdhd0WXX/tzKf/H3qlErdWc1Aw853TP5fbSf6Lfycu4M/E9Est0yqpk8=
-X-Received: by 2002:a17:90a:6d43:b0:27d:d9a:be8b with SMTP id
- z61-20020a17090a6d4300b0027d0d9abe8bmr3758897pjj.6.1697562097547; Tue, 17 Oct
- 2023 10:01:37 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231016083953.689300946@linuxfoundation.org> <a01256b5-6082-4d17-bf4d-310e7b4f7a47@oracle.com>
- <2023101641-resource-scalding-3e1d@gregkh> <43ad9708-47d4-4113-ab05-6012cb7c4d6c@oracle.com>
- <2023101655-throng-rickety-ff79@gregkh> <fb1ce733-d612-4fa3-a1e4-716545625822@oracle.com>
- <2023101716-sporting-geology-2de2@gregkh> <2023101719-anteater-deviant-bdf9@gregkh>
- <8cd1f099-b16e-4db8-91d8-ae1ad974bf08@oracle.com> <2023101700-symphonic-stretch-b62b@gregkh>
-In-Reply-To: <2023101700-symphonic-stretch-b62b@gregkh>
-From:   =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
-Date:   Tue, 17 Oct 2023 11:01:25 -0600
-Message-ID: <CAEUSe78K_CJpr_=UhPC1h-A+q7Qizj9zY=zsf6_PBWzaKYLwxw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/102] 5.15.136-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Vegard Nossum <vegard.nossum@oracle.com>,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-        stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        with ESMTP id S1343653AbjJQS2L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 14:28:11 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D2A9E
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 11:28:08 -0700 (PDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39HI9Zb7017555;
+        Tue, 17 Oct 2023 18:27:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=ThQ7y/bkDC5CrP0Ooa7t06OEqktz1YwCfTETviDhH8c=;
+ b=UPx0slwy9K+XVQ2GlC1umuoEcPVmzFhis6eBVkYckdZSWcaTifiVKgrstb10PgVOqI/a
+ gssiyylQCJ1b5RxiN0XgQ/423tas+oNY/0gTl1pJUL/mb7nJG+CtXtd9RmcmfwKZlupw
+ oLDYV9VFNb4UyH6AAE/ceB0R4DYG2q1ujCvqjAW1wFcx800usFxIOnVbN69mxpxlatZ0
+ mk9eBnL9JWRZ4EcPVA/X4S3DQwqFO3oFWyf9pV5xXCx9JXIV1KIpqPQEoMXGVLCi6cJF
+ PIdPBtRoyeGAWshoMHyomfSDQ19/v09EolQMTOiSzMryweWIuGuK2so1D5/5pPICNbX3 Wg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsya30r98-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 18:27:51 +0000
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39HIB4HN022819;
+        Tue, 17 Oct 2023 18:27:51 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsya30r8x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 18:27:51 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39HGSxsS012949;
+        Tue, 17 Oct 2023 18:27:50 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr5pyb27s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 17 Oct 2023 18:27:50 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+        by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39HIRneX4981328
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 17 Oct 2023 18:27:49 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4FAD258054;
+        Tue, 17 Oct 2023 18:27:49 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5BEE75805A;
+        Tue, 17 Oct 2023 18:27:48 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.watson.ibm.com (unknown [9.31.99.90])
+        by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Tue, 17 Oct 2023 18:27:48 +0000 (GMT)
+Message-ID: <bd5d2f882e47b904802023d5d4d54d8d4755440e.camel@linux.ibm.com>
+Subject: Re: [PATCH 6.4 041/737] ovl: Always reevaluate the file signature
+ for IMA
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Raul E Rangel <rrangel@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, Tim Bain <tbain@google.com>,
+        Shuhei Takahashi <nya@chromium.org>
+Date:   Tue, 17 Oct 2023 14:27:47 -0400
+In-Reply-To: <ZS6xYa_kjRGvdCG6@google.com>
+References: <20230911134650.286315610@linuxfoundation.org>
+         <20230911134651.582204417@linuxfoundation.org>
+         <ZS6xYa_kjRGvdCG6@google.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ejrKfiRXY4HNOWvPe80IvpMHE_CaED7R
+X-Proofpoint-ORIG-GUID: OJGjl-coWaES9jMBFaC2VkkAvSO89ffj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-17_03,2023-10-17_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
+ malwarescore=0 priorityscore=1501 phishscore=0 spamscore=0 adultscore=0
+ lowpriorityscore=0 mlxlogscore=788 bulkscore=0 impostorscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310170155
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello!
+On Tue, 2023-10-17 at 10:08 -0600, Raul E Rangel wrote:
+> On Mon, Sep 11, 2023 at 03:38:20PM +0200, Greg Kroah-Hartman wrote:
+> > 6.4-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Eric Snowberg <eric.snowberg@oracle.com>
+> > 
+> > [ Upstream commit 18b44bc5a67275641fb26f2c54ba7eef80ac5950 ]
+> > 
+> > Commit db1d1e8b9867 ("IMA: use vfs_getattr_nosec to get the i_version")
+> > partially closed an IMA integrity issue when directly modifying a file
+> > on the lower filesystem.  If the overlay file is first opened by a user
+> > and later the lower backing file is modified by root, but the extended
+> > attribute is NOT updated, the signature validation succeeds with the old
+> > original signature.
+> > 
+> > Update the super_block s_iflags to SB_I_IMA_UNVERIFIABLE_SIGNATURE to
+> > force signature reevaluation on every file access until a fine grained
+> > solution can be found.
+> > 
+> 
+> Sorry for replying to the 6.4-stable patch, I couldn't find the original
+> patch in the mailing list.
+> 
+> We recently upgraded from 6.4.4 to 6.5.3. We have the integrity LSM
+> enabled, and are using overlayfs. When we try and execute a binary from
+> the overlayfs filesystem, the integrity LSM hashes the binary and all
+> its shared objects every single invocation. This causes a serious
+> performance regression when invoking clang thousands of times while
+> building a package. We bisected the culprit down to this patch.
+> 
+> Here are some numbers:
+> 
+> With this patch + overlayfs:
+> 
+> 	$ time /usr/bin/clang-17 --version > /dev/null 
+> 
+> 	real	0m0.628s
+> 	user	0m0.004s
+> 	sys	0m0.624s
+> 	$ time /usr/bin/clang-17 --version > /dev/null
+> 
+> 	real	0m0.597s
+> 	user	0m0.004s
+> 	sys	0m0.593s
+> 
+> With this patch - overlayfs:
+> 
+> 	$ truncate -s 1G foo.bin
+> 	$ mkfs.ext4 foo.bin
+> 	$ mount foo.bin /foo
+> 	$ cp /usr/bin/clang-17 /foo
+> 	$ time /foo/clang-17 --version > /dev/null
+> 
+> 	real	0m0.040s
+> 	user	0m0.009s
+> 	sys	0m0.031s
+> 	$ time /foo/clang-17 --version > /dev/null
+> 
+> 	real	0m0.036s
+> 	user	0m0.000s
+> 	sys	0m0.037s
+> 
+> Without this path + overlayfs:
+> 	$ time /usr/bin/clang-17 --version > /dev/null
+> 
+> 	real	0m0.017s
+> 	user	0m0.007s
+> 	sys	0m0.011s
+> 	$ time /usr/bin/clang-17 --version > /dev/null
+> 
+> 	real	0m0.018s
+> 	user	0m0.000s
+> 	sys	0m0.018s
+> 
+> i.e., we go from ~30ms / invocation to 600ms / invocation. Building
+> glibc used to take about 3 minutes, but now its taking about 20 minutes.
+> 
+> Our clang binary is about 100 MiB in size.
+> 
+> Using `perf` the following sticks out:
+> 	$ perf record -g time /usr/bin/clang-17 --version
+> 	--92.03%--elf_map
+> 	      vm_mmap_pgoff
+> 	      ima_file_mmap
+> 	      process_measurement
+> 	      ima_collect_measurement
+> 	      |
+> 	       --91.95%--ima_calc_file_hash
+> 	              ima_calc_file_hash_tfm
+> 	              |
+> 	              |--82.85%--_sha256_update
+> 	              |     |
+> 	              |      --82.47%--lib_sha256_base_do_update.isra.0
+> 	              |           |
+> 	              |            --82.39%--sha256_transform_rorx
+> 	              |
+> 	               --9.10%--integrity_kernel_read
+> 
+> The audit.log is also logging every clang invocation as well.
+> 
+> Was such a large performance regression expected? Can the commit be
+> reverted until the more fine grained solution mentioned in the commit
+> message be implemented?
 
-On Tue, 17 Oct 2023 at 10:29, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
-[...]
-> And yes, I do run newer compilers and libraries, but the rest of the
-> kernel builds fine with them (I make sure of that), but given that no
-> one seems to care about perf breaking for so long, I just apply patches
-> when they come up and don't have conflicts and see if anyone notices any
-> difference.
->
-> Normally, no one does :)
+IMA is always based on policy.  Having the "integrity LSM enabled and
+using overlayfs" will not cause any measurements or signature
+verifications, unless the files are in policy.
 
-Just for the record, we stopped building Perf on these older branches
-as we agreed with Guenter, for the same reason that you said before:
-it fails all the time with a variety of toolchains/architectures. For
-now, we're only building/testing Perf on latest stable (6.5) and
-latest stable LTS (6.1). We brought that up at the OATS call a couple
-of months back.
+The problem is that unless the lower layer file is in policy, file
+change will not be detected on the overlay filesystem.  Reverting this
+change will allow access to a modified file without re-verifying its
+integrity.
 
-Greetings!
+Instead of reverting the patch, perhaps allow users to take this risk
+by defining a Kconfig, since they're aware of their policy rules.
 
-Daniel D=C3=ADaz
-daniel.diaz@linaro.org
+-- 
+thanks,
+
+Mimi
+
