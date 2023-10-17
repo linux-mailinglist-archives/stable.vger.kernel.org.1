@@ -2,95 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93ADB7CCAA2
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 20:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E3657CCC39
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 21:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343900AbjJQS2L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 14:28:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50564 "EHLO
+        id S235016AbjJQT1y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 15:27:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343653AbjJQS2L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 14:28:11 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D2A9E
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 11:28:08 -0700 (PDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39HI9Zb7017555;
-        Tue, 17 Oct 2023 18:27:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=ThQ7y/bkDC5CrP0Ooa7t06OEqktz1YwCfTETviDhH8c=;
- b=UPx0slwy9K+XVQ2GlC1umuoEcPVmzFhis6eBVkYckdZSWcaTifiVKgrstb10PgVOqI/a
- gssiyylQCJ1b5RxiN0XgQ/423tas+oNY/0gTl1pJUL/mb7nJG+CtXtd9RmcmfwKZlupw
- oLDYV9VFNb4UyH6AAE/ceB0R4DYG2q1ujCvqjAW1wFcx800usFxIOnVbN69mxpxlatZ0
- mk9eBnL9JWRZ4EcPVA/X4S3DQwqFO3oFWyf9pV5xXCx9JXIV1KIpqPQEoMXGVLCi6cJF
- PIdPBtRoyeGAWshoMHyomfSDQ19/v09EolQMTOiSzMryweWIuGuK2so1D5/5pPICNbX3 Wg== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsya30r98-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 17 Oct 2023 18:27:51 +0000
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39HIB4HN022819;
-        Tue, 17 Oct 2023 18:27:51 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tsya30r8x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 17 Oct 2023 18:27:51 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39HGSxsS012949;
-        Tue, 17 Oct 2023 18:27:50 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr5pyb27s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 17 Oct 2023 18:27:50 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-        by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39HIRneX4981328
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 17 Oct 2023 18:27:49 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 4FAD258054;
-        Tue, 17 Oct 2023 18:27:49 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5BEE75805A;
-        Tue, 17 Oct 2023 18:27:48 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.watson.ibm.com (unknown [9.31.99.90])
-        by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 17 Oct 2023 18:27:48 +0000 (GMT)
-Message-ID: <bd5d2f882e47b904802023d5d4d54d8d4755440e.camel@linux.ibm.com>
-Subject: Re: [PATCH 6.4 041/737] ovl: Always reevaluate the file signature
- for IMA
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Raul E Rangel <rrangel@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>, Tim Bain <tbain@google.com>,
-        Shuhei Takahashi <nya@chromium.org>
-Date:   Tue, 17 Oct 2023 14:27:47 -0400
-In-Reply-To: <ZS6xYa_kjRGvdCG6@google.com>
-References: <20230911134650.286315610@linuxfoundation.org>
-         <20230911134651.582204417@linuxfoundation.org>
-         <ZS6xYa_kjRGvdCG6@google.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: ejrKfiRXY4HNOWvPe80IvpMHE_CaED7R
-X-Proofpoint-ORIG-GUID: OJGjl-coWaES9jMBFaC2VkkAvSO89ffj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-17_03,2023-10-17_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
- malwarescore=0 priorityscore=1501 phishscore=0 spamscore=0 adultscore=0
- lowpriorityscore=0 mlxlogscore=788 bulkscore=0 impostorscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310170155
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        with ESMTP id S235013AbjJQT1x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 15:27:53 -0400
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5CEC6;
+        Tue, 17 Oct 2023 12:27:50 -0700 (PDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-323ef9a8b59so5658559f8f.3;
+        Tue, 17 Oct 2023 12:27:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697570869; x=1698175669; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
+        b=mN+Kr5BmdVMGY371zJxVibPw+3d31Zy3jAgCCo4GNabPH2fl+7gNrRlr9ORmrgEgpF
+         BLN54B9UlEfuFHVmY9Ynf11/GFUUjxsjeuVxUkxKujgCdSPQGgjT8tdDF5O8XdVD2FS8
+         Kyvu2YCEANJRPXEbc7sw76VzuXpbHDyEGJDgRP8Tx1PaO930ihKXf3g1QRpV9dumAOFb
+         EWWPEZ65YU7S3CzohLXx9Bu5rqqtQ5keBb0nnIYmEAVhSD9guf/jzxrZJ2LlKe2Y0U6f
+         iOcJxUX92JUzTvHoqJdaLtFzRvJAf62TFA6KsTwriX6o+mF33QHkTFIt0uOdf84MvP6k
+         XdCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697570869; x=1698175669;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
+        b=hz3clvnV8/cDZXV0hb7E4wGl+uSreKniDYaP+hxL9qKGsljU4OkjfycSQcLDiNogt+
+         ujFJIZnuPP1DO5AKjU4T+rLnaP5uNjlA+YrZnn1tSUZd8wLbMQmn0zQvhxk157C/c9Q7
+         S4GoZ23iZHMnQj5i6aqAn5b/iO9NsQpCTfLvTYimfA/Hwy3Rtib7IDYRvlGsfP4SAfNE
+         aUuqcA7Quqk9Kw7ejAV4oPkkpa9IJlk654BcPAmswnppfAt2NYELqd42edT5xAGNS82n
+         W7khQ1hkdp9g1RuttxmYbb7LuMRrq5NGVsG+PPVDWuWl4JSnQgQ89rwtb4eBExeEMk/N
+         SG4w==
+X-Gm-Message-State: AOJu0YzAScHD0o1XxSMFfbWeP/t4N2OVSaY4R8iyJzh1VcvKIuk8K6CA
+        9/JsxjDfBCom7LU2LrPqSIsK6e+FZRA=
+X-Google-Smtp-Source: AGHT+IH1sIJVj6vXFk3PsUqXsDejVqOQyTaC/4Gh2c9aKr1SO/xiGQdSW9KnyI9IseCxWCSAKxk3+A==
+X-Received: by 2002:adf:f7c3:0:b0:32d:89b5:7fd9 with SMTP id a3-20020adff7c3000000b0032d89b57fd9mr2562686wrq.56.1697570868914;
+        Tue, 17 Oct 2023 12:27:48 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id o2-20020adfeac2000000b0032cc35c2ef7sm435897wrn.29.2023.10.17.12.27.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Oct 2023 12:27:48 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Alexander Couzens <lynxis@fe80.eu>,
+        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
+        Daniel Golle <daniel@makrotopia.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Cc:     stable@vger.kernel.org
+Subject: [net-next RFC PATCH 1/6] wifi: mt76: fix broken precal loading from MTD for mt7915
+Date:   Tue, 17 Oct 2023 21:05:05 +0200
+Message-Id: <20231017190510.27163-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -98,126 +83,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 2023-10-17 at 10:08 -0600, Raul E Rangel wrote:
-> On Mon, Sep 11, 2023 at 03:38:20PM +0200, Greg Kroah-Hartman wrote:
-> > 6.4-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Eric Snowberg <eric.snowberg@oracle.com>
-> > 
-> > [ Upstream commit 18b44bc5a67275641fb26f2c54ba7eef80ac5950 ]
-> > 
-> > Commit db1d1e8b9867 ("IMA: use vfs_getattr_nosec to get the i_version")
-> > partially closed an IMA integrity issue when directly modifying a file
-> > on the lower filesystem.  If the overlay file is first opened by a user
-> > and later the lower backing file is modified by root, but the extended
-> > attribute is NOT updated, the signature validation succeeds with the old
-> > original signature.
-> > 
-> > Update the super_block s_iflags to SB_I_IMA_UNVERIFIABLE_SIGNATURE to
-> > force signature reevaluation on every file access until a fine grained
-> > solution can be found.
-> > 
-> 
-> Sorry for replying to the 6.4-stable patch, I couldn't find the original
-> patch in the mailing list.
-> 
-> We recently upgraded from 6.4.4 to 6.5.3. We have the integrity LSM
-> enabled, and are using overlayfs. When we try and execute a binary from
-> the overlayfs filesystem, the integrity LSM hashes the binary and all
-> its shared objects every single invocation. This causes a serious
-> performance regression when invoking clang thousands of times while
-> building a package. We bisected the culprit down to this patch.
-> 
-> Here are some numbers:
-> 
-> With this patch + overlayfs:
-> 
-> 	$ time /usr/bin/clang-17 --version > /dev/null 
-> 
-> 	real	0m0.628s
-> 	user	0m0.004s
-> 	sys	0m0.624s
-> 	$ time /usr/bin/clang-17 --version > /dev/null
-> 
-> 	real	0m0.597s
-> 	user	0m0.004s
-> 	sys	0m0.593s
-> 
-> With this patch - overlayfs:
-> 
-> 	$ truncate -s 1G foo.bin
-> 	$ mkfs.ext4 foo.bin
-> 	$ mount foo.bin /foo
-> 	$ cp /usr/bin/clang-17 /foo
-> 	$ time /foo/clang-17 --version > /dev/null
-> 
-> 	real	0m0.040s
-> 	user	0m0.009s
-> 	sys	0m0.031s
-> 	$ time /foo/clang-17 --version > /dev/null
-> 
-> 	real	0m0.036s
-> 	user	0m0.000s
-> 	sys	0m0.037s
-> 
-> Without this path + overlayfs:
-> 	$ time /usr/bin/clang-17 --version > /dev/null
-> 
-> 	real	0m0.017s
-> 	user	0m0.007s
-> 	sys	0m0.011s
-> 	$ time /usr/bin/clang-17 --version > /dev/null
-> 
-> 	real	0m0.018s
-> 	user	0m0.000s
-> 	sys	0m0.018s
-> 
-> i.e., we go from ~30ms / invocation to 600ms / invocation. Building
-> glibc used to take about 3 minutes, but now its taking about 20 minutes.
-> 
-> Our clang binary is about 100 MiB in size.
-> 
-> Using `perf` the following sticks out:
-> 	$ perf record -g time /usr/bin/clang-17 --version
-> 	--92.03%--elf_map
-> 	      vm_mmap_pgoff
-> 	      ima_file_mmap
-> 	      process_measurement
-> 	      ima_collect_measurement
-> 	      |
-> 	       --91.95%--ima_calc_file_hash
-> 	              ima_calc_file_hash_tfm
-> 	              |
-> 	              |--82.85%--_sha256_update
-> 	              |     |
-> 	              |      --82.47%--lib_sha256_base_do_update.isra.0
-> 	              |           |
-> 	              |            --82.39%--sha256_transform_rorx
-> 	              |
-> 	               --9.10%--integrity_kernel_read
-> 
-> The audit.log is also logging every clang invocation as well.
-> 
-> Was such a large performance regression expected? Can the commit be
-> reverted until the more fine grained solution mentioned in the commit
-> message be implemented?
+Commit 495184ac91bb ("mt76: mt7915: add support for applying
+pre-calibration data") was fundamentally broken and never worked.
 
-IMA is always based on policy.  Having the "integrity LSM enabled and
-using overlayfs" will not cause any measurements or signature
-verifications, unless the files are in policy.
+The idea (before NVMEM support) was to expand the MTD function and pass
+an additional offset. For normal EEPROM load the offset would always be
+0. For the purpose of precal loading, an offset was passed that was
+internally the size of EEPROM, since precal data is right after the
+EEPROM.
 
-The problem is that unless the lower layer file is in policy, file
-change will not be detected on the overlay filesystem.  Reverting this
-change will allow access to a modified file without re-verifying its
-integrity.
+Problem is that the offset value passed is never handled and is actually
+overwrite by
 
-Instead of reverting the patch, perhaps allow users to take this risk
-by defining a Kconfig, since they're aware of their policy rules.
+	offset = be32_to_cpup(list);
+	ret = mtd_read(mtd, offset, len, &retlen, eep);
 
+resulting in the passed offset value always ingnored. (and even passing
+garbage data as precal as the start of the EEPROM is getting read)
+
+Fix this by adding to the current offset value, the offset from DT to
+correctly read the piece of data at the requested location.
+
+Cc: stable@vger.kernel.org
+Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt76/eeprom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index 36564930aef1..2558788f7ffb 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -67,7 +67,7 @@ static int mt76_get_of_epprom_from_mtd(struct mt76_dev *dev, void *eep, int offs
+ 		goto out_put_node;
+ 	}
+ 
+-	offset = be32_to_cpup(list);
++	offset += be32_to_cpup(list);
+ 	ret = mtd_read(mtd, offset, len, &retlen, eep);
+ 	put_mtd_device(mtd);
+ 	if (mtd_is_bitflip(ret))
 -- 
-thanks,
-
-Mimi
+2.40.1
 
