@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CF837CC57B
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 16:03:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE0897CC59A
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 16:08:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343866AbjJQODg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 10:03:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36826 "EHLO
+        id S1344016AbjJQOI3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 10:08:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343675AbjJQODf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 10:03:35 -0400
+        with ESMTP id S1344009AbjJQOI2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 10:08:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F610F5;
-        Tue, 17 Oct 2023 07:03:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF4DC433C9;
-        Tue, 17 Oct 2023 14:03:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697551412;
-        bh=2RVI5unbkvVvHNVKtdp3DCbxXfoaBxvBCnrwaiQJnEQ=;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD65F5;
+        Tue, 17 Oct 2023 07:08:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81F4C433C7;
+        Tue, 17 Oct 2023 14:08:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1697551706;
+        bh=sB/IxENRml1bMLL2KETfFO8TryY9k1wPmlB1Bd0sJhE=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cpavnQq/MPo+pRHK9jljG3aSapy1YrAdo4fsHCIi6p9j0Abu+wjfv+1s7Ubb4zo/p
-         emRJzomSM8xjNOvcBjk2YwyyEbFEa0ZSFneEVQf/susg2FIFDBOwY48WEokjxjO6tQ
-         W4b+4BJYfZ7Yv8xMBLa111npbFLXnnXBr2aZTdY6RbLezHxJZ8ieQZPwdzDv3sGb+B
-         P0srpgPZOnrbM1ZxbpVWXDwX+yQNIpMSlxz1G83huCFGtN3cZHWGQk6AwXaIhXHU8z
-         cRqnNmvQ9+5M/fJlQiHMJa78ykdbIwmAHq9k9f9g2e7WWzpsfPGKejhozMy3By1DaE
-         mlRTqtdiZmAxw==
-Date:   Tue, 17 Oct 2023 15:03:24 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        linux-stable <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Marc Zyngier <maz@kernel.org>
-Subject: Re: selftests: ftrace: Internal error: Oops: sve_save_state
-Message-ID: <39b003bc-df89-4e0b-929e-2c42354aaa86@sirena.org.uk>
-References: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
- <ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk>
- <ZS6PKYMXDfAVTeLw@FVFF77S0Q05N>
+        b=dQTnXIIpAo/WnurjNMTEEkJHkisaOG+kApNRBahR4znSOEZL8HqoAQd0cyCLjBPS1
+         kRCm6GeFm5gyhr029OGaEt8SH9TA03M6+sZAw1AJG996lOt4LfRfrlREdIyKEx3SCg
+         KwD7I9jdOL8KT8gAsbZss8eCnE3sHxttEHjoEFO8=
+Date:   Tue, 17 Oct 2023 16:08:23 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Vegard Nossum <vegard.nossum@oracle.com>
+Cc:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+        stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 5.15 000/102] 5.15.136-rc1 review
+Message-ID: <2023101719-anteater-deviant-bdf9@gregkh>
+References: <20231016083953.689300946@linuxfoundation.org>
+ <a01256b5-6082-4d17-bf4d-310e7b4f7a47@oracle.com>
+ <2023101641-resource-scalding-3e1d@gregkh>
+ <43ad9708-47d4-4113-ab05-6012cb7c4d6c@oracle.com>
+ <2023101655-throng-rickety-ff79@gregkh>
+ <fb1ce733-d612-4fa3-a1e4-716545625822@oracle.com>
+ <2023101716-sporting-geology-2de2@gregkh>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="rPnpHSvbtDULm9wM"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZS6PKYMXDfAVTeLw@FVFF77S0Q05N>
-X-Cookie: Santa Claus is watching!
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2023101716-sporting-geology-2de2@gregkh>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -60,42 +58,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, Oct 17, 2023 at 03:57:06PM +0200, Greg Kroah-Hartman wrote:
+> Sure!  Here's the output, good luck!
+> 
+> $ make -C tools/perf
+> make: Entering directory '/home/gregkh/linux/stable/linux-5.15.y/tools/perf'
+>   BUILD:   Doing 'make -j20' parallel build
+> Warning: Kernel ABI header at 'tools/include/uapi/linux/const.h' differs from latest version at 'include/uapi/linux/const.h'
+> diff -u tools/include/uapi/linux/const.h include/uapi/linux/const.h
+> Warning: Kernel ABI header at 'tools/include/uapi/linux/in.h' differs from latest version at 'include/uapi/linux/in.h'
+> diff -u tools/include/uapi/linux/in.h include/uapi/linux/in.h
+> Warning: Kernel ABI header at 'tools/arch/x86/include/asm/disabled-features.h' differs from latest version at 'arch/x86/include/asm/disabled-features.h'
+> diff -u tools/arch/x86/include/asm/disabled-features.h arch/x86/include/asm/disabled-features.h
+> Warning: Kernel ABI header at 'tools/arch/x86/include/asm/required-features.h' differs from latest version at 'arch/x86/include/asm/required-features.h'
+> diff -u tools/arch/x86/include/asm/required-features.h arch/x86/include/asm/required-features.h
+> Warning: Kernel ABI header at 'tools/arch/x86/include/asm/cpufeatures.h' differs from latest version at 'arch/x86/include/asm/cpufeatures.h'
+> diff -u tools/arch/x86/include/asm/cpufeatures.h arch/x86/include/asm/cpufeatures.h
+> Warning: Kernel ABI header at 'tools/arch/x86/include/asm/msr-index.h' differs from latest version at 'arch/x86/include/asm/msr-index.h'
+> diff -u tools/arch/x86/include/asm/msr-index.h arch/x86/include/asm/msr-index.h
+> Warning: Kernel ABI header at 'tools/arch/arm64/include/uapi/asm/kvm.h' differs from latest version at 'arch/arm64/include/uapi/asm/kvm.h'
+> diff -u tools/arch/arm64/include/uapi/asm/kvm.h arch/arm64/include/uapi/asm/kvm.h
+> Makefile.config:1036: No libbabeltrace found, disables 'perf data' CTF format support, please install libbabeltrace-dev[el]/libbabeltrace-ctf-dev
+> Makefile.config:1062: No alternatives command found, you need to set JDIR= to point to the root of your Java directory
+> tests/bpf.c: In function ‘epoll_pwait_loop’:
+> tests/bpf.c:36:17: error: argument 2 null where non-null expected [-Werror=nonnull]
+>    36 |                 epoll_pwait(-(i + 1), NULL, 0, 0, NULL);
+>       |                 ^~~~~~~~~~~
+> In file included from tests/bpf.c:5:
+> /usr/include/sys/epoll.h:134:12: note: in a call to function ‘epoll_pwait’ declared ‘nonnull’
+>   134 | extern int epoll_pwait (int __epfd, struct epoll_event *__events,
+>       |            ^~~~~~~~~~~
 
---rPnpHSvbtDULm9wM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+<snip>
 
-On Tue, Oct 17, 2023 at 02:42:01PM +0100, Mark Rutland wrote:
+Also, in Linus's tree, this works just fine on my system, but I get this
+same error above (and only this error), when building perf on 6.1.y, and
+on 6.5.y.  The perl errors are not present there.
 
-> So unless sve_alloc() failed, at the instant the IRQ was taken:
+thanks,
 
-> * `task->thread.sve_state` should be non-NULL
-> * `task->thread_info.flags & TIF_SVE` should be 0
-
-> ... so if `task->thread.sve_state` becomes NULL, I wonder if we end up
-> accidentally blatting that as part of the context switch? I can't immedaitely
-> see how/
-
-We're possibly missing a fpsimd_bind_task_to_cpu() somewhere since all
-the hilarity with KVM means that we don't use the task_struct to save
-state, though the task that's taking the SVE trap shouldn't be impacted
-there if it didn't set TIF_SVE yet.  There *is* a window where we have
-TIF_SVE set but didn't yet do the rebind but that should be in a preempt
-disabled section.
-
---rPnpHSvbtDULm9wM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUulCsACgkQJNaLcl1U
-h9CDrwf9F5vaNDd43zZltxM9I4iAWUwV9jTzBwFgYdJJYE7zCJi/jFFpka6sO9PS
-TdCruypGFw/39o5A3Mblh6BlMiWRg+2qV/I9XcZBI8EITUFc9s/HsMF2SrcV9HWH
-n41FheFZQLVmuWQHRsqUdGJOpLSSk8HZV8VUvh0MoR1KNmYzosdK1ZOR3DxPgaDr
-PTar2ZaiaS3xc+EBMTfBBHExnUKKY6ASrMPHO61o82lVIFx8JGw49IGbiKAwEvpY
-Bt9vnUiPQKISnKoDGpuUZC0TbTVtzoa/crdXcHJpCHTd7evZe2t6TyXOISc3kdBe
-5coGUVzldurIxR14J48phXawZwmsOw==
-=beHi
------END PGP SIGNATURE-----
-
---rPnpHSvbtDULm9wM--
+greg k-h
