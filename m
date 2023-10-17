@@ -2,118 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E773D7CC56F
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 16:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CF837CC57B
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 16:03:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233670AbjJQOBx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 10:01:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42588 "EHLO
+        id S1343866AbjJQODg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 10:03:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344013AbjJQOBl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 10:01:41 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43279F5
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 07:01:39 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2c519eab81fso4147291fa.1
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 07:01:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=basnieuwenhuizen.nl; s=google; t=1697551297; x=1698156097; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sVXCnESVi6yIaR3wvDcjKCyG9I43Pvn876LU89XVxLg=;
-        b=JHovkiFu7oe+gvYIujKtRSfbX7/l8mxG5RetzzE+oOiLbtkLoGvN/d/FQNk0N2An+e
-         ds5N0tRMokLMzDMSb6ZfIv3k/g80JrCbnGT/i+7GpYySSfqgMlALOqD9Pi1mL7f+E0H5
-         IvZ0sPS/kmWzsV8OnKdXUT7tyhuzQt6K6NTMi55U23qiRzAHq+9oHYziN4zjB4sQW9XW
-         0BuX9Feph+mCLu7lU6dqT11CFFi8cJT/Tt1XXl3qBUicLkMn+jwSMIXw6EKFrCNbK3pj
-         aZCloQi/sarJ6LMYZQ4Ggb37egfPW81J7zkPJ3wkPOdSyqBqs/Jf+b4FHcCNEt8sPD94
-         u2DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697551297; x=1698156097;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sVXCnESVi6yIaR3wvDcjKCyG9I43Pvn876LU89XVxLg=;
-        b=PlWKAwHUNkcw+rxh+ssbeVkyoU/xZeCZKQDHgCocOYcTvxuJ/gkGAdSnDwhWRfI5UA
-         lku5CVrOYyNEtlx8mAcK4ZKhcfTlJkv4dG7nRL1SohylqNkJryNbiWTWo28LMwhCLIbu
-         7QFqlkRjcaXfhkLSHKhGVZ0Hh47+RLkU52hDPzE3y78bLHdgHClj+irR7XNDRHlnkbfW
-         4shWceV/HbCnjurjgLsi/hM4T7AMsh0HudBzV7Y+IsZMrD+h5mZFx2eP/q8tAcSIJtoS
-         pLIA3qfob3ap3P2b/fPYpYfKugBsV0iQHEaJBFi4PewdFt2rUTtm266FhQNs/ZwTiRoq
-         PUrg==
-X-Gm-Message-State: AOJu0YxgbtKkmBSj781rPYEZurk/RNDBuy5hyPxrbZ7/hfbOpvBs0LMl
-        5Vs1A6/JB0APPFnS0ZeqvWGQzOWKLg91f0/PxeRm4A==
-X-Google-Smtp-Source: AGHT+IGkVQJBaWNhpc7ZcKAQMuw69SsFCvPvZTczEMnaEXVneH2xmq+U1MjubhquR2tP9arZH04psQ==
-X-Received: by 2002:a2e:b5ad:0:b0:2c5:36e:31bf with SMTP id f13-20020a2eb5ad000000b002c5036e31bfmr1404911ljn.5.1697551296497;
-        Tue, 17 Oct 2023 07:01:36 -0700 (PDT)
-Received: from bas-workstation.. ([2a02:aa12:a77e:6d00::d7])
-        by smtp.gmail.com with ESMTPSA id 1-20020a05600c024100b003fee8793911sm1949566wmj.44.2023.10.17.07.01.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 07:01:35 -0700 (PDT)
-From:   Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-To:     amd-gfx@lists.freedesktop.org
-Cc:     Rex.Zhu@amd.com, alexander.deucher@amd.com,
-        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
-        stable@vger.kernel.org
-Subject: [PATCH] drm/amd/pm: Handle non-terminated overdrive commands.
-Date:   Tue, 17 Oct 2023 16:01:35 +0200
-Message-ID: <20231017140135.1122153-1-bas@basnieuwenhuizen.nl>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S1343675AbjJQODf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 10:03:35 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F610F5;
+        Tue, 17 Oct 2023 07:03:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF4DC433C9;
+        Tue, 17 Oct 2023 14:03:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697551412;
+        bh=2RVI5unbkvVvHNVKtdp3DCbxXfoaBxvBCnrwaiQJnEQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cpavnQq/MPo+pRHK9jljG3aSapy1YrAdo4fsHCIi6p9j0Abu+wjfv+1s7Ubb4zo/p
+         emRJzomSM8xjNOvcBjk2YwyyEbFEa0ZSFneEVQf/susg2FIFDBOwY48WEokjxjO6tQ
+         W4b+4BJYfZ7Yv8xMBLa111npbFLXnnXBr2aZTdY6RbLezHxJZ8ieQZPwdzDv3sGb+B
+         P0srpgPZOnrbM1ZxbpVWXDwX+yQNIpMSlxz1G83huCFGtN3cZHWGQk6AwXaIhXHU8z
+         cRqnNmvQ9+5M/fJlQiHMJa78ykdbIwmAHq9k9f9g2e7WWzpsfPGKejhozMy3By1DaE
+         mlRTqtdiZmAxw==
+Date:   Tue, 17 Oct 2023 15:03:24 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        linux-stable <stable@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Marc Zyngier <maz@kernel.org>
+Subject: Re: selftests: ftrace: Internal error: Oops: sve_save_state
+Message-ID: <39b003bc-df89-4e0b-929e-2c42354aaa86@sirena.org.uk>
+References: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
+ <ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk>
+ <ZS6PKYMXDfAVTeLw@FVFF77S0Q05N>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="rPnpHSvbtDULm9wM"
+Content-Disposition: inline
+In-Reply-To: <ZS6PKYMXDfAVTeLw@FVFF77S0Q05N>
+X-Cookie: Santa Claus is watching!
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The incoming strings might not be terminated by a newline
-or a 0.
 
-(found while testing a program that just wrote the string
- itself, causing a crash)
+--rPnpHSvbtDULm9wM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Cc: stable@vger.kernel.org
-Fixes: e3933f26b657 ("drm/amd/pp: Add edit/commit/show OD clock/voltage support in sysfs")
-Signed-off-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
----
- drivers/gpu/drm/amd/pm/amdgpu_pm.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+On Tue, Oct 17, 2023 at 02:42:01PM +0100, Mark Rutland wrote:
 
-diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-index da0da03569e8..f9c9eba1a815 100644
---- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-@@ -760,7 +760,7 @@ static ssize_t amdgpu_set_pp_od_clk_voltage(struct device *dev,
- 	if (adev->in_suspend && !adev->in_runpm)
- 		return -EPERM;
- 
--	if (count > 127)
-+	if (count > 127 || count == 0)
- 		return -EINVAL;
- 
- 	if (*buf == 's')
-@@ -780,7 +780,8 @@ static ssize_t amdgpu_set_pp_od_clk_voltage(struct device *dev,
- 	else
- 		return -EINVAL;
- 
--	memcpy(buf_cpy, buf, count+1);
-+	memcpy(buf_cpy, buf, count);
-+	buf_cpy[count] = 0;
- 
- 	tmp_str = buf_cpy;
- 
-@@ -797,6 +798,9 @@ static ssize_t amdgpu_set_pp_od_clk_voltage(struct device *dev,
- 			return -EINVAL;
- 		parameter_size++;
- 
-+		if (!tmp_str)
-+			break;
-+
- 		while (isspace(*tmp_str))
- 			tmp_str++;
- 	}
--- 
-2.42.0
+> So unless sve_alloc() failed, at the instant the IRQ was taken:
 
+> * `task->thread.sve_state` should be non-NULL
+> * `task->thread_info.flags & TIF_SVE` should be 0
+
+> ... so if `task->thread.sve_state` becomes NULL, I wonder if we end up
+> accidentally blatting that as part of the context switch? I can't immedaitely
+> see how/
+
+We're possibly missing a fpsimd_bind_task_to_cpu() somewhere since all
+the hilarity with KVM means that we don't use the task_struct to save
+state, though the task that's taking the SVE trap shouldn't be impacted
+there if it didn't set TIF_SVE yet.  There *is* a window where we have
+TIF_SVE set but didn't yet do the rebind but that should be in a preempt
+disabled section.
+
+--rPnpHSvbtDULm9wM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUulCsACgkQJNaLcl1U
+h9CDrwf9F5vaNDd43zZltxM9I4iAWUwV9jTzBwFgYdJJYE7zCJi/jFFpka6sO9PS
+TdCruypGFw/39o5A3Mblh6BlMiWRg+2qV/I9XcZBI8EITUFc9s/HsMF2SrcV9HWH
+n41FheFZQLVmuWQHRsqUdGJOpLSSk8HZV8VUvh0MoR1KNmYzosdK1ZOR3DxPgaDr
+PTar2ZaiaS3xc+EBMTfBBHExnUKKY6ASrMPHO61o82lVIFx8JGw49IGbiKAwEvpY
+Bt9vnUiPQKISnKoDGpuUZC0TbTVtzoa/crdXcHJpCHTd7evZe2t6TyXOISc3kdBe
+5coGUVzldurIxR14J48phXawZwmsOw==
+=beHi
+-----END PGP SIGNATURE-----
+
+--rPnpHSvbtDULm9wM--
