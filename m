@@ -2,111 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0B337CC203
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 13:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E7207CC30F
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 14:24:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234147AbjJQLu4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 07:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58442 "EHLO
+        id S235156AbjJQMY2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 08:24:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233882AbjJQLuz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 07:50:55 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B2FEA
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 04:50:53 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-9c5b313b3ffso143602166b.0
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 04:50:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1697543452; x=1698148252; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gWNFjq7J1b1bH2lphfT1Fu13xafbJk+ueucEMZRdQUY=;
-        b=mmNv0G+LbrxkSsqLPSB85jrwi4vzk2ia34tK1wbC+UxWMipX+BhZAkqKTytY66/Tjs
-         kvG0HW2vrDTFvqgDTjVYetwTq7rKmitPHG+ylD41doVfqRBQ7pgIORyUM69l2EYWlKS/
-         jjE/jCoimDE1InQ9IRC+6SBE1G1gmVse4/3gCVJjW85abpIGULPTR4xCdlT1QYHeRJyo
-         OIsFX9ENUDCKoMHtuEHhHUYJTJFy3P3bbShNkU+hS+dXyA6e96WsTvHsVF/odIKw7Vr/
-         /rmXiyT4p3Eh4Bi6RK/Ymmp7VaT5TvSdW2TI1RQHZKs4CgdcvHhgMdJPtylB5JBIaGKJ
-         QxWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697543452; x=1698148252;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gWNFjq7J1b1bH2lphfT1Fu13xafbJk+ueucEMZRdQUY=;
-        b=HTsuVjmjN543CS9dTZ/h/pSC/qTjdWfqWEqa2bmR5zJ46jDaeTMaFRaR9V/zZ6vILR
-         zLQ9zyeRaAhyTMzGT1Ki0xQBANlu9Woi+Zucq/hYLpGyJIVVYz0Y+l+mItokNiHeMBkd
-         ymdI9bB3YiadagwjqOw9CO8n/ydhPWkIyuUxI4xb+Mw39M17lc4N5ZMTLRtYYEw4w1+g
-         Y+6wUq82hFpWa9fX4PmNM7F7vNJ31c0/r9uQj+KDWuvLYWe3WoOrj0HqYM7UVo6JQxJG
-         aRbGbD/8F7GYeHRyRe0YMRQZjncoRFFxx8/HFQk5V+M/PWSsAJTw8MN7B1DioT8enXIL
-         b3Bg==
-X-Gm-Message-State: AOJu0YzP4+coVwRJ7Px/H1vBglXspI+moMFnkblRh/6M/3U3T+faxyei
-        Yj4CjpqErv7e8noBqM0Yt3wARW+k8bPWZusNHBbRvA==
-X-Google-Smtp-Source: AGHT+IFg+ZLZEHu0kdf0bELio3Q7hx39EsGlyjfnPCLtBOZvQ7d8GQpkLSwxOk+q4t4K6UNt+The68B2G7eTkvc71yI=
-X-Received: by 2002:a17:906:da87:b0:9be:6bf0:2f95 with SMTP id
- xh7-20020a170906da8700b009be6bf02f95mr1582393ejb.20.1697543451569; Tue, 17
- Oct 2023 04:50:51 -0700 (PDT)
+        with ESMTP id S235145AbjJQMYR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 08:24:17 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040A2187;
+        Tue, 17 Oct 2023 05:22:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4B9C433C7;
+        Tue, 17 Oct 2023 12:22:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697545339;
+        bh=M00BvJirBo+mdXAXAKpgHd3oBO/bTMkIYD3+l9Xy8oM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ChBlyKPGb8GCIp6eNUPF1XPPHZDj+fZR2GBHysrDUsb+1Z6bkoZoFbdSbIHUj/Axb
+         G9uP/YC/uMpzye2GvXDv4vsM8xsLaep8qtOtxb28+RCtAepaErNujCbQ+axyfH+R99
+         TARpH7IDgm+A6+h9oEzmr/bTzz/CUaiWvRvC86vPsbRQIYFV672t3PZGhIIO+aim14
+         Uf4JB8j3QNy4VHbriNlbOz8KgHDQAY3rkrnDbQShv6tI7Y+oKIkFGzA88ujq7OmEPA
+         1LYH2UhYJg1lIr5iEtbWk/1OwblE8PBhyHIIN8rMlUp0W7ZBmaZjDd6aJ+rrMU2ERa
+         6QBdStzt0FfVg==
+Date:   Tue, 17 Oct 2023 13:22:14 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        linux-stable <stable@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Marc Zyngier <maz@kernel.org>
+Subject: Re: selftests: ftrace: Internal error: Oops: sve_save_state
+Message-ID: <ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk>
+References: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20231016084000.050926073@linuxfoundation.org>
-In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
-From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date:   Tue, 17 Oct 2023 20:50:40 +0900
-Message-ID: <CAKL4bV4Dy2qTKQ3NZo3Gh604c8Cn7t5n5xUkajkjkRys8xByzw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/131] 6.1.59-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="apekHljeOM9+sOYc"
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
+X-Cookie: Santa Claus is watching!
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
 
-On Mon, Oct 16, 2023 at 5:52=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.59 release.
-> There are 131 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 18 Oct 2023 08:39:40 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.59-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+--apekHljeOM9+sOYc
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-6.1.59-rc1 tested.
+On Tue, Oct 17, 2023 at 01:34:18PM +0530, Naresh Kamboju wrote:
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+> Following kernel crash noticed while running selftests: ftrace:
+> ftracetest-ktap on FVP models running stable-rc 6.5.8-rc2.
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+> This is not an easy to reproduce issue and not seen on mainline and next.
+> We are investigating this report.
 
-Thanks
+To confirm have you seen this on other stables as well or is this only
+v6.5?  For how long have you been seeing this?
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+> [  764.987161] Unable to handle kernel NULL pointer dereference at
+> virtual address 0000000000000000
+
+> [  765.074221] Call trace:
+> [  765.075045]  sve_save_state+0x4/0xf0
+> [  765.076138]  fpsimd_thread_switch+0x2c/0xe8
+> [  765.077305]  __switch_to+0x20/0x158
+> [  765.078384]  __schedule+0x2cc/0xb38
+> [  765.079464]  preempt_schedule_irq+0x44/0xa8
+> [  765.080633]  el1_interrupt+0x4c/0x68
+> [  765.081691]  el1h_64_irq_handler+0x18/0x28
+> [  765.082829]  el1h_64_irq+0x64/0x68
+> [  765.083874]  ftrace_return_to_handler+0x98/0x158
+> [  765.085090]  return_to_handler+0x20/0x48
+> [  765.086205]  do_sve_acc+0x64/0x128
+> [  765.087272]  el0_sve_acc+0x3c/0xa0
+> [  765.088356]  el0t_64_sync_handler+0x114/0x130
+> [  765.089524]  el0t_64_sync+0x190/0x198
+
+So something managed to get flagged as having SVE state without having
+the backing storage allocated.  We *were* preempted in the SVE access
+handler which does the allocation but I can't see the path that would
+trigger that since we allocate the state before setting TIF_SVE.  It's
+possible the compiler did something funky, a decode of the backtrace
+might help show that?
+
+--apekHljeOM9+sOYc
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUufHUACgkQJNaLcl1U
+h9Du4gf/RwBqZmgxZTFG61U5ZuvEedd7Ncv9OG5UjPNGuBlLM1KDg+t5xj5Zl+en
+LShQ6Hzccz4mxRfADxNIrWt4P+hEkgFvgSlmJvAZBJSc8LJm4OP/hiDD1Bx3Qikq
+W3nSjSa+uLW02+wF2zw2hJPK+8qv+09HFyb5bBOWavLRu45N4kzLjE3/NrDLR2vK
+j98xD+9RNYw4uUGZEy0CFqBeHTV+YOlOnH8IUOrDIzycKn17npDUIygiL3lMD8RH
+J+VyRqniWlGDkglCesuJdXMZSXTRx+YJQTExTJKvFyQiomdXjs5BMcxBtx8Ldec2
+GM5ENkf0jVDClVZOWMsGBNV/zV0/rw==
+=oZtp
+-----END PGP SIGNATURE-----
+
+--apekHljeOM9+sOYc--
