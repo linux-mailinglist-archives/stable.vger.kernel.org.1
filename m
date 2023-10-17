@@ -2,99 +2,187 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE0897CC59A
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 16:08:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1938E7CC6F7
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 17:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344016AbjJQOI3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 10:08:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37520 "EHLO
+        id S235200AbjJQPF2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 11:05:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344009AbjJQOI2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 10:08:28 -0400
+        with ESMTP id S235168AbjJQPFR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 11:05:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AD65F5;
-        Tue, 17 Oct 2023 07:08:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81F4C433C7;
-        Tue, 17 Oct 2023 14:08:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697551706;
-        bh=sB/IxENRml1bMLL2KETfFO8TryY9k1wPmlB1Bd0sJhE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dQTnXIIpAo/WnurjNMTEEkJHkisaOG+kApNRBahR4znSOEZL8HqoAQd0cyCLjBPS1
-         kRCm6GeFm5gyhr029OGaEt8SH9TA03M6+sZAw1AJG996lOt4LfRfrlREdIyKEx3SCg
-         KwD7I9jdOL8KT8gAsbZss8eCnE3sHxttEHjoEFO8=
-Date:   Tue, 17 Oct 2023 16:08:23 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Vegard Nossum <vegard.nossum@oracle.com>
-Cc:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-        stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.15 000/102] 5.15.136-rc1 review
-Message-ID: <2023101719-anteater-deviant-bdf9@gregkh>
-References: <20231016083953.689300946@linuxfoundation.org>
- <a01256b5-6082-4d17-bf4d-310e7b4f7a47@oracle.com>
- <2023101641-resource-scalding-3e1d@gregkh>
- <43ad9708-47d4-4113-ab05-6012cb7c4d6c@oracle.com>
- <2023101655-throng-rickety-ff79@gregkh>
- <fb1ce733-d612-4fa3-a1e4-716545625822@oracle.com>
- <2023101716-sporting-geology-2de2@gregkh>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023101716-sporting-geology-2de2@gregkh>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EF952914B;
+        Tue, 17 Oct 2023 07:58:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E191FC433C8;
+        Tue, 17 Oct 2023 14:58:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1697554714;
+        bh=LFtdEVkTYiH8ADUxXztCxkHDxWuqDYiI5/3MG+760wQ=;
+        h=Date:To:From:Subject:From;
+        b=lC37/2T5/fBUxdX7cmJJNpbS0frWUcKmpo424Kul/QoqIMmh7AwuG75EuAfH1sLos
+         rQQeCYfi2Cr46FJP6OeOswJiqiVN8sjlIrAEhp3C/TphmtPPGuFMlwjS6EF4huGf1B
+         qGrhPVicMIZU4h1ooy7P3BF4oIPuul8/zVpPDMUA=
+Date:   Tue, 17 Oct 2023 07:58:33 -0700
+To:     mm-commits@vger.kernel.org, zhengqi.arch@bytedance.com,
+        tglx@linutronix.de, stable@vger.kernel.org, peterz@infradead.org,
+        mingo@redhat.com, mhocko@suse.com, luto@kernel.org, hpa@zytor.com,
+        david@redhat.com, dave.hansen@linux.intel.com, bp@alien8.de,
+        rppt@kernel.org, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + x86-mm-drop-4mb-restriction-on-minimal-numa-node-size.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231017145833.E191FC433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 17, 2023 at 03:57:06PM +0200, Greg Kroah-Hartman wrote:
-> Sure!  Here's the output, good luck!
-> 
-> $ make -C tools/perf
-> make: Entering directory '/home/gregkh/linux/stable/linux-5.15.y/tools/perf'
->   BUILD:   Doing 'make -j20' parallel build
-> Warning: Kernel ABI header at 'tools/include/uapi/linux/const.h' differs from latest version at 'include/uapi/linux/const.h'
-> diff -u tools/include/uapi/linux/const.h include/uapi/linux/const.h
-> Warning: Kernel ABI header at 'tools/include/uapi/linux/in.h' differs from latest version at 'include/uapi/linux/in.h'
-> diff -u tools/include/uapi/linux/in.h include/uapi/linux/in.h
-> Warning: Kernel ABI header at 'tools/arch/x86/include/asm/disabled-features.h' differs from latest version at 'arch/x86/include/asm/disabled-features.h'
-> diff -u tools/arch/x86/include/asm/disabled-features.h arch/x86/include/asm/disabled-features.h
-> Warning: Kernel ABI header at 'tools/arch/x86/include/asm/required-features.h' differs from latest version at 'arch/x86/include/asm/required-features.h'
-> diff -u tools/arch/x86/include/asm/required-features.h arch/x86/include/asm/required-features.h
-> Warning: Kernel ABI header at 'tools/arch/x86/include/asm/cpufeatures.h' differs from latest version at 'arch/x86/include/asm/cpufeatures.h'
-> diff -u tools/arch/x86/include/asm/cpufeatures.h arch/x86/include/asm/cpufeatures.h
-> Warning: Kernel ABI header at 'tools/arch/x86/include/asm/msr-index.h' differs from latest version at 'arch/x86/include/asm/msr-index.h'
-> diff -u tools/arch/x86/include/asm/msr-index.h arch/x86/include/asm/msr-index.h
-> Warning: Kernel ABI header at 'tools/arch/arm64/include/uapi/asm/kvm.h' differs from latest version at 'arch/arm64/include/uapi/asm/kvm.h'
-> diff -u tools/arch/arm64/include/uapi/asm/kvm.h arch/arm64/include/uapi/asm/kvm.h
-> Makefile.config:1036: No libbabeltrace found, disables 'perf data' CTF format support, please install libbabeltrace-dev[el]/libbabeltrace-ctf-dev
-> Makefile.config:1062: No alternatives command found, you need to set JDIR= to point to the root of your Java directory
-> tests/bpf.c: In function ‘epoll_pwait_loop’:
-> tests/bpf.c:36:17: error: argument 2 null where non-null expected [-Werror=nonnull]
->    36 |                 epoll_pwait(-(i + 1), NULL, 0, 0, NULL);
->       |                 ^~~~~~~~~~~
-> In file included from tests/bpf.c:5:
-> /usr/include/sys/epoll.h:134:12: note: in a call to function ‘epoll_pwait’ declared ‘nonnull’
->   134 | extern int epoll_pwait (int __epfd, struct epoll_event *__events,
->       |            ^~~~~~~~~~~
 
-<snip>
+The patch titled
+     Subject: x86/mm: drop 4MB restriction on minimal NUMA node size
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     x86-mm-drop-4mb-restriction-on-minimal-numa-node-size.patch
 
-Also, in Linus's tree, this works just fine on my system, but I get this
-same error above (and only this error), when building perf on 6.1.y, and
-on 6.5.y.  The perl errors are not present there.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/x86-mm-drop-4mb-restriction-on-minimal-numa-node-size.patch
 
-thanks,
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-greg k-h
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+Subject: x86/mm: drop 4MB restriction on minimal NUMA node size
+Date: Tue, 17 Oct 2023 09:22:15 +0300
+
+Qi Zheng reports crashes in a production environment and provides a
+simplified example as a reproducer:
+
+  For example, if we use qemu to start a two NUMA node kernel,
+  one of the nodes has 2M memory (less than NODE_MIN_SIZE),
+  and the other node has 2G, then we will encounter the
+  following panic:
+
+  [    0.149844] BUG: kernel NULL pointer dereference, address: 0000000000000000
+  [    0.150783] #PF: supervisor write access in kernel mode
+  [    0.151488] #PF: error_code(0x0002) - not-present page
+  <...>
+  [    0.156056] RIP: 0010:_raw_spin_lock_irqsave+0x22/0x40
+  <...>
+  [    0.169781] Call Trace:
+  [    0.170159]  <TASK>
+  [    0.170448]  deactivate_slab+0x187/0x3c0
+  [    0.171031]  ? bootstrap+0x1b/0x10e
+  [    0.171559]  ? preempt_count_sub+0x9/0xa0
+  [    0.172145]  ? kmem_cache_alloc+0x12c/0x440
+  [    0.172735]  ? bootstrap+0x1b/0x10e
+  [    0.173236]  bootstrap+0x6b/0x10e
+  [    0.173720]  kmem_cache_init+0x10a/0x188
+  [    0.174240]  start_kernel+0x415/0x6ac
+  [    0.174738]  secondary_startup_64_no_verify+0xe0/0xeb
+  [    0.175417]  </TASK>
+  [    0.175713] Modules linked in:
+  [    0.176117] CR2: 0000000000000000
+
+The crashes happen because of inconsistency between nodemask that has
+nodes with less than 4MB as memoryless and the actual memory fed into
+core mm.
+
+The commit 9391a3f9c7f1 ("[PATCH] x86_64: Clear more state when ignoring
+empty node in SRAT parsing") that introduced minimal size of a NUMA node
+does not explain why a node size cannot be less than 4MB and what boot
+failures this restriction might fix.
+
+Since then a lot has changed and core mm won't confuse badly about small
+node sizes.
+
+Drop the limitation for the minimal node size.
+
+Link: https://lkml.kernel.org/r/20231017062215.171670-1-rppt@kernel.org
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Closes: https://lore.kernel.org/all/20230212110305.93670-1-zhengqi.arch@bytedance.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Peter Ziljstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ arch/x86/include/asm/numa.h |    7 -------
+ arch/x86/mm/numa.c          |    7 -------
+ 2 files changed, 14 deletions(-)
+
+--- a/arch/x86/include/asm/numa.h~x86-mm-drop-4mb-restriction-on-minimal-numa-node-size
++++ a/arch/x86/include/asm/numa.h
+@@ -12,13 +12,6 @@
+ 
+ #define NR_NODE_MEMBLKS		(MAX_NUMNODES*2)
+ 
+-/*
+- * Too small node sizes may confuse the VM badly. Usually they
+- * result from BIOS bugs. So dont recognize nodes as standalone
+- * NUMA entities that have less than this amount of RAM listed:
+- */
+-#define NODE_MIN_SIZE (4*1024*1024)
+-
+ extern int numa_off;
+ 
+ /*
+--- a/arch/x86/mm/numa.c~x86-mm-drop-4mb-restriction-on-minimal-numa-node-size
++++ a/arch/x86/mm/numa.c
+@@ -601,13 +601,6 @@ static int __init numa_register_memblks(
+ 		if (start >= end)
+ 			continue;
+ 
+-		/*
+-		 * Don't confuse VM with a node that doesn't have the
+-		 * minimum amount of memory:
+-		 */
+-		if (end && (end - start) < NODE_MIN_SIZE)
+-			continue;
+-
+ 		alloc_node_data(nid);
+ 	}
+ 
+_
+
+Patches currently in -mm which might be from rppt@kernel.org are
+
+x86-mm-drop-4mb-restriction-on-minimal-numa-node-size.patch
+nios2-define-virtual-address-space-for-modules.patch
+mm-introduce-execmem_text_alloc-and-execmem_free.patch
+mm-execmem-arch-convert-simple-overrides-of-module_alloc-to-execmem.patch
+mm-execmem-arch-convert-remaining-overrides-of-module_alloc-to-execmem.patch
+modules-execmem-drop-module_alloc.patch
+mm-execmem-introduce-execmem_data_alloc.patch
+arm64-execmem-extend-execmem_params-for-generated-code-allocations.patch
+riscv-extend-execmem_params-for-generated-code-allocations.patch
+powerpc-extend-execmem_params-for-kprobes-allocations.patch
+powerpc-extend-execmem_params-for-kprobes-allocations-fix.patch
+arch-make-execmem-setup-available-regardless-of-config_modules.patch
+x86-ftrace-enable-dynamic-ftrace-without-config_modules.patch
+kprobes-remove-dependency-on-config_modules.patch
+bpf-remove-config_bpf_jit-dependency-on-config_modules-of.patch
+
