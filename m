@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C12727CBA59
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 07:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88E1B7CBA6C
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 07:56:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234391AbjJQFsK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 01:48:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43760 "EHLO
+        id S233862AbjJQF43 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 01:56:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230343AbjJQFsJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 01:48:09 -0400
+        with ESMTP id S230343AbjJQF42 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 01:56:28 -0400
 Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1278D8E
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 22:48:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ACEBA1
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 22:56:27 -0700 (PDT)
 Received: from localhost.localdomain (unknown [IPv6:2a0c:5a83:9102:3700:8869:609:4cb0:482d])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: rcn)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 9024C6606F85;
-        Tue, 17 Oct 2023 06:48:05 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id A2BD96606F85;
+        Tue, 17 Oct 2023 06:56:25 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1697521685;
-        bh=tZZyyZgHVuu4fndqQT5/ST9hDrBtZ0ZdQBAJ722Itto=;
+        s=mail; t=1697522185;
+        bh=4X7AYSmDOYHFW2QVBJicsVXfQxqTPnHKYMCZA0qYR8g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=biBT3cDlokCmEQQXp4dYR015dmWVZBMhoD5bx10Yd5DkeonWqIQ7wl09qdzRfyNoW
-         ySRGJVCw3MIF2qmnR4Sj+bTupiNQX+oiejzKYDeYpLbt5zGxAM0YAs7YOGvbKz97Xs
-         g3RJwlUFc6c+zNAO2BKxDtP8Tdwn/XRopl4uWjU5z4QYo+usqDfWq3M/ENDoCt+Wmh
-         fkvP71VmZgOnP4UlaX53CnEYgsLbAPLKp3Im6bSdU4gLDJkdrSKvO3s7Lfn90Pq9W0
-         KsacerFDBbmZcG2mnZVNjAAajs11YmU4lKc8Ei9OIbZa5SoSSatAn2L9KshW0BjpcU
-         Z9PbSUaVdIHOg==
+        b=aA7159hHl+isx3+jIpMS59Rl+6bKF8TQ/JYp2WxUWVK6iNlOAaMRvsFsDqbobagNE
+         Hp6qzTaYkiqvW8kkvEqb+JvWY3IixRwuyJXY/KjxgxzW7+EISLtFDkxH7CE+3buhue
+         Nui35lDGU2HkY+iwklVQjdvEaWKIDyGxx1r+Llxt6qc7WCzREY1rCjnBioZunpmY4h
+         BwYllYZag55kH/enwUZouGmpO5ysNWooKJBvJtqxTDln+TCFBhTJlwYqerYsmHSq/j
+         9Nm5vINMLmh/ptLa/cJZKmpR5/wOYIdJ1LeMv+YLxtq0snaSIcUOzE5sWbHP/Zqw3e
+         4/qBcPStHhmtA==
 From:   =?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
 To:     stable@vger.kernel.org
 Cc:     kernel@collabora.com
-Subject: [PATCH 5.4.y] usb: hub: Guard against accesses to uninitialized BOS descriptors
-Date:   Tue, 17 Oct 2023 07:47:52 +0200
-Message-Id: <20231017054752.3481799-1-ricardo.canuelo@collabora.com>
+Subject: [PATCH 4.19.y] usb: hub: Guard against accesses to uninitialized BOS descriptors
+Date:   Tue, 17 Oct 2023 07:56:09 +0200
+Message-Id: <20231017055609.3516574-1-ricardo.canuelo@collabora.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2023101550-bountiful-matriarch-1441@gregkh>
-References: <2023101550-bountiful-matriarch-1441@gregkh>
+In-Reply-To: <2023101551-crafter-unearth-ec06@gregkh>
+References: <2023101551-crafter-unearth-ec06@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -101,10 +101,10 @@ Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
  2 files changed, 25 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index f787e9771b1f..9a1954e9f6f1 100644
+index 619e80783866..898df2e43945 100644
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -148,6 +148,10 @@ int usb_device_supports_lpm(struct usb_device *udev)
+@@ -147,6 +147,10 @@ int usb_device_supports_lpm(struct usb_device *udev)
  	if (udev->quirks & USB_QUIRK_NO_LPM)
  		return 0;
  
@@ -115,7 +115,7 @@ index f787e9771b1f..9a1954e9f6f1 100644
  	/* USB 2.1 (and greater) devices indicate LPM support through
  	 * their USB 2.0 Extended Capabilities BOS descriptor.
  	 */
-@@ -324,6 +328,10 @@ static void usb_set_lpm_parameters(struct usb_device *udev)
+@@ -323,6 +327,10 @@ static void usb_set_lpm_parameters(struct usb_device *udev)
  	if (!udev->lpm_capable || udev->speed < USB_SPEED_SUPER)
  		return;
  
@@ -126,7 +126,7 @@ index f787e9771b1f..9a1954e9f6f1 100644
  	hub = usb_hub_to_struct_hub(udev->parent);
  	/* It doesn't take time to transition the roothub into U0, since it
  	 * doesn't have an upstream link.
-@@ -2678,7 +2686,8 @@ int usb_authorize_device(struct usb_device *usb_dev)
+@@ -2644,7 +2652,8 @@ int usb_authorize_device(struct usb_device *usb_dev)
  }
  
  /*
@@ -136,7 +136,7 @@ index f787e9771b1f..9a1954e9f6f1 100644
   * check it from the link protocol field of the current speed ID attribute.
   * current speed ID is got from ext port status request. Sublink speed attribute
   * table is returned with the hub BOS SSP device capability descriptor
-@@ -2688,8 +2697,12 @@ static int port_speed_is_ssp(struct usb_device *hdev, int speed_id)
+@@ -2654,8 +2663,12 @@ static int port_speed_is_ssp(struct usb_device *hdev, int speed_id)
  	int ssa_count;
  	u32 ss_attr;
  	int i;
@@ -150,7 +150,7 @@ index f787e9771b1f..9a1954e9f6f1 100644
  	if (!ssp_cap)
  		return 0;
  
-@@ -4091,8 +4104,15 @@ static void usb_enable_link_state(struct usb_hcd *hcd, struct usb_device *udev,
+@@ -4057,8 +4070,15 @@ static void usb_enable_link_state(struct usb_hcd *hcd, struct usb_device *udev,
  		enum usb3_link_state state)
  {
  	int timeout, ret;
@@ -169,10 +169,10 @@ index f787e9771b1f..9a1954e9f6f1 100644
  	/* If the device says it doesn't have *any* exit latency to come out of
  	 * U1 or U2, it's probably lying.  Assume it doesn't implement that link
 diff --git a/drivers/usb/core/hub.h b/drivers/usb/core/hub.h
-index a8f23f8bc6ef..1c455800f7d3 100644
+index df3aa0b69188..d1845e5ff700 100644
 --- a/drivers/usb/core/hub.h
 +++ b/drivers/usb/core/hub.h
-@@ -141,7 +141,7 @@ static inline int hub_is_superspeedplus(struct usb_device *hdev)
+@@ -139,7 +139,7 @@ static inline int hub_is_superspeedplus(struct usb_device *hdev)
  {
  	return (hdev->descriptor.bDeviceProtocol == USB_HUB_PR_SS &&
  		le16_to_cpu(hdev->descriptor.bcdUSB) >= 0x0310 &&
