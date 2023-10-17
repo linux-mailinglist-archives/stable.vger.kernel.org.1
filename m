@@ -2,80 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E3657CCC39
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 21:27:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 852D47CCC53
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 21:32:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235016AbjJQT1y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 15:27:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52572 "EHLO
+        id S1344323AbjJQTcp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 15:32:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235013AbjJQT1x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 15:27:53 -0400
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF5CEC6;
-        Tue, 17 Oct 2023 12:27:50 -0700 (PDT)
-Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-323ef9a8b59so5658559f8f.3;
-        Tue, 17 Oct 2023 12:27:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697570869; x=1698175669; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
-        b=mN+Kr5BmdVMGY371zJxVibPw+3d31Zy3jAgCCo4GNabPH2fl+7gNrRlr9ORmrgEgpF
-         BLN54B9UlEfuFHVmY9Ynf11/GFUUjxsjeuVxUkxKujgCdSPQGgjT8tdDF5O8XdVD2FS8
-         Kyvu2YCEANJRPXEbc7sw76VzuXpbHDyEGJDgRP8Tx1PaO930ihKXf3g1QRpV9dumAOFb
-         EWWPEZ65YU7S3CzohLXx9Bu5rqqtQ5keBb0nnIYmEAVhSD9guf/jzxrZJ2LlKe2Y0U6f
-         iOcJxUX92JUzTvHoqJdaLtFzRvJAf62TFA6KsTwriX6o+mF33QHkTFIt0uOdf84MvP6k
-         XdCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697570869; x=1698175669;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
-        b=hz3clvnV8/cDZXV0hb7E4wGl+uSreKniDYaP+hxL9qKGsljU4OkjfycSQcLDiNogt+
-         ujFJIZnuPP1DO5AKjU4T+rLnaP5uNjlA+YrZnn1tSUZd8wLbMQmn0zQvhxk157C/c9Q7
-         S4GoZ23iZHMnQj5i6aqAn5b/iO9NsQpCTfLvTYimfA/Hwy3Rtib7IDYRvlGsfP4SAfNE
-         aUuqcA7Quqk9Kw7ejAV4oPkkpa9IJlk654BcPAmswnppfAt2NYELqd42edT5xAGNS82n
-         W7khQ1hkdp9g1RuttxmYbb7LuMRrq5NGVsG+PPVDWuWl4JSnQgQ89rwtb4eBExeEMk/N
-         SG4w==
-X-Gm-Message-State: AOJu0YzAScHD0o1XxSMFfbWeP/t4N2OVSaY4R8iyJzh1VcvKIuk8K6CA
-        9/JsxjDfBCom7LU2LrPqSIsK6e+FZRA=
-X-Google-Smtp-Source: AGHT+IH1sIJVj6vXFk3PsUqXsDejVqOQyTaC/4Gh2c9aKr1SO/xiGQdSW9KnyI9IseCxWCSAKxk3+A==
-X-Received: by 2002:adf:f7c3:0:b0:32d:89b5:7fd9 with SMTP id a3-20020adff7c3000000b0032d89b57fd9mr2562686wrq.56.1697570868914;
-        Tue, 17 Oct 2023 12:27:48 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id o2-20020adfeac2000000b0032cc35c2ef7sm435897wrn.29.2023.10.17.12.27.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Oct 2023 12:27:48 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        Alexander Couzens <lynxis@fe80.eu>,
-        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Daniel Golle <daniel@makrotopia.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     stable@vger.kernel.org
-Subject: [net-next RFC PATCH 1/6] wifi: mt76: fix broken precal loading from MTD for mt7915
-Date:   Tue, 17 Oct 2023 21:05:05 +0200
-Message-Id: <20231017190510.27163-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S235072AbjJQTcn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 15:32:43 -0400
+X-Greylist: delayed 384 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 17 Oct 2023 12:32:32 PDT
+Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [IPv6:2001:738:5001::48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F9D4124
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 12:32:31 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by smtp2.kfki.hu (Postfix) with ESMTP id 695ADCC02BE;
+        Tue, 17 Oct 2023 21:26:05 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at smtp2.kfki.hu
+Received: from smtp2.kfki.hu ([127.0.0.1])
+        by localhost (smtp2.kfki.hu [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP; Tue, 17 Oct 2023 21:26:03 +0200 (CEST)
+Received: from blackhole.kfki.hu (blackhole.szhk.kfki.hu [148.6.240.2])
+        by smtp2.kfki.hu (Postfix) with ESMTP id 4D3ACCC02B7;
+        Tue, 17 Oct 2023 21:26:02 +0200 (CEST)
+Received: by blackhole.kfki.hu (Postfix, from userid 1000)
+        id 3B3E83431A9; Tue, 17 Oct 2023 21:26:02 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+        by blackhole.kfki.hu (Postfix) with ESMTP id 3A0503431A8;
+        Tue, 17 Oct 2023 21:26:02 +0200 (CEST)
+Date:   Tue, 17 Oct 2023 21:26:02 +0200 (CEST)
+From:   Jozsef Kadlecsik <kadlec@netfilter.org>
+To:     Pablo Neira Ayuso <pablo@netfilter.org>
+cc:     xiaolinkui <xiaolinkui@gmail.com>, fw@strlen.de,
+        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, kuniyu@amazon.com, justinstitt@google.com,
+        netfilter-devel@vger.kernel.org,
+        Linkui Xiao <xiaolinkui@kylinos.cn>, stable@vger.kernel.org
+Subject: Re: [PATCH] netfilter: ipset: fix race condition in ipset swap,
+ destroy and test/add/del
+In-Reply-To: <ZS6iqG5XIEwGvDrR@calendula>
+Message-ID: <ba5ac33-2cd0-658a-2094-bc37bdcdc9d@netfilter.org>
+References: <20231017125256.23056-1-xiaolinkui@gmail.com> <ZS6iqG5XIEwGvDrR@calendula>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,47 +54,185 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit 495184ac91bb ("mt76: mt7915: add support for applying
-pre-calibration data") was fundamentally broken and never worked.
+Hi,
 
-The idea (before NVMEM support) was to expand the MTD function and pass
-an additional offset. For normal EEPROM load the offset would always be
-0. For the purpose of precal loading, an offset was passed that was
-internally the size of EEPROM, since precal data is right after the
-EEPROM.
+On Tue, 17 Oct 2023, Pablo Neira Ayuso wrote:
 
-Problem is that the offset value passed is never handled and is actually
-overwrite by
+> This means then that Jozsef's patch is fixing the issue that you 
+> reported, then a Tested-by: tag would be nice to have from you :)
+> 
+> If all is OK, then please, let Jozsef submit his own patch to 
+> netfilter-devel@ so it can follow its trip to the nf.git tree.
 
-	offset = be32_to_cpup(list);
-	ret = mtd_read(mtd, offset, len, &retlen, eep);
+I'll need a few days to work on the patch for possible improvements 
+before the final submission.
 
-resulting in the passed offset value always ingnored. (and even passing
-garbage data as precal as the start of the EEPROM is getting read)
+Best regards,
+Jozsef
 
-Fix this by adding to the current offset value, the offset from DT to
-correctly read the piece of data at the requested location.
+> On Tue, Oct 17, 2023 at 08:52:56PM +0800, xiaolinkui wrote:
+> > From: Linkui Xiao <xiaolinkui@kylinos.cn>
+> > 
+> > There is a race condition which can be demonstrated by the following
+> > script:
+> > 
+> > ipset create hash_ip1 hash:net family inet hashsize 1024 maxelem 1048576
+> > ipset add hash_ip1 172.20.0.0/16
+> > ipset add hash_ip1 192.168.0.0/16
+> > iptables -A INPUT -m set --match-set hash_ip1 src -j ACCEPT
+> > while [ 1 ]
+> > do
+> >         ipset create hash_ip2 hash:net family inet hashsize 1024 maxelem 1048576
+> >         ipset add hash_ip2 172.20.0.0/16
+> >         ipset swap hash_ip1 hash_ip2
+> >         ipset destroy hash_ip2
+> >         sleep 0.05
+> > done
+> > 
+> > Swap will exchange the values of ref so destroy will see ref = 0 instead of
+> > ref = 1. So after running this script for a period of time, the following
+> > race situations may occur:
+> >         CPU0:                CPU1:
+> >         ipt_do_table
+> >         ->set_match_v4
+> >         ->ip_set_test
+> >                         ipset swap hash_ip1 hash_ip2
+> >                         ipset destroy hash_ip2
+> >         ->hash_net4_kadt
+> > 
+> > CPU0 found ipset through the index, and at this time, hash_ip2 has been
+> > destroyed by CPU1 through name search. So CPU0 will crash when accessing
+> > set->data in the function hash_net4_kadt.
+> > 
+> > With this fix in place swap will wait for the ongoing operations to be
+> > finished.
+> > 
+> > V1->V2 changes:
+> > - replace ref_netlink with rcu synchonize_rcu()
+> > 
+> > Closes: https://lore.kernel.org/all/69e7963b-e7f8-3ad0-210-7b86eebf7f78@netfilter.org/
+> > Cc: stable@vger.kernel.org
+> > Suggested-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+> > Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+> > 
+> > ---
+> >  net/netfilter/ipset/ip_set_core.c | 31 ++++++++++++++++++++++++++-----
+> >  1 file changed, 26 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+> > index 35d2f9c9ada0..62ee4de6ffee 100644
+> > --- a/net/netfilter/ipset/ip_set_core.c
+> > +++ b/net/netfilter/ipset/ip_set_core.c
+> > @@ -712,13 +712,18 @@ ip_set_rcu_get(struct net *net, ip_set_id_t index)
+> >  	struct ip_set_net *inst = ip_set_pernet(net);
+> >  
+> >  	rcu_read_lock();
+> > -	/* ip_set_list itself needs to be protected */
+> > +	/* ip_set_list and the set pointer need to be protected */
+> >  	set = rcu_dereference(inst->ip_set_list)[index];
+> > -	rcu_read_unlock();
+> >  
+> >  	return set;
+> >  }
+> >  
+> > +static inline void
+> > +ip_set_rcu_put(struct ip_set *set __always_unused)
+> > +{
+> > +	rcu_read_unlock();
+> > +}
+> > +
+> >  static inline void
+> >  ip_set_lock(struct ip_set *set)
+> >  {
+> > @@ -744,8 +749,10 @@ ip_set_test(ip_set_id_t index, const struct sk_buff *skb,
+> >  	pr_debug("set %s, index %u\n", set->name, index);
+> >  
+> >  	if (opt->dim < set->type->dimension ||
+> > -	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC))
+> > +	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC)) {
+> > +		ip_set_rcu_put(set);
+> >  		return 0;
+> > +	}
+> >  
+> >  	ret = set->variant->kadt(set, skb, par, IPSET_TEST, opt);
+> >  
+> > @@ -764,6 +771,7 @@ ip_set_test(ip_set_id_t index, const struct sk_buff *skb,
+> >  			ret = -ret;
+> >  	}
+> >  
+> > +	ip_set_rcu_put(set);
+> >  	/* Convert error codes to nomatch */
+> >  	return (ret < 0 ? 0 : ret);
+> >  }
+> > @@ -780,12 +788,15 @@ ip_set_add(ip_set_id_t index, const struct sk_buff *skb,
+> >  	pr_debug("set %s, index %u\n", set->name, index);
+> >  
+> >  	if (opt->dim < set->type->dimension ||
+> > -	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC))
+> > +	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC)) {
+> > +		ip_set_rcu_put(set);
+> >  		return -IPSET_ERR_TYPE_MISMATCH;
+> > +	}
+> >  
+> >  	ip_set_lock(set);
+> >  	ret = set->variant->kadt(set, skb, par, IPSET_ADD, opt);
+> >  	ip_set_unlock(set);
+> > +	ip_set_rcu_put(set);
+> >  
+> >  	return ret;
+> >  }
+> > @@ -802,12 +813,15 @@ ip_set_del(ip_set_id_t index, const struct sk_buff *skb,
+> >  	pr_debug("set %s, index %u\n", set->name, index);
+> >  
+> >  	if (opt->dim < set->type->dimension ||
+> > -	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC))
+> > +	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC)) {
+> > +		ip_set_rcu_put(set);
+> >  		return -IPSET_ERR_TYPE_MISMATCH;
+> > +	}
+> >  
+> >  	ip_set_lock(set);
+> >  	ret = set->variant->kadt(set, skb, par, IPSET_DEL, opt);
+> >  	ip_set_unlock(set);
+> > +	ip_set_rcu_put(set);
+> >  
+> >  	return ret;
+> >  }
+> > @@ -882,6 +896,7 @@ ip_set_name_byindex(struct net *net, ip_set_id_t index, char *name)
+> >  	read_lock_bh(&ip_set_ref_lock);
+> >  	strscpy_pad(name, set->name, IPSET_MAXNAMELEN);
+> >  	read_unlock_bh(&ip_set_ref_lock);
+> > +	ip_set_rcu_put(set);
+> >  }
+> >  EXPORT_SYMBOL_GPL(ip_set_name_byindex);
+> >  
+> > @@ -1348,6 +1363,9 @@ static int ip_set_rename(struct sk_buff *skb, const struct nfnl_info *info,
+> >   * protected by the ip_set_ref_lock. The kernel interfaces
+> >   * do not hold the mutex but the pointer settings are atomic
+> >   * so the ip_set_list always contains valid pointers to the sets.
+> > + * However after swapping, a userspace set destroy command could
+> > + * remove a set still processed by kernel side add/del/test.
+> > + * Therefore we need to wait for the ongoing operations to be finished.
+> >   */
+> >  
+> >  static int ip_set_swap(struct sk_buff *skb, const struct nfnl_info *info,
+> > @@ -1397,6 +1415,9 @@ static int ip_set_swap(struct sk_buff *skb, const struct nfnl_info *info,
+> >  	ip_set(inst, to_id) = from;
+> >  	write_unlock_bh(&ip_set_ref_lock);
+> >  
+> > +	/* Make sure all readers of the old set pointers are completed. */
+> > +	synchronize_rcu();
+> > +
+> >  	return 0;
+> >  }
+> >  
+> > -- 
+> > 2.17.1
+> > 
+> 
 
-Cc: stable@vger.kernel.org
-Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/eeprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 36564930aef1..2558788f7ffb 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -67,7 +67,7 @@ static int mt76_get_of_epprom_from_mtd(struct mt76_dev *dev, void *eep, int offs
- 		goto out_put_node;
- 	}
- 
--	offset = be32_to_cpup(list);
-+	offset += be32_to_cpup(list);
- 	ret = mtd_read(mtd, offset, len, &retlen, eep);
- 	put_mtd_device(mtd);
- 	if (mtd_is_bitflip(ret))
 -- 
-2.40.1
-
+E-mail  : kadlec@blackhole.kfki.hu, kadlecsik.jozsef@wigner.hu
+PGP key : https://wigner.hu/~kadlec/pgp_public_key.txt
+Address : Wigner Research Centre for Physics
+          H-1525 Budapest 114, POB. 49, Hungary
