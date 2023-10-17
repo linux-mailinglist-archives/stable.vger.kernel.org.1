@@ -2,57 +2,22 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CBC77CBF8F
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 11:38:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE5917CC012
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 12:03:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234791AbjJQJiI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 05:38:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46810 "EHLO
+        id S234802AbjJQKDR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 06:03:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234788AbjJQJiI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 05:38:08 -0400
-Received: from mail-vs1-xe36.google.com (mail-vs1-xe36.google.com [IPv6:2607:f8b0:4864:20::e36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60ACEE8
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 02:38:05 -0700 (PDT)
-Received: by mail-vs1-xe36.google.com with SMTP id ada2fe7eead31-45845db2d63so55968137.3
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 02:38:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697535484; x=1698140284; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bKqVh8btfAJWGYdTAKR1R2f9vNamhWmyPKOFxzrvwzU=;
-        b=W26hzSuK1Kq3+mN1PXMHgeLUs80yoMOZrX4i3MnjjO0mkSYFsggMqxxbUrKZYdDxvx
-         c81RvkjH6htcZcYTud4OwoGmvLQ8hr3Jqvll+yINzsStHPu48XC6pi/DDVjXbjh5GbGm
-         Nq2jEbGL31Ig3ZWKVKn1Hlzy/F7nDpSmh/nGDwyxzAjf9hiNf/cP3nef6yD8akpChSC6
-         Gs9FjbPv5lgBFYOO+wBzb7j0fFjMzoGtAtt5OGQ/y9JTPesvJLYw13PbmS5S+vHl8Irm
-         o3LlrADp7hSC9Bk1F48aNlmMfUjv0ZTJCpQsrxu7yM7RXg/t03LFn8j0+zq22Pj9MJZo
-         LJFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697535484; x=1698140284;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bKqVh8btfAJWGYdTAKR1R2f9vNamhWmyPKOFxzrvwzU=;
-        b=sVK9eI5AS6r2dvJD/TSwABjE5JGZOhVQL1VrA6lUBR+7joVJDfolTK0pARsQIx9aJW
-         +bgei3VOLB7JF74VMQisAMHJAb4+I3kkn9qlvO3Q+b19s1hKXM1fKF5fl6+2sLpvpKbP
-         oxVlOZk9aQgc+V5mdcL0scMs0BPfCc5p2V2WlQInqVevqZ7Q0neeLfQ7bwLqxQk2tEV0
-         2vK2LaEUL39kh4mZseFuX+gmhRjWySt9cOJ8atQt+TnQuHX6UBTLfVxU+0l0zc3/0AH1
-         gFkpg4HOJmu5wpjQa4ZCBu4A6CAWwgyaRmML5sUrO3orOC2w0vGgHM9jq1bkiHWolGvT
-         90fg==
-X-Gm-Message-State: AOJu0Yzx5zJB3mK6GTgDKNKgizXrq25/XTz8U7h0SyYnivQ3YVMAskgA
-        8egwxlAeflBX6PhcXnhpnKOojoVkz9Gn7cV1kutaQA==
-X-Google-Smtp-Source: AGHT+IFggEgn7Ks15xd+SYbFSRsXVnpK+EIouMs2/JqWFgjLW3Lrmv/FFmLO/NCZ3wAnATND43RyJd/PGM1/dusRVbM=
-X-Received: by 2002:a67:e115:0:b0:452:b574:3ca3 with SMTP id
- d21-20020a67e115000000b00452b5743ca3mr1770346vsl.14.1697535484308; Tue, 17
- Oct 2023 02:38:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231016083953.689300946@linuxfoundation.org>
-In-Reply-To: <20231016083953.689300946@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 17 Oct 2023 15:07:53 +0530
-Message-ID: <CA+G9fYsCiwLjPENYOAqCQm_AEY-4XV8Ko84JNJhtTGYsCPmENw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/102] 5.15.136-rc1 review
+        with ESMTP id S234794AbjJQKDR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 06:03:17 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F7C998;
+        Tue, 17 Oct 2023 03:03:14 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 1356D1C006A; Tue, 17 Oct 2023 12:03:12 +0200 (CEST)
+Date:   Tue, 17 Oct 2023 12:03:11 +0200
+From:   Pavel Machek <pavel@denx.de>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
@@ -61,181 +26,66 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
         conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 6.1 000/131] 6.1.59-rc1 review
+Message-ID: <ZS5b31zuOxXuAAlE@duo.ucw.cz>
+References: <20231016084000.050926073@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="ZuOvj95TIyZYdPCo"
+Content-Disposition: inline
+In-Reply-To: <20231016084000.050926073@linuxfoundation.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_NEUTRAL autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 16 Oct 2023 at 14:14, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.136 release.
-> There are 102 patches in this series, all will be posted as a response
+
+--ZuOvj95TIyZYdPCo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> This is the start of the stable review cycle for the 6.1.59 release.
+> There are 131 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
-> Responses should be made by Wed, 18 Oct 2023 08:39:38 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.136-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
+                                                                           =
+            =20
+CIP testing did not find any problems here:                                =
+            =20
+                                                                           =
+            =20
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y       =20
+                                                                           =
+            =20
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>                              =
+            =20
+                                                                           =
+            =20
+Best regards,                                                              =
+            =20
+                                                                Pavel      =
+            =20
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+--ZuOvj95TIyZYdPCo
+Content-Type: application/pgp-signature; name="signature.asc"
 
-## Build
-* kernel: 5.15.136-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.15.y
-* git commit: f11fc66f963fdd01d969cd3dbb90f0f775de525e
-* git describe: v5.15.135-103-gf11fc66f963f
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.135-103-gf11fc66f963f
+-----BEGIN PGP SIGNATURE-----
 
-## Test Regressions (compared to v5.15.135)
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZS5b3wAKCRAw5/Bqldv6
+8t48AKCMl1eXo2hOctKzIOB5i4EHqs+f/QCfZIY266G9/gPn9kp4hQxQlekE2D8=
+=wuuW
+-----END PGP SIGNATURE-----
 
-## Metric Regressions (compared to v5.15.135)
-
-## Test Fixes (compared to v5.15.135)
-
-## Metric Fixes (compared to v5.15.135)
-
-## Test result summary
-total: 147886, pass: 122990, fail: 2836, skip: 21902, xfail: 158
-
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 227 total, 227 passed, 0 failed
-* arm64: 85 total, 85 passed, 0 failed
-* i386: 67 total, 66 passed, 1 failed
-* mips: 51 total, 50 passed, 1 failed
-* parisc: 7 total, 7 passed, 0 failed
-* powerpc: 50 total, 49 passed, 1 failed
-* riscv: 19 total, 19 passed, 0 failed
-* s390: 21 total, 20 passed, 1 failed
-* sh: 26 total, 24 passed, 2 failed
-* sparc: 14 total, 14 passed, 0 failed
-* x86_64: 72 total, 72 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+--ZuOvj95TIyZYdPCo--
