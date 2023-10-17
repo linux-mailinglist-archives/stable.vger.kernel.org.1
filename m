@@ -2,115 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E7207CC30F
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 14:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 086477CC33D
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 14:34:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235156AbjJQMY2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 08:24:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48572 "EHLO
+        id S234934AbjJQMeb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 08:34:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235145AbjJQMYR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 08:24:17 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040A2187;
-        Tue, 17 Oct 2023 05:22:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4B9C433C7;
-        Tue, 17 Oct 2023 12:22:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697545339;
-        bh=M00BvJirBo+mdXAXAKpgHd3oBO/bTMkIYD3+l9Xy8oM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ChBlyKPGb8GCIp6eNUPF1XPPHZDj+fZR2GBHysrDUsb+1Z6bkoZoFbdSbIHUj/Axb
-         G9uP/YC/uMpzye2GvXDv4vsM8xsLaep8qtOtxb28+RCtAepaErNujCbQ+axyfH+R99
-         TARpH7IDgm+A6+h9oEzmr/bTzz/CUaiWvRvC86vPsbRQIYFV672t3PZGhIIO+aim14
-         Uf4JB8j3QNy4VHbriNlbOz8KgHDQAY3rkrnDbQShv6tI7Y+oKIkFGzA88ujq7OmEPA
-         1LYH2UhYJg1lIr5iEtbWk/1OwblE8PBhyHIIN8rMlUp0W7ZBmaZjDd6aJ+rrMU2ERa
-         6QBdStzt0FfVg==
-Date:   Tue, 17 Oct 2023 13:22:14 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org,
-        linux-stable <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Marc Zyngier <maz@kernel.org>
-Subject: Re: selftests: ftrace: Internal error: Oops: sve_save_state
-Message-ID: <ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk>
-References: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
+        with ESMTP id S234866AbjJQMeb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 08:34:31 -0400
+Received: from mail-yw1-x1131.google.com (mail-yw1-x1131.google.com [IPv6:2607:f8b0:4864:20::1131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3D1A95
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 05:34:25 -0700 (PDT)
+Received: by mail-yw1-x1131.google.com with SMTP id 00721157ae682-5a7ac4c3666so69012597b3.3
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 05:34:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1697546065; x=1698150865; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gIl0fBWnXD5rRLm1M66vQJGMMeQ035Rboe3KXMky3Ps=;
+        b=NioR7hmav8+Xgzj30vXqSVt76/g/TS1ph2tPHu6sBjRYgZJjYMauXxlQdsBIcyXhAf
+         L8EXrcq91X5gS/sWbJhyRnu2VSPyNE5LcU6haoRXDKNM3pHfAzstf5g2LNBaaqivz65v
+         3l6N9HDYfgSkOyWRoBw0PjzZqZPhl5Xbfk8PE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697546065; x=1698150865;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gIl0fBWnXD5rRLm1M66vQJGMMeQ035Rboe3KXMky3Ps=;
+        b=px18BFoF+tp3IbE+RmptGuUo6BF50AqMuRCbWJ49fqP6vgF5dCrlE24yk7hbYRM2Ac
+         Ic3UhHebtyMQ3GOcFWDkzWohhaVKh7aWGvAua40cdo/33GHI3QzGkLDL+r5sTFzg+vLC
+         KirDxX27xoUXHD6JOvzF4FkG7eFC+eEU1wK0idwkgMp+Sfrrq3OgN6RSAKjxN05+bcYp
+         1vZNw0239abyukyfh/gNpXjad53NmwPC65jUJt6lgcUfZn2VooU8UkGK+KNxrCGWBtIk
+         RRpQ+nsBHt8SR4I9BldsfsRJsZDoya3RGlzR+YTaMM/2r5o4R2hzbv8VNdkPEVmCOxwU
+         v4kg==
+X-Gm-Message-State: AOJu0Yy/HS08alM9ej5iZpwXzAUQwPEhdomafx1iissP2Qvp5fSN3Lrf
+        11t7H59N/W07qOtZQp2T4Cc8hw==
+X-Google-Smtp-Source: AGHT+IEuJvyjNMSwYyn5xvBEcpAUsKV61Cs7TO3ZfWjOoko2MioWCtZU9FfFVgeRolHZ3Xwronhczw==
+X-Received: by 2002:a05:690c:387:b0:59b:ec11:7734 with SMTP id bh7-20020a05690c038700b0059bec117734mr2107670ywb.39.1697546064911;
+        Tue, 17 Oct 2023 05:34:24 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id d77-20020a814f50000000b005a7ba08b2acsm587509ywb.0.2023.10.17.05.34.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Oct 2023 05:34:24 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date:   Tue, 17 Oct 2023 07:34:22 -0500
+From:   Justin Forbes <jforbes@fedoraproject.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.5 000/190] 6.5.8-rc2 review
+Message-ID: <ZS5/TktEeU//QCuJ@fedora64.linuxtx.org>
+References: <20231016185002.371937173@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="apekHljeOM9+sOYc"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
-X-Cookie: Santa Claus is watching!
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231016185002.371937173@linuxfoundation.org>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, Oct 16, 2023 at 09:48:57PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.8 release.
+> There are 190 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 18 Oct 2023 18:48:18 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.8-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
---apekHljeOM9+sOYc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Tested rc2 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-On Tue, Oct 17, 2023 at 01:34:18PM +0530, Naresh Kamboju wrote:
-
-> Following kernel crash noticed while running selftests: ftrace:
-> ftracetest-ktap on FVP models running stable-rc 6.5.8-rc2.
-
-> This is not an easy to reproduce issue and not seen on mainline and next.
-> We are investigating this report.
-
-To confirm have you seen this on other stables as well or is this only
-v6.5?  For how long have you been seeing this?
-
-> [  764.987161] Unable to handle kernel NULL pointer dereference at
-> virtual address 0000000000000000
-
-> [  765.074221] Call trace:
-> [  765.075045]  sve_save_state+0x4/0xf0
-> [  765.076138]  fpsimd_thread_switch+0x2c/0xe8
-> [  765.077305]  __switch_to+0x20/0x158
-> [  765.078384]  __schedule+0x2cc/0xb38
-> [  765.079464]  preempt_schedule_irq+0x44/0xa8
-> [  765.080633]  el1_interrupt+0x4c/0x68
-> [  765.081691]  el1h_64_irq_handler+0x18/0x28
-> [  765.082829]  el1h_64_irq+0x64/0x68
-> [  765.083874]  ftrace_return_to_handler+0x98/0x158
-> [  765.085090]  return_to_handler+0x20/0x48
-> [  765.086205]  do_sve_acc+0x64/0x128
-> [  765.087272]  el0_sve_acc+0x3c/0xa0
-> [  765.088356]  el0t_64_sync_handler+0x114/0x130
-> [  765.089524]  el0t_64_sync+0x190/0x198
-
-So something managed to get flagged as having SVE state without having
-the backing storage allocated.  We *were* preempted in the SVE access
-handler which does the allocation but I can't see the path that would
-trigger that since we allocate the state before setting TIF_SVE.  It's
-possible the compiler did something funky, a decode of the backtrace
-might help show that?
-
---apekHljeOM9+sOYc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmUufHUACgkQJNaLcl1U
-h9Du4gf/RwBqZmgxZTFG61U5ZuvEedd7Ncv9OG5UjPNGuBlLM1KDg+t5xj5Zl+en
-LShQ6Hzccz4mxRfADxNIrWt4P+hEkgFvgSlmJvAZBJSc8LJm4OP/hiDD1Bx3Qikq
-W3nSjSa+uLW02+wF2zw2hJPK+8qv+09HFyb5bBOWavLRu45N4kzLjE3/NrDLR2vK
-j98xD+9RNYw4uUGZEy0CFqBeHTV+YOlOnH8IUOrDIzycKn17npDUIygiL3lMD8RH
-J+VyRqniWlGDkglCesuJdXMZSXTRx+YJQTExTJKvFyQiomdXjs5BMcxBtx8Ldec2
-GM5ENkf0jVDClVZOWMsGBNV/zV0/rw==
-=oZtp
------END PGP SIGNATURE-----
-
---apekHljeOM9+sOYc--
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
