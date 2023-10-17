@@ -2,63 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B0BF7CC874
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 18:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC1CA7CC87E
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 18:13:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234635AbjJQQLV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 12:11:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37454 "EHLO
+        id S234659AbjJQQNr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 12:13:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343776AbjJQQLU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 12:11:20 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5513E9E;
-        Tue, 17 Oct 2023 09:11:19 -0700 (PDT)
+        with ESMTP id S234929AbjJQQNo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 12:13:44 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 456C2B0
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 09:13:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697559079; x=1729095079;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=5TkiqnrgGUR9l/9JjizuOwqg19NNV0hU60DdfXEYDDc=;
-  b=MzMPTeh0rVnc5zh/g61/WcPmeqP80KMkI+28KdC4Fi4Z8cWMiP1MotmO
-   caPcUSQ+jUJMVjv/uHiGKuPHsI0BdLgjkGo0eryqRXNbMLpvs3daGaAjP
-   93CZvL/racL50jpABYGcMFOg3NNEsRqynnXe91FWqTFU5sNHcp5nekwH1
-   Um14S4a9XdfETZuBEhlY+978uw32dgMEWQmuCsZtDU8kjY9KbbeXdYuB7
-   y6Osd8wm9IKCEq8fRbKbvj6AyBx6UDaG9bCbq38mhKCHut/ogJkRj2yQ0
-   oiZdCX16Pr1oSTb2miFbM28t2n9f3RSiT+TaPz+nH/7I5U6P3wMLdrXv/
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="365167515"
+  t=1697559223; x=1729095223;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=6BUDwsOstiX6bA6rzmLlBk+HBj1WAjDr5Rz9qX+KMws=;
+  b=GOZ6q3z3vdXlbBzOACA3J4BGonRva1u/GjvWJDhOI6HGr05vyhBVeL8r
+   rDdc0GC8jqAyi/RQh9wOpQSggvszm77rbDrNVcYSGVmXMrVWImcik527o
+   FzidL+Zp7Q/PKnzolo7EVXj76r9vfF6hMv1S+9o18O1cufkUj13dF7M9X
+   hi6C+JasWfyjFhkY66SQi3r1K/l3MIuQfdAUvMAM7iw2/p0QdyCRFPHI6
+   wOl3m5kaLjkZlcr5XiWAovs4408260mk+KZE4n7mvzXRZdGpbDWMRlF9H
+   UFnIYDtPmc2TpVakH2Ku5xNaBr7qKOnFqyD27d5aBKL0/jsNppnoMsdtF
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="472042577"
 X-IronPort-AV: E=Sophos;i="6.03,232,1694761200"; 
-   d="scan'208";a="365167515"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 09:09:49 -0700
+   d="scan'208";a="472042577"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 09:13:42 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="759865021"
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="756175115"
 X-IronPort-AV: E=Sophos;i="6.03,232,1694761200"; 
-   d="scan'208";a="759865021"
-Received: from asprado-mobl2.amr.corp.intel.com (HELO pbossart-mobl3.intel.com) ([10.212.55.179])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Oct 2023 09:09:48 -0700
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-To:     alsa-devel@alsa-project.org, srinivas.kandagatla@linaro.org
-Cc:     tiwai@suse.de, broonie@kernel.org, vkoul@kernel.org,
-        gregkh@linuxfoundation.org,
-        Bard liao <yung-chuan.liao@linux.intel.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Subject: [RFC PATCH 2/2] soundwire: fix initializing sysfs for same devices on different buses
-Date:   Tue, 17 Oct 2023 11:09:33 -0500
-Message-Id: <20231017160933.12624-3-pierre-louis.bossart@linux.intel.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231017160933.12624-1-pierre-louis.bossart@linux.intel.com>
-References: <20231017160933.12624-1-pierre-louis.bossart@linux.intel.com>
+   d="scan'208";a="756175115"
+Received: from lkp-server02.sh.intel.com (HELO f64821696465) ([10.239.97.151])
+  by orsmga002.jf.intel.com with ESMTP; 17 Oct 2023 09:13:41 -0700
+Received: from kbuild by f64821696465 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qsmhO-0009nD-2V;
+        Tue, 17 Oct 2023 16:13:38 +0000
+Date:   Wed, 18 Oct 2023 00:12:52 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [RFC PATCH 1/2] soundwire: bus: introduce controller_id
+Message-ID: <ZS6yhIG6G8SlkN01@36731e0f0762>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231017160933.12624-2-pierre-louis.bossart@linux.intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -66,78 +61,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Hi,
 
-If same devices with same device IDs are present on different soundwire
-buses, the probe fails due to conflicting device names and sysfs
-entries:
+Thanks for your patch.
 
-  sysfs: cannot create duplicate filename '/bus/soundwire/devices/sdw:0:0217:0204:00:0'
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-The link ID is 0 for both devices, so they should be differentiated by
-the controller ID. Add the controller ID so, the device names and sysfs entries look
-like:
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-  sdw:1:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6ab0000.soundwire-controller/sdw-master-1-0/sdw:1:0:0217:0204:00:0
-  sdw:3:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6b10000.soundwire-controller/sdw-master-3-0/sdw:3:0:0217:0204:00:0
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [RFC PATCH 1/2] soundwire: bus: introduce controller_id
+Link: https://lore.kernel.org/stable/20231017160933.12624-2-pierre-louis.bossart%40linux.intel.com
 
-[PLB changes: use bus->controller_id instead of bus->id]
-
-Fixes: 7c3cd189b86d ("soundwire: Add Master registration")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Co-developed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- drivers/soundwire/slave.c        | 12 ++++++------
- sound/soc/intel/boards/sof_sdw.c |  4 ++--
- 2 files changed, 8 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
-index c1c1a2ac293a..060c2982e26b 100644
---- a/drivers/soundwire/slave.c
-+++ b/drivers/soundwire/slave.c
-@@ -39,14 +39,14 @@ int sdw_slave_add(struct sdw_bus *bus,
- 	slave->dev.fwnode = fwnode;
- 
- 	if (id->unique_id == SDW_IGNORED_UNIQUE_ID) {
--		/* name shall be sdw:link:mfg:part:class */
--		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x",
--			     bus->link_id, id->mfg_id, id->part_id,
-+		/* name shall be sdw:ctrl:link:mfg:part:class */
-+		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x",
-+			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
- 			     id->class_id);
- 	} else {
--		/* name shall be sdw:link:mfg:part:class:unique */
--		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x:%01x",
--			     bus->link_id, id->mfg_id, id->part_id,
-+		/* name shall be sdw:ctrl:link:mfg:part:class:unique */
-+		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x:%01x",
-+			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
- 			     id->class_id, id->unique_id);
- 	}
- 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 869dacb81133..6575549b8407 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -1242,11 +1242,11 @@ static int fill_sdw_codec_dlc(struct device *dev,
- 	else if (is_unique_device(adr_link, sdw_version, mfg_id, part_id,
- 				  class_id, adr_index))
- 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
--					     "sdw:%01x:%04x:%04x:%02x", link_id,
-+					     "sdw:0:%01x:%04x:%04x:%02x", link_id,
- 					     mfg_id, part_id, class_id);
- 	else
- 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
--					     "sdw:%01x:%04x:%04x:%02x:%01x", link_id,
-+					     "sdw:0:%01x:%04x:%04x:%02x:%01x", link_id,
- 					     mfg_id, part_id, class_id, unique_id);
- 
- 	if (!codec->name)
 -- 
-2.39.2
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
