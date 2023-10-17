@@ -2,33 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4BBD7CCCA5
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 21:53:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC50E7CCCCE
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 22:00:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233940AbjJQTxR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 15:53:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54678 "EHLO
+        id S230017AbjJQUAW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 16:00:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234988AbjJQTxR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 15:53:17 -0400
+        with ESMTP id S229459AbjJQUAV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 16:00:21 -0400
 Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D778C6
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 12:53:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69612C6
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 13:00:19 -0700 (PDT)
 Received: from [213.219.164.206] (helo=deadeye)
         by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <ben@decadent.org.uk>)
-        id 1qsq7q-0001bP-Te; Tue, 17 Oct 2023 21:53:10 +0200
+        id 1qsqEj-0001f0-Qs; Tue, 17 Oct 2023 22:00:17 +0200
 Received: from ben by deadeye with local (Exim 4.97-RC1)
         (envelope-from <ben@decadent.org.uk>)
-        id 1qsq7q-00000003vRq-1lNH;
-        Tue, 17 Oct 2023 21:53:10 +0200
-Message-ID: <29d20ccd1a754c91ba4a23505a096b4051e44c05.camel@decadent.org.uk>
-Subject: [stable] Documentation: sysctl: align cells in second content column
+        id 1qsqEj-00000003vYK-197K;
+        Tue, 17 Oct 2023 22:00:17 +0200
+Message-ID: <db312d7fba700ba12bbbf49c680b499fbcad1a68.camel@decadent.org.uk>
+Subject: Re: [stable] Documentation: sysctl: align cells in second content
+ column
 From:   Ben Hutchings <ben@decadent.org.uk>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable <stable@vger.kernel.org>
-Date:   Tue, 17 Oct 2023 21:53:05 +0200
+Date:   Tue, 17 Oct 2023 22:00:12 +0200
+In-Reply-To: <29d20ccd1a754c91ba4a23505a096b4051e44c05.camel@decadent.org.uk>
+References: <29d20ccd1a754c91ba4a23505a096b4051e44c05.camel@decadent.org.uk>
 Autocrypt: addr=ben@decadent.org.uk; prefer-encrypt=mutual;
  keydata=mQINBEpZoUwBEADWqNn2/TvcJO2LyjGJjMQ6VG86RTfXdfYg31Y2UnksKm81Av+MdaF37fIQUeAmBpWoRsnKL96j0G6ElNZ8Tp1SfjWiAyWFE+O6WzdDX9uaczb+SFXM5twQbjwBYbCaiHuhV7ifz33uPeJUoOcqQmNFnZWC9EbEazXtbqnU1eQcKOLUC7kO/aKlVCxr3yChQ6J2uaOKNGJqFXb/4bUUdUSqrctGbvruUCYsEBk0VU0h0VKpkvHjw2C2rBSdJ4lAyXj7XMB5AYIY7aJvueZHk9WkethA4Xy90CwYS+3fuQFk1YJLpaQ9hT3wMpRYH7Du1+oKKySakh8r9i6x9OAPEVfHidyvNkyClUVYhUBXDFwTVXeDo5cFqZwQ35yaFbhph+OU0rMMGLCGeGommZ5MiwkizorFvfWvn7mloUNV1i6Y1JLfg1S0BhEiPedcbElTsnhg5TKDMeQUmv2uPjWqiVmhOTzhynHZKPY3PGsDxvnS8H2swcmbvKVAMVQFSliWmJiiaaaiVut7ty9EnFBQq1Th4Sx6yHzmnxIlP82Hl2VM9TsCeIlirf48S7+n8TubTsZkw8L7VJSXrmQnxXEKaFhZynXLC/g+Mdvzv9gY0YbjAu05pV42XwD3YBsvK+G3S/YKGmQ0Nn0r9owcFvVbusdkUyPWtI61HBWQFHplkiRR8QARAQABtB9CZW4gSHV0Y2hpbmdzIChET0I6IDE5NzctMDEtMTEpiQI4BBMBCAAiBQJKWaJTAhsDBgsJCAcDAgYVCgkICwMEFgIBAAIeAQIXgAAKCRDnv8jslYYRCUCJEADMkiPq+lgSwisPhlP+MlXkf3biDY/4SXfZgtP69J3llQzgK56RwxPHiCOM/kKvMOEcpxR2UzGRlWPk9WE2wpJ1Mcb4/R0KrJIimjJsr27HxAUI8oC/q2mnvVFD/VytIBQmfqkEqpFUgUGJwX7Xaq520vXCsrM45+n/H
         FLYlIfF5YJwj9FxzhwyZyG70BcFU93PeHwyNxieIqSb9+brsuJWHF4FcVhpsjBCA9lxbkg0sAcbjxj4lduk4sNnCoEb6Y6jniKU6MBNwaqojDvo7KNMz66mUC1x0S50EjPsgAohW+zRgxFYeixiZk1o5qh+XE7H5eunHVRdTvEfunkgb17FGSEJPWPRUK6xmAc50LfSk4TFFEa9oi1qP6lMg/wuknnWIwij2EFm1KbWrpoFDZ+ZrfWffVCxyF1y/vqgtUe2GKwpe5i5UXMHksTjEArBRCPpXJmsdkG63e5FY89zov4jCA/xc9rQmF/4LBmS0/3qamInyr6gN00C/nyv6D8XMPq4bZ3cvOqzmqeQxZlX9XG6i9AmtTN6yWVjrG4rQFjqbAc71V6GQJflwnk0KT6cHvkOb2yq3YGqTOSC2NPqx1WVYFu7BcywUK1/cZwHuETehEoKMUstw3Zf+bMziUKBOyb/tQ8tmZKUZYyeBwKpdSBHcaLtSPiNPPHBZpa1Nj6tZrQjQmVuIEh1dGNoaW5ncyA8YmVuQGRlY2FkZW50Lm9yZy51az6JAjgEEwEIACIFAkpZoUwCGwMGCwkIBwMCBhUKCQgLAwQWAgEAAh4BAheAAAoJEOe/yOyVhhEJGisP/0mG2HEXyW6eXCEcW5PljrtDSFiZ99zP/SfWrG3sPO/SaQLHGkpOcabjqvmCIK4iLJ5nvKU9ZD6Tr6GMnVsaEmLpBQYrZNw2k3bJx+XNGyuPO7PAkk8sDGJo1ffhRfhhTUrfUplT8D+Bo171+ItIUW4lXPp8HHmiS6PY22H37bSU+twjTnNt0zJ7kI32ukhZxxoyGyQhQS8Oog5etnVL0+HqOpRLy5ZV/laF/XKX/MZodYHYAfzYE5sobZHPxhDsJdPXWy02ar0qrPfUmXjdZSzK96alUMiIBGWJwb0IPS+SnAxtMxY4PwiUmt9WmuXfbhWsi9NJGbhxJpwyi7T7MGU+MVxLau
@@ -37,7 +40,7 @@ Autocrypt: addr=ben@decadent.org.uk; prefer-encrypt=mutual;
         uZF8eDcpr7cpcev2gID8bCvtd7UH0GgiI3/sHfixcNkRk/SxMrJSmMtIQu/faqYwQsuLo2WT9rW2Pw/uxovv9UvFKg4n2huTP2JJHplNhlp2QppTy5HKw4bZDn7DJ2IyzmSZ9DfUbkwy3laTR11v6anT/dydwJy4bM234vnurlGqInmH+Em1PPSM8xMeKW0wismhfoqS9yZ8qbl0BRf5LEG7/xFo/JrM70RZkW+Sethz2gkyexicp9uWmQuSal2WxB2QzJRIN+nfdU4s7mNTiSqwHBQga6D/F32p2+z2inS5T5qJRP+OPq1fRFN6aor3CKTCvc1jBAL0gy+bqxPpKNNmwEqwVwrChuTWXRz8k8ZGjViP7otV1ExFgdphCxaCLwuPtjAbasvtEECg25M5STTggslYajdDsCCKkCF9AuaXC6yqJkxA5qOlHfMiJk53rBSsM5ikDdhz0gxij7IMTZxJNavQJHEDElN6hJtCqcyq4Y6bDuSWfEXpBJ5pMcbLqRUqhqQk5irWEAN5Ts9JwRjkPNN1UadQzDvhduc/U7KcYUVBvmFTcXkVlvp/o26PrcvRp+lKtG+S9Wkt/ON0oWmg1C/I9shkCBWfhjSQ7GNwIEk7IjIp9ygHKFgMcHZ6DzYbIZ4QrZ3wZvApsSmdHm70SFSJsqqsm+lJywARAQABiQIfBBgBCAAJBQJKWaGpAhsMAAoJEOe/yOyVhhEJhHEQALBR5ntGb5Y1UB2ioitvVjRX0nVYD9iVG8X693sUUWrpKBpibwcXc1fcYR786J3G3j9KMHR+KZudulmPn8Ee5EaLSEQDIgL0JkSTbB5o2tbQasJ2E+uJ9190wAa75IJ2XOQyLokPVDegT2LRDW/fgMq5r0teS76Ll0+1x7RcoKYucto6FZu/g0DulVD07oc90GzyHNnQKcNtqTE9D07E74P0aNlpQ/QBDvwftb5UIkcaB465u6gUngnyCny311TTgfcYq6S1tNng1
         /Odud1lLbOGjZHH2UI36euTpZDGzvOwgstifMvLK2EMT8ex196NH9MUL6KjdJtZ0NytdNoGm1N/3mWYrwiPpV5Vv+kn2ONin2Vrejre9+0OoA3YvuDJY0JJmzOZ4Th5+9mJQPDpQ4L4ZFa6V/zkhhbjA+/uh5X2sdJ8xsRXAcLB33ESDAb4+CW0m/kubk/GnAJnyflkYjmVnlPAPjfsq3gG4v9eBBnJd6+/QXR9+6lVImpUPC7D58ytFYwpeIM9vkQ4CpxZVQ9jyUpDTwgWQirWDJy0YAVxEzhAxRXyb/XjCSki4dD6S5VhWqoKOd4i3QREgf+rdymmscpf/Eos9sPAiwpXFPAC6Kj81pcxR2wNY8WwJWvSs6LNESSWcfPdN4VIefAiWtbhNmkE2VnQrGPbRhsBw+3A
 Content-Type: multipart/signed; micalg="pgp-sha512";
-        protocol="application/pgp-signature"; boundary="=-Xm1jU5WzPAhmrcQ9vwRq"
+        protocol="application/pgp-signature"; boundary="=-mbYwyPTaJD0YXAdnxUlh"
 User-Agent: Evolution 3.50.0-1 
 MIME-Version: 1.0
 X-SA-Exim-Connect-IP: 213.219.164.206
@@ -53,49 +56,58 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---=-Xm1jU5WzPAhmrcQ9vwRq
+--=-mbYwyPTaJD0YXAdnxUlh
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Several stable branches (4.14 to 5.15 inclusive) belatedly got
-backports of commit 1202cdd665315c ("Remove DECnet support from
-kernel").  This causes a minor regression for the documentation build,
-which was fixed upstream by:
+On Tue, 2023-10-17 at 21:53 +0200, Ben Hutchings wrote:
+> Several stable branches (4.14 to 5.15 inclusive) belatedly got
+> backports of commit 1202cdd665315c ("Remove DECnet support from
+> kernel").  This causes a minor regression for the documentation build,
+> which was fixed upstream by:
+>=20
+> commit 1faa34672f8a17a3e155e74bde9648564e9480d6
+> Author: Bagas Sanjaya <bagasdotme@gmail.com>
+> Date:   Wed Aug 24 10:58:04 2022 +0700
+> =20
+>     Documentation: sysctl: align cells in second content column
+>=20
+> Please apply this to the affected branches.
 
-commit 1faa34672f8a17a3e155e74bde9648564e9480d6
-Author: Bagas Sanjaya <bagasdotme@gmail.com>
-Date:   Wed Aug 24 10:58:04 2022 +0700
-=20
-    Documentation: sysctl: align cells in second content column
-
-Please apply this to the affected branches.
+...which are actually only 5.4, 5.10, and 5.15.  The backports to the
+older branches had some textual adjustments that avoided the
+regression.
 
 Ben.
+
+>=20
+> Ben.
+>=20
 
 --=20
 Ben Hutchings
 Who are all these weirdos? - David Bowie, on joining IRC
 
 
---=-Xm1jU5WzPAhmrcQ9vwRq
+--=-mbYwyPTaJD0YXAdnxUlh
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmUu5iEACgkQ57/I7JWG
-EQnUcxAAxdbTyvDQpnNgkhfH1PyLmUwAZyzt7fDBQXGa3FDSTv16uDl8kdwzO432
-0VX6EuZ7Be8dtptxIO4WMXeQ3FsUDPGh9YdTCsy8on9aFYcUn1aKORKqyY3P9hni
-AQqc9kUIsCeR/yfjrqA0c5msNkwmhTiQuJ8jE9HewJojgUj7kyXaZyXwI4Ba7wyN
-doTCQ9fyBaO/gQ6L4O/amvJeZRZLA9Qpnx8wNCR4s1amJP5VId6oFMlMJj5puVaG
-WVhqdNP74OD6BaEUyCpCTmZp6rWOQiETOEhWlgp94oO1raDt30a4TdxNYsSvF/8C
-8Q/Y+JoZWkxNlAVxGvgwPvdVJWEU8WzP7weWEjvay7+KbjOOzr11iloqIsY4sxCj
-BgPiZYHUkWMKjzRFgQWe2bxFywZBs71otaApt6rpfyMdVUUE+Wrea/C+Aeu9PvEH
-nZ7KMxTSi7mYiP6oidRpLOea5nHFtG5DICMFmTOH+dO+HJavBeM0JGxQkQLpcX87
-lYvWfME3DOAiNIW2ie1RqZRasZu8R2cVClUDQZFYfYFbS/d0Ga7IST2jp2wGO72m
-JRKcxiATamj2CCTnlF+xVCxN8KY8/kal1I9rnCx13ODnY/0uGqmOkVZxmsTYZb9v
-Tk8xz4Co6XNV2LIbAv/rlwgKqSvqurMDqVVOOvIcvk/WJKvqsRY=
-=fZBY
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmUu58wACgkQ57/I7JWG
+EQkKnA//bQfrPY66uwl5MnktbyCYvWKvFbq48f7yszWdRJ1XUteEawouNHLddsbU
+zpFBRcm9jEfhhCXDpJciXwcBl+rfXsRrRds8j0PUipSF5BO2lwTXTR+Cf8v/3e6c
+ILB/e4rK5OS1mKRNGZB+tVY2nPk/EsIbnARIi3uDdlAvpMPOVhbcL0N2Yj9y1IQh
+vw+5lHG9vJ1f4/kCXgKeePmMYmnJ7QzJWgLLYF8jo+4kdW8uuQOYBqsQl4F+Xk3R
+LU2qDDQFhAhQ0HM/G52HqCoR2/CA1DTB3omOpQ/mWyh3Locvm+yxWhDoJArLKN9V
+3No4nX/FbcN13djTWhfRVQ0qJRMkSpcKcfo8S2XxhCXhAxvQyypSKlPuAwR5tiFv
+fvba+dhvlqwRJNusPP0ODR5fGc/M2TOic4KWIHY+FOwEKsgzuP5ZzjPITW8BT2wn
+4Hm0yKT0gyEzJumvPG8lHzu9KYU9090BEwI2fmzWWrG0l4La9jnVnedtbWXM0NAB
+EPavzEDnhAZNynSxL2m/nTAVpIaACKQE/3bMp5TeoqxCV9UnzXU5V3rt0B6Tkrwq
+FWUwWGvgN8mj84morOojatSnpMvRh/b3CLiUVJozFP47O6SI5D+Rup+fdMUApjGf
+Z9RCtj4gEHWNJ26vfexWcEcIIpUzTAX08JFeOR7RY4cNqPAui3w=
+=G/Pi
 -----END PGP SIGNATURE-----
 
---=-Xm1jU5WzPAhmrcQ9vwRq--
+--=-mbYwyPTaJD0YXAdnxUlh--
