@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 330187CBA32
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 07:34:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C12727CBA59
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 07:48:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233862AbjJQFer (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 01:34:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44008 "EHLO
+        id S234391AbjJQFsK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 01:48:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230343AbjJQFeq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 01:34:46 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 792C0A4
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 22:34:44 -0700 (PDT)
+        with ESMTP id S230343AbjJQFsJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 01:48:09 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1278D8E
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 22:48:07 -0700 (PDT)
 Received: from localhost.localdomain (unknown [IPv6:2a0c:5a83:9102:3700:8869:609:4cb0:482d])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
         (No client certificate requested)
         (Authenticated sender: rcn)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id D9E116606F85;
-        Tue, 17 Oct 2023 06:34:42 +0100 (BST)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 9024C6606F85;
+        Tue, 17 Oct 2023 06:48:05 +0100 (BST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1697520883;
-        bh=ql1a+6YCLP/6lE6fEfWpYdrAsPbsP9TSZQPSMd5H1dQ=;
+        s=mail; t=1697521685;
+        bh=tZZyyZgHVuu4fndqQT5/ST9hDrBtZ0ZdQBAJ722Itto=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gE9KbMyqbFAxE6RsBquSbISYs2vChBlXvX32GIcLWQn3Sr2q2vkZqkmhHImIpUIO7
-         0kvXGLKH9yXXonFUB8jrl+LPezBBR73iITrcQ5aORFqyTwg0pORAxO5QPfQehRK3uX
-         uKpMUFXrE00sfUElNgId7ZQeXJjIFdBJQA/mvXJGoVp02+c/bvqK1tGXioHpqKp6y8
-         6t9xULB3wXKYJkzktRUsLgkehQK5t7EAue790Hwz1lY5Fg9pFIm/qmVeQgZVCQGHYB
-         ag9AxX9huh+lmXv1S+5aCCTpN+hUqV2N1cjz/5E8LBOHONTsOIJZ53OlmjDGxmceat
-         esJbMgwAtGwNg==
+        b=biBT3cDlokCmEQQXp4dYR015dmWVZBMhoD5bx10Yd5DkeonWqIQ7wl09qdzRfyNoW
+         ySRGJVCw3MIF2qmnR4Sj+bTupiNQX+oiejzKYDeYpLbt5zGxAM0YAs7YOGvbKz97Xs
+         g3RJwlUFc6c+zNAO2BKxDtP8Tdwn/XRopl4uWjU5z4QYo+usqDfWq3M/ENDoCt+Wmh
+         fkvP71VmZgOnP4UlaX53CnEYgsLbAPLKp3Im6bSdU4gLDJkdrSKvO3s7Lfn90Pq9W0
+         KsacerFDBbmZcG2mnZVNjAAajs11YmU4lKc8Ei9OIbZa5SoSSatAn2L9KshW0BjpcU
+         Z9PbSUaVdIHOg==
 From:   =?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
 To:     stable@vger.kernel.org
 Cc:     kernel@collabora.com
-Subject: [PATCH 5.10.y] usb: hub: Guard against accesses to uninitialized BOS descriptors
-Date:   Tue, 17 Oct 2023 07:34:31 +0200
-Message-Id: <20231017053431.3430816-1-ricardo.canuelo@collabora.com>
+Subject: [PATCH 5.4.y] usb: hub: Guard against accesses to uninitialized BOS descriptors
+Date:   Tue, 17 Oct 2023 07:47:52 +0200
+Message-Id: <20231017054752.3481799-1-ricardo.canuelo@collabora.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2023101548-guidable-approach-14ef@gregkh>
-References: <2023101548-guidable-approach-14ef@gregkh>
+In-Reply-To: <2023101550-bountiful-matriarch-1441@gregkh>
+References: <2023101550-bountiful-matriarch-1441@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -94,16 +94,17 @@ Cc: stable <stable@vger.kernel.org>
 Link: https://lore.kernel.org/r/20230830100418.1952143-1-ricardo.canuelo@collabora.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 (cherry picked from commit f74a7afc224acd5e922c7a2e52244d891bbe44ee)
+Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
 ---
  drivers/usb/core/hub.c | 28 ++++++++++++++++++++++++----
  drivers/usb/core/hub.h |  2 +-
  2 files changed, 25 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 580604596499..b91b01c2c5de 100644
+index f787e9771b1f..9a1954e9f6f1 100644
 --- a/drivers/usb/core/hub.c
 +++ b/drivers/usb/core/hub.c
-@@ -149,6 +149,10 @@ int usb_device_supports_lpm(struct usb_device *udev)
+@@ -148,6 +148,10 @@ int usb_device_supports_lpm(struct usb_device *udev)
  	if (udev->quirks & USB_QUIRK_NO_LPM)
  		return 0;
  
@@ -114,7 +115,7 @@ index 580604596499..b91b01c2c5de 100644
  	/* USB 2.1 (and greater) devices indicate LPM support through
  	 * their USB 2.0 Extended Capabilities BOS descriptor.
  	 */
-@@ -325,6 +329,10 @@ static void usb_set_lpm_parameters(struct usb_device *udev)
+@@ -324,6 +328,10 @@ static void usb_set_lpm_parameters(struct usb_device *udev)
  	if (!udev->lpm_capable || udev->speed < USB_SPEED_SUPER)
  		return;
  
@@ -125,7 +126,7 @@ index 580604596499..b91b01c2c5de 100644
  	hub = usb_hub_to_struct_hub(udev->parent);
  	/* It doesn't take time to transition the roothub into U0, since it
  	 * doesn't have an upstream link.
-@@ -2684,7 +2692,8 @@ int usb_authorize_device(struct usb_device *usb_dev)
+@@ -2678,7 +2686,8 @@ int usb_authorize_device(struct usb_device *usb_dev)
  }
  
  /*
@@ -135,7 +136,7 @@ index 580604596499..b91b01c2c5de 100644
   * check it from the link protocol field of the current speed ID attribute.
   * current speed ID is got from ext port status request. Sublink speed attribute
   * table is returned with the hub BOS SSP device capability descriptor
-@@ -2694,8 +2703,12 @@ static int port_speed_is_ssp(struct usb_device *hdev, int speed_id)
+@@ -2688,8 +2697,12 @@ static int port_speed_is_ssp(struct usb_device *hdev, int speed_id)
  	int ssa_count;
  	u32 ss_attr;
  	int i;
@@ -149,7 +150,7 @@ index 580604596499..b91b01c2c5de 100644
  	if (!ssp_cap)
  		return 0;
  
-@@ -4114,8 +4127,15 @@ static void usb_enable_link_state(struct usb_hcd *hcd, struct usb_device *udev,
+@@ -4091,8 +4104,15 @@ static void usb_enable_link_state(struct usb_hcd *hcd, struct usb_device *udev,
  		enum usb3_link_state state)
  {
  	int timeout, ret;
@@ -168,7 +169,7 @@ index 580604596499..b91b01c2c5de 100644
  	/* If the device says it doesn't have *any* exit latency to come out of
  	 * U1 or U2, it's probably lying.  Assume it doesn't implement that link
 diff --git a/drivers/usb/core/hub.h b/drivers/usb/core/hub.h
-index 22ea1f4f2d66..db4c7e2c5960 100644
+index a8f23f8bc6ef..1c455800f7d3 100644
 --- a/drivers/usb/core/hub.h
 +++ b/drivers/usb/core/hub.h
 @@ -141,7 +141,7 @@ static inline int hub_is_superspeedplus(struct usb_device *hdev)
