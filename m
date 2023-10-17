@@ -2,125 +2,184 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28D1A7CBA73
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 07:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECC447CBA8C
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 08:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234399AbjJQF6V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 01:58:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42790 "EHLO
+        id S234426AbjJQGGa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 02:06:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233862AbjJQF6V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 01:58:21 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94CFC9E
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 22:58:19 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-536ef8a7dcdso5845a12.0
-        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 22:58:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697522298; x=1698127098; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9rq3LvOe4SfHmFex3vU+w/NmGDGSxbe7VzmQ0Zs+zjU=;
-        b=i1UimwAXdoKMFTyKSrvRXBCb7Fd8qyCYvs+k4+MlRaBcA4X7WRHnlyvH7E7Wa38X4w
-         RtT9poVjk6X5M+2N7fzPo0+H2Kyz+GlpVmHq7eIvrbniX/fPqt6XXA1CyAuF6TnUhBEG
-         SfyzI0CC175ujoORFb7ttuVUOkg5OL2AL/KO2WzQ09PJaXKNVgtcBRQHly4PDGhKrSI0
-         tJp909LAGS4/rmkKTE7KKlZxZeEYhGTYlaIvy007GKO/rSMemNilDY53vWA1VYhx2idX
-         cU3wWalz9qCiVQWoX29LwEXWS/dMh1XJOq/FDgXWvddqtmah2PPfvRsj5HJy8kZSzmvV
-         VedQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697522298; x=1698127098;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9rq3LvOe4SfHmFex3vU+w/NmGDGSxbe7VzmQ0Zs+zjU=;
-        b=dMnfiWs05vV5O4lEbcl1fw75f+C/T1xmf2oIGPWY+TmK2DAnUlUnbnPlo1Vj5BbFCa
-         BpjblF0dGmUQTeLmoquthuCeEkDOyAqJawT4geIN0LJsCJyHw0LWHnC+NDpw2aR69JJi
-         V1eoOd1/Maf0fAxCfuZ1lYEflXfH94WgQZdD9AVBXH7sp5gyEuEztccsyIEkYLMyL/uY
-         sEu/EaRIym24p0v/T6tbqBTspWTtYXp70pKZcKUP25rDXf6LZVUOKq/Wt0EJn7FZcXtI
-         P8SMVB2NRaeT190RlGNuM28ISg9Ukq9VSwnYwp4TqH6dSkTIDxcIemzmGqEU6WhKXD+K
-         H2FA==
-X-Gm-Message-State: AOJu0YxzS1fBWwi3BuDkIGULqcrXuyqFo6wITVdTN+aX+AGO2B7wJXLV
-        1ECXp/HEJaJ/23GN9VTBqwu7aTsDlOARYnVxt6W8sC0GB+eiHQvKsfBeSA==
-X-Google-Smtp-Source: AGHT+IFjp2aDD4eYrqeEl0nw38IecTQFrd/pWHJ3xM27TxsyQLG0k9KkG1IsK+HiPF34IC/DxMkhbyTl5gqWTc1Zoko=
-X-Received: by 2002:aa7:d507:0:b0:53f:1f3e:c007 with SMTP id
- y7-20020aa7d507000000b0053f1f3ec007mr18394edq.0.1697522297915; Mon, 16 Oct
- 2023 22:58:17 -0700 (PDT)
+        with ESMTP id S234518AbjJQGG2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 02:06:28 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DF7AB6
+        for <stable@vger.kernel.org>; Mon, 16 Oct 2023 23:06:26 -0700 (PDT)
+Received: from localhost.localdomain (unknown [IPv6:2a0c:5a83:9102:3700:8869:609:4cb0:482d])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: rcn)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 123566606F85;
+        Tue, 17 Oct 2023 07:06:25 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1697522785;
+        bh=c8s52MVF0O4cVv282ZN6RZKC8MjDx5m/1oLpcg6OxP8=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=DLvP6Hm6vyGKXr2PjSvgxZhlmOukLat3QzUdonDpROyNk6NVIyBSDeKSh/hGP3u8n
+         KvNQ+2dxaXezF+7nGNEv18VlkffPayrNag/fkYKRF0ye+z6tArLx6Bu8WcA6ZYVtAc
+         jZPNWV+XgMqIZ2/87nOUkoXoXDgkWZulWKw2TtzeCwmEIWZRhClxjjJN3jiQdKS5Ue
+         jTUY91ooSY4dUYEe/MI0As4tgY5Fc9Ugxcw2CBoRyMqiJ5IcnYd/+sAhWAIdHECzNf
+         NAWnu8avvH28qoVfC8nZxFmkBcgYVIyrQK8Jjwcb8eY+vV3OgHt6FtiLGO0j0BWbdj
+         IrP/hoRVgawQA==
+From:   =?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
+To:     stable@vger.kernel.org
+Cc:     kernel@collabora.com
+Subject: [PATCH 4.14.y] usb: hub: Guard against accesses to uninitialized BOS descriptors
+Date:   Tue, 17 Oct 2023 08:06:13 +0200
+Message-Id: <20231017060613.3580689-1-ricardo.canuelo@collabora.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2023101553-strict-slogan-ea90@gregkh>
+References: <2023101553-strict-slogan-ea90@gregkh>
 MIME-Version: 1.0
-References: <CANP3RGdzJ7RYWkMT_zNXbg0FyPcCF4rixABvF0++OR-2gpEtow@mail.gmail.com>
- <CANP3RGe82EQhdKd_sc7kWDm2jqx1jTa-Rnj23xBSVpFvK_-T2Q@mail.gmail.com>
- <20231016082913.GB3502392@pengutronix.de> <CANP3RGfp9dNun7-gAarqXo71ay2jeLnqO6eJzmXpNKAmXYeosw@mail.gmail.com>
- <20231017042029.GA3539182@pengutronix.de>
-In-Reply-To: <20231017042029.GA3539182@pengutronix.de>
-From:   =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
-Date:   Mon, 16 Oct 2023 22:58:00 -0700
-Message-ID: <CANP3RGfRP2yHnNgjj0eGBJ8VpANJg4dnR74aoDUm4UOBuOO8_w@mail.gmail.com>
-Subject: Re: USB_NET_AX8817X dependency on AX88796B_PHY
-To:     Oleksij Rempel <o.rempel@pengutronix.de>
-Cc:     stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Lunn <andrew@lunn.ch>, Patrick Rohr <prohr@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Oct 16, 2023 at 9:20=E2=80=AFPM Oleksij Rempel <o.rempel@pengutroni=
-x.de> wrote:
->
-> On Mon, Oct 16, 2023 at 11:27:07AM -0700, Maciej =C5=BBenczykowski wrote:
-> > On Mon, Oct 16, 2023 at 1:29=E2=80=AFAM Oleksij Rempel <o.rempel@pengut=
-ronix.de> wrote:
-> > > On Sun, Oct 15, 2023 at 03:13:26PM -0700, Maciej =C5=BBenczykowski wr=
-ote:
-> > > > This means even with the option manually enabled, we'd still need t=
-o
-> > > > cherrypick dde25846925765a88df8964080098174495c1f10
-> > > > "net: usb/phy: asix: add support for ax88772A/C PHYs"
-> > > > since apparently this is simply new(ish) hardware with built-in x88=
-772C PHY.
-> > >
-> > >
-> > > As far as I see, you are not using clean mainline stable kernel. All =
-changes
-> > > which make your kernel to need an external PHY driver are _not_ in v5=
-.10.198.
-> >
-> > No, the dmesg was actually from a (probably clean-ish 6.4-ish) debian
-> > kernel on my laptop,
-> > where the device enumerates and works in one of the 2 usb-c ports.
-> >
-> > As I mentioned the hardware that actually runs 5.10 is having issues
-> > even detecting my test device.
-> > (and while that 5.10 is far from clean mainline, the usb and network
-> > driver portions are more or less untouched)
-> >
-> > > You will need to cherrypick at least 28 last patches from this stack:
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/lo=
-g/drivers/net/usb/asix_devices.c?h=3Dv6.6-rc6
-> > >
-> > > and some from here too:
-> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/lo=
-g/drivers/net/usb/usbnet.c?h=3Dv6.6-rc6
-> >
-> > I think this basically means the answer is "if you want this to work
-> > upgrade to a newer kernel".
-> > Which of course won't make any users happy, but oh well...
->
-> It means - what ever problem there is, it is most probably not related
-> to the asix driver. In kernel v5.10, there are no external dependencies
-> to other PHY drivers.
+Many functions in drivers/usb/core/hub.c and drivers/usb/core/hub.h
+access fields inside udev->bos without checking if it was allocated and
+initialized. If usb_get_bos_descriptor() fails for whatever
+reason, udev->bos will be NULL and those accesses will result in a
+crash:
 
-I take this to mean you think that the built-in ax88772C PHY should
-work out of the box with 5.10,
-and if it doesn't then this presumably means there's something wrong
-at the usb controller level.
-(hopefully I'll get a second unit and be able to confirm this...)
+BUG: kernel NULL pointer dereference, address: 0000000000000018
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 5 PID: 17818 Comm: kworker/5:1 Tainted: G W 5.15.108-18910-gab0e1cb584e1 #1 <HASH:1f9e 1>
+Hardware name: Google Kindred/Kindred, BIOS Google_Kindred.12672.413.0 02/03/2021
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:hub_port_reset+0x193/0x788
+Code: 89 f7 e8 20 f7 15 00 48 8b 43 08 80 b8 96 03 00 00 03 75 36 0f b7 88 92 03 00 00 81 f9 10 03 00 00 72 27 48 8b 80 a8 03 00 00 <48> 83 78 18 00 74 19 48 89 df 48 8b 75 b0 ba 02 00 00 00 4c 89 e9
+RSP: 0018:ffffab740c53fcf8 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffffa1bc5f678000 RCX: 0000000000000310
+RDX: fffffffffffffdff RSI: 0000000000000286 RDI: ffffa1be9655b840
+RBP: ffffab740c53fd70 R08: 00001b7d5edaa20c R09: ffffffffb005e060
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+R13: ffffab740c53fd3e R14: 0000000000000032 R15: 0000000000000000
+FS: 0000000000000000(0000) GS:ffffa1be96540000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000018 CR3: 000000022e80c005 CR4: 00000000003706e0
+Call Trace:
+hub_event+0x73f/0x156e
+? hub_activate+0x5b7/0x68f
+process_one_work+0x1a2/0x487
+worker_thread+0x11a/0x288
+kthread+0x13a/0x152
+? process_one_work+0x487/0x487
+? kthread_associate_blkcg+0x70/0x70
+ret_from_fork+0x1f/0x30
+
+Fall back to a default behavior if the BOS descriptor isn't accessible
+and skip all the functionalities that depend on it: LPM support checks,
+Super Speed capabilitiy checks, U1/U2 states setup.
+
+Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
+Cc: stable <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230830100418.1952143-1-ricardo.canuelo@collabora.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+(cherry picked from commit f74a7afc224acd5e922c7a2e52244d891bbe44ee)
+---
+ drivers/usb/core/hub.c | 28 ++++++++++++++++++++++++----
+ drivers/usb/core/hub.h |  2 +-
+ 2 files changed, 25 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 213ce28395d4..4a0765bca8e7 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -143,6 +143,10 @@ int usb_device_supports_lpm(struct usb_device *udev)
+ 	if (udev->quirks & USB_QUIRK_NO_LPM)
+ 		return 0;
+ 
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return 0;
++
+ 	/* USB 2.1 (and greater) devices indicate LPM support through
+ 	 * their USB 2.0 Extended Capabilities BOS descriptor.
+ 	 */
+@@ -316,6 +320,10 @@ static void usb_set_lpm_parameters(struct usb_device *udev)
+ 	if (!udev->lpm_capable || udev->speed < USB_SPEED_SUPER)
+ 		return;
+ 
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return;
++
+ 	hub = usb_hub_to_struct_hub(udev->parent);
+ 	/* It doesn't take time to transition the roothub into U0, since it
+ 	 * doesn't have an upstream link.
+@@ -2621,7 +2629,8 @@ int usb_authorize_device(struct usb_device *usb_dev)
+ }
+ 
+ /*
+- * Return 1 if port speed is SuperSpeedPlus, 0 otherwise
++ * Return 1 if port speed is SuperSpeedPlus, 0 otherwise or if the
++ * capability couldn't be checked.
+  * check it from the link protocol field of the current speed ID attribute.
+  * current speed ID is got from ext port status request. Sublink speed attribute
+  * table is returned with the hub BOS SSP device capability descriptor
+@@ -2631,8 +2640,12 @@ static int port_speed_is_ssp(struct usb_device *hdev, int speed_id)
+ 	int ssa_count;
+ 	u32 ss_attr;
+ 	int i;
+-	struct usb_ssp_cap_descriptor *ssp_cap = hdev->bos->ssp_cap;
++	struct usb_ssp_cap_descriptor *ssp_cap;
+ 
++	if (!hdev->bos)
++		return 0;
++
++	ssp_cap = hdev->bos->ssp_cap;
+ 	if (!ssp_cap)
+ 		return 0;
+ 
+@@ -3968,8 +3981,15 @@ static void usb_enable_link_state(struct usb_hcd *hcd, struct usb_device *udev,
+ 		enum usb3_link_state state)
+ {
+ 	int timeout, ret;
+-	__u8 u1_mel = udev->bos->ss_cap->bU1devExitLat;
+-	__le16 u2_mel = udev->bos->ss_cap->bU2DevExitLat;
++	__u8 u1_mel;
++	__le16 u2_mel;
++
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return;
++
++	u1_mel = udev->bos->ss_cap->bU1devExitLat;
++	u2_mel = udev->bos->ss_cap->bU2DevExitLat;
+ 
+ 	/* If the device says it doesn't have *any* exit latency to come out of
+ 	 * U1 or U2, it's probably lying.  Assume it doesn't implement that link
+diff --git a/drivers/usb/core/hub.h b/drivers/usb/core/hub.h
+index 064096e447ae..127303be41af 100644
+--- a/drivers/usb/core/hub.h
++++ b/drivers/usb/core/hub.h
+@@ -145,7 +145,7 @@ static inline int hub_is_superspeedplus(struct usb_device *hdev)
+ {
+ 	return (hdev->descriptor.bDeviceProtocol == USB_HUB_PR_SS &&
+ 		le16_to_cpu(hdev->descriptor.bcdUSB) >= 0x0310 &&
+-		hdev->bos->ssp_cap);
++		hdev->bos && hdev->bos->ssp_cap);
+ }
+ 
+ static inline unsigned hub_power_on_good_delay(struct usb_hub *hub)
+-- 
+2.25.1
+
