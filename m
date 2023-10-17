@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 852D47CCC53
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 21:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4BBD7CCCA5
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 21:53:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344323AbjJQTcp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 15:32:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54796 "EHLO
+        id S233940AbjJQTxR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 15:53:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235072AbjJQTcn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 15:32:43 -0400
-X-Greylist: delayed 384 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 17 Oct 2023 12:32:32 PDT
-Received: from smtp-out.kfki.hu (smtp-out.kfki.hu [IPv6:2001:738:5001::48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F9D4124
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 12:32:31 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by smtp2.kfki.hu (Postfix) with ESMTP id 695ADCC02BE;
-        Tue, 17 Oct 2023 21:26:05 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at smtp2.kfki.hu
-Received: from smtp2.kfki.hu ([127.0.0.1])
-        by localhost (smtp2.kfki.hu [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP; Tue, 17 Oct 2023 21:26:03 +0200 (CEST)
-Received: from blackhole.kfki.hu (blackhole.szhk.kfki.hu [148.6.240.2])
-        by smtp2.kfki.hu (Postfix) with ESMTP id 4D3ACCC02B7;
-        Tue, 17 Oct 2023 21:26:02 +0200 (CEST)
-Received: by blackhole.kfki.hu (Postfix, from userid 1000)
-        id 3B3E83431A9; Tue, 17 Oct 2023 21:26:02 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by blackhole.kfki.hu (Postfix) with ESMTP id 3A0503431A8;
-        Tue, 17 Oct 2023 21:26:02 +0200 (CEST)
-Date:   Tue, 17 Oct 2023 21:26:02 +0200 (CEST)
-From:   Jozsef Kadlecsik <kadlec@netfilter.org>
-To:     Pablo Neira Ayuso <pablo@netfilter.org>
-cc:     xiaolinkui <xiaolinkui@gmail.com>, fw@strlen.de,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, kuniyu@amazon.com, justinstitt@google.com,
-        netfilter-devel@vger.kernel.org,
-        Linkui Xiao <xiaolinkui@kylinos.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH] netfilter: ipset: fix race condition in ipset swap,
- destroy and test/add/del
-In-Reply-To: <ZS6iqG5XIEwGvDrR@calendula>
-Message-ID: <ba5ac33-2cd0-658a-2094-bc37bdcdc9d@netfilter.org>
-References: <20231017125256.23056-1-xiaolinkui@gmail.com> <ZS6iqG5XIEwGvDrR@calendula>
+        with ESMTP id S234988AbjJQTxR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 15:53:17 -0400
+Received: from maynard.decadent.org.uk (maynard.decadent.org.uk [95.217.213.242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D778C6
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 12:53:12 -0700 (PDT)
+Received: from [213.219.164.206] (helo=deadeye)
+        by maynard with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1qsq7q-0001bP-Te; Tue, 17 Oct 2023 21:53:10 +0200
+Received: from ben by deadeye with local (Exim 4.97-RC1)
+        (envelope-from <ben@decadent.org.uk>)
+        id 1qsq7q-00000003vRq-1lNH;
+        Tue, 17 Oct 2023 21:53:10 +0200
+Message-ID: <29d20ccd1a754c91ba4a23505a096b4051e44c05.camel@decadent.org.uk>
+Subject: [stable] Documentation: sysctl: align cells in second content column
+From:   Ben Hutchings <ben@decadent.org.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable <stable@vger.kernel.org>
+Date:   Tue, 17 Oct 2023 21:53:05 +0200
+Autocrypt: addr=ben@decadent.org.uk; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: multipart/signed; micalg="pgp-sha512";
+        protocol="application/pgp-signature"; boundary="=-Xm1jU5WzPAhmrcQ9vwRq"
+User-Agent: Evolution 3.50.0-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 213.219.164.206
+X-SA-Exim-Mail-From: ben@decadent.org.uk
+X-SA-Exim-Scanned: No (on maynard); SAEximRunCond expanded to false
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,185 +52,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-On Tue, 17 Oct 2023, Pablo Neira Ayuso wrote:
+--=-Xm1jU5WzPAhmrcQ9vwRq
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> This means then that Jozsef's patch is fixing the issue that you 
-> reported, then a Tested-by: tag would be nice to have from you :)
-> 
-> If all is OK, then please, let Jozsef submit his own patch to 
-> netfilter-devel@ so it can follow its trip to the nf.git tree.
+Several stable branches (4.14 to 5.15 inclusive) belatedly got
+backports of commit 1202cdd665315c ("Remove DECnet support from
+kernel").  This causes a minor regression for the documentation build,
+which was fixed upstream by:
 
-I'll need a few days to work on the patch for possible improvements 
-before the final submission.
+commit 1faa34672f8a17a3e155e74bde9648564e9480d6
+Author: Bagas Sanjaya <bagasdotme@gmail.com>
+Date:   Wed Aug 24 10:58:04 2022 +0700
+=20
+    Documentation: sysctl: align cells in second content column
 
-Best regards,
-Jozsef
+Please apply this to the affected branches.
 
-> On Tue, Oct 17, 2023 at 08:52:56PM +0800, xiaolinkui wrote:
-> > From: Linkui Xiao <xiaolinkui@kylinos.cn>
-> > 
-> > There is a race condition which can be demonstrated by the following
-> > script:
-> > 
-> > ipset create hash_ip1 hash:net family inet hashsize 1024 maxelem 1048576
-> > ipset add hash_ip1 172.20.0.0/16
-> > ipset add hash_ip1 192.168.0.0/16
-> > iptables -A INPUT -m set --match-set hash_ip1 src -j ACCEPT
-> > while [ 1 ]
-> > do
-> >         ipset create hash_ip2 hash:net family inet hashsize 1024 maxelem 1048576
-> >         ipset add hash_ip2 172.20.0.0/16
-> >         ipset swap hash_ip1 hash_ip2
-> >         ipset destroy hash_ip2
-> >         sleep 0.05
-> > done
-> > 
-> > Swap will exchange the values of ref so destroy will see ref = 0 instead of
-> > ref = 1. So after running this script for a period of time, the following
-> > race situations may occur:
-> >         CPU0:                CPU1:
-> >         ipt_do_table
-> >         ->set_match_v4
-> >         ->ip_set_test
-> >                         ipset swap hash_ip1 hash_ip2
-> >                         ipset destroy hash_ip2
-> >         ->hash_net4_kadt
-> > 
-> > CPU0 found ipset through the index, and at this time, hash_ip2 has been
-> > destroyed by CPU1 through name search. So CPU0 will crash when accessing
-> > set->data in the function hash_net4_kadt.
-> > 
-> > With this fix in place swap will wait for the ongoing operations to be
-> > finished.
-> > 
-> > V1->V2 changes:
-> > - replace ref_netlink with rcu synchonize_rcu()
-> > 
-> > Closes: https://lore.kernel.org/all/69e7963b-e7f8-3ad0-210-7b86eebf7f78@netfilter.org/
-> > Cc: stable@vger.kernel.org
-> > Suggested-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-> > Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
-> > 
-> > ---
-> >  net/netfilter/ipset/ip_set_core.c | 31 ++++++++++++++++++++++++++-----
-> >  1 file changed, 26 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-> > index 35d2f9c9ada0..62ee4de6ffee 100644
-> > --- a/net/netfilter/ipset/ip_set_core.c
-> > +++ b/net/netfilter/ipset/ip_set_core.c
-> > @@ -712,13 +712,18 @@ ip_set_rcu_get(struct net *net, ip_set_id_t index)
-> >  	struct ip_set_net *inst = ip_set_pernet(net);
-> >  
-> >  	rcu_read_lock();
-> > -	/* ip_set_list itself needs to be protected */
-> > +	/* ip_set_list and the set pointer need to be protected */
-> >  	set = rcu_dereference(inst->ip_set_list)[index];
-> > -	rcu_read_unlock();
-> >  
-> >  	return set;
-> >  }
-> >  
-> > +static inline void
-> > +ip_set_rcu_put(struct ip_set *set __always_unused)
-> > +{
-> > +	rcu_read_unlock();
-> > +}
-> > +
-> >  static inline void
-> >  ip_set_lock(struct ip_set *set)
-> >  {
-> > @@ -744,8 +749,10 @@ ip_set_test(ip_set_id_t index, const struct sk_buff *skb,
-> >  	pr_debug("set %s, index %u\n", set->name, index);
-> >  
-> >  	if (opt->dim < set->type->dimension ||
-> > -	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC))
-> > +	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC)) {
-> > +		ip_set_rcu_put(set);
-> >  		return 0;
-> > +	}
-> >  
-> >  	ret = set->variant->kadt(set, skb, par, IPSET_TEST, opt);
-> >  
-> > @@ -764,6 +771,7 @@ ip_set_test(ip_set_id_t index, const struct sk_buff *skb,
-> >  			ret = -ret;
-> >  	}
-> >  
-> > +	ip_set_rcu_put(set);
-> >  	/* Convert error codes to nomatch */
-> >  	return (ret < 0 ? 0 : ret);
-> >  }
-> > @@ -780,12 +788,15 @@ ip_set_add(ip_set_id_t index, const struct sk_buff *skb,
-> >  	pr_debug("set %s, index %u\n", set->name, index);
-> >  
-> >  	if (opt->dim < set->type->dimension ||
-> > -	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC))
-> > +	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC)) {
-> > +		ip_set_rcu_put(set);
-> >  		return -IPSET_ERR_TYPE_MISMATCH;
-> > +	}
-> >  
-> >  	ip_set_lock(set);
-> >  	ret = set->variant->kadt(set, skb, par, IPSET_ADD, opt);
-> >  	ip_set_unlock(set);
-> > +	ip_set_rcu_put(set);
-> >  
-> >  	return ret;
-> >  }
-> > @@ -802,12 +813,15 @@ ip_set_del(ip_set_id_t index, const struct sk_buff *skb,
-> >  	pr_debug("set %s, index %u\n", set->name, index);
-> >  
-> >  	if (opt->dim < set->type->dimension ||
-> > -	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC))
-> > +	    !(opt->family == set->family || set->family == NFPROTO_UNSPEC)) {
-> > +		ip_set_rcu_put(set);
-> >  		return -IPSET_ERR_TYPE_MISMATCH;
-> > +	}
-> >  
-> >  	ip_set_lock(set);
-> >  	ret = set->variant->kadt(set, skb, par, IPSET_DEL, opt);
-> >  	ip_set_unlock(set);
-> > +	ip_set_rcu_put(set);
-> >  
-> >  	return ret;
-> >  }
-> > @@ -882,6 +896,7 @@ ip_set_name_byindex(struct net *net, ip_set_id_t index, char *name)
-> >  	read_lock_bh(&ip_set_ref_lock);
-> >  	strscpy_pad(name, set->name, IPSET_MAXNAMELEN);
-> >  	read_unlock_bh(&ip_set_ref_lock);
-> > +	ip_set_rcu_put(set);
-> >  }
-> >  EXPORT_SYMBOL_GPL(ip_set_name_byindex);
-> >  
-> > @@ -1348,6 +1363,9 @@ static int ip_set_rename(struct sk_buff *skb, const struct nfnl_info *info,
-> >   * protected by the ip_set_ref_lock. The kernel interfaces
-> >   * do not hold the mutex but the pointer settings are atomic
-> >   * so the ip_set_list always contains valid pointers to the sets.
-> > + * However after swapping, a userspace set destroy command could
-> > + * remove a set still processed by kernel side add/del/test.
-> > + * Therefore we need to wait for the ongoing operations to be finished.
-> >   */
-> >  
-> >  static int ip_set_swap(struct sk_buff *skb, const struct nfnl_info *info,
-> > @@ -1397,6 +1415,9 @@ static int ip_set_swap(struct sk_buff *skb, const struct nfnl_info *info,
-> >  	ip_set(inst, to_id) = from;
-> >  	write_unlock_bh(&ip_set_ref_lock);
-> >  
-> > +	/* Make sure all readers of the old set pointers are completed. */
-> > +	synchronize_rcu();
-> > +
-> >  	return 0;
-> >  }
-> >  
-> > -- 
-> > 2.17.1
-> > 
-> 
+Ben.
 
--- 
-E-mail  : kadlec@blackhole.kfki.hu, kadlecsik.jozsef@wigner.hu
-PGP key : https://wigner.hu/~kadlec/pgp_public_key.txt
-Address : Wigner Research Centre for Physics
-          H-1525 Budapest 114, POB. 49, Hungary
+--=20
+Ben Hutchings
+Who are all these weirdos? - David Bowie, on joining IRC
+
+
+--=-Xm1jU5WzPAhmrcQ9vwRq
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEErCspvTSmr92z9o8157/I7JWGEQkFAmUu5iEACgkQ57/I7JWG
+EQnUcxAAxdbTyvDQpnNgkhfH1PyLmUwAZyzt7fDBQXGa3FDSTv16uDl8kdwzO432
+0VX6EuZ7Be8dtptxIO4WMXeQ3FsUDPGh9YdTCsy8on9aFYcUn1aKORKqyY3P9hni
+AQqc9kUIsCeR/yfjrqA0c5msNkwmhTiQuJ8jE9HewJojgUj7kyXaZyXwI4Ba7wyN
+doTCQ9fyBaO/gQ6L4O/amvJeZRZLA9Qpnx8wNCR4s1amJP5VId6oFMlMJj5puVaG
+WVhqdNP74OD6BaEUyCpCTmZp6rWOQiETOEhWlgp94oO1raDt30a4TdxNYsSvF/8C
+8Q/Y+JoZWkxNlAVxGvgwPvdVJWEU8WzP7weWEjvay7+KbjOOzr11iloqIsY4sxCj
+BgPiZYHUkWMKjzRFgQWe2bxFywZBs71otaApt6rpfyMdVUUE+Wrea/C+Aeu9PvEH
+nZ7KMxTSi7mYiP6oidRpLOea5nHFtG5DICMFmTOH+dO+HJavBeM0JGxQkQLpcX87
+lYvWfME3DOAiNIW2ie1RqZRasZu8R2cVClUDQZFYfYFbS/d0Ga7IST2jp2wGO72m
+JRKcxiATamj2CCTnlF+xVCxN8KY8/kal1I9rnCx13ODnY/0uGqmOkVZxmsTYZb9v
+Tk8xz4Co6XNV2LIbAv/rlwgKqSvqurMDqVVOOvIcvk/WJKvqsRY=
+=fZBY
+-----END PGP SIGNATURE-----
+
+--=-Xm1jU5WzPAhmrcQ9vwRq--
