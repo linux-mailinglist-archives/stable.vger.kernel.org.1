@@ -2,178 +2,244 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A0737CBD08
-	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 10:04:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3400E7CBD1D
+	for <lists+stable@lfdr.de>; Tue, 17 Oct 2023 10:11:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234718AbjJQIEc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 04:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50062 "EHLO
+        id S234469AbjJQILf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 04:11:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232134AbjJQIEc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 04:04:32 -0400
-Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 927AB95
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 01:04:30 -0700 (PDT)
-Received: by mail-vk1-xa2c.google.com with SMTP id 71dfb90a1353d-49d6bd3610cso2242278e0c.1
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 01:04:30 -0700 (PDT)
+        with ESMTP id S233857AbjJQILe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 04:11:34 -0400
+Received: from mail-vk1-xa29.google.com (mail-vk1-xa29.google.com [IPv6:2607:f8b0:4864:20::a29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA81AB
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 01:11:32 -0700 (PDT)
+Received: by mail-vk1-xa29.google.com with SMTP id 71dfb90a1353d-49dd647a477so1877710e0c.3
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 01:11:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697529869; x=1698134669; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=xyr6PCHw9JRkGbBkheAbktViQfs7PkRAlmVWx9O5GDc=;
-        b=CkvYQOdJhYT5ULhLaNXjYCwVxoozpAGqDDvNXtE0PHHhWXEhHysFmZk3tFqSEVirCL
-         uXsc4roxJPNb7eKP+aZ2ClXyUXibybEiEmeBd8BcBDexrQvGzv3xV3m3zSi5WP5otyDi
-         6b3aORBPubnlrpu2n9p982iTjqCOf6G78PxuRJAk01ExicFvWUkvoNf1yN4RHWdx5LVA
-         yoRFbToydlDBiR3pyesmHdp8xQozmtRNnZFsvC7zNxEpZXMBimiMoG60WsEFK70ZP8oW
-         tScH8n+c3ekscIlh8+evGTKGtbnvbT0KebMCLQMnE5nHFsoqF58IknZAotFHJ7I5myNy
-         o6gw==
+        d=linaro.org; s=google; t=1697530292; x=1698135092; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZwhdmZoboZYxQUEHCjJkidFw0OTKD3D55xEAaroQmr0=;
+        b=nx3oIitgYYFbUjE+DbpC/wc6XPgLJ8VbZc0bDmy2cPXwykNplz9XkubH5emLustXmQ
+         s8m03JAXvhcyJQF4VTJchTD3oQbvqKpaqmAfGASsAQRvk8abMdc1w5tQDG+nGxC7h4ul
+         U7IvS80RPMzU6Q2Uh1nLx0+nWnMNCPreptV9uJCS9aigjlOV38e7DPUJZzKeA4GsA8ol
+         iNacYoNwFu+qYc97zvYceCTgpXF0BSCzB+WGNFisUe061ZyiB+uNK98+HxckghVzbyoD
+         e8mZ0S6nalMP3DaT+7c6knUHdjnPuG0HFRGboHjOrgClsvkpXcd+IOO8Zbomf5K4QDdK
+         9PCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697529869; x=1698134669;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xyr6PCHw9JRkGbBkheAbktViQfs7PkRAlmVWx9O5GDc=;
-        b=iYdQzfeo+qiOvjggEDU8vrJj9DYmaE+kuLQUcC8u8i3cSe/uojs13v8p6pXQCEjJXK
-         6Gksj1k6pRhAkxiItYlblvYRPX/rfLyq2vAqYT3jIW6VSvLnf/3ItU3SBPBdAGz2f8mk
-         EyFZcfs7k9wfnvQlkfPPLGI3iTfjEQaQPSFPGJqKCwduG892ZV4wNckPiQ8jFHuHIeLF
-         MqDPtbhJUtqMI/FSwAn11fZhbOgR/AchnSCtvTaFDckMbaL1aYrOPv7l+hUWnaRqbJL1
-         ymxVUvV+2ax94Kc6U+whG9RWUz9vQO5O+xqolnSh/TxKqGZWAbJhvWVtce32TGuNtugV
-         EPAg==
-X-Gm-Message-State: AOJu0YwCsC9xRw8DJBmx2s4Nb4FyWeGw1/smnmIkY02IkC7Jvyztoswx
-        VgIt5sy1g6UMD2Fivp68Qtqyu3EjpHNbu+2m6YL1iw4NgFUK4fBVvQGYKA==
-X-Google-Smtp-Source: AGHT+IFd8g20QMfQ9E+xAkgr4VcpkF0gtl3Ph4qFIqtHJosckdm5kRSN7IwlaUOeiZeRSHHi1MPTY6P2HKQQtLP++qU=
-X-Received: by 2002:a05:6122:c96:b0:49a:c339:11b9 with SMTP id
- ba22-20020a0561220c9600b0049ac33911b9mr1813954vkb.11.1697529869549; Tue, 17
- Oct 2023 01:04:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697530292; x=1698135092;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZwhdmZoboZYxQUEHCjJkidFw0OTKD3D55xEAaroQmr0=;
+        b=rZHGlXGEKJboQaYNC/veODt9UB1K/r4ub+lyVhvizsUqPY3ODA6T4PfSsqSp54bTo/
+         U3SbX/6sbyYbwpsVT6WHJBQ+L0hcr+rcOhPSnX6iECWWRH2gNIBsQ2g1t7G6H9/eLQU+
+         87G3cvTSIo2+diAT4Irjqpk1R4vzPSirCs1hbftncr141IRwF456z9O3kh48B6gd6kgk
+         lO3iBVWqHXyFfIk47GZ6J5G6CD+b/Cf9hjUFcfxdsnoV8czMMCQgB7W5Bb2I4vVRPGOQ
+         e34c/z8YzyWp1lH/oVzvVV/jaWKWSe0FNJ8d9vu3hONIAx19gUBlTNhwtDR4Om580+Rn
+         OFmw==
+X-Gm-Message-State: AOJu0YzvqYE4qLoxeKVnj0nmenMrfltA+VTi/Sp94K/q9893X/3pkuZD
+        k1r7A3tpSL5dpZ/znfyhWimm9GZl/dXjcO/qP/fU7w==
+X-Google-Smtp-Source: AGHT+IHlZI6sNT/XNOy/gozixslsRF2nf0psq0DGT67oLm3hUpt2MiGFiteCDAooonykWLkljGmHedBnKhRzYqUEkJ0=
+X-Received: by 2002:a1f:2f16:0:b0:499:e671:1682 with SMTP id
+ v22-20020a1f2f16000000b00499e6711682mr1594511vkv.3.1697530291961; Tue, 17 Oct
+ 2023 01:11:31 -0700 (PDT)
 MIME-Version: 1.0
+References: <20231016185002.371937173@linuxfoundation.org>
+In-Reply-To: <20231016185002.371937173@linuxfoundation.org>
 From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 17 Oct 2023 13:34:18 +0530
-Message-ID: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
-Subject: selftests: ftrace: Internal error: Oops: sve_save_state
-To:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        lkft-triage@lists.linaro.org, linux-stable <stable@vger.kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mark Brown <broonie@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Marc Zyngier <maz@kernel.org>
+Date:   Tue, 17 Oct 2023 13:41:20 +0530
+Message-ID: <CA+G9fYuE6rLYQC6ngBVa7kBzAQbEZCG6mWh3s6Wu+Kbhycpzpw@mail.gmail.com>
+Subject: Re: [PATCH 6.5 000/190] 6.5.8-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Following kernel crash noticed while running selftests: ftrace:
-ftracetest-ktap on FVP models running stable-rc 6.5.8-rc2.
+On Tue, 17 Oct 2023 at 01:19, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.5.8 release.
+> There are 190 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 18 Oct 2023 18:48:18 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.5.8-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.5.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-This is not an easy to reproduce issue and not seen on mainline and next.
-We are investigating this report.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+## Build
+* kernel: 6.5.8-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.5.y
+* git commit: be4ec73708011c2c14720bfd9c94504d997827f1
+* git describe: v6.5.7-191-gbe4ec7370801
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.7=
+-191-gbe4ec7370801
 
-Test log:
-----------
-kselftest: Running tests in ftrace
-TAP version 13
-1..1
-# timeout set to 0
-# selftests: ftrace: ftracetest-ktap
-# TAP version 13
-# 1..129
-# ok 1 Basic trace file check
-# ok 2 Basic test for tracers
-# ok 3 Basic trace clock test
-# ok 4 Basic event tracing check
-# ok 5 Change the ringbuffer size
-# ok 6 Snapshot and tracing setting
-# ok 7 Snapshot and tracing_cpumask
-# ok 8 trace_pipe and trace_marker
-[  471.689140]
-[  471.689264] **********************************************************
-[  471.689422] **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
-[  471.689574] **                                                      **
-[  471.689716] ** trace_printk() being used. Allocating extra memory.  **
-[  471.689878] **                                                      **
-[  471.690031] ** This means that this is a DEBUG kernel and it is     **
-[  471.690183] ** unsafe for production use.                           **
-[  471.690335] **                                                      **
-[  471.690487] ** If you see this message and you are not debugging    **
-[  471.690728] ** the kernel, report this immediately to your vendor!  **
-[  471.690881] **                                                      **
-[  471.691033] **   NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE   **
-[  471.691185] **********************************************************
-[  543.243648] hrtimer: interrupt took 11937170 ns
-[  764.987161] Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000000
-[  764.992518] Mem abort info:
-[  764.995330]   ESR = 0x0000000096000044
-[  764.998562]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  765.002434]   SET = 0, FnV = 0
-[  765.005361]   EA = 0, S1PTW = 0
-[  765.008327]   FSC = 0x04: level 0 translation fault
-[  765.012011] Data abort info:
-[  765.014858]   ISV = 0, ISS = 0x00000044, ISS2 = 0x00000000
-[  765.018797]   CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-[  765.022562]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  765.026438] user pgtable: 4k pages, 48-bit VAs, pgdp=00000008848bd000
-[  765.030782] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-[  765.037045] Internal error: Oops: 0000000096000044 [#1] PREEMPT SMP
-[  765.038392] Modules linked in: ftrace_direct pl111_drm arm_spe_pmu
-drm_dma_helper crct10dif_ce panel_simple drm_kms_helper fuse drm
-dm_mod ip_tables x_tables [last unloaded: ftrace_direct]
-[  765.044892] CPU: 3 PID: 808 Comm: rmmod Not tainted 6.5.8-rc2 #1
-[  765.046192] Hardware name: FVP Base RevC (DT)
-[  765.047264] pstate: 234020c9 (nzCv daIF +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-[  765.048693] pc : sve_save_state+0x4/0xf0
-[  765.049820] lr : fpsimd_save+0x1b8/0x218
-[  765.050933] sp : ffff800080a83ac0
-[  765.051871] x29: ffff800080a83ac0 x28: ffff000805257058 x27: 0000000000000001
-[  765.054108] x26: 0000000000000000 x25: ffffd7c64d332980 x24: 0000000000000000
-[  765.056341] x23: 0000000000000001 x22: ffff284232103000 x21: 0000000000000040
-[  765.058575] x20: ffff00087f7470b0 x19: ffffd7c64d6440b0 x18: 0000000000000000
-[  765.060811] x17: 0000000000000000 x16: ffff800080018000 x15: 0000000000000000
-[  765.063041] x14: 0000000000000000 x13: 0000000000000000 x12: 0000380a873b560e
-[  765.065277] x11: ffffd7c64e0ae390 x10: ffff800080a83b10 x9 : ffffd7c64b5b7710
-[  765.067516] x8 : ffff800080a839b8 x7 : 000000000000001e x6 : ffff00080000c200
-[  765.069752] x5 : ffffd7c64b78cc30 x4 : 0000000000000000 x3 : 0000000000000000
-[  765.071983] x2 : 0000000000000001 x1 : ffff000805257820 x0 : 0000000000000880
-[  765.074221] Call trace:
-[  765.075045]  sve_save_state+0x4/0xf0
-[  765.076138]  fpsimd_thread_switch+0x2c/0xe8
-[  765.077305]  __switch_to+0x20/0x158
-[  765.078384]  __schedule+0x2cc/0xb38
-[  765.079464]  preempt_schedule_irq+0x44/0xa8
-[  765.080633]  el1_interrupt+0x4c/0x68
-[  765.081691]  el1h_64_irq_handler+0x18/0x28
-[  765.082829]  el1h_64_irq+0x64/0x68
-[  765.083874]  ftrace_return_to_handler+0x98/0x158
-[  765.085090]  return_to_handler+0x20/0x48
-[  765.086205]  do_sve_acc+0x64/0x128
-[  765.087272]  el0_sve_acc+0x3c/0xa0
-[  765.088356]  el0t_64_sync_handler+0x114/0x130
-[  765.089524]  el0t_64_sync+0x190/0x198
-[  765.090712] Code: d51b4408 d65f03c0 d503201f d503245f (e5bb5800)
-[  765.092024] ---[ end trace 0000000000000000 ]---
-[  765.904294] pstore: backend (efi_pstore) writing error (-5)
-[  765.905531] note: rmmod[808] exited with irqs disabled
+## Test Regressions (compared to v6.5.7)
 
-Links:
-test log link:
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.7-191-gbe4ec7370801/testrun/20672437/suite/log-parser-test/test/check-kernel-oops/log
+## Metric Regressions (compared to v6.5.7)
 
-Details of tests:
- - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2WrHwIIFdZpJWV5smWZVr2yJxl1
+## Test Fixes (compared to v6.5.7)
 
-Build link:
-- https://storage.tuxsuite.com/public/linaro/lkft/builds/2WrHvExYOOOZVoxlISTdAD1gMzO/
+## Metric Fixes (compared to v6.5.7)
 
+## Test result summary
+total: 138434, pass: 118450, fail: 2031, skip: 17760, xfail: 193
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 144 total, 144 passed, 0 failed
+* arm64: 52 total, 51 passed, 1 failed
+* i386: 41 total, 41 passed, 0 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 38 total, 36 passed, 2 failed
+* riscv: 26 total, 25 passed, 1 failed
+* s390: 16 total, 13 passed, 3 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
 
 --
 Linaro LKFT
