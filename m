@@ -2,105 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D19A7CDA17
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 13:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED5307CDADB
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 13:41:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230121AbjJRLPc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 07:15:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48772 "EHLO
+        id S230334AbjJRLlW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 07:41:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230159AbjJRLPb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 07:15:31 -0400
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE2811A;
-        Wed, 18 Oct 2023 04:15:28 -0700 (PDT)
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-31c5cac3ae2so5783122f8f.3;
-        Wed, 18 Oct 2023 04:15:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697627727; x=1698232527;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fMGHA1GqTA4NgUc9TGEceruFzKyhKbdLHyqCm7/lENQ=;
-        b=c/FERCEXY3H+ereO2ZhahUZFv551Fg0BlePXzPHA6ERKa84nyPo+ZlPX/wBFtNfMXI
-         XCPJjOHLIYxwtlIda9sKWXsudPlZ25LG3b2YL4uMnpHzd5y+jtN5+6hvikgw6uWAqtUl
-         BoLswV3DYloSkrUrQO44ZSYpSUPUiPvtge8/2UuEG8u1A3+1MfLNhGr0JdgthxkndWnH
-         7hJ6fuCsCvLiZ6p23R2MRB5IM4TxY2wzoHLczwVelwXFzr3/UW5oO3i+kyb47Q8LR+1O
-         sG9JC4mzVMPAxJOy36ZDijZaSWQ5sOVgvObrCaKQahaL36ehX27RTnZBWp3dS7NzQhyk
-         Z8xA==
-X-Gm-Message-State: AOJu0Yw7xBjHDGuRDVTCotxPlPcu3pZ+2AJ+o2tWaxhuoW1naCf6gQXD
-        ZJYQGdl8RHiGN9UZegbx1oEOjgJjUZJPFSmo
-X-Google-Smtp-Source: AGHT+IEah1o37/XzeYly4CKX7YUd53M7DtYsKbFDQmUnaElJZgAAwHMCs07P6qGmetQDsrpsSs4ERA==
-X-Received: by 2002:a5d:6046:0:b0:32d:a54a:f57c with SMTP id j6-20020a5d6046000000b0032da54af57cmr3949004wrt.25.1697627727199;
-        Wed, 18 Oct 2023 04:15:27 -0700 (PDT)
-Received: from salami.lan ([80.111.64.44])
-        by smtp.gmail.com with ESMTPSA id l16-20020adfe590000000b0032da46648dasm1902344wrm.8.2023.10.18.04.15.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 04:15:26 -0700 (PDT)
-From:   =?UTF-8?q?Andr=C3=A9=20Draszik?= <git@andred.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     =?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-        Bernd Schubert <bschubert@ddn.com>,
-        Miklos Szeredi <mszeredi@redhat.com>, stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set the FUSE_INIT_EXT"
-Date:   Wed, 18 Oct 2023 12:15:08 +0100
-Message-Id: <20231018111508.3913860-1-git@andred.net>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230904133321.104584-1-git@andred.net>
-References: <20230904133321.104584-1-git@andred.net>
+        with ESMTP id S235038AbjJRLlK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 07:41:10 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2054918A
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 04:40:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697629253; x=1729165253;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jCwkZ+PidRSYSvZWegOIRHSOybjP4kVHC13hkVcaqnA=;
+  b=DdFcus9W2Dznb4yndyMbt/hl6AksbDjm3aaOgQXwPsB9zsn9GVBBI/X3
+   QjfWMERNPYW0yHzLKe/oK2HTY7HEUwbd6/sJF0UQagG1NlpT41svvoYb5
+   ZuSctPCmmecs1uEoDHDhEEg7jpD1wEyyC3vD0J7awJCDEy+Hff38klsba
+   D/LeVB3Usw7fe8FYDYCHnQvtXpwwFyvQVndQxQkIV7h3SxKx1Jet6kJ/E
+   F2Jx8UYVstZo2YULQrmbJFGAQkY/Y3GSP1cG3R3JiRhxIw41yVUEkEaIT
+   xfnazcLebGc/H+CDQECl7oh5iWEDmaAmjrHJz/Uobrt2VUM3lAX0SckVP
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="450216997"
+X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; 
+   d="scan'208";a="450216997"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 04:40:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="706419211"
+X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; 
+   d="scan'208";a="706419211"
+Received: from dut-2a59.iind.intel.com ([10.190.239.113])
+  by orsmga003.jf.intel.com with ESMTP; 18 Oct 2023 04:40:50 -0700
+From:   Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     mika.kahola@intel.com, ville.syrjala@intel.com,
+        radhakrishna.sripada@intel.com, arun.r.murthy@intel.com,
+        Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] drm/i915/mtl: Support HBR3 rate with C10 phy and  eDP in MTL
+Date:   Wed, 18 Oct 2023 17:06:22 +0530
+Message-Id: <20231018113622.2761997-1-chaitanya.kumar.borah@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: André Draszik <andre.draszik@linaro.org>
+eDP specification supports HBR3 link rate since v1.4a. Moreover,
+C10 phy can support HBR3 link rate for both DP and eDP. Therefore,
+do not clamp the supported rates for eDP at 6.75Gbps.
 
-This reverts commit 3066ff93476c35679cb07a97cce37d9bb07632ff.
-
-This patch breaks all existing userspace by requiring updates as
-mentioned in the commit message, which is not allowed.
-
-Revert to restore compatibility with existing userspace
-implementations.
-
-Cc: Bernd Schubert <bschubert@ddn.com>
-Cc: Miklos Szeredi <mszeredi@redhat.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
----
-v2: ping & add ack
-v1: resend because of missing people in Cc
----
- fs/fuse/inode.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+BSpec: 70073 74224
 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 2e4eb7cf26fb..b21ccc85c47b 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -1154,10 +1154,7 @@ static void process_init_reply(struct fuse_mount *fm, struct fuse_args *args,
- 		process_init_limits(fc, arg);
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 1891c0cc187d..2c1034578984 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -430,7 +430,7 @@ static int mtl_max_source_rate(struct intel_dp *intel_dp)
+ 	enum phy phy = intel_port_to_phy(i915, dig_port->base.port);
  
- 		if (arg->minor >= 6) {
--			u64 flags = arg->flags;
--
--			if (flags & FUSE_INIT_EXT)
--				flags |= (u64) arg->flags2 << 32;
-+			u64 flags = arg->flags | (u64) arg->flags2 << 32;
+ 	if (intel_is_c10phy(i915, phy))
+-		return intel_dp_is_edp(intel_dp) ? 675000 : 810000;
++		return 810000;
  
- 			ra_pages = arg->max_readahead / PAGE_SIZE;
- 			if (flags & FUSE_ASYNC_READ)
+ 	return 2000000;
+ }
 -- 
-2.40.1
+2.25.1
 
