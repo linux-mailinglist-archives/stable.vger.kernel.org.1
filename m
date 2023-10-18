@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3564F7CE647
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 20:24:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF127CE649
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 20:24:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230489AbjJRSYH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 14:24:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33738 "EHLO
+        id S230260AbjJRSYI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 14:24:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231459AbjJRSYF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 14:24:05 -0400
+        with ESMTP id S231492AbjJRSYG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 14:24:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE84113
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 865C310F
         for <stable@vger.kernel.org>; Wed, 18 Oct 2023 11:24:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A7FDC433CB;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE29C433BB;
         Wed, 18 Oct 2023 18:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697653443;
-        bh=sVVaA7qK6A1MF9I/eIxto2nwaRUVaUAUafSQEMrzHWU=;
+        s=k20201202; t=1697653444;
+        bh=t3JO7pRjalAV5hLmRWEH40gfq1UpKK71NZeBrKPyjZw=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=RI3ZnzzhtoFKusIBwr/VslDUMaUBkWg/Avgof7QIE7W9NZvb8BT8tpbVOlvajYYgL
-         hb4kafXQvUcXDh/AjYX/ax2UyuiRrCb/e+u8KB8kfDgFYMmGMqKU+ESsu7b8zvoDon
-         /qgUBS+m08/d/O870whqig0ZgmhHOAL+WtzFIrkpU6D4EILB9pUyJMZbvTBgQL04I6
-         YJxHI/rUB7EY32VVE96NX/xGIqPcS5xbkqYju1oogY0MIAL7sqh0xOU5xTgEy+XSSj
-         IEoDrLaLrp2aRGbwRK87QplwU3OVDTmOhTMh9X8hG/7moBdk5tzS9WYBuyNxNHGvYT
-         VhbKEUaylQzrQ==
+        b=Jk+4E41EHF7J+cpx8/j+4/hb+6adn6mFoDsvppVDqd+mvYF60l5Yo2yTDq14gJHN8
+         KZ4X67tmi+F4ruFvCK0Om7s6Teil0Imo61S0oXO5wLzGMH5FpaiBB8iDJwfdosy7x1
+         F6kw+UljXajFbdina45Hks3zVkLeBek8HxqijwUR7rrbpNorbeUqBKt95WrZTldFkj
+         lMrdbHpgnizg5keYWt7fTyRO+v5QUeeP8nGah+BzPwL6W5lZIU/n/wCaNA/EOLoJwC
+         Y0RVkd79MZoOjFJsqr35Lx+HwXgGym0KbgoqnhV+xsyYT6DZRl5D+nX4B4/nqUXsA7
+         QTfeJDSD+DrYQ==
 From:   Mat Martineau <martineau@kernel.org>
-Date:   Wed, 18 Oct 2023 11:23:54 -0700
-Subject: [PATCH net 3/5] mptcp: more conservative check for zero probes
+Date:   Wed, 18 Oct 2023 11:23:55 -0700
+Subject: [PATCH net 4/5] mptcp: avoid sending RST when closing the initial
+ subflow
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231018-send-net-20231018-v1-3-17ecb002e41d@kernel.org>
+Message-Id: <20231018-send-net-20231018-v1-4-17ecb002e41d@kernel.org>
 References: <20231018-send-net-20231018-v1-0-17ecb002e41d@kernel.org>
 In-Reply-To: <20231018-send-net-20231018-v1-0-17ecb002e41d@kernel.org>
 To:     Matthieu Baerts <matttbe@kernel.org>,
@@ -45,7 +46,8 @@ To:     Matthieu Baerts <matttbe@kernel.org>,
         Christoph Paasch <cpaasch@apple.com>,
         Florian Westphal <fw@strlen.de>
 Cc:     netdev@vger.kernel.org, mptcp@lists.linux.dev,
-        Mat Martineau <martineau@kernel.org>, stable@vger.kernel.org
+        Mat Martineau <martineau@kernel.org>,
+        Geliang Tang <geliang.tang@suse.com>, stable@vger.kernel.org
 X-Mailer: b4 0.12.3
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,91 +58,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Geliang Tang <geliang.tang@suse.com>
 
-Christoph reported that the MPTCP protocol can find the subflow-level
-write queue unexpectedly not empty while crafting a zero-window probe,
-hitting a warning:
+When closing the first subflow, the MPTCP protocol unconditionally
+calls tcp_disconnect(), which in turn generates a reset if the subflow
+is established.
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 188 at net/mptcp/protocol.c:1312 mptcp_sendmsg_frag+0xc06/0xe70
-Modules linked in:
-CPU: 0 PID: 188 Comm: kworker/0:2 Not tainted 6.6.0-rc2-g1176aa719d7a #47
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-Workqueue: events mptcp_worker
-RIP: 0010:mptcp_sendmsg_frag+0xc06/0xe70 net/mptcp/protocol.c:1312
-RAX: 47d0530de347ff6a RBX: 47d0530de347ff6b RCX: ffff8881015d3c00
-RDX: ffff8881015d3c00 RSI: 47d0530de347ff6b RDI: 47d0530de347ff6b
-RBP: 47d0530de347ff6b R08: ffffffff8243c6a8 R09: ffffffff82042d9c
-R10: 0000000000000002 R11: ffffffff82056850 R12: ffff88812a13d580
-R13: 0000000000000001 R14: ffff88812b375e50 R15: ffff88812bbf3200
-FS:  0000000000000000(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000695118 CR3: 0000000115dfc001 CR4: 0000000000170ef0
-Call Trace:
- <TASK>
- __subflow_push_pending+0xa4/0x420 net/mptcp/protocol.c:1545
- __mptcp_push_pending+0x128/0x3b0 net/mptcp/protocol.c:1614
- mptcp_release_cb+0x218/0x5b0 net/mptcp/protocol.c:3391
- release_sock+0xf6/0x100 net/core/sock.c:3521
- mptcp_worker+0x6e8/0x8f0 net/mptcp/protocol.c:2746
- process_scheduled_works+0x341/0x690 kernel/workqueue.c:2630
- worker_thread+0x3a7/0x610 kernel/workqueue.c:2784
- kthread+0x143/0x180 kernel/kthread.c:388
- ret_from_fork+0x4d/0x60 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:304
- </TASK>
+That is unexpected and different from what MPTCP does with MPJ
+subflows, where resets are generated only on FASTCLOSE and other edge
+scenarios.
 
-The root cause of the issue is that expectations are wrong: e.g. due
-to MPTCP-level re-injection we can hit the critical condition.
+We can't reuse for the first subflow the same code in place for MPJ
+subflows, as MPTCP clean them up completely via a tcp_close() call,
+while must keep the first subflow socket alive for later re-usage, due
+to implementation constraints.
 
-Explicitly avoid the zero-window probe when the subflow write queue
-is not empty and drop the related warnings.
+This patch adds a new helper __mptcp_subflow_disconnect() that
+encapsulates, a logic similar to tcp_close, issuing a reset only when
+the MPTCP_CF_FASTCLOSE flag is set, and performing a clean shutdown
+otherwise.
 
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/444
-Fixes: f70cad1085d1 ("mptcp: stop relying on tcp_tx_skb_cache")
+Fixes: c2b2ae3925b6 ("mptcp: handle correctly disconnect() failures")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Co-developed-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
 Signed-off-by: Mat Martineau <martineau@kernel.org>
 ---
- net/mptcp/protocol.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ net/mptcp/protocol.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
 diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index d1902373c974..4e30e5ba3795 100644
+index 4e30e5ba3795..886ab689a8ae 100644
 --- a/net/mptcp/protocol.c
 +++ b/net/mptcp/protocol.c
-@@ -1298,7 +1298,7 @@ static int mptcp_sendmsg_frag(struct sock *sk, struct sock *ssk,
- 	if (copy == 0) {
- 		u64 snd_una = READ_ONCE(msk->snd_una);
+@@ -2348,6 +2348,26 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
+ #define MPTCP_CF_PUSH		BIT(1)
+ #define MPTCP_CF_FASTCLOSE	BIT(2)
  
--		if (snd_una != msk->snd_nxt) {
-+		if (snd_una != msk->snd_nxt || tcp_write_queue_tail(ssk)) {
- 			tcp_remove_empty_skb(ssk);
- 			return 0;
- 		}
-@@ -1306,11 +1306,6 @@ static int mptcp_sendmsg_frag(struct sock *sk, struct sock *ssk,
- 		zero_window_probe = true;
- 		data_seq = snd_una - 1;
- 		copy = 1;
--
--		/* all mptcp-level data is acked, no skbs should be present into the
--		 * ssk write queue
++/* be sure to send a reset only if the caller asked for it, also
++ * clean completely the subflow status when the subflow reaches
++ * TCP_CLOSE state
++ */
++static void __mptcp_subflow_disconnect(struct sock *ssk,
++				       struct mptcp_subflow_context *subflow,
++				       unsigned int flags)
++{
++	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
++	    (flags & MPTCP_CF_FASTCLOSE)) {
++		/* The MPTCP code never wait on the subflow sockets, TCP-level
++		 * disconnect should never fail
++		 */
++		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
++		mptcp_subflow_ctx_reset(subflow);
++	} else {
++		tcp_shutdown(ssk, SEND_SHUTDOWN);
++	}
++}
++
+ /* subflow sockets can be either outgoing (connect) or incoming
+  * (accept).
+  *
+@@ -2385,7 +2405,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+ 
+ 	if ((flags & MPTCP_CF_FASTCLOSE) && !__mptcp_check_fallback(msk)) {
+-		/* be sure to force the tcp_disconnect() path,
++		/* be sure to force the tcp_close path
+ 		 * to generate the egress reset
+ 		 */
+ 		ssk->sk_lingertime = 0;
+@@ -2395,11 +2415,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+-		/* The MPTCP code never wait on the subflow sockets, TCP-level
+-		 * disconnect should never fail
 -		 */
--		WARN_ON_ONCE(reuse_skb);
- 	}
+-		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
+-		mptcp_subflow_ctx_reset(subflow);
++		__mptcp_subflow_disconnect(ssk, subflow, flags);
+ 		release_sock(ssk);
  
- 	copy = min_t(size_t, copy, info->limit - info->sent);
-@@ -1339,7 +1334,6 @@ static int mptcp_sendmsg_frag(struct sock *sk, struct sock *ssk,
- 	if (reuse_skb) {
- 		TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_PSH;
- 		mpext->data_len += copy;
--		WARN_ON_ONCE(zero_window_probe);
  		goto out;
- 	}
- 
 
 -- 
 2.41.0
