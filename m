@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C93447CDB3A
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 14:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E80267CDB3B
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 14:05:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230259AbjJRMFk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 08:05:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55656 "EHLO
+        id S230247AbjJRMFm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 08:05:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230247AbjJRMFj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:05:39 -0400
+        with ESMTP id S230292AbjJRMFl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:05:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C0AA112
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 05:05:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE647C433CA;
-        Wed, 18 Oct 2023 12:05:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C846BA
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 05:05:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F72C433CC;
+        Wed, 18 Oct 2023 12:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697630737;
+        s=k20201202; t=1697630738;
         bh=tPz0Fx6ZbqxlkVWTc6XO9eIjCI2CJRm3u1qhEuZ00OQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W43q0zQrhX54g4tLShHbe/7AYAtlBbYCFSCN4pZTWNzSZh4kQkMX2Y2sh4G6iFiXg
-         OIfaN4H8w3aRWqDwO8lm434PwZ3kS3EuJuYvOj72IYmIaHsyUbcPg58N5m7R7kgAfV
-         ZY3O/1fHh5U65IKcXSrxM2+LWk6AchLxoZT3AS1m1WzFZZytSGwa9BTObYAo7ukgN/
-         bDT6s9wqrTrMlfNaWiP2XQMf3sIZ41Ld+1jk2y85qw0iJPRuWtLF+lBIXiaZ+qQZMd
-         Qb+iW4JvJs01r09rrzeQkEov1FM+Ve7WqifY9kANMaOSVI3GkbEIokIKLhYMDdO3Ug
-         cmjoLnhGw06qg==
+        b=HLE9wSZW9xVB9pqdwDhDa+Zudd1/pGMAmP/1XC5tYtonxuIWixE6uYeieUn29J/aJ
+         ffUW7DoA4yyVZuZABx/wWSYsLYpIuUTjq+84KAGNA45ywpaDnyrpy2Y4WOuYYGV1qx
+         cou87VxGK6Dd8ur+9p5wZTr/KDCvnb8Lxkh4t1mSEYavjGFOc1x9JOICZKZ2jSGTFk
+         LnYTqzutSuZ1jcKALubOak2zwTTnwWv/XamuNHVhkMuqzxWvG4qK2QnHYCWhjpCEPV
+         5ENEiF9PRRgbLfSKGSKGU2SLxVqcaJWeB2OTfSxIAxSUecuVllbTtG5/4EP063IBNh
+         6OsXGToFdvoCg==
 From:   Lee Jones <lee@kernel.org>
 To:     lee@kernel.org
 Cc:     stable@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Bjorn Andersson <bjorn.andersson@linaro.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v5.4.y 2/2] rpmsg: Fix kfree() of static memory on setting driver_override
-Date:   Wed, 18 Oct 2023 13:05:19 +0100
-Message-ID: <20231018120527.2110438-4-lee@kernel.org>
+Subject: [PATCH v5.4.y 3/3] rpmsg: Fix kfree() of static memory on setting driver_override
+Date:   Wed, 18 Oct 2023 13:05:20 +0100
+Message-ID: <20231018120527.2110438-5-lee@kernel.org>
 X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
 In-Reply-To: <20231018120527.2110438-1-lee@kernel.org>
 References: <20231018120527.2110438-1-lee@kernel.org>
