@@ -2,99 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5FF17CD1C9
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 03:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FECA7CD3D4
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 08:07:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229475AbjJRBYp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 21:24:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40210 "EHLO
+        id S229613AbjJRGHa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 02:07:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbjJRBYo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 21:24:44 -0400
-X-Greylist: delayed 351 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 17 Oct 2023 18:24:42 PDT
-Received: from w4.tutanota.de (w4.tutanota.de [81.3.6.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BF290;
-        Tue, 17 Oct 2023 18:24:42 -0700 (PDT)
-Received: from tutadb.w10.tutanota.de (unknown [192.168.1.10])
-        by w4.tutanota.de (Postfix) with ESMTP id C634810602E9;
-        Wed, 18 Oct 2023 01:18:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1697591929;
-        s=s1; d=bens.haus;
-        h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:Sender;
-        bh=NV9Ui7WPiv06N20hCTJ4MNdUogbGN6WVmx0Xbz99u0w=;
-        b=TbfW2WQ2eAxSCG0f9iYFRbx4QjW/VG9gIBmAi5NGtKrrbSl+PUN8x/3T0TUNMLMI
-        KGNceXxNHwOv96tX8Qw913dnwHfdBZbtglgRA5FSMl+13+2hgTrgbqoAPEpaMXzys/y
-        EnobUwV89ATcIHD+ITF+lmP99NrSf2p9UVtOli5/X130WXwqTRah0NBw7Dc7ZtjlxWq
-        g4ItZtjtTY4+fxY/0GzLkYrnslIn9moAra3EUHpYiUjNjjg3QIGg2uvpWLXOG6uTlRA
-        e+Vu6BF9tEdRsFJJnfu7EWbZqHqY0C8BSWrFlnba1oRUeVdfO6uShxlA2ojBgaJn5Zm
-        zqS2/MqNgw==
-Date:   Wed, 18 Oct 2023 03:18:49 +0200 (CEST)
-From:   Ben Schneider <ben@bens.haus>
-To:     Ardb <ardb@kernel.org>
-Cc:     Regressions <regressions@lists.linux.dev>,
-        Linux Efi <linux-efi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>
-Message-ID: <Nh-DzlX--3-9@bens.haus>
-Subject: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
+        with ESMTP id S229595AbjJRGH3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 02:07:29 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722A0C4;
+        Tue, 17 Oct 2023 23:07:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DEBC433C8;
+        Wed, 18 Oct 2023 06:07:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697609248;
+        bh=h/auq6HpOSLO/N4BVvzPRBs8wFljerSgSeyenywRUl4=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=k14kdHnxqZ97agAIFMyDjHuczUDMuqPTAoLnzIWFM/jPbjraO7DPPFJFC4bivqoYY
+         JUrGrG3gf2H1E5+HjEQyhA/kUpvKYZDW1vX1/mfoLEz36vdzWRBb9cuzmjwm7HDdBz
+         ErG81JZoUVatTvvMWFjw4PVEXH9ux8VZ9/FVi7xx1VWYv3lEdqFRqjEQqyPMyqiymI
+         zotak707hUoVBhZoqA7uDfLuGoarDlAd/657b3Fggk8958IssNB6Al2XRFLWx+XKIt
+         Vr4VJCltmeYRZv6QYuHCPYLPLqVISx0UJRvMfqNhO8Lg81W4CHb6YqQeASv5wmx6EO
+         ihCvlCrWBobyQ==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Christian Marangi <ansuelsmth@gmail.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Simon Horman <horms@kernel.org>,
+        Alexander Couzens <lynxis@fe80.eu>,
+        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
+        Daniel Golle <daniel@makrotopia.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [net-next RFC PATCH 1/6] wifi: mt76: fix broken precal loading
+ from MTD for mt7915
+References: <20231017190510.27163-1-ansuelsmth@gmail.com>
+Date:   Wed, 18 Oct 2023 09:10:07 +0300
+In-Reply-To: <20231017190510.27163-1-ansuelsmth@gmail.com> (Christian
+        Marangi's message of "Tue, 17 Oct 2023 21:05:05 +0200")
+Message-ID: <87a5sgea0w.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Ard,
+Christian Marangi <ansuelsmth@gmail.com> writes:
 
-I have an ESPRESSObin Ultra (aarch64) that uses U-Boot as its bootloader. I=
-t shipped from the manufacturer with with v5.10, and I've been trying to up=
-grade. U-Boot supports booting Image directly via EFI (https://u-boot.readt=
-hedocs.io/en/latest/usage/cmd/bootefi.html), and I have been using it that =
-way to successfully boot the system up to and including v6.0.19. However, v=
-6.1 and v6.5 kernels fail to boot.
+> Commit 495184ac91bb ("mt76: mt7915: add support for applying
+> pre-calibration data") was fundamentally broken and never worked.
+>
+> The idea (before NVMEM support) was to expand the MTD function and pass
+> an additional offset. For normal EEPROM load the offset would always be
+> 0. For the purpose of precal loading, an offset was passed that was
+> internally the size of EEPROM, since precal data is right after the
+> EEPROM.
+>
+> Problem is that the offset value passed is never handled and is actually
+> overwrite by
+>
+> 	offset = be32_to_cpup(list);
+> 	ret = mtd_read(mtd, offset, len, &retlen, eep);
+>
+> resulting in the passed offset value always ingnored. (and even passing
+> garbage data as precal as the start of the EEPROM is getting read)
+>
+> Fix this by adding to the current offset value, the offset from DT to
+> correctly read the piece of data at the requested location.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
+> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
 
-When booting successfully, the following messages are displayed:
+mt76 patches go to Felix's tree, not net-next.
 
-EFI stub: Booting Linux Kernel...EFI stub: ERROR: FIRMWARE BUG: efi_loaded_=
-image_t::image_base has bogus value
-EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundary
-EFI stub: Using DTB from configuration table
-EFI stub: ERROR: Failed to install memreserve config table!
-EFI stub: Exiting boot services...
-[=C2=A0=C2=A0=C2=A0 0.000000] Booting Linux on physical CPU 0x0000000000 [0=
-x410fd034]
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-I suspect many of the above error messages are simply attributable to using=
- U-Boot to load an EFI stub and can be safely ignored given that the system=
- boots and runs fine.
-
-When boot fails (v6.5), the following messages are displayed:
-
-EFI stub: Booting Linux Kernel...
-EFI stub: ERROR: FIRMWARE BUG: efi_loaded_image_t::image_base has bogus val=
-ue
-EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundary
-EFI stub: ERROR: Failed to install memreserve config table!
-EFI stub: Using DTB from configuration table
-EFI stub: Exiting boot services...
-EFI stub: ERROR: Unable to construct new device tree.
-EFI stub: ERROR: Failed to update FDT and exit boot services
-
-In case it's relevant, the device tree for this device is arch/arm64/boot/m=
-arvell/armada-3720-espressobin-ultra.dts
-
-Hopefully I've reported this in the correct place or that the information p=
-rovided is sufficient to get it where it needs to be. Let me know if there =
-is additional information I can provide. I am also able to use the device t=
-o test.
-
-Sincerely,
-
-Ben Schneider
-
-#regzbot introduced v6.0..v6.1
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
