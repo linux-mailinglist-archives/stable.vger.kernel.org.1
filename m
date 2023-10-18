@@ -2,179 +2,155 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F7E47CE344
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 19:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D09C47CE35A
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 19:05:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229456AbjJRRCY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 13:02:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37394 "EHLO
+        id S230220AbjJRRFd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 13:05:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229447AbjJRRCX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 13:02:23 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ADDCB0
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 10:02:22 -0700 (PDT)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39IGgHPJ030857
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 17:02:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=oZFGXOw+OPaVK2hvnuXzb+C5EwLlVt8Or92wxf73Bho=;
- b=dSMGWAdXt++0pWw2RGuOOMvEcslE46WlpmjX99nrN3edGzL5qYSdU+qCzwKBEyGJSOtq
- 8A0Pe6Mu+9+aB1sS80a04puAIkmlYmxdt7o3xk9vaRNXL9QCrlDGD8EOraTGMLqosrro
- yH3mh41vAMFuH+6fp0F1Upb6SKRNNYCF08iJ4+5KDkwCNvjVFrQ/rjMkBeo+jq9/Fkzy
- WOXd3LU7094J4VFR42OLEha8eYqLPJfE1j3S1okXATbXSNCY2eWde/TLm1MItAPCoEtg
- LcKAAr33cGcfugjoz+OSMuYUSv74LKvmxXYLvfy4/jzbejP1XiG+3Zo8yUN+Y0OTZtiC DQ== 
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttk470tgw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 17:02:19 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39IGF6Ud012871
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 17:01:47 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr5pyjeu0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 17:01:47 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-        by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39IH1gCv11534866
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 18 Oct 2023 17:01:42 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 905352004F;
-        Wed, 18 Oct 2023 17:01:42 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 516972004B;
-        Wed, 18 Oct 2023 17:01:42 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.152.224.212])
-        by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Wed, 18 Oct 2023 17:01:42 +0000 (GMT)
-Date:   Wed, 18 Oct 2023 19:01:37 +0200
-From:   Halil Pasic <pasic@linux.ibm.com>
-To:     Tony Krowiak <akrowiak@linux.ibm.com>
-Cc:     kvm390-list@tuxmaker.boeblingen.de.ibm.com, freude@linux.ibm.com,
-        pasic@linux.vnet.ibm.com, borntraeger@de.ibm.com,
-        fiuczy@linux.ibm.com, jjherne@linux.ibm.com,
-        mjrosato@linux.ibm.com, stable@vger.kernel.org,
-        Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [RFC 2/7] s390/vfio-ap: circumvent filtering for
- adapters/domains not in host config
-Message-ID: <20231018190137.277682fe.pasic@linux.ibm.com>
-In-Reply-To: <20231017222254.68457-3-akrowiak@linux.ibm.com>
-References: <20231017222254.68457-1-akrowiak@linux.ibm.com>
-        <20231017222254.68457-3-akrowiak@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        with ESMTP id S229694AbjJRRFc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 13:05:32 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266A8B0
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 10:05:30 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2c3e23a818bso83101971fa.0
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 10:05:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697648728; x=1698253528; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mUgZsAMS7wlU8iBe6DF+4g+6G1i93WOvrNnJ1NaOaO8=;
+        b=GyUl/qBLhUFD0XZJQJ39MMr+MkokXREtAQE+Fdyhcv5Y0Dr7RDWxJ/PARh7eRydivN
+         8y6CuPjRt22GroPVcjawK/aYxb8ROrJQvwBIEaPi5jA7RofP8yJ8ByFGb/trsXL0pRWk
+         0gCiATKAZ/JuM6cVokrd7N5pd5wRO/ouZ7bOVmgdmj5cx7xgUr/xmYKGswSXG/9FcxJA
+         hj/Q8/basmozevkB5uM63FtbI4dcA5ui5KNT1RalPtDp87tJvqNcvEfCd/90OzRtWdoB
+         lliVJzd1SYRY9TCuSwgAeGut7nK3RdrjOf4U6mn0cRHHHVK2BoS5ayOJgOqeIqDRhFwt
+         vWCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697648728; x=1698253528;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mUgZsAMS7wlU8iBe6DF+4g+6G1i93WOvrNnJ1NaOaO8=;
+        b=GvfVqJCB+x8Yzx+UN6bRi9IHrl0NpYJn24J2tBxKYwDYBm3pRUABcIdNE5XrbaSkMz
+         GIlIYu4MatZsVY749T//ZpEIDhDToVDTiPYd6L75RUnavU6AgCgLELnSFQ5r/LD9NWbO
+         1LGSy0R4YRejISgGiSy3Dx6ck7JSOD8aoTOk3Cq16qzbxf1O4egSEgorFOXxAgHkcQig
+         plTetVCBb98g4utip6ltITyNpIHPqVwfvu0uUFNCzKCzfcWTv8fZEJnYHNINwUCReSMd
+         PJ/B1JoH+8glM8WIaty4X80BujY6ppkiWo613rT3PX6KZUYw21Q+NubeKxm9BRki+eBU
+         p9pQ==
+X-Gm-Message-State: AOJu0YysTrmikQGfT+NTEsbPVryO5VIMr0rJ8qCDalX8HX2F1zqaUoru
+        2vYJd/mhu3UKpXYfU7LobOkvVfimKahq9Oqrr64=
+X-Google-Smtp-Source: AGHT+IEv9805H0Xgn1SBo2V0yF090GSRt9N5C3D4shgi4o2GQQvWaomRiJ1+EaYJGNU9WFl702wdM6IbmdJhj1ZBHag=
+X-Received: by 2002:a2e:a7ca:0:b0:2c1:7df1:14b1 with SMTP id
+ x10-20020a2ea7ca000000b002c17df114b1mr2401346ljp.15.1697648728021; Wed, 18
+ Oct 2023 10:05:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: YF1MoizdldsF8moGNiAM_0Ynbyr0HwG1
-X-Proofpoint-GUID: YF1MoizdldsF8moGNiAM_0Ynbyr0HwG1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-18_15,2023-10-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- mlxscore=0 mlxlogscore=999 spamscore=0 malwarescore=0 adultscore=0
- clxscore=1011 priorityscore=1501 impostorscore=0 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310180139
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <CANT5p=rReboKPbEySnZsFAn8Zv2ZzgQQ8LhyTxkt538QgyxB7A@mail.gmail.com>
+ <2023101757-dilation-femur-91b8@gregkh>
+In-Reply-To: <2023101757-dilation-femur-91b8@gregkh>
+From:   Shyam Prasad N <nspmangalore@gmail.com>
+Date:   Wed, 18 Oct 2023 22:35:16 +0530
+Message-ID: <CANT5p=oPGnCd4H5ppMbAiHsAKMor3LT_aQRqU7tKu=q6q1BGQg@mail.gmail.com>
+Subject: Re: [request for patch inclusion to 5.15 stable] cifs: fix mid leak
+ during reconnection after timeout threshold
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Stable <stable@vger.kernel.org>, Steve French <smfrench@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 17 Oct 2023 18:22:49 -0400
-Tony Krowiak <akrowiak@linux.ibm.com> wrote:
+On Tue, Oct 17, 2023 at 1:14=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Tue, Oct 17, 2023 at 11:43:26AM +0530, Shyam Prasad N wrote:
+> > Hi Greg,
+> >
+> > It recently came to my attention that this patch:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/patc=
+h/?id=3D69cba9d3c1284e0838ae408830a02c4a063104bc
+> > [Upstream commit 69cba9d3c1284e0838ae408830a02c4a063104bc]
+> > ... which is marked with Fixes tag for a change that went into 5.9
+> > kernel, was taken into 6.4 and 6.1 stable trees.
+> > However, I do not see this in the 5.15 stable tree.
+> >
+> > I got emails about this fix being taken to the 6.4 and 6.1 stable. But
+> > I do not see any communication about 5.15 kernel.
+> >
+> > Was this missed? Or is there something in the process that I missed?
+> > Based on the kernel documentation about commit tags, I assumed that
+> > for commits that have the "Fixes: " tag, it was not necessary to add
+> > the "CC: stable" as well.
+> > Please let me know if that understanding is wrong.
+>
+> That understanding is wrong, and has never been the case.  Please see:
+>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.ht=
+ml
+> for how to do this properly.
+>
 
-> While filtering the mdev matrix, it doesn't make sense - and will have
-> unexpected results - to filter an APID from the matrix if the APID or one
-> of the associated APQIs is not in the host's AP configuration. There are
-> two reasons for this:
-> 
-> 1. An adapter or domain that is not in the host's AP configuration can be
->    assigned to the matrix; this is known as over-provisioning. Queue
->    devices, however, are only created for adapters and domains in the
->    host's AP configuration, so there will be no queues associated with an
->    over-provisioned adapter or domain to filter.
-> 
-> 2. The adapter or domain may have been externally removed from the host's
->    configuration via an SE or HMC attached to a DPM enabled LPAR. In this
->    case, the vfio_ap device driver would have been notified by the AP bus
->    via the on_config_changed callback and the adapter or domain would
->    have already been filtered.
-> 
-> Let's bypass the filtering of an APID if an adapter or domain assigned to
-> the mdev matrix is not in the host's AP configuration.
+There were two statements that led me to making this assumption.
 
-I strongly agree.
+In the link that you provided:
+=E2=80=9CNote, such tagging is unnecessary if the stable team can derive th=
+e
+appropriate versions from Fixes: tags.=E2=80=9D
 
-> 
-> Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
-> Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
-> Cc: <stable@vger.kernel.org>
-> ---
->  drivers/s390/crypto/vfio_ap_ops.c | 32 +++++++++++++++++++++++++------
->  1 file changed, 26 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-> index e5490640e19c..4e40e226ce62 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -692,17 +692,37 @@ static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev)
->  		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
-> 
->  	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
+Also, the below link says:
+https://www.kernel.org/doc/html/v4.10/process/submitting-patches.html#using=
+-reported-by-tested-by-reviewed-by-suggested-by-and-fixes
+=E2=80=9CA Fixes: tag indicates that the patch fixes an issue in a previous
+commit. It is used to make it easy to determine where a bug
+originated, which can help review a bug fix. This tag also assists the
+stable kernel team in determining which stable kernel versions should
+receive your fix. This is the preferred method for indicating a bug
+fixed by the patch.=E2=80=9D
 
-What speaks against doing the loop on matrix_mdev->shadow_apcb.a[pq]m?
+But I can now see how this can also mean that additional tagging is
+not necessary if it has a "Fixes" tag, but "stable" tag is still
+necessary.
 
-Those are the and of matrix_mdev->matrix.a{p,q}m and
-matrix_dev->info.a{p,q}m so excactly those bits are 0 for which you are adding
-the ifs...
+> We just have been sweeping the tree at times to pick up the patches
+> where people only put Fixes: tags.  And then we do a "best effort" type
+> of backporting.
 
-> +		/*
-> +		 * If the adapter is not in the host's AP configuration, it will
-> +		 * be due to one of two reasons:
-> +		 * 1. The adapter is over-provisioned.
-> +		 * 2. The adapter was removed from the host's
-> +		 *    configuration in which case it will already have
-> +		 *    been processed by the on_config_changed callback.
-> +		 * In either case, we should skip the filtering and
-> +		 * continue examining APIDs.
-> +		 */
-> +		if (!test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm))
-> +			continue;
-> +
->  		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
->  			/*
-> -			 * If the APQN is not bound to the vfio_ap device
-> -			 * driver, then we can't assign it to the guest's
-> -			 * AP configuration. The AP architecture won't
-> -			 * allow filtering of a single APQN, so let's filter
-> -			 * the APID since an adapter represents a physical
-> -			 * hardware device.
-> +			 * If the domain is not in the host's AP configuration,
-> +			 * it will for one of two reasons:
-> +			 * 1. The domain is over-provisioned.
-> +			 * 2. The domain was removed from the host's
-> +			 *    configuration in which case it will already have
-> +			 *    been processed by the on_config_changed callback.
-> +			 * In either case, we should skip the filtering and
-> +			 * continue examining APQIs.
->  			 */
-> +			if (!test_bit_inv(apqi,
-> +					  (unsigned long *)matrix_dev->info.aqm))
-> +				continue;
-> +
->  			apqn = AP_MKQID(apid, apqi);
->  			q = vfio_ap_mdev_get_queue(matrix_mdev, apqn);
-> +
->  			if (!q || q->reset_status.response_code) {
->  				clear_bit_inv(apid,
->  					      matrix_mdev->shadow_apcb.apm);
+Understood.
 
+>
+> Odds are this commit does not apply to any older kernels, and yes, I
+> just tried and it did not apply to 5.15 at all.  Please provide a
+> working backport.
+Will do that soon.
+
+>
+> > Regarding this particular fix, I discussed this with Steve, and he
+> > agrees that this fix needs to go into all stable kernels as well.
+>
+> Great, please provide working backports and we will be glad to queue
+> them up.
+>
+> And in the future, please properly mark your patches with cc: stable if
+> you want to see them applied, AND for you to get FAILED notices if they
+> do not apply as far back as you are asking them to be sent to.
+
+Will do. Thanks.
+
+>
+> thanks,
+>
+> greg k-h
+
+
+
+--=20
+Regards,
+Shyam
