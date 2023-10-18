@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EF127CE649
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 20:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE8D07CE648
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 20:24:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230260AbjJRSYI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S230192AbjJRSYI (ORCPT <rfc822;lists+stable@lfdr.de>);
         Wed, 18 Oct 2023 14:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33748 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231492AbjJRSYG (ORCPT
+        with ESMTP id S230260AbjJRSYG (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 14:24:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 865C310F
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1422114
         for <stable@vger.kernel.org>; Wed, 18 Oct 2023 11:24:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE29C433BB;
-        Wed, 18 Oct 2023 18:24:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 254BFC433BF;
+        Wed, 18 Oct 2023 18:24:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
         s=k20201202; t=1697653444;
-        bh=t3JO7pRjalAV5hLmRWEH40gfq1UpKK71NZeBrKPyjZw=;
+        bh=KZ6N65Nkl5YNxcN1w6vYt0uy5Mo7hWRtrXVthBvScVQ=;
         h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-        b=Jk+4E41EHF7J+cpx8/j+4/hb+6adn6mFoDsvppVDqd+mvYF60l5Yo2yTDq14gJHN8
-         KZ4X67tmi+F4ruFvCK0Om7s6Teil0Imo61S0oXO5wLzGMH5FpaiBB8iDJwfdosy7x1
-         F6kw+UljXajFbdina45Hks3zVkLeBek8HxqijwUR7rrbpNorbeUqBKt95WrZTldFkj
-         lMrdbHpgnizg5keYWt7fTyRO+v5QUeeP8nGah+BzPwL6W5lZIU/n/wCaNA/EOLoJwC
-         Y0RVkd79MZoOjFJsqr35Lx+HwXgGym0KbgoqnhV+xsyYT6DZRl5D+nX4B4/nqUXsA7
-         QTfeJDSD+DrYQ==
+        b=qgHppDzn1lteN27ftYSRGn1OItTRhdHkeXOxxWx3DlIhx2Z4kqwxj56FDfE7Z4WAs
+         5r1ytCFEPMxUiKwTWXeOIBxjyOH00RfS1S3JZrUt2pC6yUs9WmpGYf3JRGRYv93+9W
+         Srjd0CY6+A6JoOe46C6oOfemi2d3H+Tmckq0GkDCv53G4wxNblQnK1HOsXae+7H0t3
+         4fP0ZpvqYbtqGXEGN36rGj6ykYTlhHRyVnfqZE2H/if6lN1eJtSzax3qXYnw/xZXJn
+         UTG1B7v0gWze0fQKWkpW7gmaO6Ivjmh8SjEU22nH7UhVFaRtslZfsixec/oVlYMbHC
+         ij4MjqjEneoWg==
 From:   Mat Martineau <martineau@kernel.org>
-Date:   Wed, 18 Oct 2023 11:23:55 -0700
-Subject: [PATCH net 4/5] mptcp: avoid sending RST when closing the initial
- subflow
+Date:   Wed, 18 Oct 2023 11:23:56 -0700
+Subject: [PATCH net 5/5] selftests: mptcp: join: no RST when rm
+ subflow/addr
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231018-send-net-20231018-v1-4-17ecb002e41d@kernel.org>
+Message-Id: <20231018-send-net-20231018-v1-5-17ecb002e41d@kernel.org>
 References: <20231018-send-net-20231018-v1-0-17ecb002e41d@kernel.org>
 In-Reply-To: <20231018-send-net-20231018-v1-0-17ecb002e41d@kernel.org>
 To:     Matthieu Baerts <matttbe@kernel.org>,
@@ -46,8 +46,7 @@ To:     Matthieu Baerts <matttbe@kernel.org>,
         Christoph Paasch <cpaasch@apple.com>,
         Florian Westphal <fw@strlen.de>
 Cc:     netdev@vger.kernel.org, mptcp@lists.linux.dev,
-        Mat Martineau <martineau@kernel.org>,
-        Geliang Tang <geliang.tang@suse.com>, stable@vger.kernel.org
+        Mat Martineau <martineau@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.12.3
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -58,90 +57,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Matthieu Baerts <matttbe@kernel.org>
 
-When closing the first subflow, the MPTCP protocol unconditionally
-calls tcp_disconnect(), which in turn generates a reset if the subflow
-is established.
+Recently, we noticed that some RST were wrongly generated when removing
+the initial subflow.
 
-That is unexpected and different from what MPTCP does with MPJ
-subflows, where resets are generated only on FASTCLOSE and other edge
-scenarios.
-
-We can't reuse for the first subflow the same code in place for MPJ
-subflows, as MPTCP clean them up completely via a tcp_close() call,
-while must keep the first subflow socket alive for later re-usage, due
-to implementation constraints.
-
-This patch adds a new helper __mptcp_subflow_disconnect() that
-encapsulates, a logic similar to tcp_close, issuing a reset only when
-the MPTCP_CF_FASTCLOSE flag is set, and performing a clean shutdown
-otherwise.
+This patch makes sure RST are not sent when removing any subflows or any
+addresses.
 
 Fixes: c2b2ae3925b6 ("mptcp: handle correctly disconnect() failures")
 Cc: stable@vger.kernel.org
-Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
-Co-developed-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
 Signed-off-by: Mat Martineau <martineau@kernel.org>
 ---
- net/mptcp/protocol.c | 28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index 4e30e5ba3795..886ab689a8ae 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2348,6 +2348,26 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
- #define MPTCP_CF_PUSH		BIT(1)
- #define MPTCP_CF_FASTCLOSE	BIT(2)
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 27953670206e..dc895b7b94e1 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2309,6 +2309,7 @@ remove_tests()
+ 		chk_join_nr 1 1 1
+ 		chk_rm_tx_nr 1
+ 		chk_rm_nr 1 1
++		chk_rst_nr 0 0
+ 	fi
  
-+/* be sure to send a reset only if the caller asked for it, also
-+ * clean completely the subflow status when the subflow reaches
-+ * TCP_CLOSE state
-+ */
-+static void __mptcp_subflow_disconnect(struct sock *ssk,
-+				       struct mptcp_subflow_context *subflow,
-+				       unsigned int flags)
-+{
-+	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
-+	    (flags & MPTCP_CF_FASTCLOSE)) {
-+		/* The MPTCP code never wait on the subflow sockets, TCP-level
-+		 * disconnect should never fail
-+		 */
-+		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
-+		mptcp_subflow_ctx_reset(subflow);
-+	} else {
-+		tcp_shutdown(ssk, SEND_SHUTDOWN);
-+	}
-+}
-+
- /* subflow sockets can be either outgoing (connect) or incoming
-  * (accept).
-  *
-@@ -2385,7 +2405,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
- 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+ 	# multiple subflows, remove
+@@ -2321,6 +2322,7 @@ remove_tests()
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 2 2 2
+ 		chk_rm_nr 2 2
++		chk_rst_nr 0 0
+ 	fi
  
- 	if ((flags & MPTCP_CF_FASTCLOSE) && !__mptcp_check_fallback(msk)) {
--		/* be sure to force the tcp_disconnect() path,
-+		/* be sure to force the tcp_close path
- 		 * to generate the egress reset
- 		 */
- 		ssk->sk_lingertime = 0;
-@@ -2395,11 +2415,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 	# single address, remove
+@@ -2333,6 +2335,7 @@ remove_tests()
+ 		chk_join_nr 1 1 1
+ 		chk_add_nr 1 1
+ 		chk_rm_nr 1 1 invert
++		chk_rst_nr 0 0
+ 	fi
  
- 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
- 	if (!dispose_it) {
--		/* The MPTCP code never wait on the subflow sockets, TCP-level
--		 * disconnect should never fail
--		 */
--		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
--		mptcp_subflow_ctx_reset(subflow);
-+		__mptcp_subflow_disconnect(ssk, subflow, flags);
- 		release_sock(ssk);
+ 	# subflow and signal, remove
+@@ -2346,6 +2349,7 @@ remove_tests()
+ 		chk_join_nr 2 2 2
+ 		chk_add_nr 1 1
+ 		chk_rm_nr 1 1
++		chk_rst_nr 0 0
+ 	fi
  
- 		goto out;
+ 	# subflows and signal, remove
+@@ -2360,6 +2364,7 @@ remove_tests()
+ 		chk_join_nr 3 3 3
+ 		chk_add_nr 1 1
+ 		chk_rm_nr 2 2
++		chk_rst_nr 0 0
+ 	fi
+ 
+ 	# addresses remove
+@@ -2374,6 +2379,7 @@ remove_tests()
+ 		chk_join_nr 3 3 3
+ 		chk_add_nr 3 3
+ 		chk_rm_nr 3 3 invert
++		chk_rst_nr 0 0
+ 	fi
+ 
+ 	# invalid addresses remove
+@@ -2388,6 +2394,7 @@ remove_tests()
+ 		chk_join_nr 1 1 1
+ 		chk_add_nr 3 3
+ 		chk_rm_nr 3 1 invert
++		chk_rst_nr 0 0
+ 	fi
+ 
+ 	# subflows and signal, flush
+@@ -2402,6 +2409,7 @@ remove_tests()
+ 		chk_join_nr 3 3 3
+ 		chk_add_nr 1 1
+ 		chk_rm_nr 1 3 invert simult
++		chk_rst_nr 0 0
+ 	fi
+ 
+ 	# subflows flush
+@@ -2421,6 +2429,7 @@ remove_tests()
+ 		else
+ 			chk_rm_nr 3 3
+ 		fi
++		chk_rst_nr 0 0
+ 	fi
+ 
+ 	# addresses flush
+@@ -2435,6 +2444,7 @@ remove_tests()
+ 		chk_join_nr 3 3 3
+ 		chk_add_nr 3 3
+ 		chk_rm_nr 3 3 invert simult
++		chk_rst_nr 0 0
+ 	fi
+ 
+ 	# invalid addresses flush
+@@ -2449,6 +2459,7 @@ remove_tests()
+ 		chk_join_nr 1 1 1
+ 		chk_add_nr 3 3
+ 		chk_rm_nr 3 1 invert
++		chk_rst_nr 0 0
+ 	fi
+ 
+ 	# remove id 0 subflow
+@@ -2460,6 +2471,7 @@ remove_tests()
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 1 1 1
+ 		chk_rm_nr 1 1
++		chk_rst_nr 0 0
+ 	fi
+ 
+ 	# remove id 0 address
+@@ -2472,6 +2484,7 @@ remove_tests()
+ 		chk_join_nr 1 1 1
+ 		chk_add_nr 1 1
+ 		chk_rm_nr 1 1 invert
++		chk_rst_nr 0 0 invert
+ 	fi
+ }
+ 
 
 -- 
 2.41.0
