@@ -2,69 +2,65 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB3CA7CE336
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 18:55:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B3E57CE33D
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 18:59:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229447AbjJRQzz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 12:55:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44644 "EHLO
+        id S229456AbjJRQ7G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 12:59:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjJRQzy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 12:55:54 -0400
+        with ESMTP id S229447AbjJRQ7G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 12:59:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE03B106;
-        Wed, 18 Oct 2023 09:55:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC8DBC433C8;
-        Wed, 18 Oct 2023 16:55:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697648152;
-        bh=6Hk7cRZC8TgK8G/kxiYzsGWB7/fl5io/F1SVkvui04I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wm4nKJwnmDHFE8qeQ0f4/A9pUJJ3LalkQzT9hhfEGDZBNcFUbGV/iXAWb3ccTGzta
-         cxMsOXqtjz0Ns42jm5rhFtFCrcsuZznpuJLAq0/Z2TfXJeICK6VizaFPtzA3mijUDH
-         WK6eyJWbJnfIQ8poRiMDIUUGtJ9sFzRcA0JvxeMU=
-Date:   Wed, 18 Oct 2023 18:55:43 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B66DB0
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 09:59:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7434FC433C8;
+        Wed, 18 Oct 2023 16:59:03 +0000 (UTC)
+Date:   Wed, 18 Oct 2023 13:00:42 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
 To:     Francis Laniel <flaniel@linux.microsoft.com>
 Cc:     linux-trace-kernel@vger.kernel.org,
-        Masami Hiramatsu <mhiramat@kernel.org>, stable@vger.kernel.org,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v5 2/2] selftests/ftrace: Add new test case which checks
- non unique symbol
-Message-ID: <2023101836-comprised-wreckage-77d7@gregkh>
+        Masami Hiramatsu <mhiramat@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v5 0/2] Return EADDRNOTAVAIL when func matches several
+ symbols during kprobe creation
+Message-ID: <20231018130042.3430f000@gandalf.local.home>
+In-Reply-To: <20231018144030.86885-1-flaniel@linux.microsoft.com>
 References: <20231018144030.86885-1-flaniel@linux.microsoft.com>
- <20231018144030.86885-3-flaniel@linux.microsoft.com>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231018144030.86885-3-flaniel@linux.microsoft.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 18, 2023 at 05:40:30PM +0300, Francis Laniel wrote:
-> If name_show() is non unique, this test will try to install a kprobe on this
-> function which should fail returning EADDRNOTAVAIL.
-> On kernel where name_show() is not unique, this test is skipped.
-> 
-> Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-> ---
->  .../ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc  | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
->  create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+On Wed, 18 Oct 2023 17:40:28 +0300
+Francis Laniel <flaniel@linux.microsoft.com> wrote:
 
-<formletter>
+> Changes since:
+>  v1:
+>   * Use EADDRNOTAVAIL instead of adding a new error code.
+>   * Correct also this behavior for sysfs kprobe.
+>  v2:
+>   * Count the number of symbols corresponding to function name and return
+>   EADDRNOTAVAIL if higher than 1.
+>   * Return ENOENT if above count is 0, as it would be returned later by while
+>   registering the kprobe.
+>  v3:
+>   * Check symbol does not contain ':' before testing its uniqueness.
+>   * Add a selftest to check this is not possible to install a kprobe for a non
+>   unique symbol.
+>  v5:
+>   * No changes, just add linux-stable as recipient.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+So why is this adding stable? (and as Greg's form letter states, that's not
+how you do that)
 
-</formletter>
+I don't see this as a fix but a new feature.
+
+-- Steve
