@@ -2,37 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C3E27CE77C
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 21:13:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF3257CE7E2
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 21:39:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230499AbjJRTNk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 15:13:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53772 "EHLO
+        id S231354AbjJRTju (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 15:39:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231450AbjJRTN0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 15:13:26 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D8A311C;
-        Wed, 18 Oct 2023 12:13:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C175DC433C8;
-        Wed, 18 Oct 2023 19:13:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1697656404;
-        bh=qTmp2TzHZtRdm8q1k/3umCQTMDxFgjVoonqxq4w0rwI=;
-        h=Date:To:From:Subject:From;
-        b=Nj7FJW10UskT8Ct3kBkJ75M1BKtA/Zs9+cjG58xCdBIeuydMHAHwje33bEyQFGbjG
-         uBmSW2X7j41XOFVWK1wOb/dBfu7JDq+4fSiOkytWK+3R1Cv9wigBCovf2ixcCKszFW
-         ttk6pjq4aqNnXJzy3o7l9krIfug3fYCicWaLANOc=
-Date:   Wed, 18 Oct 2023 12:13:24 -0700
-To:     mm-commits@vger.kernel.org, tglx@linutronix.de,
-        stable@vger.kernel.org, shuah@kernel.org, brauner@kernel.org,
-        yangtiezhu@loongson.cn, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] selftests-clone3-fix-broken-test-under-config_time_ns.patch removed from -mm tree
-Message-Id: <20231018191324.C175DC433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229510AbjJRTjt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 15:39:49 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C280122
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 12:39:48 -0700 (PDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39IJbgW6025198
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 19:39:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=5bw5twgt+M9rRsZdz8Su4W6nDiXCRw6ejvJ1/bktkyc=;
+ b=FNmVVl7nVJ0wNNrrM0eTDsNQO+2Zanldvv9qa+pVUy3XadYJ8BpxiniDbxngBJxsUiXY
+ jvUen0Ht5zMaxa5KBBu2rNFXrFxWu7WAcA6y1Il+wwNLhYcs9kwGujpZtLz2/Rrff8G8
+ BaM8mp2D6xeLfT9R9kT87Sbu/bPo795KJjI9jlMir1uyyQM6YBRobcFjmiiGJ6wsjsyq
+ bJHlM+0iSJZykmb1D6SEJBXyrumF9S/5Mj/QXKNdFgz7M2J7c8VpwbJS81s9nKsUdtUY
+ I9+r1arfF2uOHw0SWlsLQTutea5+1qhA91YBfzMJozmu0yT1eA578yv8dSReNeB60sQ4 FQ== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttnpcg21m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 19:39:47 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39IJNmKK027149
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 19:39:46 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6tkk9r7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 19:39:46 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+        by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39IJdhwS4522728
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 18 Oct 2023 19:39:43 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 37D9758063;
+        Wed, 18 Oct 2023 19:39:43 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id AE3FA58069;
+        Wed, 18 Oct 2023 19:39:41 +0000 (GMT)
+Received: from [9.61.163.143] (unknown [9.61.163.143])
+        by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Wed, 18 Oct 2023 19:39:41 +0000 (GMT)
+Message-ID: <31256029-a17e-835f-172d-6a9a0e528c5d@linux.ibm.com>
+Date:   Wed, 18 Oct 2023 15:39:41 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [RFC 2/7] s390/vfio-ap: circumvent filtering for adapters/domains
+ not in host config
+To:     Halil Pasic <pasic@linux.ibm.com>
+Cc:     kvm390-list@tuxmaker.boeblingen.de.ibm.com, freude@linux.ibm.com,
+        pasic@linux.vnet.ibm.com, borntraeger@de.ibm.com,
+        fiuczy@linux.ibm.com, jjherne@linux.ibm.com,
+        mjrosato@linux.ibm.com, stable@vger.kernel.org
+References: <20231017222254.68457-1-akrowiak@linux.ibm.com>
+ <20231017222254.68457-3-akrowiak@linux.ibm.com>
+ <20231018190137.277682fe.pasic@linux.ibm.com>
+Content-Language: en-US
+From:   Tony Krowiak <akrowiak@linux.ibm.com>
+In-Reply-To: <20231018190137.277682fe.pasic@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 6CaZVggyf7FQ6jGk3gldvituRXnierwo
+X-Proofpoint-ORIG-GUID: 6CaZVggyf7FQ6jGk3gldvituRXnierwo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-18_18,2023-10-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1015
+ priorityscore=1501 malwarescore=0 lowpriorityscore=0 mlxscore=0
+ mlxlogscore=999 impostorscore=0 spamscore=0 suspectscore=0 adultscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310180161
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -40,80 +92,98 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The quilt patch titled
-     Subject: selftests/clone3: Fix broken test under !CONFIG_TIME_NS
-has been removed from the -mm tree.  Its filename was
-     selftests-clone3-fix-broken-test-under-config_time_ns.patch
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On 10/18/23 13:01, Halil Pasic wrote:
+> On Tue, 17 Oct 2023 18:22:49 -0400
+> Tony Krowiak <akrowiak@linux.ibm.com> wrote:
+> 
+>> While filtering the mdev matrix, it doesn't make sense - and will have
+>> unexpected results - to filter an APID from the matrix if the APID or one
+>> of the associated APQIs is not in the host's AP configuration. There are
+>> two reasons for this:
+>>
+>> 1. An adapter or domain that is not in the host's AP configuration can be
+>>     assigned to the matrix; this is known as over-provisioning. Queue
+>>     devices, however, are only created for adapters and domains in the
+>>     host's AP configuration, so there will be no queues associated with an
+>>     over-provisioned adapter or domain to filter.
+>>
+>> 2. The adapter or domain may have been externally removed from the host's
+>>     configuration via an SE or HMC attached to a DPM enabled LPAR. In this
+>>     case, the vfio_ap device driver would have been notified by the AP bus
+>>     via the on_config_changed callback and the adapter or domain would
+>>     have already been filtered.
+>>
+>> Let's bypass the filtering of an APID if an adapter or domain assigned to
+>> the mdev matrix is not in the host's AP configuration.
+> 
+> I strongly agree.
+> 
+>>
+>> Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+>> Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
+>> Cc: <stable@vger.kernel.org>
+>> ---
+>>   drivers/s390/crypto/vfio_ap_ops.c | 32 +++++++++++++++++++++++++------
+>>   1 file changed, 26 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+>> index e5490640e19c..4e40e226ce62 100644
+>> --- a/drivers/s390/crypto/vfio_ap_ops.c
+>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+>> @@ -692,17 +692,37 @@ static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev)
+>>   		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
+>>
+>>   	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
+> 
+> What speaks against doing the loop on matrix_mdev->shadow_apcb.a[pq]m?
+> 
+> Those are the and of matrix_mdev->matrix.a{p,q}m and
+> matrix_dev->info.a{p,q}m so excactly those bits are 0 for which you are adding
+> the ifs...
 
-------------------------------------------------------
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: selftests/clone3: Fix broken test under !CONFIG_TIME_NS
-Date: Tue, 11 Jul 2023 17:13:34 +0800
+You are correct, there is no good reason to avoid looping on the 
+shadow_apcb. I'll change this patch to do just that.
 
-When execute the following command to test clone3 under !CONFIG_TIME_NS:
-
-  # make headers && cd tools/testing/selftests/clone3 && make && ./clone3
-
-we can see the following error info:
-
-  # [7538] Trying clone3() with flags 0x80 (size 0)
-  # Invalid argument - Failed to create new process
-  # [7538] clone3() with flags says: -22 expected 0
-  not ok 18 [7538] Result (-22) is different than expected (0)
-  ...
-  # Totals: pass:18 fail:1 xfail:0 xpass:0 skip:0 error:0
-
-This is because if CONFIG_TIME_NS is not set, but the flag
-CLONE_NEWTIME (0x80) is used to clone a time namespace, it
-will return -EINVAL in copy_time_ns().
-
-If kernel does not support CONFIG_TIME_NS, /proc/self/ns/time
-will be not exist, and then we should skip clone3() test with
-CLONE_NEWTIME.
-
-With this patch under !CONFIG_TIME_NS:
-
-  # make headers && cd tools/testing/selftests/clone3 && make && ./clone3
-  ...
-  # Time namespaces are not supported
-  ok 18 # SKIP Skipping clone3() with CLONE_NEWTIME
-  ...
-  # Totals: pass:18 fail:0 xfail:0 xpass:0 skip:1 error:0
-
-Link: https://lkml.kernel.org/r/1689066814-13295-1-git-send-email-yangtiezhu@loongson.cn
-Fixes: 515bddf0ec41 ("selftests/clone3: test clone3 with CLONE_NEWTIME")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/clone3/clone3.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
---- a/tools/testing/selftests/clone3/clone3.c~selftests-clone3-fix-broken-test-under-config_time_ns
-+++ a/tools/testing/selftests/clone3/clone3.c
-@@ -196,7 +196,12 @@ int main(int argc, char *argv[])
- 			CLONE3_ARGS_NO_TEST);
- 
- 	/* Do a clone3() in a new time namespace */
--	test_clone3(CLONE_NEWTIME, 0, 0, CLONE3_ARGS_NO_TEST);
-+	if (access("/proc/self/ns/time", F_OK) == 0) {
-+		test_clone3(CLONE_NEWTIME, 0, 0, CLONE3_ARGS_NO_TEST);
-+	} else {
-+		ksft_print_msg("Time namespaces are not supported\n");
-+		ksft_test_result_skip("Skipping clone3() with CLONE_NEWTIME\n");
-+	}
- 
- 	/* Do a clone3() with exit signal (SIGCHLD) in flags */
- 	test_clone3(SIGCHLD, 0, -EINVAL, CLONE3_ARGS_NO_TEST);
-_
-
-Patches currently in -mm which might be from yangtiezhu@loongson.cn are
-
-
+> 
+>> +		/*
+>> +		 * If the adapter is not in the host's AP configuration, it will
+>> +		 * be due to one of two reasons:
+>> +		 * 1. The adapter is over-provisioned.
+>> +		 * 2. The adapter was removed from the host's
+>> +		 *    configuration in which case it will already have
+>> +		 *    been processed by the on_config_changed callback.
+>> +		 * In either case, we should skip the filtering and
+>> +		 * continue examining APIDs.
+>> +		 */
+>> +		if (!test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm))
+>> +			continue;
+>> +
+>>   		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
+>>   			/*
+>> -			 * If the APQN is not bound to the vfio_ap device
+>> -			 * driver, then we can't assign it to the guest's
+>> -			 * AP configuration. The AP architecture won't
+>> -			 * allow filtering of a single APQN, so let's filter
+>> -			 * the APID since an adapter represents a physical
+>> -			 * hardware device.
+>> +			 * If the domain is not in the host's AP configuration,
+>> +			 * it will for one of two reasons:
+>> +			 * 1. The domain is over-provisioned.
+>> +			 * 2. The domain was removed from the host's
+>> +			 *    configuration in which case it will already have
+>> +			 *    been processed by the on_config_changed callback.
+>> +			 * In either case, we should skip the filtering and
+>> +			 * continue examining APQIs.
+>>   			 */
+>> +			if (!test_bit_inv(apqi,
+>> +					  (unsigned long *)matrix_dev->info.aqm))
+>> +				continue;
+>> +
+>>   			apqn = AP_MKQID(apid, apqi);
+>>   			q = vfio_ap_mdev_get_queue(matrix_mdev, apqn);
+>> +
+>>   			if (!q || q->reset_status.response_code) {
+>>   				clear_bit_inv(apid,
+>>   					      matrix_mdev->shadow_apcb.apm);
+> 
