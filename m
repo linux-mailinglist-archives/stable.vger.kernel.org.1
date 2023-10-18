@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B35D7CDE8E
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 16:12:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6E827CDE83
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 16:12:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344854AbjJROMc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 10:12:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50200 "EHLO
+        id S230267AbjJROM2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 10:12:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344846AbjJROMP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 10:12:15 -0400
+        with ESMTP id S231929AbjJROMR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 10:12:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0944183;
-        Wed, 18 Oct 2023 07:12:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5BBC433C9;
-        Wed, 18 Oct 2023 14:12:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 754F0119;
+        Wed, 18 Oct 2023 07:12:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B34C433C7;
+        Wed, 18 Oct 2023 14:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697638333;
-        bh=lOJ9IO0p1IqYS9u1GlHfb86JxNofqQmR9iLuoYPMvwQ=;
+        s=k20201202; t=1697638335;
+        bh=NpWOL949zjbv0453tfqLRDpLsMUhTAUanBD43aHGEEc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jF93VGus9M9etw/f0MT9FpbnbBaNZbvuK3HKLU/2E6lV7sLENKrbeXSSsBRhDxhgN
-         9s9wGoQxgP+sw206mbNok9fxDYuzJVUaQwem0OduvXAW2FBih7Rmm6XzkIekhfwhTP
-         3fTOTWD2oNHxiywIMAt0TdH/rDggMljIO1NSMV/5BgHqOf5JPxyVyp+nhM/TLJ9i/i
-         zhOWo40wa8OKxp4ynxyPn3JrtgrGnPEZyyEhQqMS6JWVP9jMYZi2W94ulsohZACiNK
-         GYyfpCQY1GFBeCOnceP95C87UCVTqbPQZzd5j6b4wDaH7hFRU2ehGYECzasB1uYzwJ
-         ES9zhRoB8iFzg==
+        b=lFKeLM0Zs5+MzEYYy8UhLbqVx3lXaV8xyhtcBeKfwv3rc5pSxCjn008Ndhjc8afrh
+         U7huOkpYkUYnX+rfpZ0QlLc7Od7srXGF0Y33gKhI07SnMYOn0u/Ze98q4U8I62hipG
+         2mNZ37oOufu2zskr3spQTMMViRR0lPF3Ec6duB8ERchb9JhBCazPT/vjlauQPncBAx
+         p3leaHdLvqngibnlw3T35PBpTlkkOITFVSv+1ChoFi8+PEon3RPIbCGvtHCqqIQ6do
+         5CeKjYsGbqQ/kPRh+k9wiWTmuTdsEUZvjjoUfYcUKSTm6Wzrkpgolk6Ws5rjpNsYcl
+         PJS8I8IWA6xhw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
+Cc:     Antoine Gennart <gennartan@disroot.org>,
         Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, lgirdwood@gmail.com,
+        Sasha Levin <sashal@kernel.org>, shenghao-ding@ti.com,
+        kevin-lu@ti.com, baojun.xu@ti.com, lgirdwood@gmail.com,
         perex@perex.cz, tiwai@suse.com, alsa-devel@alsa-project.org
-Subject: [PATCH AUTOSEL 6.5 08/31] ASoC: core: Do not call link_exit() on uninitialized rtd objects
-Date:   Wed, 18 Oct 2023 10:11:25 -0400
-Message-Id: <20231018141151.1334501-8-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.5 09/31] ASoC: tlv320adc3xxx: BUG: Correct micbias setting
+Date:   Wed, 18 Oct 2023 10:11:26 -0400
+Message-Id: <20231018141151.1334501-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231018141151.1334501-1-sashal@kernel.org>
 References: <20231018141151.1334501-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.5.7
@@ -55,109 +53,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Antoine Gennart <gennartan@disroot.org>
 
-[ Upstream commit dd9f9cc1e6b9391140afa5cf27bb47c9e2a08d02 ]
+[ Upstream commit e930bea4124b8a4a47ba4092d99da30099b9242d ]
 
-On init we have sequence:
+The micbias setting for tlv320adc can also have the value '3' which
+means that the micbias ouput pin is connected to the input pin AVDD.
 
-	for_each_card_prelinks(card, i, dai_link) {
-		ret = snd_soc_add_pcm_runtime(card, dai_link);
-
-	ret = init_some_other_things(...);
-	if (ret)
-		goto probe_end:
-
-	for_each_card_rtds(card, rtd) {
-		ret = soc_init_pcm_runtime(card, rtd);
-
-probe_end:
-
-while on exit:
-	for_each_card_rtds(card, rtd)
-		snd_soc_link_exit(rtd);
-
-If init_some_other_things() step fails due to error we end up with
-not fully setup rtds and try to call snd_soc_link_exit on them, which
-depending on contents on .link_exit handler, can end up dereferencing
-NULL pointer.
-
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20230929103243.705433-2-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Antoine Gennart <gennartan@disroot.org>
+Link: https://lore.kernel.org/r/20230929130117.77661-1-gennartan@disroot.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc.h  |  2 ++
- sound/soc/soc-core.c | 20 +++++++++++++++-----
- 2 files changed, 17 insertions(+), 5 deletions(-)
+ sound/soc/codecs/tlv320adc3xxx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/sound/soc.h b/include/sound/soc.h
-index b27f84580c5b0..cf34810882347 100644
---- a/include/sound/soc.h
-+++ b/include/sound/soc.h
-@@ -1125,6 +1125,8 @@ struct snd_soc_pcm_runtime {
- 	unsigned int pop_wait:1;
- 	unsigned int fe_compr:1; /* for Dynamic PCM */
+diff --git a/sound/soc/codecs/tlv320adc3xxx.c b/sound/soc/codecs/tlv320adc3xxx.c
+index b976c1946286a..420bbf588efea 100644
+--- a/sound/soc/codecs/tlv320adc3xxx.c
++++ b/sound/soc/codecs/tlv320adc3xxx.c
+@@ -293,7 +293,7 @@
+ #define ADC3XXX_BYPASS_RPGA		0x80
  
-+	bool initialized;
-+
- 	int num_components;
- 	struct snd_soc_component *components[]; /* CPU/Codec/Platform */
- };
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 1a0bde23f5e6f..2d85164457f73 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1259,7 +1259,7 @@ static int soc_init_pcm_runtime(struct snd_soc_card *card,
- 	snd_soc_runtime_get_dai_fmt(rtd);
- 	ret = snd_soc_runtime_set_dai_fmt(rtd, dai_link->dai_fmt);
- 	if (ret)
--		return ret;
-+		goto err;
+ /* MICBIAS control bits */
+-#define ADC3XXX_MICBIAS_MASK		0x2
++#define ADC3XXX_MICBIAS_MASK		0x3
+ #define ADC3XXX_MICBIAS1_SHIFT		5
+ #define ADC3XXX_MICBIAS2_SHIFT		3
  
- 	/* add DPCM sysfs entries */
- 	soc_dpcm_debugfs_add(rtd);
-@@ -1284,17 +1284,26 @@ static int soc_init_pcm_runtime(struct snd_soc_card *card,
- 	/* create compress_device if possible */
- 	ret = snd_soc_dai_compress_new(cpu_dai, rtd, num);
- 	if (ret != -ENOTSUPP)
--		return ret;
-+		goto err;
+@@ -1099,7 +1099,7 @@ static int adc3xxx_parse_dt_micbias(struct adc3xxx *adc3xxx,
+ 	unsigned int val;
  
- 	/* create the pcm */
- 	ret = soc_new_pcm(rtd, num);
- 	if (ret < 0) {
- 		dev_err(card->dev, "ASoC: can't create pcm %s :%d\n",
- 			dai_link->stream_name, ret);
--		return ret;
-+		goto err;
- 	}
- 
--	return snd_soc_pcm_dai_new(rtd);
-+	ret = snd_soc_pcm_dai_new(rtd);
-+	if (ret < 0)
-+		goto err;
-+
-+	rtd->initialized = true;
-+
-+	return 0;
-+err:
-+	snd_soc_link_exit(rtd);
-+	return ret;
- }
- 
- static void soc_set_name_prefix(struct snd_soc_card *card,
-@@ -1892,7 +1901,8 @@ static void soc_cleanup_card_resources(struct snd_soc_card *card)
- 
- 	/* release machine specific resources */
- 	for_each_card_rtds(card, rtd)
--		snd_soc_link_exit(rtd);
-+		if (rtd->initialized)
-+			snd_soc_link_exit(rtd);
- 	/* remove and free each DAI */
- 	soc_remove_link_dais(card);
- 	soc_remove_link_components(card);
+ 	if (!of_property_read_u32(np, propname, &val)) {
+-		if (val >= ADC3XXX_MICBIAS_AVDD) {
++		if (val > ADC3XXX_MICBIAS_AVDD) {
+ 			dev_err(dev, "Invalid property value for '%s'\n", propname);
+ 			return -EINVAL;
+ 		}
 -- 
 2.40.1
 
