@@ -2,66 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D09C47CE35A
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 19:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D8F57CE4C6
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 19:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230220AbjJRRFd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 13:05:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40650 "EHLO
+        id S230402AbjJRRj6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 13:39:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229694AbjJRRFc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 13:05:32 -0400
-Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266A8B0
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 10:05:30 -0700 (PDT)
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2c3e23a818bso83101971fa.0
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 10:05:30 -0700 (PDT)
+        with ESMTP id S229930AbjJRRj4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 13:39:56 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 533C49F;
+        Wed, 18 Oct 2023 10:39:54 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1c0ecb9a075so49224015ad.2;
+        Wed, 18 Oct 2023 10:39:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697648728; x=1698253528; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mUgZsAMS7wlU8iBe6DF+4g+6G1i93WOvrNnJ1NaOaO8=;
-        b=GyUl/qBLhUFD0XZJQJ39MMr+MkokXREtAQE+Fdyhcv5Y0Dr7RDWxJ/PARh7eRydivN
-         8y6CuPjRt22GroPVcjawK/aYxb8ROrJQvwBIEaPi5jA7RofP8yJ8ByFGb/trsXL0pRWk
-         0gCiATKAZ/JuM6cVokrd7N5pd5wRO/ouZ7bOVmgdmj5cx7xgUr/xmYKGswSXG/9FcxJA
-         hj/Q8/basmozevkB5uM63FtbI4dcA5ui5KNT1RalPtDp87tJvqNcvEfCd/90OzRtWdoB
-         lliVJzd1SYRY9TCuSwgAeGut7nK3RdrjOf4U6mn0cRHHHVK2BoS5ayOJgOqeIqDRhFwt
-         vWCQ==
+        d=gmail.com; s=20230601; t=1697650793; x=1698255593; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kObTCpttwRGsJXO+T/tcZq3nvHyuvs5borClzJUYcjo=;
+        b=dWIf6iniYVw3XJfX/yp/P6hOR7aPqCoeFu3vF9uP7VNPd15mFAb1jOInTXfwo/Nc0m
+         1g8EKpE40ADCv2v1adI9w02fSb9Qb7xqBxA3egCM10kg6l0mf8DeSY/o2amYAuKnKesq
+         cwqP0QSViSnIBVkS5mTnHLF4yuSf3DMtzWoxpLhYlFZH8hgV0AI9CPNOVT0e+fhebP6f
+         eo4CkiNumNzAT0Y18RhZeHKpMlrN6JdhbfEbym6p/18Zza5o717BZXmVY86TQCjlwDIc
+         4cFfY/SBWCeO1frNcz/dl829NKG+HJn+IDgY8NgzoTxwehEc7d19pk5FUBTmioJHOHyi
+         88Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697648728; x=1698253528;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mUgZsAMS7wlU8iBe6DF+4g+6G1i93WOvrNnJ1NaOaO8=;
-        b=GvfVqJCB+x8Yzx+UN6bRi9IHrl0NpYJn24J2tBxKYwDYBm3pRUABcIdNE5XrbaSkMz
-         GIlIYu4MatZsVY749T//ZpEIDhDToVDTiPYd6L75RUnavU6AgCgLELnSFQ5r/LD9NWbO
-         1LGSy0R4YRejISgGiSy3Dx6ck7JSOD8aoTOk3Cq16qzbxf1O4egSEgorFOXxAgHkcQig
-         plTetVCBb98g4utip6ltITyNpIHPqVwfvu0uUFNCzKCzfcWTv8fZEJnYHNINwUCReSMd
-         PJ/B1JoH+8glM8WIaty4X80BujY6ppkiWo613rT3PX6KZUYw21Q+NubeKxm9BRki+eBU
-         p9pQ==
-X-Gm-Message-State: AOJu0YysTrmikQGfT+NTEsbPVryO5VIMr0rJ8qCDalX8HX2F1zqaUoru
-        2vYJd/mhu3UKpXYfU7LobOkvVfimKahq9Oqrr64=
-X-Google-Smtp-Source: AGHT+IEv9805H0Xgn1SBo2V0yF090GSRt9N5C3D4shgi4o2GQQvWaomRiJ1+EaYJGNU9WFl702wdM6IbmdJhj1ZBHag=
-X-Received: by 2002:a2e:a7ca:0:b0:2c1:7df1:14b1 with SMTP id
- x10-20020a2ea7ca000000b002c17df114b1mr2401346ljp.15.1697648728021; Wed, 18
- Oct 2023 10:05:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697650793; x=1698255593;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kObTCpttwRGsJXO+T/tcZq3nvHyuvs5borClzJUYcjo=;
+        b=ITdvvow71rBck52pQNw2AWX9R9ScWUZrQhhQoubUZhEmILTvt5WFOvN4ljv1Q2sVtS
+         Qyte6/C0iKgTOEfXiEcjl/Ncy/O2Zo5TmNpX9eXbzucm2AJ10zn468fIIbIZo2L2d/J/
+         U95+6Esa8nINr0800MCCD/H/9DO1uXXDNS3U8uIk9mRr5afKm/z39ske8Xjjo2CyjJTn
+         wy4HrOognrNtlGqtFB3weV6pi4Wia6LcbpXYseb1cBmn7h4enZHFQHtXETrMW1dMLKEO
+         2cKFUTdFEumFNDfHkQgFWk+F1gAXDQUojkxQnDWwux7PzYxMTny51tKfGxSKCdJGAr+A
+         AdgA==
+X-Gm-Message-State: AOJu0YyaRqqN/tmQwom9ecwK962f7C+DyyCXRJ6o/x1iUP04jyJC99fu
+        /Rb2kapa4PkmKvgWYLVjjXQ+P8LdN3qNVA==
+X-Google-Smtp-Source: AGHT+IHGWc3brrKeq8m+T2qjYBp+b6NRfd6rMxT7Raa+KkypH9RsWP/08hvWVqAEmGdZAAzRgwqF2Q==
+X-Received: by 2002:a17:903:120f:b0:1bc:e6a:205f with SMTP id l15-20020a170903120f00b001bc0e6a205fmr47574plh.20.1697650793330;
+        Wed, 18 Oct 2023 10:39:53 -0700 (PDT)
+Received: from lrumancik.svl.corp.google.com ([2620:15c:2a3:200:c7ee:164e:dc3a:6a45])
+        by smtp.gmail.com with ESMTPSA id h1-20020a170902eec100b001ca4c20003dsm205866plb.69.2023.10.18.10.39.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 10:39:52 -0700 (PDT)
+From:   Leah Rumancik <leah.rumancik@gmail.com>
+To:     stable@vger.kernel.org
+Cc:     linux-xfs@vger.kernel.org, amir73il@gmail.com,
+        chandan.babu@oracle.com, "Darrick J. Wong" <djwong@kernel.org>,
+        Ian Kent <raven@themaw.net>,
+        Dave Chinner <dchinner@redhat.com>,
+        Chandan Babu R <chandanbabu@kernel.org>,
+        Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 5.15] xfs: don't expose internal symlink metadata buffers to the vfs
+Date:   Wed, 18 Oct 2023 10:39:45 -0700
+Message-ID: <20231018173945.2858151-1-leah.rumancik@gmail.com>
+X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
 MIME-Version: 1.0
-References: <CANT5p=rReboKPbEySnZsFAn8Zv2ZzgQQ8LhyTxkt538QgyxB7A@mail.gmail.com>
- <2023101757-dilation-femur-91b8@gregkh>
-In-Reply-To: <2023101757-dilation-femur-91b8@gregkh>
-From:   Shyam Prasad N <nspmangalore@gmail.com>
-Date:   Wed, 18 Oct 2023 22:35:16 +0530
-Message-ID: <CANT5p=oPGnCd4H5ppMbAiHsAKMor3LT_aQRqU7tKu=q6q1BGQg@mail.gmail.com>
-Subject: Re: [request for patch inclusion to 5.15 stable] cifs: fix mid leak
- during reconnection after timeout threshold
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     Stable <stable@vger.kernel.org>, Steve French <smfrench@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,88 +72,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 17, 2023 at 1:14=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Tue, Oct 17, 2023 at 11:43:26AM +0530, Shyam Prasad N wrote:
-> > Hi Greg,
-> >
-> > It recently came to my attention that this patch:
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/patc=
-h/?id=3D69cba9d3c1284e0838ae408830a02c4a063104bc
-> > [Upstream commit 69cba9d3c1284e0838ae408830a02c4a063104bc]
-> > ... which is marked with Fixes tag for a change that went into 5.9
-> > kernel, was taken into 6.4 and 6.1 stable trees.
-> > However, I do not see this in the 5.15 stable tree.
-> >
-> > I got emails about this fix being taken to the 6.4 and 6.1 stable. But
-> > I do not see any communication about 5.15 kernel.
-> >
-> > Was this missed? Or is there something in the process that I missed?
-> > Based on the kernel documentation about commit tags, I assumed that
-> > for commits that have the "Fixes: " tag, it was not necessary to add
-> > the "CC: stable" as well.
-> > Please let me know if that understanding is wrong.
->
-> That understanding is wrong, and has never been the case.  Please see:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.ht=
-ml
-> for how to do this properly.
->
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-There were two statements that led me to making this assumption.
+[ Upstream commit 7b7820b83f230036fc48c3e7fb280c48c58adebf ]
 
-In the link that you provided:
-=E2=80=9CNote, such tagging is unnecessary if the stable team can derive th=
-e
-appropriate versions from Fixes: tags.=E2=80=9D
+Ian Kent reported that for inline symlinks, it's possible for
+vfs_readlink to hang on to the target buffer returned by
+_vn_get_link_inline long after it's been freed by xfs inode reclaim.
+This is a layering violation -- we should never expose XFS internals to
+the VFS.
 
-Also, the below link says:
-https://www.kernel.org/doc/html/v4.10/process/submitting-patches.html#using=
--reported-by-tested-by-reviewed-by-suggested-by-and-fixes
-=E2=80=9CA Fixes: tag indicates that the patch fixes an issue in a previous
-commit. It is used to make it easy to determine where a bug
-originated, which can help review a bug fix. This tag also assists the
-stable kernel team in determining which stable kernel versions should
-receive your fix. This is the preferred method for indicating a bug
-fixed by the patch.=E2=80=9D
+When the symlink has a remote target, we allocate a separate buffer,
+copy the internal information, and let the VFS manage the new buffer's
+lifetime.  Let's adapt the inline code paths to do this too.  It's
+less efficient, but fixes the layering violation and avoids the need to
+adapt the if_data lifetime to rcu rules.  Clearly I don't care about
+readlink benchmarks.
 
-But I can now see how this can also mean that additional tagging is
-not necessary if it has a "Fixes" tag, but "stable" tag is still
-necessary.
+As a side note, this fixes the minor locking violation where we can
+access the inode data fork without taking any locks; proper locking (and
+eliminating the possibility of having to switch inode_operations on a
+live inode) is essential to online repair coordinating repairs
+correctly.
 
-> We just have been sweeping the tree at times to pick up the patches
-> where people only put Fixes: tags.  And then we do a "best effort" type
-> of backporting.
+Reported-by: Ian Kent <raven@themaw.net>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Tested-by: Chandan Babu R <chandanbabu@kernel.org>
+Acked-by: Leah Rumancik <leah.rumancik@gmail.com>
+---
+ fs/xfs/xfs_iops.c    | 34 +---------------------------------
+ fs/xfs/xfs_symlink.c | 29 +++++++++++++++++++----------
+ 2 files changed, 20 insertions(+), 43 deletions(-)
 
-Understood.
+diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
+index 1eb71275e5b0..8696d6551200 100644
+--- a/fs/xfs/xfs_iops.c
++++ b/fs/xfs/xfs_iops.c
+@@ -511,27 +511,6 @@ xfs_vn_get_link(
+ 	return ERR_PTR(error);
+ }
+ 
+-STATIC const char *
+-xfs_vn_get_link_inline(
+-	struct dentry		*dentry,
+-	struct inode		*inode,
+-	struct delayed_call	*done)
+-{
+-	struct xfs_inode	*ip = XFS_I(inode);
+-	char			*link;
+-
+-	ASSERT(ip->i_df.if_format == XFS_DINODE_FMT_LOCAL);
+-
+-	/*
+-	 * The VFS crashes on a NULL pointer, so return -EFSCORRUPTED if
+-	 * if_data is junk.
+-	 */
+-	link = ip->i_df.if_u1.if_data;
+-	if (XFS_IS_CORRUPT(ip->i_mount, !link))
+-		return ERR_PTR(-EFSCORRUPTED);
+-	return link;
+-}
+-
+ static uint32_t
+ xfs_stat_blksize(
+ 	struct xfs_inode	*ip)
+@@ -1200,14 +1179,6 @@ static const struct inode_operations xfs_symlink_inode_operations = {
+ 	.update_time		= xfs_vn_update_time,
+ };
+ 
+-static const struct inode_operations xfs_inline_symlink_inode_operations = {
+-	.get_link		= xfs_vn_get_link_inline,
+-	.getattr		= xfs_vn_getattr,
+-	.setattr		= xfs_vn_setattr,
+-	.listxattr		= xfs_vn_listxattr,
+-	.update_time		= xfs_vn_update_time,
+-};
+-
+ /* Figure out if this file actually supports DAX. */
+ static bool
+ xfs_inode_supports_dax(
+@@ -1358,10 +1329,7 @@ xfs_setup_iops(
+ 		inode->i_fop = &xfs_dir_file_operations;
+ 		break;
+ 	case S_IFLNK:
+-		if (ip->i_df.if_format == XFS_DINODE_FMT_LOCAL)
+-			inode->i_op = &xfs_inline_symlink_inode_operations;
+-		else
+-			inode->i_op = &xfs_symlink_inode_operations;
++		inode->i_op = &xfs_symlink_inode_operations;
+ 		break;
+ 	default:
+ 		inode->i_op = &xfs_inode_operations;
+diff --git a/fs/xfs/xfs_symlink.c b/fs/xfs/xfs_symlink.c
+index a31d2e5d0321..affbedf78160 100644
+--- a/fs/xfs/xfs_symlink.c
++++ b/fs/xfs/xfs_symlink.c
+@@ -22,6 +22,7 @@
+ #include "xfs_trace.h"
+ #include "xfs_trans.h"
+ #include "xfs_ialloc.h"
++#include "xfs_error.h"
+ 
+ /* ----- Kernel only functions below ----- */
+ int
+@@ -96,17 +97,15 @@ xfs_readlink_bmap_ilocked(
+ 
+ int
+ xfs_readlink(
+-	struct xfs_inode *ip,
+-	char		*link)
++	struct xfs_inode	*ip,
++	char			*link)
+ {
+-	struct xfs_mount *mp = ip->i_mount;
+-	xfs_fsize_t	pathlen;
+-	int		error = 0;
++	struct xfs_mount	*mp = ip->i_mount;
++	xfs_fsize_t		pathlen;
++	int			error = -EFSCORRUPTED;
+ 
+ 	trace_xfs_readlink(ip);
+ 
+-	ASSERT(ip->i_df.if_format != XFS_DINODE_FMT_LOCAL);
+-
+ 	if (xfs_is_shutdown(mp))
+ 		return -EIO;
+ 
+@@ -121,12 +120,22 @@ xfs_readlink(
+ 			 __func__, (unsigned long long) ip->i_ino,
+ 			 (long long) pathlen);
+ 		ASSERT(0);
+-		error = -EFSCORRUPTED;
+ 		goto out;
+ 	}
+ 
+-
+-	error = xfs_readlink_bmap_ilocked(ip, link);
++	if (ip->i_df.if_format == XFS_DINODE_FMT_LOCAL) {
++		/*
++		 * The VFS crashes on a NULL pointer, so return -EFSCORRUPTED
++		 * if if_data is junk.
++		 */
++		if (XFS_IS_CORRUPT(ip->i_mount, !ip->i_df.if_u1.if_data))
++			goto out;
++
++		memcpy(link, ip->i_df.if_u1.if_data, pathlen + 1);
++		error = 0;
++	} else {
++		error = xfs_readlink_bmap_ilocked(ip, link);
++	}
+ 
+  out:
+ 	xfs_iunlock(ip, XFS_ILOCK_SHARED);
+-- 
+2.42.0.655.g421f12c284-goog
 
->
-> Odds are this commit does not apply to any older kernels, and yes, I
-> just tried and it did not apply to 5.15 at all.  Please provide a
-> working backport.
-Will do that soon.
-
->
-> > Regarding this particular fix, I discussed this with Steve, and he
-> > agrees that this fix needs to go into all stable kernels as well.
->
-> Great, please provide working backports and we will be glad to queue
-> them up.
->
-> And in the future, please properly mark your patches with cc: stable if
-> you want to see them applied, AND for you to get FAILED notices if they
-> do not apply as far back as you are asking them to be sent to.
-
-Will do. Thanks.
-
->
-> thanks,
->
-> greg k-h
-
-
-
---=20
-Regards,
-Shyam
