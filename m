@@ -2,145 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 261F47CE76D
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 21:12:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B84467CE777
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 21:13:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229786AbjJRTMo convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Wed, 18 Oct 2023 15:12:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51318 "EHLO
+        id S229487AbjJRTNT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 15:13:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjJRTMo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 15:12:44 -0400
-Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B72C109;
-        Wed, 18 Oct 2023 12:12:42 -0700 (PDT)
-Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-d9ac43d3b71so7809959276.0;
-        Wed, 18 Oct 2023 12:12:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697656361; x=1698261161;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bm/QitVoXGxf3ERCz3VJAvR9l7hSVdW0OvjmYyP6n1s=;
-        b=D3+z/My+TkaEJ83wkraPBqL4quLG4CY8GUcezwYaQfS0CYJnh9g/WB7c9o0lVRh0HE
-         HgbhmQBu6G9fW8HUu/FO8fWM3eUA4cBwduiNXqoVYAz/qSv79q9+DKLMJkjy9r+Re0wf
-         6zmWSflv6THq+y/ewY7lTc9gvVR3PZIJV7LXb8N6kr+hHIlu70ZW0ZHwD6AxaBG5z8au
-         erKVbDWzIJw5OV079YWkajwsheUsau2b59cyR1nJHELa7tKhy4Ydw53p7+thc8fwgf0p
-         cDtLAAhAv7o3+G485MDQZtBQI4fNk1c8FQKDeSwCVpBi8zQLQG5Iuz7u+CTvQwH/BOnf
-         N8pQ==
-X-Gm-Message-State: AOJu0YyN3y6aW+CzJGnxFXLtl7iNUSnYf9Icb21iA6TpDO5ecoQgj/bd
-        SSgA+j3T/LjSuxX7MeeExiP8vB0wankJzA==
-X-Google-Smtp-Source: AGHT+IG99EISzj7k6T/yx0htRH7EUXaAkURMTiKbUNVYa2lCnKMK5l/f8Vj9mdDXRkTu+CWbTgKGKg==
-X-Received: by 2002:a25:50c7:0:b0:d9a:e337:b6a with SMTP id e190-20020a2550c7000000b00d9ae3370b6amr259861ybb.61.1697656361368;
-        Wed, 18 Oct 2023 12:12:41 -0700 (PDT)
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com. [209.85.219.172])
-        by smtp.gmail.com with ESMTPSA id l12-20020a25bccc000000b00d749a394c87sm1487247ybm.16.2023.10.18.12.12.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 18 Oct 2023 12:12:41 -0700 (PDT)
-Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-d84f18e908aso8157338276.1;
-        Wed, 18 Oct 2023 12:12:40 -0700 (PDT)
-X-Received: by 2002:a25:d7c7:0:b0:d80:1604:f6e9 with SMTP id
- o190-20020a25d7c7000000b00d801604f6e9mr285943ybg.44.1697656360583; Wed, 18
- Oct 2023 12:12:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20231018182412.80291-1-hamza.mahfooz@amd.com> <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
- <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
-In-Reply-To: <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 18 Oct 2023 21:12:29 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXYDQi5+x1KxMG0wnjSfa=A547B9tgAbgbHbV42bbRu8Q@mail.gmail.com>
-Message-ID: <CAMuHMdXYDQi5+x1KxMG0wnjSfa=A547B9tgAbgbHbV42bbRu8Q@mail.gmail.com>
-Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Arnd Bergmann <arnd@arndb.de>, stable@vger.kernel.org,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Nick Terrell <terrelln@fb.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-        Li Hua <hucool.lihua@huawei.com>,
-        Alexander Potapenko <glider@google.com>,
-        Rae Moar <rmoar@google.com>, rust-for-linux@vger.kernel.org,
-        bpf@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S231373AbjJRTNP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 15:13:15 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E9C11D;
+        Wed, 18 Oct 2023 12:13:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74042C433C7;
+        Wed, 18 Oct 2023 19:13:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1697656393;
+        bh=lweJdFy3QfFbwuPeWxx5QKJW7lo6zTWLXHJ/6xFu/II=;
+        h=Date:To:From:Subject:From;
+        b=PpjJ/1RpFreH3j0RyC2rhaiQwjsT7M0kbqAtcmtOwaLsLQSxIspaF2qVjBPBK6+Ra
+         Y4EUJ2OimNnd9lVmVblBCAdtElGQHFU3PPvdOkxB8vyFswURt+4mmmjn4S+Lo/hl8p
+         skQf5eg4BJ1r7sVEGjHFBDAo8Ij50asSTQ1zYt/Q=
+Date:   Wed, 18 Oct 2023 12:13:12 -0700
+To:     mm-commits@vger.kernel.org, vitaly.wool@konsulko.com,
+        stable@vger.kernel.org, nphamcs@gmail.com, clm@fb.com,
+        cerasuolodomenico@gmail.com, hannes@cmpxchg.org,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-zswap-fix-pool-refcount-bug-around-shrink_worker.patch removed from -mm tree
+Message-Id: <20231018191313.74042C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Hamza,
 
-On Wed, Oct 18, 2023 at 8:39 PM Hamza Mahfooz <hamza.mahfooz@amd.com> wrote:
-> On 10/18/23 14:29, Geert Uytterhoeven wrote:
-> > On Wed, Oct 18, 2023 at 8:24 PM Hamza Mahfooz <hamza.mahfooz@amd.com> wrote:
-> >> With every release of LLVM, both of these sanitizers eat up more and
-> >> more of the stack. So, set FRAME_WARN to 0 if either of them is enabled
-> >> for a given build.
-> >>
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-> >
-> > Thanks for your patch!
-> >
-> >> --- a/lib/Kconfig.debug
-> >> +++ b/lib/Kconfig.debug
-> >> @@ -429,11 +429,10 @@ endif # DEBUG_INFO
-> >>   config FRAME_WARN
-> >>          int "Warn for stack frames larger than"
-> >>          range 0 8192
-> >> -       default 0 if KMSAN
-> >> +       default 0 if KASAN || KCSAN || KMSAN
-> >
-> > Are kernels with KASAN || KCSAN || KMSAN enabled supposed to be bootable?
->
-> They are all intended to be used for runtime debugging, so I'd imagine so.
+The quilt patch titled
+     Subject: mm: zswap: fix pool refcount bug around shrink_worker()
+has been removed from the -mm tree.  Its filename was
+     mm-zswap-fix-pool-refcount-bug-around-shrink_worker.patch
 
-Then I strongly suggest putting a nonzero value here.  As you write
-that "with every release of LLVM, both of these sanitizers eat up more and more
-of the stack", don't you want to have at least some canary to detect
-when "more and more" is guaranteed to run into problems?
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> > Stack overflows do cause crashes.
->
-> It is worth noting that FRAME_WARN has been disabled for KMSAN for quite
-> a while and as far as I can tell no one has complained.
+------------------------------------------------------
+From: Johannes Weiner <hannes@cmpxchg.org>
+Subject: mm: zswap: fix pool refcount bug around shrink_worker()
+Date: Fri, 6 Oct 2023 12:00:24 -0400
 
-ROTFL...
+When a zswap store fails due to the limit, it acquires a pool reference
+and queues the shrinker.  When the shrinker runs, it drops the reference. 
+However, there can be multiple store attempts before the shrinker wakes up
+and runs once.  This results in reference leaks and eventual saturation
+warnings for the pool refcount.
 
-> >>          default 2048 if GCC_PLUGIN_LATENT_ENTROPY
-> >>          default 2048 if PARISC
-> >>          default 1536 if (!64BIT && XTENSA)
-> >> -       default 1280 if KASAN && !64BIT
-> >>          default 1024 if !64BIT
-> >>          default 2048 if 64BIT
-> >>          help
+Fix this by dropping the reference again when the shrinker is already
+queued.  This ensures one reference per shrinker run.
 
-Gr{oetje,eeting}s,
+Link: https://lkml.kernel.org/r/20231006160024.170748-1-hannes@cmpxchg.org
+Fixes: 45190f01dd40 ("mm/zswap.c: add allocation hysteresis if pool limit is hit")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reported-by: Chris Mason <clm@fb.com>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Cc: <stable@vger.kernel.org>	[5.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-                        Geert
+ mm/zswap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+--- a/mm/zswap.c~mm-zswap-fix-pool-refcount-bug-around-shrink_worker
++++ a/mm/zswap.c
+@@ -1383,8 +1383,8 @@ reject:
+ 
+ shrink:
+ 	pool = zswap_pool_last_get();
+-	if (pool)
+-		queue_work(shrink_wq, &pool->shrink_work);
++	if (pool && !queue_work(shrink_wq, &pool->shrink_work))
++		zswap_pool_put(pool);
+ 	goto reject;
+ }
+ 
+_
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Patches currently in -mm which might be from hannes@cmpxchg.org are
+
+
