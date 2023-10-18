@@ -2,100 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91C067CDC83
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 15:00:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F66B7CDCCD
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 15:10:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231189AbjJRNAm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 09:00:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54962 "EHLO
+        id S231267AbjJRNKq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 09:10:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230355AbjJRNAl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 09:00:41 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 628C6A3
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 06:00:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697634040; x=1729170040;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lPc2zuJMiNVfsti6czd8IBCBiARsc41XEWOSVk+Sau0=;
-  b=krd8Q//6M6Jh23eNTK/qc/89jyBuTaz3TBMFOu1BlMHP0lRFHk8nf0vF
-   KrrYOWcR5zB5R006Ai8p0m8WFV8VO85DOPMGXbsuXc6eKoQ2boSDqpffj
-   YlKI5PuITZc6F0QE6ftvrnTdukLWjSsy8zct9TFmrwKlnDoyIbTn0rnxw
-   ymv5fwnjC9JUsEi7srqtuEgCUNF+3D0tD33cWHUmViMNqjoEAri80VJnr
-   Zk+8VrnmYziiKnZbbDya1sgnJMqpw7Odpd8wBouHMbJrFUE2o/6IHLaph
-   x+xqt99BbK9UvYeFoUwBOazJxI5F0AGe1NSxfp3z8fdcNNKoN0tt72zev
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="472232541"
-X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; 
-   d="scan'208";a="472232541"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 06:00:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; 
-   d="scan'208";a="4369992"
-Received: from nurfahan-mobl3.gar.corp.intel.com (HELO intel.com) ([10.213.159.217])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 05:59:26 -0700
-Date:   Wed, 18 Oct 2023 15:00:26 +0200
-From:   Andi Shyti <andi.shyti@linux.intel.com>
-To:     Nirmoy Das <nirmoy.das@linux.intel.com>
-Cc:     Andi Shyti <andi.shyti@linux.intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        intel-gfx@lists.freedesktop.org,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        dri-devel@lists.freedesktop.org,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>, stable@vger.kernel.org,
-        Matt Roper <matthew.d.roper@intel.com>,
-        John Harrison <john.c.harrison@intel.com>
-Subject: Re: [PATCH v3] drm/i915: Flush WC GGTT only on required platforms
-Message-ID: <ZS/W6obrW/g8WuS4@ashyti-mobl2.lan>
-References: <20231018093815.1349-1-nirmoy.das@intel.com>
- <ZS/GZ0U7rOuuD0Kw@ashyti-mobl2.lan>
- <36c0e644-4013-f2f8-a0a7-9b9c3d8423c9@linux.intel.com>
+        with ESMTP id S231210AbjJRNKp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 09:10:45 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12AD8F7;
+        Wed, 18 Oct 2023 06:10:43 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2c518a1d83fso60329821fa.3;
+        Wed, 18 Oct 2023 06:10:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697634641; x=1698239441; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
+        b=lNWsNGayi00fyI33JdnRcA9H0i70H+ss+eHrV8nraqgUvwKzP18+oBgmJP/Ffdtxvw
+         0uENuC1dN3qRym5YW/ozONK0y+c5vj3Y8NTWz8fYnn0g1Fvyveh5I/mvaADyke2NQpc8
+         3/c5s+gfmg7xyQ6IWQGH1DDTXP3fCmL4YZ5FRqHhAXuUIwiuMCjR/PLKVnjNjVtbxDOL
+         LPRpFTTssZcZHDVBKi3YkaUEBbybOlRpYeMcBLQtfImmTgEdj57cXT65laoC3+5lHw6B
+         B+bHZo2T7wcD8j5xvFcR80LAATYgFb0M4tB8cXBmR7WLVPLCTqWY4iLv3R4/U9tEJIHR
+         Nu6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697634641; x=1698239441;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
+        b=HBqgwY4fPFv2dkKFCb0c/K4rxLs7JKqb1yJnEJYD4CKxq47RBoMO5B55RMMS52cwFY
+         B9SzDM5fu0xZeUFL4ahdA4SZ/+t9IShQ4kcDmez4SfarHHi8QwiyNyHy+jPrYl3jLF/S
+         Iy2r3HDLs8fydXUFOsQrhyIj/leH2dFHw4WbPjMMO8LbpoIlKm9z0/nIBIlSeNc4esv/
+         wkmGCUvwcr+LdSCXI330u8UdioEpGVUlFR4J2bSZJNIuCfjK5mrcl4sdBQJ4DsfqNU7+
+         aEniEwHyy4bb8eururvkNJ9FdGWjQ7QePFc+uyXZ7Z3qt+HxJbruddLCWqcQNz7KC3z+
+         hv5A==
+X-Gm-Message-State: AOJu0YycjdldEcYZLYx5rRq61bKvoN7vMu8LyUQmfSf0J6ZPfyoi1FiQ
+        mT7CFpKh1vm/qURQzyxh4hc=
+X-Google-Smtp-Source: AGHT+IGfdJUpk8Rdt2SKdTJZt1PuOoBqvCcCill/y7BxjK6YaWEs7dFTajSyDUWp2IXypz6opVTCQA==
+X-Received: by 2002:a2e:9c43:0:b0:2c5:234b:d1eb with SMTP id t3-20020a2e9c43000000b002c5234bd1ebmr3001799ljj.50.1697634640737;
+        Wed, 18 Oct 2023 06:10:40 -0700 (PDT)
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id u6-20020a05600c138600b004064288597bsm1677426wmf.30.2023.10.18.06.10.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 06:10:40 -0700 (PDT)
+From:   Christian Marangi <ansuelsmth@gmail.com>
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo@kernel.org>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Kalle Valo <kvalo@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Alexander Couzens <lynxis@fe80.eu>,
+        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
+        Daniel Golle <daniel@makrotopia.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Cc:     stable@vger.kernel.org
+Subject: [PATCH v2 1/6] wifi: mt76: fix broken precal loading from MTD for mt7915
+Date:   Wed, 18 Oct 2023 15:09:37 +0200
+Message-Id: <20231018130942.31187-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <36c0e644-4013-f2f8-a0a7-9b9c3d8423c9@linux.intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Nirmoy,
+Commit 495184ac91bb ("mt76: mt7915: add support for applying
+pre-calibration data") was fundamentally broken and never worked.
 
-> > > gen8_ggtt_invalidate() is only needed for limited set of platforms
-> > > where GGTT is mapped as WC. This was added as way to fix WC based GGTT in
-> > > commit 0f9b91c754b7 ("drm/i915: flush system agent TLBs on SNB") and
-> > > there are no reference in HW docs that forces us to use this on non-WC
-> > > backed GGTT.
-> > > 
-> > > This can also cause unwanted side-effects on XE_HP platforms where
-> > > GFX_FLSH_CNTL_GEN6 is not valid anymore.
-> > > 
-> > > v2: Add a func to detect wc ggtt detection (Ville)
-> > > v3: Improve commit log and add reference commit (Daniel)
-> > > 
-> > > Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-> > I'm wondering if this is the right Fixes, though. Should this
-> > rather be:
-> > 
-> > Fixes: 6266992cf105 ("drm/i915/gt: remove GRAPHICS_VER == 10")
-> 
-> Hard to find a real Fixes for this. I just want to backport this to dg2
-> where we can have unwanted side-effects.
+The idea (before NVMEM support) was to expand the MTD function and pass
+an additional offset. For normal EEPROM load the offset would always be
+0. For the purpose of precal loading, an offset was passed that was
+internally the size of EEPROM, since precal data is right after the
+EEPROM.
 
-yes, this piece of code has moved around enough so to make it
-diffuclt to track its origin.
+Problem is that the offset value passed is never handled and is actually
+overwrite by
 
-I think the one I found should be the correct one, but the dg2
-force probe removeal can also become a placeholder for DG2 fixes.
+	offset = be32_to_cpup(list);
+	ret = mtd_read(mtd, offset, len, &retlen, eep);
 
-I won't complain.
+resulting in the passed offset value always ingnored. (and even passing
+garbage data as precal as the start of the EEPROM is getting read)
 
-Andi
+Fix this by adding to the current offset value, the offset from DT to
+correctly read the piece of data at the requested location.
+
+Cc: stable@vger.kernel.org
+Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt76/eeprom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
+index 36564930aef1..2558788f7ffb 100644
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -67,7 +67,7 @@ static int mt76_get_of_epprom_from_mtd(struct mt76_dev *dev, void *eep, int offs
+ 		goto out_put_node;
+ 	}
+ 
+-	offset = be32_to_cpup(list);
++	offset += be32_to_cpup(list);
+ 	ret = mtd_read(mtd, offset, len, &retlen, eep);
+ 	put_mtd_device(mtd);
+ 	if (mtd_is_bitflip(ret))
+-- 
+2.40.1
+
