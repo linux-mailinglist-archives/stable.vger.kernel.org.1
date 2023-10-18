@@ -2,46 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3007CDB43
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 14:06:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB8087CDB81
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 14:26:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230313AbjJRMGV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 08:06:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37454 "EHLO
+        id S231367AbjJRM0G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 08:26:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231279AbjJRMGU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:06:20 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA1098
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 05:06:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D303BC433C9;
-        Wed, 18 Oct 2023 12:06:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697630779;
-        bh=tDklYhrRFqyugDGhhcXSZv6qFAgDbkOsiFMGwfGq7wA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UDMHF3KO/TR5+3L2amfLfufe1I5gWmUudDM0m3YCcPJwiVWsx2QCzzMBdxOgW6O7v
-         2Y2kZnva77xZUdTuPyQbhthDnLU1ly8M773q+JXnC1SinAXXC1XCe/tb4JkM/sDKnC
-         BTqkkxQaYsCzpgEs9k9umbN/Mwiy7YAqrLha7AsmGoXN1nwXQq6f1TeryBYq29GPHh
-         PGY6U/NjqChgrfxzKk0bSg2q4qc3tuMZPxOOJnBFDEYpITjzUR5g0f6zKpXhz4f+Z0
-         HrsC/hBzFOSGQuUsJK3aTYkm2jYpq4dNX/kE5cpzOydnt7KPAnHKMGOhlpobWarafR
-         wTNfhdUEApLqA==
-From:   Lee Jones <lee@kernel.org>
-To:     lee@kernel.org
-Cc:     stable@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v4.14.y 2/2] rpmsg: Fix kfree() of static memory on setting driver_override
-Date:   Wed, 18 Oct 2023 13:06:07 +0100
-Message-ID: <20231018120611.2110876-2-lee@kernel.org>
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-In-Reply-To: <20231018120611.2110876-1-lee@kernel.org>
-References: <20231018120611.2110876-1-lee@kernel.org>
+        with ESMTP id S229786AbjJRM0F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:26:05 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B83C998;
+        Wed, 18 Oct 2023 05:26:02 -0700 (PDT)
+Received: from kwepemm000007.china.huawei.com (unknown [172.30.72.54])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4S9VPJ6ZLSz15NZL;
+        Wed, 18 Oct 2023 20:23:16 +0800 (CST)
+Received: from [192.168.98.231] (10.67.165.2) by
+ kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.31; Wed, 18 Oct 2023 20:25:59 +0800
+Message-ID: <f256ba6b-b0e7-333a-10a7-57b73892d626@huawei.com>
+Date:   Wed, 18 Oct 2023 20:25:58 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+User-Agent: Mozilla Thunderbird
+CC:     <shaojijie@huawei.com>, <yisen.zhuang@huawei.com>,
+        <salil.mehta@huawei.com>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <shenjian15@huawei.com>, <wangjie125@huawei.com>,
+        <liuyonglong@huawei.com>, <wangpeiyang1@huawei.com>,
+        <netdev@vger.kernel.org>, <stable@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net 5/6] net: hns3: fix wrong print link down up
+To:     Andrew Lunn <andrew@lunn.ch>
+References: <20230728075840.4022760-1-shaojijie@huawei.com>
+ <20230728075840.4022760-6-shaojijie@huawei.com>
+ <7ce32389-550b-4beb-82b1-1b6183fdeabb@lunn.ch>
+ <2c6514a7-db97-f345-9bc4-affd4eba2dda@huawei.com>
+ <73b41fe2-12dd-4fc0-a44d-f6f94e6541fc@lunn.ch>
+ <ef5489f9-43b4-ee59-699b-3f54a30c00aa@huawei.com>
+ <e7219114-774f-49d0-8985-8875fd351b60@lunn.ch>
+ <a21beff2-9f38-d354-6049-aed20c18c8d4@huawei.com>
+ <150d8d95-a6cd-dc28-618b-6cc5295b4bf9@huawei.com>
+ <06cd6f53-e0af-4bdf-a684-68fc55b9b436@lunn.ch>
+From:   Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <06cd6f53-e0af-4bdf-a684-68fc55b9b436@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.165.2]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ kwepemm000007.china.huawei.com (7.193.23.189)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,78 +61,26 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 42cd402b8fd4672b692400fe5f9eecd55d2794ac upstream.
+on 2023/10/17 21:59, Andrew Lunn wrote
+> I still think this is totally valid and correct.
+>
+> When you turn auto-neg off the link partner is going to react to that,
+> it might drop the link. After a while, the link partner will give up
+> trying to perform auto-neg and might fall back to 10/Half. At which
+> point, the link might allow traffic flow. However, in this example,
+> you have a duplex mis-match, so it might not work correctly.
+>
+> Turning off auto-neg is something you need to do at both ends, and you
+> need to then force both ends to the same settings. Link down is
+> expected. I would actually be suppressed if no link down events were
+> reported.
+>
+> 	Andrew
 
-The driver_override field from platform driver should not be initialized
-from static memory (string literal) because the core later kfree() it,
-for example when driver_override is set via sysfs.
+Hi Andrew,
+Thank you for your comments, we are re-evaluating this issue and may drop this patch.
 
-Use dedicated helper to set driver_override properly.
-
-Fixes: 950a7388f02b ("rpmsg: Turn name service into a stand alone driver")
-Fixes: c0cdc19f84a4 ("rpmsg: Driver for user space endpoint interface")
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20220419113435.246203-13-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
----
- drivers/rpmsg/rpmsg_internal.h | 13 +++++++++++--
- include/linux/rpmsg.h          |  6 ++++--
- 2 files changed, 15 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/rpmsg/rpmsg_internal.h b/drivers/rpmsg/rpmsg_internal.h
-index 0cf9c7e2ee835..e1522caadbc8a 100644
---- a/drivers/rpmsg/rpmsg_internal.h
-+++ b/drivers/rpmsg/rpmsg_internal.h
-@@ -91,10 +91,19 @@ struct device *rpmsg_find_device(struct device *parent,
-  */
- static inline int rpmsg_chrdev_register_device(struct rpmsg_device *rpdev)
- {
-+	int ret;
-+
- 	strcpy(rpdev->id.name, "rpmsg_chrdev");
--	rpdev->driver_override = "rpmsg_chrdev";
-+	ret = driver_set_override(&rpdev->dev, &rpdev->driver_override,
-+				  rpdev->id.name, strlen(rpdev->id.name));
-+	if (ret)
-+		return ret;
-+
-+	ret = rpmsg_register_device(rpdev);
-+	if (ret)
-+		kfree(rpdev->driver_override);
- 
--	return rpmsg_register_device(rpdev);
-+	return ret;
- }
- 
- #endif
-diff --git a/include/linux/rpmsg.h b/include/linux/rpmsg.h
-index 1ab79e8dc0b8f..fdbb7814cfbe8 100644
---- a/include/linux/rpmsg.h
-+++ b/include/linux/rpmsg.h
-@@ -66,7 +66,9 @@ struct rpmsg_channel_info {
-  * rpmsg_device - device that belong to the rpmsg bus
-  * @dev: the device struct
-  * @id: device id (used to match between rpmsg drivers and devices)
-- * @driver_override: driver name to force a match
-+ * @driver_override: driver name to force a match; do not set directly,
-+ *                   because core frees it; use driver_set_override() to
-+ *                   set or clear it.
-  * @src: local address
-  * @dst: destination address
-  * @ept: the rpmsg endpoint of this channel
-@@ -75,7 +77,7 @@ struct rpmsg_channel_info {
- struct rpmsg_device {
- 	struct device dev;
- 	struct rpmsg_device_id id;
--	char *driver_override;
-+	const char *driver_override;
- 	u32 src;
- 	u32 dst;
- 	struct rpmsg_endpoint *ept;
--- 
-2.42.0.655.g421f12c284-goog
+Regards
+Jijie
 
