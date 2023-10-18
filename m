@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 379487CDB38
+	by mail.lfdr.de (Postfix) with ESMTP id 639A67CDB39
 	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 14:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230273AbjJRMFg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 08:05:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42080 "EHLO
+        id S230229AbjJRMFj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 08:05:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230247AbjJRMFf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:05:35 -0400
+        with ESMTP id S230247AbjJRMFh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:05:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49133BA
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 05:05:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FF9C433C9;
-        Wed, 18 Oct 2023 12:05:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFE7116
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 05:05:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607C3C433C8;
+        Wed, 18 Oct 2023 12:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697630733;
+        s=k20201202; t=1697630735;
         bh=6fOioNis1dNNYoFYh3Req6O/SZIUp3GUJaDj45GqNpU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nUIQAgV4NGl4+bZN4EmL8lfj1C07ai+43tvTni/Agg1XaIndvCZ4mq247pD7MYSEE
-         sfNEFcYglKWXvwNIvQXvTTpUpxSYcirX/6kcDKweLAzNJ1bCfzZFtueIWW6kzfDqID
-         CqXJ4cEJXhEIwOTlPMw3PU5Y1DSPzuN+p76SxQuOOPUAV4Db8Tjn/Sg7/nKhDTS09W
-         r1PO7oFB091NIVgXw/YgT6GlgGd5n+/cNqLj3UdBYAoLH5VSPU8GIvzAHc0rT4ywS0
-         Bi8q2WxxV90XV8wh+AoN9Q1V21f0VPYJVwuSZ0lv58VzQlMSm9aBxHc/CqKXJwT2ST
-         9nrA0/51Sd7Jw==
+        b=Ds+xYv1pQCJu/T53U7SYtur3oDYynLlng7wjdL78OWV618yCOz7G/dursE7GA+YH2
+         zVEckLBA7qVyeZkXQTsXoN+sSbbsTesMPHAl6QL7SQdS6XT1fC5jqd0llqR3GMnywM
+         Al1I1nPdRsoR0Tw/jiB6TYHvHlZdXOIgBfVgrF4ZCYHcsXIDxHNWcJBKLQtaWZjHyY
+         SHzcG5EcqOkkMjGqAqqeCx9PIcu/WycATxZkK4TUc5FjzvTb6H64c/WQG+88xyYfeG
+         bgGaAH22ywtKnSbuWGftt52KBMSyUPCS5NcWoaMemyWwwN9iKFTJSvm4aZw4BMU5/F
+         /3KH2aOSe9VdA==
 From:   Lee Jones <lee@kernel.org>
 To:     lee@kernel.org
 Cc:     stable@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v5.4.y 1/2] rpmsg: Constify local variable in field store macro
-Date:   Wed, 18 Oct 2023 13:05:17 +0100
-Message-ID: <20231018120527.2110438-2-lee@kernel.org>
+Subject: [PATCH v5.4.y 2/3] rpmsg: Constify local variable in field store macro
+Date:   Wed, 18 Oct 2023 13:05:18 +0100
+Message-ID: <20231018120527.2110438-3-lee@kernel.org>
 X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
 In-Reply-To: <20231018120527.2110438-1-lee@kernel.org>
 References: <20231018120527.2110438-1-lee@kernel.org>
