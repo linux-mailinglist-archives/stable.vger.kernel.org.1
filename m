@@ -2,170 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E51F7CEB76
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 00:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C8D07CEB84
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 00:57:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230239AbjJRWtz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 18:49:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
+        id S229632AbjJRW56 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 18:57:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229897AbjJRWty (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 18:49:54 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87147113
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 15:49:52 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d9c7bba32beso1522192276.1
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 15:49:52 -0700 (PDT)
+        with ESMTP id S229679AbjJRW56 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 18:57:58 -0400
+Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 268CD114;
+        Wed, 18 Oct 2023 15:57:56 -0700 (PDT)
+Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5a7c7262d5eso92835127b3.1;
+        Wed, 18 Oct 2023 15:57:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697669392; x=1698274192; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Itd3K+35Q5LCuuiQpkQ+hlfAcgIRYzc4goGel/0mjhk=;
-        b=N0Vji/T8DW8QFf0c+EbGY/jy6gfJe+WrUi8hV8KG9ZMkVr6f6qUG7svg43G3GNmGtT
-         0xsT1Gyu35vu89ecergNJ8k3KGzahpdpemBOwzYFWtkCMt/IVHPd+xen+muXNBeIwyft
-         ASAyV9/WY4BVxzmYmyFHE/WNYlJYOQmkD1ngzQSDqJgAVqmt6Ok+0CkcN/W41OOLH0wr
-         Qb4M3kye26wCzeFXez/2ln7mKqXTkOAyr2TxgWdcfo5ZPYQVTVhfxSd2/hntwRppMxNJ
-         ZEDe2k02Hhb5hXNm8b7meQR8M5y/Ci5Irz7Re1hLRhEb2qifG/cy5NipKE/nzFKZH05Q
-         OXRA==
+        d=gmail.com; s=20230601; t=1697669875; x=1698274675; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RKkVdOuDWF4XkQSOFeT9iebziRU+xr3n1OlUXKxR8yQ=;
+        b=R6r+wNWSKY5hLGqvhwjeDmZx5hf1bPcHlIyYl++wTJk4JNDZcJtXqubEIux9UflePn
+         GSXXj2zMFm1ZEf+9HVSQ4SM8iAQq55G/UNJJCaKJiq6GNEaZutRKkxPR+oLB/E4LLdn8
+         ncF3bas1v6Cs2oGUqzrYNHZ/3uFzlpJOH2C0B2+2nbLZfj7Gvff1oJQkZx2xsdxUaAf/
+         AHNmaF/05XGcMwwoNmviWg5x9SOo61P/Vnr5fxjuYFjeF2TSPYrLRdIObBGv8q1xBgzh
+         EgJWAKyyXA89pcV7GXIYNHukaxfmAQssGXEsq6UCpwObYRWMtdJuj2Uqz6WUaY4W0DC2
+         hy4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697669392; x=1698274192;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Itd3K+35Q5LCuuiQpkQ+hlfAcgIRYzc4goGel/0mjhk=;
-        b=dl/HgCR9f0A9uMQQNuQzOyMbRy+v2NUgNhev2Ha/uxUti/6lF9wmDj/pWRQ/v/YwlW
-         RgnDdaR9yohksWYKvjr7MwrMtJUAnwCZC7RPfb/s3zdjV+EIhTCgxAJtGhImf3CbgH59
-         KmrN2juInzFa+y77PwnhXXrmrKJyJYE7jO/JSXGQoQz76q8yMAXmMWT2eCY8jNnMFg2z
-         puFZew0w/OHIhoV8QKAFmYwFRenyWLwzGQrEsts6mAfg0dbXJ3Sj0X4LmcBgaXVItH3y
-         UZOIzrJveSf6uI6/P0EF2manlpYDYb/XFU3d2PDta2Ze7wwWCFZxYeT7hg/MwKkHY+P7
-         O4Ww==
-X-Gm-Message-State: AOJu0YzO4UneG4dennEHdVknSfNG88wGlbaLo46a2zxa6653XHWyirdX
-        tfYX81AcIuRpIWH6KeNBsrlXzTiH1vgfdnHPjVPSKw==
-X-Google-Smtp-Source: AGHT+IFMQne48Ci6124ZJ4/1HYU4EA0QRWtfa4ezFepMeZBntWk0+Ilj6fnvEHae0teXkx2uHfaLR4luXVeMdbtLFcE=
-X-Received: by 2002:a5b:3ce:0:b0:d80:68d1:b826 with SMTP id
- t14-20020a5b03ce000000b00d8068d1b826mr732120ybp.6.1697669391762; Wed, 18 Oct
- 2023 15:49:51 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697669875; x=1698274675;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RKkVdOuDWF4XkQSOFeT9iebziRU+xr3n1OlUXKxR8yQ=;
+        b=DPrPOBJXTXAOW5YDDeul+mEd0qdessv/6OPDBHx+hq70ZQ4pQe3ixGaLNDofGeDWIG
+         Gw+rMpughq2mHpWgdVTT0QCFWq+yc0/JIyN+6ecWlbhE9mfoAtACNj0V2wtX4jh67vQ1
+         h3DeVfyNGkED9XJ+thX+sQHNnXwzxYmyZzCjdg7A94dwfL+QyMz0L6GhQTn1jY/8ObKJ
+         6vLmlaNtOMxO0eCybHBx9leI6xxm0fNkNBqNHvc9U4XIz6r7rYmBl1KuYKiKANCrVNYp
+         6B66GvTOQTREqmMke/cCzrFRkpzDVs6tsJGSkYapzpEo5DeiCvqrxk9EZ2RBaJMfvVi8
+         IB+A==
+X-Gm-Message-State: AOJu0YwJk6W9c+0MRqYtpxQvGda3iXrUSE0o6NdPnMlNUy+fdd5qpDe+
+        ZV0ztWlxIDhpnGGZJSApdDRF8B6hnnsSBt+P+i0=
+X-Google-Smtp-Source: AGHT+IFrRe19551V3133QusmY93KFsTv/XMURZAAbpLgmpHhSRq0ztkPRgjFSMeQaWFwYIX6VJzYxBi/XO3cFeKFXQ4=
+X-Received: by 2002:a05:690c:dd1:b0:5a7:dbf4:6a1a with SMTP id
+ db17-20020a05690c0dd100b005a7dbf46a1amr792663ywb.7.1697669875320; Wed, 18 Oct
+ 2023 15:57:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231001194943.658299-1-beanhuo@iokpp.de> <CAPDyKFpgPEhVuTbxe5YhYQ0W6907SwJRxSQLB1F2FbVW3zKHxg@mail.gmail.com>
- <254df9b8ca7475ad9dbd3a303c60e1f99eca9c56.camel@iokpp.de> <CAPDyKFofJR0xtpmjCQXM7=VzUeN5jQLD2AZYEWocuyCnYNObYw@mail.gmail.com>
- <fbb29b88-7a16-4d3d-a96a-0256f6bcfc05@beims.me>
-In-Reply-To: <fbb29b88-7a16-4d3d-a96a-0256f6bcfc05@beims.me>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 19 Oct 2023 00:49:15 +0200
-Message-ID: <CAPDyKFo2BGp+Wacz7cTAPZ7_Tkpy0St0AujWfiW=13P7fmrwhA@mail.gmail.com>
-Subject: Re: [PATCH v4] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
- eMMC Q2J54A
-To:     Rafael Beims <rafael@beims.me>
-Cc:     Bean Huo <beanhuo@iokpp.de>, adrian.hunter@intel.com,
-        beanhuo@micron.com, jakub.kwapisz@toradex.com,
-        rafael.beims@toradex.com, linux-mmc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20231018155527.1015059-1-ojeda@kernel.org>
+In-Reply-To: <20231018155527.1015059-1-ojeda@kernel.org>
+From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date:   Thu, 19 Oct 2023 00:57:44 +0200
+Message-ID: <CANiq72mx+gHfP+PE1fuHcO8zhv038qXJ9Zz+rKgRN5tt7eokvw@mail.gmail.com>
+Subject: Re: [PATCH] rust: docs: fix logo replacement
+To:     Miguel Ojeda <ojeda@kernel.org>
+Cc:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Alice Ryhl <aliceryhl@google.com>,
+        rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        patches@lists.linux.dev, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 18 Oct 2023 at 18:05, Rafael Beims <rafael@beims.me> wrote:
+On Wed, Oct 18, 2023 at 5:55=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> On 10/10/2023 18:04, Ulf Hansson wrote:
-> > On Tue, 10 Oct 2023 at 17:33, Bean Huo <beanhuo@iokpp.de> wrote:
-> >> Hi Ulf,
-> >>
-> >> thanks for your comments, I didn't quite get your points:
-> >>
-> >> On Tue, 2023-10-10 at 16:20 +0200, Ulf Hansson wrote:
-> >>>> @@ -2381,8 +2381,11 @@ enum mmc_issued mmc_blk_mq_issue_rq(struct
-> >>>> mmc_queue *mq, struct request *req)
-> >>>>                           }
-> >>>>                           ret = mmc_blk_cqe_issue_flush(mq, req);
-> >>>>                           break;
-> >>>> -               case REQ_OP_READ:
-> >>>>                   case REQ_OP_WRITE:
-> >>>> +                       if (mmc_card_broken_cache_flush(card) &&
-> >>>> !card->written_flag)
-> >>> It looks superfluous to me to check mmc_card_broken_cache_flush() and
-> >>> !card->written_flag. Just set the card->written_flag unconditionally.
-> >> what did you mean "Just set the card->written_flag unconditionally."?
-> >> This means I just need to check card->written_flag and set card-
-> >>> written_flag to true and false in the case
-> >> MMC_QUIRK_BROKEN_CACHE_FLUSH? or don't need to call
-> >> mmc_card_broken_cache_flush()?
-> > I mean skip the checks above and just do the assignment below.
-> >
-> >>>> +                               card->written_flag = true;
-> >>>> +                       fallthrough;
-> >>>> +               case REQ_OP_READ:
-> >>>>                           if (host->cqe_enabled)
-> >>>>                                   ret = mmc_blk_cqe_issue_rw_rq(mq,
-> >>>> req);
-> >>>>                           else
-> >>>> diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-> >>>> index 4edf9057fa79..b7754a1b8d97 100644
-> >>>> --- a/drivers/mmc/core/card.h
-> >>>> +++ b/drivers/mmc/core/card.h
-> >>>> @@ -280,4 +280,8 @@ static inline int
-> >>>> mmc_card_broken_sd_cache(const struct mmc_card *c)
-> >>>>           return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
-> >>>>    }
-> >>>>
-> >>>> +static inline int mmc_card_broken_cache_flush(const struct
-> >>>> mmc_card *c)
-> >>>> +{
-> >>>> +       return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
-> >>>> +}
-> >>>>    #endif
-> >>>> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-> >>>> index 89cd48fcec79..47896c32086e 100644
-> >>>> --- a/drivers/mmc/core/mmc.c
-> >>>> +++ b/drivers/mmc/core/mmc.c
-> >>>> @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host
-> >>>> *host, u32 ocr,
-> >>>>           if (!oldcard)
-> >>>>                   host->card = card;
-> >>>>
-> >>>> +       card->written_flag = false;
-> >>>> +
-> >>> How about doing this after a successful flush operation instead? In
-> >>> other words in _mmc_flush_cache().
-> >> Here initializes flag and the patch is intenting to eliminate the cache
-> >> flush command before writing. what do you mean adding in
-> >> mmc_flush_cache()?
-> > mmc_init_card() is called while initializing and re-initializing the
-> > card. So, it certainly works to reset the flag from here.
-> >
-> > However, _mmc_flush_cache() is called before powering off the card,
-> > which then would work similarly to the above, but also gets called for
-> > REQ_OP_FLUSH. Wouldn't that mean that we may be able to skip some
-> > unnecessary/troublesome cache flush requests if we would reset the
-> > flag from  mmc_flush_cache(), rather than from mmc_init_card()?
-> >
-> > Kind regards
-> > Uffe
-> Forgive me if I'm misunderstanding something, but wouldn't resetting the
-> flag on _mmc_flush_cache()
-> essentially disable cache when the MMC_QUIRK_BROKEN_CACHE_FLUSH is active?
-
-It would, until after there has been a new I/O write. Is that a problem?
-
+> The static files placement by `rustdoc` changed in Rust 1.67.0 [1],
+> but the custom code we have to replace the logo in the generated
+> HTML files did not get updated.
 >
->  From what I see, the card->written flag is supposed to stay true until
-> we need to reinitialize the
-> eMMC again, otherwise we would be skipping cache flushes we don't want
-> to skip. It's only before
-> writing for the first time that we want to skip the flush.
+> Thus update it to have the Linux logo again in the output.
+>
+> Hopefully `rustdoc` will eventually support a custom logo from
+> a local file [2], so that we do not need to maintain this hack
+> on our side.
+>
+> Link: https://github.com/rust-lang/rust/pull/101702 [1]
+> Link: https://github.com/rust-lang/rfcs/pull/3226 [2]
+> Fixes: 3ed03f4da06e ("rust: upgrade to Rust 1.68.2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-If that's really what we want, that's perfectly okay to me. The commit
-message isn't really clear about this, so I think that Bean could
-improve that too.
+Applied to `rust-fixes` early to start getting some time in
+`linux-next` -- please feel free to send more reviews, thanks!
 
-I guess we need some kind of confirmation from Bean about this. Don't
-get me wrong, I am happy to go with whatever approach as long as it's
-clear *why* the selected approach is taken.
-
-Kind regards
-Uffe
+Cheers,
+Miguel
