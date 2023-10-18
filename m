@@ -2,141 +2,165 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 769DC7CD810
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 11:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276D97CD85C
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 11:38:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230274AbjJRJbB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 05:31:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45498 "EHLO
+        id S229984AbjJRJih (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 05:38:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230080AbjJRJaq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 05:30:46 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87CEFE
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 02:30:36 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-507c78d258fso859127e87.2
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 02:30:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697621435; x=1698226235; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=W+z3LrvywvH2G6NIfVU/XJ/JLCRcetjXjsTm8sPFYUo=;
-        b=yXoFEihES3j8scQ3Dh2zCh4lXhBwzLtTpe+vEOdrOuzWE7NOEg47QTE0gJ1eVKkx6U
-         fKANZvaJWKRWNFwNURbcKYAfcuQjQGerVt9pFXTGCuLe8ut21MhC/pQ0/fUqSn7KNCnd
-         nC3QwCpnuCdgPHyeKHd8jafnPjq7qLW+TEn122nGoi4B+csWzGRkUS83uVZcKswCdJ68
-         svjablSwPdZpUaB2jUvWpbgkaPXRsVkLMO8IUzq7t7D0v4UgbkA5LB9UU3Ysk0a2Ws5J
-         iqpsxP9skYDkD3N2VSGiMyXzGPL/uhX8GnW1H3lq/V4VhiCy8MkwNBhILYieQWGl3kDw
-         /LoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697621435; x=1698226235;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W+z3LrvywvH2G6NIfVU/XJ/JLCRcetjXjsTm8sPFYUo=;
-        b=EbQXIhdW39znVeXG8LMkg7W3iqa60/ISFb2RxVdEhOSe2wFciCMXc732J+EhdKicU5
-         P9/2sSRgeSULWJgA86exnnMYeqz8g8voIMKSm9ROhniGkVgARmDzfz1Y+6JuzYoQ0Bh0
-         tyjcrZEIZ9uczbAuuHAg+qIk8vxIqZTPGYIPiLgDdlKLg4vuqSlgsCgHFmejXbCLrduN
-         +J5YVBilu0GORVTAff+vp703Zfq+2jBJZMOT2GXn93viCKQnMQ6TDTxuUlzobJQvUx8L
-         VGKHp6dk+qIY5v45lfaEm5dxJG2FsOP4UoWoNWAD15MhljmsSBXC88b5/qCOw2O96oNx
-         BIcw==
-X-Gm-Message-State: AOJu0Yx8TYRYYa8cJAg5fDjStyHjJ8gIyPCyZKdShfk9iaiViYFUbMQU
-        DVfjwjw77urvS2lxlYAfjvbFkykqIYGDUODL//eYmg==
-X-Google-Smtp-Source: AGHT+IH2uQl/Fyj8SvKhXifub5DJW84yf3ZAxCw8sNP+SVz2+WDQW00+UrhEUCDO9c7YO/aRloQrvnHIDGn00Q/iL1Y=
-X-Received: by 2002:a05:6512:3102:b0:507:9b70:1f0e with SMTP id
- n2-20020a056512310200b005079b701f0emr3807189lfb.24.1697621434724; Wed, 18 Oct
- 2023 02:30:34 -0700 (PDT)
+        with ESMTP id S229959AbjJRJib (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 05:38:31 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4215BFE
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 02:38:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697621909; x=1729157909;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2ccUgyhgZlFPwuyb6c7YjouKROVLbPEz6EELbdrZDz8=;
+  b=bHAu6q69lqiAKj1CfwnEuqaEJVbV74AkB/biv3AGxAro1YZfgMAR6iEj
+   PNRvlfNd3EpUP/YqSEIPkpSLzirDbqH/mG2t1z6ni4VBM4s95FLL+uZAu
+   Q4tkHPIQ2qTxXS6IzZDg81h1WkcyV12ZfoiezyjJTXuSiroi8Tmn6WRMI
+   1f0idxmZrzXv+By5bAil7k07PQEMmA0HA5AsopP5BV/FAX3Fthqgngdhk
+   hWANa61VagVwcYhNp7hQESXMnRvujY8039uZ92CtmbOxGvggpz1CmygIM
+   PKAX/k4g6uEo0kszEL9lp/p+F7HnZoLoSVVHWfmacJNeOqzHgwflnOJVm
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="7529266"
+X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; 
+   d="scan'208";a="7529266"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 02:38:29 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="872958098"
+X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; 
+   d="scan'208";a="872958098"
+Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 02:38:25 -0700
+From:   Nirmoy Das <nirmoy.das@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     dri-devel@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        John Harrison <john.c.harrison@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>, Daniel Vetter <daniel@ffwll.ch>,
+        stable@vger.kernel.org, Matt Roper <matthew.d.roper@intel.com>
+Subject: [PATCH v3] drm/i915: Flush WC GGTT only on required platforms
+Date:   Wed, 18 Oct 2023 11:38:15 +0200
+Message-ID: <20231018093815.1349-1-nirmoy.das@intel.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <Nh-DzlX--3-9@bens.haus> <CAMj1kXFKe6piagNLdSUhxUhwLB+RfNHqjNWt8-r2CNS-rBdJKA@mail.gmail.com>
- <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com>
-In-Reply-To: <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com>
-From:   Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date:   Wed, 18 Oct 2023 12:29:58 +0300
-Message-ID: <CAC_iWjJB3OTWiYX5YsJmNcPQw+rHSm955c1Z5pUajedWGM5QgA@mail.gmail.com>
-Subject: Re: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
-To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc:     Ben Schneider <ben@bens.haus>,
-        Regressions <regressions@lists.linux.dev>,
-        Linux Efi <linux-efi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928 
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi all,
+gen8_ggtt_invalidate() is only needed for limited set of platforms
+where GGTT is mapped as WC. This was added as way to fix WC based GGTT in
+commit 0f9b91c754b7 ("drm/i915: flush system agent TLBs on SNB") and
+there are no reference in HW docs that forces us to use this on non-WC
+backed GGTT.
 
-On Wed, 18 Oct 2023 at 12:17, Heinrich Schuchardt
-<heinrich.schuchardt@canonical.com> wrote:
->
-> On 10/18/23 10:34, Ard Biesheuvel wrote:
-> > (cc Heinrich)
-> >
-> > Hello Ben,
-> >
-> > Thanks for the report.
-> >
-> > On Wed, 18 Oct 2023 at 03:19, Ben Schneider <ben@bens.haus> wrote:
-> >>
-> >> Hi Ard,
-> >>
-> >> I have an ESPRESSObin Ultra (aarch64) that uses U-Boot as its bootload=
-er. It shipped from the manufacturer with with v5.10, and I've been trying =
-to upgrade. U-Boot supports booting Image directly via EFI (https://u-boot.=
-readthedocs.io/en/latest/usage/cmd/bootefi.html), and I have been using it =
-that way to successfully boot the system up to and including v6.0.19. Howev=
-er, v6.1 and v6.5 kernels fail to boot.
-> >>
-> >> When booting successfully, the following messages are displayed:
-> >>
-> >> EFI stub: Booting Linux Kernel...EFI stub: ERROR: FIRMWARE BUG: efi_lo=
-aded_image_t::image_base has bogus value
-> >> EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundar=
-y
-> >> EFI stub: Using DTB from configuration table
-> >> EFI stub: ERROR: Failed to install memreserve config table!
-> >> EFI stub: Exiting boot services...
-> >> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd034]
-> >>
-> >> I suspect many of the above error messages are simply attributable to =
-using U-Boot to load an EFI stub and can be safely ignored given that the s=
-ystem boots and runs fine.
->
-> These messages are not typical for launching a kernel via the EFI stub
-> from U-Boot. It should look like this:
+This can also cause unwanted side-effects on XE_HP platforms where
+GFX_FLSH_CNTL_GEN6 is not valid anymore.
 
-The alignment one might be true depending on the U-Boot version that's used=
-.
-The alignment was fixed on commit ebdea88d57d5e ("efi_loader: Fix
-loaded image alignment")
-The rest indeed make little sense for now
+v2: Add a func to detect wc ggtt detection (Ville)
+v3: Improve commit log and add reference commit (Daniel)
 
->
-> =3D> load mmc 0:1 $fdt_addr_r boot/dtb
-> 28846 bytes read in 6 ms (4.6 MiB/s)
-> =3D> load mmc 0:1 $kernel_addr_r boot/vmlinuz
-> 53686664 bytes read in 2223 ms (23 MiB/s)
-> =3D> setenv bootargs root=3D/dev/mmcblk0p1 efi=3Ddebug earlyprintk
-> initrd=3Dboot/initrd.img
-> =3D> bootefi $kernel_addr_r $fdt_addr_r
-> Card did not respond to voltage select! : -110
-> Failed to load EFI variables
-> Booting /boot\vmlinuz
-> EFI stub: Booting Linux Kernel...
-> EFI stub: EFI_RNG_PROTOCOL unavailable
-> EFI stub: Loaded initrd from command line option
-> EFI stub: Using DTB from configuration table
-> EFI stub: Exiting boot services...
-> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd034]
->
+Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: John Harrison <john.c.harrison@intel.com>
+Cc: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: <stable@vger.kernel.org> # v6.2+
+Suggested-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+---
+ drivers/gpu/drm/i915/gt/intel_ggtt.c | 35 +++++++++++++++++++---------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-[...]
+diff --git a/drivers/gpu/drm/i915/gt/intel_ggtt.c b/drivers/gpu/drm/i915/gt/intel_ggtt.c
+index 1c93e84278a0..15fc8e4703f4 100644
+--- a/drivers/gpu/drm/i915/gt/intel_ggtt.c
++++ b/drivers/gpu/drm/i915/gt/intel_ggtt.c
+@@ -195,6 +195,21 @@ void gen6_ggtt_invalidate(struct i915_ggtt *ggtt)
+ 	spin_unlock_irq(&uncore->lock);
+ }
+ 
++static bool needs_wc_ggtt_mapping(struct drm_i915_private *i915)
++{
++	/*
++	 * On BXT+/ICL+ writes larger than 64 bit to the GTT pagetable range
++	 * will be dropped. For WC mappings in general we have 64 byte burst
++	 * writes when the WC buffer is flushed, so we can't use it, but have to
++	 * resort to an uncached mapping. The WC issue is easily caught by the
++	 * readback check when writing GTT PTE entries.
++	 */
++	if (!IS_GEN9_LP(i915) && GRAPHICS_VER(i915) < 11)
++		return true;
++
++	return false;
++}
++
+ static void gen8_ggtt_invalidate(struct i915_ggtt *ggtt)
+ {
+ 	struct intel_uncore *uncore = ggtt->vm.gt->uncore;
+@@ -202,8 +217,12 @@ static void gen8_ggtt_invalidate(struct i915_ggtt *ggtt)
+ 	/*
+ 	 * Note that as an uncached mmio write, this will flush the
+ 	 * WCB of the writes into the GGTT before it triggers the invalidate.
++	 *
++	 * Only perform this when GGTT is mapped as WC, see ggtt_probe_common().
+ 	 */
+-	intel_uncore_write_fw(uncore, GFX_FLSH_CNTL_GEN6, GFX_FLSH_CNTL_EN);
++	if (needs_wc_ggtt_mapping(ggtt->vm.i915))
++		intel_uncore_write_fw(uncore, GFX_FLSH_CNTL_GEN6,
++				      GFX_FLSH_CNTL_EN);
+ }
+ 
+ static void guc_ggtt_ct_invalidate(struct intel_gt *gt)
+@@ -1140,17 +1159,11 @@ static int ggtt_probe_common(struct i915_ggtt *ggtt, u64 size)
+ 	GEM_WARN_ON(pci_resource_len(pdev, GEN4_GTTMMADR_BAR) != gen6_gttmmadr_size(i915));
+ 	phys_addr = pci_resource_start(pdev, GEN4_GTTMMADR_BAR) + gen6_gttadr_offset(i915);
+ 
+-	/*
+-	 * On BXT+/ICL+ writes larger than 64 bit to the GTT pagetable range
+-	 * will be dropped. For WC mappings in general we have 64 byte burst
+-	 * writes when the WC buffer is flushed, so we can't use it, but have to
+-	 * resort to an uncached mapping. The WC issue is easily caught by the
+-	 * readback check when writing GTT PTE entries.
+-	 */
+-	if (IS_GEN9_LP(i915) || GRAPHICS_VER(i915) >= 11)
+-		ggtt->gsm = ioremap(phys_addr, size);
+-	else
++	if (needs_wc_ggtt_mapping(i915))
+ 		ggtt->gsm = ioremap_wc(phys_addr, size);
++	else
++		ggtt->gsm = ioremap(phys_addr, size);
++
+ 	if (!ggtt->gsm) {
+ 		drm_err(&i915->drm, "Failed to map the ggtt page table\n");
+ 		return -ENOMEM;
+-- 
+2.41.0
 
-Cheers
-/Ilias
