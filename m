@@ -2,98 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD93E7CE5E3
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 20:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 524D57CE643
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 20:24:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231994AbjJRSH4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 14:07:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58324 "EHLO
+        id S231223AbjJRSYF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 14:24:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbjJRSHz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 14:07:55 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D8F911A
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 11:07:53 -0700 (PDT)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39II5dQr019974;
-        Wed, 18 Oct 2023 18:07:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=znEhWGKEBLl+Pkhyojrv4Y0PXmxOtbdPBIDSypafgWw=;
- b=eNAxGSC0Fg6UAii8AAj5taQOPnh2ctQFfX18oPNTXPhJ0wefr3lsBD1C1RiBKvCNFs2J
- Zz1LZvjYZGjKNbZKG2KGaTckG7gtSE+6M0u3yAxy/26Uy4dPLMtr5d2LRNQ/9Hte+w0U
- Cdvxt4ld/Q2kDN3WC2MBm0jxdUkZ5TDL0vzEJj8kajfs0IaqEfh54ZvLunu1nJMopSjW
- gh+B3/CPxXtVAcXVO7gqxxVtQkqvpqhsDAHApJae1zsrV5iKLavrthp/9nm+jxn1c2ey
- KmYHxFWeM9T/TvJlfeRPZoqMvo6KuUM/DtgaD8YUMjdRuYsPFhkEURQAd+39HYJ1ILnP BA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttmb183pk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 Oct 2023 18:07:44 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39II7h8P000729;
-        Wed, 18 Oct 2023 18:07:43 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttmb183p6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 Oct 2023 18:07:43 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-        by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39IGE5IN019900;
-        Wed, 18 Oct 2023 18:07:43 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-        by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tr811t8qb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 18 Oct 2023 18:07:42 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-        by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39II7g2719137268
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 18 Oct 2023 18:07:42 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2D5DA5805B;
-        Wed, 18 Oct 2023 18:07:42 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2E3CC58058;
-        Wed, 18 Oct 2023 18:07:41 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.watson.ibm.com (unknown [9.31.99.90])
-        by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Wed, 18 Oct 2023 18:07:41 +0000 (GMT)
-Message-ID: <e03ccb1e354cee0eea828cb6f2e6f91714218c49.camel@linux.ibm.com>
-Subject: Re: [PATCH 6.4 041/737] ovl: Always reevaluate the file signature
- for IMA
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Raul Rangel <rrangel@chromium.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        Eric Snowberg <eric.snowberg@oracle.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>, Tim Bain <tbain@google.com>,
-        Shuhei Takahashi <nya@chromium.org>
-Date:   Wed, 18 Oct 2023 14:07:40 -0400
-In-Reply-To: <CAHQZ30BPUtNbQhxvUGMQWP3Ka4UxtaS_NUeK12jtdaheMq4EWw@mail.gmail.com>
-References: <20230911134650.286315610@linuxfoundation.org>
-         <20230911134651.582204417@linuxfoundation.org>
-         <ZS6xYa_kjRGvdCG6@google.com>
-         <bd5d2f882e47b904802023d5d4d54d8d4755440e.camel@linux.ibm.com>
-         <CAHQZ30A8R+EDGbrngMOQrXabR=DTHL3Y-1Tv+3RF98VHQ5b68Q@mail.gmail.com>
-         <c9b7de507e26cb4e5111cdc76998f1dcd3c0957a.camel@linux.ibm.com>
-         <CAHQZ30BPUtNbQhxvUGMQWP3Ka4UxtaS_NUeK12jtdaheMq4EWw@mail.gmail.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-Mime-Version: 1.0
+        with ESMTP id S230260AbjJRSYE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 14:24:04 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F06D10F
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 11:24:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFF5C433C9;
+        Wed, 18 Oct 2023 18:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697653442;
+        bh=MqbWF9KWr+fDWmDuFscKuEg2a6ksnYydthQmw8YMP5s=;
+        h=From:Subject:Date:To:Cc:From;
+        b=nW1vBzhRpKtassDHekDkfjI+vv/pSTzuWk2CiSts7XikL1l5NTOqbC75zCZ8YeTH0
+         ap+pxSuITI7ioEFdrkraehPbRZ8AUkqjcBHaL2sSNujqkMz/OZ5SaWOb2wVKGFIkeL
+         wemtcEhXS/S+IukTe2noizSNwiCzdeOIZL1K9aylYoJ1mcisZTb0I/WpgdiYrk+6O8
+         GF8tIQhScJAuvzWbKL1YNbguMJAKuc6bAQ5tL31qjprEdSCmpaXYg/RmFuyGF5fAMW
+         A9CIV8w5LRXBcnEOk0sFuIJNWPfw3ZTLAHnyaZRmQhN/Lf2ISy0fQM8co72NJop2BO
+         pjUad1Z3NBwRA==
+From:   Mat Martineau <martineau@kernel.org>
+Subject: [PATCH net 0/5] mptcp: Fixes for v6.6
+Date:   Wed, 18 Oct 2023 11:23:51 -0700
+Message-Id: <20231018-send-net-20231018-v1-0-17ecb002e41d@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UL_Y2bHQEUmEB297hQwHdMFO7qBoh9hI
-X-Proofpoint-GUID: HZzxLl52JR-dvgT1YRVttYnlmaykZ2JS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-18_16,2023-10-18_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 mlxscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0
- phishscore=0 spamscore=0 clxscore=1015 bulkscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2309180000 definitions=main-2310180148
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+X-B4-Tracking: v=1; b=H4sIALciMGUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI2NDA0ML3eLUvBTdvNQSXbhIYrJZkrFFSpqBaaqRElBfQVFqWmYF2MxoJaB
+ KpdjaWgAcInu2aAAAAA==
+To:     Matthieu Baerts <matttbe@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        David Ahern <dsahern@kernel.org>,
+        Davide Caratti <dcaratti@redhat.com>,
+        Christoph Paasch <cpaasch@apple.com>,
+        Florian Westphal <fw@strlen.de>
+Cc:     netdev@vger.kernel.org, mptcp@lists.linux.dev,
+        Mat Martineau <martineau@kernel.org>, stable@vger.kernel.org,
+        Geliang Tang <geliang.tang@suse.com>
+X-Mailer: b4 0.12.3
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -101,47 +58,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 2023-10-18 at 10:35 -0600, Raul Rangel wrote:
+Patch 1 corrects the logic for MP_JOIN tests where 0 RSTs are expected.
 
-> > > > Instead of reverting the patch, perhaps allow users to take this risk
-> > > > by defining a Kconfig, since they're aware of their policy rules.
-> > > >
-> > >
-> > > That sounds good. Or would it make sense to add an option to the
-> > > policy file? i.e., `verifiable fsmagic=0x794c7630
-> >
-> > Perhaps instead of introducing a new "action" (measure/dont_measure,
-> > appraise/dont_appraise, audit), it should be more granular at the
-> > policy rule level.
-> > Something like ignore_cache/dont_ignore_cache, depending on the
-> > default.
-> >
-> > Eric, does that make sense?
-> 
-> I guess if one of the lower layers was a tmpfs that no longer holds.
+Patch 2 ensures MPTCP packets are not incorrectly coalesced in the TCP
+backlog queue.
 
-I don't understand what's special about tmpfs.  The only reason the
-builtin "ima_tcb" policy includes a "dont_measure" tmpfs rule is
-because the initramfs doesn't support xattrs.
+Patch 3 avoids a zero-window probe and associated WARN_ON_ONCE() in an
+expected MPTCP reinjection scenario.
 
-> Can overlayfs determine if the lower file is covered by a policy
-> before setting the SB_I_IMA_UNVERIFIABLE_SIGNATURE flag? This way the
-> policy writer doesn't need to get involved with the specifics of how
-> the overlayfs layers are constructed.
+Patches 4 & 5 allow an initial MPTCP subflow to be closed cleanly
+instead of always sending RST. Associated selftest is updated.
 
-A read-only filesystem (squashfs) as the lower filesystem obviously
-does not need to be re-evaluated.
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+---
+Geliang Tang (1):
+      mptcp: avoid sending RST when closing the initial subflow
 
-With the "audit" and perhaps "measure" rule examples, the policy can at
-least be finer grained.
+Matthieu Baerts (2):
+      selftests: mptcp: join: correctly check for no RST
+      selftests: mptcp: join: no RST when rm subflow/addr
 
-> In the original commit message it was mentioned that there was a more
-> fine grained approach. If that's in the pipeline, maybe it makes sense
-> to just wait for that instead of adding a new keyword? We just revered
-> this patch internally to avoid the performance penalty, but we don't
-> want to carry this patch indefinitely.
+Paolo Abeni (2):
+      tcp: check mptcp-level constraints for backlog coalescing
+      mptcp: more conservative check for zero probes
 
-I'm not aware of anyone else looking into it.
+ net/ipv4/tcp_ipv4.c                             |  1 +
+ net/mptcp/protocol.c                            | 36 ++++++++++++++++---------
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 21 +++++++++++++--
+ 3 files changed, 43 insertions(+), 15 deletions(-)
+---
+base-commit: 2915240eddba96b37de4c7e9a3d0ac6f9548454b
+change-id: 20231018-send-net-20231018-ac6b38df05e2
 
-Mimi
+Best regards,
+-- 
+Mat Martineau <martineau@kernel.org>
 
