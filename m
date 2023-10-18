@@ -2,178 +2,315 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 156E27CE21D
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 18:05:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CB137CE2D9
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 18:35:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230480AbjJRQFT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 12:05:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42084 "EHLO
+        id S229694AbjJRQf0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 12:35:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36226 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229456AbjJRQFS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 12:05:18 -0400
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84340A4;
-        Wed, 18 Oct 2023 09:05:16 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id 953FD3200B98;
-        Wed, 18 Oct 2023 12:05:13 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 18 Oct 2023 12:05:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=beims.me; h=cc
-        :cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1697645113; x=1697731513; bh=OcI7K146pnoJnjGn0F28VwM8IGY10AUfkq0
-        k1lyol4c=; b=cvczwF4GhPO/4SKndYOZJK0ARPLjGDCh4ZpHmVkq4iJrzlzCVSd
-        QcDqVvuAnbRgW0koEA47wZUKAbR4yBXqZW0dDexDbxZomMMHu/sJyQQnhxN4Rwgz
-        F0X08QU/zgMgRLPfcRw+8YztBvfiAP+zTxdFDUo0zcYV9RWNeibxCOdAtlmM7m+R
-        kk10g3l+H2BZcFT/HVfLDx/dEKy3P7GRki0hdLspdc55Z2pJYzct+1PL7OSSxCkN
-        D1w1Koi4KaOcwUmrnLJ/b2mYgH2Lo/aC+smaD0UPF/GI4dp3Fhswi0BQsXvdwGN6
-        MOKRm6ddRyYh5Oh6TQiyh6WZUacPUkjZ9BQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-        1697645113; x=1697731513; bh=OcI7K146pnoJnjGn0F28VwM8IGY10AUfkq0
-        k1lyol4c=; b=RyMEzjT6mItxa7fHgAXyqmnzTPecbr6sdllVgRQTzU9aZgaZlkF
-        thULbVVaJ892hC3t1B3ZjaScjeEH1MpdUoWnmxzkcj+GZuOlGAwuHXj+SMxmEFmA
-        i+s+Rk7AQ0fTTUfEvohoQsKpB++6Lk0W5NDo1oLBJd9Z76/who0qcEd2n9WSCTld
-        nkczK5Ri8iMiWAJn8QAd4BR8y0JahbRCnYrLuHn0Fik8urDmaKUPW1dhb3WNphpW
-        VnK3T4094pyyGwtElMB6kmL3NAwwkKOlb0YI6FrURr0e91vd2BmE/uHhf5irs//J
-        I19Mmf3ILG3yoKuVfWvN3mXjgZ837QbVw+g==
-X-ME-Sender: <xms:OAIwZbie5CEjxYuu_lyJNzSQZ1TrS2xNupuDcxiMQh4pUNjWxwxGtA>
-    <xme:OAIwZYAAh_5RMr_Z6wvsp_noFlQdItrlA7BGL0CHOCA4AOykmOlyF9YmIp4LtAT7G
-    ZYm0EogdR-ZvNXNgsM>
-X-ME-Received: <xmr:OAIwZbGOThdgk8va4wwdARD4UoDCQkXZ8-u0sBeQDWzwf60DQb8LZSGmATgRYPsP7w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrjeeggdelgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptfgrfhgr
-    vghluceuvghimhhsuceorhgrfhgrvghlsegsvghimhhsrdhmvgeqnecuggftrfgrthhtvg
-    hrnhepjeeijedvleegudevjeegledtveeifeetjeelieeijeegiefhleelhedtgeduieei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprhgrfh
-    grvghlsegsvghimhhsrdhmvg
-X-ME-Proxy: <xmx:OAIwZYQztc4SzvSQRq_bEnh0wIRM02_eNBIBtHY-5JoEuv16XvF2lQ>
-    <xmx:OAIwZYxLYwFWpfh7D0q7F4uvx6UR3uOOucpq8Lu7Ry7PGnfhefqSkA>
-    <xmx:OAIwZe6OHVtmAKjg0sdTIGVmdV3FAau7ATyHIpUpIIS6PkeD97g-8Q>
-    <xmx:OQIwZbyqsdr4NUiC601AX8uC9wsFhNHr0L6ag_TOe8CJejSl9iZLrA>
-Feedback-ID: idc214666:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 18 Oct 2023 12:05:10 -0400 (EDT)
-Message-ID: <fbb29b88-7a16-4d3d-a96a-0256f6bcfc05@beims.me>
-Date:   Wed, 18 Oct 2023 13:05:09 -0300
+        with ESMTP id S229537AbjJRQfZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 12:35:25 -0400
+Received: from mail-vk1-xa34.google.com (mail-vk1-xa34.google.com [IPv6:2607:f8b0:4864:20::a34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39D33AB
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 09:35:20 -0700 (PDT)
+Received: by mail-vk1-xa34.google.com with SMTP id 71dfb90a1353d-49d0f24a815so3118003e0c.2
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 09:35:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1697646919; x=1698251719; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cl/7EOsE+qKolAEw1eaMnzYR9djxxzkrTyT+pdY5BHo=;
+        b=Oz4HPCT10/tC07tw27CrpwCVRlpPMF4yKHJP/HLKRdxk2rGWu0LOcWs7tGnZCltt7J
+         erDyowg8HXM+KMHewvW/5x22Wn+8URLW31uMY83/UsMiad97/smT7gbHoEf4MIs/h9dc
+         eQiLv3PEFiqElQdTdeL6G6inEBLcuQ03UHLAc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697646919; x=1698251719;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cl/7EOsE+qKolAEw1eaMnzYR9djxxzkrTyT+pdY5BHo=;
+        b=kPndHtsl3Wy3D8dwvv6wc/P+d98VARr69IeuLtufTw0VZcbZQmEqB3/77Yj2Uw1lda
+         YgomoTjRptqlufP6/2qHTNDEzGePG8Rz6oPTKf9MBOBeO5tarntRckUJnT4vXXcR35ps
+         I1mKGyM7DQvxoi4xhcbhPSPdHltL3vvBFj4ARfXSRIE1j9+OscfMgVHX/L/8dCELzNXH
+         ag5dNpSnUSGi+g+srbBCb3wdXcm0+p4p8ypyryQXL4koZAtDWsjlriYxL+uxUJpZPL3F
+         HFfRvafFkXBRw6tSACro8wuOdDlqf55xPfuDYHRbUmsrCCDCmhpaDPyEaT7M742woSgY
+         zRog==
+X-Gm-Message-State: AOJu0YxDgqwU0EIq6Y69TySfMO1+rqdQZAOYhtrUJJL/n49MSU+LxiCK
+        D1rw0p4n5j21jzfZlrKBytAv0A5AY+w6SHCc2NM=
+X-Google-Smtp-Source: AGHT+IGkyevofenDlycQZJgY+CA4svDDDb4yinrAXQ3KDgCWccw53eVU0fk/0LblBzo+Vx81TwJXuw==
+X-Received: by 2002:a1f:17c6:0:b0:49d:b653:da31 with SMTP id 189-20020a1f17c6000000b0049db653da31mr5257584vkx.7.1697646919003;
+        Wed, 18 Oct 2023 09:35:19 -0700 (PDT)
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com. [209.85.222.41])
+        by smtp.gmail.com with ESMTPSA id m22-20020a056122215600b0048720f093dbsm424974vkd.44.2023.10.18.09.35.16
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 18 Oct 2023 09:35:17 -0700 (PDT)
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-7b65004396fso2076163241.3
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 09:35:16 -0700 (PDT)
+X-Received: by 2002:a05:6102:34eb:b0:457:e822:60e8 with SMTP id
+ bi11-20020a05610234eb00b00457e82260e8mr6142210vsb.29.1697646916101; Wed, 18
+ Oct 2023 09:35:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
- eMMC Q2J54A
-Content-Language: pt-BR
-To:     Ulf Hansson <ulf.hansson@linaro.org>, Bean Huo <beanhuo@iokpp.de>
-Cc:     adrian.hunter@intel.com, beanhuo@micron.com,
-        jakub.kwapisz@toradex.com, rafael.beims@toradex.com,
-        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-References: <20231001194943.658299-1-beanhuo@iokpp.de>
- <CAPDyKFpgPEhVuTbxe5YhYQ0W6907SwJRxSQLB1F2FbVW3zKHxg@mail.gmail.com>
- <254df9b8ca7475ad9dbd3a303c60e1f99eca9c56.camel@iokpp.de>
- <CAPDyKFofJR0xtpmjCQXM7=VzUeN5jQLD2AZYEWocuyCnYNObYw@mail.gmail.com>
-From:   Rafael Beims <rafael@beims.me>
-In-Reply-To: <CAPDyKFofJR0xtpmjCQXM7=VzUeN5jQLD2AZYEWocuyCnYNObYw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230911134650.286315610@linuxfoundation.org> <20230911134651.582204417@linuxfoundation.org>
+ <ZS6xYa_kjRGvdCG6@google.com> <bd5d2f882e47b904802023d5d4d54d8d4755440e.camel@linux.ibm.com>
+ <CAHQZ30A8R+EDGbrngMOQrXabR=DTHL3Y-1Tv+3RF98VHQ5b68Q@mail.gmail.com> <c9b7de507e26cb4e5111cdc76998f1dcd3c0957a.camel@linux.ibm.com>
+In-Reply-To: <c9b7de507e26cb4e5111cdc76998f1dcd3c0957a.camel@linux.ibm.com>
+From:   Raul Rangel <rrangel@chromium.org>
+Date:   Wed, 18 Oct 2023 10:35:03 -0600
+X-Gmail-Original-Message-ID: <CAHQZ30BPUtNbQhxvUGMQWP3Ka4UxtaS_NUeK12jtdaheMq4EWw@mail.gmail.com>
+Message-ID: <CAHQZ30BPUtNbQhxvUGMQWP3Ka4UxtaS_NUeK12jtdaheMq4EWw@mail.gmail.com>
+Subject: Re: [PATCH 6.4 041/737] ovl: Always reevaluate the file signature for IMA
+To:     Mimi Zohar <zohar@linux.ibm.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        Eric Snowberg <eric.snowberg@oracle.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, Tim Bain <tbain@google.com>,
+        Shuhei Takahashi <nya@chromium.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/10/2023 18:04, Ulf Hansson wrote:
-> On Tue, 10 Oct 2023 at 17:33, Bean Huo <beanhuo@iokpp.de> wrote:
->> Hi Ulf,
->>
->> thanks for your comments, I didn't quite get your points:
->>
->> On Tue, 2023-10-10 at 16:20 +0200, Ulf Hansson wrote:
->>>> @@ -2381,8 +2381,11 @@ enum mmc_issued mmc_blk_mq_issue_rq(struct
->>>> mmc_queue *mq, struct request *req)
->>>>                           }
->>>>                           ret = mmc_blk_cqe_issue_flush(mq, req);
->>>>                           break;
->>>> -               case REQ_OP_READ:
->>>>                   case REQ_OP_WRITE:
->>>> +                       if (mmc_card_broken_cache_flush(card) &&
->>>> !card->written_flag)
->>> It looks superfluous to me to check mmc_card_broken_cache_flush() and
->>> !card->written_flag. Just set the card->written_flag unconditionally.
->> what did you mean "Just set the card->written_flag unconditionally."?
->> This means I just need to check card->written_flag and set card-
->>> written_flag to true and false in the case
->> MMC_QUIRK_BROKEN_CACHE_FLUSH? or don't need to call
->> mmc_card_broken_cache_flush()?
-> I mean skip the checks above and just do the assignment below.
+On Wed, Oct 18, 2023 at 9:03=E2=80=AFAM Mimi Zohar <zohar@linux.ibm.com> wr=
+ote:
 >
->>>> +                               card->written_flag = true;
->>>> +                       fallthrough;
->>>> +               case REQ_OP_READ:
->>>>                           if (host->cqe_enabled)
->>>>                                   ret = mmc_blk_cqe_issue_rw_rq(mq,
->>>> req);
->>>>                           else
->>>> diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
->>>> index 4edf9057fa79..b7754a1b8d97 100644
->>>> --- a/drivers/mmc/core/card.h
->>>> +++ b/drivers/mmc/core/card.h
->>>> @@ -280,4 +280,8 @@ static inline int
->>>> mmc_card_broken_sd_cache(const struct mmc_card *c)
->>>>           return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
->>>>    }
->>>>
->>>> +static inline int mmc_card_broken_cache_flush(const struct
->>>> mmc_card *c)
->>>> +{
->>>> +       return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
->>>> +}
->>>>    #endif
->>>> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
->>>> index 89cd48fcec79..47896c32086e 100644
->>>> --- a/drivers/mmc/core/mmc.c
->>>> +++ b/drivers/mmc/core/mmc.c
->>>> @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host
->>>> *host, u32 ocr,
->>>>           if (!oldcard)
->>>>                   host->card = card;
->>>>
->>>> +       card->written_flag = false;
->>>> +
->>> How about doing this after a successful flush operation instead? In
->>> other words in _mmc_flush_cache().
->> Here initializes flag and the patch is intenting to eliminate the cache
->> flush command before writing. what do you mean adding in
->> mmc_flush_cache()?
-> mmc_init_card() is called while initializing and re-initializing the
-> card. So, it certainly works to reset the flag from here.
+> On Tue, 2023-10-17 at 17:00 -0600, Raul Rangel wrote:
+> > On Tue, Oct 17, 2023 at 12:27=E2=80=AFPM Mimi Zohar <zohar@linux.ibm.co=
+m> wrote:
+> > >
+> > > On Tue, 2023-10-17 at 10:08 -0600, Raul E Rangel wrote:
+> > > > On Mon, Sep 11, 2023 at 03:38:20PM +0200, Greg Kroah-Hartman wrote:
+> > > > > 6.4-stable review patch.  If anyone has any objections, please le=
+t me know.
+> > > > >
+> > > > > ------------------
+> > > > >
+> > > > > From: Eric Snowberg <eric.snowberg@oracle.com>
+> > > > >
+> > > > > [ Upstream commit 18b44bc5a67275641fb26f2c54ba7eef80ac5950 ]
+> > > > >
+> > > > > Commit db1d1e8b9867 ("IMA: use vfs_getattr_nosec to get the i_ver=
+sion")
+> > > > > partially closed an IMA integrity issue when directly modifying a=
+ file
+> > > > > on the lower filesystem.  If the overlay file is first opened by =
+a user
+> > > > > and later the lower backing file is modified by root, but the ext=
+ended
+> > > > > attribute is NOT updated, the signature validation succeeds with =
+the old
+> > > > > original signature.
+> > > > >
+> > > > > Update the super_block s_iflags to SB_I_IMA_UNVERIFIABLE_SIGNATUR=
+E to
+> > > > > force signature reevaluation on every file access until a fine gr=
+ained
+> > > > > solution can be found.
+> > > > >
+> > > >
+> > > > Sorry for replying to the 6.4-stable patch, I couldn't find the ori=
+ginal
+> > > > patch in the mailing list.
+> > > >
+> > > > We recently upgraded from 6.4.4 to 6.5.3. We have the integrity LSM
+> > > > enabled, and are using overlayfs. When we try and execute a binary =
+from
+> > > > the overlayfs filesystem, the integrity LSM hashes the binary and a=
+ll
+> > > > its shared objects every single invocation. This causes a serious
+> > > > performance regression when invoking clang thousands of times while
+> > > > building a package. We bisected the culprit down to this patch.
+> > > >
+> > > > Here are some numbers:
+> > > >
+> > > > With this patch + overlayfs:
+> > > >
+> > > >       $ time /usr/bin/clang-17 --version > /dev/null
+> > > >
+> > > >       real    0m0.628s
+> > > >       user    0m0.004s
+> > > >       sys     0m0.624s
+> > > >       $ time /usr/bin/clang-17 --version > /dev/null
+> > > >
+> > > >       real    0m0.597s
+> > > >       user    0m0.004s
+> > > >       sys     0m0.593s
+> > > >
+> > > > With this patch - overlayfs:
+> > > >
+> > > >       $ truncate -s 1G foo.bin
+> > > >       $ mkfs.ext4 foo.bin
+> > > >       $ mount foo.bin /foo
+> > > >       $ cp /usr/bin/clang-17 /foo
+> > > >       $ time /foo/clang-17 --version > /dev/null
+> > > >
+> > > >       real    0m0.040s
+> > > >       user    0m0.009s
+> > > >       sys     0m0.031s
+> > > >       $ time /foo/clang-17 --version > /dev/null
+> > > >
+> > > >       real    0m0.036s
+> > > >       user    0m0.000s
+> > > >       sys     0m0.037s
+> > > >
+> > > > Without this path + overlayfs:
+> > > >       $ time /usr/bin/clang-17 --version > /dev/null
+> > > >
+> > > >       real    0m0.017s
+> > > >       user    0m0.007s
+> > > >       sys     0m0.011s
+> > > >       $ time /usr/bin/clang-17 --version > /dev/null
+> > > >
+> > > >       real    0m0.018s
+> > > >       user    0m0.000s
+> > > >       sys     0m0.018s
+> > > >
+> > > > i.e., we go from ~30ms / invocation to 600ms / invocation. Building
+> > > > glibc used to take about 3 minutes, but now its taking about 20 min=
+utes.
+> > > >
+> > > > Our clang binary is about 100 MiB in size.
+> > > >
+> > > > Using `perf` the following sticks out:
+> > > >       $ perf record -g time /usr/bin/clang-17 --version
+> > > >       --92.03%--elf_map
+> > > >             vm_mmap_pgoff
+> > > >             ima_file_mmap
+> > > >             process_measurement
+> > > >             ima_collect_measurement
+> > > >             |
+> > > >              --91.95%--ima_calc_file_hash
+> > > >                     ima_calc_file_hash_tfm
+> > > >                     |
+> > > >                     |--82.85%--_sha256_update
+> > > >                     |     |
+> > > >                     |      --82.47%--lib_sha256_base_do_update.isra=
+.0
+> > > >                     |           |
+> > > >                     |            --82.39%--sha256_transform_rorx
+> > > >                     |
+> > > >                      --9.10%--integrity_kernel_read
+> > > >
+> > > > The audit.log is also logging every clang invocation as well.
+> > > >
+> > > > Was such a large performance regression expected? Can the commit be
+> > > > reverted until the more fine grained solution mentioned in the comm=
+it
+> > > > message be implemented?
+> > >
+> >
+> > First off, thanks for the quick reply. And I apologize in advance for
+> > any naive questions. I'm still learning how the IMA system works.
+> >
+> > > IMA is always based on policy.  Having the "integrity LSM enabled and
+> > > using overlayfs" will not cause any measurements or signature
+> > > verifications, unless the files are in policy.
+> >
+> > Good point. The policy we have loaded is very similar to the one we
+> > get from setting `ima_tcb`on the kernel command line. We just remove
+> > the uid=3D0 constraint. i.e.,
+> > ```
+> > # SECURITYFS_MAGIC
+> > dont_measure fsmagic=3D0x73636673
+> > # SELINUXFS_MAGIC
+> > dont_measure fsmagic=3D0xf97cff8c
+> > ...
 >
-> However, _mmc_flush_cache() is called before powering off the card,
-> which then would work similarly to the above, but also gets called for
-> REQ_OP_FLUSH. Wouldn't that mean that we may be able to skip some
-> unnecessary/troublesome cache flush requests if we would reset the
-> flag from  mmc_flush_cache(), rather than from mmc_init_card()?
+> The following are new rules:
 >
-> Kind regards
-> Uffe
-Forgive me if I'm misunderstanding something, but wouldn't resetting the 
-flag on _mmc_flush_cache()
-essentially disable cache when the MMC_QUIRK_BROKEN_CACHE_FLUSH is active?
+> > # audit files executed.
+> > audit func=3DBPRM_CHECK
+> > # audit executable libraries mmap'd.
+> > audit func=3DFILE_MMAP mask=3DMAY_EXEC
+> > # audit loaded kernel modules
+> > audit func=3DMODULE_CHECK
+> > ```
+> >
+> > We don't have any appraisal rules loaded.
+>
+> Okay.  The appraisal result of the overlay file is being cached and not
+> cleared on file change of the lower file.
+>
+> > >
+> > > The problem is that unless the lower layer file is in policy, file
+> > > change will not be detected on the overlay filesystem.  Reverting thi=
+s
+> > > change will allow access to a modified file without re-verifying its
+> > > integrity.
+> >
+> > Given our simple policy, I think the lower layer file is included in th=
+e
+> > policy. So if I understand correctly, you are saying that this patch
+> > was meant to address the case where the lower layer wasn't
+> > covered by the policy?
+>
+> Yes
+>
+> > >
+> > > Instead of reverting the patch, perhaps allow users to take this risk
+> > > by defining a Kconfig, since they're aware of their policy rules.
+> > >
+> >
+> > That sounds good. Or would it make sense to add an option to the
+> > policy file? i.e., `verifiable fsmagic=3D0x794c7630
+>
+> Perhaps instead of introducing a new "action" (measure/dont_measure,
+> appraise/dont_appraise, audit), it should be more granular at the
+> policy rule level.
+> Something like ignore_cache/dont_ignore_cache, depending on the
+> default.
+>
+> Eric, does that make sense?
 
- From what I see, the card->written flag is supposed to stay true until 
-we need to reinitialize the
-eMMC again, otherwise we would be skipping cache flushes we don't want 
-to skip. It's only before
-writing for the first time that we want to skip the flush.
+I guess if one of the lower layers was a tmpfs that no longer holds.
+Can overlayfs determine if the lower file is covered by a policy
+before setting the SB_I_IMA_UNVERIFIABLE_SIGNATURE flag? This way the
+policy writer doesn't need to get involved with the specifics of how
+the overlayfs layers are constructed.
 
-Regards,
-Rafael
+In the original commit message it was mentioned that there was a more
+fine grained approach. If that's in the pipeline, maybe it makes sense
+to just wait for that instead of adding a new keyword? We just revered
+this patch internally to avoid the performance penalty, but we don't
+want to carry this patch indefinitely.
+
+>
+> > FWIW, I also added the following to my policy file:
+> > ```
+> > # OVERLAYFS_SUPER_MAGIC
+> > dont_appraise fsmagic=3D0x794c7630
+> > dont_measure fsmagic=3D0x794c7630
+> > dont_hash fsmagic=3D0x794c7630
+> > ```
+> >
+> > I didn't get any entries in my audit.log, but the hashing was still
+> > performed. I figured since tmpfs and ramfs were already marked
+> > as dont_measure, adding overlayfs shouldn't really be any
+> > different.
+>
+> If you're using a modified "ima_tcb" there are "measure" action rules
+> which would cause files to be re-measured.  Look at the IMA measurement
+> list.
+
+Oh, I assumed `audit` =3D=3D `MEASURE`, so I was thinking that
+`dont_measure` would negate it. Thanks for that clarification.
+
+>
+> If you're only accessing files via the overlayfs and not the lower
+> layer, then there wouldn't be any audit records.
+>
+> Mimi
+>
+
+Thanks,
+Raul
