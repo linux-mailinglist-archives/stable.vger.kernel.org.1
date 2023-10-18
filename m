@@ -2,103 +2,170 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E36AD7CEB43
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 00:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E51F7CEB76
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 00:49:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231217AbjJRW3U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 18:29:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37924 "EHLO
+        id S230239AbjJRWtz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 18:49:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229487AbjJRW3U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 18:29:20 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E008114
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 15:29:18 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c9bca1d96cso51298655ad.3
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 15:29:18 -0700 (PDT)
+        with ESMTP id S229897AbjJRWty (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 18:49:54 -0400
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87147113
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 15:49:52 -0700 (PDT)
+Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d9c7bba32beso1522192276.1
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 15:49:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1697668158; x=1698272958; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MlEhPotc9YVtJuw6c5D3IvfNe+8QoING9f1FrC2gg/U=;
-        b=JT3ODgYecULnjYpL8MERlDIjflhc1CPn9eeq2YXXsPQID82x6RcvoccyBhciNM/qt0
-         KBaQivWvSMJ/5rYdwMHBuIiQDdqNZyPnIP/vYt9qKmwwfH/8CAlJNw7r3R+1XtDqI+Cy
-         Gj4Gl+bU+jQI8wDOkfVlSM2uoLG/O1p+4Uacs=
+        d=linaro.org; s=google; t=1697669392; x=1698274192; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Itd3K+35Q5LCuuiQpkQ+hlfAcgIRYzc4goGel/0mjhk=;
+        b=N0Vji/T8DW8QFf0c+EbGY/jy6gfJe+WrUi8hV8KG9ZMkVr6f6qUG7svg43G3GNmGtT
+         0xsT1Gyu35vu89ecergNJ8k3KGzahpdpemBOwzYFWtkCMt/IVHPd+xen+muXNBeIwyft
+         ASAyV9/WY4BVxzmYmyFHE/WNYlJYOQmkD1ngzQSDqJgAVqmt6Ok+0CkcN/W41OOLH0wr
+         Qb4M3kye26wCzeFXez/2ln7mKqXTkOAyr2TxgWdcfo5ZPYQVTVhfxSd2/hntwRppMxNJ
+         ZEDe2k02Hhb5hXNm8b7meQR8M5y/Ci5Irz7Re1hLRhEb2qifG/cy5NipKE/nzFKZH05Q
+         OXRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697668158; x=1698272958;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MlEhPotc9YVtJuw6c5D3IvfNe+8QoING9f1FrC2gg/U=;
-        b=OHqkk6cAwtkGWKwstLD2FwPVhEEDQyM0uXn2hwPUQSArGMADyUTGsv2VwCK+qzEt+T
-         WEE6d50h6fcfMN3foPoylEULXKAE9O1GVSbMooGD+BrtWQeZmxMoJfiE7Jeb0dw7EM7A
-         Lig07UkQXOE0YoXnxCvq0TrNB6PjGZDKSBPAWX3rFEJ9OpqMDZZOfGNvzRJ1FaE0YYTx
-         H83fpUDGulUF0bcjbgl6lxlZGKj7qmqBQanqukEJby2T7xZyWDjxEJO0RJXmBzUVec7C
-         rG4z7YBovVYD45ex1/Crtya7C81rXczdQQ9Vmt3KEty7DCjnLasuzFyAbaKUSoMh6wFZ
-         Di3g==
-X-Gm-Message-State: AOJu0YwWVM9xpda5CimsCjxrS6ynYowCpsC9f7ygBOh5G32ObOj2gsEB
-        OlPbtFaIVkuboY2pP4P3Ha3mgQ==
-X-Google-Smtp-Source: AGHT+IFa7ai3cfHBIJet4SvOmgqTNI6nHVqvudThEcy1ldRSisV/7jAkhiE1Axsq53XFBLKli+nTAA==
-X-Received: by 2002:a17:902:dac8:b0:1ca:64f:35ff with SMTP id q8-20020a170902dac800b001ca064f35ffmr877478plx.48.1697668158080;
-        Wed, 18 Oct 2023 15:29:18 -0700 (PDT)
-Received: from chromium.org (77.62.105.34.bc.googleusercontent.com. [34.105.62.77])
-        by smtp.gmail.com with ESMTPSA id d4-20020a170902cec400b001bf6ea340a9sm425908plg.159.2023.10.18.15.29.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 15:29:17 -0700 (PDT)
-Date:   Wed, 18 Oct 2023 22:29:16 +0000
-From:   Prashant Malani <pmalani@chromium.org>
-To:     RD Babiera <rdbabiera@google.com>
-Cc:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        badhri@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: altmodes/displayport: verify compatible
- source/sink role combination
-Message-ID: <ZTBcPEXV5UL_HP3W@chromium.org>
-References: <20231018203408.202845-2-rdbabiera@google.com>
+        d=1e100.net; s=20230601; t=1697669392; x=1698274192;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Itd3K+35Q5LCuuiQpkQ+hlfAcgIRYzc4goGel/0mjhk=;
+        b=dl/HgCR9f0A9uMQQNuQzOyMbRy+v2NUgNhev2Ha/uxUti/6lF9wmDj/pWRQ/v/YwlW
+         RgnDdaR9yohksWYKvjr7MwrMtJUAnwCZC7RPfb/s3zdjV+EIhTCgxAJtGhImf3CbgH59
+         KmrN2juInzFa+y77PwnhXXrmrKJyJYE7jO/JSXGQoQz76q8yMAXmMWT2eCY8jNnMFg2z
+         puFZew0w/OHIhoV8QKAFmYwFRenyWLwzGQrEsts6mAfg0dbXJ3Sj0X4LmcBgaXVItH3y
+         UZOIzrJveSf6uI6/P0EF2manlpYDYb/XFU3d2PDta2Ze7wwWCFZxYeT7hg/MwKkHY+P7
+         O4Ww==
+X-Gm-Message-State: AOJu0YzO4UneG4dennEHdVknSfNG88wGlbaLo46a2zxa6653XHWyirdX
+        tfYX81AcIuRpIWH6KeNBsrlXzTiH1vgfdnHPjVPSKw==
+X-Google-Smtp-Source: AGHT+IFMQne48Ci6124ZJ4/1HYU4EA0QRWtfa4ezFepMeZBntWk0+Ilj6fnvEHae0teXkx2uHfaLR4luXVeMdbtLFcE=
+X-Received: by 2002:a5b:3ce:0:b0:d80:68d1:b826 with SMTP id
+ t14-20020a5b03ce000000b00d8068d1b826mr732120ybp.6.1697669391762; Wed, 18 Oct
+ 2023 15:49:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231018203408.202845-2-rdbabiera@google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20231001194943.658299-1-beanhuo@iokpp.de> <CAPDyKFpgPEhVuTbxe5YhYQ0W6907SwJRxSQLB1F2FbVW3zKHxg@mail.gmail.com>
+ <254df9b8ca7475ad9dbd3a303c60e1f99eca9c56.camel@iokpp.de> <CAPDyKFofJR0xtpmjCQXM7=VzUeN5jQLD2AZYEWocuyCnYNObYw@mail.gmail.com>
+ <fbb29b88-7a16-4d3d-a96a-0256f6bcfc05@beims.me>
+In-Reply-To: <fbb29b88-7a16-4d3d-a96a-0256f6bcfc05@beims.me>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Thu, 19 Oct 2023 00:49:15 +0200
+Message-ID: <CAPDyKFo2BGp+Wacz7cTAPZ7_Tkpy0St0AujWfiW=13P7fmrwhA@mail.gmail.com>
+Subject: Re: [PATCH v4] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron
+ eMMC Q2J54A
+To:     Rafael Beims <rafael@beims.me>
+Cc:     Bean Huo <beanhuo@iokpp.de>, adrian.hunter@intel.com,
+        beanhuo@micron.com, jakub.kwapisz@toradex.com,
+        rafael.beims@toradex.com, linux-mmc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi RD,
+On Wed, 18 Oct 2023 at 18:05, Rafael Beims <rafael@beims.me> wrote:
+>
+> On 10/10/2023 18:04, Ulf Hansson wrote:
+> > On Tue, 10 Oct 2023 at 17:33, Bean Huo <beanhuo@iokpp.de> wrote:
+> >> Hi Ulf,
+> >>
+> >> thanks for your comments, I didn't quite get your points:
+> >>
+> >> On Tue, 2023-10-10 at 16:20 +0200, Ulf Hansson wrote:
+> >>>> @@ -2381,8 +2381,11 @@ enum mmc_issued mmc_blk_mq_issue_rq(struct
+> >>>> mmc_queue *mq, struct request *req)
+> >>>>                           }
+> >>>>                           ret = mmc_blk_cqe_issue_flush(mq, req);
+> >>>>                           break;
+> >>>> -               case REQ_OP_READ:
+> >>>>                   case REQ_OP_WRITE:
+> >>>> +                       if (mmc_card_broken_cache_flush(card) &&
+> >>>> !card->written_flag)
+> >>> It looks superfluous to me to check mmc_card_broken_cache_flush() and
+> >>> !card->written_flag. Just set the card->written_flag unconditionally.
+> >> what did you mean "Just set the card->written_flag unconditionally."?
+> >> This means I just need to check card->written_flag and set card-
+> >>> written_flag to true and false in the case
+> >> MMC_QUIRK_BROKEN_CACHE_FLUSH? or don't need to call
+> >> mmc_card_broken_cache_flush()?
+> > I mean skip the checks above and just do the assignment below.
+> >
+> >>>> +                               card->written_flag = true;
+> >>>> +                       fallthrough;
+> >>>> +               case REQ_OP_READ:
+> >>>>                           if (host->cqe_enabled)
+> >>>>                                   ret = mmc_blk_cqe_issue_rw_rq(mq,
+> >>>> req);
+> >>>>                           else
+> >>>> diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
+> >>>> index 4edf9057fa79..b7754a1b8d97 100644
+> >>>> --- a/drivers/mmc/core/card.h
+> >>>> +++ b/drivers/mmc/core/card.h
+> >>>> @@ -280,4 +280,8 @@ static inline int
+> >>>> mmc_card_broken_sd_cache(const struct mmc_card *c)
+> >>>>           return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
+> >>>>    }
+> >>>>
+> >>>> +static inline int mmc_card_broken_cache_flush(const struct
+> >>>> mmc_card *c)
+> >>>> +{
+> >>>> +       return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
+> >>>> +}
+> >>>>    #endif
+> >>>> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+> >>>> index 89cd48fcec79..47896c32086e 100644
+> >>>> --- a/drivers/mmc/core/mmc.c
+> >>>> +++ b/drivers/mmc/core/mmc.c
+> >>>> @@ -1929,6 +1929,8 @@ static int mmc_init_card(struct mmc_host
+> >>>> *host, u32 ocr,
+> >>>>           if (!oldcard)
+> >>>>                   host->card = card;
+> >>>>
+> >>>> +       card->written_flag = false;
+> >>>> +
+> >>> How about doing this after a successful flush operation instead? In
+> >>> other words in _mmc_flush_cache().
+> >> Here initializes flag and the patch is intenting to eliminate the cache
+> >> flush command before writing. what do you mean adding in
+> >> mmc_flush_cache()?
+> > mmc_init_card() is called while initializing and re-initializing the
+> > card. So, it certainly works to reset the flag from here.
+> >
+> > However, _mmc_flush_cache() is called before powering off the card,
+> > which then would work similarly to the above, but also gets called for
+> > REQ_OP_FLUSH. Wouldn't that mean that we may be able to skip some
+> > unnecessary/troublesome cache flush requests if we would reset the
+> > flag from  mmc_flush_cache(), rather than from mmc_init_card()?
+> >
+> > Kind regards
+> > Uffe
+> Forgive me if I'm misunderstanding something, but wouldn't resetting the
+> flag on _mmc_flush_cache()
+> essentially disable cache when the MMC_QUIRK_BROKEN_CACHE_FLUSH is active?
 
-On Oct 18 20:34, RD Babiera wrote:
-> DisplayPort Alt Mode CTS test 10.3.8 states that both sides of the
-> connection shall be compatible with one another such that the connection
-> is not Source to Source or Sink to Sink.
-> 
-> The DisplayPort driver currently checks for a compatible pin configuration
-> that resolves into a source and sink combination. The CTS test is designed
-> to send a Discover Modes message that has a compatible pin configuration
-> but advertises the same port capability as the device; the current check
-> fails this.
-> 
-> Verify that the port and port partner resolve into a valid source and sink
-> combination before checking for a compatible pin configuration.
-> 
-> ---
-> Changes since v1:
-> * Fixed styling errors
-> * Added DP_CAP_IS_UFP_D and DP_CAP_IS_DFP_D as macros to typec_dp.h
-> ---
-> 
+It would, until after there has been a new I/O write. Is that a problem?
 
-FWIW,
-Reviewed-by: Prashant Malani <pmalani@chromium.org>
+>
+>  From what I see, the card->written flag is supposed to stay true until
+> we need to reinitialize the
+> eMMC again, otherwise we would be skipping cache flushes we don't want
+> to skip. It's only before
+> writing for the first time that we want to skip the flush.
 
-> Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: RD Babiera <rdbabiera@google.com>
+If that's really what we want, that's perfectly okay to me. The commit
+message isn't really clear about this, so I think that Bean could
+improve that too.
 
-BR,
+I guess we need some kind of confirmation from Bean about this. Don't
+get me wrong, I am happy to go with whatever approach as long as it's
+clear *why* the selected approach is taken.
 
--Prashant
+Kind regards
+Uffe
