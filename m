@@ -2,196 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B5F67CE03D
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 16:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 393297CE041
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 16:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231901AbjJROk0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 10:40:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38662 "EHLO
+        id S230432AbjJROk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 10:40:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229810AbjJROk0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 10:40:26 -0400
-Received: from outbound-ip160b.ess.barracuda.com (outbound-ip160b.ess.barracuda.com [209.222.82.95])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C9B94;
-        Wed, 18 Oct 2023 07:40:21 -0700 (PDT)
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2101.outbound.protection.outlook.com [104.47.70.101]) by mx-outbound16-38.us-east-2b.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Wed, 18 Oct 2023 14:40:16 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=irzaLHNr04rsW/xJ/q1WdoQbZbkdYm+g55OauV9B0wEfxXTCP52QPeXkNEYs0BRPKl8tuqVWnnBlBV/SY2Yde2FmcoGRlPDYmoLaXn1IOc9SwLHmsUeGuTkMPuW+fPpY5m3aISn6i+hplvleF8wMxC0NJLGCvrcKCNab2R6zyJ3NjHz4PXuRSj662KO0tJIA5pRxcHFOQOO+F+ed8G9XrgK1AeElHz2aviwJc0ihIdDv9OGYNrlLmm9hzq1JC4Qv9GXay/8kGRE0xL17UoK/7apfjemGeEFXJYM/KRMh9dU5Cyyt1aT9uLBf60Mm5bo7JYUTesuG6qqNGeQSq54u+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3Oa4W10xZZD6q4EkOEY+KksJzOrNXeKKqKEtLKtYBaE=;
- b=izXdSvnL/bMdSNiA1L+9VCJg/yoj/gisZvDF4T6asbCJGnQ0r7xglihEDx92rVpCPteOO5hw3thWuV8WqbPInByCyrl7yqAdzzY5FaQb6K4VBTOiMziEILUXP6Q4SVp1mgafp+/gOcClhPMBL4KgnDP6bsrXkd5ArU/gKnaTcDlES+6PnzhNyH+Wq27dJqMecb35VH0WHEtJZC7BePP4mZuMi8h6havKYUP4bVpxR2dkEH4znUfmOTv09nvm1GjTK72W95Gye+nuHnS2BTiM+6p4qxVFyEfMIWVxHLTmuUiIEWfEeXTzqY0MGnvUzhbMiOW6ewo4khqu2GfKX/B5AA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ddn.com; dmarc=pass action=none header.from=ddn.com; dkim=pass
- header.d=ddn.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3Oa4W10xZZD6q4EkOEY+KksJzOrNXeKKqKEtLKtYBaE=;
- b=vsVp3Q0G8P5gEOR2Hx6qMdqiKWkMYp2OBxq2CkmEDopuXxJtTz9ojtwLaN+cV7rAZQjLmT74mYndA4q/ijdwLKtlLh+As2dEQyewiycm2KgdM5/xXdYEwCBPlc+HKYNf3f4Dv0DYJTtPDavAh5jPf/d3WAzxngdTRjPHSHloKx8=
-Received: from DM5PR1901MB2037.namprd19.prod.outlook.com (2603:10b6:4:aa::29)
- by CY8PR19MB7249.namprd19.prod.outlook.com (2603:10b6:930:98::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.36; Wed, 18 Oct
- 2023 14:40:14 +0000
-Received: from DM5PR1901MB2037.namprd19.prod.outlook.com
- ([fe80::b051:b4e4:8a2:33a2]) by DM5PR1901MB2037.namprd19.prod.outlook.com
- ([fe80::b051:b4e4:8a2:33a2%5]) with mapi id 15.20.6907.022; Wed, 18 Oct 2023
- 14:40:14 +0000
-From:   Bernd Schubert <bschubert@ddn.com>
-To:     =?utf-8?B?QW5kcsOpIERyYXN6aWs=?= <andre.draszik@linaro.org>
-CC:     Miklos Szeredi <mszeredi@redhat.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set the
- FUSE_INIT_EXT"
-Thread-Topic: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set
- the FUSE_INIT_EXT"
-Thread-Index: AQHaAbRpOYa+0Y8j+kCP04IX3OA3s7BPbDcAgAABw4CAAAGgAIAAKwaAgAAD9wA=
-Date:   Wed, 18 Oct 2023 14:40:13 +0000
-Message-ID: <9afc3152-5448-42eb-a7f4-4167fc8bc589@ddn.com>
-References: <20230904133321.104584-1-git@andred.net>
- <20231018111508.3913860-1-git@andred.net>
- <717fd97a-6d14-4dc9-808c-d752d718fb80@ddn.com>
- <4b0b46f29955956916765d8d615f96849c8ce3f7.camel@linaro.org>
- <fa3510f3-d3cc-45d2-b38e-e8717e2a9f83@ddn.com>
- <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
-In-Reply-To: <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
-Accept-Language: en-GB, en-US
-Content-Language: en-GB
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla Thunderbird
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=ddn.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM5PR1901MB2037:EE_|CY8PR19MB7249:EE_
-x-ms-office365-filtering-correlation-id: 77b3784e-3cb5-4748-c583-08dbcfe82353
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 8Mll6t4HkktRdG3kudVQBBLQlaS6UDsCZSWOUuGwMc8Qec/bTnnYW19iyfwPVUQUREFTsf2mcgklZgy3UxO5t0LhJcXw2LlmhvuP7bGKZxb1DwGp7B/Bpg1mDdGeZf/IvP7v7F0lznFNsywCSDYo3MHiPHappXByM8Gy6rMVQVorD+BmcvQ3VzVYC/YSNmQnGhXnjAgH/q8JuJwx8METIiJtRijGczabBhHZQ3v7BkiNBjKrJTwD31tmC3fPoE5K8jkI9hNoO5RggIciO1BYEP6OgtUi9/XrQa2QHdAub2ot4fn/4a3drPjLPyu/UK+SIBiAki1s6JaixZfyRNpPZAzuaKWu2vNXJyw4i/Ud6bIs3d9zKFz6p7T3/gwg57xEpNHzui1wCh9QlAdd3+K7tUeu0CDhXy+YFmx9JevCN2XhiprG8eH5RiLilouAojmN9O6N1b2sOT/d+aZYuduPvuY0exQMC+x3jMrYMFAxULXJeD3bJhtSJlmP11Bli2d0stwpYWQQvFtDt0llcwHmVnII5nx8FLMhVTDnxCdGOwVpekNGWFHoEGbiazXMq7URy5fmW9c3WqGUPA5dM7on41/MNNYyJ7IEuGftz6lQEc2OqWAy3ix/sQ2muLaIePaK9qEzsPelsF9mJCgnPHNTR3oJp31o7z5Yam+VzJnnjw/55XgtoT9jAGUgVGKt45OjoMIGGJjdB1ZDeV6U/Lx+QA==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR1901MB2037.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(39850400004)(136003)(376002)(346002)(230922051799003)(1800799009)(64100799003)(186009)(451199024)(31686004)(83380400001)(316002)(31696002)(86362001)(36756003)(4326008)(38070700005)(5660300002)(122000001)(4001150100001)(41300700001)(2906002)(6506007)(966005)(66556008)(91956017)(8936002)(8676002)(71200400001)(38100700002)(6486002)(66946007)(53546011)(76116006)(64756008)(66476007)(6512007)(66446008)(54906003)(6916009)(2616005)(478600001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TVRWSlZ2ck05R3RTbVNXVUcyNFBLQml6dytMeVNNRHpqbFpVVEVNb2wvUWE0?=
- =?utf-8?B?YUJNTnBQYUhvV0VmZHpXbkFpVFNPZDVVNmVuMFFIY1VvU05LZ3NscFNmbkFo?=
- =?utf-8?B?b28wVURWN2NJcHJCNkhQOUVpWDdNMFBuaHF1TEl3RC9QSjBEa0RoRVl1NXFZ?=
- =?utf-8?B?QlZMVDl6MEs5VytRRWVTOVRyQ0FXeStYOWg1OW9xMW54T2ZsUVN1YVpLSTB6?=
- =?utf-8?B?S0ZVcHplRUdiVUJzbzl0TWNOdlRwYnlOYlRIY3RtVVoxQzA3dnlVSUl5clNt?=
- =?utf-8?B?WFNjdnNwYmc3VU9oOVg0SHpaQzYveUxXMHo3aHlCZS8ycG1qQUpOUCsrUHpl?=
- =?utf-8?B?cVlkYWZlQ2xyYW1RY05ZUzNkdHpYTXM2d0d0UDh2Z1dXQ0ZGWkxDWkJybksz?=
- =?utf-8?B?TlIxWWFPUVV1YXpweHlJSFNrZ0djWnpOMVZDeHBlOGJlVU5JcUxTSVU0Q3BW?=
- =?utf-8?B?Ym9rMmRXcThYRTJVSFhTNlo1bVUvZ0U2M2pjWEdGMThkQnNTMDNReFkrVE9G?=
- =?utf-8?B?dEtuMHBwMC83MVpRV2xpSENMckRETFJnUEpVdHNiWFRuV0VaZnp6ZDZwSklZ?=
- =?utf-8?B?TFdNSEpmaUJydlJ4a2Q1SkhmaXZHMnJ3WW42TlNaczU2OWhTTHpZd1pNUVR1?=
- =?utf-8?B?TlJGbytuWDlHWGJXbjBWTUJQK2FNbTkzelJIOS80R0YzcDd2TS9JeVc1dHhT?=
- =?utf-8?B?L0tyaVZKOEJRUm1McUwza25pNmo0OW5MeUs4QjBsa1dWSHF4cVMxSzJ2alR0?=
- =?utf-8?B?WURwbzUzTnordG1UQ2JRTXc0L0tZYStDbHJVclZ2VFZ6RDhSQ3hnampKRkZT?=
- =?utf-8?B?UWV5KzZWU1NvcWd1bmVORENIRkxVSFJtYkVtUng4UVZOQ2JBT25EMSt2Qmpp?=
- =?utf-8?B?YVRZckhRUG14RlBUdlZmMWlpT3dOY0F3eldmVS82OVlYb2pzaDJ6V1JmZ2or?=
- =?utf-8?B?dXgzcThHMUZWNURvbTBsWGJZWnBaQVo3eXM5Z1h1M1VFVCtpOWNUZG9UcFow?=
- =?utf-8?B?NEJXTDhqd3JlaFRxbDhJVEovREQ2TTY0NmtWN2hicEdKRk5UcTdiYm85NTZx?=
- =?utf-8?B?VzRKVWh1by85aVo1RWFjbUFteTF6Mk5YcnJWc25BWjV6RlkrZTkzL2dzd2NS?=
- =?utf-8?B?RldpZXV3WXVoZGdsaXliM2lvT2NTVm9sMndyOHhOaXQ1MGhtc3VURktSS1V2?=
- =?utf-8?B?YnJmSDI3UWNaNGtucWNNbThwMHZORGpib082c2hQN3VoazZ0WTZ0Wnl0djVG?=
- =?utf-8?B?RDdBK1NhMjhLK1hRTWJ4M2lYTWZHdXM2OFAxU0hLY3RVV0hkUjdWQWFOMFgx?=
- =?utf-8?B?SDZwbDlWNURHRTNuTk9qOGlwT1hWejZiaS9CM0lvVHZySHBQTW5NTTFIZk9W?=
- =?utf-8?B?QTNGRVRuNkxzbThKOUM0NjNKY3VObDJkcWN4QkZ4TWZ2Z2hhUk5oNzZ0T1VK?=
- =?utf-8?B?ZXhqdGNoSmdBVDREZFZEN0xmSmo0Z1h3d2JNczJyYlFLRjRMUU9TY3JLQUc1?=
- =?utf-8?B?cG92Z3pzRzNCUklXU2hibnVHTjJ0TWxoeUNOb3Jsem5obXFnWTQrdUdUaHZn?=
- =?utf-8?B?WStIV0JqbXpNTHc0OXh5bTdMSWhzQkRWU1I0ZFoxNU85YWkrNFZGaGtMaStk?=
- =?utf-8?B?RWtBYUhoRHY5WHFHUUFQRVhodHMxbDQ4Z2I5YS85bktoSktOSkZLQXdqV3Uy?=
- =?utf-8?B?cTlUbmVHUkJ4NzdoQkZ3UUxYenFOeE43UXJTeXUwTm9PZ05vUXAxa0EwUTkz?=
- =?utf-8?B?b2MvWDc4T1h1bTU4eGc3U21kVnVvVU0vTVVWOU14WGFMNTdyOWgzdE41Qm4r?=
- =?utf-8?B?NFdDWVM1ckh4T2FsazJrS0NXWFVNb0RBL1AyZFMyMUFaejlOeHJGdjUxTnRa?=
- =?utf-8?B?OTJQUU01L3UrV3RnUFdyN1dkQUhLSVkyL3lEdFplSnUvOWhWZklEZUR6U1Fh?=
- =?utf-8?B?UVlObFRhSmhjN1JRWjZ6ck8yM1lubVJoV3U4aHB2dnl0YTd4WURGOGVoTFJa?=
- =?utf-8?B?WXEzMmNYcE9QemFaZ3RTNC9TTDArRDlYTkhUVkZCaGt5NTNFbGhXVTAySjJH?=
- =?utf-8?B?b3lzVTBZTnA0SlpqOFg3bEZvWDFSejVGTjgxZXNFUFU5dXRFV1Bza0gzWElr?=
- =?utf-8?B?WU5yRlcwc0VRdkhjeDlRcEd5Q3RSc3IrYkMwOGgyMUpvRkFZcU14Q2VSWHZU?=
- =?utf-8?Q?eX7AUmvg5JoShOSzVqGBRuU=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <BF08FCD97BAFB044BBD54DDCB4A9D975@namprd19.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        with ESMTP id S235208AbjJROk6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 10:40:58 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5260310E;
+        Wed, 18 Oct 2023 07:40:56 -0700 (PDT)
+Received: from pwmachine.numericable.fr (unknown [188.24.154.80])
+        by linux.microsoft.com (Postfix) with ESMTPSA id D0E4D20B74C0;
+        Wed, 18 Oct 2023 07:40:53 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D0E4D20B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1697640055;
+        bh=rNK2ZSSkxeW+oOn8+c0A+f57gZEtJD4/megjKHpC57M=;
+        h=From:To:Cc:Subject:Date:From;
+        b=g0MyMcG+Q5UCFxeDDHtYkiVwR8sxVZB9Mi8m8NrEfhUyNNBwhmGUnoJdQCJ082ZQY
+         mSqtgKJoU5P4LjUXt0f7GK2v1uzDnIbMkYhaslMPMBxz+C/zeIc1gSMRpcvJ9HUHa7
+         lD2Hpjb83YGCV+xGI2OvUw4exF8lrdUxF+fB689I=
+From:   Francis Laniel <flaniel@linux.microsoft.com>
+To:     linux-trace-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>, stable@vger.kernel.org,
+        Francis Laniel <flaniel@linux.microsoft.com>
+Subject: [PATCH v5 0/2] Return EADDRNOTAVAIL when func matches several symbols during kprobe creation
+Date:   Wed, 18 Oct 2023 17:40:28 +0300
+Message-Id: <20231018144030.86885-1-flaniel@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: St/PL7/ao9sJ30TaL/assxvlFTzPNE/H203LXmP2IxRjg5NcPmGIT97LzjsC20hdoUhWy421asSWzEXudhL5cTZek23OGLn2lsi0Ibr6EOZ9Q4ROu02iqo+DEsQH9SD2Nt0fyGt0j1e1/9NRbovMaXIwDm8x4m/yIJCm05jPUkQQhs/1Oi0Xo9LZno9rOppwxDU3AjHyzElsg6+OjVFQeVTLZvqpaKNgzZp5y5hV7yB82n4b47a1a/IMUnbS4l0PdJIpWd+Ikk5p2RPFmbO8Tj1n2s62mJ5TW/QR/EFYqDN4jN0wLQRS++k14NzMyrzw5weThG86WMSnlNf6WgVwjiNwNAkN4NYXUfrwcA6bVhOn4kITBEaWWw67clHdpoXgUqsEhUt9ybeENTZfm//KNuALLReW85KXLjVDhCgJ5ETOnnl5uK97xE2dxSItE0CWsuudZefli/t0fPcM0H0jESXJs0P+f49dmVumPvmiAYwev8zr92GVE88yeZtEu73oOCYFZbNZaPjBtA/wENOZusqtMbgD5we7vQGKQovo8TyxnGGg92XT8UBqsvmdOLcDSvIz/BY4q8PQW6gp8fM/bLED5W7dgwiBZN15f1JHlU7RJ8vsF1rfpNpFo5mjbX4RScrc0xBVB8R403/waX8TilXd2T0gxQ1IhDrb8nJnMb9OaJaB3/IMlki+3RIMO4gMVMrRb+reCiz+PwcA5iGp+4LaCRCmvhuGDpvsbBHKowYWnTZSt8HYVqJi2e1m+gXNrN36WWlwCb7l8VJgMkMUbUW8Ud5YGBpQprFqLnjPRUHWHvpwoZhXTEEYFuRtKj7NNQ5niMJG78KkZFiALxH1o1esx8H7a35QR1Ht78/fLbx2E9eMSvB6gNk+LWiO7K6QAvxxwstVqy6kA6zv9vTzHlqPRTC2XYTppIKXS9wxGqo=
-X-OriginatorOrg: ddn.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM5PR1901MB2037.namprd19.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 77b3784e-3cb5-4748-c583-08dbcfe82353
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Oct 2023 14:40:13.4948
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vM0qonKt8oQ9uJm1PW8y1Jc/0iP0EkKmgelGLyph0fiyQzzPrdkRSjHw553TY3eLrzfVmwHOLHY0z1gHzDnVcQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR19MB7249
-X-BESS-ID: 1697640016-104134-12333-3083-1
-X-BESS-VER: 2019.1_20231013.1615
-X-BESS-Apparent-Source-IP: 104.47.70.101
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVkYmBgZAVgZQMDHJPMk02TLZOM
-        XY3CjVyNA0zcLYOM04zdws1dzM0thSqTYWABmpx4ZBAAAA
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.251526 [from 
-        cloudscan16-10.us-east-2b.ess.aws.cudaops.com]
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS124931 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status: 1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-T24gMTAvMTgvMjMgMTY6MjYsIEFuZHLDqSBEcmFzemlrIHdyb3RlOg0KPiBPbiBXZWQsIDIwMjMt
-MTAtMTggYXQgMTE6NTIgKzAwMDAsIEJlcm5kIFNjaHViZXJ0IHdyb3RlOg0KPj4gT24gMTAvMTgv
-MjMgMTM6NDYsIEFuZHLDqSBEcmFzemlrIHdyb3RlOg0KPj4+IE9uIFdlZCwgMjAyMy0xMC0xOCBh
-dCAxMTozOSArMDAwMCwgQmVybmQgU2NodWJlcnQgd3JvdGU6DQo+Pj4+IE9uIDEwLzE4LzIzIDEz
-OjE1LCBBbmRyw6kgRHJhc3ppayB3cm90ZToNCj4+Pj4+IEZyb206IEFuZHLDqSBEcmFzemlrIDxh
-bmRyZS5kcmFzemlrQGxpbmFyby5vcmc+DQo+Pj4+Pg0KPj4+Pj4gVGhpcyByZXZlcnRzIGNvbW1p
-dCAzMDY2ZmY5MzQ3NmMzNTY3OWNiMDdhOTdjY2UzN2Q5YmIwNzYzMmZmLg0KPj4+Pj4NCj4+Pj4+
-IFRoaXMgcGF0Y2ggYnJlYWtzIGFsbCBleGlzdGluZyB1c2Vyc3BhY2UgYnkgcmVxdWlyaW5nIHVw
-ZGF0ZXMNCj4+Pj4+IGFzDQo+Pj4+PiBtZW50aW9uZWQgaW4gdGhlIGNvbW1pdCBtZXNzYWdlLCB3
-aGljaCBpcyBub3QgYWxsb3dlZC4NCj4+Pj4+DQo+Pj4+PiBSZXZlcnQgdG8gcmVzdG9yZSBjb21w
-YXRpYmlsaXR5IHdpdGggZXhpc3RpbmcgdXNlcnNwYWNlDQo+Pj4+PiBpbXBsZW1lbnRhdGlvbnMu
-DQo+Pj4+DQo+Pj4+IFdoaWNoIGZ1c2UgZmlsZSBzeXN0ZW0gZG9lcyBpdCBleGFjdGx5IGJyZWFr
-PyBJbiBmYWN0IHRoZXJlDQo+Pj4+IGhhdmVuJ3QNCj4+Pj4gYmVlbg0KPj4+PiBhZGRlZCB0b28g
-bWFueSBmbGFncyBhZnRlciAtIHdoYXQgZXhhY3RseSBpcyBicm9rZW4/DQo+Pj4NCj4+PiBUaGUg
-b3JpZ2luYWwgcGF0Y2ggYnJva2UgdGhlIGV4aXN0aW5nIGtlcm5lbCA8LT4gdXNlciBBQkkgYnkg
-bm93DQo+Pj4gcmVxdWlyaW5nIHVzZXIgc3BhY2UgYXBwbGljYXRpb25zIHRvIHBhc3MgaW4gYW4g
-ZXh0cmEgZmxhZy4NCj4+PiBUaGVyZSBhcmUgdmFyaW91cyBzaWRlLWVmZmVjdHMgb2YgdGhpcywg
-bGlrZSB1bmJvb3RhYmxlIHN5c3RlbXMsDQo+Pj4ganVzdA0KPj4+IGJlY2F1c2UgdGhlIGtlcm5l
-bCB3YXMgdXBkYXRlZC4NCj4+PiBCcmVha2luZyB0aGUgQUJJIGlzIHRoZSBvbmUgdGhpbmcgdGhh
-dCBpcyBub3QgYWxsb3dlZC4gVGhpcyBpcyBub3QNCj4+PiBzcGVjaWZpYyB0byBhbnkgcGFydGlj
-dWxhciBmdXNlIGZpbGUgc3lzdGVtLg0KPj4NCj4+IEhvdyBleGFjdGx5IGRpZCBpdCBicmVhayBp
-dD8NCj4gDQo+IEF0IGxlYXN0IGluIEFuZHJvaWQsIGNyZWF0aW5nIG5ldyBmaWxlcywgb3IgcmVh
-ZGluZyBleGlzdGluZyBmaWxlcw0KPiByZXR1cm5zIC1FRkFVTFQNCg0KSG1tLCBjb3VsZCB5b3Ug
-cGxlYXNlIHBvaW50IG1lIHRvIHRoZSBjb3JyZXNwb25kaW5nIGFuZHJvaWQgdXNlcnNwYWNlIA0K
-bGlicmFyeT8gSSBndWVzcyBpdCBpcyBub3QgdXNpbmcgbGliZnVzZT8gQXQgbGVhc3QgSSB3b3Vs
-ZCBsaWtlIHRvIA0KdW5kZXJzdGFuZCB0aGUgaXNzdWUuLi4NCg0KPiANCj4+ICAgVGhlc2UgYXJl
-IGZlYXR1cmUgZmxhZ3MgLSBpcyB0aGVyZSByZWFsbHkgYQ0KPj4gZmlsZSBzeXN0ZW0gdGhhdCBy
-ZWxpZXMgb24gdGhlc2UgZmxhZyB0byB0aGUgZXh0ZW5kIHRoYXQgaXQgZG9lcyBub3QNCj4+IHdv
-cmsgYW55bW9yZT8NCj4gDQo+IEkgZG9uJ3Qga25vdyBlbm91Z2ggYWJvdXQgdGhlIGltcGxlbWVu
-dGF0aW9uIGRldGFpbHMsIGJ1dCBldmVuIG91dHNpZGUNCj4gQW5kcm9pZCB1c2VyIHNwYWNlIGhh
-ZCB0byBiZSB1cGRhdGVkIGFzIGEgcHJlcmVxdWlzaXRlIGZvciB0aGlzIGtlcm5lbA0KPiBwYXRj
-aDoNCj4gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsL1ltVUtaUUtOQUdpbXVwdjdAcmVkaGF0
-LmNvbS8NCj4gaHR0cHM6Ly9naXRodWIuY29tL2xpYmZ1c2UvbGliZnVzZS9wdWxsLzY2Mg0KPiAN
-Cj4gV2hpY2ggbWVhbnMgYW55IG5vbi1BbmRyb2lkIHVzZXIgc3BhY2UgcHJlZGF0aW5nIHRob3Nl
-IGNoYW5nZXMgaXNuJ3QNCj4gd29ya2luZyBhbnltb3JlIGVpdGhlci4NCg0KVGhlIHBhdGNoIGlu
-IGxpYmZ1c2UgaXMgZnJvbSBtZSwgdGhlcmUgd2FzIG5vdGhpbmcgYnJva2VuLg0KQW5kIEkgZG9u
-J3QgdGhpbmsgdGhhdCBhbnkgb2YgdGhlIGFkZGl0aW9uYWwgZmxhZ3MgYWRkZWQgYXJlIGEgDQpf
-cmVxdWlyZW1lbnRfIGZvciBsaWJmdXNlIGZpbGUgc3lzdGVtcyB0byB3b3JrLiBJJ20gbm90IHN1
-cmUgaWYgREFYIGFuZCANCnRoZSBvdGhlciBmbGFncyBiZWZvcmUgdGhlIHBhdGNoIHdhcyBtZXJn
-ZWQgYXJlIGEgX3JlcXVpcmVtZW50XyBmb3IgDQp2aXJ0aW9mc2Qgb3IganVzdCBhIG5pY2UgZmVh
-dHVyZSB0byBoYXZlLi4uDQoNCkluIGFueXdheSwgcGxlYXNlIHN0aWxsIGNvbnNpZGVyIHRoYXQg
-dXNpbmcgcG9zc2libHkgdW5pbml0aWFsaXplZCBmbGFncyANCmlzIG5vdCBhIGdvb2QgaWRlYSBl
-aXRoZXIgYW5kIGNvdWxkIHJhbmRvbWx5IGJyZWFrIHRoaW5ncyBhcyB3ZWxsLg0KDQoNClRoYW5r
-cywNCkJlcm5kDQoNCg0K
+Hi.
+
+
+In the kernel source code, it exists different functions which share the same
+name but which have, of course, different addresses as they can be defined in
+different modules:
+# Kernel was compiled with CONFIG_NTFS_FS and CONFIG_NTFS3_FS as built-in.
+root@vm-amd64:~# grep ntfs_file_write_iter /proc/kallsyms
+ffffffff814ce3c0 t __pfx_ntfs_file_write_iter
+ffffffff814ce3d0 t ntfs_file_write_iter
+ffffffff814fc8a0 t __pfx_ntfs_file_write_iter
+ffffffff814fc8b0 t ntfs_file_write_iter
+This can be source of troubles when you create a PMU kprobe for such a function,
+as it will only install one for the first address (e.g. 0xffffffff814ce3d0 in
+the above).
+This could lead to some troubles were BPF based tools does not report any event
+because the second function is not called:
+root@vm-amd64:/mnt# mount | grep /mnt
+/foo.img on /mnt type ntfs3 (rw,relatime,uid=0,gid=0,iocharset=utf8)
+# ig is a tool which installs a PMU kprobe on ntfs_file_write_iter().
+root@vm-amd64:/mnt# ig trace fsslower -m 0 -f ntfs3 --host &> /tmp/foo &
+[1] 207
+root@vm-amd64:/mnt# dd if=./foo of=./bar count=3
+3+0 records in
+3+0 records out
+1536 bytes (1.5 kB, 1.5 KiB) copied, 0.00543323 s, 283 kB/s
+root@vm-amd64:/mnt# fg
+ig trace fsslower -m 0 -f ntfs3 --host &> /tmp/foo
+^Croot@vm-amd64:/mnt# more /tmp/foo
+RUNTIME.CONTAINERNAME          RUNTIME.CONTAIN… PID              COMM
+  T      BYTES     OFFSET        LAT FILE
+                                                214              dd
+  R        512          0        766 foo
+                                                214              dd
+  R        512        512          9 foo
+                                                214              dd
+As you can see in the above, only read events are reported and no write because
+the kprobe is installed for the old ntfs_file_write_iter() and not the ntfs3
+one.
+The same behavior occurs with sysfs kprobe:
+root@vm-amd64:/# echo 'p:probe/ntfs_file_write_iter ntfs_file_write_iter' > /sys/kernel/tracing/kprobe_events
+root@vm-amd64:/# cat /sys/kernel/tracing/kprobe_events
+p:probe/ntfs_file_write_iter ntfs_file_write_iter
+root@vm-amd64:/# mount | grep /mnt
+/foo.img on /mnt type ntfs3 (rw,relatime,uid=0,gid=0,iocharset=utf8)
+root@vm-amd64:/# perf record -e probe:ntfs_file_write_iter &
+[1] 210
+root@vm-amd64:/# cd /mnt/
+root@vm-amd64:/mnt# dd if=./foo of=./bar count=3
+3+0 records in
+3+0 records out
+1536 bytes (1.5 kB, 1.5 KiB) copied, 0.00234793 s, 654 kB/s
+root@vm-amd64:/mnt# cd -
+/
+root@vm-amd64:/# fg
+perf record -e probe:ntfs_file_write_iter
+^C[ perf record: Woken up 1 times to write data ]
+[ perf record: Captured and wrote 0.056 MB perf.data ]
+
+root@vm-amd64:/# perf report
+Error:
+The perf.data data has no samples!
+# To display the perf.data header info, please use --header/--header-only optio>
+#
+
+In this contribution, I modified the functions creating sysfs and PMU kprobes to
+test if the function name given as argument matches several symbols.
+In this case, these functions return EADDRNOTAVAIL to indicate the user to use
+addr and offs to remove this ambiguity.
+So, when the above BPF tool is run, the following error message is printed:
+root@vm-amd64:~# ig trace fsslower -m 0 -f ntfs3 --host &> /tmp/foo &
+[1] 228
+root@vm-amd64:~# more /tmp/foo
+RUNTIME.CONTAINERNAME          RUNTIME.CONTAIN… PID              COMM
+  T      BYTES     OFFSET        LAT FILE
+Error: running gadget: running gadget: installing tracer: attaching kprobe: crea
+ting perf_kprobe PMU (arch-specific fallback for "ntfs_file_write_iter"): token
+ntfs_file_write_iter: opening perf event: cannot assign requested address
+And the same with sysfs kprobe:
+root@vm-amd64:/# echo 'p:probe/ntfs_file_write_iter ntfs_file_write_iter' > /sys/kernel/tracing/kprobe_events
+-bash: echo: write error: Cannot assign requested address
+Note that, this does not influence perf as it installs kprobes as offset on
+_text:
+root@vm-amd64:/# perf probe --add ntfs_file_write_iter
+Added new events:
+  probe:ntfs_file_write_iter (on ntfs_file_write_iter)
+  probe:ntfs_file_write_iter (on ntfs_file_write_iter)
+...
+root@vm-amd64:/# cat /sys/kernel/tracing/kprobe_events
+p:probe/ntfs_file_write_iter _text+5039088
+p:probe/ntfs_file_write_iter _text+5228752
+
+Note that, this contribution is the conclusion of a previous RFC which intended
+to install a PMU kprobe for all matching symbols [1, 2].
+
+If you see any way to improve this contribution, particularly if you have an
+idea to add tests or documentation for this behavior, please share your
+feedback.
+
+Changes since:
+ v1:
+  * Use EADDRNOTAVAIL instead of adding a new error code.
+  * Correct also this behavior for sysfs kprobe.
+ v2:
+  * Count the number of symbols corresponding to function name and return
+  EADDRNOTAVAIL if higher than 1.
+  * Return ENOENT if above count is 0, as it would be returned later by while
+  registering the kprobe.
+ v3:
+  * Check symbol does not contain ':' before testing its uniqueness.
+  * Add a selftest to check this is not possible to install a kprobe for a non
+  unique symbol.
+ v5:
+  * No changes, just add linux-stable as recipient.
+
+Francis Laniel (2):
+  tracing/kprobes: Return EADDRNOTAVAIL when func matches several
+    symbols
+  selftests/ftrace: Add new test case which checks non unique symbol
+
+ kernel/trace/trace_kprobe.c                   | 63 +++++++++++++++++++
+ kernel/trace/trace_probe.h                    |  1 +
+ .../test.d/kprobe/kprobe_non_uniq_symbol.tc   | 13 ++++
+ 3 files changed, 77 insertions(+)
+ create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+
+
+Best regards and thank you in advance.
+---
+[1]: https://lore.kernel.org/lkml/20230816163517.112518-1-flaniel@linux.microsoft.com/
+[2]: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
+--
+2.34.1
+
