@@ -2,95 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B86247CD1BB
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 03:17:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5FF17CD1C9
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 03:24:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344384AbjJRBRM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 21:17:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35068 "EHLO
+        id S229475AbjJRBYp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 21:24:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344382AbjJRBRL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 21:17:11 -0400
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31A1CFC
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 18:17:09 -0700 (PDT)
-Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-27d26a4fda1so4123057a91.3
-        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 18:17:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697591828; x=1698196628; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3n3bprVeIQuT2Ng9Lf574qnCGv4o8+z0VKTT/COmX9Q=;
-        b=KmHbK/G2xmikzjtcHD7dGMJdB8+tRHOpRptRNALPHyL2DYqRgOH1bMIeGUqK1EbOGP
-         4to8W9LqBAcFOwilHbSGVGTEi587ddTy0EQOrVOWET1/H4QeGAC062OMsd/CHUpWES8y
-         nWAh21q4LbZpK+VPwFb9Ib92KqvgZzqYj807pOIph20AD0SItjG/cLyBKCaG+GB5EeQ8
-         ZdZbswWNo+UUBxT3LC3Jf6+hjZU9GO25jQjV0LIrgeOJA61S7rmgPFyuQvfPq4XNRMYg
-         dlThAVfEkhPELdowbkI5Q2ozJEX3HWN+qpfgkwpb+vZOOogRN7NAkRf3V8ViPKhyeMCa
-         B+gA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697591828; x=1698196628;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3n3bprVeIQuT2Ng9Lf574qnCGv4o8+z0VKTT/COmX9Q=;
-        b=OeuxMcpMhH2kwh8czm2vFHbBcDKzCpg5DryOjmAkoLOmLaf3/xdpMJYYW5IgghFBQ4
-         6SPQQ1KtseNgCdOcdVqRsFavuOX+/MSc4vujUzPDclcXY/BTQlvWDuuyyw1C21oCz1EK
-         Ws+6+DWoDHzTl887oMZhZMHHr7tTgawGHhbFioGasQ4Npn/o3ZMYOIOwDV9PO5SDQ203
-         CbX45nxfn4uFJAGKnUo91418Xqr1D+8dcQb3T31GP0IOxLbVEZg1/UKvwZ7rsXYFZKFz
-         9pWSZa3RgX7xjptEOIjVAprzx05dGFt7q5Z2u7AJ3ebPj8GlslSSUcGVVCR7jnHZwQl3
-         mNqg==
-X-Gm-Message-State: AOJu0YyKBd+/CnYVi47RK/UZVbVpcUPNbIYtSUEN2kacjoMa2UeiE2Of
-        i7ciISrVvt4g8HGvoKfLrBUJXPOIs40=
-X-Google-Smtp-Source: AGHT+IH/h6VBuLNlyY3uWvKQWh9avfftGmDa316dg+vgdu/+7muqIhPyBmlDCjLij/7M4rsy1Exn781Z6iA=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:f14c:b0:1c9:dbcf:a87c with SMTP id
- d12-20020a170902f14c00b001c9dbcfa87cmr63061plb.3.1697591828655; Tue, 17 Oct
- 2023 18:17:08 -0700 (PDT)
-Date:   Tue, 17 Oct 2023 18:16:20 -0700
-In-Reply-To: <20231017155101.40677-1-nsaenz@amazon.com>
-Mime-Version: 1.0
-References: <20231017155101.40677-1-nsaenz@amazon.com>
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-Message-ID: <169759163972.1787364.3932584247097617727.b4-ty@google.com>
-Subject: Re: [PATCH v3] KVM: x86: hyper-v: Don't auto-enable stimer on write
- from user-space
-From:   Sean Christopherson <seanjc@google.com>
-To:     Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
-        Nicolas Saenz Julienne <nsaenz@amazon.com>
-Cc:     vkuznets@redhat.com, pbonzini@redhat.com, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, hpa@zytor.com, graf@amazon.de, rkagan@amazon.de,
-        linux-kernel@vger.kernel.org, anelkz@amazon.de,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S229451AbjJRBYo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 21:24:44 -0400
+X-Greylist: delayed 351 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 17 Oct 2023 18:24:42 PDT
+Received: from w4.tutanota.de (w4.tutanota.de [81.3.6.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BF290;
+        Tue, 17 Oct 2023 18:24:42 -0700 (PDT)
+Received: from tutadb.w10.tutanota.de (unknown [192.168.1.10])
+        by w4.tutanota.de (Postfix) with ESMTP id C634810602E9;
+        Wed, 18 Oct 2023 01:18:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1697591929;
+        s=s1; d=bens.haus;
+        h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:Sender;
+        bh=NV9Ui7WPiv06N20hCTJ4MNdUogbGN6WVmx0Xbz99u0w=;
+        b=TbfW2WQ2eAxSCG0f9iYFRbx4QjW/VG9gIBmAi5NGtKrrbSl+PUN8x/3T0TUNMLMI
+        KGNceXxNHwOv96tX8Qw913dnwHfdBZbtglgRA5FSMl+13+2hgTrgbqoAPEpaMXzys/y
+        EnobUwV89ATcIHD+ITF+lmP99NrSf2p9UVtOli5/X130WXwqTRah0NBw7Dc7ZtjlxWq
+        g4ItZtjtTY4+fxY/0GzLkYrnslIn9moAra3EUHpYiUjNjjg3QIGg2uvpWLXOG6uTlRA
+        e+Vu6BF9tEdRsFJJnfu7EWbZqHqY0C8BSWrFlnba1oRUeVdfO6uShxlA2ojBgaJn5Zm
+        zqS2/MqNgw==
+Date:   Wed, 18 Oct 2023 03:18:49 +0200 (CEST)
+From:   Ben Schneider <ben@bens.haus>
+To:     Ardb <ardb@kernel.org>
+Cc:     Regressions <regressions@lists.linux.dev>,
+        Linux Efi <linux-efi@vger.kernel.org>,
+        Stable <stable@vger.kernel.org>
+Message-ID: <Nh-DzlX--3-9@bens.haus>
+Subject: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 17 Oct 2023 15:51:02 +0000, Nicolas Saenz Julienne wrote:
-> Don't apply the stimer's counter side effects when modifying its
-> value from user-space, as this may trigger spurious interrupts.
-> 
-> For example:
->  - The stimer is configured in auto-enable mode.
->  - The stimer's count is set and the timer enabled.
->  - The stimer expires, an interrupt is injected.
->  - The VM is live migrated.
->  - The stimer config and count are deserialized, auto-enable is ON, the
->    stimer is re-enabled.
->  - The stimer expires right away, and injects an unwarranted interrupt.
-> 
-> [...]
+Hi Ard,
 
-Applied to kvm-x86 misc, thanks!
+I have an ESPRESSObin Ultra (aarch64) that uses U-Boot as its bootloader. I=
+t shipped from the manufacturer with with v5.10, and I've been trying to up=
+grade. U-Boot supports booting Image directly via EFI (https://u-boot.readt=
+hedocs.io/en/latest/usage/cmd/bootefi.html), and I have been using it that =
+way to successfully boot the system up to and including v6.0.19. However, v=
+6.1 and v6.5 kernels fail to boot.
 
-[1/1] KVM: x86: hyper-v: Don't auto-enable stimer on write from user-space
-      https://github.com/kvm-x86/linux/commit/d6800af51c76
+When booting successfully, the following messages are displayed:
 
---
-https://github.com/kvm-x86/linux/tree/next
+EFI stub: Booting Linux Kernel...EFI stub: ERROR: FIRMWARE BUG: efi_loaded_=
+image_t::image_base has bogus value
+EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundary
+EFI stub: Using DTB from configuration table
+EFI stub: ERROR: Failed to install memreserve config table!
+EFI stub: Exiting boot services...
+[=C2=A0=C2=A0=C2=A0 0.000000] Booting Linux on physical CPU 0x0000000000 [0=
+x410fd034]
+
+I suspect many of the above error messages are simply attributable to using=
+ U-Boot to load an EFI stub and can be safely ignored given that the system=
+ boots and runs fine.
+
+When boot fails (v6.5), the following messages are displayed:
+
+EFI stub: Booting Linux Kernel...
+EFI stub: ERROR: FIRMWARE BUG: efi_loaded_image_t::image_base has bogus val=
+ue
+EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundary
+EFI stub: ERROR: Failed to install memreserve config table!
+EFI stub: Using DTB from configuration table
+EFI stub: Exiting boot services...
+EFI stub: ERROR: Unable to construct new device tree.
+EFI stub: ERROR: Failed to update FDT and exit boot services
+
+In case it's relevant, the device tree for this device is arch/arm64/boot/m=
+arvell/armada-3720-espressobin-ultra.dts
+
+Hopefully I've reported this in the correct place or that the information p=
+rovided is sufficient to get it where it needs to be. Let me know if there =
+is additional information I can provide. I am also able to use the device t=
+o test.
+
+Sincerely,
+
+Ben Schneider
+
+#regzbot introduced v6.0..v6.1
