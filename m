@@ -2,127 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F66B7CDCCD
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 15:10:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97E237CDD7E
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 15:39:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231267AbjJRNKq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 09:10:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44094 "EHLO
+        id S231816AbjJRNi4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 09:38:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231210AbjJRNKp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 09:10:45 -0400
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12AD8F7;
-        Wed, 18 Oct 2023 06:10:43 -0700 (PDT)
-Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2c518a1d83fso60329821fa.3;
-        Wed, 18 Oct 2023 06:10:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697634641; x=1698239441; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
-        b=lNWsNGayi00fyI33JdnRcA9H0i70H+ss+eHrV8nraqgUvwKzP18+oBgmJP/Ffdtxvw
-         0uENuC1dN3qRym5YW/ozONK0y+c5vj3Y8NTWz8fYnn0g1Fvyveh5I/mvaADyke2NQpc8
-         3/c5s+gfmg7xyQ6IWQGH1DDTXP3fCmL4YZ5FRqHhAXuUIwiuMCjR/PLKVnjNjVtbxDOL
-         LPRpFTTssZcZHDVBKi3YkaUEBbybOlRpYeMcBLQtfImmTgEdj57cXT65laoC3+5lHw6B
-         B+bHZo2T7wcD8j5xvFcR80LAATYgFb0M4tB8cXBmR7WLVPLCTqWY4iLv3R4/U9tEJIHR
-         Nu6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697634641; x=1698239441;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/WIYTERMpa/hQ3nYRT3WjhR5KvI3DYiqFx8C9H6a/AQ=;
-        b=HBqgwY4fPFv2dkKFCb0c/K4rxLs7JKqb1yJnEJYD4CKxq47RBoMO5B55RMMS52cwFY
-         B9SzDM5fu0xZeUFL4ahdA4SZ/+t9IShQ4kcDmez4SfarHHi8QwiyNyHy+jPrYl3jLF/S
-         Iy2r3HDLs8fydXUFOsQrhyIj/leH2dFHw4WbPjMMO8LbpoIlKm9z0/nIBIlSeNc4esv/
-         wkmGCUvwcr+LdSCXI330u8UdioEpGVUlFR4J2bSZJNIuCfjK5mrcl4sdBQJ4DsfqNU7+
-         aEniEwHyy4bb8eururvkNJ9FdGWjQ7QePFc+uyXZ7Z3qt+HxJbruddLCWqcQNz7KC3z+
-         hv5A==
-X-Gm-Message-State: AOJu0YycjdldEcYZLYx5rRq61bKvoN7vMu8LyUQmfSf0J6ZPfyoi1FiQ
-        mT7CFpKh1vm/qURQzyxh4hc=
-X-Google-Smtp-Source: AGHT+IGfdJUpk8Rdt2SKdTJZt1PuOoBqvCcCill/y7BxjK6YaWEs7dFTajSyDUWp2IXypz6opVTCQA==
-X-Received: by 2002:a2e:9c43:0:b0:2c5:234b:d1eb with SMTP id t3-20020a2e9c43000000b002c5234bd1ebmr3001799ljj.50.1697634640737;
-        Wed, 18 Oct 2023 06:10:40 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id u6-20020a05600c138600b004064288597bsm1677426wmf.30.2023.10.18.06.10.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 06:10:40 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Kalle Valo <kvalo@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        Alexander Couzens <lynxis@fe80.eu>,
-        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Daniel Golle <daniel@makrotopia.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     stable@vger.kernel.org
-Subject: [PATCH v2 1/6] wifi: mt76: fix broken precal loading from MTD for mt7915
-Date:   Wed, 18 Oct 2023 15:09:37 +0200
-Message-Id: <20231018130942.31187-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S1344708AbjJRNiy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 09:38:54 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5526F95;
+        Wed, 18 Oct 2023 06:38:52 -0700 (PDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39IDREYT003041;
+        Wed, 18 Oct 2023 13:38:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=i3WHzy2jPOq7DWRkfcZKRbraJ5RbzlX80Vmm73j18BQ=;
+ b=dgAMFEl96Ml5b28k/WmAH40jAKvhbFF2oGE3F2kdgxxEDmXatV4GZsBne1pWoERKS0+W
+ Ddvjuko8clPf86ATjvU18UZV4Ej9Bl1ENrvR9H1n4w0QEfsT76ayNU5S/dyPZO4VBEbB
+ yNKKb8dKx4WTfap13pYRv+xMII7d0sxvJyB3CvrHUIprtCbLWgHfO+wUzR2eu2qYNv8V
+ IJMoveSNoJd2OrMmj4pScOoaOlc8UAVXHF/XhYzi9xswz0cE1mn82+UCFiDKA4CaAnJk
+ qel3fTpb3+njKmwYvIU5GjlmTmXB8cqR140aPPq/mehiTdXaQTZiDFsh+RGgHbUl8K6f nQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttg8v0mr3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 18 Oct 2023 13:38:51 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39IDRpvU005406;
+        Wed, 18 Oct 2023 13:38:42 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3ttg8v0me4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 18 Oct 2023 13:38:41 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39ICmgG3027163;
+        Wed, 18 Oct 2023 13:38:33 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tr6tkgkwc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 18 Oct 2023 13:38:33 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+        by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39IDcXZ326673760
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 18 Oct 2023 13:38:33 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id ECE3458054;
+        Wed, 18 Oct 2023 13:38:32 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8AC0658052;
+        Wed, 18 Oct 2023 13:38:31 +0000 (GMT)
+Received: from li-2c1e724c-2c76-11b2-a85c-ae42eaf3cb3d.ibm.com.com (unknown [9.61.47.87])
+        by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Wed, 18 Oct 2023 13:38:31 +0000 (GMT)
+From:   Tony Krowiak <akrowiak@linux.ibm.com>
+To:     linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc:     jjherne@linux.ibm.com, pasic@linux.ibm.com,
+        borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, david@redhat.com,
+        Anthony Krowiak <akrowiak@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>, stable@vger.kernel.org
+Subject: [PATCH v2 1/3] s390/vfio-ap: unpin pages on gisc registration failure
+Date:   Wed, 18 Oct 2023 09:38:23 -0400
+Message-ID: <20231018133829.147226-2-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231018133829.147226-1-akrowiak@linux.ibm.com>
+References: <20231018133829.147226-1-akrowiak@linux.ibm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: vja-EVQZhzePNr7mHYSqNsT-4Xqdr32p
+X-Proofpoint-GUID: basFk4F_qTajL0D0pAAa1tqTqJheMIeh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-18_12,2023-10-18_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ mlxscore=0 malwarescore=0 clxscore=1015 spamscore=0 adultscore=0
+ bulkscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310180113
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit 495184ac91bb ("mt76: mt7915: add support for applying
-pre-calibration data") was fundamentally broken and never worked.
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-The idea (before NVMEM support) was to expand the MTD function and pass
-an additional offset. For normal EEPROM load the offset would always be
-0. For the purpose of precal loading, an offset was passed that was
-internally the size of EEPROM, since precal data is right after the
-EEPROM.
+In the vfio_ap_irq_enable function, after the page containing the
+notification indicator byte (NIB) is pinned, the function attempts
+to register the guest ISC. If registration fails, the function sets the
+status response code and returns without unpinning the page containing
+the NIB. In order to avoid a memory leak, the NIB should be unpinned before
+returning from the vfio_ap_irq_enable function.
 
-Problem is that the offset value passed is never handled and is actually
-overwrite by
-
-	offset = be32_to_cpup(list);
-	ret = mtd_read(mtd, offset, len, &retlen, eep);
-
-resulting in the passed offset value always ingnored. (and even passing
-garbage data as precal as the start of the EEPROM is getting read)
-
-Fix this by adding to the current offset value, the offset from DT to
-correctly read the piece of data at the requested location.
-
-Cc: stable@vger.kernel.org
-Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Fixes: 783f0a3ccd79 ("s390/vfio-ap: add s390dbf logging to the vfio_ap_irq_enable function")
+Cc: <stable@vger.kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/eeprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/crypto/vfio_ap_ops.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/eeprom.c b/drivers/net/wireless/mediatek/mt76/eeprom.c
-index 36564930aef1..2558788f7ffb 100644
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -67,7 +67,7 @@ static int mt76_get_of_epprom_from_mtd(struct mt76_dev *dev, void *eep, int offs
- 		goto out_put_node;
- 	}
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index 4db538a55192..9cb28978c186 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -457,6 +457,7 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
+ 		VFIO_AP_DBF_WARN("%s: gisc registration failed: nisc=%d, isc=%d, apqn=%#04x\n",
+ 				 __func__, nisc, isc, q->apqn);
  
--	offset = be32_to_cpup(list);
-+	offset += be32_to_cpup(list);
- 	ret = mtd_read(mtd, offset, len, &retlen, eep);
- 	put_mtd_device(mtd);
- 	if (mtd_is_bitflip(ret))
++		vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
+ 		status.response_code = AP_RESPONSE_INVALID_GISA;
+ 		return status;
+ 	}
 -- 
-2.40.1
+2.41.0
 
