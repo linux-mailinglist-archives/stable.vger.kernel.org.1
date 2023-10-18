@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A5467CDB36
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 14:05:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5A377CDB37
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 14:05:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbjJRMFQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 08:05:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42394 "EHLO
+        id S230233AbjJRMFg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 08:05:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230201AbjJRMFP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:05:15 -0400
+        with ESMTP id S230229AbjJRMFf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:05:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 568C295
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 05:05:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB648C433C7;
-        Wed, 18 Oct 2023 12:05:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE61895
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 05:05:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC06C433C7;
+        Wed, 18 Oct 2023 12:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697630714;
-        bh=tPz0Fx6ZbqxlkVWTc6XO9eIjCI2CJRm3u1qhEuZ00OQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EaYGibQ7px6BfroxFr5A39Ipeo4MQiR8o/ccbSWB5cr01y1vXqLBWpZb2FDH51rxY
-         z6suQUONO1VwrngHZ5FGAo9MgTAl0zlUiCDR6f7LvucpB8QTJvEWkjlzrGSAYj9F0P
-         Bx/PLZZ35taevblFsqj8GKQ0REihRVh8XDS8Ktz9N+L04jicByeXTDZJJw/lNUWd98
-         j4U0RHmY+rWAX90KXGV0Ig55MC+/uL/R3b5wq75JvuTt9rsetULqFHkxpvhVth/9aV
-         PPBb3D9PD9lg+C1brKWCxSctldeVxVSQX1aLbJMlqCnrpFLhZqi4/EQ584iP3W/OTn
-         7sUxIiTrr186w==
+        s=k20201202; t=1697630732;
+        bh=nikhAq33CyVKUmREq6z40q7bxpH+4ZtxNEKEORDdXUo=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ltSkyxJD/dc9mBo/CZj8sGFUWvutltSOeXSnq0oupWuG1KLC2VrPspdwwc55qFeDe
+         WuCMko9brzDPlOROLxitO6oxQmhTtczXpb3Qagcza6maeBQeQTdrhfNef25kOnznsP
+         r8de740ClF/Bv+xvnM9FsWu5t0lT5CrDdAqMiARiepMxa03XCh7xHNx8JXVoJ//9O+
+         e+tgaxVoQcAPMBpunYhgEZHqbBdizxSYGtB3/eniJ2GFTOG9qUGiqrEqePxiqCRMpR
+         4i5ZXaNOz4K6tgfsspXz8oEMVfVoEFPcJ//zHwoBM93HlXj9Cn5grzqhFobcL34Cv1
+         SUkfIXIYhnngw==
 From:   Lee Jones <lee@kernel.org>
 To:     lee@kernel.org
 Cc:     stable@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v5.10.y 3/3] rpmsg: Fix kfree() of static memory on setting driver_override
-Date:   Wed, 18 Oct 2023 13:04:59 +0100
-Message-ID: <20231018120502.2110260-3-lee@kernel.org>
+Subject: [PATCH v5.4.y 1/3] driver: platform: Add helper for safer setting of driver_override
+Date:   Wed, 18 Oct 2023 13:05:16 +0100
+Message-ID: <20231018120527.2110438-1-lee@kernel.org>
 X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-In-Reply-To: <20231018120502.2110260-1-lee@kernel.org>
-References: <20231018120502.2110260-1-lee@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -51,76 +49,207 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 42cd402b8fd4672b692400fe5f9eecd55d2794ac upstream.
+commit 6c2f421174273de8f83cde4286d1c076d43a2d35 upstream.
 
-The driver_override field from platform driver should not be initialized
-from static memory (string literal) because the core later kfree() it,
-for example when driver_override is set via sysfs.
+Several core drivers and buses expect that driver_override is a
+dynamically allocated memory thus later they can kfree() it.
 
-Use dedicated helper to set driver_override properly.
+However such assumption is not documented, there were in the past and
+there are already users setting it to a string literal. This leads to
+kfree() of static memory during device release (e.g. in error paths or
+during unbind):
 
-Fixes: 950a7388f02b ("rpmsg: Turn name service into a stand alone driver")
-Fixes: c0cdc19f84a4 ("rpmsg: Driver for user space endpoint interface")
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+    kernel BUG at ../mm/slub.c:3960!
+    Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM
+    ...
+    (kfree) from [<c058da50>] (platform_device_release+0x88/0xb4)
+    (platform_device_release) from [<c0585be0>] (device_release+0x2c/0x90)
+    (device_release) from [<c0a69050>] (kobject_put+0xec/0x20c)
+    (kobject_put) from [<c0f2f120>] (exynos5_clk_probe+0x154/0x18c)
+    (exynos5_clk_probe) from [<c058de70>] (platform_drv_probe+0x6c/0xa4)
+    (platform_drv_probe) from [<c058b7ac>] (really_probe+0x280/0x414)
+    (really_probe) from [<c058baf4>] (driver_probe_device+0x78/0x1c4)
+    (driver_probe_device) from [<c0589854>] (bus_for_each_drv+0x74/0xb8)
+    (bus_for_each_drv) from [<c058b48c>] (__device_attach+0xd4/0x16c)
+    (__device_attach) from [<c058a638>] (bus_probe_device+0x88/0x90)
+    (bus_probe_device) from [<c05871fc>] (device_add+0x3dc/0x62c)
+    (device_add) from [<c075ff10>] (of_platform_device_create_pdata+0x94/0xbc)
+    (of_platform_device_create_pdata) from [<c07600ec>] (of_platform_bus_create+0x1a8/0x4fc)
+    (of_platform_bus_create) from [<c0760150>] (of_platform_bus_create+0x20c/0x4fc)
+    (of_platform_bus_create) from [<c07605f0>] (of_platform_populate+0x84/0x118)
+    (of_platform_populate) from [<c0f3c964>] (of_platform_default_populate_init+0xa0/0xb8)
+    (of_platform_default_populate_init) from [<c01031f8>] (do_one_initcall+0x8c/0x404)
+
+Provide a helper which clearly documents the usage of driver_override.
+This will allow later to reuse the helper and reduce the amount of
+duplicated code.
+
+Convert the platform driver to use a new helper and make the
+driver_override field const char (it is not modified by the core).
+
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20220419113435.246203-13-krzysztof.kozlowski@linaro.org
+Link: https://lore.kernel.org/r/20220419113435.246203-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- drivers/rpmsg/rpmsg_internal.h | 13 +++++++++++--
- include/linux/rpmsg.h          |  6 ++++--
- 2 files changed, 15 insertions(+), 4 deletions(-)
+ drivers/base/driver.c           | 69 +++++++++++++++++++++++++++++++++
+ drivers/base/platform.c         | 28 ++-----------
+ include/linux/device.h          |  2 +
+ include/linux/platform_device.h |  6 ++-
+ 4 files changed, 80 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/rpmsg/rpmsg_internal.h b/drivers/rpmsg/rpmsg_internal.h
-index 3fc83cd50e98f..9165e3c811be4 100644
---- a/drivers/rpmsg/rpmsg_internal.h
-+++ b/drivers/rpmsg/rpmsg_internal.h
-@@ -84,10 +84,19 @@ struct device *rpmsg_find_device(struct device *parent,
-  */
- static inline int rpmsg_chrdev_register_device(struct rpmsg_device *rpdev)
- {
-+	int ret;
-+
- 	strcpy(rpdev->id.name, "rpmsg_chrdev");
--	rpdev->driver_override = "rpmsg_chrdev";
-+	ret = driver_set_override(&rpdev->dev, &rpdev->driver_override,
-+				  rpdev->id.name, strlen(rpdev->id.name));
-+	if (ret)
-+		return ret;
-+
-+	ret = rpmsg_register_device(rpdev);
-+	if (ret)
-+		kfree(rpdev->driver_override);
- 
--	return rpmsg_register_device(rpdev);
-+	return ret;
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 4e5ca632f35e8..ef14566a49710 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -29,6 +29,75 @@ static struct device *next_device(struct klist_iter *i)
+ 	return dev;
  }
  
- #endif
-diff --git a/include/linux/rpmsg.h b/include/linux/rpmsg.h
-index a68972b097b72..6e7690e20dc51 100644
---- a/include/linux/rpmsg.h
-+++ b/include/linux/rpmsg.h
-@@ -41,7 +41,9 @@ struct rpmsg_channel_info {
-  * rpmsg_device - device that belong to the rpmsg bus
-  * @dev: the device struct
-  * @id: device id (used to match between rpmsg drivers and devices)
-- * @driver_override: driver name to force a match
-+ * @driver_override: driver name to force a match; do not set directly,
-+ *                   because core frees it; use driver_set_override() to
-+ *                   set or clear it.
-  * @src: local address
-  * @dst: destination address
-  * @ept: the rpmsg endpoint of this channel
-@@ -50,7 +52,7 @@ struct rpmsg_channel_info {
- struct rpmsg_device {
- 	struct device dev;
- 	struct rpmsg_device_id id;
--	char *driver_override;
++/**
++ * driver_set_override() - Helper to set or clear driver override.
++ * @dev: Device to change
++ * @override: Address of string to change (e.g. &device->driver_override);
++ *            The contents will be freed and hold newly allocated override.
++ * @s: NUL-terminated string, new driver name to force a match, pass empty
++ *     string to clear it ("" or "\n", where the latter is only for sysfs
++ *     interface).
++ * @len: length of @s
++ *
++ * Helper to set or clear driver override in a device, intended for the cases
++ * when the driver_override field is allocated by driver/bus code.
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len)
++{
++	const char *new, *old;
++	char *cp;
++
++	if (!override || !s)
++		return -EINVAL;
++
++	/*
++	 * The stored value will be used in sysfs show callback (sysfs_emit()),
++	 * which has a length limit of PAGE_SIZE and adds a trailing newline.
++	 * Thus we can store one character less to avoid truncation during sysfs
++	 * show.
++	 */
++	if (len >= (PAGE_SIZE - 1))
++		return -EINVAL;
++
++	if (!len) {
++		/* Empty string passed - clear override */
++		device_lock(dev);
++		old = *override;
++		*override = NULL;
++		device_unlock(dev);
++		kfree(old);
++
++		return 0;
++	}
++
++	cp = strnchr(s, len, '\n');
++	if (cp)
++		len = cp - s;
++
++	new = kstrndup(s, len, GFP_KERNEL);
++	if (!new)
++		return -ENOMEM;
++
++	device_lock(dev);
++	old = *override;
++	if (cp != s) {
++		*override = new;
++	} else {
++		/* "\n" passed - clear override */
++		kfree(new);
++		*override = NULL;
++	}
++	device_unlock(dev);
++
++	kfree(old);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(driver_set_override);
++
+ /**
+  * driver_for_each_device - Iterator for devices bound to a driver.
+  * @drv: Driver we're iterating.
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 75623b914b8c2..0ed43d185a900 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -973,31 +973,11 @@ static ssize_t driver_override_store(struct device *dev,
+ 				     const char *buf, size_t count)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+-	char *driver_override, *old, *cp;
+-
+-	/* We need to keep extra room for a newline */
+-	if (count >= (PAGE_SIZE - 1))
+-		return -EINVAL;
+-
+-	driver_override = kstrndup(buf, count, GFP_KERNEL);
+-	if (!driver_override)
+-		return -ENOMEM;
+-
+-	cp = strchr(driver_override, '\n');
+-	if (cp)
+-		*cp = '\0';
+-
+-	device_lock(dev);
+-	old = pdev->driver_override;
+-	if (strlen(driver_override)) {
+-		pdev->driver_override = driver_override;
+-	} else {
+-		kfree(driver_override);
+-		pdev->driver_override = NULL;
+-	}
+-	device_unlock(dev);
++	int ret;
+ 
+-	kfree(old);
++	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
++	if (ret)
++		return ret;
+ 
+ 	return count;
+ }
+diff --git a/include/linux/device.h b/include/linux/device.h
+index c7be3a8073ec3..af4ecbf889107 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -422,6 +422,8 @@ extern int __must_check driver_create_file(struct device_driver *driver,
+ extern void driver_remove_file(struct device_driver *driver,
+ 			       const struct driver_attribute *attr);
+ 
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len);
+ extern int __must_check driver_for_each_device(struct device_driver *drv,
+ 					       struct device *start,
+ 					       void *data,
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index 569f446502bed..c7bd8a1a60976 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -29,7 +29,11 @@ struct platform_device {
+ 	struct resource	*resource;
+ 
+ 	const struct platform_device_id	*id_entry;
+-	char *driver_override; /* Driver name to force a match */
++	/*
++	 * Driver name to force a match.  Do not set directly, because core
++	 * frees it.  Use driver_set_override() to set or clear it.
++	 */
 +	const char *driver_override;
- 	u32 src;
- 	u32 dst;
- 	struct rpmsg_endpoint *ept;
+ 
+ 	/* MFD cell pointer */
+ 	struct mfd_cell *mfd_cell;
 -- 
 2.42.0.655.g421f12c284-goog
 
