@@ -2,57 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3914E7CE84F
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 21:58:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C659D7CE880
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 22:07:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231182AbjJRT6A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 15:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49680 "EHLO
+        id S231812AbjJRUHQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 16:07:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229921AbjJRT6A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 15:58:00 -0400
-Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1655112
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 12:57:58 -0700 (PDT)
-Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d852b28ec3bso8205003276.2
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 12:57:58 -0700 (PDT)
+        with ESMTP id S231733AbjJRUHQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 16:07:16 -0400
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB4EA12A
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 13:07:10 -0700 (PDT)
+Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-40662119cd0so2175e9.1
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 13:07:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697659078; x=1698263878; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=I/XM1z5JZivZjrCtyiiMknZBzqnQ0wXs5QF6KiE/CLE=;
-        b=O/V2UJWhKwysAOMR08k/LSHE4vZAwujVRjzSrSO+VaOqL8f4G8DM9yLWAuL1J4742c
-         45TuUzLC+mpyvKbrlHOFE/bBlY2JyIzoZvGAVym8AJWScqN5A5J/OBg+yYgGtvPWHdUx
-         Nv7YzNoKoSZVJA512bSDdBnuzMl+QF5H8s12tL8hZidODFdmJHrLwkG2JFQQhvPfwPI4
-         1FfYv1A+rbQP9sMrzKC2N4JuJX9dE2OR2EY1QW0cd9QXLGq/LNZ7vlzzF6Bm+z1O//RC
-         qTK/J5BSTAc0EGOkPRT7cy1aj1dUetZH8eFLyd9kRK6uJxD5h60mjOJuMJJAKrEGDnmO
-         Jqzg==
+        d=google.com; s=20230601; t=1697659629; x=1698264429; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sPhmrOEAGSKzMIjkwCvY5cv2O4ZSIOLkxAjWrHEja3w=;
+        b=qGImROqCUOY96TrtmHXS+8iirCCu5lM5bTlxcKNGoO5ltnV79akvZdjA4NXuJSmJYR
+         SOuLE/shapWsFPZEuLPAgpbs5LixNtCbhoy4iJsTScsT+0SBiUciFf5wQygrjXqZwP94
+         vwN5piFoZ+tRtCol6sSUuincCy323JUyYJFAAsLT9eKkQznXH1uFz6XGQzfvZ176sFy0
+         T8MpHNudCOx/W3ULIPInVnccro3vaMKwRzBv6mc4/nrmgnppykVP6zG/nejt3+syLbLM
+         7YFM9+qzk3AybTHrbTqskpT7ExW/jmKu7gqigiVVuheyUql05exeMorWQ/5B0u4wj4cx
+         m+Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697659078; x=1698263878;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=I/XM1z5JZivZjrCtyiiMknZBzqnQ0wXs5QF6KiE/CLE=;
-        b=DBcqSgz3T0VgynVJHT4S4svMHmbQWg1q6HvVjz8F9YyToK0eF+KK6Dd6Py+tMowphN
-         tuvg+EbnO+oXwbW+2r9rMzCOtMZLxTtIuQAIQKtMcm7swdUob3AxdLGRIdxoHof7CDWN
-         D7dLTtZuRs6I5Htjoo7+syx6R+rQVclN3BB7gcolYaHEjuD0OX8A18giDDx9hpIBDB6d
-         ojWred3Xc3Lea3QogwCvFCd+gLQWP7lJrQCRSBQTr6fXYJdXZXamdwoB3TgXyvYOfXRg
-         czW4LpI1uuQH+E4oExuXQvtl57JmU+Q2pnoiedAUbiD6GaeO3JMaBIzTvS0ul9woZubv
-         FhDQ==
-X-Gm-Message-State: AOJu0YxDRP3+vF7aZRRlauoBPAI45+91PQgukwgEaCYKXHrKei2JGEWp
-        NiYSfDyprgJBBy3WecDBbNTyiVjqZ3+HP8n0r1nm/kqwDHexng==
-X-Google-Smtp-Source: AGHT+IFFmgbM3elbPOjcS01ubTUTSSjieu7PHMrZVqJv8gixG6ESvf/e6reoA08V7VNHaxAlMLlduakc5/QDu2Ozr2M=
-X-Received: by 2002:a5b:252:0:b0:d91:fdb:afd4 with SMTP id g18-20020a5b0252000000b00d910fdbafd4mr350353ybp.16.1697659077787;
- Wed, 18 Oct 2023 12:57:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697659629; x=1698264429;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sPhmrOEAGSKzMIjkwCvY5cv2O4ZSIOLkxAjWrHEja3w=;
+        b=UZxpDuwkGqqbV8YrtdYel+h9C5mRJ8j2uy4wHjseYj6Xeg2Dwr4jLH2PE8I8KfRHwB
+         pCuxigTqpMNDfzDkBhNXIM4OB45q21kB0+hlaFNPz5oYOe53K03i/qQt0iOFWT2h22Nj
+         RC+GlWDO+lu8jf+vdt5mtlMSEIU2T4oPXbQlVqRynOy98bW7eHPQM3RKiHYwk+eGXoro
+         eRpCTHiRxlScxPF8a/vJmkQpCktQJKwbcrUFH56cdgIVwBpmJPVQDbqjfggDLOHcQCmM
+         FWEGGBHGhOsiSF5iUxtUh0bv7R77EKR0Usq1Z8/BPhzoAIwy/J0DMVG8W2vYCGhwscOP
+         i1VQ==
+X-Gm-Message-State: AOJu0YwMck1V9NVrA/JOfnM6w17V4u6RYCWMcfE+E0SQz0fpPKue6wqp
+        hlBqoCLbCC9rIuIvMYyjRn8bcyRwP/KePqa9BUfYZg==
+X-Google-Smtp-Source: AGHT+IFkedQ+OHj7eKCi9zaF6kjyK5MOXzE0T4xvjYrgCFJPKLNw2LYw0cD94nyM5tACg+nqXeEkej5ps5730sWdDBs=
+X-Received: by 2002:a05:600c:1c1b:b0:405:320a:44f9 with SMTP id
+ j27-20020a05600c1c1b00b00405320a44f9mr6026wms.5.1697659628765; Wed, 18 Oct
+ 2023 13:07:08 -0700 (PDT)
 MIME-Version: 1.0
-From:   aftermath digital <aftermath.digital0@gmail.com>
-Date:   Wed, 18 Oct 2023 20:57:47 +0100
-Message-ID: <CADwTF6=b4wuC4ESVTZsAidDhxMj-A9RU6wOYShJcuhMKQFfVaw@mail.gmail.com>
-Subject: vmlinux-gdb unable to parse_and_eval("hrtimer_resolution") on mainline
-To:     stable@vger.kernel.org, jan.kiszka@siemens.com, kbingham@kernel.org
+References: <20231016225617.3182108-2-rdbabiera@google.com> <CACeCKac2kknw2s7orH1tu4RsiCr5+WYy1VQ483ok_zuzC2N9zQ@mail.gmail.com>
+In-Reply-To: <CACeCKac2kknw2s7orH1tu4RsiCr5+WYy1VQ483ok_zuzC2N9zQ@mail.gmail.com>
+From:   RD Babiera <rdbabiera@google.com>
+Date:   Wed, 18 Oct 2023 13:06:57 -0700
+Message-ID: <CALzBnUEhV1m841bPtcJUceOb0EiNF_jczVhOTQSFhVbvc9E=dw@mail.gmail.com>
+Subject: Re: [PATCH v1] usb: typec: altmodes/displayport: verify compatible
+ source/sink role combination
+To:     Prashant Malani <pmalani@chromium.org>
+Cc:     heikki.krogerus@linux.intel.com, gregkh@linuxfoundation.org,
+        badhri@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,40 +71,18 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Tue, Oct 17, 2023 at 2:33=E2=80=AFPM Prashant Malani <pmalani@chromium.o=
+rg> wrote:
+> OTOH, perhaps you should just introduce a macro that performs this
+> bitwise operation for even better
+> readability. Something like
+>
+> #define DP_CAP_IS_DFP_D(_cap_)        (!!(DP_CAP_CAPABILITY(_cap_) &
+> DP_CAP_DFP_D))
 
-I've tested the below on both linux-6.5.7 and mainline linux-6.6-rc6,
-both of which seem to have the same issue.
+I'll take this approach, thanks for the feedback Prashant!
 
-GDB 13.2 isn't able to load vmlinux-gdb.py as it throws the following:
+---
 
-Traceback (most recent call last):
-  File "/home/user/debug_kernel/linux-6.6-rc6/vmlinux-gdb.py", line
-25, in <module>
-    import linux.constants
-  File "/home/user/debug_kernel/linux-6.6-rc6/scripts/gdb/linux/constants.py",
-line 11, in <module>
-    LX_hrtimer_resolution = gdb.parse_and_eval("hrtimer_resolution")
-gdb.error: 'hrtimer_resolution' has unknown type; cast it to its declared type
-
-I've built-linux like so:
-
-make defconfig
-scripts/config --disable SYSTEM_TRUSTED_KEYS
-scripts/config --disable SYSTEM_REVOCATION_KEYS
-scripts/config --set-str SYSTEM_TRUSTED_KEYS ""
-scripts/config -e CONFIG_DEBUG_INFO -e CONFIG_GDB_SCRIPTS -e
-CONFIG_FRAME_POINTER
-make -j$(nproc)
-make scripts_gdb
-
-$ gcc --version
-gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
-$ gdb --version
-GNU gdb (GDB) 13.2
-
-This is my first time submitting a bug to the LK mailing list, please
-let me know if this format is not correct or if you need more
-information.
-
-Thanks.
+Best,
+RD
