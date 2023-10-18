@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4104A7CDB35
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 14:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A5467CDB36
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 14:05:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230138AbjJRMFP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 08:05:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42390 "EHLO
+        id S230202AbjJRMFQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 08:05:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230201AbjJRMFO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:05:14 -0400
+        with ESMTP id S230201AbjJRMFP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 08:05:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2EDD95
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 05:05:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D055C433C9;
-        Wed, 18 Oct 2023 12:05:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 568C295
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 05:05:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB648C433C7;
+        Wed, 18 Oct 2023 12:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697630712;
-        bh=X3w/+tcJbii8Aanj0ihHChUWSRXtwcat67SQS3z29fk=;
+        s=k20201202; t=1697630714;
+        bh=tPz0Fx6ZbqxlkVWTc6XO9eIjCI2CJRm3u1qhEuZ00OQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nq1x35wOcgM9yj0c4oloacOryMFs83dMsx91Ib5ASG5QWsZ00Y5+df9o9cC1vV8rW
-         Mcic/0URlao1tooe+DZe/SMQoqoC0sPlOAkkDXmWIRNWFXP2l/QmcXUx75ziaxUTy9
-         c78SZ8vDHUGg70Q58u16REyPz6ronO6GbuBsMMOSbsN3gSP5FOZnZ6/8LGglSklK+T
-         GzCRF3uP/yuX5io8nyVTwdncWZWoFgNnnV+JKfQUd+JFT7uyBrnMBq2HcUqCqUkH5A
-         t5sYoSu70gbvnmNBlbp2416v22wnQkedxm2DT3xsbT6MQfD93M1vxH1MNi30UOxGUX
-         ke0L8DobzuT9A==
+        b=EaYGibQ7px6BfroxFr5A39Ipeo4MQiR8o/ccbSWB5cr01y1vXqLBWpZb2FDH51rxY
+         z6suQUONO1VwrngHZ5FGAo9MgTAl0zlUiCDR6f7LvucpB8QTJvEWkjlzrGSAYj9F0P
+         Bx/PLZZ35taevblFsqj8GKQ0REihRVh8XDS8Ktz9N+L04jicByeXTDZJJw/lNUWd98
+         j4U0RHmY+rWAX90KXGV0Ig55MC+/uL/R3b5wq75JvuTt9rsetULqFHkxpvhVth/9aV
+         PPBb3D9PD9lg+C1brKWCxSctldeVxVSQX1aLbJMlqCnrpFLhZqi4/EQ584iP3W/OTn
+         7sUxIiTrr186w==
 From:   Lee Jones <lee@kernel.org>
 To:     lee@kernel.org
 Cc:     stable@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v5.10.y 2/3] rpmsg: Constify local variable in field store macro
-Date:   Wed, 18 Oct 2023 13:04:58 +0100
-Message-ID: <20231018120502.2110260-2-lee@kernel.org>
+Subject: [PATCH v5.10.y 3/3] rpmsg: Fix kfree() of static memory on setting driver_override
+Date:   Wed, 18 Oct 2023 13:04:59 +0100
+Message-ID: <20231018120502.2110260-3-lee@kernel.org>
 X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
 In-Reply-To: <20231018120502.2110260-1-lee@kernel.org>
 References: <20231018120502.2110260-1-lee@kernel.org>
@@ -50,33 +51,76 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit e5f89131a06142e91073b6959d91cea73861d40e upstream.
+commit 42cd402b8fd4672b692400fe5f9eecd55d2794ac upstream.
 
-Memory pointed by variable 'old' in field store macro is not modified,
-so it can be made a pointer to const.
+The driver_override field from platform driver should not be initialized
+from static memory (string literal) because the core later kfree() it,
+for example when driver_override is set via sysfs.
 
+Use dedicated helper to set driver_override properly.
+
+Fixes: 950a7388f02b ("rpmsg: Turn name service into a stand alone driver")
+Fixes: c0cdc19f84a4 ("rpmsg: Driver for user space endpoint interface")
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20220419113435.246203-12-krzysztof.kozlowski@linaro.org
+Link: https://lore.kernel.org/r/20220419113435.246203-13-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Lee Jones <lee@kernel.org>
 ---
- drivers/rpmsg/rpmsg_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/rpmsg/rpmsg_internal.h | 13 +++++++++++--
+ include/linux/rpmsg.h          |  6 ++++--
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-index 028ca5961bc2a..ef32fd66e8c2d 100644
---- a/drivers/rpmsg/rpmsg_core.c
-+++ b/drivers/rpmsg/rpmsg_core.c
-@@ -332,7 +332,8 @@ field##_store(struct device *dev, struct device_attribute *attr,	\
- 	      const char *buf, size_t sz)				\
- {									\
- 	struct rpmsg_device *rpdev = to_rpmsg_device(dev);		\
--	char *new, *old;						\
-+	const char *old;						\
-+	char *new;							\
- 									\
- 	new = kstrndup(buf, sz, GFP_KERNEL);				\
- 	if (!new)							\
+diff --git a/drivers/rpmsg/rpmsg_internal.h b/drivers/rpmsg/rpmsg_internal.h
+index 3fc83cd50e98f..9165e3c811be4 100644
+--- a/drivers/rpmsg/rpmsg_internal.h
++++ b/drivers/rpmsg/rpmsg_internal.h
+@@ -84,10 +84,19 @@ struct device *rpmsg_find_device(struct device *parent,
+  */
+ static inline int rpmsg_chrdev_register_device(struct rpmsg_device *rpdev)
+ {
++	int ret;
++
+ 	strcpy(rpdev->id.name, "rpmsg_chrdev");
+-	rpdev->driver_override = "rpmsg_chrdev";
++	ret = driver_set_override(&rpdev->dev, &rpdev->driver_override,
++				  rpdev->id.name, strlen(rpdev->id.name));
++	if (ret)
++		return ret;
++
++	ret = rpmsg_register_device(rpdev);
++	if (ret)
++		kfree(rpdev->driver_override);
+ 
+-	return rpmsg_register_device(rpdev);
++	return ret;
+ }
+ 
+ #endif
+diff --git a/include/linux/rpmsg.h b/include/linux/rpmsg.h
+index a68972b097b72..6e7690e20dc51 100644
+--- a/include/linux/rpmsg.h
++++ b/include/linux/rpmsg.h
+@@ -41,7 +41,9 @@ struct rpmsg_channel_info {
+  * rpmsg_device - device that belong to the rpmsg bus
+  * @dev: the device struct
+  * @id: device id (used to match between rpmsg drivers and devices)
+- * @driver_override: driver name to force a match
++ * @driver_override: driver name to force a match; do not set directly,
++ *                   because core frees it; use driver_set_override() to
++ *                   set or clear it.
+  * @src: local address
+  * @dst: destination address
+  * @ept: the rpmsg endpoint of this channel
+@@ -50,7 +52,7 @@ struct rpmsg_channel_info {
+ struct rpmsg_device {
+ 	struct device dev;
+ 	struct rpmsg_device_id id;
+-	char *driver_override;
++	const char *driver_override;
+ 	u32 src;
+ 	u32 dst;
+ 	struct rpmsg_endpoint *ept;
 -- 
 2.42.0.655.g421f12c284-goog
 
