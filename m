@@ -2,96 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FECA7CD3D4
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 08:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C3B77CD55C
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 09:13:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbjJRGHa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 02:07:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52028 "EHLO
+        id S229840AbjJRHNd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 03:13:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229595AbjJRGH3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 02:07:29 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 722A0C4;
-        Tue, 17 Oct 2023 23:07:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DEBC433C8;
-        Wed, 18 Oct 2023 06:07:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697609248;
-        bh=h/auq6HpOSLO/N4BVvzPRBs8wFljerSgSeyenywRUl4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=k14kdHnxqZ97agAIFMyDjHuczUDMuqPTAoLnzIWFM/jPbjraO7DPPFJFC4bivqoYY
-         JUrGrG3gf2H1E5+HjEQyhA/kUpvKYZDW1vX1/mfoLEz36vdzWRBb9cuzmjwm7HDdBz
-         ErG81JZoUVatTvvMWFjw4PVEXH9ux8VZ9/FVi7xx1VWYv3lEdqFRqjEQqyPMyqiymI
-         zotak707hUoVBhZoqA7uDfLuGoarDlAd/657b3Fggk8958IssNB6Al2XRFLWx+XKIt
-         Vr4VJCltmeYRZv6QYuHCPYLPLqVISx0UJRvMfqNhO8Lg81W4CHb6YqQeASv5wmx6EO
-         ihCvlCrWBobyQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Christian Marangi <ansuelsmth@gmail.com>
-Cc:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo@kernel.org>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Simon Horman <horms@kernel.org>,
-        Alexander Couzens <lynxis@fe80.eu>,
-        Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-        Daniel Golle <daniel@makrotopia.org>,
-        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [net-next RFC PATCH 1/6] wifi: mt76: fix broken precal loading
- from MTD for mt7915
-References: <20231017190510.27163-1-ansuelsmth@gmail.com>
-Date:   Wed, 18 Oct 2023 09:10:07 +0300
-In-Reply-To: <20231017190510.27163-1-ansuelsmth@gmail.com> (Christian
-        Marangi's message of "Tue, 17 Oct 2023 21:05:05 +0200")
-Message-ID: <87a5sgea0w.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        with ESMTP id S229805AbjJRHNb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 03:13:31 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E7A7BA;
+        Wed, 18 Oct 2023 00:13:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1697613207; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=YVEdEd+44bqyCaMa0ZwcpYPN05TNXqtKJmkgcXf8d1s0rB5y8IJABHC/SFGIhnBrWx
+    P2AQPou+c7blTkw4dctvljfiAHy+0UbqLbzj1r0cMSXd112hX1svx8qW+tksUt0ioq1O
+    gl1BBIv4byXkLyhElJ74uR8HJEwVyxQCPtYvpJlLW3KlfX9rh/q7ys9lSZVlmH6GCZwh
+    +T4xJbUC8yFbj/gkmoK/9SJL0y4lcwGZS6yp0G+OeH9hH8CXvwZ6fHmusm6WCzFV5r+F
+    w8CBApdg2V986J36+ALVSdb99X2VpriqY3JURWxInQvB/L52n8zktPlIq55Zb04fNM2D
+    v/Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1697613207;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=a0tv/jXdlJYYydvKci7q39RV+zMHykUxsafimd8rhKc=;
+    b=W8B1QyGTNGQuEoVTeKHZMTd51/kyyHE42FVV5kcCBzUNVTUGObZDa+TTB8X00XD3fL
+    fx+bPqf0Yt7+NW98z6sHhh+pjcnKO7Zfbpi7GW76HNpsbszKfp9yLhAIlySPgDRspgOr
+    pFTu6OZ+JJ5oI+yEnvSuV6/g5mUPTGxa9YQPC86D9pIlSpFg0SpJe0RUw9k2TX1uIqYJ
+    XWfQyzc0Mv/IUEGfy55s6hXBeKJGXAEmICsarMC6J+7nI3Gq8r7BkpvVyHWbZiS4GUgT
+    5jn9qD7gZMmyjcmwZyn1qMjhuifz76uTOzNsanKeHIEqRoxUJyROEREOhKNEjI1kQIyR
+    rqpg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1697613207;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=a0tv/jXdlJYYydvKci7q39RV+zMHykUxsafimd8rhKc=;
+    b=fhZjx0VCRuCKmrPK/CZR16ebZEfIwfEUPHVnZfUVV67VdjUiCWHft3498orR681iCq
+    tzl9wvZRymx3gxovj7zUeeMrwgahlFzENRbFxbZjV0NRr3E3xr964ANA0gpCOZN5JUnX
+    q+qRQG1lsKFeqAe/R5jSovW0mcO48541A9ER6pmmSdaQY+ZZ2pTQwvIjdnj6hOMEG3Dg
+    YVF9c5e9vkK6jq5I2JwJr/5kS6hY0wFTNN91eJ5uYp37N4XIG767tPrWVT3YeJ8en42o
+    2asiOWR0j3SEZbVkf/G+zlgkkY/I0Ly9xyjYap3FpQ4EC3f3j7H1QeiCLbYsxrjD08uJ
+    TTlQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1697613207;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=a0tv/jXdlJYYydvKci7q39RV+zMHykUxsafimd8rhKc=;
+    b=9ngWWFvNgop0xqTFoBm8e19FIv/0otce8CLSzVntPzaazdOQr2s4yii0lSyi7i/ra7
+    Z405IM7xnKU755E9SwAQ==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4peA+p3h"
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 49.9.0 DYNA|AUTH)
+    with ESMTPSA id j34a49z9I7DQ7o8
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Wed, 18 Oct 2023 09:13:26 +0200 (CEST)
+Date:   Wed, 18 Oct 2023 09:13:18 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/4] cpufreq: qcom-nvmem: Enable virtual power domain
+ devices
+Message-ID: <ZS-FjhUU12TssGhy@gerhold.net>
+References: <20230912-msm8909-cpufreq-v1-1-767ce66b544b@kernkonzept.com>
+ <CAPDyKFq6U-MR4Bd+GmixYseRECDh142RhydtKbiPd3NHV2g6aw@mail.gmail.com>
+ <ZQGqfMigCFZP_HLA@gerhold.net>
+ <CAPDyKFppdXe1AZo1jm2Bc_ZR18hw5Bmh1x+2P7Obhb_rJ2gc4Q@mail.gmail.com>
+ <ZRcC2IRRv6dtKY65@gerhold.net>
+ <CAPDyKFoiup8KNv=1LFGKDdDLA1pHsdJUgTTWMdgxnikEmReXzg@mail.gmail.com>
+ <ZSg-XtwMxg3_fWxc@gerhold.net>
+ <CAPDyKFoH5EOvRRKy-Bgp_B9B3rf=PUKK5N45s5PNgfBi55PaOQ@mail.gmail.com>
+ <ZS70aZbP33fkf9dP@gerhold.net>
+ <CAPDyKFpwZdx=vyuAZSv1WGYCyiohfnt87LM1jw=fhKsF5Ks1Yw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpwZdx=vyuAZSv1WGYCyiohfnt87LM1jw=fhKsF5Ks1Yw@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Christian Marangi <ansuelsmth@gmail.com> writes:
+On Tue, Oct 17, 2023 at 11:50:21PM +0200, Ulf Hansson wrote:
+> [...]
+> > >
+> > > *) The pm_runtime_resume_and_get() works for QCS404 as a fix. It also
+> > > works fine when there is only one RPMPD that manages the performance
+> > > scaling.
+> > >
+> >
+> > Agreed.
+> >
+> > > **) In cases where we have multiple PM domains to scale performance
+> > > for, using pm_runtime_resume_and_get() would work fine too. Possibly
+> > > we want to use device_link_add() to set up suppliers, to avoid calling
+> > > pm_runtime_resume_and_get() for each and every device.
+> > >
+> >
+> > Hm. What would you use as "supplied" device? The CPU device I guess?
+> 
+> The consumer would be the device that is used to probe the cpureq
+> driver and the supplier(s) the virtual devices returned from genpd
+> when attaching.
+> 
+> >
+> > I'm looking again at my old patch from 2020 where I implemented this
+> > with device links in the OPP core. Seems like you suggested this back
+> > then too :)
+> >
+> >   https://lore.kernel.org/linux-pm/20200826093328.88268-1-stephan@gerhold.net/
+> >
+> > However, for the special case of the CPU I think we don't gain any code
+> > simplification from using device links. There will just be a single
+> > resume of each virtual genpd device, as well as one put during remove().
+> > Exactly the same applies when using device links, we need to set up the
+> > device links once for each virtual genpd device, and clean them up again
+> > during remove().
+> >
+> > Or can you think of another advantage of using device links?
+> 
+> No, not at this point.
+> 
+> So, in this particular case it may not matter that much. But when the
+> number of PM domains starts to vary between platforms it could be a
+> nice way to abstract some logic. I guess starting without using
+> device-links and seeing how it evolves could be a way forward too.
+> 
 
-> Commit 495184ac91bb ("mt76: mt7915: add support for applying
-> pre-calibration data") was fundamentally broken and never worked.
->
-> The idea (before NVMEM support) was to expand the MTD function and pass
-> an additional offset. For normal EEPROM load the offset would always be
-> 0. For the purpose of precal loading, an offset was passed that was
-> internally the size of EEPROM, since precal data is right after the
-> EEPROM.
->
-> Problem is that the offset value passed is never handled and is actually
-> overwrite by
->
-> 	offset = be32_to_cpup(list);
-> 	ret = mtd_read(mtd, offset, len, &retlen, eep);
->
-> resulting in the passed offset value always ingnored. (and even passing
-> garbage data as precal as the start of the EEPROM is getting read)
->
-> Fix this by adding to the current offset value, the offset from DT to
-> correctly read the piece of data at the requested location.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Sounds good :)
 
-mt76 patches go to Felix's tree, not net-next.
+> >
+> > > ***) Due to the above, we don't need a new mechanism to avoid
+> > > "caching" performance states for genpd. At least for the time being.
+> > >
+> >
+> > Right. Given *) and **) I'll prepare a v2 of $subject patch with the
+> > remove() cleanup fixed and an improved commit description.
+> >
+> > I'll wait for a bit in case you have more thoughts about the device
+> > links.
+> 
+> One more thing though that crossed my mind. In the rpmpd case, is
+> there anything we need to care about during system suspend/resume that
+> isn't already taken care of correctly?
+> 
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+No, I don't think so. The RPM firmware makes no difference between deep
+cpuidle and system suspend. As long as we properly enter deep cpuidle as
+part of s2idle, it will automatically release our votes for the
+"active-only" (_AO) variant of the RPMPDs.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+I'll send the adjusted v2 shortly for you to look at. :)
+
+Thanks,
+Stephan
