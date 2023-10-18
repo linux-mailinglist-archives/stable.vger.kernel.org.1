@@ -2,81 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 145787CE04A
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 16:43:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAA307CE090
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 16:59:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231970AbjJROnE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 10:43:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51636 "EHLO
+        id S231929AbjJRO7a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 10:59:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231984AbjJROnE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 10:43:04 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E39994
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 07:43:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697640183; x=1729176183;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=nmDMp6vui9J7GGgaUmqVI1J/abW7L+xpXrDJ3RYgWD8=;
-  b=GvGN98oUBfWHPfx9AMF15Y0GvTHLePvi+lw5Cp7miNGFgGQT6B4VNNao
-   dMQpCsqxb+i0sWi9+O0HK7wUNizLD8OHIlvZ6/7Kq0DEXrtMoDyzP99ZW
-   ExF9S6H238io4OKFDXmu5Uv9oTCYyk3Fm7gWAytbD3D/eIaI2reiOvGcZ
-   6kDIru/O8kdh9nsOBtHNXFAJlsDSUqC08VFIFOz+PUpxqyWP+FUU7BEHh
-   Q9gtpsG4IMvrXLGwx6q1VlCNNXiwtaMc4QXkwUpbNNQTMz5F2ls7YO7ls
-   8Pkr0jOnwtP14wvJm/uS4iUGl81H0fPKWB2ZhmxwkoMb+stAg2sdeH2hH
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="472252937"
-X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; 
-   d="scan'208";a="472252937"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 07:43:02 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="785951705"
-X-IronPort-AV: E=Sophos;i="6.03,235,1694761200"; 
-   d="scan'208";a="785951705"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by orsmga008.jf.intel.com with ESMTP; 18 Oct 2023 07:43:01 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qt7lD-0000Wi-0I;
-        Wed, 18 Oct 2023 14:42:59 +0000
-Date:   Wed, 18 Oct 2023 22:42:26 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Francis Laniel <flaniel@linux.microsoft.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v5 1/2] tracing/kprobes: Return EADDRNOTAVAIL when func
- matches several symbols
-Message-ID: <ZS/u0o3R3Vj2JxTJ@dcec3e67a8dd>
+        with ESMTP id S235251AbjJRO73 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 10:59:29 -0400
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 039DC109
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 07:59:28 -0700 (PDT)
+Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-457bfdc1cdaso2190021137.2
+        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 07:59:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697641167; x=1698245967; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=BUz99UmL8wUGNq3ldoN6zFoTydWQFmImnEvwxSw+6Xg=;
+        b=ndyqdxeD/gJpiqPa6km/J0w5TIECbBpQvEY7bpIGGYUYAXLsoTGHAHJz1Z4tknvKkD
+         pGQ7hMDgVQx4j+BcJy12bV0URGA7JDjUf/zuEMAsim4s1iKB+/9zQlu3ccR50fnW03xa
+         fahINlA5dQqW2utPU+xN5XB2NNdCvpXABSQCKe0WqUkx6Zt4Iyr0Ih7jezKfeVKfOjoR
+         7vl6M0ZjLmbTdIM363vuxxPGyZiV2vnVjY4jenyHWn339yJqJzO2+byiKZ46JFkx4ANy
+         p7pSAbgQmDxaMdRnk4ncHW0+ESwFGXUAfBR5jLeToKRFbHsyEpbP1TE+RTGgPUfHUXmz
+         G9vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697641167; x=1698245967;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BUz99UmL8wUGNq3ldoN6zFoTydWQFmImnEvwxSw+6Xg=;
+        b=oUIZYB7crZoEFklA63WlL7isi4rj+agNnchZiBpfJaIDqLpFEChZVmqD/VDGpPia49
+         CfnftKF1MFUamVPWsjR90DBo3VDXPBEcqb9RFi2d/f5ifMxcss6yecIfp5xe5Y/CsgEj
+         BEm9EQ3xfY31eXVgaZ+NWACUNGv/XKy3qRwMlKzHsdau/88uBBykECOe2r+tEyexTL/7
+         4p/wpmA2B+yUKQLE/z5E9yRHFrvqyB0eADB9SgQfvFf3P+uo3BjWLdLFt9SJJCAjC6h7
+         AtuCnrrmJpM8fJlYBay28wO6lOFVoB5C0SWOs6My+3NpxrvOWvq7QAxkD+D8nX0Awwxt
+         /Oaw==
+X-Gm-Message-State: AOJu0YxwSvoVmS2HkcC5cwlXgS1yNfAMICrGF3gKHfbt1BXAs7pN1goV
+        M3NY1WIXN/Scy9e73bTridaFeaXfXRVMZz8MP3I=
+X-Google-Smtp-Source: AGHT+IHQmHdCOFfCnZ0K/0VhV4tERfqbL8Ac0tnvqB+Hcrx0ZQyl13iF0Mn50HSXRWWTgtJvLgtC/nNONjEQEBQvRyc=
+X-Received: by 2002:a67:ec49:0:b0:457:6b29:9486 with SMTP id
+ z9-20020a67ec49000000b004576b299486mr5782601vso.33.1697641166977; Wed, 18 Oct
+ 2023 07:59:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231018144030.86885-2-flaniel@linux.microsoft.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a59:c743:0:b0:403:949f:ccaa with HTTP; Wed, 18 Oct 2023
+ 07:59:26 -0700 (PDT)
+From:   Audu bello <afaf95101@gmail.com>
+Date:   Wed, 18 Oct 2023 16:59:26 +0200
+Message-ID: <CAPxFRXQN3Oe_DmAHNseSuxkNPUUUsM8fqL1NVp-oWqVUi7=k1Q@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLY,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+An email was sent to you about receiving a pending funds but I'm
+surprised that you never bothered to respond.
 
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v5 1/2] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
-Link: https://lore.kernel.org/stable/20231018144030.86885-2-flaniel%40linux.microsoft.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Please URGENTLY use my regular email address: mgr.audu@yahoo.com
+Yours faithfully
+Audit Manager
