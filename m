@@ -2,165 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 276D97CD85C
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 11:38:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D19A7CDA17
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 13:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229984AbjJRJih (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 05:38:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38674 "EHLO
+        id S230121AbjJRLPc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 07:15:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229959AbjJRJib (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 05:38:31 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4215BFE
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 02:38:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697621909; x=1729157909;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=2ccUgyhgZlFPwuyb6c7YjouKROVLbPEz6EELbdrZDz8=;
-  b=bHAu6q69lqiAKj1CfwnEuqaEJVbV74AkB/biv3AGxAro1YZfgMAR6iEj
-   PNRvlfNd3EpUP/YqSEIPkpSLzirDbqH/mG2t1z6ni4VBM4s95FLL+uZAu
-   Q4tkHPIQ2qTxXS6IzZDg81h1WkcyV12ZfoiezyjJTXuSiroi8Tmn6WRMI
-   1f0idxmZrzXv+By5bAil7k07PQEMmA0HA5AsopP5BV/FAX3Fthqgngdhk
-   hWANa61VagVwcYhNp7hQESXMnRvujY8039uZ92CtmbOxGvggpz1CmygIM
-   PKAX/k4g6uEo0kszEL9lp/p+F7HnZoLoSVVHWfmacJNeOqzHgwflnOJVm
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="7529266"
-X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; 
-   d="scan'208";a="7529266"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 02:38:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10866"; a="872958098"
-X-IronPort-AV: E=Sophos;i="6.03,234,1694761200"; 
-   d="scan'208";a="872958098"
-Received: from nirmoyda-desk.igk.intel.com ([10.102.138.190])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 02:38:25 -0700
-From:   Nirmoy Das <nirmoy.das@intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     dri-devel@lists.freedesktop.org, Nirmoy Das <nirmoy.das@intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        John Harrison <john.c.harrison@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>, Daniel Vetter <daniel@ffwll.ch>,
-        stable@vger.kernel.org, Matt Roper <matthew.d.roper@intel.com>
-Subject: [PATCH v3] drm/i915: Flush WC GGTT only on required platforms
-Date:   Wed, 18 Oct 2023 11:38:15 +0200
-Message-ID: <20231018093815.1349-1-nirmoy.das@intel.com>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S230159AbjJRLPb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 07:15:31 -0400
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE2811A;
+        Wed, 18 Oct 2023 04:15:28 -0700 (PDT)
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-31c5cac3ae2so5783122f8f.3;
+        Wed, 18 Oct 2023 04:15:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697627727; x=1698232527;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fMGHA1GqTA4NgUc9TGEceruFzKyhKbdLHyqCm7/lENQ=;
+        b=c/FERCEXY3H+ereO2ZhahUZFv551Fg0BlePXzPHA6ERKa84nyPo+ZlPX/wBFtNfMXI
+         XCPJjOHLIYxwtlIda9sKWXsudPlZ25LG3b2YL4uMnpHzd5y+jtN5+6hvikgw6uWAqtUl
+         BoLswV3DYloSkrUrQO44ZSYpSUPUiPvtge8/2UuEG8u1A3+1MfLNhGr0JdgthxkndWnH
+         7hJ6fuCsCvLiZ6p23R2MRB5IM4TxY2wzoHLczwVelwXFzr3/UW5oO3i+kyb47Q8LR+1O
+         sG9JC4mzVMPAxJOy36ZDijZaSWQ5sOVgvObrCaKQahaL36ehX27RTnZBWp3dS7NzQhyk
+         Z8xA==
+X-Gm-Message-State: AOJu0Yw7xBjHDGuRDVTCotxPlPcu3pZ+2AJ+o2tWaxhuoW1naCf6gQXD
+        ZJYQGdl8RHiGN9UZegbx1oEOjgJjUZJPFSmo
+X-Google-Smtp-Source: AGHT+IEah1o37/XzeYly4CKX7YUd53M7DtYsKbFDQmUnaElJZgAAwHMCs07P6qGmetQDsrpsSs4ERA==
+X-Received: by 2002:a5d:6046:0:b0:32d:a54a:f57c with SMTP id j6-20020a5d6046000000b0032da54af57cmr3949004wrt.25.1697627727199;
+        Wed, 18 Oct 2023 04:15:27 -0700 (PDT)
+Received: from salami.lan ([80.111.64.44])
+        by smtp.gmail.com with ESMTPSA id l16-20020adfe590000000b0032da46648dasm1902344wrm.8.2023.10.18.04.15.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Oct 2023 04:15:26 -0700 (PDT)
+From:   =?UTF-8?q?Andr=C3=A9=20Draszik?= <git@andred.net>
+To:     linux-kernel@vger.kernel.org
+Cc:     =?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+        Bernd Schubert <bschubert@ddn.com>,
+        Miklos Szeredi <mszeredi@redhat.com>, stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set the FUSE_INIT_EXT"
+Date:   Wed, 18 Oct 2023 12:15:08 +0100
+Message-Id: <20231018111508.3913860-1-git@andred.net>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230904133321.104584-1-git@andred.net>
+References: <20230904133321.104584-1-git@andred.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Organization: Intel Deutschland GmbH, Registered Address: Am Campeon 10, 85579 Neubiberg, Germany, Commercial Register: Amtsgericht Muenchen HRB 186928 
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-gen8_ggtt_invalidate() is only needed for limited set of platforms
-where GGTT is mapped as WC. This was added as way to fix WC based GGTT in
-commit 0f9b91c754b7 ("drm/i915: flush system agent TLBs on SNB") and
-there are no reference in HW docs that forces us to use this on non-WC
-backed GGTT.
+From: André Draszik <andre.draszik@linaro.org>
 
-This can also cause unwanted side-effects on XE_HP platforms where
-GFX_FLSH_CNTL_GEN6 is not valid anymore.
+This reverts commit 3066ff93476c35679cb07a97cce37d9bb07632ff.
 
-v2: Add a func to detect wc ggtt detection (Ville)
-v3: Improve commit log and add reference commit (Daniel)
+This patch breaks all existing userspace by requiring updates as
+mentioned in the commit message, which is not allowed.
 
-Fixes: d2eae8e98d59 ("drm/i915/dg2: Drop force_probe requirement")
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: John Harrison <john.c.harrison@intel.com>
-Cc: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: <stable@vger.kernel.org> # v6.2+
-Suggested-by: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Revert to restore compatibility with existing userspace
+implementations.
+
+Cc: Bernd Schubert <bschubert@ddn.com>
+Cc: Miklos Szeredi <mszeredi@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- drivers/gpu/drm/i915/gt/intel_ggtt.c | 35 +++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+v2: ping & add ack
+v1: resend because of missing people in Cc
+---
+ fs/fuse/inode.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_ggtt.c b/drivers/gpu/drm/i915/gt/intel_ggtt.c
-index 1c93e84278a0..15fc8e4703f4 100644
---- a/drivers/gpu/drm/i915/gt/intel_ggtt.c
-+++ b/drivers/gpu/drm/i915/gt/intel_ggtt.c
-@@ -195,6 +195,21 @@ void gen6_ggtt_invalidate(struct i915_ggtt *ggtt)
- 	spin_unlock_irq(&uncore->lock);
- }
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index 2e4eb7cf26fb..b21ccc85c47b 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -1154,10 +1154,7 @@ static void process_init_reply(struct fuse_mount *fm, struct fuse_args *args,
+ 		process_init_limits(fc, arg);
  
-+static bool needs_wc_ggtt_mapping(struct drm_i915_private *i915)
-+{
-+	/*
-+	 * On BXT+/ICL+ writes larger than 64 bit to the GTT pagetable range
-+	 * will be dropped. For WC mappings in general we have 64 byte burst
-+	 * writes when the WC buffer is flushed, so we can't use it, but have to
-+	 * resort to an uncached mapping. The WC issue is easily caught by the
-+	 * readback check when writing GTT PTE entries.
-+	 */
-+	if (!IS_GEN9_LP(i915) && GRAPHICS_VER(i915) < 11)
-+		return true;
-+
-+	return false;
-+}
-+
- static void gen8_ggtt_invalidate(struct i915_ggtt *ggtt)
- {
- 	struct intel_uncore *uncore = ggtt->vm.gt->uncore;
-@@ -202,8 +217,12 @@ static void gen8_ggtt_invalidate(struct i915_ggtt *ggtt)
- 	/*
- 	 * Note that as an uncached mmio write, this will flush the
- 	 * WCB of the writes into the GGTT before it triggers the invalidate.
-+	 *
-+	 * Only perform this when GGTT is mapped as WC, see ggtt_probe_common().
- 	 */
--	intel_uncore_write_fw(uncore, GFX_FLSH_CNTL_GEN6, GFX_FLSH_CNTL_EN);
-+	if (needs_wc_ggtt_mapping(ggtt->vm.i915))
-+		intel_uncore_write_fw(uncore, GFX_FLSH_CNTL_GEN6,
-+				      GFX_FLSH_CNTL_EN);
- }
+ 		if (arg->minor >= 6) {
+-			u64 flags = arg->flags;
+-
+-			if (flags & FUSE_INIT_EXT)
+-				flags |= (u64) arg->flags2 << 32;
++			u64 flags = arg->flags | (u64) arg->flags2 << 32;
  
- static void guc_ggtt_ct_invalidate(struct intel_gt *gt)
-@@ -1140,17 +1159,11 @@ static int ggtt_probe_common(struct i915_ggtt *ggtt, u64 size)
- 	GEM_WARN_ON(pci_resource_len(pdev, GEN4_GTTMMADR_BAR) != gen6_gttmmadr_size(i915));
- 	phys_addr = pci_resource_start(pdev, GEN4_GTTMMADR_BAR) + gen6_gttadr_offset(i915);
- 
--	/*
--	 * On BXT+/ICL+ writes larger than 64 bit to the GTT pagetable range
--	 * will be dropped. For WC mappings in general we have 64 byte burst
--	 * writes when the WC buffer is flushed, so we can't use it, but have to
--	 * resort to an uncached mapping. The WC issue is easily caught by the
--	 * readback check when writing GTT PTE entries.
--	 */
--	if (IS_GEN9_LP(i915) || GRAPHICS_VER(i915) >= 11)
--		ggtt->gsm = ioremap(phys_addr, size);
--	else
-+	if (needs_wc_ggtt_mapping(i915))
- 		ggtt->gsm = ioremap_wc(phys_addr, size);
-+	else
-+		ggtt->gsm = ioremap(phys_addr, size);
-+
- 	if (!ggtt->gsm) {
- 		drm_err(&i915->drm, "Failed to map the ggtt page table\n");
- 		return -ENOMEM;
+ 			ra_pages = arg->max_readahead / PAGE_SIZE;
+ 			if (flags & FUSE_ASYNC_READ)
 -- 
-2.41.0
+2.40.1
 
