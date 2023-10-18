@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 978F27CE779
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 21:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA8087CE77A
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 21:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231439AbjJRTNY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 15:13:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53696 "EHLO
+        id S231447AbjJRTNj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 15:13:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231450AbjJRTNW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 15:13:22 -0400
+        with ESMTP id S231483AbjJRTNY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 15:13:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81BFD119;
-        Wed, 18 Oct 2023 12:13:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E80C433CD;
-        Wed, 18 Oct 2023 19:13:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EFBE119;
+        Wed, 18 Oct 2023 12:13:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE48C433C8;
+        Wed, 18 Oct 2023 19:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1697656400;
-        bh=4c3TEHANLYyMJlSMjF1ER0bH+v65lmFoaKWNmKj3z0Q=;
+        s=korg; t=1697656403;
+        bh=o/jJQcRcTJsCc/Y46guB4iuWQEdihoZOViyY1UKM8sg=;
         h=Date:To:From:Subject:From;
-        b=GAnp5zUjLhYLXUE7vJgeTtSLfUNBaOSS3sWP5qCQ0jiPBBJntqnjZRFhN7ZOUB6a4
-         r9P4qPrC0Z96nSBPHS2vfL0DHBRDrzSv6hLqcRkHPF7p1lqZviWievC9nrW24wrafx
-         RGzgMkOwULFA+juy4mFE80LF35GOt7sNU2A4R2do=
-Date:   Wed, 18 Oct 2023 12:13:19 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
-        akpm@linux-foundation.org
+        b=XHVLvrD8Q3B30685nqDynZzINMnIzAcJTEHR0FrIEuOPmdltOR6WryKTRNJKF4NuL
+         PGF2PGBPh4Nr5YzJQtxYDD0fhVF1YcQEntNtZJSy4MO7rzWiYzgpg7Ai7RhR6Vuntl
+         unvpxLpdJK3OXdJoWWtDsDVk2AbLzRqv5sBw0Hn0=
+Date:   Wed, 18 Oct 2023 12:13:22 -0700
+To:     mm-commits@vger.kernel.org, usama.anjum@collabora.com,
+        stable@vger.kernel.org, shuah@kernel.org, lkft@linaro.org,
+        samasth.norway.ananda@oracle.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-damon-sysfs-check-damos-regions-update-progress-from-before_terminate.patch removed from -mm tree
-Message-Id: <20231018191320.46E80C433CD@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-mm-include-mman-header-to-access-mremap_dontunmap-identifier.patch removed from -mm tree
+Message-Id: <20231018191322.EFE48C433C8@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -40,74 +41,48 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: mm/damon/sysfs: check DAMOS regions update progress from before_terminate()
+     Subject: selftests/mm: include mman header to access MREMAP_DONTUNMAP identifier
 has been removed from the -mm tree.  Its filename was
-     mm-damon-sysfs-check-damos-regions-update-progress-from-before_terminate.patch
+     selftests-mm-include-mman-header-to-access-mremap_dontunmap-identifier.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs: check DAMOS regions update progress from before_terminate()
-Date: Sat, 7 Oct 2023 20:04:32 +0000
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Subject: selftests/mm: include mman header to access MREMAP_DONTUNMAP identifier
+Date: Thu, 12 Oct 2023 08:52:57 -0700
 
-DAMON_SYSFS can receive DAMOS tried regions update request while kdamond
-is already out of the main loop and before_terminate callback
-(damon_sysfs_before_terminate() in this case) is not yet called.  And
-damon_sysfs_handle_cmd() can further be finished before the callback is
-invoked.  Then, damon_sysfs_before_terminate() unlocks damon_sysfs_lock,
-which is not locked by anyone.  This happens because the callback function
-assumes damon_sysfs_cmd_request_callback() should be called before it. 
-Check if the assumption was true before doing the unlock, to avoid this
-problem.
+Definition for MREMAP_DONTUNMAP is not present in glibc older than 2.32
+thus throwing an undeclared error when running make on mm.  Including
+linux/mman.h solves the build error for people having older glibc.
 
-Link: https://lkml.kernel.org/r/20231007200432.3110-1-sj@kernel.org
-Fixes: f1d13cacabe1 ("mm/damon/sysfs: implement DAMOS tried regions update command")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.2.x]
+Link: https://lkml.kernel.org/r/20231012155257.891776-1-samasth.norway.ananda@oracle.com
+Fixes: 0183d777c29a ("selftests: mm: remove duplicate unneeded defines")
+Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/linux-mm/CA+G9fYvV-71XqpCr_jhdDfEtN701fBdG3q+=bafaZiGwUXy_aA@mail.gmail.com/
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/sysfs.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/mremap_dontunmap.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/damon/sysfs.c~mm-damon-sysfs-check-damos-regions-update-progress-from-before_terminate
-+++ a/mm/damon/sysfs.c
-@@ -1208,6 +1208,8 @@ static int damon_sysfs_set_targets(struc
- 	return 0;
- }
- 
-+static bool damon_sysfs_schemes_regions_updating;
-+
- static void damon_sysfs_before_terminate(struct damon_ctx *ctx)
- {
- 	struct damon_target *t, *next;
-@@ -1219,8 +1221,10 @@ static void damon_sysfs_before_terminate
- 	cmd = damon_sysfs_cmd_request.cmd;
- 	if (kdamond && ctx == kdamond->damon_ctx &&
- 			(cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS ||
--			 cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_BYTES)) {
-+			 cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_BYTES) &&
-+			damon_sysfs_schemes_regions_updating) {
- 		damon_sysfs_schemes_update_regions_stop(ctx);
-+		damon_sysfs_schemes_regions_updating = false;
- 		mutex_unlock(&damon_sysfs_lock);
- 	}
- 
-@@ -1340,7 +1344,6 @@ static int damon_sysfs_commit_input(stru
- static int damon_sysfs_cmd_request_callback(struct damon_ctx *c)
- {
- 	struct damon_sysfs_kdamond *kdamond;
--	static bool damon_sysfs_schemes_regions_updating;
- 	bool total_bytes_only = false;
- 	int err = 0;
- 
+--- a/tools/testing/selftests/mm/mremap_dontunmap.c~selftests-mm-include-mman-header-to-access-mremap_dontunmap-identifier
++++ a/tools/testing/selftests/mm/mremap_dontunmap.c
+@@ -7,6 +7,7 @@
+  */
+ #define _GNU_SOURCE
+ #include <sys/mman.h>
++#include <linux/mman.h>
+ #include <errno.h>
+ #include <stdio.h>
+ #include <stdlib.h>
 _
 
-Patches currently in -mm which might be from sj@kernel.org are
+Patches currently in -mm which might be from samasth.norway.ananda@oracle.com are
 
-mm-damon-sysfs-schemes-do-not-update-tried-regions-more-than-one-damon-snapshot.patch
-mm-damon-sysfs-avoid-empty-scheme-tried-regions-for-large-apply-interval.patch
-docs-admin-guide-mm-damon-usage-update-for-tried-regions-update-time-interval.patch
 
