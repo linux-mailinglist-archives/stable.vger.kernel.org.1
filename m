@@ -2,77 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 737F27CD0C5
-	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 01:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B86247CD1BB
+	for <lists+stable@lfdr.de>; Wed, 18 Oct 2023 03:17:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230219AbjJQXa3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 17 Oct 2023 19:30:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45482 "EHLO
+        id S1344384AbjJRBRM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 17 Oct 2023 21:17:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234836AbjJQXa2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 19:30:28 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EEDC103;
-        Tue, 17 Oct 2023 16:30:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C90FEC433CB;
-        Tue, 17 Oct 2023 23:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697585425;
-        bh=ZAyjbke2TjqJcwoIhucIv9TG3uMrAnnnU9qwH6ECYQ0=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=t919TXtE9N1pfTLgLwbTwfhFjIJL6DO6rB1sdnr1hfyGYpL7YSLfddg7Ij7y1XDB7
-         yIh71a5cCpBI3gyhC2gOGxXE5MgW1uK43r4zt2IwncbPk3lp4udziBXaHWtGImjj4+
-         ovJRT2ujOyN+71CxXCefyqDdZLtL/TTfAPsaaaKOwEc5QVxUxfmDJJgIai2SLxKiSF
-         IVpVa/R07xt7rTqWomy3Zr5WmLDiEuQ0hoAFy1sB2UKtUdzfIb4min8iPcDEQIJJCk
-         pa39l0pEV79zJI4QS/nR+JK3nnXsKZlkvc2/8WEHT/fLkzbt2rg1KtVLMQaQUX1rg9
-         lFcwHSlZyxAgg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A942BC04E24;
-        Tue, 17 Oct 2023 23:30:25 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE
-From:   patchwork-bot+bluetooth@kernel.org
-Message-Id: <169758542568.4587.5920833611147387224.git-patchwork-notify@kernel.org>
-Date:   Tue, 17 Oct 2023 23:30:25 +0000
-References: <20231012112118.11431-1-guanwentao@uniontech.com>
-In-Reply-To: <20231012112118.11431-1-guanwentao@uniontech.com>
-To:     Guan Wentao <guanwentao@uniontech.com>
-Cc:     marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
-        linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S1344382AbjJRBRL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 17 Oct 2023 21:17:11 -0400
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31A1CFC
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 18:17:09 -0700 (PDT)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-27d26a4fda1so4123057a91.3
+        for <stable@vger.kernel.org>; Tue, 17 Oct 2023 18:17:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697591828; x=1698196628; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3n3bprVeIQuT2Ng9Lf574qnCGv4o8+z0VKTT/COmX9Q=;
+        b=KmHbK/G2xmikzjtcHD7dGMJdB8+tRHOpRptRNALPHyL2DYqRgOH1bMIeGUqK1EbOGP
+         4to8W9LqBAcFOwilHbSGVGTEi587ddTy0EQOrVOWET1/H4QeGAC062OMsd/CHUpWES8y
+         nWAh21q4LbZpK+VPwFb9Ib92KqvgZzqYj807pOIph20AD0SItjG/cLyBKCaG+GB5EeQ8
+         ZdZbswWNo+UUBxT3LC3Jf6+hjZU9GO25jQjV0LIrgeOJA61S7rmgPFyuQvfPq4XNRMYg
+         dlThAVfEkhPELdowbkI5Q2ozJEX3HWN+qpfgkwpb+vZOOogRN7NAkRf3V8ViPKhyeMCa
+         B+gA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697591828; x=1698196628;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3n3bprVeIQuT2Ng9Lf574qnCGv4o8+z0VKTT/COmX9Q=;
+        b=OeuxMcpMhH2kwh8czm2vFHbBcDKzCpg5DryOjmAkoLOmLaf3/xdpMJYYW5IgghFBQ4
+         6SPQQ1KtseNgCdOcdVqRsFavuOX+/MSc4vujUzPDclcXY/BTQlvWDuuyyw1C21oCz1EK
+         Ws+6+DWoDHzTl887oMZhZMHHr7tTgawGHhbFioGasQ4Npn/o3ZMYOIOwDV9PO5SDQ203
+         CbX45nxfn4uFJAGKnUo91418Xqr1D+8dcQb3T31GP0IOxLbVEZg1/UKvwZ7rsXYFZKFz
+         9pWSZa3RgX7xjptEOIjVAprzx05dGFt7q5Z2u7AJ3ebPj8GlslSSUcGVVCR7jnHZwQl3
+         mNqg==
+X-Gm-Message-State: AOJu0YyKBd+/CnYVi47RK/UZVbVpcUPNbIYtSUEN2kacjoMa2UeiE2Of
+        i7ciISrVvt4g8HGvoKfLrBUJXPOIs40=
+X-Google-Smtp-Source: AGHT+IH/h6VBuLNlyY3uWvKQWh9avfftGmDa316dg+vgdu/+7muqIhPyBmlDCjLij/7M4rsy1Exn781Z6iA=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a17:902:f14c:b0:1c9:dbcf:a87c with SMTP id
+ d12-20020a170902f14c00b001c9dbcfa87cmr63061plb.3.1697591828655; Tue, 17 Oct
+ 2023 18:17:08 -0700 (PDT)
+Date:   Tue, 17 Oct 2023 18:16:20 -0700
+In-Reply-To: <20231017155101.40677-1-nsaenz@amazon.com>
+Mime-Version: 1.0
+References: <20231017155101.40677-1-nsaenz@amazon.com>
+X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
+Message-ID: <169759163972.1787364.3932584247097617727.b4-ty@google.com>
+Subject: Re: [PATCH v3] KVM: x86: hyper-v: Don't auto-enable stimer on write
+ from user-space
+From:   Sean Christopherson <seanjc@google.com>
+To:     Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org,
+        Nicolas Saenz Julienne <nsaenz@amazon.com>
+Cc:     vkuznets@redhat.com, pbonzini@redhat.com, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        x86@kernel.org, hpa@zytor.com, graf@amazon.de, rkagan@amazon.de,
+        linux-kernel@vger.kernel.org, anelkz@amazon.de,
         stable@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
-
-This patch was applied to bluetooth/bluetooth-next.git (master)
-by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
-
-On Thu, 12 Oct 2023 19:21:17 +0800 you wrote:
-> Add PID/VID 0bda:b85b for Realtek RTL8852BE USB bluetooth part.
-> The PID/VID was reported by the patch last year. [1]
-> Some SBCs like rockpi 5B A8 module contains the device.
-> And it`s founded in website. [2] [3]
+On Tue, 17 Oct 2023 15:51:02 +0000, Nicolas Saenz Julienne wrote:
+> Don't apply the stimer's counter side effects when modifying its
+> value from user-space, as this may trigger spurious interrupts.
 > 
-> Here is the device tables in /sys/kernel/debug/usb/devices .
+> For example:
+>  - The stimer is configured in auto-enable mode.
+>  - The stimer's count is set and the timer enabled.
+>  - The stimer expires, an interrupt is injected.
+>  - The VM is live migrated.
+>  - The stimer config and count are deserialized, auto-enable is ON, the
+>    stimer is re-enabled.
+>  - The stimer expires right away, and injects an unwarranted interrupt.
 > 
 > [...]
 
-Here is the summary with links:
-  - Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE
-    https://git.kernel.org/bluetooth/bluetooth-next/c/9bb309db620f
+Applied to kvm-x86 misc, thanks!
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+[1/1] KVM: x86: hyper-v: Don't auto-enable stimer on write from user-space
+      https://github.com/kvm-x86/linux/commit/d6800af51c76
 
-
+--
+https://github.com/kvm-x86/linux/tree/next
