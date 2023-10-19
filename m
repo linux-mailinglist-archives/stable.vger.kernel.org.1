@@ -2,192 +2,197 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF67A7CF7EC
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 14:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A92A97CF84C
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 14:07:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345410AbjJSMCi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 08:02:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39996 "EHLO
+        id S1345478AbjJSMHA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 08:07:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345535AbjJSMC3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 08:02:29 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74279184;
-        Thu, 19 Oct 2023 05:02:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6747C433C7;
-        Thu, 19 Oct 2023 12:02:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697716947;
-        bh=R+5y2QNUvpt4INL3lQPSCQLkuydVmA5dErPkd3V4WNA=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ItD6WkAGIh+xK7y9khfcK2WoitkBiQmlb1XYlEbrfsCoQBQnd1fMcde0whMt0guyT
-         T/oL5W8GM3s8qLYTiW/mHomS+NMwQ+V+CxvTHOMJRHK7noXvHpbcQIyMNBVlO+OI1a
-         mUlClE9U0oWNc4ApcnTz/PYb/zZK12oxEcFmHMzfQsDlEtjA0jekjMpZzUl63sDIZb
-         XVgJg4SKfnYEjztzHIYLmunoO1xW/Y62k6q01/41DCerBvm6Pvs7Y1pSTlsuC9KOQT
-         pcpRjWR6AqZaKzKMkxjKm1nMqlUugxvFo8mExZ7Fk3r59lQJ32avEnYHekqWXzYvr9
-         6sb27otZE3N0Q==
-From:   Frederic Weisbecker <frederic@kernel.org>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Neeraj Upadhyay <neeraj.upadhyay@amd.com>,
-        "Paul E . McKenney" <paulmck@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Uladzislau Rezki <urezki@gmail.com>, rcu <rcu@vger.kernel.org>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Binbin Zhou <zhoubinbin@loongson.cn>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
-        Frederic Weisbecker <frederic@kernel.org>
-Subject: [PATCH 6/6] rcu/tree: Defer setting of jiffies during stall reset
-Date:   Thu, 19 Oct 2023 14:02:02 +0200
-Message-Id: <20231019120202.1216228-7-frederic@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231019120202.1216228-1-frederic@kernel.org>
-References: <20231019120202.1216228-1-frederic@kernel.org>
+        with ESMTP id S1345521AbjJSMGV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 08:06:21 -0400
+Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AD6B173F
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 05:04:33 -0700 (PDT)
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20231019120432euoutp01e0d752449096c9ef46424a196afa9a3e~PgK7HoBcr0474004740euoutp01Y
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 12:04:32 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20231019120432euoutp01e0d752449096c9ef46424a196afa9a3e~PgK7HoBcr0474004740euoutp01Y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1697717072;
+        bh=UuT+43MuAJ7Xse3ZkxctwKmSJQDv0cIYRJ0g7MYPtEA=;
+        h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+        b=jsmBkI5iSobFkj/VRlsFyUuZqxgsw64j5SDaEd8wpU5u9+8cN8ZqlkHAimNdn3gSA
+         TzL8rMltnfKkj2Q4tbI7LRZGLNfVa1Ds5SAS0XdOsXtOto2Z8zak8de4Gf+LF59RWs
+         nvnRSlHLmDw5Fd/542Xq8UN1AP5/7aim8Vvmv6uA=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20231019120432eucas1p270299039be97a250c566e4dc96592c8f~PgK6saScF0294502945eucas1p2U;
+        Thu, 19 Oct 2023 12:04:32 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id AB.79.37758.05B11356; Thu, 19
+        Oct 2023 13:04:32 +0100 (BST)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20231019120431eucas1p2f7e355c1c628c4350188735acd9a0ed1~PgK6L2tt72673826738eucas1p2t;
+        Thu, 19 Oct 2023 12:04:31 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20231019120431eusmtrp29e8e54a76ee4175eae53d81d0881dfbf~PgK6LIQ591929519295eusmtrp2C;
+        Thu, 19 Oct 2023 12:04:31 +0000 (GMT)
+X-AuditID: cbfec7f5-815ff7000002937e-6d-65311b50912e
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 22.11.10549.F4B11356; Thu, 19
+        Oct 2023 13:04:31 +0100 (BST)
+Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20231019120431eusmtip235d3a457cb6e89ca1d9b2c5258a2a618~PgK6BFGy10517305173eusmtip2n;
+        Thu, 19 Oct 2023 12:04:31 +0000 (GMT)
+Received: from CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) by
+        CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348) with Microsoft SMTP
+        Server (TLS) id 15.0.1497.2; Thu, 19 Oct 2023 13:04:30 +0100
+Received: from CAMSVWEXC02.scsc.local ([::1]) by CAMSVWEXC02.scsc.local
+        ([fe80::3c08:6c51:fa0a:6384%13]) with mapi id 15.00.1497.012; Thu, 19 Oct
+        2023 13:04:30 +0100
+From:   Andreas Hindborg <a.hindborg@samsung.com>
+To:     Miguel Ojeda <ojeda@kernel.org>
+CC:     Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        Benno Lossin <benno.lossin@proton.me>,
+        Alice Ryhl <aliceryhl@google.com>,
+        "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "patches@lists.linux.dev" <patches@lists.linux.dev>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] rust: docs: fix logo replacement
+Thread-Topic: [PATCH] rust: docs: fix logo replacement
+Thread-Index: AQHaAdvAuvbjg/ia0k6JWzKMfPbkfbBQ9EoA
+Date:   Thu, 19 Oct 2023 12:04:30 +0000
+Message-ID: <87o7guizsn.fsf@samsung.com>
+In-Reply-To: <20231018155527.1015059-1-ojeda@kernel.org>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [106.210.248.240]
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrKKsWRmVeSWpSXmKPExsWy7djPc7oB0oapBpeXsFv8nb2d3eLE9SYW
+        iw/XmlgtblzYz2yxZksjk8XFM68ZLS7vmsNmsXL+ciDrxCVGi/XPDjNbLNj4iNFiw7K1jA48
+        Hks6fzF57Jx1l91jwaZSj02rOtk8XmyeyejxvX0Pm0dP2yYmj8+b5AI4orhsUlJzMstSi/Tt
+        Ergyrk3pYir4LVrxrVOlgfGTUBcjJ4eEgInEh+fTWEBsIYEVjBKrbotA2F8YJf71hUPYnxkl
+        ZvaIdTFygNU/+iDbxcgFFF7OKDHl5wE2CAeoZsG11UwQzhlGic2NX9ghnJWMEr/nvwBbwSag
+        L3FtzTVmEFtEQFmi4cArNhCbWWAyi8TLX2AnCQuYSsy53MMGUWMm8fLBVKh6I4k9Ez6zgtgs
+        AqoST2ZNBKvhFdCQaDsymwnE5hSwkNg4eTOYzSggK/Fo5S92iPniEreezGeCeFlQYtHsPcwQ
+        tpjEv10P2SBsHYmz158wQtgGEluX7mOBsJUldn+ewwIxR0/ixtQpUDdrSyxb+JoZ4gZBiZMz
+        n7CAPCwh8I9TYsfeB1CDXCRuPOqAWiYs8er4FnYIW0bi/875TBMYtWchuW8Wkh2zkOyYhWTH
+        AkaWVYziqaXFuempxcZ5qeV6xYm5xaV56XrJ+bmbGIEp7fS/4193MK549VHvECMTB+MhRgkO
+        ZiURXlUPg1Qh3pTEyqrUovz4otKc1OJDjNIcLErivKop8qlCAumJJanZqakFqUUwWSYOTqkG
+        ps4s6cUecjdr7RpXRLotNdmlWhV3dEZu+J4dnBq/FBs2HdXKEcsIFBXPvrSp7wND4fcDk2cs
+        mWTKVFk9dYuKwOYnh7s1L/+d+ZBbovPA2qVzwr5ERwWey1xbxDjNadH9mR+XBnPvvPD6R2ax
+        Wt/fIy3ZPkbaXPEF0w3+bGeb9Du459hefoWp7366rJrZLFT/1czu9n7RnkU15+f2R00R3FTe
+        Lc+5VedO8YXnGt6lCk4aojm2yaue3/n86dvyTXzXvthdnMTtM7n+3gV+4Vlxm1+wfz1T/sDP
+        UvDpRXZ28+NH/kX7dqtzy+euzZirxr/v5zr3AwFSVnfZ3N/YaIpN3JsdfvxjpeCFea/ZWuL2
+        SiqxFGckGmoxFxUnAgCdQHbM2AMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrKKsWRmVeSWpSXmKPExsVy+t/xe7r+0oapBv9Pq1n8nb2d3eLE9SYW
+        iw/XmlgtblzYz2yxZksjk8XFM68ZLS7vmsNmsXL+ciDrxCVGi/XPDjNbLNj4iNFiw7K1jA48
+        Hks6fzF57Jx1l91jwaZSj02rOtk8XmyeyejxvX0Pm0dP2yYmj8+b5AI4ovRsivJLS1IVMvKL
+        S2yVog0tjPQMLS30jEws9QyNzWOtjEyV9O1sUlJzMstSi/TtEvQyrk3pYir4LVrxrVOlgfGT
+        UBcjB4eEgInEow+yXYxcHEICSxklHm7tYeli5ASKy0hs/HKVFcIWlvhzrYsNougjo8Tu3kWM
+        EM4ZRonFmw5DZVYySvS/vwbWziagL3FtzTVmEFtEQFmi4cArsCJmgcksEpe/HAObKyxgKjHn
+        cg8bRJGZxMsHU6EajCT2TPgMVsMioCrxZNZEsBpeAQ2JtiOzmSC2dTNKbL99GqyBU8BCYuPk
+        zUwgNqOArMSjlb/YQWxmAXGJW0/mM0E8ISCxZM95ZghbVOLl439Qz+lInL3+hBHCNpDYunQf
+        NACUJXZ/nsMCMUdP4sbUKWwQtrbEsoWvmSEOEpQ4OfMJywRG6VlI1s1C0jILScssJC0LGFlW
+        MYqklhbnpucWG+oVJ+YWl+al6yXn525iBKanbcd+bt7BOO/VR71DjEwcjIcYJTiYlUR4VT0M
+        UoV4UxIrq1KL8uOLSnNSiw8xmgIDaSKzlGhyPjBB5pXEG5oZmBqamFkamFqaGSuJ83oWdCQK
+        CaQnlqRmp6YWpBbB9DFxcEo1MIn3Vp/r3My4x4nt9asPj+r4P/jtuP521qTdzTeXihr3c53W
+        WZ+6j3WP/uOGbdt1F0iaJ2hLnZe55Pv4e/XZ5zs27dy5XrFg23mxvlka0yN2qPxO7TwTJLiu
+        7SRP4pU7/Mvut5337lGcLVL4zP3S9IT2pjyjcPGVh4x2b6y49+ty4q/APu6/xxmv7f/kcNAm
+        e1Lh59suX5SPf2510r/MqddfvuRKT+b7Ns5JchX1G08tXVNRmy5/ft5l5+bbFV9TLKfmRrWH
+        Z9emfbrDnqvIt3+W891jMzO+P14ZZpxk4vFx/zLNKwVBf1l1cn/2r5hzc6Of1PwHE/+l3npz
+        UDvGQXxK5hPdhxN0+C1qz+zq0BdSYinOSDTUYi4qTgQAksfPnNgDAAA=
+X-CMS-MailID: 20231019120431eucas1p2f7e355c1c628c4350188735acd9a0ed1
+X-Msg-Generator: CA
+X-RootMTR: 20231018155602eucas1p14b9439c5249a921e1d5eda1e2e23eebf
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20231018155602eucas1p14b9439c5249a921e1d5eda1e2e23eebf
+References: <CGME20231018155602eucas1p14b9439c5249a921e1d5eda1e2e23eebf@eucas1p1.samsung.com>
+        <20231018155527.1015059-1-ojeda@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Joel Fernandes (Google)" <joel@joelfernandes.org>
 
-There are instances where rcu_cpu_stall_reset() is called when jiffies
-did not get a chance to update for a long time. Before jiffies is
-updated, the CPU stall detector can go off triggering false-positives
-where a just-started grace period appears to be ages old. In the past,
-we disabled stall detection in rcu_cpu_stall_reset() however this got
-changed [1]. This is resulting in false-positives in KGDB usecase [2].
+Miguel Ojeda <ojeda@kernel.org> writes:
 
-Fix this by deferring the update of jiffies to the third run of the FQS
-loop. This is more robust, as, even if rcu_cpu_stall_reset() is called
-just before jiffies is read, we would end up pushing out the jiffies
-read by 3 more FQS loops. Meanwhile the CPU stall detection will be
-delayed and we will not get any false positives.
+> The static files placement by `rustdoc` changed in Rust 1.67.0 [1],
+> but the custom code we have to replace the logo in the generated
+> HTML files did not get updated.
+>
+> Thus update it to have the Linux logo again in the output.
+>
+> Hopefully `rustdoc` will eventually support a custom logo from
+> a local file [2], so that we do not need to maintain this hack
+> on our side.
+>
+> Link: https://protect2.fireeye.com/v1/url?k=3D3606269f-578d33a5-3607add0-=
+74fe4860008a-47cdfdc2f1793629&q=3D1&e=3Dca2ce79b-669b-4a80-b032-30bab50cf45=
+5&u=3Dhttps%3A%2F%2Fgithub.com%2Frust-lang%2Frust%2Fpull%2F101702 [1]
+> Link: https://protect2.fireeye.com/v1/url?k=3Dfaa866e4-9b2373de-faa9edab-=
+74fe4860008a-e32c39efb11c5865&q=3D1&e=3Dca2ce79b-669b-4a80-b032-30bab50cf45=
+5&u=3Dhttps%3A%2F%2Fgithub.com%2Frust-lang%2Frfcs%2Fpull%2F3226 [2]
+> Fixes: 3ed03f4da06e ("rust: upgrade to Rust 1.68.2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-[1] https://lore.kernel.org/all/20210521155624.174524-2-senozhatsky@chromium.org/
-[2] https://lore.kernel.org/all/20230814020045.51950-2-chenhuacai@loongson.cn/
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-Tested with rcutorture.cpu_stall option as well to verify stall behavior
-with/without patch.
-
-Tested-by: Huacai Chen <chenhuacai@loongson.cn>
-Reported-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Closes: https://lore.kernel.org/all/20230814020045.51950-2-chenhuacai@loongson.cn/
-Suggested-by: Paul  McKenney <paulmck@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Fixes: a80be428fbc1 ("rcu: Do not disable GP stall detection in rcu_cpu_stall_reset()")
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
----
- kernel/rcu/tree.c       | 12 ++++++++++++
- kernel/rcu/tree.h       |  4 ++++
- kernel/rcu/tree_stall.h | 20 ++++++++++++++++++--
- 3 files changed, 34 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index cb1caefa8bd0..d85779f67aea 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1556,10 +1556,22 @@ static bool rcu_gp_fqs_check_wake(int *gfp)
-  */
- static void rcu_gp_fqs(bool first_time)
- {
-+	int nr_fqs = READ_ONCE(rcu_state.nr_fqs_jiffies_stall);
- 	struct rcu_node *rnp = rcu_get_root();
- 
- 	WRITE_ONCE(rcu_state.gp_activity, jiffies);
- 	WRITE_ONCE(rcu_state.n_force_qs, rcu_state.n_force_qs + 1);
-+
-+	WARN_ON_ONCE(nr_fqs > 3);
-+	/* Only countdown nr_fqs for stall purposes if jiffies moves. */
-+	if (nr_fqs) {
-+		if (nr_fqs == 1) {
-+			WRITE_ONCE(rcu_state.jiffies_stall,
-+				   jiffies + rcu_jiffies_till_stall_check());
-+		}
-+		WRITE_ONCE(rcu_state.nr_fqs_jiffies_stall, --nr_fqs);
-+	}
-+
- 	if (first_time) {
- 		/* Collect dyntick-idle snapshots. */
- 		force_qs_rnp(dyntick_save_progress_counter);
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index 192536916f9a..e9821a8422db 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -386,6 +386,10 @@ struct rcu_state {
- 						/*  in jiffies. */
- 	unsigned long jiffies_stall;		/* Time at which to check */
- 						/*  for CPU stalls. */
-+	int nr_fqs_jiffies_stall;		/* Number of fqs loops after
-+						 * which read jiffies and set
-+						 * jiffies_stall. Stall
-+						 * warnings disabled if !0. */
- 	unsigned long jiffies_resched;		/* Time at which to resched */
- 						/*  a reluctant CPU. */
- 	unsigned long n_force_qs_gpstart;	/* Snapshot of n_force_qs at */
-diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
-index 49544f932279..ac8e86babe44 100644
---- a/kernel/rcu/tree_stall.h
-+++ b/kernel/rcu/tree_stall.h
-@@ -150,12 +150,17 @@ static void panic_on_rcu_stall(void)
- /**
-  * rcu_cpu_stall_reset - restart stall-warning timeout for current grace period
-  *
-+ * To perform the reset request from the caller, disable stall detection until
-+ * 3 fqs loops have passed. This is required to ensure a fresh jiffies is
-+ * loaded.  It should be safe to do from the fqs loop as enough timer
-+ * interrupts and context switches should have passed.
-+ *
-  * The caller must disable hard irqs.
-  */
- void rcu_cpu_stall_reset(void)
- {
--	WRITE_ONCE(rcu_state.jiffies_stall,
--		   jiffies + rcu_jiffies_till_stall_check());
-+	WRITE_ONCE(rcu_state.nr_fqs_jiffies_stall, 3);
-+	WRITE_ONCE(rcu_state.jiffies_stall, ULONG_MAX);
- }
- 
- //////////////////////////////////////////////////////////////////////////////
-@@ -171,6 +176,7 @@ static void record_gp_stall_check_time(void)
- 	WRITE_ONCE(rcu_state.gp_start, j);
- 	j1 = rcu_jiffies_till_stall_check();
- 	smp_mb(); // ->gp_start before ->jiffies_stall and caller's ->gp_seq.
-+	WRITE_ONCE(rcu_state.nr_fqs_jiffies_stall, 0);
- 	WRITE_ONCE(rcu_state.jiffies_stall, j + j1);
- 	rcu_state.jiffies_resched = j + j1 / 2;
- 	rcu_state.n_force_qs_gpstart = READ_ONCE(rcu_state.n_force_qs);
-@@ -726,6 +732,16 @@ static void check_cpu_stall(struct rcu_data *rdp)
- 	    !rcu_gp_in_progress())
- 		return;
- 	rcu_stall_kick_kthreads();
-+
-+	/*
-+	 * Check if it was requested (via rcu_cpu_stall_reset()) that the FQS
-+	 * loop has to set jiffies to ensure a non-stale jiffies value. This
-+	 * is required to have good jiffies value after coming out of long
-+	 * breaks of jiffies updates. Not doing so can cause false positives.
-+	 */
-+	if (READ_ONCE(rcu_state.nr_fqs_jiffies_stall) > 0)
-+		return;
-+
- 	j = jiffies;
- 
- 	/*
--- 
-2.34.1
-
+> ---
+>  rust/Makefile | 15 +++++++--------
+>  1 file changed, 7 insertions(+), 8 deletions(-)
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 87958e864be0..08af1f869f0c 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -93,15 +93,14 @@ quiet_cmd_rustdoc =3D RUSTDOC $(if $(rustdoc_host),H,=
+ ) $<
+>  # and then retouch the generated files.
+>  rustdoc: rustdoc-core rustdoc-macros rustdoc-compiler_builtins \
+>      rustdoc-alloc rustdoc-kernel
+> -	$(Q)cp $(srctree)/Documentation/images/logo.svg $(rustdoc_output)
+> -	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(rustdoc_output)
+> +	$(Q)cp $(srctree)/Documentation/images/logo.svg $(rustdoc_output)/stati=
+c.files/
+> +	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(rustdoc_output)/s=
+tatic.files/
+>  	$(Q)find $(rustdoc_output) -name '*.html' -type f -print0 | xargs -0 se=
+d -Ei \
+> -		-e 's:rust-logo\.svg:logo.svg:g' \
+> -		-e 's:rust-logo\.png:logo.svg:g' \
+> -		-e 's:favicon\.svg:logo.svg:g' \
+> -		-e 's:<link rel=3D"alternate icon" type=3D"image/png" href=3D"[./]*fav=
+icon-(16x16|32x32)\.png">::g'
+> -	$(Q)echo '.logo-container > img { object-fit: contain; }' \
+> -		>> $(rustdoc_output)/rustdoc.css
+> +		-e 's:rust-logo-[0-9a-f]+\.svg:logo.svg:g' \
+> +		-e 's:favicon-[0-9a-f]+\.svg:logo.svg:g' \
+> +		-e 's:<link rel=3D"alternate icon" type=3D"image/png" href=3D"[/.]+/st=
+atic\.files/favicon-(16x16|32x32)-[0-9a-f]+\.png">::g'
+> +	$(Q)for f in $(rustdoc_output)/static.files/rustdoc-*.css; do \
+> +		echo ".logo-container > img { object-fit: contain; }" >> $$f; done
+> =20
+>  rustdoc-macros: private rustdoc_host =3D yes
+>  rustdoc-macros: private rustc_target_flags =3D --crate-type proc-macro \
