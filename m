@@ -2,83 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98EE87CFFD9
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 18:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26CC07D0031
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 19:07:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345017AbjJSQno (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 12:43:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52978 "EHLO
+        id S235445AbjJSRHz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 13:07:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233146AbjJSQnn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 12:43:43 -0400
-Received: from mail-yw1-x112f.google.com (mail-yw1-x112f.google.com [IPv6:2607:f8b0:4864:20::112f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CDD711F
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 09:43:41 -0700 (PDT)
-Received: by mail-yw1-x112f.google.com with SMTP id 00721157ae682-5a7e5dc8573so100895797b3.0
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 09:43:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1697733820; x=1698338620; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=v/PWIrwK7yjVyTLCrAnW4DXLe2PtvDZ2eghjerodrKw=;
-        b=Ac/em7+OEM6sju6lbQRfRMeQVVyk2AwDXXeZz4LwYp8iWrOzHSMWkzk6afpfJQofyZ
-         PYFTlIjJ4S59e9RC/qJXQBuxFDhpO0InVlMlUteY1hjSwIxhhX1JtGQ7p3Rs7ER6v7DA
-         xiv7GY16XY58CCpZS7VR3gZxTCxVWznXzy6Y0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697733820; x=1698338620;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v/PWIrwK7yjVyTLCrAnW4DXLe2PtvDZ2eghjerodrKw=;
-        b=RCwx8COCD0/CLUeKHKZMgesToCpc/g6q9XZp1UmXxBefwrC2YqRrrxLTcGb5Ju143t
-         o6VYyx4TVgnOoZIszgyXYOh/wdSQVWtFx+lrs1IjHNtERq4IG1NohTkrF5LAAaLlUR4N
-         zsDJnHBP/gwo72diQIY9FD7An1vnGn4CYrngHi1TmWQPzKqcNBynl8hNTw+SCDfo/hFD
-         v+fDpPOcbS0yM0XG/1hXHALAe137Rx8ftyj8al1kwQ/xIzx86CqfrPwCU+n6qcX8ptPv
-         L7m51CRImk0RhZK2vR+/9mwJBbqUbL+rYSbVTFS27pMKXhTchqRARusGQ7o/a4K7D9Na
-         Nc3A==
-X-Gm-Message-State: AOJu0YzyhhhyapHaVvki7NMHwAk+N+B2p/HU93+0PZMu8da8V9q/M8rW
-        ybbkzbTQFQNRhbNmvHo3wg9vucakBTNlKGyPbKvILw==
-X-Google-Smtp-Source: AGHT+IFd62ic0pQJCqoncPJxXabGcZf4KKud86nThgMjLPEjjH97+UYqiqAisRJM3jhW+CQVFLq1IPqoZ7FHOmR54B0=
-X-Received: by 2002:a0d:d789:0:b0:595:8e80:30ef with SMTP id
- z131-20020a0dd789000000b005958e8030efmr2679766ywd.51.1697733820608; Thu, 19
- Oct 2023 09:43:40 -0700 (PDT)
+        with ESMTP id S233041AbjJSRHy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 13:07:54 -0400
+Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [85.215.255.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68F1B9E;
+        Thu, 19 Oct 2023 10:07:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1697735268; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=gL+OYJWOZsBK8wjUer7YzfA6lu2/OAmILo7rXbMEpIo6Q5vpMyC7mSWdbhANMzl7q+
+    Yu5Sz+ZybFahk9W7740bmh3r2LQT5BzJ9GIa8FZy0cXEABKXDEY8LS0fzGz4GNwzzAo2
+    7PIAaqu2cgWNqw5JgtFO/ghcduIJuqL9WtdsO3ZItYiXxK8iFxT9KrozvKRvEojXiUCn
+    1hXv6cMNAJGsvhVYq7ntP5eZ+xrumKheqlDvHcyuDN3ITzSmXHIDuPkDxaiznH/Fz83I
+    8wDGnOGbV1esiSODY+sD3w13uc8ia4t1qetiLpxsB0ucKa/Z9Vlf5cBXMHaZcdvp/nIG
+    a5Eg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1697735268;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=ggdAcZ8XFp1hnFIstd7n2G5k77VgwuMSI/PGdGGtmZ8=;
+    b=T8uEwk7akEKn3bWwEfLVQY5L3xK5W0hJHI2EdktHjkdNySOpoSZpJ8sl9eAXEtVwnz
+    P+J2UNQb7RmFnrgApP98u3q24kXUIGQgDv2hlwZfEZzuAgvZp7VCxYq+DTqaNlkjZGbV
+    N+oOEWGaIwpKMKxPUTq3xZPtv+2rrajpsOE1E/VHbjRX9d1eCi9HB8IUyAWLea4U5XSq
+    sVSFQ/EiFq6GfBWeDAD/QVfMyUHbQf2HSc9jqiYy/SDfh7rM5/xzBnqknx/lVFMItKvk
+    wWh2Uw9zNJAWmPqap08exwrIK/zGkyqopS+SAZBHzYJR/DFMa8Ud9FHaZR4QoDdwMFGw
+    Pb4g==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1697735268;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=ggdAcZ8XFp1hnFIstd7n2G5k77VgwuMSI/PGdGGtmZ8=;
+    b=SUmf/7em3PDqqlxJi6XO0HJImqy824rDa1rYbI+jD1uANy/YAqLOaFom9WYb+THzPZ
+    iaDWgRpAtIZSJQvVGyRk2U+/KctdVGTBXKNcZrPV+Za6kbIflE60hn7QCoJQYVocVtrQ
+    cjTrSfj26muuvN1xwmWY02Iz7g/mdToTG6efrS0AzAmyLDhLkVUhCQRHIO5/360bsFkP
+    opF4nVSAQIjPPCf2FVhDW6k6n4rUtOwlLdD+CiaAFvOJ++oqgz5PrgTCAgYa2s0hxef3
+    twDk4RrWo/nWEMlDOQciApA6kKkejkZEpp5rSsfDC5PuIIbknlslSR/ptr6wpsH7262n
+    jFzg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1697735268;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=ggdAcZ8XFp1hnFIstd7n2G5k77VgwuMSI/PGdGGtmZ8=;
+    b=9jhv3SStOE/B1Ma3imgq1ohB5nXLSIXSN7EHHaG3zof6i2DaDRzyTci5sZfrlo/LQN
+    J8uF5e3y68hG2BkmleCw==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA95vh"
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 49.9.0 DYNA|AUTH)
+    with ESMTPSA id j34a49z9JH7lEPB
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Thu, 19 Oct 2023 19:07:47 +0200 (CEST)
+Date:   Thu, 19 Oct 2023 19:07:40 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] cpufreq: qcom-nvmem: Enable virtual power domain
+ devices
+Message-ID: <ZTFiXJ2XO4WQN_gu@gerhold.net>
+References: <20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com>
+ <20231018-msm8909-cpufreq-v2-2-0962df95f654@kernkonzept.com>
+ <CAPDyKFot9=M1ooP_Q1AOgG5o_4DTQ2qsyai1ZdXAzBwf89W4uA@mail.gmail.com>
+ <CAPDyKFr5A-P=UhWs4rUMBWup3pH75WAhcZ56Y2_Sfk3=WfxRCQ@mail.gmail.com>
+ <ZTEph19CAvbgbN_E@gerhold.net>
+ <CAPDyKFo1PVZYsdW_=92EtMmTT9hmkm-mBR69N_WvPh4f-Hw=NA@mail.gmail.com>
+ <ZTFBzjLAaaUHux4O@gerhold.net>
+ <CAPDyKFruYqngQoW21Ra+hm4ybjS7LoD4casYbo8bP4J+hLUnaA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20231018235944.1860717-1-markhas@chromium.org> <7b08520e-8f36-45a1-9b7a-316a33c8e8c4@linux.intel.com>
-In-Reply-To: <7b08520e-8f36-45a1-9b7a-316a33c8e8c4@linux.intel.com>
-From:   Mark Hasemeyer <markhas@chromium.org>
-Date:   Thu, 19 Oct 2023 10:43:29 -0600
-Message-ID: <CANg-bXDvZ00ZHEgbUf1NwDrOKfDF4vpBOxZ4hGEp-ohs6-pZpw@mail.gmail.com>
-Subject: Re: [PATCH v1] ALSA: hda: intel-dsp-config: Fix JSL Chromebook quirk detection
-To:     =?UTF-8?B?QW1hZGV1c3ogU8WCYXdpxYRza2k=?= 
-        <amadeuszx.slawinski@linux.intel.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Brady Norander <bradynorander@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Mark Brown <broonie@kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFruYqngQoW21Ra+hm4ybjS7LoD4casYbo8bP4J+hLUnaA@mail.gmail.com>
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> I would assume that platform that has DMI_SYS_VENDOR set to "Google",
-> also has DMI_BIOS_VERSION set to "Google", so perhaps just replace
-> DMI_SYS_VENDOR match with DMI_BIOS_VERSION, to keep table small? Or is
-> that not a case?
+On Thu, Oct 19, 2023 at 05:19:53PM +0200, Ulf Hansson wrote:
+> On Thu, 19 Oct 2023 at 16:49, Stephan Gerhold <stephan@gerhold.net> wrote:
+> > On Thu, Oct 19, 2023 at 04:12:56PM +0200, Ulf Hansson wrote:
+> > > On Thu, 19 Oct 2023 at 15:05, Stephan Gerhold <stephan@gerhold.net> wrote:
+> > > > On Thu, Oct 19, 2023 at 01:26:19PM +0200, Ulf Hansson wrote:
+> > > > > BTW, if you really need something like the above, the proper way to do
+> > > > > it would instead be to call device_set_awake_path() for the device.
+> > > > >
+> > > > > This informs genpd that the device needs to stay powered-on during
+> > > > > system suspend (assuming that GENPD_FLAG_ACTIVE_WAKEUP has been set
+> > > > > for it), hence it will keep the corresponding PM domain powered-on
+> > > > > too.
+> > > >
+> > > > Thanks, I can try if this works as alternative to the
+> > > > dev_pm_syscore_device()!
+> > >
+> > > Yes, please. We don't want to abuse the dev_pm_syscore_device() thingy.
+> >
+> > Could you clarify the idea behind GENPD_FLAG_ACTIVE_WAKEUP? Would I set
+> > it conditionally for all RPMPDs or just the ones consumed by the CPU?
+> > How does the genpd *provider* know if one of its *consumer* devices
+> > needs to have its power domain kept on for wakeup?
+> 
+> We are thinking of the GENPD_FLAG_ACTIVE_WAKEUP as a platform
+> configuration type of flag for the genpd in question. The consumer
+> driver shouldn't need to know about the details of what is happening
+> on the PM domain level - only whether it needs its device to remain
+> powered-on during system suspend or not.
+> 
 
-That is the case. But I'm inclined to keep it for two reasons:
-1. There is precedent in the kernel to use DMI_SYS_VENDOR=="Google"
-for Chromebook detection.
-2. If the coreboot version schema for Chromebooks were to change, this
-check would fail for all JSL Chromebooks instead of just a few models.
+Thanks! I will test if this works for RPMPD and post new versions of the
+patches. By coincidence I think this flag might actually be useful as
+temporary solution for CPR. If I:
+
+ 1. Change $subject patch to use device_set_awake_path() instead, and
+ 2. Set GENPD_FLAG_ACTIVE_WAKEUP for the RPMPD genpds, but
+ 3. Do *not* set GENPD_FLAG_ACTIVE_WAKEUP for the CPR genpd.
+
+Then the genpd ->power_on|off() callbacks should still be called
+for CPR during system suspend, right? :D
+
+> I suspect that the GENPD_FLAG_ACTIVE_WAKEUP is probably okay to set
+> for most genpds, but there may be some exceptions.
+> 
+
+Out of curiosity, do you have an example for such an exception where
+GENPD_FLAG_ACTIVE_WAKEUP shouldn't be set, aside from workarounds like
+I just described?
+
+As you said, the consumer device should just say that it wants to stay
+powered for wakeup during suspend. But if its power domains get powered
+off, I would expect that to break. How could a genpd driver still
+provide power without being powered on? Wouldn't that rather be a low
+performance state?
+
+Thanks,
+Stephan
