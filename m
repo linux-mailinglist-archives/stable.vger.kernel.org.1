@@ -2,96 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65DC37CFA5C
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 15:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 725107CFAB1
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 15:17:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345748AbjJSNFY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 09:05:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59992 "EHLO
+        id S235369AbjJSNRW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 09:17:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345641AbjJSNFX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 09:05:23 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53EBE119;
-        Thu, 19 Oct 2023 06:05:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1697720717; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=HQkJwUGjXxiVocX2+JRqv+20JKUah3fIpKJawr5qqY13Qlmh8/IC8xybss6bgFO3sT
-    mzIhLYpqmwxnkWVoA+n9gJBY0kdtehdVgQsOyb+3tEcbi61JfcEykbPOHc9P+5+YOr1N
-    8tfQgfVON770jRcTQLeyRPZ3VPeQ9oy66DJQFjYTF6XBi8GLnNndqh7K2vq3hx9dsuhP
-    4lYHrIZ7Xi3Ky9scvNKSzCxA4SUkNpIK11G03rDP/+E26q4u8PjeDhEv2wweZ3wJT5Nd
-    SplQiaXuLVF6zbdNd94BEJrS/UObr3zsOwne84QeyjlZd3gmxl9CkokblxHWuGBfxymR
-    GYVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1697720717;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=xxfgo5/03Ivn9KxKr/YiTmmInTNFF0S4txFCc5wo/cY=;
-    b=Eq4Wd/oVZVv8nQOqi892ovadJ81VegZ1Ry7+gW2HoW3mrRIWqTiJ/L0QD2dL53dxPG
-    a78fuBUBAFcK9kHkeLmMpNrJp8HfFPwy2n+vkRsV1Fty+phWf1X8Cy84ofvrlt2Spz3N
-    s8woUuKWXSHzKyqBwfU+jYiJ9umxZQlW+KNVpooy7gsjeNZWoeEOUjHZzp1quxMVErml
-    mYcppjd8iwAaisRvWzmuhr8JutQ//JOVqPXB3t3a84nkuVptWmXmc5QBJ705BnZMwE/+
-    OyfdcaAf9KRYtkgNPo4alq7Lwg1tPcM+uQjW0iHoXtMsfWSzlvdY8vk13FOgk9fcxaes
-    GHiQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1697720717;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=xxfgo5/03Ivn9KxKr/YiTmmInTNFF0S4txFCc5wo/cY=;
-    b=ZrGWmf/5PgbELJxxzjqKdMd0xAbnF4jJst4iFXsrTVkkZ6UbIETPjNeae5tsdUX061
-    CY4tV7zFCwzEoo+o6dSUw3XR37sTVGW9mO8jg5nh4wS6CzL7bE0hCygsymGdB0iG4me1
-    jNCQ5jGMdCT9hVtq2/1gmNn2zji7joORpbene1WxfgGuLwH/kYjxRPbgV/Gi4AnlnE83
-    tF2XDacGZuguHUEKMYEGU/Out7azl3HR0Aa9UolUdAO5YzgzBndTR3Z3HlD+3amvlzJ5
-    hFwsEbqdWykZezHIIVoozhlE0K6CuUdHA60sKs267EmiBnsBH0ty2GuoJOZIMKYmNe3R
-    DnTg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1697720717;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=xxfgo5/03Ivn9KxKr/YiTmmInTNFF0S4txFCc5wo/cY=;
-    b=7dyg0EudhUTJj5c11LTuz5JIN03XClSzW5niCEYEngNkgfQTe3UUFazbzrpgFyVi5+
-    7fFwWSvQTXhjqQQ4yxAA==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA95vh"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.9.0 DYNA|AUTH)
-    with ESMTPSA id j34a49z9JD5HDef
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 19 Oct 2023 15:05:17 +0200 (CEST)
-Date:   Thu, 19 Oct 2023 15:05:11 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] cpufreq: qcom-nvmem: Enable virtual power domain
- devices
-Message-ID: <ZTEph19CAvbgbN_E@gerhold.net>
-References: <20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com>
- <20231018-msm8909-cpufreq-v2-2-0962df95f654@kernkonzept.com>
- <CAPDyKFot9=M1ooP_Q1AOgG5o_4DTQ2qsyai1ZdXAzBwf89W4uA@mail.gmail.com>
- <CAPDyKFr5A-P=UhWs4rUMBWup3pH75WAhcZ56Y2_Sfk3=WfxRCQ@mail.gmail.com>
+        with ESMTP id S233202AbjJSNRV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 09:17:21 -0400
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C8998;
+        Thu, 19 Oct 2023 06:17:15 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8106F240002;
+        Thu, 19 Oct 2023 13:17:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1697721434;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=7kubKUOdyt7koTXOXKhU8wFECVMZDVp8kCAlvbhKcUI=;
+        b=evznZ03xPa0BEwhJfOpNDV6d3q5E4Ku96L8mhZfSmZ0WUAyqSyXEHUqqaCyyVLtItEGvJG
+        iI6qrODCXFvYvK78X9EaXwnN1EdVV5EAKy2i+nJLs5gM8vPTgBk+GtMRLOzf8QBS83sGmg
+        gmdd5uackLlA7rCLXeUjimx1JzlpafuKGeeXAcKIKTRILR+l8WSVFibee3PrOXIX+c03pf
+        niu31RkRhCXonSiGBCR+L6uJv25Lt15MaLuEN70pGQBMMk0ytJ5KRB5B/bXiQK13Mhdo/s
+        PYa9WxihA5q8z5ZuHkvs1Bbj0fK9rMBqAZ7Tw05nMfPXahSVtClavHN/lPGQhQ==
+From:   Kory Maincent <kory.maincent@bootlin.com>
+Date:   Thu, 19 Oct 2023 15:16:41 +0200
+Subject: [PATCH net] Revert "ethtool: Fix mod state of verbose no_mask
+ bitset"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFr5A-P=UhWs4rUMBWup3pH75WAhcZ56Y2_Sfk3=WfxRCQ@mail.gmail.com>
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20231019-feature_ptp_bitset_fix-v1-1-70f3c429a221@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIADgsMWUC/x2M0QqEIBQFfyXuc0ImFfUrEZJ13L0vJnqLhejfV
+ 3qcgZmbMhIj01TdlHBx5iMU0HVF23cNHyjeC1PbtEY3elQeq5wJNkq0jiVDrOef6p0fun7Qzhh
+ QiWNC0e94pgCh5Xn+yXvplG0AAAA=
+To:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Simon Horman <horms@kernel.org>
+Cc:     Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Simon Horman <horms@kernel.org>,
+        Michal Kubecek <mkubecek@suse.cz>, stable@vger.kernel.org,
+        Kory Maincent <kory.maincent@bootlin.com>,
+        Oleksij Rempel <linux@rempel-privat.de>
+X-Mailer: b4 0.12.3
+X-GND-Sasl: kory.maincent@bootlin.com
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -99,105 +63,125 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 19, 2023 at 01:26:19PM +0200, Ulf Hansson wrote:
-> On Thu, 19 Oct 2023 at 12:24, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > On Wed, 18 Oct 2023 at 10:06, Stephan Gerhold
-> > <stephan.gerhold@kernkonzept.com> wrote:
-> > >
-> > > The genpd core caches performance state votes from devices that are
-> > > runtime suspended as of commit 3c5a272202c2 ("PM: domains: Improve
-> > > runtime PM performance state handling"). They get applied once the
-> > > device becomes active again.
-> > >
-> > > To attach the power domains needed by qcom-cpufreq-nvmem the OPP core
-> > > calls genpd_dev_pm_attach_by_id(). This results in "virtual" dummy
-> > > devices that use runtime PM only to control the enable and performance
-> > > state for the attached power domain.
-> > >
-> > > However, at the moment nothing ever resumes the virtual devices created
-> > > for qcom-cpufreq-nvmem. They remain permanently runtime suspended. This
-> > > means that performance state votes made during cpufreq scaling get
-> > > always cached and never applied to the hardware.
-> > >
-> > > Fix this by enabling the devices after attaching them and use
-> > > dev_pm_syscore_device() to ensure the power domains also stay on when
-> > > going to suspend. Since it supplies the CPU we can never turn it off
-> > > from Linux. There are other mechanisms to turn it off when needed,
-> > > usually in the RPM firmware (RPMPD) or the cpuidle path (CPR genpd).
-> >
-> > I believe we discussed using dev_pm_syscore_device() for the previous
-> > version. It's not intended to be used for things like the above.
-> >
+This reverts commit 108a36d07c01edbc5942d27c92494d1c6e4d45a0.
 
-Sorry, looks like we still had a misunderstanding in the conclusion of
-the previous discussion. :')
+It was reported that this fix breaks the possibility to remove existing WoL
+flags. For example:
+~$ ethtool lan2
+...
+        Supports Wake-on: pg
+        Wake-on: d
+...
+~$ ethtool -s lan2 wol gp
+~$ ethtool lan2
+...
+        Wake-on: pg
+...
+~$ ethtool -s lan2 wol d
+~$ ethtool lan2
+...
+        Wake-on: pg
+...
 
-> > Moreover, I was under the impression that it wasn't really needed. In
-> > fact, I would think that this actually breaks things for system
-> > suspend/resume, as in this case the cpr driver's genpd
-> > ->power_on|off() callbacks are no longer getting called due this,
-> > which means that the cpr state machine isn't going to be restored
-> > properly. Or did I get this wrong?
-> 
+This worked correctly before this commit because we were always updating
+a zero bitmap (since commit 6699170376ab ("ethtool: fix application of
+verbose no_mask bitset"), that is) so that the rest was left zero
+naturally. But now the 1->0 change (old_val is true, bit not present in
+netlink nest) no longer works.
 
-We strictly need the RPMPDs to be always-on, also across system suspend
-[1]. The RPM firmware will drop the votes internally as soon as the
-CPU(s) have entered deep cpuidle. We can't do this from Linux, because
-we need the CPU to continue running until it was shut down cleanly.
+Reported-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Reported-by: Michal Kubecek <mkubecek@suse.cz>
+Closes: https://lore.kernel.org/netdev/20231019095140.l6fffnszraeb6iiw@lion.mk-sys.cz/
+Cc: stable@vger.kernel.org
+Fixes: 108a36d07c01 ("ethtool: Fix mod state of verbose no_mask bitset")
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+---
 
-For CPR, we strictly need the backing regulator to be always-on, also
-across system suspend. Typically the hardware will turn off the
-regulator as soon as the CPU(s) enter deep cpuidle. Similarly, we can't
-do this from Linux, because we need the CPU to continue running until it
-was shut down cleanly.
+This patch is reverted for now as we are approaching the end of the
+merge-window. The real fix that fix the mod value will be sent later
+on the next merge-window.
+---
+ net/ethtool/bitset.c | 32 ++++++--------------------------
+ 1 file changed, 6 insertions(+), 26 deletions(-)
 
-My understanding was that we're going to pause the CPR state machine
-using the system suspend/resume callbacks on the driver, instead of
-using the genpd->power_on|off() callbacks [2]. I can submit a separate
-patch for this.
+diff --git a/net/ethtool/bitset.c b/net/ethtool/bitset.c
+index 883ed9be81f9..0515d6604b3b 100644
+--- a/net/ethtool/bitset.c
++++ b/net/ethtool/bitset.c
+@@ -431,10 +431,8 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 			      ethnl_string_array_t names,
+ 			      struct netlink_ext_ack *extack, bool *mod)
+ {
+-	u32 *orig_bitmap, *saved_bitmap = NULL;
+ 	struct nlattr *bit_attr;
+ 	bool no_mask;
+-	bool dummy;
+ 	int rem;
+ 	int ret;
+ 
+@@ -450,22 +448,8 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 	}
+ 
+ 	no_mask = tb[ETHTOOL_A_BITSET_NOMASK];
+-	if (no_mask) {
+-		unsigned int nwords = DIV_ROUND_UP(nbits, 32);
+-		unsigned int nbytes = nwords * sizeof(u32);
+-
+-		/* The bitmap size is only the size of the map part without
+-		 * its mask part.
+-		 */
+-		saved_bitmap = kcalloc(nwords, sizeof(u32), GFP_KERNEL);
+-		if (!saved_bitmap)
+-			return -ENOMEM;
+-		memcpy(saved_bitmap, bitmap, nbytes);
+-		ethnl_bitmap32_clear(bitmap, 0, nbits, &dummy);
+-		orig_bitmap = saved_bitmap;
+-	} else {
+-		orig_bitmap = bitmap;
+-	}
++	if (no_mask)
++		ethnl_bitmap32_clear(bitmap, 0, nbits, mod);
+ 
+ 	nla_for_each_nested(bit_attr, tb[ETHTOOL_A_BITSET_BITS], rem) {
+ 		bool old_val, new_val;
+@@ -474,14 +458,13 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 		if (nla_type(bit_attr) != ETHTOOL_A_BITSET_BITS_BIT) {
+ 			NL_SET_ERR_MSG_ATTR(extack, bit_attr,
+ 					    "only ETHTOOL_A_BITSET_BITS_BIT allowed in ETHTOOL_A_BITSET_BITS");
+-			ret = -EINVAL;
+-			goto out;
++			return -EINVAL;
+ 		}
+ 		ret = ethnl_parse_bit(&idx, &new_val, nbits, bit_attr, no_mask,
+ 				      names, extack);
+ 		if (ret < 0)
+-			goto out;
+-		old_val = orig_bitmap[idx / 32] & ((u32)1 << (idx % 32));
++			return ret;
++		old_val = bitmap[idx / 32] & ((u32)1 << (idx % 32));
+ 		if (new_val != old_val) {
+ 			if (new_val)
+ 				bitmap[idx / 32] |= ((u32)1 << (idx % 32));
+@@ -491,10 +474,7 @@ ethnl_update_bitset32_verbose(u32 *bitmap, unsigned int nbits,
+ 		}
+ 	}
+ 
+-	ret = 0;
+-out:
+-	kfree(saved_bitmap);
+-	return ret;
++	return 0;
+ }
+ 
+ static int ethnl_compact_sanity_checks(unsigned int nbits,
 
-I didn't prioritize this because QCS404 (as the only current user of
-CPR) doesn't have proper deep cpuidle/power management set up yet. It's
-not entirely clear to me if there is any advantage (or perhaps even
-disadvantage) if we pause the CPR state machine while the shared L2
-cache is still being actively powered by the CPR power rail during
-system suspend. I suspect this is a configuration that was never
-considered in the hardware design.
+---
+base-commit: a602ee3176a81280b829c9f0cf259450f7982168
+change-id: 20231019-feature_ptp_bitset_fix-6bf75671b33e
 
-Given the strict requirement for the RPMPDs, I only see two options:
+Best regards,
+-- 
+Köry Maincent, Bootlin
+Embedded Linux and kernel engineering
+https://bootlin.com
 
- 1. Have an always-on consumer that prevents the power domains to be
-    powered off during system suspend. This is what this patch tries to
-    achieve.
-
-Or:
-
- 2. Come up with a way to register the RPMPDs used by the CPU with
-    GENPD_FLAG_ALWAYS_ON. This would also be doable, but isn't as
-    straightfoward as "regulator-always-on" in the DT because the rpmpd
-    DT node represents multiple genpds in a single DT node [3].
-
-What do you think? Do you see some other solution perhaps? I hope we can
-clear up the misunderstanding. :-)
-
-[1]: https://lore.kernel.org/linux-arm-msm/ZQGqfMigCFZP_HLA@gerhold.net/
-[2]: https://lore.kernel.org/linux-arm-msm/CAPDyKFoiup8KNv=1LFGKDdDLA1pHsdJUgTTWMdgxnikEmReXzg@mail.gmail.com/
-[3]: https://lore.kernel.org/linux-arm-msm/ZSg-XtwMxg3_fWxc@gerhold.net/
-
-> BTW, if you really need something like the above, the proper way to do
-> it would instead be to call device_set_awake_path() for the device.
-> 
-> This informs genpd that the device needs to stay powered-on during
-> system suspend (assuming that GENPD_FLAG_ACTIVE_WAKEUP has been set
-> for it), hence it will keep the corresponding PM domain powered-on
-> too.
-> 
-
-Thanks, I can try if this works as alternative to the
-dev_pm_syscore_device()!
-
-I will wait for your thoughts on the above before accidentally going
-into the wrong direction again. :-)
-
-Thanks!
-Stephan
