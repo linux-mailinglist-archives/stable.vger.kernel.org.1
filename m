@@ -2,101 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 245EF7CFB0F
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 15:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8106A7CFB93
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 15:48:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235394AbjJSNcj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 09:32:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40892 "EHLO
+        id S1345757AbjJSNs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 09:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235403AbjJSNci (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 09:32:38 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2050.outbound.protection.outlook.com [40.107.94.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF7E212D
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 06:32:35 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FhissA/nGeVZbQVDk6YqPAsSX6vnqeXIec6SZ8c/4gjo5/MPYxj7KyLhN67PcX/bRk4/KxiY5TE3ne69XqTB7foodbhQ/KcMS4KDIlVEISFAh1h5ZQpqcACjLiaZZrMdYOFBFD4hiqpnP0f6689isQ02SiNKVI4V4hppd0+9XjnDEAF0FMq6wFhyKkIVTa6UGO6UJp/zMgwKxF7TFjV1nkTpx/Ultq0rvI4IhwBfgvVBPlknnxVH5QiVsaMpYriX/6WzEk5RA6uqOICeqBEQ8GZG8FsmXml5o+AhAfDD+poz+M6R3y7HLmR82/wzAxBLA4hI4lJpJfyR3BaP96TqNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e+W5cl/KBVDgmHcZtLkKEfjnWrUIzuaQlyTIzaJCYGE=;
- b=agt6NzsVh3Aryd3adVx7c6ukmf8cvSALJ5ibOfgDimst6xEmotT7MF7vMvBFWRe6LIcwzjJZMY3fYLXF30r3efnIlZT7Wysf1NdIDp2OmuPjFRm7YOoL3xzwmjQ8gOga/SnJBd+t0NmqkMWpvHuJN5LDPvetaz9YHQp6pEbhhtHW+lGGjPO8TT/br1HbrvqWn4xmerbEjA25LRoMw5I9xz/4LZlMPBJaXH//O6OxdFgloOnrQOBtXfG1XsExvaSXUJXsveBM3xSAWJRDPdZlpvD3OXm8TAkK8WYV1PHGME82TyQ/fDkwrRAaDINSbUz96/lG670o0Evwd3px61EhyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e+W5cl/KBVDgmHcZtLkKEfjnWrUIzuaQlyTIzaJCYGE=;
- b=Wkj5UO9OV4P5OOkYzQ99FEhGg/+HgaUnLSBnDznXsxiJBW32//Kcn1U6jLZI3mO7o22aqHIPfyTy03cFVt18GzVgJe8aJ+SeKrh4vT8hJGT/BAWddI21FL+/UM3qnnuTgPJ+glcRswMFHVpcVk+nBGo6XK+cl83L3WNhkWU4jRs=
-Received: from BL1P223CA0004.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:2c4::9)
- by LV8PR12MB9418.namprd12.prod.outlook.com (2603:10b6:408:202::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.24; Thu, 19 Oct
- 2023 13:32:33 +0000
-Received: from MN1PEPF0000F0DE.namprd04.prod.outlook.com
- (2603:10b6:208:2c4:cafe::2b) by BL1P223CA0004.outlook.office365.com
- (2603:10b6:208:2c4::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.26 via Frontend
- Transport; Thu, 19 Oct 2023 13:32:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- MN1PEPF0000F0DE.mail.protection.outlook.com (10.167.242.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6838.22 via Frontend Transport; Thu, 19 Oct 2023 13:32:32 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 19 Oct
- 2023 08:32:32 -0500
-Received: from roman-vdev.amd.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.27 via Frontend
- Transport; Thu, 19 Oct 2023 08:32:31 -0500
-From:   <Roman.Li@amd.com>
-To:     <amd-gfx@lists.freedesktop.org>
-CC:     <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
-        <Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>,
-        <roman.li@amd.com>, <wayne.lin@amd.com>, <stylon.wang@amd.com>,
-        <pavle.kotarac@amd.com>, <agustin.gutierrez@amd.com>,
-        <chiahsuan.chung@amd.com>, <hersenxs.wu@amd.com>,
-        <jerry.zuo@amd.com>, <stable@vger.kernel.org>,
-        "Swapnil Patel" <swapnil.patel@amd.com>
-Subject: [PATCH v2 02/24] drm/amd/display: Remove power sequencing check
-Date:   Thu, 19 Oct 2023 09:32:00 -0400
-Message-ID: <20231019133222.1633077-3-Roman.Li@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231019133222.1633077-1-Roman.Li@amd.com>
-References: <20231019133222.1633077-1-Roman.Li@amd.com>
+        with ESMTP id S1345816AbjJSNs4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 09:48:56 -0400
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49F96131;
+        Thu, 19 Oct 2023 06:48:52 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1697723330; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=Wdx2UZFfAlgZFCVP1a17S/qlvThF9NU+4Il6PUktzwwFl6LB+Ozyunu8ecsu9xLitE
+    VKNRL6jWZ7cftIc12eLTVN2cic68eqWlnemHiv+yZHMFnfgeE7HaKDSk0c6h5uNiFs8d
+    79AZmJrRQnsVCNBo1l5OCJeazoda56xxufE+Am3UM9xAdCStR7OOUGR/1lkwdyIQsXAp
+    83PGoNAYa9hUOAjH4feD+jjLVMnFaTBawoIk6l4fPre4OIN5Q22MYONXp6lJh3WTTS1x
+    TeAscj6fYioPFa+QcNeMjQ0X+gNyOyPfpNRWdIk5/zVrO2SJUpF2puD7btkKl9B/K3PF
+    kF0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1697723330;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=GObdimmw9pskjnof7wPSDzQDxLphrL/hHiKhEwm3O+I=;
+    b=WQY4IBf1YJwomaGLBQuZSRYaCJx75EHSfCAzTNH+KhkADaAJHGnugXKQNZq1San3S3
+    py+V5sAoPevNxYdeWimxjBfcg3u2fxWBXgE3ExS4HWq3OXTiaaek2dYIoW3fHwvDZWPv
+    7UXk48+H+TRiKiusEDzJHIjQmG03wHkqHQPRGWIrV2lvflwJYmK34iWsolIXnnfSezFg
+    Ovy2Fc1bqq62XewzDA+firZhWbYIeKj1YHL16BRL8B84l3U6SalDcsELS1kyFGhpZ7GA
+    I+fgyC5If+zCrUW9gIAen58oXP7Br8jYbjU8Dk7KPXQCnfbyouf/j9mBgq2SLZip9+Jf
+    CnoA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1697723330;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=GObdimmw9pskjnof7wPSDzQDxLphrL/hHiKhEwm3O+I=;
+    b=Q6o6ExnKKpvJAJOcQQjEXdjXP1Xj4dmGQW74FaaQJVqUq3roEHVpWf7qX8cWjCVP0D
+    kBrFI/Djp+grrGKKwkUKdBcBXmoRJfzX1o6qd5cwpKWErtggRSDY32y3aOPTXd+4A41X
+    pj9Uo9q4vpG/EhfAdp53x9bWNvofbKPALsf411MfgntUsLBk0RlVpJC7R3WQW1+zF4FE
+    NmDV3RMT2CqCUk5S5vXUTGBgyfPoOOicY06Y/ce7hU4dynCvZ01ZUygFQ/igP7T/3DMW
+    st6lgqQE0pqY9VTEDDwWsoWQgIGUOnrlmGKn05x6MBzC3/qbTfMfjY/PilMB8iq4VizB
+    I1jQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1697723330;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
+    From:Subject:Sender;
+    bh=GObdimmw9pskjnof7wPSDzQDxLphrL/hHiKhEwm3O+I=;
+    b=UV8LqNpI1mXnn7AO8BNXu5SCePcVw8yTRfKgNWVpdwZWG56Ag+77GLfHgWGlLIgLeY
+    wQcHrG165UYWviT1pgAw==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA95vh"
+Received: from gerhold.net
+    by smtp.strato.de (RZmta 49.9.0 DYNA|AUTH)
+    with ESMTPSA id j34a49z9JDmoDqV
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Thu, 19 Oct 2023 15:48:50 +0200 (CEST)
+Date:   Thu, 19 Oct 2023 15:48:43 +0200
+From:   Stephan Gerhold <stephan@gerhold.net>
+To:     Viresh Kumar <viresh.kumar@linaro.org>
+Cc:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Ulf Hansson <ulf.hansson@linaro.org>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] cpufreq: Add basic cpufreq scaling for Qualcomm
+ MSM8909
+Message-ID: <ZTEzuz7VrDGIoR7H@gerhold.net>
+References: <20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com>
+ <20231019061608.wjlf4orkdlpnv3a5@vireshk-i7>
+ <20231019102342.5f4oyxd6hmjcju6g@vireshk-i7>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0DE:EE_|LV8PR12MB9418:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0aa16d21-05b4-4a0f-0f2f-08dbd0a7d96d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ytIkogYk3Lg5oxBsG7ZqjdSadqlkQ/Rr24OK1NhNIUEvOB1vEBvAUXBow6BWnr99JQbIIWHdy6z55EiWVZ0kdP0wmsSm+Ic79Qv6mTVJee1X3k7i+g1pVptFR4iNyZl+YVeUYrN8+rgrGvFOplOHBrUDzUUuAs0Q78SG/cDkMCyGNE4Es+wetu3ICh7zIvpYCi86Nmbklz9vlszfnzszFiQ7+FT8YN+rvqxO/oDqbTOJfK7EqAjnWHBE//iwYCmTF8TQ7zJeWgPhSvjNlj+YHPCeyRRUelxym4ynEkVnvWQGN1rpJoZNV7JG0OeykbCFs+6OzVbgYhjCe9NsoeaAEfeaVqB2ofBZmaPvMTO0D1UItCgmJVF+aAWXarIHlw6cI2lk8YrJkIr0n8NxqCv4Z9Vl4O3thRdxbS1PU9E8iIrfuNxaeFMVe+6N89ZhwPuPtEY0KDmv3Y6FAFzRh9yTkirX61fSwqrHT9b2/cqOC0MU1clzV+tutXlpejt1Biu80+SGW9NosMqgh2N1x11djTpJ8OfpYXOOTw7HtftpZDt3wunEyOmAUPI42dojCpnkWYbGO8L2ufJiB7Pl77kYB2z7VCTLM6iJFcwXij9Onf7OY2hYlzQr66bLmp0KLVXZoR3qThqZHzydTA7uSJiruMd4q7wJfzSxdc5tvRIBcqAZeGEa9n9Pa2RfNizFnqq3ZtEEzVfRCtJiiHoQomqrklAqT2IbVjhUlZJ828ctvmI1WPSNCpZ7xGJ6TYqghSuI
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(136003)(346002)(39860400002)(396003)(230922051799003)(451199024)(64100799003)(82310400011)(186009)(1800799009)(40470700004)(36840700001)(46966006)(6916009)(40460700003)(2876002)(2906002)(7696005)(70586007)(6666004)(1076003)(2616005)(70206006)(86362001)(54906003)(82740400003)(966005)(478600001)(316002)(83380400001)(47076005)(36860700001)(356005)(81166007)(336012)(426003)(26005)(40480700001)(41300700001)(8936002)(4326008)(8676002)(36756003)(5660300002)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2023 13:32:32.8507
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0aa16d21-05b4-4a0f-0f2f-08dbd0a7d96d
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: MN1PEPF0000F0DE.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9418
-X-Spam-Status: No, score=-0.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        TVD_SUBJ_WIPE_DEBT,URIBL_BLOCKED autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231019102342.5f4oyxd6hmjcju6g@vireshk-i7>
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -104,40 +98,32 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Agustin Gutierrez <agustin.gutierrez@amd.com>
+On Thu, Oct 19, 2023 at 03:53:42PM +0530, Viresh Kumar wrote:
+> On 19-10-23, 11:46, Viresh Kumar wrote:
+> > On 18-10-23, 10:06, Stephan Gerhold wrote:
+> > > Add the necessary definitions to the qcom-cpufreq-nvmem driver to
+> > > support basic cpufreq scaling on the Qualcomm MSM8909 SoC. In practice
+> > > the necessary power domains vary depending on the actual PMIC the SoC
+> > > was combined with. With PM8909 the VDD_APC power domain is shared with
+> > > VDD_CX so the RPM firmware handles all voltage adjustments, while with
+> > > PM8916 and PM660 Linux is responsible to do adaptive voltage scaling
+> > > of a dedicated CPU regulator using CPR.
+> > > 
+> > > Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+> > 
+> > Applied patch 1 and 3. Thanks.
+> 
+> Hi Stephan,
+> 
+> I think your platform has exactly what I am looking for. Can you
+> please help me test this, before it lands into linux-next :)
+> 
+> https://lore.kernel.org/cover.1697710527.git.viresh.kumar@linaro.org
+> 
 
-[Why]
-	Some ASICs keep backlight powered on after dpms off
-	command has been issued.
+Sure, I will try to test it until end of next week, with both single and
+multiple power domains assigned to the CPU. Is there something
+particular you would like me to look for? Or just that the scaling still
+works correctly as before?
 
-[How]
-	The check for no edp power sequencing was never going to pass.
-	The value is never changed from what it is set by design.
-
-Cc: stable@vger.kernel.org # 6.1+
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
-
-Reviewed-by: Swapnil Patel <swapnil.patel@amd.com>
-Acked-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Agustin Gutierrez <agustin.gutierrez@amd.com>
----
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index 4538451945b4..34a4a8c0e18c 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -1932,8 +1932,7 @@ static void disable_link_dp(struct dc_link *link,
- 	dp_disable_link_phy(link, link_res, signal);
- 
- 	if (link->connector_signal == SIGNAL_TYPE_EDP) {
--		if (!link->dc->config.edp_no_power_sequencing &&
--			!link->skip_implict_edp_power_control)
-+		if (!link->skip_implict_edp_power_control)
- 			link->dc->hwss.edp_power_control(link, false);
- 	}
- 
--- 
-2.34.1
-
+Stephan
