@@ -2,207 +2,163 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D67D7D0312
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 22:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E41187D0348
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 22:45:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230321AbjJSURj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 16:17:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45368 "EHLO
+        id S1346563AbjJSUpP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 16:45:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229892AbjJSURi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 16:17:38 -0400
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2044.outbound.protection.outlook.com [40.107.102.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08274124;
-        Thu, 19 Oct 2023 13:17:36 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=aYTkTYgn1C7k+gulS0SXPggS4Ri1fY0uKt1HdZbDAhdkNFh6+zFDlsBenvE2hNa7MwJnXIzYvQKwO4orXCfK+6sYSUK3uvMjAXbLR+6OqZ0/H5W895UinH3mN5tNDq9gQiBjAGKj0KwVs4cX48BYLQG7O2hrZQdxrq3Lg2cU0+dApJK2QkfyPu7q9rYnsySjSONausb3vydRgGzL2o3y8AolGfPBxtVJ9150AebDvoz5Le6TeUeTwe9ZT8mSZDmkPN59gCu3qxxBGX69/bSjIOFV7Rs/SvRQ4r+NXZQbi+hSfu2gxF8ngERlJU4YC2QXRt6YA3/8eC4BrpLtqnoejw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q+1qGJ1b1W/hrmbe9VlayPZ0BGk79yLrvvAYCz9Z+Ic=;
- b=EB51bvc8luL0XcOTcBIK8LmOw+FAIrkF/V3mvKKd1zGxi+mUBnXKLb9VZ8CvKYAQdnVygRPtqQWRcBGVwC6JHX9t2aPPQxS6hC2t6a417bSnGwH+cMk4S1pMqkU25s6REqGIkfJo/nuC40qQNUhP7xYQeDNGSAw6SBE7qIGkRBkz8/HYvu1xcIm18H+jrogLi0EVhkNFp1F5J4JrYZpnmfA5gQTzIH9x01bW9z6zYK1cL1Nv1MlCmq8osOYzuDQUj8KVPhrF7OGxA52X+JlDpDAHJEAwK2m5cOzLPXzQ/Cskydb2daV4LFMtW5l1fE+nk2IrIOvNjNnNPzwQRZmeDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q+1qGJ1b1W/hrmbe9VlayPZ0BGk79yLrvvAYCz9Z+Ic=;
- b=c6/FDmwx4W1xMVmG+lxU3pOHFRWdezlf3Eis1sYqACwuJ9rVI7JKSkHEYeJ8V/UIVLSONfKPeXUzOsGmTfp3TxIDvWeehgKfhpADFvX7JshfixIskCEeF/j3MQ/DSxYrxGL5AoKFoois7f9QyHJZqRWdW9UlSil6QWMCFtNWelw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6280.namprd12.prod.outlook.com (2603:10b6:8:a2::11) by
- DS0PR12MB7632.namprd12.prod.outlook.com (2603:10b6:8:11f::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6907.24; Thu, 19 Oct 2023 20:17:31 +0000
-Received: from DM4PR12MB6280.namprd12.prod.outlook.com
- ([fe80::5aa2:3605:1718:3332]) by DM4PR12MB6280.namprd12.prod.outlook.com
- ([fe80::5aa2:3605:1718:3332%7]) with mapi id 15.20.6886.034; Thu, 19 Oct 2023
- 20:17:31 +0000
-Message-ID: <a9237e7a-e08c-4904-b84a-f6198333a78c@amd.com>
-Date:   Thu, 19 Oct 2023 16:17:26 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
-Content-Language: en-US
-To:     Nathan Chancellor <nathan@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     Alexander Potapenko <glider@google.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-kernel@vger.kernel.org,
-        Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-        Alex Gaynor <alex.gaynor@gmail.com>,
-        Wedson Almeida Filho <wedsonaf@gmail.com>,
-        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-        Nick Terrell <terrelln@fb.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Kees Cook <keescook@chromium.org>,
-        Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
-        Li Hua <hucool.lihua@huawei.com>, Rae Moar <rmoar@google.com>,
-        rust-for-linux@vger.kernel.org, bpf@vger.kernel.org,
-        llvm@lists.linux.dev
-References: <20231018182412.80291-1-hamza.mahfooz@amd.com>
- <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
- <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
- <CAMuHMdXYDQi5+x1KxMG0wnjSfa=A547B9tgAbgbHbV42bbRu8Q@mail.gmail.com>
- <CAG_fn=XcJ=rZEJN+L1zZwk=qA90KShhZK1MA6fdW0oh7BqSJKw@mail.gmail.com>
- <22580470-7def-4723-b836-1688db6da038@app.fastmail.com>
- <20231019155600.GB60597@dev-arch.thelio-3990X>
-From:   Hamza Mahfooz <hamza.mahfooz@amd.com>
-In-Reply-To: <20231019155600.GB60597@dev-arch.thelio-3990X>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR0101CA0208.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:67::31) To DM4PR12MB6280.namprd12.prod.outlook.com
- (2603:10b6:8:a2::11)
+        with ESMTP id S1346553AbjJSUpO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 16:45:14 -0400
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2A212D
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 13:45:12 -0700 (PDT)
+Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-51e24210395so4283a12.0
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 13:45:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697748311; x=1698353111; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VVuCB44VLEjsZzvUgM1w7n2lvEI4MsHtEyH+2GVq2dY=;
+        b=EulO5Oy4vXgxAA88b1og3ur2Akh0sYSkPVfIpxvdGm4MMF93ZCwC1lj2M+zZLqG6eQ
+         A2Pyy0EJ4bXkkrdo7FlBfFVZtAmXDPTVpWgs4MiadRD84rCsdV957TmoxHIs8fAh5OJR
+         LWH+O7bqv3+BZ1CoAaTo7px+dZp2vRpOeiIoL5aSkVby89PJtAhnMCGpk9XMaHLfBIms
+         vaynbKJref+ZTPRmPnc+Wwjun2M1X65PfBJ5TVBm2ZAJOmc1H34QGZIw5Zo2QtFK0zqL
+         CK5pv1cXTUAZOIMeusY13UWvRnqzJaIS6rYMBqCJ7baIWJZlslahMbQxMbWwG3hfByDB
+         F+jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697748311; x=1698353111;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VVuCB44VLEjsZzvUgM1w7n2lvEI4MsHtEyH+2GVq2dY=;
+        b=PN/KoyU1uncLm5pcKzXZIiSdEfUwVNxsaXc5uHbZFkvsff/22CsyGQSRbvFclW6a5q
+         hcMQD+2LhKBBeU3pGLnpOTms7Yjjw/qkitEK+Y3WnLdBARIzlCbTpDkKn28D5uakK6Za
+         Aw1ZrMNVNYhzXi9H3GOHncYkU8Kd/q+pheuDQT/bD526SxbgsayW2FN/eWzU2k2x8Jzn
+         DvM9eh3X6OcnHR6Fsratdkcq9BpGLFQ2yLYHAC79ccQcGRRIpjvCl7i4uLLBvUO5tyRP
+         cBbYBw3EmvkJ6R4H5A/h0IYFykOaCZS7RwMtdeoldogLUeBVEY70rE4T1IjR89vwTj23
+         ku2A==
+X-Gm-Message-State: AOJu0Yz2Hu9C4A5cNqmGs6Ef9RtdgHjgfp6/r3dQQFyBILRvAQBGBqDI
+        ezxqTFDDRdxV+DSgEI1J8tHdYTiOgadAD35R3hsIhA==
+X-Google-Smtp-Source: AGHT+IHFC9ybSiyivStLgYN8fa6C0ml9tRY1/5sGB2bF7uJu4CHMtn3ZiatZMgc3HYBkARDtPGQ6AHj9IsKbPrz5vok=
+X-Received: by 2002:a50:9f41:0:b0:53f:91cb:6904 with SMTP id
+ b59-20020a509f41000000b0053f91cb6904mr27602edf.4.1697748310674; Thu, 19 Oct
+ 2023 13:45:10 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6280:EE_|DS0PR12MB7632:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1758f286-9ebe-459b-f9a4-08dbd0e06c6a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1YUWApU2IIWDF6DjVLrfsugTaHu+NQ5NGOoBZfg3WfZFNydhnrpdQei+AxxkLZtUtOyWgi7y4fLf9khvcw/yW/21NAEIRLQh+rB+HAfW11/vccRctgoUFQVOkO0le+M/oVcEXbQIsTP0U4xvJbgW6jXJlqf+pH/WiXq5Jz+rn++eNdz1nInESobUlhW1alN703tK1CzxvLirWVZ42ejJbSoA+G4EfI35RR30DvihnKz4lZsVrRJ4t+oLxbCDfOj4RoLFrm/lhWSDq38pSlP/NoMFUzOqrqunERnBWXeHkmfXjVmgutv7wePUF2lOxEsJ+kRlCS74fj/aP01m/sKzN05DVSTvPnAbOhvySki4z8UY0Cybcy6YCTJi7ftJenNj7zqO1K6CX+GRIeIyBkUV62AOAlJIa6BhDIktnadb6G5f1ZTyQeHwaz5QOJhSovnLdXhiej45soSiqESh1ieYcXld0hK4x59QoLnDSOYiOCJuJv22B4LhdUomX1GlFtD4dZfZlHOXcJbKrXtwJbSEBnIceFDGS+m+4FnlAzO7Orf3zAi9y3rGWgHZ3sRRT+wtiOoMAri00PDqFwIrDrTBHS6BnYKhkvqGcyMRJebW/hN2q7ECQQ7e8CgpS4OykJ+i6RnKXOImnQhzdYMTkzQ/CB5p6u4RFJkx37FrhReYeHflG+iOnAygwu874+Fq6YLQ
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6280.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(376002)(366004)(39860400002)(396003)(346002)(230922051799003)(186009)(1800799009)(64100799003)(451199024)(26005)(31686004)(38100700002)(83380400001)(54906003)(5660300002)(66946007)(8676002)(4326008)(7416002)(8936002)(86362001)(2906002)(110136005)(66476007)(44832011)(966005)(6486002)(66556008)(53546011)(6506007)(478600001)(6666004)(316002)(31696002)(66899024)(2616005)(36756003)(6512007)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?K1ZsRUQrcFYxS1BBcDRWTnFxOWRsU2lhYVE0YmpJdE5GdFNOL0ZKQVJ0bWQ5?=
- =?utf-8?B?OEJiTlRXZGtJZElPUW1uSU1lUWU1RHZaS1FVV1k3MXRqb0FBVmZ0M0VJUlJL?=
- =?utf-8?B?ZThhdFhQMWdtRXBKa3h3WWdzYllPTVJqU0NRbTBsWGJrRERvVkpQMk1EVFBz?=
- =?utf-8?B?V2lJMkxVdzY5RllURjNYMzU2aDZSWVFDdGZJaTB1MFlZSGEzMWlPanhJNGhv?=
- =?utf-8?B?SGRKR28rUDUzcUVCbEJXSzZ0Y24vaTdBb2xpVENWaGJBZlBaNUNFNkUzc0k0?=
- =?utf-8?B?aklXRlE5dkpiUFp6c0RJVlJBTE1CRVdwWE90dFU5bjNoM092NkhHL09vK1J4?=
- =?utf-8?B?YjJyWjlNZStIdUtHMlIrOFlMTG9CT05wUTFwS0lic3lMbWR5VFprRlUzQlBH?=
- =?utf-8?B?MHJnQzhYYUNXUzJmckNZb0FBM0RIZytWMTh1RDZKWmhFWkpqVG1YbEdRN0JI?=
- =?utf-8?B?LytFUlpud2FVWFIvYXA3VmlVaFRMc2VTVm4zcFZvaDBvcHhRVW56QWUwamdS?=
- =?utf-8?B?MGF1SXBxZXlPQjRNd2FZVjJOUlYveFZWV2JRdk4rVXRmRlJjZnZBcmpCanY4?=
- =?utf-8?B?MDFqTUR1bndpUVR0NFN5dEJ1djFmd3lDclhRbzBhYkRTZG9nZGtHWTM0Ukwx?=
- =?utf-8?B?YXN2WDZ1dFY3ZzUvUUhubXJFWTE3OTVjQ2RJZ2FMUWZibG8rWHdCRTIxaDVo?=
- =?utf-8?B?OXRseExLZ2pOaGJ3OUdzRmJzZFJFMTFJVkdpUndQUUxQeWNVRTQ4UGluMWpU?=
- =?utf-8?B?NzFLaE1Fb2kvK25DQTJ3WFF3TTBZUm5UN3VTQ08xRXc3aUkxRnVlcnR6SVFD?=
- =?utf-8?B?NFB6NFJvVGhkUFNvekY1U3ZUaC9wajdaK2RwV3FReUhlZWVQcEJ1R3Q1dmw0?=
- =?utf-8?B?SGdoWXBVRzRJcFpNY2xCc2xrRCtUTjZ4OXJ1Z0F5bUwwS1BnTXByRGVsazJH?=
- =?utf-8?B?Q3J6RjlYTWpQZkVnNGJoWGNLeHZpK044ZWhpM0o0TFJLVDJ1S0JNcytTQ011?=
- =?utf-8?B?bEJYMVV6eVU2Q3lXU2tkaElKcHBkZUM3L0N1MWkwMFROUHZDSlFiUCtCQ2Ru?=
- =?utf-8?B?K2ZNNFRSUVRYQUtUTTd0THVtak1ESlJTN3JCTVJmRzNVdHdwYkFCYWZIOUpU?=
- =?utf-8?B?MERyNk9oZVc2ZWxTWEdCQkRGY2o0aFcyMU1Kam14TnI2R294Tm1rSjY1dmNK?=
- =?utf-8?B?WG5qTFdNN1JWYjZXRll4dzRORXQ0N0lTYXkrOERKaTRvU0JFcWNFK256cHBY?=
- =?utf-8?B?V1N5T0FPUkI4NlZVRHZ4TDJ5SHMySmdFbTFWY3ZCZm5kb3NNRmZ6ZTZWQ250?=
- =?utf-8?B?a1dSYUVscDAxR0YwK2dsWHRZOFBOTTdneXdmUWxneHlUcWFMK3R3QjBEZTQv?=
- =?utf-8?B?RFpuRHI2TW4ycDc0blo4Z0lBdmZZUVE4cUZpV0FDTGlNNDM4UE9LRmZ2Q0Vs?=
- =?utf-8?B?ckRUdFNnUndxN0pONGJrMUxpcVEwbTdRS2txQWpQdnZPTEdOckFaMWhTUHBq?=
- =?utf-8?B?UDl0SWZwb3p6NE1IUEtUMFk4a2RXMDlJVmd5VXA5U09WbVcyMTJmeGVuYlEz?=
- =?utf-8?B?blA4SzVOYlpJUS8xVUJEQWR3bzZhc3hPY0R1MWtnaGh0M0NpZDRaOXF3aFFF?=
- =?utf-8?B?UzMrNUFzWEM3SDJ0R0x5S3ZkUTRFNkp6dC82dnZWZGZIQ08rWUlyY0V1MG5z?=
- =?utf-8?B?TWJ3R1JXaWhYdU5tNlhRb050NENscm9oclh2eU5BbmxyRXkvNkVYUWR5Tk9T?=
- =?utf-8?B?R200K2RjdEtCK2lVWE8yMGJYVEhYcWJkempsb0kwZ3NXUEp3UHRpOXdoMmh2?=
- =?utf-8?B?ZWhvV2xlRDhxa2c4RUpjWXNNQ2RGL0U2azdQNDNQZGtzZmhwdTRLaFJWNktX?=
- =?utf-8?B?TWU4dnNPczFsdTE5dDlDa1Q5bTV2VDBEZDNPbG9rRmQvQ2NsWFV3RTZDYW1l?=
- =?utf-8?B?Z0sxcWViRVJISVcwT1hYWnRUaWh1WTlSS0tIWTdMOG1tbW1MNkFJbDg2OElt?=
- =?utf-8?B?cTc4V0xSc2c5Yk9IdEpIKzFFMUdHTXpROFNISHl5am51eC9VQVE4Q0tQUzE5?=
- =?utf-8?B?VGZHaUQra0lySWxiSE84SXROdjZtelJvbHlFdkg0cklWUE80MFIySWtUMWVK?=
- =?utf-8?Q?RNsGZrR/C761Q0i+L6lJjCbLT?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1758f286-9ebe-459b-f9a4-08dbd0e06c6a
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6280.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Oct 2023 20:17:31.4993
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3ieGRtnbjL0PaAYTLLaRYZtkLrz/fyA6g8zaYKgOIYzyc3MPkojFvvLfOXjSakbcIJ9r/7n6iNVQJJF16dD8pw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7632
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+References: <20231016232816.3355132-2-rdbabiera@google.com> <ZTDkIGLmjmL9HwJP@kuha.fi.intel.com>
+In-Reply-To: <ZTDkIGLmjmL9HwJP@kuha.fi.intel.com>
+From:   RD Babiera <rdbabiera@google.com>
+Date:   Thu, 19 Oct 2023 13:44:59 -0700
+Message-ID: <CALzBnUF-EZjFEHCc4XRLdFr5yP8dCq7De4SaNif32LcL5=tMYA@mail.gmail.com>
+Subject: Re: [PATCH v1] usb: typec: tcpm: only discover modes the port
+ supports svids for
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Cc:     gregkh@linuxfoundation.org, linux@roeck-us.net,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        badhri@google.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/19/23 11:56, Nathan Chancellor wrote:
-> On Thu, Oct 19, 2023 at 02:53:01PM +0200, Arnd Bergmann wrote:
->> On Thu, Oct 19, 2023, at 12:04, Alexander Potapenko wrote:
->>> So the remaining option would be to just increase the frame size every
->>> time a new function surpasses the limit.
->>
->> That is clearly not an option, though we could try to
->> add Kconfig dependencies that avoid the known bad combinations,
->> such as annotating the AMD GPU driver as
->>
->>        depends on (CC_IS_GCC || CLANG_VERSION >=180000) || !(KASAN || KCSAN)
-> 
-> This would effectively disable the AMDGPU driver for allmodconfig, which
-> is somewhat unfortunate as it is an easy testing target.
-> 
-> Taking a step back, this is all being done because of a couple of
-> warnings in the AMDGPU code. If fixing those in the source is too much
-> effort (I did note [1] that GCC is at the current limit for that file
-> even with Rodrigo's series applied [2]), couldn't we just take the
-> existing workaround that this Makefile has for this file and its high
-> stack usage and just extend it slightly for clang?
+Hi Heikki,
 
-I personally don't mind fixing these issues in the driver, but the fact
-that they the creep back every time a new major version of Clang rolls
-out (that has been true for the past couple of years at the very
-least), makes it rather annoying to deal with.
+On Thu, Oct 19, 2023 at 1:09=E2=80=AFAM Heikki Krogerus
+<heikki.krogerus@linux.intel.com> wrote:
+> I'm confused here. Is the device here the port or partner (or both)?
 
-> 
-> diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-> index 66431525f2a0..fd49e3526c0d 100644
-> --- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-> +++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
-> @@ -58,7 +58,7 @@ endif
->   endif
->   
->   ifneq ($(CONFIG_FRAME_WARN),0)
-> -frame_warn_flag := -Wframe-larger-than=2048
-> +frame_warn_flag := -Wframe-larger-than=$(if $(CONFIG_CC_IS_CLANG),3072,2048)
->   endif
->   
->   CFLAGS_$(AMDDALPATH)/dc/dml2/display_mode_core.o := $(dml2_ccflags) $(frame_warn_flag)
-> 
-> That would address the immediate concern of the warning breaking builds
-> with CONFIG_WERROR=y while not raising the limit for other files in the
-> kernel (just this one file in AMDGPU) and avoiding disabling the whole
-> driver. The number could be lower, I think ~2500 bytes is the most usage
-> I see with Rodrigo's series applied, so maybe 2800 would be a decent
-> limit? Once there is a fix in the compiler, this expression could be
-> changed to use clang-min-version or something of that sort.
-> 
-> [1]: https://lore.kernel.org/20231017172231.GA2348194@dev-arch.thelio-3990X/
-> [2]: https://lore.kernel.org/20231016142031.241912-1-Rodrigo.Siqueira@amd.com/
-> 
-> Cheers,
-> Nathan
--- 
-Hamza
+The port, I'll make sure to be more precise when describing.
 
+> Why are you skipping the first SVID?
+
+Skipping to the first SVID supported by the port when preparing
+the first Discover Modes message.
+
+> Please note that the Type-C specification puts priority on TBT over DP.
+> Is this in conflict with that?
+
+Not in this case. Assuming the port supports both TBT and DP, a Discover
+Modes message will be sent to both regardless of what order they return
+in the Discover SVIDs ACK message.
+
+> > Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+>
+> I think that's wrong commit (perhaps you want 8afe9a3548f9d instead?).
+
+8afe9a3548f9d looks to be more concerned with the consumption and
+processing of the received payload, I had put f0690a25a140 because it
+contained the logic to determine if the Discover Mode message was being
+sent at all as well as preparing the response. 5e1d4c49fbc86 does touch
+the response formation but only the svdm_version and not the SVID.
+
+> Right now I'm not convinced that this should be considered as a fix at
+> all. I don't know anything about the test you are talking about, but
+> if this patch is just about making it pass, then there is something
+> seriously wrong.
+
+I use the VESA DisplayPort Alt Mode on USB Type-C CTS as a reference.
+In regards to this being a fix, if this ends up being more optional (discus=
+sed
+below), then I'll remove the fix tag.
+
+> If you need the modes to be discovered in some specific order, then we
+> need the framework to allow you to do that. So perhaps the tcpci
+> drivers should be able to supply the preferred order to the tcpm?
+>
+> But as such, unless I'm mistaken, this patch will change the logic so
+> that only the partner alt modes that the port supports get registered,
+> and that way are exposed to the user. You can't do that - right now
+> it's the only way we can inform the user about them. All partner
+> alternate modes (at least the SVIDs) must be exposed to the user one
+> way or the other, regardless does the port support them or not.
+
+The test this patch tries to fix could just be written without consideratio=
+n
+of this. My guess is that the test was designed such that the SVIDs before
+the DisplayPort SVID are unknown to the port under test so the mentality
+could have been "why should a port care about SVIDs it doesn't know
+about?"
+
+A defense I could make for it is that the USB PD CTS doesn't test
+to see if a port under test sends Discover Modes for every SVID returned
+in a Discover SVIDs ACK, so the interpretation isn't invalid. I've seen oth=
+er
+tcpm implementations handle Discover Modes this way as well.
+
+Regardless, you're definitely right that the user should know about all
+Alt Modes/SVIDs - the port would lose SVID information without
+registering a partner altmode for it. Currently I think the approaches to p=
+ass
+this test look like:
+    1. Your suggestion - let the tcpci decide if there should be a
+discovery order.
+Alternatively, let the tcpci decide if it wants to opt into this
+patch's behavior of
+only discovering modes for known SVIDs - a strict discovery flag.
+    2. Send a Discover Mode message to known SVIDs first in the order
+they come in, and then to unknown SVIDs. The test passes and no information
+is lost, but it's unnecessary refactoring just to pass one test for
+one Alt Mode.
+    3. Don't send a Discover Mode message to unknown SVIDs, but do register
+an Alt Mode with blank info for that SVID. It passes the test without havin=
+g to
+do any reordering compared to the first option and it preserves supported
+SVIDs. But, the port would lose information such as each SVID's Alt Modes
+VDO plus each SVID can support more than one Alt Mode.
+
+Let me know if any of these approaches sound worth pursuing; I do think
+Option 1 does make more sense than the others.
+
+---
+Thanks for the feedback,
+RD
