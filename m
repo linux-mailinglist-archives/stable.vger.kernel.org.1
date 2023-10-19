@@ -2,110 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98D037CEC77
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 02:00:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6FD37CECA8
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 02:16:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231704AbjJSAAS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 18 Oct 2023 20:00:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38494 "EHLO
+        id S229694AbjJSAQm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 18 Oct 2023 20:16:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229679AbjJSAAR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 20:00:17 -0400
-Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E9B1115
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 17:00:15 -0700 (PDT)
-Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-3515deaa7c1so30430505ab.2
-        for <stable@vger.kernel.org>; Wed, 18 Oct 2023 17:00:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1697673615; x=1698278415; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z1HJODpBcMbzB2tUXUZxawzk68qAf00Djnx9IKBN0d8=;
-        b=X2gC2r7UGG5y4Sc+EB+khOWcAme3Evcmh7hybtMMjds4baAKWqOTuGYOxkwMyo6YuV
-         X1+FoNnzIuP7LbNcRsdDKJUMUpYuznFYROGwsXaLO6nkLpKU8KXJxa1A4kbrOtTwvv7o
-         HK+weMKR4tTmMG+x90lG9C0nbAhxYSYvmhVys=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697673615; x=1698278415;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z1HJODpBcMbzB2tUXUZxawzk68qAf00Djnx9IKBN0d8=;
-        b=djZTXfuDiFYqs7tx+Swpd+ULOfxwj987tzINJOMJ9zSJJ0XsD5TP4VucHlscWllrNv
-         bhd6OKSy8DKnGxuRNym6wRRM3oew+53PBDwpljrgQNl9ckkgq3edoBUyqN7NCgT28pHa
-         TyphZ/S0YWuVCoAnPuDJ1Bn6dGZMP92xjzari5mK8gr9qEz8FKMZ6P6Pes/XqQ0Fbbn4
-         rB95U8a/edbu036tf+NYtXxgNHyjmq3fYtkN/ZGHNkpsHAn6Noa1wNEH0W5DH5pXxHVH
-         4GySW5Ejr/dGZAc0Jjrf6JC/kMAT7/avNYy8fjM5NgXmOCdly5slC0Y6Le/h8ajDbUKm
-         AnYQ==
-X-Gm-Message-State: AOJu0Yz8xrbJRncZDP0UsjuOiK0JFy/wPTlAqA9FLwNECu7Am0Z/nvQv
-        NDo+Qd61HYgFSnG+iHg+Vkl5dW8VBNQOGYOjG+c=
-X-Google-Smtp-Source: AGHT+IGb7/9XyHJU8tJSJRr+AOTGRuQiAjyMLpKpxv6aUrSVC/zA8mgpnLR6nLEsyXT+SILta4xVUA==
-X-Received: by 2002:a05:6e02:2146:b0:351:e6e:7723 with SMTP id d6-20020a056e02214600b003510e6e7723mr1072598ilv.25.1697673614869;
-        Wed, 18 Oct 2023 17:00:14 -0700 (PDT)
-Received: from markhas1.lan (71-218-45-6.hlrn.qwest.net. [71.218.45.6])
-        by smtp.gmail.com with ESMTPSA id z15-20020a92da0f000000b003512c3e8809sm1425870ilm.71.2023.10.18.17.00.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Oct 2023 17:00:08 -0700 (PDT)
-From:   Mark Hasemeyer <markhas@chromium.org>
-To:     LKML <linux-kernel@vger.kernel.org>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
-        Mark Hasemeyer <markhas@chromium.org>,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Brady Norander <bradynorander@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Mark Brown <broonie@kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
-Subject: [PATCH v1] ALSA: hda: intel-dsp-config: Fix JSL Chromebook quirk detection
-Date:   Wed, 18 Oct 2023 17:59:31 -0600
-Message-ID: <20231018235944.1860717-1-markhas@chromium.org>
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
+        with ESMTP id S229632AbjJSAQm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 18 Oct 2023 20:16:42 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD063FE;
+        Wed, 18 Oct 2023 17:16:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73910C433C7;
+        Thu, 19 Oct 2023 00:16:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697674600;
+        bh=6uPwkZ4yiG6o3MMwW++45pNUHDSPtK16RZV1nf9Kw6w=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=f8izOVvgCNr3OCTnTZBVaFgBngHWPPx/mayolA5yr1fNK+U0NeZnCH63olaVpZGGC
+         NfJ9vsf3uh9bJK3bafY3C7e/J/GQcot0sgkqx7Rmc8TdKzGpBSem4ZEXcCKofmgz4I
+         X44gX+Z3yI1l5CGVHHmVwtRAPoZZ2Ottgaf6P82ir6k0eCzDpe2JUcXQXakXz2hTSm
+         GpvDSGHF5cl9AiuFxtArZGfoeINVdu3sYMBYiIvPyhiJmvZOkb2E5BXlTjiQrzFkH8
+         b9ZnHMLKHf4QeBiAWXy1HqKZ9I7NuNaWr5ZoCxh7oHkLsRvFlEsRZ1Wzfy7qILT2xm
+         CjQi+eAGTOKqg==
+Message-ID: <c3dfeecf5cde513cf675b2f1a382f7a4.sboyd@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <76f3bc23-8677-42bd-a3a5-43b17cbe552e@linaro.org>
+References: <20230913-gpll_cleanup-v2-0-c8ceb1a37680@quicinc.com> <20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com> <76f3bc23-8677-42bd-a3a5-43b17cbe552e@linaro.org>
+Subject: Re: [PATCH v2 01/11] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+        stable@vger.kernel.org
+To:     Andy Gross <agross@kernel.org>,
+        Anusha Rao <quic_anusha@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Devi Priya <quic_devipriy@quicinc.com>,
+        Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>,
+        Jassi Brar <jassisinghbrar@gmail.com>,
+        Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Sricharan Ramabadhran <quic_srichara@quicinc.com>,
+        Varadarajan Narayanan <quic_varada@quicinc.com>
+Date:   Wed, 18 Oct 2023 17:16:38 -0700
+User-Agent: alot/0.10
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Some Jasperlake Chromebooks overwrite the system vendor DMI value to the
-name of the OEM that manufactured the device. This breaks Chromebook
-quirk detection as it expects the system vendor to be "Google".
+Quoting Konrad Dybcio (2023-09-15 05:19:56)
+> On 14.09.2023 08:59, Kathiravan Thirumoorthy wrote:
+> > GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
+> > on the request from dependent clocks. Doing so will result in the
+> > unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
+> > clocks.
+> >=20
+> > Cc: stable@vger.kernel.org
+> > Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL=E2=80=99s")
+> > Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+> > ---
+> Stephen, do you think there should be some sort of error
+> or at least warning thrown when SET_RATE_PARENT is used with
+> RO ops?
+>=20
 
-Add another quirk detection entry that looks for "Google" in the BIOS
-version.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
----
-
- sound/hda/intel-dsp-config.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
-index 24a948baf1bc..756fa0aa69bb 100644
---- a/sound/hda/intel-dsp-config.c
-+++ b/sound/hda/intel-dsp-config.c
-@@ -336,6 +336,12 @@ static const struct config_entry config_table[] = {
- 					DMI_MATCH(DMI_SYS_VENDOR, "Google"),
- 				}
- 			},
-+			{
-+				.ident = "Google firmware",
-+				.matches = {
-+					DMI_MATCH(DMI_BIOS_VERSION, "Google"),
-+				}
-+			},
- 			{}
- 		}
- 	},
--- 
-2.42.0.655.g421f12c284-goog
-
+Sure? How would that be implemented?
