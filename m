@@ -2,51 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBA6D7CFDE5
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 17:32:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E54337CFE09
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 17:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345961AbjJSPc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 11:32:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49054 "EHLO
+        id S1346307AbjJSPhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 11:37:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345747AbjJSPc6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 11:32:58 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD24312F;
-        Thu, 19 Oct 2023 08:32:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6655CC433C8;
-        Thu, 19 Oct 2023 15:32:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697729576;
-        bh=JmxVPCdruKLMQZ5RUKgTCknlS6N8U4MPq35+pkolZUQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=POBMJg19qSQ8erDJJsBUAf4QYH8J8D1C98PNUaEeDBax10sfUqooXE+3ZKs22bFFx
-         Tg9fXsoNI6LSy/j0et+lzIy5ceQrs4BsPjQwjk6tD+nHsf2hGul/MyaheRNwH/wszt
-         xHYnJlyz6oQmakAfMzDckwV0XWI316CcWj3YbngQAeHnep2LSdzgNys2eLGFEu5KNM
-         HddIU7Bp2dEJECPMzwA191ONt1VSdxObTlvZ+T1OKmQWSXiA7A6TOvMFzR4bwLKq8l
-         or2NE7fzpEJnHxWyFEMg+AOLSbqyFlZjJejvqN1n0klNmtRYMy+tSULs0BB/IKbE4I
-         Zwz+s+1Czk0Aw==
-Received: from johan by xi.lan with local (Exim 4.96)
-        (envelope-from <johan+linaro@kernel.org>)
-        id 1qtV1A-0006tC-0o;
-        Thu, 19 Oct 2023 17:33:00 +0200
-From:   Johan Hovold <johan+linaro@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH v2 2/2] wifi: ath11k: fix dfs radar event locking
-Date:   Thu, 19 Oct 2023 17:31:15 +0200
-Message-ID: <20231019153115.26401-3-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231019153115.26401-1-johan+linaro@kernel.org>
-References: <20231019153115.26401-1-johan+linaro@kernel.org>
+        with ESMTP id S1346302AbjJSPhQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 11:37:16 -0400
+Received: from mail-ua1-x92a.google.com (mail-ua1-x92a.google.com [IPv6:2607:f8b0:4864:20::92a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7722F121
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 08:37:14 -0700 (PDT)
+Received: by mail-ua1-x92a.google.com with SMTP id a1e0cc1a2514c-7b6e3dc54e0so613666241.1
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 08:37:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697729833; x=1698334633; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=49fagu2cnGMwxsc7JEmJZKgqBj5vWAdKuaR8p7iEFTY=;
+        b=ddQLSnFzIvwVsIo2Ys1PVINSvPHTUf2oaahS6o6d1mb8bzZarRthNI6jJPWZW9/N0P
+         K4dY5c5Y43BQO3UmcmKqJ7zfL4iBW+qUqGfug53tZXxh0/tkbGbXh8iOsSblwewubawL
+         WzrqZG5FpCM31vfYnO3VC16ZX48yJ/M2lZjVHWrgE1Qe/XUw57NJUS+UqNI0HxmRvY+V
+         zdH5tXEMh4g/uDBeMEwKPn/2opEJ+9roIBlC+MU3CXC16esSpsegAizZ5+OWwYIIH2uN
+         L/uySStsQah5KDRZnEQ567yVy2FxIigz0RwkwNjiEFYSlj5dsCk5Sy8JTnHmYdGvf8Zm
+         3uDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697729833; x=1698334633;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=49fagu2cnGMwxsc7JEmJZKgqBj5vWAdKuaR8p7iEFTY=;
+        b=pNvINrCQ98BUVBAd8DWrSzTIfgxJU8/OKKvAGJjtYMySo/ZIq4wdc0mWwdrFIYSjrQ
+         yxKpNi5yJarSF8mGbpsCWabF1h/2kSWPNIs30dzOY5PuNsygbK7TDFwJJJCm/sPW4Avr
+         RaY5kVSOJtyQL3E/3a35mdszt4E0BvY7zQFYigz0rnHpwd0xSdjO0uzj0NUL/ImoTXYA
+         F5no/rvFwfj1UFXivjSzTv6YFMylX3KWDWg7fgoDPXS8W/qkJaWBL47Foerjf8cgm78O
+         N8R2JBu6JKob9+FeN+iYFsBGLF+0jRDxyV98J+GRTKTIMUvkRIOkhp60uNjjtVmX3+6m
+         YuWQ==
+X-Gm-Message-State: AOJu0YwxN0M0cXp1HRp7j0tGWJd6eonD1V0q3zweiUW/JXod12HO3vOs
+        zPA5OQ2SkVQv4uwYmYNTauCW1T4tj5umjlG361oqeQ==
+X-Google-Smtp-Source: AGHT+IF/TIxqGeiS2XhR+1vH5JCmmpN+VeV9SgvLUgpDO8Ap7VcLJ6Dhf6Nf3ZlHfe7THOF4vu9OLSSM93ulRd5ziLg=
+X-Received: by 2002:a05:6122:459e:b0:48d:11d1:9feb with SMTP id
+ de30-20020a056122459e00b0048d11d19febmr1317623vkb.8.1697729833434; Thu, 19
+ Oct 2023 08:37:13 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
+ <ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk>
+In-Reply-To: <ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Thu, 19 Oct 2023 21:07:02 +0530
+Message-ID: <CA+G9fYsbwWpDVR9KJXx8UO5MXsYT81uAJbLLNDnLianr8jmXUA@mail.gmail.com>
+Subject: Re: selftests: ftrace: Internal error: Oops: sve_save_state
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        lkft-triage@lists.linaro.org,
+        linux-stable <stable@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,43 +74,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The ath11k active pdevs are protected by RCU but the DFS radar event
-handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section.
+On Tue, 17 Oct 2023 at 17:52, Mark Brown <broonie@kernel.org> wrote:
+>
+> On Tue, Oct 17, 2023 at 01:34:18PM +0530, Naresh Kamboju wrote:
+>
+> > Following kernel crash noticed while running selftests: ftrace:
+> > ftracetest-ktap on FVP models running stable-rc 6.5.8-rc2.
+>
+> > This is not an easy to reproduce issue and not seen on mainline and next.
+> > We are investigating this report.
+>
+> To confirm have you seen this on other stables as well or is this only
+> v6.5?  For how long have you been seeing this?
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
+This is only seen on 6.5.8-rc2 and seen only once.
+I have checked on mainline / next and other stable branches and this crash
+is not seen anywhere else.
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/net/wireless/ath/ath11k/wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+However, I will keep checking them on other branches and next and mainline.
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index da1582b8dc30..f0eac6cb84fd 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8337,6 +8337,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event(struct ath11k_base *ab, struct sk_buff
- 		   ev->detector_id, ev->segment_id, ev->timestamp, ev->is_chirp,
- 		   ev->freq_offset, ev->sidx);
- 
-+	rcu_read_lock();
-+
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
- 
- 	if (!ar) {
-@@ -8354,6 +8356,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event(struct ath11k_base *ab, struct sk_buff
- 		ieee80211_radar_detected(ar->hw);
- 
- exit:
-+	rcu_read_unlock();
-+
- 	kfree(tb);
- }
- 
--- 
-2.41.0
+>
+> > [  764.987161] Unable to handle kernel NULL pointer dereference at
+> > virtual address 0000000000000000
+>
+> > [  765.074221] Call trace:
+> > [  765.075045]  sve_save_state+0x4/0xf0
+> > [  765.076138]  fpsimd_thread_switch+0x2c/0xe8
+> > [  765.077305]  __switch_to+0x20/0x158
+> > [  765.078384]  __schedule+0x2cc/0xb38
+> > [  765.079464]  preempt_schedule_irq+0x44/0xa8
+> > [  765.080633]  el1_interrupt+0x4c/0x68
+> > [  765.081691]  el1h_64_irq_handler+0x18/0x28
+> > [  765.082829]  el1h_64_irq+0x64/0x68
+> > [  765.083874]  ftrace_return_to_handler+0x98/0x158
+> > [  765.085090]  return_to_handler+0x20/0x48
+> > [  765.086205]  do_sve_acc+0x64/0x128
+> > [  765.087272]  el0_sve_acc+0x3c/0xa0
+> > [  765.088356]  el0t_64_sync_handler+0x114/0x130
+> > [  765.089524]  el0t_64_sync+0x190/0x198
+>
+> So something managed to get flagged as having SVE state without having
+> the backing storage allocated.  We *were* preempted in the SVE access
+> handler which does the allocation but I can't see the path that would
+> trigger that since we allocate the state before setting TIF_SVE.  It's
+> possible the compiler did something funky, a decode of the backtrace
+> might help show that?
 
+We have not uploaded vmlinux and System.map to this specific build.
+However, I have requested to have these files get uploaded for upcoming
+builds.
+
+- Naresh
