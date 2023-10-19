@@ -2,148 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D739D7CF10E
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 09:21:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B13D57CF145
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 09:30:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232942AbjJSHVP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 03:21:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
+        id S232975AbjJSHa5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 03:30:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232890AbjJSHVO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 03:21:14 -0400
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E348D126
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 00:21:11 -0700 (PDT)
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 69B163FDC3
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 07:21:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1697700070;
-        bh=x91R+lC/YKZONC3H6UuQ7fgHRxPTzGFAHyvdz6tJ5Ok=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-         In-Reply-To:Content-Type;
-        b=rX9gRrLizFOKGYJSIkhGquZaah1vWqZVX3uwTAR5amjdvjSarO+hcFtXplR35/PZ7
-         Xp2SLaUh3ymClSSf+pGGqXn/5Elahw98GTEJM8sQQykQXwfw8V4KMDS3s38nexx7pZ
-         8Y6CF+3HbCUsjZub7e2qAkmzYHEIcEbtD/K1HA6LJQ0ApvU0TevhJ0pG9dRiqno9dm
-         a0OOd62+Jwh7By1/IYV7YvNUgDKH1irR4dg2UWzaac7ThkiqhG6FCgrwr51JCeDTFd
-         OnpVRNg2TRjCBLwboF5Knfri9dwNol2frLQ4GbF5jRP1Qez9p+Iks6dTF45k8Z4SZF
-         H5EKQnkHOPvIA==
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2c51a7df557so45977101fa.0
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 00:21:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697700069; x=1698304869;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x91R+lC/YKZONC3H6UuQ7fgHRxPTzGFAHyvdz6tJ5Ok=;
-        b=INSGc0wrgYKbRxt7QedZrW56Ir8SnxfLpY8sT08FWGaBUcoldyOJA7ESocpT/tIkj6
-         Dqd6MJ5IsZHrnRtCsOrHVXmegFux/RDRNrcqBstcP+jjonzYMgKzRyZrqMYAftR4avqF
-         IZX24k3szntXNbhgT7gyTc5FHY58lnHjXQGA16AXdB+LHLPmymCF2hmIJrLd1lOtjqsf
-         OTv0k7zhw5c/5fx3lgOKWOh9O7o5g4HW6Uu5JnH0aYsb16Sm9oNbm0YXbi+WDd66s7V5
-         0PXHHwxXpDd4A0Z99EkrF/DNMdg739OgEeXnj1rmWAjqrP6WkvdPVz8ucArPZcMh3gnx
-         t6NA==
-X-Gm-Message-State: AOJu0YzZKfO+rc9OpUADWH0owqOpqi18pNBWCVtLjIiosQAEbHpd45qd
-        OHxdVoe3ruJ8TwzFG7quIIW9LH4w7V7byn+bmrxd+5Td5/2fIXk7pEmlUgO1xr+dX//Fmww9sZi
-        TPRdYJm9UfDLJbmwYpsimUJ+Z9jVr3ftXwg==
-X-Received: by 2002:a05:651c:1507:b0:2bc:f252:6cc4 with SMTP id e7-20020a05651c150700b002bcf2526cc4mr1042797ljf.10.1697700068813;
-        Thu, 19 Oct 2023 00:21:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGrEU16y5JLCrQA1zLjr1UsCW+KYgjOi+xUvCvHEVOlrHclgBiPupWNCqAkJ1xwc+J1xs6X/A==
-X-Received: by 2002:a05:651c:1507:b0:2bc:f252:6cc4 with SMTP id e7-20020a05651c150700b002bcf2526cc4mr1042779ljf.10.1697700068371;
-        Thu, 19 Oct 2023 00:21:08 -0700 (PDT)
-Received: from [192.168.123.94] (ip-178-202-040-247.um47.pools.vodafone-ip.de. [178.202.40.247])
-        by smtp.gmail.com with ESMTPSA id m13-20020a7bca4d000000b00402ff8d6086sm3610975wml.18.2023.10.19.00.21.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Oct 2023 00:21:07 -0700 (PDT)
-Message-ID: <57062702-f858-46d3-bccc-f0f96891128b@canonical.com>
-Date:   Thu, 19 Oct 2023 09:21:13 +0200
+        with ESMTP id S232326AbjJSHa4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 03:30:56 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CDA69F;
+        Thu, 19 Oct 2023 00:30:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E478DC433C8;
+        Thu, 19 Oct 2023 07:30:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697700654;
+        bh=9g/oL5ciNynJcn9WgauUXtHsSALIsdoIPjlIDDbWEys=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=KRvWN9M6Omb2EVLdylaIEl4OTKB6w92CHI5vHjZIMrWPeWS5m5xxzwc4Svg15O4K+
+         PSP7OveM/o+APV5fOwGPsPs31FyZa4VPZS2zSvYMJNwljwOJ4ryUMf0ddezjFfYRH0
+         /oCi2R4j9Ty6XAL6MV+Yp91x+04hyBo/uG12eDCXAAZ0m2eFXF0/FKdJXoa1+ZFmtb
+         grkx5g/glQxPH7wAq4qbM2JAfmbxjfYXldpL+uXzvYibDTj+1X9gPDqFOspPxpoGtZ
+         0tQWY/ftgAG4V1d1qpUt2RNXLRX42CxjgXu2aZg0vQfDvWb7qlyGSXiAKcWcyylyJM
+         F5CX5JTmq/pag==
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
-To:     Ben Schneider <ben@bens.haus>
-Cc:     Regressions <regressions@lists.linux.dev>,
-        Linux Efi <linux-efi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-References: <Nh-DzlX--3-9@bens.haus>
- <CAMj1kXFKe6piagNLdSUhxUhwLB+RfNHqjNWt8-r2CNS-rBdJKA@mail.gmail.com>
- <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com>
- <CAC_iWjJB3OTWiYX5YsJmNcPQw+rHSm955c1Z5pUajedWGM5QgA@mail.gmail.com>
- <Nh30qsF--3-9@bens.haus>
-Content-Language: en-US, de-DE
-From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-In-Reply-To: <Nh30qsF--3-9@bens.haus>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3] wifi: wilc1000: use vmm_table as array in wilc struct
+From:   Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20231017-wilc1000_tx_oops-v3-1-b2155f1f7bee@bootlin.com>
+References: <20231017-wilc1000_tx_oops-v3-1-b2155f1f7bee@bootlin.com>
+To:     =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Cc:     Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+        Michael Walle <mwalle@kernel.org>,
+        linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Ajay Singh <ajay.kathat@microchip.com>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        stable@vger.kernel.org,
+        =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <169770065004.117236.8779995270709198838.kvalo@kernel.org>
+Date:   Thu, 19 Oct 2023 07:30:51 +0000 (UTC)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/19/23 03:51, Ben Schneider wrote:
->> How old is the u-boot build on this platform?
-> 
-> U-Boot 2018.03-devel-18.12.3-g926d08c7ce (Apr 11 2022 - 15:48:13 +0800)
-> 
-> This appears to be the most recent version the manufacturer has released for this device. Source: https://github.com/globalscaletechnologies/u-boot-marvell.
-> 
->>> arch/arm64/boot/marvell/armada-3720-espressobin-ultra.dts
->> This is a uboot path, right? Not a linux path? Are you sure this DTS is compatible with the v6.5 kernel?
-> 
-> Sorry for the confusion; that is the path in the linux source to the DTS used to compile the DTB that I am using to boot the device. I booted v5.15.135 using the DTB compiled from v6.5.7 source and that works fine. I also tried to boot v6.5.7 with the factory DTB and that failed.
+Alexis Lothoré <alexis.lothore@bootlin.com> wrote:
 
-To which kernel and device-tree are the messages below related?
-
+> From: Ajay Singh <ajay.kathat@microchip.com>
 > 
->> Please add message inside the update_fdt() routine...
+> Enabling KASAN and running some iperf tests raises some memory issues with
+> vmm_table:
 > 
-> I added a bunch and here's what I got back:
+> BUG: KASAN: slab-out-of-bounds in wilc_wlan_handle_txq+0x6ac/0xdb4
+> Write of size 4 at addr c3a61540 by task wlan0-tx/95
 > 
-> EFI stub: Booting Linux Kernel...
-> EFI stub: ERROR: FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value
-> EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundary
-> EFI stub: ERROR: Failed to install memreserve config table!
-> EFI stub: Using DTB from configuration table
-> EFI stub: Exiting boot services...
-> EFI stub: Starting update_fdt()...
-> EFI stub: fdt_num_mem_rsv() returned 1
-> EFI stub: fdt_subnode_offset() returned 8944
-> EFI stub: Setting bootargs=console=ttyMV0,115200 earlycon=ar3700_uart,0xd0012000 root=/dev/sda1 rw rootwait
-> EFI stub: Adding FDT entries...
-> EFI stub: fdt_setprop_var() for linux,uefi-system-table returned 0
-> EFI stub: fdt_setprop_var() for linux,uefi-mmap-start returned -11
-
-11 = FDT_ERR_BADSTRUCTURE
-This is probably set in scripts/dtc/libfdt/fdt_ro.c.
-Something in the structure of your device-tree is invalid.
-
-Please, check the load addresses in U-Boot. Is something overwriting the 
-tail of the device-tree?
-
-Compiling upstream U-Boot's qemu_arm64_defconfig yields 
-lib/efi_loader/dtbdump.efi. If you run this instead of the kernel, you 
-can write the device-tree as it is passed in a configuration table to 
-the ESP.
-
-Best regards
-
-Heinrich
-
-> EFI stub: update_fdt() failed with status -11
-> EFI stub: ERROR: Unable to construct new device tree.
-> EFI stub: ERROR: Failed to update FDT and exit boot services
+> KASAN detects that we are writing data beyond range allocated to vmm_table.
+> There is indeed a mismatch between the size passed to allocator in
+> wilc_wlan_init, and the range of possible indexes used later: allocation
+> size is missing a multiplication by sizeof(u32)
 > 
-> That's as far as I could get today but hopefully that starts to narrow it down. Appreciate the help!
-> 
-> Sincerely,
-> 
-> Ben
+> Fixes: 40b717bfcefa ("wifi: wilc1000: fix DMA on stack objects")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
+> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+> Reviewed-by: Michael Walle <mwalle@kernel.org>
+> Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+
+Patch applied to wireless-next.git, thanks.
+
+05ac1a198a63 wifi: wilc1000: use vmm_table as array in wilc struct
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20231017-wilc1000_tx_oops-v3-1-b2155f1f7bee@bootlin.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
