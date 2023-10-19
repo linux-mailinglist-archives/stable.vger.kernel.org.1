@@ -2,262 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B42D87CFD33
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 16:49:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57DBE7CFD88
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 17:05:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346196AbjJSOtE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 10:49:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44300 "EHLO
+        id S1345809AbjJSPFH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 11:05:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346280AbjJSOs7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 10:48:59 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FFE3114;
-        Thu, 19 Oct 2023 07:48:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1697726933; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=FN9OpOocMTgJiz/Lo2ho4Xcff50OoGOqTC7RCDLu72EqgEE6ydz69eINTOF4f0Vz3j
-    vpQJjVlF61TJGlPtJ0XKlfsJQuAtm5jgalVPUDdgKfjCXwlmn8/2UxFeJ/kFlyPeFmya
-    6zMdcCq71+jlg7PPS4mpYaPhaAOKQpf5NoHiou8NyJT5JU5u5rK/qWsZSca62zt9xDdC
-    9z9PLmxU/AJ73z7WrQfIP/DmggOcLLo1xJeGb5zgWGhfr1nhno0VZ3L1MZmxDNikd0Wj
-    vu1PAtGgj958vIdDlXxUb5iYfZF+XHYa0oLCKgVIRh0mrNB16XWMshIACGv+1n8xLYQU
-    6Sxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1697726933;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=7cuD1QOpe7Y7Z0gNct5qHlFiCYXpc9cJzhz/dPK12RM=;
-    b=OPpaKVeoThjHhKC+6IqWZrlOs47B/afs9wb4Jvby3nQp/ieIVpZUqwV27Ghd399HqS
-    LSgmEqnY9JwQuMuY54NXE25i1sUp51FQ2vB59wzt6wE5TCbS+vQzUVKtg++8crHIN10V
-    VOtwocuafExzdj0VVxI4H5BXhzrE9efMD5bw9o47a3rJrgoHLct3VGNAobYBnly9O+VZ
-    5m5yYJsiBNP4jdP6uafPiqls7tOtEzmqHZU1ZhlwcMzbnfGy6akP8VJCyFhBsnJnj7Qt
-    JmvYTV8FKezobhP0E1A+H+MQFi/S7LuT+IVv20jlimIRHXAWJXRm+e4RliFKKuk4rSOd
-    cWxg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1697726933;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=7cuD1QOpe7Y7Z0gNct5qHlFiCYXpc9cJzhz/dPK12RM=;
-    b=bzAmkUvDoHIXo9AIg0D+wMfnSEqg4e0qRra25EbaRbwGzYg0tHQf28A3Hrv1VBDCcL
-    9RmeUP32UNKDJQ6JDm31RKosW0EKULpH3gHebNCA5/SNvySgGNrr6uZ1PXiYEXVSxaFh
-    mrNHVSox/F6m45uWQU5HmOmhcAUEzRXRxhBKLDRgZw+EbD6hgptbBeQ4mU0/xc0ArVO2
-    gMNSjJVn60GnB/b808iXQ7m41PxrHSykqm+joQkVMw7a1Veut7hMMvNKOyDwh8MP5Won
-    NVmeCki+AwrAMJyuUF7EIJTJ/MVcGw1DVSM0svLbJOPsmDZMZwwa1V/9gVU4zq5pf2fN
-    Xb+g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1697726932;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=In-Reply-To:References:Message-ID:Subject:Cc:To:From:Date:Cc:Date:
-    From:Subject:Sender;
-    bh=7cuD1QOpe7Y7Z0gNct5qHlFiCYXpc9cJzhz/dPK12RM=;
-    b=gXO+qnKOAFEgRc8tWyDjUEoMxLBLb7JyEEV4vg+xVNH0qKV1OamKOPV2AeH3Ls9Vvp
-    EXhnGmv4A7f8wSG4tdDQ==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQ/OcYgojyw4j34+u261EJF5OxJD4paA95vh"
-Received: from gerhold.net
-    by smtp.strato.de (RZmta 49.9.0 DYNA|AUTH)
-    with ESMTPSA id j34a49z9JEmqE5Z
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Thu, 19 Oct 2023 16:48:52 +0200 (CEST)
-Date:   Thu, 19 Oct 2023 16:48:46 +0200
-From:   Stephan Gerhold <stephan@gerhold.net>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] cpufreq: qcom-nvmem: Enable virtual power domain
- devices
-Message-ID: <ZTFBzjLAaaUHux4O@gerhold.net>
-References: <20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com>
- <20231018-msm8909-cpufreq-v2-2-0962df95f654@kernkonzept.com>
- <CAPDyKFot9=M1ooP_Q1AOgG5o_4DTQ2qsyai1ZdXAzBwf89W4uA@mail.gmail.com>
- <CAPDyKFr5A-P=UhWs4rUMBWup3pH75WAhcZ56Y2_Sfk3=WfxRCQ@mail.gmail.com>
- <ZTEph19CAvbgbN_E@gerhold.net>
- <CAPDyKFo1PVZYsdW_=92EtMmTT9hmkm-mBR69N_WvPh4f-Hw=NA@mail.gmail.com>
+        with ESMTP id S1346174AbjJSPFG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 11:05:06 -0400
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99D6B11D;
+        Thu, 19 Oct 2023 08:05:04 -0700 (PDT)
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39JBTTpm015458;
+        Thu, 19 Oct 2023 15:04:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=qcppdkim1;
+ bh=qanLP9cmLj+5RCqf6a5RUipKVc/ue5qlpWjav39spJI=;
+ b=N55h2sDaxlOTr5cqyrZiCojGMyOT9NR8bSHs2F/gOzJ89WNMIKTr60vipNiPCo/+3Sns
+ s9GKmNGFGb/DYAaUt51KrBwTsRDOmqq9aI588puJePZ50WEq/k/OSQRhtSUQvdaVLgbU
+ gKP4qqzDrkaKFm7yAimUjb6A24J3vn3W3VAd/2CV+0vahAV8+ThzHw2QjQos7XCyFtHe
+ WoQsyi+0ix57YBvgsGD7uVVlOsc0OPZuI5GcFh50kThYUBmFCxPzQ4az5BbvH8dFKzTJ
+ a6se8ExXuw+V/Rqktd42HFEhGYI7WQgpkaL078xfrcxGyPb+KWMq8Vp/rR2lRG2yGep0 qg== 
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3tu14crsrq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 19 Oct 2023 15:04:57 +0000
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 39JF4ujJ005265
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 19 Oct 2023 15:04:56 GMT
+Received: from [10.48.241.70] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Thu, 19 Oct
+ 2023 08:04:56 -0700
+Message-ID: <4233c8af-5911-40bf-b5ba-dd0a63863a45@quicinc.com>
+Date:   Thu, 19 Oct 2023 08:04:55 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFo1PVZYsdW_=92EtMmTT9hmkm-mBR69N_WvPh4f-Hw=NA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: ath11k: fix temperature event locking
+Content-Language: en-US
+To:     Johan Hovold <johan+linaro@kernel.org>,
+        Kalle Valo <kvalo@kernel.org>
+CC:     Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20231019104211.13769-1-johan+linaro@kernel.org>
+ <20231019104211.13769-2-johan+linaro@kernel.org>
+From:   Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20231019104211.13769-2-johan+linaro@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.49.16.6]
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: LLFEGCv0SJ0xik2fPzfmGJ9UzfpCfQCs
+X-Proofpoint-ORIG-GUID: LLFEGCv0SJ0xik2fPzfmGJ9UzfpCfQCs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.980,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-19_14,2023-10-19_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=703 clxscore=1011 suspectscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 mlxscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2309180000 definitions=main-2310190127
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 19, 2023 at 04:12:56PM +0200, Ulf Hansson wrote:
-> On Thu, 19 Oct 2023 at 15:05, Stephan Gerhold <stephan@gerhold.net> wrote:
-> > On Thu, Oct 19, 2023 at 01:26:19PM +0200, Ulf Hansson wrote:
-> > > On Thu, 19 Oct 2023 at 12:24, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > > > On Wed, 18 Oct 2023 at 10:06, Stephan Gerhold
-> > > > <stephan.gerhold@kernkonzept.com> wrote:
-> > > > >
-> > > > > The genpd core caches performance state votes from devices that are
-> > > > > runtime suspended as of commit 3c5a272202c2 ("PM: domains: Improve
-> > > > > runtime PM performance state handling"). They get applied once the
-> > > > > device becomes active again.
-> > > > >
-> > > > > To attach the power domains needed by qcom-cpufreq-nvmem the OPP core
-> > > > > calls genpd_dev_pm_attach_by_id(). This results in "virtual" dummy
-> > > > > devices that use runtime PM only to control the enable and performance
-> > > > > state for the attached power domain.
-> > > > >
-> > > > > However, at the moment nothing ever resumes the virtual devices created
-> > > > > for qcom-cpufreq-nvmem. They remain permanently runtime suspended. This
-> > > > > means that performance state votes made during cpufreq scaling get
-> > > > > always cached and never applied to the hardware.
-> > > > >
-> > > > > Fix this by enabling the devices after attaching them and use
-> > > > > dev_pm_syscore_device() to ensure the power domains also stay on when
-> > > > > going to suspend. Since it supplies the CPU we can never turn it off
-> > > > > from Linux. There are other mechanisms to turn it off when needed,
-> > > > > usually in the RPM firmware (RPMPD) or the cpuidle path (CPR genpd).
-> > > >
-> > > > I believe we discussed using dev_pm_syscore_device() for the previous
-> > > > version. It's not intended to be used for things like the above.
-> > > >
-> >
-> > Sorry, looks like we still had a misunderstanding in the conclusion of
-> > the previous discussion. :')
-> >
-> > > > Moreover, I was under the impression that it wasn't really needed. In
-> > > > fact, I would think that this actually breaks things for system
-> > > > suspend/resume, as in this case the cpr driver's genpd
-> > > > ->power_on|off() callbacks are no longer getting called due this,
-> > > > which means that the cpr state machine isn't going to be restored
-> > > > properly. Or did I get this wrong?
-> > >
-> >
-> > We strictly need the RPMPDs to be always-on, also across system suspend
-> > [1]. The RPM firmware will drop the votes internally as soon as the
-> > CPU(s) have entered deep cpuidle. We can't do this from Linux, because
-> > we need the CPU to continue running until it was shut down cleanly.
-> >
-> > For CPR, we strictly need the backing regulator to be always-on, also
-> > across system suspend. Typically the hardware will turn off the
-> > regulator as soon as the CPU(s) enter deep cpuidle. Similarly, we can't
-> > do this from Linux, because we need the CPU to continue running until it
-> > was shut down cleanly.
-> >
-> > My understanding was that we're going to pause the CPR state machine
-> > using the system suspend/resume callbacks on the driver, instead of
-> > using the genpd->power_on|off() callbacks [2]. I can submit a separate
-> > patch for this.
-> 
-> If we are going to do 1) as described below, this looks to me that
-> it's going to be needed.
-> 
+On 10/19/2023 3:42 AM, Johan Hovold wrote:
+> The ath11k active pdevs are protected by RCU but the temperature event
+> handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+> read-side critical section as reported by RCU lockdep:
 
-Yep.
-
-> How will otherwise the cpr state machine be saved/restored during
-> system suspend/resume? Note that, beyond 1), the genpd's
-> ->power_on|off() callbacks are no longer going to be called during
-> system suspend/resume.
-> 
-
-(Side note: I think "save/restore" might be the wrong words for
- suspend/resume of CPR. Looking at the code most of the configuration
- appears to be preserved across suspend/resume. Nothing is saved, it
- literally just disables the state machine during suspend and re-enables
- it during resume.
-
- I'm not entirely sure what's the reason for doing this. Perhaps the
- main goal is just to prevent the CPR state machine from getting stuck
- or sending pointless IRQs that won't be handled while Linux is
- suspended.)
-
-> In a way this also means that the cpr genpd provider might as well
-> also have GENPD_FLAG_ALWAYS_ON set for it.
-
-Conceptually I would consider CPR to be a generic power domain provider
-that could supply any kind of device. I know at least of CPUs and GPUs.
-We need "always-on" only for the CPU, but not necessarily for other
-devices.
-
-For a GPU, the Linux driver (running on the CPU) can stop the GPU, wait
-for completion and then invoke the ->power_off() callback of CPR. In
-that case it is also safe to disable the backing regulator from Linux.
-(I briefly mentioned this already in the previous discussion I think.)
-
-We could set GENPD_FLAG_ALWAYS_ON for the CPR compatibles where we know
-that they are only used to supply CPUs, but if we're going to do (1)
-anyway there might not be much of an advantage for the extra complexity.
+How do I enable this? Just enable CONFIG_PROVE_RCU?
+Of course I'd also need to exercise the code path...
 
 > 
-> >
-> > I didn't prioritize this because QCS404 (as the only current user of
-> > CPR) doesn't have proper deep cpuidle/power management set up yet. It's
-> > not entirely clear to me if there is any advantage (or perhaps even
-> > disadvantage) if we pause the CPR state machine while the shared L2
-> > cache is still being actively powered by the CPR power rail during
-> > system suspend. I suspect this is a configuration that was never
-> > considered in the hardware design.
+> 	=============================
+> 	WARNING: suspicious RCU usage
+> 	6.6.0-rc6 #7 Not tainted
+> 	-----------------------------
+> 	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
 > 
-> I see.
+> 	other info that might help us debug this:
 > 
-> >
-> > Given the strict requirement for the RPMPDs, I only see two options:
-> >
-> >  1. Have an always-on consumer that prevents the power domains to be
-> >     powered off during system suspend. This is what this patch tries to
-> >     achieve.
-> >
-> > Or:
-> >
-> >  2. Come up with a way to register the RPMPDs used by the CPU with
-> >     GENPD_FLAG_ALWAYS_ON. This would also be doable, but isn't as
-> >     straightfoward as "regulator-always-on" in the DT because the rpmpd
-> >     DT node represents multiple genpds in a single DT node [3].
+> 	rcu_scheduler_active = 2, debug_locks = 1
+> 	no locks held by swapper/0/0.
+> 	...
+> 	Call trace:
+> 	...
+> 	 lockdep_rcu_suspicious+0x16c/0x22c
+> 	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
+> 	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
+> 	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
 > 
-> Yes, it sounds like it may be easier to do 1).
+> Mark the code in question as an RCU read-side critical section to avoid
+> any potential use-after-free issues.
 > 
-> >
-> > What do you think? Do you see some other solution perhaps? I hope we can
-> > clear up the misunderstanding. :-)
+> Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
+> Cc: stable@vger.kernel.org      # 5.7
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>   drivers/net/wireless/ath/ath11k/wmi.c | 4 ++++
+>   1 file changed, 4 insertions(+)
 > 
-> Yes, thanks!
-> 
-> >
-> > [1]: https://lore.kernel.org/linux-arm-msm/ZQGqfMigCFZP_HLA@gerhold.net/
-> > [2]: https://lore.kernel.org/linux-arm-msm/CAPDyKFoiup8KNv=1LFGKDdDLA1pHsdJUgTTWMdgxnikEmReXzg@mail.gmail.com/
-> > [3]: https://lore.kernel.org/linux-arm-msm/ZSg-XtwMxg3_fWxc@gerhold.net/
-> >
-> > > BTW, if you really need something like the above, the proper way to do
-> > > it would instead be to call device_set_awake_path() for the device.
-> > >
-> > > This informs genpd that the device needs to stay powered-on during
-> > > system suspend (assuming that GENPD_FLAG_ACTIVE_WAKEUP has been set
-> > > for it), hence it will keep the corresponding PM domain powered-on
-> > > too.
-> > >
-> >
-> > Thanks, I can try if this works as alternative to the
-> > dev_pm_syscore_device()!
-> 
-> Yes, please. We don't want to abuse the dev_pm_syscore_device() thingy.
-> 
+> diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
+> index 23ad6825e5be..980ff588325d 100644
+> --- a/drivers/net/wireless/ath/ath11k/wmi.c
+> +++ b/drivers/net/wireless/ath/ath11k/wmi.c
+> @@ -8383,6 +8383,8 @@ ath11k_wmi_pdev_temperature_event(struct ath11k_base *ab,
+>   	ath11k_dbg(ab, ATH11K_DBG_WMI, "event pdev temperature ev temp %d pdev_id %d\n",
+>   		   ev->temp, ev->pdev_id);
+>   
+> +	rcu_read_lock();
+> +
+>   	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
+>   	if (!ar) {
+>   		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
 
-Could you clarify the idea behind GENPD_FLAG_ACTIVE_WAKEUP? Would I set
-it conditionally for all RPMPDs or just the ones consumed by the CPU?
-How does the genpd *provider* know if one of its *consumer* devices
-needs to have its power domain kept on for wakeup?
+aren't you missing an unlock() in this error path?
 
-Thanks!
-Stephan
+perhaps have a goto cleanup that does both the unlock() and the kfree()?
+
+> @@ -8392,6 +8394,8 @@ ath11k_wmi_pdev_temperature_event(struct ath11k_base *ab,
+>   
+>   	ath11k_thermal_event_temperature(ar, ev->temp);
+>   
+> +	rcu_read_unlock();
+> +
+>   	kfree(tb);
+>   }
+>   
+
