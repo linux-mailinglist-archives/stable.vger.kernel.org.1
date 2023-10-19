@@ -2,123 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05D1F7CF04D
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 08:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D739D7CF10E
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 09:21:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232808AbjJSGqJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 02:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55316 "EHLO
+        id S232942AbjJSHVP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 03:21:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232818AbjJSGqG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 02:46:06 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E45F124;
-        Wed, 18 Oct 2023 23:46:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697697964; x=1729233964;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qNGiwG6sPEn5ubts1BrNP/8VMfC11VFMYM5s5vJIJZU=;
-  b=JOmox+3mKfj0lafGMacmqd+QL8A4VDLckj9TJsSdkWqzaaPSHwgZ8uWX
-   u4d8A4hkUl5fisXdN/8fkEOKC7fFTfrlu6mc59xfYe94JnegT8Aa43+Uk
-   4XxHT4l3waQhA20q1xWYsY5Kf6AlYg6g5V21/RCsa9pwWxdtpaJ32P+p5
-   E0qKTYPMMoSkgc9aMcszt5zFIAn5Xx9p8KNf+++aIpU7jyFWMYnxedjMt
-   QjsSigwpt5CRIfyxhWEMA8CraPb2mf+hXZCBKcGR5zLwc1Z48sbbbVje7
-   bTqwAa8qInuZvx1C/SYP/EXwsZgdEOt8eYhPT9lYyxjt41hzxtCG/G8C8
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="376560061"
-X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; 
-   d="scan'208";a="376560061"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2023 23:46:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10867"; a="1088259427"
-X-IronPort-AV: E=Sophos;i="6.03,236,1694761200"; 
-   d="scan'208";a="1088259427"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga005.fm.intel.com with SMTP; 18 Oct 2023 23:45:59 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Thu, 19 Oct 2023 09:45:58 +0300
-Date:   Thu, 19 Oct 2023 09:45:58 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     gregkh@linuxfoundation.org, linux@roeck-us.net, kyletso@google.com,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        rdbabiera@google.com, amitsd@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: tcpm: Fix sink caps op current check
-Message-ID: <ZTDQpqVMx/QB1tTo@kuha.fi.intel.com>
-References: <20231015035838.2207567-1-badhri@google.com>
+        with ESMTP id S232890AbjJSHVO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 03:21:14 -0400
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E348D126
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 00:21:11 -0700 (PDT)
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com [209.85.208.198])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 69B163FDC3
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 07:21:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1697700070;
+        bh=x91R+lC/YKZONC3H6UuQ7fgHRxPTzGFAHyvdz6tJ5Ok=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=rX9gRrLizFOKGYJSIkhGquZaah1vWqZVX3uwTAR5amjdvjSarO+hcFtXplR35/PZ7
+         Xp2SLaUh3ymClSSf+pGGqXn/5Elahw98GTEJM8sQQykQXwfw8V4KMDS3s38nexx7pZ
+         8Y6CF+3HbCUsjZub7e2qAkmzYHEIcEbtD/K1HA6LJQ0ApvU0TevhJ0pG9dRiqno9dm
+         a0OOd62+Jwh7By1/IYV7YvNUgDKH1irR4dg2UWzaac7ThkiqhG6FCgrwr51JCeDTFd
+         OnpVRNg2TRjCBLwboF5Knfri9dwNol2frLQ4GbF5jRP1Qez9p+Iks6dTF45k8Z4SZF
+         H5EKQnkHOPvIA==
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2c51a7df557so45977101fa.0
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 00:21:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697700069; x=1698304869;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=x91R+lC/YKZONC3H6UuQ7fgHRxPTzGFAHyvdz6tJ5Ok=;
+        b=INSGc0wrgYKbRxt7QedZrW56Ir8SnxfLpY8sT08FWGaBUcoldyOJA7ESocpT/tIkj6
+         Dqd6MJ5IsZHrnRtCsOrHVXmegFux/RDRNrcqBstcP+jjonzYMgKzRyZrqMYAftR4avqF
+         IZX24k3szntXNbhgT7gyTc5FHY58lnHjXQGA16AXdB+LHLPmymCF2hmIJrLd1lOtjqsf
+         OTv0k7zhw5c/5fx3lgOKWOh9O7o5g4HW6Uu5JnH0aYsb16Sm9oNbm0YXbi+WDd66s7V5
+         0PXHHwxXpDd4A0Z99EkrF/DNMdg739OgEeXnj1rmWAjqrP6WkvdPVz8ucArPZcMh3gnx
+         t6NA==
+X-Gm-Message-State: AOJu0YzZKfO+rc9OpUADWH0owqOpqi18pNBWCVtLjIiosQAEbHpd45qd
+        OHxdVoe3ruJ8TwzFG7quIIW9LH4w7V7byn+bmrxd+5Td5/2fIXk7pEmlUgO1xr+dX//Fmww9sZi
+        TPRdYJm9UfDLJbmwYpsimUJ+Z9jVr3ftXwg==
+X-Received: by 2002:a05:651c:1507:b0:2bc:f252:6cc4 with SMTP id e7-20020a05651c150700b002bcf2526cc4mr1042797ljf.10.1697700068813;
+        Thu, 19 Oct 2023 00:21:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGrEU16y5JLCrQA1zLjr1UsCW+KYgjOi+xUvCvHEVOlrHclgBiPupWNCqAkJ1xwc+J1xs6X/A==
+X-Received: by 2002:a05:651c:1507:b0:2bc:f252:6cc4 with SMTP id e7-20020a05651c150700b002bcf2526cc4mr1042779ljf.10.1697700068371;
+        Thu, 19 Oct 2023 00:21:08 -0700 (PDT)
+Received: from [192.168.123.94] (ip-178-202-040-247.um47.pools.vodafone-ip.de. [178.202.40.247])
+        by smtp.gmail.com with ESMTPSA id m13-20020a7bca4d000000b00402ff8d6086sm3610975wml.18.2023.10.19.00.21.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Oct 2023 00:21:07 -0700 (PDT)
+Message-ID: <57062702-f858-46d3-bccc-f0f96891128b@canonical.com>
+Date:   Thu, 19 Oct 2023 09:21:13 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231015035838.2207567-1-badhri@google.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
+To:     Ben Schneider <ben@bens.haus>
+Cc:     Regressions <regressions@lists.linux.dev>,
+        Linux Efi <linux-efi@vger.kernel.org>,
+        Stable <stable@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+References: <Nh-DzlX--3-9@bens.haus>
+ <CAMj1kXFKe6piagNLdSUhxUhwLB+RfNHqjNWt8-r2CNS-rBdJKA@mail.gmail.com>
+ <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com>
+ <CAC_iWjJB3OTWiYX5YsJmNcPQw+rHSm955c1Z5pUajedWGM5QgA@mail.gmail.com>
+ <Nh30qsF--3-9@bens.haus>
+Content-Language: en-US, de-DE
+From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <Nh30qsF--3-9@bens.haus>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Oct 15, 2023 at 03:58:38AM +0000, Badhri Jagan Sridharan wrote:
-> TCPM checks for sink caps operational current even when PD is disabled.
-> This incorrectly sets tcpm_set_charge() when PD is disabled.
-> Check for sink caps only when PD is enabled.
+On 10/19/23 03:51, Ben Schneider wrote:
+>> How old is the u-boot build on this platform?
 > 
-> [   97.572342] Start toggling
-> [   97.578949] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-> [   99.571648] CC1: 0 -> 0, CC2: 0 -> 4 [state TOGGLING, polarity 0, connected]
-> [   99.571658] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-> [   99.571673] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-> [   99.741778] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-> [   99.789283] CC1: 0 -> 0, CC2: 4 -> 5 [state SNK_DEBOUNCED, polarity 0, connected]
-> [   99.789306] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-> [   99.903584] VBUS on
-> [   99.903591] state change SNK_DEBOUNCED -> SNK_ATTACHED [rev3 NONE_AMS]
-> [   99.903600] polarity 1
-> [   99.910155] enable vbus discharge ret:0
-> [   99.910160] Requesting mux state 1, usb-role 2, orientation 2
-> [   99.946791] state change SNK_ATTACHED -> SNK_STARTUP [rev3 NONE_AMS]
-> [   99.946798] state change SNK_STARTUP -> SNK_DISCOVERY [rev3 NONE_AMS]
-> [   99.946800] Setting voltage/current limit 5000 mV 500 mA
-> [   99.946803] vbus=0 charge:=1
-> [  100.027139] state change SNK_DISCOVERY -> SNK_READY [rev3 NONE_AMS]
-> [  100.027145] Setting voltage/current limit 5000 mV 3000 mA
-> [  100.466830] VBUS on
+> U-Boot 2018.03-devel-18.12.3-g926d08c7ce (Apr 11 2022 - 15:48:13 +0800)
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 34fde9ec08a3 ("FROMGIT: usb: typec: tcpm: not sink vbus if operational current is 0mA")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> This appears to be the most recent version the manufacturer has released for this device. Source: https://github.com/globalscaletechnologies/u-boot-marvell.
+> 
+>>> arch/arm64/boot/marvell/armada-3720-espressobin-ultra.dts
+>> This is a uboot path, right? Not a linux path? Are you sure this DTS is compatible with the v6.5 kernel?
+> 
+> Sorry for the confusion; that is the path in the linux source to the DTS used to compile the DTB that I am using to boot the device. I booted v5.15.135 using the DTB compiled from v6.5.7 source and that works fine. I also tried to boot v6.5.7 with the factory DTB and that failed.
 
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To which kernel and device-tree are the messages below related?
 
-> ---
-> Changes since v1:
-> * Fix commit title and description to address comments from Guenter Roeck
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 6e843c511b85..994493481c24 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -4268,7 +4268,8 @@ static void run_state_machine(struct tcpm_port *port)
->  				current_lim = PD_P_SNK_STDBY_MW / 5;
->  			tcpm_set_current_limit(port, current_lim, 5000);
->  			/* Not sink vbus if operational current is 0mA */
-> -			tcpm_set_charge(port, !!pdo_max_current(port->snk_pdo[0]));
-> +			tcpm_set_charge(port, port->pd_supported ?
-> +					!!pdo_max_current(port->snk_pdo[0]) : true);
->  
->  			if (!port->pd_supported)
->  				tcpm_set_state(port, SNK_READY, 0);
+>> Please add message inside the update_fdt() routine...
 > 
-> base-commit: 1034cc423f1b4a7a9a56d310ca980fcd2753e11d
-> -- 
-> 2.42.0.655.g421f12c284-goog
+> I added a bunch and here's what I got back:
+> 
+> EFI stub: Booting Linux Kernel...
+> EFI stub: ERROR: FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value
+> EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundary
+> EFI stub: ERROR: Failed to install memreserve config table!
+> EFI stub: Using DTB from configuration table
+> EFI stub: Exiting boot services...
+> EFI stub: Starting update_fdt()...
+> EFI stub: fdt_num_mem_rsv() returned 1
+> EFI stub: fdt_subnode_offset() returned 8944
+> EFI stub: Setting bootargs=console=ttyMV0,115200 earlycon=ar3700_uart,0xd0012000 root=/dev/sda1 rw rootwait
+> EFI stub: Adding FDT entries...
+> EFI stub: fdt_setprop_var() for linux,uefi-system-table returned 0
+> EFI stub: fdt_setprop_var() for linux,uefi-mmap-start returned -11
 
--- 
-heikki
+11 = FDT_ERR_BADSTRUCTURE
+This is probably set in scripts/dtc/libfdt/fdt_ro.c.
+Something in the structure of your device-tree is invalid.
+
+Please, check the load addresses in U-Boot. Is something overwriting the 
+tail of the device-tree?
+
+Compiling upstream U-Boot's qemu_arm64_defconfig yields 
+lib/efi_loader/dtbdump.efi. If you run this instead of the kernel, you 
+can write the device-tree as it is passed in a configuration table to 
+the ESP.
+
+Best regards
+
+Heinrich
+
+> EFI stub: update_fdt() failed with status -11
+> EFI stub: ERROR: Unable to construct new device tree.
+> EFI stub: ERROR: Failed to update FDT and exit boot services
+> 
+> That's as far as I could get today but hopefully that starts to narrow it down. Appreciate the help!
+> 
+> Sincerely,
+> 
+> Ben
+
