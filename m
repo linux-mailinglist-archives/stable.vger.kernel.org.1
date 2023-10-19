@@ -2,163 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E41187D0348
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 22:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A8127D036A
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 22:51:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346563AbjJSUpP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 16:45:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41062 "EHLO
+        id S231825AbjJSUvX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 16:51:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346553AbjJSUpO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 16:45:14 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D2A212D
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 13:45:12 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-51e24210395so4283a12.0
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 13:45:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697748311; x=1698353111; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VVuCB44VLEjsZzvUgM1w7n2lvEI4MsHtEyH+2GVq2dY=;
-        b=EulO5Oy4vXgxAA88b1og3ur2Akh0sYSkPVfIpxvdGm4MMF93ZCwC1lj2M+zZLqG6eQ
-         A2Pyy0EJ4bXkkrdo7FlBfFVZtAmXDPTVpWgs4MiadRD84rCsdV957TmoxHIs8fAh5OJR
-         LWH+O7bqv3+BZ1CoAaTo7px+dZp2vRpOeiIoL5aSkVby89PJtAhnMCGpk9XMaHLfBIms
-         vaynbKJref+ZTPRmPnc+Wwjun2M1X65PfBJ5TVBm2ZAJOmc1H34QGZIw5Zo2QtFK0zqL
-         CK5pv1cXTUAZOIMeusY13UWvRnqzJaIS6rYMBqCJ7baIWJZlslahMbQxMbWwG3hfByDB
-         F+jQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697748311; x=1698353111;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VVuCB44VLEjsZzvUgM1w7n2lvEI4MsHtEyH+2GVq2dY=;
-        b=PN/KoyU1uncLm5pcKzXZIiSdEfUwVNxsaXc5uHbZFkvsff/22CsyGQSRbvFclW6a5q
-         hcMQD+2LhKBBeU3pGLnpOTms7Yjjw/qkitEK+Y3WnLdBARIzlCbTpDkKn28D5uakK6Za
-         Aw1ZrMNVNYhzXi9H3GOHncYkU8Kd/q+pheuDQT/bD526SxbgsayW2FN/eWzU2k2x8Jzn
-         DvM9eh3X6OcnHR6Fsratdkcq9BpGLFQ2yLYHAC79ccQcGRRIpjvCl7i4uLLBvUO5tyRP
-         cBbYBw3EmvkJ6R4H5A/h0IYFykOaCZS7RwMtdeoldogLUeBVEY70rE4T1IjR89vwTj23
-         ku2A==
-X-Gm-Message-State: AOJu0Yz2Hu9C4A5cNqmGs6Ef9RtdgHjgfp6/r3dQQFyBILRvAQBGBqDI
-        ezxqTFDDRdxV+DSgEI1J8tHdYTiOgadAD35R3hsIhA==
-X-Google-Smtp-Source: AGHT+IHFC9ybSiyivStLgYN8fa6C0ml9tRY1/5sGB2bF7uJu4CHMtn3ZiatZMgc3HYBkARDtPGQ6AHj9IsKbPrz5vok=
-X-Received: by 2002:a50:9f41:0:b0:53f:91cb:6904 with SMTP id
- b59-20020a509f41000000b0053f91cb6904mr27602edf.4.1697748310674; Thu, 19 Oct
- 2023 13:45:10 -0700 (PDT)
+        with ESMTP id S229892AbjJSUvW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 16:51:22 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F52C2;
+        Thu, 19 Oct 2023 13:51:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE170C433C7;
+        Thu, 19 Oct 2023 20:51:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697748680;
+        bh=avvVhk562RDsloShDfVKbRwRR54xodJjv+T6J94vhjQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=rJ+cw6Yu53WaCZw4SBhXOsLU55656lONyJVrRglH9t56UjH5t/DpaapyQldAZrWeZ
+         MRJgZQBaWmn2reW0SrFN3YZAmcSvnfvFGKwIv4gTBRwLJBm+TRlPVL5v3ldSHwXc84
+         utZz868f+bdzqjHsX9nFyzcZYScMeqEv++Wv4GLHiMtEoALOvIzrVH0wim6LaAvwVP
+         /Qq0RA8xOHjLsB5N3jJ40NqlLeco5kc2Ejje+V+9kjj1vT2NpiorfWBEweKmmS3Lgr
+         7j7IH7yb5s0p5v6paWW9zXY5d9GvJVbGBVmvTHVAIsWDOcbgNvhscLeC4qjk/iVRTc
+         Xqx3C52GjjO6Q==
+Date:   Thu, 19 Oct 2023 13:51:17 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Hamza Mahfooz <hamza.mahfooz@amd.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Alexander Potapenko <glider@google.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        linux-kernel@vger.kernel.org,
+        Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Nick Terrell <terrelln@fb.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+        Li Hua <hucool.lihua@huawei.com>, Rae Moar <rmoar@google.com>,
+        rust-for-linux@vger.kernel.org, bpf@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
+Message-ID: <20231019205117.GA839902@dev-arch.thelio-3990X>
+References: <20231018182412.80291-1-hamza.mahfooz@amd.com>
+ <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
+ <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
+ <CAMuHMdXYDQi5+x1KxMG0wnjSfa=A547B9tgAbgbHbV42bbRu8Q@mail.gmail.com>
+ <CAG_fn=XcJ=rZEJN+L1zZwk=qA90KShhZK1MA6fdW0oh7BqSJKw@mail.gmail.com>
+ <22580470-7def-4723-b836-1688db6da038@app.fastmail.com>
+ <20231019155600.GB60597@dev-arch.thelio-3990X>
+ <a9237e7a-e08c-4904-b84a-f6198333a78c@amd.com>
 MIME-Version: 1.0
-References: <20231016232816.3355132-2-rdbabiera@google.com> <ZTDkIGLmjmL9HwJP@kuha.fi.intel.com>
-In-Reply-To: <ZTDkIGLmjmL9HwJP@kuha.fi.intel.com>
-From:   RD Babiera <rdbabiera@google.com>
-Date:   Thu, 19 Oct 2023 13:44:59 -0700
-Message-ID: <CALzBnUF-EZjFEHCc4XRLdFr5yP8dCq7De4SaNif32LcL5=tMYA@mail.gmail.com>
-Subject: Re: [PATCH v1] usb: typec: tcpm: only discover modes the port
- supports svids for
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     gregkh@linuxfoundation.org, linux@roeck-us.net,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        badhri@google.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a9237e7a-e08c-4904-b84a-f6198333a78c@amd.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Heikki,
+On Thu, Oct 19, 2023 at 04:17:26PM -0400, Hamza Mahfooz wrote:
+> On 10/19/23 11:56, Nathan Chancellor wrote:
+> > On Thu, Oct 19, 2023 at 02:53:01PM +0200, Arnd Bergmann wrote:
+> > > On Thu, Oct 19, 2023, at 12:04, Alexander Potapenko wrote:
+> > > > So the remaining option would be to just increase the frame size every
+> > > > time a new function surpasses the limit.
+> > > 
+> > > That is clearly not an option, though we could try to
+> > > add Kconfig dependencies that avoid the known bad combinations,
+> > > such as annotating the AMD GPU driver as
+> > > 
+> > >        depends on (CC_IS_GCC || CLANG_VERSION >=180000) || !(KASAN || KCSAN)
+> > 
+> > This would effectively disable the AMDGPU driver for allmodconfig, which
+> > is somewhat unfortunate as it is an easy testing target.
+> > 
+> > Taking a step back, this is all being done because of a couple of
+> > warnings in the AMDGPU code. If fixing those in the source is too much
+> > effort (I did note [1] that GCC is at the current limit for that file
+> > even with Rodrigo's series applied [2]), couldn't we just take the
+> > existing workaround that this Makefile has for this file and its high
+> > stack usage and just extend it slightly for clang?
+> 
+> I personally don't mind fixing these issues in the driver, but the fact
+> that they the creep back every time a new major version of Clang rolls
+> out (that has been true for the past couple of years at the very
+> least), makes it rather annoying to deal with.
 
-On Thu, Oct 19, 2023 at 1:09=E2=80=AFAM Heikki Krogerus
-<heikki.krogerus@linux.intel.com> wrote:
-> I'm confused here. Is the device here the port or partner (or both)?
+I am not sure I agree with that characterization of the situation. clang
+has been pretty consistent for the most part (which is certainly on us),
+as all versions that the kernel supports warns about this code. I
+believe it is more so the fact that there is a new copy of the dcn code
+added every year that has none of the fixes applied from earlier
+generations... It is not just me that has fixed issues like this, just
+run 'git log --grep=stack drivers/gpu/drm/amd/display'. It is not just
+clang that complains about the code when sanitizers are turned on, GCC
+does as well since Stephen reported them.
 
-The port, I'll make sure to be more precise when describing.
+Cheers,
+Nathan
 
-> Why are you skipping the first SVID?
-
-Skipping to the first SVID supported by the port when preparing
-the first Discover Modes message.
-
-> Please note that the Type-C specification puts priority on TBT over DP.
-> Is this in conflict with that?
-
-Not in this case. Assuming the port supports both TBT and DP, a Discover
-Modes message will be sent to both regardless of what order they return
-in the Discover SVIDs ACK message.
-
-> > Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
->
-> I think that's wrong commit (perhaps you want 8afe9a3548f9d instead?).
-
-8afe9a3548f9d looks to be more concerned with the consumption and
-processing of the received payload, I had put f0690a25a140 because it
-contained the logic to determine if the Discover Mode message was being
-sent at all as well as preparing the response. 5e1d4c49fbc86 does touch
-the response formation but only the svdm_version and not the SVID.
-
-> Right now I'm not convinced that this should be considered as a fix at
-> all. I don't know anything about the test you are talking about, but
-> if this patch is just about making it pass, then there is something
-> seriously wrong.
-
-I use the VESA DisplayPort Alt Mode on USB Type-C CTS as a reference.
-In regards to this being a fix, if this ends up being more optional (discus=
-sed
-below), then I'll remove the fix tag.
-
-> If you need the modes to be discovered in some specific order, then we
-> need the framework to allow you to do that. So perhaps the tcpci
-> drivers should be able to supply the preferred order to the tcpm?
->
-> But as such, unless I'm mistaken, this patch will change the logic so
-> that only the partner alt modes that the port supports get registered,
-> and that way are exposed to the user. You can't do that - right now
-> it's the only way we can inform the user about them. All partner
-> alternate modes (at least the SVIDs) must be exposed to the user one
-> way or the other, regardless does the port support them or not.
-
-The test this patch tries to fix could just be written without consideratio=
-n
-of this. My guess is that the test was designed such that the SVIDs before
-the DisplayPort SVID are unknown to the port under test so the mentality
-could have been "why should a port care about SVIDs it doesn't know
-about?"
-
-A defense I could make for it is that the USB PD CTS doesn't test
-to see if a port under test sends Discover Modes for every SVID returned
-in a Discover SVIDs ACK, so the interpretation isn't invalid. I've seen oth=
-er
-tcpm implementations handle Discover Modes this way as well.
-
-Regardless, you're definitely right that the user should know about all
-Alt Modes/SVIDs - the port would lose SVID information without
-registering a partner altmode for it. Currently I think the approaches to p=
-ass
-this test look like:
-    1. Your suggestion - let the tcpci decide if there should be a
-discovery order.
-Alternatively, let the tcpci decide if it wants to opt into this
-patch's behavior of
-only discovering modes for known SVIDs - a strict discovery flag.
-    2. Send a Discover Mode message to known SVIDs first in the order
-they come in, and then to unknown SVIDs. The test passes and no information
-is lost, but it's unnecessary refactoring just to pass one test for
-one Alt Mode.
-    3. Don't send a Discover Mode message to unknown SVIDs, but do register
-an Alt Mode with blank info for that SVID. It passes the test without havin=
-g to
-do any reordering compared to the first option and it preserves supported
-SVIDs. But, the port would lose information such as each SVID's Alt Modes
-VDO plus each SVID can support more than one Alt Mode.
-
-Let me know if any of these approaches sound worth pursuing; I do think
-Option 1 does make more sense than the others.
-
----
-Thanks for the feedback,
-RD
+> > diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+> > index 66431525f2a0..fd49e3526c0d 100644
+> > --- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+> > +++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+> > @@ -58,7 +58,7 @@ endif
+> >   endif
+> >   ifneq ($(CONFIG_FRAME_WARN),0)
+> > -frame_warn_flag := -Wframe-larger-than=2048
+> > +frame_warn_flag := -Wframe-larger-than=$(if $(CONFIG_CC_IS_CLANG),3072,2048)
+> >   endif
+> >   CFLAGS_$(AMDDALPATH)/dc/dml2/display_mode_core.o := $(dml2_ccflags) $(frame_warn_flag)
+> > 
+> > That would address the immediate concern of the warning breaking builds
+> > with CONFIG_WERROR=y while not raising the limit for other files in the
+> > kernel (just this one file in AMDGPU) and avoiding disabling the whole
+> > driver. The number could be lower, I think ~2500 bytes is the most usage
+> > I see with Rodrigo's series applied, so maybe 2800 would be a decent
+> > limit? Once there is a fix in the compiler, this expression could be
+> > changed to use clang-min-version or something of that sort.
+> > 
+> > [1]: https://lore.kernel.org/20231017172231.GA2348194@dev-arch.thelio-3990X/
+> > [2]: https://lore.kernel.org/20231016142031.241912-1-Rodrigo.Siqueira@amd.com/
+> > 
+> > Cheers,
+> > Nathan
+> -- 
+> Hamza
+> 
