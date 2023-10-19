@@ -2,97 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C0C57CF898
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 14:18:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 472EC7CFB83
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 15:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235294AbjJSMSu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 08:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48990 "EHLO
+        id S1345498AbjJSNpx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 09:45:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233195AbjJSMSt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 08:18:49 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EE31A3
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 05:18:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C41CC433C8;
-        Thu, 19 Oct 2023 12:18:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697717927;
-        bh=y3v4IfGSgIc8FpfyQVXiNpDGuzP2wM1wvkHAL6T5GT8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=sPco6XOa1kuZi9AoXasi2hVstQDVEouN0SHm5PKpLLDILwezdkTae7vIiBP6M6vk+
-         7jhnmDjV3VpxXdXqxHbY6Nf01eWKbvvwF7sWczqtnXYgFGsdIzwqYu2wh9y3kvr7Gd
-         lqlq7Iipn1EC23y+VrMasPHlyfcuJuEiE7If2EpWlqdvkHgPZ7sU+7mH6d8+yvUSs+
-         iJKlo0GFdCUVP/DksEKP07fHRaJCkhNoI5Y1tILOEdioafZB6mjFOJjJNrClXQTDvH
-         PM0DgR6WMErBvLRrzzeTjr/XhRF8cX5nfHEd0p0OS4+PfDrlsbiJWGb0s6hMm3Ellt
-         3w5rGGXQ+Ez9w==
-Date:   Thu, 19 Oct 2023 21:18:43 +0900
-From:   Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Francis Laniel <flaniel@linux.microsoft.com>,
-        linux-trace-kernel@vger.kernel.org,
-        Masami Hiramatsu <mhiramat@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v5 0/2] Return EADDRNOTAVAIL when func matches several
- symbols during kprobe creation
-Message-Id: <20231019211843.56f292be3eee75cdd377e5a2@kernel.org>
-In-Reply-To: <20231018130042.3430f000@gandalf.local.home>
-References: <20231018144030.86885-1-flaniel@linux.microsoft.com>
-        <20231018130042.3430f000@gandalf.local.home>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S1346364AbjJSNEN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 09:04:13 -0400
+Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECB691FD7;
+        Thu, 19 Oct 2023 05:53:29 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.west.internal (Postfix) with ESMTP id C215C3200ACE;
+        Thu, 19 Oct 2023 08:53:23 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute5.internal (MEProxy); Thu, 19 Oct 2023 08:53:26 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm2; t=1697720003; x=1697806403; bh=c+
+        OQf9mXsocdxZsSc7Qg9I7aF5FCLMuGCb54DwDnDIE=; b=iYYwDelQB/1pQrjDqD
+        +wxGOVgX15b5fVhHulX5D1KgWssBiLtEWMUm88IdtPhTBXrrU9TAAhOpVPuIRXAd
+        haM0sz6u4GsmCMqTZnboeJ19b/464N1s4W9XOb/c+kQl+rjHcxyug0YtC0Z0G7fH
+        Lo1s+nzXVPBk6KSGQdaPQ5YSYTSTI1X0Qjrv4O96eWvkvB73sNDiGS4ENUnryZxA
+        NNC2CKuqGgMR2DBoAh1Y6wCkll44M0s0+mvq8IPRFUF0zB/O8RxRjhGypTK9EpbC
+        lLqUFX0K6H9h4Rrot0pMdqcUgLY05kdLNbZn0kdKfwfrT6T7lgqX5rH4gqrofkIh
+        PiwA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1697720003; x=1697806403; bh=c+OQf9mXsocdx
+        ZsSc7Qg9I7aF5FCLMuGCb54DwDnDIE=; b=mjx3p4xyhc148ce0bmL6NGiNVF1PH
+        2meSQ1Y0xo9jkztYxxZFxoOx17sAyptr3psxKQqa0+BItwMMmC1FBeHMJltK7+Fw
+        zwx9HSmRJfmu5jO+yLEZ5PToLdjzHgM94u006RLdD9ovfMO3O+bGeLmnazuCaYx5
+        ciN2DuwDBblj09x3ph3Sdnko+BJjvPWL36HJ1UPSmiF8I0X3UHv0gEwGHeI3EXd2
+        yPtWh7jXY83BOvm1qRWUG68wjzryk0qQyj9ON0OEmBRziZPp5RkXiNbD1iUlMcd2
+        2GTxSJiLqzT2C4DDykOJACpAXeIC+tfbFm0sNSgHElPCIED44huQMMFkQ==
+X-ME-Sender: <xms:wiYxZfvAYJ87OzL9VJN9VajqrAd9mgWFUIqvh_ipRUCu-oDhieqG8A>
+    <xme:wiYxZQfJ7aLYw3RUOtljHcmchazyXW_2og17Uv9qdFEdGeBWvD90Z6CJ1xuSNYCcU
+    NZBv0Z-xolbQEy2UFI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrjeeigdehjecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdetrhhn
+    ugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrghtth
+    gvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedtkeet
+    ffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrrh
+    hnugesrghrnhgusgdruggv
+X-ME-Proxy: <xmx:wiYxZSw6r134fUYOgOhgv3ngUAo50bNAGvSy1QLaIZNf49-vBL7Cbg>
+    <xmx:wiYxZeO4Ul-zvjp16Ul8GX0sKIdVXOp2j_Z0qhNLwYD_8-gua6JlzA>
+    <xmx:wiYxZf9u3G-k4Z-_FQ-mwH9HDOaPIijI0xYy-wXAB9T3ew_sRQDhgg>
+    <xmx:wyYxZVFsp_WBSxC4d5aZFDo0KbDS7UHeT8xw3LEAywvqBYOea_Hrnw>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 2D5DEB60089; Thu, 19 Oct 2023 08:53:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-1019-ged83ad8595-fm-20231002.001-ged83ad85
+MIME-Version: 1.0
+Message-Id: <22580470-7def-4723-b836-1688db6da038@app.fastmail.com>
+In-Reply-To: <CAG_fn=XcJ=rZEJN+L1zZwk=qA90KShhZK1MA6fdW0oh7BqSJKw@mail.gmail.com>
+References: <20231018182412.80291-1-hamza.mahfooz@amd.com>
+ <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
+ <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
+ <CAMuHMdXYDQi5+x1KxMG0wnjSfa=A547B9tgAbgbHbV42bbRu8Q@mail.gmail.com>
+ <CAG_fn=XcJ=rZEJN+L1zZwk=qA90KShhZK1MA6fdW0oh7BqSJKw@mail.gmail.com>
+Date:   Thu, 19 Oct 2023 14:53:01 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Alexander Potapenko" <glider@google.com>,
+        "Geert Uytterhoeven" <geert@linux-m68k.org>
+Cc:     "Hamza Mahfooz" <hamza.mahfooz@amd.com>,
+        linux-kernel@vger.kernel.org,
+        "Rodrigo Siqueira" <rodrigo.siqueira@amd.com>,
+        "Harry Wentland" <harry.wentland@amd.com>,
+        "Alex Deucher" <alexander.deucher@amd.com>, stable@vger.kernel.org,
+        "Miguel Ojeda" <ojeda@kernel.org>,
+        "Alex Gaynor" <alex.gaynor@gmail.com>,
+        "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+        "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+        =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+        "Nick Terrell" <terrelln@fb.com>,
+        "Nathan Chancellor" <nathan@kernel.org>,
+        "Nick Desaulniers" <ndesaulniers@google.com>,
+        "Tom Rix" <trix@redhat.com>,
+        "Andrew Morton" <akpm@linux-foundation.org>,
+        "Masami Hiramatsu" <mhiramat@kernel.org>,
+        "Randy Dunlap" <rdunlap@infradead.org>,
+        "Kees Cook" <keescook@chromium.org>,
+        "Zhaoyang Huang" <zhaoyang.huang@unisoc.com>,
+        "Li Hua" <hucool.lihua@huawei.com>, "Rae Moar" <rmoar@google.com>,
+        rust-for-linux@vger.kernel.org, bpf@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 18 Oct 2023 13:00:42 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
+On Thu, Oct 19, 2023, at 12:04, Alexander Potapenko wrote:
+>> > > Are kernels with KASAN || KCSAN || KMSAN enabled supposed to be bootable?
+>> >
+>> > They are all intended to be used for runtime debugging, so I'd imagine so.
+>>
+>> Then I strongly suggest putting a nonzero value here.  As you write
+>> that "with every release of LLVM, both of these sanitizers eat up more and more
+>> of the stack", don't you want to have at least some canary to detect
+>> when "more and more" is guaranteed to run into problems?
+>
+> FRAME_WARN is a poor canary. First, it does not necessarily indicate
+> that a build is faulty (a single bloated stack frame won't crash the
+> system).
 
-> On Wed, 18 Oct 2023 17:40:28 +0300
-> Francis Laniel <flaniel@linux.microsoft.com> wrote:
-> 
-> > Changes since:
-> >  v1:
-> >   * Use EADDRNOTAVAIL instead of adding a new error code.
-> >   * Correct also this behavior for sysfs kprobe.
-> >  v2:
-> >   * Count the number of symbols corresponding to function name and return
-> >   EADDRNOTAVAIL if higher than 1.
-> >   * Return ENOENT if above count is 0, as it would be returned later by while
-> >   registering the kprobe.
-> >  v3:
-> >   * Check symbol does not contain ':' before testing its uniqueness.
-> >   * Add a selftest to check this is not possible to install a kprobe for a non
-> >   unique symbol.
-> >  v5:
-> >   * No changes, just add linux-stable as recipient.
-> 
-> So why is this adding stable? (and as Greg's form letter states, that's not
-> how you do that)
-> 
-> I don't see this as a fix but a new feature.
+I agree it's flawed, but it does catch a lot of bugs, both in the
+driver and the compiler. What we should probably have is some better
+runtime debugging in addition to FRAME_WARN, but it's better than
+nothing.
 
-I asked him to make this a fix since the current kprobe event' behavior is
-somewhat strange. It puts the probe on only the "first symbol" if user
-specifies a symbol name which has multiple instances. In this case, the
-actual probe address can not be solved by name. User must specify the
-probe address by unique name + offset. Unless, it can put a probe on
-unexpected address, especially if it specifies non-unique symbol + offset,
-the address may NOT be the instruction boundary.
-To avoid this issue, it should check the given symbol is unique.
+One idea that I've suggested in the past is to add a soft stack
+limit that is lower than THREAD_SIZE, using VMAP_STACK with a custom
+stack start and a read-only page at the end to catch a thread
+exceeding the soft limit and print a backtrace before marking
+the page writable.
 
-Thank you,
+> Second, devs are unlikely to fix a function because its stack frame is
+> too big under some exotic tool+compiler combination.
 
-> 
-> -- Steve
+I've probably sent hundreds of fixes for these in the past. Most
+of the time there is an actual driver bug, and almost always
+the driver maintainers are responsive and treat the report with
+the appropriate urgency: even if only some configurations actually
+push it over the limit, the general case is some data structure that
+is hundreds of bytes long and was not actually meant to be on
+the stack.
 
+The gcc bug reports also usually get addressed quickly, though
+we've had problems with clang not making progress on known
+bugs for years. It sounds like Nick has made some important
+progress on clang very recently, so we should be able to
+raise the minimum clang version for kasan and kcsan once
+there is a known good release.
 
--- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> So the remaining option would be to just increase the frame size every
+> time a new function surpasses the limit.
+
+That is clearly not an option, though we could try to
+add Kconfig dependencies that avoid the known bad combinations,
+such as annotating the AMD GPU driver as
+
+      depends on (CC_IS_GCC || CLANG_VERSION >=180000) || !(KASAN || KCSAN)
+
+    Arnd
