@@ -2,47 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CAC27CFEBA
-	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 17:54:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F4927CFEC9
+	for <lists+stable@lfdr.de>; Thu, 19 Oct 2023 17:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235438AbjJSPx7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 11:53:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41190 "EHLO
+        id S1345737AbjJSP4I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 11:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233176AbjJSPx6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 11:53:58 -0400
+        with ESMTP id S235441AbjJSP4G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 11:56:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E9C93;
-        Thu, 19 Oct 2023 08:53:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B09C433C8;
-        Thu, 19 Oct 2023 15:53:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DB3A106;
+        Thu, 19 Oct 2023 08:56:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F47C433CA;
+        Thu, 19 Oct 2023 15:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697730836;
-        bh=wa4WXUdBJDSprT0pug2ujhG4LLF9gr+xArqonoxADzw=;
-        h=From:To:Cc:Subject:Date:From;
-        b=sXKWpTylvlESxh+A9Ob0R/6Ik+gMuidD6esDgwByGAV8s6TPXDJolqJ8+l+mEAHYh
-         d1M59feYyobvivShElD7sHFA1952PL4IhTuygo2gVnCTiM2/+aOmL/VMxuVNXQlC4B
-         Pkvr7U9z4QIB8r2Jy2rKHXVbYa09DwZn3Xd8/Aeg4Ou4eBbaFlpGA3Be3uOG7gU4aZ
-         WtR6mxZnlEKNWalKmfIDIYPn/XQKlFxyTwnjR2f24gw0BqI3BQbR4AIdNxYFE0gNg4
-         RyNzKWp8mWJSCHYMNKmjQcGRBOQ8FnAi+LDtskbRn2XKQ/Ygc/VHfWOZL9VNFS+mPd
-         ljpK+AzNp49rg==
-Received: from johan by xi.lan with local (Exim 4.96)
-        (envelope-from <johan+linaro@kernel.org>)
-        id 1qtVLT-0008Eg-2K;
-        Thu, 19 Oct 2023 17:53:59 +0200
-From:   Johan Hovold <johan+linaro@kernel.org>
-To:     Kalle Valo <kvalo@kernel.org>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        s=k20201202; t=1697730963;
+        bh=UdTLJEWjQLLbDTfkJJrqOSkrPFt3tUV8K30G7Qw7fHE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RDaKFfQEqVlYYZxhyDmpBy3qGGGZtmxpAdGXPA/9qSuTBgNgPzDJz/QMIb47NzO6n
+         meCy2xfdT29X7i5Ns9X6gThQnxZzRu0K+bFldhIbskVNg2R+0o82hu56yrxI9vSB94
+         t1PEK0SOSnDiiS33daoKearQ1I3JajQaip6qgE4pLq06pj551afIUREXxwpz4oPKt4
+         S8hvWeVcGRjK6JUQl1mKU3nGaIfMFZw2nmv0meXLoHr+NlWtk0Odjv8QyepSGe7rGj
+         ISgesdES0lJxpCRT5qmji/cU3XaAzrOC4QN3Eg1nRmUKWJ6cT1RhfvPsClBlCkMZgg
+         gBNMao2FqR7FQ==
+Date:   Thu, 19 Oct 2023 08:56:00 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Arnd Bergmann <arnd@arndb.de>
+Cc:     Alexander Potapenko <glider@google.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
         linux-kernel@vger.kernel.org,
-        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
-        Carl Huang <quic_cjhuang@quicinc.com>
-Subject: [PATCH] wifi: ath11k: fix gtk offload status event locking
-Date:   Thu, 19 Oct 2023 17:53:42 +0200
-Message-ID: <20231019155342.31631-1-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.41.0
+        Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+        =?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+        Nick Terrell <terrelln@fb.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Zhaoyang Huang <zhaoyang.huang@unisoc.com>,
+        Li Hua <hucool.lihua@huawei.com>, Rae Moar <rmoar@google.com>,
+        rust-for-linux@vger.kernel.org, bpf@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: Re: [PATCH] lib/Kconfig.debug: disable FRAME_WARN for kasan and kcsan
+Message-ID: <20231019155600.GB60597@dev-arch.thelio-3990X>
+References: <20231018182412.80291-1-hamza.mahfooz@amd.com>
+ <CAMuHMdXSzMJe1zyJu1HkxWggTKJj_sxkPOejjbdRjg3FeFTVHQ@mail.gmail.com>
+ <d764242f-cde0-47c0-ae2c-f94b199c93df@amd.com>
+ <CAMuHMdXYDQi5+x1KxMG0wnjSfa=A547B9tgAbgbHbV42bbRu8Q@mail.gmail.com>
+ <CAG_fn=XcJ=rZEJN+L1zZwk=qA90KShhZK1MA6fdW0oh7BqSJKw@mail.gmail.com>
+ <22580470-7def-4723-b836-1688db6da038@app.fastmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <22580470-7def-4723-b836-1688db6da038@app.fastmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -53,57 +74,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The ath11k active pdevs are protected by RCU but the gtk offload status
-event handling code calling ath11k_mac_get_arvif_by_vdev_id() was not
-marked as a read-side critical section.
+On Thu, Oct 19, 2023 at 02:53:01PM +0200, Arnd Bergmann wrote:
+> On Thu, Oct 19, 2023, at 12:04, Alexander Potapenko wrote:
+> > So the remaining option would be to just increase the frame size every
+> > time a new function surpasses the limit.
+> 
+> That is clearly not an option, though we could try to
+> add Kconfig dependencies that avoid the known bad combinations,
+> such as annotating the AMD GPU driver as
+> 
+>       depends on (CC_IS_GCC || CLANG_VERSION >=180000) || !(KASAN || KCSAN)
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
+This would effectively disable the AMDGPU driver for allmodconfig, which
+is somewhat unfortunate as it is an easy testing target.
 
-Fixes: a16d9b50cfba ("ath11k: support GTK rekey offload")
-Cc: stable@vger.kernel.org      # 5.18
-Cc: Carl Huang <quic_cjhuang@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
+Taking a step back, this is all being done because of a couple of
+warnings in the AMDGPU code. If fixing those in the source is too much
+effort (I did note [1] that GCC is at the current limit for that file
+even with Rodrigo's series applied [2]), couldn't we just take the
+existing workaround that this Makefile has for this file and its high
+stack usage and just extend it slightly for clang?
 
-...and here's one more, this time using the
-ath11k_mac_get_arvif_by_vdev_id() helper.
-
-Johan
-
-
- drivers/net/wireless/ath/ath11k/wmi.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index f0eac6cb84fd..78af659b1ccd 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8618,12 +8618,13 @@ static void ath11k_wmi_gtk_offload_status_event(struct ath11k_base *ab,
- 		return;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/Makefile b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+index 66431525f2a0..fd49e3526c0d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml2/Makefile
+@@ -58,7 +58,7 @@ endif
+ endif
  
-+	rcu_read_lock();
-+
- 	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, ev->vdev_id);
- 	if (!arvif) {
- 		ath11k_warn(ab, "failed to get arvif for vdev_id:%d\n",
- 			    ev->vdev_id);
--		kfree(tb);
--		return;
-+		goto exit;
- 	}
+ ifneq ($(CONFIG_FRAME_WARN),0)
+-frame_warn_flag := -Wframe-larger-than=2048
++frame_warn_flag := -Wframe-larger-than=$(if $(CONFIG_CC_IS_CLANG),3072,2048)
+ endif
  
- 	ath11k_dbg(ab, ATH11K_DBG_WMI, "event gtk offload refresh_cnt %d\n",
-@@ -8640,6 +8641,8 @@ static void ath11k_wmi_gtk_offload_status_event(struct ath11k_base *ab,
- 
- 	ieee80211_gtk_rekey_notify(arvif->vif, arvif->bssid,
- 				   (void *)&replay_ctr_be, GFP_ATOMIC);
-+exit:
-+	rcu_read_unlock();
- 
- 	kfree(tb);
- }
--- 
-2.41.0
+ CFLAGS_$(AMDDALPATH)/dc/dml2/display_mode_core.o := $(dml2_ccflags) $(frame_warn_flag)
 
+That would address the immediate concern of the warning breaking builds
+with CONFIG_WERROR=y while not raising the limit for other files in the
+kernel (just this one file in AMDGPU) and avoiding disabling the whole
+driver. The number could be lower, I think ~2500 bytes is the most usage
+I see with Rodrigo's series applied, so maybe 2800 would be a decent
+limit? Once there is a fix in the compiler, this expression could be
+changed to use clang-min-version or something of that sort.
+
+[1]: https://lore.kernel.org/20231017172231.GA2348194@dev-arch.thelio-3990X/
+[2]: https://lore.kernel.org/20231016142031.241912-1-Rodrigo.Siqueira@amd.com/
+
+Cheers,
+Nathan
