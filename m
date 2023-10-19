@@ -2,135 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A26887D0E11
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 13:04:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 065F27D1073
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 15:24:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376927AbjJTLEK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 07:04:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40920 "EHLO
+        id S1377121AbjJTNYj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 09:24:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376745AbjJTLEJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 07:04:09 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7A1ECA;
-        Fri, 20 Oct 2023 04:04:07 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qtnIU-0003KO-3g; Fri, 20 Oct 2023 13:04:06 +0200
-Message-ID: <c9a99e29-1a16-4b46-8e3a-afd0aae5b76e@leemhuis.info>
-Date:   Fri, 20 Oct 2023 13:04:05 +0200
+        with ESMTP id S1377002AbjJTNYj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 09:24:39 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B81D19E;
+        Fri, 20 Oct 2023 06:24:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697808278; x=1729344278;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=k6ndI6jcwy64xNeCRwxhVgSos4puSIbLOL6kbeJBH7s=;
+  b=KrY84MeWUn2joZ8mdQaWKyBvM6+RiIX87I1NRSEUlEjltT28aj8ZzplK
+   a1qSDYuX0C34WHKgv4Rvtfb2rFLeq7ftcFbGjTPdVb+KraORMzrY8AAz3
+   B6hH8Dbnqaz2djMosEFIlWAv4WzGCz49nM/WicEy5W4mYbODb2OYSQWGH
+   TRQ+BW8fyVWGZmRh++0rWIPqwRQg8VHrYviHkqJZwo5wLtCy9OvNbPvu4
+   vAxcuXAsyNdLgTh1jt/ih2DPXmj1qcaVnuFbN2nq08BbDISBuNZZAwLxZ
+   DEladML93+8SnPMRYIlF1g4ZExNZb142fHgJ8YNujT1Gs2PhUcHRgI7xX
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="385372620"
+X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
+   d="scan'208";a="385372620"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 06:24:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="881083826"
+X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
+   d="scan'208";a="881083826"
+Received: from mtadesse-mobl.amr.corp.intel.com (HELO [10.209.140.77]) ([10.209.140.77])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 06:24:36 -0700
+Message-ID: <5bc82aca-04f2-463b-ba52-34bcae6724d5@linux.intel.com>
+Date:   Thu, 19 Oct 2023 12:00:19 -0500
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] pci: loongson: Workaround MIPS firmware MRRS settings
-Content-Language: en-US, de-DE
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     Huacai Chen <chenhuacai@kernel.org>, linux-pci@vger.kernel.org,
-        bhelgaas@google.com, linux-kernel@vger.kernel.org, kw@linux.com,
-        lpieralisi@kernel.org, stable@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-References: <20230725061008.1504292-1-jiaxun.yang@flygoat.com>
- <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com>
- <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
- <861a809d-3df1-327e-e033-87506f6d89e5@flygoat.com>
- <20230907011828.GA2865@thinkpad>
- <6e1bdebf-f335-23a5-c79f-d603c5d0150c@flygoat.com>
- <20230907050805.GA3218@thinkpad>
- <91336c97-0831-3ce3-5ff0-54344f18e065@leemhuis.info>
-In-Reply-To: <91336c97-0831-3ce3-5ff0-54344f18e065@leemhuis.info>
+Subject: Re: [PATCH v1] ALSA: hda: intel-dsp-config: Fix JSL Chromebook quirk
+ detection
+Content-Language: en-US
+To:     Mark Hasemeyer <markhas@chromium.org>,
+        =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Brady Norander <bradynorander@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org
+References: <20231018235944.1860717-1-markhas@chromium.org>
+ <7b08520e-8f36-45a1-9b7a-316a33c8e8c4@linux.intel.com>
+ <CANg-bXDvZ00ZHEgbUf1NwDrOKfDF4vpBOxZ4hGEp-ohs6-pZpw@mail.gmail.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <CANg-bXDvZ00ZHEgbUf1NwDrOKfDF4vpBOxZ4hGEp-ohs6-pZpw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1697799847;c25b5c96;
-X-HE-SMSGID: 1qtnIU-0003KO-3g
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DATE_IN_PAST_12_24,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
-for once, to make this easily accessible to everyone.
 
-Just wondering what's up here. The patch this thread is about afaics was
-supposed to fix a regression reported in July
-(https://bugzilla.kernel.org/show_bug.cgi?id=217680 ), but has made not
-steps closer to get mainlined during the past few weeks. Is there a
-reason, or did it maybe fell through the cracks?
 
-Jiaxun Yang, from it quick look it seems like you wanted to post a v3,
-but never did so; but I might be mistaken there.
+On 10/19/23 11:43, Mark Hasemeyer wrote:
+>> I would assume that platform that has DMI_SYS_VENDOR set to "Google",
+>> also has DMI_BIOS_VERSION set to "Google", so perhaps just replace
+>> DMI_SYS_VENDOR match with DMI_BIOS_VERSION, to keep table small? Or is
+>> that not a case?
+> 
+> That is the case. But I'm inclined to keep it for two reasons:
+> 1. There is precedent in the kernel to use DMI_SYS_VENDOR=="Google"
+> for Chromebook detection.
+> 2. If the coreboot version schema for Chromebooks were to change, this
+> check would fail for all JSL Chromebooks instead of just a few models.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+I also prefer a low-risk addition to a higher-risk change. It's not like
+we really care about the size of the table at this point.
 
-#regzbot poke
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-On 20.09.23 14:33, Linux regression tracking (Thorsten Leemhuis) wrote:
-> [CCing the regression list, as it should be in the loop for regressions:
-> https://docs.kernel.org/admin-guide/reporting-regressions.html]
-> 
-> On 07.09.23 07:08, Manivannan Sadhasivam wrote:
->> On Thu, Sep 07, 2023 at 11:13:00AM +0800, Jiaxun Yang wrote:
->>> 在 2023/9/7 9:18, Manivannan Sadhasivam 写道:
->>> [...]
->>>> Why do you need to walk through every single device instead of just bridges?
->>>> I'm not the maintainer, but my suggestion is to go for Huacai Chen's solution.
->>>
->>> Thanks for your reply, unfortunately Huacai's solution is impractical in
->>> this case.
->>>
->>> The problem we have, is firmware (or BIOS) setting improper MRRS for devices
->>> attached under those bridges. So we have to fix up MRRS for every single
->>> device.
->>> We can't iterate child device in bridge quirk because there is no guarantee
->>> that
->>> bridge will be probed before  it's child device, partly due to hotplug.
->>
->> Okay, this clarifies and also warrants improvement in commit message.
->>
->> You could also use pci_walk_bus() after pci_host_probe() to iterate over the
->> child devices under root bridge and set MRRS. IMO that would look neat.
-> 
-> Hi, Thorsten here, the Linux kernel's regression tracker. What's the
-> status here? The regression that was supposed to be fixed by the patched
-> that started this thread was reported 9 weeks ago[1] and the culprit
-> made it to many stable kernels as well. Would be really good to finally
-> fix this, as a regression like this should ideally be fixed within 2 to
-> 3 weeks (in both mainline and stable). With a revert if necessary -- is
-> this maybe still a option, or would that cause more trouble then it
-> solved (I guess that's the case).
-> 
-> [1] https://bugzilla.kernel.org/show_bug.cgi?id=217680
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
-> 
->>> This quirk has been in tree for a while, until Huacai refactored it and
->>> broke some
->>> systems in 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases").
->>>
->>> Also to note that ks_pcie_quirk in drivers/pci/controller/dwc/pci-keystone.c
->>> uses similar approach.
->>>> This avoids iterating over bridges/devices two times.
->>>>
->>>> Also, please rename firmware to BIOS, as firmware commonly represents the
->>>> software running on PCIe endpoint devices.
->>> Ack, will fix in next reversion.
->>>
->>> Thanks
->>> - Jiaxun
->>>>
->>>> - Mani
->>> [...]
->>
+FWIW we use this other quirk:
+DMI_MATCH(DMI_PRODUCT_FAMILY, "Google"),
+
+How many engineers does it take to identify a Chromebook, eh?
