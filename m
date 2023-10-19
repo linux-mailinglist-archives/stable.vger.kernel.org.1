@@ -2,57 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FB427D04A3
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 00:08:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57B867D0507
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 00:53:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235540AbjJSWIq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 18:08:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59454 "EHLO
+        id S233286AbjJSWxG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 18:53:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230120AbjJSWIp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 18:08:45 -0400
+        with ESMTP id S235553AbjJSWxF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 18:53:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AF29A4;
-        Thu, 19 Oct 2023 15:08:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7149C433C7;
-        Thu, 19 Oct 2023 22:08:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6DF4124;
+        Thu, 19 Oct 2023 15:53:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2BAC433C8;
+        Thu, 19 Oct 2023 22:53:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697753323;
-        bh=0xUExZaCnpOZe09w1IymOILE+jJMJDYlYAh9fZjofMw=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=qCC/P6Z7UE87jxBHLuDwBwT+KgZtuqPAHBmCFVYxig53subGe5m/UnXrOlQ1Kttxa
-         jHQ9vw1yma/irMtt9GBQsWafuxPEoxiRWnA0GU7VmuaxbveT4JBxu/b3ck3oQljMbu
-         J+rIs5mj40Ud/DefXs1Jzmu6Frp/rEI/BujGJIChvpy4PcE4+izgmrkMSHyUtVIG3Z
-         Xka4WoIrLTURuZrBfnFMC1SN/ijke3yG0jWrNymZ1tbywZ4jprIOCnnS5Wg6KUOxLr
-         J5f9qRyKtnqNXVlVSsS6DJ0jQxSBipUNP1vQCFrMYW5/mLuoBOOAi2Twt2xDZT9wuH
-         9WvO+5K4DSVMg==
-Message-ID: <4f4803d538c6727990cda8f2e4fd7397.sboyd@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1697755983;
+        bh=4QWPJAIM+Q/aCyrT5OkgDDJq9iMWdUi9V0YvpsfpZ88=;
+        h=From:To:Cc:Subject:Date:From;
+        b=aVduFb5pNRpQcQMJiDrYPHiDS0fntkHHzp9NxGuevyHM93LUoA0kRcOpYlxWFSnAj
+         Ag4/ybpQRGHtmBx2JTAJrMWPe5Dy33FiPkmVqJy7aAtwWVo8E89ng1poSJGMhYO3cY
+         2jYHMM4+YvQ4AT4KVVdqH8yArboj7T3w3Fij5A4ucvAEgoMAVLKsPJw64J4ZQqfO3Q
+         M1wAodPDnYW6xBPvZx50gzd6k3JSSf44scmp0B4Vw45fn16Urrq+qCHS+xJj6h1X4t
+         aeJyXyrTTU9MFgGZKCkPXrzCkjtr+uuUxXyhbEX0y3AfyoyaMfxcAr7n+RIT8AYbwP
+         WOCyxpG3HETWw==
+From:   Jaegeuk Kim <jaegeuk@kernel.org>
+To:     linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net
+Cc:     Jaegeuk Kim <jaegeuk@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] f2fs: do not return EFSCORRUPTED, but try to run online repair
+Date:   Thu, 19 Oct 2023 15:53:00 -0700
+Message-ID: <20231019225300.1846362-1-jaegeuk@kernel.org>
+X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <76b652c8-041c-49d6-9804-2781fe2ccfe3@linaro.org>
-References: <20230913-gpll_cleanup-v2-0-c8ceb1a37680@quicinc.com> <20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com> <76f3bc23-8677-42bd-a3a5-43b17cbe552e@linaro.org> <c3dfeecf5cde513cf675b2f1a382f7a4.sboyd@kernel.org> <76b652c8-041c-49d6-9804-2781fe2ccfe3@linaro.org>
-Subject: Re: [PATCH v2 01/11] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        stable@vger.kernel.org
-To:     Andy Gross <agross@kernel.org>,
-        Anusha Rao <quic_anusha@quicinc.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Devi Priya <quic_devipriy@quicinc.com>,
-        Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-        Varadarajan Narayanan <quic_varada@quicinc.com>
-Date:   Thu, 19 Oct 2023 15:08:41 -0700
-User-Agent: alot/0.10
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -62,82 +45,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Quoting Konrad Dybcio (2023-10-19 04:22:33)
->=20
->=20
-> On 10/19/23 02:16, Stephen Boyd wrote:
-> > Quoting Konrad Dybcio (2023-09-15 05:19:56)
-> >> On 14.09.2023 08:59, Kathiravan Thirumoorthy wrote:
-> >>> GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled ba=
-sed
-> >>> on the request from dependent clocks. Doing so will result in the
-> >>> unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the P=
-LL
-> >>> clocks.
-> >>>
-> >>> Cc: stable@vger.kernel.org
-> >>> Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL=E2=80=99s=
-")
-> >>> Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-> >>> ---
-> >> Stephen, do you think there should be some sort of error
-> >> or at least warning thrown when SET_RATE_PARENT is used with
-> >> RO ops?
-> >>
-> >=20
-> > Sure? How would that be implemented?
-> drivers/clk/clk.c : static void clk_change_rate()
->=20
-> if (!skip_set_rate && core->ops->set_rate)
->         core->ops->set_rate(core->hw, core->new_rate, best_parent_rate);
->=20
-> ->
->=20
-> if (!skip_set_rate) {
->         if (core->ops->set_rate)
->                 core->ops->set_rate(core->hw, core->new_rate,
->                                     best_parent_rate);
->         else
->                 pr_err("bad idea");
-> }
->=20
+If we return the error, there's no way to recover the status as of now, since
+fsck does not fix the xattr boundary issue.
 
-CLK_SET_RATE_PARENT means that "calling clk_set_rate() on this clk will
-propagate up to the parent". Changing the rate of the parent could
-change the rate of this clk to be the same frequency as the parent if
-this clk doesn't have a set_rate clk op, or it could be that this clk
-has a fixed divider so during the determine_rate() callback it
-calculated what rate the parent should be to achieve the requested rate
-in clk_set_rate().
+Cc: stable@vger.kernel.org
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+---
+ fs/f2fs/node.c  |  4 +++-
+ fs/f2fs/xattr.c | 20 +++++++++++++-------
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-It really matters what determine_rate() returns for a clk and if after
-changing rates that rate is actually achieved. I suppose if the
-determine_rate() callback returns some rate, and then we recalc rates
-and notice that the rate determined earlier doesn't match we're
-concerned. So far in the last decade we've never cared about this though
-and I'm hesitant to start adding that check. I believe some qcom clk
-drivers take a shortcut and round the rate in frequency tables so
-whatever is returned in determine_rate() doesn't match what
-recalc_rate() calculates.
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 1c8bf56c834c..256270d6a065 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -2750,7 +2750,9 @@ int f2fs_recover_xattr_data(struct inode *inode, struct page *page)
+ 	f2fs_update_inode_page(inode);
+ 
+ 	/* 3: update and set xattr node page dirty */
+-	memcpy(F2FS_NODE(xpage), F2FS_NODE(page), VALID_XATTR_BLOCK_SIZE);
++	if (page)
++		memcpy(F2FS_NODE(xpage), F2FS_NODE(page),
++				VALID_XATTR_BLOCK_SIZE);
+ 
+ 	set_page_dirty(xpage);
+ 	f2fs_put_page(xpage, 1);
+diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+index a657284faee3..465d145360de 100644
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -364,10 +364,10 @@ static int lookup_all_xattrs(struct inode *inode, struct page *ipage,
+ 
+ 	*xe = __find_xattr(cur_addr, last_txattr_addr, NULL, index, len, name);
+ 	if (!*xe) {
+-		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
++		f2fs_err(F2FS_I_SB(inode), "lookup inode (%lu) has corrupted xattr",
+ 								inode->i_ino);
+ 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
+-		err = -EFSCORRUPTED;
++		err = -ENODATA;
+ 		f2fs_handle_error(F2FS_I_SB(inode),
+ 					ERROR_CORRUPTED_XATTR);
+ 		goto out;
+@@ -584,13 +584,12 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
+ 
+ 		if ((void *)(entry) + sizeof(__u32) > last_base_addr ||
+ 			(void *)XATTR_NEXT_ENTRY(entry) > last_base_addr) {
+-			f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
++			f2fs_err(F2FS_I_SB(inode), "list inode (%lu) has corrupted xattr",
+ 						inode->i_ino);
+ 			set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
+-			error = -EFSCORRUPTED;
+ 			f2fs_handle_error(F2FS_I_SB(inode),
+ 						ERROR_CORRUPTED_XATTR);
+-			goto cleanup;
++			break;
+ 		}
+ 
+ 		if (!prefix)
+@@ -650,7 +649,7 @@ static int __f2fs_setxattr(struct inode *inode, int index,
+ 
+ 	if (size > MAX_VALUE_LEN(inode))
+ 		return -E2BIG;
+-
++retry:
+ 	error = read_all_xattrs(inode, ipage, &base_addr);
+ 	if (error)
+ 		return error;
+@@ -660,7 +659,14 @@ static int __f2fs_setxattr(struct inode *inode, int index,
+ 	/* find entry with wanted name. */
+ 	here = __find_xattr(base_addr, last_base_addr, NULL, index, len, name);
+ 	if (!here) {
+-		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
++		if (!F2FS_I(inode)->i_xattr_nid) {
++			f2fs_notice(F2FS_I_SB(inode),
++				"recover xattr in inode (%lu)", inode->i_ino);
++			f2fs_recover_xattr_data(inode, NULL);
++			kfree(base_addr);
++			goto retry;
++		}
++		f2fs_err(F2FS_I_SB(inode), "set inode (%lu) has corrupted xattr",
+ 								inode->i_ino);
+ 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
+ 		error = -EFSCORRUPTED;
+-- 
+2.42.0.655.g421f12c284-goog
 
-It would be interesting to get rid of the CLK_SET_RATE_PARENT check in
-clk_calc_new_rates() and simply always call clk_calc_new_rates() on the
-parent if the parent->rate doesn't match what determine_rate thought it
-should be. The framework currently calls the rounding clk op for a clk
-and gets back the parent rate that the clk requires to achieve that rate
-and then it blindly trusts that the parent rate is going to be achieved.
-If the CLK_SET_RATE_PARENT flag is set it calls clk_calc_new_rates()
-recursively on the parent, but then it doesn't check that the parent
-rate is what was requested. That's mostly there to figure out if the
-parent also needs to change rate, i.e. calculating the 'top' clk in a
-rate change. Note that this also calls determine_rate again on the
-parent, once from the child clk's determine_rate clk op and once from
-the framework.
-
-I wouldn't be surprised if some driver is relying on this behavior where
-the rate isn't checked after being set. Maybe when we extend struct
-clk_rate_request to have a linked list that allows a clk to build up a
-chain of rate requests we can also enforce more things like matching
-rates on recalc. Then any drivers that are relying on this behavior will
-have to opt in to a different method of changing rates and notice that
-things aren't working.
