@@ -2,115 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF1317D12C8
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 17:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E307A7D12ED
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 17:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377761AbjJTPbO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 11:31:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56944 "EHLO
+        id S1377657AbjJTPg4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 11:36:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377732AbjJTPbL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 11:31:11 -0400
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A6A210E2;
-        Fri, 20 Oct 2023 08:31:03 -0700 (PDT)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-53e04b17132so1446030a12.0;
-        Fri, 20 Oct 2023 08:31:03 -0700 (PDT)
+        with ESMTP id S1377601AbjJTPgz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 11:36:55 -0400
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86EADAB
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 08:36:53 -0700 (PDT)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-5a822f96aedso10416127b3.2
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 08:36:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697815861; x=1698420661; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eBxrNimSjl2GBOQ8H36ib0tWv/gZxO8BkrOrDWOE6OM=;
-        b=QMuVssfgGUrkF0F8PdnIZN0I1GmjB0YZRIFSWUcYO22Bj9YnmOb8O2zKwEpjYgD/lE
-         Akczo+xut/86heJvSRlWAEFXxr6BqNFXmn6+76ZjUiIj9ePquPsWv+r0zOA8MGmcUMQd
-         rPEYvLiIimQNGelHbN39SoxZSPkxM+RLxv1A/pxg87HaLRzR8BcteE8+zKdDXwSF/rR+
-         kJ2RqH5jav5R51VB2acP+wxhwsG/CtsYo/p7N1oYZ9JFoVRR69G3dV0Omzox54gG9AOI
-         OxjhUPe+9mECMEdZDAU7HgUBNnzHRvljhbRl+8mZCelrLHqMU1ZLWIuGEGowkf0bSlr6
-         PHZQ==
+        d=chromium.org; s=google; t=1697816213; x=1698421013; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tu6pyTUtGymaS2j2r9iQnDpyhQcaCvR7FSo8pcjNejA=;
+        b=oQKM4VbKDW4+J9kxOY6nRHrICm/EV1SxdqzIfk4w1bEgsxkpurSIUowSF8tBl16jKk
+         MEdoEKZbNrWrmh73jpaZyzNN+MdkEUYp4LqCngoLK52Z5XNWLLR0Lz/UbHvy5fid8Iaf
+         cUoZu4I0OcX6DMVp2WZzc2k2zZilm/2iGAxqE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697815861; x=1698420661;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eBxrNimSjl2GBOQ8H36ib0tWv/gZxO8BkrOrDWOE6OM=;
-        b=j4kqhvhouX0NgxufqIUrTRzAQY0o+SwQ0+qTHjMmMEMI67ukx1Srf3RH6qNC7sFgxP
-         oeP+XDNXIthtV6FR1+dz5DnUAKxK9U99cpL3Gy2gdIUf5wyXTdK5grnIL1lQB9o+4Xvg
-         65+f2hV/oLN9WbV/yf33ol8GCqtofYlxAgLv/8qtUjkkvFi9unoDk/sxZ0f07nHFYmvB
-         s11bSikMm5jH/FL/z1ubF/icjbb599i4fGaTpfAkykDwsNYWKLqX+Ld3xsD66NCyimGX
-         CDOkDGv2Ht3ZlWDCjCJJEmMcWippenQMO1EZ18BnvF/mmOvJDTAhV5bp7SCUVZejXKil
-         OdAA==
-X-Gm-Message-State: AOJu0YzOY50x4V7PAM3XFv+Owc5Cl7X2ZIultdokkR6jkoxWAUO8vkNf
-        FV6YFPrvNZ/xU8iuFjK1ZZM=
-X-Google-Smtp-Source: AGHT+IHZ9EApz6QicYMD2pUHgWL1XMcpe9bCx52IL9m5mwc3xcIc2cO7tUHYAjIY99FbEcFMw0Nr7g==
-X-Received: by 2002:a50:8754:0:b0:53e:bb41:7506 with SMTP id 20-20020a508754000000b0053ebb417506mr1819869edv.33.1697815861112;
-        Fri, 20 Oct 2023 08:31:01 -0700 (PDT)
-Received: from andrejs-nb.int.toradex.com (77-59-154-235.dclient.hispeed.ch. [77.59.154.235])
-        by smtp.gmail.com with ESMTPSA id if5-20020a0564025d8500b0053f10da1105sm1631199edb.87.2023.10.20.08.31.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Oct 2023 08:31:00 -0700 (PDT)
-From:   Andrejs Cainikovs <andrejs.cainikovs@gmail.com>
-To:     Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Cc:     Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v1 2/2] ARM: dts: imx6q-apalis: add can power-up delay on ixora board
-Date:   Fri, 20 Oct 2023 17:30:22 +0200
-Message-Id: <20231020153022.57858-3-andrejs.cainikovs@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231020153022.57858-1-andrejs.cainikovs@gmail.com>
-References: <20231020153022.57858-1-andrejs.cainikovs@gmail.com>
+        d=1e100.net; s=20230601; t=1697816213; x=1698421013;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Tu6pyTUtGymaS2j2r9iQnDpyhQcaCvR7FSo8pcjNejA=;
+        b=nteyhOK4c1yu2vpUKv0P6XiQKnbd2XTB+yOtB1QvilWaCrmfKJOjxNvO8CZG7pqjwf
+         7EiAmXLSMlt5Wmi8ZAnCy+UVVD2omHmkAhjFl24lCsQGF+ZkMs5sxq+kGR9AWPt6hUcH
+         wjNRUgRLr49LfwkWGAaxUpWV99yd5+hkSGEEcixPEEpQnoWBEx5P0FkH0bIj8K5Yxy4F
+         9vu+OWViuvJ9YiRzT+h5xmfTfp89tz/vpB8QDVSf2Oxi+Td59PQkPzSmYbaq7VZWgn31
+         UnNwx+kexgoXvvIehdoJM7Px1U6AZpa6UBuVTfroM4DLAmPaVAHSX/F2sYMQJtvBrZ/M
+         6GWA==
+X-Gm-Message-State: AOJu0YyM25acm84+FoKckN/NYk8cByLvmtzh7vwrmQGLXWBDbNm2f9a4
+        uBHab+m42phurb89MTTrdu6wmG1Ic+eYJQnLzy2w2w==
+X-Google-Smtp-Source: AGHT+IFqUlPG6dlUmNyqyGkuC10+FI40s+GmD/Bn0XNtOkYk8p12lirTlbLaNaqGbzu5h56aM3HWjjPYZb8mY6Vee1A=
+X-Received: by 2002:a81:7354:0:b0:5a8:1973:190a with SMTP id
+ o81-20020a817354000000b005a81973190amr2633859ywc.8.1697816212688; Fri, 20 Oct
+ 2023 08:36:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20231018235944.1860717-1-markhas@chromium.org>
+ <7b08520e-8f36-45a1-9b7a-316a33c8e8c4@linux.intel.com> <CANg-bXDvZ00ZHEgbUf1NwDrOKfDF4vpBOxZ4hGEp-ohs6-pZpw@mail.gmail.com>
+ <5bc82aca-04f2-463b-ba52-34bcae6724d5@linux.intel.com>
+In-Reply-To: <5bc82aca-04f2-463b-ba52-34bcae6724d5@linux.intel.com>
+From:   Mark Hasemeyer <markhas@chromium.org>
+Date:   Fri, 20 Oct 2023 09:36:40 -0600
+Message-ID: <CANg-bXCaUOxSTfR1oXKrdnDozA9Hn-NL7mqg+zvLASLQyouChA@mail.gmail.com>
+Subject: Re: [PATCH v1] ALSA: hda: intel-dsp-config: Fix JSL Chromebook quirk detection
+To:     Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Cc:     =?UTF-8?B?QW1hZGV1c3ogU8WCYXdpxYRza2k=?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Brady Norander <bradynorander@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+> FWIW we use this other quirk:
+> DMI_MATCH(DMI_PRODUCT_FAMILY, "Google"),
 
-Newer variants of Ixora boards require a power-up delay when powering up
-the CAN transceiver of up to 1ms.
+Unfortunately DMI_PRODUCT_FAMILY is empty on these particular devices.
+The coreboot version field is the only entry that has "Google" in it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
----
- arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts | 2 ++
- 1 file changed, 2 insertions(+)
+> How many engineers does it take to identify a Chromebook, eh?
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
-index 717decda0ceb..3ac7a4501620 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
-@@ -76,6 +76,7 @@ reg_can1_supply: regulator-can1-supply {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_enable_can1_power>;
- 		regulator-name = "can1_supply";
-+		startup-delay-us = <1000>;
- 	};
- 
- 	reg_can2_supply: regulator-can2-supply {
-@@ -85,6 +86,7 @@ reg_can2_supply: regulator-can2-supply {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_enable_can2_power>;
- 		regulator-name = "can2_supply";
-+		startup-delay-us = <1000>;
- 	};
- };
- 
--- 
-2.34.1
-
+Ha! There has been some discussion about this: to come up with a
+canonical way for Chromebook identification throughout the kernel. But
+nothing has been settled on AFAIK.
