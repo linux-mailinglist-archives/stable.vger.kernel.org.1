@@ -2,73 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95D4A7D118A
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 16:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 462767D118C
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 16:26:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377571AbjJTOZ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 10:25:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36958 "EHLO
+        id S1377566AbjJTO0S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 10:26:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377573AbjJTOZz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 10:25:55 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 252AED66
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 07:25:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D9B5C433C7;
-        Fri, 20 Oct 2023 14:25:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697811952;
-        bh=6PoCuKIk4FcuMpZ90SnR0HDzueQQozxpyNhjmXc4gV8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mR0+wMwB9MgVqh1xf9P1DTnb4Kqg0R9i0FiyhIHY+UTt/x9lqjAlmAnB3moEEQ/gJ
-         bRafePEBbcDkRDiEfI9I5VjPvZ4DCioHHoJE/rYL+VR81vo7+GY5nnrWFM7fafx6ZU
-         Fufmh44bwknQy7Dyi9NCbMp3TYriYSyq7zNyggx2jT9emGI+y+AJnzEAiHGjerlOxZ
-         OrDE7MCUdkkE7BQwXJxHe3qUQH2tALhcRZRZmJzYDYPQ4z7Y9YYsW0bjP4ESibkLHP
-         Bh4atMZPi3Yc9eAP0Khrwc8potG9d3fngpWd3bFGDMkPjYcr/xX+GPWT1Nr1kJEnqb
-         aXgqgfrjvreQg==
-Date:   Fri, 20 Oct 2023 08:25:49 -0600
-From:   Keith Busch <kbusch@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Kanchan Joshi <joshi.k@samsung.com>, axboe@kernel.dk,
-        sagi@grimberg.me, linux-nvme@lists.infradead.org,
-        gost.dev@samsung.com, vincentfu@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] nvme: remove unprivileged passthrough support
-Message-ID: <ZTKN7f7kzydfiwb2@kbusch-mbp>
-References: <CGME20231016061151epcas5p1a0e18162b362ffbea754157e99f88995@epcas5p1.samsung.com>
- <20231016060519.231880-1-joshi.k@samsung.com>
- <ZS2D4VixIYfMQMwg@kbusch-mbp.dhcp.thefacebook.com>
- <ZTBNfDzxD3D8loMm@kbusch-mbp>
- <20231019050411.GA14044@lst.de>
+        with ESMTP id S1377541AbjJTO0R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 10:26:17 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E655D46
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 07:26:16 -0700 (PDT)
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+        by mailout.nyi.internal (Postfix) with ESMTP id 1F1105C0042;
+        Fri, 20 Oct 2023 10:26:14 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute7.internal (MEProxy); Fri, 20 Oct 2023 10:26:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm3; t=1697811974; x=1697898374; bh=G/
+        fVVtLpNYGftdgvme4fPbv7NdM7aExnw/qSXxf8Cio=; b=TVT+u+/vdyTJVsA9ge
+        Q23c5tL5uXlvLg58DJv8d4h0RZhE+OkAanW/Ky1gDLlsWZiLzlsnWV67BUJaURL7
+        eNMQN51asRoATxFYlbBdwYqAfs5XrGx3wLrVZFGrdd1RmU58wE9dsYC89aYUFT/f
+        KAT6TT5Qf4FZI4XKIa5yqdQzJsUGqo3HACo2QvTSrfaod3+rdVp8tgXWC9TG1myX
+        Fgm5xyuRc5z4I+d6dwj4cLARcrDDuyEoXKC15J2q2DWJJELS4v9dPqMQJP6vDSNN
+        nFZSCj3jncQY+qqANbF5f3CuXEf2OEauMEcn+Em6LKI1sj/nkdngOVrrZyfxHYbJ
+        egpg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1697811974; x=1697898374; bh=G/fVVtLpNYGft
+        dgvme4fPbv7NdM7aExnw/qSXxf8Cio=; b=XCWk/2TcfUHc5pE27S5hegJKcinMQ
+        QA+u6Y95on1pBiU4B0K7yjMYF3kmkPnhOwk48cyFChW+0Kn1+MYB8Z45Pe5OUF16
+        w1dehPoAIBE/bCqWimCbPSCgK923SJQfSooh0wgltUfbPn8AoxE8bc3S/BDwbv11
+        COQTnV2gPpmKIYYFjZd2K9RMwHVBjInhQfYVZxoCr8C31A6/R7POUteuV20LICb/
+        k5r8BNdBg07I6TsFW7nRDdyIMFkSTbaWqcrmMN55KbuMaWdO4TTa//aC2tlZqxKW
+        LQrxdhdh2FZouYc4wQf9wpcGxyl/G34wCxk8Vkt2rEO0YuZx2s3yBudtA==
+X-ME-Sender: <xms:BY4yZZuV2BrUoosKY-Us_TrzA9TsbuMY2oxvXNkpTe_HUObMM00Qbw>
+    <xme:BY4yZScRe6FiD-gbA0HacBLTw_w6T3zOenrUaASbfeVtu0_6HE2MgwXQq4k0dv7UP
+    0cMy8Uf0NhX1g>
+X-ME-Received: <xmr:BY4yZcyvI-ykzMwrJJUzFgxnID6YU9U3eKGHvxJvlzlmYysq5VLilAOKsHNsqKbhl30ppin1utXwtnr9jEzbgWYK5UO3sfhcLsVqAKfN86M>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrjeekgdejgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtre
+    dttddtvdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheq
+    necuggftrfgrthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejue
+    fhtdeufefhgfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
+    lhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
+X-ME-Proxy: <xmx:BY4yZQOOFtjkG_NxQNdOmebwfqHzOolA9ekaXSvtv60ZZoXLFQogew>
+    <xmx:BY4yZZ_tOAblyWzeMz-gB1gCCPZYMIEWs5OIsif5Sub3zGLex4qW9w>
+    <xmx:BY4yZQWjND3TwpgFzY_lFIxdeV3YHjE_38t0BxbF5pALiJOqhPMwbA>
+    <xmx:Bo4yZVbVTB6lUdoY5uin_Plz_P0EChgS3-tgYbFlkrno8UurftFqGw>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 20 Oct 2023 10:26:13 -0400 (EDT)
+Date:   Fri, 20 Oct 2023 16:26:09 +0200
+From:   Greg KH <greg@kroah.com>
+To:     pjy@amazon.com
+Cc:     stable@vger.kernel.org, lmark@codeaurora.org
+Subject: Re: Backport commit 786dee864804 ("mm/memory_hotplug: rate limit
+ page migration warnings")
+Message-ID: <2023102001-vision-preorder-3853@gregkh>
+References: <mb61p4jiltmty.fsf@amazon.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231019050411.GA14044@lst.de>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <mb61p4jiltmty.fsf@amazon.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 19, 2023 at 07:04:11AM +0200, Christoph Hellwig wrote:
-> On Wed, Oct 18, 2023 at 03:26:20PM -0600, Keith Busch wrote:
-> > On further consideration and some offline chats, I believe this large
-> > change is a bit too late for 6.6. I think this should wait for 6.7 (and
-> > stable), hopefully preserving non-root access in some sane capacity.
-> > It's backed out now, and current nvme-6.6 PR does not include this
-> > patch.
+On Fri, Oct 20, 2023 at 02:01:13PM +0000, pjy@amazon.com wrote:
 > 
-> Umm, what are the offlist discussions?  We leave an exploitable hole
-> in, so I don't think waiting any longer is an option.
+> Please backport commit 786dee864804 ("mm/memory_hotplug: ratelimit page
+> migration warnings") to 5.10 stable branch.
+> 
+> Commit message:
+> """
+> When offlining memory the system can attempt to migrate a lot of pages, if
+> there are problems with migration this can flood the logs.  Printing all
+> the data hogs the CPU and cause some RT threads to run for a long time,
+> which may have some bad consequences.
+> 
+> Rate limit the page migration warnings in order to avoid this.
+> """
+> 
+> We are sometimes seeing RCU stalls while offlining memory with the 5.10
+> kernel due to the printing of these messages.
+> 
+> Applying this patch solves the problem by ratelimiting the prints.
 
-Jens repeated what he told me offline on this thread here, and dropped
-the pull request that contained this patch:
+Now queued up, thanks.
 
-  https://lists.infradead.org/pipermail/linux-nvme/2023-October/042684.html
-
-BTW, don't you still need someone with root access to change the
-permissions on the device handle in order for an unpriveledged user to
-reach this hole? It's not open access by default, you still have to
-opt-in.
+greg k-h
