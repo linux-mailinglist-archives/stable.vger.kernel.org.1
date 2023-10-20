@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DF397D16E5
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E4AB7D16E6
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:23:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230294AbjJTUXP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:23:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38886 "EHLO
+        id S230248AbjJTUXS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:23:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230251AbjJTUXN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:23:13 -0400
+        with ESMTP id S230117AbjJTUXR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:23:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AFD7D65
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:23:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABABC433C7;
-        Fri, 20 Oct 2023 20:23:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE5AD63
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:23:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CEDC433C8;
+        Fri, 20 Oct 2023 20:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697833390;
-        bh=rhY5JWnSHRrXy7gC1yLoGGf8goXzWMhAhL53ZCuzrPw=;
+        s=korg; t=1697833395;
+        bh=3xMLMtqWWT1KAWA4Lxa+/hkaICx9kF4+Teq1twufr28=;
         h=Subject:To:Cc:From:Date:From;
-        b=upTPXjgnenk+W1k7nghTHZgLYchc2MGA8PLwFUjgc+LLlrk/TOPe5sY28Rf0q9eEU
-         N/E7DpkOr1vj2x18uKGhyTe7kXd7dmTPZ5K7wxI3ttqHhhJLD+wqOb/6NKHyJoPQ5C
-         nmR02SC4w/u8RmGbDINM3ChzNoQNTtQPfy/8GRHc=
-Subject: FAILED: patch "[PATCH] net: xfrm: skip policies marked as dead while reinserting" failed to apply to 5.10-stable tree
+        b=fzXr3vGlI0ilVPqy3yv+TmoQGa6+ScX6/Y3kK0MJRMyMac3WH/1Vag62fUm0JcSlR
+         HNKc5FtjWynjXrNYqV6LysB05vvKrHzTNGJW7QTorWv7z1oQmP8JEug0VTXn7dJynn
+         pqqBAzpmG545rcZyDEH7XU/qN94p/e+2NLAlNp9s=
+Subject: FAILED: patch "[PATCH] net: xfrm: skip policies marked as dead while reinserting" failed to apply to 5.4-stable tree
 To:     dongchenchen2@huawei.com, steffen.klassert@secunet.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:23:05 +0200
-Message-ID: <2023102004-imbecile-uneasy-23a8@gregkh>
+Date:   Fri, 20 Oct 2023 22:23:06 +0200
+Message-ID: <2023102006-detector-tweed-1a0c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6d41d4fe28724db16ca1016df0713a07e0cc7448
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102004-imbecile-uneasy-23a8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102006-detector-tweed-1a0c@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
