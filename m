@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F49B7D1536
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:54:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF9F37D1537
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230008AbjJTRy3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 13:54:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47686 "EHLO
+        id S1377710AbjJTRyi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 13:54:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229902AbjJTRy2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:54:28 -0400
+        with ESMTP id S1377908AbjJTRyi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:54:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1295CC0
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 10:54:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A4EC433C8;
-        Fri, 20 Oct 2023 17:54:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04223D5D
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 10:54:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A52C433C8;
+        Fri, 20 Oct 2023 17:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697824466;
-        bh=o2LNGZ7OVjS1/kUaoBcjuvo77jAvhFaCT+hffiC9BsA=;
+        s=korg; t=1697824475;
+        bh=olrQfcsfMHNR4o+cAxVXbajk0rfKGvCm+aa3N2cZpno=;
         h=Subject:To:Cc:From:Date:From;
-        b=WFedMJ1WJiTXk3ot14rthuChuYbZxLMKlXhMZSopR5+jrdD4Gt3h5b+juCLZOo6ed
-         DZZT/jvsbDrHHti3VyHqbEarvjTC0nt6lSkXamY3ntiwYjPSlMPnLxnqppgWoQq0vY
-         4zr9x3zPtiVh3BGmbNR8N58uLnOaylCEG+Qwbigo=
-Subject: FAILED: patch "[PATCH] drm/mediatek: Correctly free sg_table in gem prime vmap" failed to apply to 5.15-stable tree
+        b=y4tP4lCmszf+xbOiH3aVPvdHJA+8qbmupDLrOIaGRyQMp6YTDLuQnygHH1A8JXNbd
+         +lq4K/rjAi2+bZxeHB9tk2CbWFB5T2utpqEpmptc6/iVv2Q+2fjdsV4m+KL77LIt/L
+         3V9n7rceuCHX49IIVuslGJvToCPnSG64afow99Zk=
+Subject: FAILED: patch "[PATCH] drm/mediatek: Correctly free sg_table in gem prime vmap" failed to apply to 5.10-stable tree
 To:     wenst@chromium.org, chunkuang.hu@kernel.org, ck.hu@mediatek.com,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 19:54:23 +0200
-Message-ID: <2023102023-praising-mumbo-a93b@gregkh>
+Date:   Fri, 20 Oct 2023 19:54:24 +0200
+Message-ID: <2023102024-bagginess-ultra-3e5b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x dcc583c225e659d5da34b4ad83914fd6b51e3dbf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102023-praising-mumbo-a93b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102024-bagginess-ultra-3e5b@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
