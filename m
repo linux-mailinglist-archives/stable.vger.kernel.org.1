@@ -2,74 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 127CA7D1473
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:00:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81D777D14B2
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:18:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229779AbjJTRAA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 13:00:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51606 "EHLO
+        id S229796AbjJTRSu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 13:18:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229692AbjJTRAA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:00:00 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D640618F;
-        Fri, 20 Oct 2023 09:59:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697821198; x=1729357198;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=DFuYk/iZFo38XXz5QEJHG+rb8/gZLVBaR1l70X7qLgQ=;
-  b=Gs4mHLh80z2r1jvcMi98LLUXii/dNC/kDQNlgW7IgaNbUo/qF1yKnnnk
-   u2M5ZpvKP60bkP40qQNaHtWEhE12Vz/XggnbnipXYsoiVc9cw2SQMqw+T
-   uQ9pfWnKPwAD6O0vjSaHpzrQWRfChTDH8p7suwvhIDfa10wY2ZhCDIC4T
-   sh94UP+a1bqlitG8T1lF63RPc025o9QTz3YE1GKOm1aIMJpuX3d33v0Ii
-   Pzk63BXwh/r7PJcqPqyhIgNsVGobYPOQErmjM/5jScAPBd/T7DPMVlpWT
-   vizOSRQtcRUFhPoIwhZ3QcnK+6CnTK01Fzj1cZeusZqbsSX9pbTFd5FAh
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="5144946"
-X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="5144946"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 09:59:58 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="901189445"
-X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="901189445"
-Received: from mtadesse-mobl.amr.corp.intel.com (HELO [10.209.140.77]) ([10.209.140.77])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 09:57:46 -0700
-Message-ID: <80f8a742-4a60-4c75-9093-dcd63de70b66@linux.intel.com>
-Date:   Fri, 20 Oct 2023 11:59:55 -0500
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ALSA: hda: intel-dsp-config: Fix JSL Chromebook quirk
- detection
-Content-Language: en-US
-To:     Mark Hasemeyer <markhas@chromium.org>
-Cc:     =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Brady Norander <bradynorander@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
-        alsa-devel@alsa-project.org,
-        Curtis Malainey <cujomalainey@chromium.org>
-References: <20231018235944.1860717-1-markhas@chromium.org>
- <7b08520e-8f36-45a1-9b7a-316a33c8e8c4@linux.intel.com>
- <CANg-bXDvZ00ZHEgbUf1NwDrOKfDF4vpBOxZ4hGEp-ohs6-pZpw@mail.gmail.com>
- <5bc82aca-04f2-463b-ba52-34bcae6724d5@linux.intel.com>
- <CANg-bXCaUOxSTfR1oXKrdnDozA9Hn-NL7mqg+zvLASLQyouChA@mail.gmail.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-In-Reply-To: <CANg-bXCaUOxSTfR1oXKrdnDozA9Hn-NL7mqg+zvLASLQyouChA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229683AbjJTRSu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:18:50 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 477E0A3;
+        Fri, 20 Oct 2023 10:18:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6EEAC433C7;
+        Fri, 20 Oct 2023 17:18:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1697822327;
+        bh=QAjNN0bCu/hgiA6kDpt0CE8GUJR8wSW7cNvulRSHR8Q=;
+        h=Date:To:From:Subject:From;
+        b=MeTz0CSVzuljBxPFVQYH+lbbQJc+e447iWGOWF0NTbYdvXEwXz+rd9YzXTlYYElcH
+         n8UYPKz6dQxX8n+7V4bt//TQKQsBQ5XJUuOSCvDDmEYrp3WyPnn5j451IQlrAGeKXH
+         U7gPfc8Cc3DgqnAPvPdSS58VcWeJWdgflD9dQraw=
+Date:   Fri, 20 Oct 2023 10:18:47 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-implement-a-function-for-max-nr_accesses-safe-calculation.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231020171847.C6EEAC433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -77,35 +39,102 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
+The patch titled
+     Subject: mm/damon: implement a function for max nr_accesses safe calculation
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-implement-a-function-for-max-nr_accesses-safe-calculation.patch
 
-On 10/20/23 10:36, Mark Hasemeyer wrote:
->> FWIW we use this other quirk:
->> DMI_MATCH(DMI_PRODUCT_FAMILY, "Google"),
-> 
-> Unfortunately DMI_PRODUCT_FAMILY is empty on these particular devices.
-> The coreboot version field is the only entry that has "Google" in it.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-implement-a-function-for-max-nr_accesses-safe-calculation.patch
 
-well then you have additional issues with the DMI quirk for the firmware
-selection in sound/soc/sof/sof-pci-dev.c,
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-      {
-		.ident = "Google Chromebooks",
-		.callback = chromebook_use_community_key,
-		.matches = {
-			DMI_MATCH(DMI_PRODUCT_FAMILY, "Google"),
-		}
-	},
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-which means you need additional kernel parameters to provide the
-location of the firmware....
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
->> How many engineers does it take to identify a Chromebook, eh?
-> 
-> Ha! There has been some discussion about this: to come up with a
-> canonical way for Chromebook identification throughout the kernel. But
-> nothing has been settled on AFAIK.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-There's been multiple rounds of discussions with Curtis, we introduced
-DMI_OEM_STRING but it's still not good enough, and now the previous
-conventions are not being followed on what is a relatively old platform
-already...
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon: implement a function for max nr_accesses safe calculation
+Date: Thu, 19 Oct 2023 19:49:20 +0000
+
+Patch series "avoid divide-by-zero due to max_nr_accesses overflow".
+
+The maximum nr_accesses of given DAMON context can be calculated by
+dividing the aggregation interval by the sampling interval.  Some logics
+in DAMON uses the maximum nr_accesses as a divisor.  Hence, the value
+shouldn't be zero.  Such case is avoided since DAMON avoids setting the
+agregation interval as samller than the sampling interval.  However, since
+nr_accesses is unsigned int while the intervals are unsigned long, the
+maximum nr_accesses could be zero while casting.
+
+Avoid the divide-by-zero by implementing a function that handles the
+corner case (first patch), and replaces the vulnerable direct max
+nr_accesses calculations (remaining patches).
+
+Note that the patches for the replacements are divided for broken commits,
+to make backporting on required tres easier.  Especially, the last patch
+is for a patch that not yet merged into the mainline but in mm tree.
+
+
+This patch (of 4):
+
+The maximum nr_accesses of given DAMON context can be calculated by
+dividing the aggregation interval by the sampling interval.  Some logics
+in DAMON uses the maximum nr_accesses as a divisor.  Hence, the value
+shouldn't be zero.  Such case is avoided since DAMON avoids setting the
+agregation interval as samller than the sampling interval.  However, since
+nr_accesses is unsigned int while the intervals are unsigned long, the
+maximum nr_accesses could be zero while casting.  Implement a function
+that handles the corner case.
+
+Note that this commit is not fixing the real issue since this is only
+introducing the safe function that will replaces the problematic
+divisions.  The replacements will be made by followup commits, to make
+backporting on stable series easier.
+
+Link: https://lkml.kernel.org/r/20231019194924.100347-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20231019194924.100347-2-sj@kernel.org
+Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.16+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/damon.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+--- a/include/linux/damon.h~mm-damon-implement-a-function-for-max-nr_accesses-safe-calculation
++++ a/include/linux/damon.h
+@@ -642,6 +642,13 @@ static inline bool damon_target_has_pid(
+ 	return ctx->ops.id == DAMON_OPS_VADDR || ctx->ops.id == DAMON_OPS_FVADDR;
+ }
+ 
++static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
++{
++	/* {aggr,sample}_interval are unsigned long, hence could overflow */
++	return min(attrs->aggr_interval / attrs->sample_interval,
++			(unsigned long)UINT_MAX);
++}
++
+ 
+ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
+ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-implement-a-function-for-max-nr_accesses-safe-calculation.patch
+mm-damon-core-avoid-divide-by-zero-during-monitoring-results-update.patch
+mm-damon-ops-common-avoid-divide-by-zero-during-region-hotness-calculation.patch
+mm-damon-lru_sort-avoid-divide-by-zero-in-hot-threshold-calculation.patch
+
