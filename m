@@ -2,157 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D9D77D0D00
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 12:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DEB07D0D34
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 12:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376713AbjJTKUw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 06:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45206 "EHLO
+        id S1376844AbjJTKc3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 06:32:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376720AbjJTKUw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 06:20:52 -0400
-Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86AF4D49
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 03:20:48 -0700 (PDT)
-Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-5a7eef0b931so7018067b3.0
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 03:20:48 -0700 (PDT)
+        with ESMTP id S1376902AbjJTKc2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 06:32:28 -0400
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E5DFD53
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 03:32:25 -0700 (PDT)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-32dc918d454so455263f8f.2
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 03:32:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1697797247; x=1698402047; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=W79U9iklHwLSbhR/94JhGNefp7ntZs362QatUfI3IfI=;
-        b=nfxlTP0z3z6L6PAXEscyKxYpQTRCM9o0adr1SrnQ9q7CTPZqHv+abj+1QI+m0iKr2+
-         BBcWd5APgf9VIUg6OVry26MMWPBCNMIkeM3nzriOyFD6/q+KgwZohtWaGScP0H2GohMw
-         eM3dEx+RI6vZdgKAuJXQqLppBga08jWW/11ebkjXAqF5MRBprg1hXmfMcPX2PC9LFN8c
-         wideoaqq7CUToxKN310zNTGaXduLInkr2lJ9+W6obY+h/ynKuDoHRnLKLgwEoD85vP5b
-         NBXLAhzvJnAkR/oQxFosT3LkLycnau5bKrBvF6CWmlKPfhygvnwPUAvv+rROVDedtnpf
-         SebA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1697797944; x=1698402744; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=igrslGOc8lOfnbcsO3yOOnOBbB2z/+ZB5557ersesus=;
+        b=COix8rpRK0gECbprls+QXHnDCg1Z9FbNGRogAEbOrFiXgZ061joGgNvVjBHYDrdSmD
+         N33CJr9SIH/7MlnE0UrxW0xdXKWu0Ufhwge91bnE53zKIT1VCOeLSz1xdT2n0+rlauXx
+         vvDpmDmiGIRE3SpcVb4KKHx2lNPuQ7MIs530PSXKSH4lJLeb85Ac2ZlUM/tbxeODaIgL
+         Sbpn2L2lt3uuXhDuMksx74NLrJR8u4mWlILQ/sz5AnZ533k5/nTRZ3r7ssWE+1JcSi0/
+         iFt4H5xv6ZSoRny/Nn1F0xUs0cyfkifHbEtOBshUFj/7xOlnkN+2zD14pbLnpDaMopqn
+         ZYXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697797247; x=1698402047;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W79U9iklHwLSbhR/94JhGNefp7ntZs362QatUfI3IfI=;
-        b=AWbFqyK+F9nXB2SJEyo2mEJ9sbOVbodl8KOe+B0uu+Lg9urcm7MTHZHjyjy0PTrXL3
-         PQF9Me3O3ikcW8yHUzVPCVKMdUsCd8MF/18nrefMuvsDfAwMy+NUgYiRghpff6dGoabK
-         m6g9c9ZC+ealooJccydxwY7z6DGfxfkhKkQ6Ndf+5hjhqOg5XeGTk0budjwVsnC6kof7
-         s4TsWS2dX8vAW20dgG2HPlwr2Gt8W+txKNfyvNWNUX+gWozPG8qgsQp09Gcau2aazxVQ
-         WXdYFS0hYDeSteJC8YeG/lAismp4pLPXyfshGyi7pBYu+oKxZDN2XJb8VeOj1yJT7RtH
-         +4zw==
-X-Gm-Message-State: AOJu0YyyTTOUoQIgzbMZGRfBMwl4JPNpod46mRs0zMtOWHGyUlB09VLY
-        3Yx08wDCvUtmivu1+27a5lGbtDCyhXlqQLicdB3kWg==
-X-Google-Smtp-Source: AGHT+IFppxZveglONFPIGli2rJYFfP862ng1fj8gvWuwqd6m5OzeXOk1StoswlMPW+jNGU8qSha8o4+c/CfPZy2DJjA=
-X-Received: by 2002:a5b:f4c:0:b0:d9a:3bf1:35e9 with SMTP id
- y12-20020a5b0f4c000000b00d9a3bf135e9mr1288441ybr.3.1697797247740; Fri, 20 Oct
- 2023 03:20:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1697797944; x=1698402744;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=igrslGOc8lOfnbcsO3yOOnOBbB2z/+ZB5557ersesus=;
+        b=gyGcSfR5gkjVEzLMrHEQMECkHUUx6ZvjgsIumyKiBP+oGeQmMBmohqdK0aXEsT8aNe
+         DjSyU+84sUHaNqKI7H/R2BXMnHd9PgiQ9AsCh8Rij0OROA0kxK56wff1ryCEpeAIMiqI
+         bYEsQpWHw43G1sck53aFxhSc3oH6eco5L8dVdO4zw3PgsaCQJv5t2dEt5dS+rSrvWSCI
+         0Mf9kTQJ4id3SEgzVONRVSvteiZ5nnk+fIY1+BOMyvNwbglB6mlf4xmkh/XomegKRKAM
+         YKLkbwSzGB+tIpA+dXQXqrFb/lyljmTz14mU2Mm5kmYatFpxjNG5N3bfK+WPm2kH1G4o
+         h78w==
+X-Gm-Message-State: AOJu0Ywc7lzeXO93L4JHjS+OtxrYLYKF1xnNXP6eTaqi3NTrHU5boKe+
+        KBJB/RZ+hav0UmxYwTM8ybb1ww==
+X-Google-Smtp-Source: AGHT+IHvZz/X5JQHO3BEuu44B8mjF8wsdVBvnEP3zzsL+PMw2pSuhiBl3H5XEium7IMjvWbKbHSz2g==
+X-Received: by 2002:adf:ec03:0:b0:32d:d879:1c3 with SMTP id x3-20020adfec03000000b0032dd87901c3mr1041129wrn.31.1697797943877;
+        Fri, 20 Oct 2023 03:32:23 -0700 (PDT)
+Received: from [192.168.1.172] ([93.5.22.158])
+        by smtp.gmail.com with ESMTPSA id y10-20020a5d470a000000b0032d9efeccd8sm1396888wrq.51.2023.10.20.03.32.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Oct 2023 03:32:23 -0700 (PDT)
+Message-ID: <b372ef8c-7f3f-483b-8cc2-d927a60050be@baylibre.com>
+Date:   Fri, 20 Oct 2023 12:32:22 +0200
 MIME-Version: 1.0
-References: <20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com>
- <20231018-msm8909-cpufreq-v2-2-0962df95f654@kernkonzept.com>
- <CAPDyKFot9=M1ooP_Q1AOgG5o_4DTQ2qsyai1ZdXAzBwf89W4uA@mail.gmail.com>
- <CAPDyKFr5A-P=UhWs4rUMBWup3pH75WAhcZ56Y2_Sfk3=WfxRCQ@mail.gmail.com>
- <ZTEph19CAvbgbN_E@gerhold.net> <CAPDyKFo1PVZYsdW_=92EtMmTT9hmkm-mBR69N_WvPh4f-Hw=NA@mail.gmail.com>
- <ZTFBzjLAaaUHux4O@gerhold.net> <CAPDyKFruYqngQoW21Ra+hm4ybjS7LoD4casYbo8bP4J+hLUnaA@mail.gmail.com>
- <ZTFiXJ2XO4WQN_gu@gerhold.net>
-In-Reply-To: <ZTFiXJ2XO4WQN_gu@gerhold.net>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 20 Oct 2023 12:20:11 +0200
-Message-ID: <CAPDyKFoRhDnx7SOiT1czcyteMJ=2KMOwZvn7ynDJsYtePthnxA@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] cpufreq: qcom-nvmem: Enable virtual power domain devices
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: mtk-jpeg: Fix use after free bug due to error path
+ handling in mtk_jpeg_dec_device_run
+Content-Language: en-US
+To:     Zheng Wang <zyytlz.wz@163.com>, dmitry.osipenko@collabora.com
+Cc:     Kyrie.Wu@mediatek.com, bin.liu@mediatek.com, mchehab@kernel.org,
+        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, Irui.Wang@mediatek.com,
+        security@kernel.org, hackerzheng666@gmail.com,
+        1395428693sheep@gmail.com, alex000young@gmail.com,
+        wenst@chromium.org, stable@vger.kernel.org
+References: <20231020040732.2499269-1-zyytlz.wz@163.com>
+From:   Alexandre Mergnat <amergnat@baylibre.com>
+In-Reply-To: <20231020040732.2499269-1-zyytlz.wz@163.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 19 Oct 2023 at 19:08, Stephan Gerhold <stephan@gerhold.net> wrote:
->
-> On Thu, Oct 19, 2023 at 05:19:53PM +0200, Ulf Hansson wrote:
-> > On Thu, 19 Oct 2023 at 16:49, Stephan Gerhold <stephan@gerhold.net> wrote:
-> > > On Thu, Oct 19, 2023 at 04:12:56PM +0200, Ulf Hansson wrote:
-> > > > On Thu, 19 Oct 2023 at 15:05, Stephan Gerhold <stephan@gerhold.net> wrote:
-> > > > > On Thu, Oct 19, 2023 at 01:26:19PM +0200, Ulf Hansson wrote:
-> > > > > > BTW, if you really need something like the above, the proper way to do
-> > > > > > it would instead be to call device_set_awake_path() for the device.
-> > > > > >
-> > > > > > This informs genpd that the device needs to stay powered-on during
-> > > > > > system suspend (assuming that GENPD_FLAG_ACTIVE_WAKEUP has been set
-> > > > > > for it), hence it will keep the corresponding PM domain powered-on
-> > > > > > too.
-> > > > >
-> > > > > Thanks, I can try if this works as alternative to the
-> > > > > dev_pm_syscore_device()!
-> > > >
-> > > > Yes, please. We don't want to abuse the dev_pm_syscore_device() thingy.
-> > >
-> > > Could you clarify the idea behind GENPD_FLAG_ACTIVE_WAKEUP? Would I set
-> > > it conditionally for all RPMPDs or just the ones consumed by the CPU?
-> > > How does the genpd *provider* know if one of its *consumer* devices
-> > > needs to have its power domain kept on for wakeup?
-> >
-> > We are thinking of the GENPD_FLAG_ACTIVE_WAKEUP as a platform
-> > configuration type of flag for the genpd in question. The consumer
-> > driver shouldn't need to know about the details of what is happening
-> > on the PM domain level - only whether it needs its device to remain
-> > powered-on during system suspend or not.
-> >
->
-> Thanks! I will test if this works for RPMPD and post new versions of the
-> patches. By coincidence I think this flag might actually be useful as
-> temporary solution for CPR. If I:
->
->  1. Change $subject patch to use device_set_awake_path() instead, and
->  2. Set GENPD_FLAG_ACTIVE_WAKEUP for the RPMPD genpds, but
->  3. Do *not* set GENPD_FLAG_ACTIVE_WAKEUP for the CPR genpd.
->
-> Then the genpd ->power_on|off() callbacks should still be called
-> for CPR during system suspend, right? :D
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
 
-Yes, correct, that should work fine!
+On 20/10/2023 06:07, Zheng Wang wrote:
+> In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with 
+> mtk_jpeg_job_timeout_work. In mtk_jpeg_dec_device_run, if error happens 
+> in mtk_jpeg_set_dec_dst, it will finally start the worker while mark the 
+> job as finished by invoking v4l2_m2m_job_finish. There are two methods 
+> to trigger the bug. If we remove the module, it which will call 
+> mtk_jpeg_remove to make cleanup. The possible sequence is as follows, 
+> which will cause a use-after-free bug. CPU0 CPU1 mtk_jpeg_dec_... | 
+> start worker | |mtk_jpeg_job_timeout_work mtk_jpeg_remove | 
+> v4l2_m2m_release | kfree(m2m_dev); | | | v4l2_m2m_get_curr_priv | 
+> m2m_dev->curr_ctx //use If we close the file descriptor, which will call 
+> mtk_jpeg_release, it will have a similar sequence. Fix this bug by start 
+> timeout worker only if started jpegdec worker successfully so the 
+> v4l2_m2m_job_finish will only be called on either 
+> mtk_jpeg_job_timeout_work or mtk_jpeg_dec_device_run. This patch also 
+> reverts commit c677d7ae8314 ("media: mtk-jpeg: Fix use after free bug 
+> due to uncanceled work") for this patch also fixed the use-after-free 
+> bug mentioned before. Before mtk_jpeg_remove is invoked, 
+> mtk_jpeg_release must be invoked to close opened files. And it will call 
+> v4l2_m2m_cancel_job to wait for the timeout worker finished so the 
+> canceling in mtk_jpeg_remove is unnecessary.
 
->
-> > I suspect that the GENPD_FLAG_ACTIVE_WAKEUP is probably okay to set
-> > for most genpds, but there may be some exceptions.
-> >
->
-> Out of curiosity, do you have an example for such an exception where
-> GENPD_FLAG_ACTIVE_WAKEUP shouldn't be set, aside from workarounds like
-> I just described?
->
-> As you said, the consumer device should just say that it wants to stay
-> powered for wakeup during suspend. But if its power domains get powered
-> off, I would expect that to break. How could a genpd driver still
-> provide power without being powered on? Wouldn't that rather be a low
-> performance state?
-
-I think this boils down to how the power-rail that the genpd manages,
-is handled by the platform during system suspend.
-
-In principle there could be some other separate logic that helps a
-FW/PMIC to understand whether it needs to keep the power-rail on or
-not - no matter whether the genpd releases its vote for it during
-system suspend.
-
-This becomes mostly hypothetical, but clearly there are a lot of
-genpd/platforms that don't use GENPD_FLAG_ACTIVE_WAKEUP too. If those
-are just mistakes or just not needed, I don't actually know.
-
-Kind regards
-Uffe
+-- 
+Regards,
+Alexandre
