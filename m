@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E117D16FF
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:28:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C50BB7D1700
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:28:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229554AbjJTU2p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:28:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34206 "EHLO
+        id S229555AbjJTU2z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:28:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbjJTU2p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:28:45 -0400
+        with ESMTP id S230162AbjJTU2y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:28:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E7A8D63
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:28:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F11C433C7;
-        Fri, 20 Oct 2023 20:28:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FB3ED63
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:28:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2814C433C7;
+        Fri, 20 Oct 2023 20:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697833723;
-        bh=TeTDn61yrTXKrtkUuLFbuzsjbHhtDzIUpDOVWZNaD+o=;
+        s=korg; t=1697833732;
+        bh=xn8bM6RwDj/Z2ywto15rFCT9Sf14YewoVuz2yzHCSHA=;
         h=Subject:To:Cc:From:Date:From;
-        b=pGadxdCSKMOFU6+c8gl6e+Nxo3EeepGCQ5TDeSxSLx3g/V5CBn9Bs2iQJhyf5jk6G
-         kMSSqTY/5HLyZmbPgP8YXGypTUL1zu75Jpsna92Dc2poNRkB7ofU1MuY5drZiYiDYr
-         2YJTO/Z1DuqkKWE4Pcwmmbqv2qXe9huxAtsNhueo=
-Subject: FAILED: patch "[PATCH] net: dsa: bcm_sf2: Fix possible memory leak in" failed to apply to 5.4-stable tree
+        b=h3DMHK+couwAYKpJJoVeQ9TY7V4WJzrdjQ4p1EUdDYZcswo5kiBf09WUPPm7d7oU5
+         BrLbF0cIlEp26ofqIBS5dpPWMYiHD7BaNqq5lUAMfCUY5Egon9UfbsQIUtcu66ycz0
+         AaKBW8MSoh1Pd2nK/gAA6XGEy2eRuU/nfFmZwCvY=
+Subject: FAILED: patch "[PATCH] net: dsa: bcm_sf2: Fix possible memory leak in" failed to apply to 4.19-stable tree
 To:     ruanjinjie@huawei.com, florian.fainelli@broadcom.com,
         horms@kernel.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:28:39 +0200
-Message-ID: <2023102039-chance-unseen-916d@gregkh>
+Date:   Fri, 20 Oct 2023 22:28:41 +0200
+Message-ID: <2023102041-speculate-spew-1d42@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 61b40cefe51af005c72dbdcf975a3d166c6e6406
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102039-chance-unseen-916d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102041-speculate-spew-1d42@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
