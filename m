@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51EB47D146A
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 18:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A59BF7D146B
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 18:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229813AbjJTQyD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 12:54:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34720 "EHLO
+        id S229790AbjJTQyM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 12:54:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229812AbjJTQyC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 12:54:02 -0400
+        with ESMTP id S229576AbjJTQyL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 12:54:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C69BBD57
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 09:54:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123CAC433C8;
-        Fri, 20 Oct 2023 16:53:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B8FCA
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 09:54:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECED4C433C8;
+        Fri, 20 Oct 2023 16:54:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697820840;
-        bh=4tnzH4GJPETl3B/wAFQ8An+ysxSWdMDC03gB5VAlE50=;
+        s=korg; t=1697820849;
+        bh=rgQy45PV/JcDeqbVuLPS1x+lRDMmzm5yRqBbQ+6cSPU=;
         h=Subject:To:Cc:From:Date:From;
-        b=yn5UnaDgtxMbXf2SNCG2edJeyJmynbmIf5qxU7/0ztP65TNx9S+fQ5sKgUIXAB4eQ
-         dGFd90Cv2t9CeHH271lbfkPE4Sg3yIUtWXi7+wDRd3LzCgTFTY8rqobq/hYINqgU29
-         DX5tXNrEJr4TsGgKQI6fRCXXUhTD9w0fau+hLbII=
-Subject: FAILED: patch "[PATCH] net/smc: fix smc clc failed issue when netdevice not in" failed to apply to 6.5-stable tree
+        b=G5Cga1cjl2GQmgNPA2FefhkH3kBOuLwtlLK1plzu5RrtxuGWuKzgllBSYcokgLC9E
+         KC7iLu7xyq1yCcQer7HVhubWynTBCzLReSK0YEz0xj4UgwQaZO8oG8D/KOCsfgj8SW
+         tCQBQFu2kpufLkJWxgV/WwxBuGjfKhYtfChYeeas=
+Subject: FAILED: patch "[PATCH] net/smc: fix smc clc failed issue when netdevice not in" failed to apply to 6.1-stable tree
 To:     huangjie.albert@bytedance.com, dust.li@linux.alibaba.com,
         kuba@kernel.org, wenjia@linux.ibm.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 18:53:57 +0200
-Message-ID: <2023102057-arming-autism-6d65@gregkh>
+Date:   Fri, 20 Oct 2023 18:53:58 +0200
+Message-ID: <2023102058-bullish-chess-e399@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x c68681ae46eaaa1640b52fe366d21a93b2185df5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102057-arming-autism-6d65@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102058-bullish-chess-e399@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
