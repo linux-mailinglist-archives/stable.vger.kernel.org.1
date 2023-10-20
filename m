@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D91717D153A
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B0CC7D155B
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 20:02:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbjJTRzN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 13:55:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45874 "EHLO
+        id S1377964AbjJTSCO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 14:02:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjJTRzM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:55:12 -0400
+        with ESMTP id S230114AbjJTSCM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 14:02:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC5F7C0
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 10:55:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAEFC433C8;
-        Fri, 20 Oct 2023 17:55:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 788F1D5D
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:02:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DD6C433C8;
+        Fri, 20 Oct 2023 18:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697824510;
-        bh=1Ow2XDId2LMLbIdUP3r/sopP7CvUseWOtrShYqNiA7w=;
+        s=korg; t=1697824930;
+        bh=FazifPyBwomqkFAnmPBwXMfaTwKS71J5em8k6OyyRzo=;
         h=Subject:To:Cc:From:Date:From;
-        b=DhzyLoy6FosDIqZGfr5GrUyrHToQfu5O4YPwBQOMSHHAiNbVpSDS31RDR7acA19V+
-         QuUxy64m4Mywt1K34u53QX4riPy5HzJDbzqakJp6t0LK12Ybqs7HY79FPBbHLgK0jo
-         M5anW+5qK/A2pCzWbupo67sSmV5W7B/IWpl1/dA8=
-Subject: FAILED: patch "[PATCH] accel/ivpu: Don't enter d0i3 during FLR" failed to apply to 6.5-stable tree
-To:     jacek.lawrynowicz@linux.intel.com,
-        stanislaw.gruszka@linux.intel.com
+        b=zcRg6iw9F+t2e1S6w+fgNXL2PNyb8+XT3v21KnClNPkqfTwEmUboziSW+pPK6GsNi
+         3ws2TTMXWxtTUgCLgavYNJdU2dWPP11L0Jx58xocxz5RJQ7jaxdlHngJn4EYD4zDxA
+         Y1amRr9PnFItw3xr/oDxxzditJvEqdFZULFOF2HE=
+Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd938x: fix resource leaks on bind errors" failed to apply to 5.15-stable tree
+To:     johan+linaro@kernel.org, broonie@kernel.org,
+        srinivas.kandagatla@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 19:55:07 +0200
-Message-ID: <2023102007-snitch-flip-acaa@gregkh>
+Date:   Fri, 20 Oct 2023 20:02:07 +0200
+Message-ID: <2023102007-mardi-shakily-1a2f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 828d63042aeca132a93938b98dc7f1a6c97bbc51
+git cherry-pick -x da29b94ed3547cee9d510d02eca4009f2de476cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102007-snitch-flip-acaa@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102007-mardi-shakily-1a2f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,122 +68,131 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 828d63042aeca132a93938b98dc7f1a6c97bbc51 Mon Sep 17 00:00:00 2001
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Date: Tue, 3 Oct 2023 08:42:13 +0200
-Subject: [PATCH] accel/ivpu: Don't enter d0i3 during FLR
+From da29b94ed3547cee9d510d02eca4009f2de476cf Mon Sep 17 00:00:00 2001
+From: Johan Hovold <johan+linaro@kernel.org>
+Date: Tue, 3 Oct 2023 17:55:54 +0200
+Subject: [PATCH] ASoC: codecs: wcd938x: fix resource leaks on bind errors
 
-Avoid HW bug on some platforms where we enter D0i3 state
-and CPU is in low power states (C8 or above).
+Add the missing code to release resources on bind errors, including the
+references taken by wcd938x_sdw_device_get() which also need to be
+dropped on unbind().
 
-Fixes: 852be13f3bd3 ("accel/ivpu: Add PM support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231003064213.1527327-1-stanislaw.gruszka@linux.intel.com
+Fixes: 16572522aece ("ASoC: codecs: wcd938x-sdw: add SoundWire driver")
+Cc: stable@vger.kernel.org      # 5.14
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231003155558.27079-4-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 
-diff --git a/drivers/accel/ivpu/ivpu_drv.c b/drivers/accel/ivpu/ivpu_drv.c
-index 467a60235370..7e9359611d69 100644
---- a/drivers/accel/ivpu/ivpu_drv.c
-+++ b/drivers/accel/ivpu/ivpu_drv.c
-@@ -367,14 +367,19 @@ int ivpu_boot(struct ivpu_device *vdev)
- 	return 0;
+diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
+index c617fc3ce489..7e0b07eeed77 100644
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -3435,7 +3435,8 @@ static int wcd938x_bind(struct device *dev)
+ 	wcd938x->rxdev = wcd938x_sdw_device_get(wcd938x->rxnode);
+ 	if (!wcd938x->rxdev) {
+ 		dev_err(dev, "could not find slave with matching of node\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_unbind;
+ 	}
+ 	wcd938x->sdw_priv[AIF1_PB] = dev_get_drvdata(wcd938x->rxdev);
+ 	wcd938x->sdw_priv[AIF1_PB]->wcd938x = wcd938x;
+@@ -3443,7 +3444,8 @@ static int wcd938x_bind(struct device *dev)
+ 	wcd938x->txdev = wcd938x_sdw_device_get(wcd938x->txnode);
+ 	if (!wcd938x->txdev) {
+ 		dev_err(dev, "could not find txslave with matching of node\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_put_rxdev;
+ 	}
+ 	wcd938x->sdw_priv[AIF1_CAP] = dev_get_drvdata(wcd938x->txdev);
+ 	wcd938x->sdw_priv[AIF1_CAP]->wcd938x = wcd938x;
+@@ -3454,31 +3456,35 @@ static int wcd938x_bind(struct device *dev)
+ 	if (!device_link_add(wcd938x->rxdev, wcd938x->txdev, DL_FLAG_STATELESS |
+ 			    DL_FLAG_PM_RUNTIME)) {
+ 		dev_err(dev, "could not devlink tx and rx\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_put_txdev;
+ 	}
+ 
+ 	if (!device_link_add(dev, wcd938x->txdev, DL_FLAG_STATELESS |
+ 					DL_FLAG_PM_RUNTIME)) {
+ 		dev_err(dev, "could not devlink wcd and tx\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_remove_rxtx_link;
+ 	}
+ 
+ 	if (!device_link_add(dev, wcd938x->rxdev, DL_FLAG_STATELESS |
+ 					DL_FLAG_PM_RUNTIME)) {
+ 		dev_err(dev, "could not devlink wcd and rx\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_remove_tx_link;
+ 	}
+ 
+ 	wcd938x->regmap = dev_get_regmap(&wcd938x->tx_sdw_dev->dev, NULL);
+ 	if (!wcd938x->regmap) {
+ 		dev_err(dev, "could not get TX device regmap\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_remove_rx_link;
+ 	}
+ 
+ 	ret = wcd938x_irq_init(wcd938x, dev);
+ 	if (ret) {
+ 		dev_err(dev, "%s: IRQ init failed: %d\n", __func__, ret);
+-		return ret;
++		goto err_remove_rx_link;
+ 	}
+ 
+ 	wcd938x->sdw_priv[AIF1_PB]->slave_irq = wcd938x->virq;
+@@ -3487,17 +3493,33 @@ static int wcd938x_bind(struct device *dev)
+ 	ret = wcd938x_set_micbias_data(wcd938x);
+ 	if (ret < 0) {
+ 		dev_err(dev, "%s: bad micbias pdata\n", __func__);
+-		return ret;
++		goto err_remove_rx_link;
+ 	}
+ 
+ 	ret = snd_soc_register_component(dev, &soc_codec_dev_wcd938x,
+ 					 wcd938x_dais, ARRAY_SIZE(wcd938x_dais));
+-	if (ret)
++	if (ret) {
+ 		dev_err(dev, "%s: Codec registration failed\n",
+ 				__func__);
++		goto err_remove_rx_link;
++	}
+ 
+-	return ret;
++	return 0;
+ 
++err_remove_rx_link:
++	device_link_remove(dev, wcd938x->rxdev);
++err_remove_tx_link:
++	device_link_remove(dev, wcd938x->txdev);
++err_remove_rxtx_link:
++	device_link_remove(wcd938x->rxdev, wcd938x->txdev);
++err_put_txdev:
++	put_device(wcd938x->txdev);
++err_put_rxdev:
++	put_device(wcd938x->rxdev);
++err_unbind:
++	component_unbind_all(dev, wcd938x);
++
++	return ret;
  }
  
--int ivpu_shutdown(struct ivpu_device *vdev)
-+void ivpu_prepare_for_reset(struct ivpu_device *vdev)
- {
--	int ret;
--
- 	ivpu_hw_irq_disable(vdev);
- 	disable_irq(vdev->irq);
- 	ivpu_ipc_disable(vdev);
- 	ivpu_mmu_disable(vdev);
-+}
-+
-+int ivpu_shutdown(struct ivpu_device *vdev)
-+{
-+	int ret;
-+
-+	ivpu_prepare_for_reset(vdev);
+ static void wcd938x_unbind(struct device *dev)
+@@ -3508,6 +3530,8 @@ static void wcd938x_unbind(struct device *dev)
+ 	device_link_remove(dev, wcd938x->txdev);
+ 	device_link_remove(dev, wcd938x->rxdev);
+ 	device_link_remove(wcd938x->rxdev, wcd938x->txdev);
++	put_device(wcd938x->txdev);
++	put_device(wcd938x->rxdev);
+ 	component_unbind_all(dev, wcd938x);
+ }
  
- 	ret = ivpu_hw_power_down(vdev);
- 	if (ret)
-diff --git a/drivers/accel/ivpu/ivpu_drv.h b/drivers/accel/ivpu/ivpu_drv.h
-index 03b3d6532fb6..2adc349126bb 100644
---- a/drivers/accel/ivpu/ivpu_drv.h
-+++ b/drivers/accel/ivpu/ivpu_drv.h
-@@ -151,6 +151,7 @@ void ivpu_file_priv_put(struct ivpu_file_priv **link);
- 
- int ivpu_boot(struct ivpu_device *vdev);
- int ivpu_shutdown(struct ivpu_device *vdev);
-+void ivpu_prepare_for_reset(struct ivpu_device *vdev);
- 
- static inline u8 ivpu_revision(struct ivpu_device *vdev)
- {
-diff --git a/drivers/accel/ivpu/ivpu_hw.h b/drivers/accel/ivpu/ivpu_hw.h
-index ab341237bcf9..1079e06255ba 100644
---- a/drivers/accel/ivpu/ivpu_hw.h
-+++ b/drivers/accel/ivpu/ivpu_hw.h
-@@ -13,6 +13,7 @@ struct ivpu_hw_ops {
- 	int (*power_up)(struct ivpu_device *vdev);
- 	int (*boot_fw)(struct ivpu_device *vdev);
- 	int (*power_down)(struct ivpu_device *vdev);
-+	int (*reset)(struct ivpu_device *vdev);
- 	bool (*is_idle)(struct ivpu_device *vdev);
- 	void (*wdt_disable)(struct ivpu_device *vdev);
- 	void (*diagnose_failure)(struct ivpu_device *vdev);
-@@ -91,6 +92,13 @@ static inline int ivpu_hw_power_down(struct ivpu_device *vdev)
- 	return vdev->hw->ops->power_down(vdev);
- };
- 
-+static inline int ivpu_hw_reset(struct ivpu_device *vdev)
-+{
-+	ivpu_dbg(vdev, PM, "HW reset\n");
-+
-+	return vdev->hw->ops->reset(vdev);
-+};
-+
- static inline void ivpu_hw_wdt_disable(struct ivpu_device *vdev)
- {
- 	vdev->hw->ops->wdt_disable(vdev);
-diff --git a/drivers/accel/ivpu/ivpu_hw_37xx.c b/drivers/accel/ivpu/ivpu_hw_37xx.c
-index 9eae1c241bc0..976019429164 100644
---- a/drivers/accel/ivpu/ivpu_hw_37xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_37xx.c
-@@ -1029,6 +1029,7 @@ const struct ivpu_hw_ops ivpu_hw_37xx_ops = {
- 	.power_up = ivpu_hw_37xx_power_up,
- 	.is_idle = ivpu_hw_37xx_is_idle,
- 	.power_down = ivpu_hw_37xx_power_down,
-+	.reset = ivpu_hw_37xx_reset,
- 	.boot_fw = ivpu_hw_37xx_boot_fw,
- 	.wdt_disable = ivpu_hw_37xx_wdt_disable,
- 	.diagnose_failure = ivpu_hw_37xx_diagnose_failure,
-diff --git a/drivers/accel/ivpu/ivpu_hw_40xx.c b/drivers/accel/ivpu/ivpu_hw_40xx.c
-index 8bdb59a45da6..85171a408363 100644
---- a/drivers/accel/ivpu/ivpu_hw_40xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_40xx.c
-@@ -1179,6 +1179,7 @@ const struct ivpu_hw_ops ivpu_hw_40xx_ops = {
- 	.power_up = ivpu_hw_40xx_power_up,
- 	.is_idle = ivpu_hw_40xx_is_idle,
- 	.power_down = ivpu_hw_40xx_power_down,
-+	.reset = ivpu_hw_40xx_reset,
- 	.boot_fw = ivpu_hw_40xx_boot_fw,
- 	.wdt_disable = ivpu_hw_40xx_wdt_disable,
- 	.diagnose_failure = ivpu_hw_40xx_diagnose_failure,
-diff --git a/drivers/accel/ivpu/ivpu_pm.c b/drivers/accel/ivpu/ivpu_pm.c
-index e6f27daf5560..ffff2496e8e8 100644
---- a/drivers/accel/ivpu/ivpu_pm.c
-+++ b/drivers/accel/ivpu/ivpu_pm.c
-@@ -261,7 +261,8 @@ void ivpu_pm_reset_prepare_cb(struct pci_dev *pdev)
- 	ivpu_dbg(vdev, PM, "Pre-reset..\n");
- 	atomic_inc(&vdev->pm->reset_counter);
- 	atomic_set(&vdev->pm->in_reset, 1);
--	ivpu_shutdown(vdev);
-+	ivpu_prepare_for_reset(vdev);
-+	ivpu_hw_reset(vdev);
- 	ivpu_pm_prepare_cold_boot(vdev);
- 	ivpu_jobs_abort_all(vdev);
- 	ivpu_dbg(vdev, PM, "Pre-reset done.\n");
 
