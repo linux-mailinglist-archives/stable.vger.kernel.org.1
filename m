@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0DCA7D156A
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 20:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DF387D156B
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 20:06:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230139AbjJTSGB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 14:06:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37966 "EHLO
+        id S230106AbjJTSGE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 14:06:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230164AbjJTSF7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 14:05:59 -0400
+        with ESMTP id S230089AbjJTSGE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 14:06:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1034D5D
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:05:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE757C433C7;
-        Fri, 20 Oct 2023 18:05:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 758A1D5A
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:06:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4480C433C8;
+        Fri, 20 Oct 2023 18:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697825156;
-        bh=T/B8E1TJ1x6Jl7teX39cUEp7FTvpOBivKgJZDB6SX00=;
+        s=korg; t=1697825162;
+        bh=Egr/hdPoZHTNtYSupiHVC0T0jSAJYd17vDcNjgkKVuQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=c5KdB4ytamcr1VFpboFsifDBXmAdTPnHirrsl+kpoHJ/a7q9atGRgioy322deNob+
-         v6sD3tDdKxM2sgahnmODwuEm6NsFY/MVD/ydjeqYTBu/wVjslbIC7FV5JIGR4iytl4
-         s+rp4MvuqdbUWD/1cE9dZBam+7/FgpxL9jSMQ+XU=
-Subject: FAILED: patch "[PATCH] qed: fix LL2 RX buffer allocation" failed to apply to 4.14-stable tree
+        b=hAHmbrYiBNsIpFbF9Q6aaG3pkslxfjfIywsnZcqcd0xstHP3JxGtpKUkSivLYFUAZ
+         bumwCw8qfYAGVQGmBEajMLUuMdne1U48oW3WJFJvSSLAvIB0xxk0zR1zsMDfjJspNe
+         RylH2Lw11+lFFu6eLxme9WVAT3LQESXa8iglwlDM=
+Subject: FAILED: patch "[PATCH] qed: fix LL2 RX buffer allocation" failed to apply to 4.19-stable tree
 To:     manishc@marvell.com, davem@davemloft.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Fri, 20 Oct 2023 20:04:30 +0200
-Message-ID: <2023102030-strict-cake-e8e2@gregkh>
+Message-ID: <2023102029-display-provolone-fab2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2f3389c73832ad90b63208c0fc281ad080114c7a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102030-strict-cake-e8e2@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102029-display-provolone-fab2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
