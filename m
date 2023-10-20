@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A9427D150F
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:42:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA22C7D1510
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:42:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377710AbjJTRmj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 13:42:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48212 "EHLO
+        id S1377950AbjJTRms (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 13:42:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377950AbjJTRmi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:42:38 -0400
+        with ESMTP id S1377908AbjJTRmr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:42:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52785FA
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 10:42:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94B4AC433C8;
-        Fri, 20 Oct 2023 17:42:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36B57A3
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 10:42:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFEDC433C8;
+        Fri, 20 Oct 2023 17:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697823757;
-        bh=0AVdu4TcFnM1sXR4gdK84lrwdbnIUzQHQsddwQCyIeg=;
+        s=korg; t=1697823765;
+        bh=bPgXSA1/u/PnCm7Sr5DMffoXSHGR4l2ifhRXxP8O7+8=;
         h=Subject:To:Cc:From:Date:From;
-        b=FQfo6yxDXTVZR63O/DTGT8p0eniUSPEf4ZfydulfzAYMcEGRtAukG8XjNvpTlHFbk
-         YKB4nHEVsN7i+DzdnGFXLZbjUCGmUccW/ktQA01wCZX7+VvGRMOAEsCny6sRRKKufr
-         k8ZqJo5pwcBky4B7R2cPLWxFCdledpy3g7sJ+nsQ=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: join: correctly check for no RST" failed to apply to 6.5-stable tree
+        b=iuA1QP1aGroCVoJjtj2a/6iMOqS+Z4osCtk3fVBiVB/MJ88fzco8WCb71XDq1dkbS
+         PTuD+hXy9ZXlpGbmeSscfK1y4ptS1Es9iNrAnIVlZ5id3gEi0FhvxAc7jXj87YuMZ6
+         l9ZyH3yMelIU9qNcFRCZpSM3Ubna6E2ntw5ZtzNw=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: join: correctly check for no RST" failed to apply to 6.1-stable tree
 To:     matttbe@kernel.org, kuba@kernel.org, martineau@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 19:42:34 +0200
-Message-ID: <2023102034-patience-flaring-b32f@gregkh>
+Date:   Fri, 20 Oct 2023 19:42:35 +0200
+Message-ID: <2023102035-citation-buddhist-8a5d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x b134a5805455d1886662a6516c965cdb9df9fbcc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102034-patience-flaring-b32f@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102035-citation-buddhist-8a5d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
