@@ -2,107 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E7D67D14B6
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:18:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4168B7D14C6
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229902AbjJTRS6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 13:18:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45024 "EHLO
+        id S229902AbjJTRX0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 13:23:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44334 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229875AbjJTRSz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:18:55 -0400
+        with ESMTP id S229905AbjJTRXY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:23:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 788BD13E;
-        Fri, 20 Oct 2023 10:18:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127E5C433C8;
-        Fri, 20 Oct 2023 17:18:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1697822333;
-        bh=9OYVShPRSQVVFBfdVQCEJSwJVreEwqTHLOyJV55tUO4=;
-        h=Date:To:From:Subject:From;
-        b=E1RMwPTlMhdqWeSE6SzcXWG6WEtKnZpEqwmcGwXf/QJAxQNfskp0v/z51L9znMghI
-         R9SdzW7LDWRtv7wpD6z4tuxroGrst0KH6/sou3a69gZ2oLcbNOaGR9FYnA1kbPD3bC
-         HXhcV9Bnl3F1nycy0Uj+QwL2CC+Wbq1uUuHRn6Gs=
-Date:   Fri, 20 Oct 2023 10:18:52 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-lru_sort-avoid-divide-by-zero-in-hot-threshold-calculation.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231020171853.127E5C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DA651A3;
+        Fri, 20 Oct 2023 10:23:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5437EC433C8;
+        Fri, 20 Oct 2023 17:23:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697822602;
+        bh=Rn9BHGv/kMTRWnOOhqqlR6v0d9H0u3tnTjx9VDJfJCU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=lk1FqpYByQMbf59yh0U8YLgrRJ43zTSnfY5ztYkNwJxmOlrcYYzGMmulb64GWPd27
+         WDnr/ul64sOEPEBEX/FpDD7+OZxQ8uoE0Z3aJRmivH6ITsRSScdktkyKelkVw9EWzz
+         /YvbiC+RTKd5QA6LA86beLXArsehV6tLDXXWVWr1ZBYHK8TVlWJvgdQu8eDE1kLNFp
+         Y09FFWInvtPhlAqZAV2wcN8olPgLL4o0Xj8ujhKXQCa21H/maEShe4WpqSSEIrcXg/
+         zChMs5xWAxN9PsyWly2J4u8y1YAbo07mJij27Eu/Tj0CAYBsIe7S6DVGlYjXB2W8SE
+         DJbKUg/VjiXzA==
+From:   SeongJae Park <sj@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     SeongJae Park <sj@kernel.org>, Jakub Acs <acsjakub@amazon.de>,
+        damon@lists.linux.dev, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH v2 1/5] mm/damon: implement a function for max nr_accesses safe calculation
+Date:   Fri, 20 Oct 2023 17:23:13 +0000
+Message-Id: <20231020172317.64192-2-sj@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231020172317.64192-1-sj@kernel.org>
+References: <20231020172317.64192-1-sj@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+The maximum nr_accesses of given DAMON context can be calculated by
+dividing the aggregation interval by the sampling interval.  Some logics
+in DAMON uses the maximum nr_accesses as a divisor.  Hence, the value
+shouldn't be zero.  Such case is avoided since DAMON avoids setting the
+agregation interval as samller than the sampling interval.  However,
+since nr_accesses is unsigned int while the intervals are unsigned long,
+the maximum nr_accesses could be zero while casting.  Implement a
+function that handles the corner case.
 
-The patch titled
-     Subject: mm/damon/lru_sort: avoid divide-by-zero in hot threshold calculation
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-lru_sort-avoid-divide-by-zero-in-hot-threshold-calculation.patch
+Note that this commit is not fixing the real issue since this is only
+introducing the safe function that will replaces the problematic
+divisions.  The replacements will be made by followup commits, to make
+backporting on stable series easier.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-lru_sort-avoid-divide-by-zero-in-hot-threshold-calculation.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/lru_sort: avoid divide-by-zero in hot threshold calculation
-Date: Thu, 19 Oct 2023 19:49:23 +0000
-
-When calculating the hotness threshold for lru_prio scheme of
-DAMON_LRU_SORT, the module divides some values by the maximum nr_accesses.
-However, due to the type of the related variables, simple division-based
-calculation of the divisor can return zero.  As a result, divide-by-zero
-is possible.  Fix it by using damon_max_nr_accesses(), which handles the
-case.
-
-Link: https://lkml.kernel.org/r/20231019194924.100347-5-sj@kernel.org
-Fixes: 40e983cca927 ("mm/damon: introduce DAMON-based LRU-lists Sorting")
+Reported-by: Jakub Acs <acsjakub@amazon.de>
+Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
+Cc: <stable@vger.kernel.org> # 5.16.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.0+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
+ include/linux/damon.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
- mm/damon/lru_sort.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
---- a/mm/damon/lru_sort.c~mm-damon-lru_sort-avoid-divide-by-zero-in-hot-threshold-calculation
-+++ a/mm/damon/lru_sort.c
-@@ -193,9 +193,7 @@ static int damon_lru_sort_apply_paramete
- 	if (err)
- 		return err;
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 27b995c22497..ab2f17d9926b 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -681,6 +681,13 @@ static inline bool damon_target_has_pid(const struct damon_ctx *ctx)
+ 	return ctx->ops.id == DAMON_OPS_VADDR || ctx->ops.id == DAMON_OPS_FVADDR;
+ }
  
--	/* aggr_interval / sample_interval is the maximum nr_accesses */
--	hot_thres = damon_lru_sort_mon_attrs.aggr_interval /
--		damon_lru_sort_mon_attrs.sample_interval *
-+	hot_thres = damon_max_nr_accesses(&damon_lru_sort_mon_attrs) *
- 		hot_thres_access_freq / 1000;
- 	scheme = damon_lru_sort_new_hot_scheme(hot_thres);
- 	if (!scheme)
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-implement-a-function-for-max-nr_accesses-safe-calculation.patch
-mm-damon-core-avoid-divide-by-zero-during-monitoring-results-update.patch
-mm-damon-ops-common-avoid-divide-by-zero-during-region-hotness-calculation.patch
-mm-damon-lru_sort-avoid-divide-by-zero-in-hot-threshold-calculation.patch
++static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
++{
++	/* {aggr,sample}_interval are unsigned long, hence could overflow */
++	return min(attrs->aggr_interval / attrs->sample_interval,
++			(unsigned long)UINT_MAX);
++}
++
+ 
+ int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
+ int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
+-- 
+2.34.1
 
