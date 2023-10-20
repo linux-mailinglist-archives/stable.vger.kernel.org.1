@@ -2,107 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B50267D128D
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 17:24:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 072A67D12BB
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 17:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377601AbjJTPYs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 11:24:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47068 "EHLO
+        id S1377715AbjJTPa2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 11:30:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377652AbjJTPYr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 11:24:47 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 978ED18F
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 08:24:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1697815485; x=1729351485;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=U/jBMLkL89JOvi9+2k6oX4zjaxoTZukoqyxYwpdrb8Y=;
-  b=GR1Be/7gsWidsHMvuazdSt/ucopVDCwPBTdJyEixox2Pio0NG7H55h8S
-   otquWUDEf1m/7kv98Q8C5I6m0YJrcedl4Nl/SWbxTkuk3NRbULct+QGSh
-   oA4dolDJdkI6pFrdrvHt3AROUxZExcrvcXLHzIVp1SYxay+Cr0R72h9M7
-   3flXCVYsfhj1d9P7rThmMiwiI9z7mGKMlKWPT78XeC4jVO7cPGwb4Jh6H
-   hOQKt0Qh57QAmw51iFaCPxeLGjdnmgoyEZReJr8mPCSfUb6YisAewD3Bf
-   gTrCH7UvLcHJR14voCPfocXPOWHeIsaBgaCFNxXJe9UwNGBxbmOCbtDcA
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="371586953"
-X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="371586953"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:24:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="1088770106"
-X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
-   d="scan'208";a="1088770106"
-Received: from unerlige-desk.jf.intel.com ([10.165.21.199])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 08:24:44 -0700
-From:   Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] drm/i915/pmu: Check if pmu is closed before stopping event
-Date:   Fri, 20 Oct 2023 08:24:41 -0700
-Message-Id: <20231020152441.3764850-1-umesh.nerlige.ramappa@intel.com>
-X-Mailer: git-send-email 2.38.1
+        with ESMTP id S1377703AbjJTPa1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 11:30:27 -0400
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD04AD41;
+        Fri, 20 Oct 2023 08:30:24 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 13D32C0015;
+        Fri, 20 Oct 2023 15:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+        t=1697815823;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=AM62ZlFQTzCoejFnnmrothFoj82sgbfnGqDeWLVxoAQ=;
+        b=Xzd6NvEU6m3B9XH238lvcZlu8oA05x/xQM4wq17E0ZSl2TtwSBTsBDhNEyuoCsYWhcohcf
+        oKxPZgijH1BA//6g0glVVqtBdodUpuKDIyKD8etscS8vAlveDeB5xCrniUHqQkJ36TqIPJ
+        8X9B/MMGBwi/aeGo/6iqz/E1AhBw9aVZyLWlPz4/XIpBMXFFpc6CvwVr9OJz+83/ODy8v+
+        0EwKlhvfsgSPKOzhUvvyn6GfoUJ1Rd5R9qGjQIpA5TKpJqjjkTOYpu4OxQXVx/2GT1Bwif
+        6nZqxkcqJoK/u+W1s8t7W27zCRlcoboMkCkU1u96honkOQ4nw+aCS0MydQ/esg==
+From:   Herve Codina <herve.codina@bootlin.com>
+To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Peter Rosin <peda@axentia.se>,
+        Stephen Warren <swarren@nvidia.com>,
+        Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>
+Cc:     Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Steen Hegelund <steen.hegelund@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Herve Codina <herve.codina@bootlin.com>,
+        stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 1/3] i2c: muxes: i2c-mux-pinctrl: Use of_get_i2c_adapter_by_node()
+Date:   Fri, 20 Oct 2023 17:30:11 +0200
+Message-ID: <20231020153017.759926-2-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231020153017.759926-1-herve.codina@bootlin.com>
+References: <20231020153017.759926-1-herve.codina@bootlin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.9 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        SPF_HELO_NONE,SPF_NONE autolearn=no autolearn_force=no version=3.4.6
+X-GND-Sasl: herve.codina@bootlin.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When the driver unbinds, pmu is unregistered and i915->uabi_engines is
-set to RB_ROOT. Due to this, when i915 PMU tries to stop the engine
-events, it issues a warn_on because engine lookup fails.
+i2c-mux-pinctrl uses the pair of_find_i2c_adapter_by_node() /
+i2c_put_adapter(). These pair alone is not correct to properly lock the
+I2C parent adapter.
 
-All perf hooks are taking care of this using a pmu->closed flag that is
-set when PMU unregisters. The stop event seems to have been left out.
+Indeed, i2c_put_adapter() decrements the module refcount while
+of_find_i2c_adapter_by_node() does not increment it. This leads to an
+underflow of the parent module refcount.
 
-Check for pmu->closed in pmu_event_stop as well.
+Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
+correctly the module refcount.
 
-Based on discussion here -
-https://patchwork.freedesktop.org/patch/492079/?series=105790&rev=2
-
-v2: s/is/if/ in commit title
-v3: Add fixes tag and cc stable
-
-Cc: <stable@vger.kernel.org> # v5.11+
-Fixes: b00bccb3f0bb ("drm/i915/pmu: Handle PCI unbind")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Fixes: c4aee3e1b0de ("i2c: mux: pinctrl: remove platform_data")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Cc: stable@vger.kernel.org
+Acked-by: Peter Rosin <peda@axentia.se>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/gpu/drm/i915/i915_pmu.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/i2c/muxes/i2c-mux-pinctrl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_pmu.c b/drivers/gpu/drm/i915/i915_pmu.c
-index 108b675088ba..f861863eb7c1 100644
---- a/drivers/gpu/drm/i915/i915_pmu.c
-+++ b/drivers/gpu/drm/i915/i915_pmu.c
-@@ -831,9 +831,18 @@ static void i915_pmu_event_start(struct perf_event *event, int flags)
- 
- static void i915_pmu_event_stop(struct perf_event *event, int flags)
- {
-+	struct drm_i915_private *i915 =
-+		container_of(event->pmu, typeof(*i915), pmu.base);
-+	struct i915_pmu *pmu = &i915->pmu;
-+
-+	if (pmu->closed)
-+		goto out;
-+
- 	if (flags & PERF_EF_UPDATE)
- 		i915_pmu_event_read(event);
- 	i915_pmu_disable(event);
-+
-+out:
- 	event->hw.state = PERF_HES_STOPPED;
- }
- 
+diff --git a/drivers/i2c/muxes/i2c-mux-pinctrl.c b/drivers/i2c/muxes/i2c-mux-pinctrl.c
+index 18236b9fa14a..6ebca7bfd8a2 100644
+--- a/drivers/i2c/muxes/i2c-mux-pinctrl.c
++++ b/drivers/i2c/muxes/i2c-mux-pinctrl.c
+@@ -62,7 +62,7 @@ static struct i2c_adapter *i2c_mux_pinctrl_parent_adapter(struct device *dev)
+ 		dev_err(dev, "Cannot parse i2c-parent\n");
+ 		return ERR_PTR(-ENODEV);
+ 	}
+-	parent = of_find_i2c_adapter_by_node(parent_np);
++	parent = of_get_i2c_adapter_by_node(parent_np);
+ 	of_node_put(parent_np);
+ 	if (!parent)
+ 		return ERR_PTR(-EPROBE_DEFER);
 -- 
-2.38.1
+2.41.0
 
