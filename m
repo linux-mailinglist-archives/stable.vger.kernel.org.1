@@ -2,92 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFD717D0625
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 03:25:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8C1D7D0629
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 03:27:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235578AbjJTBZb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 21:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42698 "EHLO
+        id S1346811AbjJTB1z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 21:27:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233387AbjJTBZa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 21:25:30 -0400
-Received: from w4.tutanota.de (w4.tutanota.de [81.3.6.165])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07BA2112;
-        Thu, 19 Oct 2023 18:25:24 -0700 (PDT)
-Received: from tutadb.w10.tutanota.de (unknown [192.168.1.10])
-        by w4.tutanota.de (Postfix) with ESMTP id 96A951060136;
-        Fri, 20 Oct 2023 01:25:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1697765123;
-        s=s1; d=bens.haus;
-        h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
-        bh=1jxNhGDyMeJS0OqpiE+P/Rwnl5U2rvW+F1eQUv3MgS8=;
-        b=GJGPgQmUcUlpwCwOMIf3JysAHVDLV2sAWhZ+n1Xy5aeXVS2vFvw5H4n5yFejfZZb
-        VLXjgLQPofhGyjEbRtOcKhzu71mZ5g1kJBc7i4mqzZD/444iby15s2U3Q1w7YJ2uYEJ
-        GXd+oGWYFGaTVOXam5KZvPq0p4Slmtf9ISRjITi4Zy6f5TUVyuMvbCG3G+5/YH657mb
-        Eyzi+4geHdOpx762XuoRvvEPMCi1IkxsvzZyzqdZDhAAD0t8aGQzk5Fp1u8CszdQprf
-        2CW1psS2i/lknRaDa3Xzof8gkgYuguGLQvqQjL8PQBsYkPrsdustc1etVWcEPpJhMp+
-        X4aOWzAXxQ==
-Date:   Fri, 20 Oct 2023 03:25:23 +0200 (CEST)
-From:   Ben Schneider <ben@bens.haus>
-To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc:     Regressions <regressions@lists.linux.dev>,
-        Linux Efi <linux-efi@vger.kernel.org>,
-        Stable <stable@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Message-ID: <Nh8pThy--3-9@bens.haus>
-In-Reply-To: <57062702-f858-46d3-bccc-f0f96891128b@canonical.com>
-References: <Nh-DzlX--3-9@bens.haus> <CAMj1kXFKe6piagNLdSUhxUhwLB+RfNHqjNWt8-r2CNS-rBdJKA@mail.gmail.com> <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com> <CAC_iWjJB3OTWiYX5YsJmNcPQw+rHSm955c1Z5pUajedWGM5QgA@mail.gmail.com> <Nh30qsF--3-9@bens.haus> <57062702-f858-46d3-bccc-f0f96891128b@canonical.com>
-Subject: Re: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
+        with ESMTP id S1346768AbjJTB1y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 21:27:54 -0400
+Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8C3116
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 18:27:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1697765274; x=1729301274;
+  h=message-id:date:mime-version:to:from:cc:subject:
+   content-transfer-encoding;
+  bh=gRHIWGBX70z/DJmBCO4m5ERrAqpwWSa9w8RtpF/7jLg=;
+  b=kc1wwwRgpNhdcMZCQ96mZX9YpMOOxVv5iby9yzj3ziBiRcBE7zYS0cp7
+   4gXrDWgo0iUN2EKEjS9VlmouE4Rd51f12t3VgGvSpbApDxBQPkAuC1cP3
+   MTPmsz94ED2ob86UKwCXYZjHTTVA95Zo1k8mex8UJBhYf9Z1dEuNXfyzo
+   A=;
+X-IronPort-AV: E=Sophos;i="6.03,238,1694736000"; 
+   d="scan'208";a="309451795"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-6e7a78d7.us-east-1.amazon.com) ([10.43.8.6])
+  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 01:27:47 +0000
+Received: from smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev (iad7-ws-svc-p70-lb3-vlan2.iad.amazon.com [10.32.235.34])
+        by email-inbound-relay-iad-1e-m6i4x-6e7a78d7.us-east-1.amazon.com (Postfix) with ESMTPS id 7387A88416;
+        Fri, 20 Oct 2023 01:27:45 +0000 (UTC)
+Received: from EX19MTAUEB002.ant.amazon.com [10.0.29.78:56613]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.62.238:2525] with esmtp (Farcaster)
+ id bfc3f018-7291-43d7-ab6c-b10fc8d61a6a; Fri, 20 Oct 2023 01:27:44 +0000 (UTC)
+X-Farcaster-Flow-ID: bfc3f018-7291-43d7-ab6c-b10fc8d61a6a
+Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
+ EX19MTAUEB002.ant.amazon.com (10.252.135.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Fri, 20 Oct 2023 01:27:40 +0000
+Received: from [10.95.211.45] (10.95.211.45) by EX19D028UEC003.ant.amazon.com
+ (10.252.137.159) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.37; Fri, 20 Oct
+ 2023 01:27:39 +0000
+Message-ID: <97397e8d-f447-4cf7-84a1-070989d0a7fd@amazon.com>
+Date:   Thu, 19 Oct 2023 21:27:37 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Greg KH <gregkh@linuxfoundation.org>,
+        "sashal@kernel.org" <sashal@kernel.org>
+From:   Luiz Capitulino <luizcap@amazon.com>
+CC:     <42.hyeyoo@gmail.com>
+Subject: [6.1] Please apply cc6003916ed46d7a67d91ee32de0f9138047d55f
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.95.211.45]
+X-ClientProxiedBy: EX19D044UWA001.ant.amazon.com (10.13.139.100) To
+ EX19D028UEC003.ant.amazon.com (10.252.137.159)
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE,UNPARSEABLE_RELAY autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Oct 19, 2023, 07:21 by heinrich.schuchardt@canonical.com:
+Hi,
 
-> To which kernel and device-tree are the messages below related?
->
-Sorry. I'm building/testing with v6.5.7 right now, but I have not been able=
- to boot any kernel version >=3D 6.1. The device tree I used also came from=
- linux v6.5.7. Its source is at arch/arm64/boot/dts/marvell/armada-3720-esp=
-ressobin-ultra.dts.
+As reported before[1], we found another regression in 6.1 when doing
+performance comparisons with 5.10. This one is caused by CONFIG_DEBUG_PREEMPT
+being enabled by default by the following upstream commit if you have the
+right config dependencies enabled (commit is introduced in v5.16-rc1):
 
-> Something in the structure of your device-tree is invalid.
->
-The device does boot using kernel v5.15 and the device tree compiled from l=
-inux v6.5.7. The device tree could still very well be a problem. I just did=
-n't start there because whatever problems the device tree may have don't pr=
-event the device from booting for kernels prior to v6.1.
+"""
+commit c597bfddc9e9e8a63817252b67c3ca0e544ace26
+Author: Frederic Weisbecker <frederic@kernel.org>
+Date: Tue Sep 14 12:31:34 2021 +0200
 
-> Please, check the load addresses in U-Boot. Is something overwriting the =
-tail of the device-tree?
->
-I have always loaded the device tree to 0x1000000 (16MiB) and the kernel to=
-=C2=A00x2000000 (32MiB) for no particular reason except that's what the man=
-ufacturer did.=C2=A0armada-3720-espressobin-ultra.dtb is only 14K. I don't =
-load an initramfs or anything else to memory with u-boot and the address us=
-ed to load u-boot environment is 0x6000000.
+sched: Provide Kconfig support for default dynamic preempt mode
+"""
 
-> Compiling upstream U-Boot's qemu_arm64_defconfig yields lib/efi_loader/dt=
-bdump.efi. If you run this instead of the kernel, you can write the device-=
-tree as it is passed in a configuration table to the ESP.
->
-I compiled and ran this fine, but I was unable to save the device tree. I s=
-uspect this is because the program searches for an ESP, and there is none o=
-n the device. U-boot was compiled with support to load directly from an ext=
-4 filesystem so I didn't bother setting one up. I will work on it. I can co=
-nvert the .dtb on disk back to a human-readable .dts easily with dtc if tha=
-t is helpful.
+We found up to 8% performance improvement with CONFIG_DEBUG_PREEMPT
+disabled in different perf benchmarks (including UnixBench process
+creation and redis). The root cause is explained in the commit log
+below which is merged in 6.3 and applies (almost) clealy on 6.1.59.
 
-Thanks!
+"""
+commit cc6003916ed46d7a67d91ee32de0f9138047d55f
+Author: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Date:   Sat Jan 21 12:39:42 2023 +0900
 
-Ben
+     lib/Kconfig.debug: do not enable DEBUG_PREEMPT by default
+
+     In workloads where this_cpu operations are frequently performed,
+     enabling DEBUG_PREEMPT may result in significant increase in
+     runtime overhead due to frequent invocation of
+     __this_cpu_preempt_check() function.
+
+     This can be demonstrated through benchmarks such as hackbench where this
+     configuration results in a 10% reduction in performance, primarily due to
+     the added overhead within memcg charging path.
+"""
+
+[1] https://lore.kernel.org/stable/010edf5a-453d-4c98-9c07-12e75d3f983c@amazon.com/
