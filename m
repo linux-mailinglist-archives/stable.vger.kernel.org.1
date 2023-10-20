@@ -2,173 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F77D7D096D
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 09:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FB707D0A49
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 10:10:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235640AbjJTHXh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 03:23:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42322 "EHLO
+        id S235647AbjJTIKO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 04:10:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376536AbjJTHXZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 03:23:25 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70A151BE3;
-        Fri, 20 Oct 2023 00:22:55 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 90EB521864;
-        Fri, 20 Oct 2023 07:22:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1697786573; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oHUQDoUOG8wAnAcAHyKhIFWzNSj2D39ugT0s3djIGmk=;
-        b=E+Ewv9SMxyIFu71T31LJGtPmf1yB2oBKlF8AOjxQdcqFSnwhaVN2NhuTWC9wGYMQj3QGqJ
-        IzhlDFo+a2IgDXHljoaN2hKXRfBdGcZM3GgNxMohtKN0fUNNNfL1D7fT9+grhBQXevgalR
-        67xHhzKQ3y97WZ4QrqUVijvKQLcQ6gw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1697786573;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=oHUQDoUOG8wAnAcAHyKhIFWzNSj2D39ugT0s3djIGmk=;
-        b=Ad1SMC4F86I12S3GpW0lebaCquRNIpFaWuFqIBUUl0QtVj/Guce9nNMky1NbMI/wgMZmEY
-        M2rSeDOrjSCN72AQ==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 36AB313584;
-        Fri, 20 Oct 2023 07:22:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 8pbBN8oqMmX5CAAAMHmgww
-        (envelope-from <neilb@suse.de>); Fri, 20 Oct 2023 07:22:50 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S235655AbjJTIKO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 04:10:14 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A33D115;
+        Fri, 20 Oct 2023 01:10:12 -0700 (PDT)
+Date:   Fri, 20 Oct 2023 08:10:10 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1697789411;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=k9cEt6RCZsT0SZQPSsNYDc8lc1K/B93bfA94NveKhpA=;
+        b=4JBehA5jx76Rw26JYeV/ASsBKFT7qpmbFqMSLszlJZPmTwyNBUFNV/tk8vxktzQAVqNBLZ
+        AHgx6BL2u8XKicajRaUoiHooKp08us58oruMaNC/h17qm2qsp537mULqfruvBNCv5fWJXR
+        gxbi8/kQ4djykoxAIbAd4D8/u/cxdn/8lRX3UsUWb7dSyW8/zepmpnmNooPQUE9FY4Adv0
+        Gpxoy+Og9ryXtgFrr755gH8JaQAXsGPmtI3NNdhhWqh/I8hmzoRWK6WHJD9CLRl60dqb5a
+        OXYvy/+w9D9gs3pwOsFCVenAQY3Xv9bURb32jVzKb/hwpdJbm+4GlaEpibs+UA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1697789411;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+        bh=k9cEt6RCZsT0SZQPSsNYDc8lc1K/B93bfA94NveKhpA=;
+        b=BOSjsx4/4hrH6pRn7i+EnDSW9EDoHsBU9K5pLd1iFlncWR2Pbxnesey4TJ6qysHf4N68ww
+        8hDvIOH7AsJMFBCw==
+From:   "tip-bot2 for Haitao Huang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/sgx: Return VM_FAULT_SIGBUS instead of
+ VM_FAULT_OOM for EPC exhaustion
+Cc:     Haitao Huang <haitao.huang@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>, stable@vger.kernel.org,
+        #@tip-bot2.tec.linutronix.de, v6.0+@tip-bot2.tec.linutronix.de,
+        x86@kernel.org, linux-kernel@vger.kernel.org
 MIME-Version: 1.0
-From:   "NeilBrown" <neilb@suse.de>
-To:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-        jslaby@suse.cz, "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.1.58
-In-reply-to: <2023101518-subscript-entity-be71@gregkh>
-References: <2023101518-subscript-entity-be71@gregkh>
-Date:   Fri, 20 Oct 2023 18:22:47 +1100
-Message-id: <169778656748.20306.1670865069010793541@noble.neil.brown.name>
-Authentication-Results: smtp-out1.suse.de;
-        none
-X-Spam-Level: 
-X-Spam-Score: -7.10
-X-Spamd-Result: default: False [-7.10 / 50.00];
-         ARC_NA(0.00)[];
-         RCVD_VIA_SMTP_AUTH(0.00)[];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         NEURAL_HAM_LONG(-3.00)[-1.000];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-         NEURAL_HAM_SHORT(-1.00)[-1.000];
-         RCPT_COUNT_SEVEN(0.00)[8];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         RCVD_TLS_ALL(0.00)[];
-         BAYES_HAM(-3.00)[100.00%]
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <169778941056.3135.14169781154210769341.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 16 Oct 2023, Greg Kroah-Hartman wrote:
-> I'm announcing the release of the 6.1.58 kernel.
->=20
-> All users of the 6.1 kernel series must upgrade.
->=20
-> The updated 6.1.y git tree can be found at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linu=
-x-6.1.y
-> and can be browsed at the normal kernel.org git web browser:
-> 	https://git.kernel.org/?p=3Dlinux/kernel/git/stable/linux-stable.git;a=3Ds=
-ummary
->=20
-> thanks,
->=20
-> greg k-h
->=20
-> ------------
->=20
->  Makefile                 |    2=20
->  fs/nfs/direct.c          |  134 ++++++++++++++----------------------------=
------
->  fs/nfs/write.c           |   23 +++-----
->  include/linux/nfs_page.h |    4 -
->  lib/test_meminit.c       |    2=20
->  5 files changed, 55 insertions(+), 110 deletions(-)
->=20
-> Greg Kroah-Hartman (7):
->       Revert "NFS: More fixes for nfs_direct_write_reschedule_io()"
->       Revert "NFS: Use the correct commit info in nfs_join_page_group()"
->       Revert "NFS: More O_DIRECT accounting fixes for error paths"
->       Revert "NFS: Fix O_DIRECT locking issues"
->       Revert "NFS: Fix error handling for O_DIRECT write scheduling"
+The following commit has been merged into the x86/urgent branch of tip:
 
-FYI the problem with these NFS patch is now described in comment #4 of
-https://bugzilla.kernel.org/show_bug.cgi?id=3D217999
-which I include below.  They can be reapplied if the "Fix error
-handling..." patch is fixed up as described.
+Commit-ID:     6b7b71a70af6d75e0a9eddf4b01e4383a78b8a5e
+Gitweb:        https://git.kernel.org/tip/6b7b71a70af6d75e0a9eddf4b01e4383a78b8a5e
+Author:        Haitao Huang <haitao.huang@linux.intel.com>
+AuthorDate:    Thu, 19 Oct 2023 19:53:53 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 20 Oct 2023 10:05:48 +02:00
 
-NeilBrown
+x86/sgx: Return VM_FAULT_SIGBUS instead of VM_FAULT_OOM for EPC exhaustion
 
-FYI the cause of this corruption is that the  backport of
-   NFS: Fix error handling for O_DIRECT write scheduling
+In the EAUG on page fault path, VM_FAULT_OOM is returned when the
+Enclave Page Cache (EPC) runs out. This may trigger unneeded OOM kill
+that will not free any EPCs. Return VM_FAULT_SIGBUS instead.
 
-had an error.
-The backported patch f16fd0b11f0f4d41846b5102b1656ea1fc9ac7a0
-moves "pos +=3D req_len" in nfs_direct_write_schedule_iovec() from after
-    req->wb_index =3D pos >> PAGE_SHIFT;
-to before that statement.  This ->wb_index is wrong.
-Possibly a better way to look at this is the use of "pos" is moved to *after*=
- it is updated.
+Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized enclave")
+Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: stable@vger.kernel.org # v6.0+
+---
+ arch/x86/kernel/cpu/sgx/encl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-The upstream patch 954998b60caa8f2a3bf3abe490de6f08d283687a
-doesn't move the use of pos because
-Commit 70e9db69f927 ("NFS: Clean up O_DIRECT request allocation")
-
-removes the use.
-
-v6.1.56 can be fixed with
-
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index 5a976fa343df..69134e11e7d0 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -864,6 +864,8 @@ static ssize_t nfs_direct_write_schedule_iovec(struct nfs=
-_direct_req *dreq,
-                                result =3D PTR_ERR(req);
-                                break;
-                        }
-+                       req->wb_index =3D pos >> PAGE_SHIFT;
-+                       req->wb_offset =3D pos & ~PAGE_MASK;
-=20
-                        if (desc.pg_error < 0) {
-                                nfs_free_request(req);
-@@ -883,8 +885,6 @@ static ssize_t nfs_direct_write_schedule_iovec(struct nfs=
-_direct_req *dreq,
-                        }
-=20
-                        nfs_lock_request(req);
--                       req->wb_index =3D pos >> PAGE_SHIFT;
--                       req->wb_offset =3D pos & ~PAGE_MASK;
-                        if (nfs_pageio_add_request(&desc, req))
-                                continue;
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 279148e..d13b7e4 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -322,7 +322,7 @@ struct sgx_encl_page *sgx_encl_load_page(struct sgx_encl *encl,
+  * ENCLS[EAUG] instruction.
+  *
+  * Returns: Appropriate vm_fault_t: VM_FAULT_NOPAGE when PTE was installed
+- * successfully, VM_FAULT_SIGBUS or VM_FAULT_OOM as error otherwise.
++ * successfully, VM_FAULT_SIGBUS as error otherwise.
+  */
+ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
+ 				     struct sgx_encl *encl, unsigned long addr)
+@@ -348,7 +348,7 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
+ 	secinfo_flags = SGX_SECINFO_R | SGX_SECINFO_W | SGX_SECINFO_X;
+ 	encl_page = sgx_encl_page_alloc(encl, addr - encl->base, secinfo_flags);
+ 	if (IS_ERR(encl_page))
+-		return VM_FAULT_OOM;
++		return VM_FAULT_SIGBUS;
+ 
+ 	mutex_lock(&encl->lock);
+ 
