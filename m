@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37CDD7D1717
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C197D1719
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230297AbjJTUeS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:34:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40156 "EHLO
+        id S229836AbjJTUeV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:34:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229836AbjJTUeR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:34:17 -0400
+        with ESMTP id S230306AbjJTUeU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:34:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3431BF
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:34:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B01C433C8;
-        Fri, 20 Oct 2023 20:34:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 849A61BF
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:34:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20C2C433C8;
+        Fri, 20 Oct 2023 20:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697834055;
-        bh=X15sSUpZQpC4o2hvE4eFocQVh5rnsLIon31e2XvmXfQ=;
+        s=korg; t=1697834058;
+        bh=sP8Ox7h3IwznA4r1v1aJzPU6XVhhoqcRNz7he1pT9SA=;
         h=Subject:To:Cc:From:Date:From;
-        b=EHoiHD3mfyvt1yuAhFBwAJ7jwHsdfOFJz+fDsmahFYy/rjC4S527ms/+jIVPg8KV4
-         8LX2NAXndOXmAp+p29VbT7LmW4fOYzft5I2Wy9VSV8AzmODM5HpoEd5vmnEVOi87W3
-         7MKo/y/rP5Fr1QMSXDGV41+vsS4p0m9Gb8np52HQ=
-Subject: FAILED: patch "[PATCH] net: move altnames together with the netdevice" failed to apply to 6.1-stable tree
+        b=eU2dSnK5rD6PpMk845p1yJMqWbZ5zECL2SgwnYWzUP/W8wbi9jL3imBlVLmwMdzoB
+         L/RuGtxm7/4Rs3kNTEowWDLFxk+EsP8PlinoVqJVn2gLPf2Iwpb9fF7qd6Y4bXDDvS
+         xw+cJtJzXvWsrwFsUw+2i9DfWSwCexBvu1XGE93M=
+Subject: FAILED: patch "[PATCH] net: move altnames together with the netdevice" failed to apply to 5.15-stable tree
 To:     kuba@kernel.org, jiri@nvidia.com, pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:34:10 +0200
-Message-ID: <2023102010-implicit-rectify-fa06@gregkh>
+Date:   Fri, 20 Oct 2023 22:34:11 +0200
+Message-ID: <2023102011-escapable-flattop-efeb@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8e15aee621618a3ee3abecaf1fd8c1428098b7ef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102010-implicit-rectify-fa06@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102011-escapable-flattop-efeb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
