@@ -2,39 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DF387D156B
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 20:06:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9C6A7D15FB
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 20:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230106AbjJTSGE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 14:06:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38034 "EHLO
+        id S229555AbjJTSwr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 14:52:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230089AbjJTSGE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 14:06:04 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 758A1D5A
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:06:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4480C433C8;
-        Fri, 20 Oct 2023 18:06:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697825162;
-        bh=Egr/hdPoZHTNtYSupiHVC0T0jSAJYd17vDcNjgkKVuQ=;
-        h=Subject:To:Cc:From:Date:From;
-        b=hAHmbrYiBNsIpFbF9Q6aaG3pkslxfjfIywsnZcqcd0xstHP3JxGtpKUkSivLYFUAZ
-         bumwCw8qfYAGVQGmBEajMLUuMdne1U48oW3WJFJvSSLAvIB0xxk0zR1zsMDfjJspNe
-         RylH2Lw11+lFFu6eLxme9WVAT3LQESXa8iglwlDM=
-Subject: FAILED: patch "[PATCH] qed: fix LL2 RX buffer allocation" failed to apply to 4.19-stable tree
-To:     manishc@marvell.com, davem@davemloft.net
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 20:04:30 +0200
-Message-ID: <2023102029-display-provolone-fab2@gregkh>
+        with ESMTP id S229437AbjJTSwq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 14:52:46 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0C3A11B
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:52:41 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-6ba54c3ed97so1084515b3a.2
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:52:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697827961; x=1698432761; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DTSJspe6v544wqJ5pbefnUtP+UIVc6mp9wCNcSSACRk=;
+        b=RoCP1pG0OtI7hvdVowuM0qQ6phFQYo3OugHx+x7/7oVjs9w7qE0jEkWtH8pt68apDM
+         oGOdL5H3y0eizlDhq2TPQ8JKwJAhXNL5y8vgv/O0HRWG+zG4N60iwipCQbHBCMW0i3Lm
+         /eOC+OcO5CNaV3sPRo415/1ej5IbUiEq4NNxCPVSboUKAFRL992eNDNx1nY5XB8HWxV+
+         yfMCOcVNzMuvJfg5PLTnVwAIF14xk7Oj9wllDIRhYMOQXKLBCYqUHR2FpZ6LTRj+m+Pb
+         tnf/zF4SOIYE9npCXIc88mkpT+Mqs4ua4J2hgKXCh4GG2uQ3ktAz53Huo0q61lel2MDh
+         8qvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697827961; x=1698432761;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DTSJspe6v544wqJ5pbefnUtP+UIVc6mp9wCNcSSACRk=;
+        b=uOyhjIG5RYPCkIzG5ARJrxOn5oMJo+qXObVIFOF0OVlDhRF5Xh1SgrUDkhN2aaTaTZ
+         0LNlw+M0faaWxf1cuRjDLINF/tKHxZs7hbYV5OEg6grLIaBz0AW6N6BYxXh52bJSiW19
+         WEdKfGl0oWJ9SUJsdzQ020zkvvVZYXiNzLWWOMkVOPHdbq9oCdlvJbEYHItqEn0DlXa3
+         eBxUxlw4YpFWat8PD3WCe+nXWc4u2YPbVuGLElLFcN34Mi+rvfr/MbTKinjuyPzi/lFl
+         3V0rzRPxSYZ9OHvK33AM+6LZArGpIvfnQyk09jh6IbNAlC2G4DCeQF8k85n9zZWDzDN6
+         orJQ==
+X-Gm-Message-State: AOJu0Yy1HCq822igUv6Fis3mOg4D665Am6yuqM1RhfGUzflkZKvDVcA9
+        gRkFUYsZS8vMSjYhA/ZUs0MmHQ==
+X-Google-Smtp-Source: AGHT+IGtSG0CdpLv7VLLWwthXlAkWWoVEYHlOSNc8IsWEjTOOD4D2zAepXWaocbQwjctb1/FcypFIQ==
+X-Received: by 2002:a05:6a00:24d1:b0:6be:2720:16a5 with SMTP id d17-20020a056a0024d100b006be272016a5mr3028317pfv.33.1697827961208;
+        Fri, 20 Oct 2023 11:52:41 -0700 (PDT)
+Received: from google.com (175.199.125.34.bc.googleusercontent.com. [34.125.199.175])
+        by smtp.gmail.com with ESMTPSA id z123-20020a626581000000b006b341144ad0sm1950069pfb.102.2023.10.20.11.52.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Oct 2023 11:52:40 -0700 (PDT)
+Date:   Fri, 20 Oct 2023 11:52:34 -0700
+From:   David Matlack <dmatlack@google.com>
+To:     Sean Christopherson <seanjc@google.com>
+Cc:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Pattara Teerapong <pteerapong@google.com>,
+        David Stevens <stevensd@google.com>,
+        Yiwei Zhang <zzyiwei@google.com>,
+        Paul Hsia <paulhsia@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH] KVM: x86/mmu: Stop zapping invalidated TDP MMU roots
+ asynchronously
+Message-ID: <ZTLMcmj-ycWhZuTX@google.com>
+References: <20231019201138.2076865-1-seanjc@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231019201138.2076865-1-seanjc@google.com>
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,89 +78,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 2023-10-19 01:11 PM, Sean Christopherson wrote:
+> [ Upstream commit 0df9dab891ff0d9b646d82e4fe038229e4c02451 ]
+> 
+> Stop zapping invalidate TDP MMU roots via work queue now that KVM
+> preserves TDP MMU roots until they are explicitly invalidated.  Zapping
+> roots asynchronously was effectively a workaround to avoid stalling a vCPU
+> for an extended during if a vCPU unloaded a root, which at the time
+> happened whenever the guest toggled CR0.WP (a frequent operation for some
+> guest kernels).
+> 
+[...]
+> 
+> Reported-by: Pattara Teerapong <pteerapong@google.com>
+> Cc: David Stevens <stevensd@google.com>
+> Cc: Yiwei Zhang<zzyiwei@google.com>
+> Cc: Paul Hsia <paulhsia@google.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Message-Id: <20230916003916.2545000-4-seanjc@google.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> Cc: David Matlack <dmatlack@google.com>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Reviewed-by: David Matlack <dmatlack@google.com>
+Tested-by: David Matlack <dmatlack@google.com>
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x 2f3389c73832ad90b63208c0fc281ad080114c7a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102029-display-provolone-fab2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 2f3389c73832ad90b63208c0fc281ad080114c7a Mon Sep 17 00:00:00 2001
-From: Manish Chopra <manishc@marvell.com>
-Date: Fri, 13 Oct 2023 18:48:12 +0530
-Subject: [PATCH] qed: fix LL2 RX buffer allocation
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Driver allocates the LL2 rx buffers from kmalloc()
-area to construct the skb using slab_build_skb()
-
-The required size allocation seems to have overlooked
-for accounting both skb_shared_info size and device
-placement padding bytes which results into the below
-panic when doing skb_put() for a standard MTU sized frame.
-
-skbuff: skb_over_panic: text:ffffffffc0b0225f len:1514 put:1514
-head:ff3dabceaf39c000 data:ff3dabceaf39c042 tail:0x62c end:0x566
-dev:<NULL>
-…
-skb_panic+0x48/0x4a
-skb_put.cold+0x10/0x10
-qed_ll2b_complete_rx_packet+0x14f/0x260 [qed]
-qed_ll2_rxq_handle_completion.constprop.0+0x169/0x200 [qed]
-qed_ll2_rxq_completion+0xba/0x320 [qed]
-qed_int_sp_dpc+0x1a7/0x1e0 [qed]
-
-This patch fixes this by accouting skb_shared_info and device
-placement padding size bytes when allocating the buffers.
-
-Cc: David S. Miller <davem@davemloft.net>
-Fixes: 0a7fb11c23c0 ("qed: Add Light L2 support")
-Signed-off-by: Manish Chopra <manishc@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_ll2.c b/drivers/net/ethernet/qlogic/qed/qed_ll2.c
-index 717a0b3f89bd..ab5ef254a748 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_ll2.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_ll2.c
-@@ -113,7 +113,10 @@ static void qed_ll2b_complete_tx_packet(void *cxt,
- static int qed_ll2_alloc_buffer(struct qed_dev *cdev,
- 				u8 **data, dma_addr_t *phys_addr)
- {
--	*data = kmalloc(cdev->ll2->rx_size, GFP_ATOMIC);
-+	size_t size = cdev->ll2->rx_size + NET_SKB_PAD +
-+		      SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+
-+	*data = kmalloc(size, GFP_ATOMIC);
- 	if (!(*data)) {
- 		DP_INFO(cdev, "Failed to allocate LL2 buffer data\n");
- 		return -ENOMEM;
-@@ -2589,7 +2592,7 @@ static int qed_ll2_start(struct qed_dev *cdev, struct qed_ll2_params *params)
- 	INIT_LIST_HEAD(&cdev->ll2->list);
- 	spin_lock_init(&cdev->ll2->lock);
- 
--	cdev->ll2->rx_size = NET_SKB_PAD + ETH_HLEN +
-+	cdev->ll2->rx_size = PRM_DMA_PAD_BYTES_NUM + ETH_HLEN +
- 			     L1_CACHE_BYTES + params->mtu;
- 
- 	/* Allocate memory for LL2.
-
+(Ran all KVM selftests and kvm-unit-tests with lockdep enabled.)
