@@ -2,100 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B37A7D12C0
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 17:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF1317D12C8
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 17:31:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377752AbjJTPao (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 11:30:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32914 "EHLO
+        id S1377761AbjJTPbO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 11:31:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377726AbjJTPa3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 11:30:29 -0400
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68BDC1A8;
-        Fri, 20 Oct 2023 08:30:27 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPA id DF5DAC000D;
-        Fri, 20 Oct 2023 15:30:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1697815826;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LpkSQeveUeewBTxaJFyVrBiY7AoHvN0hE8hZ52cDayY=;
-        b=OuMTtuTsfHK6E+16NET+zVwtnX4o+Xw9/X7wdTuWuRBpjJ5jdIChiURZAUu5RmWLvsB2T3
-        9T9vA38ADHg9rQhKOv0J2IKStBUWX73xMAJIKH6ebMUfsLlEeyo/V/cPqMJbHHCDLRdFT3
-        whXqROauSPkco0ha6pH7rqag50cww3Nehn5ycYMB1k3jMYZVaOQyRNdfFeCxJ1mCHV3IaD
-        tQ8gvIxiTf2fiX7znhONmol9gf1Ig7oDlavgMgKgttyQAZcvsUJuuJNufpWay2pmDszPKH
-        QgwDu2WUlMViWKQK0xdy2jbR1VlcbfaEFJHJqfp230QjADYt4b8TkrhP7Nm7Ew==
-From:   Herve Codina <herve.codina@bootlin.com>
-To:     Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Peter Rosin <peda@axentia.se>,
-        Stephen Warren <swarren@nvidia.com>,
-        Rob Herring <robh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>
-Cc:     Wolfram Sang <wsa@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Steen Hegelund <steen.hegelund@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Herve Codina <herve.codina@bootlin.com>,
-        stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 3/3] i2c: muxes: i2c-mux-gpmux: Use of_get_i2c_adapter_by_node()
-Date:   Fri, 20 Oct 2023 17:30:13 +0200
-Message-ID: <20231020153017.759926-4-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231020153017.759926-1-herve.codina@bootlin.com>
-References: <20231020153017.759926-1-herve.codina@bootlin.com>
+        with ESMTP id S1377732AbjJTPbL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 11:31:11 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A6A210E2;
+        Fri, 20 Oct 2023 08:31:03 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-53e04b17132so1446030a12.0;
+        Fri, 20 Oct 2023 08:31:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697815861; x=1698420661; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eBxrNimSjl2GBOQ8H36ib0tWv/gZxO8BkrOrDWOE6OM=;
+        b=QMuVssfgGUrkF0F8PdnIZN0I1GmjB0YZRIFSWUcYO22Bj9YnmOb8O2zKwEpjYgD/lE
+         Akczo+xut/86heJvSRlWAEFXxr6BqNFXmn6+76ZjUiIj9ePquPsWv+r0zOA8MGmcUMQd
+         rPEYvLiIimQNGelHbN39SoxZSPkxM+RLxv1A/pxg87HaLRzR8BcteE8+zKdDXwSF/rR+
+         kJ2RqH5jav5R51VB2acP+wxhwsG/CtsYo/p7N1oYZ9JFoVRR69G3dV0Omzox54gG9AOI
+         OxjhUPe+9mECMEdZDAU7HgUBNnzHRvljhbRl+8mZCelrLHqMU1ZLWIuGEGowkf0bSlr6
+         PHZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697815861; x=1698420661;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eBxrNimSjl2GBOQ8H36ib0tWv/gZxO8BkrOrDWOE6OM=;
+        b=j4kqhvhouX0NgxufqIUrTRzAQY0o+SwQ0+qTHjMmMEMI67ukx1Srf3RH6qNC7sFgxP
+         oeP+XDNXIthtV6FR1+dz5DnUAKxK9U99cpL3Gy2gdIUf5wyXTdK5grnIL1lQB9o+4Xvg
+         65+f2hV/oLN9WbV/yf33ol8GCqtofYlxAgLv/8qtUjkkvFi9unoDk/sxZ0f07nHFYmvB
+         s11bSikMm5jH/FL/z1ubF/icjbb599i4fGaTpfAkykDwsNYWKLqX+Ld3xsD66NCyimGX
+         CDOkDGv2Ht3ZlWDCjCJJEmMcWippenQMO1EZ18BnvF/mmOvJDTAhV5bp7SCUVZejXKil
+         OdAA==
+X-Gm-Message-State: AOJu0YzOY50x4V7PAM3XFv+Owc5Cl7X2ZIultdokkR6jkoxWAUO8vkNf
+        FV6YFPrvNZ/xU8iuFjK1ZZM=
+X-Google-Smtp-Source: AGHT+IHZ9EApz6QicYMD2pUHgWL1XMcpe9bCx52IL9m5mwc3xcIc2cO7tUHYAjIY99FbEcFMw0Nr7g==
+X-Received: by 2002:a50:8754:0:b0:53e:bb41:7506 with SMTP id 20-20020a508754000000b0053ebb417506mr1819869edv.33.1697815861112;
+        Fri, 20 Oct 2023 08:31:01 -0700 (PDT)
+Received: from andrejs-nb.int.toradex.com (77-59-154-235.dclient.hispeed.ch. [77.59.154.235])
+        by smtp.gmail.com with ESMTPSA id if5-20020a0564025d8500b0053f10da1105sm1631199edb.87.2023.10.20.08.31.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Oct 2023 08:31:00 -0700 (PDT)
+From:   Andrejs Cainikovs <andrejs.cainikovs@gmail.com>
+To:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v1 2/2] ARM: dts: imx6q-apalis: add can power-up delay on ixora board
+Date:   Fri, 20 Oct 2023 17:30:22 +0200
+Message-Id: <20231020153022.57858-3-andrejs.cainikovs@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231020153022.57858-1-andrejs.cainikovs@gmail.com>
+References: <20231020153022.57858-1-andrejs.cainikovs@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-i2c-mux-gpmux uses the pair of_find_i2c_adapter_by_node() /
-i2c_put_adapter(). These pair alone is not correct to properly lock the
-I2C parent adapter.
+From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
 
-Indeed, i2c_put_adapter() decrements the module refcount while
-of_find_i2c_adapter_by_node() does not increment it. This leads to an
-underflow of the parent module refcount.
+Newer variants of Ixora boards require a power-up delay when powering up
+the CAN transceiver of up to 1ms.
 
-Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
-correctly the module refcount.
-
-Fixes: ac8498f0ce53 ("i2c: i2c-mux-gpmux: new driver")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 Cc: stable@vger.kernel.org
-Acked-by: Peter Rosin <peda@axentia.se>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
 ---
- drivers/i2c/muxes/i2c-mux-gpmux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i2c/muxes/i2c-mux-gpmux.c b/drivers/i2c/muxes/i2c-mux-gpmux.c
-index baccf4bfaf02..8305661e1253 100644
---- a/drivers/i2c/muxes/i2c-mux-gpmux.c
-+++ b/drivers/i2c/muxes/i2c-mux-gpmux.c
-@@ -52,7 +52,7 @@ static struct i2c_adapter *mux_parent_adapter(struct device *dev)
- 		dev_err(dev, "Cannot parse i2c-parent\n");
- 		return ERR_PTR(-ENODEV);
- 	}
--	parent = of_find_i2c_adapter_by_node(parent_np);
-+	parent = of_get_i2c_adapter_by_node(parent_np);
- 	of_node_put(parent_np);
- 	if (!parent)
- 		return ERR_PTR(-EPROBE_DEFER);
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
+index 717decda0ceb..3ac7a4501620 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
+@@ -76,6 +76,7 @@ reg_can1_supply: regulator-can1-supply {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_enable_can1_power>;
+ 		regulator-name = "can1_supply";
++		startup-delay-us = <1000>;
+ 	};
+ 
+ 	reg_can2_supply: regulator-can2-supply {
+@@ -85,6 +86,7 @@ reg_can2_supply: regulator-can2-supply {
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_enable_can2_power>;
+ 		regulator-name = "can2_supply";
++		startup-delay-us = <1000>;
+ 	};
+ };
+ 
 -- 
-2.41.0
+2.34.1
 
