@@ -2,187 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09CD77D20C8
-	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 04:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70D987D21EB
+	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 10:22:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229943AbjJVCwv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 22:52:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49878 "EHLO
+        id S229574AbjJVIWw convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Sun, 22 Oct 2023 04:22:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjJVCwv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 22:52:51 -0400
-Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B3CD5D;
-        Sat, 21 Oct 2023 19:52:45 -0700 (PDT)
-Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-41cc7b67419so14937221cf.2;
-        Sat, 21 Oct 2023 19:52:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697943164; x=1698547964; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=fLJPGz08SScZMNcOGuHvw7UWOGHz7MBlKaho3/nzID8=;
-        b=PrM1C45OtorNQYkqV6nVhbTVDNHmgLl2JeBAwytC8NoDFqhs5LRQqnT+z2R6EeDS+F
-         uVrMr8O+xSdgl5mBLFAhH+qsMkhsHwBQmEPidDilBXFtjGVD7jVscNslwWgKflMbOeHA
-         ftMphdNVbvEIJu9C8kiSST0kLwJGwT97PotezqPEoRi2hgZtX4Rs7vC7AuhbrGMBVYmW
-         QT4B7HPSeT2i+LGk8PbU6DyMgrJalvMVjfGcSy2zpPMlaGaRtz8B30AX7fw9XyxNfxF8
-         xyI5iL01sBiFe2KQlV3FdEg2jDCSVbPhMUtNrmBEdwjU2vxaQZBG2RivNHz6CDRTb1Zo
-         MYsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697943164; x=1698547964;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fLJPGz08SScZMNcOGuHvw7UWOGHz7MBlKaho3/nzID8=;
-        b=k/jGVLHoJDXPER5mwLrfBE+GlrMIFBWX61O8BaWsq42Vik2SuGo+7/ay+nEOzemL+G
-         ueAx+CwjpRFxN9fF7SHPkHF8ub9G0/ttudYyOLbkjJamxciE407zZlZMv8x+46aWwo2r
-         gmVZ4KzBK01PO/0d3RE8/YxAhowvS5bH+OqMNx6tdn8SdrXVxFCuuXpjo2qqIPU1jLKU
-         ct6Jdr33IbxCjZYAETdWGVxAyPa7aebCHU4Z3E5kXsgR8rBGSMri4Wfz/ikJS+n4pwpC
-         +uMA+NsLlBWtS1h968WBc6geKtoNLwmlre26B/lrU6keCqDwFf1bvmt0uHp0Op/BZ3YA
-         rzgg==
-X-Gm-Message-State: AOJu0Ywu1G81BrF2gkb3ljlNzJHLcL+dLWzbFirRN0PUae6Pvc7wFInq
-        VlekXh6zKcIine7V2dHSlVA4ZjHTJ7WmM1ZIazU=
-X-Google-Smtp-Source: AGHT+IH2MHhpNeld9CqgKmIyUAEse6uqV2LrpU3aVrBAb1iJmpBgVHWItyqnxH7A/f6f8L8SOj4byTK4gKxP3ZofK/4=
-X-Received: by 2002:a05:622a:5d1:b0:418:1f20:5522 with SMTP id
- d17-20020a05622a05d100b004181f205522mr6758862qtb.43.1697943164314; Sat, 21
- Oct 2023 19:52:44 -0700 (PDT)
+        with ESMTP id S229500AbjJVIWv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 22 Oct 2023 04:22:51 -0400
+X-Greylist: delayed 141547 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 22 Oct 2023 01:22:47 PDT
+Received: from boboe.cn (unknown [120.230.82.59])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C4793
+        for <stable@vger.kernel.org>; Sun, 22 Oct 2023 01:22:47 -0700 (PDT)
+Received: from boboe.cn (localhost [127.0.0.1])
+        by boboe.cn (Postfix) with ESMTP id F06D06AE3050
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 19:54:52 +0800 (CST)
+Reply-To: jacques.bouchex@hotmail.com
+From:   Jacques BOUCHEX <info@boboe.cn>
+To:     stable@vger.kernel.org
+Subject: =?UTF-8?B?0JfQtNGA0LDQstC10LnRgtC1LA==?=
+Date:   20 Oct 2023 13:54:51 +0200
+Message-ID: <20231020135451.7CEAD43C413F12B5@boboe.cn>
 MIME-Version: 1.0
-References: <20231018141151.1334501-1-sashal@kernel.org> <20231018141151.1334501-12-sashal@kernel.org>
-In-Reply-To: <20231018141151.1334501-12-sashal@kernel.org>
-From:   Z qiang <qiang.zhang1211@gmail.com>
-Date:   Sun, 22 Oct 2023 10:52:33 +0800
-Message-ID: <CALm+0cVpvreUHCxjLiEAbXgmEO1J3egtn=MnB8NDs=c0gFx8Vw@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.5 12/31] workqueue: Fix UAF report by KASAN in pwq_release_workfn()
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        syzbot+60db9f652c92d5bacba4@syzkaller.appspotmail.com,
-        Tejun Heo <tj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
+        SPF_HELO_SOFTFAIL,SPF_SOFTFAIL autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [120.230.82.59 listed in list.dnswl.org]
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        *  0.7 SPF_HELO_SOFTFAIL SPF: HELO does not match SPF record
+        *      (softfail)
+        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
->
-> From: Zqiang <qiang.zhang1211@gmail.com>
->
-> [ Upstream commit 643445531829d89dc5ddbe0c5ee4ff8f84ce8687 ]
->
-> Currently, for UNBOUND wq, if the apply_wqattrs_prepare() return error,
-> the apply_wqattr_cleanup() will be called and use the pwq_release_worker
-> kthread to release resources asynchronously. however, the kfree(wq) is
-> invoked directly in failure path of alloc_workqueue(), if the kfree(wq)
-> has been executed and when the pwq_release_workfn() accesses wq, this
-> leads to the following scenario:
->
-> BUG: KASAN: slab-use-after-free in pwq_release_workfn+0x339/0x380 kernel/workqueue.c:4124
-> Read of size 4 at addr ffff888027b831c0 by task pool_workqueue_/3
->
-> CPU: 0 PID: 3 Comm: pool_workqueue_ Not tainted 6.5.0-rc7-next-20230825-syzkaller #0
-> Hardware name: Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-> Call Trace:
->  <TASK>
->  __dump_stack lib/dump_stack.c:88 [inline]
->  dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
->  print_address_description mm/kasan/report.c:364 [inline]
->  print_report+0xc4/0x620 mm/kasan/report.c:475
->  kasan_report+0xda/0x110 mm/kasan/report.c:588
->  pwq_release_workfn+0x339/0x380 kernel/workqueue.c:4124
->  kthread_worker_fn+0x2fc/0xa80 kernel/kthread.c:823
->  kthread+0x33a/0x430 kernel/kthread.c:388
->  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
->  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
->  </TASK>
->
-> Allocated by task 5054:
->  kasan_save_stack+0x33/0x50 mm/kasan/common.c:45
->  kasan_set_track+0x25/0x30 mm/kasan/common.c:52
->  ____kasan_kmalloc mm/kasan/common.c:374 [inline]
->  __kasan_kmalloc+0xa2/0xb0 mm/kasan/common.c:383
->  kmalloc include/linux/slab.h:599 [inline]
->  kzalloc include/linux/slab.h:720 [inline]
->  alloc_workqueue+0x16f/0x1490 kernel/workqueue.c:4684
->  kvm_mmu_init_tdp_mmu+0x23/0x100 arch/x86/kvm/mmu/tdp_mmu.c:19
->  kvm_mmu_init_vm+0x248/0x2e0 arch/x86/kvm/mmu/mmu.c:6180
->  kvm_arch_init_vm+0x39/0x720 arch/x86/kvm/x86.c:12311
->  kvm_create_vm arch/x86/kvm/../../../virt/kvm/kvm_main.c:1222 [inline]
->  kvm_dev_ioctl_create_vm arch/x86/kvm/../../../virt/kvm/kvm_main.c:5089 [inline]
->  kvm_dev_ioctl+0xa31/0x1c20 arch/x86/kvm/../../../virt/kvm/kvm_main.c:5131
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:871 [inline]
->  __se_sys_ioctl fs/ioctl.c:857 [inline]
->  __x64_sys_ioctl+0x18f/0x210 fs/ioctl.c:857
->  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
->  do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
->  entry_SYSCALL_64_after_hwframe+0x63/0xcd
->
-> Freed by task 5054:
->  kasan_save_stack+0x33/0x50 mm/kasan/common.c:45
->  kasan_set_track+0x25/0x30 mm/kasan/common.c:52
->  kasan_save_free_info+0x2b/0x40 mm/kasan/generic.c:522
->  ____kasan_slab_free mm/kasan/common.c:236 [inline]
->  ____kasan_slab_free+0x15b/0x1b0 mm/kasan/common.c:200
->  kasan_slab_free include/linux/kasan.h:164 [inline]
->  slab_free_hook mm/slub.c:1800 [inline]
->  slab_free_freelist_hook+0x114/0x1e0 mm/slub.c:1826
->  slab_free mm/slub.c:3809 [inline]
->  __kmem_cache_free+0xb8/0x2f0 mm/slub.c:3822
->  alloc_workqueue+0xe76/0x1490 kernel/workqueue.c:4746
->  kvm_mmu_init_tdp_mmu+0x23/0x100 arch/x86/kvm/mmu/tdp_mmu.c:19
->  kvm_mmu_init_vm+0x248/0x2e0 arch/x86/kvm/mmu/mmu.c:6180
->  kvm_arch_init_vm+0x39/0x720 arch/x86/kvm/x86.c:12311
->  kvm_create_vm arch/x86/kvm/../../../virt/kvm/kvm_main.c:1222 [inline]
->  kvm_dev_ioctl_create_vm arch/x86/kvm/../../../virt/kvm/kvm_main.c:5089 [inline]
->  kvm_dev_ioctl+0xa31/0x1c20 arch/x86/kvm/../../../virt/kvm/kvm_main.c:5131
->  vfs_ioctl fs/ioctl.c:51 [inline]
->  __do_sys_ioctl fs/ioctl.c:871 [inline]
->  __se_sys_ioctl fs/ioctl.c:857 [inline]
->  __x64_sys_ioctl+0x18f/0x210 fs/ioctl.c:857
->  do_syscall_x64 arch/x86/entry/common.c:50 [inline]
->  do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
->  entry_SYSCALL_64_after_hwframe+0x63/0xcd
->
-> This commit therefore flush pwq_release_worker in the alloc_and_link_pwqs()
-> before invoke kfree(wq).
->
-> Reported-by: syzbot+60db9f652c92d5bacba4@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=60db9f652c92d5bacba4
-> Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-> Signed-off-by: Tejun Heo <tj@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  kernel/workqueue.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-> index e51ab3d4765eb..a0045c159a0e1 100644
-> --- a/kernel/workqueue.c
-> +++ b/kernel/workqueue.c
-> @@ -4567,6 +4567,12 @@ static int alloc_and_link_pwqs(struct workqueue_struct *wq)
->         }
->         cpus_read_unlock();
->
-> +       /* for unbound pwq, flush the pwq_release_worker ensures that the
-> +        * pwq_release_workfn() completes before calling kfree(wq).
-> +        */
-> +       if (ret)
-> +               kthread_flush_worker(pwq_release_worker);
-> +
->         return ret;
->  }
->
+Здравейте,
 
-Hello Sasha,  the pwq_release_worker only exists in the V6.6 kernel,
-the previous versions of kernels do not use this mechanism.
+Съжалявам за този начин на контакт с вас, Току-що видях профила 
+ви и си помислих, че вие сте човекът, от когото имам нужда. 
+Накратко, името ми е Jacques BOUCHEX, от френски произход. 
+Страдам от тежко заболяване, което ще ме обрече на сигурна смърт, 
+рак на мозъка, и разполагам със сума от двадесет и пет милиона и 
+петстотин хиляди евро (25 500 000 евро), която бих искал да 
+предоставя на надеждна и честна трета страна за правилното ѝ 
+използване. Имам компания, която внася червено масло във Франция 
+и други страни. Преди 10 години загубих съпругата си и двете си 
+прекрасни деца при нещастен случай на пътя. Бих искал да даря 
+тази сума преди да умра, тъй като дните ми са преброени. Моля, 
+изпратете ми имейл на jacques.bouchex@hotmail.com
 
-Thanks
-Zqiang
-
->
-> --
-> 2.40.1
->
+Нека Господ ви благослови.
+Jacques BOUCHEX
