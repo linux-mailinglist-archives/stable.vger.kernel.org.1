@@ -2,84 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D79647D0D8D
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 12:43:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CCF37D0DE2
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 12:48:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376969AbjJTKnY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 06:43:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49300 "EHLO
+        id S1376909AbjJTKsS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 06:48:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376699AbjJTKnX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 06:43:23 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5F82EA4;
-        Fri, 20 Oct 2023 03:43:22 -0700 (PDT)
-Received: from pwmachine.numericable.fr (unknown [188.24.154.80])
-        by linux.microsoft.com (Postfix) with ESMTPSA id CB9AA20B74C0;
-        Fri, 20 Oct 2023 03:43:19 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CB9AA20B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1697798601;
-        bh=jHEMFSWvEcx1czRBXUE2OS96KE3ALvaIroFuMgx4g8g=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G4ZwyRGDZ8VV6xRFRRI5YT2sOs4vbJ9C1Ls7T6m8Ll4k+alQa91Ymp65cGpTEHlvM
-         fivLgH/sEdRBx51wFJ5cBYSAa87N3p4rUHYZl3JyELXjwSm+WgCsYP86XHT7wto0Fe
-         1f9HbJFCI1NfES2mnL2pq6X2moTAjGc68KWZk4qQ=
-From:   Francis Laniel <flaniel@linux.microsoft.com>
-To:     linux-trace-kernel@vger.kernel.org
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Francis Laniel <flaniel@linux.microsoft.com>,
-        stable@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
-        Shuah Khan <shuah@kernel.org>, linux-kernel@vger.kernel.org,
-        linux-kselftest@vger.kernel.org
-Subject: [PATCH v6 2/2] selftests/ftrace: Add new test case which checks non unique symbol
-Date:   Fri, 20 Oct 2023 13:42:50 +0300
-Message-Id: <20231020104250.9537-3-flaniel@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231020104250.9537-1-flaniel@linux.microsoft.com>
-References: <20231020104250.9537-1-flaniel@linux.microsoft.com>
+        with ESMTP id S1377102AbjJTKsP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 06:48:15 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2305D1738;
+        Fri, 20 Oct 2023 03:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=NYgUxqgWdWiMzMO4WM+VQrWOaxfIXpBf/TNYgsN2m04=; b=CZ9ruFd+h5Vi7bMFuAtlBHOGqB
+        MUuPKrOC0TB6B9QwySakkov0zer+ZknduzdHLJYwjTIdt/04bn3V0l9bpGoieTV+PUCM6Jiy/1FYA
+        dyD7Xka1BD1OQf0s0+rForFaZgbvHUaWUbDE1PckY21ImPPe+SNnRx24zHSdBjuUtBQSNpxoUHr94
+        OaERJIzhxmfW11n7KtCEoV13L+fVW5QF+DCMScwllR30K4s8hyLq0vp1VyIFnb8YeBmr8NLTqY6B3
+        94oYYMjoI/y5+dC70lPiHQC5bGeUHHlUNrTDydlOcAoYc9ETCpKswfUFePItYFP+vIizxHVrtyXdG
+        cup/TrFQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
+        id 1qtn10-00AxZV-0J;
+        Fri, 20 Oct 2023 10:46:02 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+        id BC5B8300392; Fri, 20 Oct 2023 12:46:01 +0200 (CEST)
+Date:   Fri, 20 Oct 2023 12:46:01 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Hao Jia <jiahao.os@bytedance.com>
+Cc:     mingo@redhat.com, mingo@kernel.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        bristot@redhat.com, vschneid@redhat.com,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Igor Raits <igor.raits@gmail.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: Re: [PATCH v2] sched/core: Fix RQCF_ACT_SKIP leak
+Message-ID: <20231020104601.GA33965@noisy.programming.kicks-ass.net>
+References: <20231012090003.11450-1-jiahao.os@bytedance.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,SPF_HELO_PASS,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231012090003.11450-1-jiahao.os@bytedance.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-If name_show() is non unique, this test will try to install a kprobe on this
-function which should fail returning EADDRNOTAVAIL.
-On kernel where name_show() is not unique, this test is skipped.
+On Thu, Oct 12, 2023 at 05:00:03PM +0800, Hao Jia wrote:
+> Igor Raits and Bagas Sanjaya report a RQCF_ACT_SKIP leak warning.
+> Link: https://lore.kernel.org/all/a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com
+> 
+> This warning may be triggered in the following situations:
+> 
+>     CPU0                                      CPU1
+> 
+> __schedule()
+>   *rq->clock_update_flags <<= 1;*   unregister_fair_sched_group()
+>   pick_next_task_fair+0x4a/0x410      destroy_cfs_bandwidth()
+>     newidle_balance+0x115/0x3e0       for_each_possible_cpu(i) *i=0*
+>       rq_unpin_lock(this_rq, rf)      __cfsb_csd_unthrottle()
+>       raw_spin_rq_unlock(this_rq)
+>                                       rq_lock(*CPU0_rq*, &rf)
+>                                       rq_clock_start_loop_update()
+>                                       rq->clock_update_flags & RQCF_ACT_SKIP <--
+>       raw_spin_rq_lock(this_rq)
+> 
+> The purpose of RQCF_ACT_SKIP is to skip the update rq clock,
+> but the update is very early in __schedule(), but we clear
+> RQCF_*_SKIP very late, causing it to span that gap above
+> and triggering this warning.
+> 
+> In __schedule() we can clear the RQCF_*_SKIP flag immediately
+> after update_rq_clock() to avoid this RQCF_ACT_SKIP leak warning.
+> And set rq->clock_update_flags to RQCF_UPDATED to avoid
+> rq->clock_update_flags < RQCF_ACT_SKIP warning that may be triggered later.
+> 
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
----
- .../ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc  | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
- create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-
-diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-new file mode 100644
-index 000000000000..bc9514428dba
---- /dev/null
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-@@ -0,0 +1,13 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+# description: Test failure of registering kprobe on non unique symbol
-+# requires: kprobe_events
-+
-+SYMBOL='name_show'
-+
-+# We skip this test on kernel where SYMBOL is unique or does not exist.
-+if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
-+	exit_unsupported
-+fi
-+
-+! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
--- 
-2.34.1
-
+Thanks!
