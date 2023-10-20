@@ -2,111 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA2097D0618
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 03:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFD717D0625
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 03:25:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346787AbjJTBVk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 21:21:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38436 "EHLO
+        id S235578AbjJTBZb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 21:25:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346758AbjJTBVk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 21:21:40 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D71C124
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 18:21:38 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d81e9981ff4so353760276.3
-        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 18:21:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1697764897; x=1698369697; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=svgRlD+xMxXKSNv1D21nXe/Ukb4M7OikQcdxYN6vhEQ=;
-        b=E6w/HQLu+MM7ZPt5y0dka0jHHkkNewlbZNJFvK/oeRDHncOpdSXgod5JH2BVF8wm9h
-         MPiXB70QD9hXN4nxMNLkDxblaJ0lYMB2LfxHA4faV+1OUfPKiBA8qXnqVkJEdWdRBxJO
-         NKIVD2OGfOua6m9uj0A32Wc0LulJ8aiBredMlKg9rH6if+/OCq82VeUwAg7FcMo0Wiof
-         WCKzy9DmqJepUD/ycFXd0/xqSjiTeC1/HjxGGIji9TKXofO0ba42Cj8t0+0H1aH+pugL
-         7foHYl9Jcz5wcD2qAd7oyEJKpjw+RAKYIJiERoU3xeLgPgpxtVaS8g3BaMtuakRR7Azp
-         ldbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697764897; x=1698369697;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=svgRlD+xMxXKSNv1D21nXe/Ukb4M7OikQcdxYN6vhEQ=;
-        b=XzN0Xo/7KQLgAXiNMjsJyB7Vmj3Dhnqgy/KQVgf0uZgy6Dhi4lBqF90Rk2fpLCvoxe
-         L9E+qGCilItngGqvmL9pigYGu3lrcKWDXigHrP2x055yU7mY3FtlXcL7DGzPA6EocFiT
-         VGiSiktYOZADgjjS2ErORPqPyvAOJxfg6FbYVLvKF6KIiom++txmsPU3te1Xm889g8RD
-         ctSw/QIvIifnbWM8i4Ww9DwQ5RhyGGJvSd08vuHMGPvxmyqQFsH99m6imodTDEhBJxzb
-         QGxV4VdjVseTUAEb3oyoRqEmXNwyJ425QfBfldap+gVDTTcLIkxL2NLyj9GiBudhtbug
-         ImLg==
-X-Gm-Message-State: AOJu0YxEMAD9RuOf+3rorjHHjZ4o+Eua01pXM28p8Z3sLza8+Li/tsQW
-        S2o96hoZ57xK8EI50pX8zqq21SX92L4=
-X-Google-Smtp-Source: AGHT+IEVeJk3Qi++5fKSME7qdO8CAO8j6CVkisf6RVyyQg1hEpWsD9DIRASMsOOPNhJdtTnJfDNyeH2MfO8=
-X-Received: from hhhuuu.c.googlers.com ([fda3:e722:ac3:cc00:3:22c1:c0a8:c80])
- (user=hhhuuu job=sendgmr) by 2002:a5b:b06:0:b0:d9a:3a26:fb56 with SMTP id
- z6-20020a5b0b06000000b00d9a3a26fb56mr9102ybp.2.1697764897525; Thu, 19 Oct
- 2023 18:21:37 -0700 (PDT)
-Date:   Fri, 20 Oct 2023 01:21:32 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.758.gaed0368e0e-goog
-Message-ID: <20231020012132.100960-1-hhhuuu@google.com>
-Subject: [PATCH v2] usb: typec: tcpm: Fix NULL pointer dereference in tcpm_pd_svdm()
-From:   Jimmy Hu <hhhuuu@google.com>
-To:     linux@roeck-us.net, heikki.krogerus@linux.intel.com,
-        gregkh@linuxfoundation.org
-Cc:     kyletso@google.com, badhri@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Jimmy Hu <hhhuuu@google.com>,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S233387AbjJTBZa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 21:25:30 -0400
+Received: from w4.tutanota.de (w4.tutanota.de [81.3.6.165])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07BA2112;
+        Thu, 19 Oct 2023 18:25:24 -0700 (PDT)
+Received: from tutadb.w10.tutanota.de (unknown [192.168.1.10])
+        by w4.tutanota.de (Postfix) with ESMTP id 96A951060136;
+        Fri, 20 Oct 2023 01:25:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1697765123;
+        s=s1; d=bens.haus;
+        h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
+        bh=1jxNhGDyMeJS0OqpiE+P/Rwnl5U2rvW+F1eQUv3MgS8=;
+        b=GJGPgQmUcUlpwCwOMIf3JysAHVDLV2sAWhZ+n1Xy5aeXVS2vFvw5H4n5yFejfZZb
+        VLXjgLQPofhGyjEbRtOcKhzu71mZ5g1kJBc7i4mqzZD/444iby15s2U3Q1w7YJ2uYEJ
+        GXd+oGWYFGaTVOXam5KZvPq0p4Slmtf9ISRjITi4Zy6f5TUVyuMvbCG3G+5/YH657mb
+        Eyzi+4geHdOpx762XuoRvvEPMCi1IkxsvzZyzqdZDhAAD0t8aGQzk5Fp1u8CszdQprf
+        2CW1psS2i/lknRaDa3Xzof8gkgYuguGLQvqQjL8PQBsYkPrsdustc1etVWcEPpJhMp+
+        X4aOWzAXxQ==
+Date:   Fri, 20 Oct 2023 03:25:23 +0200 (CEST)
+From:   Ben Schneider <ben@bens.haus>
+To:     Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+Cc:     Regressions <regressions@lists.linux.dev>,
+        Linux Efi <linux-efi@vger.kernel.org>,
+        Stable <stable@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Message-ID: <Nh8pThy--3-9@bens.haus>
+In-Reply-To: <57062702-f858-46d3-bccc-f0f96891128b@canonical.com>
+References: <Nh-DzlX--3-9@bens.haus> <CAMj1kXFKe6piagNLdSUhxUhwLB+RfNHqjNWt8-r2CNS-rBdJKA@mail.gmail.com> <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com> <CAC_iWjJB3OTWiYX5YsJmNcPQw+rHSm955c1Z5pUajedWGM5QgA@mail.gmail.com> <Nh30qsF--3-9@bens.haus> <57062702-f858-46d3-bccc-f0f96891128b@canonical.com>
+Subject: Re: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-It is possible that typec_register_partner() returns ERR_PTR on failure.
-When port->partner is an error, a NULL pointer dereference may occur as
-shown below.
+Oct 19, 2023, 07:21 by heinrich.schuchardt@canonical.com:
 
-[91222.095236][  T319] typec port0: failed to register partner (-17)
-...
-[91225.061491][  T319] Unable to handle kernel NULL pointer dereference
-at virtual address 000000000000039f
-[91225.274642][  T319] pc : tcpm_pd_data_request+0x310/0x13fc
-[91225.274646][  T319] lr : tcpm_pd_data_request+0x298/0x13fc
-[91225.308067][  T319] Call trace:
-[91225.308070][  T319]  tcpm_pd_data_request+0x310/0x13fc
-[91225.308073][  T319]  tcpm_pd_rx_handler+0x100/0x9e8
-[91225.355900][  T319]  kthread_worker_fn+0x178/0x58c
-[91225.355902][  T319]  kthread+0x150/0x200
-[91225.355905][  T319]  ret_from_fork+0x10/0x30
+> To which kernel and device-tree are the messages below related?
+>
+Sorry. I'm building/testing with v6.5.7 right now, but I have not been able=
+ to boot any kernel version >=3D 6.1. The device tree I used also came from=
+ linux v6.5.7. Its source is at arch/arm64/boot/dts/marvell/armada-3720-esp=
+ressobin-ultra.dts.
 
-Add a check for port->partner to avoid dereferencing a NULL pointer.
+> Something in the structure of your device-tree is invalid.
+>
+The device does boot using kernel v5.15 and the device tree compiled from l=
+inux v6.5.7. The device tree could still very well be a problem. I just did=
+n't start there because whatever problems the device tree may have don't pr=
+event the device from booting for kernels prior to v6.1.
 
-Fixes: 5e1d4c49fbc8 ("usb: typec: tcpm: Determine common SVDM Version")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jimmy Hu <hhhuuu@google.com>
----
- drivers/usb/typec/tcpm/tcpm.c | 3 +++
- 1 file changed, 3 insertions(+)
+> Please, check the load addresses in U-Boot. Is something overwriting the =
+tail of the device-tree?
+>
+I have always loaded the device tree to 0x1000000 (16MiB) and the kernel to=
+=C2=A00x2000000 (32MiB) for no particular reason except that's what the man=
+ufacturer did.=C2=A0armada-3720-espressobin-ultra.dtb is only 14K. I don't =
+load an initramfs or anything else to memory with u-boot and the address us=
+ed to load u-boot environment is 0x6000000.
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 6e843c511b85..792ec4ac7d8d 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1625,6 +1625,9 @@ static int tcpm_pd_svdm(struct tcpm_port *port, struct typec_altmode *adev,
- 			if (PD_VDO_VID(p[0]) != USB_SID_PD)
- 				break;
- 
-+			if (IS_ERR_OR_NULL(port->partner))
-+				break;
-+
- 			if (PD_VDO_SVDM_VER(p[0]) < svdm_version) {
- 				typec_partner_set_svdm_version(port->partner,
- 							       PD_VDO_SVDM_VER(p[0]));
--- 
-2.42.0.758.gaed0368e0e-goog
+> Compiling upstream U-Boot's qemu_arm64_defconfig yields lib/efi_loader/dt=
+bdump.efi. If you run this instead of the kernel, you can write the device-=
+tree as it is passed in a configuration table to the ESP.
+>
+I compiled and ran this fine, but I was unable to save the device tree. I s=
+uspect this is because the program searches for an ESP, and there is none o=
+n the device. U-boot was compiled with support to load directly from an ext=
+4 filesystem so I didn't bother setting one up. I will work on it. I can co=
+nvert the .dtb on disk back to a human-readable .dts easily with dtc if tha=
+t is helpful.
 
+Thanks!
+
+Ben
