@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D7647D14FD
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DCC57D14FE
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:40:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229975AbjJTRju (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 13:39:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51478 "EHLO
+        id S230008AbjJTRkW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 13:40:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229909AbjJTRjt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:39:49 -0400
+        with ESMTP id S229909AbjJTRkW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:40:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22A36A3
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 10:39:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5547DC433C8;
-        Fri, 20 Oct 2023 17:39:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8079FA
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 10:40:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECB4C433C8;
+        Fri, 20 Oct 2023 17:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697823587;
-        bh=7XtoQ8bdWFvHVCJAH/4one3FzUsf3uLRDdhD+1m2ZvI=;
+        s=korg; t=1697823620;
+        bh=COueDFjuhf805Nt20Mt5UNUK6r2WKZuTfnrVSH2C1X0=;
         h=Subject:To:Cc:From:Date:From;
-        b=vjL3CEBS3ziy5IF7TS5Qy5s1fBAOwnq5e5PO2ndHZ+UzKn0acQi7JQOKSbIR7FU4D
-         yW1+fcSplG4WYpOkVYsLAiWvqitWHeU3RxnBQC5liOapUNfyn5FZPqWpJXHfujuuc/
-         z3IP0H1Tts/awXiM2gd7jtWMeqI0V2W4oj5ymNPc=
-Subject: FAILED: patch "[PATCH] KVM: x86/pmu: Truncate counter value to allowed width on" failed to apply to 6.1-stable tree
-To:     rkagan@amazon.de, likexu@tencent.com, seanjc@google.com
+        b=0qpuwG/2+eyjmGPU7w+eGrecHHRH5kipPT+Oo4D1UsFOG9ZQEMPMSC5TevvR+mWyn
+         ccUtcoKXK4ExzpmRmWNIOPOTRrB2Tp/bRBDkbQZdKWJY/h46HMTk1uCkuLVDka36Jj
+         7CNjgMaJGiyJorOPB2kPabBcwcMguk+IH8OyJ5v0=
+Subject: FAILED: patch "[PATCH] x86: KVM: SVM: always update the x2avic msr interception" failed to apply to 6.1-stable tree
+To:     mlevitsk@redhat.com, pbonzini@redhat.com, seanjc@google.com,
+        suravee.suthikulpanit@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 19:39:45 +0200
-Message-ID: <2023102044-ice-badass-92b5@gregkh>
+Date:   Fri, 20 Oct 2023 19:40:17 +0200
+Message-ID: <2023102017-human-marine-7125@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -52,10 +53,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x b29a2acd36dd7a33c63f260df738fb96baa3d4f8
+git cherry-pick -x b65235f6e102354ccafda601eaa1c5bef5284d21
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102044-ice-badass-92b5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102017-human-marine-7125@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,93 +68,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b29a2acd36dd7a33c63f260df738fb96baa3d4f8 Mon Sep 17 00:00:00 2001
-From: Roman Kagan <rkagan@amazon.de>
-Date: Thu, 4 May 2023 14:00:42 +0200
-Subject: [PATCH] KVM: x86/pmu: Truncate counter value to allowed width on
- write
+From b65235f6e102354ccafda601eaa1c5bef5284d21 Mon Sep 17 00:00:00 2001
+From: Maxim Levitsky <mlevitsk@redhat.com>
+Date: Thu, 28 Sep 2023 20:33:51 +0300
+Subject: [PATCH] x86: KVM: SVM: always update the x2avic msr interception
 
-Performance counters are defined to have width less than 64 bits.  The
-vPMU code maintains the counters in u64 variables but assumes the value
-to fit within the defined width.  However, for Intel non-full-width
-counters (MSR_IA32_PERFCTRx) the value receieved from the guest is
-truncated to 32 bits and then sign-extended to full 64 bits.  If a
-negative value is set, it's sign-extended to 64 bits, but then in
-kvm_pmu_incr_counter() it's incremented, truncated, and compared to the
-previous value for overflow detection.
+The following problem exists since x2avic was enabled in the KVM:
 
-That previous value is not truncated, so it always evaluates bigger than
-the truncated new one, and a PMI is injected.  If the PMI handler writes
-a negative counter value itself, the vCPU never quits the PMI loop.
+svm_set_x2apic_msr_interception is called to enable the interception of
+the x2apic msrs.
 
-Turns out that Linux PMI handler actually does write the counter with
-the value just read with RDPMC, so when no full-width support is exposed
-via MSR_IA32_PERF_CAPABILITIES, and the guest initializes the counter to
-a negative value, it locks up.
+In particular it is called at the moment the guest resets its apic.
 
-This has been observed in the field, for example, when the guest configures
-atop to use perfevents and runs two instances of it simultaneously.
+Assuming that the guest's apic was in x2apic mode, the reset will bring
+it back to the xapic mode.
 
-To address the problem, maintain the invariant that the counter value
-always fits in the defined bit width, by truncating the received value
-in the respective set_msr methods.  For better readability, factor the
-out into a helper function, pmc_write_counter(), shared by vmx and svm
-parts.
+The svm_set_x2apic_msr_interception however has an erroneous check for
+'!apic_x2apic_mode()' which prevents it from doing anything in this case.
 
-Fixes: 9cd803d496e7 ("KVM: x86: Update vPMCs when retiring instructions")
+As a result of this, all x2apic msrs are left unintercepted, and that
+exposes the bare metal x2apic (if enabled) to the guest.
+Oops.
+
+Remove the erroneous '!apic_x2apic_mode()' check to fix that.
+
+This fixes CVE-2023-5090
+
+Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
 Cc: stable@vger.kernel.org
-Signed-off-by: Roman Kagan <rkagan@amazon.de>
-Link: https://lore.kernel.org/all/20230504120042.785651-1-rkagan@amazon.de
-Tested-by: Like Xu <likexu@tencent.com>
-[sean: tweak changelog, s/set/write in the helper]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Tested-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230928173354.217464-2-mlevitsk@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index 7d9ba301c090..1d64113de488 100644
---- a/arch/x86/kvm/pmu.h
-+++ b/arch/x86/kvm/pmu.h
-@@ -74,6 +74,12 @@ static inline u64 pmc_read_counter(struct kvm_pmc *pmc)
- 	return counter & pmc_bitmask(pmc);
- }
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 9507df93f410..acdd0b89e471 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -913,8 +913,7 @@ void svm_set_x2apic_msr_interception(struct vcpu_svm *svm, bool intercept)
+ 	if (intercept == svm->x2avic_msrs_intercepted)
+ 		return;
  
-+static inline void pmc_write_counter(struct kvm_pmc *pmc, u64 val)
-+{
-+	pmc->counter += val - pmc_read_counter(pmc);
-+	pmc->counter &= pmc_bitmask(pmc);
-+}
-+
- static inline void pmc_release_perf_event(struct kvm_pmc *pmc)
- {
- 	if (pmc->perf_event) {
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index cef5a3d0abd0..373ff6a6687b 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -160,7 +160,7 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	/* MSR_PERFCTRn */
- 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
- 	if (pmc) {
--		pmc->counter += data - pmc_read_counter(pmc);
-+		pmc_write_counter(pmc, data);
- 		pmc_update_sample_period(pmc);
- 		return 0;
- 	}
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index f2efa0bf7ae8..820d3e1f6b4f 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -436,11 +436,11 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			if (!msr_info->host_initiated &&
- 			    !(msr & MSR_PMC_FULL_WIDTH_BIT))
- 				data = (s64)(s32)data;
--			pmc->counter += data - pmc_read_counter(pmc);
-+			pmc_write_counter(pmc, data);
- 			pmc_update_sample_period(pmc);
- 			break;
- 		} else if ((pmc = get_fixed_pmc(pmu, msr))) {
--			pmc->counter += data - pmc_read_counter(pmc);
-+			pmc_write_counter(pmc, data);
- 			pmc_update_sample_period(pmc);
- 			break;
- 		} else if ((pmc = get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0))) {
+-	if (!x2avic_enabled ||
+-	    !apic_x2apic_mode(svm->vcpu.arch.apic))
++	if (!x2avic_enabled)
+ 		return;
+ 
+ 	for (i = 0; i < MAX_DIRECT_ACCESS_MSRS; i++) {
 
