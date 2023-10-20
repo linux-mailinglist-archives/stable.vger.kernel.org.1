@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B16D7D179D
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:56:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2A57D17A0
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:56:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231288AbjJTU4K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:56:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35370 "EHLO
+        id S231301AbjJTU4Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:56:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230408AbjJTU4I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:56:08 -0400
+        with ESMTP id S230408AbjJTU4X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:56:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB133BF
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:56:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE741C433C7;
-        Fri, 20 Oct 2023 20:56:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 630C7E8
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:56:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F11C433C8;
+        Fri, 20 Oct 2023 20:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697835366;
+        s=korg; t=1697835381;
         bh=Kn2TQ0lUnr+F5AtBe1+6+1nrvrZEfy/aMKkA3UdiW7s=;
         h=Subject:To:Cc:From:Date:From;
-        b=y8n/kCokbg/SN7x6SC+CY1YXvH/tXzr7WE3OgBnsTHueAfdLVQenKan5jtjH2Av+2
-         lIMAhLVl5UWCcSDk5kIxZnN+xDr2udK4Dsq9ndQZpFuR5t9dxfBl0qbjbuRuB+NDJq
-         7kqTpshvmWrFGRSN7QIXehINsH3GBh8YyLrGMdPQ=
+        b=b9l9gjPIjl7iUC+xmAIoVKnkPLqgpwmPEgyEprGJps4fvDCLdmJF5i2hSu4pcdES0
+         bNvQbRNPFL/ksEuNIbXWtDj4o6rJztShdY6hac+I6DGcVoWecwskrVP2sfFdu20WtF
+         MezEcbdjGvnmx5+IFaqi2+dzKxD+1T6p4sYvWaCw=
 Subject: FAILED: patch "[PATCH] net: avoid UAF on deleted altname" failed to apply to 5.15-stable tree
 To:     kuba@kernel.org, jiri@nvidia.com, pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
@@ -34,7 +34,8 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
