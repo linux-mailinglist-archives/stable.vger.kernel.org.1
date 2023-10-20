@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29F6A7D16E3
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 267AC7D16E4
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:23:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229659AbjJTUXI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:23:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38820 "EHLO
+        id S229704AbjJTUXL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:23:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230248AbjJTUXI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:23:08 -0400
+        with ESMTP id S230251AbjJTUXK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:23:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3565FD66
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:23:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7203DC433C8;
-        Fri, 20 Oct 2023 20:23:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BE10D63
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:23:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD4BC433C8;
+        Fri, 20 Oct 2023 20:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697833384;
-        bh=Oha7Co7HadeDbcBF0q3HWgZCg032u5KK3Ya9xds59E4=;
+        s=korg; t=1697833387;
+        bh=4ERxc0zdNHqB3z2BGzTLvLJV4STXbUpaJ9OCHj6XKfs=;
         h=Subject:To:Cc:From:Date:From;
-        b=NVvJ2gR6iY8qT7EX+CVsAE4wU8GHgNxfHYQ6TLX5obd2AjSf7hnBeC8bgIM6wdjmf
-         gJF+Pf6I02q9K4roM29vjBoD4dcEyJKWmYs9GoyFXo0Y3W7d6A+Jbr39cgwdN/FJvX
-         SuFyosigavIO+ChdO298b90WFwirK8NPYI8kI2Wk=
-Subject: FAILED: patch "[PATCH] net: xfrm: skip policies marked as dead while reinserting" failed to apply to 6.1-stable tree
+        b=cYPGLEZbcTAJPOah5er7yFNGgG2+CBFvclRjjwB85Te3hnG2Y6woC6LLZQkvJm5rM
+         LxbvewG/yUMoAxhcK7dq7cTd9KtMVXTu6zgHWZ4BaBzH/MCUyT1k8lAMyz9v5GOspJ
+         VEqrDKn1Z/dUi2n0sw/bcjCSO0n1tOzcKCuOAwyM=
+Subject: FAILED: patch "[PATCH] net: xfrm: skip policies marked as dead while reinserting" failed to apply to 5.15-stable tree
 To:     dongchenchen2@huawei.com, steffen.klassert@secunet.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:23:02 +0200
-Message-ID: <2023102002-overplant-unseated-c388@gregkh>
+Date:   Fri, 20 Oct 2023 22:23:03 +0200
+Message-ID: <2023102003-shank-happiness-527c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6d41d4fe28724db16ca1016df0713a07e0cc7448
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102002-overplant-unseated-c388@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102003-shank-happiness-527c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
