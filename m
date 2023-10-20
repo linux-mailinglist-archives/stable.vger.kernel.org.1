@@ -2,156 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE47B7D0744
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 06:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2CD67D0831
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 08:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376285AbjJTEI5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 00:08:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41864 "EHLO
+        id S229735AbjJTGS6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 02:18:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346919AbjJTEIs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 00:08:48 -0400
-Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.220])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 97B07CE;
-        Thu, 19 Oct 2023 21:08:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=bTNEU
-        KYdQRSbEH26367Xfr03nDSYmfPUQGyQW1vivyY=; b=G/USLP+1mCvkTnGsCm3pB
-        L5zQiknSe/xWAbyT9fXRy6BoyqxGKe2PJ5yL2lbaSNDC9sk3xSsoZ/ICkox2CdkH
-        IiRcJ88Ter66vsRGPAB/5Lj0y0aK+kxt29nYBz2tP3p6Ol2iW41Z7IUIPE2oFRTA
-        67jGUMJQw6hmZMYYQDO6LM=
-Received: from leanderwang-LC4.localdomain (unknown [111.206.145.21])
-        by zwqz-smtp-mta-g1-4 (Coremail) with SMTP id _____wDXfs0G_TFl9X8bBA--.28481S2;
-        Fri, 20 Oct 2023 12:07:35 +0800 (CST)
-From:   Zheng Wang <zyytlz.wz@163.com>
-To:     dmitry.osipenko@collabora.com
-Cc:     Kyrie.Wu@mediatek.com, bin.liu@mediatek.com, mchehab@kernel.org,
-        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, Irui.Wang@mediatek.com,
-        security@kernel.org, hackerzheng666@gmail.com,
-        1395428693sheep@gmail.com, alex000young@gmail.com,
-        amergnat@baylibre.com, wenst@chromium.org,
-        Zheng Wang <zyytlz.wz@163.com>, stable@vger.kernel.org
-Subject: [PATCH] media: mtk-jpeg: Fix use after free bug due to error path handling in mtk_jpeg_dec_device_run
-Date:   Fri, 20 Oct 2023 12:07:32 +0800
-Message-Id: <20231020040732.2499269-1-zyytlz.wz@163.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229558AbjJTGS6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 02:18:58 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D17AED49
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 23:18:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1F1C433C8;
+        Fri, 20 Oct 2023 06:18:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1697782736;
+        bh=XGhXOEjRhO0Vw5HK9APyCr6eHZI1/Lb/6opavS/zxGU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=xyTCiVng2inuuKGOitO+jgJSfzL4bxlyem7nrYvK9PG9Vpn58CMFTR+NV/k23qSf6
+         QzGK0QNBKP3ngL5Ri9mANWS7yULBZD3nFQVSbuUzQM5h/kynUGMq2vmMFJxC1D3QTh
+         ztu7RnE9PWijI79M4PDtDkn1vcVIp4ENG6rYX2G0=
+Date:   Fri, 20 Oct 2023 08:11:36 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc:     Luiz Capitulino <luizcap@amazon.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "sashal@kernel.org" <sashal@kernel.org>
+Subject: Re: [6.1] Please apply cc6003916ed46d7a67d91ee32de0f9138047d55f
+Message-ID: <2023102026-zookeeper-retreat-b38f@gregkh>
+References: <97397e8d-f447-4cf7-84a1-070989d0a7fd@amazon.com>
+ <CAB=+i9SvjjUBUvPmQm_cEGo4OKXtkj72HnUXLhsGd4FTk4QzSw@mail.gmail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wDXfs0G_TFl9X8bBA--.28481S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZw1xtFWktFy5Xr13Jw4fKrg_yoWrGw15pr
-        Zagw4DCFWUJrZ0gr4UA3WUZFyrC3s8tr12qr4Sgws3Z343Xrs7tr10ya4xtFWIyFZrCFyr
-        Zr48W34xJr4DZFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR1rWrUUUUU=
-X-Originating-IP: [111.206.145.21]
-X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/xtbBdgcPU2DkpkVL4gAAsj
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CAB=+i9SvjjUBUvPmQm_cEGo4OKXtkj72HnUXLhsGd4FTk4QzSw@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
-mtk_jpeg_job_timeout_work.
+On Fri, Oct 20, 2023 at 11:46:36AM +0900, Hyeonggon Yoo wrote:
+> On Fri, Oct 20, 2023 at 10:27 AM Luiz Capitulino <luizcap@amazon.com> wrote:
+> >
+> > Hi,
+> >
+> > As reported before[1], we found another regression in 6.1 when doing
+> > performance comparisons with 5.10. This one is caused by CONFIG_DEBUG_PREEMPT
+> > being enabled by default by the following upstream commit if you have the
+> > right config dependencies enabled (commit is introduced in v5.16-rc1):
+> >
+> > """
+> > commit c597bfddc9e9e8a63817252b67c3ca0e544ace26
+> > Author: Frederic Weisbecker <frederic@kernel.org>
+> > Date: Tue Sep 14 12:31:34 2021 +0200
+> >
+> > sched: Provide Kconfig support for default dynamic preempt mode
+> > """
+> >
+> > We found up to 8% performance improvement with CONFIG_DEBUG_PREEMPT
+> > disabled in different perf benchmarks (including UnixBench process
+> > creation and redis). The root cause is explained in the commit log
+> > below which is merged in 6.3 and applies (almost) clealy on 6.1.59.
+> 
+> Oh, I should've sent it to the stable. Thanks for sending it!
+> 
+> Yes, DEBUG_PREEMPT was unintentionally enabled after the introduction
+> of PREEMPT_DYNAMIC. It was already enabled by default for PREEMPTION=y kernels
+> but PREEMPT_DYNAMIC always enables PREEMPT_BUILD (and hence PREEMPTION)
+> so distros that were using PREEMPT_VOLUNTARY are silently affected by that.
+> 
+> It looks appropriate to be backported to the stable tree (to me).
+> Hmm but I think it should be backported to 5.15 too?
 
-In mtk_jpeg_dec_device_run, if error happens in
-mtk_jpeg_set_dec_dst, it will finally start the worker while
-mark the job as finished by invoking v4l2_m2m_job_finish.
+Now queued up, thanks.
 
-There are two methods to trigger the bug. If we remove the
-module, it which will call mtk_jpeg_remove to make cleanup.
-The possible sequence is as follows, which will cause a
-use-after-free bug.
-
-CPU0                  CPU1
-mtk_jpeg_dec_...    |
-  start worker	    |
-                    |mtk_jpeg_job_timeout_work
-mtk_jpeg_remove     |
-  v4l2_m2m_release  |
-    kfree(m2m_dev); |
-                    |
-                    | v4l2_m2m_get_curr_priv
-                    |   m2m_dev->curr_ctx //use
-
-If we close the file descriptor, which will call mtk_jpeg_release,
-it will have a similar sequence.
-
-Fix this bug by start timeout worker only if started jpegdec worker
-successfully so the v4l2_m2m_job_finish will only be called on
-either mtk_jpeg_job_timeout_work or mtk_jpeg_dec_device_run.
-
-This patch also reverts commit c677d7ae8314 
-("media: mtk-jpeg: Fix use after free bug due to uncanceled work")
-for this patch also fixed the use-after-free bug mentioned before.
-Before mtk_jpeg_remove is invoked, mtk_jpeg_release must be invoked
-to close opened files. And it will call v4l2_m2m_cancel_job to wait
-for the timeout worker finished so the canceling in mtk_jpeg_remove
-is unnecessary.
-
-Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: stable@vger.kernel.org
----
- .../media/platform/mediatek/jpeg/mtk_jpeg_core.c    | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-index 7194f88edc0f..c3456c700c07 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1021,13 +1021,13 @@ static void mtk_jpeg_dec_device_run(void *priv)
- 	if (ret < 0)
- 		goto dec_end;
- 
--	schedule_delayed_work(&jpeg->job_timeout_work,
--			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
--
- 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
- 	if (mtk_jpeg_set_dec_dst(ctx, &jpeg_src_buf->dec_param, &dst_buf->vb2_buf, &fb))
- 		goto dec_end;
- 
-+	schedule_delayed_work(&jpeg->job_timeout_work,
-+			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
-+
- 	spin_lock_irqsave(&jpeg->hw_lock, flags);
- 	mtk_jpeg_dec_reset(jpeg->reg_base);
- 	mtk_jpeg_dec_set_config(jpeg->reg_base,
-@@ -1403,7 +1403,6 @@ static void mtk_jpeg_remove(struct platform_device *pdev)
- {
- 	struct mtk_jpeg_dev *jpeg = platform_get_drvdata(pdev);
- 
--	cancel_delayed_work_sync(&jpeg->job_timeout_work);
- 	pm_runtime_disable(&pdev->dev);
- 	video_unregister_device(jpeg->vdev);
- 	v4l2_m2m_release(jpeg->m2m_dev);
-@@ -1750,9 +1749,6 @@ static void mtk_jpegdec_worker(struct work_struct *work)
- 	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
- 	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
- 
--	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
--			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
--
- 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
- 	if (mtk_jpeg_set_dec_dst(ctx,
- 				 &jpeg_src_buf->dec_param,
-@@ -1762,6 +1758,9 @@ static void mtk_jpegdec_worker(struct work_struct *work)
- 		goto setdst_end;
- 	}
- 
-+	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
-+			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
-+
- 	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
- 	ctx->total_frame_num++;
- 	mtk_jpeg_dec_reset(comp_jpeg[hw_id]->reg_base);
--- 
-2.25.1
-
+greg k-h
