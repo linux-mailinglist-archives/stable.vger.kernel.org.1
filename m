@@ -2,48 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C9D27D0A94
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 10:34:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1907D0C6C
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 11:57:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376452AbjJTIeo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 04:34:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53652 "EHLO
+        id S1376757AbjJTJ5p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 05:57:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376433AbjJTIen (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 04:34:43 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067A5D41;
-        Fri, 20 Oct 2023 01:34:40 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qtkxp-0007ci-Gi; Fri, 20 Oct 2023 10:34:37 +0200
-Message-ID: <38bf9c2b-25e2-498e-ae50-362792219e50@leemhuis.info>
-Date:   Fri, 20 Oct 2023 10:34:36 +0200
+        with ESMTP id S1376787AbjJTJ5o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 05:57:44 -0400
+X-Greylist: delayed 958 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 20 Oct 2023 02:57:39 PDT
+Received: from vps-vb.mhejs.net (vps-vb.mhejs.net [37.28.154.113])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B403D1A6
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 02:57:39 -0700 (PDT)
+Received: from MUA
+        by vps-vb.mhejs.net with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.94.2)
+        (envelope-from <mail@maciej.szmigiero.name>)
+        id 1qtm0T-0006Dk-Cw; Fri, 20 Oct 2023 11:41:25 +0200
+Message-ID: <d0029d6b-2ddf-4723-ba93-3c7bb9580abc@maciej.szmigiero.name>
+Date:   Fri, 20 Oct 2023 11:41:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH] attr: block mode changes of symlinks
-Content-Language: en-US, de-DE
-To:     Jesse Hathaway <jesse@mbuki-mvuki.org>,
-        "Christian Brauner (Microsoft)" <brauner@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Florian Weimer <fweimer@redhat.com>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        linux-fsdevel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        stable@vger.kernel.org,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        Greg KH <gregkh@linuxfoundation.org>
-References: <CANSNSoUYMdPPLuZhofOW6DaKzCF47WhZ+T9BnL8sA37M7b4F+g@mail.gmail.com>
- <2023101819-satisfied-drool-49bb@gregkh>
- <CANSNSoV6encjhH2u-Ua8wmjy==emvpi+76HTZasxbfzobMQ_Vw@mail.gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-In-Reply-To: <CANSNSoV6encjhH2u-Ua8wmjy==emvpi+76HTZasxbfzobMQ_Vw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1697790881;dcf01234;
-X-HE-SMSGID: 1qtkxp-0007ci-Gi
+Subject: Re: [PATCH 5.4 02/68] x86/CPU/AMD: Disable XSAVES on AMD family 0x17
+Content-Language: en-US, pl-PL
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Cc:     patches@lists.linux.dev, Tavis Ormandy <taviso@gmail.com>,
+        stable@kernel.org, stable@vger.kernel.org
+References: <20230315115726.103942885@linuxfoundation.org>
+ <20230315115726.197012029@linuxfoundation.org>
+From:   "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ xsFNBFpGusUBEADXUMM2t7y9sHhI79+2QUnDdpauIBjZDukPZArwD+sDlx5P+jxaZ13XjUQc
+ 6oJdk+jpvKiyzlbKqlDtw/Y2Ob24tg1g/zvkHn8AVUwX+ZWWewSZ0vcwp7u/LvA+w2nJbIL1
+ N0/QUUdmxfkWTHhNqgkNX5hEmYqhwUPozFR0zblfD/6+XFR7VM9yT0fZPLqYLNOmGfqAXlxY
+ m8nWmi+lxkd/PYqQQwOq6GQwxjRFEvSc09m/YPYo9hxh7a6s8hAP88YOf2PD8oBB1r5E7KGb
+ Fv10Qss4CU/3zaiyRTExWwOJnTQdzSbtnM3S8/ZO/sL0FY/b4VLtlZzERAraxHdnPn8GgxYk
+ oPtAqoyf52RkCabL9dsXPWYQjkwG8WEUPScHDy8Uoo6imQujshG23A99iPuXcWc/5ld9mIo/
+ Ee7kN50MOXwS4vCJSv0cMkVhh77CmGUv5++E/rPcbXPLTPeRVy6SHgdDhIj7elmx2Lgo0cyh
+ uyxyBKSuzPvb61nh5EKAGL7kPqflNw7LJkInzHqKHDNu57rVuCHEx4yxcKNB4pdE2SgyPxs9
+ 9W7Cz0q2Hd7Yu8GOXvMfQfrBiEV4q4PzidUtV6sLqVq0RMK7LEi0RiZpthwxz0IUFwRw2KS/
+ 9Kgs9LmOXYimodrV0pMxpVqcyTepmDSoWzyXNP2NL1+GuQtaTQARAQABzTBNYWNpZWogUy4g
+ U3ptaWdpZXJvIDxtYWlsQG1hY2llai5zem1pZ2llcm8ubmFtZT7CwZQEEwEIAD4CGwMFCwkI
+ BwIGFQoJCAsCBBYCAwECHgECF4AWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZHu3rAUJC4vC
+ 5wAKCRCEf143kM4Jdw74EAC6WUqhTI7MKKqJIjFpR3IxzqAKhoTl/lKPnhzwnB9Zdyj9WJlv
+ wIITsQOvhHj6K2Ds63zmh/NKccMY8MDaBnffXnH8fi9kgBKHpPPMXJj1QOXCONlCVp5UGM8X
+ j/gs94QmMxhr9TPY5WBa50sDW441q8zrDB8+B/hfbiE1B5k9Uwh6p/aAzEzLCb/rp9ELUz8/
+ bax/e8ydtHpcbAMCRrMLkfID127dlLltOpOr+id+ACRz0jabaWqoGjCHLIjQEYGVxdSzzu+b
+ 27kWIcUPWm+8hNX35U3ywT7cnU/UOHorEorZyad3FkoVYfz/5necODocsIiBn2SJ3zmqTdBe
+ sqmYKDf8gzhRpRqc+RrkWJJ98ze2A9w/ulLBC5lExXCjIAdckt2dLyPtsofmhJbV/mIKcbWx
+ GX4vw1ufUIJmkbVFlP2MAe978rdj+DBHLuWT0uusPgOqpgO9v12HuqYgyBDpZ2cvhjU+uPAj
+ Bx8eLu/tpxEHGONpdET42esoaIlsNnHC7SehyOH/liwa6Ew0roRHp+VZUaf9yE8lS0gNlKzB
+ H5YPyYBMVSRNokVG4QUkzp30nJDIZ6GdAUZ1bfafSHFHH1wzmOLrbNquyZRIAkcNCFuVtHoY
+ CUDuGAnZlqV+e4BLBBtl9VpJOS6PHKx0k6A8D86vtCMaX/M/SSdbL6Kd5M7AzQRaRrwiAQwA
+ xnVmJqeP9VUTISps+WbyYFYlMFfIurl7tzK74bc67KUBp+PHuDP9p4ZcJUGC3UZJP85/GlUV
+ dE1NairYWEJQUB7bpogTuzMI825QXIB9z842HwWfP2RW5eDtJMeujzJeFaUpmeTG9snzaYxY
+ N3r0TDKj5dZwSIThIMQpsmhH2zylkT0jH7kBPxb8IkCQ1c6wgKITwoHFjTIO0B75U7bBNSDp
+ XUaUDvd6T3xd1Fz57ujAvKHrZfWtaNSGwLmUYQAcFvrKDGPB5Z3ggkiTtkmW3OCQbnIxGJJw
+ /+HefYhB5/kCcpKUQ2RYcYgCZ0/WcES1xU5dnNe4i0a5gsOFSOYCpNCfTHttVxKxZZTQ/rxj
+ XwTuToXmTI4Nehn96t25DHZ0t9L9UEJ0yxH2y8Av4rtf75K2yAXFZa8dHnQgCkyjA/gs0ujG
+ wD+Gs7dYQxP4i+rLhwBWD3mawJxLxY0vGwkG7k7npqanlsWlATHpOdqBMUiAR22hs02FikAo
+ iXNgWTy7ABEBAAHCwXwEGAEIACYCGwwWIQRyeg1N257Z9gOb7O+Ef143kM4JdwUCZHu3zQUJ
+ C4vBowAKCRCEf143kM4Jd2NnD/9E9Seq0HDZag4Uazn9cVsYWV/cPK4vKSqeGWMeLpJlG/UB
+ PHY9q8a79jukEArt610oWj7+wL8SG61/YOyvYaC+LT9R54K8juP66hLCUTNDmv8s9DEzJkDP
+ +ct8MwzA3oYtuirzbas0qaSwxHjZ3aV40vZk0uiDDG6kK24pv3SXcMDWz8m+sKu3RI3H+hdQ
+ gnDrBIfTeeT6DCEgTHsaotFDc7vaNESElHHldCZTrg56T82to6TMm571tMW7mbg9O+u2pUON
+ xEQ5hHCyvNrMAEel191KTWKE0Uh4SFrLmYYCRL9RIgUzxFF+ahPxjtjhkBmtQC4vQ20Bc3X6
+ 35ThI4munnjDmhM4eWVdcmDN4c8y+2FN/uHS5IUcfb9/7w+BWiELb3yGienDZ44U6j+ySA39
+ gT6BAecNNIP47FG3AZXT3C1FZwFgkKoZ3lgN5VZgX2Gj53XiHqIGO8c3ayvHYAmrgtYYXG1q
+ H5/qn1uUAhP1Oz+jKLUECbPS2ll73rFXUr+U3AKyLpx4T+/Wy1ajKn7rOB7udmTmYb8nnlQb
+ 0fpPzYGBzK7zWIzFotuS5x1PzLYhZQFkfegyAaxys2joryhI6YNFo+BHYTfamOVfFi8QFQL5
+ 5ZSOo27q/Ox95rwuC/n+PoJxBfqU36XBi886VV4LxuGZ8kfy0qDpL5neYtkC9w==
+In-Reply-To: <20230315115726.197012029@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
@@ -53,45 +87,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[adding Christian, the author of what appears to be the culprit]
-
-On 18.10.23 20:49, Jesse Hathaway wrote:
-> On Wed, Oct 18, 2023 at 1:40 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-
-FWIW, this thread afaics was supposed to be in reply to this submission:
-
-https://lore.kernel.org/all/20230712-vfs-chmod-symlinks-v1-1-27921df6011f@kernel.org/
-
-That patch later became 5d1f903f75a80d ("attr: block mode changes of
-symlinks") [v6.6-rc1, v6.5.5, v6.1.55, v5.4.257, v5.15.133, v5.10.197,
-v4.19.295, v4.14.326]
-
->>> Unfortunately, this has not held up in LTSes without causing
->>> regressions, specifically in crun:
->>>
->>> Crun issue and patch
->>>  1. https://github.com/containers/crun/issues/1308
->>>  2. https://github.com/containers/crun/pull/1309
->>
->> So thre's a fix already for this, they agree that symlinks shouldn't
->> have modes, so what's the issue?
+On 15.03.2023 13:11, Greg Kroah-Hartman wrote:
+> From: Andrew Cooper <andrew.cooper3@citrix.com>
 > 
-> The problem is that it breaks crun in Debian stable. They have fixed the
-> issue in crun, but that patch may not be backported to Debian's stable
-> version. In other words the patch seems to break existing software in
-> the wild.
+> commit b0563468eeac88ebc70559d52a0b66efc37e4e9d upstream.
 > 
->> It needs to reverted in Linus's tree first, otherwise you will hit the
->> same problem when moving to a new kernel.
+> AMD Erratum 1386 is summarised as:
 > 
-> Okay, I'll raise the issue on the linux kernel mailing list.
+>    XSAVES Instruction May Fail to Save XMM Registers to the Provided
+>    State Save Area
+> 
+> This piece of accidental chronomancy causes the %xmm registers to
+> occasionally reset back to an older value.
+> 
+> Ignore the XSAVES feature on all AMD Zen1/2 hardware.  The XSAVEC
+> instruction (which works fine) is equivalent on affected parts.
+> 
+>    [ bp: Typos, move it into the F17h-specific function. ]
+> 
+> Reported-by: Tavis Ormandy <taviso@gmail.com>
+> Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Cc: <stable@kernel.org>
+> Link: https://lore.kernel.org/r/20230307174643.1240184-1-andrew.cooper3@citrix.com
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>   arch/x86/kernel/cpu/amd.c |    9 +++++++++
+>   1 file changed, 9 insertions(+)
+> 
+> --- a/arch/x86/kernel/cpu/amd.c
+> +++ b/arch/x86/kernel/cpu/amd.c
+> @@ -205,6 +205,15 @@ static void init_amd_k6(struct cpuinfo_x
+>   		return;
+>   	}
+>   #endif
+> +	/*
+> +	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
+> +	 * certain circumstances on Zen1/2 uarch, and not all parts have had
+> +	 * updated microcode at the time of writing (March 2023).
+> +	 *
+> +	 * Affected parts all have no supervisor XSAVE states, meaning that
+> +	 * the XSAVEC instruction (which works fine) is equivalent.
+> +	 */
+> +	clear_cpu_cap(c, X86_FEATURE_XSAVES);
+>   }
 
-Did you do that? I could not find anything. Just wondering, as right now
-there is still some time to fix this regression before 6.6 is released
-(and then the fix can be backported to the stable trees, too).
+This is essentially a well-intended NOP since K6 well predates XSAVES,
+and init_amd_k6() is *not* called for Zen CPUs.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+This workaround should have been added to init_amd_zn() function
+instead.
+
+4.19 and 4.14 backports of this patch have the same problem.
+
+Thanks,
+Maciej
+
