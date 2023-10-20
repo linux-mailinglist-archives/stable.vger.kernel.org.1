@@ -2,144 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC1907D0C6C
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 11:57:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D9D77D0D00
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 12:20:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376757AbjJTJ5p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 05:57:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60946 "EHLO
+        id S1376713AbjJTKUw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 06:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376787AbjJTJ5o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 05:57:44 -0400
-X-Greylist: delayed 958 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 20 Oct 2023 02:57:39 PDT
-Received: from vps-vb.mhejs.net (vps-vb.mhejs.net [37.28.154.113])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B403D1A6
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 02:57:39 -0700 (PDT)
-Received: from MUA
-        by vps-vb.mhejs.net with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.94.2)
-        (envelope-from <mail@maciej.szmigiero.name>)
-        id 1qtm0T-0006Dk-Cw; Fri, 20 Oct 2023 11:41:25 +0200
-Message-ID: <d0029d6b-2ddf-4723-ba93-3c7bb9580abc@maciej.szmigiero.name>
-Date:   Fri, 20 Oct 2023 11:41:13 +0200
+        with ESMTP id S1376720AbjJTKUw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 06:20:52 -0400
+Received: from mail-yw1-x112c.google.com (mail-yw1-x112c.google.com [IPv6:2607:f8b0:4864:20::112c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86AF4D49
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 03:20:48 -0700 (PDT)
+Received: by mail-yw1-x112c.google.com with SMTP id 00721157ae682-5a7eef0b931so7018067b3.0
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 03:20:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697797247; x=1698402047; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=W79U9iklHwLSbhR/94JhGNefp7ntZs362QatUfI3IfI=;
+        b=nfxlTP0z3z6L6PAXEscyKxYpQTRCM9o0adr1SrnQ9q7CTPZqHv+abj+1QI+m0iKr2+
+         BBcWd5APgf9VIUg6OVry26MMWPBCNMIkeM3nzriOyFD6/q+KgwZohtWaGScP0H2GohMw
+         eM3dEx+RI6vZdgKAuJXQqLppBga08jWW/11ebkjXAqF5MRBprg1hXmfMcPX2PC9LFN8c
+         wideoaqq7CUToxKN310zNTGaXduLInkr2lJ9+W6obY+h/ynKuDoHRnLKLgwEoD85vP5b
+         NBXLAhzvJnAkR/oQxFosT3LkLycnau5bKrBvF6CWmlKPfhygvnwPUAvv+rROVDedtnpf
+         SebA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697797247; x=1698402047;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=W79U9iklHwLSbhR/94JhGNefp7ntZs362QatUfI3IfI=;
+        b=AWbFqyK+F9nXB2SJEyo2mEJ9sbOVbodl8KOe+B0uu+Lg9urcm7MTHZHjyjy0PTrXL3
+         PQF9Me3O3ikcW8yHUzVPCVKMdUsCd8MF/18nrefMuvsDfAwMy+NUgYiRghpff6dGoabK
+         m6g9c9ZC+ealooJccydxwY7z6DGfxfkhKkQ6Ndf+5hjhqOg5XeGTk0budjwVsnC6kof7
+         s4TsWS2dX8vAW20dgG2HPlwr2Gt8W+txKNfyvNWNUX+gWozPG8qgsQp09Gcau2aazxVQ
+         WXdYFS0hYDeSteJC8YeG/lAismp4pLPXyfshGyi7pBYu+oKxZDN2XJb8VeOj1yJT7RtH
+         +4zw==
+X-Gm-Message-State: AOJu0YyyTTOUoQIgzbMZGRfBMwl4JPNpod46mRs0zMtOWHGyUlB09VLY
+        3Yx08wDCvUtmivu1+27a5lGbtDCyhXlqQLicdB3kWg==
+X-Google-Smtp-Source: AGHT+IFppxZveglONFPIGli2rJYFfP862ng1fj8gvWuwqd6m5OzeXOk1StoswlMPW+jNGU8qSha8o4+c/CfPZy2DJjA=
+X-Received: by 2002:a5b:f4c:0:b0:d9a:3bf1:35e9 with SMTP id
+ y12-20020a5b0f4c000000b00d9a3bf135e9mr1288441ybr.3.1697797247740; Fri, 20 Oct
+ 2023 03:20:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 02/68] x86/CPU/AMD: Disable XSAVES on AMD family 0x17
-Content-Language: en-US, pl-PL
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Cc:     patches@lists.linux.dev, Tavis Ormandy <taviso@gmail.com>,
-        stable@kernel.org, stable@vger.kernel.org
-References: <20230315115726.103942885@linuxfoundation.org>
- <20230315115726.197012029@linuxfoundation.org>
-From:   "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
-Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
- 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
-In-Reply-To: <20230315115726.197012029@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com>
+ <20231018-msm8909-cpufreq-v2-2-0962df95f654@kernkonzept.com>
+ <CAPDyKFot9=M1ooP_Q1AOgG5o_4DTQ2qsyai1ZdXAzBwf89W4uA@mail.gmail.com>
+ <CAPDyKFr5A-P=UhWs4rUMBWup3pH75WAhcZ56Y2_Sfk3=WfxRCQ@mail.gmail.com>
+ <ZTEph19CAvbgbN_E@gerhold.net> <CAPDyKFo1PVZYsdW_=92EtMmTT9hmkm-mBR69N_WvPh4f-Hw=NA@mail.gmail.com>
+ <ZTFBzjLAaaUHux4O@gerhold.net> <CAPDyKFruYqngQoW21Ra+hm4ybjS7LoD4casYbo8bP4J+hLUnaA@mail.gmail.com>
+ <ZTFiXJ2XO4WQN_gu@gerhold.net>
+In-Reply-To: <ZTFiXJ2XO4WQN_gu@gerhold.net>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Fri, 20 Oct 2023 12:20:11 +0200
+Message-ID: <CAPDyKFoRhDnx7SOiT1czcyteMJ=2KMOwZvn7ynDJsYtePthnxA@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] cpufreq: qcom-nvmem: Enable virtual power domain devices
+To:     Stephan Gerhold <stephan@gerhold.net>
+Cc:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 15.03.2023 13:11, Greg Kroah-Hartman wrote:
-> From: Andrew Cooper <andrew.cooper3@citrix.com>
-> 
-> commit b0563468eeac88ebc70559d52a0b66efc37e4e9d upstream.
-> 
-> AMD Erratum 1386 is summarised as:
-> 
->    XSAVES Instruction May Fail to Save XMM Registers to the Provided
->    State Save Area
-> 
-> This piece of accidental chronomancy causes the %xmm registers to
-> occasionally reset back to an older value.
-> 
-> Ignore the XSAVES feature on all AMD Zen1/2 hardware.  The XSAVEC
-> instruction (which works fine) is equivalent on affected parts.
-> 
->    [ bp: Typos, move it into the F17h-specific function. ]
-> 
-> Reported-by: Tavis Ormandy <taviso@gmail.com>
-> Signed-off-by: Andrew Cooper <andrew.cooper3@citrix.com>
-> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-> Cc: <stable@kernel.org>
-> Link: https://lore.kernel.org/r/20230307174643.1240184-1-andrew.cooper3@citrix.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->   arch/x86/kernel/cpu/amd.c |    9 +++++++++
->   1 file changed, 9 insertions(+)
-> 
-> --- a/arch/x86/kernel/cpu/amd.c
-> +++ b/arch/x86/kernel/cpu/amd.c
-> @@ -205,6 +205,15 @@ static void init_amd_k6(struct cpuinfo_x
->   		return;
->   	}
->   #endif
-> +	/*
-> +	 * Work around Erratum 1386.  The XSAVES instruction malfunctions in
-> +	 * certain circumstances on Zen1/2 uarch, and not all parts have had
-> +	 * updated microcode at the time of writing (March 2023).
-> +	 *
-> +	 * Affected parts all have no supervisor XSAVE states, meaning that
-> +	 * the XSAVEC instruction (which works fine) is equivalent.
-> +	 */
-> +	clear_cpu_cap(c, X86_FEATURE_XSAVES);
->   }
+On Thu, 19 Oct 2023 at 19:08, Stephan Gerhold <stephan@gerhold.net> wrote:
+>
+> On Thu, Oct 19, 2023 at 05:19:53PM +0200, Ulf Hansson wrote:
+> > On Thu, 19 Oct 2023 at 16:49, Stephan Gerhold <stephan@gerhold.net> wrote:
+> > > On Thu, Oct 19, 2023 at 04:12:56PM +0200, Ulf Hansson wrote:
+> > > > On Thu, 19 Oct 2023 at 15:05, Stephan Gerhold <stephan@gerhold.net> wrote:
+> > > > > On Thu, Oct 19, 2023 at 01:26:19PM +0200, Ulf Hansson wrote:
+> > > > > > BTW, if you really need something like the above, the proper way to do
+> > > > > > it would instead be to call device_set_awake_path() for the device.
+> > > > > >
+> > > > > > This informs genpd that the device needs to stay powered-on during
+> > > > > > system suspend (assuming that GENPD_FLAG_ACTIVE_WAKEUP has been set
+> > > > > > for it), hence it will keep the corresponding PM domain powered-on
+> > > > > > too.
+> > > > >
+> > > > > Thanks, I can try if this works as alternative to the
+> > > > > dev_pm_syscore_device()!
+> > > >
+> > > > Yes, please. We don't want to abuse the dev_pm_syscore_device() thingy.
+> > >
+> > > Could you clarify the idea behind GENPD_FLAG_ACTIVE_WAKEUP? Would I set
+> > > it conditionally for all RPMPDs or just the ones consumed by the CPU?
+> > > How does the genpd *provider* know if one of its *consumer* devices
+> > > needs to have its power domain kept on for wakeup?
+> >
+> > We are thinking of the GENPD_FLAG_ACTIVE_WAKEUP as a platform
+> > configuration type of flag for the genpd in question. The consumer
+> > driver shouldn't need to know about the details of what is happening
+> > on the PM domain level - only whether it needs its device to remain
+> > powered-on during system suspend or not.
+> >
+>
+> Thanks! I will test if this works for RPMPD and post new versions of the
+> patches. By coincidence I think this flag might actually be useful as
+> temporary solution for CPR. If I:
+>
+>  1. Change $subject patch to use device_set_awake_path() instead, and
+>  2. Set GENPD_FLAG_ACTIVE_WAKEUP for the RPMPD genpds, but
+>  3. Do *not* set GENPD_FLAG_ACTIVE_WAKEUP for the CPR genpd.
+>
+> Then the genpd ->power_on|off() callbacks should still be called
+> for CPR during system suspend, right? :D
 
-This is essentially a well-intended NOP since K6 well predates XSAVES,
-and init_amd_k6() is *not* called for Zen CPUs.
+Yes, correct, that should work fine!
 
-This workaround should have been added to init_amd_zn() function
-instead.
+>
+> > I suspect that the GENPD_FLAG_ACTIVE_WAKEUP is probably okay to set
+> > for most genpds, but there may be some exceptions.
+> >
+>
+> Out of curiosity, do you have an example for such an exception where
+> GENPD_FLAG_ACTIVE_WAKEUP shouldn't be set, aside from workarounds like
+> I just described?
+>
+> As you said, the consumer device should just say that it wants to stay
+> powered for wakeup during suspend. But if its power domains get powered
+> off, I would expect that to break. How could a genpd driver still
+> provide power without being powered on? Wouldn't that rather be a low
+> performance state?
 
-4.19 and 4.14 backports of this patch have the same problem.
+I think this boils down to how the power-rail that the genpd manages,
+is handled by the platform during system suspend.
 
-Thanks,
-Maciej
+In principle there could be some other separate logic that helps a
+FW/PMIC to understand whether it needs to keep the power-rail on or
+not - no matter whether the genpd releases its vote for it during
+system suspend.
 
+This becomes mostly hypothetical, but clearly there are a lot of
+genpd/platforms that don't use GENPD_FLAG_ACTIVE_WAKEUP too. If those
+are just mistakes or just not needed, I don't actually know.
+
+Kind regards
+Uffe
