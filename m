@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 620357D155C
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 20:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2B9C7D1560
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 20:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229839AbjJTSCh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 14:02:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57652 "EHLO
+        id S230028AbjJTSDH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 14:03:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230028AbjJTSCg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 14:02:36 -0400
+        with ESMTP id S230087AbjJTSDH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 14:03:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6C0D51
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:02:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F2C433C8;
-        Fri, 20 Oct 2023 18:02:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 573FFC0
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:03:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E07C433C8;
+        Fri, 20 Oct 2023 18:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697824954;
-        bh=RYBN2FkuNM7fPNUX+71DLcq0ctB4EKII/H+wHGREYfg=;
+        s=korg; t=1697824985;
+        bh=oyAidbwkS8iixdpDCiRCrVQ3H63sXZrYZKe2f8gPrDw=;
         h=Subject:To:Cc:From:Date:From;
-        b=gdiQc6Uj5FAnc2tBggz8D36+ceTlI1Xav64ifvHuXSYyIEXogBUBrS4dpMg46/VhQ
-         9C6LrImQFVWUbnKACAFUeW9AwUGQtUTDPwch65zKvhghfgwXvadGJQiRrmu9P9M/OQ
-         5okI1/rr8L11BAJE79cQPQABFwYzYjII4zjzFWtc=
-Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd938x: fix regulator leaks on probe errors" failed to apply to 6.1-stable tree
+        b=tGJbl4EYl/u181xPB0+6yGTqIuQ7eHmjL4O8oxuyH5Z6Wo9SjwWXef/LH4HZ4FCAK
+         p8pUortaDUXV1AX04d+dVfxanvPj4OXbYSx9DMIR4nj80Umr/KhWATw6Llf1XNGLKz
+         Lz6Wzk9MNFSS8Ay6b6AKXFw8uVnE81e9llB/74S0=
+Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd938x: fix runtime PM imbalance on remove" failed to apply to 6.1-stable tree
 To:     johan+linaro@kernel.org, broonie@kernel.org,
         srinivas.kandagatla@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 20:02:32 +0200
-Message-ID: <2023102031-dropper-froth-7dd6@gregkh>
+Date:   Fri, 20 Oct 2023 20:03:02 +0200
+Message-ID: <2023102002-maximum-tray-450b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -53,10 +53,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 69a026a2357ee69983690d07976de44ef26ee38a
+git cherry-pick -x 3ebebb2c1eca92a15107b2d7aeff34196fd9e217
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102031-dropper-froth-7dd6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102002-maximum-tray-450b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,73 +68,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 69a026a2357ee69983690d07976de44ef26ee38a Mon Sep 17 00:00:00 2001
+From 3ebebb2c1eca92a15107b2d7aeff34196fd9e217 Mon Sep 17 00:00:00 2001
 From: Johan Hovold <johan+linaro@kernel.org>
-Date: Tue, 3 Oct 2023 17:55:55 +0200
-Subject: [PATCH] ASoC: codecs: wcd938x: fix regulator leaks on probe errors
+Date: Tue, 3 Oct 2023 17:55:56 +0200
+Subject: [PATCH] ASoC: codecs: wcd938x: fix runtime PM imbalance on remove
 
-Make sure to disable and free the regulators on probe errors and on
-driver unbind.
+Make sure to balance the runtime PM operations, including the disable
+count, on driver unbind.
 
 Fixes: 16572522aece ("ASoC: codecs: wcd938x-sdw: add SoundWire driver")
 Cc: stable@vger.kernel.org      # 5.14
 Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231003155558.27079-5-johan+linaro@kernel.org
+Link: https://lore.kernel.org/r/20231003155558.27079-6-johan+linaro@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 
 diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
-index 7e0b07eeed77..679c627f7eaa 100644
+index 679c627f7eaa..d27b919c63b4 100644
 --- a/sound/soc/codecs/wcd938x.c
 +++ b/sound/soc/codecs/wcd938x.c
-@@ -3325,8 +3325,10 @@ static int wcd938x_populate_dt_data(struct wcd938x_priv *wcd938x, struct device
- 		return dev_err_probe(dev, ret, "Failed to get supplies\n");
- 
- 	ret = regulator_bulk_enable(WCD938X_MAX_SUPPLY, wcd938x->supplies);
--	if (ret)
-+	if (ret) {
-+		regulator_bulk_free(WCD938X_MAX_SUPPLY, wcd938x->supplies);
- 		return dev_err_probe(dev, ret, "Failed to enable supplies\n");
-+	}
- 
- 	wcd938x_dt_parse_micbias_info(dev, wcd938x);
- 
-@@ -3592,13 +3594,13 @@ static int wcd938x_probe(struct platform_device *pdev)
- 
- 	ret = wcd938x_add_slave_components(wcd938x, dev, &match);
- 	if (ret)
--		return ret;
-+		goto err_disable_regulators;
- 
- 	wcd938x_reset(wcd938x);
- 
- 	ret = component_master_add_with_match(dev, &wcd938x_comp_ops, match);
- 	if (ret)
--		return ret;
-+		goto err_disable_regulators;
- 
- 	pm_runtime_set_autosuspend_delay(dev, 1000);
- 	pm_runtime_use_autosuspend(dev);
-@@ -3608,11 +3610,21 @@ static int wcd938x_probe(struct platform_device *pdev)
- 	pm_runtime_idle(dev);
- 
- 	return 0;
-+
-+err_disable_regulators:
-+	regulator_bulk_disable(WCD938X_MAX_SUPPLY, wcd938x->supplies);
-+	regulator_bulk_free(WCD938X_MAX_SUPPLY, wcd938x->supplies);
-+
-+	return ret;
- }
+@@ -3620,9 +3620,15 @@ static int wcd938x_probe(struct platform_device *pdev)
  
  static void wcd938x_remove(struct platform_device *pdev)
  {
-+	struct wcd938x_priv *wcd938x = dev_get_drvdata(&pdev->dev);
+-	struct wcd938x_priv *wcd938x = dev_get_drvdata(&pdev->dev);
++	struct device *dev = &pdev->dev;
++	struct wcd938x_priv *wcd938x = dev_get_drvdata(dev);
 +
- 	component_master_del(&pdev->dev, &wcd938x_comp_ops);
-+	regulator_bulk_disable(WCD938X_MAX_SUPPLY, wcd938x->supplies);
-+	regulator_bulk_free(WCD938X_MAX_SUPPLY, wcd938x->supplies);
- }
++	component_master_del(dev, &wcd938x_comp_ops);
++
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
++	pm_runtime_dont_use_autosuspend(dev);
  
- #if defined(CONFIG_OF)
+-	component_master_del(&pdev->dev, &wcd938x_comp_ops);
+ 	regulator_bulk_disable(WCD938X_MAX_SUPPLY, wcd938x->supplies);
+ 	regulator_bulk_free(WCD938X_MAX_SUPPLY, wcd938x->supplies);
+ }
 
