@@ -2,41 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A59BF7D146B
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 18:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 127CA7D1473
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:00:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbjJTQyM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 12:54:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43274 "EHLO
+        id S229779AbjJTRAA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 13:00:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbjJTQyL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 12:54:11 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B8FCA
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 09:54:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECED4C433C8;
-        Fri, 20 Oct 2023 16:54:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697820849;
-        bh=rgQy45PV/JcDeqbVuLPS1x+lRDMmzm5yRqBbQ+6cSPU=;
-        h=Subject:To:Cc:From:Date:From;
-        b=G5Cga1cjl2GQmgNPA2FefhkH3kBOuLwtlLK1plzu5RrtxuGWuKzgllBSYcokgLC9E
-         KC7iLu7xyq1yCcQer7HVhubWynTBCzLReSK0YEz0xj4UgwQaZO8oG8D/KOCsfgj8SW
-         tCQBQFu2kpufLkJWxgV/WwxBuGjfKhYtfChYeeas=
-Subject: FAILED: patch "[PATCH] net/smc: fix smc clc failed issue when netdevice not in" failed to apply to 6.1-stable tree
-To:     huangjie.albert@bytedance.com, dust.li@linux.alibaba.com,
-        kuba@kernel.org, wenjia@linux.ibm.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 18:53:58 +0200
-Message-ID: <2023102058-bullish-chess-e399@gregkh>
+        with ESMTP id S229692AbjJTRAA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:00:00 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D640618F;
+        Fri, 20 Oct 2023 09:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1697821198; x=1729357198;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=DFuYk/iZFo38XXz5QEJHG+rb8/gZLVBaR1l70X7qLgQ=;
+  b=Gs4mHLh80z2r1jvcMi98LLUXii/dNC/kDQNlgW7IgaNbUo/qF1yKnnnk
+   u2M5ZpvKP60bkP40qQNaHtWEhE12Vz/XggnbnipXYsoiVc9cw2SQMqw+T
+   uQ9pfWnKPwAD6O0vjSaHpzrQWRfChTDH8p7suwvhIDfa10wY2ZhCDIC4T
+   sh94UP+a1bqlitG8T1lF63RPc025o9QTz3YE1GKOm1aIMJpuX3d33v0Ii
+   Pzk63BXwh/r7PJcqPqyhIgNsVGobYPOQErmjM/5jScAPBd/T7DPMVlpWT
+   vizOSRQtcRUFhPoIwhZ3QcnK+6CnTK01Fzj1cZeusZqbsSX9pbTFd5FAh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="5144946"
+X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
+   d="scan'208";a="5144946"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 09:59:58 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10869"; a="901189445"
+X-IronPort-AV: E=Sophos;i="6.03,239,1694761200"; 
+   d="scan'208";a="901189445"
+Received: from mtadesse-mobl.amr.corp.intel.com (HELO [10.209.140.77]) ([10.209.140.77])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Oct 2023 09:57:46 -0700
+Message-ID: <80f8a742-4a60-4c75-9093-dcd63de70b66@linux.intel.com>
+Date:   Fri, 20 Oct 2023 11:59:55 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] ALSA: hda: intel-dsp-config: Fix JSL Chromebook quirk
+ detection
+Content-Language: en-US
+To:     Mark Hasemeyer <markhas@chromium.org>
+Cc:     =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Brady Norander <bradynorander@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Mark Brown <broonie@kernel.org>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org,
+        Curtis Malainey <cujomalainey@chromium.org>
+References: <20231018235944.1860717-1-markhas@chromium.org>
+ <7b08520e-8f36-45a1-9b7a-316a33c8e8c4@linux.intel.com>
+ <CANg-bXDvZ00ZHEgbUf1NwDrOKfDF4vpBOxZ4hGEp-ohs6-pZpw@mail.gmail.com>
+ <5bc82aca-04f2-463b-ba52-34bcae6724d5@linux.intel.com>
+ <CANg-bXCaUOxSTfR1oXKrdnDozA9Hn-NL7mqg+zvLASLQyouChA@mail.gmail.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <CANg-bXCaUOxSTfR1oXKrdnDozA9Hn-NL7mqg+zvLASLQyouChA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -44,121 +77,35 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On 10/20/23 10:36, Mark Hasemeyer wrote:
+>> FWIW we use this other quirk:
+>> DMI_MATCH(DMI_PRODUCT_FAMILY, "Google"),
+> 
+> Unfortunately DMI_PRODUCT_FAMILY is empty on these particular devices.
+> The coreboot version field is the only entry that has "Google" in it.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x c68681ae46eaaa1640b52fe366d21a93b2185df5
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102058-bullish-chess-e399@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+well then you have additional issues with the DMI quirk for the firmware
+selection in sound/soc/sof/sof-pci-dev.c,
 
-Possible dependencies:
+      {
+		.ident = "Google Chromebooks",
+		.callback = chromebook_use_community_key,
+		.matches = {
+			DMI_MATCH(DMI_PRODUCT_FAMILY, "Google"),
+		}
+	},
 
+which means you need additional kernel parameters to provide the
+location of the firmware....
 
+>> How many engineers does it take to identify a Chromebook, eh?
+> 
+> Ha! There has been some discussion about this: to come up with a
+> canonical way for Chromebook identification throughout the kernel. But
+> nothing has been settled on AFAIK.
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c68681ae46eaaa1640b52fe366d21a93b2185df5 Mon Sep 17 00:00:00 2001
-From: Albert Huang <huangjie.albert@bytedance.com>
-Date: Wed, 11 Oct 2023 15:48:51 +0800
-Subject: [PATCH] net/smc: fix smc clc failed issue when netdevice not in
- init_net
-
-If the netdevice is within a container and communicates externally
-through network technologies such as VxLAN, we won't be able to find
-routing information in the init_net namespace. To address this issue,
-we need to add a struct net parameter to the smc_ib_find_route function.
-This allow us to locate the routing information within the corresponding
-net namespace, ensuring the correct completion of the SMC CLC interaction.
-
-Fixes: e5c4744cfb59 ("net/smc: add SMC-Rv2 connection establishment")
-Signed-off-by: Albert Huang <huangjie.albert@bytedance.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231011074851.95280-1-huangjie.albert@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index bacdd971615e..7a874da90c7f 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1201,6 +1201,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
- 		(struct smc_clc_msg_accept_confirm_v2 *)aclc;
- 	struct smc_clc_first_contact_ext *fce =
- 		smc_get_clc_first_contact_ext(clc_v2, false);
-+	struct net *net = sock_net(&smc->sk);
- 	int rc;
- 
- 	if (!ini->first_contact_peer || aclc->hdr.version == SMC_V1)
-@@ -1210,7 +1211,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
- 		memcpy(ini->smcrv2.nexthop_mac, &aclc->r0.lcl.mac, ETH_ALEN);
- 		ini->smcrv2.uses_gateway = false;
- 	} else {
--		if (smc_ib_find_route(smc->clcsock->sk->sk_rcv_saddr,
-+		if (smc_ib_find_route(net, smc->clcsock->sk->sk_rcv_saddr,
- 				      smc_ib_gid_to_ipv4(aclc->r0.lcl.gid),
- 				      ini->smcrv2.nexthop_mac,
- 				      &ini->smcrv2.uses_gateway))
-diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
-index 9b66d6aeeb1a..89981dbe46c9 100644
---- a/net/smc/smc_ib.c
-+++ b/net/smc/smc_ib.c
-@@ -193,7 +193,7 @@ bool smc_ib_port_active(struct smc_ib_device *smcibdev, u8 ibport)
- 	return smcibdev->pattr[ibport - 1].state == IB_PORT_ACTIVE;
- }
- 
--int smc_ib_find_route(__be32 saddr, __be32 daddr,
-+int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
- 		      u8 nexthop_mac[], u8 *uses_gateway)
- {
- 	struct neighbour *neigh = NULL;
-@@ -205,7 +205,7 @@ int smc_ib_find_route(__be32 saddr, __be32 daddr,
- 
- 	if (daddr == cpu_to_be32(INADDR_NONE))
- 		goto out;
--	rt = ip_route_output_flow(&init_net, &fl4, NULL);
-+	rt = ip_route_output_flow(net, &fl4, NULL);
- 	if (IS_ERR(rt))
- 		goto out;
- 	if (rt->rt_uses_gateway && rt->rt_gw_family != AF_INET)
-@@ -235,6 +235,7 @@ static int smc_ib_determine_gid_rcu(const struct net_device *ndev,
- 	if (smcrv2 && attr->gid_type == IB_GID_TYPE_ROCE_UDP_ENCAP &&
- 	    smc_ib_gid_to_ipv4((u8 *)&attr->gid) != cpu_to_be32(INADDR_NONE)) {
- 		struct in_device *in_dev = __in_dev_get_rcu(ndev);
-+		struct net *net = dev_net(ndev);
- 		const struct in_ifaddr *ifa;
- 		bool subnet_match = false;
- 
-@@ -248,7 +249,7 @@ static int smc_ib_determine_gid_rcu(const struct net_device *ndev,
- 		}
- 		if (!subnet_match)
- 			goto out;
--		if (smcrv2->daddr && smc_ib_find_route(smcrv2->saddr,
-+		if (smcrv2->daddr && smc_ib_find_route(net, smcrv2->saddr,
- 						       smcrv2->daddr,
- 						       smcrv2->nexthop_mac,
- 						       &smcrv2->uses_gateway))
-diff --git a/net/smc/smc_ib.h b/net/smc/smc_ib.h
-index 4df5f8c8a0a1..ef8ac2b7546d 100644
---- a/net/smc/smc_ib.h
-+++ b/net/smc/smc_ib.h
-@@ -112,7 +112,7 @@ void smc_ib_sync_sg_for_device(struct smc_link *lnk,
- int smc_ib_determine_gid(struct smc_ib_device *smcibdev, u8 ibport,
- 			 unsigned short vlan_id, u8 gid[], u8 *sgid_index,
- 			 struct smc_init_info_smcrv2 *smcrv2);
--int smc_ib_find_route(__be32 saddr, __be32 daddr,
-+int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
- 		      u8 nexthop_mac[], u8 *uses_gateway);
- bool smc_ib_is_valid_local_systemid(void);
- int smcr_nl_get_device(struct sk_buff *skb, struct netlink_callback *cb);
-
+There's been multiple rounds of discussions with Curtis, we introduced
+DMI_OEM_STRING but it's still not good enough, and now the previous
+conventions are not being followed on what is a relatively old platform
+already...
