@@ -2,39 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CA6C7D1702
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A37DD7D1704
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:30:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbjJTU33 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:29:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47286 "EHLO
+        id S229649AbjJTUaf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:30:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229659AbjJTU32 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:29:28 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEE4A1A4
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:29:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C100C433C7;
-        Fri, 20 Oct 2023 20:29:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697833766;
-        bh=GhdV+QhLASnITacVGo3O2uIYwO5/IvBM9hwccPVpSgA=;
-        h=Subject:To:Cc:From:Date:From;
-        b=FNxpyM8kymFdC2KuBrTwDCxlGO89Ln8zuyjMr14uaXIQS03i/BorJGv3icMmIr+KD
-         X+u0DmrJmHDShTSSOQNTOZHnU23jKIm5LtLBnd3LnBtGvC/96oXZEx8SGlU8z2rrA3
-         BbqA9oRR7g+LHh0r+FiuPi0MjBzdG5YnOSpZoEno=
-Subject: FAILED: patch "[PATCH] net/sched: sch_hfsc: upgrade 'rt' to 'sc' when it becomes a" failed to apply to 4.14-stable tree
-To:     pctammela@mojatatu.com, ct@flyingcircus.io, jhs@mojatatu.com,
-        kuba@kernel.org, markovicbudimir@gmail.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:29:23 +0200
-Message-ID: <2023102023-poster-opulently-4c96@gregkh>
+        with ESMTP id S229954AbjJTUae (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:30:34 -0400
+Received: from mail-lf1-x12f.google.com (mail-lf1-x12f.google.com [IPv6:2a00:1450:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CDE2D67
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:30:32 -0700 (PDT)
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-507d1cc0538so1765087e87.2
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:30:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1697833830; x=1698438630; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6GPuaggtGD10El9ZGrri8KfDDHuU0PlPpw0GJi5kP2w=;
+        b=Yv5OsElFPBRKgqrDkpz55T/JUR2eZnGKwCLLi17imW7tqP/BnLcxYzmnfCDFCex9qt
+         vR2kMnjgvRM3vA2qpJ/LYhPPXQEBxxN061s3HUS1nXWj/h1ZNSQBoVGYzcHWhat+0uez
+         M7ve2HYZsXAScjN6nmEf7BgyRV4BfEJLwY9T5iNpBoyQMEPg9KXgBLALfDCsZ0qgSMsW
+         v16IoRw6LyX0YldY6VJpS9rNDCgc2WXkXz0RDCRAO2w+nsTPMbbShY22MKNJA9m6vU5t
+         trByV6Dpch47pRjzWuEh5vo89PC5V+4h5CnZMu91pO4z0ZpVwIC6A6EwpeLix+iwYwA7
+         pnew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697833830; x=1698438630;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6GPuaggtGD10El9ZGrri8KfDDHuU0PlPpw0GJi5kP2w=;
+        b=Pm1Dlp+fvFE/cQkTovrKCFPECynvxRcegdhsoqGE1OmIHw1DgnLnD5KrvyxfuTSQCV
+         uqjFdFcvqaj9j5OXNwrAK6Z/2FWQS+03Msg1RM5NV5OhYleSXHpVrnLYNfPGf34Dj0ci
+         fnCCZGqX9G5HW+CeNW6M1FJY3TLE2qgQX8NqPJHM+2k1POgIMFa5wgCpfBF43PU8yQi/
+         ZCzu9KuAqyetk5w7FKS3GGjpbgIIvc2Df2Lyyntm3T16m8L9glOS8h5ASHCfpTR/PQIy
+         2BvQbUlWj+IM19T6JgXUzaOwj47r/3yA4LFob+PFR4qioqSAbF8rtMlZQB3cwK8/DDtD
+         DYrA==
+X-Gm-Message-State: AOJu0YzRXFCxVM1boyL6d8zC8UpsoQKtoKBhPnqi2RPkgF+iqBpE6zdw
+        vcwjpsd73XFoNcvYil35WCLfKA==
+X-Google-Smtp-Source: AGHT+IE/jJITtXMCaFHxTcQC1SW8/hIF6htW3PSk3OTrvWF55xGx5GVpzQ947QxHb14qRj1YWfcCIQ==
+X-Received: by 2002:a19:711c:0:b0:500:aa41:9d67 with SMTP id m28-20020a19711c000000b00500aa419d67mr1843149lfc.8.1697833830125;
+        Fri, 20 Oct 2023 13:30:30 -0700 (PDT)
+Received: from [192.168.1.2] (c-21d3225c.014-348-6c756e10.bbcust.telenor.se. [92.34.211.33])
+        by smtp.gmail.com with ESMTPSA id a24-20020a056512201800b004ff6fa3f038sm509345lfb.144.2023.10.20.13.30.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Oct 2023 13:30:29 -0700 (PDT)
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Fri, 20 Oct 2023 22:30:29 +0200
+Subject: [PATCH v4] mtd: cfi_cmdset_0001: Byte swap OTP info
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231020-mtd-otp-byteswap-v4-1-0d132c06aa9d@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAGTjMmUC/x3MTQqAIBBA4avErBswjYSuEi00p5pFJSr9EN49a
+ fkt3nshUmCK0FcvBDo58rEXtHUF02r2hZBdMUghVSOkwC05PJJH+ySKl/GorWm1ajpyWkHJfKC
+ Z7385jDl/ifdQzWIAAAA=
+To:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Vignesh Raghavendra <vigneshr@ti.com>
+Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Nicolas Pitre <nico@fluxnic.net>,
+        Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.12.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,114 +74,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Currently the offset into the device when looking for OTP
+bits can go outside of the address of the MTD NOR devices,
+and if that memory isn't readable, bad things happen
+on the IXP4xx (added prints that illustrate the problem before
+the crash):
 
-The patch below does not apply to the 4.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x00000100
+ixp4xx_copy_from copy from 0x00000100 to 0xc880dd78
+cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x12000000
+ixp4xx_copy_from copy from 0x12000000 to 0xc880dd78
+8<--- cut here ---
+Unable to handle kernel paging request at virtual address db000000
+[db000000] *pgd=00000000
+(...)
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This happens in this case because the IXP4xx is big endian and
+the 32- and 16-bit fields in the struct cfi_intelext_otpinfo are not
+properly byteswapped. Compare to how the code in read_pri_intelext()
+byteswaps the fields in struct cfi_pri_intelext.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x a13b67c9a015c4e21601ef9aa4ec9c5d972df1b4
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102023-poster-opulently-4c96@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+Adding a small byte swapping loop for the OTP in read_pri_intelext()
+and the crash goes away.
 
-Possible dependencies:
+The problem went unnoticed for many years until I enabled
+CONFIG_MTD_OTP on the IXP4xx as well, triggering the bug.
 
+Cc: stable@vger.kernel.org
+Reviewed-by: Nicolas Pitre <nico@fluxnic.net>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ChangeLog v3->v4:
+- Collected Nico's ACK.
+- Stalled since june! Has this been missed?
+ChangeLog v2->v3:
+- Link to v3:
+  https://lore.kernel.org/linux-mtd/20230602204359.3493320-1-linus.walleij@linaro.org/
+- Move the byte swapping to a small loop in read_pri_intelext()
+  so all bytes are swapped as we reach cfi_intelext_otp_walk().
+ChangeLog v1->v2:
+- Drill deeper and discover a big endian compatibility issue.
+---
+ drivers/mtd/chips/cfi_cmdset_0001.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From a13b67c9a015c4e21601ef9aa4ec9c5d972df1b4 Mon Sep 17 00:00:00 2001
-From: Pedro Tammela <pctammela@mojatatu.com>
-Date: Tue, 17 Oct 2023 11:36:02 -0300
-Subject: [PATCH] net/sched: sch_hfsc: upgrade 'rt' to 'sc' when it becomes a
- inner curve
-
-Christian Theune says:
-   I upgraded from 6.1.38 to 6.1.55 this morning and it broke my traffic shaping script,
-   leaving me with a non-functional uplink on a remote router.
-
-A 'rt' curve cannot be used as a inner curve (parent class), but we were
-allowing such configurations since the qdisc was introduced. Such
-configurations would trigger a UAF as Budimir explains:
-   The parent will have vttree_insert() called on it in init_vf(),
-   but will not have vttree_remove() called on it in update_vf()
-   because it does not have the HFSC_FSC flag set.
-
-The qdisc always assumes that inner classes have the HFSC_FSC flag set.
-This is by design as it doesn't make sense 'qdisc wise' for an 'rt'
-curve to be an inner curve.
-
-Budimir's original patch disallows users to add classes with a 'rt'
-parent, but this is too strict as it breaks users that have been using
-'rt' as a inner class. Another approach, taken by this patch, is to
-upgrade the inner 'rt' into a 'sc', warning the user in the process.
-It avoids the UAF reported by Budimir while also being more permissive
-to bad scripts/users/code using 'rt' as a inner class.
-
-Users checking the `tc class ls [...]` or `tc class get [...]` dumps would
-observe the curve change and are potentially breaking with this change.
-
-v1->v2: https://lore.kernel.org/all/20231013151057.2611860-1-pctammela@mojatatu.com/
-- Correct 'Fixes' tag and merge with revert (Jakub)
-
-Cc: Christian Theune <ct@flyingcircus.io>
-Cc: Budimir Markovic <markovicbudimir@gmail.com>
-Fixes: b3d26c5702c7 ("net/sched: sch_hfsc: Ensure inner classes have fsc curve")
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20231017143602.3191556-1-pctammela@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 3554085bc2be..880c5f16b29c 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -902,6 +902,14 @@ hfsc_change_usc(struct hfsc_class *cl, struct tc_service_curve *usc,
- 	cl->cl_flags |= HFSC_USC;
- }
+diff --git a/drivers/mtd/chips/cfi_cmdset_0001.c b/drivers/mtd/chips/cfi_cmdset_0001.c
+index 11b06fefaa0e..c10693ba265b 100644
+--- a/drivers/mtd/chips/cfi_cmdset_0001.c
++++ b/drivers/mtd/chips/cfi_cmdset_0001.c
+@@ -422,9 +422,25 @@ read_pri_intelext(struct map_info *map, __u16 adr)
+ 		extra_size = 0;
  
-+static void
-+hfsc_upgrade_rt(struct hfsc_class *cl)
-+{
-+	cl->cl_fsc = cl->cl_rsc;
-+	rtsc_init(&cl->cl_virtual, &cl->cl_fsc, cl->cl_vt, cl->cl_total);
-+	cl->cl_flags |= HFSC_FSC;
-+}
+ 		/* Protection Register info */
+-		if (extp->NumProtectionFields)
++		if (extp->NumProtectionFields) {
++			struct cfi_intelext_otpinfo *otp =
++				(struct cfi_intelext_otpinfo *)&extp->extra[0];
 +
- static const struct nla_policy hfsc_policy[TCA_HFSC_MAX + 1] = {
- 	[TCA_HFSC_RSC]	= { .len = sizeof(struct tc_service_curve) },
- 	[TCA_HFSC_FSC]	= { .len = sizeof(struct tc_service_curve) },
-@@ -1011,10 +1019,6 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 		if (parent == NULL)
- 			return -ENOENT;
+ 			extra_size += (extp->NumProtectionFields - 1) *
+-				      sizeof(struct cfi_intelext_otpinfo);
++				sizeof(struct cfi_intelext_otpinfo);
++
++			if (extp_size >= sizeof(*extp) + extra_size) {
++				int i;
++
++				/* Do some byteswapping if necessary */
++				for (i = 0; i < extp->NumProtectionFields - 1; i++) {
++					otp->ProtRegAddr = le32_to_cpu(otp->ProtRegAddr);
++					otp->FactGroups = le16_to_cpu(otp->FactGroups);
++					otp->UserGroups = le16_to_cpu(otp->UserGroups);
++					otp++;
++				}
++			}
++		}
  	}
--	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
--		NL_SET_ERR_MSG(extack, "Invalid parent - parent class must have FSC");
--		return -EINVAL;
--	}
  
- 	if (classid == 0 || TC_H_MAJ(classid ^ sch->handle) != 0)
- 		return -EINVAL;
-@@ -1065,6 +1069,12 @@ hfsc_change_class(struct Qdisc *sch, u32 classid, u32 parentid,
- 	cl->cf_tree = RB_ROOT;
- 
- 	sch_tree_lock(sch);
-+	/* Check if the inner class is a misconfigured 'rt' */
-+	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
-+		NL_SET_ERR_MSG(extack,
-+			       "Forced curve change on parent 'rt' to 'sc'");
-+		hfsc_upgrade_rt(parent);
-+	}
- 	qdisc_class_hash_insert(&q->clhash, &cl->cl_common);
- 	list_add_tail(&cl->siblings, &parent->children);
- 	if (parent->level == 0)
+ 	if (extp->MinorVersion >= '1') {
+
+---
+base-commit: 0bb80ecc33a8fb5a682236443c1e740d5c917d1d
+change-id: 20231020-mtd-otp-byteswap-7ba47316ed73
+
+Best regards,
+-- 
+Linus Walleij <linus.walleij@linaro.org>
 
