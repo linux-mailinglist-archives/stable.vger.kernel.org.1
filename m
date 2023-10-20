@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 293D67D16F0
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:26:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F4597D16F1
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:27:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229836AbjJTU04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41328 "EHLO
+        id S230251AbjJTU1J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:27:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229555AbjJTU04 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:26:56 -0400
+        with ESMTP id S230390AbjJTU1I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:27:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 634CED63
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:26:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77F9C433C8;
-        Fri, 20 Oct 2023 20:26:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 487D2D65
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:27:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5856FC433C9;
+        Fri, 20 Oct 2023 20:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697833614;
-        bh=v+v+KYAyLjv5ZH3IB3yfXyX9qEIul3wj50rHZZBudzI=;
+        s=korg; t=1697833623;
+        bh=AT/7dokR97wjprYDPslKgdJz7TezcXL7uYboD1zj6VA=;
         h=Subject:To:Cc:From:Date:From;
-        b=nLcz58QLNAp0VQ3+bKZjZz2t7KES4oAvKGtYTr19F9jGtyNNviMHBPl5EfCpyfG1n
-         Nwoalpm1vLxHMbO+6bTDP9K5EpPg9uhvEEjd/04NOVbu2huy2d5+9Ci37xQGI4wZIW
-         FcJaZIbI300YxWntgu4JE2HBdcqA8Xfd2OinctFY=
-Subject: FAILED: patch "[PATCH] tun: prevent negative ifindex" failed to apply to 4.19-stable tree
+        b=BjYDVZ2cjuBXi0fNBh7tCRzhYTmPALl7BWW27ZyUSWD/5+2HhIzaeo93uVEYZcBqN
+         3Ic4fHP4DGgT44yFdi4BHNQwASHmE9cbNpLCsqme524im0Ik3HfG8aFyr6Iz532kzC
+         7QZh/PXDryGA1q0z8lnJGr2YnZdE7qL7ZwxlD4nQ=
+Subject: FAILED: patch "[PATCH] tun: prevent negative ifindex" failed to apply to 4.14-stable tree
 To:     edumazet@google.com, jasowang@redhat.com, kuba@kernel.org,
         syzkaller@googlegroups.com, willemb@google.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:26:50 +0200
-Message-ID: <2023102050-bruising-festivity-e149@gregkh>
+Date:   Fri, 20 Oct 2023 22:26:52 +0200
+Message-ID: <2023102052-enlarging-trough-a5f5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x cbfbfe3aee718dc4c3c837f5d2463170ee59d78c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102050-bruising-festivity-e149@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102052-enlarging-trough-a5f5@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
