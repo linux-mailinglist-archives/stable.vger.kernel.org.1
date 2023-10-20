@@ -2,41 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3CAD7D0D8A
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 12:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6713E7D0D8B
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 12:43:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376963AbjJTKmu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 06:42:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56808 "EHLO
+        id S1376882AbjJTKnS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 06:43:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376699AbjJTKmu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 06:42:50 -0400
+        with ESMTP id S1376699AbjJTKnS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 06:43:18 -0400
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 87C9F106;
-        Fri, 20 Oct 2023 03:42:48 -0700 (PDT)
-Received: from pwmachine.localnet (unknown [188.24.154.80])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 2705320B74C0;
-        Fri, 20 Oct 2023 03:42:46 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2705320B74C0
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5CD3C114;
+        Fri, 20 Oct 2023 03:43:16 -0700 (PDT)
+Received: from pwmachine.numericable.fr (unknown [188.24.154.80])
+        by linux.microsoft.com (Postfix) with ESMTPSA id A88F020B74C1;
+        Fri, 20 Oct 2023 03:43:13 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A88F020B74C1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1697798568;
-        bh=hnnVsUjyZV+dpb5bf774eE1FJR1gw5g94Ljn0qCzUP0=;
+        s=default; t=1697798595;
+        bh=9VCxaeebanUQ/Qf2MXAfmGic0SqHTRKJ/14/HCr2fXM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=roXaDV5LOfYsc+JAum0I5rZHl38D78cVf4X+FcnrWAXr25XR75w+NNtQDGBsGtp85
-         zznht0rHMR8+y+kMppbuYQvOjF5aMY/AQVIz57GYAo8aqtoR/xC/wzwtKs5yzAsS8j
-         hfPuahMC6jRfskUvssxIc8XGTQJSdxMeawdkh1f8=
+        b=dqkKKU5MpbDhpDEo8R7b8r+QLcxwpUm9Sne3TIlfIMKTHnvCpTFFbRWvp0iqUik4d
+         74Rs/+3i7npIqE7Jz7mSvHSCfD8UV0FtB/pUE+nJsWHmvX0RhA2Hy0Wfps+ukYsnSU
+         Xs6FJuuAPh/empUA36bf1/L7t96s5VhlQMtAtFMw=
 From:   Francis Laniel <flaniel@linux.microsoft.com>
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     linux-trace-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v5 0/2] Return EADDRNOTAVAIL when func matches several symbols during kprobe creation
-Date:   Fri, 20 Oct 2023 13:42:44 +0300
-Message-ID: <5720486.DvuYhMxLoT@pwmachine>
-In-Reply-To: <20231020000708.e33ec727fcd322b7cde292cd@kernel.org>
-References: <20231018144030.86885-1-flaniel@linux.microsoft.com> <20231019095104.006a7252@gandalf.local.home> <20231020000708.e33ec727fcd322b7cde292cd@kernel.org>
+To:     linux-trace-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Francis Laniel <flaniel@linux.microsoft.com>,
+        stable@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        Ananth N Mavinakayanahalli <ananth@in.ibm.com>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v6 1/2] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
+Date:   Fri, 20 Oct 2023 13:42:49 +0300
+Message-Id: <20231020104250.9537-2-flaniel@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231020104250.9537-1-flaniel@linux.microsoft.com>
+References: <20231020104250.9537-1-flaniel@linux.microsoft.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,SPF_HELO_PASS,SPF_PASS,
         USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
@@ -47,98 +51,134 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi!
+When a kprobe is attached to a function that's name is not unique (is
+static and shares the name with other functions in the kernel), the
+kprobe is attached to the first function it finds. This is a bug as the
+function that it is attaching to is not necessarily the one that the
+user wants to attach to.
 
-Le jeudi 19 octobre 2023, 18:07:08 EEST Masami Hiramatsu a =E9crit :
-> On Thu, 19 Oct 2023 09:51:04 -0400
->=20
-> Steven Rostedt <rostedt@goodmis.org> wrote:
-> > On Thu, 19 Oct 2023 21:18:43 +0900
-> >=20
-> > Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
-> > > > So why is this adding stable? (and as Greg's form letter states,
-> > > > that's not
-> > > > how you do that)
-> > > >=20
-> > > > I don't see this as a fix but a new feature.
-> > >=20
-> > > I asked him to make this a fix since the current kprobe event' behavi=
-or
-> > > is
-> > > somewhat strange. It puts the probe on only the "first symbol" if user
-> > > specifies a symbol name which has multiple instances. In this case, t=
-he
-> > > actual probe address can not be solved by name. User must specify the
-> > > probe address by unique name + offset. Unless, it can put a probe on
-> > > unexpected address, especially if it specifies non-unique symbol +
-> > > offset,
-> > > the address may NOT be the instruction boundary.
-> > > To avoid this issue, it should check the given symbol is unique.
-> >=20
-> > OK, so what is broken is that when you add a probe to a function that h=
-as
-> > multiple names, it will attach to the first one and not necessarily the
-> > one
-> > you want.
-> >=20
-> > The change log needs to be more explicit in what the "bug" is. It does
-> > state this in a round about way, but it is written in a way that it
-> > doesn't
-> > stand out.
-> >=20
-> >     Previously to this commit, if func matches several symbols, a kprob=
-e,
-> >     being either sysfs or PMU, would only be installed for the first
-> >     matching address. This could lead to some misunderstanding when some
-> >     BPF code was never called because it was attached to a function whi=
-ch
-> >     was indeed not called, because the effectively called one has no
-> >     kprobes attached.
-> >    =20
-> >     So, this commit returns EADDRNOTAVAIL when func matches several
-> >     symbols. This way, user needs to use address to remove the ambiguit=
-y.
-> >=20
-> > What it should say is:
-> >     When a kprobe is attached to a function that's name is not unique (=
-is
-> >     static and shares the name with other functions in the kernel), the
-> >     kprobe is attached to the first function it finds. This is a bug as
-> >     the
-> >     function that it is attaching to is not necessarily the one that the
-> >     user wants to attach to.
-> >    =20
-> >     Instead of blindly picking a function to attach to what is ambiguou=
-s,
-> >     error with EADDRNOTAVAIL to let the user know that this function is
-> >     not
-> >     unique, and that the user must use another unique function with an
-> >     address offset to get to the function they want to attach to.
->=20
-> Great!, yes this looks good to me too.
->=20
-> > And yes, it should have:
-> >=20
-> > Cc: stable@vger.kernel.org
-> >=20
-> > which is how to mark something for stable, and
-> >=20
-> > Fixes: ...
-> >=20
-> > To the commit that caused the bug.
->=20
-> Yes, this should be the first one.
->=20
-> Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
+Instead of blindly picking a function to attach to what is ambiguous,
+error with EADDRNOTAVAIL to let the user know that this function is not
+unique, and that the user must use another unique function with an
+address offset to get to the function they want to attach to.
 
-Thank you! I should have thought about it nonetheless but I will take more=
-=20
-care in the future!
+Cc: stable@vger.kernel.org
+Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
+Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Link: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
+---
+ kernel/trace/trace_kprobe.c | 63 +++++++++++++++++++++++++++++++++++++
+ kernel/trace/trace_probe.h  |  1 +
+ 2 files changed, 64 insertions(+)
 
-> Thank you,
->=20
-> > -- Steve
-
-Best regards.
-
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 3d7a180a8427..a8fef6ab0872 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -705,6 +705,25 @@ static struct notifier_block trace_kprobe_module_nb = {
+ 	.priority = 1	/* Invoked after kprobe module callback */
+ };
+ 
++static int count_symbols(void *data, unsigned long unused)
++{
++	unsigned int *count = data;
++
++	(*count)++;
++
++	return 0;
++}
++
++static unsigned int number_of_same_symbols(char *func_name)
++{
++	unsigned int count;
++
++	count = 0;
++	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
++
++	return count;
++}
++
+ static int __trace_kprobe_create(int argc, const char *argv[])
+ {
+ 	/*
+@@ -836,6 +855,31 @@ static int __trace_kprobe_create(int argc, const char *argv[])
+ 		}
+ 	}
+ 
++	if (symbol && !strchr(symbol, ':')) {
++		unsigned int count;
++
++		count = number_of_same_symbols(symbol);
++		if (count > 1) {
++			/*
++			 * Users should use ADDR to remove the ambiguity of
++			 * using KSYM only.
++			 */
++			trace_probe_log_err(0, NON_UNIQ_SYMBOL);
++			ret = -EADDRNOTAVAIL;
++
++			goto error;
++		} else if (count == 0) {
++			/*
++			 * We can return ENOENT earlier than when register the
++			 * kprobe.
++			 */
++			trace_probe_log_err(0, BAD_PROBE_ADDR);
++			ret = -ENOENT;
++
++			goto error;
++		}
++	}
++
+ 	trace_probe_log_set_index(0);
+ 	if (event) {
+ 		ret = traceprobe_parse_event_name(&event, &group, gbuf,
+@@ -1695,6 +1739,7 @@ static int unregister_kprobe_event(struct trace_kprobe *tk)
+ }
+ 
+ #ifdef CONFIG_PERF_EVENTS
++
+ /* create a trace_kprobe, but don't add it to global lists */
+ struct trace_event_call *
+ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+@@ -1705,6 +1750,24 @@ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+ 	int ret;
+ 	char *event;
+ 
++	if (func) {
++		unsigned int count;
++
++		count = number_of_same_symbols(func);
++		if (count > 1)
++			/*
++			 * Users should use addr to remove the ambiguity of
++			 * using func only.
++			 */
++			return ERR_PTR(-EADDRNOTAVAIL);
++		else if (count == 0)
++			/*
++			 * We can return ENOENT earlier than when register the
++			 * kprobe.
++			 */
++			return ERR_PTR(-ENOENT);
++	}
++
+ 	/*
+ 	 * local trace_kprobes are not added to dyn_event, so they are never
+ 	 * searched in find_trace_kprobe(). Therefore, there is no concern of
+diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
+index 02b432ae7513..850d9ecb6765 100644
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -450,6 +450,7 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
+ 	C(BAD_MAXACT,		"Invalid maxactive number"),		\
+ 	C(MAXACT_TOO_BIG,	"Maxactive is too big"),		\
+ 	C(BAD_PROBE_ADDR,	"Invalid probed address or symbol"),	\
++	C(NON_UNIQ_SYMBOL,	"The symbol is not unique"),		\
+ 	C(BAD_RETPROBE,		"Retprobe address must be an function entry"), \
+ 	C(NO_TRACEPOINT,	"Tracepoint is not found"),		\
+ 	C(BAD_ADDR_SUFFIX,	"Invalid probed address suffix"), \
+-- 
+2.34.1
 
