@@ -2,54 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C59537D0E0D
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 13:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A26887D0E11
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 13:04:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376897AbjJTLBx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 07:01:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52180 "EHLO
+        id S1376927AbjJTLEK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 07:04:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376881AbjJTLBv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 07:01:51 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B1A1E8
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 04:01:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6448DC433C8;
-        Fri, 20 Oct 2023 11:01:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697799709;
-        bh=4Rkb5V2D8bP++SzpqDTXV2hlkoc7FCRIfbSezE4goj4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RUVpp1plkdOHyyFAde2H/Cn0OKs1eY343jIXt+VEfhg6e25IqEkTenBDwlTD0kBf4
-         TWuJ/UbvrzK2VihpOsWF0IaSwXAEkxZ4Mzz2DsgwHWru0nD5lBn1fjiXdHcGHXS/0u
-         kRqudxzqp1lftoa+HgmsSm50bq/jgUdDmVpiy8M6qbT8i4SDa5r7+sYJkdh3z+VPS6
-         jud37U/LvIdCTy4HA4okQOhqwILpyrOY5fjP6r5tkZY3W2bUUTELVjRXnFigCX0Gnh
-         ng1HjGxAv3fRnlLxqYzqbear4pGhLpzjR/1x4O20u28EUXWfjyIjhOuw9eRcZFpeYK
-         kPQGWdgXjVZCg==
-Date:   Fri, 20 Oct 2023 13:01:44 +0200
-From:   Christian Brauner <brauner@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Jesse Hathaway <jesse@mbuki-mvuki.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Florian Weimer <fweimer@redhat.com>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        linux-fsdevel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
-        Linux regressions mailing list <regressions@lists.linux.dev>,
-        giuseppe@scrivano.org
-Subject: Re: [PATCH] attr: block mode changes of symlinks
-Message-ID: <20231020-allgegenwart-torbogen-33dc58e9a7aa@brauner>
-References: <CANSNSoUYMdPPLuZhofOW6DaKzCF47WhZ+T9BnL8sA37M7b4F+g@mail.gmail.com>
- <2023101819-satisfied-drool-49bb@gregkh>
- <CANSNSoV6encjhH2u-Ua8wmjy==emvpi+76HTZasxbfzobMQ_Vw@mail.gmail.com>
- <38bf9c2b-25e2-498e-ae50-362792219e50@leemhuis.info>
+        with ESMTP id S1376745AbjJTLEJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 07:04:09 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7A1ECA;
+        Fri, 20 Oct 2023 04:04:07 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qtnIU-0003KO-3g; Fri, 20 Oct 2023 13:04:06 +0200
+Message-ID: <c9a99e29-1a16-4b46-8e3a-afd0aae5b76e@leemhuis.info>
+Date:   Fri, 20 Oct 2023 13:04:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] pci: loongson: Workaround MIPS firmware MRRS settings
+Content-Language: en-US, de-DE
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     Huacai Chen <chenhuacai@kernel.org>, linux-pci@vger.kernel.org,
+        bhelgaas@google.com, linux-kernel@vger.kernel.org, kw@linux.com,
+        lpieralisi@kernel.org, stable@vger.kernel.org,
+        Linux kernel regressions list <regressions@lists.linux.dev>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+References: <20230725061008.1504292-1-jiaxun.yang@flygoat.com>
+ <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com>
+ <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
+ <861a809d-3df1-327e-e033-87506f6d89e5@flygoat.com>
+ <20230907011828.GA2865@thinkpad>
+ <6e1bdebf-f335-23a5-c79f-d603c5d0150c@flygoat.com>
+ <20230907050805.GA3218@thinkpad>
+ <91336c97-0831-3ce3-5ff0-54344f18e065@leemhuis.info>
+In-Reply-To: <91336c97-0831-3ce3-5ff0-54344f18e065@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <38bf9c2b-25e2-498e-ae50-362792219e50@leemhuis.info>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1697799847;c25b5c96;
+X-HE-SMSGID: 1qtnIU-0003KO-3g
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -58,61 +53,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 20, 2023 at 10:34:36AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
-> [adding Christian, the author of what appears to be the culprit]
-> 
-> On 18.10.23 20:49, Jesse Hathaway wrote:
-> > On Wed, Oct 18, 2023 at 1:40 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> 
-> FWIW, this thread afaics was supposed to be in reply to this submission:
-> 
-> https://lore.kernel.org/all/20230712-vfs-chmod-symlinks-v1-1-27921df6011f@kernel.org/
-> 
-> That patch later became 5d1f903f75a80d ("attr: block mode changes of
-> symlinks") [v6.6-rc1, v6.5.5, v6.1.55, v5.4.257, v5.15.133, v5.10.197,
-> v4.19.295, v4.14.326]
-> 
-> >>> Unfortunately, this has not held up in LTSes without causing
-> >>> regressions, specifically in crun:
-> >>>
-> >>> Crun issue and patch
-> >>>  1. https://github.com/containers/crun/issues/1308
-> >>>  2. https://github.com/containers/crun/pull/1309
-> >>
-> >> So thre's a fix already for this, they agree that symlinks shouldn't
-> >> have modes, so what's the issue?
-> > 
-> > The problem is that it breaks crun in Debian stable. They have fixed the
-> > issue in crun, but that patch may not be backported to Debian's stable
-> > version. In other words the patch seems to break existing software in
-> > the wild.
-> > 
-> >> It needs to reverted in Linus's tree first, otherwise you will hit the
-> >> same problem when moving to a new kernel.
-> > 
-> > Okay, I'll raise the issue on the linux kernel mailing list.
-> 
-> Did you do that? I could not find anything. Just wondering, as right now
-> there is still some time to fix this regression before 6.6 is released
-> (and then the fix can be backported to the stable trees, too).
+Hi, Thorsten here, the Linux kernel's regression tracker. Top-posting
+for once, to make this easily accessible to everyone.
 
-I have not seen a report other than the crun fix I commented on.
+Just wondering what's up here. The patch this thread is about afaics was
+supposed to fix a regression reported in July
+(https://bugzilla.kernel.org/show_bug.cgi?id=217680 ), but has made not
+steps closer to get mainlined during the past few weeks. Is there a
+reason, or did it maybe fell through the cracks?
 
-The crun authors had agreed to fix this in crun. As symlink mode changes
-are severly broken to the point that it's not even supported through the
-official glibc and musl system call wrappers anymore not having to
-revert this from mainline would be the ideal outcome.
+Jiaxun Yang, from it quick look it seems like you wanted to post a v3,
+but never did so; but I might be mistaken there.
 
-So ideally, the crun bugfix would be backported to Debian stable just as
-it was already backported to Fedora or crun make a new point release for
-the 1.8.* series.
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-The other option to consider would be to revert the backport of the attr
-changes to stable kernels. I'm not sure what Greg's stance on this is
-but given that crun versions in -testing already include that fix that
-means all future Debian releases will already have a fixed crun version.
+#regzbot poke
 
-That symlink stuff is so brittle and broken that we'd do more long-term
-harm by letting it go on. Which is why we did this.
-
-@Linus, this is ultimately your call of course.
+On 20.09.23 14:33, Linux regression tracking (Thorsten Leemhuis) wrote:
+> [CCing the regression list, as it should be in the loop for regressions:
+> https://docs.kernel.org/admin-guide/reporting-regressions.html]
+> 
+> On 07.09.23 07:08, Manivannan Sadhasivam wrote:
+>> On Thu, Sep 07, 2023 at 11:13:00AM +0800, Jiaxun Yang wrote:
+>>> 在 2023/9/7 9:18, Manivannan Sadhasivam 写道:
+>>> [...]
+>>>> Why do you need to walk through every single device instead of just bridges?
+>>>> I'm not the maintainer, but my suggestion is to go for Huacai Chen's solution.
+>>>
+>>> Thanks for your reply, unfortunately Huacai's solution is impractical in
+>>> this case.
+>>>
+>>> The problem we have, is firmware (or BIOS) setting improper MRRS for devices
+>>> attached under those bridges. So we have to fix up MRRS for every single
+>>> device.
+>>> We can't iterate child device in bridge quirk because there is no guarantee
+>>> that
+>>> bridge will be probed before  it's child device, partly due to hotplug.
+>>
+>> Okay, this clarifies and also warrants improvement in commit message.
+>>
+>> You could also use pci_walk_bus() after pci_host_probe() to iterate over the
+>> child devices under root bridge and set MRRS. IMO that would look neat.
+> 
+> Hi, Thorsten here, the Linux kernel's regression tracker. What's the
+> status here? The regression that was supposed to be fixed by the patched
+> that started this thread was reported 9 weeks ago[1] and the culprit
+> made it to many stable kernels as well. Would be really good to finally
+> fix this, as a regression like this should ideally be fixed within 2 to
+> 3 weeks (in both mainline and stable). With a revert if necessary -- is
+> this maybe still a option, or would that cause more trouble then it
+> solved (I guess that's the case).
+> 
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=217680
+> 
+> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+> --
+> Everything you wanna know about Linux kernel regression tracking:
+> https://linux-regtracking.leemhuis.info/about/#tldr
+> If I did something stupid, please tell me, as explained on that page.
+> 
+>>> This quirk has been in tree for a while, until Huacai refactored it and
+>>> broke some
+>>> systems in 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases").
+>>>
+>>> Also to note that ks_pcie_quirk in drivers/pci/controller/dwc/pci-keystone.c
+>>> uses similar approach.
+>>>> This avoids iterating over bridges/devices two times.
+>>>>
+>>>> Also, please rename firmware to BIOS, as firmware commonly represents the
+>>>> software running on PCIe endpoint devices.
+>>> Ack, will fix in next reversion.
+>>>
+>>> Thanks
+>>> - Jiaxun
+>>>>
+>>>> - Mani
+>>> [...]
+>>
