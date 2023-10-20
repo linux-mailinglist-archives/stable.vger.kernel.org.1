@@ -2,33 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21AAE7D1462
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 18:51:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39EE27D1466
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 18:53:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229709AbjJTQvK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 12:51:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34234 "EHLO
+        id S229709AbjJTQxJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 12:53:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbjJTQvK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 12:51:10 -0400
+        with ESMTP id S229849AbjJTQxJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 12:53:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E0BCCA
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 09:51:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA81C433C7;
-        Fri, 20 Oct 2023 16:51:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87AF2D65
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 09:53:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90E2C433C7;
+        Fri, 20 Oct 2023 16:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697820668;
-        bh=UxcsiI/3vFy6mHRMZguagYnbHlujibYrxAnFu2X46a4=;
+        s=korg; t=1697820786;
+        bh=H5/l5nu60nQfQ6pjXbvO1283YI4956PdSFU3101qHTQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=R7fzOznlCh5NPvKa6gD3VSXL4WyP5CtHG9qvAEv3L1L49KIHnnK/w/li38GWl1/NR
-         82A04VbLMW+uzRkKVVfXI+8N8a7kIQp5D9W6ynJWvwwbqNwP9TsVf428HXOhjCGl46
-         391i+rMXOJIS24VyEx8OWXe+jTGHXcUr1X2A8dgQ=
-Subject: FAILED: patch "[PATCH] Bluetooth: ISO: Fix invalid context error" failed to apply to 6.5-stable tree
-To:     iulia.tanasescu@nxp.com, luiz.von.dentz@intel.com
+        b=0FLTdvF3mP6OrUV6ZI2c0lrsSkFfMGIOS3+zWa+MASQoRamnoRDf4SvtULfwBjUxi
+         wePW2cIit9RbcOTfEz4O6jXrHtljZ3IQpj6LktW0oD+b/xNK8TapZvlyGFyf3evT7d
+         siDx0H75AXgrkKHoZmaMhDMEECXNTFt3B0dm142k=
+Subject: FAILED: patch "[PATCH] ice: fix over-shifted variable" failed to apply to 4.19-stable tree
+To:     jesse.brandeburg@intel.com, himasekharx.reddy.pucha@intel.com,
+        horms@kernel.org, jacob.e.keller@intel.com, kuba@kernel.org,
+        przemyslaw.kitszel@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 18:51:05 +0200
-Message-ID: <2023102005-stomp-defy-0f8e@gregkh>
+Date:   Fri, 20 Oct 2023 18:52:51 +0200
+Message-ID: <2023102051-monsoon-democracy-4b10@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x acab8ff29a2a226409cfe04e6d2e0896928c1b3a
+git cherry-pick -x 242e34500a32631f85c2b4eb6cb42a368a39e54f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102005-stomp-defy-0f8e@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102051-monsoon-democracy-4b10@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,58 +69,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From acab8ff29a2a226409cfe04e6d2e0896928c1b3a Mon Sep 17 00:00:00 2001
-From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Date: Thu, 28 Sep 2023 10:52:57 +0300
-Subject: [PATCH] Bluetooth: ISO: Fix invalid context error
+From 242e34500a32631f85c2b4eb6cb42a368a39e54f Mon Sep 17 00:00:00 2001
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Date: Tue, 10 Oct 2023 13:30:59 -0700
+Subject: [PATCH] ice: fix over-shifted variable
 
-This moves the hci_le_terminate_big_sync call from rx_work
-to cmd_sync_work, to avoid calling sleeping function from
-an invalid context.
+Since the introduction of the ice driver the code has been
+double-shifting the RSS enabling field, because the define already has
+shifts in it and can't have the regular pattern of "a << shiftval &
+mask" applied.
 
-Reported-by: syzbot+c715e1bd8dfbcb1ab176@syzkaller.appspotmail.com
-Fixes: a0bfde167b50 ("Bluetooth: ISO: Add support for connecting multiple BISes")
-Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Most places in the code got it right, but one line was still wrong. Fix
+this one location for easy backports to stable. An in-progress patch
+fixes the defines to "standard" and will be applied as part of the
+regular -next process sometime after this one.
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 31d02b54eea1..e6cfc65abcb8 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -7021,6 +7021,14 @@ static void hci_le_cis_req_evt(struct hci_dev *hdev, void *data,
- 	hci_dev_unlock(hdev);
+Fixes: d76a60ba7afb ("ice: Add support for VLANs and offloads")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20231010203101.406248-1-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 7bf9b7069754..73bbf06a76db 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -1201,8 +1201,7 @@ static void ice_set_rss_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
+ 
+ 	ctxt->info.q_opt_rss = ((lut_type << ICE_AQ_VSI_Q_OPT_RSS_LUT_S) &
+ 				ICE_AQ_VSI_Q_OPT_RSS_LUT_M) |
+-				((hash_type << ICE_AQ_VSI_Q_OPT_RSS_HASH_S) &
+-				 ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
++				(hash_type & ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
  }
  
-+static int hci_iso_term_big_sync(struct hci_dev *hdev, void *data)
-+{
-+	u8 handle = PTR_UINT(data);
-+
-+	return hci_le_terminate_big_sync(hdev, handle,
-+					 HCI_ERROR_LOCAL_HOST_TERM);
-+}
-+
- static void hci_le_create_big_complete_evt(struct hci_dev *hdev, void *data,
- 					   struct sk_buff *skb)
- {
-@@ -7065,16 +7073,17 @@ static void hci_le_create_big_complete_evt(struct hci_dev *hdev, void *data,
- 		rcu_read_lock();
- 	}
- 
-+	rcu_read_unlock();
-+
- 	if (!ev->status && !i)
- 		/* If no BISes have been connected for the BIG,
- 		 * terminate. This is in case all bound connections
- 		 * have been closed before the BIG creation
- 		 * has completed.
- 		 */
--		hci_le_terminate_big_sync(hdev, ev->handle,
--					  HCI_ERROR_LOCAL_HOST_TERM);
-+		hci_cmd_sync_queue(hdev, hci_iso_term_big_sync,
-+				   UINT_PTR(ev->handle), NULL);
- 
--	rcu_read_unlock();
- 	hci_dev_unlock(hdev);
- }
- 
+ static void
 
