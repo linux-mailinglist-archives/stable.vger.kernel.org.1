@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 710BB7D155E
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 20:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 620357D155C
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 20:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230085AbjJTSCq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 14:02:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57676 "EHLO
+        id S229839AbjJTSCh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 14:02:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229902AbjJTSCp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 14:02:45 -0400
+        with ESMTP id S230028AbjJTSCg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 14:02:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDBC4C0
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:02:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381E5C433C7;
-        Fri, 20 Oct 2023 18:02:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D6C0D51
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 11:02:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F2C433C8;
+        Fri, 20 Oct 2023 18:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697824963;
-        bh=mbLF8HN2N4X2H/tieXdZ+UL9SEy69TROaRAF56Mbp5I=;
+        s=korg; t=1697824954;
+        bh=RYBN2FkuNM7fPNUX+71DLcq0ctB4EKII/H+wHGREYfg=;
         h=Subject:To:Cc:From:Date:From;
-        b=aWDidS0ch1uG3rDmX+ttLMkPfITEsqYmnPlx9L8uAlcbcgV0cCRuFW5V9Rv3eCPXJ
-         Ee8Ki9LrWqeO1OOQUn03bt4gkj8bD6QsLuZzOg44Z1YC8SL6HPDU0QI1vvWKA71TMh
-         XRj86nwnvn+YUCxUY6bQCp8oZ5YkX7kWGRjQy8A8=
-Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd938x: fix regulator leaks on probe errors" failed to apply to 5.15-stable tree
+        b=gdiQc6Uj5FAnc2tBggz8D36+ceTlI1Xav64ifvHuXSYyIEXogBUBrS4dpMg46/VhQ
+         9C6LrImQFVWUbnKACAFUeW9AwUGQtUTDPwch65zKvhghfgwXvadGJQiRrmu9P9M/OQ
+         5okI1/rr8L11BAJE79cQPQABFwYzYjII4zjzFWtc=
+Subject: FAILED: patch "[PATCH] ASoC: codecs: wcd938x: fix regulator leaks on probe errors" failed to apply to 6.1-stable tree
 To:     johan+linaro@kernel.org, broonie@kernel.org,
         srinivas.kandagatla@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Fri, 20 Oct 2023 20:02:32 +0200
-Message-ID: <2023102032-musty-aground-e769@gregkh>
+Message-ID: <2023102031-dropper-froth-7dd6@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 69a026a2357ee69983690d07976de44ef26ee38a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102032-musty-aground-e769@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102031-dropper-froth-7dd6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
