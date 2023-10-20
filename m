@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D9AA7D150C
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7C987D150E
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:42:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230008AbjJTRm0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 13:42:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43408 "EHLO
+        id S1377953AbjJTRmg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 13:42:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229909AbjJTRm0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:42:26 -0400
+        with ESMTP id S1377950AbjJTRmg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:42:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60EE6A3
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 10:42:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A521DC433C9;
-        Fri, 20 Oct 2023 17:42:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72C24D71
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 10:42:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B202DC433C8;
+        Fri, 20 Oct 2023 17:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697823744;
-        bh=W+DFWY6OuxkWVwPJOORi5vjuDb8YbkP7AQ3CbgAtl18=;
+        s=korg; t=1697823753;
+        bh=/dbE62so9CbI8WsDC7OD1x0gs1mrXmZYQ/kQ/EefUDc=;
         h=Subject:To:Cc:From:Date:From;
-        b=mYwQA6NBMEiDvC2JBFx7hj4AyRY8GrPzvfVD0Xgj2c+O0fT4M3SdTCj4UXD0hg6qW
-         NZR6q8QgE+NTcC+AEB/iqEHSSnXlE8svx40U7EjD0LrMQoqSPPzsF8KHBQiVcMXHNA
-         EHA+Ulk6pDs7OjXoydox/PYtJy7CwjLrrCMEnMQg=
-Subject: FAILED: patch "[PATCH] mptcp: avoid sending RST when closing the initial subflow" failed to apply to 6.5-stable tree
+        b=l1kW+jqaiskS1+deS/55ngCdGwh6lPWzBd9VD7IFZdRezWOww1tudsVo4PAUiaDSq
+         1vWce+uhL/pSu8Uvpq4pF78JN3Pn/5A39uzWJ7yi0gsSCWVm2MgbA+pXtKdvaTMAcY
+         CAmh9NzBtnzKRPaadIkAMxdpBu2P+E62nK/c2XH8=
+Subject: FAILED: patch "[PATCH] mptcp: avoid sending RST when closing the initial subflow" failed to apply to 6.1-stable tree
 To:     geliang.tang@suse.com, kuba@kernel.org, martineau@kernel.org,
         matttbe@kernel.org, pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 19:42:21 +0200
-Message-ID: <2023102021-unawake-celibate-46c9@gregkh>
+Date:   Fri, 20 Oct 2023 19:42:22 +0200
+Message-ID: <2023102022-wrongness-buddhism-fcf4@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 14c56686a64c65ba716ff48f1f4b19c85f4cb2a9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102021-unawake-celibate-46c9@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102022-wrongness-buddhism-fcf4@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
