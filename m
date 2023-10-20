@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C50BB7D1700
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E0897D1701
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:28:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229555AbjJTU2z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:28:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41920 "EHLO
+        id S229704AbjJTU26 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:28:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230162AbjJTU2y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:28:54 -0400
+        with ESMTP id S229659AbjJTU25 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:28:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FB3ED63
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:28:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2814C433C7;
-        Fri, 20 Oct 2023 20:28:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE792D63
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:28:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFEBC433C8;
+        Fri, 20 Oct 2023 20:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697833732;
-        bh=xn8bM6RwDj/Z2ywto15rFCT9Sf14YewoVuz2yzHCSHA=;
+        s=korg; t=1697833735;
+        bh=fZEfqoF3152+B0b6bh3u1PE3gjXXRy3xnzzRiJxm4Io=;
         h=Subject:To:Cc:From:Date:From;
-        b=h3DMHK+couwAYKpJJoVeQ9TY7V4WJzrdjQ4p1EUdDYZcswo5kiBf09WUPPm7d7oU5
-         BrLbF0cIlEp26ofqIBS5dpPWMYiHD7BaNqq5lUAMfCUY5Egon9UfbsQIUtcu66ycz0
-         AaKBW8MSoh1Pd2nK/gAA6XGEy2eRuU/nfFmZwCvY=
-Subject: FAILED: patch "[PATCH] net: dsa: bcm_sf2: Fix possible memory leak in" failed to apply to 4.19-stable tree
+        b=uxPt+Wqk1SleERyc2SL0I8Si6Mlrdsk8kGLJBwMx6B1a8ioc2Iu07c4GH4svBQkR4
+         siMhjOyA+Mu06jtAjcwmq2vmJHAU0v9o0BYbyn6Wg5M/BOZExmKy0mjsX+4nM65HZQ
+         BLEB+aq7qPm1D0S7jST9AWT0JiLfTvLmduSkdzL0=
+Subject: FAILED: patch "[PATCH] net: dsa: bcm_sf2: Fix possible memory leak in" failed to apply to 4.14-stable tree
 To:     ruanjinjie@huawei.com, florian.fainelli@broadcom.com,
         horms@kernel.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:28:41 +0200
-Message-ID: <2023102041-speculate-spew-1d42@gregkh>
+Date:   Fri, 20 Oct 2023 22:28:42 +0200
+Message-ID: <2023102042-clinic-pruning-a3ca@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 61b40cefe51af005c72dbdcf975a3d166c6e6406
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102041-speculate-spew-1d42@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102042-clinic-pruning-a3ca@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
