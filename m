@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E85187D16DE
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D27C17D16DF
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:22:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230100AbjJTUWO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:22:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35836 "EHLO
+        id S230106AbjJTUWQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:22:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230114AbjJTUWN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:22:13 -0400
+        with ESMTP id S230114AbjJTUWQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:22:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E59AD65
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:22:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF7B6C433C8;
-        Fri, 20 Oct 2023 20:22:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99E93D65
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:22:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5157C433CA;
+        Fri, 20 Oct 2023 20:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697833331;
-        bh=5M8B0xyUgQVkjXiJZ4F3G43uxlGkMisxy4syV+y45u0=;
+        s=korg; t=1697833334;
+        bh=OyMJAuRw1cT5uMYdndu5rI1W/eiIjnx8MU1VmGM/q4Q=;
         h=Subject:To:Cc:From:Date:From;
-        b=b2pw6H2f1YSrrqIyDwcPmD2OAprCj9h3pUvH7r508xYpYqgDInPGnCLYk/aA9FSF1
-         zcclFamfboiQHQbc3SnKJ15zl0+GD1XSr3sx5tGjhGMNxGwF/1duXVXD0ev0hTIrYG
-         EXIqqzJ2UJCigoIcQSt/0QGfRBXRNwlUm8ymgGJc=
-Subject: FAILED: patch "[PATCH] xfrm6: fix inet6_dev refcount underflow problem" failed to apply to 5.10-stable tree
+        b=Fkab/+Bu79bpJldchxGn0WwgeXmMatmo+9xpIOD5xdkVUYwBPur3eEKek5rgx4niJ
+         Se46gTm9u9ykhNkXoK/Vc/DLN5ghNlX4bTgOzTBRVGoVBylO0+2pmB+CVkJV++xI0C
+         74O7yLTYuwLnS9jfz34eAXv9Gc11MMSNPtaRvzds=
+Subject: FAILED: patch "[PATCH] xfrm6: fix inet6_dev refcount underflow problem" failed to apply to 5.4-stable tree
 To:     zhangchangzhong@huawei.com, lucien.xin@gmail.com,
         steffen.klassert@secunet.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:22:03 +0200
-Message-ID: <2023102003-anagram-decency-29a0@gregkh>
+Date:   Fri, 20 Oct 2023 22:22:04 +0200
+Message-ID: <2023102004-collision-feminism-9a66@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x cc9b364bb1d58d3dae270c7a931a8cc717dc2b3b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102003-anagram-decency-29a0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102004-collision-feminism-9a66@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
