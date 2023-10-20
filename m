@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EDE17D16FA
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AE297D16FB
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:27:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231225AbjJTU1k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:27:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35124 "EHLO
+        id S230403AbjJTU1s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:27:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231786AbjJTU1i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:27:38 -0400
+        with ESMTP id S230457AbjJTU1q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:27:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0533D70
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:27:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD228C433C8;
-        Fri, 20 Oct 2023 20:27:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D5FD6A
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:27:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B76C433C7;
+        Fri, 20 Oct 2023 20:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697833654;
-        bh=Cp57djc8uFAbxqX+fNBj6DTHkA38Dv7AHLKqBKZFkzc=;
+        s=korg; t=1697833664;
+        bh=zsdIvisNqEeuIXJRiv75rcZYUeZdR9lynAwg/2mA+rI=;
         h=Subject:To:Cc:From:Date:From;
-        b=f/HZrQ8TXmie2Jyb28CQunU/43Voti/tpGqJyWIjk6M71qKX4mEHpixOFTTls0KJX
-         l5bmIura87s8KYN+oUii5fBDQvlkMxLo5CGEzmKYIfnu09xBdsGG94qJIknGv0kYsi
-         HfNEQzxW7T90HCaRD2+I4ZQAxudPfHRxfj4EdTzo=
-Subject: FAILED: patch "[PATCH] ipv4: fib: annotate races around nh->nh_saddr_genid and" failed to apply to 4.19-stable tree
+        b=okw0K11ehbD86iQpWDs6uXnvN2v2iTM77uFNmXnLIefmA6hgXlCEXNGqBISVaL6fY
+         L2DR4G7tvcZD46dVzJqUbSsvAyXdrnobcBcsp4CWOfyo2X4YEDZY09yDc8ROvPhzTa
+         KILbNXVDY/7YIzsBxuGd9w9+t6MW5IX5lsgvSbOs=
+Subject: FAILED: patch "[PATCH] ipv4: fib: annotate races around nh->nh_saddr_genid and" failed to apply to 4.14-stable tree
 To:     edumazet@google.com, dsahern@kernel.org, horms@kernel.org,
         kuba@kernel.org, syzkaller@googlegroups.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:27:31 +0200
-Message-ID: <2023102031-pacify-value-687a@gregkh>
+Date:   Fri, 20 Oct 2023 22:27:32 +0200
+Message-ID: <2023102032-fang-urban-2541@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 195374d893681da43a39796e53b30ac4f20400c4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102031-pacify-value-687a@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102032-fang-urban-2541@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
