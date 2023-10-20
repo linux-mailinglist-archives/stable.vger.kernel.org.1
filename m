@@ -2,132 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57B867D0507
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 00:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA2097D0618
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 03:21:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233286AbjJSWxG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 19 Oct 2023 18:53:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58910 "EHLO
+        id S1346787AbjJTBVk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 19 Oct 2023 21:21:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235553AbjJSWxF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 18:53:05 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6DF4124;
-        Thu, 19 Oct 2023 15:53:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2BAC433C8;
-        Thu, 19 Oct 2023 22:53:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697755983;
-        bh=4QWPJAIM+Q/aCyrT5OkgDDJq9iMWdUi9V0YvpsfpZ88=;
-        h=From:To:Cc:Subject:Date:From;
-        b=aVduFb5pNRpQcQMJiDrYPHiDS0fntkHHzp9NxGuevyHM93LUoA0kRcOpYlxWFSnAj
-         Ag4/ybpQRGHtmBx2JTAJrMWPe5Dy33FiPkmVqJy7aAtwWVo8E89ng1poSJGMhYO3cY
-         2jYHMM4+YvQ4AT4KVVdqH8yArboj7T3w3Fij5A4ucvAEgoMAVLKsPJw64J4ZQqfO3Q
-         M1wAodPDnYW6xBPvZx50gzd6k3JSSf44scmp0B4Vw45fn16Urrq+qCHS+xJj6h1X4t
-         aeJyXyrTTU9MFgGZKCkPXrzCkjtr+uuUxXyhbEX0y3AfyoyaMfxcAr7n+RIT8AYbwP
-         WOCyxpG3HETWw==
-From:   Jaegeuk Kim <jaegeuk@kernel.org>
-To:     linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net
-Cc:     Jaegeuk Kim <jaegeuk@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH] f2fs: do not return EFSCORRUPTED, but try to run online repair
-Date:   Thu, 19 Oct 2023 15:53:00 -0700
-Message-ID: <20231019225300.1846362-1-jaegeuk@kernel.org>
-X-Mailer: git-send-email 2.42.0.655.g421f12c284-goog
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S1346758AbjJTBVk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 19 Oct 2023 21:21:40 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D71C124
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 18:21:38 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d81e9981ff4so353760276.3
+        for <stable@vger.kernel.org>; Thu, 19 Oct 2023 18:21:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1697764897; x=1698369697; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=svgRlD+xMxXKSNv1D21nXe/Ukb4M7OikQcdxYN6vhEQ=;
+        b=E6w/HQLu+MM7ZPt5y0dka0jHHkkNewlbZNJFvK/oeRDHncOpdSXgod5JH2BVF8wm9h
+         MPiXB70QD9hXN4nxMNLkDxblaJ0lYMB2LfxHA4faV+1OUfPKiBA8qXnqVkJEdWdRBxJO
+         NKIVD2OGfOua6m9uj0A32Wc0LulJ8aiBredMlKg9rH6if+/OCq82VeUwAg7FcMo0Wiof
+         WCKzy9DmqJepUD/ycFXd0/xqSjiTeC1/HjxGGIji9TKXofO0ba42Cj8t0+0H1aH+pugL
+         7foHYl9Jcz5wcD2qAd7oyEJKpjw+RAKYIJiERoU3xeLgPgpxtVaS8g3BaMtuakRR7Azp
+         ldbg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697764897; x=1698369697;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=svgRlD+xMxXKSNv1D21nXe/Ukb4M7OikQcdxYN6vhEQ=;
+        b=XzN0Xo/7KQLgAXiNMjsJyB7Vmj3Dhnqgy/KQVgf0uZgy6Dhi4lBqF90Rk2fpLCvoxe
+         L9E+qGCilItngGqvmL9pigYGu3lrcKWDXigHrP2x055yU7mY3FtlXcL7DGzPA6EocFiT
+         VGiSiktYOZADgjjS2ErORPqPyvAOJxfg6FbYVLvKF6KIiom++txmsPU3te1Xm889g8RD
+         ctSw/QIvIifnbWM8i4Ww9DwQ5RhyGGJvSd08vuHMGPvxmyqQFsH99m6imodTDEhBJxzb
+         QGxV4VdjVseTUAEb3oyoRqEmXNwyJ425QfBfldap+gVDTTcLIkxL2NLyj9GiBudhtbug
+         ImLg==
+X-Gm-Message-State: AOJu0YxEMAD9RuOf+3rorjHHjZ4o+Eua01pXM28p8Z3sLza8+Li/tsQW
+        S2o96hoZ57xK8EI50pX8zqq21SX92L4=
+X-Google-Smtp-Source: AGHT+IEVeJk3Qi++5fKSME7qdO8CAO8j6CVkisf6RVyyQg1hEpWsD9DIRASMsOOPNhJdtTnJfDNyeH2MfO8=
+X-Received: from hhhuuu.c.googlers.com ([fda3:e722:ac3:cc00:3:22c1:c0a8:c80])
+ (user=hhhuuu job=sendgmr) by 2002:a5b:b06:0:b0:d9a:3a26:fb56 with SMTP id
+ z6-20020a5b0b06000000b00d9a3a26fb56mr9102ybp.2.1697764897525; Thu, 19 Oct
+ 2023 18:21:37 -0700 (PDT)
+Date:   Fri, 20 Oct 2023 01:21:32 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.758.gaed0368e0e-goog
+Message-ID: <20231020012132.100960-1-hhhuuu@google.com>
+Subject: [PATCH v2] usb: typec: tcpm: Fix NULL pointer dereference in tcpm_pd_svdm()
+From:   Jimmy Hu <hhhuuu@google.com>
+To:     linux@roeck-us.net, heikki.krogerus@linux.intel.com,
+        gregkh@linuxfoundation.org
+Cc:     kyletso@google.com, badhri@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Jimmy Hu <hhhuuu@google.com>,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-If we return the error, there's no way to recover the status as of now, since
-fsck does not fix the xattr boundary issue.
+It is possible that typec_register_partner() returns ERR_PTR on failure.
+When port->partner is an error, a NULL pointer dereference may occur as
+shown below.
 
+[91222.095236][  T319] typec port0: failed to register partner (-17)
+...
+[91225.061491][  T319] Unable to handle kernel NULL pointer dereference
+at virtual address 000000000000039f
+[91225.274642][  T319] pc : tcpm_pd_data_request+0x310/0x13fc
+[91225.274646][  T319] lr : tcpm_pd_data_request+0x298/0x13fc
+[91225.308067][  T319] Call trace:
+[91225.308070][  T319]  tcpm_pd_data_request+0x310/0x13fc
+[91225.308073][  T319]  tcpm_pd_rx_handler+0x100/0x9e8
+[91225.355900][  T319]  kthread_worker_fn+0x178/0x58c
+[91225.355902][  T319]  kthread+0x150/0x200
+[91225.355905][  T319]  ret_from_fork+0x10/0x30
+
+Add a check for port->partner to avoid dereferencing a NULL pointer.
+
+Fixes: 5e1d4c49fbc8 ("usb: typec: tcpm: Determine common SVDM Version")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
 ---
- fs/f2fs/node.c  |  4 +++-
- fs/f2fs/xattr.c | 20 +++++++++++++-------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 1c8bf56c834c..256270d6a065 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -2750,7 +2750,9 @@ int f2fs_recover_xattr_data(struct inode *inode, struct page *page)
- 	f2fs_update_inode_page(inode);
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 6e843c511b85..792ec4ac7d8d 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1625,6 +1625,9 @@ static int tcpm_pd_svdm(struct tcpm_port *port, struct typec_altmode *adev,
+ 			if (PD_VDO_VID(p[0]) != USB_SID_PD)
+ 				break;
  
- 	/* 3: update and set xattr node page dirty */
--	memcpy(F2FS_NODE(xpage), F2FS_NODE(page), VALID_XATTR_BLOCK_SIZE);
-+	if (page)
-+		memcpy(F2FS_NODE(xpage), F2FS_NODE(page),
-+				VALID_XATTR_BLOCK_SIZE);
- 
- 	set_page_dirty(xpage);
- 	f2fs_put_page(xpage, 1);
-diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-index a657284faee3..465d145360de 100644
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -364,10 +364,10 @@ static int lookup_all_xattrs(struct inode *inode, struct page *ipage,
- 
- 	*xe = __find_xattr(cur_addr, last_txattr_addr, NULL, index, len, name);
- 	if (!*xe) {
--		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
-+		f2fs_err(F2FS_I_SB(inode), "lookup inode (%lu) has corrupted xattr",
- 								inode->i_ino);
- 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
--		err = -EFSCORRUPTED;
-+		err = -ENODATA;
- 		f2fs_handle_error(F2FS_I_SB(inode),
- 					ERROR_CORRUPTED_XATTR);
- 		goto out;
-@@ -584,13 +584,12 @@ ssize_t f2fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
- 
- 		if ((void *)(entry) + sizeof(__u32) > last_base_addr ||
- 			(void *)XATTR_NEXT_ENTRY(entry) > last_base_addr) {
--			f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
-+			f2fs_err(F2FS_I_SB(inode), "list inode (%lu) has corrupted xattr",
- 						inode->i_ino);
- 			set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
--			error = -EFSCORRUPTED;
- 			f2fs_handle_error(F2FS_I_SB(inode),
- 						ERROR_CORRUPTED_XATTR);
--			goto cleanup;
-+			break;
- 		}
- 
- 		if (!prefix)
-@@ -650,7 +649,7 @@ static int __f2fs_setxattr(struct inode *inode, int index,
- 
- 	if (size > MAX_VALUE_LEN(inode))
- 		return -E2BIG;
--
-+retry:
- 	error = read_all_xattrs(inode, ipage, &base_addr);
- 	if (error)
- 		return error;
-@@ -660,7 +659,14 @@ static int __f2fs_setxattr(struct inode *inode, int index,
- 	/* find entry with wanted name. */
- 	here = __find_xattr(base_addr, last_base_addr, NULL, index, len, name);
- 	if (!here) {
--		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
-+		if (!F2FS_I(inode)->i_xattr_nid) {
-+			f2fs_notice(F2FS_I_SB(inode),
-+				"recover xattr in inode (%lu)", inode->i_ino);
-+			f2fs_recover_xattr_data(inode, NULL);
-+			kfree(base_addr);
-+			goto retry;
-+		}
-+		f2fs_err(F2FS_I_SB(inode), "set inode (%lu) has corrupted xattr",
- 								inode->i_ino);
- 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
- 		error = -EFSCORRUPTED;
++			if (IS_ERR_OR_NULL(port->partner))
++				break;
++
+ 			if (PD_VDO_SVDM_VER(p[0]) < svdm_version) {
+ 				typec_partner_set_svdm_version(port->partner,
+ 							       PD_VDO_SVDM_VER(p[0]));
 -- 
-2.42.0.655.g421f12c284-goog
+2.42.0.758.gaed0368e0e-goog
 
