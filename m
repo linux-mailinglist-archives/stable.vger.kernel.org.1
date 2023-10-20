@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C13677D170A
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D69B67D170D
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 22:33:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbjJTUda (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 16:33:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55196 "EHLO
+        id S229983AbjJTUdd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 16:33:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbjJTUd3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:33:29 -0400
+        with ESMTP id S229704AbjJTUdc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 16:33:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D431C1BF
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:33:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FDEC433C8;
-        Fri, 20 Oct 2023 20:33:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06514C0
+        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 13:33:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7FBC433C7;
+        Fri, 20 Oct 2023 20:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697834007;
-        bh=Gkyi0tntPU8dJ/8mYZ9r1M4+S5HtAiGI7FCi/5FIouk=;
+        s=korg; t=1697834010;
+        bh=3u+6tRm/Am4faK29xpAY2XLpTf3e7npHURKRv9Fq7zs=;
         h=Subject:To:Cc:From:Date:From;
-        b=FIVCwhdnsaAOm/8XjLe8bGR3lXCMhhJxe1t+S7cb2h6qJ5VHN2tXPOT/aOVuHWoX/
-         Di5djZJ1LhG1h5ca00Q4cBFcYNGcrRq3nrcT4GFwqnQSrHmkGHbEGNom5XFG2QTlfD
-         ZYT1Fv2g0iDPLT0nGJfGvF8kJJEM6JN3LHBYWqyM=
-Subject: FAILED: patch "[PATCH] net: fix ifname in netlink ntf during netns move" failed to apply to 5.15-stable tree
+        b=GKFcBH3tc1CKIo/FdZGPp84pmNF8cAuS4wgHo6XSbSFXIU2xvupmTus2bL1/1KdUg
+         Ak72z7GbBGTRWsGcJ8wzX4r2Vxh40T0Q7jaxkTKk6ZSrPcBmiGAZaDB2bPse5W/Ix1
+         ohpdOA5J/8Er7mxAgn+l+vPmh/E91AIG3BsVAccg=
+Subject: FAILED: patch "[PATCH] net: fix ifname in netlink ntf during netns move" failed to apply to 5.10-stable tree
 To:     kuba@kernel.org, jiri@nvidia.com, pabeni@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 20 Oct 2023 22:33:24 +0200
-Message-ID: <2023102024-blame-romp-1612@gregkh>
+Date:   Fri, 20 Oct 2023 22:33:25 +0200
+Message-ID: <2023102025-divisibly-deck-9f5a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 311cca40661f428b7aa114fb5af578cfdbe3e8b6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102024-blame-romp-1612@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102025-divisibly-deck-9f5a@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
