@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C385D7D14B4
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9C737D14B7
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 19:18:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377895AbjJTRS6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 13:18:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45002 "EHLO
+        id S1377713AbjJTRS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 13:18:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229683AbjJTRSv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:18:51 -0400
+        with ESMTP id S229867AbjJTRSx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 13:18:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A30A3;
-        Fri, 20 Oct 2023 10:18:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AC2C433C8;
-        Fri, 20 Oct 2023 17:18:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63C211B;
+        Fri, 20 Oct 2023 10:18:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4959FC433C8;
+        Fri, 20 Oct 2023 17:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1697822329;
-        bh=7qJXBEALo09kOtNdlPNLYg88qi7oMmUv55iQ1IROUmc=;
+        s=korg; t=1697822331;
+        bh=Bh90cxE3cX1hRY4vCEHOMSDVYcOoYqEIzibsCyHxXTU=;
         h=Date:To:From:Subject:From;
-        b=S5jnZr726AKxwQyXnIpp7xS6GTj3VydwUMkoYBfjvZDhWdqfTnQgu+vAfrLecBKsV
-         VXlZygx3HmdKIuViektxLr87fMLNIlfxUVLc6ypz40EHZYcbdtKT1gDuKWIuzkp3U2
-         G3bE8XT+Pet4QzPUGbuvGrwRe5DAyM669ReOevI0=
-Date:   Fri, 20 Oct 2023 10:18:48 -0700
+        b=UGvlf9jwYqu5WMjRS+9b7UGG8w4vRXRA2j00mhmOHfNqeUmozRtDLGt3noTpZxfWw
+         tChrcvwXtZe3hA2LOZ9DB5G6N4jcLUQajQE2vPiRvdG24rwI2/NGYkWlGN4MOWha5z
+         Tn0QOdze1CAzQ31jPbQhDKnYOfUiP3LQ65YsZKHY=
+Date:   Fri, 20 Oct 2023 10:18:50 -0700
 To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
         akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-core-avoid-divide-by-zero-during-monitoring-results-update.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231020171849.83AC2C433C8@smtp.kernel.org>
+Subject: + mm-damon-ops-common-avoid-divide-by-zero-during-region-hotness-calculation.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231020171851.4959FC433C8@smtp.kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -40,12 +40,12 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The patch titled
-     Subject: mm/damon/core: avoid divide-by-zero during monitoring results update
+     Subject: mm/damon/ops-common: avoid divide-by-zero during region hotness calculation
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-core-avoid-divide-by-zero-during-monitoring-results-update.patch
+     mm-damon-ops-common-avoid-divide-by-zero-during-region-hotness-calculation.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-avoid-divide-by-zero-during-monitoring-results-update.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-ops-common-avoid-divide-by-zero-during-region-hotness-calculation.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -64,51 +64,47 @@ and is updated there every 2-3 working days
 
 ------------------------------------------------------
 From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/core: avoid divide-by-zero during monitoring results update
-Date: Thu, 19 Oct 2023 19:49:21 +0000
+Subject: mm/damon/ops-common: avoid divide-by-zero during region hotness calculation
+Date: Thu, 19 Oct 2023 19:49:22 +0000
 
-When monitoring attributes are changed, DAMON updates access rate of the
-monitoring results accordingly.  For that, it divides some values by the
-maximum nr_accesses.  However, due to the type of the related variables,
-simple division-based calculation of the divisor can return zero.  As a
-result, divide-by-zero is possible.  Fix it by using
-damon_max_nr_accesses(), which handles the case.
+When calculating the hotness of each region for the under-quota regions
+prioritization, DAMON divides some values by the maximum nr_accesses. 
+However, due to the type of the related variables, simple division-based
+calculation of the divisor can return zero.  As a result, divide-by-zero
+is possible.  Fix it by using damon_max_nr_accesses(), which handles the
+case.
 
-Link: https://lkml.kernel.org/r/20231019194924.100347-3-sj@kernel.org
-Fixes: 2f5bef5a590b ("mm/damon/core: update monitoring results for new monitoring attributes")
+Link: https://lkml.kernel.org/r/20231019194924.100347-4-sj@kernel.org
+Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
 Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.3+]
+Cc: <stable@vger.kernel.org>	[5.16+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/core.c |   10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ mm/damon/ops-common.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/mm/damon/core.c~mm-damon-core-avoid-divide-by-zero-during-monitoring-results-update
-+++ a/mm/damon/core.c
-@@ -476,20 +476,14 @@ static unsigned int damon_age_for_new_at
- static unsigned int damon_accesses_bp_to_nr_accesses(
- 		unsigned int accesses_bp, struct damon_attrs *attrs)
+--- a/mm/damon/ops-common.c~mm-damon-ops-common-avoid-divide-by-zero-during-region-hotness-calculation
++++ a/mm/damon/ops-common.c
+@@ -73,7 +73,6 @@ void damon_pmdp_mkold(pmd_t *pmd, struct
+ int damon_hot_score(struct damon_ctx *c, struct damon_region *r,
+ 			struct damos *s)
  {
--	unsigned int max_nr_accesses =
--		attrs->aggr_interval / attrs->sample_interval;
--
--	return accesses_bp * max_nr_accesses / 10000;
-+	return accesses_bp * damon_max_nr_accesses(attrs) / 10000;
- }
+-	unsigned int max_nr_accesses;
+ 	int freq_subscore;
+ 	unsigned int age_in_sec;
+ 	int age_in_log, age_subscore;
+@@ -81,8 +80,8 @@ int damon_hot_score(struct damon_ctx *c,
+ 	unsigned int age_weight = s->quota.weight_age;
+ 	int hotness;
  
- /* convert nr_accesses to access ratio in bp (per 10,000) */
- static unsigned int damon_nr_accesses_to_accesses_bp(
- 		unsigned int nr_accesses, struct damon_attrs *attrs)
- {
--	unsigned int max_nr_accesses =
--		attrs->aggr_interval / attrs->sample_interval;
--
--	return nr_accesses * 10000 / max_nr_accesses;
-+	return nr_accesses * 10000 / damon_max_nr_accesses(attrs);
- }
+-	max_nr_accesses = c->attrs.aggr_interval / c->attrs.sample_interval;
+-	freq_subscore = r->nr_accesses * DAMON_MAX_SUBSCORE / max_nr_accesses;
++	freq_subscore = r->nr_accesses * DAMON_MAX_SUBSCORE /
++		damon_max_nr_accesses(&c->attrs);
  
- static unsigned int damon_nr_accesses_for_new_attrs(unsigned int nr_accesses,
+ 	age_in_sec = (unsigned long)r->age * c->attrs.aggr_interval / 1000000;
+ 	for (age_in_log = 0; age_in_log < DAMON_MAX_AGE_IN_LOG && age_in_sec;
 _
 
 Patches currently in -mm which might be from sj@kernel.org are
