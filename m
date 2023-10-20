@@ -2,108 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B54A67D0A73
-	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 10:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C9D27D0A94
+	for <lists+stable@lfdr.de>; Fri, 20 Oct 2023 10:34:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235655AbjJTIUR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 20 Oct 2023 04:20:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39642 "EHLO
+        id S1376452AbjJTIeo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 20 Oct 2023 04:34:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230217AbjJTIUR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 04:20:17 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EEEAB0;
-        Fri, 20 Oct 2023 01:20:15 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 60F966607352;
-        Fri, 20 Oct 2023 09:20:13 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1697790014;
-        bh=RSQ5/DMeBnjdqm4h5GEDNo41Y8NPcwqWmF2hl3CzU4Y=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=LTr/BwXEXjwM28l/WBLy3g4Y6rSO7GmucFVzcI6oDTvGsGkpsDiWKWtxsyA/UVPgO
-         godKZqiaTA8xWdepYuPjuEOg1rJ8pG7MrICvM7PLNO8wrymvthXDzPCKoWtZj39ts4
-         XxNQez3PUaVRWnI1iMFG6nJp7yYgnckhziuZ8yAJ5J9SHiW2m6z1cV0f7eDMT2IZ/i
-         56Ykk4SQwQoFQHUAxA2Ce2pGKQxe5iIOcGD1X96lNDl+3daRKbujVdr+ZmJ8f/SQ+C
-         43fnemdqYE1JnQRm2rxKJsly8AdjEh+0TT9H3iXfIvL4Hv5isgvxMUVb3h1i1Mg3km
-         Vr7OwHYB0r7Xw==
-Message-ID: <8b799079-fd98-46ba-a2cd-04ecf0c0df1d@collabora.com>
-Date:   Fri, 20 Oct 2023 10:20:13 +0200
+        with ESMTP id S1376433AbjJTIen (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 20 Oct 2023 04:34:43 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 067A5D41;
+        Fri, 20 Oct 2023 01:34:40 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qtkxp-0007ci-Gi; Fri, 20 Oct 2023 10:34:37 +0200
+Message-ID: <38bf9c2b-25e2-498e-ae50-362792219e50@leemhuis.info>
+Date:   Fri, 20 Oct 2023 10:34:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: mtk-jpeg: Fix use after free bug due to error path
- handling in mtk_jpeg_dec_device_run
-Content-Language: en-US
-To:     Zheng Wang <zyytlz.wz@163.com>, dmitry.osipenko@collabora.com
-Cc:     Kyrie.Wu@mediatek.com, bin.liu@mediatek.com, mchehab@kernel.org,
-        matthias.bgg@gmail.com, linux-media@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, Irui.Wang@mediatek.com,
-        security@kernel.org, hackerzheng666@gmail.com,
-        1395428693sheep@gmail.com, alex000young@gmail.com,
-        amergnat@baylibre.com, wenst@chromium.org, stable@vger.kernel.org
-References: <20231020040732.2499269-1-zyytlz.wz@163.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20231020040732.2499269-1-zyytlz.wz@163.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [PATCH] attr: block mode changes of symlinks
+Content-Language: en-US, de-DE
+To:     Jesse Hathaway <jesse@mbuki-mvuki.org>,
+        "Christian Brauner (Microsoft)" <brauner@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Florian Weimer <fweimer@redhat.com>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        linux-fsdevel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        stable@vger.kernel.org,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Greg KH <gregkh@linuxfoundation.org>
+References: <CANSNSoUYMdPPLuZhofOW6DaKzCF47WhZ+T9BnL8sA37M7b4F+g@mail.gmail.com>
+ <2023101819-satisfied-drool-49bb@gregkh>
+ <CANSNSoV6encjhH2u-Ua8wmjy==emvpi+76HTZasxbfzobMQ_Vw@mail.gmail.com>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+In-Reply-To: <CANSNSoV6encjhH2u-Ua8wmjy==emvpi+76HTZasxbfzobMQ_Vw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1697790881;dcf01234;
+X-HE-SMSGID: 1qtkxp-0007ci-Gi
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Il 20/10/23 06:07, Zheng Wang ha scritto:
-> In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
-> mtk_jpeg_job_timeout_work.
-> 
-> In mtk_jpeg_dec_device_run, if error happens in
-> mtk_jpeg_set_dec_dst, it will finally start the worker while
-> mark the job as finished by invoking v4l2_m2m_job_finish.
-> 
-> There are two methods to trigger the bug. If we remove the
-> module, it which will call mtk_jpeg_remove to make cleanup.
-> The possible sequence is as follows, which will cause a
-> use-after-free bug.
-> 
-> CPU0                  CPU1
-> mtk_jpeg_dec_...    |
->    start worker	    |
->                      |mtk_jpeg_job_timeout_work
-> mtk_jpeg_remove     |
->    v4l2_m2m_release  |
->      kfree(m2m_dev); |
->                      |
->                      | v4l2_m2m_get_curr_priv
->                      |   m2m_dev->curr_ctx //use
-> 
-> If we close the file descriptor, which will call mtk_jpeg_release,
-> it will have a similar sequence.
-> 
-> Fix this bug by start timeout worker only if started jpegdec worker
-> successfully so the v4l2_m2m_job_finish will only be called on
-> either mtk_jpeg_job_timeout_work or mtk_jpeg_dec_device_run.
-> 
-> This patch also reverts commit c677d7ae8314
-> ("media: mtk-jpeg: Fix use after free bug due to uncanceled work")
-> for this patch also fixed the use-after-free bug mentioned before.
-> Before mtk_jpeg_remove is invoked, mtk_jpeg_release must be invoked
-> to close opened files. And it will call v4l2_m2m_cancel_job to wait
-> for the timeout worker finished so the canceling in mtk_jpeg_remove
-> is unnecessary.
-> 
-> Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
-> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+[adding Christian, the author of what appears to be the culprit]
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+On 18.10.23 20:49, Jesse Hathaway wrote:
+> On Wed, Oct 18, 2023 at 1:40 PM Greg KH <gregkh@linuxfoundation.org> wrote:
 
+FWIW, this thread afaics was supposed to be in reply to this submission:
 
+https://lore.kernel.org/all/20230712-vfs-chmod-symlinks-v1-1-27921df6011f@kernel.org/
+
+That patch later became 5d1f903f75a80d ("attr: block mode changes of
+symlinks") [v6.6-rc1, v6.5.5, v6.1.55, v5.4.257, v5.15.133, v5.10.197,
+v4.19.295, v4.14.326]
+
+>>> Unfortunately, this has not held up in LTSes without causing
+>>> regressions, specifically in crun:
+>>>
+>>> Crun issue and patch
+>>>  1. https://github.com/containers/crun/issues/1308
+>>>  2. https://github.com/containers/crun/pull/1309
+>>
+>> So thre's a fix already for this, they agree that symlinks shouldn't
+>> have modes, so what's the issue?
+> 
+> The problem is that it breaks crun in Debian stable. They have fixed the
+> issue in crun, but that patch may not be backported to Debian's stable
+> version. In other words the patch seems to break existing software in
+> the wild.
+> 
+>> It needs to reverted in Linus's tree first, otherwise you will hit the
+>> same problem when moving to a new kernel.
+> 
+> Okay, I'll raise the issue on the linux kernel mailing list.
+
+Did you do that? I could not find anything. Just wondering, as right now
+there is still some time to fix this regression before 6.6 is released
+(and then the fix can be backported to the stable trees, too).
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
