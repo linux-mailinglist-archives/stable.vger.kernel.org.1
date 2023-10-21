@@ -2,69 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91F027D1E34
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 18:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40E2E7D1ECE
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 19:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbjJUQTm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 12:19:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50840 "EHLO
+        id S231552AbjJUR6C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 13:58:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231710AbjJUQTm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 12:19:42 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5093E1A8;
-        Sat, 21 Oct 2023 09:19:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E495C433C7;
-        Sat, 21 Oct 2023 16:19:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697905177;
-        bh=KuG7HJuTbJpgl9cv4/FVqC+PNkm0XhOMATgkMOUl4+I=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mNcyvyWZ1y+3lWlA7lp2c2yrpbOrsJxyUssI6vntD6tzMvueT97Ecwpw9Ep0CRdLT
-         3Kv/0KmeH34f1j5fQLN4Olq+GWEujWGMPpTM/usmLwM2d16FYJuKU3O6q9AhnioFRg
-         jBtzOdK58g6bF8q1Sl6koDUQ1UuJfHaAQKu+Nhcc=
-Date:   Sat, 21 Oct 2023 18:19:34 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Cameron Williams <cang1@live.co.uk>
-Cc:     jirislaby@kernel.org, linux-kernel@vger.kernel.org,
-        linux-serial@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 01/11] tty: 8250: Fix IS-200 PCI ID comment
-Message-ID: <2023102107-poser-recipient-3593@gregkh>
-References: <BBPatchesV4>
- <20231020160412.118550-1-cang1@live.co.uk>
- <DU0PR02MB78993B6AD85F6550AF6590FBC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com>
+        with ESMTP id S231876AbjJUR6A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 13:58:00 -0400
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7731BD67
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 10:57:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        sang-engineering.com; h=date:from:to:cc:subject:message-id
+        :references:mime-version:content-type:in-reply-to; s=k1; bh=hyrU
+        saBfs9U+VgT7gUElro9ixkZH4rjrsyfqitWvIdw=; b=csL4l/aoVzts/2DOHK1b
+        FCKLcTp9UeMnS4tjCfqQPCD0JDn6EUgFw9wnMt3wuwDbbn6PQpuSsD0ZyCTs3Dqp
+        vaXrtDvEFcXUq9hozJh+M3i4F4Ry4wsCigLkm42r+2eqaZebA0Mcjfq9hU2l6ZQO
+        SI3dtZY0A9Mba8QCDqrIX2YT5uO1wmZfHBsJQtyzqPRHB9vECpIliZ1m4uO7TZtf
+        ZfiRMZztRKhjrvuLQGNfxGjF42A6ww3cEQC1V3Q7l2Zon8fsRHRpJEzIrlJ/DEVx
+        9uxcg8f4uh6IWu3tT8LP/BLOGTPuhnkQZUMlCCXE0Aox/360gKAYod7Rvf/ubmGv
+        sQ==
+Received: (qmail 1472704 invoked from network); 21 Oct 2023 19:57:47 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 21 Oct 2023 19:57:47 +0200
+X-UD-Smtp-Session: l3s3148p1@s/EMuj0ILN4gAQnoAGobAPDYRw1R6KxZ
+Date:   Sat, 21 Oct 2023 19:57:47 +0200
+From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
+To:     Herve Codina <herve.codina@bootlin.com>
+Cc:     Peter Rosin <peda@axentia.se>, Stephen Warren <swarren@nvidia.com>,
+        Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Steen Hegelund <steen.hegelund@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v3 1/3] i2c: muxes: i2c-mux-pinctrl: Use
+ of_get_i2c_adapter_by_node()
+Message-ID: <ZTQRG81wfrLYJo74@ninjato>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Herve Codina <herve.codina@bootlin.com>,
+        Peter Rosin <peda@axentia.se>, Stephen Warren <swarren@nvidia.com>,
+        Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Allan Nielsen <allan.nielsen@microchip.com>,
+        Horatiu Vultur <horatiu.vultur@microchip.com>,
+        Steen Hegelund <steen.hegelund@microchip.com>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20231020153017.759926-1-herve.codina@bootlin.com>
+ <20231020153017.759926-2-herve.codina@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="e+2AHZSc7n833TFr"
 Content-Disposition: inline
-In-Reply-To: <DU0PR02MB78993B6AD85F6550AF6590FBC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231020153017.759926-2-herve.codina@bootlin.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 20, 2023 at 05:03:07PM +0100, Cameron Williams wrote:
-> Fix the PCI comment for the IS-200 card. The PCI ID for the IS-200
-> is 0x0d80, and the definition used (PCI_DEVICE_ID_INTASHIELD_IS200)
-> is indeed 0x0d80, clarify that by fixing the comment as its
-> neighbouring cards are all at 0x0020 offsets.
-> 
-> Fixes: 737c17561fb2 ("[SERIAL] Support for Intashield 2 port PCI serial card")
+
+--e+2AHZSc7n833TFr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Fri, Oct 20, 2023 at 05:30:11PM +0200, Herve Codina wrote:
+> i2c-mux-pinctrl uses the pair of_find_i2c_adapter_by_node() /
+> i2c_put_adapter(). These pair alone is not correct to properly lock the
+> I2C parent adapter.
+>=20
+> Indeed, i2c_put_adapter() decrements the module refcount while
+> of_find_i2c_adapter_by_node() does not increment it. This leads to an
+> underflow of the parent module refcount.
+>=20
+> Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
+> correctly the module refcount.
+>=20
+> Fixes: c4aee3e1b0de ("i2c: mux: pinctrl: remove platform_data")
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Cameron Williams <cang1@live.co.uk>
-> ---
-> I argue for fixing this rather than removing due to this patch series (and
-> the code already in the kernel) referring to the rest of the cards in
-> the manufacturer's product line by hex ID, makes sense to me to
-> have the hex IDs all displayed correctly one way or another in the
-> one driver as the IS-200 and 400 are the only cards to use a definition instead.
+> Acked-by: Peter Rosin <peda@axentia.se>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-I'll take this, but it is obviously not for stable kernels to take, as
-it has no code functional changes.
+Applied to for-current, thanks!
 
-thanks,
 
-greg k-h
+--e+2AHZSc7n833TFr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmU0ERcACgkQFA3kzBSg
+KbZceA//SLD4wYCVZ4MeysN0/8ZkjP3dT3AsTf6bqABvSTS23dQpmI/NDpPpy7D1
+x8hpP1RtzvXgUUjTMJAhhd7/mG5zUlrKwCqLtNHEtVNuUNhwBhgULl7uRcUh7Bve
+6cHP4GTLMOhttXvksLr0iUGsNB4ijlPnDi5NcPWbuXIjmhuPTU6SOFHij4xHlQ/Q
+AyNt3AQE2+qNY5xUjMW5s4qa+U9tViMEy5WkjfsYneIU7LcXyJrvWdp612x1CRW7
+IEuFmHzk3sQ6EEDnMfcByshPAD6FEtp3RI4QeaRPDnluraCrwtfcoyDfIHanZ8sw
+MaHWbINyZxpM4tSDbpHm6ZVai0N7T4syTFXLqf7Miv26PSYxekhDmu6SOHv3Fv/E
+axP7noVssPBXbwu14PYgI7OyZ9v5CRTjYsYwiPp3WVeli91y3bE7tV3Z7m1Braj9
+f9bKFOYpYPmXd5suD9gf+MqOSHSAZ2uQSP7osn0ZNIZG8QrFwJi4V0AjeOU+/Lbj
+lNRj4N6pfegsiHzW/06tUbAcs9Jba2UfHDTJFqzVlFb+tFxyT9jygVWFfDs6DEHV
+jnAwEC8GSbltCl1PdKpUkoOwMUMHDjjFLaODFc+kDM1rVvO4PSgf6+C1UsE2T+zs
+lEF5cQ1Di1zUbHiKM79sbAKT0Oaedhh7K1ITsY+gQOhkvaMN0eg=
+=cyp0
+-----END PGP SIGNATURE-----
+
+--e+2AHZSc7n833TFr--
