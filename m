@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FA0B7D1DEF
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 17:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54B5F7D1DF0
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 17:36:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231403AbjJUPgt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 11:36:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33916 "EHLO
+        id S231332AbjJUPg5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 11:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231332AbjJUPgs (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sat, 21 Oct 2023 11:36:48 -0400
+        with ESMTP id S231356AbjJUPg5 (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sat, 21 Oct 2023 11:36:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E215B114
-        for <Stable@vger.kernel.org>; Sat, 21 Oct 2023 08:36:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 296B2C433C8;
-        Sat, 21 Oct 2023 15:36:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5FF126
+        for <Stable@vger.kernel.org>; Sat, 21 Oct 2023 08:36:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB0BEC433C9;
+        Sat, 21 Oct 2023 15:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697902603;
-        bh=+rH3s7o30AwSdVnE9zGFlzMN3TXoTYx93j6Wl1Hl74g=;
+        s=korg; t=1697902611;
+        bh=Llhrb38YbboKSc33qcVAqc2/VRrEbzqN7oJW4fzj01Y=;
         h=Subject:To:From:Date:From;
-        b=ijOmiaVJCpJ02qY5o8bF40ySHBLNKgHQpfaGE2GDg5EgJGsL486wUmMmjVprmHv40
-         7MZgNObuTVavdSoV13tuoGaZBADy3qxHRf+b1XC8h4Ju9W4w/pI52Ka4SXQ+UcRhjs
-         JOeftxSFth553Gk7CCJJgCHaa1DceYmJ1boVCeBU=
-Subject: patch "iio: exynos-adc: request second interupt only when touchscreen mode" added to char-misc-linus
-To:     m.szyprowski@samsung.com, Jonathan.Cameron@huawei.com,
-        Stable@vger.kernel.org
+        b=sWM84g7FtCrVko64oAl5X8X16BdB5Nmcj8nyfFHNsaAMw0aro7+rbfnnbGkaiAdfh
+         YO2KTZR70qSq8QzPEB8otc4SldlgzOyd5KQXDmbVLo/gsQZYUFzM9sbitMA706u1Cf
+         wWcOAWwp0lfDh9klSaB7nTiz1ah06pqdGwvKgydQ=
+Subject: patch "iio: afe: rescale: Accept only offset channels" added to char-misc-linus
+To:     linus.walleij@linaro.org, Jonathan.Cameron@huawei.com,
+        Stable@vger.kernel.org, jic23@kernel.org, peda@axentia.se
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 21 Oct 2023 17:36:34 +0200
-Message-ID: <2023102134-victory-distant-412c@gregkh>
+Date:   Sat, 21 Oct 2023 17:36:35 +0200
+Message-ID: <2023102135-coastline-entrust-3b25@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,7 +44,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 This is a note to let you know that I've just added the patch titled
 
-    iio: exynos-adc: request second interupt only when touchscreen mode
+    iio: afe: rescale: Accept only offset channels
 
 to my char-misc git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc.git
@@ -59,75 +59,72 @@ next -rc kernel release.
 If you have any questions about this process, please let me know.
 
 
-From 865b080e3229102f160889328ce2e8e97aa65ea0 Mon Sep 17 00:00:00 2001
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-Date: Mon, 9 Oct 2023 12:14:12 +0200
-Subject: iio: exynos-adc: request second interupt only when touchscreen mode
- is used
+From bee448390e5166d019e9e037194d487ee94399d9 Mon Sep 17 00:00:00 2001
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Sat, 2 Sep 2023 21:46:20 +0200
+Subject: iio: afe: rescale: Accept only offset channels
 
-Second interrupt is needed only when touchscreen mode is used, so don't
-request it unconditionally. This removes the following annoying warning
-during boot:
+As noted by Jonathan Cameron: it is perfectly legal for a channel
+to have an offset but no scale in addition to the raw interface.
+The conversion will imply that scale is 1:1.
 
-exynos-adc 14d10000.adc: error -ENXIO: IRQ index 1 not found
+Make rescale_configure_channel() accept just scale, or just offset
+to process a channel.
 
-Fixes: 2bb8ad9b44c5 ("iio: exynos-adc: add experimental touchscreen support")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20231009101412.916922-1-m.szyprowski@samsung.com
+When a user asks for IIO_CHAN_INFO_OFFSET in rescale_read_raw()
+we now have to deal with the fact that OFFSET could be present
+but SCALE missing. Add code to simply scale 1:1 in this case.
+
+Link: https://lore.kernel.org/linux-iio/CACRpkdZXBjHU4t-GVOCFxRO-AHGxKnxMeHD2s4Y4PuC29gBq6g@mail.gmail.com/
+Fixes: 53ebee949980 ("iio: afe: iio-rescale: Support processed channels")
+Fixes: 9decacd8b3a4 ("iio: afe: rescale: Fix boolean logic bug")
+Reported-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Peter Rosin <peda@axentia.se>
+Link: https://lore.kernel.org/r/20230902-iio-rescale-only-offset-v2-1-988b807754c8@linaro.org
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/exynos_adc.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ drivers/iio/afe/iio-rescale.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
-index cff1ba57fb16..43c8af41b4a9 100644
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -826,16 +826,26 @@ static int exynos_adc_probe(struct platform_device *pdev)
+diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
+index 1f280c360701..56e5913ab82d 100644
+--- a/drivers/iio/afe/iio-rescale.c
++++ b/drivers/iio/afe/iio-rescale.c
+@@ -214,8 +214,18 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
+ 				return ret < 0 ? ret : -EOPNOTSUPP;
  		}
- 	}
  
-+	/* leave out any TS related code if unreachable */
-+	if (IS_REACHABLE(CONFIG_INPUT)) {
-+		has_ts = of_property_read_bool(pdev->dev.of_node,
-+					       "has-touchscreen") || pdata;
-+	}
+-		ret = iio_read_channel_scale(rescale->source, &scale, &scale2);
+-		return rescale_process_offset(rescale, ret, scale, scale2,
++		if (iio_channel_has_info(rescale->source->channel,
++					 IIO_CHAN_INFO_SCALE)) {
++			ret = iio_read_channel_scale(rescale->source, &scale, &scale2);
++			return rescale_process_offset(rescale, ret, scale, scale2,
++						      schan_off, val, val2);
++		}
 +
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		return irq;
- 	info->irq = irq;
++		/*
++		 * If we get here we have no scale so scale 1:1 but apply
++		 * rescaler and offset, if any.
++		 */
++		return rescale_process_offset(rescale, IIO_VAL_FRACTIONAL, 1, 1,
+ 					      schan_off, val, val2);
+ 	default:
+ 		return -EINVAL;
+@@ -280,8 +290,9 @@ static int rescale_configure_channel(struct device *dev,
+ 	chan->type = rescale->cfg->type;
  
--	irq = platform_get_irq(pdev, 1);
--	if (irq == -EPROBE_DEFER)
--		return irq;
-+	if (has_ts) {
-+		irq = platform_get_irq(pdev, 1);
-+		if (irq == -EPROBE_DEFER)
-+			return irq;
- 
--	info->tsirq = irq;
-+		info->tsirq = irq;
-+	} else {
-+		info->tsirq = -1;
-+	}
- 
- 	info->dev = &pdev->dev;
- 
-@@ -900,12 +910,6 @@ static int exynos_adc_probe(struct platform_device *pdev)
- 	if (info->data->init_hw)
- 		info->data->init_hw(info);
- 
--	/* leave out any TS related code if unreachable */
--	if (IS_REACHABLE(CONFIG_INPUT)) {
--		has_ts = of_property_read_bool(pdev->dev.of_node,
--					       "has-touchscreen") || pdata;
--	}
--
- 	if (pdata)
- 		info->delay = pdata->delay;
- 	else
+ 	if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) &&
+-	    iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE)) {
+-		dev_info(dev, "using raw+scale source channel\n");
++	    (iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE) ||
++	     iio_channel_has_info(schan, IIO_CHAN_INFO_OFFSET))) {
++		dev_info(dev, "using raw+scale/offset source channel\n");
+ 	} else if (iio_channel_has_info(schan, IIO_CHAN_INFO_PROCESSED)) {
+ 		dev_info(dev, "using processed channel\n");
+ 		rescale->chan_processed = true;
 -- 
 2.42.0
 
