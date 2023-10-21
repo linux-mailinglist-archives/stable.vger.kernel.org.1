@@ -2,86 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A45197D1BFE
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BEE47D1C0B
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230479AbjJUJLB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 05:11:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40334 "EHLO
+        id S229478AbjJUJZf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 05:25:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230451AbjJUJK7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:10:59 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC5EE10CA;
-        Sat, 21 Oct 2023 02:10:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D006C433C8;
-        Sat, 21 Oct 2023 09:10:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697879454;
-        bh=nooTBPOV1b+3XpXMfXZty/WQcMVOJOlAfpiWnEipiEc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kKTI2ON2rmB5eb4ObvDDX1t0PcfbaSEMyu/9J0GRvxDyH8xScoKFABoQbpBG5rSG3
-         vqZ/5EaVpSc+tHKUXsayXQOB0DiP+315ltStRGGovA3VodQwXq8BhvZ5aQ9ISuxijO
-         vwgpObedYh3EOCVIwVdD0QRpjgza1lnMtf6aYbQA=
-Date:   Sat, 21 Oct 2023 11:10:51 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     David Matlack <dmatlack@google.com>
-Cc:     Sean Christopherson <seanjc@google.com>, stable@vger.kernel.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Pattara Teerapong <pteerapong@google.com>,
-        David Stevens <stevensd@google.com>,
-        Yiwei Zhang <zzyiwei@google.com>,
-        Paul Hsia <paulhsia@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH] KVM: x86/mmu: Stop zapping invalidated TDP MMU roots
- asynchronously
-Message-ID: <2023102145-unstylish-vertigo-ab7c@gregkh>
-References: <20231019201138.2076865-1-seanjc@google.com>
- <ZTLMcmj-ycWhZuTX@google.com>
+        with ESMTP id S229472AbjJUJZe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:25:34 -0400
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E18681A3;
+        Sat, 21 Oct 2023 02:25:25 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id E294B3200AE5;
+        Sat, 21 Oct 2023 05:25:21 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Sat, 21 Oct 2023 05:25:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1697880321; x=1697966721; bh=rlh0h5qajVIoXRZWGLAfuf98MgKzQ+2olbn
+        CuKR9GkM=; b=BlPHlBlDWYTGtvNThRIap56tbohJ+MD7MjipAYGXFhPdRFIOZoT
+        I39Aq0OPbgZCoiDxBPX3R5YDt6BzmjbwRvOHQs1+Q0EAXKiavADnbq1xa26ggS3e
+        wvvT1LA7zELa2PXEsibJ4Let6jmnyOKKzpreQ/BI7FIrzR3gP0heWO3bootSbcPX
+        7j46RE8DQq9YxL4h/RXD/OtEXOM72XEI/OhSMiqyrATk1n4OYu2LJ3thpppepVGE
+        VZ5ZGvZG3Jo0tdwW5lVEYr05GgoWwyKt/N+gLIVwd6iLxEUHSpfq7SOD+wUOJjYA
+        skZL6PT3dawYxcM/MZBL0JF4qO2ceMTM1gg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+        1697880321; x=1697966721; bh=rlh0h5qajVIoXRZWGLAfuf98MgKzQ+2olbn
+        CuKR9GkM=; b=deR20aStqiiwGsiwksHHix6RoOASn7imQ/m76bAkj2LZt2zW+pa
+        V7nbg9yhMLDEtplPL746p91j1850YleKVi00RoRLbr7fgH7NHpfF13RzQcuplvSa
+        QZj3QkTgBnnJXKmL1d0Q/xB4xzHVIdir237lZCZTysu+AaN1qerlrArKSGBkeu6T
+        wcx2JBLGxfaiMgKvb/GgSudEPiUtkSzg3DElX7DpgEKNTyJrlkmv9nvDZZ6ORaBq
+        SNJtylxo7Fj1YkrG7OWaBHTDyguYKZQK2YBKvtiiZckWUxVDKRjx3ztVYo+cPhM0
+        8jCvtk2fFoYouXpDmzfIt8kTKxBkxdDkIuA==
+X-ME-Sender: <xms:AJkzZSBTJaWeJ44Hi83PdiensxP0sh-IbAFs4g3EJNOuWtOiEn3Oag>
+    <xme:AJkzZchACYPMZJlYdMpSXk_dyajhmI0g1VPX4sYTBwuEtf8OCrYa19f7Irf91PlA2
+    mypgnTrYPY-lg>
+X-ME-Received: <xmr:AJkzZVmd5DqF58hdkRIvetwU3uNF91vCFKxd1HSQBlyhgfg06gVs9Jn9LITC_2n3Cx2zbDfPH1NXZptyalB0rmKuU-T9aPIbYIsFCqmh6w8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrkedtgdduvdcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeevve
+    etgfevjeffffevleeuhfejfeegueevfeetudejudefudetjedttdehueffnecuffhomhgr
+    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:AJkzZQxhpPlvqvK12o7FMMxHKra1Lj2cm1iW5dSyAk4n03IAj9H5SQ>
+    <xmx:AJkzZXTegRUtWiNSOXRSJC9VGlVRDxd8Vyd8iudSCpxgAVQ3rUcb6Q>
+    <xmx:AJkzZbaL_gG-0CEBRjTd6KeTLQ0l05C3GyoB9vLLYa577CvmfmOfBw>
+    <xmx:AZkzZYIdvvz_iHlqtc3BfB6-hY7maKObbL3-MK635P028UDym_-FpA>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 21 Oct 2023 05:25:20 -0400 (EDT)
+Date:   Sat, 21 Oct 2023 11:25:18 +0200
+From:   Greg KH <greg@kroah.com>
+To:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Sasha Levin <sashal@kernel.org>, stable-commits@vger.kernel.org,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: Patch "ice: Remove useless DMA-32 fallback configuration" has
+ been added to the 5.15-stable tree
+Message-ID: <2023102159-chitchat-goliath-af2a@gregkh>
+References: <20231021002330.1609939-1-sashal@kernel.org>
+ <203646d1-7dc9-436d-a556-ea2861ac3d4c@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <ZTLMcmj-ycWhZuTX@google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <203646d1-7dc9-436d-a556-ea2861ac3d4c@wanadoo.fr>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 20, 2023 at 11:52:34AM -0700, David Matlack wrote:
-> On 2023-10-19 01:11 PM, Sean Christopherson wrote:
-> > [ Upstream commit 0df9dab891ff0d9b646d82e4fe038229e4c02451 ]
-> > 
-> > Stop zapping invalidate TDP MMU roots via work queue now that KVM
-> > preserves TDP MMU roots until they are explicitly invalidated.  Zapping
-> > roots asynchronously was effectively a workaround to avoid stalling a vCPU
-> > for an extended during if a vCPU unloaded a root, which at the time
-> > happened whenever the guest toggled CR0.WP (a frequent operation for some
-> > guest kernels).
-> > 
-> [...]
-> > 
-> > Reported-by: Pattara Teerapong <pteerapong@google.com>
-> > Cc: David Stevens <stevensd@google.com>
-> > Cc: Yiwei Zhang<zzyiwei@google.com>
-> > Cc: Paul Hsia <paulhsia@google.com>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > Message-Id: <20230916003916.2545000-4-seanjc@google.com>
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > Cc: David Matlack <dmatlack@google.com>
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
+On Sat, Oct 21, 2023 at 10:52:13AM +0200, Marion & Christophe JAILLET wrote:
 > 
-> Reviewed-by: David Matlack <dmatlack@google.com>
-> Tested-by: David Matlack <dmatlack@google.com>
+> Le 21/10/2023 à 02:23, Sasha Levin a écrit :
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >      ice: Remove useless DMA-32 fallback configuration
+> > 
+> > to the 5.15-stable tree which can be found at:
+> >      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >       ice-remove-useless-dma-32-fallback-configuration.patch
+> > and it can be found in the queue-5.15 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
 > 
-> (Ran all KVM selftests and kvm-unit-tests with lockdep enabled.)
+> Why is it needed for backport, it is only dead code.
+> 
+> Another patch depends on it?
+> 
+> Looking *quickly* in other patches at [1], I've not seen anything that
+> conflicts.
 
-Thanks, now queued up.
+Agreed, it seems the dependancy bot got things backwards, I'll go drop
+these now, thanks.
 
 greg k-h
