@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5074B7D1F74
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 22:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F34C07D1F75
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 22:20:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232148AbjJUUUy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 16:20:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50090 "EHLO
+        id S229633AbjJUUUz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 16:20:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232063AbjJUUUx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 16:20:53 -0400
+        with ESMTP id S232050AbjJUUUz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 16:20:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 120A3D41
-        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 13:20:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448C3C433C8;
-        Sat, 21 Oct 2023 20:20:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E37E8D5D
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 13:20:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292D8C433C9;
+        Sat, 21 Oct 2023 20:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697919646;
-        bh=ZSmwDh/tp2aCZuEfEGjGWoeMGn9voLSvvh9Of7P403I=;
+        s=korg; t=1697919649;
+        bh=DA9JoFrD9D5wnhRsBjMTyl5HXGAEUWDCJYVufddMy8k=;
         h=Subject:To:Cc:From:Date:From;
-        b=ct538uhlbbhrN1iti1f3weLh4wlkGxdhYuZkpSR4nDwL76juvrqw7FBmKV3SPK9Fj
-         kqu2eEJD2KcDRBR778R2dk3uZIptMNNQzc2h+HaBsqXoBCw2c2n9UGJX8e5DrlkaG9
-         0Kz5g1s+Qwd3HBWZwaII+Tn7S7wRdDpWQKdeEEm8=
-Subject: FAILED: patch "[PATCH] gpio: vf610: mask the gpio irq in system suspend and support" failed to apply to 4.19-stable tree
+        b=gAL2oUPoqioeGwFbTQyZ94xsp+4ggQE7VDqmrT3nOVjvlgmQoc9kz4qRN0PyUBtBw
+         Lp3S+nqw2bJfNzSupL+BNjqNuiHvJaE/R/F/H4FxZ/Mwv+CUgCksiRJLL3Uwi0ppGs
+         1c/QDNq8OnloMAn9YCYIfQeW6CYA2poBw0hf2Yrw=
+Subject: FAILED: patch "[PATCH] gpio: vf610: mask the gpio irq in system suspend and support" failed to apply to 4.14-stable tree
 To:     haibo.chen@nxp.com, bartosz.golaszewski@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 21 Oct 2023 22:20:35 +0200
-Message-ID: <2023102135-tiny-varsity-1599@gregkh>
+Date:   Sat, 21 Oct 2023 22:20:36 +0200
+Message-ID: <2023102136-charity-deplored-163e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 430232619791e7de95191f2cd8ebaa4c380d17d0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102135-tiny-varsity-1599@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102136-charity-deplored-163e@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
