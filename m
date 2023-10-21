@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 024247D1F6F
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 22:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDEE87D1F70
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 22:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231611AbjJUUTl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 16:19:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38464 "EHLO
+        id S232064AbjJUUUk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 16:20:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjJUUTl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 16:19:41 -0400
+        with ESMTP id S229633AbjJUUUj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 16:20:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31D20119
-        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 13:19:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7502BC433C7;
-        Sat, 21 Oct 2023 20:19:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8D74119
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 13:20:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4BDC433C7;
+        Sat, 21 Oct 2023 20:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697919575;
-        bh=qxF8AyBiKS6OFh499R5kOv5dBqgC2SjjyBUOme2qY+8=;
+        s=korg; t=1697919634;
+        bh=fnfCVp8QNocb/geFDGJCzOTKJJzX9gaFcHsihN6Bq34=;
         h=Subject:To:Cc:From:Date:From;
-        b=xhowQdRNot6ISOWmrztXEbv6yba1GSCwql8qKGFjSjqKSLhTc8jT2111nnKDjsoQ7
-         ND//CnYtjFVmBsWsgCn7o+UypMhyhB2gzKx2560epj8fX9cRr0CcrcQINHjdM+cbiX
-         O2CZSQbqUKhvI8/gTyp++ZATPqPEQO+7dS0i4gjM=
-Subject: FAILED: patch "[PATCH] rust: docs: fix logo replacement" failed to apply to 6.5-stable tree
-To:     ojeda@kernel.org, a.hindborg@samsung.com, benno.lossin@proton.me
+        b=LAiCzkyinanEyfX0W/+5vPl8rssSBR7n1o0wgI/3e9sQrUFI5XkHAWHV8hGmJv1ac
+         wsCR9AahZP0+t3I9iDbUjOZRSTDRMNfS1/ifyDMhsrpLLTB40jZuaFbqnPa0fHABRQ
+         5lWA55N9UdXeFyJ5fdjDqyBt3XSYZBNG4f87R1Mc=
+Subject: FAILED: patch "[PATCH] gpio: vf610: mask the gpio irq in system suspend and support" failed to apply to 6.1-stable tree
+To:     haibo.chen@nxp.com, bartosz.golaszewski@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 21 Oct 2023 22:19:33 +0200
-Message-ID: <2023102132-relay-underpay-845a@gregkh>
+Date:   Sat, 21 Oct 2023 22:20:31 +0200
+Message-ID: <2023102131-slideshow-demote-ac1d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x cfd96726e61136e68a168813cedc4084f626208b
+git cherry-pick -x 430232619791e7de95191f2cd8ebaa4c380d17d0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102132-relay-underpay-845a@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102131-slideshow-demote-ac1d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -66,55 +66,36 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cfd96726e61136e68a168813cedc4084f626208b Mon Sep 17 00:00:00 2001
-From: Miguel Ojeda <ojeda@kernel.org>
-Date: Wed, 18 Oct 2023 17:55:27 +0200
-Subject: [PATCH] rust: docs: fix logo replacement
+From 430232619791e7de95191f2cd8ebaa4c380d17d0 Mon Sep 17 00:00:00 2001
+From: Haibo Chen <haibo.chen@nxp.com>
+Date: Tue, 17 Oct 2023 18:42:36 +0800
+Subject: [PATCH] gpio: vf610: mask the gpio irq in system suspend and support
+ wakeup
 
-The static files placement by `rustdoc` changed in Rust 1.67.0 [1],
-but the custom code we have to replace the logo in the generated
-HTML files did not get updated.
+Add flag IRQCHIP_MASK_ON_SUSPEND to make sure gpio irq is masked on
+suspend, if lack this flag, current irq arctitecture will not mask
+the irq, and these unmasked gpio irq will wrongly wakeup the system
+even they are not config as wakeup source.
 
-Thus update it to have the Linux logo again in the output.
+Also add flag IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND to make sure the gpio
+irq which is configed as wakeup source can work as expect.
 
-Hopefully `rustdoc` will eventually support a custom logo from
-a local file [2], so that we do not need to maintain this hack
-on our side.
+Fixes: 7f2691a19627 ("gpio: vf610: add gpiolib/IRQ chip driver for Vybrid")
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-Link: https://github.com/rust-lang/rust/pull/101702 [1]
-Link: https://github.com/rust-lang/rfcs/pull/3226 [2]
-Fixes: 3ed03f4da06e ("rust: upgrade to Rust 1.68.2")
-Cc: stable@vger.kernel.org
-Tested-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
-Link: https://lore.kernel.org/r/20231018155527.1015059-1-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 1e78c82a18a8..7dbf9abe0d01 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -93,15 +93,14 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
- # and then retouch the generated files.
- rustdoc: rustdoc-core rustdoc-macros rustdoc-compiler_builtins \
-     rustdoc-alloc rustdoc-kernel
--	$(Q)cp $(srctree)/Documentation/images/logo.svg $(rustdoc_output)
--	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(rustdoc_output)
-+	$(Q)cp $(srctree)/Documentation/images/logo.svg $(rustdoc_output)/static.files/
-+	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(rustdoc_output)/static.files/
- 	$(Q)find $(rustdoc_output) -name '*.html' -type f -print0 | xargs -0 sed -Ei \
--		-e 's:rust-logo\.svg:logo.svg:g' \
--		-e 's:rust-logo\.png:logo.svg:g' \
--		-e 's:favicon\.svg:logo.svg:g' \
--		-e 's:<link rel="alternate icon" type="image/png" href="[./]*favicon-(16x16|32x32)\.png">::g'
--	$(Q)echo '.logo-container > img { object-fit: contain; }' \
--		>> $(rustdoc_output)/rustdoc.css
-+		-e 's:rust-logo-[0-9a-f]+\.svg:logo.svg:g' \
-+		-e 's:favicon-[0-9a-f]+\.svg:logo.svg:g' \
-+		-e 's:<link rel="alternate icon" type="image/png" href="[/.]+/static\.files/favicon-(16x16|32x32)-[0-9a-f]+\.png">::g'
-+	$(Q)for f in $(rustdoc_output)/static.files/rustdoc-*.css; do \
-+		echo ".logo-container > img { object-fit: contain; }" >> $$f; done
+diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
+index dbc7ba0ee72c..d1f05810340f 100644
+--- a/drivers/gpio/gpio-vf610.c
++++ b/drivers/gpio/gpio-vf610.c
+@@ -246,7 +246,8 @@ static const struct irq_chip vf610_irqchip = {
+ 	.irq_unmask = vf610_gpio_irq_unmask,
+ 	.irq_set_type = vf610_gpio_irq_set_type,
+ 	.irq_set_wake = vf610_gpio_irq_set_wake,
+-	.flags = IRQCHIP_IMMUTABLE,
++	.flags = IRQCHIP_IMMUTABLE | IRQCHIP_MASK_ON_SUSPEND
++			| IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND,
+ 	GPIOCHIP_IRQ_RESOURCE_HELPERS,
+ };
  
- rustdoc-macros: private rustdoc_host = yes
- rustdoc-macros: private rustc_target_flags = --crate-type proc-macro \
 
