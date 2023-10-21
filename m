@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36FE27D1BF2
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:09:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB7067D1BF6
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229636AbjJUJJQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 05:09:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53142 "EHLO
+        id S231179AbjJUJJU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 05:09:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231324AbjJUJJN (ORCPT
+        with ESMTP id S231331AbjJUJJN (ORCPT
         <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:09:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C887210F6
-        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 02:08:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A47FC433C7;
-        Sat, 21 Oct 2023 09:08:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6BC10F9
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 02:09:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D147AC433C7;
+        Sat, 21 Oct 2023 09:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697879335;
-        bh=Lw8box0AXZy6ZD90TjQcx22cTNOIBRkoyCDJUhmw1mc=;
+        s=korg; t=1697879343;
+        bh=v3K95yJ+SyU9kjh/aYu8Z4X90mOAHAzKeJQ+hGR+Mwc=;
         h=Subject:To:Cc:From:Date:From;
-        b=yHEia0oj85gbE3YzbE83odcVsrcU9xMkBc0uJ5t1Rdc6Gaw5I98z/RIBfbyiG2RLM
-         e2Ill11dOdmcnGwvlGHbhrGw1yUR5OEaLhuNSdcq6Lic+UTXCSuXdI2BaSqwWu2JGu
-         uroUifCp1TBegP/bbthjwn8Vs9rIZWh8wfQOqgR4=
-Subject: FAILED: patch "[PATCH] nvme: sanitize metadata bounce buffer for reads" failed to apply to 4.19-stable tree
+        b=Aeg/LslFhmNgyp2XL9tQpXyF0eoC/FoPZzKj4JpqblSrVKSa+HZykGe9RfERiaoEu
+         nFoxASfnjHkhzH9vd+vK5Jw9p662+J9ROw4Hr8KBuI/+CqcRbNGhZG+OYnw7+3TYb+
+         H3YvFW0+H0W6PfnPao0Reg6eKvwVWysRHojWaWdE=
+Subject: FAILED: patch "[PATCH] nvme: sanitize metadata bounce buffer for reads" failed to apply to 4.14-stable tree
 To:     kbusch@kernel.org, axboe@kernel.dk, hch@lst.de,
         joshi.k@samsung.com, kch@nvidia.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 21 Oct 2023 11:08:46 +0200
-Message-ID: <2023102146-postwar-smugly-830b@gregkh>
+Date:   Sat, 21 Oct 2023 11:08:47 +0200
+Message-ID: <2023102147-granola-preschool-1418@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2b32c76e2b0154b98b9322ae7546b8156cd703e6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102146-postwar-smugly-830b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102147-granola-preschool-1418@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
