@@ -2,81 +2,203 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C99537D1EFF
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 20:58:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AAB17D1F12
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 21:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231597AbjJUS64 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 14:58:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35540 "EHLO
+        id S229621AbjJUTaq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 15:30:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229633AbjJUS6y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 14:58:54 -0400
-Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E36FA;
-        Sat, 21 Oct 2023 11:58:52 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id C271C6343CB4;
-        Sat, 21 Oct 2023 20:58:50 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id P-b8PQmRRzfA; Sat, 21 Oct 2023 20:58:50 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by lithops.sigma-star.at (Postfix) with ESMTP id 5BA596343CB5;
-        Sat, 21 Oct 2023 20:58:50 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-        by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id WHulukewPv4l; Sat, 21 Oct 2023 20:58:50 +0200 (CEST)
-Received: from foxxylove.corp.sigma-star.at (unknown [82.150.214.1])
-        by lithops.sigma-star.at (Postfix) with ESMTPSA id 0B96B6343CB4;
-        Sat, 21 Oct 2023 20:58:50 +0200 (CEST)
-From:   Richard Weinberger <richard@nod.at>
-To:     linux-mtd@lists.infradead.org
-Cc:     linux-kernel@vger.kernel.org, vigneshr@ti.com, richard@nod.at,
-        miquel.raynal@bootlin.com, joern@lazybastard.org,
-        Christoph Hellwig <hch@lst.de>, stable@vger.kernel.org
-Subject: [PATCH] mtd: block2mtd: Add a valid holder to blkdev_put()
-Date:   Sat, 21 Oct 2023 20:58:32 +0200
-Message-Id: <20231021185832.25592-1-richard@nod.at>
-X-Mailer: git-send-email 2.35.3
+        with ESMTP id S229478AbjJUTap (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 15:30:45 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DAD611B
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 12:30:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C90C433C8;
+        Sat, 21 Oct 2023 19:30:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1697916639;
+        bh=X84HNw6M7jOSqujm+PlF0o2o1iNagllzbPdME3wazyQ=;
+        h=Subject:To:Cc:From:Date:From;
+        b=B2Dxkh/3hp4uJpHs/toFii2QGP+07GmWnhLpsYh/t9+2GyDC8/YLyEm5QIZMZyedu
+         3/apQJ+GNFaTANoR3rrNPQyFxmA3sHu+5HYPb5V3io1HOGYih3NHUF4mdXpztAWy2w
+         rcqNAtXN/o7d0ogwb8skOx5Fto8MUTNucqpVH494=
+Subject: FAILED: patch "[PATCH] tracing/kprobes: Return EADDRNOTAVAIL when func matches" failed to apply to 5.10-stable tree
+To:     flaniel@linux.microsoft.com, mhiramat@kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sat, 21 Oct 2023 21:30:36 +0200
+Message-ID: <2023102135-shuffle-blank-783e@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        T_SPF_PERMERROR autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Since commit 2736e8eeb0ccd ("block: use the holder as indication for excl=
-usive opens")
-blkdev_put() requires a valid holder argument.
-So, do so also in block2mtd to unbreak bdev->bd_holder refcounting.
 
-Cc: Christoph Hellwig <hch@lst.de>
+The patch below does not apply to the 5.10-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git checkout FETCH_HEAD
+git cherry-pick -x b022f0c7e404887a7c5229788fc99eff9f9a80d5
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102135-shuffle-blank-783e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From b022f0c7e404887a7c5229788fc99eff9f9a80d5 Mon Sep 17 00:00:00 2001
+From: Francis Laniel <flaniel@linux.microsoft.com>
+Date: Fri, 20 Oct 2023 13:42:49 +0300
+Subject: [PATCH] tracing/kprobes: Return EADDRNOTAVAIL when func matches
+ several symbols
+
+When a kprobe is attached to a function that's name is not unique (is
+static and shares the name with other functions in the kernel), the
+kprobe is attached to the first function it finds. This is a bug as the
+function that it is attaching to is not necessarily the one that the
+user wants to attach to.
+
+Instead of blindly picking a function to attach to what is ambiguous,
+error with EADDRNOTAVAIL to let the user know that this function is not
+unique, and that the user must use another unique function with an
+address offset to get to the function they want to attach to.
+
+Link: https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.microsoft.com/
+
 Cc: stable@vger.kernel.org
-Fixes: 2736e8eeb0ccd ("block: use the holder as indication for exclusive =
-opens")
-Signed-off-by: Richard Weinberger <richard@nod.at>
----
- drivers/mtd/devices/block2mtd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
+Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Link: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-diff --git a/drivers/mtd/devices/block2mtd.c b/drivers/mtd/devices/block2=
-mtd.c
-index be106dc20ff3c..8c37650bbce45 100644
---- a/drivers/mtd/devices/block2mtd.c
-+++ b/drivers/mtd/devices/block2mtd.c
-@@ -209,7 +209,7 @@ static void block2mtd_free_device(struct block2mtd_de=
-v *dev)
- 	if (dev->blkdev) {
- 		invalidate_mapping_pages(dev->blkdev->bd_inode->i_mapping,
- 					0, -1);
--		blkdev_put(dev->blkdev, NULL);
-+		blkdev_put(dev->blkdev, dev);
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 3d7a180a8427..a8fef6ab0872 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -705,6 +705,25 @@ static struct notifier_block trace_kprobe_module_nb = {
+ 	.priority = 1	/* Invoked after kprobe module callback */
+ };
+ 
++static int count_symbols(void *data, unsigned long unused)
++{
++	unsigned int *count = data;
++
++	(*count)++;
++
++	return 0;
++}
++
++static unsigned int number_of_same_symbols(char *func_name)
++{
++	unsigned int count;
++
++	count = 0;
++	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
++
++	return count;
++}
++
+ static int __trace_kprobe_create(int argc, const char *argv[])
+ {
+ 	/*
+@@ -836,6 +855,31 @@ static int __trace_kprobe_create(int argc, const char *argv[])
+ 		}
  	}
-=20
- 	kfree(dev);
---=20
-2.35.3
+ 
++	if (symbol && !strchr(symbol, ':')) {
++		unsigned int count;
++
++		count = number_of_same_symbols(symbol);
++		if (count > 1) {
++			/*
++			 * Users should use ADDR to remove the ambiguity of
++			 * using KSYM only.
++			 */
++			trace_probe_log_err(0, NON_UNIQ_SYMBOL);
++			ret = -EADDRNOTAVAIL;
++
++			goto error;
++		} else if (count == 0) {
++			/*
++			 * We can return ENOENT earlier than when register the
++			 * kprobe.
++			 */
++			trace_probe_log_err(0, BAD_PROBE_ADDR);
++			ret = -ENOENT;
++
++			goto error;
++		}
++	}
++
+ 	trace_probe_log_set_index(0);
+ 	if (event) {
+ 		ret = traceprobe_parse_event_name(&event, &group, gbuf,
+@@ -1695,6 +1739,7 @@ static int unregister_kprobe_event(struct trace_kprobe *tk)
+ }
+ 
+ #ifdef CONFIG_PERF_EVENTS
++
+ /* create a trace_kprobe, but don't add it to global lists */
+ struct trace_event_call *
+ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+@@ -1705,6 +1750,24 @@ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+ 	int ret;
+ 	char *event;
+ 
++	if (func) {
++		unsigned int count;
++
++		count = number_of_same_symbols(func);
++		if (count > 1)
++			/*
++			 * Users should use addr to remove the ambiguity of
++			 * using func only.
++			 */
++			return ERR_PTR(-EADDRNOTAVAIL);
++		else if (count == 0)
++			/*
++			 * We can return ENOENT earlier than when register the
++			 * kprobe.
++			 */
++			return ERR_PTR(-ENOENT);
++	}
++
+ 	/*
+ 	 * local trace_kprobes are not added to dyn_event, so they are never
+ 	 * searched in find_trace_kprobe(). Therefore, there is no concern of
+diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
+index 02b432ae7513..850d9ecb6765 100644
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -450,6 +450,7 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
+ 	C(BAD_MAXACT,		"Invalid maxactive number"),		\
+ 	C(MAXACT_TOO_BIG,	"Maxactive is too big"),		\
+ 	C(BAD_PROBE_ADDR,	"Invalid probed address or symbol"),	\
++	C(NON_UNIQ_SYMBOL,	"The symbol is not unique"),		\
+ 	C(BAD_RETPROBE,		"Retprobe address must be an function entry"), \
+ 	C(NO_TRACEPOINT,	"Tracepoint is not found"),		\
+ 	C(BAD_ADDR_SUFFIX,	"Invalid probed address suffix"), \
 
