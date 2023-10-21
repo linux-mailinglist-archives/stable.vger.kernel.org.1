@@ -2,60 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5177D1BD7
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF59A7D1BDA
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjJUI74 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 04:59:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36966 "EHLO
+        id S229680AbjJUJBR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 05:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbjJUI7z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 04:59:55 -0400
-X-Greylist: delayed 451 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 21 Oct 2023 01:59:50 PDT
-Received: from smtp.smtpout.orange.fr (smtp-25.smtpout.orange.fr [80.12.242.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CEC16D71
-        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 01:59:50 -0700 (PDT)
-Received: from [192.168.1.18] ([86.243.2.178])
-        by smtp.orange.fr with ESMTPA
-        id u7iPq7tspMEM0u7iPqRk9P; Sat, 21 Oct 2023 10:52:18 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-        s=t20230301; t=1697878338;
-        bh=GxQB0k3jsJwtA2JiUZnn8f7IQsmdbKwWjelgZ0513b4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=dO3VaNU+B2+6QtEwZShNAsFLzts7aZjyx7crZ7/Ka3CpZn6/H1/Qfqira844sWYeA
-         Vgsl2np8bBoKYTcWugnM+lHC4vnhejlHQOr9EYA9J+vrQF9Ks+1a3mcGH/dDlAj2TM
-         lQ0m6R5cNB2r99mQjnqzC444G2d5v4MFam7vGfQerMuVTkL1DY00fp9wPBRPP/kte6
-         LKnmNHPL+DbY8AMtK9fdpMUOGnyoIHEp1NzDDO6RmpY7xeI5nO4V76zhoEkJqtCbfp
-         9SYYsFLwq1bIhdkLjt3Yo8aoKXJuotlST0n1eyAhJqBhozTjpRyYLsmp5i16JLFdW7
-         5dEYqCddS1cIg==
-X-ME-Helo: [192.168.1.18]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 21 Oct 2023 10:52:18 +0200
-X-ME-IP: 86.243.2.178
-Message-ID: <203646d1-7dc9-436d-a556-ea2861ac3d4c@wanadoo.fr>
-Date:   Sat, 21 Oct 2023 10:52:13 +0200
+        with ESMTP id S229727AbjJUJBR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:01:17 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1097CA6
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 02:01:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E404C433C8;
+        Sat, 21 Oct 2023 09:01:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1697878871;
+        bh=bq2BaSJMF/R6HwR8qbHIKV1D+OQMnwFfBkHWRNW7xmg=;
+        h=Subject:To:Cc:From:Date:From;
+        b=AD2Iv09NDEQ9ie4mfG/GfSJ93sUKX2QnbMwJl5MdKQamIcEw93lz7/Xgz9IYQgUh2
+         Pdpci9mJk9v4N7lgwujA/XBzQoyNPqBQZOjyeptBehvN4PINERgUdl2rRi6P+i72XU
+         GJlZl3Q63kHUOQmpj1fcuwXtGswBtQkx+nuqrE6w=
+Subject: FAILED: patch "[PATCH] mtd: rawnand: marvell: Ensure program page operations are" failed to apply to 5.4-stable tree
+To:     miquel.raynal@bootlin.com, aviramd@marvell.com,
+        rminnikanti@marvell.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sat, 21 Oct 2023 11:01:08 +0200
+Message-ID: <2023102108-winner-gorged-4d0d@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "ice: Remove useless DMA-32 fallback configuration" has
- been added to the 5.15-stable tree
-Content-Language: fr, en-US
-To:     Sasha Levin <sashal@kernel.org>, stable-commits@vger.kernel.org
-Cc:     Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20231021002330.1609939-1-sashal@kernel.org>
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20231021002330.1609939-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -63,70 +44,116 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-Le 21/10/2023 à 02:23, Sasha Levin a écrit :
-> This is a note to let you know that I've just added the patch titled
->
->      ice: Remove useless DMA-32 fallback configuration
->
-> to the 5.15-stable tree which can be found at:
->      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->
-> The filename of the patch is:
->       ice-remove-useless-dma-32-fallback-configuration.patch
-> and it can be found in the queue-5.15 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Why is it needed for backport, it is only dead code.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Another patch depends on it?
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 3e01d5254698ea3d18e09d96b974c762328352cd
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102108-winner-gorged-4d0d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
-Looking *quickly* in other patches at [1], I've not seen anything that 
-conflicts.
-
-CJ
+Possible dependencies:
 
 
-[1]: 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=ea20ae5ac61b1af9c12d4cb5292920136a683199
 
->
->
-> commit 6f77725babf0559f90f19df76ff71f7807dff67f
-> Author: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Date:   Sun Jan 9 19:25:05 2022 +0100
->
->      ice: Remove useless DMA-32 fallback configuration
->      
->      [ Upstream commit 9c3e54a632637f27d98fb0ec0c44f7039925809d ]
->      
->      As stated in [1], dma_set_mask() with a 64-bit mask never fails if
->      dev->dma_mask is non-NULL.
->      So, if it fails, the 32 bits case will also fail for the same reason.
->      
->      Simplify code and remove some dead code accordingly.
->      
->      [1]: https://lkml.org/lkml/2021/6/7/398
->      
->      Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->      Reviewed-by: Christoph Hellwig <hch@lst.de>
->      Reviewed-by: Alexander Lobakin <alexandr.lobakin@intel.com>
->      Tested-by: Gurucharan G <gurucharanx.g@intel.com>
->      Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
->      Stable-dep-of: 0288c3e709e5 ("ice: reset first in crash dump kernels")
->      Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index 691c4320b6b1d..4aad089ea1f5d 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> @@ -4292,8 +4292,6 @@ ice_probe(struct pci_dev *pdev, const struct pci_device_id __always_unused *ent)
->   
->   	/* set up for high or low DMA */
->   	err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
-> -	if (err)
-> -		err = dma_set_mask_and_coherent(dev, DMA_BIT_MASK(32));
->   	if (err) {
->   		dev_err(dev, "DMA configuration failed: 0x%x\n", err);
->   		return err;
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 3e01d5254698ea3d18e09d96b974c762328352cd Mon Sep 17 00:00:00 2001
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+Date: Mon, 17 Jul 2023 21:42:19 +0200
+Subject: [PATCH] mtd: rawnand: marvell: Ensure program page operations are
+ successful
+
+The NAND core complies with the ONFI specification, which itself
+mentions that after any program or erase operation, a status check
+should be performed to see whether the operation was finished *and*
+successful.
+
+The NAND core offers helpers to finish a page write (sending the
+"PAGE PROG" command, waiting for the NAND chip to be ready again, and
+checking the operation status). But in some cases, advanced controller
+drivers might want to optimize this and craft their own page write
+helper to leverage additional hardware capabilities, thus not always
+using the core facilities.
+
+Some drivers, like this one, do not use the core helper to finish a page
+write because the final cycles are automatically managed by the
+hardware. In this case, the additional care must be taken to manually
+perform the final status check.
+
+Let's read the NAND chip status at the end of the page write helper and
+return -EIO upon error.
+
+Cc: stable@vger.kernel.org
+Fixes: 02f26ecf8c77 ("mtd: nand: add reworked Marvell NAND controller driver")
+Reported-by: Aviram Dali <aviramd@marvell.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Ravi Chandra Minnikanti <rminnikanti@marvell.com>
+Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-1-miquel.raynal@bootlin.com
+
+diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
+index 2c94da7a3b3a..b841a81cb128 100644
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -1165,6 +1165,7 @@ static int marvell_nfc_hw_ecc_hmg_do_write_page(struct nand_chip *chip,
+ 		.ndcb[2] = NDCB2_ADDR5_PAGE(page),
+ 	};
+ 	unsigned int oob_bytes = lt->spare_bytes + (raw ? lt->ecc_bytes : 0);
++	u8 status;
+ 	int ret;
+ 
+ 	/* NFCv2 needs more information about the operation being executed */
+@@ -1198,7 +1199,18 @@ static int marvell_nfc_hw_ecc_hmg_do_write_page(struct nand_chip *chip,
+ 
+ 	ret = marvell_nfc_wait_op(chip,
+ 				  PSEC_TO_MSEC(sdr->tPROG_max));
+-	return ret;
++	if (ret)
++		return ret;
++
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
++	return 0;
+ }
+ 
+ static int marvell_nfc_hw_ecc_hmg_write_page_raw(struct nand_chip *chip,
+@@ -1627,6 +1639,7 @@ static int marvell_nfc_hw_ecc_bch_write_page(struct nand_chip *chip,
+ 	int data_len = lt->data_bytes;
+ 	int spare_len = lt->spare_bytes;
+ 	int chunk, ret;
++	u8 status;
+ 
+ 	marvell_nfc_select_target(chip, chip->cur_cs);
+ 
+@@ -1663,6 +1676,14 @@ static int marvell_nfc_hw_ecc_bch_write_page(struct nand_chip *chip,
+ 	if (ret)
+ 		return ret;
+ 
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
+ 	return 0;
+ }
+ 
+
