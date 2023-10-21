@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F032B7D1BDF
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A62427D1BE0
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:03:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbjJUJDt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 05:03:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54546 "EHLO
+        id S229590AbjJUJD4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 05:03:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjJUJDt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:03:49 -0400
+        with ESMTP id S229472AbjJUJDz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:03:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CAE8DD
-        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 02:03:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD4CC433C8;
-        Sat, 21 Oct 2023 09:03:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE3FCD66
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 02:03:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A69C433C8;
+        Sat, 21 Oct 2023 09:03:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697879024;
-        bh=Hp+4J33qekfSDXkTAnlYsijirVEflADj/X2deR3o4pw=;
+        s=korg; t=1697879033;
+        bh=0jNusZ6dzZxnxJUg3+eyQWYRzpIwJuKnHCmpCWGZCEc=;
         h=Subject:To:Cc:From:Date:From;
-        b=O06RQpF9104Rro9QbZczog/ZDkZsOCNiX2anADjgiASUAFq/ZmlztHg9lMDNNRZgK
-         nIi8mS1BBKD124UKFjN3FOy0SbWEi5Qy8FTiGEPPYpyYqVeiOcCbpj5ZyfB/wEV4en
-         PCD8SvPnfGBUoFwFor3bpnKZ4NgmP6S1YUvJuNIU=
-Subject: FAILED: patch "[PATCH] pinctrl: qcom: lpass-lpi: fix concurrent register updates" failed to apply to 6.1-stable tree
+        b=fz8ClIAV13gyZEJllBR1ZhUqWhERfiz24CudeJ1y35vrVkiTnL/b2YZReTmkEq9X4
+         jSWhxBynrr912KUK15QOsjf6KFuy6VT1V5e+e3BnHKGZirNzZlkcGUPhlyriWE1+Is
+         YA0lZ/IRmHx20NBiGM7XNCQZ1gfWDWSE13YPnbBE=
+Subject: FAILED: patch "[PATCH] pinctrl: qcom: lpass-lpi: fix concurrent register updates" failed to apply to 5.15-stable tree
 To:     krzysztof.kozlowski@linaro.org, linus.walleij@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 21 Oct 2023 11:03:41 +0200
-Message-ID: <2023102141-caring-alienate-2ec8@gregkh>
+Date:   Sat, 21 Oct 2023 11:03:42 +0200
+Message-ID: <2023102142-tiny-thing-872a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x c8befdc411e5fd1bf95a13e8744c8ca79b412bee
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102141-caring-alienate-2ec8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102142-tiny-thing-872a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
