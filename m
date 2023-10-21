@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C3A07D1BE5
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:06:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C7BC7D1BE6
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:06:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbjJUJGj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 05:06:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34778 "EHLO
+        id S229636AbjJUJGm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 05:06:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229590AbjJUJGi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:06:38 -0400
+        with ESMTP id S229590AbjJUJGl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:06:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D022D6B
-        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 02:06:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3B3C433C8;
-        Sat, 21 Oct 2023 09:06:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D01ADD
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 02:06:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5A2C433C9;
+        Sat, 21 Oct 2023 09:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697879193;
-        bh=Fi6ESXhYBN37XJEUrV4sqrDNF3Rz2HAB/UNO7w7p5Xw=;
+        s=korg; t=1697879196;
+        bh=KaXph4s95eEz94/9GVmxEj0p83ZcCc3IGwH1M2MBWmQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=0a7EvoOmKUGK8H/9swUyQkaD6UbZhlsCRJbjYdWPcPLAZyEFk6eXwDb2s3JUFw0k3
-         3NSUwecocE5ha91l9SrXwCvIkPbUoao7ZP3cy90l4l0L2jLp/HEkMv+aU7DD2mJocH
-         tbJ8qfhP3PTumfsGgkDesSMtnu1tSwN4DOHa0saw=
-Subject: FAILED: patch "[PATCH] pNFS/flexfiles: Check the layout validity in" failed to apply to 5.10-stable tree
+        b=EMW4l42xCOWlALgl+VZPKQhw57/CP5OxJBCBiGbL+k6kt3gSMnweUnG6iYfCMQqxG
+         femrm5kCSIhmOry+D+ZC46hQe8PSYimrbu3s1UujgfjdIIzd5Emmq2Le2yj2pXlKb2
+         DWWaLkC7h2AtHTEvDMH94RBSODvo84DEpXluGov0=
+Subject: FAILED: patch "[PATCH] pNFS/flexfiles: Check the layout validity in" failed to apply to 5.4-stable tree
 To:     trond.myklebust@hammerspace.com, Anna.Schumaker@Netapp.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 21 Oct 2023 11:06:27 +0200
-Message-ID: <2023102127-gray-quill-78d1@gregkh>
+Date:   Sat, 21 Oct 2023 11:06:28 +0200
+Message-ID: <2023102128-paralysis-unwary-3d2b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x e1c6cfbb3bd1377e2ddcbe06cf8fb1ec323ea7d3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102127-gray-quill-78d1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102128-paralysis-unwary-3d2b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
