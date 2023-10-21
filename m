@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28F517D1BE2
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D0667D1BE4
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 11:06:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229636AbjJUJEu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 05:04:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36528 "EHLO
+        id S229574AbjJUJGc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 05:06:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjJUJEu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:04:50 -0400
+        with ESMTP id S229590AbjJUJGb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 05:06:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85DD9D65
-        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 02:04:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4085C433C8;
-        Sat, 21 Oct 2023 09:04:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B03AAD66
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 02:06:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C6DC433C8;
+        Sat, 21 Oct 2023 09:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697879088;
-        bh=o+bH2eXYws3+l5yh3RF2mSOhmL0GV5pG77P0+AQGjTw=;
+        s=korg; t=1697879189;
+        bh=i9jFRkE+6ZUR+jsqBu2aaziA/OI9PHQKl4LR1eWFZIU=;
         h=Subject:To:Cc:From:Date:From;
-        b=ri72EyI6pFGUjR319va2uGz/JsSnRolOqSwoaPmi8c61GWfAt8Uh6Q5XvQsK4P4y7
-         MwuRKa7Z5Z6I8apIbcKjt1XcFqoSe9PNbJlQD8WqEcPovSNUVzSzEHWOp/O5gw/WUt
-         tFg2d/1D9Soj2WYCKrEPVtwZCLXJk5w9FEN6gq+A=
-Subject: FAILED: patch "[PATCH] pNFS: Fix a hang in nfs4_evict_inode()" failed to apply to 4.19-stable tree
+        b=KC30oisrJKo9eV3/qZ9xd9EEHUsbfpnqtGjUt2OUlC0VNsn7zbbB/xazEZU12gz6t
+         7MjBXuntKUiWO2/QSGPzhxXNCkO3AeM/ZXeSFj4v7nzne5XBx3DvmaibY3NDkssJH1
+         BJ3yfRXYRxy+1Kc6ZC2SVMcJPRog1gtDDBgOxakQ=
+Subject: FAILED: patch "[PATCH] pNFS/flexfiles: Check the layout validity in" failed to apply to 5.15-stable tree
 To:     trond.myklebust@hammerspace.com, Anna.Schumaker@Netapp.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 21 Oct 2023 11:04:37 +0200
-Message-ID: <2023102137-pawing-rift-8b65@gregkh>
+Date:   Sat, 21 Oct 2023 11:06:26 +0200
+Message-ID: <2023102126-directed-excitable-b90e@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x f63955721a8020e979b99cc417dcb6da3106aa24
+git cherry-pick -x e1c6cfbb3bd1377e2ddcbe06cf8fb1ec323ea7d3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102137-pawing-rift-8b65@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102126-directed-excitable-b90e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,82 +67,53 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f63955721a8020e979b99cc417dcb6da3106aa24 Mon Sep 17 00:00:00 2001
+From e1c6cfbb3bd1377e2ddcbe06cf8fb1ec323ea7d3 Mon Sep 17 00:00:00 2001
 From: Trond Myklebust <trond.myklebust@hammerspace.com>
-Date: Sun, 8 Oct 2023 14:20:19 -0400
-Subject: [PATCH] pNFS: Fix a hang in nfs4_evict_inode()
+Date: Sun, 8 Oct 2023 14:28:46 -0400
+Subject: [PATCH] pNFS/flexfiles: Check the layout validity in
+ ff_layout_mirror_prepare_stats
 
-We are not allowed to call pnfs_mark_matching_lsegs_return() without
-also holding a reference to the layout header, since doing so could lead
-to the reference count going to zero when we call
-pnfs_layout_remove_lseg(). This again can lead to a hang when we get to
-nfs4_evict_inode() and are unable to clear the layout pointer.
+Ensure that we check the layout pointer and validity after dereferencing
+it in ff_layout_mirror_prepare_stats.
 
-pnfs_layout_return_unused_byserver() is guilty of this behaviour, and
-has been seen to trigger the refcount warning prior to a hang.
-
-Fixes: b6d49ecd1081 ("NFSv4: Fix a pNFS layout related use-after-free race when freeing the inode")
-Cc: stable@vger.kernel.org
+Fixes: 08e2e5bc6c9a ("pNFS/flexfiles: Clean up layoutstats")
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 306cba0b9e69..84343aefbbd6 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2634,31 +2634,44 @@ pnfs_should_return_unused_layout(struct pnfs_layout_hdr *lo,
- 	return mode == 0;
+diff --git a/fs/nfs/flexfilelayout/flexfilelayout.c b/fs/nfs/flexfilelayout/flexfilelayout.c
+index a1dc33864906..ef817a0475ff 100644
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -2520,9 +2520,9 @@ ff_layout_mirror_prepare_stats(struct pnfs_layout_hdr *lo,
+ 	return i;
  }
  
 -static int
--pnfs_layout_return_unused_byserver(struct nfs_server *server, void *data)
-+static int pnfs_layout_return_unused_byserver(struct nfs_server *server,
-+					      void *data)
+-ff_layout_prepare_layoutstats(struct nfs42_layoutstat_args *args)
++static int ff_layout_prepare_layoutstats(struct nfs42_layoutstat_args *args)
  {
- 	const struct pnfs_layout_range *range = data;
-+	const struct cred *cred;
- 	struct pnfs_layout_hdr *lo;
- 	struct inode *inode;
-+	nfs4_stateid stateid;
-+	enum pnfs_iomode iomode;
-+
- restart:
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(lo, &server->layouts, plh_layouts) {
--		if (!pnfs_layout_can_be_returned(lo) ||
-+		inode = lo->plh_inode;
-+		if (!inode || !pnfs_layout_can_be_returned(lo) ||
- 		    test_bit(NFS_LAYOUT_RETURN_REQUESTED, &lo->plh_flags))
- 			continue;
--		inode = lo->plh_inode;
- 		spin_lock(&inode->i_lock);
--		if (!pnfs_should_return_unused_layout(lo, range)) {
-+		if (!lo->plh_inode ||
-+		    !pnfs_should_return_unused_layout(lo, range)) {
- 			spin_unlock(&inode->i_lock);
- 			continue;
- 		}
-+		pnfs_get_layout_hdr(lo);
-+		pnfs_set_plh_return_info(lo, range->iomode, 0);
-+		if (pnfs_mark_matching_lsegs_return(lo, &lo->plh_return_segs,
-+						    range, 0) != 0 ||
-+		    !pnfs_prepare_layoutreturn(lo, &stateid, &cred, &iomode)) {
-+			spin_unlock(&inode->i_lock);
-+			rcu_read_unlock();
-+			pnfs_put_layout_hdr(lo);
-+			cond_resched();
-+			goto restart;
-+		}
- 		spin_unlock(&inode->i_lock);
--		inode = pnfs_grab_inode_layout_hdr(lo);
--		if (!inode)
--			continue;
- 		rcu_read_unlock();
--		pnfs_mark_layout_for_return(inode, range);
--		iput(inode);
-+		pnfs_send_layoutreturn(lo, &stateid, &cred, iomode, false);
-+		pnfs_put_layout_hdr(lo);
- 		cond_resched();
- 		goto restart;
- 	}
++	struct pnfs_layout_hdr *lo;
+ 	struct nfs4_flexfile_layout *ff_layout;
+ 	const int dev_count = PNFS_LAYOUTSTATS_MAXDEV;
+ 
+@@ -2533,11 +2533,14 @@ ff_layout_prepare_layoutstats(struct nfs42_layoutstat_args *args)
+ 		return -ENOMEM;
+ 
+ 	spin_lock(&args->inode->i_lock);
+-	ff_layout = FF_LAYOUT_FROM_HDR(NFS_I(args->inode)->layout);
+-	args->num_dev = ff_layout_mirror_prepare_stats(&ff_layout->generic_hdr,
+-						       &args->devinfo[0],
+-						       dev_count,
+-						       NFS4_FF_OP_LAYOUTSTATS);
++	lo = NFS_I(args->inode)->layout;
++	if (lo && pnfs_layout_is_valid(lo)) {
++		ff_layout = FF_LAYOUT_FROM_HDR(lo);
++		args->num_dev = ff_layout_mirror_prepare_stats(
++			&ff_layout->generic_hdr, &args->devinfo[0], dev_count,
++			NFS4_FF_OP_LAYOUTSTATS);
++	} else
++		args->num_dev = 0;
+ 	spin_unlock(&args->inode->i_lock);
+ 	if (!args->num_dev) {
+ 		kfree(args->devinfo);
 
