@@ -2,71 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 298E17D1ED3
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 19:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63CAB7D1EF3
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 20:34:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232050AbjJUR6X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 13:58:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45810 "EHLO
+        id S229621AbjJUSec (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 14:34:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231356AbjJUR6W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 13:58:22 -0400
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44272D53
-        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 10:58:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        sang-engineering.com; h=date:from:to:cc:subject:message-id
-        :references:mime-version:content-type:in-reply-to; s=k1; bh=1tph
-        RT4/fr6VXmFmt73f2t/eEw2/hid0bq+Uk88Fnc0=; b=T01xIk/LpseplDjUziNG
-        OiJnc67xrhwoXXqnOMtdMAYKIkirBLh5hIVYPPaQtRHWIWVuJI+BhVY5f2yxUAbU
-        t8tBTvVQ/S5cnGmxRcmDoEoTa4ri5NpX8g2SedCUQndPwUo2cQK6ZQUI9VgqrLM8
-        2zqv4EO/z75WIcNRNgbTzcYwB8TaJQoHcMplObC92ee4CNsYp0pgU3h1Mmgo1aiY
-        CMRQ9f7AqteFjRlJjuZfsivZOdB6c7gVueECb/7poxHDuH8ow30qCGtwPQgeSe3D
-        Wla7upnqYqXReHI9nQMGw8uigzDtsbCEDCwzoR9KbKMfGNSk1Pp1ltsyeXkZaiP3
-        kg==
-Received: (qmail 1472854 invoked from network); 21 Oct 2023 19:58:09 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 21 Oct 2023 19:58:09 +0200
-X-UD-Smtp-Session: l3s3148p1@UZJNuz0IEpkgAQnoAGobAPDYRw1R6KxZ
-Date:   Sat, 21 Oct 2023 19:58:08 +0200
-From:   Wolfram Sang <wsa+renesas@sang-engineering.com>
-To:     Herve Codina <herve.codina@bootlin.com>
-Cc:     Peter Rosin <peda@axentia.se>, Stephen Warren <swarren@nvidia.com>,
-        Rob Herring <robh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Steen Hegelund <steen.hegelund@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        with ESMTP id S229478AbjJUSec (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 14:34:32 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 036F0114;
+        Sat, 21 Oct 2023 11:34:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E34C433C7;
+        Sat, 21 Oct 2023 18:34:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697913266;
+        bh=2IMZ7iFSlhjVxu/VTWm4dQq1ViJWvD2O8nqsU123hsI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Imz4h9ik9Z0meo1QALRSvieG/apyUw8g88eOzV2t7xUSkUChO9bwvEz7AD8GSWoib
+         S7F49bfhcTvXjb9WLbai7uD8PT1U+DLCViKzqyVayRDAXAHql9lzf1TirVYukUo1EP
+         Plwo/igPIJqXuE3tIVON21tCwn6h2o9z0BzMiE8Z7fMLrO6SYVpw9ZUMvfVopgm8kC
+         GGDBXBZlFIJDsO/h3XmFRuvX6iMoq+T30Er7cJTvxrnF5WJFoXzofjGXGeV8YgkEKj
+         Yn0YLepoOX2ERwa5Yg4dPr5t1k1Aev7RLNx2Dw0nxTtzqQwvR2i6j6QsGcwDVHsyH/
+         0QUWcSeNZlo8A==
+Date:   Sat, 21 Oct 2023 20:34:23 +0200
+From:   Wolfram Sang <wsa@kernel.org>
+To:     Alain Volmat <alain.volmat@foss.st.com>
+Cc:     Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        M'boumba Cedric Madianga <cedric.madianga@gmail.com>,
         stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v3 3/3] i2c: muxes: i2c-mux-gpmux: Use
- of_get_i2c_adapter_by_node()
-Message-ID: <ZTQRMG+IGMyM/PIf@ninjato>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Herve Codina <herve.codina@bootlin.com>,
-        Peter Rosin <peda@axentia.se>, Stephen Warren <swarren@nvidia.com>,
-        Rob Herring <robh@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jonathan Cameron <jic23@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        Allan Nielsen <allan.nielsen@microchip.com>,
-        Horatiu Vultur <horatiu.vultur@microchip.com>,
-        Steen Hegelund <steen.hegelund@microchip.com>,
-        Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+        Pierre-Yves MORDRET <pierre-yves.mordret@st.com>,
+        linux-i2c@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: stm32f7: Fix PEC handling in case of SMBUS
+ transfers
+Message-ID: <ZTQZr9QocS+Qls0P@ninjato>
+Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
+        Alain Volmat <alain.volmat@foss.st.com>,
+        Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        M'boumba Cedric Madianga <cedric.madianga@gmail.com>,
         stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20231020153017.759926-1-herve.codina@bootlin.com>
- <20231020153017.759926-4-herve.codina@bootlin.com>
+        Pierre-Yves MORDRET <pierre-yves.mordret@st.com>,
+        linux-i2c@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20231010084455.1718830-1-alain.volmat@foss.st.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="bKdObAA9+5DRRzFe"
+        protocol="application/pgp-signature"; boundary="ODTK9yyIQXicmMUN"
 Content-Disposition: inline
-In-Reply-To: <20231020153017.759926-4-herve.codina@bootlin.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=ham
+In-Reply-To: <20231010084455.1718830-1-alain.volmat@foss.st.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,50 +70,61 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---bKdObAA9+5DRRzFe
+--ODTK9yyIQXicmMUN
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 20, 2023 at 05:30:13PM +0200, Herve Codina wrote:
-> i2c-mux-gpmux uses the pair of_find_i2c_adapter_by_node() /
-> i2c_put_adapter(). These pair alone is not correct to properly lock the
-> I2C parent adapter.
+On Tue, Oct 10, 2023 at 10:44:54AM +0200, Alain Volmat wrote:
+> In case of SMBUS byte read with PEC enabled, the whole transfer
+> is split into two commands.  A first write command, followed by
+> a read command.  The write command does not have any PEC byte
+> and a PEC byte is appended at the end of the read command.
+> (cf Read byte protocol with PEC in SMBUS specification)
 >=20
-> Indeed, i2c_put_adapter() decrements the module refcount while
-> of_find_i2c_adapter_by_node() does not increment it. This leads to an
-> underflow of the parent module refcount.
+> Within the STM32 I2C controller, handling (either sending
+> or receiving) of the PEC byte is done via the PECBYTE bit in
+> register CR2.
 >=20
-> Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
-> correctly the module refcount.
+> Currently, the PECBYTE is set at the beginning of a transfer,
+> which lead to sending a PEC byte at the end of the write command
+> (hence losing the real last byte), and also does not check the
+> PEC byte received during the read command.
 >=20
-> Fixes: ac8498f0ce53 ("i2c: i2c-mux-gpmux: new driver")
-> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-> Cc: stable@vger.kernel.org
-> Acked-by: Peter Rosin <peda@axentia.se>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> This patch corrects the function stm32f7_i2c_smbus_xfer_msg
+> in order to only set the PECBYTE during the read command.
+>=20
+> Fixes: 9e48155f6bfe ("i2c: i2c-stm32f7: Add initial SMBus protocols suppo=
+rt")
+> Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+> Reviewed-by: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
 
 Applied to for-current, thanks!
 
+BTW, there are some patches pending from this series for stm32f4/7. Do
+you have time for an ack?
 
---bKdObAA9+5DRRzFe
+http://patchwork.ozlabs.org/project/linux-i2c/list/?series=3D359230
+
+
+--ODTK9yyIQXicmMUN
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmU0ETAACgkQFA3kzBSg
-KbYotw/9H5yLe18QGWIzB99u5ZQtqYrFPqfJ97aASuvaLBJH5D2I2oMEu5VfOe3r
-n5uW6mKilgM/g1Dw0jzfNXP+rzrc1beu7KeYK7WIhtmvdet7WYd+KzJYfM/Pxy/e
-6izTwfCNW4p2A0xjb+T4kN0/GYnUIvG9SfbJsSpB6jlLplZ2uoTOqMMIfr0kx1bi
-nkfXvaJv2KwhaNRZq9WSDekHLYPPEQNvXnOgvDKWPz7EP45IpBAodw9GAXa8Eq4c
-sCn6e/0vbuCNp8r/iMGpMFZMgZVaiQe0R0tTt4bHatmzMjUe7kCJytJnu6GYt2kj
-0QKX/1ubGVhkjfr0/1xxjCVNJrzFD71EX2BcR60v7N51xErhcSkMyy6kiL1JiYCt
-R3HOa3MhUbcwrsFgXjkx3z1/VRHTVONijY62ayORKdo9ovdQ10+dfLNrQ3TYw4X2
-KyJCPbaoSsvUyZEnLt2oMPNZZ7+L5ePsz+nNc+agcW1D0UJen53dU+7zr2TYRf3g
-0TsVoA89J0z/282ycr4bKc4Mlszb3+bEOxuHmQ3VqbvjMKA5oj1zBgoMwEhjb3GK
-t5M+11mb0wnpIDL0+1pY6humwzYUAdTYiAIHfiAsI3evHhww9XCJrOYpP0MChO3e
-B1Wp+f1tpTqh3A/w+gmmpeCvtWoC3THouTVcHAW4KxujrbBRo3w=
-=YdAO
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmU0GaoACgkQFA3kzBSg
+KbZcAA/8CTJ0qwqy93erVsUOzCzgDrO437q8fryQz8SPGRvQfAysYCmJcG4uccTT
+QZ3WUJ8VoX6gWFl63Hql44rvvn6px4vxoLOD+kx3ue+3kuS4DKEKOaQ0mH02eBsv
+k3tFT76nnkTCV+10itUJ/EM+GUBsXVX3xoTgG3Rko7u1pQdyt5ro5AFaJX/IAAQe
+o5wttCU/pIG/a850p5mfsv3wcl/JHaAG8Lzd7Fss6uTlqfcIAgcwHZs/gygstJB2
+01Fim6Be9LuAopCCkI3hh0/keo/BSLqwsXrtvXRV6bRKgcSmvTqJJDkjjxT6a+l+
+ABWjG3z88wTtI81VywiR3gFkuRp+InlTbuILncjG+yay4dm0aehL8eNh6STKNRIM
+u8ynrhBEIuuAXEQ0/6g43CSQQGpTt4PcPhWyK1vsNlVFGfFSaclRXFQEMh27oARy
+GMDdXrH/7lYQ7xeoQPKuO9oYOoTQtbMjC6Mwz6IkY9CpKNQwxxen9rNePrpVdUiV
+odjcAizzMb6CPP2A6wFM7LtkbfpozPYHZ9L1/Ujm0D5c7Fb3g9cRTiMWpokDXzV7
+4aUNkE6GAPgkPJPulLYoTjphzUfDoRjVJGXoK/cfVQWR6ad3Kk1c2r4HJ+xTQKVJ
+Q3quC5MhJKcyLfVEBfJUbL4LwKo19s6gUxTSFvVOW10+s/6/9rc=
+=GBVW
 -----END PGP SIGNATURE-----
 
---bKdObAA9+5DRRzFe--
+--ODTK9yyIQXicmMUN--
