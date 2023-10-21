@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 586747D1F14
-	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 21:30:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B827C7D1F15
+	for <lists+stable@lfdr.de>; Sat, 21 Oct 2023 21:30:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231552AbjJUTaw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 21 Oct 2023 15:30:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34804 "EHLO
+        id S231597AbjJUTax (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 21 Oct 2023 15:30:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjJUTav (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 15:30:51 -0400
+        with ESMTP id S229478AbjJUTaw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 21 Oct 2023 15:30:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEC9311B
-        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 12:30:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1217FC433C7;
-        Sat, 21 Oct 2023 19:30:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1373126
+        for <stable@vger.kernel.org>; Sat, 21 Oct 2023 12:30:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DE52C433C8;
+        Sat, 21 Oct 2023 19:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1697916647;
-        bh=qU8mlP42NKpgpR3m67QyqS98N9GXWU0fG/oMqg/ZODc=;
+        s=korg; t=1697916650;
+        bh=blmLOZI9vOu1uqVdvUpybubugC+QC17T8Zx9X5ivj4E=;
         h=Subject:To:Cc:From:Date:From;
-        b=S8rOKvK8MrphOIsLWj2ZIXrMcQZh0nq72OXlA5QGlWMV8/aCt3NZNNLyNrv8Awi0n
-         1oCsBPq2L1VZ9ZpZQ0YmEXevW65Pb7j2KpSk5ebIppDGxdyUEzdeb0YbEX1Lt5TDEC
-         8QR+JFKpdBQYtFa0YlrpdwTAVFFRn+W5L82vH9AI=
-Subject: FAILED: patch "[PATCH] tracing/kprobes: Return EADDRNOTAVAIL when func matches" failed to apply to 4.19-stable tree
+        b=CBufZPgMPawXoQz/sS0YYX9ns85/xEBorB4xfz5Vae/eCSY321AG0OYpFmTa2ceie
+         sieRmaV/GAhP6p05MYPSui1d/vUzV9jIYDzyMA1CGC6/T2KX1XhFZE5U4COoRAZqJU
+         WwNgEssLCg1HbIoT4RTmKrljGvDL9kPBWB00dirw=
+Subject: FAILED: patch "[PATCH] tracing/kprobes: Return EADDRNOTAVAIL when func matches" failed to apply to 4.14-stable tree
 To:     flaniel@linux.microsoft.com, mhiramat@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 21 Oct 2023 21:30:38 +0200
-Message-ID: <2023102138-riverbed-senator-e356@gregkh>
+Date:   Sat, 21 Oct 2023 21:30:40 +0200
+Message-ID: <2023102140-tartly-democrat-140d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x b022f0c7e404887a7c5229788fc99eff9f9a80d5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102138-riverbed-senator-e356@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102140-tartly-democrat-140d@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
