@@ -2,107 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C93DC7D247B
-	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 18:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADCEA7D24B0
+	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 18:58:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232178AbjJVQXz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 22 Oct 2023 12:23:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57256 "EHLO
+        id S231638AbjJVQ6d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 22 Oct 2023 12:58:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232225AbjJVPqS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 22 Oct 2023 11:46:18 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28A4DB4;
-        Sun, 22 Oct 2023 08:46:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF8AC433D9;
-        Sun, 22 Oct 2023 15:46:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1697989575;
-        bh=5U0+w/BGtHtXW2F9LQIXpNNTOP74moySVAIGJYB4T7M=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fbin9TVgMQ2/T5sY81hCxh7OqUlLO1MsjYQZkVrn/5NZI8bGLAaSOAr8aJ551106M
-         2BNt3sgPcmY5vcjteqdx3WLNOH+7EXC2ma+QYbyLUHX583mdXsAFNZoKdi7X67kPR5
-         hDCTgACZN6cdJ1WqjBZ1jURujZT4L53GweK4QovnjJNITbSftS+8v5rMcLsfb13ddk
-         89uCAliWlYXCpkRyG34ufldW2VJtVuU3V0EkAHp4IR+mWUvO+ORlt+SXOlQ8RwuJpu
-         wU6yeBkOe15BzcB/zP7H3jHV9XBc5RIq0gt8iLrRlUSaD6F/IZuWxSdjIoS8b59X6X
-         +chZEoq3EDHNA==
-From:   Bjorn Andersson <andersson@kernel.org>
-To:     Andy Gross <agross@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sricharan Ramabadhran <quic_srichara@quicinc.com>,
-        Gokul Sriram Palanisamy <quic_gokulsri@quicinc.com>,
-        Varadarajan Narayanan <quic_varada@quicinc.com>,
-        Anusha Rao <quic_anusha@quicinc.com>,
-        Devi Priya <quic_devipriy@quicinc.com>,
-        Jassi Brar <jassisinghbrar@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Cc:     linux-arm-msm@vger.kernel.org, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
-        stable@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Robert Marko <robimarko@gmail.com>
-Subject: Re: (subset) [PATCH v2 00/11] Add GPLL0 as clock provider for the Qualcomm's IPQ mailbox controller
-Date:   Sun, 22 Oct 2023 08:50:22 -0700
-Message-ID: <169798982292.271027.2242232774452445233.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230913-gpll_cleanup-v2-0-c8ceb1a37680@quicinc.com>
-References: <20230913-gpll_cleanup-v2-0-c8ceb1a37680@quicinc.com>
+        with ESMTP id S229500AbjJVQ6c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 22 Oct 2023 12:58:32 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3FEEE;
+        Sun, 22 Oct 2023 09:58:28 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b497c8575aso2530892b3a.1;
+        Sun, 22 Oct 2023 09:58:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697993908; x=1698598708; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=IwkHwhxesLPKqjBuQHsCOV/nzGIgUui9PvuqFp60Gu4=;
+        b=Psm4wsGpF2xEcjvz9RxQykfY0kESoRu5NcwVTuAqadyCrudKSOz5aaw8pOGjIzAmlz
+         wPy1O+4Uo2J9upLNDDqmsJJqekbXu59q+mWceos5AG/xb8zUgQJXUmvoJtu6LkVSz+u4
+         YUHRjntPZ4yo3wa00J+rbgED1xrM4HIWqe+KjELmM3jQGdA3Sbq2i6zVmYT9DiGtNALZ
+         q/8NK7irNlNt5x1kAwiWPCuBYv7oucNUvBSHNraQzXJAjN1ch1CieW3T7YRLcnNrI6KW
+         p2MvaVcZMjIxYz+w8/IPIpP6Ch5QXJPhhIDDq83lrlL821Wbv6pob+QsR4M2fFCF70m2
+         qnyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697993908; x=1698598708;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IwkHwhxesLPKqjBuQHsCOV/nzGIgUui9PvuqFp60Gu4=;
+        b=vH8cDK07SFdpcD7oXu7JGQHtciYJnxKlsr1nRCWd2AaG6b+6InHMlhSHowz33Ctex8
+         ckY0IGe2NQdoVrFf8PXzlWbPq3lNTzS/QlSfF9Fpw20UqJHNWVJna8UT1qlTm1OBlThj
+         jgYz9WXx8dRpnSdJjEwy57b2NakdJwqFosvPCd08xvtkMtUxJzYXP7kiifz/hkVdY08q
+         NGR184XIWHaVM1bKMzMk7QBY3zsDdS/fjZsXeBqxMEFNRnBPpB7BzS8Rsms5aLW3SNPC
+         F0WLwM2/D1wQA8RJXKF9MEAjdmHit8W/oZEJ7hanaqIWdcClV5Uuw4BUap6AN3Gu2Q1j
+         uV6A==
+X-Gm-Message-State: AOJu0YxpbH+P0XzAza4Rd/x4oYHXLskPHcgW83uhhCXz8NQzjRGMqRvf
+        aSjKh9AkSaQr32lGIC6cbBk=
+X-Google-Smtp-Source: AGHT+IEYfJ/AoRsJ9amHD/W2WLpvXa/3dxIzCpTXNeztkwnwYxALQX6X+GqFhvmVrl3w1YkurD0PPA==
+X-Received: by 2002:a05:6a20:1602:b0:153:7515:9919 with SMTP id l2-20020a056a20160200b0015375159919mr9062907pzj.21.1697993907684;
+        Sun, 22 Oct 2023 09:58:27 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id z11-20020aa79e4b000000b006b725b2158bsm4790807pfq.41.2023.10.22.09.58.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Oct 2023 09:58:27 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <1fae4d2c-4bc7-f169-7b84-501674a82ee4@roeck-us.net>
+Date:   Sun, 22 Oct 2023 09:58:26 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] sbsa_gwdt: Calculate timeout with 64-bit math
+Content-Language: en-US
+To:     Darren Hart <darren@os.amperecomputing.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        linux-watchdog@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+References: <7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com>
+ <bcc41311-075c-44fe-b0f7-30564d7ac58c@roeck-us.net> <ZSpbfXzFeaoUJRZ3@Fedora>
+From:   Guenter Roeck <linux@roeck-us.net>
+In-Reply-To: <ZSpbfXzFeaoUJRZ3@Fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-On Thu, 14 Sep 2023 12:29:50 +0530, Kathiravan Thirumoorthy wrote:
-> Currently mailbox controller takes the XO and APSS PLL as the input. It
-> can take the GPLL0 also as an input. This patch series adds the same and
-> fixes the issue caused by this.
+On 10/14/23 02:12, Darren Hart wrote:
+> On Tue, Sep 26, 2023 at 05:45:13AM -0700, Guenter Roeck wrote:
+>> On Thu, Sep 21, 2023 at 02:02:36AM -0700, Darren Hart wrote:
+>>> Commit abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+>>> introduced new timer math for watchdog revision 1 with the 48 bit offset
+>>> register.
+>>>
+>>> The gwdt->clk and timeout are u32, but the argument being calculated is
+>>> u64. Without a cast, the compiler performs u32 operations, truncating
+>>> intermediate steps, resulting in incorrect values.
+>>>
+>>> A watchdog revision 1 implementation with a gwdt->clk of 1GHz and a
+>>> timeout of 600s writes 3647256576 to the one shot watchdog instead of
+>>> 300000000000, resulting in the watchdog firing in 3.6s instead of 600s.
+>>>
+>>> Force u64 math by casting the first argument (gwdt->clk) as a u64. Make
+>>> the order of operations explicit with parenthesis.
+>>>
+>>> Fixes: abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+>>> Reported-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+>>> Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
+>>> Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
+>>> Cc: Guenter Roeck <linux@roeck-us.net>
+>>> Cc: linux-watchdog@vger.kernel.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Cc: linux-arm-kernel@lists.infradead.org
+>>> Cc: <stable@vger.kernel.org> # 5.14.x
+>>
+>> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
 > 
-> Once the cpufreq driver is up, it tries to bump up the cpu frequency
-> above 800MHz, while doing so system is going to unusable state. Reason
-> being, with the GPLL0 included as clock source, clock framework tries to
-> achieve the required rate with the possible parent and since GPLL0
-> carries the CLK_SET_RATE_PARENT flag, clock rate of the GPLL0 is getting
-> changed, causing the issue.
+> Guenter or Wim, I haven't seen this land in the RCs or in next yet. Have
+> you already picked it up? Anything more needed from me?
 > 
-> [...]
+> Thanks,
+> 
 
-Applied, thanks!
+Sorry, I am suffering from what I can only describe as a severe case of
+maintainer/reviewer PTSD, and I have yet to find a way of dealing with that.
 
-[01/11] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
-        commit: e641a070137dd959932c7c222e000d9d941167a2
-[02/11] clk: qcom: ipq6018: drop the CLK_SET_RATE_PARENT flag from PLL clocks
-        commit: 99cd4935cb972d0aafb16838bb2aeadbcaf196ce
-[03/11] clk: qcom: ipq5018: drop the CLK_SET_RATE_PARENT flag from GPLL clocks
-        commit: 01a5e4c6731ab6b4b74822661d296f8893fc1230
-[04/11] clk: qcom: ipq9574: drop the CLK_SET_RATE_PARENT flag from GPLL clocks
-        commit: 99a8f8764b70158a712992640a6be46a8fd79d15
-[05/11] clk: qcom: ipq5332: drop the CLK_SET_RATE_PARENT flag from GPLL clocks
-        commit: 5635ef0bd1052420bc659a00be6fd0c60cec5cb9
-[07/11] clk: qcom: apss-ipq6018: add the GPLL0 clock also as clock provider
-        commit: e0e6373d653b7707bf042ecf1538884597c5d0da
-[08/11] arm64: dts: qcom: ipq8074: include the GPLL0 as clock provider for mailbox
-        commit: 80ebe63329909531afc87335f1d95c7bf8414438
-[09/11] arm64: dts: qcom: ipq6018: include the GPLL0 as clock provider for mailbox
-        commit: 0133c7af3aa0420778d106cb90db708cfa45f2c6
-[10/11] arm64: dts: qcom: ipq9574: include the GPLL0 as clock provider for mailbox
-        commit: 77c726a4f3b124903db5ced7d597976d5b80dcfb
-[11/11] arm64: dts: qcom: ipq5332: include the GPLL0 as clock provider for mailbox
-        commit: da528016952bf93ca810c43fafe518c699db7fa0
+Guenter
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
