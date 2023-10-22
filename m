@@ -2,123 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADCEA7D24B0
-	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 18:58:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A8FF7D24B9
+	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 19:03:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231638AbjJVQ6d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 22 Oct 2023 12:58:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38038 "EHLO
+        id S229586AbjJVRDu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 22 Oct 2023 13:03:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjJVQ6c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 22 Oct 2023 12:58:32 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3FEEE;
-        Sun, 22 Oct 2023 09:58:28 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6b497c8575aso2530892b3a.1;
-        Sun, 22 Oct 2023 09:58:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697993908; x=1698598708; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=IwkHwhxesLPKqjBuQHsCOV/nzGIgUui9PvuqFp60Gu4=;
-        b=Psm4wsGpF2xEcjvz9RxQykfY0kESoRu5NcwVTuAqadyCrudKSOz5aaw8pOGjIzAmlz
-         wPy1O+4Uo2J9upLNDDqmsJJqekbXu59q+mWceos5AG/xb8zUgQJXUmvoJtu6LkVSz+u4
-         YUHRjntPZ4yo3wa00J+rbgED1xrM4HIWqe+KjELmM3jQGdA3Sbq2i6zVmYT9DiGtNALZ
-         q/8NK7irNlNt5x1kAwiWPCuBYv7oucNUvBSHNraQzXJAjN1ch1CieW3T7YRLcnNrI6KW
-         p2MvaVcZMjIxYz+w8/IPIpP6Ch5QXJPhhIDDq83lrlL821Wbv6pob+QsR4M2fFCF70m2
-         qnyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697993908; x=1698598708;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IwkHwhxesLPKqjBuQHsCOV/nzGIgUui9PvuqFp60Gu4=;
-        b=vH8cDK07SFdpcD7oXu7JGQHtciYJnxKlsr1nRCWd2AaG6b+6InHMlhSHowz33Ctex8
-         ckY0IGe2NQdoVrFf8PXzlWbPq3lNTzS/QlSfF9Fpw20UqJHNWVJna8UT1qlTm1OBlThj
-         jgYz9WXx8dRpnSdJjEwy57b2NakdJwqFosvPCd08xvtkMtUxJzYXP7kiifz/hkVdY08q
-         NGR184XIWHaVM1bKMzMk7QBY3zsDdS/fjZsXeBqxMEFNRnBPpB7BzS8Rsms5aLW3SNPC
-         F0WLwM2/D1wQA8RJXKF9MEAjdmHit8W/oZEJ7hanaqIWdcClV5Uuw4BUap6AN3Gu2Q1j
-         uV6A==
-X-Gm-Message-State: AOJu0YxpbH+P0XzAza4Rd/x4oYHXLskPHcgW83uhhCXz8NQzjRGMqRvf
-        aSjKh9AkSaQr32lGIC6cbBk=
-X-Google-Smtp-Source: AGHT+IEYfJ/AoRsJ9amHD/W2WLpvXa/3dxIzCpTXNeztkwnwYxALQX6X+GqFhvmVrl3w1YkurD0PPA==
-X-Received: by 2002:a05:6a20:1602:b0:153:7515:9919 with SMTP id l2-20020a056a20160200b0015375159919mr9062907pzj.21.1697993907684;
-        Sun, 22 Oct 2023 09:58:27 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z11-20020aa79e4b000000b006b725b2158bsm4790807pfq.41.2023.10.22.09.58.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Oct 2023 09:58:27 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <1fae4d2c-4bc7-f169-7b84-501674a82ee4@roeck-us.net>
-Date:   Sun, 22 Oct 2023 09:58:26 -0700
+        with ESMTP id S229500AbjJVRDt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 22 Oct 2023 13:03:49 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8A83EE
+        for <stable@vger.kernel.org>; Sun, 22 Oct 2023 10:03:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482F0C433C8;
+        Sun, 22 Oct 2023 17:03:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1697994227;
+        bh=ASmwY7XEktZn06QAjZRktEYJPd220w54PNdcSEgJbjI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=M1vLPzR6mSiTVbb13ipjwcRkTJwr4oTf+XdFLQszrEfPZ8S0qo6KqNXAjA4wz0tgo
+         agxRGVu4JpoUWRMjGWWCqyG7oUtCsITvOCc2hnKlsvz3q7tZeWKhY2xkiPkZHNxmCP
+         W89v0C7YYJuToa85Ak515O7R1sH49Dr5ZuqfEEYxDTdwUZ8aGEXuhLwk3V52gUA4It
+         s1yStHnxCeLcyysiPGrSjF/Xh8BWMa36errFU1Qwxs0L8gO0xkFarkga81Qbtcqxu9
+         JWYcH+ib6pfI04XTxxCziojpo2+eGYoekT1fiWiIerxA9ij+pFYdpodNm4NErfGz0+
+         z+hMZw6Wfr3ZA==
+From:   Matthieu Baerts <matttbe@kernel.org>
+To:     stable@vger.kernel.org, gregkh@linuxfoundation.org
+Cc:     MPTCP Upstream <mptcp@lists.linux.dev>,
+        Geliang Tang <geliang.tang@suse.com>,
+        Matthieu Baerts <matttbe@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Mat Martineau <martineau@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.5.y] mptcp: avoid sending RST when closing the initial subflow
+Date:   Sun, 22 Oct 2023 19:03:12 +0200
+Message-Id: <20231022170312.2806040-1-matttbe@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <2023102021-unawake-celibate-46c9@gregkh>
+References: <2023102021-unawake-celibate-46c9@gregkh>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] sbsa_gwdt: Calculate timeout with 64-bit math
-Content-Language: en-US
-To:     Darren Hart <darren@os.amperecomputing.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-        Wim Van Sebroeck <wim@linux-watchdog.org>,
-        linux-watchdog@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com>
- <bcc41311-075c-44fe-b0f7-30564d7ac58c@roeck-us.net> <ZSpbfXzFeaoUJRZ3@Fedora>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <ZSpbfXzFeaoUJRZ3@Fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3650; i=matttbe@kernel.org; h=from:subject; bh=OxoEL9JK5W7UwjkuM9ecSkMvPAXIfJK7/IP8ekAuuRw=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBlNVXQxL/mTqocoHvl/b/gtTttpmufJlWnwrSbZ wPOR1id296JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZTVV0AAKCRD2t4JPQmmg cyAMEACv7suDSh1Ydr8eDNk9eUvoqCyMdFUT38DXESnFRuTCv+i4/e+tUA/UbzkKv0qWf3O+ZGz YiRTRTVvqnSGt8zb2frCl/Mlq7MLjmALWh3GCTRKUO6oJehIjo8PqpbWKRkw70XdaEp4SPAqKmR NzWdycrtUFhuj4D4BrACtcbdW6JWgR5WuwxFXPXHZwq03fPMV7hMWkIEJnEITXT/6weaMCNpjI8 FL8AnowDK0ey72Qp9j9TaQD8AmHIA3ohgMo/ZO3Zo50s0mXi00GtLDT4+ou3cEjSXalgGEVXkv/ 8EZJSa4mUSYyWg3qYEWtBEpq0YIy4J7xXRyEL/4IemP+Ope+lA4oJbg5mBk57f1zMQMngB1SoWp 7F4ZpXMlTzXjhEaEN4a7a4TEtAvVuyBui5CNeFUSUwj87g+GhHCedxVxKBozCWt4MEJqk7uNdqO kL6PL0o+omlQxZJdoaCHr8fXmes+7XINogeuThmJvsOglw0eefBjkOBfulG4jMXWx/LdJkHIXY+ 2lNuXJGAYUUZwdLLgzfHnR7QmZeKDg/yAwwAPkN8MkxfyVxFd9gPtxR7vNomUg0fz10+pyfXRgo Y90LTpFcFAE/JHQeWhrSRSfNDRlEqpBdIeRAxLWgBbNmU1Yr6OVNZdrlaRdglzg7x6TzaXDDuKj 1KujfTsWBZMjIoA==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/14/23 02:12, Darren Hart wrote:
-> On Tue, Sep 26, 2023 at 05:45:13AM -0700, Guenter Roeck wrote:
->> On Thu, Sep 21, 2023 at 02:02:36AM -0700, Darren Hart wrote:
->>> Commit abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
->>> introduced new timer math for watchdog revision 1 with the 48 bit offset
->>> register.
->>>
->>> The gwdt->clk and timeout are u32, but the argument being calculated is
->>> u64. Without a cast, the compiler performs u32 operations, truncating
->>> intermediate steps, resulting in incorrect values.
->>>
->>> A watchdog revision 1 implementation with a gwdt->clk of 1GHz and a
->>> timeout of 600s writes 3647256576 to the one shot watchdog instead of
->>> 300000000000, resulting in the watchdog firing in 3.6s instead of 600s.
->>>
->>> Force u64 math by casting the first argument (gwdt->clk) as a u64. Make
->>> the order of operations explicit with parenthesis.
->>>
->>> Fixes: abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
->>> Reported-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
->>> Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
->>> Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
->>> Cc: Guenter Roeck <linux@roeck-us.net>
->>> Cc: linux-watchdog@vger.kernel.org
->>> Cc: linux-kernel@vger.kernel.org
->>> Cc: linux-arm-kernel@lists.infradead.org
->>> Cc: <stable@vger.kernel.org> # 5.14.x
->>
->> Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-> 
-> Guenter or Wim, I haven't seen this land in the RCs or in next yet. Have
-> you already picked it up? Anything more needed from me?
-> 
-> Thanks,
-> 
+From: Geliang Tang <geliang.tang@suse.com>
 
-Sorry, I am suffering from what I can only describe as a severe case of
-maintainer/reviewer PTSD, and I have yet to find a way of dealing with that.
+commit 14c56686a64c65ba716ff48f1f4b19c85f4cb2a9 upstream.
 
-Guenter
+When closing the first subflow, the MPTCP protocol unconditionally
+calls tcp_disconnect(), which in turn generates a reset if the subflow
+is established.
+
+That is unexpected and different from what MPTCP does with MPJ
+subflows, where resets are generated only on FASTCLOSE and other edge
+scenarios.
+
+We can't reuse for the first subflow the same code in place for MPJ
+subflows, as MPTCP clean them up completely via a tcp_close() call,
+while must keep the first subflow socket alive for later re-usage, due
+to implementation constraints.
+
+This patch adds a new helper __mptcp_subflow_disconnect() that
+encapsulates, a logic similar to tcp_close, issuing a reset only when
+the MPTCP_CF_FASTCLOSE flag is set, and performing a clean shutdown
+otherwise.
+
+Fixes: c2b2ae3925b6 ("mptcp: handle correctly disconnect() failures")
+Cc: stable@vger.kernel.org
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Co-developed-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Geliang Tang <geliang.tang@suse.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231018-send-net-20231018-v1-4-17ecb002e41d@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+---
+Backport notes:
+  - One conflict due to 39880bd808ad ("mptcp: get rid of msk->subflow")
+    introduced in v6.6. In previous versions, the socket state needs to
+    be set to SS_UNCONNECTED.
+---
+ net/mptcp/protocol.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
+
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 679c2732b5d0..fc3621bbbe7e 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2342,6 +2342,26 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
+ #define MPTCP_CF_PUSH		BIT(1)
+ #define MPTCP_CF_FASTCLOSE	BIT(2)
+ 
++/* be sure to send a reset only if the caller asked for it, also
++ * clean completely the subflow status when the subflow reaches
++ * TCP_CLOSE state
++ */
++static void __mptcp_subflow_disconnect(struct sock *ssk,
++				       struct mptcp_subflow_context *subflow,
++				       unsigned int flags)
++{
++	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
++	    (flags & MPTCP_CF_FASTCLOSE)) {
++		/* The MPTCP code never wait on the subflow sockets, TCP-level
++		 * disconnect should never fail
++		 */
++		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
++		mptcp_subflow_ctx_reset(subflow);
++	} else {
++		tcp_shutdown(ssk, SEND_SHUTDOWN);
++	}
++}
++
+ /* subflow sockets can be either outgoing (connect) or incoming
+  * (accept).
+  *
+@@ -2379,7 +2399,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+ 
+ 	if ((flags & MPTCP_CF_FASTCLOSE) && !__mptcp_check_fallback(msk)) {
+-		/* be sure to force the tcp_disconnect() path,
++		/* be sure to force the tcp_close path
+ 		 * to generate the egress reset
+ 		 */
+ 		ssk->sk_lingertime = 0;
+@@ -2389,12 +2409,8 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+-		/* The MPTCP code never wait on the subflow sockets, TCP-level
+-		 * disconnect should never fail
+-		 */
+-		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
++		__mptcp_subflow_disconnect(ssk, subflow, flags);
+ 		msk->subflow->state = SS_UNCONNECTED;
+-		mptcp_subflow_ctx_reset(subflow);
+ 		release_sock(ssk);
+ 
+ 		goto out;
+-- 
+2.40.1
 
