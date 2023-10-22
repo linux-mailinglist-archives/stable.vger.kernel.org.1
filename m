@@ -2,69 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70D987D21EB
-	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 10:22:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 958E07D2289
+	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 12:17:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbjJVIWw convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Sun, 22 Oct 2023 04:22:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38214 "EHLO
+        id S231302AbjJVKRF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 22 Oct 2023 06:17:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229500AbjJVIWv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 22 Oct 2023 04:22:51 -0400
-X-Greylist: delayed 141547 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 22 Oct 2023 01:22:47 PDT
-Received: from boboe.cn (unknown [120.230.82.59])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2C4793
-        for <stable@vger.kernel.org>; Sun, 22 Oct 2023 01:22:47 -0700 (PDT)
-Received: from boboe.cn (localhost [127.0.0.1])
-        by boboe.cn (Postfix) with ESMTP id F06D06AE3050
-        for <stable@vger.kernel.org>; Fri, 20 Oct 2023 19:54:52 +0800 (CST)
-Reply-To: jacques.bouchex@hotmail.com
-From:   Jacques BOUCHEX <info@boboe.cn>
-To:     stable@vger.kernel.org
-Subject: =?UTF-8?B?0JfQtNGA0LDQstC10LnRgtC1LA==?=
-Date:   20 Oct 2023 13:54:51 +0200
-Message-ID: <20231020135451.7CEAD43C413F12B5@boboe.cn>
+        with ESMTP id S229500AbjJVKRE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 22 Oct 2023 06:17:04 -0400
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4A08E6
+        for <stable@vger.kernel.org>; Sun, 22 Oct 2023 03:17:02 -0700 (PDT)
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 556F13F722
+        for <stable@vger.kernel.org>; Sun, 22 Oct 2023 10:17:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+        s=20210705; t=1697969820;
+        bh=gColUGB2JSdwsFjV3ExI1Ly4vT+H+2Kv7wPXR0ErwzI=;
+        h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+         In-Reply-To:Content-Type;
+        b=blaHAvsho5Zn9cui+CySfUoGsFTRF2uN2yDN7L1o68ZPcX/mQltZD6kIdAinUX8ce
+         HQ5j043vM2WikfQ4kLCGKYTknq0fyVHZXJ8X5WJWTjB5dPgRtfGswKgN1GChVtyZi0
+         TB1BqI0Vg97Fw1lz++ONXBjL0LDAA9WvY6adSEg7aMnDkStZ8GpCW+5zWrbZ9P4yNm
+         w1oOeaTK1WQypgxbhi7ZmqVYfUi0Iv0wE9n+589NNp8Y9JRa3BMvCVEhq90t/6WVeA
+         92UIsTM+T52bXb256Tflwr2MVtRKFkC8I4kYqPnzRWfouCWxchRtq9iBhPVguhL3zL
+         dVsomquVbGajg==
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4083fec2c30so13368985e9.1
+        for <stable@vger.kernel.org>; Sun, 22 Oct 2023 03:17:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697969817; x=1698574617;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gColUGB2JSdwsFjV3ExI1Ly4vT+H+2Kv7wPXR0ErwzI=;
+        b=UdK0citI1D0rICM6wsCCHkMeE+HwAcNel2fqdS29VpqgG0lYhHzA8m5O7jFLdiTH9t
+         q1kVN4L17h0Y56jBnChUghlYbShy+nSXmF22ZGQwrOyUQiUEsDb4wHNS2gEi2EufSrGn
+         Qc2yNeNHZ9oqrE6r2uHyWP9MsH7Dg8MInOjNELiHRibdHVnELdjwdRrXRKiFzSqNfhXt
+         cLL9Bpkbv5N4mGqjt0HEQiNok5vVQO8A0LmSKnGTeqBpxItDFccgHeB6em7LaujnPysi
+         KlzvEiHyES+BdbzmepmL+MbtSaYjizt/GIq93NzyUMPiQIuGsh202X2pOEkru6zfncOq
+         eCPw==
+X-Gm-Message-State: AOJu0YyokbYnzQ6YAL9PGTStkyCAIvITTsSgZhJDZs7kpgUjwOOPeeUu
+        kn5iEvwsbxHvcs/2RbgAfI6nQ4rp65w8X6ZjdDWqK+H73Ca8dBbqt7CVufZJsNdY2y4gotiYsXC
+        a+txZQd2f8tr2GtMtv/X6qr6ukOw0s9VEzVjZ4husog==
+X-Received: by 2002:a05:600c:a02:b0:405:4daa:6e3d with SMTP id z2-20020a05600c0a0200b004054daa6e3dmr4857182wmp.39.1697969817325;
+        Sun, 22 Oct 2023 03:16:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHR9ajGyAKxGnJTHGXo85cKGVbITf+pxIsTZxiW6T8a2EGRQXazCWzonnmgcZkbqGRIZyg5GQ==
+X-Received: by 2002:a05:600c:a02:b0:405:4daa:6e3d with SMTP id z2-20020a05600c0a0200b004054daa6e3dmr4857170wmp.39.1697969816846;
+        Sun, 22 Oct 2023 03:16:56 -0700 (PDT)
+Received: from [192.168.123.94] (ip-178-202-040-247.um47.pools.vodafone-ip.de. [178.202.40.247])
+        by smtp.gmail.com with ESMTPSA id 1-20020a05600c028100b004077219aed5sm11287461wmk.6.2023.10.22.03.16.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Oct 2023 03:16:56 -0700 (PDT)
+Message-ID: <d3afc8dc-51db-43fd-abb8-b9030d86bbe2@canonical.com>
+Date:   Sun, 22 Oct 2023 12:17:02 +0200
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,RCVD_IN_DNSWL_BLOCKED,RDNS_NONE,
-        SPF_HELO_SOFTFAIL,SPF_SOFTFAIL autolearn=no autolearn_force=no
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
+Content-Language: en-US, de-DE
+To:     Ben Schneider <ben@bens.haus>
+Cc:     Regressions <regressions@lists.linux.dev>,
+        Linux Efi <linux-efi@vger.kernel.org>,
+        Stable <stable@vger.kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>
+References: <Nh-DzlX--3-9@bens.haus>
+ <CAMj1kXFKe6piagNLdSUhxUhwLB+RfNHqjNWt8-r2CNS-rBdJKA@mail.gmail.com>
+ <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com>
+ <CAC_iWjJB3OTWiYX5YsJmNcPQw+rHSm955c1Z5pUajedWGM5QgA@mail.gmail.com>
+ <Nh30qsF--3-9@bens.haus> <57062702-f858-46d3-bccc-f0f96891128b@canonical.com>
+ <Nh8pThy--3-9@bens.haus> <NhEYpWg--3-9@bens.haus>
+From:   Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
+In-Reply-To: <NhEYpWg--3-9@bens.haus>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
         version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [120.230.82.59 listed in list.dnswl.org]
-        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
-        *  0.7 SPF_HELO_SOFTFAIL SPF: HELO does not match SPF record
-        *      (softfail)
-        *  0.8 RDNS_NONE Delivered to internal network by a host with no rDNS
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Здравейте,
+On 10/21/23 02:07, Ben Schneider wrote:
+> Oct 20, 2023, 01:25 by ben@bens.haus:
+> 
+>> Oct 19, 2023, 07:21 by heinrich.schuchardt@canonical.com:
+>>
+>>> Compiling upstream U-Boot's qemu_arm64_defconfig yields lib/efi_loader/dtbdump.efi. If you run this instead of the kernel, you can write the device-tree as it is passed in a configuration table to the ESP.
+>>>
+>> I compiled and ran this fine, but I was unable to save the device tree. I suspect this is because the program searches for an ESP, and there is none on the device. U-boot was compiled with support to load directly from an ext4 filesystem so I didn't bother setting one up. I will work on it.
+>>
+> Hi Heinrich, I loaded dtbdump.efi from a FAT32 formatted partition with type EFI System, but attempts to run the save command return "Failed to open simple file system protocol". Sorry if there is something else I am missing.
 
-Съжалявам за този начин на контакт с вас, Току-що видях профила 
-ви и си помислих, че вие сте човекът, от когото имам нужда. 
-Накратко, името ми е Jacques BOUCHEX, от френски произход. 
-Страдам от тежко заболяване, което ще ме обрече на сигурна смърт, 
-рак на мозъка, и разполагам със сума от двадесет и пет милиона и 
-петстотин хиляди евро (25 500 000 евро), която бих искал да 
-предоставя на надеждна и честна трета страна за правилното ѝ 
-използване. Имам компания, която внася червено масло във Франция 
-и други страни. Преди 10 години загубих съпругата си и двете си 
-прекрасни деца при нещастен случай на пътя. Бих искал да даря 
-тази сума преди да умра, тъй като дните ми са преброени. Моля, 
-изпратете ми имейл на jacques.bouchex@hotmail.com
+On upstream U-Boot I cannot see this problem.
 
-Нека Господ ви благослови.
-Jacques BOUCHEX
+Best regards
+
+Heinrich
