@@ -2,50 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69B9A7D261B
-	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 23:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF62A7D262A
+	for <lists+stable@lfdr.de>; Sun, 22 Oct 2023 23:58:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232708AbjJVVdH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 22 Oct 2023 17:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36604 "EHLO
+        id S229848AbjJVV6D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 22 Oct 2023 17:58:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232655AbjJVVdH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 22 Oct 2023 17:33:07 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DEBA93
-        for <stable@vger.kernel.org>; Sun, 22 Oct 2023 14:33:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56389C433C8;
-        Sun, 22 Oct 2023 21:33:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698010385;
-        bh=g/hyyzZKVQ0+FqD1E/Rm91HvO2Mq26Gkt1fpii+h/RY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=stJA1F04zw6ln+ofRBvcNUOBwGACk5aPUrMxmg5j/dyS0uXYDtNk8GeKTYvYv8Cea
-         y9LUBROfNQHFXBJGeTwHV2utSP4GVS3GIM1XkIfaurm1loeAQRzo8B5eOQU+BlWOYL
-         BAX1VZtJlp0CQ72Y39agNWSoiLyhdI4KJ1svhGlS8dF6Dyi7AnY3J2Gz5L3/lf8PXr
-         vyvzmygvsbNJvhGXNUVQqn57gv+qx3YvR7C2/Ucy7CB1s0W0lD5A+KubGsGy7VpBkh
-         bpC3CefJbQPLjrGSKdMcc8puX0FfhtGN/7XpktjXShHToDNFd4yBIUlEInWkwyWEB3
-         yTAPeyl7UuxuA==
-From:   Matthieu Baerts <matttbe@kernel.org>
-To:     stable@vger.kernel.org, gregkh@linuxfoundation.org
-Cc:     MPTCP Upstream <mptcp@lists.linux.dev>,
-        Matthieu Baerts <matttbe@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Mat Martineau <martineau@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1.y] selftests: mptcp: join: no RST when rm subflow/addr
-Date:   Sun, 22 Oct 2023 23:32:29 +0200
-Message-Id: <20231022213229.3394813-1-matttbe@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <2023102046-haven-jargon-a683@gregkh>
-References: <2023102046-haven-jargon-a683@gregkh>
+        with ESMTP id S229452AbjJVV6D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 22 Oct 2023 17:58:03 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBBF0E6
+        for <stable@vger.kernel.org>; Sun, 22 Oct 2023 14:58:00 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1dd1714b9b6so2066587fac.0
+        for <stable@vger.kernel.org>; Sun, 22 Oct 2023 14:58:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698011879; x=1698616679; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jM7xtUN8+FMFzdg+qEgYZbWhwBxi6uyoJ7cyLWmTpFY=;
+        b=XRaWcekHEDT+by3BhORVYsDjpBqjEa72uVU5k8GJe5FnNJMMHHB1xgGtBaWXyqVNli
+         SwvT+bYKtP+/s26n+oCz0rCL7wfAlSJPwWGdX5sTqU43HROJO436KD4q79KVzJwe20Fd
+         EMooS57HetXx7rtHQr0MJDSV0pkbAA3NfYQaa3UCsEJTGjgt8k67juOGckT81/wk2ilr
+         m/x1d8iXUb5AmjKMhNdfbtKg/tmqfhexFrFDX15dSaujOsPG8LQmgbhhMgLZNrvuxwrz
+         7ExEKBWjuamLJ6JwV4Gwz9SgiVjzVYnChfmOP6mPMAjPbOpl821vid/F7xTSz6c4kME3
+         k7vQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698011879; x=1698616679;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jM7xtUN8+FMFzdg+qEgYZbWhwBxi6uyoJ7cyLWmTpFY=;
+        b=hzd71gX7HrOxvxhruE0r0B2bvk7f6hV36DYmSmi7kJE2iYoRiL5dukivBFONHYoOLl
+         Y1KHDevp60jmGUlo+Ve00o1gmX/nMQqfO9dynWJcfo/t9lHQ5GLR4tEZrqDUnicaX0st
+         fbAp7+c8YlLEyjIxwxQO3Dnq5K64uN3ztFT0zti5FWOVq76sDsuIXWa5BGw9kAaithzR
+         G3DtLlGTtk7jKI1jYuPthucUS2El8Nws5utAD51Pwca7Ba9Dlo/FPnmm9gxrIOJpsKdW
+         tVZCLmS92pbtfLyYrFjsEXzWZgSP5Af12X67wZuj5UPA2TjqX06mWhQ/jT75yo8x/AnJ
+         y+Zw==
+X-Gm-Message-State: AOJu0Yw+ZbltAdBkIRfmuiuxL1wJ1k9rVsER+WU7iXVKNpcotF02/+fO
+        NLrXNdqNgRXhi6PFFfGC4CV1FSMlbkVOMrJpz4pJTQ==
+X-Google-Smtp-Source: AGHT+IGzjQyqPgxAShxk+TrUXpKqj/d2E9HS/Xe40Fw/gtOM2EADjPgR1ZNqGitmOAleAKky39wtuQ==
+X-Received: by 2002:a05:6871:530f:b0:1c5:56f:ac08 with SMTP id hx15-20020a056871530f00b001c5056fac08mr10991323oac.12.1698011879574;
+        Sun, 22 Oct 2023 14:57:59 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id g16-20020a056a001a1000b0069302c3c050sm4914838pfv.218.2023.10.22.14.57.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Oct 2023 14:57:59 -0700 (PDT)
+Message-ID: <65359ae7.050a0220.320c9.e7df@mx.google.com>
+Date:   Sun, 22 Oct 2023 14:57:59 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3192; i=matttbe@kernel.org; h=from:subject; bh=g/hyyzZKVQ0+FqD1E/Rm91HvO2Mq26Gkt1fpii+h/RY=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBlNZTtEfdDxr1Qwvec71bo4uHW+QUidaAKS7C4u SZUggWbTCmJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZTWU7QAKCRD2t4JPQmmg c0psD/9DmsEowzfz24d0+KHBcfTprCVcSgwOUotBoOOhORC2n2oYm0E5AnwXMIoSw/q3+/qaHbW d+N/HxXft9z+z0NmsKIN7ugoANbhr2cTs5ZAIfnrB06BQ8K8C1W3sgtutMeNqQhK27hwA47Sa+N TpGGV6rgOTCqYbA2fg/u81JnIrBViV4Zg0rSxV6pgrr0nHHHHAmZes7ncWC//VowsdZAoBKx732 c1AsB1XK5JPYQMhQM1Nf4G9w3mhZ/Ww48+qC4rI16xnz1u378DyOZq4fHWMIZd9LTIOKVjueZlO SzqUrrIbaBWmDS7lxvs2vsYN0PewRCKuPDwoKBg0Dg7iwSUkk9DwDlNxBmsA/RNGKSLOXxASiR8 fAfmsariEv3T6A2BhQDoTAEhn8GMVVHzyUzjbM2djRVpyLQpQ+YjXdZMjTM3ZLrtraZK6EI0PcD uYFAaCPSXm595yM3p5VYo0mZjpuK+xhF1MIaR8wlvP3xieyrp4s0+mlFT52Qv/zdyUzyhTo6/5o z/lN1/khpzJQPlfb3jnmEHXSdCqVAgeB9JXvvS/37hR7RNTvPeYVuPGiUbw728Az851XOFlFhS8 18YPaRMLbxlSYVgFyDIpZiyC4/GWuI0TzS86dgajkSSOuDbC0mhkSYZMNIFQvDxD1u7N6woR5hf lzQ8R9ilmJ3XONQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.10.198-202-g380033a2840c
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-5.10.y build: 19 builds: 2 failed, 17 passed, 6 errors,
+ 9 warnings (v5.10.198-202-g380033a2840c)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,137 +71,212 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 2cfaa8b3b7aece3c7b13dd10db20dcea65875692 upstream.
+stable-rc/linux-5.10.y build: 19 builds: 2 failed, 17 passed, 6 errors, 9 w=
+arnings (v5.10.198-202-g380033a2840c)
 
-Recently, we noticed that some RST were wrongly generated when removing
-the initial subflow.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.198-202-g380033a2840c/
 
-This patch makes sure RST are not sent when removing any subflows or any
-addresses.
+Tree: stable-rc
+Branch: linux-5.10.y
+Git Describe: v5.10.198-202-g380033a2840c
+Git Commit: 380033a2840c0b70c0b22ea637a3b20ea8691c8c
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Fixes: c2b2ae3925b6 ("mptcp: handle correctly disconnect() failures")
-Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231018-send-net-20231018-v1-5-17ecb002e41d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+Build Failures Detected:
+
+arm:
+    imx_v6_v7_defconfig: (gcc-10) FAIL
+    multi_v7_defconfig: (gcc-10) FAIL
+
+Errors and Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+    imx_v6_v7_defconfig (gcc-10): 3 errors, 2 warnings
+    multi_v7_defconfig (gcc-10): 3 errors, 2 warnings
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+Errors summary:
+
+    2    drivers/gpio/gpio-vf610.c:340:2: error: implicit declaration of fu=
+nction =E2=80=98gpio_irq_chip_set_chip=E2=80=99 [-Werror=3Dimplicit-functio=
+n-declaration]
+    2    drivers/gpio/gpio-vf610.c:251:2: error: =E2=80=98GPIOCHIP_IRQ_RESO=
+URCE_HELPERS=E2=80=99 undeclared here (not in a function)
+    2    drivers/gpio/gpio-vf610.c:249:11: error: =E2=80=98IRQCHIP_IMMUTABL=
+E=E2=80=99 undeclared here (not in a function); did you mean =E2=80=98IS_IM=
+MUTABLE=E2=80=99?
+
+Warnings summary:
+
+    2    drivers/gpio/gpio-vf610.c:251:2: warning: excess elements in struc=
+t initializer
+    2    cc1: some warnings being treated as errors
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 3 errors, 2 warnings, 0 s=
+ection mismatches
+
+Errors:
+    drivers/gpio/gpio-vf610.c:249:11: error: =E2=80=98IRQCHIP_IMMUTABLE=E2=
+=80=99 undeclared here (not in a function); did you mean =E2=80=98IS_IMMUTA=
+BLE=E2=80=99?
+    drivers/gpio/gpio-vf610.c:251:2: error: =E2=80=98GPIOCHIP_IRQ_RESOURCE_=
+HELPERS=E2=80=99 undeclared here (not in a function)
+    drivers/gpio/gpio-vf610.c:340:2: error: implicit declaration of functio=
+n =E2=80=98gpio_irq_chip_set_chip=E2=80=99 [-Werror=3Dimplicit-function-dec=
+laration]
+
+Warnings:
+    drivers/gpio/gpio-vf610.c:251:2: warning: excess elements in struct ini=
+tializer
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 3 errors, 2 warnings, 0 se=
+ction mismatches
+
+Errors:
+    drivers/gpio/gpio-vf610.c:249:11: error: =E2=80=98IRQCHIP_IMMUTABLE=E2=
+=80=99 undeclared here (not in a function); did you mean =E2=80=98IS_IMMUTA=
+BLE=E2=80=99?
+    drivers/gpio/gpio-vf610.c:251:2: error: =E2=80=98GPIOCHIP_IRQ_RESOURCE_=
+HELPERS=E2=80=99 undeclared here (not in a function)
+    drivers/gpio/gpio-vf610.c:340:2: error: implicit declaration of functio=
+n =E2=80=98gpio_irq_chip_set_chip=E2=80=99 [-Werror=3Dimplicit-function-dec=
+laration]
+
+Warnings:
+    drivers/gpio/gpio-vf610.c:251:2: warning: excess elements in struct ini=
+tializer
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
 ---
-Backport notes
-  - No conflicts
----
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 8dcfcdba58c6..ea6fc59e9f62 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2263,6 +2263,7 @@ remove_tests()
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -1 slow
- 		chk_join_nr 1 1 1
- 		chk_rm_nr 1 1
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# multiple subflows, remove
-@@ -2274,6 +2275,7 @@ remove_tests()
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -2 slow
- 		chk_join_nr 2 2 2
- 		chk_rm_nr 2 2
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# single address, remove
-@@ -2285,6 +2287,7 @@ remove_tests()
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
- 		chk_rm_nr 1 1 invert
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# subflow and signal, remove
-@@ -2297,6 +2300,7 @@ remove_tests()
- 		chk_join_nr 2 2 2
- 		chk_add_nr 1 1
- 		chk_rm_nr 1 1
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# subflows and signal, remove
-@@ -2310,6 +2314,7 @@ remove_tests()
- 		chk_join_nr 3 3 3
- 		chk_add_nr 1 1
- 		chk_rm_nr 2 2
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# addresses remove
-@@ -2323,6 +2328,7 @@ remove_tests()
- 		chk_join_nr 3 3 3
- 		chk_add_nr 3 3
- 		chk_rm_nr 3 3 invert
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# invalid addresses remove
-@@ -2336,6 +2342,7 @@ remove_tests()
- 		chk_join_nr 1 1 1
- 		chk_add_nr 3 3
- 		chk_rm_nr 3 1 invert
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# subflows and signal, flush
-@@ -2349,6 +2356,7 @@ remove_tests()
- 		chk_join_nr 3 3 3
- 		chk_add_nr 1 1
- 		chk_rm_nr 1 3 invert simult
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# subflows flush
-@@ -2366,6 +2374,7 @@ remove_tests()
- 		else
- 			chk_rm_nr 3 3
- 		fi
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# addresses flush
-@@ -2379,6 +2388,7 @@ remove_tests()
- 		chk_join_nr 3 3 3
- 		chk_add_nr 3 3
- 		chk_rm_nr 3 3 invert simult
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# invalid addresses flush
-@@ -2392,6 +2402,7 @@ remove_tests()
- 		chk_join_nr 1 1 1
- 		chk_add_nr 3 3
- 		chk_rm_nr 3 1 invert
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# remove id 0 subflow
-@@ -2402,6 +2413,7 @@ remove_tests()
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -9 slow
- 		chk_join_nr 1 1 1
- 		chk_rm_nr 1 1
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# remove id 0 address
-@@ -2413,6 +2425,7 @@ remove_tests()
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
- 		chk_rm_nr 1 1 invert
-+		chk_rst_nr 0 0 invert
- 	fi
- }
- 
--- 
-2.40.1
-
+For more info write to <info@kernelci.org>
