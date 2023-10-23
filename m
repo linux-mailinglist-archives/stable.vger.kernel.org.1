@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54F6D7D3356
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ACCA7D31B3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234004AbjJWL3Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:29:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49182 "EHLO
+        id S233617AbjJWLMJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:12:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234016AbjJWL3P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:29:15 -0400
+        with ESMTP id S233620AbjJWLMF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E95FAA4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:29:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 352CEC433C8;
-        Mon, 23 Oct 2023 11:29:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F2EA4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE86AC433C8;
+        Mon, 23 Oct 2023 11:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060552;
-        bh=9r5ejx2+9TNdcbTHglNQkF541dASu/z/S8j0q+R9umY=;
+        s=korg; t=1698059522;
+        bh=qnEp2RU2Cvg+3bcpEU/CcA/kfrgyTFLNF/TUlFrnIrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xTKaECnuW8ZRBdgRJgkJPSoDglz4VkV64J5PtfoCZ5sFslPjn0mWDrTtwZvKrRtg3
-         gQCdGT76QXPldxYLoSaPIF4qlDXlJcV7Mn8Jg/oWa0lDf2HAlfmUH5MhmbxO/YqlLH
-         d6Jjv7mpNTfttvAbq7v87zvlaGX/8zYSBtqFd5SM=
+        b=BYDZgo6geljOIei/8E80YDoHY32kIQkMYYcqcnNOLl98/zMmXk88bzRYz5L2I9lvL
+         7ngwhK3aPxQiRrSjHMdGUEgaj0+VyvXF2ZXb8oRXmOEp3OE/+xsSfZ1k9DVHIJ4eeV
+         oNUtUQHssUVGJmu0pPla6WcuUnVHQHmMCQwk6UXw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Whitney <enwlinux@gmail.com>,
-        Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.4 006/123] quota: Fix slow quotaoff
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.5 178/241] Revert "pinctrl: avoid unsafe code pattern in find_pinctrl()"
 Date:   Mon, 23 Oct 2023 12:56:04 +0200
-Message-ID: <20231023104817.934280080@linuxfoundation.org>
+Message-ID: <20231023104838.223101598@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,212 +49,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 869b6ea1609f655a43251bf41757aa44e5350a8f upstream.
+commit 62140a1e4dec4594d5d1e1d353747bf2ef434e8b upstream.
 
-Eric has reported that commit dabc8b207566 ("quota: fix dqput() to
-follow the guarantees dquot_srcu should provide") heavily increases
-runtime of generic/270 xfstest for ext4 in nojournal mode. The reason
-for this is that ext4 in nojournal mode leaves dquots dirty until the last
-dqput() and thus the cleanup done in quota_release_workfn() has to write
-them all. Due to the way quota_release_workfn() is written this results
-in synchronize_srcu() call for each dirty dquot which makes the dquot
-cleanup when turning quotas off extremely slow.
+The commit breaks MMC enumeration on the Intel Merrifield
+plaform.
 
-To be able to avoid synchronize_srcu() for each dirty dquot we need to
-rework how we track dquots to be cleaned up. Instead of keeping the last
-dquot reference while it is on releasing_dquots list, we drop it right
-away and mark the dquot with new DQ_RELEASING_B bit instead. This way we
-can we can remove dquot from releasing_dquots list when new reference to
-it is acquired and thus there's no need to call synchronize_srcu() each
-time we drop dq_list_lock.
+Before:
+[   36.439057] mmc0: SDHCI controller on PCI [0000:00:01.0] using ADMA
+[   36.450924] mmc2: SDHCI controller on PCI [0000:00:01.3] using ADMA
+[   36.459355] mmc1: SDHCI controller on PCI [0000:00:01.2] using ADMA
+[   36.706399] mmc0: new DDR MMC card at address 0001
+[   37.058972] mmc2: new ultra high speed DDR50 SDIO card at address 0001
+[   37.278977] mmcblk0: mmc0:0001 H4G1d 3.64 GiB
+[   37.297300]  mmcblk0: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
 
-References: https://lore.kernel.org/all/ZRytn6CxFK2oECUt@debian-BULLSEYE-live-builder-AMD64
-Reported-by: Eric Whitney <enwlinux@gmail.com>
-Fixes: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
+After:
+[   36.436704] mmc2: SDHCI controller on PCI [0000:00:01.3] using ADMA
+[   36.436720] mmc1: SDHCI controller on PCI [0000:00:01.0] using ADMA
+[   36.463685] mmc0: SDHCI controller on PCI [0000:00:01.2] using ADMA
+[   36.720627] mmc1: new DDR MMC card at address 0001
+[   37.068181] mmc2: new ultra high speed DDR50 SDIO card at address 0001
+[   37.279998] mmcblk1: mmc1:0001 H4G1d 3.64 GiB
+[   37.302670]  mmcblk1: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
+
+This reverts commit c153a4edff6ab01370fcac8e46f9c89cca1060c2.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231017141806.535191-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c         |   66 +++++++++++++++++++++++++++--------------------
- include/linux/quota.h    |    4 ++
- include/linux/quotaops.h |    2 -
- 3 files changed, 43 insertions(+), 29 deletions(-)
+ drivers/pinctrl/core.c |   16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -231,19 +231,18 @@ static void put_quota_format(struct quot
-  * All dquots are placed to the end of inuse_list when first created, and this
-  * list is used for invalidate operation, which must look at every dquot.
-  *
-- * When the last reference of a dquot will be dropped, the dquot will be
-- * added to releasing_dquots. We'd then queue work item which would call
-+ * When the last reference of a dquot is dropped, the dquot is added to
-+ * releasing_dquots. We'll then queue work item which will call
-  * synchronize_srcu() and after that perform the final cleanup of all the
-- * dquots on the list. Both releasing_dquots and free_dquots use the
-- * dq_free list_head in the dquot struct. When a dquot is removed from
-- * releasing_dquots, a reference count is always subtracted, and if
-- * dq_count == 0 at that point, the dquot will be added to the free_dquots.
-+ * dquots on the list. Each cleaned up dquot is moved to free_dquots list.
-+ * Both releasing_dquots and free_dquots use the dq_free list_head in the dquot
-+ * struct.
-  *
-- * Unused dquots (dq_count == 0) are added to the free_dquots list when freed,
-- * and this list is searched whenever we need an available dquot.  Dquots are
-- * removed from the list as soon as they are used again, and
-- * dqstats.free_dquots gives the number of dquots on the list. When
-- * dquot is invalidated it's completely released from memory.
-+ * Unused and cleaned up dquots are in the free_dquots list and this list is
-+ * searched whenever we need an available dquot. Dquots are removed from the
-+ * list as soon as they are used again and dqstats.free_dquots gives the number
-+ * of dquots on the list. When dquot is invalidated it's completely released
-+ * from memory.
-  *
-  * Dirty dquots are added to the dqi_dirty_list of quota_info when mark
-  * dirtied, and this list is searched when writing dirty dquots back to
-@@ -321,6 +320,7 @@ static inline void put_dquot_last(struct
- static inline void put_releasing_dquots(struct dquot *dquot)
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1012,20 +1012,17 @@ static int add_setting(struct pinctrl *p
+ 
+ static struct pinctrl *find_pinctrl(struct device *dev)
  {
- 	list_add_tail(&dquot->dq_free, &releasing_dquots);
-+	set_bit(DQ_RELEASING_B, &dquot->dq_flags);
- }
+-	struct pinctrl *entry, *p = NULL;
++	struct pinctrl *p;
  
- static inline void remove_free_dquot(struct dquot *dquot)
-@@ -328,8 +328,10 @@ static inline void remove_free_dquot(str
- 	if (list_empty(&dquot->dq_free))
- 		return;
- 	list_del_init(&dquot->dq_free);
--	if (!atomic_read(&dquot->dq_count))
-+	if (!test_bit(DQ_RELEASING_B, &dquot->dq_flags))
- 		dqstats_dec(DQST_FREE_DQUOTS);
-+	else
-+		clear_bit(DQ_RELEASING_B, &dquot->dq_flags);
- }
- 
- static inline void put_inuse(struct dquot *dquot)
-@@ -572,12 +574,6 @@ restart:
- 			continue;
- 		/* Wait for dquot users */
- 		if (atomic_read(&dquot->dq_count)) {
--			/* dquot in releasing_dquots, flush and retry */
--			if (!list_empty(&dquot->dq_free)) {
--				spin_unlock(&dq_list_lock);
--				goto restart;
--			}
+ 	mutex_lock(&pinctrl_list_mutex);
 -
- 			atomic_inc(&dquot->dq_count);
- 			spin_unlock(&dq_list_lock);
- 			/*
-@@ -597,6 +593,15 @@ restart:
- 			goto restart;
+-	list_for_each_entry(entry, &pinctrl_list, node) {
+-		if (entry->dev == dev) {
+-			p = entry;
+-			kref_get(&p->users);
+-			break;
++	list_for_each_entry(p, &pinctrl_list, node)
++		if (p->dev == dev) {
++			mutex_unlock(&pinctrl_list_mutex);
++			return p;
  		}
- 		/*
-+		 * The last user already dropped its reference but dquot didn't
-+		 * get fully cleaned up yet. Restart the scan which flushes the
-+		 * work cleaning up released dquots.
-+		 */
-+		if (test_bit(DQ_RELEASING_B, &dquot->dq_flags)) {
-+			spin_unlock(&dq_list_lock);
-+			goto restart;
-+		}
-+		/*
- 		 * Quota now has no users and it has been written on last
- 		 * dqput()
- 		 */
-@@ -687,6 +692,13 @@ int dquot_writeback_dquots(struct super_
- 						 dq_dirty);
+-	}
  
- 			WARN_ON(!dquot_active(dquot));
-+			/* If the dquot is releasing we should not touch it */
-+			if (test_bit(DQ_RELEASING_B, &dquot->dq_flags)) {
-+				spin_unlock(&dq_list_lock);
-+				flush_delayed_work(&quota_release_work);
-+				spin_lock(&dq_list_lock);
-+				continue;
-+			}
- 
- 			/* Now we have active dquot from which someone is
-  			 * holding reference so we can safely just increase
-@@ -800,18 +812,18 @@ static void quota_release_workfn(struct
- 	/* Exchange the list head to avoid livelock. */
- 	list_replace_init(&releasing_dquots, &rls_head);
- 	spin_unlock(&dq_list_lock);
-+	synchronize_srcu(&dquot_srcu);
- 
- restart:
--	synchronize_srcu(&dquot_srcu);
- 	spin_lock(&dq_list_lock);
- 	while (!list_empty(&rls_head)) {
- 		dquot = list_first_entry(&rls_head, struct dquot, dq_free);
--		/* Dquot got used again? */
--		if (atomic_read(&dquot->dq_count) > 1) {
--			remove_free_dquot(dquot);
--			atomic_dec(&dquot->dq_count);
--			continue;
--		}
-+		WARN_ON_ONCE(atomic_read(&dquot->dq_count));
-+		/*
-+		 * Note that DQ_RELEASING_B protects us from racing with
-+		 * invalidate_dquots() calls so we are safe to work with the
-+		 * dquot even after we drop dq_list_lock.
-+		 */
- 		if (dquot_dirty(dquot)) {
- 			spin_unlock(&dq_list_lock);
- 			/* Commit dquot before releasing */
-@@ -825,7 +837,6 @@ restart:
- 		}
- 		/* Dquot is inactive and clean, now move it to free list */
- 		remove_free_dquot(dquot);
--		atomic_dec(&dquot->dq_count);
- 		put_dquot_last(dquot);
- 	}
- 	spin_unlock(&dq_list_lock);
-@@ -866,6 +877,7 @@ void dqput(struct dquot *dquot)
- 	BUG_ON(!list_empty(&dquot->dq_free));
- #endif
- 	put_releasing_dquots(dquot);
-+	atomic_dec(&dquot->dq_count);
- 	spin_unlock(&dq_list_lock);
- 	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
+ 	mutex_unlock(&pinctrl_list_mutex);
+-	return p;
++	return NULL;
  }
-@@ -954,7 +966,7 @@ we_slept:
- 		dqstats_inc(DQST_LOOKUPS);
+ 
+ static void pinctrl_free(struct pinctrl *p, bool inlist);
+@@ -1133,6 +1130,7 @@ struct pinctrl *pinctrl_get(struct devic
+ 	p = find_pinctrl(dev);
+ 	if (p) {
+ 		dev_dbg(dev, "obtain a copy of previously claimed pinctrl\n");
++		kref_get(&p->users);
+ 		return p;
  	}
- 	/* Wait for dq_lock - after this we know that either dquot_release() is
--	 * already finished or it will be canceled due to dq_count > 1 test */
-+	 * already finished or it will be canceled due to dq_count > 0 test */
- 	wait_on_dquot(dquot);
- 	/* Read the dquot / allocate space in quota file */
- 	if (!dquot_active(dquot)) {
---- a/include/linux/quota.h
-+++ b/include/linux/quota.h
-@@ -285,7 +285,9 @@ static inline void dqstats_dec(unsigned
- #define DQ_FAKE_B	3	/* no limits only usage */
- #define DQ_READ_B	4	/* dquot was read into memory */
- #define DQ_ACTIVE_B	5	/* dquot is active (dquot_release not called) */
--#define DQ_LASTSET_B	6	/* Following 6 bits (see QIF_) are reserved\
-+#define DQ_RELEASING_B	6	/* dquot is in releasing_dquots list waiting
-+				 * to be cleaned up */
-+#define DQ_LASTSET_B	7	/* Following 6 bits (see QIF_) are reserved\
- 				 * for the mask of entries set via SETQUOTA\
- 				 * quotactl. They are set under dq_data_lock\
- 				 * and the quota format handling dquot can\
---- a/include/linux/quotaops.h
-+++ b/include/linux/quotaops.h
-@@ -59,7 +59,7 @@ static inline bool dquot_is_busy(struct
- {
- 	if (test_bit(DQ_MOD_B, &dquot->dq_flags))
- 		return true;
--	if (atomic_read(&dquot->dq_count) > 1)
-+	if (atomic_read(&dquot->dq_count) > 0)
- 		return true;
- 	return false;
- }
+ 
 
 
