@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 048BD7D3582
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B387D323B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234550AbjJWLtK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45664 "EHLO
+        id S233722AbjJWLSA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:18:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234541AbjJWLtJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:09 -0400
+        with ESMTP id S233702AbjJWLR7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85FCEAF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C563FC433C7;
-        Mon, 23 Oct 2023 11:49:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D0CA2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FD3C433C8;
+        Mon, 23 Oct 2023 11:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061746;
-        bh=1om9pX3vrdJyo9X2Jaax6fex1Qgc93VXU8bZXOWOIYA=;
+        s=korg; t=1698059877;
+        bh=lUW6/Zf8pUiFEFTBugiTNf9RGYaNo+X9jxdcShsGwtE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zaKyiQGphc5w7CY2ljsnwGxKDo3A0ReGURO49Z03A1rnwjNz3jgO2KxbC3yt5G6SR
-         WPPc23pbzrN7dKdJeJQscggV9PD6A7JcX3SDlHAWvE5VIcWMj1MpYxlZ6DEiii0QUP
-         tYfSQrzKA1CC9hNakZny3XBrfR7cbzCVMZitxJ88=
+        b=O9uV7bwvS1kXE1ExL+pKwOl9GkyZ04mVGKhKNnVvLTh4rkhruge4AjJrJdzUtJ2tU
+         mpBI44WzguBdf3GF4m6HoeudkfkzjjrDNOGjN8kZ1ML+yxAtjI0P2D3Lwvcn3ubAiq
+         vj+gbppHh2/pcZZ66euaH6I1BkvqB3kS2s0kmku4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Manuel Krause <manuelkrause@netscape.net>,
-        Hui Wang <hui.wang@canonical.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 124/202] ACPI: resources: Add DMI-based legacy IRQ override quirk
+Subject: [PATCH 4.19 82/98] Bluetooth: hci_event: Fix using memcmp when comparing keys
 Date:   Mon, 23 Oct 2023 12:57:11 +0200
-Message-ID: <20231023104830.155781962@linuxfoundation.org>
+Message-ID: <20231023104816.445892418@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,115 +49,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Wang <hui.wang@canonical.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 892a012699fc0b91a2ed6309078936191447f480 ]
+[ Upstream commit b541260615f601ae1b5d6d0cc54e790de706303b ]
 
-After the commit 0ec4e55e9f57 ("ACPI: resources: Add checks for ACPI
-IRQ override") is reverted, the keyboard on Medion laptops can't
-work again.
+memcmp is not consider safe to use with cryptographic secrets:
 
-To fix the keyboard issue, add a DMI-based override check that will
-not affect other machines along the lines of prt_quirks[] in
-drivers/acpi/pci_irq.c.
+ 'Do  not  use memcmp() to compare security critical data, such as
+ cryptographic secrets, because the required CPU time depends on the
+ number of equal bytes.'
 
-If similar issues are seen on other platforms, the quirk table could
-be expanded in the future.
+While usage of memcmp for ZERO_KEY may not be considered a security
+critical data, it can lead to more usage of memcmp with pairing keys
+which could introduce more security problems.
 
-BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
-BugLink: http://bugs.launchpad.net/bugs/1909814
-Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reported-by: Manuel Krause <manuelkrause@netscape.net>
-Tested-by: Manuel Krause <manuelkrause@netscape.net>
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
+Fixes: 455c2ff0a558 ("Bluetooth: Fix BR/EDR out-of-band pairing with only initiator data")
+Fixes: 33155c4aae52 ("Bluetooth: hci_event: Ignore NULL link key")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 49 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 47 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_event.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 20a7892c6d3fd..bf7c2deafb0a9 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -16,6 +16,7 @@
- #include <linux/ioport.h>
- #include <linux/slab.h>
- #include <linux/irq.h>
-+#include <linux/dmi.h>
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 843502783b268..8b59f7808628a 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -25,6 +25,8 @@
+ /* Bluetooth HCI event handling. */
  
- #ifdef CONFIG_X86
- #define valid_IRQ(i) (((i) != 0) && ((i) != 2))
-@@ -380,9 +381,51 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
- }
- EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
+ #include <asm/unaligned.h>
++#include <linux/crypto.h>
++#include <crypto/algapi.h>
  
-+static const struct dmi_system_id medion_laptop[] = {
-+	{
-+		.ident = "MEDION P15651",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
-+			DMI_MATCH(DMI_BOARD_NAME, "M15T"),
-+		},
-+	},
-+	{ }
-+};
-+
-+struct irq_override_cmp {
-+	const struct dmi_system_id *system;
-+	unsigned char irq;
-+	unsigned char triggering;
-+	unsigned char polarity;
-+	unsigned char shareable;
-+};
-+
-+static const struct irq_override_cmp skip_override_table[] = {
-+	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
-+};
-+
-+static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
-+				  u8 shareable)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
-+		const struct irq_override_cmp *entry = &skip_override_table[i];
-+
-+		if (dmi_check_system(entry->system) &&
-+		    entry->irq == gsi &&
-+		    entry->triggering == triggering &&
-+		    entry->polarity == polarity &&
-+		    entry->shareable == shareable)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 				     u8 triggering, u8 polarity, u8 shareable,
--				     bool legacy)
-+				     bool check_override)
- {
- 	int irq, p, t;
+ #include <net/bluetooth/bluetooth.h>
+ #include <net/bluetooth/hci_core.h>
+@@ -3827,7 +3829,7 @@ static void hci_link_key_notify_evt(struct hci_dev *hdev, struct sk_buff *skb)
+ 		goto unlock;
  
-@@ -401,7 +444,9 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 	 * using extended IRQ descriptors we take the IRQ configuration
- 	 * from _CRS directly.
+ 	/* Ignore NULL link key against CVE-2020-26555 */
+-	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
++	if (!crypto_memneq(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
+ 		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
+ 			   &ev->bdaddr);
+ 		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
+@@ -4313,8 +4315,8 @@ static u8 bredr_oob_data_present(struct hci_conn *conn)
+ 		 * available, then do not declare that OOB data is
+ 		 * present.
+ 		 */
+-		if (!memcmp(data->rand256, ZERO_KEY, 16) ||
+-		    !memcmp(data->hash256, ZERO_KEY, 16))
++		if (!crypto_memneq(data->rand256, ZERO_KEY, 16) ||
++		    !crypto_memneq(data->hash256, ZERO_KEY, 16))
+ 			return 0x00;
+ 
+ 		return 0x02;
+@@ -4324,8 +4326,8 @@ static u8 bredr_oob_data_present(struct hci_conn *conn)
+ 	 * not supported by the hardware, then check that if
+ 	 * P-192 data values are present.
  	 */
--	if (legacy && !acpi_get_override_irq(gsi, &t, &p)) {
-+	if (check_override &&
-+	    acpi_dev_irq_override(gsi, triggering, polarity, shareable) &&
-+	    !acpi_get_override_irq(gsi, &t, &p)) {
- 		u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
- 		u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
+-	if (!memcmp(data->rand192, ZERO_KEY, 16) ||
+-	    !memcmp(data->hash192, ZERO_KEY, 16))
++	if (!crypto_memneq(data->rand192, ZERO_KEY, 16) ||
++	    !crypto_memneq(data->hash192, ZERO_KEY, 16))
+ 		return 0x00;
  
+ 	return 0x01;
 -- 
 2.40.1
 
