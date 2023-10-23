@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF1C97D3165
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 478287D34CC
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229973AbjJWLIs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:08:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39290 "EHLO
+        id S234366AbjJWLm5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:42:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233499AbjJWLIr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:47 -0400
+        with ESMTP id S234367AbjJWLml (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC4499
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80ECCC433C7;
-        Mon, 23 Oct 2023 11:08:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4FFCD7F
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15E5C433C9;
+        Mon, 23 Oct 2023 11:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059324;
-        bh=lpxY9B7KJkEOJ1a6f0nC2SXp4BJ+3rEMRZNgjnfvRMs=;
+        s=korg; t=1698061352;
+        bh=hDPR7etOJhKBZxgAuaDO+7gtFn0IkHy868w6T2617Do=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UoeDsu7Bzo2ZkVjMxGkIbkyxlV3LZknTjLSesjWKvD9uWWG+6PI7HpJbP6Z3paz5a
-         1kuS6eaCW4k39lqFYv/TPEZ9N6Ee/E65Phy1G6HZuSax5PHaRAvpJl0KESgpD89MMs
-         iYfyOApYUKimYAHKO+s5mhWbPlOfzKPoaROOeAWQ=
+        b=qziYbUrekiYLg6ry0c/j+lWNm7L5yOWYOCQdqy/RzqPPGefimlhVKgjPfUsNME1bv
+         mIivSO0R1m8FjbvXTjSU0AJRWhjKuswTLaaMETAXRhRQBRCsRh7SrH9A+mPrfdPEpX
+         TE6de4bLLigqeyDYEfhXfGYx8l86SK9OXfEcC+tA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martino Fontana <tinozzo123@gmail.com>,
-        "Daniel J. Ogorchock" <djogorchock@gmail.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 139/241] HID: nintendo: reinitialize USB Pro Controller after resuming from suspend
-Date:   Mon, 23 Oct 2023 12:55:25 +0200
-Message-ID: <20231023104837.253291685@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Zack Rusin <zackr@vmware.com>, Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 5.10 019/202] drm/vmwgfx: fix typo of sizeof argument
+Date:   Mon, 23 Oct 2023 12:55:26 +0200
+Message-ID: <20231023104827.169619422@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,266 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martino Fontana <tinozzo123@gmail.com>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-[ Upstream commit 95ea4d9fd385fe335b989f22d409df079a042b7a ]
+[ Upstream commit 39465cac283702a7d4a507a558db81898029c6d3 ]
 
-When suspending the computer, a Switch Pro Controller connected via USB will
-lose its internal status. However, because the USB connection was technically
-never lost, when resuming the computer, the driver will attempt to communicate
-with the controller as if nothing happened (and fail).
-Because of this, the user was forced to manually disconnect the controller
-(or to press the sync button on the controller to power it off), so that it
-can be re-initialized.
+Since size of 'header' pointer and '*header' structure is equal on 64-bit
+machines issue probably didn't cause any wrong behavior. But anyway,
+fixing typo is required.
 
-With this patch, the controller will be automatically re-initialized after
-resuming from suspend.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216233
-
-Signed-off-by: Martino Fontana <tinozzo123@gmail.com>
-Reviewed-by: Daniel J. Ogorchock <djogorchock@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Fixes: 7a73ba7469cb ("drm/vmwgfx: Use TTM handles instead of SIDs as user-space surface handles.")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230905100203.1716731-1-konstantin.meskhidze@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-nintendo.c | 175 ++++++++++++++++++++++---------------
- 1 file changed, 103 insertions(+), 72 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
-index 250f5d2f888ab..10468f727e5bb 100644
---- a/drivers/hid/hid-nintendo.c
-+++ b/drivers/hid/hid-nintendo.c
-@@ -2088,7 +2088,9 @@ static int joycon_read_info(struct joycon_ctlr *ctlr)
- 	struct joycon_input_report *report;
- 
- 	req.subcmd_id = JC_SUBCMD_REQ_DEV_INFO;
-+	mutex_lock(&ctlr->output_mutex);
- 	ret = joycon_send_subcmd(ctlr, &req, 0, HZ);
-+	mutex_unlock(&ctlr->output_mutex);
- 	if (ret) {
- 		hid_err(ctlr->hdev, "Failed to get joycon info; ret=%d\n", ret);
- 		return ret;
-@@ -2117,6 +2119,85 @@ static int joycon_read_info(struct joycon_ctlr *ctlr)
- 	return 0;
- }
- 
-+static int joycon_init(struct hid_device *hdev)
-+{
-+	struct joycon_ctlr *ctlr = hid_get_drvdata(hdev);
-+	int ret = 0;
-+
-+	mutex_lock(&ctlr->output_mutex);
-+	/* if handshake command fails, assume ble pro controller */
-+	if ((jc_type_is_procon(ctlr) || jc_type_is_chrggrip(ctlr)) &&
-+	    !joycon_send_usb(ctlr, JC_USB_CMD_HANDSHAKE, HZ)) {
-+		hid_dbg(hdev, "detected USB controller\n");
-+		/* set baudrate for improved latency */
-+		ret = joycon_send_usb(ctlr, JC_USB_CMD_BAUDRATE_3M, HZ);
-+		if (ret) {
-+			hid_err(hdev, "Failed to set baudrate; ret=%d\n", ret);
-+			goto out_unlock;
-+		}
-+		/* handshake */
-+		ret = joycon_send_usb(ctlr, JC_USB_CMD_HANDSHAKE, HZ);
-+		if (ret) {
-+			hid_err(hdev, "Failed handshake; ret=%d\n", ret);
-+			goto out_unlock;
-+		}
-+		/*
-+		 * Set no timeout (to keep controller in USB mode).
-+		 * This doesn't send a response, so ignore the timeout.
-+		 */
-+		joycon_send_usb(ctlr, JC_USB_CMD_NO_TIMEOUT, HZ/10);
-+	} else if (jc_type_is_chrggrip(ctlr)) {
-+		hid_err(hdev, "Failed charging grip handshake\n");
-+		ret = -ETIMEDOUT;
-+		goto out_unlock;
-+	}
-+
-+	/* get controller calibration data, and parse it */
-+	ret = joycon_request_calibration(ctlr);
-+	if (ret) {
-+		/*
-+		 * We can function with default calibration, but it may be
-+		 * inaccurate. Provide a warning, and continue on.
-+		 */
-+		hid_warn(hdev, "Analog stick positions may be inaccurate\n");
-+	}
-+
-+	/* get IMU calibration data, and parse it */
-+	ret = joycon_request_imu_calibration(ctlr);
-+	if (ret) {
-+		/*
-+		 * We can function with default calibration, but it may be
-+		 * inaccurate. Provide a warning, and continue on.
-+		 */
-+		hid_warn(hdev, "Unable to read IMU calibration data\n");
-+	}
-+
-+	/* Set the reporting mode to 0x30, which is the full report mode */
-+	ret = joycon_set_report_mode(ctlr);
-+	if (ret) {
-+		hid_err(hdev, "Failed to set report mode; ret=%d\n", ret);
-+		goto out_unlock;
-+	}
-+
-+	/* Enable rumble */
-+	ret = joycon_enable_rumble(ctlr);
-+	if (ret) {
-+		hid_err(hdev, "Failed to enable rumble; ret=%d\n", ret);
-+		goto out_unlock;
-+	}
-+
-+	/* Enable the IMU */
-+	ret = joycon_enable_imu(ctlr);
-+	if (ret) {
-+		hid_err(hdev, "Failed to enable the IMU; ret=%d\n", ret);
-+		goto out_unlock;
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&ctlr->output_mutex);
-+	return ret;
-+}
-+
- /* Common handler for parsing inputs */
- static int joycon_ctlr_read_handler(struct joycon_ctlr *ctlr, u8 *data,
- 							      int size)
-@@ -2248,85 +2329,19 @@ static int nintendo_hid_probe(struct hid_device *hdev,
- 
- 	hid_device_io_start(hdev);
- 
--	/* Initialize the controller */
--	mutex_lock(&ctlr->output_mutex);
--	/* if handshake command fails, assume ble pro controller */
--	if ((jc_type_is_procon(ctlr) || jc_type_is_chrggrip(ctlr)) &&
--	    !joycon_send_usb(ctlr, JC_USB_CMD_HANDSHAKE, HZ)) {
--		hid_dbg(hdev, "detected USB controller\n");
--		/* set baudrate for improved latency */
--		ret = joycon_send_usb(ctlr, JC_USB_CMD_BAUDRATE_3M, HZ);
--		if (ret) {
--			hid_err(hdev, "Failed to set baudrate; ret=%d\n", ret);
--			goto err_mutex;
--		}
--		/* handshake */
--		ret = joycon_send_usb(ctlr, JC_USB_CMD_HANDSHAKE, HZ);
--		if (ret) {
--			hid_err(hdev, "Failed handshake; ret=%d\n", ret);
--			goto err_mutex;
--		}
--		/*
--		 * Set no timeout (to keep controller in USB mode).
--		 * This doesn't send a response, so ignore the timeout.
--		 */
--		joycon_send_usb(ctlr, JC_USB_CMD_NO_TIMEOUT, HZ/10);
--	} else if (jc_type_is_chrggrip(ctlr)) {
--		hid_err(hdev, "Failed charging grip handshake\n");
--		ret = -ETIMEDOUT;
--		goto err_mutex;
--	}
--
--	/* get controller calibration data, and parse it */
--	ret = joycon_request_calibration(ctlr);
-+	ret = joycon_init(hdev);
- 	if (ret) {
--		/*
--		 * We can function with default calibration, but it may be
--		 * inaccurate. Provide a warning, and continue on.
--		 */
--		hid_warn(hdev, "Analog stick positions may be inaccurate\n");
--	}
--
--	/* get IMU calibration data, and parse it */
--	ret = joycon_request_imu_calibration(ctlr);
--	if (ret) {
--		/*
--		 * We can function with default calibration, but it may be
--		 * inaccurate. Provide a warning, and continue on.
--		 */
--		hid_warn(hdev, "Unable to read IMU calibration data\n");
--	}
--
--	/* Set the reporting mode to 0x30, which is the full report mode */
--	ret = joycon_set_report_mode(ctlr);
--	if (ret) {
--		hid_err(hdev, "Failed to set report mode; ret=%d\n", ret);
--		goto err_mutex;
--	}
--
--	/* Enable rumble */
--	ret = joycon_enable_rumble(ctlr);
--	if (ret) {
--		hid_err(hdev, "Failed to enable rumble; ret=%d\n", ret);
--		goto err_mutex;
--	}
--
--	/* Enable the IMU */
--	ret = joycon_enable_imu(ctlr);
--	if (ret) {
--		hid_err(hdev, "Failed to enable the IMU; ret=%d\n", ret);
--		goto err_mutex;
-+		hid_err(hdev, "Failed to initialize controller; ret=%d\n", ret);
-+		goto err_close;
- 	}
- 
- 	ret = joycon_read_info(ctlr);
- 	if (ret) {
- 		hid_err(hdev, "Failed to retrieve controller info; ret=%d\n",
- 			ret);
--		goto err_mutex;
-+		goto err_close;
- 	}
- 
--	mutex_unlock(&ctlr->output_mutex);
--
- 	/* Initialize the leds */
- 	ret = joycon_leds_create(ctlr);
- 	if (ret) {
-@@ -2352,8 +2367,6 @@ static int nintendo_hid_probe(struct hid_device *hdev,
- 	hid_dbg(hdev, "probe - success\n");
- 	return 0;
- 
--err_mutex:
--	mutex_unlock(&ctlr->output_mutex);
- err_close:
- 	hid_hw_close(hdev);
- err_stop:
-@@ -2383,6 +2396,20 @@ static void nintendo_hid_remove(struct hid_device *hdev)
- 	hid_hw_stop(hdev);
- }
- 
-+#ifdef CONFIG_PM
-+
-+static int nintendo_hid_resume(struct hid_device *hdev)
-+{
-+	int ret = joycon_init(hdev);
-+
-+	if (ret)
-+		hid_err(hdev, "Failed to restore controller after resume");
-+
-+	return ret;
-+}
-+
-+#endif
-+
- static const struct hid_device_id nintendo_hid_devices[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_NINTENDO,
- 			 USB_DEVICE_ID_NINTENDO_PROCON) },
-@@ -2404,6 +2431,10 @@ static struct hid_driver nintendo_hid_driver = {
- 	.probe		= nintendo_hid_probe,
- 	.remove		= nintendo_hid_remove,
- 	.raw_event	= nintendo_hid_event,
-+
-+#ifdef CONFIG_PM
-+	.resume		= nintendo_hid_resume,
-+#endif
- };
- module_hid_driver(nintendo_hid_driver);
- 
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 4c6c2e5abf95e..00082c679170a 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1627,7 +1627,7 @@ static int vmw_cmd_tex_state(struct vmw_private *dev_priv,
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSetTextureState);
+ 	SVGA3dTextureState *last_state = (SVGA3dTextureState *)
+-	  ((unsigned long) header + header->size + sizeof(header));
++	  ((unsigned long) header + header->size + sizeof(*header));
+ 	SVGA3dTextureState *cur_state = (SVGA3dTextureState *)
+ 		((unsigned long) header + sizeof(*cmd));
+ 	struct vmw_resource *ctx;
 -- 
 2.40.1
 
