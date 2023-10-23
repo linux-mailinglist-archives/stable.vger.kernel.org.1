@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D08B7D3585
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C8F57D3344
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234543AbjJWLtP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:49:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45718 "EHLO
+        id S233981AbjJWL2b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:28:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234295AbjJWLtO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:14 -0400
+        with ESMTP id S233985AbjJWL2a (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C135AF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D81C433C8;
-        Mon, 23 Oct 2023 11:49:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D227DC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 252D1C433C7;
+        Mon, 23 Oct 2023 11:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061752;
-        bh=K3MnpYb8J72vsKTodMsDiwWlxutj71IE7z2+q5Y7tfI=;
+        s=korg; t=1698060508;
+        bh=XdmObQvU7LNheXihBgsMOMsHFRG7zyF4I2pfy/XK+0c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qqi4h+mzQ1IE67zrrcUsTiBoS72LtE++yDSKPH2GJTT8/NSs7tqjgZctlY2fX8d41
-         WPfqal+sNQSxCdL34JHtFbb1QbJbSh/16Hb2rvt3EKZ0UKOhpAYjSQrEDG3WOPVRgg
-         wZ93/YhQsAAUv8OFxNS9mWi2bv9c7lA9m4KJ/54E=
+        b=cB0bwKT+2qntYsQ7CPewiXi7XqNTIZbuGpm6jFw9UwyYLB7ms/biMtxzTNkf/VaLK
+         itNiuflE5Kn11Re77rL+xN0ajCBHckTbYHsby7WhDErDwmOFXrVFyIbyYa9/iSQOCv
+         cSDVTNEmL7KsYYEStwX3yptM29qkpBXe+J5Q0nGw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kellen Renshaw <kellen.renshaw@canonical.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 126/202] ACPI: resource: Add ASUS model S5402ZA to quirks
-Date:   Mon, 23 Oct 2023 12:57:13 +0200
-Message-ID: <20231023104830.216990050@linuxfoundation.org>
+        patches@lists.linux.dev, Matthew Rosato <mjrosato@linux.ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.1 169/196] s390/pci: fix iommu bitmap allocation
+Date:   Mon, 23 Oct 2023 12:57:14 +0200
+Message-ID: <20231023104833.202874198@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +49,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kellen Renshaw <kellen.renshaw@canonical.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 6e5cbe7c4b41824e500acbb42411da692d1435f1 ]
+commit c1ae1c59c8c6e0b66a718308c623e0cb394dab6b upstream.
 
-The Asus Vivobook S5402ZA has the same keyboard issue as Asus Vivobook
-K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
-should be Active_Low.
+Since the fixed commits both zdev->iommu_bitmap and zdev->lazy_bitmap
+are allocated as vzalloc(zdev->iommu_pages / 8). The problem is that
+zdev->iommu_bitmap is a pointer to unsigned long but the above only
+yields an allocation that is a multiple of sizeof(unsigned long) which
+is 8 on s390x if the number of IOMMU pages is a multiple of 64.
+This in turn is the case only if the effective IOMMU aperture is
+a multiple of 64 * 4K = 256K. This is usually the case and so didn't
+cause visible issues since both the virt_to_phys(high_memory) reduced
+limit and hardware limits use nice numbers.
 
-This patch adds the S5402ZA model to the quirk list.
+Under KVM, and in particular with QEMU limiting the IOMMU aperture to
+the vfio DMA limit (default 65535), it is possible for the reported
+aperture not to be a multiple of 256K however. In this case we end up
+with an iommu_bitmap whose allocation is not a multiple of
+8 causing bitmap operations to access it out of bounds.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216158
-Tested-by: Kellen Renshaw <kellen.renshaw@canonical.com>
-Signed-off-by: Kellen Renshaw <kellen.renshaw@canonical.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Sadly we can't just fix this in the obvious way and use bitmap_zalloc()
+because for large RAM systems (tested on 8 TiB) the zdev->iommu_bitmap
+grows too large for kmalloc(). So add our own bitmap_vzalloc() wrapper.
+This might be a candidate for common code, but this area of code will
+be replaced by the upcoming conversion to use the common code DMA API on
+s390 so just add a local routine.
+
+Fixes: 224593215525 ("s390/pci: use virtual memory for iommu bitmap")
+Fixes: 13954fd6913a ("s390/pci_dma: improve lazy flush for unmap")
+Cc: stable@vger.kernel.org
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/s390/pci/pci_dma.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 602c44821fb45..50ab81a333cdd 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -407,6 +407,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus Vivobook S5402ZA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
-+		},
-+	},
- 	{ }
- };
- 
--- 
-2.40.1
-
+--- a/arch/s390/pci/pci_dma.c
++++ b/arch/s390/pci/pci_dma.c
+@@ -544,6 +544,17 @@ static void s390_dma_unmap_sg(struct dev
+ 		s->dma_length = 0;
+ 	}
+ }
++
++static unsigned long *bitmap_vzalloc(size_t bits, gfp_t flags)
++{
++	size_t n = BITS_TO_LONGS(bits);
++	size_t bytes;
++
++	if (unlikely(check_mul_overflow(n, sizeof(unsigned long), &bytes)))
++		return NULL;
++
++	return vzalloc(bytes);
++}
+ 	
+ int zpci_dma_init_device(struct zpci_dev *zdev)
+ {
+@@ -584,13 +595,13 @@ int zpci_dma_init_device(struct zpci_dev
+ 				zdev->end_dma - zdev->start_dma + 1);
+ 	zdev->end_dma = zdev->start_dma + zdev->iommu_size - 1;
+ 	zdev->iommu_pages = zdev->iommu_size >> PAGE_SHIFT;
+-	zdev->iommu_bitmap = vzalloc(zdev->iommu_pages / 8);
++	zdev->iommu_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
+ 	if (!zdev->iommu_bitmap) {
+ 		rc = -ENOMEM;
+ 		goto free_dma_table;
+ 	}
+ 	if (!s390_iommu_strict) {
+-		zdev->lazy_bitmap = vzalloc(zdev->iommu_pages / 8);
++		zdev->lazy_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
+ 		if (!zdev->lazy_bitmap) {
+ 			rc = -ENOMEM;
+ 			goto free_bitmap;
 
 
