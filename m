@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 276DC7D314D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C00277D3263
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233428AbjJWLHt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:07:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34266 "EHLO
+        id S233773AbjJWLTc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:19:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233406AbjJWLHs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:48 -0400
+        with ESMTP id S233780AbjJWLTb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 416F4D7A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1A7C433C8;
-        Mon, 23 Oct 2023 11:07:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0F58E8
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A97C433C7;
+        Mon, 23 Oct 2023 11:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059265;
-        bh=c82bco+lSGBdFLnYHKXR1BE9eWuwZRccSxB1m8Ke/xE=;
+        s=korg; t=1698059969;
+        bh=yXWMuLl4ebqq+V1NBLGtpQfFh+fGYutwk9fOMKLMKLE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iuS2YGyx/q/5cnhKj3TvT9MjC3OU9UQj948TwkzIDhety7FcS/pgC0QRBdr6qbALI
-         NXAZGm7/own+8QLA1GL9Zs84pnMPwaaIjtJl1eqVrAxiUzfqmmPwVeuYLmAP916Bya
-         JJSyrBTrHuvEnaFP3RHZYBea2gE5c+9mx6qMxYY4=
+        b=WnmF8WLnnD2bT5o7RXe0tzjWevk24PvoA5ibwfF2tLHJDfwYpTfRj+GSL8EHz/1nR
+         MXnHMtSHYIsjxO3xQ90SCt2hunDoePAfyzuiCQ0BWwrJ5GeTgo37dHjZj77JZSZy1k
+         JcMMkQHBzt78+bOK4zdr5oKoQ9eNXDTRnnw4m0qM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
+        patches@lists.linux.dev, Vishal Agrawal <vagrawal@redhat.com>,
+        Jay Vosburgh <jay.vosburgh@canonical.com>,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.5 093/241] net: avoid UAF on deleted altname
-Date:   Mon, 23 Oct 2023 12:54:39 +0200
-Message-ID: <20231023104836.163367616@linuxfoundation.org>
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 015/196] ice: reset first in crash dump kernels
+Date:   Mon, 23 Oct 2023 12:54:40 +0200
+Message-ID: <20231023104828.923978365@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,69 +52,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-commit 1a83f4a7c156fa6bbd6b530e89fa3270bf3d9d1b upstream.
+commit 0288c3e709e5fabd51e84715c5c798a02f43061a upstream.
 
-Altnames are accessed under RCU (dev_get_by_name_rcu())
-but freed by kfree() with no synchronization point.
+When the system boots into the crash dump kernel after a panic, the ice
+networking device may still have pending transactions that can cause errors
+or machine checks when the device is re-enabled. This can prevent the crash
+dump kernel from loading the driver or collecting the crash data.
 
-Each node has one or two allocations (node and a variable-size
-name, sometimes the name is netdev->name). Adding rcu_heads
-here is a bit tedious. Besides most code which unlists the names
-already has rcu barriers - so take the simpler approach of adding
-synchronize_rcu(). Note that the one on the unregistration path
-(which matters more) is removed by the next fix.
+To avoid this issue, perform a function level reset (FLR) on the ice device
+via PCIe config space before enabling it on the crash kernel. This will
+clear any outstanding transactions and stop all queues and interrupts.
+Restore the config space after the FLR, otherwise it was found in testing
+that the driver wouldn't load successfully.
 
-Fixes: ff92741270bf ("net: introduce name_node struct to be used in hashlist")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+The following sequence causes the original issue:
+- Load the ice driver with modprobe ice
+- Enable SR-IOV with 2 VFs: echo 2 > /sys/class/net/eth0/device/sriov_num_vfs
+- Trigger a crash with echo c > /proc/sysrq-trigger
+- Load the ice driver again (or let it load automatically) with modprobe ice
+- The system crashes again during pcim_enable_device()
+
+Fixes: 837f08fdecbe ("ice: Add basic driver framework for Intel(R) E800 Series")
+Reported-by: Vishal Agrawal <vagrawal@redhat.com>
+Reviewed-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Link: https://lore.kernel.org/r/20231011233334.336092-3-jacob.e.keller@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -343,7 +343,6 @@ int netdev_name_node_alt_create(struct n
- static void __netdev_name_node_alt_destroy(struct netdev_name_node *name_node)
- {
- 	list_del(&name_node->list);
--	netdev_name_node_del(name_node);
- 	kfree(name_node->name);
- 	netdev_name_node_free(name_node);
- }
-@@ -362,6 +361,8 @@ int netdev_name_node_alt_destroy(struct
- 	if (name_node == dev->name_node || name_node->dev != dev)
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -6,6 +6,7 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 
+ #include <generated/utsrelease.h>
++#include <linux/crash_dump.h>
+ #include "ice.h"
+ #include "ice_base.h"
+ #include "ice_lib.h"
+@@ -4681,6 +4682,20 @@ ice_probe(struct pci_dev *pdev, const st
  		return -EINVAL;
+ 	}
  
-+	netdev_name_node_del(name_node);
-+	synchronize_rcu();
- 	__netdev_name_node_alt_destroy(name_node);
- 
- 	return 0;
-@@ -10838,6 +10839,7 @@ void unregister_netdevice_many_notify(st
- 	synchronize_net();
- 
- 	list_for_each_entry(dev, head, unreg_list) {
-+		struct netdev_name_node *name_node;
- 		struct sk_buff *skb = NULL;
- 
- 		/* Shutdown queueing discipline. */
-@@ -10865,6 +10867,9 @@ void unregister_netdevice_many_notify(st
- 		dev_uc_flush(dev);
- 		dev_mc_flush(dev);
- 
-+		netdev_for_each_altname(dev, name_node)
-+			netdev_name_node_del(name_node);
-+		synchronize_rcu();
- 		netdev_name_node_alt_flush(dev);
- 		netdev_name_node_free(dev->name_node);
- 
++	/* when under a kdump kernel initiate a reset before enabling the
++	 * device in order to clear out any pending DMA transactions. These
++	 * transactions can cause some systems to machine check when doing
++	 * the pcim_enable_device() below.
++	 */
++	if (is_kdump_kernel()) {
++		pci_save_state(pdev);
++		pci_clear_master(pdev);
++		err = pcie_flr(pdev);
++		if (err)
++			return err;
++		pci_restore_state(pdev);
++	}
++
+ 	/* this driver uses devres, see
+ 	 * Documentation/driver-api/driver-model/devres.rst
+ 	 */
 
 
