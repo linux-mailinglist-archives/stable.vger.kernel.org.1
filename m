@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C3D7D3438
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C3AE7D3552
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:47:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234178AbjJWLhp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:37:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58572 "EHLO
+        id S234409AbjJWLrK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:47:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234156AbjJWLho (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:44 -0400
+        with ESMTP id S234382AbjJWLrH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:47:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF2C8DB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC15AC433C8;
-        Mon, 23 Oct 2023 11:37:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72DEDB0
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:47:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE1F1C433C7;
+        Mon, 23 Oct 2023 11:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061061;
-        bh=MSGB2PKXxfzM730NkfldPHpr4hFJItU8sW9Tj2e+AoE=;
+        s=korg; t=1698061625;
+        bh=RX0IVR47NUDJ/45WtXx3lv/MP2K7XhBiAuOxZm0jqWk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v6DmQ8SZ7byvCBVKbhFqmaJk3xPneUL6yFYZLHuMq90COyBluVvVYpB9GpUAFNfQ5
-         kl8mPTyEeYVObVqXkhw2cxfLiekrdFw4anLEPfPkXvlBZ2gCZovDjl/Ud3knDYlF04
-         j7IEo312H/tX8pH88mGYKB+avRop1wj+cwiN4ltM=
+        b=jmOGkwBvXI6EA+lcxwn5jHWokkhXwm2Xy1Y/NwYwMuX/lqUdVG+rOCUHG61It9LW8
+         8mD9H3rEaJIjZiAxlivO4yVmgr7JqZhIZvY50zxe473HcexGQA6pfTc2gSZnRzU+5b
+         qTyb3NfL2/iidhN4afgvqj1lTd8W3ESbuQseb/sc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Simon Ser <contact@emersion.fr>,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>, Lyude Paul <lyude@redhat.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Imre Deak <imre.deak@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/137] drm/atomic-helper: relax unregistered connector check
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 110/202] tcp: fix excessive TLP and RACK timeouts from HZ rounding
 Date:   Mon, 23 Oct 2023 12:56:57 +0200
-Message-ID: <20231023104822.998563701@linuxfoundation.org>
+Message-ID: <20231023104829.749418692@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,92 +50,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Ser <contact@emersion.fr>
+From: Neal Cardwell <ncardwell@google.com>
 
-[ Upstream commit 2b7947bd32e243c52870d54141d3b4ea6775e63d ]
+commit 1c2709cfff1dedbb9591e989e2f001484208d914 upstream.
 
-The driver might pull connectors which weren't submitted by
-user-space into the atomic state. For instance,
-intel_dp_mst_atomic_master_trans_check() pulls in connectors
-sharing the same DP-MST stream. However, if the connector is
-unregistered, this later fails with:
+We discovered from packet traces of slow loss recovery on kernels with
+the default HZ=250 setting (and min_rtt < 1ms) that after reordering,
+when receiving a SACKed sequence range, the RACK reordering timer was
+firing after about 16ms rather than the desired value of roughly
+min_rtt/4 + 2ms. The problem is largely due to the RACK reorder timer
+calculation adding in TCP_TIMEOUT_MIN, which is 2 jiffies. On kernels
+with HZ=250, this is 2*4ms = 8ms. The TLP timer calculation has the
+exact same issue.
 
-    [  559.425658] i915 0000:00:02.0: [drm:drm_atomic_helper_check_modeset] [CONNECTOR:378:DP-7] is not registered
+This commit fixes the TLP transmit timer and RACK reordering timer
+floor calculation to more closely match the intended 2ms floor even on
+kernels with HZ=250. It does this by adding in a new
+TCP_TIMEOUT_MIN_US floor of 2000 us and then converting to jiffies,
+instead of the current approach of converting to jiffies and then
+adding th TCP_TIMEOUT_MIN value of 2 jiffies.
 
-Skip the unregistered connector check to allow user-space to turn
-off connectors one-by-one.
+Our testing has verified that on kernels with HZ=1000, as expected,
+this does not produce significant changes in behavior, but on kernels
+with the default HZ=250 the latency improvement can be large. For
+example, our tests show that for HZ=250 kernels at low RTTs this fix
+roughly halves the latency for the RACK reorder timer: instead of
+mostly firing at 16ms it mostly fires at 8ms.
 
-See this wlroots issue:
-https://gitlab.freedesktop.org/wlroots/wlroots/-/issues/3407
-
-Previous discussion:
-https://lore.kernel.org/intel-gfx/Y6GX7z17WmDSKwta@ideak-desk.fi.intel.com/
-
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Cc: stable@vger.kernel.org
-Reviewed-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231005131623.114379-1-contact@emersion.fr
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Fixes: bb4d991a28cc ("tcp: adjust tail loss probe timeout")
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20231015174700.2206872-1-ncardwell.sw@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ include/net/tcp.h       |    3 +++
+ net/ipv4/tcp_output.c   |    9 +++++----
+ net/ipv4/tcp_recovery.c |    2 +-
+ 3 files changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -285,7 +285,8 @@ static int
- update_connector_routing(struct drm_atomic_state *state,
- 			 struct drm_connector *connector,
- 			 struct drm_connector_state *old_connector_state,
--			 struct drm_connector_state *new_connector_state)
-+			 struct drm_connector_state *new_connector_state,
-+			 bool added_by_user)
- {
- 	const struct drm_connector_helper_funcs *funcs;
- 	struct drm_encoder *new_encoder;
-@@ -336,9 +337,13 @@ update_connector_routing(struct drm_atom
- 	 * there's a chance the connector may have been destroyed during the
- 	 * process, but it's better to ignore that then cause
- 	 * drm_atomic_helper_resume() to fail.
-+	 *
-+	 * Last, we want to ignore connector registration when the connector
-+	 * was not pulled in the atomic state by user-space (ie, was pulled
-+	 * in by the driver, e.g. when updating a DP-MST stream).
- 	 */
- 	if (!state->duplicated && drm_connector_is_unregistered(connector) &&
--	    crtc_state->active) {
-+	    added_by_user && crtc_state->active) {
- 		DRM_DEBUG_ATOMIC("[CONNECTOR:%d:%s] is not registered\n",
- 				 connector->base.id, connector->name);
- 		return -EINVAL;
-@@ -610,7 +615,10 @@ drm_atomic_helper_check_modeset(struct d
- 	struct drm_connector *connector;
- 	struct drm_connector_state *old_connector_state, *new_connector_state;
- 	int i, ret;
--	unsigned int connectors_mask = 0;
-+	unsigned int connectors_mask = 0, user_connectors_mask = 0;
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -141,6 +141,9 @@ void tcp_time_wait(struct sock *sk, int
+ #define TCP_RTO_MAX	((unsigned)(120*HZ))
+ #define TCP_RTO_MIN	((unsigned)(HZ/5))
+ #define TCP_TIMEOUT_MIN	(2U) /* Min timeout for TCP timers in jiffies */
 +
-+	for_each_oldnew_connector_in_state(state, connector, old_connector_state, new_connector_state, i)
-+		user_connectors_mask |= BIT(i);
++#define TCP_TIMEOUT_MIN_US (2*USEC_PER_MSEC) /* Min TCP timeout in microsecs */
++
+ #define TCP_TIMEOUT_INIT ((unsigned)(1*HZ))	/* RFC6298 2.1 initial RTO value	*/
+ #define TCP_TIMEOUT_FALLBACK ((unsigned)(3*HZ))	/* RFC 1122 initial RTO value, now
+ 						 * used as a fallback RTO for the
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2727,7 +2727,7 @@ bool tcp_schedule_loss_probe(struct sock
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	struct tcp_sock *tp = tcp_sk(sk);
+-	u32 timeout, rto_delta_us;
++	u32 timeout, timeout_us, rto_delta_us;
+ 	int early_retrans;
  
- 	for_each_oldnew_crtc_in_state(state, crtc, old_crtc_state, new_crtc_state, i) {
- 		bool has_connectors =
-@@ -675,7 +683,8 @@ drm_atomic_helper_check_modeset(struct d
- 		 */
- 		ret = update_connector_routing(state, connector,
- 					       old_connector_state,
--					       new_connector_state);
-+					       new_connector_state,
-+					       BIT(i) & user_connectors_mask);
- 		if (ret)
- 			return ret;
- 		if (old_connector_state->crtc) {
+ 	/* Don't do any loss probe on a Fast Open connection before 3WHS
+@@ -2751,11 +2751,12 @@ bool tcp_schedule_loss_probe(struct sock
+ 	 * sample is available then probe after TCP_TIMEOUT_INIT.
+ 	 */
+ 	if (tp->srtt_us) {
+-		timeout = usecs_to_jiffies(tp->srtt_us >> 2);
++		timeout_us = tp->srtt_us >> 2;
+ 		if (tp->packets_out == 1)
+-			timeout += TCP_RTO_MIN;
++			timeout_us += tcp_rto_min_us(sk);
+ 		else
+-			timeout += TCP_TIMEOUT_MIN;
++			timeout_us += TCP_TIMEOUT_MIN_US;
++		timeout = usecs_to_jiffies(timeout_us);
+ 	} else {
+ 		timeout = TCP_TIMEOUT_INIT;
+ 	}
+--- a/net/ipv4/tcp_recovery.c
++++ b/net/ipv4/tcp_recovery.c
+@@ -109,7 +109,7 @@ bool tcp_rack_mark_lost(struct sock *sk)
+ 	tp->rack.advanced = 0;
+ 	tcp_rack_detect_loss(sk, &timeout);
+ 	if (timeout) {
+-		timeout = usecs_to_jiffies(timeout) + TCP_TIMEOUT_MIN;
++		timeout = usecs_to_jiffies(timeout + TCP_TIMEOUT_MIN_US);
+ 		inet_csk_reset_xmit_timer(sk, ICSK_TIME_REO_TIMEOUT,
+ 					  timeout, inet_csk(sk)->icsk_rto);
+ 	}
 
 
