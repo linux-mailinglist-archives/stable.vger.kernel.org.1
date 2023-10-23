@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C95B77D32E3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EEDF7D3368
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233686AbjJWLYs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45688 "EHLO
+        id S233828AbjJWLaE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:30:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233702AbjJWLYr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:47 -0400
+        with ESMTP id S234017AbjJWL37 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:29:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91420E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A6EC433C7;
-        Mon, 23 Oct 2023 11:24:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35B34F9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:29:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745F1C433CB;
+        Mon, 23 Oct 2023 11:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060285;
-        bh=GC23r4Wl8FKFwK6CVFE5jTfi8x5Fr1Mlq8Pp/DEoP64=;
+        s=korg; t=1698060596;
+        bh=bfHIqVVuwz9bmWP+jr9WBfYt+KziWXW0QtWm2EbHKaU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dS/j2Pn1lU+Qmk02pqFdKlcJsB3tCGSZAoSe4u8YKp3hjaB4fsSL5D2IqX+90hRlI
-         g4+ZvsaeM6yOCy9TMObHXKiSofFafPYxnuHsoC4RFkyLe1BoR7NGLHI6/pFLKVFbCy
-         uYT4WOwEeqppzcuRMv3Eon4/J2G0s7GHmGEPkJqU=
+        b=OXSaeN5S3sMOy1jskXVbDC5vBAzM08Idj8xtEuh9hPJI8n76xfqV3H481nzHzrnhQ
+         BPZ5jgHTw+xfeeI/rRasc/XOvYGRzAhSgHXAB47eRX1sEe1sCpfRlWXoq+/sEss94D
+         4DH/ZmlW2RLcjxd2YmGuOpryJlwuxYjCkmu2v07A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/196] btrfs: error out when reallocating block for defrag using a stale transaction
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+        Jose Javier Rodriguez Barbarin 
+        <JoseJavier.Rodriguez@duagon.com>
+Subject: [PATCH 5.4 028/123] mcb: remove is_added flag from mcb_device struct
 Date:   Mon, 23 Oct 2023 12:56:26 +0200
-Message-ID: <20231023104831.930217530@linuxfoundation.org>
+Message-ID: <20231023104818.685308305@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,81 +50,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
 
-[ Upstream commit e36f94914021e58ee88a8856c7fdf35adf9c7ee1 ]
+commit 0f28ada1fbf0054557cddcdb93ad17f767105208 upstream.
 
-At btrfs_realloc_node() we have these checks to verify we are not using a
-stale transaction (a past transaction with an unblocked state or higher),
-and the only thing we do is to trigger two WARN_ON(). This however is a
-critical problem, highly unexpected and if it happens it's most likely due
-to a bug, so we should error out and turn the fs into error state so that
-such issue is much more easily noticed if it's triggered.
+When calling mcb_bus_add_devices(), both mcb devices and the mcb
+bus will attempt to attach a device to a driver because they share
+the same bus_type. This causes an issue when trying to cast the
+container of the device to mcb_device struct using to_mcb_device(),
+leading to a wrong cast when the mcb_bus is added. A crash occurs
+when freing the ida resources as the bus numbering of mcb_bus gets
+confused with the is_added flag on the mcb_device struct.
 
-The problem is critical because in btrfs_realloc_node() we COW tree blocks,
-and using such stale transaction will lead to not persisting the extent
-buffers used for the COW operations, as allocating tree block adds the
-range of the respective extent buffers to the ->dirty_pages iotree of the
-transaction, and a stale transaction, in the unlocked state or higher,
-will not flush dirty extent buffers anymore, therefore resulting in not
-persisting the tree block and resource leaks (not cleaning the dirty_pages
-iotree for example).
+The only reason for this cast was to keep an is_added flag on the
+mcb_device struct that does not seem necessary. The function
+device_attach() handles already bound devices and the mcb subsystem
+does nothing special with this is_added flag so remove it completely.
 
-So do the following changes:
-
-1) Return -EUCLEAN if we find a stale transaction;
-
-2) Turn the fs into error state, with error -EUCLEAN, so that no
-   transaction can be committed, and generate a stack trace;
-
-3) Combine both conditions into a single if statement, as both are related
-   and have the same error message;
-
-4) Mark the check as unlikely, since this is not expected to ever happen.
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 18d288198099 ("mcb: Correctly initialize the bus's device")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Co-developed-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Signed-off-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Link: https://lore.kernel.org/r/20230906114901.63174-2-JoseJavier.Rodriguez@duagon.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/mcb/mcb-core.c  |   10 +++-------
+ drivers/mcb/mcb-parse.c |    2 --
+ include/linux/mcb.h     |    1 -
+ 3 files changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 98f68bd1383a3..e08688844f1e1 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -698,8 +698,22 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
- 	int progress_passed = 0;
- 	struct btrfs_disk_key disk_key;
+--- a/drivers/mcb/mcb-core.c
++++ b/drivers/mcb/mcb-core.c
+@@ -389,17 +389,13 @@ EXPORT_SYMBOL_GPL(mcb_free_dev);
  
--	WARN_ON(trans->transaction != fs_info->running_transaction);
--	WARN_ON(trans->transid != fs_info->generation);
-+	/*
-+	 * COWing must happen through a running transaction, which always
-+	 * matches the current fs generation (it's a transaction with a state
-+	 * less than TRANS_STATE_UNBLOCKED). If it doesn't, then turn the fs
-+	 * into error state to prevent the commit of any transaction.
-+	 */
-+	if (unlikely(trans->transaction != fs_info->running_transaction ||
-+		     trans->transid != fs_info->generation)) {
-+		btrfs_abort_transaction(trans, -EUCLEAN);
-+		btrfs_crit(fs_info,
-+"unexpected transaction when attempting to reallocate parent %llu for root %llu, transaction %llu running transaction %llu fs generation %llu",
-+			   parent->start, btrfs_root_id(root), trans->transid,
-+			   fs_info->running_transaction->transid,
-+			   fs_info->generation);
-+		return -EUCLEAN;
+ static int __mcb_bus_add_devices(struct device *dev, void *data)
+ {
+-	struct mcb_device *mdev = to_mcb_device(dev);
+ 	int retval;
+ 
+-	if (mdev->is_added)
+-		return 0;
+-
+ 	retval = device_attach(dev);
+-	if (retval < 0)
++	if (retval < 0) {
+ 		dev_err(dev, "Error adding device (%d)\n", retval);
+-
+-	mdev->is_added = true;
++		return retval;
 +	}
  
- 	parent_nritems = btrfs_header_nritems(parent);
- 	blocksize = fs_info->nodesize;
--- 
-2.40.1
-
+ 	return 0;
+ }
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -99,8 +99,6 @@ static int chameleon_parse_gdd(struct mc
+ 	mdev->mem.end = mdev->mem.start + size - 1;
+ 	mdev->mem.flags = IORESOURCE_MEM;
+ 
+-	mdev->is_added = false;
+-
+ 	ret = mcb_device_register(bus, mdev);
+ 	if (ret < 0)
+ 		goto err;
+--- a/include/linux/mcb.h
++++ b/include/linux/mcb.h
+@@ -63,7 +63,6 @@ static inline struct mcb_bus *to_mcb_bus
+ struct mcb_device {
+ 	struct device dev;
+ 	struct mcb_bus *bus;
+-	bool is_added;
+ 	struct mcb_driver *driver;
+ 	u16 id;
+ 	int inst;
 
 
