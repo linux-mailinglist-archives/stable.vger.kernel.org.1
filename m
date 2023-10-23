@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22CBE7D3278
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2F867D3146
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233797AbjJWLUb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:20:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40074 "EHLO
+        id S233437AbjJWLHb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:07:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230433AbjJWLU1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:27 -0400
+        with ESMTP id S233428AbjJWLH0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A80D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F446C433C8;
-        Mon, 23 Oct 2023 11:20:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52EF910D3
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BA7C433C8;
+        Mon, 23 Oct 2023 11:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060020;
-        bh=bXLx30Ayi2IInuncAsQ24PirWEL+2b26r/Poq4/O/uU=;
+        s=korg; t=1698059244;
+        bh=EuD4Su401B1FhKhkpBDj8hB8gVfZyugpLhInvUPbaug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M7lLBtx/me/hnRsUKgjQfWDbgU49KNrxDNmPJjmX3qRDhWhRY+KmcHEvi2mfvBrR+
-         X4t1Wi9a7IAN2szCnZJ+vlJUALUxXWba9PX9h3u5FAV6lH1Z5X4ApLzmv1P7RprWPA
-         Jw2pyoOcXFaEgOsXARUlM6rWQmpHNUH5vgSpP/fM=
+        b=CnagY33SZvAXvkufPjDUbZFHryDelR+gT1KZz2ZtZDj5j3xSNrEp2j6U9gOwgoa5G
+         v3ht0WoF0pXpvNXymvV06Q3MvT9mFWt37rTbHsT8qvawyMGW1hK2J9NzvQNj6RqVlt
+         jW1b+7bcFa1+bBI67LZAPyd73qTayvxEvpBPNn4w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+9fcea5ef6dc4dc72d334@syzkaller.appspotmail.com,
-        Zeng Heng <zengheng4@huawei.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.1 032/196] fs/ntfs3: fix panic about slab-out-of-bounds caused by ntfs_list_ea()
-Date:   Mon, 23 Oct 2023 12:54:57 +0200
-Message-ID: <20231023104829.396647260@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Williams <dcbw@redhat.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 112/241] wifi: mwifiex: Sanity check tlv_len and tlv_bitmap_len
+Date:   Mon, 23 Oct 2023 12:54:58 +0200
+Message-ID: <20231023104836.620344556@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,68 +50,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeng Heng <zengheng4@huawei.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-commit 8e7e27b2ee1e19c4040d4987e345f678a74c0aed upstream.
+[ Upstream commit d5a93b7d2877aae4ba7590ad6cb65f8d33079489 ]
 
-Here is a BUG report about linux-6.1 from syzbot, but it still remains
-within upstream:
+Add sanity checks for both `tlv_len` and `tlv_bitmap_len` before
+decoding data from `event_buf`.
 
-BUG: KASAN: slab-out-of-bounds in ntfs_list_ea fs/ntfs3/xattr.c:191 [inline]
-BUG: KASAN: slab-out-of-bounds in ntfs_listxattr+0x401/0x570 fs/ntfs3/xattr.c:710
-Read of size 1 at addr ffff888021acaf3d by task syz-executor128/3632
+This prevents any malicious or buggy firmware from overflowing
+`event_buf` through large values for `tlv_len` and `tlv_bitmap_len`.
 
-Call Trace:
- kasan_report+0x139/0x170 mm/kasan/report.c:495
- ntfs_list_ea fs/ntfs3/xattr.c:191 [inline]
- ntfs_listxattr+0x401/0x570 fs/ntfs3/xattr.c:710
- vfs_listxattr fs/xattr.c:457 [inline]
- listxattr+0x293/0x2d0 fs/xattr.c:804
- path_listxattr fs/xattr.c:828 [inline]
- __do_sys_llistxattr fs/xattr.c:846 [inline]
-
-Before derefering field members of `ea` in unpacked_ea_size(), we need to
-check whether the EA_FULL struct is located in access validate range.
-
-Similarly, when derefering `ea->name` field member, we need to check
-whethe the ea->name is located in access validate range, too.
-
-Fixes: be71b5cba2e6 ("fs/ntfs3: Add attrib operations")
-Reported-by: syzbot+9fcea5ef6dc4dc72d334@syzkaller.appspotmail.com
-Signed-off-by: Zeng Heng <zengheng4@huawei.com>
-[almaz.alexandrovich@paragon-software.com: took the ret variable out of the loop block]
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Dan Williams <dcbw@redhat.com>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/d4f8780527d551552ee96f17a0229e02e1c200d1.1692931954.git.gustavoars@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/xattr.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ .../net/wireless/marvell/mwifiex/11n_rxreorder.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/fs/ntfs3/xattr.c
-+++ b/fs/ntfs3/xattr.c
-@@ -209,7 +209,8 @@ static ssize_t ntfs_list_ea(struct ntfs_
- 	size = le32_to_cpu(info->size);
- 
- 	/* Enumerate all xattrs. */
--	for (ret = 0, off = 0; off < size; off += ea_size) {
-+	ret = 0;
-+	for (off = 0; off + sizeof(struct EA_FULL) < size; off += ea_size) {
- 		ea = Add2Ptr(ea_all, off);
- 		ea_size = unpacked_ea_size(ea);
- 
-@@ -217,6 +218,10 @@ static ssize_t ntfs_list_ea(struct ntfs_
- 			break;
- 
- 		if (buffer) {
-+			/* Check if we can use field ea->name */
-+			if (off + ea_size > size)
-+				break;
+diff --git a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+index d1d3632a3ed7b..4ab3a14567b65 100644
+--- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
++++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
+@@ -921,6 +921,14 @@ void mwifiex_11n_rxba_sync_event(struct mwifiex_private *priv,
+ 	while (tlv_buf_left >= sizeof(*tlv_rxba)) {
+ 		tlv_type = le16_to_cpu(tlv_rxba->header.type);
+ 		tlv_len  = le16_to_cpu(tlv_rxba->header.len);
++		if (size_add(sizeof(tlv_rxba->header), tlv_len) > tlv_buf_left) {
++			mwifiex_dbg(priv->adapter, WARN,
++				    "TLV size (%zu) overflows event_buf buf_left=%d\n",
++				    size_add(sizeof(tlv_rxba->header), tlv_len),
++				    tlv_buf_left);
++			return;
++		}
 +
- 			if (ret + ea->name_len + 1 > bytes_per_buffer) {
- 				err = -ERANGE;
- 				goto out;
+ 		if (tlv_type != TLV_TYPE_RXBA_SYNC) {
+ 			mwifiex_dbg(priv->adapter, ERROR,
+ 				    "Wrong TLV id=0x%x\n", tlv_type);
+@@ -929,6 +937,14 @@ void mwifiex_11n_rxba_sync_event(struct mwifiex_private *priv,
+ 
+ 		tlv_seq_num = le16_to_cpu(tlv_rxba->seq_num);
+ 		tlv_bitmap_len = le16_to_cpu(tlv_rxba->bitmap_len);
++		if (size_add(sizeof(*tlv_rxba), tlv_bitmap_len) > tlv_buf_left) {
++			mwifiex_dbg(priv->adapter, WARN,
++				    "TLV size (%zu) overflows event_buf buf_left=%d\n",
++				    size_add(sizeof(*tlv_rxba), tlv_bitmap_len),
++				    tlv_buf_left);
++			return;
++		}
++
+ 		mwifiex_dbg(priv->adapter, INFO,
+ 			    "%pM tid=%d seq_num=%d bitmap_len=%d\n",
+ 			    tlv_rxba->mac, tlv_rxba->tid, tlv_seq_num,
+-- 
+2.40.1
+
 
 
