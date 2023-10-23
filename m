@@ -2,41 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 177977D317B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C51C17D350A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:45:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233549AbjJWLJm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:09:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41588 "EHLO
+        id S234422AbjJWLpB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:45:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229984AbjJWLJl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:09:41 -0400
+        with ESMTP id S234431AbjJWLow (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6326A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:09:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27DEC433C9;
-        Mon, 23 Oct 2023 11:09:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D17BF10DD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0004C433C9;
+        Mon, 23 Oct 2023 11:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059378;
-        bh=RiXRKFssKYIPvpCxInBrVer4Gv46PQl1wGDVwXq0qU8=;
+        s=korg; t=1698061489;
+        bh=UiSRR63HkeTmuPCSR6k3byc6X4VsvRfQbbo9TyU/4Zw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zN4WQabs8CwIW/8r2al30MUEcHvlmYXMVXfxRAj5s1qzyB08vXGYLuDm6Hf5xUQlY
-         eVORoNNfmSwxQqB9SSjQYno6MP+oLXii6bwwRi+1yKtMMnTOr/tVPOKPtTJugy+LzH
-         HUiGlS171E8+eEz5CYy23ZOhTKeZikRMY+AT52nU=
+        b=ZnRClDfNfK+Lri9ziJVfy4FbAXpyjDA/djwg4j2ZCqIeqs+IAbFvVwLyCw1eHeMCX
+         ua8EFrQxumNsURacDv1ApqufyHcHhJbaDD7BkV/sxbWzosHO8PExTXgW7j77G3mSyg
+         vEBLpRQ80v8ED+jFnlCTC0CLjvrBxP4it4NsGC0k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Deseyn <tdeseyn@redhat.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 158/241] tcp: allow again tcp_disconnect() when threads are waiting
+        patches@lists.linux.dev, Xingxing Luo <xingxing.luo@unisoc.com>
+Subject: [PATCH 5.10 037/202] usb: musb: Get the musb_qh poniter after musb_giveback
 Date:   Mon, 23 Oct 2023 12:55:44 +0200
-Message-ID: <20231023104837.726033209@linuxfoundation.org>
+Message-ID: <20231023104827.675959711@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,488 +47,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Xingxing Luo <xingxing.luo@unisoc.com>
 
-[ Upstream commit 419ce133ab928ab5efd7b50b2ef36ddfd4eadbd2 ]
+commit 33d7e37232155aadebe4145dcc592f00dabd7a2b upstream.
 
-As reported by Tom, .NET and applications build on top of it rely
-on connect(AF_UNSPEC) to async cancel pending I/O operations on TCP
-socket.
+When multiple threads are performing USB transmission, musb->lock will be
+unlocked when musb_giveback is executed. At this time, qh may be released
+in the dequeue process in other threads, resulting in a wild pointer, so
+it needs to be here get qh again, and judge whether qh is NULL, and when
+dequeue, you need to set qh to NULL.
 
-The blamed commit below caused a regression, as such cancellation
-can now fail.
-
-As suggested by Eric, this change addresses the problem explicitly
-causing blocking I/O operation to terminate immediately (with an error)
-when a concurrent disconnect() is executed.
-
-Instead of tracking the number of threads blocked on a given socket,
-track the number of disconnect() issued on such socket. If such counter
-changes after a blocking operation releasing and re-acquiring the socket
-lock, error out the current operation.
-
-Fixes: 4faeee0cf8a5 ("tcp: deny tcp_disconnect() when threads are waiting")
-Reported-by: Tom Deseyn <tdeseyn@redhat.com>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=1886305
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/f3b95e47e3dbed840960548aebaa8d954372db41.1697008693.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: dbac5d07d13e ("usb: musb: host: don't start next rx urb if current one failed")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xingxing Luo <xingxing.luo@unisoc.com>
+Link: https://lore.kernel.org/r/20230919033055.14085-1-xingxing.luo@unisoc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../chelsio/inline_crypto/chtls/chtls_io.c    | 36 +++++++++++++++----
- include/net/sock.h                            | 10 +++---
- net/core/stream.c                             | 12 ++++---
- net/ipv4/af_inet.c                            | 10 ++++--
- net/ipv4/inet_connection_sock.c               |  1 -
- net/ipv4/tcp.c                                | 16 ++++-----
- net/ipv4/tcp_bpf.c                            |  4 +++
- net/mptcp/protocol.c                          |  7 ----
- net/tls/tls_main.c                            | 10 ++++--
- net/tls/tls_sw.c                              | 19 ++++++----
- 10 files changed, 80 insertions(+), 45 deletions(-)
+ drivers/usb/musb/musb_host.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_io.c b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_io.c
-index 5fc64e47568a9..d567e42e17601 100644
---- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_io.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_io.c
-@@ -911,7 +911,7 @@ static int csk_wait_memory(struct chtls_dev *cdev,
- 			   struct sock *sk, long *timeo_p)
- {
- 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
--	int err = 0;
-+	int ret, err = 0;
- 	long current_timeo;
- 	long vm_wait = 0;
- 	bool noblock;
-@@ -942,10 +942,13 @@ static int csk_wait_memory(struct chtls_dev *cdev,
+--- a/drivers/usb/musb/musb_host.c
++++ b/drivers/usb/musb/musb_host.c
+@@ -321,10 +321,16 @@ static void musb_advance_schedule(struct
+ 	musb_giveback(musb, urb, status);
+ 	qh->is_ready = ready;
  
- 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
- 		sk->sk_write_pending++;
--		sk_wait_event(sk, &current_timeo, sk->sk_err ||
--			      (sk->sk_shutdown & SEND_SHUTDOWN) ||
--			      (csk_mem_free(cdev, sk) && !vm_wait), &wait);
-+		ret = sk_wait_event(sk, &current_timeo, sk->sk_err ||
-+				    (sk->sk_shutdown & SEND_SHUTDOWN) ||
-+				    (csk_mem_free(cdev, sk) && !vm_wait),
-+				    &wait);
- 		sk->sk_write_pending--;
-+		if (ret < 0)
-+			goto do_error;
- 
- 		if (vm_wait) {
- 			vm_wait -= current_timeo;
-@@ -1348,6 +1351,7 @@ static int chtls_pt_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	int copied = 0;
- 	int target;
- 	long timeo;
-+	int ret;
- 
- 	buffers_freed = 0;
- 
-@@ -1423,7 +1427,11 @@ static int chtls_pt_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		if (copied >= target)
- 			break;
- 		chtls_cleanup_rbuf(sk, copied);
--		sk_wait_data(sk, &timeo, NULL);
-+		ret = sk_wait_data(sk, &timeo, NULL);
-+		if (ret < 0) {
-+			copied = copied ? : ret;
-+			goto unlock;
-+		}
- 		continue;
- found_ok_skb:
- 		if (!skb->len) {
-@@ -1518,6 +1526,8 @@ static int chtls_pt_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 	if (buffers_freed)
- 		chtls_cleanup_rbuf(sk, copied);
++	/*
++	 * musb->lock had been unlocked in musb_giveback, so qh may
++	 * be freed, need to get it again
++	 */
++	qh = musb_ep_get_qh(hw_ep, is_in);
 +
-+unlock:
- 	release_sock(sk);
- 	return copied;
- }
-@@ -1534,6 +1544,7 @@ static int peekmsg(struct sock *sk, struct msghdr *msg,
- 	int copied = 0;
- 	size_t avail;          /* amount of available data in current skb */
- 	long timeo;
-+	int ret;
+ 	/* reclaim resources (and bandwidth) ASAP; deschedule it, and
+ 	 * invalidate qh as soon as list_empty(&hep->urb_list)
+ 	 */
+-	if (list_empty(&qh->hep->urb_list)) {
++	if (qh && list_empty(&qh->hep->urb_list)) {
+ 		struct list_head	*head;
+ 		struct dma_controller	*dma = musb->dma_controller;
  
- 	lock_sock(sk);
- 	timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
-@@ -1585,7 +1596,12 @@ static int peekmsg(struct sock *sk, struct msghdr *msg,
- 			release_sock(sk);
- 			lock_sock(sk);
- 		} else {
--			sk_wait_data(sk, &timeo, NULL);
-+			ret = sk_wait_data(sk, &timeo, NULL);
-+			if (ret < 0) {
-+				/* here 'copied' is 0 due to previous checks */
-+				copied = ret;
-+				break;
-+			}
- 		}
- 
- 		if (unlikely(peek_seq != tp->copied_seq)) {
-@@ -1656,6 +1672,7 @@ int chtls_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	int copied = 0;
- 	long timeo;
- 	int target;             /* Read at least this many bytes */
-+	int ret;
- 
- 	buffers_freed = 0;
- 
-@@ -1747,7 +1764,11 @@ int chtls_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 		if (copied >= target)
- 			break;
- 		chtls_cleanup_rbuf(sk, copied);
--		sk_wait_data(sk, &timeo, NULL);
-+		ret = sk_wait_data(sk, &timeo, NULL);
-+		if (ret < 0) {
-+			copied = copied ? : ret;
-+			goto unlock;
-+		}
- 		continue;
- 
- found_ok_skb:
-@@ -1816,6 +1837,7 @@ int chtls_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 	if (buffers_freed)
- 		chtls_cleanup_rbuf(sk, copied);
- 
-+unlock:
- 	release_sock(sk);
- 	return copied;
- }
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 4e787285fc66b..fc189910e63fc 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -336,7 +336,7 @@ struct sk_filter;
-   *	@sk_cgrp_data: cgroup data for this cgroup
-   *	@sk_memcg: this socket's memory cgroup association
-   *	@sk_write_pending: a write to stream socket waits to start
--  *	@sk_wait_pending: number of threads blocked on this socket
-+  *	@sk_disconnects: number of disconnect operations performed on this sock
-   *	@sk_state_change: callback to indicate change in the state of the sock
-   *	@sk_data_ready: callback to indicate there is data to be processed
-   *	@sk_write_space: callback to indicate there is bf sending space available
-@@ -429,7 +429,7 @@ struct sock {
- 	unsigned int		sk_napi_id;
- #endif
- 	int			sk_rcvbuf;
--	int			sk_wait_pending;
-+	int			sk_disconnects;
- 
- 	struct sk_filter __rcu	*sk_filter;
- 	union {
-@@ -1189,8 +1189,7 @@ static inline void sock_rps_reset_rxhash(struct sock *sk)
- }
- 
- #define sk_wait_event(__sk, __timeo, __condition, __wait)		\
--	({	int __rc;						\
--		__sk->sk_wait_pending++;				\
-+	({	int __rc, __dis = __sk->sk_disconnects;			\
- 		release_sock(__sk);					\
- 		__rc = __condition;					\
- 		if (!__rc) {						\
-@@ -1200,8 +1199,7 @@ static inline void sock_rps_reset_rxhash(struct sock *sk)
- 		}							\
- 		sched_annotate_sleep();					\
- 		lock_sock(__sk);					\
--		__sk->sk_wait_pending--;				\
--		__rc = __condition;					\
-+		__rc = __dis == __sk->sk_disconnects ? __condition : -EPIPE; \
- 		__rc;							\
- 	})
- 
-diff --git a/net/core/stream.c b/net/core/stream.c
-index f5c4e47df1650..96fbcb9bbb30a 100644
---- a/net/core/stream.c
-+++ b/net/core/stream.c
-@@ -117,7 +117,7 @@ EXPORT_SYMBOL(sk_stream_wait_close);
-  */
- int sk_stream_wait_memory(struct sock *sk, long *timeo_p)
- {
--	int err = 0;
-+	int ret, err = 0;
- 	long vm_wait = 0;
- 	long current_timeo = *timeo_p;
- 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-@@ -142,11 +142,13 @@ int sk_stream_wait_memory(struct sock *sk, long *timeo_p)
- 
- 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
- 		sk->sk_write_pending++;
--		sk_wait_event(sk, &current_timeo, READ_ONCE(sk->sk_err) ||
--						  (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN) ||
--						  (sk_stream_memory_free(sk) &&
--						  !vm_wait), &wait);
-+		ret = sk_wait_event(sk, &current_timeo, READ_ONCE(sk->sk_err) ||
-+				    (READ_ONCE(sk->sk_shutdown) & SEND_SHUTDOWN) ||
-+				    (sk_stream_memory_free(sk) && !vm_wait),
-+				    &wait);
- 		sk->sk_write_pending--;
-+		if (ret < 0)
-+			goto do_error;
- 
- 		if (vm_wait) {
- 			vm_wait -= current_timeo;
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index 02736b83c3032..0c0ae021b7ff5 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -587,7 +587,6 @@ static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
- 
- 	add_wait_queue(sk_sleep(sk), &wait);
- 	sk->sk_write_pending += writebias;
--	sk->sk_wait_pending++;
- 
- 	/* Basic assumption: if someone sets sk->sk_err, he _must_
- 	 * change state of the socket from TCP_SYN_*.
-@@ -603,7 +602,6 @@ static long inet_wait_for_connect(struct sock *sk, long timeo, int writebias)
- 	}
- 	remove_wait_queue(sk_sleep(sk), &wait);
- 	sk->sk_write_pending -= writebias;
--	sk->sk_wait_pending--;
- 	return timeo;
- }
- 
-@@ -632,6 +630,7 @@ int __inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 			return -EINVAL;
- 
- 		if (uaddr->sa_family == AF_UNSPEC) {
-+			sk->sk_disconnects++;
- 			err = sk->sk_prot->disconnect(sk, flags);
- 			sock->state = err ? SS_DISCONNECTING : SS_UNCONNECTED;
- 			goto out;
-@@ -686,6 +685,7 @@ int __inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 		int writebias = (sk->sk_protocol == IPPROTO_TCP) &&
- 				tcp_sk(sk)->fastopen_req &&
- 				tcp_sk(sk)->fastopen_req->data ? 1 : 0;
-+		int dis = sk->sk_disconnects;
- 
- 		/* Error code is set above */
- 		if (!timeo || !inet_wait_for_connect(sk, timeo, writebias))
-@@ -694,6 +694,11 @@ int __inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- 		err = sock_intr_errno(timeo);
- 		if (signal_pending(current))
- 			goto out;
-+
-+		if (dis != sk->sk_disconnects) {
-+			err = -EPIPE;
-+			goto out;
-+		}
- 	}
- 
- 	/* Connection was closed by RST, timeout, ICMP error
-@@ -715,6 +720,7 @@ int __inet_stream_connect(struct socket *sock, struct sockaddr *uaddr,
- sock_error:
- 	err = sock_error(sk) ? : -ECONNABORTED;
- 	sock->state = SS_UNCONNECTED;
-+	sk->sk_disconnects++;
- 	if (sk->sk_prot->disconnect(sk, flags))
- 		sock->state = SS_DISCONNECTING;
- 	goto out;
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index aeebe88166899..394a498c28232 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1145,7 +1145,6 @@ struct sock *inet_csk_clone_lock(const struct sock *sk,
- 	if (newsk) {
- 		struct inet_connection_sock *newicsk = inet_csk(newsk);
- 
--		newsk->sk_wait_pending = 0;
- 		inet_sk_set_state(newsk, TCP_SYN_RECV);
- 		newicsk->icsk_bind_hash = NULL;
- 		newicsk->icsk_bind2_hash = NULL;
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 9cfc07d1e4252..9bdc1b2eaf734 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -829,7 +829,9 @@ ssize_t tcp_splice_read(struct socket *sock, loff_t *ppos,
- 			 */
- 			if (!skb_queue_empty(&sk->sk_receive_queue))
- 				break;
--			sk_wait_data(sk, &timeo, NULL);
-+			ret = sk_wait_data(sk, &timeo, NULL);
-+			if (ret < 0)
-+				break;
- 			if (signal_pending(current)) {
- 				ret = sock_intr_errno(timeo);
- 				break;
-@@ -2442,7 +2444,11 @@ static int tcp_recvmsg_locked(struct sock *sk, struct msghdr *msg, size_t len,
- 			__sk_flush_backlog(sk);
- 		} else {
- 			tcp_cleanup_rbuf(sk, copied);
--			sk_wait_data(sk, &timeo, last);
-+			err = sk_wait_data(sk, &timeo, last);
-+			if (err < 0) {
-+				err = copied ? : err;
-+				goto out;
-+			}
- 		}
- 
- 		if ((flags & MSG_PEEK) &&
-@@ -2966,12 +2972,6 @@ int tcp_disconnect(struct sock *sk, int flags)
- 	int old_state = sk->sk_state;
- 	u32 seq;
- 
--	/* Deny disconnect if other threads are blocked in sk_wait_event()
--	 * or inet_wait_for_connect().
--	 */
--	if (sk->sk_wait_pending)
--		return -EBUSY;
--
- 	if (old_state != TCP_CLOSE)
- 		tcp_set_state(sk, TCP_CLOSE);
- 
-diff --git a/net/ipv4/tcp_bpf.c b/net/ipv4/tcp_bpf.c
-index 3272682030015..ba2e921881248 100644
---- a/net/ipv4/tcp_bpf.c
-+++ b/net/ipv4/tcp_bpf.c
-@@ -307,6 +307,8 @@ static int tcp_bpf_recvmsg_parser(struct sock *sk,
- 		}
- 
- 		data = tcp_msg_wait_data(sk, psock, timeo);
-+		if (data < 0)
-+			return data;
- 		if (data && !sk_psock_queue_empty(psock))
- 			goto msg_bytes_ready;
- 		copied = -EAGAIN;
-@@ -351,6 +353,8 @@ static int tcp_bpf_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
- 
- 		timeo = sock_rcvtimeo(sk, flags & MSG_DONTWAIT);
- 		data = tcp_msg_wait_data(sk, psock, timeo);
-+		if (data < 0)
-+			return data;
- 		if (data) {
- 			if (!sk_psock_queue_empty(psock))
- 				goto msg_bytes_ready;
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index d2a47c6f9655b..0850d6a43049c 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -3063,12 +3063,6 @@ static int mptcp_disconnect(struct sock *sk, int flags)
- {
- 	struct mptcp_sock *msk = mptcp_sk(sk);
- 
--	/* Deny disconnect if other threads are blocked in sk_wait_event()
--	 * or inet_wait_for_connect().
--	 */
--	if (sk->sk_wait_pending)
--		return -EBUSY;
--
- 	/* We are on the fastopen error path. We can't call straight into the
- 	 * subflows cleanup code due to lock nesting (we are already under
- 	 * msk->firstsocket lock).
-@@ -3139,7 +3133,6 @@ struct sock *mptcp_sk_clone_init(const struct sock *sk,
- 		inet_sk(nsk)->pinet6 = mptcp_inet6_sk(nsk);
- #endif
- 
--	nsk->sk_wait_pending = 0;
- 	__mptcp_init_sock(nsk);
- 
- 	msk = mptcp_sk(nsk);
-diff --git a/net/tls/tls_main.c b/net/tls/tls_main.c
-index 4a8ee2f6badb9..f3d3fc1c32676 100644
---- a/net/tls/tls_main.c
-+++ b/net/tls/tls_main.c
-@@ -96,8 +96,8 @@ void update_sk_prot(struct sock *sk, struct tls_context *ctx)
- 
- int wait_on_pending_writer(struct sock *sk, long *timeo)
- {
--	int rc = 0;
- 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-+	int ret, rc = 0;
- 
- 	add_wait_queue(sk_sleep(sk), &wait);
- 	while (1) {
-@@ -111,9 +111,13 @@ int wait_on_pending_writer(struct sock *sk, long *timeo)
- 			break;
- 		}
- 
--		if (sk_wait_event(sk, timeo,
--				  !READ_ONCE(sk->sk_write_pending), &wait))
-+		ret = sk_wait_event(sk, timeo,
-+				    !READ_ONCE(sk->sk_write_pending), &wait);
-+		if (ret) {
-+			if (ret < 0)
-+				rc = ret;
- 			break;
-+		}
- 	}
- 	remove_wait_queue(sk_sleep(sk), &wait);
- 	return rc;
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index a83f474933033..ce925f3a52492 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1288,6 +1288,7 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
- 	struct tls_context *tls_ctx = tls_get_ctx(sk);
- 	struct tls_sw_context_rx *ctx = tls_sw_ctx_rx(tls_ctx);
- 	DEFINE_WAIT_FUNC(wait, woken_wake_function);
-+	int ret = 0;
- 	long timeo;
- 
- 	timeo = sock_rcvtimeo(sk, nonblock);
-@@ -1299,6 +1300,9 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
- 		if (sk->sk_err)
- 			return sock_error(sk);
- 
-+		if (ret < 0)
-+			return ret;
-+
- 		if (!skb_queue_empty(&sk->sk_receive_queue)) {
- 			tls_strp_check_rcv(&ctx->strp);
- 			if (tls_strp_msg_ready(ctx))
-@@ -1317,10 +1321,10 @@ tls_rx_rec_wait(struct sock *sk, struct sk_psock *psock, bool nonblock,
- 		released = true;
- 		add_wait_queue(sk_sleep(sk), &wait);
- 		sk_set_bit(SOCKWQ_ASYNC_WAITDATA, sk);
--		sk_wait_event(sk, &timeo,
--			      tls_strp_msg_ready(ctx) ||
--			      !sk_psock_queue_empty(psock),
--			      &wait);
-+		ret = sk_wait_event(sk, &timeo,
-+				    tls_strp_msg_ready(ctx) ||
-+				    !sk_psock_queue_empty(psock),
-+				    &wait);
- 		sk_clear_bit(SOCKWQ_ASYNC_WAITDATA, sk);
- 		remove_wait_queue(sk_sleep(sk), &wait);
- 
-@@ -1849,6 +1853,7 @@ static int tls_rx_reader_acquire(struct sock *sk, struct tls_sw_context_rx *ctx,
- 				 bool nonblock)
- {
- 	long timeo;
-+	int ret;
- 
- 	timeo = sock_rcvtimeo(sk, nonblock);
- 
-@@ -1858,14 +1863,16 @@ static int tls_rx_reader_acquire(struct sock *sk, struct tls_sw_context_rx *ctx,
- 		ctx->reader_contended = 1;
- 
- 		add_wait_queue(&ctx->wq, &wait);
--		sk_wait_event(sk, &timeo,
--			      !READ_ONCE(ctx->reader_present), &wait);
-+		ret = sk_wait_event(sk, &timeo,
-+				    !READ_ONCE(ctx->reader_present), &wait);
- 		remove_wait_queue(&ctx->wq, &wait);
- 
- 		if (timeo <= 0)
- 			return -EAGAIN;
- 		if (signal_pending(current))
- 			return sock_intr_errno(timeo);
-+		if (ret < 0)
-+			return ret;
- 	}
- 
- 	WRITE_ONCE(ctx->reader_present, 1);
--- 
-2.40.1
-
+@@ -2404,6 +2410,7 @@ static int musb_urb_dequeue(struct usb_h
+ 		 * and its URB list has emptied, recycle this qh.
+ 		 */
+ 		if (ready && list_empty(&qh->hep->urb_list)) {
++			musb_ep_set_qh(qh->hw_ep, is_in, NULL);
+ 			qh->hep->hcpriv = NULL;
+ 			list_del(&qh->ring);
+ 			kfree(qh);
 
 
