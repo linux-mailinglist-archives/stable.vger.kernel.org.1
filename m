@@ -2,38 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6B847D348D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48C4A7D33D2
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234267AbjJWLkn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:40:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57454 "EHLO
+        id S229498AbjJWLe2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:34:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234282AbjJWLkk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:40 -0400
+        with ESMTP id S229852AbjJWLe1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 950F4D7F
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21C7C433C8;
-        Mon, 23 Oct 2023 11:40:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01958E8
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC8DAC433C9;
+        Mon, 23 Oct 2023 11:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061238;
-        bh=t3BN54va3Gtc2lMfC5/u9NxcyUJwVTPCuHy0z+d1FYc=;
+        s=korg; t=1698060864;
+        bh=/kB7S1wIzJlvb5d6rM6KbkAgObVbztSIGy59hLtbjzI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IuJWoUuVi/+Xwi7/Lgu4crOcwJw5b1c0mSuJBWU2+c6xUX2Wi+P/kOYXd6H7OYS0c
-         c1BFBe8ZY2J4kfjEvLR3WuA4kHPrBtEPhXy6tuG2RN4aMvg7UWzkenzXE+qVug5FGJ
-         lOZK8hMiisiOBLBD19+z/KblIAIiZ+TaEFdahDWE=
+        b=lML7g9fWYWUge6dcHJMhvB/+qNtq9gAgbuuRc/jGnBMIucPy7RUp4Je+pYyNl7pUf
+         wdOcvT0/tDZ2HAf9PNtZDPkf5vhyTtO2j/SMlf2RlslMxmKDRIwE6YAsUBnZljq+IP
+         28v28wibBVDEADIEVPeHvd4LkCNGi0/8cybs9xzM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Puliang Lu <puliang.lu@fibocom.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 119/137] USB: serial: option: add Fibocom to DELL custom modem FM101R-GL
+        patches@lists.linux.dev,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Miaoqian Lin <linmq006@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 118/123] phy: mapphone-mdm6600: Fix runtime disable on probe
 Date:   Mon, 23 Oct 2023 12:57:56 +0200
-Message-ID: <20231023104824.776440360@linuxfoundation.org>
+Message-ID: <20231023104821.743081171@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,92 +53,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puliang Lu <puliang.lu@fibocom.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit 52480e1f1a259c93d749ba3961af0bffedfe7a7a upstream.
+[ Upstream commit 719606154c7033c068a5d4c1dc5f9163b814b3c8 ]
 
-Update the USB serial option driver support for the Fibocom
-FM101R-GL LTE modules as there are actually several different variants.
+Commit d644e0d79829 ("phy: mapphone-mdm6600: Fix PM error handling in
+phy_mdm6600_probe") caused a regression where we now unconditionally
+disable runtime PM at the end of the probe while it is only needed on
+errors.
 
-- VID:PID 413C:8213, FM101R-GL are laptop M.2 cards (with
-  MBIM interfaces for Linux)
-
-- VID:PID 413C:8215, FM101R-GL ESIM are laptop M.2 cards (with
-  MBIM interface for Linux)
-
-0x8213: mbim, tty
-0x8215: mbim, tty
-
-T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=413c ProdID=8213 Rev= 5.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom FM101-GL Module
-S:  SerialNumber=a3b7cbf0
-C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=413c ProdID=8215 Rev= 5.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom FM101-GL Module
-S:  SerialNumber=a3b7cbf0
-C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Cc: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: d644e0d79829 ("phy: mapphone-mdm6600: Fix PM error handling in phy_mdm6600_probe")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230913060433.48373-1-tony@atomide.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/phy/motorola/phy-mapphone-mdm6600.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -203,6 +203,9 @@ static void option_instat_callback(struc
- #define DELL_PRODUCT_5829E_ESIM			0x81e4
- #define DELL_PRODUCT_5829E			0x81e6
+diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+index 39d13f7e4cf33..042927f8ac4f3 100644
+--- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
++++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+@@ -626,10 +626,12 @@ static int phy_mdm6600_probe(struct platform_device *pdev)
+ 	pm_runtime_put_autosuspend(ddata->dev);
  
-+#define DELL_PRODUCT_FM101R			0x8213
-+#define DELL_PRODUCT_FM101R_ESIM		0x8215
+ cleanup:
+-	if (error < 0)
++	if (error < 0) {
+ 		phy_mdm6600_device_power_off(ddata);
+-	pm_runtime_disable(ddata->dev);
+-	pm_runtime_dont_use_autosuspend(ddata->dev);
++		pm_runtime_disable(ddata->dev);
++		pm_runtime_dont_use_autosuspend(ddata->dev);
++	}
 +
- #define KYOCERA_VENDOR_ID			0x0c88
- #define KYOCERA_PRODUCT_KPC650			0x17da
- #define KYOCERA_PRODUCT_KPC680			0x180a
-@@ -1108,6 +1111,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | RSVD(6) },
- 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
- 	  .driver_info = RSVD(0) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
-+	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_500A) },
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_620UW) },
+ 	return error;
+ }
+ 
+-- 
+2.42.0
+
 
 
