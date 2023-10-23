@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 936A07D352C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:45:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 933D17D3222
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234395AbjJWLpy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:45:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51828 "EHLO
+        id S233665AbjJWLRC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:17:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234564AbjJWLpc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:32 -0400
+        with ESMTP id S233662AbjJWLRB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B9A3B0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECC9C433C7;
-        Mon, 23 Oct 2023 11:45:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA14192
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19962C433C7;
+        Mon, 23 Oct 2023 11:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061528;
-        bh=5vmSEBd/dQIea0U1HIYo2z0XXL+n4KgxplVwl8bVUgI=;
+        s=korg; t=1698059819;
+        bh=Jx/ckxkBU6x17NkHuDTJkJ9V5buw4c0NUU4SHTRKPM0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mdttTEvAdKoN8HBAmT9kS9ov5lkNZe+xYtvURdUbhGHlY098r2imm5+LPz1qpPyVL
-         VVgBazpsddU/rMJoZKzy8HlYOU7jSwIGltV2RMmkhC75Rugn6J0iWysGIQB27NukTY
-         0wHycvqcZYKy20tG7B9HDxuoLVEllxVvNc+RzRJ0=
+        b=LdyAjaFA93gPCM3gBovXZMpxHXBjBMnS4uKIz7oSth5y6jUMq080+cEIAaWLGyK0a
+         1c7sxGqeWxMxudklZ9MGCw09mjLVGfWzHqz0YJ444j193TSx2sg344CL/NH/31Ltu4
+         qWKYoOhf+vzxbl07UnG2/ueM3hxwEPlyqn/jXlag=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiao Yang <yangx.jy@fujitsu.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 5.10 078/202] RDMA/srp: Set scmnd->result only when scmnd is not NULL
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Piyush Mehta <piyush.mehta@amd.com>
+Subject: [PATCH 4.19 36/98] usb: gadget: udc-xilinx: replace memcpy with memcpy_toio
 Date:   Mon, 23 Oct 2023 12:56:25 +0200
-Message-ID: <20231023104828.827711040@linuxfoundation.org>
+Message-ID: <20231023104814.873986769@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,65 +48,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yangx.jy@fujitsu.com <yangx.jy@fujitsu.com>
+From: Piyush Mehta <piyush.mehta@amd.com>
 
-commit 12f35199a2c0551187edbf8eb01379f0598659fa upstream.
+commit 3061b6491f491197a35e14e49f805d661b02acd4 upstream.
 
-This change fixes the following kernel NULL pointer dereference
-which is reproduced by blktests srp/007 occasionally.
+For ARM processor, unaligned access to device memory is not allowed.
+Method memcpy does not take care of alignment.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000170
-PGD 0 P4D 0
-Oops: 0002 [#1] PREEMPT SMP NOPTI
-CPU: 0 PID: 9 Comm: kworker/0:1H Kdump: loaded Not tainted 6.0.0-rc1+ #37
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.15.0-29-g6a62e0cb0dfe-prebuilt.qemu.org 04/01/2014
-Workqueue:  0x0 (kblockd)
-RIP: 0010:srp_recv_done+0x176/0x500 [ib_srp]
-Code: 00 4d 85 ff 0f 84 52 02 00 00 48 c7 82 80 02 00 00 00 00 00 00 4c 89 df 4c 89 14 24 e8 53 d3 4a f6 4c 8b 14 24 41 0f b6 42 13 <41> 89 87 70 01 00 00 41 0f b6 52 12 f6 c2 02 74 44 41 8b 42 1c b9
-RSP: 0018:ffffaef7c0003e28 EFLAGS: 00000282
-RAX: 0000000000000000 RBX: ffff9bc9486dea60 RCX: 0000000000000000
-RDX: 0000000000000102 RSI: ffffffffb76bbd0e RDI: 00000000ffffffff
-RBP: ffff9bc980099a00 R08: 0000000000000001 R09: 0000000000000001
-R10: ffff9bca53ef0000 R11: ffff9bc980099a10 R12: ffff9bc956e14000
-R13: ffff9bc9836b9cb0 R14: ffff9bc9557b4480 R15: 0000000000000000
-FS:  0000000000000000(0000) GS:ffff9bc97ec00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000170 CR3: 0000000007e04000 CR4: 00000000000006f0
-Call Trace:
- <IRQ>
- __ib_process_cq+0xb7/0x280 [ib_core]
- ib_poll_handler+0x2b/0x130 [ib_core]
- irq_poll_softirq+0x93/0x150
- __do_softirq+0xee/0x4b8
- irq_exit_rcu+0xf7/0x130
- sysvec_apic_timer_interrupt+0x8e/0xc0
- </IRQ>
+USB detection failure with the unalingned address of memory, with
+below kernel crash. To fix the unalingned address kernel panic,
+replace memcpy with memcpy_toio method.
 
-Fixes: ad215aaea4f9 ("RDMA/srp: Make struct scsi_cmnd and struct srp_request adjacent")
-Link: https://lore.kernel.org/r/20220831081626.18712-1-yangx.jy@fujitsu.com
-Signed-off-by: Xiao Yang <yangx.jy@fujitsu.com>
-Acked-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Kernel crash:
+Unable to handle kernel paging request at virtual address ffff80000c05008a
+Mem abort info:
+  ESR = 0x96000061
+  EC = 0x25: DABT (current EL), IL = 32 bits
+  SET = 0, FnV = 0
+  EA = 0, S1PTW = 0
+  FSC = 0x21: alignment fault
+Data abort info:
+  ISV = 0, ISS = 0x00000061
+  CM = 0, WnR = 1
+swapper pgtable: 4k pages, 48-bit VAs, pgdp=000000000143b000
+[ffff80000c05008a] pgd=100000087ffff003, p4d=100000087ffff003,
+pud=100000087fffe003, pmd=1000000800bcc003, pte=00680000a0010713
+Internal error: Oops: 96000061 [#1] SMP
+Modules linked in:
+CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.15.19-xilinx-v2022.1 #1
+Hardware name: ZynqMP ZCU102 Rev1.0 (DT)
+pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __memcpy+0x30/0x260
+lr : __xudc_ep0_queue+0xf0/0x110
+sp : ffff800008003d00
+x29: ffff800008003d00 x28: ffff800009474e80 x27: 00000000000000a0
+x26: 0000000000000100 x25: 0000000000000012 x24: ffff000800bc8080
+x23: 0000000000000001 x22: 0000000000000012 x21: ffff000800bc8080
+x20: 0000000000000012 x19: ffff000800bc8080 x18: 0000000000000000
+x17: ffff800876482000 x16: ffff800008004000 x15: 0000000000004000
+x14: 00001f09785d0400 x13: 0103020101005567 x12: 0781400000000200
+x11: 00000000c5672a10 x10: 00000000000008d0 x9 : ffff800009463cf0
+x8 : ffff8000094757b0 x7 : 0201010055670781 x6 : 4000000002000112
+x5 : ffff80000c05009a x4 : ffff000800a15012 x3 : ffff00080362ad80
+x2 : 0000000000000012 x1 : ffff000800a15000 x0 : ffff80000c050088
+Call trace:
+ __memcpy+0x30/0x260
+ xudc_ep0_queue+0x3c/0x60
+ usb_ep_queue+0x38/0x44
+ composite_ep0_queue.constprop.0+0x2c/0xc0
+ composite_setup+0x8d0/0x185c
+ configfs_composite_setup+0x74/0xb0
+ xudc_irq+0x570/0xa40
+ __handle_irq_event_percpu+0x58/0x170
+ handle_irq_event+0x60/0x120
+ handle_fasteoi_irq+0xc0/0x220
+ handle_domain_irq+0x60/0x90
+ gic_handle_irq+0x74/0xa0
+ call_on_irq_stack+0x2c/0x60
+ do_interrupt_handler+0x54/0x60
+ el1_interrupt+0x30/0x50
+ el1h_64_irq_handler+0x18/0x24
+ el1h_64_irq+0x78/0x7c
+ arch_cpu_idle+0x18/0x2c
+ do_idle+0xdc/0x15c
+ cpu_startup_entry+0x28/0x60
+ rest_init+0xc8/0xe0
+ arch_call_rest_init+0x10/0x1c
+ start_kernel+0x694/0x6d4
+ __primary_switched+0xa4/0xac
+
+Fixes: 1f7c51660034 ("usb: gadget: Add xilinx usb2 device support")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202209020044.CX2PfZzM-lkp@intel.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Piyush Mehta <piyush.mehta@amd.com>
+Link: https://lore.kernel.org/r/20230929121514.13475-1-piyush.mehta@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/srp/ib_srp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/udc/udc-xilinx.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/drivers/infiniband/ulp/srp/ib_srp.c
-+++ b/drivers/infiniband/ulp/srp/ib_srp.c
-@@ -1955,7 +1955,8 @@ static void srp_process_rsp(struct srp_r
- 		if (scmnd) {
- 			req = scsi_cmd_priv(scmnd);
- 			scmnd = srp_claim_req(ch, req, NULL, scmnd);
--		} else {
-+		}
-+		if (!scmnd) {
- 			shost_printk(KERN_ERR, target->scsi_host,
- 				     "Null scmnd for RSP w/tag %#016llx received on ch %td / QP %#x\n",
- 				     rsp->tag, ch - target->ch, ch->qp->qp_num);
+--- a/drivers/usb/gadget/udc/udc-xilinx.c
++++ b/drivers/usb/gadget/udc/udc-xilinx.c
+@@ -496,11 +496,13 @@ static int xudc_eptxrx(struct xusb_ep *e
+ 		/* Get the Buffer address and copy the transmit data.*/
+ 		eprambase = (u32 __force *)(udc->addr + ep->rambase);
+ 		if (ep->is_in) {
+-			memcpy(eprambase, bufferptr, bytestosend);
++			memcpy_toio((void __iomem *)eprambase, bufferptr,
++				    bytestosend);
+ 			udc->write_fn(udc->addr, ep->offset +
+ 				      XUSB_EP_BUF0COUNT_OFFSET, bufferlen);
+ 		} else {
+-			memcpy(bufferptr, eprambase, bytestosend);
++			memcpy_toio((void __iomem *)bufferptr, eprambase,
++				    bytestosend);
+ 		}
+ 		/*
+ 		 * Enable the buffer for transmission.
+@@ -514,11 +516,13 @@ static int xudc_eptxrx(struct xusb_ep *e
+ 		eprambase = (u32 __force *)(udc->addr + ep->rambase +
+ 			     ep->ep_usb.maxpacket);
+ 		if (ep->is_in) {
+-			memcpy(eprambase, bufferptr, bytestosend);
++			memcpy_toio((void __iomem *)eprambase, bufferptr,
++				    bytestosend);
+ 			udc->write_fn(udc->addr, ep->offset +
+ 				      XUSB_EP_BUF1COUNT_OFFSET, bufferlen);
+ 		} else {
+-			memcpy(bufferptr, eprambase, bytestosend);
++			memcpy_toio((void __iomem *)bufferptr, eprambase,
++				    bytestosend);
+ 		}
+ 		/*
+ 		 * Enable the buffer for transmission.
+@@ -1020,7 +1024,7 @@ static int __xudc_ep0_queue(struct xusb_
+ 			   udc->addr);
+ 		length = req->usb_req.actual = min_t(u32, length,
+ 						     EP0_MAX_PACKET);
+-		memcpy(corebuf, req->usb_req.buf, length);
++		memcpy_toio((void __iomem *)corebuf, req->usb_req.buf, length);
+ 		udc->write_fn(udc->addr, XUSB_EP_BUF0COUNT_OFFSET, length);
+ 		udc->write_fn(udc->addr, XUSB_BUFFREADY_OFFSET, 1);
+ 	} else {
+@@ -1746,7 +1750,7 @@ static void xudc_handle_setup(struct xus
+ 
+ 	/* Load up the chapter 9 command buffer.*/
+ 	ep0rambase = (u32 __force *) (udc->addr + XUSB_SETUP_PKT_ADDR_OFFSET);
+-	memcpy(&setup, ep0rambase, 8);
++	memcpy_toio((void __iomem *)&setup, ep0rambase, 8);
+ 
+ 	udc->setup = setup;
+ 	udc->setup.wValue = cpu_to_le16(setup.wValue);
+@@ -1833,7 +1837,7 @@ static void xudc_ep0_out(struct xusb_udc
+ 			     (ep0->rambase << 2));
+ 		buffer = req->usb_req.buf + req->usb_req.actual;
+ 		req->usb_req.actual = req->usb_req.actual + bytes_to_rx;
+-		memcpy(buffer, ep0rambase, bytes_to_rx);
++		memcpy_toio((void __iomem *)buffer, ep0rambase, bytes_to_rx);
+ 
+ 		if (req->usb_req.length == req->usb_req.actual) {
+ 			/* Data transfer completed get ready for Status stage */
+@@ -1909,7 +1913,7 @@ static void xudc_ep0_in(struct xusb_udc
+ 				     (ep0->rambase << 2));
+ 			buffer = req->usb_req.buf + req->usb_req.actual;
+ 			req->usb_req.actual = req->usb_req.actual + length;
+-			memcpy(ep0rambase, buffer, length);
++			memcpy_toio((void __iomem *)ep0rambase, buffer, length);
+ 		}
+ 		udc->write_fn(udc->addr, XUSB_EP_BUF0COUNT_OFFSET, count);
+ 		udc->write_fn(udc->addr, XUSB_BUFFREADY_OFFSET, 1);
 
 
