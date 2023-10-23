@@ -2,44 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F6567D3458
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:38:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3DB37D30B8
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234209AbjJWLis (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:38:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35164 "EHLO
+        id S229906AbjJWLBa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234212AbjJWLir (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:38:47 -0400
+        with ESMTP id S229707AbjJWLB3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D15FF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:38:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25446C433C7;
-        Mon, 23 Oct 2023 11:38:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 925D6D6E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA94C433C7;
+        Mon, 23 Oct 2023 11:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061124;
-        bh=jxQl9areu2bWOUCk6kSqI2qJNTCiFW5paUanNR45IQM=;
+        s=korg; t=1698058887;
+        bh=K7hrOM/jbW8LQOvUEBhnHJvHflK887+pXb6gR4Ih4gc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SCWXjiT2ip2g19ZEMSE0iHVhGj7wmwaFymlnH2QivcnGNbupgZV2sgY1WUWzobDWK
-         uMgQX3Rxysxwqndd32YPMCnjp1WaNyQzOdjjRLOp7RJpWp0yHKlgxK6SAEET1R/ZL+
-         chP22DOptDxY4SwRmDqqeeF5PPcxNxZecpsfKxsg=
+        b=tJaPDicUIUDszAuwSF7c6L8xe5THAqWMZbb1fXmhpvImDaIbCNm5v23JpFpyltGfN
+         rdl/gbsju6Qe1pAepi3znUeXRHZdebKQQF2/AY/bMA94T9F1GTcvOf01HQVd62aN3k
+         UNiqOx4PAHdU1I+PpsiOVd8v6TIx1BY6JgX8ImUg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Eugen Hristev <eugen.hristev@microchip.com>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 053/137] iio: core: Hide read accesses to iio_dev->currentmode
+        patches@lists.linux.dev, Puliang Lu <puliang.lu@fibocom.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.14 60/66] USB: serial: option: add Fibocom to DELL custom modem FM101R-GL
 Date:   Mon, 23 Oct 2023 12:56:50 +0200
-Message-ID: <20231023104822.788704443@linuxfoundation.org>
+Message-ID: <20231023104813.056926189@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,117 +48,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Puliang Lu <puliang.lu@fibocom.com>
 
-[ Upstream commit 8c576f87ad7eb639b8bd4472a9bb830e0696dda5 ]
+commit 52480e1f1a259c93d749ba3961af0bffedfe7a7a upstream.
 
-In order to later move this variable within the opaque structure, let's
-create a helper for accessing it in read-only mode. This helper will be
-exposed to device drivers and kept accessible for the few that could need
-it. The write access to this variable however should be fully reserved to
-the core so in a second step we will hide this variable into the opaque
-structure.
+Update the USB serial option driver support for the Fibocom
+FM101R-GL LTE modules as there are actually several different variants.
 
-Cc: Eugen Hristev <eugen.hristev@microchip.com>
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc: Ludovic Desroches <ludovic.desroches@microchip.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20220207143840.707510-11-miquel.raynal@bootlin.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 7771c8c80d62 ("iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- VID:PID 413C:8213, FM101R-GL are laptop M.2 cards (with
+  MBIM interfaces for Linux)
+
+- VID:PID 413C:8215, FM101R-GL ESIM are laptop M.2 cards (with
+  MBIM interface for Linux)
+
+0x8213: mbim, tty
+0x8215: mbim, tty
+
+T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=413c ProdID=8213 Rev= 5.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom FM101-GL Module
+S:  SerialNumber=a3b7cbf0
+C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=413c ProdID=8215 Rev= 5.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom FM101-GL Module
+S:  SerialNumber=a3b7cbf0
+C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/bmc150-accel-core.c |  4 ++--
- drivers/iio/adc/at91-sama5d2_adc.c    |  4 ++--
- drivers/iio/industrialio-core.c       | 11 +++++++++++
- include/linux/iio/iio.h               |  1 +
- 4 files changed, 16 insertions(+), 4 deletions(-)
+ drivers/usb/serial/option.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/iio/accel/bmc150-accel-core.c b/drivers/iio/accel/bmc150-accel-core.c
-index 3af763b4a9737..9eabc4d1dd0f2 100644
---- a/drivers/iio/accel/bmc150-accel-core.c
-+++ b/drivers/iio/accel/bmc150-accel-core.c
-@@ -1525,7 +1525,7 @@ static int bmc150_accel_buffer_postenable(struct iio_dev *indio_dev)
- 	struct bmc150_accel_data *data = iio_priv(indio_dev);
- 	int ret = 0;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -206,6 +206,9 @@ static void option_instat_callback(struc
+ #define DELL_PRODUCT_5829E_ESIM			0x81e4
+ #define DELL_PRODUCT_5829E			0x81e6
  
--	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED)
-+	if (iio_device_get_current_mode(indio_dev) == INDIO_BUFFER_TRIGGERED)
- 		return 0;
- 
- 	mutex_lock(&data->mutex);
-@@ -1557,7 +1557,7 @@ static int bmc150_accel_buffer_predisable(struct iio_dev *indio_dev)
- {
- 	struct bmc150_accel_data *data = iio_priv(indio_dev);
- 
--	if (indio_dev->currentmode == INDIO_BUFFER_TRIGGERED)
-+	if (iio_device_get_current_mode(indio_dev) == INDIO_BUFFER_TRIGGERED)
- 		return 0;
- 
- 	mutex_lock(&data->mutex);
-diff --git a/drivers/iio/adc/at91-sama5d2_adc.c b/drivers/iio/adc/at91-sama5d2_adc.c
-index ecb49bc452ae6..806fdcd79e64d 100644
---- a/drivers/iio/adc/at91-sama5d2_adc.c
-+++ b/drivers/iio/adc/at91-sama5d2_adc.c
-@@ -894,7 +894,7 @@ static int at91_adc_buffer_prepare(struct iio_dev *indio_dev)
- 		return at91_adc_configure_touch(st, true);
- 
- 	/* if we are not in triggered mode, we cannot enable the buffer. */
--	if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
-+	if (!(iio_device_get_current_mode(indio_dev) & INDIO_ALL_TRIGGERED_MODES))
- 		return -EINVAL;
- 
- 	/* we continue with the triggered buffer */
-@@ -947,7 +947,7 @@ static int at91_adc_buffer_postdisable(struct iio_dev *indio_dev)
- 		return at91_adc_configure_touch(st, false);
- 
- 	/* if we are not in triggered mode, nothing to do here */
--	if (!(indio_dev->currentmode & INDIO_ALL_TRIGGERED_MODES))
-+	if (!(iio_device_get_current_mode(indio_dev) & INDIO_ALL_TRIGGERED_MODES))
- 		return -EINVAL;
- 
- 	/*
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index f95a95fd9d0a5..6145e6e4f0ffd 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -2084,6 +2084,17 @@ void iio_device_release_direct_mode(struct iio_dev *indio_dev)
- }
- EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
- 
-+/**
-+ * iio_device_get_current_mode() - helper function providing read-only access to
-+ *				   the @currentmode variable
-+ * @indio_dev:			   IIO device structure for device
-+ */
-+int iio_device_get_current_mode(struct iio_dev *indio_dev)
-+{
-+	return indio_dev->currentmode;
-+}
-+EXPORT_SYMBOL_GPL(iio_device_get_current_mode);
++#define DELL_PRODUCT_FM101R			0x8213
++#define DELL_PRODUCT_FM101R_ESIM		0x8215
 +
- subsys_initcall(iio_init);
- module_exit(iio_exit);
- 
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 0346acbbed2ee..0cac05d5ef1c3 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -542,6 +542,7 @@ struct iio_dev {
- };
- 
- int iio_device_id(struct iio_dev *indio_dev);
-+int iio_device_get_current_mode(struct iio_dev *indio_dev);
- bool iio_buffer_enabled(struct iio_dev *indio_dev);
- 
- const struct iio_chan_spec
--- 
-2.40.1
-
+ #define KYOCERA_VENDOR_ID			0x0c88
+ #define KYOCERA_PRODUCT_KPC650			0x17da
+ #define KYOCERA_PRODUCT_KPC680			0x180a
+@@ -1111,6 +1114,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | RSVD(6) },
+ 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
+ 	  .driver_info = RSVD(0) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
++	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_500A) },
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_620UW) },
 
 
