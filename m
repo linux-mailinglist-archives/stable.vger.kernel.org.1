@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 960917D3577
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4F797D33BB
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234461AbjJWLsj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:48:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45284 "EHLO
+        id S233902AbjJWLda (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:33:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234498AbjJWLsj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:48:39 -0400
+        with ESMTP id S234117AbjJWLd3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13906AF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:48:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A3AC433C8;
-        Mon, 23 Oct 2023 11:48:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBCE092
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:33:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6FCC433CD;
+        Mon, 23 Oct 2023 11:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061716;
-        bh=zPAvn1JhndAW43thYym5s8knzjqTyaWF+LNZ1JTK0no=;
+        s=korg; t=1698060807;
+        bh=nCBgFcL3PghXoGVcanSR5jHfO6zGzFKwQ06jakhukOk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f8GVpPKlr9UrnXDoWlHsqOT01Djn7xEuGvtDjF5l5mNSsw04rVymd91giItNnr7iS
-         a4BPZdntX99vG0XYwWe7imOgyt1HgwdZVDLZKomwYl5hs2xIMzly1TtcdRy5M+Ku7Q
-         HFd8oGoDZF83luskRO4ri1+kNx74wKKyzBWKvMfo=
+        b=gj3W6XLTiK3QKATiph1eTgQ4UaZUhuncHmITT1lkF/sHXgvEAqjBazae6WVb1siOo
+         3OlDOnTkbkEMiUWtlIsXuikcItiHWF3KiE7MeskJN4U/ywai8g3tz95sXlxGmchlo1
+         PFE4ENJXCIE2UE/wzAp9C88VucaGDxHjgoDpqC2U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Garry <john.garry@huawei.com>,
-        Marc Zyngier <maz@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 123/202] ACPI: Drop acpi_dev_irqresource_disabled()
+        patches@lists.linux.dev, Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 072/123] net: pktgen: Fix interface flags printing
 Date:   Mon, 23 Oct 2023 12:57:10 +0200
-Message-ID: <20231023104830.125382853@linuxfoundation.org>
+Message-ID: <20231023104820.094477794@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,93 +48,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.garry@huawei.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit 1c3f69b4543af0aad514c127298e5ea40392575d ]
+commit 1d30162f35c7a73fc2f8cdcdcdbd690bedb99d1a upstream.
 
-The functionality of acpi_dev_irqresource_disabled() is same as in common
-irqresource_disabled(), so drop acpi_dev_irqresource_disabled() in favour
-of that function.
+Device flags are displayed incorrectly:
+1) The comparison (i == F_FLOW_SEQ) is always false, because F_FLOW_SEQ
+is equal to (1 << FLOW_SEQ_SHIFT) == 2048, and the maximum value
+of the 'i' variable is (NR_PKT_FLAG - 1) == 17. It should be compared
+with FLOW_SEQ_SHIFT.
 
-Signed-off-by: John Garry <john.garry@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/1606905417-183214-4-git-send-email-john.garry@huawei.com
-Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+2) Similarly to the F_IPSEC flag.
+
+3) Also add spaces to the print end of the string literal "spi:%u"
+to prevent the output from merging with the flag that follows.
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
+
+Fixes: 99c6d3d20d62 ("pktgen: Remove brute-force printing of flags")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c | 17 +++++------------
- 1 file changed, 5 insertions(+), 12 deletions(-)
+ net/core/pktgen.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index f2f5f1dc7c61d..20a7892c6d3fd 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -380,13 +380,6 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
- }
- EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -645,19 +645,19 @@ static int pktgen_if_show(struct seq_fil
+ 	seq_puts(seq, "     Flags: ");
  
--static void acpi_dev_irqresource_disabled(struct resource *res, u32 gsi)
--{
--	res->start = gsi;
--	res->end = gsi;
--	res->flags = IORESOURCE_IRQ | IORESOURCE_DISABLED | IORESOURCE_UNSET;
--}
+ 	for (i = 0; i < NR_PKT_FLAGS; i++) {
+-		if (i == F_FLOW_SEQ)
++		if (i == FLOW_SEQ_SHIFT)
+ 			if (!pkt_dev->cflows)
+ 				continue;
+ 
+-		if (pkt_dev->flags & (1 << i))
++		if (pkt_dev->flags & (1 << i)) {
+ 			seq_printf(seq, "%s  ", pkt_flag_names[i]);
+-		else if (i == F_FLOW_SEQ)
+-			seq_puts(seq, "FLOW_RND  ");
 -
- static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 				     u8 triggering, u8 polarity, u8 shareable,
- 				     bool legacy)
-@@ -394,7 +387,7 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 	int irq, p, t;
- 
- 	if (!valid_IRQ(gsi)) {
--		acpi_dev_irqresource_disabled(res, gsi);
-+		irqresource_disabled(res, gsi);
- 		return;
+ #ifdef CONFIG_XFRM
+-		if (i == F_IPSEC && pkt_dev->spi)
+-			seq_printf(seq, "spi:%u", pkt_dev->spi);
++			if (i == IPSEC_SHIFT && pkt_dev->spi)
++				seq_printf(seq, "spi:%u  ", pkt_dev->spi);
+ #endif
++		} else if (i == FLOW_SEQ_SHIFT) {
++			seq_puts(seq, "FLOW_RND  ");
++		}
  	}
  
-@@ -426,7 +419,7 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
- 		res->start = irq;
- 		res->end = irq;
- 	} else {
--		acpi_dev_irqresource_disabled(res, gsi);
-+		irqresource_disabled(res, gsi);
- 	}
- }
- 
-@@ -463,7 +456,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
- 		 */
- 		irq = &ares->data.irq;
- 		if (index >= irq->interrupt_count) {
--			acpi_dev_irqresource_disabled(res, 0);
-+			irqresource_disabled(res, 0);
- 			return false;
- 		}
- 		acpi_dev_get_irqresource(res, irq->interrupts[index],
-@@ -473,7 +466,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
- 	case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
- 		ext_irq = &ares->data.extended_irq;
- 		if (index >= ext_irq->interrupt_count) {
--			acpi_dev_irqresource_disabled(res, 0);
-+			irqresource_disabled(res, 0);
- 			return false;
- 		}
- 		if (is_gsi(ext_irq))
-@@ -481,7 +474,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
- 					 ext_irq->triggering, ext_irq->polarity,
- 					 ext_irq->shareable, false);
- 		else
--			acpi_dev_irqresource_disabled(res, 0);
-+			irqresource_disabled(res, 0);
- 		break;
- 	default:
- 		res->flags = 0;
--- 
-2.40.1
-
+ 	seq_puts(seq, "\n");
 
 
