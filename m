@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 165BA7D31F7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C17287D3426
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229686AbjJWLPP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:15:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59674 "EHLO
+        id S234175AbjJWLhE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232894AbjJWLPO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:15:14 -0400
+        with ESMTP id S234170AbjJWLhD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0FD1101
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE05C433CB;
-        Mon, 23 Oct 2023 11:15:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5FDE100
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C934C433C8;
+        Mon, 23 Oct 2023 11:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059710;
-        bh=hB43rsEYzW+mRQlTTCVYfaV2IkYMcgvZwxxMW77ursI=;
+        s=korg; t=1698061020;
+        bh=5wiBpbB3xN3kP22V6ToPDL7xqqavfHBOqzwkEK0zWVE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MT5tYUhMtC5HDjIKKQQcR/leaVJC3bAz1Q0sh+UEpzpUhcTooXXKzd16Uz+cig6nG
-         DsNyAlQ3N2Meb8JXgyTcYMFgcZLzIsFnDQrOlOPPg2OHR93ycQ2TGG92JN2rFTJZ2m
-         990a2vGSVCcNn7adoxLQY8e7Va0prtAg/TKCSCAE=
+        b=Vtrx3ZG9IDPZNBgs3muepC1cHSeoh6lZum2o43gbnkZYAXYRq9eVI8sucJbwAY8A0
+         Ix1i4m8A/b45wk0DE12SUtoyHoJlBUaZntwj9PdwSNAozCuyPa6gnGfyM13/d3/qLa
+         LT1IrvWPeqcaeZYaifT4vLZoeg5Hub7+/br0rWdY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Phil Elwell <phil@raspberrypi.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 26/98] iio: pressure: bmp280: Fix NULL pointer exception
+        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
+        Mat Martineau <martineau@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 018/137] tcp: check mptcp-level constraints for backlog coalescing
 Date:   Mon, 23 Oct 2023 12:56:15 +0200
-Message-ID: <20231023104814.508369168@linuxfoundation.org>
+Message-ID: <20231023104821.561259654@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,39 +50,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Elwell <phil@raspberrypi.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit 85dfb43bf69281adb1f345dfd9a39faf2e5a718d upstream.
+commit 6db8a37dfc541e059851652cfd4f0bb13b8ff6af upstream.
 
-The bmp085 EOC IRQ support is optional, but the driver's common probe
-function queries the IRQ properties whether or not it exists, which
-can trigger a NULL pointer exception. Avoid any exception by making
-the query conditional on the possession of a valid IRQ.
+The MPTCP protocol can acquire the subflow-level socket lock and
+cause the tcp backlog usage. When inserting new skbs into the
+backlog, the stack will try to coalesce them.
 
-Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
-Signed-off-by: Phil Elwell <phil@raspberrypi.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20230811155829.51208-1-phil@raspberrypi.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Currently, we have no check in place to ensure that such coalescing
+will respect the MPTCP-level DSS, and that may cause data stream
+corruption, as reported by Christoph.
+
+Address the issue by adding the relevant admission check for coalescing
+in tcp_add_backlog().
+
+Note the issue is not easy to reproduce, as the MPTCP protocol tries
+hard to avoid acquiring the subflow-level socket lock.
+
+Fixes: 648ef4b88673 ("mptcp: Implement MPTCP receive path")
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/420
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20231018-send-net-20231018-v1-2-17ecb002e41d@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/pressure/bmp280-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_ipv4.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1110,7 +1110,7 @@ int bmp280_common_probe(struct device *d
- 	 * however as it happens, the BMP085 shares the chip ID of BMP180
- 	 * so we look for an IRQ if we have that.
- 	 */
--	if (irq > 0 || (chip_id  == BMP180_CHIP_ID)) {
-+	if (irq > 0 && (chip_id  == BMP180_CHIP_ID)) {
- 		ret = bmp085_fetch_eoc_irq(dev, name, irq, data);
- 		if (ret)
- 			goto out_disable_vdda;
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -1863,6 +1863,7 @@ bool tcp_add_backlog(struct sock *sk, st
+ #ifdef CONFIG_TLS_DEVICE
+ 	    tail->decrypted != skb->decrypted ||
+ #endif
++	    !mptcp_skb_can_collapse(tail, skb) ||
+ 	    thtail->doff != th->doff ||
+ 	    memcmp(thtail + 1, th + 1, hdrlen - sizeof(*th)))
+ 		goto no_coalesce;
 
 
