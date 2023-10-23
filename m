@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CD8D7D307F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FE947D31B7
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230282AbjJWK7Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 06:59:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51668 "EHLO
+        id S229613AbjJWLMS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:12:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230449AbjJWK7Y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:24 -0400
+        with ESMTP id S233620AbjJWLMR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E6210C0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D680EC433C9;
-        Mon, 23 Oct 2023 10:59:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 811D8C5
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B747FC433C8;
+        Mon, 23 Oct 2023 11:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058762;
-        bh=SWG+7rs0cu9OSQgSKnREGuzL5SvzhHGNZSHrLCJY7Uk=;
+        s=korg; t=1698059534;
+        bh=aoW9YddJqGnJbkbzC2oI32I/beL5N9ajjdwOnAqcgag=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XOuXBSjFLblbd/ykd0iyVvUTQwJXFHhKB0WCHLkh27uko/RySQY78p1nTFmu9Rv2p
-         D463WAJiD36WCYuMSZEokQU66Gdqvexe34xS87TOUAiEblkOPIg+BzHxBkzGMFwfmz
-         hPw8aTH1yG4h3d5B0+lbWaFzZWNtI6ITt0a4mFHI=
+        b=TqkAQehrr0/Y9Mefvsp8Ry1z5cdUCIoefNEs52cvMen720IhtmuEqgZO3ZZLNMoMT
+         YbnQva++9z4WFUnYM7GQGSz9fcKz/WkZLWMNcE3iwJ3Z5QXtg0X1oeBrkyP2VOY5dc
+         5xaAgOiRbP6Zu33Jv66zia0ooOY6X9fCPqBIEero=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-        syzbot+0434ac83f907a1dbdd1e@syzkaller.appspotmail.com,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 4.14 18/66] Input: powermate - fix use-after-free in powermate_config_complete
+        patches@lists.linux.dev, Sunil V L <sunilvl@ventanamicro.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.5 182/241] ACPI: irq: Fix incorrect return value in acpi_register_gsi()
 Date:   Mon, 23 Oct 2023 12:56:08 +0200
-Message-ID: <20231023104811.474402774@linuxfoundation.org>
+Message-ID: <20231023104838.319191757@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +48,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-commit 5c15c60e7be615f05a45cd905093a54b11f461bc upstream.
+commit 0c21a18d5d6c6a73d098fb9b4701572370942df9 upstream.
 
-syzbot has found a use-after-free bug [1] in the powermate driver. This
-happens when the device is disconnected, which leads to a memory free from
-the powermate_device struct.  When an asynchronous control message
-completes after the kfree and its callback is invoked, the lock does not
-exist anymore and hence the bug.
+acpi_register_gsi() should return a negative value in case of failure.
 
-Use usb_kill_urb() on pm->config to cancel any in-progress requests upon
-device disconnection.
+Currently, it returns the return value from irq_create_fwspec_mapping().
+However, irq_create_fwspec_mapping() returns 0 for failure. Fix the
+issue by returning -EINVAL if irq_create_fwspec_mapping() returns zero.
 
-[1] https://syzkaller.appspot.com/bug?extid=0434ac83f907a1dbdd1e
-
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reported-by: syzbot+0434ac83f907a1dbdd1e@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/20230916-topic-powermate_use_after_free-v3-1-64412b81a7a2@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: d44fa3d46079 ("ACPI: Add support for ResourceSource/IRQ domain mapping")
+Cc: 4.11+ <stable@vger.kernel.org> # 4.11+
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+[ rjw: Rename a new local variable ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/powermate.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/irq.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/input/misc/powermate.c
-+++ b/drivers/input/misc/powermate.c
-@@ -424,6 +424,7 @@ static void powermate_disconnect(struct
- 		pm->requires_update = 0;
- 		usb_kill_urb(pm->irq);
- 		input_unregister_device(pm->input);
-+		usb_kill_urb(pm->config);
- 		usb_free_urb(pm->irq);
- 		usb_free_urb(pm->config);
- 		powermate_free_buffers(interface_to_usbdev(intf), pm);
+--- a/drivers/acpi/irq.c
++++ b/drivers/acpi/irq.c
+@@ -57,6 +57,7 @@ int acpi_register_gsi(struct device *dev
+ 		      int polarity)
+ {
+ 	struct irq_fwspec fwspec;
++	unsigned int irq;
+ 
+ 	fwspec.fwnode = acpi_get_gsi_domain_id(gsi);
+ 	if (WARN_ON(!fwspec.fwnode)) {
+@@ -68,7 +69,11 @@ int acpi_register_gsi(struct device *dev
+ 	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
+ 	fwspec.param_count = 2;
+ 
+-	return irq_create_fwspec_mapping(&fwspec);
++	irq = irq_create_fwspec_mapping(&fwspec);
++	if (!irq)
++		return -EINVAL;
++
++	return irq;
+ }
+ EXPORT_SYMBOL_GPL(acpi_register_gsi);
+ 
 
 
