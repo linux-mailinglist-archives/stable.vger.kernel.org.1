@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF9B07D333E
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C88B7D3581
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233980AbjJWL2T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:28:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40486 "EHLO
+        id S234542AbjJWLtG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233847AbjJWL2T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:19 -0400
+        with ESMTP id S234541AbjJWLtF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1F1C1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B76EC433C8;
-        Mon, 23 Oct 2023 11:28:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A43CCE8
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E689EC433C7;
+        Mon, 23 Oct 2023 11:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060496;
-        bh=79M3672aYhrt6KN6ZLZsLrYHepXjUf3tOfI4Et5yxQE=;
+        s=korg; t=1698061743;
+        bh=IjjfcJuMDyru9+CyHjpeMvxkkmCfNsS3Lnsi6XlywI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F9alNztfyseGxL8CVpuuvegajiFPqa0vpGcEdRnipaBKlFioknuvraEssi44bQiG1
-         qjeEg+osczU+Wy7lrANqwfV/wEwpcxEfDUieqTH2JhgrgD+ufpv4eSKEQr3Xk3h/fZ
-         CrJPN92YYFiQLis4zUPF/rjyIoKtJFIDdMOHThcQ=
+        b=Gazvga1zMUKLJB0bXq9JbbmiPBsHu8ofPdzPyd8sBOTkTo7ZNDRR78mTxQoOb1EkU
+         /qOq22oLpcQfBByNX0LWL3j7iL2YmlSO8HsPQNKjZpB/pE/1OFPQHMP3if7/mDUtfO
+         3wUwB1QjnyXNJfsKHNThkgCToHzqyy3rleQtR89s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 191/196] net: move altnames together with the netdevice
+        patches@lists.linux.dev,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 149/202] usb: typec: altmodes/displayport: Notify drm subsys of hotplug events
 Date:   Mon, 23 Oct 2023 12:57:36 +0200
-Message-ID: <20231023104833.766378653@linuxfoundation.org>
+Message-ID: <20231023104830.883973906@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,96 +50,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 8e15aee621618a3ee3abecaf1fd8c1428098b7ef upstream.
+[ Upstream commit 7f811394878535ed9a6849717de8c2959ae38899 ]
 
-The altname nodes are currently not moved to the new netns
-when netdevice itself moves:
+Use the new drm_connector_oob_hotplug_event() functions to let drm/kms
+drivers know about DisplayPort over Type-C hotplug events.
 
-  [ ~]# ip netns add test
-  [ ~]# ip -netns test link add name eth0 type dummy
-  [ ~]# ip -netns test link property add dev eth0 altname some-name
-  [ ~]# ip -netns test link show dev some-name
-  2: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-      link/ether 1e:67:ed:19:3d:24 brd ff:ff:ff:ff:ff:ff
-      altname some-name
-  [ ~]# ip -netns test link set dev eth0 netns 1
-  [ ~]# ip link
-  ...
-  3: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-      link/ether 02:40:88:62:ec:b8 brd ff:ff:ff:ff:ff:ff
-      altname some-name
-  [ ~]# ip li show dev some-name
-  Device "some-name" does not exist.
-
-Remove them from the hash table when device is unlisted
-and add back when listed again.
-
-Fixes: 36fbf1e52bd3 ("net: rtnetlink: add linkprop commands to add and delete alternative ifnames")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Link: https://lore.kernel.org/r/20210817215201.795062-9-hdegoede@redhat.com
+Stable-dep-of: 89434b069e46 ("usb: typec: altmodes/displayport: Signal hpd low when exiting mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/usb/typec/altmodes/Kconfig       |  1 +
+ drivers/usb/typec/altmodes/displayport.c | 23 +++++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -381,6 +381,7 @@ static void netdev_name_node_alt_flush(s
- /* Device list insertion */
- static void list_netdevice(struct net_device *dev)
+diff --git a/drivers/usb/typec/altmodes/Kconfig b/drivers/usb/typec/altmodes/Kconfig
+index 60d375e9c3c7c..1a6b5e872b0d9 100644
+--- a/drivers/usb/typec/altmodes/Kconfig
++++ b/drivers/usb/typec/altmodes/Kconfig
+@@ -4,6 +4,7 @@ menu "USB Type-C Alternate Mode drivers"
+ 
+ config TYPEC_DP_ALTMODE
+ 	tristate "DisplayPort Alternate Mode driver"
++	depends on DRM
+ 	help
+ 	  DisplayPort USB Type-C Alternate Mode allows DisplayPort
+ 	  displays and adapters to be attached to the USB Type-C
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index 0d4b1c0eeefb3..8083d5faf0c98 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -11,8 +11,10 @@
+ #include <linux/delay.h>
+ #include <linux/mutex.h>
+ #include <linux/module.h>
++#include <linux/property.h>
+ #include <linux/usb/pd_vdo.h>
+ #include <linux/usb/typec_dp.h>
++#include <drm/drm_connector.h>
+ #include "displayport.h"
+ 
+ #define DP_HEADER(_dp, cmd)		(VDO((_dp)->alt->svid, 1, cmd) | \
+@@ -57,11 +59,13 @@ struct dp_altmode {
+ 	struct typec_displayport_data data;
+ 
+ 	enum dp_state state;
++	bool hpd;
+ 
+ 	struct mutex lock; /* device lock */
+ 	struct work_struct work;
+ 	struct typec_altmode *alt;
+ 	const struct typec_altmode *port;
++	struct fwnode_handle *connector_fwnode;
+ };
+ 
+ static int dp_altmode_notify(struct dp_altmode *dp)
+@@ -122,6 +126,7 @@ static int dp_altmode_configure(struct dp_altmode *dp, u8 con)
+ static int dp_altmode_status_update(struct dp_altmode *dp)
  {
-+	struct netdev_name_node *name_node;
- 	struct net *net = dev_net(dev);
+ 	bool configured = !!DP_CONF_GET_PIN_ASSIGN(dp->data.conf);
++	bool hpd = !!(dp->data.status & DP_STATUS_HPD_STATE);
+ 	u8 con = DP_STATUS_CONNECTION(dp->data.status);
+ 	int ret = 0;
  
- 	ASSERT_RTNL();
-@@ -392,6 +393,9 @@ static void list_netdevice(struct net_de
- 			   dev_index_hash(net, dev->ifindex));
- 	write_unlock(&dev_base_lock);
+@@ -134,6 +139,11 @@ static int dp_altmode_status_update(struct dp_altmode *dp)
+ 		ret = dp_altmode_configure(dp, con);
+ 		if (!ret)
+ 			dp->state = DP_STATE_CONFIGURE;
++	} else {
++		if (dp->hpd != hpd) {
++			drm_connector_oob_hotplug_event(dp->connector_fwnode);
++			dp->hpd = hpd;
++		}
+ 	}
  
-+	netdev_for_each_altname(dev, name_node)
-+		netdev_name_node_add(net, name_node);
+ 	return ret;
+@@ -526,6 +536,7 @@ static const struct attribute_group dp_altmode_group = {
+ int dp_altmode_probe(struct typec_altmode *alt)
+ {
+ 	const struct typec_altmode *port = typec_altmode_get_partner(alt);
++	struct fwnode_handle *fwnode;
+ 	struct dp_altmode *dp;
+ 	int ret;
+ 
+@@ -554,6 +565,11 @@ int dp_altmode_probe(struct typec_altmode *alt)
+ 	alt->desc = "DisplayPort";
+ 	alt->ops = &dp_altmode_ops;
+ 
++	fwnode = dev_fwnode(alt->dev.parent->parent); /* typec_port fwnode */
++	dp->connector_fwnode = fwnode_find_reference(fwnode, "displayport", 0);
++	if (IS_ERR(dp->connector_fwnode))
++		dp->connector_fwnode = NULL;
 +
- 	dev_base_seq_inc(net);
+ 	typec_altmode_set_drvdata(alt, dp);
+ 
+ 	dp->state = DP_STATE_ENTER;
+@@ -569,6 +585,13 @@ void dp_altmode_remove(struct typec_altmode *alt)
+ 
+ 	sysfs_remove_group(&alt->dev.kobj, &dp_altmode_group);
+ 	cancel_work_sync(&dp->work);
++
++	if (dp->connector_fwnode) {
++		if (dp->hpd)
++			drm_connector_oob_hotplug_event(dp->connector_fwnode);
++
++		fwnode_handle_put(dp->connector_fwnode);
++	}
  }
+ EXPORT_SYMBOL_GPL(dp_altmode_remove);
  
-@@ -400,8 +404,13 @@ static void list_netdevice(struct net_de
-  */
- static void unlist_netdevice(struct net_device *dev, bool lock)
- {
-+	struct netdev_name_node *name_node;
-+
- 	ASSERT_RTNL();
- 
-+	netdev_for_each_altname(dev, name_node)
-+		netdev_name_node_del(name_node);
-+
- 	/* Unlink dev from the device chain */
- 	if (lock)
- 		write_lock(&dev_base_lock);
-@@ -10851,7 +10860,6 @@ void unregister_netdevice_many(struct li
- 	synchronize_net();
- 
- 	list_for_each_entry(dev, head, unreg_list) {
--		struct netdev_name_node *name_node;
- 		struct sk_buff *skb = NULL;
- 
- 		/* Shutdown queueing discipline. */
-@@ -10877,9 +10885,6 @@ void unregister_netdevice_many(struct li
- 		dev_uc_flush(dev);
- 		dev_mc_flush(dev);
- 
--		netdev_for_each_altname(dev, name_node)
--			netdev_name_node_del(name_node);
--		synchronize_rcu();
- 		netdev_name_node_alt_flush(dev);
- 		netdev_name_node_free(dev->name_node);
- 
+-- 
+2.40.1
+
 
 
