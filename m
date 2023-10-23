@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FE947D31B7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D7AE7D33EB
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbjJWLMS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:12:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54436 "EHLO
+        id S234041AbjJWLfS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233620AbjJWLMR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:17 -0400
+        with ESMTP id S234038AbjJWLfP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 811D8C5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B747FC433C8;
-        Mon, 23 Oct 2023 11:12:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C46FE4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13E4C433C9;
+        Mon, 23 Oct 2023 11:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059534;
-        bh=aoW9YddJqGnJbkbzC2oI32I/beL5N9ajjdwOnAqcgag=;
+        s=korg; t=1698060913;
+        bh=323e7ZPBxUerWjSU6JDOH1uHcQCs5HNegQ0iZeElMLc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TqkAQehrr0/Y9Mefvsp8Ry1z5cdUCIoefNEs52cvMen720IhtmuEqgZO3ZZLNMoMT
-         YbnQva++9z4WFUnYM7GQGSz9fcKz/WkZLWMNcE3iwJ3Z5QXtg0X1oeBrkyP2VOY5dc
-         5xaAgOiRbP6Zu33Jv66zia0ooOY6X9fCPqBIEero=
+        b=1bweaR8xrgqUdN8ShJ5+Ft85Hc9P1p0NmZXXm23HRpbZl9jFtDrBPFxE1b/nnJ9us
+         Q3tjqt1/MP1jauVr+gz+slQ5LxcfKN3y+Vk6UJQZCtOPcMy33j6oE4IG58bAjCt1jj
+         UR8jsVIxQRBdczzt8/L6H6xsxSro+GrxQ3/2cL/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sunil V L <sunilvl@ventanamicro.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.5 182/241] ACPI: irq: Fix incorrect return value in acpi_register_gsi()
+        patches@lists.linux.dev, Vishal Agrawal <vagrawal@redhat.com>,
+        Jay Vosburgh <jay.vosburgh@canonical.com>,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 011/137] ice: reset first in crash dump kernels
 Date:   Mon, 23 Oct 2023 12:56:08 +0200
-Message-ID: <20231023104838.319191757@linuxfoundation.org>
+Message-ID: <20231023104821.282489932@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,52 +52,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunil V L <sunilvl@ventanamicro.com>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-commit 0c21a18d5d6c6a73d098fb9b4701572370942df9 upstream.
+commit 0288c3e709e5fabd51e84715c5c798a02f43061a upstream.
 
-acpi_register_gsi() should return a negative value in case of failure.
+When the system boots into the crash dump kernel after a panic, the ice
+networking device may still have pending transactions that can cause errors
+or machine checks when the device is re-enabled. This can prevent the crash
+dump kernel from loading the driver or collecting the crash data.
 
-Currently, it returns the return value from irq_create_fwspec_mapping().
-However, irq_create_fwspec_mapping() returns 0 for failure. Fix the
-issue by returning -EINVAL if irq_create_fwspec_mapping() returns zero.
+To avoid this issue, perform a function level reset (FLR) on the ice device
+via PCIe config space before enabling it on the crash kernel. This will
+clear any outstanding transactions and stop all queues and interrupts.
+Restore the config space after the FLR, otherwise it was found in testing
+that the driver wouldn't load successfully.
 
-Fixes: d44fa3d46079 ("ACPI: Add support for ResourceSource/IRQ domain mapping")
-Cc: 4.11+ <stable@vger.kernel.org> # 4.11+
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-[ rjw: Rename a new local variable ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The following sequence causes the original issue:
+- Load the ice driver with modprobe ice
+- Enable SR-IOV with 2 VFs: echo 2 > /sys/class/net/eth0/device/sriov_num_vfs
+- Trigger a crash with echo c > /proc/sysrq-trigger
+- Load the ice driver again (or let it load automatically) with modprobe ice
+- The system crashes again during pcim_enable_device()
+
+Fixes: 837f08fdecbe ("ice: Add basic driver framework for Intel(R) E800 Series")
+Reported-by: Vishal Agrawal <vagrawal@redhat.com>
+Reviewed-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Link: https://lore.kernel.org/r/20231011233334.336092-3-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/irq.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -57,6 +57,7 @@ int acpi_register_gsi(struct device *dev
- 		      int polarity)
- {
- 	struct irq_fwspec fwspec;
-+	unsigned int irq;
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -6,6 +6,7 @@
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- 	fwspec.fwnode = acpi_get_gsi_domain_id(gsi);
- 	if (WARN_ON(!fwspec.fwnode)) {
-@@ -68,7 +69,11 @@ int acpi_register_gsi(struct device *dev
- 	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
- 	fwspec.param_count = 2;
+ #include <generated/utsrelease.h>
++#include <linux/crash_dump.h>
+ #include "ice.h"
+ #include "ice_base.h"
+ #include "ice_lib.h"
+@@ -4255,6 +4256,20 @@ ice_probe(struct pci_dev *pdev, const st
+ 		return -EINVAL;
+ 	}
  
--	return irq_create_fwspec_mapping(&fwspec);
-+	irq = irq_create_fwspec_mapping(&fwspec);
-+	if (!irq)
-+		return -EINVAL;
++	/* when under a kdump kernel initiate a reset before enabling the
++	 * device in order to clear out any pending DMA transactions. These
++	 * transactions can cause some systems to machine check when doing
++	 * the pcim_enable_device() below.
++	 */
++	if (is_kdump_kernel()) {
++		pci_save_state(pdev);
++		pci_clear_master(pdev);
++		err = pcie_flr(pdev);
++		if (err)
++			return err;
++		pci_restore_state(pdev);
++	}
 +
-+	return irq;
- }
- EXPORT_SYMBOL_GPL(acpi_register_gsi);
- 
+ 	/* this driver uses devres, see
+ 	 * Documentation/driver-api/driver-model/devres.rst
+ 	 */
 
 
