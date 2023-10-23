@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36B7E7D30A9
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13C917D319D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbjJWLBD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:01:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53938 "EHLO
+        id S233523AbjJWLLH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:11:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbjJWLBC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:02 -0400
+        with ESMTP id S233521AbjJWLLH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71C5AD7C
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D31C433C8;
-        Mon, 23 Oct 2023 11:00:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA80C99
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166E3C433CA;
+        Mon, 23 Oct 2023 11:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058860;
-        bh=uXnCFGSLYOTzL+p31Jwjc1rzNZFQ9YShHTdFZjusy9c=;
+        s=korg; t=1698059465;
+        bh=KNPtezlZ5hvGu2WTqWXxnVup4nSRBGNOdsJUYFIDgIg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gk/bGnqRGve7312LkY2MxD8dCR1EsyKG3tnFrWPsFvK/eEw21ZhWZxD2LFu7HXWyZ
-         NZXfU5dNi5nofJa5ios4Ckyzo/ERDx/saYSyynD/Aaf0/uxxpKLr2NSPedd2ITdT4a
-         n2uYUINY0v3ZmkCrXZScOTAXiEv+b/33ZXMxqP8o=
+        b=OxtZIkLQaZ95xRy1+MDqZUBf1CiG/MIjiQjUljHK3V8QB1d72dztxNmmJh4lSF12W
+         PAiN1npXgrhJy5ma60pGMQwUCbpHpSh0Fv9Tt6Jcao2bRUi6VQV1s4k/SasEzMCvwS
+         yv41qls3Ft8SUcafCbOE82RkJhnSxsAah6LeGo3c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krishna Kurapati <quic_kriskura@quicinc.com>,
-        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
-Subject: [PATCH 4.14 23/66] usb: gadget: ncm: Handle decoding of multiple NTBs in unwrap call
+        patches@lists.linux.dev, Scott Mayhew <smayhew@redhat.com>,
+        Benjamin Coddington <bcodding@redhat.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 6.5 187/241] NFS: Fix potential oops in nfs_inode_remove_request()
 Date:   Mon, 23 Oct 2023 12:56:13 +0200
-Message-ID: <20231023104811.678057443@linuxfoundation.org>
+Message-ID: <20231023104838.440109672@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,107 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-commit 427694cfaafa565a3db5c5ea71df6bc095dca92f upstream.
+commit 6a6d4644ce935ddec4f76223ac0ca68da56bd2d3 upstream.
 
-When NCM is used with hosts like Windows PC, it is observed that there are
-multiple NTB's contained in one usb request giveback. Since the driver
-unwraps the obtained request data assuming only one NTB is present, we
-loose the subsequent NTB's present resulting in data loss.
+Once a folio's private data has been cleared, it's possible for another
+process to clear the folio->mapping (e.g. via invalidate_complete_folio2
+or evict_mapping_folio), so it wouldn't be safe to call
+nfs_page_to_inode() after that.
 
-Fix this by checking the parsed block length with the obtained data
-length in usb request and continue parsing after the last byte of current
-NTB.
-
-Cc: stable@vger.kernel.org
-Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Link: https://lore.kernel.org/r/20230927105858.12950-1-quic_kriskura@quicinc.com
+Fixes: 0c493b5cf16e ("NFS: Convert buffered writes to use folios")
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Tested-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ncm.c |   26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ fs/nfs/write.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/function/f_ncm.c
-+++ b/drivers/usb/gadget/function/f_ncm.c
-@@ -1201,7 +1201,8 @@ static int ncm_unwrap_ntb(struct gether
- 			  struct sk_buff_head *list)
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 7720b5e43014..9d82d50ce0b1 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -788,6 +788,8 @@ static void nfs_inode_add_request(struct nfs_page *req)
+  */
+ static void nfs_inode_remove_request(struct nfs_page *req)
  {
- 	struct f_ncm	*ncm = func_to_ncm(&port->func);
--	__le16		*tmp = (void *) skb->data;
-+	unsigned char	*ntb_ptr = skb->data;
-+	__le16		*tmp;
- 	unsigned	index, index2;
- 	int		ndp_index;
- 	unsigned	dg_len, dg_len2;
-@@ -1214,6 +1215,10 @@ static int ncm_unwrap_ntb(struct gether
- 	const struct ndp_parser_opts *opts = ncm->parser_opts;
- 	unsigned	crc_len = ncm->is_crc ? sizeof(uint32_t) : 0;
- 	int		dgram_counter;
-+	int		to_process = skb->len;
++	struct nfs_inode *nfsi = NFS_I(nfs_page_to_inode(req));
 +
-+parse_ntb:
-+	tmp = (__le16 *)ntb_ptr;
+ 	if (nfs_page_group_sync_on_bit(req, PG_REMOVE)) {
+ 		struct folio *folio = nfs_page_to_folio(req->wb_head);
+ 		struct address_space *mapping = folio_file_mapping(folio);
+@@ -802,7 +804,7 @@ static void nfs_inode_remove_request(struct nfs_page *req)
+ 	}
  
- 	/* dwSignature */
- 	if (get_unaligned_le32(tmp) != opts->nth_sign) {
-@@ -1260,7 +1265,7 @@ static int ncm_unwrap_ntb(struct gether
- 		 * walk through NDP
- 		 * dwSignature
- 		 */
--		tmp = (void *)(skb->data + ndp_index);
-+		tmp = (__le16 *)(ntb_ptr + ndp_index);
- 		if (get_unaligned_le32(tmp) != ncm->ndp_sign) {
- 			INFO(port->func.config->cdev, "Wrong NDP SIGN\n");
- 			goto err;
-@@ -1317,11 +1322,11 @@ static int ncm_unwrap_ntb(struct gether
- 			if (ncm->is_crc) {
- 				uint32_t crc, crc2;
- 
--				crc = get_unaligned_le32(skb->data +
-+				crc = get_unaligned_le32(ntb_ptr +
- 							 index + dg_len -
- 							 crc_len);
- 				crc2 = ~crc32_le(~0,
--						 skb->data + index,
-+						 ntb_ptr + index,
- 						 dg_len - crc_len);
- 				if (crc != crc2) {
- 					INFO(port->func.config->cdev,
-@@ -1348,7 +1353,7 @@ static int ncm_unwrap_ntb(struct gether
- 							 dg_len - crc_len);
- 			if (skb2 == NULL)
- 				goto err;
--			skb_put_data(skb2, skb->data + index,
-+			skb_put_data(skb2, ntb_ptr + index,
- 				     dg_len - crc_len);
- 
- 			skb_queue_tail(list, skb2);
-@@ -1361,10 +1366,17 @@ static int ncm_unwrap_ntb(struct gether
- 		} while (ndp_len > 2 * (opts->dgram_item_len * 2));
- 	} while (ndp_index);
- 
--	dev_consume_skb_any(skb);
--
- 	VDBG(port->func.config->cdev,
- 	     "Parsed NTB with %d frames\n", dgram_counter);
-+
-+	to_process -= block_len;
-+	if (to_process != 0) {
-+		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
-+		goto parse_ntb;
-+	}
-+
-+	dev_consume_skb_any(skb);
-+
- 	return 0;
- err:
- 	skb_queue_purge(list);
+ 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
+-		atomic_long_dec(&NFS_I(nfs_page_to_inode(req))->nrequests);
++		atomic_long_dec(&nfsi->nrequests);
+ 		nfs_release_request(req);
+ 	}
+ }
+-- 
+2.42.0
+
 
 
