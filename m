@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E0FC7D32B4
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 256407D315F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233867AbjJWLW7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:22:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34738 "EHLO
+        id S233488AbjJWLIa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233853AbjJWLW4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:56 -0400
+        with ESMTP id S233406AbjJWLI3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D056DC
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2783C433C7;
-        Mon, 23 Oct 2023 11:22:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65A2DC5
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A88ADC433C7;
+        Mon, 23 Oct 2023 11:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060173;
-        bh=cZGsV8VeEUwsvLkYEQIKZNu2WlXawgi3ARezfgI9jVc=;
+        s=korg; t=1698059307;
+        bh=945q1fo9fQp/pEt3agFvNxVjTtCKLEWc2rCoxtttjEA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=herTjPZ+8AWxrDxxY+kNH9dr+bWkv4Zv8uxM4fxG+EnJGc0zEN3N/QHFeMVgjeBe1
-         dApzxsrwO5UynNT4dKGlAL6/OoxQ+72DWZDV3iTjHzAJpgJewe0geKh6D0btDi+JoB
-         fazRiFq0SdSgqr4ux61HGhBlU4Z8jVW5lXaIzOcw=
+        b=D4VlGPk3iru/utV3ljXopYbhhhCbQUprP8iaEOCSctJWp/7O5wW9oSNjzERmKkTAm
+         D9e/3eWtKSma9bYWYCYaUt6dbc/GthkVoiKV2mEMMPce4++62CC8BdxziXYLQ4sbZJ
+         vk37a8g3rd6NrR5a+mkufUV3MIC+WiYqfcJUD8sA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Wahren <wahrenst@gmx.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Neal Cardwell <ncardwell@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 055/196] tcp: tsq: relax tcp_small_queue_check() when rtx queue contains a single skb
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 134/241] btrfs: error when COWing block from a root that is being deleted
 Date:   Mon, 23 Oct 2023 12:55:20 +0200
-Message-ID: <20231023104830.091262472@linuxfoundation.org>
+Message-ID: <20231023104837.137517865@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,80 +49,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit f921a4a5bffa8a0005b190fb9421a7fc1fd716b6 upstream.
+[ Upstream commit a2caab29884397e583d09be6546259a83ebfbdb1 ]
 
-In commit 75eefc6c59fd ("tcp: tsq: add a shortcut in tcp_small_queue_check()")
-we allowed to send an skb regardless of TSQ limits being hit if rtx queue
-was empty or had a single skb, in order to better fill the pipe
-when/if TX completions were slow.
+At btrfs_cow_block() we check if the block being COWed belongs to a root
+that is being deleted and if so we log an error message. However this is
+an unexpected case and it indicates a bug somewhere, so we should return
+an error and abort the transaction. So change this in the following ways:
 
-Then later, commit 75c119afe14f ("tcp: implement rb-tree based
-retransmit queue") accidentally removed the special case for
-one skb in rtx queue.
+1) Abort the transaction with -EUCLEAN, so that if the issue ever happens
+   it can easily be noticed;
 
-Stefan Wahren reported a regression in single TCP flow throughput
-using a 100Mbit fec link, starting from commit 65466904b015 ("tcp: adjust
-TSO packet sizes based on min_rtt"). This last commit only made the
-regression more visible, because it locked the TCP flow on a particular
-behavior where TSQ prevented two skbs being pushed downstream,
-adding silences on the wire between each TSO packet.
+2) Change the logged message level from error to critical, and change the
+   message itself to print the block's logical address and the ID of the
+   root;
 
-Many thanks to Stefan for his invaluable help !
+3) Return -EUCLEAN to the caller;
 
-Fixes: 75c119afe14f ("tcp: implement rb-tree based retransmit queue")
-Link: https://lore.kernel.org/netdev/7f31ddc8-9971-495e-a1f6-819df542e0af@gmx.net/
-Reported-by: Stefan Wahren <wahrenst@gmx.net>
-Tested-by: Stefan Wahren <wahrenst@gmx.net>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20231017124526.4060202-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+4) As this is an unexpected scenario, that should never happen, mark the
+   check as unlikely, allowing the compiler to potentially generate better
+   code.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_output.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ fs/btrfs/ctree.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2489,6 +2489,18 @@ static bool tcp_pacing_check(struct sock
- 	return true;
- }
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 7afd0a6495f37..db1f3bc7f3284 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -682,9 +682,13 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
+ 	u64 search_start;
+ 	int ret;
  
-+static bool tcp_rtx_queue_empty_or_single_skb(const struct sock *sk)
-+{
-+	const struct rb_node *node = sk->tcp_rtx_queue.rb_node;
-+
-+	/* No skb in the rtx queue. */
-+	if (!node)
-+		return true;
-+
-+	/* Only one skb in rtx queue. */
-+	return !node->rb_left && !node->rb_right;
-+}
-+
- /* TCP Small Queues :
-  * Control number of packets in qdisc/devices to two packets / or ~1 ms.
-  * (These limits are doubled for retransmits)
-@@ -2526,12 +2538,12 @@ static bool tcp_small_queue_check(struct
- 		limit += extra_bytes;
- 	}
- 	if (refcount_read(&sk->sk_wmem_alloc) > limit) {
--		/* Always send skb if rtx queue is empty.
-+		/* Always send skb if rtx queue is empty or has one skb.
- 		 * No need to wait for TX completion to call us back,
- 		 * after softirq/tasklet schedule.
- 		 * This helps when TX completions are delayed too much.
- 		 */
--		if (tcp_rtx_queue_empty(sk))
-+		if (tcp_rtx_queue_empty_or_single_skb(sk))
- 			return false;
+-	if (test_bit(BTRFS_ROOT_DELETING, &root->state))
+-		btrfs_err(fs_info,
+-			"COW'ing blocks on a fs root that's being dropped");
++	if (unlikely(test_bit(BTRFS_ROOT_DELETING, &root->state))) {
++		btrfs_abort_transaction(trans, -EUCLEAN);
++		btrfs_crit(fs_info,
++		   "attempt to COW block %llu on root %llu that is being deleted",
++			   buf->start, btrfs_root_id(root));
++		return -EUCLEAN;
++	}
  
- 		set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
+ 	/*
+ 	 * COWing must happen through a running transaction, which always
+-- 
+2.40.1
+
 
 
