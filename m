@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 025047D31C8
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C577D7D354B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:47:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229563AbjJWLNL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:13:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43462 "EHLO
+        id S234394AbjJWLrC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233207AbjJWLNJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:09 -0400
+        with ESMTP id S233145AbjJWLqx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CBF0DC
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A177C433C9;
-        Mon, 23 Oct 2023 11:13:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D436EFF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:46:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D44C433C7;
+        Mon, 23 Oct 2023 11:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059586;
-        bh=in0xnYOYJY4k5ATzcR1xV4iNSBNmN4FTtaVPTz6NYYc=;
+        s=korg; t=1698061610;
+        bh=209hKD3F+V7fQOpcFgVO6g6TTO8R5Ox97EpmTdCrRSQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FpXIg0OLKN4SAg5iLL2q3OEa3Jp3I0re9asE3Yyl4ABWK+bu1asxzQdKVyTIt9uh7
-         xabqClDz5OGtpVBXhIssFNeonMxY1eQ5q8KWn2rc5MvQp2E4m0IZSWf5ESxbr5ToLp
-         hVWqe95LjFILwmFf4oyZwDdiO8uuvf/42yCS79ew=
+        b=A6gdwACzrYZim3tsTAivSNqaKXH0anTwkdV5L3Ujimp9tfLTY/xTOdGXbPDwPltBD
+         Od+1N8szwZfQJLUikxUNnwwo5s96Zez1KhwX9G3z1vmX6qEqaUED1Mn2EWbxLlVaco
+         LvxwIKlN+XKk/mdqsh01pc9ZuXFKgpv88yU5lvoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Miaoqian Lin <linmq006@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 226/241] phy: mapphone-mdm6600: Fix runtime disable on probe
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 105/202] xfrm: fix a data-race in xfrm_gen_index()
 Date:   Mon, 23 Oct 2023 12:56:52 +0200
-Message-ID: <20231023104839.377604693@linuxfoundation.org>
+Message-ID: <20231023104829.602287172@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +50,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 719606154c7033c068a5d4c1dc5f9163b814b3c8 ]
+commit 3e4bc23926b83c3c67e5f61ae8571602754131a6 upstream.
 
-Commit d644e0d79829 ("phy: mapphone-mdm6600: Fix PM error handling in
-phy_mdm6600_probe") caused a regression where we now unconditionally
-disable runtime PM at the end of the probe while it is only needed on
-errors.
+xfrm_gen_index() mutual exclusion uses net->xfrm.xfrm_policy_lock.
 
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Miaoqian Lin <linmq006@gmail.com>
-Cc: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Fixes: d644e0d79829 ("phy: mapphone-mdm6600: Fix PM error handling in phy_mdm6600_probe")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20230913060433.48373-1-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This means we must use a per-netns idx_generator variable,
+instead of a static one.
+Alternative would be to use an atomic variable.
+
+syzbot reported:
+
+BUG: KCSAN: data-race in xfrm_sk_policy_insert / xfrm_sk_policy_insert
+
+write to 0xffffffff87005938 of 4 bytes by task 29466 on cpu 0:
+xfrm_gen_index net/xfrm/xfrm_policy.c:1385 [inline]
+xfrm_sk_policy_insert+0x262/0x640 net/xfrm/xfrm_policy.c:2347
+xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
+do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
+ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
+rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
+sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
+__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
+__do_sys_setsockopt net/socket.c:2274 [inline]
+__se_sys_setsockopt net/socket.c:2271 [inline]
+__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read to 0xffffffff87005938 of 4 bytes by task 29460 on cpu 1:
+xfrm_sk_policy_insert+0x13e/0x640
+xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
+do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
+ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
+rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
+sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
+__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
+__do_sys_setsockopt net/socket.c:2274 [inline]
+__se_sys_setsockopt net/socket.c:2271 [inline]
+__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x00006ad8 -> 0x00006b18
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 29460 Comm: syz-executor.1 Not tainted 6.5.0-rc5-syzkaller-00243-g9106536c1aa3 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+
+Fixes: 1121994c803f ("netns xfrm: policy insertion in netns")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/motorola/phy-mapphone-mdm6600.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/net/netns/xfrm.h |    1 +
+ net/xfrm/xfrm_policy.c   |    6 ++----
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-index 1d567604b650d..0147112f77b17 100644
---- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
-+++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-@@ -627,10 +627,12 @@ static int phy_mdm6600_probe(struct platform_device *pdev)
- 	pm_runtime_put_autosuspend(ddata->dev);
+--- a/include/net/netns/xfrm.h
++++ b/include/net/netns/xfrm.h
+@@ -49,6 +49,7 @@ struct netns_xfrm {
+ 	struct list_head	policy_all;
+ 	struct hlist_head	*policy_byidx;
+ 	unsigned int		policy_idx_hmask;
++	unsigned int		idx_generator;
+ 	struct hlist_head	policy_inexact[XFRM_POLICY_MAX];
+ 	struct xfrm_policy_hash	policy_bydst[XFRM_POLICY_MAX];
+ 	unsigned int		policy_count[XFRM_POLICY_MAX * 2];
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -1371,8 +1371,6 @@ EXPORT_SYMBOL(xfrm_policy_hash_rebuild);
+  * of an absolute inpredictability of ordering of rules. This will not pass. */
+ static u32 xfrm_gen_index(struct net *net, int dir, u32 index)
+ {
+-	static u32 idx_generator;
+-
+ 	for (;;) {
+ 		struct hlist_head *list;
+ 		struct xfrm_policy *p;
+@@ -1380,8 +1378,8 @@ static u32 xfrm_gen_index(struct net *ne
+ 		int found;
  
- cleanup:
--	if (error < 0)
-+	if (error < 0) {
- 		phy_mdm6600_device_power_off(ddata);
--	pm_runtime_disable(ddata->dev);
--	pm_runtime_dont_use_autosuspend(ddata->dev);
-+		pm_runtime_disable(ddata->dev);
-+		pm_runtime_dont_use_autosuspend(ddata->dev);
-+	}
-+
- 	return error;
- }
- 
--- 
-2.42.0
-
+ 		if (!index) {
+-			idx = (idx_generator | dir);
+-			idx_generator += 8;
++			idx = (net->xfrm.idx_generator | dir);
++			net->xfrm.idx_generator += 8;
+ 		} else {
+ 			idx = index;
+ 			index = 0;
 
 
