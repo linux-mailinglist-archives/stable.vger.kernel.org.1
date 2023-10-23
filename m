@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B9627D33D5
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED76E7D348F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233855AbjJWLea (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:34:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40090 "EHLO
+        id S234269AbjJWLks (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:40:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233845AbjJWLe3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:29 -0400
+        with ESMTP id S234258AbjJWLkr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7252E8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F37C433C9;
-        Mon, 23 Oct 2023 11:34:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8581B10A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0772C433C8;
+        Mon, 23 Oct 2023 11:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060867;
-        bh=T3ZwfRb+HmnhgcGgS7gQ1Xy5gI3Pl6afjzymuGDll38=;
+        s=korg; t=1698061244;
+        bh=5cLTywvk3Xql/QHDDZUAGT00XtwgEJER/mOpu9SoZfg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mcUntNgvRdLUJfuBao2kBPR3UmNDHDSlE0OKzSBYOhDkdXXPN//QioTIAmfz8Hq2l
-         T3tojlMQFUi2FIhB94BTjFWcAQcueQcUpyY5+CIJpC62s7fNUT89MIlAx6di7rbh6h
-         Bo6hooPQfNl1WX8rnUmv+kKCgGak7sUlOM6EZE4k=
+        b=Eyj6fcrk8phI6O7ScPUXUpuADG5yMXUD8nTMS1Zr0agIf1/kK7YqwQK6rHVVys62G
+         w6FBMRo95S7FwkCSBNDv0rzu/qzuSf0k+hW8KeXlxXP7l204SxepwEwnfQ54nk3817
+         mzTerG0T09+9sY+kcEDDaMS4IcxRxK9Z9PbEwZX0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 119/123] phy: mapphone-mdm6600: Fix runtime PM for remove
-Date:   Mon, 23 Oct 2023 12:57:57 +0200
-Message-ID: <20231023104821.780839388@linuxfoundation.org>
+        patches@lists.linux.dev, Matthew Rosato <mjrosato@linux.ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 5.15 121/137] s390/pci: fix iommu bitmap allocation
+Date:   Mon, 23 Oct 2023 12:57:58 +0200
+Message-ID: <20231023104824.832547492@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,44 +49,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit b99e0ba9633af51638e5ee1668da2e33620c134f ]
+commit c1ae1c59c8c6e0b66a718308c623e0cb394dab6b upstream.
 
-Otherwise we will get an underflow on remove.
+Since the fixed commits both zdev->iommu_bitmap and zdev->lazy_bitmap
+are allocated as vzalloc(zdev->iommu_pages / 8). The problem is that
+zdev->iommu_bitmap is a pointer to unsigned long but the above only
+yields an allocation that is a multiple of sizeof(unsigned long) which
+is 8 on s390x if the number of IOMMU pages is a multiple of 64.
+This in turn is the case only if the effective IOMMU aperture is
+a multiple of 64 * 4K = 256K. This is usually the case and so didn't
+cause visible issues since both the virt_to_phys(high_memory) reduced
+limit and hardware limits use nice numbers.
 
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Fixes: f7f50b2a7b05 ("phy: mapphone-mdm6600: Add runtime PM support for n_gsm on USB suspend")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20230913060433.48373-2-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Under KVM, and in particular with QEMU limiting the IOMMU aperture to
+the vfio DMA limit (default 65535), it is possible for the reported
+aperture not to be a multiple of 256K however. In this case we end up
+with an iommu_bitmap whose allocation is not a multiple of
+8 causing bitmap operations to access it out of bounds.
+
+Sadly we can't just fix this in the obvious way and use bitmap_zalloc()
+because for large RAM systems (tested on 8 TiB) the zdev->iommu_bitmap
+grows too large for kmalloc(). So add our own bitmap_vzalloc() wrapper.
+This might be a candidate for common code, but this area of code will
+be replaced by the upcoming conversion to use the common code DMA API on
+s390 so just add a local routine.
+
+Fixes: 224593215525 ("s390/pci: use virtual memory for iommu bitmap")
+Fixes: 13954fd6913a ("s390/pci_dma: improve lazy flush for unmap")
+Cc: stable@vger.kernel.org
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/motorola/phy-mapphone-mdm6600.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/s390/pci/pci_dma.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-index 042927f8ac4f3..50a7f2a1ea16a 100644
---- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
-+++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-@@ -640,6 +640,7 @@ static int phy_mdm6600_remove(struct platform_device *pdev)
- 	struct phy_mdm6600 *ddata = platform_get_drvdata(pdev);
- 	struct gpio_desc *reset_gpio = ddata->ctrl_gpios[PHY_MDM6600_RESET];
- 
-+	pm_runtime_get_noresume(ddata->dev);
- 	pm_runtime_dont_use_autosuspend(ddata->dev);
- 	pm_runtime_put_sync(ddata->dev);
- 	pm_runtime_disable(ddata->dev);
--- 
-2.42.0
-
+--- a/arch/s390/pci/pci_dma.c
++++ b/arch/s390/pci/pci_dma.c
+@@ -542,6 +542,17 @@ static void s390_dma_unmap_sg(struct dev
+ 		s->dma_length = 0;
+ 	}
+ }
++
++static unsigned long *bitmap_vzalloc(size_t bits, gfp_t flags)
++{
++	size_t n = BITS_TO_LONGS(bits);
++	size_t bytes;
++
++	if (unlikely(check_mul_overflow(n, sizeof(unsigned long), &bytes)))
++		return NULL;
++
++	return vzalloc(bytes);
++}
+ 	
+ int zpci_dma_init_device(struct zpci_dev *zdev)
+ {
+@@ -578,13 +589,13 @@ int zpci_dma_init_device(struct zpci_dev
+ 				zdev->end_dma - zdev->start_dma + 1);
+ 	zdev->end_dma = zdev->start_dma + zdev->iommu_size - 1;
+ 	zdev->iommu_pages = zdev->iommu_size >> PAGE_SHIFT;
+-	zdev->iommu_bitmap = vzalloc(zdev->iommu_pages / 8);
++	zdev->iommu_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
+ 	if (!zdev->iommu_bitmap) {
+ 		rc = -ENOMEM;
+ 		goto free_dma_table;
+ 	}
+ 	if (!s390_iommu_strict) {
+-		zdev->lazy_bitmap = vzalloc(zdev->iommu_pages / 8);
++		zdev->lazy_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
+ 		if (!zdev->lazy_bitmap) {
+ 			rc = -ENOMEM;
+ 			goto free_bitmap;
 
 
