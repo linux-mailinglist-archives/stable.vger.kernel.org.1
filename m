@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D3C37D32D0
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B01727D3505
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233790AbjJWLYQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34074 "EHLO
+        id S234393AbjJWLot (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233863AbjJWLYP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:15 -0400
+        with ESMTP id S234413AbjJWLom (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6474FC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90658C433CD;
-        Mon, 23 Oct 2023 11:23:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C52D10A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C4FC433C8;
+        Mon, 23 Oct 2023 11:44:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060232;
-        bh=MW+m38ndwu9c8/mci4bEXEK60eh/nbjutQdMRbUWFqw=;
+        s=korg; t=1698061477;
+        bh=M+BhfojAXe68ha5FClY4qkg0WT7F0Vj79442c5yZOAA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eq4WNGSH8kVePqrt5AQvVFUxBzjToVlkSm3ScnbSQMxl3Mw4E406FmvNbdrarJk6I
-         QBlXqlRZfSSoc4BLLSSDQS+PcuEqcYXJn/dXZS5TDxZ5gJcjigr9DpeDxzCc8A4pXC
-         x4UgydbbeK2FyRkSnNLBV2Ob6PgsksteAf71NxpU=
+        b=Ag6j9mvz3yh4fwHBkIdI38n9G4GafD9IjZRuCpgzzSJjVqUqRZN6oE9UokzaR7El2
+         bOvkn6CTcMDkXRMlCLjjJbNY4xH9XqXoPtpFdb/aQ7+SV/HLaC271ZTk9GWcUJQg5r
+         /SMLtN0atBYN8dmZA0NYfZSwHQGIGGJkIsvwO4Cg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-        Atish Patra <atishp@rivosinc.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/196] tracing: relax trace_event_eval_update() execution with cond_resched()
+Subject: [PATCH 5.10 060/202] powerpc/8xx: Fix pte_access_permitted() for PAGE_NONE
 Date:   Mon, 23 Oct 2023 12:56:07 +0200
-Message-ID: <20231023104831.419071955@linuxfoundation.org>
+Message-ID: <20231023104828.314142464@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,53 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 23cce5f25491968b23fb9c399bbfb25f13870cd9 ]
+[ Upstream commit 5d9cea8a552ee122e21fbd5a3c5d4eb85f648e06 ]
 
-When kernel is compiled without preemption, the eval_map_work_func()
-(which calls trace_event_eval_update()) will not be preempted up to its
-complete execution. This can actually cause a problem since if another
-CPU call stop_machine(), the call will have to wait for the
-eval_map_work_func() function to finish executing in the workqueue
-before being able to be scheduled. This problem was observe on a SMP
-system at boot time, when the CPU calling the initcalls executed
-clocksource_done_booting() which in the end calls stop_machine(). We
-observed a 1 second delay because one CPU was executing
-eval_map_work_func() and was not preempted by the stop_machine() task.
+On 8xx, PAGE_NONE is handled by setting _PAGE_NA instead of clearing
+_PAGE_USER.
 
-Adding a call to cond_resched() in trace_event_eval_update() allows
-other tasks to be executed and thus continue working asynchronously
-like before without blocking any pending task at boot time.
+But then pte_user() returns 1 also for PAGE_NONE.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20230929191637.416931-1-cleger@rivosinc.com
+As _PAGE_NA prevent reads, add a specific version of pte_read()
+that returns 0 when _PAGE_NA is set instead of always returning 1.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Tested-by: Atish Patra <atishp@rivosinc.com>
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 351750331fc1 ("powerpc/mm: Introduce _PAGE_NA")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/57bcfbe578e43123f9ed73e040229b80f1ad56ec.1695659959.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h | 7 +++++++
+ arch/powerpc/include/asm/nohash/pgtable.h    | 2 ++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index 9da418442a063..2e3dce5e2575e 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -2777,6 +2777,7 @@ void trace_event_eval_update(struct trace_eval_map **map, int len)
- 				update_event_fields(call, map[i]);
- 			}
- 		}
-+		cond_resched();
- 	}
- 	up_write(&trace_event_sem);
+diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+index 1581204467e1d..2b06da0ffd2d2 100644
+--- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+@@ -94,6 +94,13 @@ static inline pte_t pte_wrprotect(pte_t pte)
+ 
+ #define pte_wrprotect pte_wrprotect
+ 
++static inline int pte_read(pte_t pte)
++{
++	return (pte_val(pte) & _PAGE_RO) != _PAGE_NA;
++}
++
++#define pte_read pte_read
++
+ static inline int pte_write(pte_t pte)
+ {
+ 	return !(pte_val(pte) & _PAGE_RO);
+diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+index ac75f4ab0dba1..7ad1d1b042a60 100644
+--- a/arch/powerpc/include/asm/nohash/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/pgtable.h
+@@ -45,7 +45,9 @@ static inline int pte_write(pte_t pte)
+ 	return pte_val(pte) & _PAGE_RW;
  }
+ #endif
++#ifndef pte_read
+ static inline int pte_read(pte_t pte)		{ return 1; }
++#endif
+ static inline int pte_dirty(pte_t pte)		{ return pte_val(pte) & _PAGE_DIRTY; }
+ static inline int pte_special(pte_t pte)	{ return pte_val(pte) & _PAGE_SPECIAL; }
+ static inline int pte_none(pte_t pte)		{ return (pte_val(pte) & ~_PTE_NONE_MASK) == 0; }
 -- 
 2.40.1
 
