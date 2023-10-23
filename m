@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 91B107D33E2
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4868C7D35AC
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234022AbjJWLe7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:34:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
+        id S234603AbjJWLuo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:50:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234040AbjJWLe5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:57 -0400
+        with ESMTP id S234609AbjJWLum (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFF8DB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A54C433C7;
-        Mon, 23 Oct 2023 11:34:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EB98E4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:50:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623DFC433C7;
+        Mon, 23 Oct 2023 11:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060895;
-        bh=M/t4p0612jsrSHk+9f1E5JrSilt/bGVS4EHiWYtzI6k=;
+        s=korg; t=1698061840;
+        bh=or01qtOxVnDE9jHLe/bCd2pe4zGCTIpumROle9MLUC4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XT4sqo4hmVfg8QzUorR9evTEH72pilRteEPPhmOYq27IBWoRGd/Qrtma7N9zcvkow
-         gX3qd4I3wS9sphf7Rn6bgxTEExthvbRKDcUey63ZVfmTaJbndGJqxNOVOgvFoqAnGs
-         2YrVcAPk/+augT4G3lcwoHUxo+/Ow+SgAjyFc5Vw=
+        b=0Q+QMnK0jD8g8LLpEQ7hv2qXKoYnIJshwyaxdCzSNxZd4rerIiqh3FK7+bIb85bOP
+         wfp9nrCkNcR9xFAAkjvEqnVtH9zsCA030vLLf9CfuCAHEq3SENbe21GHcIYj4j2QyZ
+         SxoAHgb+IIrp3uwY21/l0PZBjGmE9bdx8qVgWmaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.4 104/123] mtd: physmap-core: Restore map_rom fallback
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        Jeff Layton <jlayton@kernel.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 155/202] overlayfs: set ctime when setting mtime and atime
 Date:   Mon, 23 Oct 2023 12:57:42 +0200
-Message-ID: <20231023104821.200572428@linuxfoundation.org>
+Message-ID: <20231023104831.046066971@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 6792b7fce610bcd1cf3e07af3607fe7e2c38c1d8 upstream.
+[ Upstream commit 03dbab3bba5f009d053635c729d1244f2c8bad38 ]
 
-When the exact mapping type driver was not available, the old
-physmap_of_core driver fell back to mapping the region as ROM.
-Unfortunately this feature was lost when the DT and pdata cases were
-merged.  Revive this useful feature.
+Nathan reported that he was seeing the new warning in
+setattr_copy_mgtime pop when starting podman containers. Overlayfs is
+trying to set the atime and mtime via notify_change without also
+setting the ctime.
 
-Fixes: 642b1e8dbed7bbbf ("mtd: maps: Merge physmap_of.c into physmap-core.c")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/550e8c8c1da4c4baeb3d71ff79b14a18d4194f9e.1693407371.git.geert+renesas@glider.be
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+POSIX states that when the atime and mtime are updated via utimes() that
+we must also update the ctime to the current time. The situation with
+overlayfs copy-up is analogies, so add ATTR_CTIME to the bitmask.
+notify_change will fill in the value.
+
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Christian Brauner <brauner@kernel.org>
+Acked-by: Amir Goldstein <amir73il@gmail.com>
+Message-Id: <20230913-ctime-v1-1-c6bc509cbc27@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/maps/physmap-core.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/overlayfs/copy_up.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/maps/physmap-core.c
-+++ b/drivers/mtd/maps/physmap-core.c
-@@ -533,6 +533,17 @@ static int physmap_flash_probe(struct pl
- 		if (info->probe_type) {
- 			info->mtds[i] = do_map_probe(info->probe_type,
- 						     &info->maps[i]);
-+
-+			/* Fall back to mapping region as ROM */
-+			if (!info->mtds[i] && IS_ENABLED(CONFIG_MTD_ROM) &&
-+			    strcmp(info->probe_type, "map_rom")) {
-+				dev_warn(&dev->dev,
-+					 "map_probe() failed for type %s\n",
-+					 info->probe_type);
-+
-+				info->mtds[i] = do_map_probe("map_rom",
-+							     &info->maps[i]);
-+			}
- 		} else {
- 			int j;
- 
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index 7ef3c87f8a23d..65ac504595ba4 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -243,7 +243,7 @@ static int ovl_set_timestamps(struct dentry *upperdentry, struct kstat *stat)
+ {
+ 	struct iattr attr = {
+ 		.ia_valid =
+-		     ATTR_ATIME | ATTR_MTIME | ATTR_ATIME_SET | ATTR_MTIME_SET,
++		     ATTR_ATIME | ATTR_MTIME | ATTR_ATIME_SET | ATTR_MTIME_SET | ATTR_CTIME,
+ 		.ia_atime = stat->atime,
+ 		.ia_mtime = stat->mtime,
+ 	};
+-- 
+2.40.1
+
 
 
