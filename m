@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B32B87D30DC
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE9F37D30DE
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231136AbjJWLDE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:03:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35722 "EHLO
+        id S230386AbjJWLDI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:03:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233090AbjJWLDC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:03:02 -0400
+        with ESMTP id S233084AbjJWLDI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:03:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17DEAD6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:03:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4BFC433C8;
-        Mon, 23 Oct 2023 11:03:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 184F3D7E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:03:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8F9C433C7;
+        Mon, 23 Oct 2023 11:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058980;
-        bh=cHamRBfA1TZ1jqBhIm2GuwDFKBNN8+6gEOpVHGUsB6w=;
+        s=korg; t=1698058983;
+        bh=u7mWjFZGZnU8N+72psBtc5lI9nvUCd24qtcu/3Gqa4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kAAkHZ6A8rahHcIkr9UmTNwkmA42Cc3dMaccqnhmHMw5DS/5ETSYysd7mjXT1wzQP
-         fBIpZXLOkhW0oLxMuH+PLN92dnHQDfcDutL+BK0uRYk4xWmlpDKfX3ukmDVIEpginG
-         pCEb26k9M/zOfMUBiExkdorPSNP9P68GFnomjHjQ=
+        b=CU8GmDeP8SaKPBJQJuBIjUgjDRiukM2mVSNRbNWH4ZNg9HQlaEeqdmmuc16pY841g
+         thHNnrrTdBV5kaiIr2JSbkvzC70U3HT5D2gJBJmII4LM+07/xiDDH4aOG54TfEK6Xr
+         fysM8P7NCRix7suU7bjoGdkCRZNnauZQwUAq7ORc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Maxim Levitsky <mlevitsk@redhat.com>,
         Sean Christopherson <seanjc@google.com>,
         Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.5 023/241] x86: KVM: SVM: add support for Invalid IPI Vector interception
-Date:   Mon, 23 Oct 2023 12:53:29 +0200
-Message-ID: <20231023104834.498063284@linuxfoundation.org>
+Subject: [PATCH 6.5 024/241] x86: KVM: SVM: refresh AVIC inhibition in svm_leave_nested()
+Date:   Mon, 23 Oct 2023 12:53:30 +0200
+Message-ID: <20231023104834.520751671@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
 References: <20231023104833.832874523@linuxfoundation.org>
@@ -55,59 +55,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Maxim Levitsky <mlevitsk@redhat.com>
 
-commit 2dcf37abf9d3aab7f975002d29fc7c17272def38 upstream.
+commit 3fdc6087df3be73a212a81ce5dd6516638568806 upstream.
 
-In later revisions of AMD's APM, there is a new 'incomplete IPI' exit code:
+svm_leave_nested() similar to a nested VM exit, get the vCPU out of nested
+mode and thus should end the local inhibition of AVIC on this vCPU.
 
-"Invalid IPI Vector - The vector for the specified IPI was set to an
-illegal value (VEC < 16)"
+Failure to do so, can lead to hangs on guest reboot.
 
-Note that tests on Zen2 machine show that this VM exit doesn't happen and
-instead AVIC just does nothing.
+Raise the KVM_REQ_APICV_UPDATE request to refresh the AVIC state of the
+current vCPU in this case.
 
-Add support for this exit code by doing nothing, instead of filling
-the kernel log with errors.
-
-Also replace an unthrottled 'pr_err()' if another unknown incomplete
-IPI exit happens with vcpu_unimpl()
-
-(e.g in case AMD adds yet another 'Invalid IPI' exit reason)
-
-Cc: <stable@vger.kernel.org>
+Fixes: f44509f849fe ("KVM: x86: SVM: allow AVIC to co-exist with a nested guest running")
+Cc: stable@vger.kernel.org
 Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
 Reviewed-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20230928173354.217464-3-mlevitsk@redhat.com>
+Message-Id: <20230928173354.217464-4-mlevitsk@redhat.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/svm.h |    1 +
- arch/x86/kvm/svm/avic.c    |    5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -268,6 +268,7 @@ enum avic_ipi_failure_cause {
- 	AVIC_IPI_FAILURE_TARGET_NOT_RUNNING,
- 	AVIC_IPI_FAILURE_INVALID_TARGET,
- 	AVIC_IPI_FAILURE_INVALID_BACKING_PAGE,
-+	AVIC_IPI_FAILURE_INVALID_IPI_VECTOR,
- };
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1243,6 +1243,9 @@ void svm_leave_nested(struct kvm_vcpu *v
  
- #define AVIC_PHYSICAL_MAX_INDEX_MASK	GENMASK_ULL(8, 0)
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -529,8 +529,11 @@ int avic_incomplete_ipi_interception(str
- 	case AVIC_IPI_FAILURE_INVALID_BACKING_PAGE:
- 		WARN_ONCE(1, "Invalid backing page\n");
- 		break;
-+	case AVIC_IPI_FAILURE_INVALID_IPI_VECTOR:
-+		/* Invalid IPI with vector < 16 */
-+		break;
- 	default:
--		pr_err("Unknown IPI interception\n");
-+		vcpu_unimpl(vcpu, "Unknown avic incomplete IPI interception\n");
+ 		nested_svm_uninit_mmu_context(vcpu);
+ 		vmcb_mark_all_dirty(svm->vmcb);
++
++		if (kvm_apicv_activated(vcpu->kvm))
++			kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
  	}
  
- 	return 1;
+ 	kvm_clear_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
 
 
