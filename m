@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F38647D315B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AA0A7D34E9
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:43:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233449AbjJWLIT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:08:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58814 "EHLO
+        id S233279AbjJWLnp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:43:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233406AbjJWLIT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:19 -0400
+        with ESMTP id S234414AbjJWLn3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:43:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEF3FA4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D9BC433C8;
-        Mon, 23 Oct 2023 11:08:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7BF310FE
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C441BC433C7;
+        Mon, 23 Oct 2023 11:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059295;
-        bh=RD206V00s4ofQqR8pOp6/XunmHn5ango40h90eo0p+0=;
+        s=korg; t=1698061406;
+        bh=yIXFesigVfZvzlUMw6/IiHdVxXN2L7x7FUNNWTIwT1M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=onX9wCoT2xW+S1Ta1pWz4JNDIiq1AAzxNYvAQ/phFyvWY4kCQXar2y76kbLt0+zDa
-         TJyPRdChzOUu0oDRMC60kq4Dm8eD10pszpU1mNaCtIkb2Yg34H234g73sqJX3XR7qM
-         4JHRvNxjb55CRfM/fLM13HHfldELlDHuQgGoaXOY=
+        b=uPXw2O5tJseyDTymV3/HsgpXjL/ssv+p/uUkELOnDSRD2hTGfOQixhjH39hEC0Kj1
+         mOfQatwimg2kYNT3gTe4cPVr4/dJEKTEmY9StLSxUVV9HPuD2qiw0gB7CyvdqP60WG
+         ztkWVstm5zIUJsO+WH65WOVAHK65TO7yvCYXtXwM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Haller <thaller@redhat.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        David Ahern <dsahern@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 130/241] ipv4/fib: send notify when delete source address routes
-Date:   Mon, 23 Oct 2023 12:55:16 +0200
-Message-ID: <20231023104837.036652512@linuxfoundation.org>
+Subject: [PATCH 5.10 010/202] drm/msm/dp: do not reinitialize phy unless retry during link training
+Date:   Mon, 23 Oct 2023 12:55:17 +0200
+Message-ID: <20231023104826.894116571@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,114 +51,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Kuogee Hsieh <quic_khsieh@quicinc.com>
 
-[ Upstream commit 4b2b606075e50cdae62ab2356b0a1e206947c354 ]
+[ Upstream commit 0c1a2e69bcb506f48ebf94bd199bab0b93f66da2 ]
 
-After deleting an interface address in fib_del_ifaddr(), the function
-scans the fib_info list for stray entries and calls fib_flush() and
-fib_table_flush(). Then the stray entries will be deleted silently and no
-RTM_DELROUTE notification will be sent.
+DP PHY re-initialization done using dp_ctrl_reinitialize_mainlink() will
+cause PLL unlocked initially and then PLL gets locked at the end of
+initialization. PLL_UNLOCKED interrupt will fire during this time if the
+interrupt mask is enabled.
 
-This lack of notification can make routing daemons, or monitor like
-`ip monitor route` miss the routing changes. e.g.
+However currently DP driver link training implementation incorrectly
+re-initializes PHY unconditionally during link training as the PHY was
+already configured in dp_ctrl_enable_mainlink_clocks().
 
-+ ip link add dummy1 type dummy
-+ ip link add dummy2 type dummy
-+ ip link set dummy1 up
-+ ip link set dummy2 up
-+ ip addr add 192.168.5.5/24 dev dummy1
-+ ip route add 7.7.7.0/24 dev dummy2 src 192.168.5.5
-+ ip -4 route
-7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
-192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
-+ ip monitor route
-+ ip addr del 192.168.5.5/24 dev dummy1
-Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
-Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
-Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
+Fix this by re-initializing the PHY only if the previous link training
+failed.
 
-As Ido reminded, fib_table_flush() isn't only called when an address is
-deleted, but also when an interface is deleted or put down. The lack of
-notification in these cases is deliberate. And commit 7c6bb7d2faaf
-("net/ipv6: Add knob to skip DELROUTE message on device down") introduced
-a sysctl to make IPv6 behave like IPv4 in this regard. So we can't send
-the route delete notify blindly in fib_table_flush().
+[drm:dp_aux_isr] *ERROR* Unexpected DP AUX IRQ 0x01000000 when not busy
 
-To fix this issue, let's add a new flag in "struct fib_info" to track the
-deleted prefer source address routes, and only send notify for them.
-
-After update:
-+ ip monitor route
-+ ip addr del 192.168.5.5/24 dev dummy1
-Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
-Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
-Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
-Deleted 7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
-
-Suggested-by: Thomas Haller <thaller@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230922075508.848925-1-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/30
+Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Tested-by: Abhinav Kumar <quic_abhinavk@quicinc.com> # sc7280
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/551847/
+Link: https://lore.kernel.org/r/1691533190-19335-1-git-send-email-quic_khsieh@quicinc.com
+[quic_abhinavk@quicinc.com: added line break in commit text]
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_fib.h     | 1 +
- net/ipv4/fib_semantics.c | 1 +
- net/ipv4/fib_trie.c      | 4 ++++
- 3 files changed, 6 insertions(+)
+ drivers/gpu/drm/msm/dp/dp_ctrl.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
-index f0c13864180e2..15de07d365405 100644
---- a/include/net/ip_fib.h
-+++ b/include/net/ip_fib.h
-@@ -154,6 +154,7 @@ struct fib_info {
- 	int			fib_nhs;
- 	bool			fib_nh_is_v6;
- 	bool			nh_updated;
-+	bool			pfsrc_removed;
- 	struct nexthop		*nh;
- 	struct rcu_head		rcu;
- 	struct fib_nh		fib_nh[];
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 894d8ac6b9d0e..5eb1b8d302bbd 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -1891,6 +1891,7 @@ int fib_sync_down_addr(struct net_device *dev, __be32 local)
- 			continue;
- 		if (fi->fib_prefsrc == local) {
- 			fi->fib_flags |= RTNH_F_DEAD;
-+			fi->pfsrc_removed = true;
- 			ret++;
- 		}
- 	}
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index d13fb9e76b971..9bdfdab906fe0 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -2027,6 +2027,7 @@ void fib_table_flush_external(struct fib_table *tb)
- int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
- {
- 	struct trie *t = (struct trie *)tb->tb_data;
-+	struct nl_info info = { .nl_net = net };
- 	struct key_vector *pn = t->kv;
- 	unsigned long cindex = 1;
- 	struct hlist_node *tmp;
-@@ -2089,6 +2090,9 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+index 9fac55c24214a..07becbf3c64fc 100644
+--- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
++++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+@@ -1665,13 +1665,6 @@ int dp_ctrl_on_link(struct dp_ctrl *dp_ctrl)
+ 		return rc;
  
- 			fib_notify_alias_delete(net, n->key, &n->leaf, fa,
- 						NULL);
-+			if (fi->pfsrc_removed)
-+				rtmsg_fib(RTM_DELROUTE, htonl(n->key), fa,
-+					  KEYLENGTH - fa->fa_slen, tb->tb_id, &info, 0);
- 			hlist_del_rcu(&fa->fa_list);
- 			fib_release_info(fa->fa_info);
- 			alias_free_mem_rcu(fa);
+ 	while (--link_train_max_retries) {
+-		rc = dp_ctrl_reinitialize_mainlink(ctrl);
+-		if (rc) {
+-			DRM_ERROR("Failed to reinitialize mainlink. rc=%d\n",
+-					rc);
+-			break;
+-		}
+-
+ 		training_step = DP_TRAINING_NONE;
+ 		rc = dp_ctrl_setup_main_link(ctrl, &cr, &training_step);
+ 		if (rc == 0) {
+@@ -1712,6 +1705,12 @@ int dp_ctrl_on_link(struct dp_ctrl *dp_ctrl)
+ 				break; /* lane == 1 already */
+ 			}
+ 		}
++
++		rc = dp_ctrl_reinitialize_mainlink(ctrl);
++		if (rc) {
++			DRM_ERROR("Failed to reinitialize mainlink. rc=%d\n", rc);
++			break;
++		}
+ 	}
+ 
+ 	if (ctrl->link->sink_request & DP_TEST_LINK_PHY_TEST_PATTERN)
 -- 
 2.40.1
 
