@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 962FD7D31A7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B4D07D321E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233587AbjJWLLj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37710 "EHLO
+        id S233663AbjJWLQ4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:16:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233541AbjJWLLi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:38 -0400
+        with ESMTP id S233662AbjJWLQz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B3EEC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C23CC433C7;
-        Mon, 23 Oct 2023 11:11:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4B91C4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27158C433C8;
+        Mon, 23 Oct 2023 11:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059496;
-        bh=5zc5w87uJD10+ooMxwqknq3cPhAGci4TVmqZQScBI9U=;
+        s=korg; t=1698059813;
+        bh=j+DRAatsckkGMEMhFH7FHNVsoZrr0ryZhIAmBjF3cLc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=he9qmQ9A6jH1vS3NZt8wwqmCf9uMgvamOSLDHq8qflcwabl+CWTPAb6OQcgSUwckl
-         th574SJ3SZUunczoAYni2uB8k/ET5+Dp4BcS5I//0uzY67CsNf6cxk8B94hs5RFuPi
-         /DvK9UVTrRLsEH0meDxCCpV2/UPd5nFDtds9AyPc=
+        b=sU5hZPWw0O2to5Vwx5EsFYSzOhRCcmNQ0Gtsimf9VKndJPI8308K02ZgaQiCMMjqY
+         UYDt3U3uku/eGPx+V8tHnTkKsIyPyz//JG1RPB8IejSf7W/Tx130zCtg/Eoz6QZWnd
+         bIaJb05IQRKGwFsf2N+6VGm2jbRJ54Y2qgmxGJIc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Puliang Lu <puliang.lu@fibocom.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.5 196/241] USB: serial: option: add Fibocom to DELL custom modem FM101R-GL
-Date:   Mon, 23 Oct 2023 12:56:22 +0200
-Message-ID: <20231023104838.647287434@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 4.19 34/98] pinctrl: avoid unsafe code pattern in find_pinctrl()
+Date:   Mon, 23 Oct 2023 12:56:23 +0200
+Message-ID: <20231023104814.801160994@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,92 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puliang Lu <puliang.lu@fibocom.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 52480e1f1a259c93d749ba3961af0bffedfe7a7a upstream.
+commit c153a4edff6ab01370fcac8e46f9c89cca1060c2 upstream.
 
-Update the USB serial option driver support for the Fibocom
-FM101R-GL LTE modules as there are actually several different variants.
+The code in find_pinctrl() takes a mutex and traverses a list of pinctrl
+structures. Later the caller bumps up reference count on the found
+structure. Such pattern is not safe as pinctrl that was found may get
+deleted before the caller gets around to increasing the reference count.
 
-- VID:PID 413C:8213, FM101R-GL are laptop M.2 cards (with
-  MBIM interfaces for Linux)
+Fix this by taking the reference count in find_pinctrl(), while it still
+holds the mutex.
 
-- VID:PID 413C:8215, FM101R-GL ESIM are laptop M.2 cards (with
-  MBIM interface for Linux)
-
-0x8213: mbim, tty
-0x8215: mbim, tty
-
-T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=413c ProdID=8213 Rev= 5.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom FM101-GL Module
-S:  SerialNumber=a3b7cbf0
-C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=413c ProdID=8215 Rev= 5.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom FM101-GL Module
-S:  SerialNumber=a3b7cbf0
-C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/ZQs1RgTKg6VJqmPs@google.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/core.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -203,6 +203,9 @@ static void option_instat_callback(struc
- #define DELL_PRODUCT_5829E_ESIM			0x81e4
- #define DELL_PRODUCT_5829E			0x81e6
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1001,17 +1001,20 @@ static int add_setting(struct pinctrl *p
  
-+#define DELL_PRODUCT_FM101R			0x8213
-+#define DELL_PRODUCT_FM101R_ESIM		0x8215
+ static struct pinctrl *find_pinctrl(struct device *dev)
+ {
+-	struct pinctrl *p;
++	struct pinctrl *entry, *p = NULL;
+ 
+ 	mutex_lock(&pinctrl_list_mutex);
+-	list_for_each_entry(p, &pinctrl_list, node)
+-		if (p->dev == dev) {
+-			mutex_unlock(&pinctrl_list_mutex);
+-			return p;
 +
- #define KYOCERA_VENDOR_ID			0x0c88
- #define KYOCERA_PRODUCT_KPC650			0x17da
- #define KYOCERA_PRODUCT_KPC680			0x180a
-@@ -1108,6 +1111,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | RSVD(6) },
- 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
- 	  .driver_info = RSVD(0) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
-+	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_500A) },
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_620UW) },
++	list_for_each_entry(entry, &pinctrl_list, node) {
++		if (entry->dev == dev) {
++			p = entry;
++			kref_get(&p->users);
++			break;
+ 		}
++	}
+ 
+ 	mutex_unlock(&pinctrl_list_mutex);
+-	return NULL;
++	return p;
+ }
+ 
+ static void pinctrl_free(struct pinctrl *p, bool inlist);
+@@ -1120,7 +1123,6 @@ struct pinctrl *pinctrl_get(struct devic
+ 	p = find_pinctrl(dev);
+ 	if (p) {
+ 		dev_dbg(dev, "obtain a copy of previously claimed pinctrl\n");
+-		kref_get(&p->users);
+ 		return p;
+ 	}
+ 
 
 
