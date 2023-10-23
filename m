@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C4AA7D334A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 963A77D3451
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:38:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233960AbjJWL3B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:29:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49084 "EHLO
+        id S234199AbjJWLi3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:38:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234003AbjJWL2v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:51 -0400
+        with ESMTP id S234197AbjJWLi2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:38:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 492DCE8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F198C433CA;
-        Mon, 23 Oct 2023 11:28:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 677F5DB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:38:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA57DC433C7;
+        Mon, 23 Oct 2023 11:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060528;
-        bh=KNOStMEJsEdlQoAHEH6tbOZqoe6HMdO0di7Rn1ZsOQY=;
+        s=korg; t=1698061106;
+        bh=fNy1Wx48fQr2CCi8MVKVIgnWGrIcn4A55Wm5dUJbIRY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KFpes3UOYgwStOwl57Iownaf1aj405+plKNzKNxIeElpansyptUoFQTqkD44/lQ+3
-         ITVW19CIxi9f1SHWGOsFboInS0mbJCngtOyRMmrMYNyxasb86zlaEFx2eFPfg3J5N6
-         6jifECYVOgKluLQfED/X09ewPXxDMSPFTbasXBuU=
+        b=OWi5cD219O3C7l5B0a6/2HpHnj8FBUITrSEHRWUmzT0w2P9FniVxRIOZVn0RlEyT2
+         Zs5iVvJOvvpaQGPRkgr93qu5OC0AkCp6rKlW4W6Y9H5mE9+ycdrXUhX5xUkMFWwJHZ
+         L/OcxaAFNwKLFIGShih+jEozuod+eol2buf9S+60=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 166/196] USB: serial: option: add entry for Sierra EM9191 with new firmware
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 074/137] gpio: timberdale: Fix potential deadlock on &tgpio->lock
 Date:   Mon, 23 Oct 2023 12:57:11 +0200
-Message-ID: <20231023104833.128123941@linuxfoundation.org>
+Message-ID: <20231023104823.432257819@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,46 +50,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-commit 064f6e2ba9eb59b2c87b866e1e968e79ccedf9dd upstream.
+[ Upstream commit 9e8bc2dda5a7a8e2babc9975f4b11c9a6196e490 ]
 
-Following a firmware update of the modem, the interface for the AT
-command port changed, so add it back.
+As timbgpio_irq_enable()/timbgpio_irq_disable() callback could be
+executed under irq context, it could introduce double locks on
+&tgpio->lock if it preempts other execution units requiring
+the same locks.
 
-T:  Bus=08 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=1199 ProdID=90d3 Rev=00.06
-S:  Manufacturer=Sierra Wireless, Incorporated
-S:  Product=Sierra Wireless EM9191
-S:  SerialNumber=xxxxxxxxxxxxxxxx
-C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
-I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+timbgpio_gpio_set()
+--> timbgpio_update_bit()
+--> spin_lock(&tgpio->lock)
+<interrupt>
+   --> timbgpio_irq_disable()
+   --> spin_lock_irqsave(&tgpio->lock)
 
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This flaw was found by an experimental static analysis tool I am
+developing for irq-related deadlock.
+
+To prevent the potential deadlock, the patch uses spin_lock_irqsave()
+on &tgpio->lock inside timbgpio_gpio_set() to prevent the possible
+deadlock scenario.
+
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpio/gpio-timberdale.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2263,6 +2263,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
+diff --git a/drivers/gpio/gpio-timberdale.c b/drivers/gpio/gpio-timberdale.c
+index de14949a3fe5a..92c1f2baa4bff 100644
+--- a/drivers/gpio/gpio-timberdale.c
++++ b/drivers/gpio/gpio-timberdale.c
+@@ -43,9 +43,10 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
+ 	unsigned offset, bool enabled)
+ {
+ 	struct timbgpio *tgpio = gpiochip_get_data(gpio);
++	unsigned long flags;
+ 	u32 reg;
+ 
+-	spin_lock(&tgpio->lock);
++	spin_lock_irqsave(&tgpio->lock, flags);
+ 	reg = ioread32(tgpio->membase + offset);
+ 
+ 	if (enabled)
+@@ -54,7 +55,7 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
+ 		reg &= ~(1 << index);
+ 
+ 	iowrite32(reg, tgpio->membase + offset);
+-	spin_unlock(&tgpio->lock);
++	spin_unlock_irqrestore(&tgpio->lock, flags);
+ 
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
