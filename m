@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5FDF7D32B0
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F8DC7D315E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233860AbjJWLWx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:22:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34648 "EHLO
+        id S233451AbjJWLI1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233862AbjJWLWw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:52 -0400
+        with ESMTP id S233406AbjJWLI0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7184DC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A737AC433CB;
-        Mon, 23 Oct 2023 11:22:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BFE399
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BCDC433C9;
+        Mon, 23 Oct 2023 11:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060170;
-        bh=ptdZkBPKAlpZKgEUjjKbiyvzA8zy77LUwaq+PzYV/qw=;
+        s=korg; t=1698059304;
+        bh=foSVcUnCafjm/xkO2Smx9Sqf6m0Q9l8AHf2H8uI5/gk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TdhyA2+HNBhVG+32+94EU50INyZPZk8Sda7RaB/MQONiV+3uaXx7/3uN5lg7uBz3h
-         pB3uC4SON5gcOG+q8bxKqW4VM2QxZeTYlwSsrgV3+s+UlW6WkFf1R1DpBqOX3RAlYF
-         EPXxniqua8RlOd+uqf8L6kGlO9Mh30pOyC9TLUvg=
+        b=GVJXNB8FC5WZBK35kxISbqsF14Gi+7fpOouNCN4T8JDt/mpHoN4RCXby4wFSnbuyR
+         doXARbnKyawRUM5zgoGVPMa8vMDc9hmGuriL/DRffypi03A15qggK9soSm6W798DTL
+         SuoDuHUmiSbzjDANyShw+ZMl87UrjFZBEO9D3r80=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Neal Cardwell <ncardwell@google.com>,
-        Yuchung Cheng <ycheng@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 054/196] tcp: fix excessive TLP and RACK timeouts from HZ rounding
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 133/241] btrfs: error out when COWing block using a stale transaction
 Date:   Mon, 23 Oct 2023 12:55:19 +0200
-Message-ID: <20231023104830.060253008@linuxfoundation.org>
+Message-ID: <20231023104837.114090308@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,100 +49,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 1c2709cfff1dedbb9591e989e2f001484208d914 upstream.
+[ Upstream commit 48774f3bf8b4dd3b1a0e155825c9ce48483db14c ]
 
-We discovered from packet traces of slow loss recovery on kernels with
-the default HZ=250 setting (and min_rtt < 1ms) that after reordering,
-when receiving a SACKed sequence range, the RACK reordering timer was
-firing after about 16ms rather than the desired value of roughly
-min_rtt/4 + 2ms. The problem is largely due to the RACK reorder timer
-calculation adding in TCP_TIMEOUT_MIN, which is 2 jiffies. On kernels
-with HZ=250, this is 2*4ms = 8ms. The TLP timer calculation has the
-exact same issue.
+At btrfs_cow_block() we have these checks to verify we are not using a
+stale transaction (a past transaction with an unblocked state or higher),
+and the only thing we do is to trigger a WARN with a message and a stack
+trace. This however is a critical problem, highly unexpected and if it
+happens it's most likely due to a bug, so we should error out and turn the
+fs into error state so that such issue is much more easily noticed if it's
+triggered.
 
-This commit fixes the TLP transmit timer and RACK reordering timer
-floor calculation to more closely match the intended 2ms floor even on
-kernels with HZ=250. It does this by adding in a new
-TCP_TIMEOUT_MIN_US floor of 2000 us and then converting to jiffies,
-instead of the current approach of converting to jiffies and then
-adding th TCP_TIMEOUT_MIN value of 2 jiffies.
+The problem is critical because using such stale transaction will lead to
+not persisting the extent buffer used for the COW operation, as allocating
+a tree block adds the range of the respective extent buffer to the
+->dirty_pages iotree of the transaction, and a stale transaction, in the
+unlocked state or higher, will not flush dirty extent buffers anymore,
+therefore resulting in not persisting the tree block and resource leaks
+(not cleaning the dirty_pages iotree for example).
 
-Our testing has verified that on kernels with HZ=1000, as expected,
-this does not produce significant changes in behavior, but on kernels
-with the default HZ=250 the latency improvement can be large. For
-example, our tests show that for HZ=250 kernels at low RTTs this fix
-roughly halves the latency for the RACK reorder timer: instead of
-mostly firing at 16ms it mostly fires at 8ms.
+So do the following changes:
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Fixes: bb4d991a28cc ("tcp: adjust tail loss probe timeout")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231015174700.2206872-1-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+1) Return -EUCLEAN if we find a stale transaction;
+
+2) Turn the fs into error state, with error -EUCLEAN, so that no
+   transaction can be committed, and generate a stack trace;
+
+3) Combine both conditions into a single if statement, as both are related
+   and have the same error message;
+
+4) Mark the check as unlikely, since this is not expected to ever happen.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tcp.h       |    3 +++
- net/ipv4/tcp_output.c   |    9 +++++----
- net/ipv4/tcp_recovery.c |    2 +-
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ fs/btrfs/ctree.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -141,6 +141,9 @@ void tcp_time_wait(struct sock *sk, int
- #define TCP_RTO_MAX	((unsigned)(120*HZ))
- #define TCP_RTO_MIN	((unsigned)(HZ/5))
- #define TCP_TIMEOUT_MIN	(2U) /* Min timeout for TCP timers in jiffies */
-+
-+#define TCP_TIMEOUT_MIN_US (2*USEC_PER_MSEC) /* Min TCP timeout in microsecs */
-+
- #define TCP_TIMEOUT_INIT ((unsigned)(1*HZ))	/* RFC6298 2.1 initial RTO value	*/
- #define TCP_TIMEOUT_FALLBACK ((unsigned)(3*HZ))	/* RFC 1122 initial RTO value, now
- 						 * used as a fallback RTO for the
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2735,7 +2735,7 @@ bool tcp_schedule_loss_probe(struct sock
- {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
--	u32 timeout, rto_delta_us;
-+	u32 timeout, timeout_us, rto_delta_us;
- 	int early_retrans;
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index a4cb4b6429870..7afd0a6495f37 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -686,14 +686,22 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
+ 		btrfs_err(fs_info,
+ 			"COW'ing blocks on a fs root that's being dropped");
  
- 	/* Don't do any loss probe on a Fast Open connection before 3WHS
-@@ -2759,11 +2759,12 @@ bool tcp_schedule_loss_probe(struct sock
- 	 * sample is available then probe after TCP_TIMEOUT_INIT.
- 	 */
- 	if (tp->srtt_us) {
--		timeout = usecs_to_jiffies(tp->srtt_us >> 2);
-+		timeout_us = tp->srtt_us >> 2;
- 		if (tp->packets_out == 1)
--			timeout += TCP_RTO_MIN;
-+			timeout_us += tcp_rto_min_us(sk);
- 		else
--			timeout += TCP_TIMEOUT_MIN;
-+			timeout_us += TCP_TIMEOUT_MIN_US;
-+		timeout = usecs_to_jiffies(timeout_us);
- 	} else {
- 		timeout = TCP_TIMEOUT_INIT;
- 	}
---- a/net/ipv4/tcp_recovery.c
-+++ b/net/ipv4/tcp_recovery.c
-@@ -104,7 +104,7 @@ bool tcp_rack_mark_lost(struct sock *sk)
- 	tp->rack.advanced = 0;
- 	tcp_rack_detect_loss(sk, &timeout);
- 	if (timeout) {
--		timeout = usecs_to_jiffies(timeout) + TCP_TIMEOUT_MIN;
-+		timeout = usecs_to_jiffies(timeout + TCP_TIMEOUT_MIN_US);
- 		inet_csk_reset_xmit_timer(sk, ICSK_TIME_REO_TIMEOUT,
- 					  timeout, inet_csk(sk)->icsk_rto);
- 	}
+-	if (trans->transaction != fs_info->running_transaction)
+-		WARN(1, KERN_CRIT "trans %llu running %llu\n",
+-		       trans->transid,
+-		       fs_info->running_transaction->transid);
+-
+-	if (trans->transid != fs_info->generation)
+-		WARN(1, KERN_CRIT "trans %llu running %llu\n",
+-		       trans->transid, fs_info->generation);
++	/*
++	 * COWing must happen through a running transaction, which always
++	 * matches the current fs generation (it's a transaction with a state
++	 * less than TRANS_STATE_UNBLOCKED). If it doesn't, then turn the fs
++	 * into error state to prevent the commit of any transaction.
++	 */
++	if (unlikely(trans->transaction != fs_info->running_transaction ||
++		     trans->transid != fs_info->generation)) {
++		btrfs_abort_transaction(trans, -EUCLEAN);
++		btrfs_crit(fs_info,
++"unexpected transaction when attempting to COW block %llu on root %llu, transaction %llu running transaction %llu fs generation %llu",
++			   buf->start, btrfs_root_id(root), trans->transid,
++			   fs_info->running_transaction->transid,
++			   fs_info->generation);
++		return -EUCLEAN;
++	}
+ 
+ 	if (!should_cow_block(trans, root, buf)) {
+ 		*cow_ret = buf;
+-- 
+2.40.1
+
 
 
