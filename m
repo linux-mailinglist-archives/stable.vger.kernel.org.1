@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0FC47D3599
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A836B7D33D1
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234575AbjJWLt4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:49:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41914 "EHLO
+        id S234009AbjJWLeZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:34:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234583AbjJWLtz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:55 -0400
+        with ESMTP id S233949AbjJWLeX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEA73AF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A744C433CA;
-        Mon, 23 Oct 2023 11:49:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A17C6DB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59B6C433C7;
+        Mon, 23 Oct 2023 11:34:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061793;
-        bh=ZkFLNgXld+10IzY9G9k9gkiiHsxn8mucEbXinZseTnQ=;
+        s=korg; t=1698060861;
+        bh=8WFFtOAelhORmEDZPwpyUmhJNY122YxBe2s2HJOmnHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P+R8HwXq2ADyby1Z0Kr1RKGIdNjiRP7Q11bCArgcc7aHWcdOrWwJ3stkBAiaPHom1
-         iYk5knSrZoCgwQPsTKTpcw6ri9Ppw+amSpE9WE/u3sAl+FaVdJVHDzXPVqWOEi/uNa
-         8zOin+QitjhXjezcX3qkto2fYM4dXU8aKo/1Y+M4=
+        b=Dm+dpNaWYoUsooR20BToFixfkcHwk6bjxRcyoOBC2+8D/AWK+rbd1uxaP83EODntD
+         wdR/VZHV7Pw+RU2Bj6tDTvIzWRWJaOjtguGsHlxsyd2JxdTZecA5q6Pcp9Ef7Ab8BI
+         dDlzCmr++K/FWrECSitYySgkF4n4XMA0PlLq5ot4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Haller <thaller@redhat.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        David Ahern <dsahern@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 167/202] ipv4/fib: send notify when delete source address routes
-Date:   Mon, 23 Oct 2023 12:57:54 +0200
-Message-ID: <20231023104831.372558936@linuxfoundation.org>
+Subject: [PATCH 5.4 117/123] gpio: vf610: mask the gpio irq in system suspend and support wakeup
+Date:   Mon, 23 Oct 2023 12:57:55 +0200
+Message-ID: <20231023104821.703548159@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,116 +49,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit 4b2b606075e50cdae62ab2356b0a1e206947c354 ]
+[ Upstream commit 430232619791e7de95191f2cd8ebaa4c380d17d0 ]
 
-After deleting an interface address in fib_del_ifaddr(), the function
-scans the fib_info list for stray entries and calls fib_flush() and
-fib_table_flush(). Then the stray entries will be deleted silently and no
-RTM_DELROUTE notification will be sent.
+Add flag IRQCHIP_MASK_ON_SUSPEND to make sure gpio irq is masked on
+suspend, if lack this flag, current irq arctitecture will not mask
+the irq, and these unmasked gpio irq will wrongly wakeup the system
+even they are not config as wakeup source.
 
-This lack of notification can make routing daemons, or monitor like
-`ip monitor route` miss the routing changes. e.g.
+Also add flag IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND to make sure the gpio
+irq which is configed as wakeup source can work as expect.
 
-+ ip link add dummy1 type dummy
-+ ip link add dummy2 type dummy
-+ ip link set dummy1 up
-+ ip link set dummy2 up
-+ ip addr add 192.168.5.5/24 dev dummy1
-+ ip route add 7.7.7.0/24 dev dummy2 src 192.168.5.5
-+ ip -4 route
-7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
-192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
-+ ip monitor route
-+ ip addr del 192.168.5.5/24 dev dummy1
-Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
-Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
-Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
-
-As Ido reminded, fib_table_flush() isn't only called when an address is
-deleted, but also when an interface is deleted or put down. The lack of
-notification in these cases is deliberate. And commit 7c6bb7d2faaf
-("net/ipv6: Add knob to skip DELROUTE message on device down") introduced
-a sysctl to make IPv6 behave like IPv4 in this regard. So we can't send
-the route delete notify blindly in fib_table_flush().
-
-To fix this issue, let's add a new flag in "struct fib_info" to track the
-deleted prefer source address routes, and only send notify for them.
-
-After update:
-+ ip monitor route
-+ ip addr del 192.168.5.5/24 dev dummy1
-Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
-Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
-Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
-Deleted 7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
-
-Suggested-by: Thomas Haller <thaller@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230922075508.848925-1-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 7f2691a19627 ("gpio: vf610: add gpiolib/IRQ chip driver for Vybrid")
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_fib.h     | 1 +
- net/ipv4/fib_semantics.c | 1 +
- net/ipv4/fib_trie.c      | 4 ++++
- 3 files changed, 6 insertions(+)
+ drivers/gpio/gpio-vf610.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
-index 088f257cd6fb3..0d3cb34c7abc5 100644
---- a/include/net/ip_fib.h
-+++ b/include/net/ip_fib.h
-@@ -151,6 +151,7 @@ struct fib_info {
- 	int			fib_nhs;
- 	bool			fib_nh_is_v6;
- 	bool			nh_updated;
-+	bool			pfsrc_removed;
- 	struct nexthop		*nh;
- 	struct rcu_head		rcu;
- 	struct fib_nh		fib_nh[];
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 5f786cff2e410..bb5255178d75c 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -1908,6 +1908,7 @@ int fib_sync_down_addr(struct net_device *dev, __be32 local)
- 			continue;
- 		if (fi->fib_prefsrc == local) {
- 			fi->fib_flags |= RTNH_F_DEAD;
-+			fi->pfsrc_removed = true;
- 			ret++;
- 		}
- 	}
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 456240d2adc11..3f4f6458d40e9 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -1977,6 +1977,7 @@ void fib_table_flush_external(struct fib_table *tb)
- int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
- {
- 	struct trie *t = (struct trie *)tb->tb_data;
-+	struct nl_info info = { .nl_net = net };
- 	struct key_vector *pn = t->kv;
- 	unsigned long cindex = 1;
- 	struct hlist_node *tmp;
-@@ -2039,6 +2040,9 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
+index a548ac3fbb207..c2883bdeb95fe 100644
+--- a/drivers/gpio/gpio-vf610.c
++++ b/drivers/gpio/gpio-vf610.c
+@@ -246,7 +246,8 @@ static const struct irq_chip vf610_irqchip = {
+ 	.irq_unmask = vf610_gpio_irq_unmask,
+ 	.irq_set_type = vf610_gpio_irq_set_type,
+ 	.irq_set_wake = vf610_gpio_irq_set_wake,
+-	.flags = IRQCHIP_IMMUTABLE,
++	.flags = IRQCHIP_IMMUTABLE | IRQCHIP_MASK_ON_SUSPEND
++			| IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND,
+ 	GPIOCHIP_IRQ_RESOURCE_HELPERS,
+ };
  
- 			fib_notify_alias_delete(net, n->key, &n->leaf, fa,
- 						NULL);
-+			if (fi->pfsrc_removed)
-+				rtmsg_fib(RTM_DELROUTE, htonl(n->key), fa,
-+					  KEYLENGTH - fa->fa_slen, tb->tb_id, &info, 0);
- 			hlist_del_rcu(&fa->fa_list);
- 			fib_release_info(fa->fa_info);
- 			alias_free_mem_rcu(fa);
 -- 
-2.40.1
+2.42.0
 
 
 
