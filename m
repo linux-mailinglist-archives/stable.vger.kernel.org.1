@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F3A97D33B1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8622B7D3468
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:39:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234101AbjJWLdL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:33:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32988 "EHLO
+        id S234218AbjJWLj1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:39:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234124AbjJWLdJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:09 -0400
+        with ESMTP id S234249AbjJWLj0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0190EE8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:33:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731E5C433CB;
-        Mon, 23 Oct 2023 11:33:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55ECEE8
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CDCC433C7;
+        Mon, 23 Oct 2023 11:39:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060786;
-        bh=/bSRX9kHqiiRYhSTfS/frqwDA91kmOM1bw01TMKb0bE=;
+        s=korg; t=1698061164;
+        bh=HsHU/hxIx6OGgHyNYdylrWbEX6I6fNxyiLps4g40wZg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0+4/qG4iPRtoe+zOxQUa9nHW4Jft91rAc4iQBxf54ow73oc4X5NKdtqUt86jt5tlR
-         OBx+xQhOF6Kkn7s5uXZd2qUffM0qymhLywsjph6A5L0E5gZT55xmzB7zEX8w8sfQDa
-         Jbov0fdB8l2MKBHkFd+exm99dyJGcOv/xlwTWaQ8=
+        b=2aXvemiAwNVdH6rzRyeMEm0jR6+u02HDjzxCjc8G84ANhyykTPcsRpfD0Ch17/+07
+         vFIkFgbRFswS80ZACPXv29wXzhzgfvJzP0xGXxnL24Bp6nsanrXmqnTbB0CkeO9psi
+         FAjw0FsqQk8t/EqWSQHUQUxAXFR+VZnpGPQUKWyA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 092/123] Bluetooth: Avoid redundant authentication
-Date:   Mon, 23 Oct 2023 12:57:30 +0200
-Message-ID: <20231023104820.776972044@linuxfoundation.org>
+Subject: [PATCH 5.15 094/137] btrfs: error out when reallocating block for defrag using a stale transaction
+Date:   Mon, 23 Oct 2023 12:57:31 +0200
+Message-ID: <20231023104824.061862411@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,108 +49,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 1d8e801422d66e4b8c7b187c52196bef94eed887 ]
+[ Upstream commit e36f94914021e58ee88a8856c7fdf35adf9c7ee1 ]
 
-While executing the Android 13 CTS Verifier Secure Server test on a
-ChromeOS device, it was observed that the Bluetooth host initiates
-authentication for an RFCOMM connection after SSP completes.
-When this happens, some Intel Bluetooth controllers, like AC9560, would
-disconnect with "Connection Rejected due to Security Reasons (0x0e)".
+At btrfs_realloc_node() we have these checks to verify we are not using a
+stale transaction (a past transaction with an unblocked state or higher),
+and the only thing we do is to trigger two WARN_ON(). This however is a
+critical problem, highly unexpected and if it happens it's most likely due
+to a bug, so we should error out and turn the fs into error state so that
+such issue is much more easily noticed if it's triggered.
 
-Historically, BlueZ did not mandate this authentication while an
-authenticated combination key was already in use for the connection.
-This behavior was changed since commit 7b5a9241b780
-("Bluetooth: Introduce requirements for security level 4").
-So, this patch addresses the aforementioned disconnection issue by
-restoring the previous behavior.
+The problem is critical because in btrfs_realloc_node() we COW tree blocks,
+and using such stale transaction will lead to not persisting the extent
+buffers used for the COW operations, as allocating tree block adds the
+range of the respective extent buffers to the ->dirty_pages iotree of the
+transaction, and a stale transaction, in the unlocked state or higher,
+will not flush dirty extent buffers anymore, therefore resulting in not
+persisting the tree block and resource leaks (not cleaning the dirty_pages
+iotree for example).
 
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+So do the following changes:
+
+1) Return -EUCLEAN if we find a stale transaction;
+
+2) Turn the fs into error state, with error -EUCLEAN, so that no
+   transaction can be committed, and generate a stack trace;
+
+3) Combine both conditions into a single if statement, as both are related
+   and have the same error message;
+
+4) Mark the check as unlikely, since this is not expected to ever happen.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 63 ++++++++++++++++++++++------------------
- 1 file changed, 35 insertions(+), 28 deletions(-)
+ fs/btrfs/ctree.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 9ffc18c883e24..afdc0afa8ee7d 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1391,34 +1391,41 @@ int hci_conn_security(struct hci_conn *conn, __u8 sec_level, __u8 auth_type,
- 	if (!test_bit(HCI_CONN_AUTH, &conn->flags))
- 		goto auth;
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 8fe6aaa7b11fd..8b53313bf3b2c 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -680,8 +680,22 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
+ 	int progress_passed = 0;
+ 	struct btrfs_disk_key disk_key;
  
--	/* An authenticated FIPS approved combination key has sufficient
--	 * security for security level 4. */
--	if (conn->key_type == HCI_LK_AUTH_COMBINATION_P256 &&
--	    sec_level == BT_SECURITY_FIPS)
--		goto encrypt;
--
--	/* An authenticated combination key has sufficient security for
--	   security level 3. */
--	if ((conn->key_type == HCI_LK_AUTH_COMBINATION_P192 ||
--	     conn->key_type == HCI_LK_AUTH_COMBINATION_P256) &&
--	    sec_level == BT_SECURITY_HIGH)
--		goto encrypt;
--
--	/* An unauthenticated combination key has sufficient security for
--	   security level 1 and 2. */
--	if ((conn->key_type == HCI_LK_UNAUTH_COMBINATION_P192 ||
--	     conn->key_type == HCI_LK_UNAUTH_COMBINATION_P256) &&
--	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW))
--		goto encrypt;
--
--	/* A combination key has always sufficient security for the security
--	   levels 1 or 2. High security level requires the combination key
--	   is generated using maximum PIN code length (16).
--	   For pre 2.1 units. */
--	if (conn->key_type == HCI_LK_COMBINATION &&
--	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW ||
--	     conn->pin_length == 16))
--		goto encrypt;
-+	switch (conn->key_type) {
-+	case HCI_LK_AUTH_COMBINATION_P256:
-+		/* An authenticated FIPS approved combination key has
-+		 * sufficient security for security level 4 or lower.
-+		 */
-+		if (sec_level <= BT_SECURITY_FIPS)
-+			goto encrypt;
-+		break;
-+	case HCI_LK_AUTH_COMBINATION_P192:
-+		/* An authenticated combination key has sufficient security for
-+		 * security level 3 or lower.
-+		 */
-+		if (sec_level <= BT_SECURITY_HIGH)
-+			goto encrypt;
-+		break;
-+	case HCI_LK_UNAUTH_COMBINATION_P192:
-+	case HCI_LK_UNAUTH_COMBINATION_P256:
-+		/* An unauthenticated combination key has sufficient security
-+		 * for security level 2 or lower.
-+		 */
-+		if (sec_level <= BT_SECURITY_MEDIUM)
-+			goto encrypt;
-+		break;
-+	case HCI_LK_COMBINATION:
-+		/* A combination key has always sufficient security for the
-+		 * security levels 2 or lower. High security level requires the
-+		 * combination key is generated using maximum PIN code length
-+		 * (16). For pre 2.1 units.
-+		 */
-+		if (sec_level <= BT_SECURITY_MEDIUM || conn->pin_length == 16)
-+			goto encrypt;
-+		break;
-+	default:
-+		break;
+-	WARN_ON(trans->transaction != fs_info->running_transaction);
+-	WARN_ON(trans->transid != fs_info->generation);
++	/*
++	 * COWing must happen through a running transaction, which always
++	 * matches the current fs generation (it's a transaction with a state
++	 * less than TRANS_STATE_UNBLOCKED). If it doesn't, then turn the fs
++	 * into error state to prevent the commit of any transaction.
++	 */
++	if (unlikely(trans->transaction != fs_info->running_transaction ||
++		     trans->transid != fs_info->generation)) {
++		btrfs_abort_transaction(trans, -EUCLEAN);
++		btrfs_crit(fs_info,
++"unexpected transaction when attempting to reallocate parent %llu for root %llu, transaction %llu running transaction %llu fs generation %llu",
++			   parent->start, btrfs_root_id(root), trans->transid,
++			   fs_info->running_transaction->transid,
++			   fs_info->generation);
++		return -EUCLEAN;
 +	}
  
- auth:
- 	if (test_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags))
+ 	parent_nritems = btrfs_header_nritems(parent);
+ 	blocksize = fs_info->nodesize;
 -- 
 2.40.1
 
