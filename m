@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8267D34F3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43D5A7D32C5
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234425AbjJWLoN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:44:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46390 "EHLO
+        id S233904AbjJWLXj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:23:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234553AbjJWLoF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:05 -0400
+        with ESMTP id S233866AbjJWLXW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66C3F1729
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7759FC433CA;
-        Mon, 23 Oct 2023 11:43:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 799BA1724
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C7AC433C7;
+        Mon, 23 Oct 2023 11:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061435;
-        bh=LMj5ja0ULzeQZwnrvseQxFyhhphlBkCXtWOiKScDGqI=;
+        s=korg; t=1698060190;
+        bh=Th1z5anTtlk1THDLH2N6t1tbqqcInv901s3CtuG/HBQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vS9I1ln7zeMBqG/ATYRby5lTtQ8a0DUwgeOVkFDMPrN8xlyXYRXO++ugHArQ37c7n
-         H/W9QnCFkCqfoelCtQBLQHKWpbat4LRE8es3Ku8zzcrY7+zidrXeSTk2d9H7hkeoQ4
-         cOXk0AKyxrOr0E0OE4SJlbIbNNX+cF3Yg1J66qgY=
+        b=tkrR3IV1sPVAJGz4SvOHWxQNp9Z35ePz8wVLWaFrftPMJ4gGAlJFsb1B6eSJkweGk
+         G8svmR/Ki1bwLZ8abgf0PKdqthxglZd0C63EUiv7zaSs7ZnSlaHCWzRDQg885fTe7G
+         eEGCD7qic5IlxBUQQqEkuf8rPg9uEHOe3hADO0x4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.10 047/202] ceph: fix type promotion bug on 32bit systems
+        patches@lists.linux.dev,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 089/196] iio: adc: ad7192: Simplify using devm_regulator_get_enable()
 Date:   Mon, 23 Oct 2023 12:55:54 +0200
-Message-ID: <20231023104827.959753874@linuxfoundation.org>
+Message-ID: <20231023104831.055671591@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,39 +50,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
 
-commit 07bb00ef00ace88dd6f695fadbba76565756e55c upstream.
+[ Upstream commit 1ccef2e6e9205e209ad958d2e591bcca60981007 ]
 
-In this code "ret" is type long and "src_objlen" is unsigned int.  The
-problem is that on 32bit systems, when we do the comparison signed longs
-are type promoted to unsigned int.  So negative error codes from
-do_splice_direct() are treated as success instead of failure.
+Use devm_regulator_get_enable() instead of open coded get, enable,
+add-action-to-disable-at-detach - pattern. Also drop the seemingly unused
+struct member 'dvdd'.
 
-Cc: stable@vger.kernel.org
-Fixes: 1b0c3b9f91f0 ("ceph: re-org copy_file_range and fix some error paths")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+Link: https://lore.kernel.org/r/9719c445c095d3d308e2fc9f4f93294f5806c41c.1660934107.git.mazziesaccount@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 7e7dcab620cd ("iio: adc: ad7192: Correct reference voltage")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/file.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7192.c | 15 ++-------------
+ 1 file changed, 2 insertions(+), 13 deletions(-)
 
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -2428,7 +2428,7 @@ static ssize_t __ceph_copy_file_range(st
- 		ret = do_splice_direct(src_file, &src_off, dst_file,
- 				       &dst_off, src_objlen, flags);
- 		/* Abort on short copies or on error */
--		if (ret < src_objlen) {
-+		if (ret < (long)src_objlen) {
- 			dout("Failed partial copy (%zd)\n", ret);
- 			goto out;
- 		}
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 80eff7090f14a..18520f7bedccd 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -177,7 +177,6 @@ struct ad7192_chip_info {
+ struct ad7192_state {
+ 	const struct ad7192_chip_info	*chip_info;
+ 	struct regulator		*avdd;
+-	struct regulator		*dvdd;
+ 	struct clk			*mclk;
+ 	u16				int_vref_mv;
+ 	u32				fclk;
+@@ -1011,19 +1010,9 @@ static int ad7192_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return ret;
+ 
+-	st->dvdd = devm_regulator_get(&spi->dev, "dvdd");
+-	if (IS_ERR(st->dvdd))
+-		return PTR_ERR(st->dvdd);
+-
+-	ret = regulator_enable(st->dvdd);
+-	if (ret) {
+-		dev_err(&spi->dev, "Failed to enable specified DVdd supply\n");
+-		return ret;
+-	}
+-
+-	ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->dvdd);
++	ret = devm_regulator_get_enable(&spi->dev, "dvdd");
+ 	if (ret)
+-		return ret;
++		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd supply\n");
+ 
+ 	ret = regulator_get_voltage(st->avdd);
+ 	if (ret < 0) {
+-- 
+2.40.1
+
 
 
