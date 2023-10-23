@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D226C7D31CD
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C25DF7D3310
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233207AbjJWLNY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:13:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35150 "EHLO
+        id S233861AbjJWL0V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:26:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233618AbjJWLNX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:23 -0400
+        with ESMTP id S233926AbjJWL0T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 438F692
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BE0C433C7;
-        Mon, 23 Oct 2023 11:13:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C907C92
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F54BC433C7;
+        Mon, 23 Oct 2023 11:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059601;
-        bh=K8EE6OpbSZS7iffc2uysJ972iS0j/wDJMphmPnOIHms=;
+        s=korg; t=1698060377;
+        bh=F8zy6IIxuCdlo/Q1ypqq3w5DXkSikCpAkLku4DpUKmk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j3uhJY6XGSV4G2yTqoSgVHUSBItZSptN5Ya+XEKsvi0PgoDqOg8XkMYdWpRdz0DnK
-         ucimAqKD9BbDmClLRqPa1I/Q1frKpZySmfD+TUDt9RABOgwMmysMIlAMeqQr170pBM
-         E5XfnyqOU2mGtDWTNckTa7nMn+eVIxtqY68IgudY=
+        b=kgS2eAVJID08nt4YEMDA6idbTbyqFMENedBBt2mYOm0ZQQF94eBPhavR1YDPLD7p1
+         Wjh792uP4GmoytkdDDzR0IDE/WccBZwqTxyKtzAVOk1NmarmLwderxbuR0lu2uBjue
+         LGlxTMMpnq0nBN1vi8R/ob33j2Tu7e8J1CKrGAJw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abel Vesa <abel.vesa@linaro.org>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 231/241] phy: qcom-qmp-combo: Square out 8550 POWER_STATE_CONFIG1
+        patches@lists.linux.dev, Avri Altman <avri.altman@wdc.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 152/196] mmc: core: Capture correct oemid-bits for eMMC cards
 Date:   Mon, 23 Oct 2023 12:56:57 +0200
-Message-ID: <20231023104839.506458003@linuxfoundation.org>
+Message-ID: <20231023104832.772174125@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,72 +48,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Avri Altman <avri.altman@wdc.com>
 
-[ Upstream commit 112c23705c6dc59a05290c8e3e597e1b4e9c23fc ]
+commit 84ee19bffc9306128cd0f1c650e89767079efeff upstream.
 
-There are two instances of the POWER_STATE_CONFIG1 register: one in
-the PCS space and another one in PCS_USB.
+The OEMID is an 8-bit binary number rather than 16-bit as the current code
+parses for. The OEMID occupies bits [111:104] in the CID register, see the
+eMMC spec JESD84-B51 paragraph 7.2.3. It seems that the 16-bit comes from
+the legacy MMC specs (v3.31 and before).
 
-The downstream init sequence pokes the latter one while we've been poking
-the former one (and misnamed it as the latter one, impostor!). Fix that
-up to avoid UB.
+Let's fix the parsing by simply move to use 8-bit instead of 16-bit. This
+means we ignore the impact on some of those old MMC cards that may be out
+there, but on the other hand this shouldn't be a problem as the OEMID seems
+not be an important feature for these cards.
 
-Fixes: 49742e9edab3 ("phy: qcom-qmp-combo: Add support for SM8550")
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230829-topic-8550_usbphy-v3-1-34ec434194c5@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Avri Altman <avri.altman@wdc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230927071500.1791882-1-avri.altman@wdc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c      | 2 +-
- drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/mmc/core/mmc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-index bebce8c591a30..48639b88a1e28 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -772,10 +772,10 @@ static const struct qmp_phy_init_tbl sm8550_usb3_pcs_tbl[] = {
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_PCS_TX_RX_CONFIG, 0x0c),
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_EQ_CONFIG1, 0x4b),
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_EQ_CONFIG5, 0x10),
--	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1, 0x68),
- };
- 
- static const struct qmp_phy_init_tbl sm8550_usb3_pcs_usb_tbl[] = {
-+	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1, 0x68),
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_LFPS_DET_HIGH_COUNT_VAL, 0xf8),
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_RXEQTRAINING_DFE_TIME_S2, 0x07),
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_RCVR_DTCT_DLY_U3_L, 0x40),
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h b/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h
-index 9510e63ba9d8a..c38530d6776b4 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h
-@@ -12,7 +12,7 @@
- #define QPHY_USB_V6_PCS_LOCK_DETECT_CONFIG3		0xcc
- #define QPHY_USB_V6_PCS_LOCK_DETECT_CONFIG6		0xd8
- #define QPHY_USB_V6_PCS_REFGEN_REQ_CONFIG1		0xdc
--#define QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1	0x90
-+#define QPHY_USB_V6_PCS_POWER_STATE_CONFIG1		0x90
- #define QPHY_USB_V6_PCS_RX_SIGDET_LVL			0x188
- #define QPHY_USB_V6_PCS_RCVR_DTCT_DLY_P1U2_L		0x190
- #define QPHY_USB_V6_PCS_RCVR_DTCT_DLY_P1U2_H		0x194
-@@ -23,6 +23,7 @@
- #define QPHY_USB_V6_PCS_EQ_CONFIG1			0x1dc
- #define QPHY_USB_V6_PCS_EQ_CONFIG5			0x1ec
- 
-+#define QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1	0x00
- #define QPHY_USB_V6_PCS_USB3_LFPS_DET_HIGH_COUNT_VAL	0x18
- #define QPHY_USB_V6_PCS_USB3_RXEQTRAINING_DFE_TIME_S2	0x3c
- #define QPHY_USB_V6_PCS_USB3_RCVR_DTCT_DLY_U3_L		0x40
--- 
-2.42.0
-
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -104,7 +104,7 @@ static int mmc_decode_cid(struct mmc_car
+ 	case 3: /* MMC v3.1 - v3.3 */
+ 	case 4: /* MMC v4 */
+ 		card->cid.manfid	= UNSTUFF_BITS(resp, 120, 8);
+-		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 16);
++		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 8);
+ 		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
+ 		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
+ 		card->cid.prod_name[2]	= UNSTUFF_BITS(resp, 80, 8);
 
 
