@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC1C37D31AC
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E01BC7D3407
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233581AbjJWLLy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52760 "EHLO
+        id S234159AbjJWLgP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:36:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233602AbjJWLLx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:53 -0400
+        with ESMTP id S234145AbjJWLgM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B75C1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D30C433C7;
-        Mon, 23 Oct 2023 11:11:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3302D7F
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38523C433C9;
+        Mon, 23 Oct 2023 11:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059510;
-        bh=LkDcZ2Br5iNL7GU3II4bYEajT12sHEjpTk91J+2xrw4=;
+        s=korg; t=1698060969;
+        bh=RDAbcKoAhehQrUUwZCIVETNHc2vKaAaViqIf/XiVOF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ETiRC3flVrjqx2AidHbCqQFfkrIbj7mB2yWuvlSsFhYO3HC+teVGpZD2T5rtB4R6J
-         U0fDiBeo8BnZBv/RBEh10qDF/I4EheAlIXfEKFS13ycu/1+IWRJwT9JLgexfcA/kBA
-         Lxpdiaogs8O+ZqntH3tdO1YrXDG5gof4Wy689Ljg=
+        b=UCNTpmg0QJJHarWMcTuEN3ap0SJkQXErXwyMNGR0v28RlX8KqL3xcPIXessVkMulm
+         q8xtbK3DdPKF6k0wZoZCe5Q/J6bWhj6UkHS3dWXfS0UNZ8Vwx0FcEifzaA2r+Memtn
+         tF3gjpZGs2je40VhLWvu0OSJpOk+FEPb/f0KDc6Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Francis Laniel <flaniel@linux.microsoft.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.5 201/241] selftests/ftrace: Add new test case which checks non unique symbol
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.15 030/137] xfrm: fix a data-race in xfrm_gen_index()
 Date:   Mon, 23 Oct 2023 12:56:27 +0200
-Message-ID: <20231023104838.762128978@linuxfoundation.org>
+Message-ID: <20231023104822.026348977@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +50,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francis Laniel <flaniel@linux.microsoft.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 03b80ff8023adae6780e491f66e932df8165e3a0 upstream.
+commit 3e4bc23926b83c3c67e5f61ae8571602754131a6 upstream.
 
-If name_show() is non unique, this test will try to install a kprobe on this
-function which should fail returning EADDRNOTAVAIL.
-On kernel where name_show() is not unique, this test is skipped.
+xfrm_gen_index() mutual exclusion uses net->xfrm.xfrm_policy_lock.
 
-Link: https://lore.kernel.org/all/20231020104250.9537-3-flaniel@linux.microsoft.com/
+This means we must use a per-netns idx_generator variable,
+instead of a static one.
+Alternative would be to use an atomic variable.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+syzbot reported:
+
+BUG: KCSAN: data-race in xfrm_sk_policy_insert / xfrm_sk_policy_insert
+
+write to 0xffffffff87005938 of 4 bytes by task 29466 on cpu 0:
+xfrm_gen_index net/xfrm/xfrm_policy.c:1385 [inline]
+xfrm_sk_policy_insert+0x262/0x640 net/xfrm/xfrm_policy.c:2347
+xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
+do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
+ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
+rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
+sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
+__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
+__do_sys_setsockopt net/socket.c:2274 [inline]
+__se_sys_setsockopt net/socket.c:2271 [inline]
+__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read to 0xffffffff87005938 of 4 bytes by task 29460 on cpu 1:
+xfrm_sk_policy_insert+0x13e/0x640
+xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
+do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
+ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
+rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
+sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
+__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
+__do_sys_setsockopt net/socket.c:2274 [inline]
+__se_sys_setsockopt net/socket.c:2271 [inline]
+__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x00006ad8 -> 0x00006b18
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 29460 Comm: syz-executor.1 Not tainted 6.5.0-rc5-syzkaller-00243-g9106536c1aa3 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+
+Fixes: 1121994c803f ("netns xfrm: policy insertion in netns")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc |   13 ++++++++++
- 1 file changed, 13 insertions(+)
- create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+ include/net/netns/xfrm.h |    1 +
+ net/xfrm/xfrm_policy.c   |    6 ++----
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
---- /dev/null
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-@@ -0,0 +1,13 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+# description: Test failure of registering kprobe on non unique symbol
-+# requires: kprobe_events
-+
-+SYMBOL='name_show'
-+
-+# We skip this test on kernel where SYMBOL is unique or does not exist.
-+if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
-+	exit_unsupported
-+fi
-+
-+! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
+--- a/include/net/netns/xfrm.h
++++ b/include/net/netns/xfrm.h
+@@ -50,6 +50,7 @@ struct netns_xfrm {
+ 	struct list_head	policy_all;
+ 	struct hlist_head	*policy_byidx;
+ 	unsigned int		policy_idx_hmask;
++	unsigned int		idx_generator;
+ 	struct hlist_head	policy_inexact[XFRM_POLICY_MAX];
+ 	struct xfrm_policy_hash	policy_bydst[XFRM_POLICY_MAX];
+ 	unsigned int		policy_count[XFRM_POLICY_MAX * 2];
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -1371,8 +1371,6 @@ EXPORT_SYMBOL(xfrm_policy_hash_rebuild);
+  * of an absolute inpredictability of ordering of rules. This will not pass. */
+ static u32 xfrm_gen_index(struct net *net, int dir, u32 index)
+ {
+-	static u32 idx_generator;
+-
+ 	for (;;) {
+ 		struct hlist_head *list;
+ 		struct xfrm_policy *p;
+@@ -1380,8 +1378,8 @@ static u32 xfrm_gen_index(struct net *ne
+ 		int found;
+ 
+ 		if (!index) {
+-			idx = (idx_generator | dir);
+-			idx_generator += 8;
++			idx = (net->xfrm.idx_generator | dir);
++			net->xfrm.idx_generator += 8;
+ 		} else {
+ 			idx = index;
+ 			index = 0;
 
 
