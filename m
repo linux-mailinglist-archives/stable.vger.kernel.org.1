@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E08C7D3528
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:45:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4406B7D321F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234546AbjJWLps (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43148 "EHLO
+        id S233664AbjJWLQ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:16:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52732 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234485AbjJWLp0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:26 -0400
+        with ESMTP id S233662AbjJWLQ7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F462170F
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6ED2C433C8;
-        Mon, 23 Oct 2023 11:45:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEE1692
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E29C433C7;
+        Mon, 23 Oct 2023 11:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061522;
-        bh=pu1Br4OwnJMEl2beWFbtNN2Y7JtYO4vGX1lSICYVWUU=;
+        s=korg; t=1698059816;
+        bh=2mpMTdgCw5RbC3FnPtG8/sOzrzhrzPvAoUoqsx2XzSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BrtPJEpoIJvGKdpl5EBeMTd6mF4f4ALu/2PCylcQ+BxumMDhsNufdg72yHE7yW3LD
-         9vrLRJMaN/ldUTOkUfqRtvTdWdubckkHYKnniMGZ+6sy35V7nJOEEgM9D3dBBchohM
-         g+gS1Z7QhCxEIWmUHMxJ9Y2G/o4zSrEpbL8ARACY=
+        b=HZaBPdHJVviWUh2qENtp3BQ/R/ECE0EO3tdgrsJcipfwtKP1Rro0Ql/pTQAdVzWAJ
+         fr3yT5Fc4a3zeMOo62VifCeG8BeaZz+lWsvvClpsT+F75t3Tx0cZmMF+RTy0PVuH5C
+         Z7Abx6vVEmHgqQ5SPuwvG6tRcmqvVYxXqM/fHzBg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, ruanjinjie@huawei.com,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        James Morse <james.morse@arm.com>,
-        Joey Gouly <joey.gouly@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 076/202] arm64: armv8_deprecated: rework deprected instruction handling
-Date:   Mon, 23 Oct 2023 12:56:23 +0200
-Message-ID: <20231023104828.766270552@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactcode.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 4.19 35/98] x86/cpu: Fix AMD erratum #1485 on Zen4-based CPUs
+Date:   Mon, 23 Oct 2023 12:56:24 +0200
+Message-ID: <20231023104814.837660899@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,583 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 124c49b1b5d947b7180c5d6cbb09ddf76ea45ea2 upstream.
+commit f454b18e07f518bcd0c05af17a2239138bff52de upstream.
 
-Support for deprecated instructions can be enabled or disabled at
-runtime. To handle this, the code in armv8_deprecated.c registers and
-unregisters undef_hooks, and makes cross CPU calls to configure HW
-support. This is rather complicated, and the synchronization required to
-make this safe ends up serializing the handling of instructions which
-have been trapped.
+Fix erratum #1485 on Zen4 parts where running with STIBP disabled can
+cause an #UD exception. The performance impact of the fix is negligible.
 
-This patch simplifies the deprecated instruction handling by removing
-the dynamic registration and unregistration, and changing the trap
-handling code to determine whether a handler should be invoked. This
-removes the need for dynamic list management, and simplifies the locking
-requirements, making it possible to handle trapped instructions entirely
-in parallel.
-
-Where changing the emulation state requires a cross-call, this is
-serialized by locally disabling interrupts, ensuring that the CPU is not
-left in an inconsistent state.
-
-To simplify sysctl management, each insn_emulation is given a separate
-sysctl table, permitting these to be registered separately. The core
-sysctl code will iterate over all of these when walking sysfs.
-
-I've tested this with userspace programs which use each of the
-deprecated instructions, and I've concurrently modified the support
-level for each of the features back-and-forth between HW and emulated to
-check that there are no spurious SIGILLs sent to userspace when the
-support level is changed.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Joey Gouly <joey.gouly@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20221019144123.612388-10-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reported-by: René Rebe <rene@exactcode.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: René Rebe <rene@exactcode.de>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/D99589F4-BC5D-430B-87B2-72C20370CF57@exactcode.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/traps.h       |   19 +-
- arch/arm64/kernel/armv8_deprecated.c |  291 +++++++++++++++++------------------
- arch/arm64/kernel/traps.c            |   40 ----
- 3 files changed, 156 insertions(+), 194 deletions(-)
+ arch/x86/include/asm/msr-index.h |    4 ++++
+ arch/x86/kernel/cpu/amd.c        |    8 ++++++++
+ 2 files changed, 12 insertions(+)
 
---- a/arch/arm64/include/asm/traps.h
-+++ b/arch/arm64/include/asm/traps.h
-@@ -13,17 +13,16 @@
+--- a/arch/x86/include/asm/msr-index.h
++++ b/arch/x86/include/asm/msr-index.h
+@@ -446,6 +446,10 @@
  
- struct pt_regs;
+ #define MSR_AMD64_VIRT_SPEC_CTRL	0xc001011f
  
--struct undef_hook {
--	struct list_head node;
--	u32 instr_mask;
--	u32 instr_val;
--	u64 pstate_mask;
--	u64 pstate_val;
--	int (*fn)(struct pt_regs *regs, u32 instr);
--};
-+#ifdef CONFIG_ARMV8_DEPRECATED
-+bool try_emulate_armv8_deprecated(struct pt_regs *regs, u32 insn);
-+#else
-+static inline bool
-+try_emulate_armv8_deprecated(struct pt_regs *regs, u32 insn)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_ARMV8_DEPRECATED */
- 
--void register_undef_hook(struct undef_hook *hook);
--void unregister_undef_hook(struct undef_hook *hook);
- void force_signal_inject(int signal, int code, unsigned long address, unsigned int err);
- void arm64_notify_segfault(unsigned long addr);
- void arm64_force_sig_fault(int signo, int code, void __user *addr, const char *str);
---- a/arch/arm64/kernel/armv8_deprecated.c
-+++ b/arch/arm64/kernel/armv8_deprecated.c
-@@ -38,17 +38,24 @@ enum insn_emulation_mode {
- enum legacy_insn_status {
- 	INSN_DEPRECATED,
- 	INSN_OBSOLETE,
-+	INSN_UNAVAILABLE,
- };
- 
- struct insn_emulation {
- 	const char			*name;
--	struct list_head		node;
- 	enum legacy_insn_status		status;
--	struct undef_hook		*hooks;
-+	bool				(*try_emulate)(struct pt_regs *regs,
-+						       u32 insn);
- 	int				(*set_hw_mode)(bool enable);
++/* Zen4 */
++#define MSR_ZEN4_BP_CFG			0xc001102e
++#define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
 +
- 	int current_mode;
- 	int min;
- 	int max;
+ /* Fam 17h MSRs */
+ #define MSR_F17H_IRPERF			0xc00000e9
+ 
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -72,6 +72,10 @@ static const int amd_zenbleed[] =
+ 			   AMD_MODEL_RANGE(0x17, 0x90, 0x0, 0x91, 0xf),
+ 			   AMD_MODEL_RANGE(0x17, 0xa0, 0x0, 0xaf, 0xf));
+ 
++static const int amd_erratum_1485[] =
++	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x19, 0x10, 0x0, 0x1f, 0xf),
++			   AMD_MODEL_RANGE(0x19, 0x60, 0x0, 0xaf, 0xf));
 +
-+	/*
-+	 * sysctl for this emulation + a sentinal entry.
-+	 */
-+	struct ctl_table sysctl[2];
- };
- 
- #define ARM_OPCODE_CONDTEST_FAIL   0
-@@ -70,6 +77,7 @@ static unsigned int aarch32_check_condit
- 	return ARM_OPCODE_CONDTEST_UNCOND;
- }
- 
-+#ifdef CONFIG_SWP_EMULATION
- /*
-  *  Implement emulation of the SWP/SWPB instructions using load-exclusive and
-  *  store-exclusive.
-@@ -228,28 +236,27 @@ fault:
- 	return 0;
- }
- 
--/*
-- * Only emulate SWP/SWPB executed in ARM state/User mode.
-- * The kernel must be SWP free and SWP{B} does not exist in Thumb.
-- */
--static struct undef_hook swp_hooks[] = {
--	{
--		.instr_mask	= 0x0fb00ff0,
--		.instr_val	= 0x01000090,
--		.pstate_mask	= PSR_AA32_MODE_MASK,
--		.pstate_val	= PSR_AA32_MODE_USR,
--		.fn		= swp_handler
--	},
--	{ }
--};
-+static bool try_emulate_swp(struct pt_regs *regs, u32 insn)
-+{
-+	/* SWP{B} only exists in ARM state and does not exist in Thumb */
-+	if (!compat_user_mode(regs) || compat_thumb_mode(regs))
-+		return false;
-+
-+	if ((insn & 0x0fb00ff0) != 0x01000090)
-+		return false;
-+
-+	return swp_handler(regs, insn) == 0;
-+}
- 
- static struct insn_emulation insn_swp = {
- 	.name = "swp",
- 	.status = INSN_OBSOLETE,
--	.hooks = swp_hooks,
-+	.try_emulate = try_emulate_swp,
- 	.set_hw_mode = NULL,
- };
-+#endif /* CONFIG_SWP_EMULATION */
- 
-+#ifdef CONFIG_CP15_BARRIER_EMULATION
- static int cp15barrier_handler(struct pt_regs *regs, u32 instr)
+ static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
  {
- 	perf_sw_event(PERF_COUNT_SW_EMULATION_FAULTS, 1, regs, regs->pc);
-@@ -312,31 +319,29 @@ static int cp15_barrier_set_hw_mode(bool
- 	return 0;
+ 	int osvw_id = *erratum++;
+@@ -1122,6 +1126,10 @@ static void init_amd(struct cpuinfo_x86
+ 	check_null_seg_clears_base(c);
+ 
+ 	zenbleed_check(c);
++
++	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
++	     cpu_has_amd_erratum(c, amd_erratum_1485))
++		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
  }
  
--static struct undef_hook cp15_barrier_hooks[] = {
--	{
--		.instr_mask	= 0x0fff0fdf,
--		.instr_val	= 0x0e070f9a,
--		.pstate_mask	= PSR_AA32_MODE_MASK,
--		.pstate_val	= PSR_AA32_MODE_USR,
--		.fn		= cp15barrier_handler,
--	},
--	{
--		.instr_mask	= 0x0fff0fff,
--		.instr_val	= 0x0e070f95,
--		.pstate_mask	= PSR_AA32_MODE_MASK,
--		.pstate_val	= PSR_AA32_MODE_USR,
--		.fn		= cp15barrier_handler,
--	},
--	{ }
--};
-+static bool try_emulate_cp15_barrier(struct pt_regs *regs, u32 insn)
-+{
-+	if (!compat_user_mode(regs) || compat_thumb_mode(regs))
-+		return false;
-+
-+	if ((insn & 0x0fff0fdf) == 0x0e070f9a)
-+		return cp15barrier_handler(regs, insn) == 0;
-+
-+	if ((insn & 0x0fff0fff) == 0x0e070f95)
-+		return cp15barrier_handler(regs, insn) == 0;
-+
-+	return false;
-+}
- 
- static struct insn_emulation insn_cp15_barrier = {
- 	.name = "cp15_barrier",
- 	.status = INSN_DEPRECATED,
--	.hooks = cp15_barrier_hooks,
-+	.try_emulate = try_emulate_cp15_barrier,
- 	.set_hw_mode = cp15_barrier_set_hw_mode,
- };
-+#endif /* CONFIG_CP15_BARRIER_EMULATION */
- 
-+#ifdef CONFIG_SETEND_EMULATION
- static int setend_set_hw_mode(bool enable)
- {
- 	if (!cpu_supports_mixed_endian_el0())
-@@ -384,60 +389,40 @@ static int t16_setend_handler(struct pt_
- 	return rc;
- }
- 
--static struct undef_hook setend_hooks[] = {
--	{
--		.instr_mask	= 0xfffffdff,
--		.instr_val	= 0xf1010000,
--		.pstate_mask	= PSR_AA32_MODE_MASK,
--		.pstate_val	= PSR_AA32_MODE_USR,
--		.fn		= a32_setend_handler,
--	},
--	{
--		/* Thumb mode */
--		.instr_mask	= 0xfffffff7,
--		.instr_val	= 0x0000b650,
--		.pstate_mask	= (PSR_AA32_T_BIT | PSR_AA32_MODE_MASK),
--		.pstate_val	= (PSR_AA32_T_BIT | PSR_AA32_MODE_USR),
--		.fn		= t16_setend_handler,
--	},
--	{}
--};
-+static bool try_emulate_setend(struct pt_regs *regs, u32 insn)
-+{
-+	if (compat_thumb_mode(regs) &&
-+	    (insn & 0xfffffff7) == 0x0000b650)
-+		return t16_setend_handler(regs, insn) == 0;
-+
-+	if (compat_user_mode(regs) &&
-+	    (insn & 0xfffffdff) == 0xf1010000)
-+		return a32_setend_handler(regs, insn) == 0;
-+
-+	return false;
-+}
- 
- static struct insn_emulation insn_setend = {
- 	.name = "setend",
- 	.status = INSN_DEPRECATED,
--	.hooks = setend_hooks,
-+	.try_emulate = try_emulate_setend,
- 	.set_hw_mode = setend_set_hw_mode,
- };
-+#endif /* CONFIG_SETEND_EMULATION */
- 
--static LIST_HEAD(insn_emulation);
--static int nr_insn_emulated __initdata;
--static DEFINE_RAW_SPINLOCK(insn_emulation_lock);
--static DEFINE_MUTEX(insn_emulation_mutex);
--
--static void register_emulation_hooks(struct insn_emulation *insn)
--{
--	struct undef_hook *hook;
--
--	BUG_ON(!insn->hooks);
--
--	for (hook = insn->hooks; hook->instr_mask; hook++)
--		register_undef_hook(hook);
--
--	pr_notice("Registered %s emulation handler\n", insn->name);
--}
--
--static void remove_emulation_hooks(struct insn_emulation *insn)
--{
--	struct undef_hook *hook;
--
--	BUG_ON(!insn->hooks);
--
--	for (hook = insn->hooks; hook->instr_mask; hook++)
--		unregister_undef_hook(hook);
-+static struct insn_emulation *insn_emulations[] = {
-+#ifdef CONFIG_SWP_EMULATION
-+	&insn_swp,
-+#endif
-+#ifdef CONFIG_CP15_BARRIER_EMULATION
-+	&insn_cp15_barrier,
-+#endif
-+#ifdef CONFIG_SETEND_EMULATION
-+	&insn_setend,
-+#endif
-+};
- 
--	pr_notice("Removed %s emulation handler\n", insn->name);
--}
-+static DEFINE_MUTEX(insn_emulation_mutex);
- 
- static void enable_insn_hw_mode(void *data)
- {
-@@ -473,20 +458,27 @@ static int run_all_cpu_set_hw_mode(struc
-  */
- static int run_all_insn_set_hw_mode(unsigned int cpu)
- {
-+	int i;
- 	int rc = 0;
- 	unsigned long flags;
--	struct insn_emulation *insn;
- 
--	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
--	list_for_each_entry(insn, &insn_emulation, node) {
--		bool enable = (insn->current_mode == INSN_HW);
-+	/*
-+	 * Disable IRQs to serialize against an IPI from
-+	 * run_all_cpu_set_hw_mode(), ensuring the HW is programmed to the most
-+	 * recent enablement state if the two race with one another.
-+	 */
-+	local_irq_save(flags);
-+	for (i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
-+		struct insn_emulation *insn = insn_emulations[i];
-+		bool enable = READ_ONCE(insn->current_mode) == INSN_HW;
- 		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
- 			pr_warn("CPU[%u] cannot support the emulation of %s",
- 				cpu, insn->name);
- 			rc = -EINVAL;
- 		}
- 	}
--	raw_spin_unlock_irqrestore(&insn_emulation_lock, flags);
-+	local_irq_restore(flags);
-+
- 	return rc;
- }
- 
-@@ -499,7 +491,6 @@ static int update_insn_emulation_mode(st
- 	case INSN_UNDEF: /* Nothing to be done */
- 		break;
- 	case INSN_EMULATE:
--		remove_emulation_hooks(insn);
- 		break;
- 	case INSN_HW:
- 		if (!run_all_cpu_set_hw_mode(insn, false))
-@@ -511,7 +502,6 @@ static int update_insn_emulation_mode(st
- 	case INSN_UNDEF:
- 		break;
- 	case INSN_EMULATE:
--		register_emulation_hooks(insn);
- 		break;
- 	case INSN_HW:
- 		ret = run_all_cpu_set_hw_mode(insn, true);
-@@ -523,34 +513,6 @@ static int update_insn_emulation_mode(st
- 	return ret;
- }
- 
--static void __init register_insn_emulation(struct insn_emulation *insn)
--{
--	unsigned long flags;
--
--	insn->min = INSN_UNDEF;
--
--	switch (insn->status) {
--	case INSN_DEPRECATED:
--		insn->current_mode = INSN_EMULATE;
--		/* Disable the HW mode if it was turned on at early boot time */
--		run_all_cpu_set_hw_mode(insn, false);
--		insn->max = INSN_HW;
--		break;
--	case INSN_OBSOLETE:
--		insn->current_mode = INSN_UNDEF;
--		insn->max = INSN_EMULATE;
--		break;
--	}
--
--	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
--	list_add(&insn->node, &insn_emulation);
--	nr_insn_emulated++;
--	raw_spin_unlock_irqrestore(&insn_emulation_lock, flags);
--
--	/* Register any handlers if required */
--	update_insn_emulation_mode(insn, INSN_UNDEF);
--}
--
- static int emulation_proc_handler(struct ctl_table *table, int write,
- 				  void *buffer, size_t *lenp,
- 				  loff_t *ppos)
-@@ -568,7 +530,7 @@ static int emulation_proc_handler(struct
- 	ret = update_insn_emulation_mode(insn, prev_mode);
- 	if (ret) {
- 		/* Mode change failed, revert to previous mode. */
--		insn->current_mode = prev_mode;
-+		WRITE_ONCE(insn->current_mode, prev_mode);
- 		update_insn_emulation_mode(insn, INSN_UNDEF);
- 	}
- ret:
-@@ -576,21 +538,34 @@ ret:
- 	return ret;
- }
- 
--static void __init register_insn_emulation_sysctl(void)
-+static void __init register_insn_emulation(struct insn_emulation *insn)
- {
--	unsigned long flags;
--	int i = 0;
--	struct insn_emulation *insn;
--	struct ctl_table *insns_sysctl, *sysctl;
--
--	insns_sysctl = kcalloc(nr_insn_emulated + 1, sizeof(*sysctl),
--			       GFP_KERNEL);
--	if (!insns_sysctl)
--		return;
--
--	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
--	list_for_each_entry(insn, &insn_emulation, node) {
--		sysctl = &insns_sysctl[i];
-+	struct ctl_table *sysctl;
-+
-+	insn->min = INSN_UNDEF;
-+
-+	switch (insn->status) {
-+	case INSN_DEPRECATED:
-+		insn->current_mode = INSN_EMULATE;
-+		/* Disable the HW mode if it was turned on at early boot time */
-+		run_all_cpu_set_hw_mode(insn, false);
-+		insn->max = INSN_HW;
-+		break;
-+	case INSN_OBSOLETE:
-+		insn->current_mode = INSN_UNDEF;
-+		insn->max = INSN_EMULATE;
-+		break;
-+	case INSN_UNAVAILABLE:
-+		insn->current_mode = INSN_UNDEF;
-+		insn->max = INSN_UNDEF;
-+		break;
-+	}
-+
-+	/* Program the HW if required */
-+	update_insn_emulation_mode(insn, INSN_UNDEF);
-+
-+	if (insn->status != INSN_UNAVAILABLE) {
-+		sysctl = &insn->sysctl[0];
- 
- 		sysctl->mode = 0644;
- 		sysctl->maxlen = sizeof(int);
-@@ -600,11 +575,34 @@ static void __init register_insn_emulati
- 		sysctl->extra1 = &insn->min;
- 		sysctl->extra2 = &insn->max;
- 		sysctl->proc_handler = emulation_proc_handler;
--		i++;
-+
-+		register_sysctl("abi", sysctl);
-+	}
-+}
-+
-+bool try_emulate_armv8_deprecated(struct pt_regs *regs, u32 insn)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
-+		struct insn_emulation *ie = insn_emulations[i];
-+
-+		if (ie->status == INSN_UNAVAILABLE)
-+			continue;
-+
-+		/*
-+		 * A trap may race with the mode being changed
-+		 * INSN_EMULATE<->INSN_HW. Try to emulate the instruction to
-+		 * avoid a spurious UNDEF.
-+		 */
-+		if (READ_ONCE(ie->current_mode) == INSN_UNDEF)
-+			continue;
-+
-+		if (ie->try_emulate(regs, insn))
-+			return true;
- 	}
--	raw_spin_unlock_irqrestore(&insn_emulation_lock, flags);
- 
--	register_sysctl("abi", insns_sysctl);
-+	return false;
- }
- 
- /*
-@@ -613,24 +611,27 @@ static void __init register_insn_emulati
-  */
- static int __init armv8_deprecated_init(void)
- {
--	if (IS_ENABLED(CONFIG_SWP_EMULATION))
--		register_insn_emulation(&insn_swp);
-+	int i;
- 
--	if (IS_ENABLED(CONFIG_CP15_BARRIER_EMULATION))
--		register_insn_emulation(&insn_cp15_barrier);
-+#ifdef CONFIG_SETEND_EMULATION
-+	if (!system_supports_mixed_endian_el0()) {
-+		insn_setend.status = INSN_UNAVAILABLE;
-+		pr_info("setend instruction emulation is not supported on this system\n");
-+	}
- 
--	if (IS_ENABLED(CONFIG_SETEND_EMULATION)) {
--		if (system_supports_mixed_endian_el0())
--			register_insn_emulation(&insn_setend);
--		else
--			pr_info("setend instruction emulation is not supported on this system\n");
-+#endif
-+	for (i = 0; i < ARRAY_SIZE(insn_emulations); i++) {
-+		struct insn_emulation *ie = insn_emulations[i];
-+
-+		if (ie->status == INSN_UNAVAILABLE)
-+			continue;
-+
-+		register_insn_emulation(ie);
- 	}
- 
- 	cpuhp_setup_state_nocalls(CPUHP_AP_ARM64_ISNDEP_STARTING,
- 				  "arm64/isndep:starting",
- 				  run_all_insn_set_hw_mode, NULL);
--	register_insn_emulation_sysctl();
--
- 	return 0;
- }
- 
---- a/arch/arm64/kernel/traps.c
-+++ b/arch/arm64/kernel/traps.c
-@@ -282,27 +282,6 @@ void arm64_skip_faulting_instruction(str
- 		regs->pstate &= ~PSR_BTYPE_MASK;
- }
- 
--static LIST_HEAD(undef_hook);
--static DEFINE_RAW_SPINLOCK(undef_lock);
--
--void register_undef_hook(struct undef_hook *hook)
--{
--	unsigned long flags;
--
--	raw_spin_lock_irqsave(&undef_lock, flags);
--	list_add(&hook->node, &undef_hook);
--	raw_spin_unlock_irqrestore(&undef_lock, flags);
--}
--
--void unregister_undef_hook(struct undef_hook *hook)
--{
--	unsigned long flags;
--
--	raw_spin_lock_irqsave(&undef_lock, flags);
--	list_del(&hook->node);
--	raw_spin_unlock_irqrestore(&undef_lock, flags);
--}
--
- static int user_insn_read(struct pt_regs *regs, u32 *insnp)
- {
- 	u32 instr;
-@@ -334,23 +313,6 @@ static int user_insn_read(struct pt_regs
- 	return 0;
- }
- 
--static int call_undef_hook(struct pt_regs *regs, u32 instr)
--{
--	struct undef_hook *hook;
--	unsigned long flags;
--	int (*fn)(struct pt_regs *regs, u32 instr) = NULL;
--
--	raw_spin_lock_irqsave(&undef_lock, flags);
--	list_for_each_entry(hook, &undef_hook, node)
--		if ((instr & hook->instr_mask) == hook->instr_val &&
--			(regs->pstate & hook->pstate_mask) == hook->pstate_val)
--			fn = hook->fn;
--
--	raw_spin_unlock_irqrestore(&undef_lock, flags);
--
--	return fn ? fn(regs, instr) : 1;
--}
--
- void force_signal_inject(int signal, int code, unsigned long address, unsigned int err)
- {
- 	const char *desc;
-@@ -411,7 +373,7 @@ void do_el0_undef(struct pt_regs *regs,
- 	if (try_emulate_mrs(regs, insn))
- 		return;
- 
--	if (call_undef_hook(regs, insn) == 0)
-+	if (try_emulate_armv8_deprecated(regs, insn))
- 		return;
- 
- out_err:
+ #ifdef CONFIG_X86_32
 
 
