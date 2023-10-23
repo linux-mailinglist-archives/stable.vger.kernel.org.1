@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FD987D3493
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3BD77D33DB
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234261AbjJWLlA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:41:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60504 "EHLO
+        id S233954AbjJWLem (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234263AbjJWLk7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:59 -0400
+        with ESMTP id S234013AbjJWLel (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E47C3D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29752C433C7;
-        Mon, 23 Oct 2023 11:40:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F014DE8
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEEDC433C8;
+        Mon, 23 Oct 2023 11:34:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061256;
-        bh=ncB5gmYNRzDRjbC9mmGZbwQJ8t23w1stmJhi0VTgc5g=;
+        s=korg; t=1698060879;
+        bh=mUPe7NlIlOkZdHDrwzs/S3mQAcVWvUhUKjK3iD4U7f8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ojEsEGe1Pvj8VDg3FDTkxGWUzaFVwfhOd4hVKTBfqhAP4o/hupSppoM+5+Nlz+ioN
-         BNcTfCgOIVQpGEwJ1oKbmMDcx/4//0CvOkHo2gHeGkhtYy1lK8/mWr2pX0wsFXZF2U
-         tRDCDBllxvOEjoPH5o2utXgbDisAaG0sweEBlNJs=
+        b=gCb8q9tP2g4uQPqENrgGDmvjpRLpE11wnDo1ItZGTgCNW/A5qPJDptV70m6/NB/lw
+         om+TaFmJuxT14l+S3c939kjbtL8uddZRwaa/+GzcgDMIkLQu0+P+sS9dUQPjBuULvY
+         JMcOKQtaOcej4MGTClJSQx4+tsVRt2/WnVaO7M+w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.15 124/137] platform/surface: platform_profile: Propagate error if profile registration fails
+        patches@lists.linux.dev,
+        Zhang Changzhong <zhangchangzhong@huawei.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 123/123] xfrm6: fix inet6_dev refcount underflow problem
 Date:   Mon, 23 Oct 2023 12:58:01 +0200
-Message-ID: <20231023104824.915448917@linuxfoundation.org>
+Message-ID: <20231023104821.923823871@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Zhang Changzhong <zhangchangzhong@huawei.com>
 
-commit fe0e04cf66a12ffe6d1b43725ddaabd5599d024f upstream.
+[ Upstream commit cc9b364bb1d58d3dae270c7a931a8cc717dc2b3b ]
 
-If platform_profile_register() fails, the driver does not propagate
-the error, but instead probes successfully. This means when the driver
-unbinds, the a warning might be issued by platform_profile_remove().
+There are race conditions that may lead to inet6_dev refcount underflow
+in xfrm6_dst_destroy() and rt6_uncached_list_flush_dev().
 
-Fix this by propagating the error back to the caller of
-surface_platform_profile_probe().
+One of the refcount underflow bugs is shown below:
+	(cpu 1)                	|	(cpu 2)
+xfrm6_dst_destroy()             |
+  ...                           |
+  in6_dev_put()                 |
+				|  rt6_uncached_list_flush_dev()
+  ...				|    ...
+				|    in6_dev_put()
+  rt6_uncached_list_del()       |    ...
+  ...                           |
 
-Compile-tested only.
+xfrm6_dst_destroy() calls rt6_uncached_list_del() after in6_dev_put(),
+so rt6_uncached_list_flush_dev() has a chance to call in6_dev_put()
+again for the same inet6_dev.
 
-Fixes: b78b4982d763 ("platform/surface: Add platform profile driver")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
-Tested-by: Maximilian Luz <luzmaximilian@gmail.com>
-Link: https://lore.kernel.org/r/20231014235449.288702-1-W_Armin@gmx.de
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Fix it by moving in6_dev_put() after rt6_uncached_list_del() in
+xfrm6_dst_destroy().
+
+Fixes: 510c321b5571 ("xfrm: reuse uncached_list to track xdsts")
+Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/surface/surface_platform_profile.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv6/xfrm6_policy.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/surface/surface_platform_profile.c
-+++ b/drivers/platform/surface/surface_platform_profile.c
-@@ -159,8 +159,7 @@ static int surface_platform_profile_prob
- 	set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, tpd->handler.choices);
- 	set_bit(PLATFORM_PROFILE_PERFORMANCE, tpd->handler.choices);
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -120,11 +120,11 @@ static void xfrm6_dst_destroy(struct dst
+ {
+ 	struct xfrm_dst *xdst = (struct xfrm_dst *)dst;
  
--	platform_profile_register(&tpd->handler);
--	return 0;
-+	return platform_profile_register(&tpd->handler);
+-	if (likely(xdst->u.rt6.rt6i_idev))
+-		in6_dev_put(xdst->u.rt6.rt6i_idev);
+ 	dst_destroy_metrics_generic(dst);
+ 	if (xdst->u.rt6.rt6i_uncached_list)
+ 		rt6_uncached_list_del(&xdst->u.rt6);
++	if (likely(xdst->u.rt6.rt6i_idev))
++		in6_dev_put(xdst->u.rt6.rt6i_idev);
+ 	xfrm_dst_destroy(xdst);
  }
  
- static void surface_platform_profile_remove(struct ssam_device *sdev)
 
 
