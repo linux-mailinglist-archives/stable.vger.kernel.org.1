@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 396397D3384
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C474D7D3432
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234078AbjJWLbP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:31:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56618 "EHLO
+        id S233950AbjJWLha (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234074AbjJWLbN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:13 -0400
+        with ESMTP id S234176AbjJWLh2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A49A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49E2C433C9;
-        Mon, 23 Oct 2023 11:31:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4687F9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAA6C433C8;
+        Mon, 23 Oct 2023 11:37:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060671;
-        bh=XPHkzFylGX8i1iZmLwPrGWFHybccEVXB6ZT6fQq7eEk=;
+        s=korg; t=1698061046;
+        bh=QGrnqq0ESIIGg/j7RiWk4VNGr880DHcXnDESTFJJ3Rg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rXgF+aaSw+nGErsfQiy6l4OsQfCJZrcQyn1GIMw1ofkQOKs21/6ve2fu7BefyGfeS
-         0tpDUykwQQSecd26D75O7aJ0zR/TVyhJHPkkjLadysHgO82JWIBp7og2IH3yC4XOr1
-         Fn9ItEmDUdt7mG0V7cxRAVxiolojxSxXZ6wpSEWs=
+        b=SwqUAW4AgFaoIgRN07eSij8IJCP0XJaTDxSYRESID9iS5EOXuPL/RxJwQs497/sFo
+         NMvVaQ2RXlcQlXmIzZGltyJbbohUc4wlChs4N1oppqRbl5Kpbvr6qziUBWtIe0UFmk
+         GT2UX582gWrvVG28nimB2KB+o94NG2JjJi8LptCY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.4 054/123] regmap: fix NULL deref on lookup
+        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
+        Guenter Roeck <groeck@chromium.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 055/137] iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()
 Date:   Mon, 23 Oct 2023 12:56:52 +0200
-Message-ID: <20231023104819.514240624@linuxfoundation.org>
+Message-ID: <20231023104822.850456576@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,39 +51,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-commit c6df843348d6b71ea986266c12831cb60c2cf325 upstream.
+[ Upstream commit 7771c8c80d62ad065637ef74ed2962983f6c5f6d ]
 
-Not all regmaps have a name so make sure to check for that to avoid
-dereferencing a NULL pointer when dev_get_regmap() is used to lookup a
-named regmap.
+cros_ec_sensors_push_data() reads `indio_dev->active_scan_mask` and
+calls iio_push_to_buffers_with_timestamp() without making sure the
+`indio_dev` stays in buffer mode.  There is a race if `indio_dev` exits
+buffer mode right before cros_ec_sensors_push_data() accesses them.
 
-Fixes: e84861fec32d ("regmap: dev_get_regmap_match(): fix string comparison")
-Cc: stable@vger.kernel.org      # 5.8
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231006082104.16707-1-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+An use-after-free on `indio_dev->active_scan_mask` was observed.  The
+call trace:
+[...]
+ _find_next_bit
+ cros_ec_sensors_push_data
+ cros_ec_sensorhub_event
+ blocking_notifier_call_chain
+ cros_ec_irq_thread
+
+It was caused by a race condition: one thread just freed
+`active_scan_mask` at [1]; while another thread tried to access the
+memory at [2].
+
+Fix it by calling iio_device_claim_buffer_mode() to ensure the
+`indio_dev` can't exit buffer mode during cros_ec_sensors_push_data().
+
+[1]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/industrialio-buffer.c#L1189
+[2]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c#L198
+
+Cc: stable@vger.kernel.org
+Fixes: aa984f1ba4a4 ("iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO")
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20230829030622.1571852-1-tzungbi@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/regmap/regmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1363,7 +1363,7 @@ static int dev_get_regmap_match(struct d
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+index f529c01ac66b2..a600ad9ed8696 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -196,8 +196,11 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+ 	/*
+ 	 * Ignore samples if the buffer is not set: it is needed if the ODR is
+ 	 * set but the buffer is not enabled yet.
++	 *
++	 * Note: iio_device_claim_buffer_mode() returns -EBUSY if the buffer
++	 * is not enabled.
+ 	 */
+-	if (!iio_buffer_enabled(indio_dev))
++	if (iio_device_claim_buffer_mode(indio_dev) < 0)
+ 		return 0;
  
- 	/* If the user didn't specify a name match any */
- 	if (data)
--		return !strcmp((*r)->name, data);
-+		return (*r)->name && !strcmp((*r)->name, data);
- 	else
- 		return 1;
+ 	out = (s16 *)st->samples;
+@@ -216,6 +219,7 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+ 	iio_push_to_buffers_with_timestamp(indio_dev, st->samples,
+ 					   timestamp + delta);
+ 
++	iio_device_release_buffer_mode(indio_dev);
+ 	return 0;
  }
+ EXPORT_SYMBOL_GPL(cros_ec_sensors_push_data);
+-- 
+2.40.1
+
 
 
