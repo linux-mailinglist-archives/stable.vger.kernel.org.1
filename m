@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C3C77D34EC
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E0FC7D32B4
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234234AbjJWLoF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:44:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37786 "EHLO
+        id S233867AbjJWLW7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:22:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234397AbjJWLnf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:43:35 -0400
+        with ESMTP id S233853AbjJWLW4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB0DB170F
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD203C433CA;
-        Mon, 23 Oct 2023 11:43:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D056DC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2783C433C7;
+        Mon, 23 Oct 2023 11:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061412;
-        bh=6LYJo5RS1lqMK56bllyuleoh5DPPYGkN/L8+YqAwI3I=;
+        s=korg; t=1698060173;
+        bh=cZGsV8VeEUwsvLkYEQIKZNu2WlXawgi3ARezfgI9jVc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sE5/2WFK9vYrRWqpbX2UfUUhg6eqMkjxyIzPmxzCUQVaZe83udDd14Z0DVZGeV/e3
-         T2zrMzCJlZRtQGdF0Fv9sf+vnVOT9mPIimCVqd6K+CLIMCACAaDd19JFh7yTNElLsX
-         In4TGnOz3UZJxzVQP0PM3OXilc44HrNUbr3SN9ME=
+        b=herTjPZ+8AWxrDxxY+kNH9dr+bWkv4Zv8uxM4fxG+EnJGc0zEN3N/QHFeMVgjeBe1
+         dApzxsrwO5UynNT4dKGlAL6/OoxQ+72DWZDV3iTjHzAJpgJewe0geKh6D0btDi+JoB
+         fazRiFq0SdSgqr4ux61HGhBlU4Z8jVW5lXaIzOcw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Nia Espera <nespera@igalia.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 012/202] drm/msm/dpu: change _dpu_plane_calc_bw() to use u64 to avoid overflow
-Date:   Mon, 23 Oct 2023 12:55:19 +0200
-Message-ID: <20231023104826.962748547@linuxfoundation.org>
+        patches@lists.linux.dev, Stefan Wahren <wahrenst@gmx.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 055/196] tcp: tsq: relax tcp_small_queue_check() when rtx queue contains a single skb
+Date:   Mon, 23 Oct 2023 12:55:20 +0200
+Message-ID: <20231023104830.091262472@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +50,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 95e681ca3b65e4ce3d2537b47672d787b7d30375 ]
+commit f921a4a5bffa8a0005b190fb9421a7fc1fd716b6 upstream.
 
-_dpu_plane_calc_bw() uses integer variables to calculate the bandwidth
-used during plane bandwidth calculations. However for high resolution
-displays this overflows easily and leads to below errors
+In commit 75eefc6c59fd ("tcp: tsq: add a shortcut in tcp_small_queue_check()")
+we allowed to send an skb regardless of TSQ limits being hit if rtx queue
+was empty or had a single skb, in order to better fill the pipe
+when/if TX completions were slow.
 
-[dpu error]crtc83 failed performance check -7
+Then later, commit 75c119afe14f ("tcp: implement rb-tree based
+retransmit queue") accidentally removed the special case for
+one skb in rtx queue.
 
-Promote the intermediate variables to u64 to avoid overflow.
+Stefan Wahren reported a regression in single TCP flow throughput
+using a 100Mbit fec link, starting from commit 65466904b015 ("tcp: adjust
+TSO packet sizes based on min_rtt"). This last commit only made the
+regression more visible, because it locked the TCP flow on a particular
+behavior where TSQ prevented two skbs being pushed downstream,
+adding silences on the wire between each TSO packet.
 
-changes in v2:
-	- change to u64 where actually needed in the math
+Many thanks to Stefan for his invaluable help !
 
-Fixes: c33b7c0389e1 ("drm/msm/dpu: add support for clk and bw scaling for display")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reported-by: Nia Espera <nespera@igalia.com>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/32
-Tested-by: Nia Espera <nespera@igalia.com>
-Patchwork: https://patchwork.freedesktop.org/patch/556288/
-Link: https://lore.kernel.org/r/20230908012616.20654-1-quic_abhinavk@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 75c119afe14f ("tcp: implement rb-tree based retransmit queue")
+Link: https://lore.kernel.org/netdev/7f31ddc8-9971-495e-a1f6-819df542e0af@gmx.net/
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Tested-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20231017124526.4060202-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/ipv4/tcp_output.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-index 7ea90d25a3b69..8aa9f2335f57a 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-@@ -147,6 +147,7 @@ static void _dpu_plane_calc_bw(struct drm_plane *plane,
- 	const struct dpu_format *fmt = NULL;
- 	struct dpu_kms *dpu_kms = _dpu_plane_get_kms(plane);
- 	int src_width, src_height, dst_height, fps;
-+	u64 plane_pixel_rate, plane_bit_rate;
- 	u64 plane_prefill_bw;
- 	u64 plane_bw;
- 	u32 hw_latency_lines;
-@@ -168,13 +169,12 @@ static void _dpu_plane_calc_bw(struct drm_plane *plane,
- 	scale_factor = src_height > dst_height ?
- 		mult_frac(src_height, 1, dst_height) : 1;
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2489,6 +2489,18 @@ static bool tcp_pacing_check(struct sock
+ 	return true;
+ }
  
--	plane_bw =
--		src_width * mode->vtotal * fps * fmt->bpp *
--		scale_factor;
-+	plane_pixel_rate = src_width * mode->vtotal * fps;
-+	plane_bit_rate = plane_pixel_rate * fmt->bpp;
- 
--	plane_prefill_bw =
--		src_width * hw_latency_lines * fps * fmt->bpp *
--		scale_factor * mode->vtotal;
-+	plane_bw = plane_bit_rate * scale_factor;
++static bool tcp_rtx_queue_empty_or_single_skb(const struct sock *sk)
++{
++	const struct rb_node *node = sk->tcp_rtx_queue.rb_node;
 +
-+	plane_prefill_bw = plane_bw * hw_latency_lines;
++	/* No skb in the rtx queue. */
++	if (!node)
++		return true;
++
++	/* Only one skb in rtx queue. */
++	return !node->rb_left && !node->rb_right;
++}
++
+ /* TCP Small Queues :
+  * Control number of packets in qdisc/devices to two packets / or ~1 ms.
+  * (These limits are doubled for retransmits)
+@@ -2526,12 +2538,12 @@ static bool tcp_small_queue_check(struct
+ 		limit += extra_bytes;
+ 	}
+ 	if (refcount_read(&sk->sk_wmem_alloc) > limit) {
+-		/* Always send skb if rtx queue is empty.
++		/* Always send skb if rtx queue is empty or has one skb.
+ 		 * No need to wait for TX completion to call us back,
+ 		 * after softirq/tasklet schedule.
+ 		 * This helps when TX completions are delayed too much.
+ 		 */
+-		if (tcp_rtx_queue_empty(sk))
++		if (tcp_rtx_queue_empty_or_single_skb(sk))
+ 			return false;
  
- 	do_div(plane_prefill_bw, (vbp+vpw));
- 
--- 
-2.40.1
-
+ 		set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
 
 
