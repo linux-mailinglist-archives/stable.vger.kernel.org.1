@@ -2,38 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 904747D332B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 619307D3382
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233953AbjJWL1Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:27:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
+        id S234075AbjJWLbK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:31:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233968AbjJWL1X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:23 -0400
+        with ESMTP id S234074AbjJWLbH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64CFB100
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D861C433CA;
-        Mon, 23 Oct 2023 11:27:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A603A92
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA722C433C7;
+        Mon, 23 Oct 2023 11:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060440;
-        bh=RMJdTkNsf5KpFN8WYdms4Kt6Di2xYpxFVh9AL+kEkbw=;
+        s=korg; t=1698060665;
+        bh=FdyVyhTizuOCPZ0Mcaija7HaxN96VpcWdf6eZqCDCkA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DWXt+osNF7zPksw2fmTxw4/LVDvXuE5tmcFyisfOKn+/gSeOIgnWeicwoo3Di/Ipw
-         0ojTnzpKtX7qGD3PE5votfWDYWieokgn93/BOS7t0e8MCR5g+/2qcwvUQ0kcnihixY
-         LN5DN/aQCz6aZFakJJnm7ISlXcXOp1dgwmOC/cd0=
+        b=2H72+zCwNEml0IVZY9+2Kf88iztugzh5UT047WsmKcYqyN00nK1/GZWfZ9AAzZrw0
+         w9BnArDQCSaxdRmKEphCrZzdLhPam87Ga15pKpfrU0opR6epPiR/0mhcXXKlRZkpGr
+         ZLX6NYrXw+TwQi6ORr3HvgvfJPBq8BdlsMQZvAuA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Simek <michal.simek@amd.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 145/196] mtd: rawnand: arasan: Ensure program page operations are successful
+        patches@lists.linux.dev,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Simon Horman <horms@kernel.org>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.4 052/123] ice: fix over-shifted variable
 Date:   Mon, 23 Oct 2023 12:56:50 +0200
-Message-ID: <20231023104832.583146848@linuxfoundation.org>
+Message-ID: <20231023104819.446949242@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,78 +53,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-commit 3a4a893dbb19e229db3b753f0462520b561dee98 upstream.
+commit 242e34500a32631f85c2b4eb6cb42a368a39e54f upstream.
 
-The NAND core complies with the ONFI specification, which itself
-mentions that after any program or erase operation, a status check
-should be performed to see whether the operation was finished *and*
-successful.
+Since the introduction of the ice driver the code has been
+double-shifting the RSS enabling field, because the define already has
+shifts in it and can't have the regular pattern of "a << shiftval &
+mask" applied.
 
-The NAND core offers helpers to finish a page write (sending the
-"PAGE PROG" command, waiting for the NAND chip to be ready again, and
-checking the operation status). But in some cases, advanced controller
-drivers might want to optimize this and craft their own page write
-helper to leverage additional hardware capabilities, thus not always
-using the core facilities.
+Most places in the code got it right, but one line was still wrong. Fix
+this one location for easy backports to stable. An in-progress patch
+fixes the defines to "standard" and will be applied as part of the
+regular -next process sometime after this one.
 
-Some drivers, like this one, do not use the core helper to finish a page
-write because the final cycles are automatically managed by the
-hardware. In this case, the additional care must be taken to manually
-perform the final status check.
-
-Let's read the NAND chip status at the end of the page write helper and
-return -EIO upon error.
-
-Cc: Michal Simek <michal.simek@amd.com>
-Cc: stable@vger.kernel.org
-Fixes: 88ffef1b65cf ("mtd: rawnand: arasan: Support the hardware BCH ECC engine")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-2-miquel.raynal@bootlin.com
+Fixes: d76a60ba7afb ("ice: Add support for VLANs and offloads")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20231010203101.406248-1-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/arasan-nand-controller.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lib.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/arasan-nand-controller.c
-+++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
-@@ -515,6 +515,7 @@ static int anfc_write_page_hw_ecc(struct
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	unsigned int len = mtd->writesize + (oob_required ? mtd->oobsize : 0);
- 	dma_addr_t dma_addr;
-+	u8 status;
- 	int ret;
- 	struct anfc_op nfc_op = {
- 		.pkt_reg =
-@@ -561,10 +562,21 @@ static int anfc_write_page_hw_ecc(struct
- 	}
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -1015,8 +1015,7 @@ static void ice_set_rss_vsi_ctx(struct i
  
- 	/* Spare data is not protected */
--	if (oob_required)
-+	if (oob_required) {
- 		ret = nand_write_oob_std(chip, page);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
- 
--	return ret;
-+	return 0;
+ 	ctxt->info.q_opt_rss = ((lut_type << ICE_AQ_VSI_Q_OPT_RSS_LUT_S) &
+ 				ICE_AQ_VSI_Q_OPT_RSS_LUT_M) |
+-				((hash_type << ICE_AQ_VSI_Q_OPT_RSS_HASH_S) &
+-				 ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
++				(hash_type & ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
  }
  
- static int anfc_sel_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
+ /**
 
 
