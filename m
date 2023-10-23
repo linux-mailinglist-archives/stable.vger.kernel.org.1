@@ -2,44 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9A27D35C5
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D2D97D35C8
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:51:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234623AbjJWLvo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50692 "EHLO
+        id S234627AbjJWLvu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:51:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234606AbjJWLvo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:51:44 -0400
+        with ESMTP id S234639AbjJWLvs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:51:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D825D10F1;
-        Mon, 23 Oct 2023 04:51:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981E7C433C8;
-        Mon, 23 Oct 2023 11:51:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BDED68
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:51:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED98C433C9;
+        Mon, 23 Oct 2023 11:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061897;
-        bh=xM52sSkaFA0z/TYUcVV4TvzfMFXhRnUHTMwW0mCBX7U=;
+        s=korg; t=1698061900;
+        bh=wFAIbEjHOYVoGrRWc7kPHGgB5ZEjOR7V6tS3CyD9F50=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hfAvDVnQ2DlA40O+IGjAvY5tAX1yl8qMfdnbbl8R8S3TrPVb3Lna/GX4LX3eiIQn/
-         hJ5LT41YAQ4dD636spIafwUqJxqbnlJS2zPU6vBLC/bh0ooPcco0dWtgL0FSlLv2yO
-         VLgh0rf7BRl5+tzqKz1CzT/fSe92S6XtJ+GGpAk8=
+        b=zExaxDOfkLe16VXzJpqPGS0bptEAsbD4JJhe7Ne3l8EYJWdYuIOuL2E5h6KK6vIgR
+         1EDpR6H7nmDot+CV2SBeEalDfXS1eGYgJh/x9RBn7Cr4QVAysoO+P40NTj3zbiaj5U
+         6yr+uEFyCCeTsVqtBtyxJLP/hH3RIqhZIrzuWv1c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Edward AD <twuufnxlz@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.10 201/202] Bluetooth: hci_sock: Correctly bounds check and pad HCI_MON_NEW_INDEX name
-Date:   Mon, 23 Oct 2023 12:58:28 +0200
-Message-ID: <20231023104832.286999580@linuxfoundation.org>
+        Zhang Changzhong <zhangchangzhong@huawei.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 202/202] xfrm6: fix inet6_dev refcount underflow problem
+Date:   Mon, 23 Oct 2023 12:58:29 +0200
+Message-ID: <20231023104832.312700481@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
 References: <20231023104826.569169691@linuxfoundation.org>
@@ -61,65 +55,56 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Zhang Changzhong <zhangchangzhong@huawei.com>
 
-commit cb3871b1cd135a6662b732fbc6b3db4afcdb4a64 upstream.
+[ Upstream commit cc9b364bb1d58d3dae270c7a931a8cc717dc2b3b ]
 
-The code pattern of memcpy(dst, src, strlen(src)) is almost always
-wrong. In this case it is wrong because it leaves memory uninitialized
-if it is less than sizeof(ni->name), and overflows ni->name when longer.
+There are race conditions that may lead to inet6_dev refcount underflow
+in xfrm6_dst_destroy() and rt6_uncached_list_flush_dev().
 
-Normally strtomem_pad() could be used here, but since ni->name is a
-trailing array in struct hci_mon_new_index, compilers that don't support
--fstrict-flex-arrays=3 can't tell how large this array is via
-__builtin_object_size(). Instead, open-code the helper and use sizeof()
-since it will work correctly.
+One of the refcount underflow bugs is shown below:
+	(cpu 1)                	|	(cpu 2)
+xfrm6_dst_destroy()             |
+  ...                           |
+  in6_dev_put()                 |
+				|  rt6_uncached_list_flush_dev()
+  ...				|    ...
+				|    in6_dev_put()
+  rt6_uncached_list_del()       |    ...
+  ...                           |
 
-Additionally mark ni->name as __nonstring since it appears to not be a
-%NUL terminated C string.
+xfrm6_dst_destroy() calls rt6_uncached_list_del() after in6_dev_put(),
+so rt6_uncached_list_flush_dev() has a chance to call in6_dev_put()
+again for the same inet6_dev.
 
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Edward AD <twuufnxlz@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-bluetooth@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Fixes: 18f547f3fc07 ("Bluetooth: hci_sock: fix slab oob read in create_monitor_event")
-Link: https://lore.kernel.org/lkml/202310110908.F2639D3276@keescook/
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix it by moving in6_dev_put() after rt6_uncached_list_del() in
+xfrm6_dst_destroy().
+
+Fixes: 510c321b5571 ("xfrm: reuse uncached_list to track xdsts")
+Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_mon.h |    2 +-
- net/bluetooth/hci_sock.c        |    3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ net/ipv6/xfrm6_policy.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/net/bluetooth/hci_mon.h
-+++ b/include/net/bluetooth/hci_mon.h
-@@ -56,7 +56,7 @@ struct hci_mon_new_index {
- 	__u8		type;
- 	__u8		bus;
- 	bdaddr_t	bdaddr;
--	char		name[8];
-+	char		name[8] __nonstring;
- } __packed;
- #define HCI_MON_NEW_INDEX_SIZE 16
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -120,11 +120,11 @@ static void xfrm6_dst_destroy(struct dst
+ {
+ 	struct xfrm_dst *xdst = (struct xfrm_dst *)dst;
  
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -438,7 +438,8 @@ static struct sk_buff *create_monitor_ev
- 		ni->type = hdev->dev_type;
- 		ni->bus = hdev->bus;
- 		bacpy(&ni->bdaddr, &hdev->bdaddr);
--		memcpy(ni->name, hdev->name, strlen(hdev->name));
-+		memcpy_and_pad(ni->name, sizeof(ni->name), hdev->name,
-+			       strnlen(hdev->name, sizeof(ni->name)), '\0');
+-	if (likely(xdst->u.rt6.rt6i_idev))
+-		in6_dev_put(xdst->u.rt6.rt6i_idev);
+ 	dst_destroy_metrics_generic(dst);
+ 	if (xdst->u.rt6.rt6i_uncached_list)
+ 		rt6_uncached_list_del(&xdst->u.rt6);
++	if (likely(xdst->u.rt6.rt6i_idev))
++		in6_dev_put(xdst->u.rt6.rt6i_idev);
+ 	xfrm_dst_destroy(xdst);
+ }
  
- 		opcode = cpu_to_le16(HCI_MON_NEW_INDEX);
- 		break;
 
 
