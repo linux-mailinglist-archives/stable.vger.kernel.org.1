@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C1A7D340C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE4F7D309F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:00:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234145AbjJWLgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49420 "EHLO
+        id S230169AbjJWLAj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:00:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234151AbjJWLgY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:24 -0400
+        with ESMTP id S230344AbjJWLAh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:00:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 329A8D7B
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDD0C433CB;
-        Mon, 23 Oct 2023 11:36:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E91AA10CF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:00:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C6B7C433C8;
+        Mon, 23 Oct 2023 11:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060981;
-        bh=QcRpx+F19sTyw3Mz0aBFs56Vx7AlotxF76fi8ftEQAY=;
+        s=korg; t=1698058833;
+        bh=rqarr9+B6xp5oc1zIc3O+OmyiyKkUesRKE+DRfJumBo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BDldrV6xIKRmlUYx10Di7Hh8pQkzB0aR5S0hHkqhr8MzBZ00BQ5gFH/5jhz2VQEYt
-         yz3xHiCWagcHd9ymsZRZYYponPo5ebbs3HTgQOHB0E1QtCX1EVixzImLFPkn0dm4QS
-         wmrCMiauGfn9GpaGxdh0PnzbnoKgXO02zeB5a5Og=
+        b=Ir6+LOyVMsgtBYxUoFdS1V718SbWSWbEdkaE5Su3nSrtpP6g7aCrvt65p2xncj5Pl
+         P7Z5qARkPzIJrPN+osNSp7KyYiChHQcLPkBNl8wqzACFOu929JAQy2iY7pRt0FV5/O
+         9NZzPLwKkR33lJID3EMkdEL7FyxK82GYjIGKtfrs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josua Mayer <josua@solid-run.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 034/137] net: rfkill: gpio: prevent value glitch during probe
+        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 4.14 41/66] i40e: prevent crash on probe if hw registers have invalid values
 Date:   Mon, 23 Oct 2023 12:56:31 +0200
-Message-ID: <20231023104822.182545022@linuxfoundation.org>
+Message-ID: <20231023104812.374652820@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,60 +50,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-commit b2f750c3a80b285cd60c9346f8c96bd0a2a66cde upstream.
+commit fc6f716a5069180c40a8c9b63631e97da34f64a3 upstream.
 
-When either reset- or shutdown-gpio have are initially deasserted,
-e.g. after a reboot - or when the hardware does not include pull-down,
-there will be a short toggle of both IOs to logical 0 and back to 1.
+The hardware provides the indexes of the first and the last available
+queue and VF. From the indexes, the driver calculates the numbers of
+queues and VFs. In theory, a faulty device might say the last index is
+smaller than the first index. In that case, the driver's calculation
+would underflow, it would attempt to write to non-existent registers
+outside of the ioremapped range and crash.
 
-It seems that the rfkill default is unblocked, so the driver should not
-glitch to output low during probe.
-It can lead e.g. to unexpected lte modem reconnect:
+I ran into this not by having a faulty device, but by an operator error.
+I accidentally ran a QE test meant for i40e devices on an ice device.
+The test used 'echo i40e > /sys/...ice PCI device.../driver_override',
+bound the driver to the device and crashed in one of the wr32 calls in
+i40e_clear_hw.
 
-[1] root@localhost:~# dmesg | grep "usb 2-1"
-[    2.136124] usb 2-1: new SuperSpeed USB device number 2 using xhci-hcd
-[   21.215278] usb 2-1: USB disconnect, device number 2
-[   28.833977] usb 2-1: new SuperSpeed USB device number 3 using xhci-hcd
+Add checks to prevent underflows in the calculations of num_queues and
+num_vfs. With this fix, the wrong device probing reports errors and
+returns a failure without crashing.
 
-The glitch has been discovered on an arm64 board, now that device-tree
-support for the rfkill-gpio driver has finally appeared :).
-
-Change the flags for devm_gpiod_get_optional from GPIOD_OUT_LOW to
-GPIOD_ASIS to avoid any glitches.
-The rfkill driver will set the intended value during rfkill_sync_work.
-
-Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Link: https://lore.kernel.org/r/20231004163928.14609-1-josua@solid-run.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 838d41d92a90 ("i40e: clear all queues and interrupts")
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Link: https://lore.kernel.org/r/20231011233334.336092-2-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rfkill/rfkill-gpio.c |    4 ++--
+ drivers/net/ethernet/intel/i40e/i40e_common.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -98,13 +98,13 @@ static int rfkill_gpio_probe(struct plat
- 
- 	rfkill->clk = devm_clk_get(&pdev->dev, NULL);
- 
--	gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_OUT_LOW);
-+	gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_ASIS);
- 	if (IS_ERR(gpio))
- 		return PTR_ERR(gpio);
- 
- 	rfkill->reset_gpio = gpio;
- 
--	gpio = devm_gpiod_get_optional(&pdev->dev, "shutdown", GPIOD_OUT_LOW);
-+	gpio = devm_gpiod_get_optional(&pdev->dev, "shutdown", GPIOD_ASIS);
- 	if (IS_ERR(gpio))
- 		return PTR_ERR(gpio);
- 
+--- a/drivers/net/ethernet/intel/i40e/i40e_common.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
+@@ -1320,7 +1320,7 @@ void i40e_clear_hw(struct i40e_hw *hw)
+ 		     I40E_PFLAN_QALLOC_FIRSTQ_SHIFT;
+ 	j = (val & I40E_PFLAN_QALLOC_LASTQ_MASK) >>
+ 	    I40E_PFLAN_QALLOC_LASTQ_SHIFT;
+-	if (val & I40E_PFLAN_QALLOC_VALID_MASK)
++	if (val & I40E_PFLAN_QALLOC_VALID_MASK && j >= base_queue)
+ 		num_queues = (j - base_queue) + 1;
+ 	else
+ 		num_queues = 0;
+@@ -1330,7 +1330,7 @@ void i40e_clear_hw(struct i40e_hw *hw)
+ 	    I40E_PF_VT_PFALLOC_FIRSTVF_SHIFT;
+ 	j = (val & I40E_PF_VT_PFALLOC_LASTVF_MASK) >>
+ 	    I40E_PF_VT_PFALLOC_LASTVF_SHIFT;
+-	if (val & I40E_PF_VT_PFALLOC_VALID_MASK)
++	if (val & I40E_PF_VT_PFALLOC_VALID_MASK && j >= i)
+ 		num_vfs = (j - i) + 1;
+ 	else
+ 		num_vfs = 0;
 
 
