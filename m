@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2D017D331C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6785C7D3232
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233942AbjJWL0u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:26:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35742 "EHLO
+        id S233687AbjJWLRm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:17:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233961AbjJWL0t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:49 -0400
+        with ESMTP id S233676AbjJWLRl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D14010B
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C78C433C7;
-        Mon, 23 Oct 2023 11:26:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4054BA4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85494C433C8;
+        Mon, 23 Oct 2023 11:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060406;
-        bh=thjgeJWthgqRx/M5+1a5F1fjeYXqkglHLxTT57GK1Uo=;
+        s=korg; t=1698059858;
+        bh=3Cdtu/0zb/DQpeRzlhIJEJjB66ADmMUQVkQAnBud/fs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QYRhbcgMwk6ppA16s6Yw81M4uyRBMTrjxpBeKLTyk7/LR7lYmMpSOC14mzMtK1CHn
-         R1/cVMvlKuzap96sh0EYWs1SgkuWLBYYjFQwKyXb2IdJ99b7eSsGSppDq9Bc36ANod
-         th8BEJ9J35NuaiKy3dtjk6QiSsvWAs1/YxZE3WeA=
+        b=UmTDWin9xTbJKyEC9z6PkfxumGITEiAWOVDq/8yRY2RjwrU4g/7LszoV33NSratRA
+         tb0Vw0nFTTmC74vy6pqxOfvS1+qQceVlpIyhMHsuJc85VH/VwbkMUzUJZZ0SA2g+uN
+         BSiZkvwJ3r8xR3k5oAMSYUcR2qI0BdF0YXTAnTCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maurizio Lombardi <mlombard@redhat.com>,
-        Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.1 161/196] nvmet-auth: complete a request only after freeing the dhchap pointers
+        patches@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 77/98] wifi: mac80211: allow transmitting EAPOL frames with tainted key
 Date:   Mon, 23 Oct 2023 12:57:06 +0200
-Message-ID: <20231023104832.998999339@linuxfoundation.org>
+Message-ID: <20231023104816.280636333@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,104 +49,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-commit f965b281fd872b2e18bd82dd97730db9834d0750 upstream.
+[ Upstream commit 61304336c67358d49a989e5e0060d8c99bad6ca8 ]
 
-It may happen that the work to destroy a queue
-(for example nvmet_tcp_release_queue_work()) is started while
-an auth-send or auth-receive command is still completing.
+Lower layer device driver stop/wake TX by calling ieee80211_stop_queue()/
+ieee80211_wake_queue() while hw scan. Sometimes hw scan and PTK rekey are
+running in parallel, when M4 sent from wpa_supplicant arrive while the TX
+queue is stopped, then the M4 will pending send, and then new key install
+from wpa_supplicant. After TX queue wake up by lower layer device driver,
+the M4 will be dropped by below call stack.
 
-nvmet_sq_destroy() will block, waiting for all the references
-to the sq to be dropped, the last reference is then
-dropped when nvmet_req_complete() is called.
+When key install started, the current key flag is set KEY_FLAG_TAINTED in
+ieee80211_pairwise_rekey(), and then mac80211 wait key install complete by
+lower layer device driver. Meanwhile ieee80211_tx_h_select_key() will return
+TX_DROP for the M4 in step 12 below, and then ieee80211_free_txskb() called
+by ieee80211_tx_dequeue(), so the M4 will not send and free, then the rekey
+process failed becaue AP not receive M4. Please see details in steps below.
 
-When this happens, both nvmet_sq_destroy() and
-nvmet_execute_auth_send()/_receive() will free the dhchap pointers by
-calling nvmet_auth_sq_free().
-Since there isn't any lock, the two threads may race against each other,
-causing double frees and memory corruptions, as reported by KASAN.
+There are a interval between KEY_FLAG_TAINTED set for current key flag and
+install key complete by lower layer device driver, the KEY_FLAG_TAINTED is
+set in this interval, all packet including M4 will be dropped in this
+interval, the interval is step 8~13 as below.
 
-Reproduced by stress blktests nvme/041 nvme/042 nvme/043
+issue steps:
+      TX thread                 install key thread
+1.   stop_queue                      -idle-
+2.   sending M4                      -idle-
+3.   M4 pending                      -idle-
+4.     -idle-                  starting install key from wpa_supplicant
+5.     -idle-                  =>ieee80211_key_replace()
+6.     -idle-                  =>ieee80211_pairwise_rekey() and set
+                                 currently key->flags |= KEY_FLAG_TAINTED
+7.     -idle-                  =>ieee80211_key_enable_hw_accel()
+8.     -idle-                  =>drv_set_key() and waiting key install
+                                 complete from lower layer device driver
+9.   wake_queue                     -waiting state-
+10.  re-sending M4                  -waiting state-
+11.  =>ieee80211_tx_h_select_key()  -waiting state-
+12.  drop M4 by KEY_FLAG_TAINTED    -waiting state-
+13.    -idle-                   install key complete with success/fail
+                                  success: clear flag KEY_FLAG_TAINTED
+                                  fail: start disconnect
 
- nvme nvme2: qid 0: authenticated with hash hmac(sha512) dhgroup ffdhe4096
- ==================================================================
- BUG: KASAN: double-free in kfree+0xec/0x4b0
+Hence add check in step 11 above to allow the EAPOL send out in the
+interval. If lower layer device driver use the old key/cipher to encrypt
+the M4, then AP received/decrypt M4 correctly, after M4 send out, lower
+layer device driver install the new key/cipher to hardware and return
+success.
 
- Call Trace:
-  <TASK>
-  kfree+0xec/0x4b0
-  nvmet_auth_sq_free+0xe1/0x160 [nvmet]
-  nvmet_execute_auth_send+0x482/0x16d0 [nvmet]
-  process_one_work+0x8e5/0x1510
+If lower layer device driver use new key/cipher to send the M4, then AP
+will/should drop the M4, then it is same result with this issue, AP will/
+should kick out station as well as this issue.
 
- Allocated by task 191846:
-  __kasan_kmalloc+0x81/0xa0
-  nvmet_auth_ctrl_sesskey+0xf6/0x380 [nvmet]
-  nvmet_auth_reply+0x119/0x990 [nvmet]
+issue log:
+kworker/u16:4-5238  [000]  6456.108926: stop_queue:           phy1 queue:0, reason:0
+wpa_supplicant-961  [003]  6456.119737: rdev_tx_control_port: wiphy_name=phy1 name=wlan0 ifindex=6 dest=ARRAY[9e, 05, 31, 20, 9b, d0] proto=36488 unencrypted=0
+wpa_supplicant-961  [003]  6456.119839: rdev_return_int_cookie: phy1, returned 0, cookie: 504
+wpa_supplicant-961  [003]  6456.120287: rdev_add_key:         phy1, netdev:wlan0(6), key_index: 0, mode: 0, pairwise: true, mac addr: 9e:05:31:20:9b:d0
+wpa_supplicant-961  [003]  6456.120453: drv_set_key:          phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 cipher:0xfac04, flags=0x9, keyidx=0, hw_key_idx=0
+kworker/u16:9-3829  [001]  6456.168240: wake_queue:           phy1 queue:0, reason:0
+kworker/u16:9-3829  [001]  6456.168255: drv_wake_tx_queue:    phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 ac:0 tid:7
+kworker/u16:9-3829  [001]  6456.168305: cfg80211_control_port_tx_status: wdev(1), cookie: 504, ack: false
+wpa_supplicant-961  [003]  6459.167982: drv_return_int:       phy1 - -110
 
- Freed by task 143270:
-  kfree+0xec/0x4b0
-  nvmet_auth_sq_free+0xe1/0x160 [nvmet]
-  process_one_work+0x8e5/0x1510
+issue call stack:
+nl80211_frame_tx_status+0x230/0x340 [cfg80211]
+cfg80211_control_port_tx_status+0x1c/0x28 [cfg80211]
+ieee80211_report_used_skb+0x374/0x3e8 [mac80211]
+ieee80211_free_txskb+0x24/0x40 [mac80211]
+ieee80211_tx_dequeue+0x644/0x954 [mac80211]
+ath10k_mac_tx_push_txq+0xac/0x238 [ath10k_core]
+ath10k_mac_op_wake_tx_queue+0xac/0xe0 [ath10k_core]
+drv_wake_tx_queue+0x80/0x168 [mac80211]
+__ieee80211_wake_txqs+0xe8/0x1c8 [mac80211]
+_ieee80211_wake_txqs+0xb4/0x120 [mac80211]
+ieee80211_wake_txqs+0x48/0x80 [mac80211]
+tasklet_action_common+0xa8/0x254
+tasklet_action+0x2c/0x38
+__do_softirq+0xdc/0x384
 
-Fix this bug by calling nvmet_req_complete() only after freeing the
-pointers, so we will prevent the race by holding the sq reference.
-
-V2: remove redundant code
-
-Fixes: db1312dd9548 ("nvmet: implement basic In-Band Authentication")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Link: https://lore.kernel.org/r/20230801064751.25803-1-quic_wgong@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fabrics-cmd-auth.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/mac80211/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/target/fabrics-cmd-auth.c
-+++ b/drivers/nvme/target/fabrics-cmd-auth.c
-@@ -337,19 +337,21 @@ done:
- 			 __func__, ctrl->cntlid, req->sq->qid,
- 			 status, req->error_loc);
- 	req->cqe->result.u64 = 0;
--	nvmet_req_complete(req, status);
- 	if (req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2 &&
- 	    req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_FAILURE2) {
- 		unsigned long auth_expire_secs = ctrl->kato ? ctrl->kato : 120;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 74045e927e044..3a0aadf881fc9 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -654,7 +654,8 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+ 		}
  
- 		mod_delayed_work(system_wq, &req->sq->auth_expired_work,
- 				 auth_expire_secs * HZ);
--		return;
-+		goto complete;
- 	}
- 	/* Final states, clear up variables */
- 	nvmet_auth_sq_free(req->sq);
- 	if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_FAILURE2)
- 		nvmet_ctrl_fatal_error(ctrl);
-+
-+complete:
-+	nvmet_req_complete(req, status);
- }
+ 		if (unlikely(tx->key && tx->key->flags & KEY_FLAG_TAINTED &&
+-			     !ieee80211_is_deauth(hdr->frame_control)))
++			     !ieee80211_is_deauth(hdr->frame_control)) &&
++			     tx->skb->protocol != tx->sdata->control_port_protocol)
+ 			return TX_DROP;
  
- static int nvmet_auth_challenge(struct nvmet_req *req, void *d, int al)
-@@ -527,11 +529,12 @@ void nvmet_execute_auth_receive(struct n
- 	kfree(d);
- done:
- 	req->cqe->result.u64 = 0;
--	nvmet_req_complete(req, status);
-+
- 	if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2)
- 		nvmet_auth_sq_free(req->sq);
- 	else if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_FAILURE1) {
- 		nvmet_auth_sq_free(req->sq);
- 		nvmet_ctrl_fatal_error(ctrl);
- 	}
-+	nvmet_req_complete(req, status);
- }
+ 		if (!skip_hw && tx->key &&
+-- 
+2.40.1
+
 
 
