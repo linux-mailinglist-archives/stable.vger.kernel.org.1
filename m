@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5FF97D33C3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDBE17D358F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234128AbjJWLdz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:33:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48192 "EHLO
+        id S234572AbjJWLtf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234133AbjJWLdx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:53 -0400
+        with ESMTP id S234575AbjJWLtf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFEA6DB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:33:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF75C433C8;
-        Mon, 23 Oct 2023 11:33:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABF8AF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8C0C433CB;
+        Mon, 23 Oct 2023 11:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060831;
-        bh=c9cx6s+AelES8P2VGa5IpduVOutLBYmsK8HACIWIWvA=;
+        s=korg; t=1698061772;
+        bh=HpsbVmY+TzZjli1gxfLhaWOusPWRnV9PCb/vgwhyNCo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mF96HNyt7xPYDgJ+1rBF+xjGmmG7Zu4pzz5ao2MvnvCg4XgksmRDL9OxjnCrjtn+6
-         fR4camM8kQzB4+b8fLZsFe+gi8LsCzyxkyLFTezVjM6UhxLdFR8Muj8fTWRhJ70ODp
-         /5F9tM6RmNCD3ApI0ca3zJ3tyX4obiNRBkvmvCKI=
+        b=tz/DJj67Ba93ueUqP0R7pURouwbSvpTEJPSRu5XflxRJETNnpvPonM1mPeU9koKjo
+         Z7dbxbibvuhkrZz2uudV/UmhWYGnzek1CrFMwt7Lzj3CCdCT62R3fldP9rMefpv2Je
+         WANhnIziJ3pWE5xE3ajPhZcHUG5gXbI2B6RZoIp0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sunil V L <sunilvl@ventanamicro.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.4 108/123] ACPI: irq: Fix incorrect return value in acpi_register_gsi()
-Date:   Mon, 23 Oct 2023 12:57:46 +0200
-Message-ID: <20231023104821.340659529@linuxfoundation.org>
+        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 160/202] Bluetooth: Avoid redundant authentication
+Date:   Mon, 23 Oct 2023 12:57:47 +0200
+Message-ID: <20231023104831.180748736@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,52 +49,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sunil V L <sunilvl@ventanamicro.com>
+From: Ying Hsu <yinghsu@chromium.org>
 
-commit 0c21a18d5d6c6a73d098fb9b4701572370942df9 upstream.
+[ Upstream commit 1d8e801422d66e4b8c7b187c52196bef94eed887 ]
 
-acpi_register_gsi() should return a negative value in case of failure.
+While executing the Android 13 CTS Verifier Secure Server test on a
+ChromeOS device, it was observed that the Bluetooth host initiates
+authentication for an RFCOMM connection after SSP completes.
+When this happens, some Intel Bluetooth controllers, like AC9560, would
+disconnect with "Connection Rejected due to Security Reasons (0x0e)".
 
-Currently, it returns the return value from irq_create_fwspec_mapping().
-However, irq_create_fwspec_mapping() returns 0 for failure. Fix the
-issue by returning -EINVAL if irq_create_fwspec_mapping() returns zero.
+Historically, BlueZ did not mandate this authentication while an
+authenticated combination key was already in use for the connection.
+This behavior was changed since commit 7b5a9241b780
+("Bluetooth: Introduce requirements for security level 4").
+So, this patch addresses the aforementioned disconnection issue by
+restoring the previous behavior.
 
-Fixes: d44fa3d46079 ("ACPI: Add support for ResourceSource/IRQ domain mapping")
-Cc: 4.11+ <stable@vger.kernel.org> # 4.11+
-Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
-[ rjw: Rename a new local variable ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/irq.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c | 63 ++++++++++++++++++++++------------------
+ 1 file changed, 35 insertions(+), 28 deletions(-)
 
---- a/drivers/acpi/irq.c
-+++ b/drivers/acpi/irq.c
-@@ -52,6 +52,7 @@ int acpi_register_gsi(struct device *dev
- 		      int polarity)
- {
- 	struct irq_fwspec fwspec;
-+	unsigned int irq;
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index f93a5ef919d1c..a9f6089a2ae2a 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1435,34 +1435,41 @@ int hci_conn_security(struct hci_conn *conn, __u8 sec_level, __u8 auth_type,
+ 	if (!test_bit(HCI_CONN_AUTH, &conn->flags))
+ 		goto auth;
  
- 	if (WARN_ON(!acpi_gsi_domain_id)) {
- 		pr_warn("GSI: No registered irqchip, giving up\n");
-@@ -63,7 +64,11 @@ int acpi_register_gsi(struct device *dev
- 	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
- 	fwspec.param_count = 2;
+-	/* An authenticated FIPS approved combination key has sufficient
+-	 * security for security level 4. */
+-	if (conn->key_type == HCI_LK_AUTH_COMBINATION_P256 &&
+-	    sec_level == BT_SECURITY_FIPS)
+-		goto encrypt;
+-
+-	/* An authenticated combination key has sufficient security for
+-	   security level 3. */
+-	if ((conn->key_type == HCI_LK_AUTH_COMBINATION_P192 ||
+-	     conn->key_type == HCI_LK_AUTH_COMBINATION_P256) &&
+-	    sec_level == BT_SECURITY_HIGH)
+-		goto encrypt;
+-
+-	/* An unauthenticated combination key has sufficient security for
+-	   security level 1 and 2. */
+-	if ((conn->key_type == HCI_LK_UNAUTH_COMBINATION_P192 ||
+-	     conn->key_type == HCI_LK_UNAUTH_COMBINATION_P256) &&
+-	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW))
+-		goto encrypt;
+-
+-	/* A combination key has always sufficient security for the security
+-	   levels 1 or 2. High security level requires the combination key
+-	   is generated using maximum PIN code length (16).
+-	   For pre 2.1 units. */
+-	if (conn->key_type == HCI_LK_COMBINATION &&
+-	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW ||
+-	     conn->pin_length == 16))
+-		goto encrypt;
++	switch (conn->key_type) {
++	case HCI_LK_AUTH_COMBINATION_P256:
++		/* An authenticated FIPS approved combination key has
++		 * sufficient security for security level 4 or lower.
++		 */
++		if (sec_level <= BT_SECURITY_FIPS)
++			goto encrypt;
++		break;
++	case HCI_LK_AUTH_COMBINATION_P192:
++		/* An authenticated combination key has sufficient security for
++		 * security level 3 or lower.
++		 */
++		if (sec_level <= BT_SECURITY_HIGH)
++			goto encrypt;
++		break;
++	case HCI_LK_UNAUTH_COMBINATION_P192:
++	case HCI_LK_UNAUTH_COMBINATION_P256:
++		/* An unauthenticated combination key has sufficient security
++		 * for security level 2 or lower.
++		 */
++		if (sec_level <= BT_SECURITY_MEDIUM)
++			goto encrypt;
++		break;
++	case HCI_LK_COMBINATION:
++		/* A combination key has always sufficient security for the
++		 * security levels 2 or lower. High security level requires the
++		 * combination key is generated using maximum PIN code length
++		 * (16). For pre 2.1 units.
++		 */
++		if (sec_level <= BT_SECURITY_MEDIUM || conn->pin_length == 16)
++			goto encrypt;
++		break;
++	default:
++		break;
++	}
  
--	return irq_create_fwspec_mapping(&fwspec);
-+	irq = irq_create_fwspec_mapping(&fwspec);
-+	if (!irq)
-+		return -EINVAL;
-+
-+	return irq;
- }
- EXPORT_SYMBOL_GPL(acpi_register_gsi);
- 
+ auth:
+ 	if (test_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags))
+-- 
+2.40.1
+
 
 
