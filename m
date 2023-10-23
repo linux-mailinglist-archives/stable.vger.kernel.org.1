@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1E117D30A8
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4971E7D31BA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229601AbjJWLBA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:01:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43512 "EHLO
+        id S233624AbjJWLM0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:12:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229753AbjJWLA7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:00:59 -0400
+        with ESMTP id S233627AbjJWLMY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 819BAD6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:00:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1939C433C7;
-        Mon, 23 Oct 2023 11:00:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4269BD6E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ED9C433C9;
+        Mon, 23 Oct 2023 11:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058857;
-        bh=J8Cy3bgd90JSHGMnTHsNOT7TfeO1mCRGZo8F1nf4oTQ=;
+        s=korg; t=1698059542;
+        bh=yWbaISuqJ+EEUdPZeds142I5UBO9j9MH5gyn2lTKQS8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o1S7zwqVxmaFH/+TW26DP4zjf3o+QUocIJNxZLgWnPCSYcUxjGPYJNxM581+0whsu
-         wDElFyo/7INqyX8CG31NV6pTWwuZ2sP7xUq/UEdIqBD2/i0QsA36M+sXbWR+IQrj0/
-         Z7ukdVt+wW75TGYUOkTI06OFgcEI8jyo02ehSnwM=
+        b=y4ADupvR1u4zqXReWCaMEsU3tJv2r0ZNAOj8SYklRf7mR5Uzwu0CVi034vsFkCrPb
+         pnTXNabxrDvbUX+4GbLxgf1xLkj29DgPv6BqIbTBdoAF4fomo4tQx+8btfPLi9Ih8+
+         I6npQFhCfooYt9x8jBcChLEZ9RrhlscdWslT70lo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 49/66] HID: holtek: fix slab-out-of-bounds Write in holtek_kbd_input_event
+        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.5 213/241] gpio: vf610: set value before the direction to avoid a glitch
 Date:   Mon, 23 Oct 2023 12:56:39 +0200
-Message-ID: <20231023104812.665793535@linuxfoundation.org>
+Message-ID: <20231023104839.042639133@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,44 +48,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit ffe3b7837a2bb421df84d0177481db9f52c93a71 ]
+commit fc363413ef8ea842ae7a99e3caf5465dafdd3a49 upstream.
 
-There is a slab-out-of-bounds Write bug in hid-holtek-kbd driver.
-The problem is the driver assumes the device must have an input
-but some malicious devices violate this assumption.
+We found a glitch when configuring the pad as output high. To avoid this
+glitch, move the data value setting before direction config in the
+function vf610_gpio_direction_output().
 
-Fix this by checking hid_device's input is non-empty before its usage.
-
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 659d8a62311f ("gpio: vf610: add imx7ulp support")
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+[Bartosz: tweak the commit message]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-holtek-kbd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpio/gpio-vf610.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-holtek-kbd.c b/drivers/hid/hid-holtek-kbd.c
-index 2f8eb66397444..72788ca260e08 100644
---- a/drivers/hid/hid-holtek-kbd.c
-+++ b/drivers/hid/hid-holtek-kbd.c
-@@ -133,6 +133,10 @@ static int holtek_kbd_input_event(struct input_dev *dev, unsigned int type,
- 		return -ENODEV;
+--- a/drivers/gpio/gpio-vf610.c
++++ b/drivers/gpio/gpio-vf610.c
+@@ -127,14 +127,14 @@ static int vf610_gpio_direction_output(s
+ 	unsigned long mask = BIT(gpio);
+ 	u32 val;
  
- 	boot_hid = usb_get_intfdata(boot_interface);
-+	if (list_empty(&boot_hid->inputs)) {
-+		hid_err(hid, "no inputs found\n");
-+		return -ENODEV;
-+	}
- 	boot_hid_input = list_first_entry(&boot_hid->inputs,
- 		struct hid_input, list);
++	vf610_gpio_set(chip, gpio, value);
++
+ 	if (port->sdata && port->sdata->have_paddr) {
+ 		val = vf610_gpio_readl(port->gpio_base + GPIO_PDDR);
+ 		val |= mask;
+ 		vf610_gpio_writel(val, port->gpio_base + GPIO_PDDR);
+ 	}
  
--- 
-2.40.1
-
+-	vf610_gpio_set(chip, gpio, value);
+-
+ 	return pinctrl_gpio_direction_output(chip->base + gpio);
+ }
+ 
 
 
