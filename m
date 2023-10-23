@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 301D37D3291
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D3E07D34E3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233821AbjJWLVj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:21:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36370 "EHLO
+        id S230031AbjJWLnb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233820AbjJWLVi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:38 -0400
+        with ESMTP id S234373AbjJWLnW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:43:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B5B3DB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979EEC433C8;
-        Mon, 23 Oct 2023 11:21:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9061510DE
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD51C433C9;
+        Mon, 23 Oct 2023 11:43:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060095;
-        bh=GslRicI7TSWWaAYMje1sNYYPUVpwXJ+TD5xOWELiIfY=;
+        s=korg; t=1698061397;
+        bh=K+JeQcm4rEkXWaFngKK2DWXBAlvl0MFASQY7pV1KzcU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZV7Q1a8LOxwdtP3VFANLuYpq3Rqu8vjpwni8p2niTla6/9+AO6tdBbuuCMehF3jiC
-         gVpfzZepmnFfvowCPamfW0XBrqQE5ORfa6gg7O3Sx72LJBGx1wmh1t9pyjpvkEEJ1S
-         crmln1Kc4xbCC09CxtqmlrFGWtwyQNV8Ir+B8rl8=
+        b=EI+2xnyD3HamlmGvjl31iBHjb6zRuXG2SORJ/VtO0dHIIvmCU9BAYo87VZlU7TVQS
+         GHjS8XlDXKv9+1Vlpo7j1KXGQeUQRSxDOihsZcZFpNe9Qz9HJfv30gokMlsGaYDMR/
+         kI2a7dlO8W5cb+UmxXcjmWFh/IsMrN2LLqLERn6c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.1 049/196] xfrm: interface: use DEV_STATS_INC()
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 5.10 007/202] HID: logitech-hidpp: Fix kernel crash on receiver USB disconnect
 Date:   Mon, 23 Oct 2023 12:55:14 +0200
-Message-ID: <20231023104829.905784090@linuxfoundation.org>
+Message-ID: <20231023104826.805833274@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,186 +48,181 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit f7c4e3e5d4f6609b4725a97451948ca2e425379a upstream.
+commit dac501397b9d81e4782232c39f94f4307b137452 upstream.
 
-syzbot/KCSAN reported data-races in xfrm whenever dev->stats fields
-are updated.
+hidpp_connect_event() has *four* time-of-check vs time-of-use (TOCTOU)
+races when it races with itself.
 
-It appears all of these updates can happen from multiple cpus.
+hidpp_connect_event() primarily runs from a workqueue but it also runs
+on probe() and if a "device-connected" packet is received by the hw
+when the thread running hidpp_connect_event() from probe() is waiting on
+the hw, then a second thread running hidpp_connect_event() will be
+started from the workqueue.
 
-Adopt SMP safe DEV_STATS_INC() to update dev->stats fields.
+This opens the following races (note the below code is simplified):
 
-BUG: KCSAN: data-race in xfrmi_xmit / xfrmi_xmit
+1. Retrieving + printing the protocol (harmless race):
 
-read-write to 0xffff88813726b160 of 8 bytes by task 23986 on cpu 1:
-xfrmi_xmit+0x74e/0xb20 net/xfrm/xfrm_interface_core.c:583
-__netdev_start_xmit include/linux/netdevice.h:4889 [inline]
-netdev_start_xmit include/linux/netdevice.h:4903 [inline]
-xmit_one net/core/dev.c:3544 [inline]
-dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3560
-__dev_queue_xmit+0xeee/0x1de0 net/core/dev.c:4340
-dev_queue_xmit include/linux/netdevice.h:3082 [inline]
-neigh_connected_output+0x231/0x2a0 net/core/neighbour.c:1581
-neigh_output include/net/neighbour.h:542 [inline]
-ip_finish_output2+0x74a/0x850 net/ipv4/ip_output.c:230
-ip_finish_output+0xf4/0x240 net/ipv4/ip_output.c:318
-NF_HOOK_COND include/linux/netfilter.h:293 [inline]
-ip_output+0xe5/0x1b0 net/ipv4/ip_output.c:432
-dst_output include/net/dst.h:458 [inline]
-ip_local_out net/ipv4/ip_output.c:127 [inline]
-ip_send_skb+0x72/0xe0 net/ipv4/ip_output.c:1487
-udp_send_skb+0x6a4/0x990 net/ipv4/udp.c:963
-udp_sendmsg+0x1249/0x12d0 net/ipv4/udp.c:1246
-inet_sendmsg+0x63/0x80 net/ipv4/af_inet.c:840
-sock_sendmsg_nosec net/socket.c:730 [inline]
-sock_sendmsg net/socket.c:753 [inline]
-____sys_sendmsg+0x37c/0x4d0 net/socket.c:2540
-___sys_sendmsg net/socket.c:2594 [inline]
-__sys_sendmmsg+0x269/0x500 net/socket.c:2680
-__do_sys_sendmmsg net/socket.c:2709 [inline]
-__se_sys_sendmmsg net/socket.c:2706 [inline]
-__x64_sys_sendmmsg+0x57/0x60 net/socket.c:2706
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+	if (!hidpp->protocol_major) {
+		hidpp_root_get_protocol_version()
+		hidpp->protocol_major = response.rap.params[0];
+	}
 
-read-write to 0xffff88813726b160 of 8 bytes by task 23987 on cpu 0:
-xfrmi_xmit+0x74e/0xb20 net/xfrm/xfrm_interface_core.c:583
-__netdev_start_xmit include/linux/netdevice.h:4889 [inline]
-netdev_start_xmit include/linux/netdevice.h:4903 [inline]
-xmit_one net/core/dev.c:3544 [inline]
-dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3560
-__dev_queue_xmit+0xeee/0x1de0 net/core/dev.c:4340
-dev_queue_xmit include/linux/netdevice.h:3082 [inline]
-neigh_connected_output+0x231/0x2a0 net/core/neighbour.c:1581
-neigh_output include/net/neighbour.h:542 [inline]
-ip_finish_output2+0x74a/0x850 net/ipv4/ip_output.c:230
-ip_finish_output+0xf4/0x240 net/ipv4/ip_output.c:318
-NF_HOOK_COND include/linux/netfilter.h:293 [inline]
-ip_output+0xe5/0x1b0 net/ipv4/ip_output.c:432
-dst_output include/net/dst.h:458 [inline]
-ip_local_out net/ipv4/ip_output.c:127 [inline]
-ip_send_skb+0x72/0xe0 net/ipv4/ip_output.c:1487
-udp_send_skb+0x6a4/0x990 net/ipv4/udp.c:963
-udp_sendmsg+0x1249/0x12d0 net/ipv4/udp.c:1246
-inet_sendmsg+0x63/0x80 net/ipv4/af_inet.c:840
-sock_sendmsg_nosec net/socket.c:730 [inline]
-sock_sendmsg net/socket.c:753 [inline]
-____sys_sendmsg+0x37c/0x4d0 net/socket.c:2540
-___sys_sendmsg net/socket.c:2594 [inline]
-__sys_sendmmsg+0x269/0x500 net/socket.c:2680
-__do_sys_sendmmsg net/socket.c:2709 [inline]
-__se_sys_sendmmsg net/socket.c:2706 [inline]
-__x64_sys_sendmmsg+0x57/0x60 net/socket.c:2706
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
+We can actually see this race hit in the dmesg in the abrt output
+attached to rhbz#2227968:
 
-value changed: 0x00000000000010d7 -> 0x00000000000010d8
+[ 3064.624215] logitech-hidpp-device 0003:046D:4071.0049: HID++ 4.5 device connected.
+[ 3064.658184] logitech-hidpp-device 0003:046D:4071.0049: HID++ 4.5 device connected.
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 23987 Comm: syz-executor.5 Not tainted 6.5.0-syzkaller-10885-g0468be89b3fa #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+Testing with extra logging added has shown that after this the 2 threads
+take turn grabbing the hw access mutex (send_mutex) so they ping-pong
+through all the other TOCTOU cases managing to hit all of them:
 
-Fixes: f203b76d7809 ("xfrm: Add virtual xfrm interfaces")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+2. Updating the name to the HIDPP name (harmless race):
+
+	if (hidpp->name == hdev->name) {
+		...
+		hidpp->name = new_name;
+	}
+
+3. Initializing the power_supply class for the battery (problematic!):
+
+hidpp_initialize_battery()
+{
+        if (hidpp->battery.ps)
+                return 0;
+
+	probe_battery(); /* Blocks, threads take turns executing this */
+
+	hidpp->battery.desc.properties =
+		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
+
+	hidpp->battery.ps =
+		devm_power_supply_register(&hidpp->hid_dev->dev,
+					   &hidpp->battery.desc, cfg);
+}
+
+4. Creating delayed input_device (potentially problematic):
+
+	if (hidpp->delayed_input)
+		return;
+
+	hidpp->delayed_input = hidpp_allocate_input(hdev);
+
+The really big problem here is 3. Hitting the race leads to the following
+sequence:
+
+	hidpp->battery.desc.properties =
+		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
+
+	hidpp->battery.ps =
+		devm_power_supply_register(&hidpp->hid_dev->dev,
+					   &hidpp->battery.desc, cfg);
+
+	...
+
+	hidpp->battery.desc.properties =
+		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
+
+	hidpp->battery.ps =
+		devm_power_supply_register(&hidpp->hid_dev->dev,
+					   &hidpp->battery.desc, cfg);
+
+So now we have registered 2 power supplies for the same battery,
+which looks a bit weird from userspace's pov but this is not even
+the really big problem.
+
+Notice how:
+
+1. This is all devm-maganaged
+2. The hidpp->battery.desc struct is shared between the 2 power supplies
+3. hidpp->battery.desc.properties points to the result from the second
+   devm_kmemdup()
+
+This causes a use after free scenario on USB disconnect of the receiver:
+1. The last registered power supply class device gets unregistered
+2. The memory from the last devm_kmemdup() call gets freed,
+   hidpp->battery.desc.properties now points to freed memory
+3. The first registered power supply class device gets unregistered,
+   this involves sending a remove uevent to userspace which invokes
+   power_supply_uevent() to fill the uevent data
+4. power_supply_uevent() uses hidpp->battery.desc.properties which
+   now points to freed memory leading to backtraces like this one:
+
+Sep 22 20:01:35 eric kernel: BUG: unable to handle page fault for address: ffffb2140e017f08
+...
+Sep 22 20:01:35 eric kernel: Workqueue: usb_hub_wq hub_event
+Sep 22 20:01:35 eric kernel: RIP: 0010:power_supply_uevent+0xee/0x1d0
+...
+Sep 22 20:01:35 eric kernel:  ? asm_exc_page_fault+0x26/0x30
+Sep 22 20:01:35 eric kernel:  ? power_supply_uevent+0xee/0x1d0
+Sep 22 20:01:35 eric kernel:  ? power_supply_uevent+0x10d/0x1d0
+Sep 22 20:01:35 eric kernel:  dev_uevent+0x10f/0x2d0
+Sep 22 20:01:35 eric kernel:  kobject_uevent_env+0x291/0x680
+Sep 22 20:01:35 eric kernel:  power_supply_unregister+0x8e/0xa0
+Sep 22 20:01:35 eric kernel:  release_nodes+0x3d/0xb0
+Sep 22 20:01:35 eric kernel:  devres_release_group+0xfc/0x130
+Sep 22 20:01:35 eric kernel:  hid_device_remove+0x56/0xa0
+Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
+Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
+Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
+Sep 22 20:01:35 eric kernel:  ? __queue_work+0x1df/0x440
+Sep 22 20:01:35 eric kernel:  hid_destroy_device+0x4b/0x60
+Sep 22 20:01:35 eric kernel:  logi_dj_remove+0x9a/0x100 [hid_logitech_dj 5c91534a0ead2b65e04dd799a0437e3b99b21bc4]
+Sep 22 20:01:35 eric kernel:  hid_device_remove+0x44/0xa0
+Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
+Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
+Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
+Sep 22 20:01:35 eric kernel:  ? __queue_work+0x1df/0x440
+Sep 22 20:01:35 eric kernel:  hid_destroy_device+0x4b/0x60
+Sep 22 20:01:35 eric kernel:  usbhid_disconnect+0x47/0x60 [usbhid 727dcc1c0b94e6b4418727a468398ac3bca492f3]
+Sep 22 20:01:35 eric kernel:  usb_unbind_interface+0x90/0x270
+Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
+Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
+Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
+Sep 22 20:01:35 eric kernel:  ? kobject_put+0xa0/0x1d0
+Sep 22 20:01:35 eric kernel:  usb_disable_device+0xcd/0x1e0
+Sep 22 20:01:35 eric kernel:  usb_disconnect+0xde/0x2c0
+Sep 22 20:01:35 eric kernel:  usb_disconnect+0xc3/0x2c0
+Sep 22 20:01:35 eric kernel:  hub_event+0xe80/0x1c10
+
+There have been quite a few bug reports (see Link tags) about this crash.
+
+Fix all the TOCTOU issues, including the really bad power-supply related
+system crash on USB disconnect, by making probe() use the workqueue for
+running hidpp_connect_event() too, so that it can never run more then once.
+
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227221
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227968
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227968
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2242189
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217412#c58
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231005182638.3776-1-hdegoede@redhat.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_interface_core.c |   22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/xfrm/xfrm_interface_core.c
-+++ b/net/xfrm/xfrm_interface_core.c
-@@ -379,8 +379,8 @@ static int xfrmi_rcv_cb(struct sk_buff *
- 	skb->dev = dev;
- 
- 	if (err) {
--		dev->stats.rx_errors++;
--		dev->stats.rx_dropped++;
-+		DEV_STATS_INC(dev, rx_errors);
-+		DEV_STATS_INC(dev, rx_dropped);
- 
- 		return 0;
- 	}
-@@ -425,7 +425,6 @@ static int
- xfrmi_xmit2(struct sk_buff *skb, struct net_device *dev, struct flowi *fl)
- {
- 	struct xfrm_if *xi = netdev_priv(dev);
--	struct net_device_stats *stats = &xi->dev->stats;
- 	struct dst_entry *dst = skb_dst(skb);
- 	unsigned int length = skb->len;
- 	struct net_device *tdev;
-@@ -464,7 +463,7 @@ xfrmi_xmit2(struct sk_buff *skb, struct
- 	tdev = dst->dev;
- 
- 	if (tdev == dev) {
--		stats->collisions++;
-+		DEV_STATS_INC(dev, collisions);
- 		net_warn_ratelimited("%s: Local routing loop detected!\n",
- 				     dev->name);
- 		goto tx_err_dst_release;
-@@ -503,13 +502,13 @@ xmit:
- 	if (net_xmit_eval(err) == 0) {
- 		dev_sw_netstats_tx_add(dev, 1, length);
- 	} else {
--		stats->tx_errors++;
--		stats->tx_aborted_errors++;
-+		DEV_STATS_INC(dev, tx_errors);
-+		DEV_STATS_INC(dev, tx_aborted_errors);
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -3936,7 +3936,8 @@ static int hidpp_probe(struct hid_device
+ 			goto hid_hw_init_fail;
  	}
  
- 	return 0;
- tx_err_link_failure:
--	stats->tx_carrier_errors++;
-+	DEV_STATS_INC(dev, tx_carrier_errors);
- 	dst_link_failure(skb);
- tx_err_dst_release:
- 	dst_release(dst);
-@@ -519,7 +518,6 @@ tx_err_dst_release:
- static netdev_tx_t xfrmi_xmit(struct sk_buff *skb, struct net_device *dev)
- {
- 	struct xfrm_if *xi = netdev_priv(dev);
--	struct net_device_stats *stats = &xi->dev->stats;
- 	struct dst_entry *dst = skb_dst(skb);
- 	struct flowi fl;
- 	int ret;
-@@ -536,7 +534,7 @@ static netdev_tx_t xfrmi_xmit(struct sk_
- 			dst = ip6_route_output(dev_net(dev), NULL, &fl.u.ip6);
- 			if (dst->error) {
- 				dst_release(dst);
--				stats->tx_carrier_errors++;
-+				DEV_STATS_INC(dev, tx_carrier_errors);
- 				goto tx_err;
- 			}
- 			skb_dst_set(skb, dst);
-@@ -552,7 +550,7 @@ static netdev_tx_t xfrmi_xmit(struct sk_
- 			fl.u.ip4.flowi4_flags |= FLOWI_FLAG_ANYSRC;
- 			rt = __ip_route_output_key(dev_net(dev), &fl.u.ip4);
- 			if (IS_ERR(rt)) {
--				stats->tx_carrier_errors++;
-+				DEV_STATS_INC(dev, tx_carrier_errors);
- 				goto tx_err;
- 			}
- 			skb_dst_set(skb, &rt->dst);
-@@ -571,8 +569,8 @@ static netdev_tx_t xfrmi_xmit(struct sk_
- 	return NETDEV_TX_OK;
+-	hidpp_connect_event(hidpp);
++	schedule_work(&hidpp->work);
++	flush_work(&hidpp->work);
  
- tx_err:
--	stats->tx_errors++;
--	stats->tx_dropped++;
-+	DEV_STATS_INC(dev, tx_errors);
-+	DEV_STATS_INC(dev, tx_dropped);
- 	kfree_skb(skb);
- 	return NETDEV_TX_OK;
- }
+ 	if (will_restart) {
+ 		/* Reset the HID node state */
 
 
