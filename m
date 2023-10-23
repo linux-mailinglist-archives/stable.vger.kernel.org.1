@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A196A7D30AB
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97EB57D337A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230012AbjJWLBH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:01:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53980 "EHLO
+        id S234065AbjJWLao (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:30:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbjJWLBG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:06 -0400
+        with ESMTP id S234047AbjJWLan (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE034D7C
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB318C433C8;
-        Mon, 23 Oct 2023 11:01:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F0C2A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD532C433C8;
+        Mon, 23 Oct 2023 11:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058863;
-        bh=z+S12Dkr21p1R+eL53rc2PiDUVdoKZ4AGs3Wotz97PY=;
+        s=korg; t=1698060641;
+        bh=pLtCdCaPvNSJ92ja+Erjya8GqOJuEprd5M3Bhu+KvYw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xPaJasUjPH4IuML9y5LCTqxijLnU7GQThSOWCfTLZW6bzgf4wXsqOzQzWVWeIT459
-         XKfm0X4E1DvWLChE8x5wjPbgHfaiW9534TAgk824TGSDKetrGd9AktRVADyQCqyFJz
-         aKELtmZyilB/FuwLn8HelnR1t16lSD4e2PAAGTYg=
+        b=l90EOLRXk09FOIBDLI8uKTzx8Xbc7gzaukL5ermRcuLYBfDq6TvajBf3S9b6/7KGW
+         gEI5JglBbqLuK1XaTHGfhNnXU+aDO7daWF7iVptmIYDSCK2w6H1QC0cDRmDfT/SDO3
+         yoqdEMX6hsHZnpzUwIiZ+YJ8YWgRrpK8LbfqfWVw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactcode.de>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 4.14 24/66] x86/cpu: Fix AMD erratum #1485 on Zen4-based CPUs
-Date:   Mon, 23 Oct 2023 12:56:14 +0200
-Message-ID: <20231023104811.716846388@linuxfoundation.org>
+        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 017/123] nfc: nci: assert requested protocol is valid
+Date:   Mon, 23 Oct 2023 12:56:15 +0200
+Message-ID: <20231023104818.322072638@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,72 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Jeremy Cline <jeremy@jcline.org>
 
-commit f454b18e07f518bcd0c05af17a2239138bff52de upstream.
+[ Upstream commit 354a6e707e29cb0c007176ee5b8db8be7bd2dee0 ]
 
-Fix erratum #1485 on Zen4 parts where running with STIBP disabled can
-cause an #UD exception. The performance impact of the fix is negligible.
+The protocol is used in a bit mask to determine if the protocol is
+supported. Assert the provided protocol is less than the maximum
+defined so it doesn't potentially perform a shift-out-of-bounds and
+provide a clearer error for undefined protocols vs unsupported ones.
 
-Reported-by: René Rebe <rene@exactcode.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: René Rebe <rene@exactcode.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/D99589F4-BC5D-430B-87B2-72C20370CF57@exactcode.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0839b78e119aae1fec78
+Signed-off-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231009200054.82557-1-jeremy@jcline.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/msr-index.h |    4 ++++
- arch/x86/kernel/cpu/amd.c        |    9 +++++++++
- 2 files changed, 13 insertions(+)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/x86/include/asm/msr-index.h
-+++ b/arch/x86/include/asm/msr-index.h
-@@ -442,6 +442,10 @@
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 57849baf9294d..54b9efb5ae821 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -894,6 +894,11 @@ static int nci_activate_target(struct nfc_dev *nfc_dev,
+ 		return -EINVAL;
+ 	}
  
- #define MSR_AMD64_VIRT_SPEC_CTRL	0xc001011f
- 
-+/* Zen4 */
-+#define MSR_ZEN4_BP_CFG			0xc001102e
-+#define MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT 5
++	if (protocol >= NFC_PROTO_MAX) {
++		pr_err("the requested nfc protocol is invalid\n");
++		return -EINVAL;
++	}
 +
- /* Fam 17h MSRs */
- #define MSR_F17H_IRPERF			0xc00000e9
- 
---- a/arch/x86/kernel/cpu/amd.c
-+++ b/arch/x86/kernel/cpu/amd.c
-@@ -24,6 +24,7 @@
- 
- static const int amd_erratum_383[];
- static const int amd_erratum_400[];
-+static const int amd_erratum_1485[];
- static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum);
- 
- /*
-@@ -974,6 +975,10 @@ static void init_amd(struct cpuinfo_x86
- 	/* AMD CPUs don't reset SS attributes on SYSRET, Xen does. */
- 	if (!cpu_has(c, X86_FEATURE_XENPV))
- 		set_cpu_bug(c, X86_BUG_SYSRET_SS_ATTRS);
-+
-+	if (!cpu_has(c, X86_FEATURE_HYPERVISOR) &&
-+	    cpu_has_amd_erratum(c, amd_erratum_1485))
-+		msr_set_bit(MSR_ZEN4_BP_CFG, MSR_ZEN4_BP_CFG_SHARED_BTB_FIX_BIT);
- }
- 
- #ifdef CONFIG_X86_32
-@@ -1102,6 +1107,10 @@ static const int amd_erratum_383[] =
- 	AMD_OSVW_ERRATUM(3, AMD_MODEL_RANGE(0x10, 0, 0, 0xff, 0xf));
- 
- 
-+static const int amd_erratum_1485[] =
-+	AMD_LEGACY_ERRATUM(AMD_MODEL_RANGE(0x19, 0x10, 0x0, 0x1f, 0xf),
-+			   AMD_MODEL_RANGE(0x19, 0x60, 0x0, 0xaf, 0xf));
-+
- static bool cpu_has_amd_erratum(struct cpuinfo_x86 *cpu, const int *erratum)
- {
- 	int osvw_id = *erratum++;
+ 	if (!(nci_target->supported_protocols & (1 << protocol))) {
+ 		pr_err("target does not support the requested protocol 0x%x\n",
+ 		       protocol);
+-- 
+2.40.1
+
 
 
