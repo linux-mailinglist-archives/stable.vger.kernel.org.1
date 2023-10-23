@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25B447D31EF
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B866D7D32D3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233694AbjJWLOz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:14:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33422 "EHLO
+        id S233858AbjJWLYY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:24:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233699AbjJWLOz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:55 -0400
+        with ESMTP id S233901AbjJWLYW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24889C4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1F4C433CA;
-        Mon, 23 Oct 2023 11:14:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FF7D1727
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F832C433C9;
+        Mon, 23 Oct 2023 11:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059692;
-        bh=um0rTo09nQBOUXHuAPt+uBN/yzpg1eLJuxDpUY5n31k=;
+        s=korg; t=1698060237;
+        bh=DpctDm3BZOFhB85dy3g+g+3YI0T0r+HPWK8yUwOsW/Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gdREw3hp3OJhhaqfx3S/Uo0oFjvnlUY3Jy/JJC5l+VTKvro7bs59XYQMEFmZH4LND
-         3chIZtg1t9UoTtsOFI1vHIaAaKyCxlK4S2kh7q4/2aiaE9FYzwlVJX3nZvO5x5O7HM
-         jGN/XQOa9Uic8KgiVJij/9zQPYElWMn7r4wsCCgM=
+        b=FlJ5yfM23aYhkoLpJHFjXPoR4TybrDYOWhHKE6JrvhB0J5zAvwR9YkPQeIjXymU+r
+         Ru6cTrYW9vcpSugn7OfunYOf4ZsZJMT7vIhwGtNjOwUgzKtLd6mPlId+BB8wOLkYHz
+         0V707h/F0m3xMBw9RO7HANlIlxq/23t4y2K+PyN8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 4.19 20/98] dmaengine: stm32-mdma: abort resume if no ongoing transfer
+        patches@lists.linux.dev, Ben Greear <greearb@candelatech.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 104/196] wifi: iwlwifi: Ensure ack flag is properly cleared.
 Date:   Mon, 23 Oct 2023 12:56:09 +0200
-Message-ID: <20231023104814.300890453@linuxfoundation.org>
+Message-ID: <20231023104831.473306052@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Ben Greear <greearb@candelatech.com>
 
-commit 81337b9a72dc58a5fa0ae8a042e8cb59f9bdec4a upstream.
+[ Upstream commit e8fbe99e87877f0412655f40d7c45bf8471470ac ]
 
-chan->desc can be null, if transfer is terminated when resume is called,
-leading to a NULL pointer when retrieving the hwdesc.
-To avoid this case, check that chan->desc is not null and channel is
-disabled (transfer previously paused or terminated).
+Debugging indicates that nothing else is clearing the info->flags,
+so some frames were flagged as ACKed when they should not be.
+Explicitly clear the ack flag to ensure this does not happen.
 
-Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231004163531.2864160-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ben Greear <greearb@candelatech.com>
+Acked-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230808205605.4105670-1-greearb@candelatech.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/stm32-mdma.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/dma/stm32-mdma.c
-+++ b/drivers/dma/stm32-mdma.c
-@@ -1217,6 +1217,10 @@ static int stm32_mdma_resume(struct dma_
- 	unsigned long flags;
- 	u32 status, reg;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index 542cfcad6e0e6..2d01f6226b7c6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -1585,6 +1585,7 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
+ 		iwl_trans_free_tx_cmd(mvm->trans, info->driver_data[1]);
  
-+	/* Transfer can be terminated */
-+	if (!chan->desc || (stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & STM32_MDMA_CCR_EN))
-+		return -EPERM;
-+
- 	hwdesc = chan->desc->node[chan->curr_hwdesc].hwdesc;
+ 		memset(&info->status, 0, sizeof(info->status));
++		info->flags &= ~(IEEE80211_TX_STAT_ACK | IEEE80211_TX_STAT_TX_FILTERED);
  
- 	spin_lock_irqsave(&chan->vchan.lock, flags);
+ 		/* inform mac80211 about what happened with the frame */
+ 		switch (status & TX_STATUS_MSK) {
+@@ -1936,6 +1937,8 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
+ 		 */
+ 		if (!is_flush)
+ 			info->flags |= IEEE80211_TX_STAT_ACK;
++		else
++			info->flags &= ~IEEE80211_TX_STAT_ACK;
+ 	}
+ 
+ 	/*
+-- 
+2.40.1
+
 
 
