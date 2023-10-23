@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 673CD7D319F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21A5B7D32FB
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233530AbjJWLLO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44592 "EHLO
+        id S233917AbjJWLZh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:25:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233521AbjJWLLN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:13 -0400
+        with ESMTP id S233923AbjJWLZg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C84F6DD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15ADEC433C7;
-        Mon, 23 Oct 2023 11:11:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D5DE102
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D346C433C8;
+        Mon, 23 Oct 2023 11:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059471;
-        bh=x6Ds/ZipGr23wXSXqpvYxfsIhRj44cU0qki0aR6f3RI=;
+        s=korg; t=1698060332;
+        bh=3gsYD+HIBmcQUqMr3+Kni5asdv/IM39bH8437v2InIk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LWO0Q+mbDyPFbqrAfuYzWMt+moGohwsR+S7FWo7yJtu+6E81uQl1xmJnuB1xRI/0C
-         DwkH94P6SaVvtRysNTniBzzcItww+KTHYDaN0YKBj1GdRK7kSAzQX4dTEBuKlgsY5m
-         9TU2+K2Mq33IP1usKCGs5lrszyAZtGv4YiDZVIEA=
+        b=EvkUpqEDfKSTiwm3dVxqTenYo5iyrLcgaVBmZlB0uTDVXMJnSRGCLvX011rbBIOvs
+         ljcWW7q4zFwybTvKb9toc2T+fyCjY1+/VBw4txTh0YwLFBBHq8ndczoW+sQjwpiwDm
+         WBKebjJikz9uSgRrHCjfn1+j7MZ3/9qgVyARNvXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@lst.de>,
-        Kanchan Joshi <joshi.k@samsung.com>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.5 189/241] nvme: sanitize metadata bounce buffer for reads
+        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 110/196] wifi: cfg80211: Fix 6GHz scan configuration
 Date:   Mon, 23 Oct 2023 12:56:15 +0200
-Message-ID: <20231023104838.488352848@linuxfoundation.org>
+Message-ID: <20231023104831.635811301@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,47 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Ilan Peer <ilan.peer@intel.com>
 
-commit 2b32c76e2b0154b98b9322ae7546b8156cd703e6 upstream.
+[ Upstream commit 0914468adf92296c4cba8a2134e06e3dea150f2e ]
 
-User can request more metadata bytes than the device will write. Ensure
-kernel buffer is initialized so we're not leaking unsanitized memory on
-the copy-out.
+When the scan request includes a non broadcast BSSID, when adding the
+scan parameters for 6GHz collocated scanning, do not include entries
+that do not match the given BSSID.
 
-Fixes: 0b7f1f26f95a51a ("nvme: use the block layer for userspace passthrough metadata")
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230918140607.6d31d2a96baf.I6c4e3e3075d1d1878ee41f45190fdc6b86f18708@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/wireless/scan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -108,9 +108,13 @@ static void *nvme_add_user_metadata(stru
- 	if (!buf)
- 		goto out;
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index e5c1510c098fd..b7e1631b3d80d 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -876,6 +876,10 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
+ 		    !cfg80211_find_ssid_match(ap, request))
+ 			continue;
  
--	ret = -EFAULT;
--	if ((req_op(req) == REQ_OP_DRV_OUT) && copy_from_user(buf, ubuf, len))
--		goto out_free_meta;
-+	if (req_op(req) == REQ_OP_DRV_OUT) {
-+		ret = -EFAULT;
-+		if (copy_from_user(buf, ubuf, len))
-+			goto out_free_meta;
-+	} else {
-+		memset(buf, 0, len);
-+	}
++		if (!is_broadcast_ether_addr(request->bssid) &&
++		    !ether_addr_equal(request->bssid, ap->bssid))
++			continue;
++
+ 		if (!request->n_ssids && ap->multi_bss && !ap->transmitted_bssid)
+ 			continue;
  
- 	bip = bio_integrity_alloc(bio, GFP_KERNEL, 1);
- 	if (IS_ERR(bip)) {
+-- 
+2.40.1
+
 
 
