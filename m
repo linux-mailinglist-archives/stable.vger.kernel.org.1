@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 033917D3573
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 834427D3331
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234496AbjJWLs2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:48:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54282 "EHLO
+        id S233966AbjJWL1m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:27:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234487AbjJWLs1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:48:27 -0400
+        with ESMTP id S233965AbjJWL1k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54C69B3
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:48:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93421C433C8;
-        Mon, 23 Oct 2023 11:48:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C4B92
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C8D3C433C8;
+        Mon, 23 Oct 2023 11:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061705;
-        bh=J40IjoVbKHGrKOgMcdlNTlA2Y4h5k2HTIweJzuxMovs=;
+        s=korg; t=1698060458;
+        bh=he3VA6xkl3SKfTuEy46OU6eoEmwFIGZC8+aoO58I3KI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AtD7jberrQ2n6fnkXV4TJnsebs7Di55MgZKzoKTiTWbRKiWttgnfXhwQ44UpPrZmk
-         LGAkoaO+tn/dSU5inSKDdZwXAQhWUBsLaFIZnUqnKhlLLGFDaAVA9O8wTF9n9F5voF
-         qxnPYZI13aieRoqlht/zkjiyLGAqBn7tUfabETSk=
+        b=gPp0EdxW+HEpX1P+u0IrMHqjwly8xMFiPSm/mA+cIuNI6d49SMZb1cnICpQuTLcno
+         nf6/MZR1WDlNntFnHgFL0cXNHHbCq6tbLk+URaaPROx2PwAizmHmbHDu6LePSt2KOk
+         TLAI5OiIESoXy6CngFQLmigGI5oFEkqDqdzo1sP8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mathias Nyman <mathias.nyman@linux.intel.com>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Maxime Ripard <maxime@cerno.tech>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 137/202] xhci: rename resume_done to resume_timestamp
+Subject: [PATCH 6.1 179/196] drm/bridge: ti-sn65dsi86: Associate DSI device lifetime with auxiliary device
 Date:   Mon, 23 Oct 2023 12:57:24 +0200
-Message-ID: <20231023104830.548363030@linuxfoundation.org>
+Message-ID: <20231023104833.461216190@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,138 +51,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit a909d629ae77b97b6288bc3cfe68560454bf79c6 ]
+[ Upstream commit 7b821db95140e2c118567aee22a78bf85f3617e0 ]
 
-resume_done is just a timestamp, avoid confusing it with completions
-related to port state transitions that are named *_done
+The kernel produces a warning splat and the DSI device fails to register
+in this driver if the i2c driver probes, populates child auxiliary
+devices, and then somewhere in ti_sn_bridge_probe() a function call
+returns -EPROBE_DEFER. When the auxiliary driver probe defers, the dsi
+device created by devm_mipi_dsi_device_register_full() is left
+registered because the devm managed device used to manage the lifetime
+of the DSI device is the parent i2c device, not the auxiliary device
+that is being probed.
 
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20230202150505.618915-10-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: d7cdfc319b2b ("xhci: track port suspend state correctly in unsuccessful resume cases")
+Associate the DSI device created and managed by this driver to the
+lifetime of the auxiliary device, not the i2c device, so that the DSI
+device is removed when the auxiliary driver unbinds. Similarly change
+the device pointer used for dev_err_probe() so the deferred probe errors
+are associated with the auxiliary device instead of the parent i2c
+device so we can narrow down future problems faster.
+
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Maxime Ripard <maxime@cerno.tech>
+Fixes: c3b75d4734cb ("drm/bridge: sn65dsi86: Register and attach our DSI device at probe")
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231002235407.769399-1-swboyd@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-hub.c  | 20 ++++++++++----------
- drivers/usb/host/xhci-ring.c |  4 ++--
- drivers/usb/host/xhci.h      |  2 +-
- 3 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
-index f836710bcd6e6..39c58b1782d5c 100644
---- a/drivers/usb/host/xhci-hub.c
-+++ b/drivers/usb/host/xhci-hub.c
-@@ -838,7 +838,7 @@ static int xhci_handle_usb2_port_link_resume(struct xhci_port *port,
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+index b89f7f7ca1885..1b5c27ed27370 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -673,7 +673,7 @@ static struct ti_sn65dsi86 *bridge_to_ti_sn65dsi86(struct drm_bridge *bridge)
+ 	return container_of(bridge, struct ti_sn65dsi86, bridge);
+ }
+ 
+-static int ti_sn_attach_host(struct ti_sn65dsi86 *pdata)
++static int ti_sn_attach_host(struct auxiliary_device *adev, struct ti_sn65dsi86 *pdata)
+ {
+ 	int val;
+ 	struct mipi_dsi_host *host;
+@@ -688,7 +688,7 @@ static int ti_sn_attach_host(struct ti_sn65dsi86 *pdata)
+ 	if (!host)
+ 		return -EPROBE_DEFER;
+ 
+-	dsi = devm_mipi_dsi_device_register_full(dev, host, &info);
++	dsi = devm_mipi_dsi_device_register_full(&adev->dev, host, &info);
+ 	if (IS_ERR(dsi))
+ 		return PTR_ERR(dsi);
+ 
+@@ -706,7 +706,7 @@ static int ti_sn_attach_host(struct ti_sn65dsi86 *pdata)
+ 
+ 	pdata->dsi = dsi;
+ 
+-	return devm_mipi_dsi_attach(dev, dsi);
++	return devm_mipi_dsi_attach(&adev->dev, dsi);
+ }
+ 
+ static int ti_sn_bridge_attach(struct drm_bridge *bridge,
+@@ -1279,9 +1279,9 @@ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
+ 	struct device_node *np = pdata->dev->of_node;
+ 	int ret;
+ 
+-	pdata->next_bridge = devm_drm_of_get_bridge(pdata->dev, np, 1, 0);
++	pdata->next_bridge = devm_drm_of_get_bridge(&adev->dev, np, 1, 0);
+ 	if (IS_ERR(pdata->next_bridge))
+-		return dev_err_probe(pdata->dev, PTR_ERR(pdata->next_bridge),
++		return dev_err_probe(&adev->dev, PTR_ERR(pdata->next_bridge),
+ 				     "failed to create panel bridge\n");
+ 
+ 	ti_sn_bridge_parse_lanes(pdata, np);
+@@ -1300,9 +1300,9 @@ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
+ 
+ 	drm_bridge_add(&pdata->bridge);
+ 
+-	ret = ti_sn_attach_host(pdata);
++	ret = ti_sn_attach_host(adev, pdata);
+ 	if (ret) {
+-		dev_err_probe(pdata->dev, ret, "failed to attach dsi host\n");
++		dev_err_probe(&adev->dev, ret, "failed to attach dsi host\n");
+ 		goto err_remove_bridge;
  	}
- 	/* did port event handler already start resume timing? */
--	if (!port->resume_done) {
-+	if (!port->resume_timestamp) {
- 		/* If not, maybe we are in a host initated resume? */
- 		if (test_bit(wIndex, &bus_state->resuming_ports)) {
- 			/* Host initated resume doesn't time the resume
-@@ -855,18 +855,18 @@ static int xhci_handle_usb2_port_link_resume(struct xhci_port *port,
- 				msecs_to_jiffies(USB_RESUME_TIMEOUT);
  
- 			set_bit(wIndex, &bus_state->resuming_ports);
--			port->resume_done = timeout;
-+			port->resume_timestamp = timeout;
- 			mod_timer(&hcd->rh_timer, timeout);
- 			usb_hcd_start_port_resume(&hcd->self, wIndex);
- 		}
- 	/* Has resume been signalled for USB_RESUME_TIME yet? */
--	} else if (time_after_eq(jiffies, port->resume_done)) {
-+	} else if (time_after_eq(jiffies, port->resume_timestamp)) {
- 		int time_left;
- 
- 		xhci_dbg(xhci, "resume USB2 port %d-%d\n",
- 			 hcd->self.busnum, wIndex + 1);
- 
--		port->resume_done = 0;
-+		port->resume_timestamp = 0;
- 		clear_bit(wIndex, &bus_state->resuming_ports);
- 		port->rexit_active = true;
- 
-@@ -1001,10 +1001,10 @@ static void xhci_get_usb2_port_status(struct xhci_port *port, u32 *status,
- 		if (link_state == XDEV_U2)
- 			*status |= USB_PORT_STAT_L1;
- 		if (link_state == XDEV_U0) {
--			if (port->resume_done)
-+			if (port->resume_timestamp)
- 				usb_hcd_end_port_resume(&port->rhub->hcd->self,
- 							portnum);
--			port->resume_done = 0;
-+			port->resume_timestamp = 0;
- 			clear_bit(portnum, &bus_state->resuming_ports);
- 			if (bus_state->suspended_ports & (1 << portnum)) {
- 				bus_state->suspended_ports &= ~(1 << portnum);
-@@ -1076,11 +1076,11 @@ static u32 xhci_get_port_status(struct usb_hcd *hcd,
- 	 * Clear stale usb2 resume signalling variables in case port changed
- 	 * state during resume signalling. For example on error
- 	 */
--	if ((port->resume_done ||
-+	if ((port->resume_timestamp ||
- 	     test_bit(wIndex, &bus_state->resuming_ports)) &&
- 	    (raw_port_status & PORT_PLS_MASK) != XDEV_U3 &&
- 	    (raw_port_status & PORT_PLS_MASK) != XDEV_RESUME) {
--		port->resume_done = 0;
-+		port->resume_timestamp = 0;
- 		clear_bit(wIndex, &bus_state->resuming_ports);
- 		usb_hcd_end_port_resume(&hcd->self, wIndex);
- 	}
-@@ -1588,8 +1588,8 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
- 
- 		if ((temp & mask) != 0 ||
- 			(bus_state->port_c_suspend & 1 << i) ||
--			(ports[i]->resume_done && time_after_eq(
--			    jiffies, ports[i]->resume_done))) {
-+			(ports[i]->resume_timestamp && time_after_eq(
-+			    jiffies, ports[i]->resume_timestamp))) {
- 			buf[(i + 1) / 8] |= 1 << (i + 1) % 8;
- 			status = 1;
- 		}
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index ada9977c41aa9..5ee095a5d38aa 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1851,7 +1851,7 @@ static void handle_port_status(struct xhci_hcd *xhci,
- 			goto cleanup;
- 		} else if (!test_bit(hcd_portnum, &bus_state->resuming_ports)) {
- 			xhci_dbg(xhci, "resume HS port %d\n", port_id);
--			port->resume_done = jiffies +
-+			port->resume_timestamp = jiffies +
- 				msecs_to_jiffies(USB_RESUME_TIMEOUT);
- 			set_bit(hcd_portnum, &bus_state->resuming_ports);
- 			/* Do the rest in GetPortStatus after resume time delay.
-@@ -1860,7 +1860,7 @@ static void handle_port_status(struct xhci_hcd *xhci,
- 			 */
- 			set_bit(HCD_FLAG_POLL_RH, &hcd->flags);
- 			mod_timer(&hcd->rh_timer,
--				  port->resume_done);
-+				  port->resume_timestamp);
- 			usb_hcd_start_port_resume(&hcd->self, hcd_portnum);
- 			bogus_port_status = true;
- 		}
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 14eb13a85fce3..bb3c362a194b2 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1724,7 +1724,7 @@ struct xhci_port {
- 	struct xhci_hub		*rhub;
- 	struct xhci_port_cap	*port_cap;
- 	unsigned int		lpm_incapable:1;
--	unsigned long		resume_done;
-+	unsigned long		resume_timestamp;
- 	bool			rexit_active;
- 	struct completion	rexit_done;
- 	struct completion	u3exit_done;
 -- 
-2.40.1
+2.42.0
 
 
 
