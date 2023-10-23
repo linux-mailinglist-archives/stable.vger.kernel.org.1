@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B16557D31AA
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EBD87D3405
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233582AbjJWLLs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52624 "EHLO
+        id S234149AbjJWLgM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:36:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233581AbjJWLLs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:48 -0400
+        with ESMTP id S234167AbjJWLgI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B52FD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7AFC433C9;
-        Mon, 23 Oct 2023 11:11:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 017C710EC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EF2C433C8;
+        Mon, 23 Oct 2023 11:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059504;
-        bh=SMqiwe/R0W1qufEzAd3AfelQbfqR0+GlAYO6R4GGduA=;
+        s=korg; t=1698060963;
+        bh=eOfBk1B9IotAPbTqbC8nuGLbXZgMEX9ErPn4nzrsSh0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rc8z+TWAbW+cvfvFH7MacEpiaJLgReMR4yHfO+xnR89CFfjc4Pddlm0B3oH5heO88
-         e8bj/l90CeKiIUV8veT3+KIvQWUH5mH5kgPWZ4FkvcKqkzVHTnq1zcIzYtbaJRxghM
-         jADkecFCll8c4ZPelmJvFBMmH1OZM++nxNZUrXKQ=
+        b=t/My5BHVZHzVgnrbMscfdROy8cuCGgi0A1ruAp1q0aMPmuDiw4N/7E+jk6RGiY+xn
+         7qKZASGu+pLXQJKeTxWa+t9Bm26G8ra7INKR4Naju8/JZzJOZ7G0p5hF1tv296B2FE
+         AqJpTjpKyS202UmOjGkRexwKXxKIol4r56ATJgos=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthew Rosato <mjrosato@linux.ibm.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.5 199/241] s390/pci: fix iommu bitmap allocation
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 028/137] ASoC: codecs: wcd938x: fix unbind tear down order
 Date:   Mon, 23 Oct 2023 12:56:25 +0200
-Message-ID: <20231023104838.716164201@linuxfoundation.org>
+Message-ID: <20231023104821.951743050@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,83 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit c1ae1c59c8c6e0b66a718308c623e0cb394dab6b upstream.
+commit fa2f8a991ba4aa733ac1c3b1be0c86148aa4c52c upstream.
 
-Since the fixed commits both zdev->iommu_bitmap and zdev->lazy_bitmap
-are allocated as vzalloc(zdev->iommu_pages / 8). The problem is that
-zdev->iommu_bitmap is a pointer to unsigned long but the above only
-yields an allocation that is a multiple of sizeof(unsigned long) which
-is 8 on s390x if the number of IOMMU pages is a multiple of 64.
-This in turn is the case only if the effective IOMMU aperture is
-a multiple of 64 * 4K = 256K. This is usually the case and so didn't
-cause visible issues since both the virt_to_phys(high_memory) reduced
-limit and hardware limits use nice numbers.
+Make sure to deregister the component before tearing down the resources
+it depends on during unbind().
 
-Under KVM, and in particular with QEMU limiting the IOMMU aperture to
-the vfio DMA limit (default 65535), it is possible for the reported
-aperture not to be a multiple of 256K however. In this case we end up
-with an iommu_bitmap whose allocation is not a multiple of
-8 causing bitmap operations to access it out of bounds.
-
-Sadly we can't just fix this in the obvious way and use bitmap_zalloc()
-because for large RAM systems (tested on 8 TiB) the zdev->iommu_bitmap
-grows too large for kmalloc(). So add our own bitmap_vzalloc() wrapper.
-This might be a candidate for common code, but this area of code will
-be replaced by the upcoming conversion to use the common code DMA API on
-s390 so just add a local routine.
-
-Fixes: 224593215525 ("s390/pci: use virtual memory for iommu bitmap")
-Fixes: 13954fd6913a ("s390/pci_dma: improve lazy flush for unmap")
-Cc: stable@vger.kernel.org
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: 16572522aece ("ASoC: codecs: wcd938x-sdw: add SoundWire driver")
+Cc: stable@vger.kernel.org      # 5.14
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231003155558.27079-3-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_dma.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ sound/soc/codecs/wcd938x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/pci/pci_dma.c
-+++ b/arch/s390/pci/pci_dma.c
-@@ -564,6 +564,17 @@ static void s390_dma_unmap_sg(struct dev
- 		s->dma_length = 0;
- 	}
- }
-+
-+static unsigned long *bitmap_vzalloc(size_t bits, gfp_t flags)
-+{
-+	size_t n = BITS_TO_LONGS(bits);
-+	size_t bytes;
-+
-+	if (unlikely(check_mul_overflow(n, sizeof(unsigned long), &bytes)))
-+		return NULL;
-+
-+	return vzalloc(bytes);
-+}
- 	
- int zpci_dma_init_device(struct zpci_dev *zdev)
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -4480,10 +4480,10 @@ static void wcd938x_unbind(struct device
  {
-@@ -604,13 +615,13 @@ int zpci_dma_init_device(struct zpci_dev
- 				zdev->end_dma - zdev->start_dma + 1);
- 	zdev->end_dma = zdev->start_dma + zdev->iommu_size - 1;
- 	zdev->iommu_pages = zdev->iommu_size >> PAGE_SHIFT;
--	zdev->iommu_bitmap = vzalloc(zdev->iommu_pages / 8);
-+	zdev->iommu_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
- 	if (!zdev->iommu_bitmap) {
- 		rc = -ENOMEM;
- 		goto free_dma_table;
- 	}
- 	if (!s390_iommu_strict) {
--		zdev->lazy_bitmap = vzalloc(zdev->iommu_pages / 8);
-+		zdev->lazy_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
- 		if (!zdev->lazy_bitmap) {
- 			rc = -ENOMEM;
- 			goto free_bitmap;
+ 	struct wcd938x_priv *wcd938x = dev_get_drvdata(dev);
+ 
++	snd_soc_unregister_component(dev);
+ 	device_link_remove(dev, wcd938x->txdev);
+ 	device_link_remove(dev, wcd938x->rxdev);
+ 	device_link_remove(wcd938x->rxdev, wcd938x->txdev);
+-	snd_soc_unregister_component(dev);
+ 	component_unbind_all(dev, wcd938x);
+ }
+ 
 
 
