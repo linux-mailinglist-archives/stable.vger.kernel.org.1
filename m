@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE367D34EF
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 783917D32DA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234343AbjJWLoH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:44:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60080 "EHLO
+        id S233909AbjJWLYe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:24:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234347AbjJWLns (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:43:48 -0400
+        with ESMTP id S233910AbjJWLYc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B4B10C2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F35C433C9;
-        Mon, 23 Oct 2023 11:43:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6CEBA4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD04C43397;
+        Mon, 23 Oct 2023 11:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061424;
-        bh=4Nduy33OMSOtdi+yXEPfb9z1Kuuvy/Kep9OylbeQbWA=;
+        s=korg; t=1698060258;
+        bh=rDWme0qAm4Zu7xdJqAxgopHq0xKjLBDWfXLZlUl3s3c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F/C2xkb+12RKz2ZHWJ7JZS3j1ozuvGBevTiQY2gIcaMM2cC4v4zpgMPKH267+cggE
-         UAcKdTiGuFGvMvGot9cTMCpefpBgE41e+Mfsdrx9ioIW8MsJuX6x/pjATN5wE/VQjq
-         dxirA2Aqi1kGcvV1CHno0gfkpo9Xy2DIpM90GVnI=
+        b=Fv1+OOlntNJVlaqSJ3g9lASPMT6WZ9UHteqjgK+G8mhkZgxgW6SynxvgjJu1hicPU
+         5jwNXUj0q40NatRs1LjFZ+s4C9qxFcgM8q6d9fyUKHWrXgxA+7tA9/yQXXIgc7Df/K
+         BEaMdzh8GECTrr4SQFM4gLOezt5DujvsQ0fburSY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
-        Jose Javier Rodriguez Barbarin 
-        <JoseJavier.Rodriguez@duagon.com>
-Subject: [PATCH 5.10 043/202] mcb: remove is_added flag from mcb_device struct
+        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/196] serial: 8250: omap: Fix imprecise external abort for omap_8250_pm()
 Date:   Mon, 23 Oct 2023 12:55:50 +0200
-Message-ID: <20231023104827.842767868@linuxfoundation.org>
+Message-ID: <20231023104830.945802258@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,83 +48,264 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit 0f28ada1fbf0054557cddcdb93ad17f767105208 upstream.
+[ Upstream commit 398cecc24846e867b9f90a0bd22730e3df6b05be ]
 
-When calling mcb_bus_add_devices(), both mcb devices and the mcb
-bus will attempt to attach a device to a driver because they share
-the same bus_type. This causes an issue when trying to cast the
-container of the device to mcb_device struct using to_mcb_device(),
-leading to a wrong cast when the mcb_bus is added. A crash occurs
-when freing the ida resources as the bus numbering of mcb_bus gets
-confused with the is_added flag on the mcb_device struct.
+We must idle the uart only after serial8250_unregister_port(). Otherwise
+unbinding the uart via sysfs while doing cat on the port produces an
+imprecise external abort:
 
-The only reason for this cast was to keep an is_added flag on the
-mcb_device struct that does not seem necessary. The function
-device_attach() handles already bound devices and the mcb subsystem
-does nothing special with this is_added flag so remove it completely.
+mem_serial_in from omap_8250_pm+0x44/0xf4
+omap_8250_pm from uart_hangup+0xe0/0x194
+uart_hangup from __tty_hangup.part.0+0x37c/0x3a8
+__tty_hangup.part.0 from uart_remove_one_port+0x9c/0x22c
+uart_remove_one_port from serial8250_unregister_port+0x60/0xe8
+serial8250_unregister_port from omap8250_remove+0x6c/0xd0
+omap8250_remove from platform_remove+0x28/0x54
 
-Fixes: 18d288198099 ("mcb: Correctly initialize the bus's device")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Co-developed-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
-Signed-off-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
-Link: https://lore.kernel.org/r/20230906114901.63174-2-JoseJavier.Rodriguez@duagon.com
+Turns out the driver needs to have runtime PM functional before the
+driver probe calls serial8250_register_8250_port(). And it needs
+runtime PM after driver remove calls serial8250_unregister_port().
+
+On probe, we need to read registers before registering the port in
+omap_serial_fill_features_erratas(). We do that with custom uart_read()
+already.
+
+On remove, after serial8250_unregister_port(), we need to write to the
+uart registers to idle the device. Let's add a custom uart_write() for
+that.
+
+Currently the uart register access depends on port->membase to be
+initialized, which won't work after serial8250_unregister_port().
+Let's use priv->membase instead, and use it for runtime PM related
+functions to remove the dependency to port->membase for early and
+late register access.
+
+Note that during use, we need to check for a valid port in the runtime PM
+related functions. This is needed for the optional wakeup configuration.
+We now need to set the drvdata a bit earlier so it's available for the
+runtime PM functions.
+
+With the port checks in runtime PM functions, the old checks for priv in
+omap8250_runtime_suspend() and omap8250_runtime_resume() functions are no
+longer needed and are removed.
+
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230508082014.23083-3-tony@atomide.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 560706eff7c8 ("serial: 8250_omap: Fix errors with no_console_suspend")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mcb/mcb-core.c  |   10 +++-------
- drivers/mcb/mcb-parse.c |    2 --
- include/linux/mcb.h     |    1 -
- 3 files changed, 3 insertions(+), 10 deletions(-)
+ drivers/tty/serial/8250/8250_omap.c | 70 ++++++++++++++++-------------
+ 1 file changed, 38 insertions(+), 32 deletions(-)
 
---- a/drivers/mcb/mcb-core.c
-+++ b/drivers/mcb/mcb-core.c
-@@ -389,17 +389,13 @@ EXPORT_SYMBOL_NS_GPL(mcb_free_dev, MCB);
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index adc85e250822c..0aed614110090 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -32,6 +32,7 @@
+ #include "8250.h"
  
- static int __mcb_bus_add_devices(struct device *dev, void *data)
+ #define DEFAULT_CLK_SPEED	48000000
++#define OMAP_UART_REGSHIFT	2
+ 
+ #define UART_ERRATA_i202_MDR1_ACCESS	(1 << 0)
+ #define OMAP_UART_WER_HAS_TX_WAKEUP	(1 << 1)
+@@ -109,6 +110,7 @@
+ #define UART_OMAP_RX_LVL		0x19
+ 
+ struct omap8250_priv {
++	void __iomem *membase;
+ 	int line;
+ 	u8 habit;
+ 	u8 mdr1;
+@@ -152,9 +154,14 @@ static void omap_8250_rx_dma_flush(struct uart_8250_port *p);
+ static inline void omap_8250_rx_dma_flush(struct uart_8250_port *p) { }
+ #endif
+ 
+-static u32 uart_read(struct uart_8250_port *up, u32 reg)
++static u32 uart_read(struct omap8250_priv *priv, u32 reg)
  {
--	struct mcb_device *mdev = to_mcb_device(dev);
- 	int retval;
- 
--	if (mdev->is_added)
--		return 0;
--
- 	retval = device_attach(dev);
--	if (retval < 0)
-+	if (retval < 0) {
- 		dev_err(dev, "Error adding device (%d)\n", retval);
--
--	mdev->is_added = true;
-+		return retval;
-+	}
- 
- 	return 0;
+-	return readl(up->port.membase + (reg << up->port.regshift));
++	return readl(priv->membase + (reg << OMAP_UART_REGSHIFT));
++}
++
++static void uart_write(struct omap8250_priv *priv, u32 reg, u32 val)
++{
++	writel(val, priv->membase + (reg << OMAP_UART_REGSHIFT));
  }
---- a/drivers/mcb/mcb-parse.c
-+++ b/drivers/mcb/mcb-parse.c
-@@ -99,8 +99,6 @@ static int chameleon_parse_gdd(struct mc
- 	mdev->mem.end = mdev->mem.start + size - 1;
- 	mdev->mem.flags = IORESOURCE_MEM;
  
--	mdev->is_added = false;
--
- 	ret = mcb_device_register(bus, mdev);
- 	if (ret < 0)
+ /*
+@@ -538,7 +545,7 @@ static void omap_serial_fill_features_erratas(struct uart_8250_port *up,
+ 	u32 mvr, scheme;
+ 	u16 revision, major, minor;
+ 
+-	mvr = uart_read(up, UART_OMAP_MVER);
++	mvr = uart_read(priv, UART_OMAP_MVER);
+ 
+ 	/* Check revision register scheme */
+ 	scheme = mvr >> OMAP_UART_MVR_SCHEME_SHIFT;
+@@ -1319,7 +1326,7 @@ static int omap8250_probe(struct platform_device *pdev)
+ 		UPF_HARD_FLOW;
+ 	up.port.private_data = priv;
+ 
+-	up.port.regshift = 2;
++	up.port.regshift = OMAP_UART_REGSHIFT;
+ 	up.port.fifosize = 64;
+ 	up.tx_loadsz = 64;
+ 	up.capabilities = UART_CAP_FIFO;
+@@ -1381,6 +1388,8 @@ static int omap8250_probe(struct platform_device *pdev)
+ 			 DEFAULT_CLK_SPEED);
+ 	}
+ 
++	priv->membase = membase;
++	priv->line = -ENODEV;
+ 	priv->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
+ 	priv->calc_latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
+ 	cpu_latency_qos_add_request(&priv->pm_qos_request, priv->latency);
+@@ -1388,6 +1397,8 @@ static int omap8250_probe(struct platform_device *pdev)
+ 
+ 	spin_lock_init(&priv->rx_dma_lock);
+ 
++	platform_set_drvdata(pdev, priv);
++
+ 	device_init_wakeup(&pdev->dev, true);
+ 	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+@@ -1449,7 +1460,6 @@ static int omap8250_probe(struct platform_device *pdev)
  		goto err;
---- a/include/linux/mcb.h
-+++ b/include/linux/mcb.h
-@@ -63,7 +63,6 @@ static inline struct mcb_bus *to_mcb_bus
- struct mcb_device {
- 	struct device dev;
- 	struct mcb_bus *bus;
--	bool is_added;
- 	struct mcb_driver *driver;
- 	u16 id;
- 	int inst;
+ 	}
+ 	priv->line = ret;
+-	platform_set_drvdata(pdev, priv);
+ 	pm_runtime_mark_last_busy(&pdev->dev);
+ 	pm_runtime_put_autosuspend(&pdev->dev);
+ 	return 0;
+@@ -1471,11 +1481,12 @@ static int omap8250_remove(struct platform_device *pdev)
+ 	if (err)
+ 		return err;
+ 
++	serial8250_unregister_port(priv->line);
++	priv->line = -ENODEV;
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+ 	pm_runtime_put_sync(&pdev->dev);
+ 	flush_work(&priv->qos_work);
+ 	pm_runtime_disable(&pdev->dev);
+-	serial8250_unregister_port(priv->line);
+ 	cpu_latency_qos_remove_request(&priv->pm_qos_request);
+ 	device_init_wakeup(&pdev->dev, false);
+ 	return 0;
+@@ -1561,7 +1572,6 @@ static int omap8250_lost_context(struct uart_8250_port *up)
+ static int omap8250_soft_reset(struct device *dev)
+ {
+ 	struct omap8250_priv *priv = dev_get_drvdata(dev);
+-	struct uart_8250_port *up = serial8250_get_port(priv->line);
+ 	int timeout = 100;
+ 	int sysc;
+ 	int syss;
+@@ -1575,20 +1585,20 @@ static int omap8250_soft_reset(struct device *dev)
+ 	 * needing omap8250_soft_reset() quirk. Do it in two writes as
+ 	 * recommended in the comment for omap8250_update_scr().
+ 	 */
+-	serial_out(up, UART_OMAP_SCR, OMAP_UART_SCR_DMAMODE_1);
+-	serial_out(up, UART_OMAP_SCR,
++	uart_write(priv, UART_OMAP_SCR, OMAP_UART_SCR_DMAMODE_1);
++	uart_write(priv, UART_OMAP_SCR,
+ 		   OMAP_UART_SCR_DMAMODE_1 | OMAP_UART_SCR_DMAMODE_CTL);
+ 
+-	sysc = serial_in(up, UART_OMAP_SYSC);
++	sysc = uart_read(priv, UART_OMAP_SYSC);
+ 
+ 	/* softreset the UART */
+ 	sysc |= OMAP_UART_SYSC_SOFTRESET;
+-	serial_out(up, UART_OMAP_SYSC, sysc);
++	uart_write(priv, UART_OMAP_SYSC, sysc);
+ 
+ 	/* By experiments, 1us enough for reset complete on AM335x */
+ 	do {
+ 		udelay(1);
+-		syss = serial_in(up, UART_OMAP_SYSS);
++		syss = uart_read(priv, UART_OMAP_SYSS);
+ 	} while (--timeout && !(syss & OMAP_UART_SYSS_RESETDONE));
+ 
+ 	if (!timeout) {
+@@ -1602,13 +1612,10 @@ static int omap8250_soft_reset(struct device *dev)
+ static int omap8250_runtime_suspend(struct device *dev)
+ {
+ 	struct omap8250_priv *priv = dev_get_drvdata(dev);
+-	struct uart_8250_port *up;
+-
+-	/* In case runtime-pm tries this before we are setup */
+-	if (!priv)
+-		return 0;
++	struct uart_8250_port *up = NULL;
+ 
+-	up = serial8250_get_port(priv->line);
++	if (priv->line >= 0)
++		up = serial8250_get_port(priv->line);
+ 	/*
+ 	 * When using 'no_console_suspend', the console UART must not be
+ 	 * suspended. Since driver suspend is managed by runtime suspend,
+@@ -1616,7 +1623,7 @@ static int omap8250_runtime_suspend(struct device *dev)
+ 	 * active during suspend.
+ 	 */
+ 	if (priv->is_suspending && !console_suspend_enabled) {
+-		if (uart_console(&up->port))
++		if (up && uart_console(&up->port))
+ 			return -EBUSY;
+ 	}
+ 
+@@ -1627,13 +1634,15 @@ static int omap8250_runtime_suspend(struct device *dev)
+ 		if (ret)
+ 			return ret;
+ 
+-		/* Restore to UART mode after reset (for wakeup) */
+-		omap8250_update_mdr1(up, priv);
+-		/* Restore wakeup enable register */
+-		serial_out(up, UART_OMAP_WER, priv->wer);
++		if (up) {
++			/* Restore to UART mode after reset (for wakeup) */
++			omap8250_update_mdr1(up, priv);
++			/* Restore wakeup enable register */
++			serial_out(up, UART_OMAP_WER, priv->wer);
++		}
+ 	}
+ 
+-	if (up->dma && up->dma->rxchan)
++	if (up && up->dma && up->dma->rxchan)
+ 		omap_8250_rx_dma_flush(up);
+ 
+ 	priv->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
+@@ -1645,18 +1654,15 @@ static int omap8250_runtime_suspend(struct device *dev)
+ static int omap8250_runtime_resume(struct device *dev)
+ {
+ 	struct omap8250_priv *priv = dev_get_drvdata(dev);
+-	struct uart_8250_port *up;
+-
+-	/* In case runtime-pm tries this before we are setup */
+-	if (!priv)
+-		return 0;
++	struct uart_8250_port *up = NULL;
+ 
+-	up = serial8250_get_port(priv->line);
++	if (priv->line >= 0)
++		up = serial8250_get_port(priv->line);
+ 
+-	if (omap8250_lost_context(up))
++	if (up && omap8250_lost_context(up))
+ 		omap8250_restore_regs(up);
+ 
+-	if (up->dma && up->dma->rxchan && !(priv->habit & UART_HAS_EFR2))
++	if (up && up->dma && up->dma->rxchan && !(priv->habit & UART_HAS_EFR2))
+ 		omap_8250_rx_dma(up);
+ 
+ 	priv->latency = priv->calc_latency;
+-- 
+2.40.1
+
 
 
