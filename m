@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA8C97D32B7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F15D57D34C1
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233890AbjJWLXB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:23:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
+        id S234327AbjJWLme (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:42:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233880AbjJWLW7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:59 -0400
+        with ESMTP id S234329AbjJWLmZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 585E5D7E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9421DC433B9;
-        Mon, 23 Oct 2023 11:22:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC4D10F3
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A34DC433C9;
+        Mon, 23 Oct 2023 11:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060176;
-        bh=z7Vzz8RVbcYte+9KQrODmLWcUjS9YblDTUPhQPENEWk=;
+        s=korg; t=1698061337;
+        bh=5I6xTcRtt1YOVgD1JDAtzQI/DvDnqHlSOplU5YL4aLI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N7irHK2K1k23No1bpYeHNaDvXJfQjaLEM9GTzu55O6d6k7ICCnCq4WWs77b5sZ1Mm
-         TUnFSZsa7H6dC5o0A2Tpp5RKdPj76biTcFvG/MutXuz+Gu3w+eLduT3/AqCcIUeU1L
-         h7089G9JwC3cih/BY7rY9Vjn07se23ZQ2tmc8g6k=
+        b=qG2NbLCKGjiHCruzDGqKbDLC50QtIcVcUz3REnj7MUtJHnFYYYPMnbGfATjLw4F0W
+         0Q2SRA8iC4Il82gGqRKVBQcca7aNMB32QxTQgp171zLmItdPl5DAt49ZKhtHmh6Woa
+         O4r0m1r5wFu3yZAap5ERf1CLSw6xFCldIM0lcKOA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+71e724675ba3958edb31@syzkaller.appspotmail.com,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 056/196] tcp: Fix listen() warning with v4-mapped-v6 address.
+        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 014/202] ieee802154: ca8210: Fix a potential UAF in ca8210_probe
 Date:   Mon, 23 Oct 2023 12:55:21 +0200
-Message-ID: <20231023104830.123100148@linuxfoundation.org>
+Message-ID: <20231023104827.029205324@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,153 +49,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit 8702cf12e6ba91616a72d684e90357977972991b upstream.
+[ Upstream commit f990874b1c98fe8e57ee9385669f501822979258 ]
 
-syzbot reported a warning [0] introduced by commit c48ef9c4aed3 ("tcp: Fix
-bind() regression for v4-mapped-v6 non-wildcard address.").
+If of_clk_add_provider() fails in ca8210_register_ext_clock(),
+it calls clk_unregister() to release priv->clk and returns an
+error. However, the caller ca8210_probe() then calls ca8210_remove(),
+where priv->clk is freed again in ca8210_unregister_ext_clock(). In
+this case, a use-after-free may happen in the second time we call
+clk_unregister().
 
-After the cited commit, a v4 socket's address matches the corresponding
-v4-mapped-v6 tb2 in inet_bind2_bucket_match_addr(), not vice versa.
+Fix this by removing the first clk_unregister(). Also, priv->clk could
+be an error code on failure of clk_register_fixed_rate(). Use
+IS_ERR_OR_NULL to catch this case in ca8210_unregister_ext_clock().
 
-During X.X.X.X -> ::ffff:X.X.X.X order bind()s, the second bind() uses
-bhash and conflicts properly without checking bhash2 so that we need not
-check if a v4-mapped-v6 sk matches the corresponding v4 address tb2 in
-inet_bind2_bucket_match_addr().  However, the repro shows that we need
-to check that in a no-conflict case.
-
-The repro bind()s two sockets to the 2-tuples using SO_REUSEPORT and calls
-listen() for the first socket:
-
-  from socket import *
-
-  s1 = socket()
-  s1.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
-  s1.bind(('127.0.0.1', 0))
-
-  s2 = socket(AF_INET6)
-  s2.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
-  s2.bind(('::ffff:127.0.0.1', s1.getsockname()[1]))
-
-  s1.listen()
-
-The second socket should belong to the first socket's tb2, but the second
-bind() creates another tb2 bucket because inet_bind2_bucket_find() returns
-NULL in inet_csk_get_port() as the v4-mapped-v6 sk does not match the
-corresponding v4 address tb2.
-
-  bhash2[] -> tb2(::ffff:X.X.X.X) -> tb2(X.X.X.X)
-
-Then, listen() for the first socket calls inet_csk_get_port(), where the
-v4 address matches the v4-mapped-v6 tb2 and WARN_ON() is triggered.
-
-To avoid that, we need to check if v4-mapped-v6 sk address matches with
-the corresponding v4 address tb2 in inet_bind2_bucket_match().
-
-The same checks are needed in inet_bind2_bucket_addr_match() too, so we
-can move all checks there and call it from inet_bind2_bucket_match().
-
-Note that now tb->family is just an address family of tb->(v6_)?rcv_saddr
-and not of sockets in the bucket.  This could be refactored later by
-defining tb->rcv_saddr as tb->v6_rcv_saddr.s6_addr32[3] and prepending
-::ffff: when creating v4 tb2.
-
-[0]:
-WARNING: CPU: 0 PID: 5049 at net/ipv4/inet_connection_sock.c:587 inet_csk_get_port+0xf96/0x2350 net/ipv4/inet_connection_sock.c:587
-Modules linked in:
-CPU: 0 PID: 5049 Comm: syz-executor288 Not tainted 6.6.0-rc2-syzkaller-00018-g2cf0f7156238 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
-RIP: 0010:inet_csk_get_port+0xf96/0x2350 net/ipv4/inet_connection_sock.c:587
-Code: 7c 24 08 e8 4c b6 8a 01 31 d2 be 88 01 00 00 48 c7 c7 e0 94 ae 8b e8 59 2e a3 f8 2e 2e 2e 31 c0 e9 04 fe ff ff e8 ca 88 d0 f8 <0f> 0b e9 0f f9 ff ff e8 be 88 d0 f8 49 8d 7e 48 e8 65 ca 5a 00 31
-RSP: 0018:ffffc90003abfbf0 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff888026429100 RCX: 0000000000000000
-RDX: ffff88807edcbb80 RSI: ffffffff88b73d66 RDI: ffff888026c49f38
-RBP: ffff888026c49f30 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: ffffffff9260f200
-R13: ffff888026c49880 R14: 0000000000000000 R15: ffff888026429100
-FS:  00005555557d5380(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000000045ad50 CR3: 0000000025754000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- inet_csk_listen_start+0x155/0x360 net/ipv4/inet_connection_sock.c:1256
- __inet_listen_sk+0x1b8/0x5c0 net/ipv4/af_inet.c:217
- inet_listen+0x93/0xd0 net/ipv4/af_inet.c:239
- __sys_listen+0x194/0x270 net/socket.c:1866
- __do_sys_listen net/socket.c:1875 [inline]
- __se_sys_listen net/socket.c:1873 [inline]
- __x64_sys_listen+0x53/0x80 net/socket.c:1873
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7f3a5bce3af9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 c1 17 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffc1a1c79e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000032
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f3a5bce3af9
-RDX: 00007f3a5bce3af9 RSI: 0000000000000000 RDI: 0000000000000003
-RBP: 00007f3a5bd565f0 R08: 0000000000000006 R09: 0000000000000006
-R10: 0000000000000006 R11: 0000000000000246 R12: 0000000000000001
-R13: 431bde82d7b634db R14: 0000000000000001 R15: 0000000000000001
- </TASK>
-
-Fixes: c48ef9c4aed3 ("tcp: Fix bind() regression for v4-mapped-v6 non-wildcard address.")
-Reported-by: syzbot+71e724675ba3958edb31@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=71e724675ba3958edb31
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231010013814.70571-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Message-ID: <20231007033049.22353-1-dinghao.liu@zju.edu.cn>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_hashtables.c |   24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ drivers/net/ieee802154/ca8210.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -148,8 +148,14 @@ static bool inet_bind2_bucket_addr_match
- 					 const struct sock *sk)
- {
- #if IS_ENABLED(CONFIG_IPV6)
--	if (sk->sk_family != tb2->family)
--		return false;
-+	if (sk->sk_family != tb2->family) {
-+		if (sk->sk_family == AF_INET)
-+			return ipv6_addr_v4mapped(&tb2->v6_rcv_saddr) &&
-+				tb2->v6_rcv_saddr.s6_addr32[3] == sk->sk_rcv_saddr;
-+
-+		return ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr) &&
-+			sk->sk_v6_rcv_saddr.s6_addr32[3] == tb2->rcv_saddr;
-+	}
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index 1c5d70c60354b..0ce426c0c0bf1 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -2783,7 +2783,6 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
+ 	struct device_node *np = spi->dev.of_node;
+ 	struct ca8210_priv *priv = spi_get_drvdata(spi);
+ 	struct ca8210_platform_data *pdata = spi->dev.platform_data;
+-	int ret = 0;
  
- 	if (sk->sk_family == AF_INET6)
- 		return ipv6_addr_equal(&tb2->v6_rcv_saddr,
-@@ -799,19 +805,7 @@ static bool inet_bind2_bucket_match(cons
- 	    tb->l3mdev != l3mdev)
- 		return false;
- 
--#if IS_ENABLED(CONFIG_IPV6)
--	if (sk->sk_family != tb->family) {
--		if (sk->sk_family == AF_INET)
--			return ipv6_addr_v4mapped(&tb->v6_rcv_saddr) &&
--				tb->v6_rcv_saddr.s6_addr32[3] == sk->sk_rcv_saddr;
--
--		return false;
+ 	if (!np)
+ 		return -EFAULT;
+@@ -2800,18 +2799,8 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
+ 		dev_crit(&spi->dev, "Failed to register external clk\n");
+ 		return PTR_ERR(priv->clk);
+ 	}
+-	ret = of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
+-	if (ret) {
+-		clk_unregister(priv->clk);
+-		dev_crit(
+-			&spi->dev,
+-			"Failed to register external clock as clock provider\n"
+-		);
+-	} else {
+-		dev_info(&spi->dev, "External clock set as clock provider\n");
 -	}
--
--	if (sk->sk_family == AF_INET6)
--		return ipv6_addr_equal(&tb->v6_rcv_saddr, &sk->sk_v6_rcv_saddr);
--#endif
--	return tb->rcv_saddr == sk->sk_rcv_saddr;
-+	return inet_bind2_bucket_addr_match(tb, sk);
+ 
+-	return ret;
++	return of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
  }
  
- bool inet_bind2_bucket_match_addr_any(const struct inet_bind2_bucket *tb, const struct net *net,
+ /**
+@@ -2823,8 +2812,8 @@ static void ca8210_unregister_ext_clock(struct spi_device *spi)
+ {
+ 	struct ca8210_priv *priv = spi_get_drvdata(spi);
+ 
+-	if (!priv->clk)
+-		return
++	if (IS_ERR_OR_NULL(priv->clk))
++		return;
+ 
+ 	of_clk_del_provider(spi->dev.of_node);
+ 	clk_unregister(priv->clk);
+-- 
+2.40.1
+
 
 
