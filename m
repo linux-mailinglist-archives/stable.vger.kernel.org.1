@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 571937D30A1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:00:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A95B57D31CF
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230344AbjJWLAm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:00:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38408 "EHLO
+        id S233641AbjJWLNa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:13:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229575AbjJWLAm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:00:42 -0400
+        with ESMTP id S233642AbjJWLN3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3A6D10C2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:00:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D21C433C8;
-        Mon, 23 Oct 2023 11:00:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88AE1C4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC7EC433C7;
+        Mon, 23 Oct 2023 11:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058839;
-        bh=ex5ZkiEKosLUfabSl30O7C+UoqW7yGB0PlSQ9FzZq5c=;
+        s=korg; t=1698059607;
+        bh=bQdjad5Oe7bm+6dqPXGW+lxkzi3G2pdja2PFWEfRLPY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tTJbHZd+UN8jwPQv/shfRJr4yUuKIOezX7mcSBTi7zGH+uo/YNrCTsZV5NOmx/Z/+
-         Rss0lJqqBSHMQ72j3oQc1RZimQcq8+/jDRaYdUC/9I5y+f3elqvy5NBhNjGNuKf/lH
-         KeYC6+jmMtx3ZilFv8xIzKleJOwEV6eievJOGlgY=
+        b=Me6Ej4/LsBSZ10sbACdlLa9dMp2EQp5EC5NZjMlejVIggHVZS3odXN8v9wDXWQTj2
+         3iKZnhnWX2AAtm1Jh6dst9bmCT/lX5iYNkJkDhbK4NteK5SDIInzk84Fxhs46mRdtP
+         oKW+wQ2ILSLC3Q4kKSiiH+o896Cuq3aeNf8E9e4E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 43/66] btrfs: initialize start_slot in btrfs_log_prealloc_extents
+        patches@lists.linux.dev, Aakash Singh <mail@singhaakash.dev>,
+        Jose Angel Pastrana <japp0005@red.ujaen.es>,
+        Nikita Kravets <teackot@gmail.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.5 207/241] platform/x86: msi-ec: Fix the 3rd config
 Date:   Mon, 23 Oct 2023 12:56:33 +0200
-Message-ID: <20231023104812.446505861@linuxfoundation.org>
+Message-ID: <20231023104838.901412130@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +52,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Nikita Kravets <teackot@gmail.com>
 
-[ Upstream commit b4c639f699349880b7918b861e1bd360442ec450 ]
+commit 6284e67aa6cb3af870ed11dfcfafd80fd927777b upstream.
 
-Jens reported a compiler warning when using
-CONFIG_CC_OPTIMIZE_FOR_SIZE=y that looks like this
+Fix the charge control address of CONF3 and remove an incorrect firmware
+version which turned out to be a BIOS firmware and not an EC firmware.
 
-  fs/btrfs/tree-log.c: In function ‘btrfs_log_prealloc_extents’:
-  fs/btrfs/tree-log.c:4828:23: warning: ‘start_slot’ may be used
-  uninitialized [-Wmaybe-uninitialized]
-   4828 |                 ret = copy_items(trans, inode, dst_path, path,
-	|                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   4829 |                                  start_slot, ins_nr, 1, 0);
-	|                                  ~~~~~~~~~~~~~~~~~~~~~~~~~
-  fs/btrfs/tree-log.c:4725:13: note: ‘start_slot’ was declared here
-   4725 |         int start_slot;
-	|             ^~~~~~~~~~
-
-The compiler is incorrect, as we only use this code when ins_len > 0,
-and when ins_len > 0 we have start_slot properly initialized.  However
-we generally find the -Wmaybe-uninitialized warnings valuable, so
-initialize start_slot to get rid of the warning.
-
-Reported-by: Jens Axboe <axboe@kernel.dk>
-Tested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 392cacf2aa10 ("platform/x86: Add new msi-ec driver")
+Cc: Aakash Singh <mail@singhaakash.dev>
+Cc: Jose Angel Pastrana <japp0005@red.ujaen.es>
+Signed-off-by: Nikita Kravets <teackot@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20231006175352.1753017-5-teackot@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/msi-ec.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 2407a231d9ad4..f73a1438a6ac1 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -4191,7 +4191,7 @@ static int btrfs_log_prealloc_extents(struct btrfs_trans_handle *trans,
- 	struct extent_buffer *leaf;
- 	int slot;
- 	int ins_nr = 0;
--	int start_slot;
-+	int start_slot = 0;
- 	int ret;
+--- a/drivers/platform/x86/msi-ec.c
++++ b/drivers/platform/x86/msi-ec.c
+@@ -276,14 +276,13 @@ static struct msi_ec_conf CONF2 __initda
  
- 	if (!(inode->flags & BTRFS_INODE_PREALLOC))
--- 
-2.40.1
-
+ static const char * const ALLOWED_FW_3[] __initconst = {
+ 	"1592EMS1.111",
+-	"E1592IMS.10C",
+ 	NULL
+ };
+ 
+ static struct msi_ec_conf CONF3 __initdata = {
+ 	.allowed_fw = ALLOWED_FW_3,
+ 	.charge_control = {
+-		.address      = 0xef,
++		.address      = 0xd7,
+ 		.offset_start = 0x8a,
+ 		.offset_end   = 0x80,
+ 		.range_min    = 0x8a,
 
 
