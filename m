@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9654F7D3148
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5B137D327B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230393AbjJWLHf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:07:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49800 "EHLO
+        id S233196AbjJWLUf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:20:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233444AbjJWLHd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:33 -0400
+        with ESMTP id S233805AbjJWLUb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32E6D10CA
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778ABC433C7;
-        Mon, 23 Oct 2023 11:07:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24209F9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551FEC433C7;
+        Mon, 23 Oct 2023 11:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059250;
-        bh=SPLVXAwqJGtchHlV1C73jT3GFdV7ygxRV+6VOi3bpUo=;
+        s=korg; t=1698060028;
+        bh=aoE1GJs595+TIXEQ8d2BgLE26M94DkqlfdLBOvL/4qk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vdjty33r0IqIxWNXPJKTqMzc6nDXYAm6idVnuK/3d8FtXZGQ6+shzvLWlhvbYAZMm
-         bThoegMJPfohmxxlHGPfJz2SYCReXV/xBrolcUYFifxkYDtAWS8iacNDCqR5DnE2QV
-         tiCziMbH9Hx4+pP1Hn+1f4wtDOFrGdtgM2zjZ624=
+        b=psnZt8/D9wFSaNa/Nh8O4h3nLkbel1teZkQEb/9CJP12URMQ87QGeoP2brpfBDffz
+         DlKKkhOE0yUyWkPla46JWVDk4+AaDg8IcwI17ISGftaOTzpm1VuqPplR9OLHQHchna
+         J4irwSsL2JrbxDvrf5vCpzs0gcteJz5CRfWt3RHg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Greear <greearb@candelatech.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 114/241] wifi: iwlwifi: Ensure ack flag is properly cleared.
+        patches@lists.linux.dev, Alon Zahavi <zahavi.alon@gmail.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Christoph Hellwig <hch@lst.de>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 035/196] nvmet-tcp: Fix a possible UAF in queue intialization setup
 Date:   Mon, 23 Oct 2023 12:55:00 +0200
-Message-ID: <20231023104836.666723937@linuxfoundation.org>
+Message-ID: <20231023104829.479315245@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Greear <greearb@candelatech.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit e8fbe99e87877f0412655f40d7c45bf8471470ac ]
+commit d920abd1e7c4884f9ecd0749d1921b7ab19ddfbd upstream.
 
-Debugging indicates that nothing else is clearing the info->flags,
-so some frames were flagged as ACKed when they should not be.
-Explicitly clear the ack flag to ensure this does not happen.
+>From Alon:
+"Due to a logical bug in the NVMe-oF/TCP subsystem in the Linux kernel,
+a malicious user can cause a UAF and a double free, which may lead to
+RCE (may also lead to an LPE in case the attacker already has local
+privileges)."
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
-Acked-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230808205605.4105670-1-greearb@candelatech.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hence, when a queue initialization fails after the ahash requests are
+allocated, it is guaranteed that the queue removal async work will be
+called, hence leave the deallocation to the queue removal.
+
+Also, be extra careful not to continue processing the socket, so set
+queue rcv_state to NVMET_TCP_RECV_ERR upon a socket error.
+
+Cc: stable@vger.kernel.org
+Reported-by: Alon Zahavi <zahavi.alon@gmail.com>
+Tested-by: Alon Zahavi <zahavi.alon@gmail.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/target/tcp.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 36d70d589aedd..898dca3936435 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1612,6 +1612,7 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
- 		iwl_trans_free_tx_cmd(mvm->trans, info->driver_data[1]);
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -345,6 +345,7 @@ static void nvmet_tcp_fatal_error(struct
  
- 		memset(&info->status, 0, sizeof(info->status));
-+		info->flags &= ~(IEEE80211_TX_STAT_ACK | IEEE80211_TX_STAT_TX_FILTERED);
+ static void nvmet_tcp_socket_error(struct nvmet_tcp_queue *queue, int status)
+ {
++	queue->rcv_state = NVMET_TCP_RECV_ERR;
+ 	if (status == -EPIPE || status == -ECONNRESET)
+ 		kernel_sock_shutdown(queue->sock, SHUT_RDWR);
+ 	else
+@@ -871,15 +872,11 @@ static int nvmet_tcp_handle_icreq(struct
+ 	iov.iov_len = sizeof(*icresp);
+ 	ret = kernel_sendmsg(queue->sock, &msg, &iov, 1, iov.iov_len);
+ 	if (ret < 0)
+-		goto free_crypto;
++		return ret; /* queue removal will cleanup */
  
- 		/* inform mac80211 about what happened with the frame */
- 		switch (status & TX_STATUS_MSK) {
-@@ -1964,6 +1965,8 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 		 */
- 		if (!is_flush)
- 			info->flags |= IEEE80211_TX_STAT_ACK;
-+		else
-+			info->flags &= ~IEEE80211_TX_STAT_ACK;
- 	}
+ 	queue->state = NVMET_TCP_Q_LIVE;
+ 	nvmet_prepare_receive_pdu(queue);
+ 	return 0;
+-free_crypto:
+-	if (queue->hdr_digest || queue->data_digest)
+-		nvmet_tcp_free_crypto(queue);
+-	return ret;
+ }
  
- 	/*
--- 
-2.40.1
-
+ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
 
 
