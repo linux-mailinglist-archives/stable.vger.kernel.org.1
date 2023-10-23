@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9F177D33E4
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B58DB7D34A2
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234037AbjJWLfE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:35:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46486 "EHLO
+        id S234163AbjJWLle (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:41:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234023AbjJWLfD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:03 -0400
+        with ESMTP id S234281AbjJWLld (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:41:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A57C3FD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E980DC433C8;
-        Mon, 23 Oct 2023 11:35:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45C6110D0
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F13B1C433C8;
+        Mon, 23 Oct 2023 11:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060901;
-        bh=Qf62WERCxtPCHB9olRmE/7WSZzwrvzMfoLLr/LDVZu4=;
+        s=korg; t=1698061286;
+        bh=mhpd7mQfqduPaHBF2p/N6zsdmM7gYbfxR4rAQWBorHU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tlwjntLiMC5lHrCxsyK6TwRs8OO2bthVynf+J3i64HLNAcruuqlw0vVNVB8rwgrbW
-         wdrDtFW9N/qcGNxhmxCNdt/tlLy879guNr884SbLB6/D2zWK0yDS/Yvs3BwmetnaK2
-         2IJ5JQUR5AQH2B9Nrrw93ykAdUJPR+CLWGrkXg+c=
+        b=kVNTeURCoOwcF8gyozroBDW9HCrXlo25yWhJKDsCquTUW0oFhCUl7vJ7L18xV/rje
+         5o8xKx7Pt4q6mH+iiT+himuRP/aTswrg91xxArHo6E8IXjgk248+2nSqL4K2Q9wUPQ
+         VlID0RaQFh5vhFQD9/MR6gf15nCtrxYaXUsmkjV8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Avri Altman <avri.altman@wdc.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 106/123] mmc: core: Capture correct oemid-bits for eMMC cards
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 107/137] mtd: physmap-core: Restore map_rom fallback
 Date:   Mon, 23 Oct 2023 12:57:44 +0200
-Message-ID: <20231023104821.269030920@linuxfoundation.org>
+Message-ID: <20231023104824.429656756@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,43 +49,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avri Altman <avri.altman@wdc.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 84ee19bffc9306128cd0f1c650e89767079efeff upstream.
+commit 6792b7fce610bcd1cf3e07af3607fe7e2c38c1d8 upstream.
 
-The OEMID is an 8-bit binary number rather than 16-bit as the current code
-parses for. The OEMID occupies bits [111:104] in the CID register, see the
-eMMC spec JESD84-B51 paragraph 7.2.3. It seems that the 16-bit comes from
-the legacy MMC specs (v3.31 and before).
+When the exact mapping type driver was not available, the old
+physmap_of_core driver fell back to mapping the region as ROM.
+Unfortunately this feature was lost when the DT and pdata cases were
+merged.  Revive this useful feature.
 
-Let's fix the parsing by simply move to use 8-bit instead of 16-bit. This
-means we ignore the impact on some of those old MMC cards that may be out
-there, but on the other hand this shouldn't be a problem as the OEMID seems
-not be an important feature for these cards.
-
-Signed-off-by: Avri Altman <avri.altman@wdc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230927071500.1791882-1-avri.altman@wdc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 642b1e8dbed7bbbf ("mtd: maps: Merge physmap_of.c into physmap-core.c")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/550e8c8c1da4c4baeb3d71ff79b14a18d4194f9e.1693407371.git.geert+renesas@glider.be
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/mmc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/maps/physmap-core.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -95,7 +95,7 @@ static int mmc_decode_cid(struct mmc_car
- 	case 3: /* MMC v3.1 - v3.3 */
- 	case 4: /* MMC v4 */
- 		card->cid.manfid	= UNSTUFF_BITS(resp, 120, 8);
--		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 16);
-+		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 8);
- 		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
- 		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
- 		card->cid.prod_name[2]	= UNSTUFF_BITS(resp, 80, 8);
+--- a/drivers/mtd/maps/physmap-core.c
++++ b/drivers/mtd/maps/physmap-core.c
+@@ -556,6 +556,17 @@ static int physmap_flash_probe(struct pl
+ 		if (info->probe_type) {
+ 			info->mtds[i] = do_map_probe(info->probe_type,
+ 						     &info->maps[i]);
++
++			/* Fall back to mapping region as ROM */
++			if (!info->mtds[i] && IS_ENABLED(CONFIG_MTD_ROM) &&
++			    strcmp(info->probe_type, "map_rom")) {
++				dev_warn(&dev->dev,
++					 "map_probe() failed for type %s\n",
++					 info->probe_type);
++
++				info->mtds[i] = do_map_probe("map_rom",
++							     &info->maps[i]);
++			}
+ 		} else {
+ 			int j;
+ 
 
 
