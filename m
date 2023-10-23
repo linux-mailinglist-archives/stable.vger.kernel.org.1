@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 441177D3287
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A32947D3153
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232725AbjJWLVJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:21:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56326 "EHLO
+        id S233489AbjJWLIH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233802AbjJWLVI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:08 -0400
+        with ESMTP id S233491AbjJWLIF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13AE2C2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52750C433C7;
-        Mon, 23 Oct 2023 11:21:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB0C10E6
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B16C433C7;
+        Mon, 23 Oct 2023 11:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060065;
-        bh=ToR+wkV+pk+YzaMSKVH3TKGsmVqWZWllthWW3jNoYAc=;
+        s=korg; t=1698059280;
+        bh=oo98s6TWcsB66hcwllKU5eQiBBexhnB2hrr8nuztaqE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ijlhWc7za4JoC6aQlRoOdG9tqWQRPKf3CqrWc8yknqE0unRk7MqF8h4sOXA0cHDAr
-         FHJ0rruOGaJvJfmKgY1N//xDFZaRDfSL1hp3JBkwjXpJSPkwMCssa52Kk9y3Dytymc
-         9Q5ISOmHgNhF/Lw5mqPuyU5tPQh8hZCqAy9h+ABg=
+        b=ktyjiqElsvkUrJcjjLFcRb/vnpYotW/bB+33bBmd0kd+ME02fbqtVBCHEMJxBesJx
+         ntutVVST1FFzMF0MGDgz5hEuBQ5U+LbafpND3s/mB49bm92y3wHnDMtALwWCFZeyVH
+         ljxvAort/7mNI7azpiRPVixnR7zJjgHoZcJaW02o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Manish Chopra <manishc@marvell.com>
-Subject: [PATCH 6.1 046/196] qed: fix LL2 RX buffer allocation
+        patches@lists.linux.dev,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 125/241] regulator/core: Revert "fix kobject release warning and memory leak in regulator_register()"
 Date:   Mon, 23 Oct 2023 12:55:11 +0200
-Message-ID: <20231023104829.819186339@linuxfoundation.org>
+Message-ID: <20231023104836.920176953@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,67 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Chopra <manishc@marvell.com>
+From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 
-commit 2f3389c73832ad90b63208c0fc281ad080114c7a upstream.
+[ Upstream commit 6e800968f6a715c0661716d2ec5e1f56ed9f9c08 ]
 
-Driver allocates the LL2 rx buffers from kmalloc()
-area to construct the skb using slab_build_skb()
+This reverts commit 5f4b204b6b8153923d5be8002c5f7082985d153f.
 
-The required size allocation seems to have overlooked
-for accounting both skb_shared_info size and device
-placement padding bytes which results into the below
-panic when doing skb_put() for a standard MTU sized frame.
+Since rdev->dev now has a release() callback, the proper way of freeing
+the initialized device can be restored.
 
-skbuff: skb_over_panic: text:ffffffffc0b0225f len:1514 put:1514
-head:ff3dabceaf39c000 data:ff3dabceaf39c042 tail:0x62c end:0x566
-dev:<NULL>
-…
-skb_panic+0x48/0x4a
-skb_put.cold+0x10/0x10
-qed_ll2b_complete_rx_packet+0x14f/0x260 [qed]
-qed_ll2_rxq_handle_completion.constprop.0+0x169/0x200 [qed]
-qed_ll2_rxq_completion+0xba/0x320 [qed]
-qed_int_sp_dpc+0x1a7/0x1e0 [qed]
-
-This patch fixes this by accouting skb_shared_info and device
-placement padding size bytes when allocating the buffers.
-
-Cc: David S. Miller <davem@davemloft.net>
-Fixes: 0a7fb11c23c0 ("qed: Add Light L2 support")
-Signed-off-by: Manish Chopra <manishc@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+Link: https://lore.kernel.org/r/d7f469f3f7b1f0e1d52f9a7ede3f3c5703382090.1695077303.git.mirq-linux@rere.qmqm.pl
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_ll2.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/regulator/core.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/qlogic/qed/qed_ll2.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_ll2.c
-@@ -113,7 +113,10 @@ static void qed_ll2b_complete_tx_packet(
- static int qed_ll2_alloc_buffer(struct qed_dev *cdev,
- 				u8 **data, dma_addr_t *phys_addr)
- {
--	*data = kmalloc(cdev->ll2->rx_size, GFP_ATOMIC);
-+	size_t size = cdev->ll2->rx_size + NET_SKB_PAD +
-+		      SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+
-+	*data = kmalloc(size, GFP_ATOMIC);
- 	if (!(*data)) {
- 		DP_INFO(cdev, "Failed to allocate LL2 buffer data\n");
- 		return -ENOMEM;
-@@ -2590,7 +2593,7 @@ static int qed_ll2_start(struct qed_dev
- 	INIT_LIST_HEAD(&cdev->ll2->list);
- 	spin_lock_init(&cdev->ll2->lock);
- 
--	cdev->ll2->rx_size = NET_SKB_PAD + ETH_HLEN +
-+	cdev->ll2->rx_size = PRM_DMA_PAD_BYTES_NUM + ETH_HLEN +
- 			     L1_CACHE_BYTES + params->mtu;
- 
- 	/* Allocate memory for LL2.
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 2820badc7a126..3137e40fcd3e0 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -5724,15 +5724,11 @@ regulator_register(struct device *dev,
+ 	mutex_lock(&regulator_list_mutex);
+ 	regulator_ena_gpio_free(rdev);
+ 	mutex_unlock(&regulator_list_mutex);
+-	put_device(&rdev->dev);
+-	rdev = NULL;
+ clean:
+ 	if (dangling_of_gpiod)
+ 		gpiod_put(config->ena_gpiod);
+-	if (rdev && rdev->dev.of_node)
+-		of_node_put(rdev->dev.of_node);
+-	kfree(rdev);
+ 	kfree(config);
++	put_device(&rdev->dev);
+ rinse:
+ 	if (dangling_cfg_gpiod)
+ 		gpiod_put(cfg->ena_gpiod);
+-- 
+2.40.1
+
 
 
