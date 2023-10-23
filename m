@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A95B57D31CF
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D8867D3538
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233641AbjJWLNa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:13:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52388 "EHLO
+        id S234540AbjJWLq1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:46:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233642AbjJWLN3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:29 -0400
+        with ESMTP id S234601AbjJWLqL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88AE1C4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEC7EC433C7;
-        Mon, 23 Oct 2023 11:13:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A78DD19B3
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB74CC433C7;
+        Mon, 23 Oct 2023 11:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059607;
-        bh=bQdjad5Oe7bm+6dqPXGW+lxkzi3G2pdja2PFWEfRLPY=;
+        s=korg; t=1698061558;
+        bh=R97K8b9AMRJweNVe2GtII5vKFzNd9V6bUGOk8VsMbDc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Me6Ej4/LsBSZ10sbACdlLa9dMp2EQp5EC5NZjMlejVIggHVZS3odXN8v9wDXWQTj2
-         3iKZnhnWX2AAtm1Jh6dst9bmCT/lX5iYNkJkDhbK4NteK5SDIInzk84Fxhs46mRdtP
-         oKW+wQ2ILSLC3Q4kKSiiH+o896Cuq3aeNf8E9e4E=
+        b=O+wWYOONUTC+AMItLW9lKqtKSmQyDLX46+bwVV6BP/wc+2ReZ6WQwDIrW7ORuV0a2
+         q+j+rH1odzsNwIhtWnd/S5j2FagFQCT1qC1VT9cK0QHpu1RkrSJn5he8hiSqWHsCj8
+         m2mK32ryzkiGHoxUi8RSQDs03Tru4zMUH9JXLyag=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aakash Singh <mail@singhaakash.dev>,
-        Jose Angel Pastrana <japp0005@red.ujaen.es>,
-        Nikita Kravets <teackot@gmail.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.5 207/241] platform/x86: msi-ec: Fix the 3rd config
-Date:   Mon, 23 Oct 2023 12:56:33 +0200
-Message-ID: <20231023104838.901412130@linuxfoundation.org>
+        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Lee@vger.kernel.org
+Subject: [PATCH 5.10 087/202] Bluetooth: Reject connection with the device which has same BD_ADDR
+Date:   Mon, 23 Oct 2023 12:56:34 +0200
+Message-ID: <20231023104829.076167322@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,47 +49,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kravets <teackot@gmail.com>
+From: Lee, Chun-Yi <jlee@suse.com>
 
-commit 6284e67aa6cb3af870ed11dfcfafd80fd927777b upstream.
+commit 1ffc6f8cc33268731fcf9629fc4438f6db1191fc upstream.
 
-Fix the charge control address of CONF3 and remove an incorrect firmware
-version which turned out to be a BIOS firmware and not an EC firmware.
+This change is used to relieve CVE-2020-26555. The description of
+the CVE:
 
-Fixes: 392cacf2aa10 ("platform/x86: Add new msi-ec driver")
-Cc: Aakash Singh <mail@singhaakash.dev>
-Cc: Jose Angel Pastrana <japp0005@red.ujaen.es>
-Signed-off-by: Nikita Kravets <teackot@gmail.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20231006175352.1753017-5-teackot@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
+1.0B through 5.2 may permit an unauthenticated nearby device to spoof
+the BD_ADDR of the peer device to complete pairing without knowledge
+of the PIN. [1]
+
+The detail of this attack is in IEEE paper:
+BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
+[2]
+
+It's a reflection attack. The paper mentioned that attacker can induce
+the attacked target to generate null link key (zero key) without PIN
+code. In BR/EDR, the key generation is actually handled in the controller
+which is below HCI.
+
+A condition of this attack is that attacker should change the
+BR_ADDR of his hacking device (Host B) to equal to the BR_ADDR with
+the target device being attacked (Host A).
+
+Thus, we reject the connection with device which has same BD_ADDR
+both on HCI_Create_Connection and HCI_Connection_Request to prevent
+the attack. A similar implementation also shows in btstack project.
+[3][4]
+
+Cc: stable@vger.kernel.org
+Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
+Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3523 [3]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L7297 [4]
+Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/msi-ec.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/bluetooth/hci_conn.c  |    9 +++++++++
+ net/bluetooth/hci_event.c |   11 +++++++++++
+ 2 files changed, 20 insertions(+)
 
---- a/drivers/platform/x86/msi-ec.c
-+++ b/drivers/platform/x86/msi-ec.c
-@@ -276,14 +276,13 @@ static struct msi_ec_conf CONF2 __initda
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1249,6 +1249,15 @@ struct hci_conn *hci_connect_acl(struct
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 	}
  
- static const char * const ALLOWED_FW_3[] __initconst = {
- 	"1592EMS1.111",
--	"E1592IMS.10C",
- 	NULL
- };
++	/* Reject outgoing connection to device with same BD ADDR against
++	 * CVE-2020-26555
++	 */
++	if (!bacmp(&hdev->bdaddr, dst)) {
++		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
++			   dst);
++		return ERR_PTR(-ECONNREFUSED);
++	}
++
+ 	acl = hci_conn_hash_lookup_ba(hdev, ACL_LINK, dst);
+ 	if (!acl) {
+ 		acl = hci_conn_add(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2701,6 +2701,17 @@ static void hci_conn_request_evt(struct
+ 	BT_DBG("%s bdaddr %pMR type 0x%x", hdev->name, &ev->bdaddr,
+ 	       ev->link_type);
  
- static struct msi_ec_conf CONF3 __initdata = {
- 	.allowed_fw = ALLOWED_FW_3,
- 	.charge_control = {
--		.address      = 0xef,
-+		.address      = 0xd7,
- 		.offset_start = 0x8a,
- 		.offset_end   = 0x80,
- 		.range_min    = 0x8a,
++	/* Reject incoming connection from device with same BD ADDR against
++	 * CVE-2020-26555
++	 */
++	if (!bacmp(&hdev->bdaddr, &ev->bdaddr))
++	{
++		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
++			   &ev->bdaddr);
++		hci_reject_conn(hdev, &ev->bdaddr);
++		return;
++	}
++
+ 	mask |= hci_proto_connect_ind(hdev, &ev->bdaddr, ev->link_type,
+ 				      &flags);
+ 
 
 
