@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAEFB7D330C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 515897D30BB
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233912AbjJWL0K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:26:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55990 "EHLO
+        id S232460AbjJWLBk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233933AbjJWL0I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:08 -0400
+        with ESMTP id S229898AbjJWLBi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1424DDD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4751CC433C7;
-        Mon, 23 Oct 2023 11:26:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58351D7B
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99216C433C7;
+        Mon, 23 Oct 2023 11:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060365;
-        bh=cpYnA431QBcXozcBtKXLmgK8d+XsPK9s7K7vI6C01y8=;
+        s=korg; t=1698058896;
+        bh=kdLSCUubBi0w19SyB0R30BfFZFwNiy3FpieWkkqr1Xo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZXJpLMyta8J05m/9d/eFdsL/MTuz94lFtjxKNcTVOTlXBdqUJ/gjLLnMOOLyLXpKg
-         qOoNURPXhIuh1mk6zDexlw4EAcZ/VAUMd3G8sgln/s4fhhb0SrY9D92ltfLEmBSgW7
-         cZ+jsXIQOPfjwUNOIFXktOeNN2qakBYbhsNGoge4=
+        b=ZY2txrHLZSrq2n4WjfD8RwI57kMvsC/ycxhb/yNaPTBnOY/ZdrLZ42iqhIK8NYpKA
+         gideBnc+XgMavGOsWcbgxoYmWVxHIpvFfvBzXLYM/hgTgEeabzMAVAm5W+WOcIJALg
+         kVBX+DeHWIKQHIvDbITSu5+M+fUzdfo2mcU+WW2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 148/196] dt-bindings: mmc: sdhci-msm: correct minimum number of clocks
+        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 4.14 63/66] gpio: vf610: set value before the direction to avoid a glitch
 Date:   Mon, 23 Oct 2023 12:56:53 +0200
-Message-ID: <20231023104832.663102928@linuxfoundation.org>
+Message-ID: <20231023104813.160207048@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +48,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-commit 1bbac8d6af085408885675c1e29b2581250be124 upstream.
+commit fc363413ef8ea842ae7a99e3caf5465dafdd3a49 upstream.
 
-In the TXT binding before conversion, the "xo" clock was listed as
-optional.  Conversion kept it optional in "clock-names", but not in
-"clocks".  This fixes dbts_check warnings like:
+We found a glitch when configuring the pad as output high. To avoid this
+glitch, move the data value setting before direction config in the
+function vf610_gpio_direction_output().
 
-  qcom-sdx65-mtp.dtb: mmc@8804000: clocks: [[13, 59], [13, 58]] is too short
-
-Cc: <stable@vger.kernel.org>
-Fixes: a45537723f4b ("dt-bindings: mmc: sdhci-msm: Convert bindings to yaml")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Link: https://lore.kernel.org/r/20230825135503.282135-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 659d8a62311f ("gpio: vf610: add imx7ulp support")
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+[Bartosz: tweak the commit message]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/mmc/sdhci-msm.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-vf610.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-+++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-@@ -59,7 +59,7 @@ properties:
-     maxItems: 4
+--- a/drivers/gpio/gpio-vf610.c
++++ b/drivers/gpio/gpio-vf610.c
+@@ -137,14 +137,14 @@ static int vf610_gpio_direction_output(s
+ 	unsigned long mask = BIT(gpio);
+ 	u32 val;
  
-   clocks:
--    minItems: 3
-+    minItems: 2
-     items:
-       - description: Main peripheral bus clock, PCLK/HCLK - AHB Bus clock
-       - description: SDC MMC clock, MCLK
++	vf610_gpio_set(chip, gpio, value);
++
+ 	if (port->sdata && port->sdata->have_paddr) {
+ 		val = vf610_gpio_readl(port->gpio_base + GPIO_PDDR);
+ 		val |= mask;
+ 		vf610_gpio_writel(val, port->gpio_base + GPIO_PDDR);
+ 	}
+ 
+-	vf610_gpio_set(chip, gpio, value);
+-
+ 	return pinctrl_gpio_direction_output(chip->base + gpio);
+ }
+ 
 
 
