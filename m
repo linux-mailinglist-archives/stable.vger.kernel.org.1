@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA9AA7D3530
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B3987D31AD
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234523AbjJWLqI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:46:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48768 "EHLO
+        id S233601AbjJWLL4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:11:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234329AbjJWLpm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:42 -0400
+        with ESMTP id S233131AbjJWLLz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4EF3173C
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB35CC433C9;
-        Mon, 23 Oct 2023 11:45:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5DADC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384C3C433C7;
+        Mon, 23 Oct 2023 11:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061537;
-        bh=aKn9cj9eJdw7WmEbeWewMBGSSSdhBDLVskRNXj4F4iU=;
+        s=korg; t=1698059513;
+        bh=HfVQleODybMbqbGeG3osDZG3BUQ5hXnUB5HrGJXs6xI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UPyRvS7omvgccu5jHeNjMJJ82nX5lxIbuBLOc/qw+PPezfWhy9X+ivaBwh5a0sdTv
-         304xix+GcSmUDXd/tZCCZdpj6UPudc9uMZAGpMedOMRgMggpbx8AWJo3ZhEwhXgsRI
-         uQLpYPC8FM2m6MBdEbJJ0+fbqE5T23TFH/IVSLCY=
+        b=m1//9QisYyB8LxdXWW4BoxB5kZL4nXP1fX1qPtjLAz+2zlSRf5idBQOVUl91hRxfz
+         OjT5j8Jui6+W+0pPcOwBu0/hTMRVptZFqP/iE7fKmj4gENmGwzzOWFD/+J+yQI+8E8
+         hqgUQI6J1A8IjTRAm7OdjhbVuUcGcpL6m2wKWbaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 5.10 081/202] dev_forward_skb: do not scrub skb mark within the same name space
+        patches@lists.linux.dev, Denis Kenzior <denkenz@gmail.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.5 202/241] KEYS: asymmetric: Fix sign/verify on pkcs1pad without a hash
 Date:   Mon, 23 Oct 2023 12:56:28 +0200
-Message-ID: <20231023104828.912986697@linuxfoundation.org>
+Message-ID: <20231023104838.785220081@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +48,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit ff70202b2d1ad522275c6aadc8c53519b6a22c57 upstream.
+commit b11950356c4b416d2e87941f3aa7a8bf089db72b upstream.
 
-The goal is to keep the mark during a bpf_redirect(), like it is done for
-legacy encapsulation / decapsulation, when there is no x-netns.
-This was initially done in commit 213dd74aee76 ("skbuff: Do not scrub skb
-mark within the same name space").
+The new sign/verify code broke the case of pkcs1pad without a
+hash algorithm.  Fix it by setting issig correctly for this case.
 
-When the call to skb_scrub_packet() was added in dev_forward_skb() (commit
-8b27f27797ca ("skb: allow skb_scrub_packet() to be used by tunnels")), the
-second argument (xnet) was set to true to force a call to skb_orphan(). At
-this time, the mark was always cleanned up by skb_scrub_packet(), whatever
-xnet value was.
-This call to skb_orphan() was removed later in commit
-9c4c325252c5 ("skbuff: preserve sock reference when scrubbing the skb.").
-But this 'true' stayed here without any real reason.
-
-Let's correctly set xnet in ____dev_forward_skb(), this function has access
-to the previous interface and to the new interface.
-
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: 63ba4d67594a ("KEYS: asymmetric: Use new crypto interface without scatterlists")
+Cc: stable@vger.kernel.org # v6.5
+Reported-by: Denis Kenzior <denkenz@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Tested-by: Denis Kenzior <denkenz@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netdevice.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/asymmetric_keys/public_key.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3972,7 +3972,7 @@ static __always_inline int ____dev_forwa
- 		return NET_RX_DROP;
- 	}
- 
--	skb_scrub_packet(skb, true);
-+	skb_scrub_packet(skb, !net_eq(dev_net(dev), dev_net(skb->dev)));
- 	skb->priority = 0;
- 	return 0;
- }
+diff --git a/crypto/asymmetric_keys/public_key.c b/crypto/asymmetric_keys/public_key.c
+index abeecb8329b3..1dcab27986a6 100644
+--- a/crypto/asymmetric_keys/public_key.c
++++ b/crypto/asymmetric_keys/public_key.c
+@@ -81,14 +81,13 @@ software_key_determine_akcipher(const struct public_key *pkey,
+ 		 * RSA signatures usually use EMSA-PKCS1-1_5 [RFC3447 sec 8.2].
+ 		 */
+ 		if (strcmp(encoding, "pkcs1") == 0) {
++			*sig = op == kernel_pkey_sign ||
++			       op == kernel_pkey_verify;
+ 			if (!hash_algo) {
+-				*sig = false;
+ 				n = snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
+ 					     "pkcs1pad(%s)",
+ 					     pkey->pkey_algo);
+ 			} else {
+-				*sig = op == kernel_pkey_sign ||
+-				       op == kernel_pkey_verify;
+ 				n = snprintf(alg_name, CRYPTO_MAX_ALG_NAME,
+ 					     "pkcs1pad(%s,%s)",
+ 					     pkey->pkey_algo, hash_algo);
+-- 
+2.42.0
+
 
 
