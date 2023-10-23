@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ADB17D3266
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA7797D312F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:06:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233766AbjJWLTi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:19:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55992 "EHLO
+        id S232316AbjJWLGi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233765AbjJWLTi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:38 -0400
+        with ESMTP id S233373AbjJWLGh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:06:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D79C2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE67DC433C7;
-        Mon, 23 Oct 2023 11:19:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74AF6D7B
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:06:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9457C433C7;
+        Mon, 23 Oct 2023 11:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059975;
-        bh=1hUUGgqDHN+jM9j1ieUGipB/lGzwsHAM7ujzknPjNEE=;
+        s=korg; t=1698059195;
+        bh=WuE6VwuJ73eaaHKPp7k1GD5D29SNXCdQEk3ns3awc4A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gNwThLBD+/68y8Ovzu7hZSjtcWE/03WW9CnIc7ot8lkhJ5BTk9J5Wsc+PdaZQarb/
-         N4vCmlYT7RF7R1kadoV9ia7gRLPTPG/IHNNXiFxWpcjayy+gF7RDOXecqX2x6OaQm1
-         zi8eaQ3D6UXvOqRK2saH9W0NfQ0g1oiBkrKCHdhw=
+        b=adD4FnD4GbLYEb4j4ZH1DGOWz2yKtrBF/UStt6kens765Jkp5nKB/xqIHRVCvEQyT
+         m0T2NqdNMx3CWxWc0U8ukFFbQT86M6m7rHgnrUATIszmrmGcFZUQHgzlvtoS454fAa
+         6KkEDOI9GWy1Cnczw2awEgCYXp6ClYH/VfFDjJuo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Qu Wenruo <wqu@suse.com>,
-        Zygo Blaxell <ce3g8jdj@umail.furryterror.org>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 017/196] btrfs: fix stripe length calculation for non-zoned data chunk allocation
+        patches@lists.linux.dev,
+        =?UTF-8?q?M=C3=A5rten=20Lindahl?= <marten.lindahl@axis.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 096/241] iio: light: vcnl4000: Dont power on/off chip in config
 Date:   Mon, 23 Oct 2023 12:54:42 +0200
-Message-ID: <20231023104828.977102552@linuxfoundation.org>
+Message-ID: <20231023104836.241982129@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,234 +52,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zygo Blaxell <ce3g8jdj@umail.furryterror.org>
+From: Mårten Lindahl <marten.lindahl@axis.com>
 
-commit 8a540e990d7da36813cb71a4a422712bfba448a4 upstream.
+[ Upstream commit 7e87ab38eed09c9dec56da361d74158159ae84a3 ]
 
-Commit f6fca3917b4d "btrfs: store chunk size in space-info struct"
-broke data chunk allocations on non-zoned multi-device filesystems when
-using default chunk_size.  Commit 5da431b71d4b "btrfs: fix the max chunk
-size and stripe length calculation" partially fixed that, and this patch
-completes the fix for that case.
+After enabling/disabling interrupts on the vcnl4040 chip the als and/or
+ps sensor is powered on or off depending on the interrupt enable bits.
+This is made as a last step in write_event_config.
 
-After commit f6fca3917b4d and 5da431b71d4b, the sequence of events for
-a data chunk allocation on a non-zoned filesystem is:
+But there is no reason to do this as the runtime PM handles the power
+state of the sensors. Interfering with this may impact sensor readings.
 
-        1.  btrfs_create_chunk calls init_alloc_chunk_ctl, which copies
-        space_info->chunk_size (default 10 GiB) to ctl->max_stripe_len
-        unmodified.  Before f6fca3917b4d, ctl->max_stripe_len value was
-        1 GiB for non-zoned data chunks and not configurable.
+Consider the following:
+ 1. Userspace makes sensor data reading which triggers RPM resume
+    (sensor powered on) and a RPM suspend timeout. The timeout is 2000ms
+    before RPM suspend powers the sensor off if no new reading is made
+    within the timeout period.
+ 2. Userspace disables interrupts => powers sensor off
+ 3. Userspace reads sensor data = 0 because sensor is off and the
+    suspend timeout has not passed. For each new reading made within the
+    timeout period the timeout is renewed with 2000ms and RPM will not
+    make a new resume (device was not suspended). So the sensor will
+    not be powered on.
+ 4. No further userspace reading for 2000ms ends RPM suspend timeout and
+    triggers suspend (powers off already powered off sensor).
 
-        2.  btrfs_create_chunk calls gather_device_info which consumes
-        and produces more fields of chunk_ctl.
+Powering sensor off in (2) makes all consecutive readings made within
+2000ms to the previous reading (3) return invalid data.
 
-        3.  gather_device_info multiplies ctl->max_stripe_len by
-        ctl->dev_stripes (which is 1 in all cases except dup)
-        and calls find_free_dev_extent with that number as num_bytes.
+Skip setting power state when writing new event config.
 
-        4.  find_free_dev_extent locates the first dev_extent hole on
-        a device which is at least as large as num_bytes.  With default
-        max_chunk_size from f6fca3917b4d, it finds the first hole which is
-        longer than 10 GiB, or the largest hole if that hole is shorter
-        than 10 GiB.  This is different from the pre-f6fca3917b4d
-        behavior, where num_bytes is 1 GiB, and find_free_dev_extent
-        may choose a different hole.
-
-        5.  gather_device_info repeats step 4 with all devices to find
-        the first or largest dev_extent hole that can be allocated on
-        each device.
-
-        6.  gather_device_info sorts the device list by the hole size
-        on each device, using total unallocated space on each device to
-        break ties, then returns to btrfs_create_chunk with the list.
-
-        7.  btrfs_create_chunk calls decide_stripe_size_regular.
-
-        8.  decide_stripe_size_regular finds the largest stripe_len that
-        fits across the first nr_devs device dev_extent holes that were
-        found by gather_device_info (and satisfies other constraints
-        on stripe_len that are not relevant here).
-
-        9.  decide_stripe_size_regular caps the length of the stripe it
-        computed at 1 GiB.  This cap appeared in 5da431b71d4b to correct
-        one of the other regressions introduced in f6fca3917b4d.
-
-        10.  btrfs_create_chunk creates a new chunk with the above
-        computed size and number of devices.
-
-At step 4, gather_device_info() has found a location where stripe up to
-10 GiB in length could be allocated on several devices, and selected
-which devices should have a dev_extent allocated on them, but at step
-9, only 1 GiB of the space that was found on each device can be used.
-This mismatch causes new suboptimal chunk allocation cases that did not
-occur in pre-f6fca3917b4d kernels.
-
-Consider a filesystem using raid1 profile with 3 devices.  After some
-balances, device 1 has 10x 1 GiB unallocated space, while devices 2
-and 3 have 1x 10 GiB unallocated space, i.e. the same total amount of
-space, but distributed across different numbers of dev_extent holes.
-For visualization, let's ignore all the chunks that were allocated before
-this point, and focus on the remaining holes:
-
-        Device 1:  [_] [_] [_] [_] [_] [_] [_] [_] [_] [_] (10x 1 GiB unallocated)
-        Device 2:  [__________] (10 GiB contig unallocated)
-        Device 3:  [__________] (10 GiB contig unallocated)
-
-Before f6fca3917b4d, the allocator would fill these optimally by
-allocating chunks with dev_extents on devices 1 and 2 ([12]), 1 and 3
-([13]), or 2 and 3 ([23]):
-
-        [after 0 chunk allocations]
-        Device 1:  [_] [_] [_] [_] [_] [_] [_] [_] [_] [_] (10 GiB)
-        Device 2:  [__________] (10 GiB)
-        Device 3:  [__________] (10 GiB)
-
-        [after 1 chunk allocation]
-        Device 1:  [12] [_] [_] [_] [_] [_] [_] [_] [_] [_]
-        Device 2:  [12] [_________] (9 GiB)
-        Device 3:  [__________] (10 GiB)
-
-        [after 2 chunk allocations]
-        Device 1:  [12] [13] [_] [_] [_] [_] [_] [_] [_] [_] (8 GiB)
-        Device 2:  [12] [_________] (9 GiB)
-        Device 3:  [13] [_________] (9 GiB)
-
-        [after 3 chunk allocations]
-        Device 1:  [12] [13] [12] [_] [_] [_] [_] [_] [_] [_] (7 GiB)
-        Device 2:  [12] [12] [________] (8 GiB)
-        Device 3:  [13] [_________] (9 GiB)
-
-        [...]
-
-        [after 12 chunk allocations]
-        Device 1:  [12] [13] [12] [13] [12] [13] [12] [13] [_] [_] (2 GiB)
-        Device 2:  [12] [12] [23] [23] [12] [12] [23] [23] [__] (2 GiB)
-        Device 3:  [13] [13] [23] [23] [13] [23] [13] [23] [__] (2 GiB)
-
-        [after 13 chunk allocations]
-        Device 1:  [12] [13] [12] [13] [12] [13] [12] [13] [12] [_] (1 GiB)
-        Device 2:  [12] [12] [23] [23] [12] [12] [23] [23] [12] [_] (1 GiB)
-        Device 3:  [13] [13] [23] [23] [13] [23] [13] [23] [__] (2 GiB)
-
-        [after 14 chunk allocations]
-        Device 1:  [12] [13] [12] [13] [12] [13] [12] [13] [12] [13] (full)
-        Device 2:  [12] [12] [23] [23] [12] [12] [23] [23] [12] [_] (1 GiB)
-        Device 3:  [13] [13] [23] [23] [13] [23] [13] [23] [13] [_] (1 GiB)
-
-        [after 15 chunk allocations]
-        Device 1:  [12] [13] [12] [13] [12] [13] [12] [13] [12] [13] (full)
-        Device 2:  [12] [12] [23] [23] [12] [12] [23] [23] [12] [23] (full)
-        Device 3:  [13] [13] [23] [23] [13] [23] [13] [23] [13] [23] (full)
-
-This allocates all of the space with no waste.  The sorting function used
-by gather_device_info considers free space holes above 1 GiB in length
-to be equal to 1 GiB, so once find_free_dev_extent locates a sufficiently
-long hole on each device, all the holes appear equal in the sort, and the
-comparison falls back to sorting devices by total free space.  This keeps
-usable space on each device equal so they can all be filled completely.
-
-After f6fca3917b4d, the allocator prefers the devices with larger holes
-over the devices with more free space, so it makes bad allocation choices:
-
-        [after 1 chunk allocation]
-        Device 1:  [_] [_] [_] [_] [_] [_] [_] [_] [_] [_] (10 GiB)
-        Device 2:  [23] [_________] (9 GiB)
-        Device 3:  [23] [_________] (9 GiB)
-
-        [after 2 chunk allocations]
-        Device 1:  [_] [_] [_] [_] [_] [_] [_] [_] [_] [_] (10 GiB)
-        Device 2:  [23] [23] [________] (8 GiB)
-        Device 3:  [23] [23] [________] (8 GiB)
-
-        [after 3 chunk allocations]
-        Device 1:  [_] [_] [_] [_] [_] [_] [_] [_] [_] [_] (10 GiB)
-        Device 2:  [23] [23] [23] [_______] (7 GiB)
-        Device 3:  [23] [23] [23] [_______] (7 GiB)
-
-        [...]
-
-        [after 9 chunk allocations]
-        Device 1:  [_] [_] [_] [_] [_] [_] [_] [_] [_] [_] (10 GiB)
-        Device 2:  [23] [23] [23] [23] [23] [23] [23] [23] [23] [_] (1 GiB)
-        Device 3:  [23] [23] [23] [23] [23] [23] [23] [23] [23] [_] (1 GiB)
-
-        [after 10 chunk allocations]
-        Device 1:  [12] [_] [_] [_] [_] [_] [_] [_] [_] [_] (9 GiB)
-        Device 2:  [23] [23] [23] [23] [23] [23] [23] [23] [12] (full)
-        Device 3:  [23] [23] [23] [23] [23] [23] [23] [23] [_] (1 GiB)
-
-        [after 11 chunk allocations]
-        Device 1:  [12] [13] [_] [_] [_] [_] [_] [_] [_] [_] (8 GiB)
-        Device 2:  [23] [23] [23] [23] [23] [23] [23] [23] [12] (full)
-        Device 3:  [23] [23] [23] [23] [23] [23] [23] [23] [13] (full)
-
-No further allocations are possible, with 8 GiB wasted (4 GiB of data
-space).  The sort in gather_device_info now considers free space in
-holes longer than 1 GiB to be distinct, so it will prefer devices 2 and
-3 over device 1 until all but 1 GiB is allocated on devices 2 and 3.
-At that point, with only 1 GiB unallocated on every device, the largest
-hole length on each device is equal at 1 GiB, so the sort finally moves
-to ordering the devices with the most free space, but by this time it
-is too late to make use of the free space on device 1.
-
-Note that it's possible to contrive a case where the pre-f6fca3917b4d
-allocator fails the same way, but these cases generally have extensive
-dev_extent fragmentation as a precondition (e.g. many holes of 768M
-in length on one device, and few holes 1 GiB in length on the others).
-With the regression in f6fca3917b4d, bad chunk allocation can occur even
-under optimal conditions, when all dev_extent holes are exact multiples
-of stripe_len in length, as in the example above.
-
-Also note that post-f6fca3917b4d kernels do treat dev_extent holes
-larger than 10 GiB as equal, so the bad behavior won't show up on a
-freshly formatted filesystem; however, as the filesystem ages and fills
-up, and holes ranging from 1 GiB to 10 GiB in size appear, the problem
-can show up as a failure to balance after adding or removing devices,
-or an unexpected shortfall in available space due to unequal allocation.
-
-To fix the regression and make data chunk allocation work
-again, set ctl->max_stripe_len back to the original SZ_1G, or
-space_info->chunk_size if that's smaller (the latter can happen if the
-user set space_info->chunk_size to less than 1 GiB via sysfs, or it's
-a 32 MiB system chunk with a hardcoded chunk_size and stripe_len).
-
-While researching the background of the earlier commits, I found that an
-identical fix was already proposed at:
-
-  https://lore.kernel.org/linux-btrfs/de83ac46-a4a3-88d3-85ce-255b7abc5249@gmx.com/
-
-The previous review missed one detail:  ctl->max_stripe_len is used
-before decide_stripe_size_regular() is called, when it is too late for
-the changes in that function to have any effect.  ctl->max_stripe_len is
-not used directly by decide_stripe_size_regular(), but the parameter
-does heavily influence the per-device free space data presented to
-the function.
-
-Fixes: f6fca3917b4d ("btrfs: store chunk size in space-info struct")
-CC: stable@vger.kernel.org # 6.1+
-Link: https://lore.kernel.org/linux-btrfs/20231007051421.19657-1-ce3g8jdj@umail.furryterror.org/
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Zygo Blaxell <ce3g8jdj@umail.furryterror.org>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 546676121cb9 ("iio: light: vcnl4000: Add interrupt support for vcnl4040")
+Fixes: bc292aaf9cb4 ("iio: light: vcnl4000: add illuminance irq vcnl4040/4200")
+Signed-off-by: Mårten Lindahl <marten.lindahl@axis.com>
+Link: https://lore.kernel.org/r/20230907-vcnl4000-pm-fix-v2-1-298e01f54db4@axis.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/light/vcnl4000.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -5139,7 +5139,7 @@ static void init_alloc_chunk_ctl_policy_
- 	ASSERT(space_info);
+diff --git a/drivers/iio/light/vcnl4000.c b/drivers/iio/light/vcnl4000.c
+index 7c7362e288213..66433886b7b03 100644
+--- a/drivers/iio/light/vcnl4000.c
++++ b/drivers/iio/light/vcnl4000.c
+@@ -994,7 +994,6 @@ static int vcnl4040_write_event_config(struct iio_dev *indio_dev,
  
- 	ctl->max_chunk_size = READ_ONCE(space_info->chunk_size);
--	ctl->max_stripe_size = ctl->max_chunk_size;
-+	ctl->max_stripe_size = min_t(u64, ctl->max_chunk_size, SZ_1G);
+ out:
+ 	mutex_unlock(&data->vcnl4000_lock);
+-	data->chip_spec->set_power_state(data, data->ps_int != 0);
  
- 	if (ctl->type & BTRFS_BLOCK_GROUP_SYSTEM)
- 		ctl->devs_max = min_t(int, ctl->devs_max, BTRFS_MAX_DEVS_SYS_CHUNK);
+ 	return ret;
+ }
+-- 
+2.40.1
+
 
 
