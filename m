@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30D587D3280
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9737D316B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233813AbjJWLUv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:20:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46132 "EHLO
+        id S233520AbjJWLJC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:09:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233796AbjJWLUs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:48 -0400
+        with ESMTP id S233501AbjJWLJB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:09:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82258D6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C20C433C7;
-        Mon, 23 Oct 2023 11:20:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24EC4C2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:09:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF1DC433C8;
+        Mon, 23 Oct 2023 11:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060044;
-        bh=wpZYbJi1d0V+4lLmD/hbnkHCeM2r9EQN0Yf1xCy9QaE=;
+        s=korg; t=1698059339;
+        bh=+5mpEOjWtpXrwl2gTE0xoGChoWqqmzYLT3/gEP8fFl4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mXviKO3ZA2NhjyE5ncnOfI++WHXTt3FlgqlTo9NqBIvH2YGBkeGY6zjoNURR2W9BW
-         Yi4T0qzc64n552sl4MCC9MF4cf0E8RltGb3IFqM/4roJM0QcqVw/Ugc5Lu7tRmCjrq
-         MEJOZp4EIMe0in9z9LDcawKs2ml0nvFNsSz3qdvg=
+        b=GR+r8ja/UKhBjW+cm7Ia5kCLer8I9xKfvswF4nW6PPBhCt/5F7OrWhYcEDQMOcoLF
+         0P0sjU/3qy6wHUuyZYro6BkmC8RG+FU8IjfZQdD2QxDqC3U3tvknuyG5DO3NzJ0SvA
+         soXJA6J/iJTplQTD8/9RZems96qaUG/qCqAWGhXQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Artem Borisov <dedsa2002@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 039/196] ALSA: hda/realtek: Add quirk for ASUS ROG GU603ZV
+        patches@lists.linux.dev, Rocky Liao <quic_rjliao@quicinc.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 118/241] Bluetooth: btusb: add shutdown function for QCA6174
 Date:   Mon, 23 Oct 2023 12:55:04 +0200
-Message-ID: <20231023104829.598316684@linuxfoundation.org>
+Message-ID: <20231023104836.758506557@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,39 +49,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Borisov <dedsa2002@gmail.com>
+From: Rocky Liao <quic_rjliao@quicinc.com>
 
-commit 5dedc9f53eef7ec07b23686381100d03fb259f50 upstream.
+[ Upstream commit 187f8b648cc16f07c66ab1d89d961bdcff779bf7 ]
 
-Enables the SPI-connected Cirrus amp and the required pins
-for headset mic detection.
+We should send hci reset command before bt turn off, which can reset bt
+firmware status.
 
-As of BIOS version 313 it is still necessary to modify the
-ACPI table to add the related _DSD properties:
-  https://gist.github.com/Flex1911/1bce378645fc95a5743671bd5deabfc8
-
-Signed-off-by: Artem Borisov <dedsa2002@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231014075044.17474-1-dedsa2002@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rocky Liao <quic_rjliao@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
+ drivers/bluetooth/btusb.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9717,6 +9717,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
- 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301V", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
-+	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1683, "ASUS UM3402YAR", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x16b2, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x16e3, "ASUS UX50", ALC269_FIXUP_STEREO_DMIC),
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index dfdfb72d350fe..ca9e2a210fff2 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -4348,6 +4348,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 
+ 	if (id->driver_info & BTUSB_QCA_ROME) {
+ 		data->setup_on_usb = btusb_setup_qca;
++		hdev->shutdown = btusb_shutdown_qca;
+ 		hdev->set_bdaddr = btusb_set_bdaddr_ath3012;
+ 		hdev->cmd_timeout = btusb_qca_cmd_timeout;
+ 		set_bit(HCI_QUIRK_SIMULTANEOUS_DISCOVERY, &hdev->quirks);
+-- 
+2.40.1
+
 
 
