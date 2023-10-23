@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03E6E7D32DB
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C647D3186
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233903AbjJWLYf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56850 "EHLO
+        id S233589AbjJWLKF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:10:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233879AbjJWLYc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:32 -0400
+        with ESMTP id S233602AbjJWLKF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBEF10D5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD83C433CD;
-        Mon, 23 Oct 2023 11:24:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B954A99
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5B9C433C8;
+        Mon, 23 Oct 2023 11:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060261;
-        bh=kDd9nFmoPEib1WzNGG7xj89HeChOpZnDgiCvndt3iHg=;
+        s=korg; t=1698059402;
+        bh=eSZDGzjZnCry1pW/gshQFJeby5A4F+UD5vYKi8IDgGA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qBqZcUagUFgk3ipbCSoI8brifuNUad3+Zy4yxM/lgPkAKe813walacRSFAqWKwHAu
-         6mc+5oiF+cd+hxw4RNXHHnWqTzLHu9DFUOAcyVhCPT7ZkcX9EOpKSp3eBxpU5alkLh
-         +nP/ldNMpTl6tni9YcC8nQGKUd3Nvjd+b/IUiVac=
+        b=jJOViV+nJpGlBDw2N0OeMI3cekVcCn4WQcX8s+go3e8JJFeYWOAAQJ4br6PGoqVdS
+         /iBCk5wtRYMBN9833T1sHS/Y8r/otzRkAuNguN4ghLi+cVkE/vkwu396FNNSIs9I53
+         qOxJwGh0R+a86sZitmCE3tHRG6X9mu5guSZv54JY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Udit Kumar <u-kumar1@ti.com>,
-        Thomas Richard <thomas.richard@bootlin.com>,
-        Tony Lindgren <tony@atomide.com>, Dhruva Gole <d-gole@ti.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/196] serial: 8250_omap: Fix errors with no_console_suspend
+        patches@lists.linux.dev, Michal Simek <michal.simek@amd.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.5 165/241] mtd: rawnand: pl353: Ensure program page operations are successful
 Date:   Mon, 23 Oct 2023 12:55:51 +0200
-Message-ID: <20231023104830.972662863@linuxfoundation.org>
+Message-ID: <20231023104837.899319351@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,101 +48,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 560706eff7c8e5621b0d63afe0866e0e1906e87e ]
+commit 9777cc13fd2c3212618904636354be60835e10bb upstream.
 
-We now get errors on system suspend if no_console_suspend is set as
-reported by Thomas. The errors started with commit 20a41a62618d ("serial:
-8250_omap: Use force_suspend and resume for system suspend").
+The NAND core complies with the ONFI specification, which itself
+mentions that after any program or erase operation, a status check
+should be performed to see whether the operation was finished *and*
+successful.
 
-Let's fix the issue by checking for console_suspend_enabled in the system
-suspend and resume path.
+The NAND core offers helpers to finish a page write (sending the
+"PAGE PROG" command, waiting for the NAND chip to be ready again, and
+checking the operation status). But in some cases, advanced controller
+drivers might want to optimize this and craft their own page write
+helper to leverage additional hardware capabilities, thus not always
+using the core facilities.
 
-Note that with this fix the checks for console_suspend_enabled in
-omap8250_runtime_suspend() become useless. We now keep runtime PM usage
-count for an attached kernel console starting with commit bedb404e91bb
-("serial: 8250_port: Don't use power management for kernel console").
+Some drivers, like this one, do not use the core helper to finish a page
+write because the final cycles are automatically managed by the
+hardware. In this case, the additional care must be taken to manually
+perform the final status check.
 
-Fixes: 20a41a62618d ("serial: 8250_omap: Use force_suspend and resume for system suspend")
-Cc: stable <stable@kernel.org>
-Cc: Udit Kumar <u-kumar1@ti.com>
-Reported-by: Thomas Richard <thomas.richard@bootlin.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Tested-by: Thomas Richard <thomas.richard@bootlin.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20230926061319.15140-1-tony@atomide.com
+Let's read the NAND chip status at the end of the page write helper and
+return -EIO upon error.
+
+Cc: Michal Simek <michal.simek@amd.com>
+Cc: stable@vger.kernel.org
+Fixes: 08d8c62164a3 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-3-miquel.raynal@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_omap.c | 25 ++++++++++---------------
- 1 file changed, 10 insertions(+), 15 deletions(-)
+ drivers/mtd/nand/raw/pl35x-nand-controller.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index 0aed614110090..05f8675925ed6 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1516,7 +1516,7 @@ static int omap8250_suspend(struct device *dev)
- {
- 	struct omap8250_priv *priv = dev_get_drvdata(dev);
- 	struct uart_8250_port *up = serial8250_get_port(priv->line);
--	int err;
-+	int err = 0;
+--- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
++++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+@@ -513,6 +513,7 @@ static int pl35x_nand_write_page_hwecc(s
+ 	u32 addr1 = 0, addr2 = 0, row;
+ 	u32 cmd_addr;
+ 	int i, ret;
++	u8 status;
  
- 	serial8250_suspend_port(priv->line);
+ 	ret = pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_APB);
+ 	if (ret)
+@@ -565,6 +566,14 @@ static int pl35x_nand_write_page_hwecc(s
+ 	if (ret)
+ 		goto disable_ecc_engine;
  
-@@ -1526,7 +1526,8 @@ static int omap8250_suspend(struct device *dev)
- 	if (!device_may_wakeup(dev))
- 		priv->wer = 0;
- 	serial_out(up, UART_OMAP_WER, priv->wer);
--	err = pm_runtime_force_suspend(dev);
-+	if (uart_console(&up->port) && console_suspend_enabled)
-+		err = pm_runtime_force_suspend(dev);
- 	flush_work(&priv->qos_work);
- 
- 	return err;
-@@ -1535,11 +1536,15 @@ static int omap8250_suspend(struct device *dev)
- static int omap8250_resume(struct device *dev)
- {
- 	struct omap8250_priv *priv = dev_get_drvdata(dev);
-+	struct uart_8250_port *up = serial8250_get_port(priv->line);
- 	int err;
- 
--	err = pm_runtime_force_resume(dev);
--	if (err)
--		return err;
-+	if (uart_console(&up->port) && console_suspend_enabled) {
-+		err = pm_runtime_force_resume(dev);
-+		if (err)
-+			return err;
-+	}
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		goto disable_ecc_engine;
 +
- 	serial8250_resume_port(priv->line);
- 	/* Paired with pm_runtime_resume_and_get() in omap8250_suspend() */
- 	pm_runtime_mark_last_busy(dev);
-@@ -1616,16 +1621,6 @@ static int omap8250_runtime_suspend(struct device *dev)
++	if (status & NAND_STATUS_FAIL)
++		ret = -EIO;
++
+ disable_ecc_engine:
+ 	pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_BYPASS);
  
- 	if (priv->line >= 0)
- 		up = serial8250_get_port(priv->line);
--	/*
--	 * When using 'no_console_suspend', the console UART must not be
--	 * suspended. Since driver suspend is managed by runtime suspend,
--	 * preventing runtime suspend (by returning error) will keep device
--	 * active during suspend.
--	 */
--	if (priv->is_suspending && !console_suspend_enabled) {
--		if (up && uart_console(&up->port))
--			return -EBUSY;
--	}
- 
- 	if (priv->habit & UART_ERRATA_CLOCK_DISABLE) {
- 		int ret;
--- 
-2.40.1
-
 
 
