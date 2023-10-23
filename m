@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 115097D30E0
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 964147D3110
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:05:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233084AbjJWLDM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:03:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50910 "EHLO
+        id S233232AbjJWLFG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:05:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233090AbjJWLDL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:03:11 -0400
+        with ESMTP id S233225AbjJWLFG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:05:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEFB1D7A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:03:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F942C433C9;
-        Mon, 23 Oct 2023 11:03:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8FD8D7F
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:05:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1663DC433C8;
+        Mon, 23 Oct 2023 11:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058989;
-        bh=DeIuB3oVa7hzQgEmZwQy6/E/wWsrn5i98jMxaTSvjzw=;
+        s=korg; t=1698059103;
+        bh=ufrSYXqCvC+fm7lzpLpoWOPQKy7WepZKnGEPdZBNuLQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x9TpXw9jryEJDlVF8f+KJ1Nxg9pvZLnoG3UTwf0vb/XX0W0bvGgsLcLwYc0jd3rJW
-         TDnTfC79BktvgH38b1wqLWWxERz7E3Gsl0+dF/EX6IlmVm1SwZ/uicEt+OgQg4fAIb
-         9AmcWqRPaUiUnUslyHUCKURsDikHhhMScBysOso4=
+        b=HMdh7U6RrokydT00m1cry8WXC7/auKIekJHu0CcOGo+CoGG6K2lyeE6DcrWD7JTsV
+         XwbfazuNzsTshv1gNkwnsCdvgLkGJ6daXmlvSLIfsWdF56MHMvyjSIt2XeljK9gOMD
+         KePBVNSbMOqRjO29ikNecAk59SL1npFSuJnHIxmQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Mat Martineau <martineau@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.5 026/241] tcp: check mptcp-level constraints for backlog coalescing
-Date:   Mon, 23 Oct 2023 12:53:32 +0200
-Message-ID: <20231023104834.566266902@linuxfoundation.org>
+Subject: [PATCH 6.5 027/241] mptcp: more conservative check for zero probes
+Date:   Mon, 23 Oct 2023 12:53:33 +0200
+Message-ID: <20231023104834.589735224@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
 References: <20231023104833.832874523@linuxfoundation.org>
@@ -56,45 +56,91 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-commit 6db8a37dfc541e059851652cfd4f0bb13b8ff6af upstream.
+commit 72377ab2d671befd6390a1d5677f5cca61235b65 upstream.
 
-The MPTCP protocol can acquire the subflow-level socket lock and
-cause the tcp backlog usage. When inserting new skbs into the
-backlog, the stack will try to coalesce them.
+Christoph reported that the MPTCP protocol can find the subflow-level
+write queue unexpectedly not empty while crafting a zero-window probe,
+hitting a warning:
 
-Currently, we have no check in place to ensure that such coalescing
-will respect the MPTCP-level DSS, and that may cause data stream
-corruption, as reported by Christoph.
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 188 at net/mptcp/protocol.c:1312 mptcp_sendmsg_frag+0xc06/0xe70
+Modules linked in:
+CPU: 0 PID: 188 Comm: kworker/0:2 Not tainted 6.6.0-rc2-g1176aa719d7a #47
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
+Workqueue: events mptcp_worker
+RIP: 0010:mptcp_sendmsg_frag+0xc06/0xe70 net/mptcp/protocol.c:1312
+RAX: 47d0530de347ff6a RBX: 47d0530de347ff6b RCX: ffff8881015d3c00
+RDX: ffff8881015d3c00 RSI: 47d0530de347ff6b RDI: 47d0530de347ff6b
+RBP: 47d0530de347ff6b R08: ffffffff8243c6a8 R09: ffffffff82042d9c
+R10: 0000000000000002 R11: ffffffff82056850 R12: ffff88812a13d580
+R13: 0000000000000001 R14: ffff88812b375e50 R15: ffff88812bbf3200
+FS:  0000000000000000(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000695118 CR3: 0000000115dfc001 CR4: 0000000000170ef0
+Call Trace:
+ <TASK>
+ __subflow_push_pending+0xa4/0x420 net/mptcp/protocol.c:1545
+ __mptcp_push_pending+0x128/0x3b0 net/mptcp/protocol.c:1614
+ mptcp_release_cb+0x218/0x5b0 net/mptcp/protocol.c:3391
+ release_sock+0xf6/0x100 net/core/sock.c:3521
+ mptcp_worker+0x6e8/0x8f0 net/mptcp/protocol.c:2746
+ process_scheduled_works+0x341/0x690 kernel/workqueue.c:2630
+ worker_thread+0x3a7/0x610 kernel/workqueue.c:2784
+ kthread+0x143/0x180 kernel/kthread.c:388
+ ret_from_fork+0x4d/0x60 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1b/0x30 arch/x86/entry/entry_64.S:304
+ </TASK>
 
-Address the issue by adding the relevant admission check for coalescing
-in tcp_add_backlog().
+The root cause of the issue is that expectations are wrong: e.g. due
+to MPTCP-level re-injection we can hit the critical condition.
 
-Note the issue is not easy to reproduce, as the MPTCP protocol tries
-hard to avoid acquiring the subflow-level socket lock.
+Explicitly avoid the zero-window probe when the subflow write queue
+is not empty and drop the related warnings.
 
-Fixes: 648ef4b88673 ("mptcp: Implement MPTCP receive path")
-Cc: stable@vger.kernel.org
 Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/420
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/444
+Fixes: f70cad1085d1 ("mptcp: stop relying on tcp_tx_skb_cache")
+Cc: stable@vger.kernel.org
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231018-send-net-20231018-v1-2-17ecb002e41d@kernel.org
+Link: https://lore.kernel.org/r/20231018-send-net-20231018-v1-3-17ecb002e41d@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_ipv4.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/protocol.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1869,6 +1869,7 @@ bool tcp_add_backlog(struct sock *sk, st
- #ifdef CONFIG_TLS_DEVICE
- 	    tail->decrypted != skb->decrypted ||
- #endif
-+	    !mptcp_skb_can_collapse(tail, skb) ||
- 	    thtail->doff != th->doff ||
- 	    memcmp(thtail + 1, th + 1, hdrlen - sizeof(*th)))
- 		goto no_coalesce;
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1300,7 +1300,7 @@ alloc_skb:
+ 	if (copy == 0) {
+ 		u64 snd_una = READ_ONCE(msk->snd_una);
+ 
+-		if (snd_una != msk->snd_nxt) {
++		if (snd_una != msk->snd_nxt || tcp_write_queue_tail(ssk)) {
+ 			tcp_remove_empty_skb(ssk);
+ 			return 0;
+ 		}
+@@ -1308,11 +1308,6 @@ alloc_skb:
+ 		zero_window_probe = true;
+ 		data_seq = snd_una - 1;
+ 		copy = 1;
+-
+-		/* all mptcp-level data is acked, no skbs should be present into the
+-		 * ssk write queue
+-		 */
+-		WARN_ON_ONCE(reuse_skb);
+ 	}
+ 
+ 	copy = min_t(size_t, copy, info->limit - info->sent);
+@@ -1341,7 +1336,6 @@ alloc_skb:
+ 	if (reuse_skb) {
+ 		TCP_SKB_CB(skb)->tcp_flags &= ~TCPHDR_PSH;
+ 		mpext->data_len += copy;
+-		WARN_ON_ONCE(zero_window_probe);
+ 		goto out;
+ 	}
+ 
 
 
