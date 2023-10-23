@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02ADC7D3369
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC1C37D31AC
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234007AbjJWLaE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:30:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37546 "EHLO
+        id S233581AbjJWLLy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:11:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234063AbjJWLaD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:03 -0400
+        with ESMTP id S233602AbjJWLLx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2472DDB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B300C433C7;
-        Mon, 23 Oct 2023 11:29:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14B75C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D30C433C7;
+        Mon, 23 Oct 2023 11:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060599;
-        bh=SA24MIPuwVcSz/U2Cf24E6+TvY/bdIJ3qMWJuMDud7w=;
+        s=korg; t=1698059510;
+        bh=LkDcZ2Br5iNL7GU3II4bYEajT12sHEjpTk91J+2xrw4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EoGo6y8Cr3l8D40ERlFee6XrKWWUyZrA2dKX3yC952eOwv4fdWPy7+itZDaYWv6Hj
-         eUTpJSmzLvysk31059AncpFv1W6Waw9it3DEZquCuqwH573j/T/jmEYoZjmrWY3DLL
-         dTWmjaFAM5gsN7Q2DwiLcI+QnnVEyTeVEx6YUWXY=
+        b=ETiRC3flVrjqx2AidHbCqQFfkrIbj7mB2yWuvlSsFhYO3HC+teVGpZD2T5rtB4R6J
+         U0fDiBeo8BnZBv/RBEh10qDF/I4EheAlIXfEKFS13ycu/1+IWRJwT9JLgexfcA/kBA
+         Lxpdiaogs8O+ZqntH3tdO1YrXDG5gof4Wy689Ljg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
-        Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.4 029/123] libceph: use kernel_connect()
+        patches@lists.linux.dev,
+        Francis Laniel <flaniel@linux.microsoft.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.5 201/241] selftests/ftrace: Add new test case which checks non unique symbol
 Date:   Mon, 23 Oct 2023 12:56:27 +0200
-Message-ID: <20231023104818.717888287@linuxfoundation.org>
+Message-ID: <20231023104838.762128978@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,50 +49,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Francis Laniel <flaniel@linux.microsoft.com>
 
-commit 7563cf17dce0a875ba3d872acdc63a78ea344019 upstream.
+commit 03b80ff8023adae6780e491f66e932df8165e3a0 upstream.
 
-Direct calls to ops->connect() can overwrite the address parameter when
-used in conjunction with BPF SOCK_ADDR hooks. Recent changes to
-kernel_connect() ensure that callers are insulated from such side
-effects. This patch wraps the direct call to ops->connect() with
-kernel_connect() to prevent unexpected changes to the address passed to
-ceph_tcp_connect().
+If name_show() is non unique, this test will try to install a kprobe on this
+function which should fail returning EADDRNOTAVAIL.
+On kernel where name_show() is not unique, this test is skipped.
 
-This change was originally part of a larger patch targeting the net tree
-addressing all instances of unprotected calls to ops->connect()
-throughout the kernel, but this change was split up into several patches
-targeting various trees.
+Link: https://lore.kernel.org/all/20231020104250.9537-3-flaniel@linux.microsoft.com/
 
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/netdev/20230821100007.559638-1-jrife@google.com/
-Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Signed-off-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/messenger.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc |   13 ++++++++++
+ 1 file changed, 13 insertions(+)
+ create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
 
---- a/net/ceph/messenger.c
-+++ b/net/ceph/messenger.c
-@@ -477,8 +477,8 @@ static int ceph_tcp_connect(struct ceph_
- 	dout("connect %s\n", ceph_pr_addr(&con->peer_addr));
- 
- 	con_sock_state_connecting(con);
--	ret = sock->ops->connect(sock, (struct sockaddr *)&ss, sizeof(ss),
--				 O_NONBLOCK);
-+	ret = kernel_connect(sock, (struct sockaddr *)&ss, sizeof(ss),
-+			     O_NONBLOCK);
- 	if (ret == -EINPROGRESS) {
- 		dout("connect %s EINPROGRESS sk_state = %u\n",
- 		     ceph_pr_addr(&con->peer_addr),
+--- /dev/null
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+@@ -0,0 +1,13 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0
++# description: Test failure of registering kprobe on non unique symbol
++# requires: kprobe_events
++
++SYMBOL='name_show'
++
++# We skip this test on kernel where SYMBOL is unique or does not exist.
++if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
++	exit_unsupported
++fi
++
++! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
 
 
