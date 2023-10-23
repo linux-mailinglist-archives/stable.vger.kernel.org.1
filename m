@@ -2,74 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0964F7D3A67
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 17:11:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F1B57D3A8B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 17:18:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230265AbjJWPLn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 11:11:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44932 "EHLO
+        id S229740AbjJWPSm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 11:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229852AbjJWPLm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 11:11:42 -0400
-Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF6A7DD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 08:11:40 -0700 (PDT)
-Received: by mail-oi1-x22c.google.com with SMTP id 5614622812f47-3b3f6f330d4so1851397b6e.2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 08:11:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698073900; x=1698678700; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=U3pUWaYV0MHOvPseFbWxT/RBFgiDxlKuLFygzevJvjk=;
-        b=dl1JE0YsBAkUOFDYm2zcWpwEePuF8vKNc6TKs0MAmQPz9CpU30nqoQte9+PBDm8AY/
-         3c57193hK5hYlqGceF6jjwACbI4/N9BsD7Cy7yf0TwDz+OS+HNfkIt46QDArXp7uxfIw
-         7/sbCDzAnbywWK8BCLAeUv+xbIdkHtsT8S/+95O0DMrRjm2Rz5T6DoUtQsSaC3u3bave
-         VZ4qkJdvD1PDZkCRKufL+8H0RTLum4wW8YBSJcBHAihWHCbOgURlOmo07koRrjk5yJc4
-         sXzPPbc+xuNBRjTyKJzENGTBNtX0lzkl17O1jlsbOHa45MQUi8UgeFxJW67KwML5y7vM
-         A42g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698073900; x=1698678700;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U3pUWaYV0MHOvPseFbWxT/RBFgiDxlKuLFygzevJvjk=;
-        b=BxF+qH7eCcTcl4iMPpt/soeCU7IcxT+7Q8vOL7Hlnq2YXVatfusct15dNMg6bMCDjj
-         +4NkX+UjObqH25slE3pvgRIMoJ3M22DbEVwnAE4gzXGzHywoaSdduciTrBccVnxrCWPv
-         234XgPhg6Y/dfKnYRxhBzQ2RWMlkRzDvXq3hYR1Ws4rSdoTx6N8jkvqEBd2KtuYa1TK9
-         DPl1fBB84djMTret2MBn1n54Ax3NXvf3IMmQk5LRsUdTu92QSXsxzj0upBp/efJJVorU
-         Ppmv41uZ3oWcTGPu82sXgrNfHJ2fXfoNUsMsU0K9BdKsgzIP4f6ku04GkI9FVrRmZzhN
-         J5dQ==
-X-Gm-Message-State: AOJu0Yx4wAKHyBnSqi2rb6vo7X/fRd0X6tkK/vB7t14ETZbYDzHY7APE
-        0v1/+88nsDM9ebnowELm86j/Hw==
-X-Google-Smtp-Source: AGHT+IGcKp4/eFPOWrpY5TtmEIBGpd+oYq18I+HIjdd/mGHJ37Djqu2HS8GusX9DKnUfaoEQWTwTrw==
-X-Received: by 2002:a05:6808:188:b0:3a7:4876:6044 with SMTP id w8-20020a056808018800b003a748766044mr10467355oic.52.1698073900151;
-        Mon, 23 Oct 2023 08:11:40 -0700 (PDT)
-Received: from [192.168.17.16] ([138.84.45.126])
-        by smtp.gmail.com with ESMTPSA id 4-20020aca1004000000b003af642cf646sm1513574oiq.37.2023.10.23.08.11.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Oct 2023 08:11:39 -0700 (PDT)
-Message-ID: <724521b8-9c63-4645-b3e0-30d9635573a7@linaro.org>
-Date:   Mon, 23 Oct 2023 09:11:36 -0600
+        with ESMTP id S230461AbjJWPSm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 11:18:42 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF841103
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 08:18:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12463C433C9;
+        Mon, 23 Oct 2023 15:18:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698074319;
+        bh=MioXTG7udluvSetup3O78g2HsJEJGk9gLWyJfEWeILA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=LJx2CfV/+FJCiVWBI6EsJhxvDLnqzg/b1qllHt7cMwV3PatGJp5gmRHX6iK/jxiez
+         kRurmaMakEqIWoXrL6DvCBETjyyl0Fyy2X4MyY514jhXPyeevItuZzXmYsk2bXv4cY
+         XYCMCInK0g7H2QENhVjX8YksIEBN6OBBnK+VoB8N/fUtxE/MZzypLmDez03xQpMmt3
+         URfJbBTtg8BGWvGAo0j1BIChnWdR3OWKYg1YtQsX7AwDj5s8PpC4SGk29PWG803Y7j
+         4fzCaoz5+yk2CApd13vd9KnriggdZpxWoB/tOEuhm+3XvBqpQrfBCa2VG0UJorH4qN
+         9ZYepcPt3pwCw==
+Date:   Mon, 23 Oct 2023 09:18:36 -0600
+From:   Keith Busch <kbusch@kernel.org>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Kanchan Joshi <joshi.k@samsung.com>, axboe@kernel.dk,
+        sagi@grimberg.me, linux-nvme@lists.infradead.org,
+        gost.dev@samsung.com, vincentfu@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] nvme: remove unprivileged passthrough support
+Message-ID: <ZTaOzORdmFwxCW1c@kbusch-mbp>
+References: <CGME20231016061151epcas5p1a0e18162b362ffbea754157e99f88995@epcas5p1.samsung.com>
+ <20231016060519.231880-1-joshi.k@samsung.com>
+ <ZS2D4VixIYfMQMwg@kbusch-mbp.dhcp.thefacebook.com>
+ <ZTBNfDzxD3D8loMm@kbusch-mbp>
+ <20231019050411.GA14044@lst.de>
+ <ZTKN7f7kzydfiwb2@kbusch-mbp>
+ <20231023054456.GB11272@lst.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/137] 5.15.137-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231023104820.849461819@linuxfoundation.org>
-From:   =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231023054456.GB11272@lst.de>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,73 +54,19 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello!
+On Mon, Oct 23, 2023 at 07:44:56AM +0200, Christoph Hellwig wrote:
+> Yes, you need someone with root access to change the device node
+> persmissions.  But we allowed that under the assumption it is safe
+> to do so, which it turns out it is not.
 
-On 23/10/23 4:55 a. m., Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.137 release.
-> There are 137 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.137-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Okay, iiuc, while we have to opt-in to allow this hole, we need another
+option for users to set to allow this usage because it's not safe.
 
-We see lots of errors on Arm 32-bits:
+Here are two options I have considered for unpriveledged access, please
+let me know if you have others or thoughts.
 
------8<-----
-/builds/linux/drivers/gpio/gpio-vf610.c:249:11: error: 'IRQCHIP_IMMUTABLE' undeclared here (not in a function); did you mean 'IS_IMMUTABLE'?
-   .flags = IRQCHIP_IMMUTABLE | IRQCHIP_MASK_ON_SUSPEND
-            ^~~~~~~~~~~~~~~~~
-            IS_IMMUTABLE
-/builds/linux/drivers/gpio/gpio-vf610.c:251:2: error: 'GPIOCHIP_IRQ_RESOURCE_HELPERS' undeclared here (not in a function)
-   GPIOCHIP_IRQ_RESOURCE_HELPERS,
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-/builds/linux/drivers/gpio/gpio-vf610.c:251:2: warning: excess elements in struct initializer
-/builds/linux/drivers/gpio/gpio-vf610.c:251:2: note: (near initialization for 'vf610_irqchip')
-/builds/linux/drivers/gpio/gpio-vf610.c: In function 'vf610_gpio_probe':
-/builds/linux/drivers/gpio/gpio-vf610.c:340:2: error: implicit declaration of function 'gpio_irq_chip_set_chip'; did you mean 'gpiochip_get_data'? [-Werror=implicit-function-declaration]
-   gpio_irq_chip_set_chip(girq, &vf610_irqchip);
-   ^~~~~~~~~~~~~~~~~~~~~~
-   gpiochip_get_data
-cc1: some warnings being treated as errors
------>8-----
+  Restrict access for processes with CAP_SYS_RAWIO, which can be granted
+  to non-root users. This cap is already used in scsi subsystem, too.
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Affected builds:
-* clang-17-defconfig                  arm
-* clang-17-imx_v6_v7_defconfig        arm
-* clang-17-lkftconfig                 arm
-* clang-17-lkftconfig-no-kselftest-frag arm
-* clang-nightly-lkftconfig-kselftest  arm
-* gcc-8-defconfig                     arm
-* gcc-8-imx_v6_v7_defconfig           arm
-* gcc-12-defconfig                    arm
-* gcc-12-lkftconfig                   arm
-* gcc-12-lkftconfig-debug             arm
-* gcc-12-lkftconfig-debug-kmemleak    arm
-* gcc-12-lkftconfig-kasan             arm
-* gcc-12-lkftconfig-kselftest         arm
-* gcc-12-lkftconfig-kselftest-kernel  arm
-* gcc-12-lkftconfig-kunit             arm
-* gcc-12-lkftconfig-libgpiod          arm
-* gcc-12-lkftconfig-no-kselftest-frag arm
-* gcc-12-lkftconfig-perf              arm
-* gcc-12-lkftconfig-perf-kernel       arm
-* gcc-12-lkftconfig-rcutorture        arm
-
-Greetings!
-
-Daniel Díaz
-daniel.diaz@linaro.org
-
+  A per nvme-generic namespace sysfs attribute that only root can toggle
+  that would override any caps and just rely on access permissions.
