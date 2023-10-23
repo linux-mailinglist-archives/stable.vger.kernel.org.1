@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 500B97D3533
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C0097D336E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234419AbjJWLqQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:46:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51808 "EHLO
+        id S234054AbjJWLaM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:30:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234376AbjJWLpx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:53 -0400
+        with ESMTP id S234006AbjJWLaL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8DE410F0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB106C433C8;
-        Mon, 23 Oct 2023 11:45:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3A4892
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BEAC433C7;
+        Mon, 23 Oct 2023 11:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061546;
-        bh=0NfI+EcaaDRLUj7pYDOjaHYqwH4CcOrqNeKg96MzlrQ=;
+        s=korg; t=1698060608;
+        bh=up8k6UrH8c7NGtfMgqziN+cquQEvhmZJ9pUQfQ8UAPc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TaE1Jx6OSMZH9YG/s9LDB4RanuXDpK3xB8Ryy4Yde3lNl1y/Qr9u+7WpH0Ukgh81P
-         9YY31WelcTlLAfHlhbfAskamedOpwxEVez8Zp6DH/i2mrCEB1KAn+00ltELCJXQFKF
-         /VZU9yJgQJi1ykD40s5qa3Bg1N56VJCg3zcvD4wk=
+        b=b8t3q7NZjtobeKwrmZHAlpSAjhpmo5gFRQHwfLSyIpEdVdn6WNLKsnSm+zSMKlr1V
+         nJJFyV8jeuJXMEaNif4nV/QlsyRW01HChKtu+TQd1Gr2hpuZqdVTSKJq58dHG1fvw3
+         JBBUe6fz361DHlwb5wi+f4ltsBRbQBYcP3BiSl7I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liam Mark <lmark@codeaurora.org>,
-        Georgi Djakov <georgi.djakov@linaro.org>,
-        David Hildenbrand <david@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>, pjy@amazon.com
-Subject: [PATCH 5.10 083/202] mm/memory_hotplug: rate limit page migration warnings
+        patches@lists.linux.dev, Thorsten Leemhuis <linux@leemhuis.info>,
+        Jeffery Miller <jefferymiller@google.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 032/123] Input: psmouse - fix fast_reconnect function for PS/2 mode
 Date:   Mon, 23 Oct 2023 12:56:30 +0200
-Message-ID: <20231023104828.967818598@linuxfoundation.org>
+Message-ID: <20231023104818.821706012@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +49,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam Mark <lmark@codeaurora.org>
+From: Jeffery Miller <jefferymiller@google.com>
 
-commit 786dee864804f8e851cf0f258df2ccbb4ee03d80 upstream.
+commit e2cb5cc822b6c9ee72c56ce1d81671b22c05406a upstream.
 
-When offlining memory the system can attempt to migrate a lot of pages, if
-there are problems with migration this can flood the logs.  Printing all
-the data hogs the CPU and cause some RT threads to run for a long time,
-which may have some bad consequences.
+When the SMBus connection is attempted psmouse_smbus_init() sets
+the fast_reconnect pointer to psmouse_smbus_reconnecti(). If SMBus
+initialization fails, elantech_setup_ps2() and synaptics_init_ps2() will
+fallback to PS/2 mode, replacing the psmouse private data. This can cause
+issues on resume, since psmouse_smbus_reconnect() expects to find an
+instance of struct psmouse_smbus_dev in psmouse->private.
 
-Rate limit the page migration warnings in order to avoid this.
+The issue was uncovered when in 92e24e0e57f7 ("Input: psmouse - add
+delay when deactivating for SMBus mode") psmouse_smbus_reconnect()
+started attempting to use more of the data structure. The commit was
+since reverted, not because it was at fault, but because there was found
+a better way of doing what it was attempting to do.
 
-Link: https://lkml.kernel.org/r/20210505140542.24935-1-georgi.djakov@linaro.org
-Signed-off-by: Liam Mark <lmark@codeaurora.org>
-Signed-off-by: Georgi Djakov <georgi.djakov@linaro.org>
-Cc: David Hildenbrand <david@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: <pjy@amazon.com>
+Fix the problem by resetting the fast_reconnect pointer in psmouse
+structure in elantech_setup_ps2() and synaptics_init_ps2() when the PS/2
+mode is used.
+
+Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
+Tested-by: Thorsten Leemhuis <linux@leemhuis.info>
+Signed-off-by: Jeffery Miller <jefferymiller@google.com>
+Fixes: bf232e460a35 ("Input: psmouse-smbus - allow to control psmouse_deactivate")
+Link: https://lore.kernel.org/r/20231005002249.554877-1-jefferymiller@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory_hotplug.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/input/mouse/elantech.c  |    1 +
+ drivers/input/mouse/synaptics.c |    1 +
+ 2 files changed, 2 insertions(+)
 
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1279,6 +1279,8 @@ do_migrate_range(unsigned long start_pfn
- 	struct page *page, *head;
- 	int ret = 0;
- 	LIST_HEAD(source);
-+	static DEFINE_RATELIMIT_STATE(migrate_rs, DEFAULT_RATELIMIT_INTERVAL,
-+				      DEFAULT_RATELIMIT_BURST);
+--- a/drivers/input/mouse/elantech.c
++++ b/drivers/input/mouse/elantech.c
+@@ -2114,6 +2114,7 @@ static int elantech_setup_ps2(struct psm
+ 	psmouse->protocol_handler = elantech_process_byte;
+ 	psmouse->disconnect = elantech_disconnect;
+ 	psmouse->reconnect = elantech_reconnect;
++	psmouse->fast_reconnect = NULL;
+ 	psmouse->pktsize = info->hw_version > 1 ? 6 : 4;
  
- 	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
- 		if (!pfn_valid(pfn))
-@@ -1325,8 +1327,10 @@ do_migrate_range(unsigned long start_pfn
- 						    page_is_file_lru(page));
- 
- 		} else {
--			pr_warn("failed to isolate pfn %lx\n", pfn);
--			dump_page(page, "isolation failed");
-+			if (__ratelimit(&migrate_rs)) {
-+				pr_warn("failed to isolate pfn %lx\n", pfn);
-+				dump_page(page, "isolation failed");
-+			}
- 		}
- 		put_page(page);
- 	}
-@@ -1355,9 +1359,11 @@ do_migrate_range(unsigned long start_pfn
- 			(unsigned long)&mtc, MIGRATE_SYNC, MR_MEMORY_HOTPLUG);
- 		if (ret) {
- 			list_for_each_entry(page, &source, lru) {
--				pr_warn("migrating pfn %lx failed ret:%d ",
--				       page_to_pfn(page), ret);
--				dump_page(page, "migration failure");
-+				if (__ratelimit(&migrate_rs)) {
-+					pr_warn("migrating pfn %lx failed ret:%d\n",
-+						page_to_pfn(page), ret);
-+					dump_page(page, "migration failure");
-+				}
- 			}
- 			putback_movable_pages(&source);
- 		}
+ 	return 0;
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -1617,6 +1617,7 @@ static int synaptics_init_ps2(struct psm
+ 	psmouse->set_rate = synaptics_set_rate;
+ 	psmouse->disconnect = synaptics_disconnect;
+ 	psmouse->reconnect = synaptics_reconnect;
++	psmouse->fast_reconnect = NULL;
+ 	psmouse->cleanup = synaptics_reset;
+ 	/* Synaptics can usually stay in sync without extra help */
+ 	psmouse->resync_time = 0;
 
 
