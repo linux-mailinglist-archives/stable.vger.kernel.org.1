@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AFB87D320D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B7CA7D31D0
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233737AbjJWLQM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:16:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49648 "EHLO
+        id S233633AbjJWLNe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:13:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233754AbjJWLQI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:08 -0400
+        with ESMTP id S233412AbjJWLNd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B34610FB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A196C433C7;
-        Mon, 23 Oct 2023 11:16:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90DD9C5
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE74BC433C8;
+        Mon, 23 Oct 2023 11:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059763;
-        bh=3qUTny/oFDuXPqsNCc4p217hZZQH67ID6Vu8IZGvlXg=;
+        s=korg; t=1698059610;
+        bh=J0frSJpNxJ7IIs5GPkrsQMTAM2pvnZRZKloAfmVSjCc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hx00uGrzPNvmmh4nA8HhPpz9q3gkq6dLbDcIPXq10zecaLnp3YlCgwq4QrYXBvcxE
-         BXRpu6xgrO5x8vgG/LEJ3OGSAiLXqN7s4oORek61ETlLDp6YsKYv0YqdlG5z+iArkb
-         0gDfJM2hESXGeSGEQxJ2HK/8WdlvFsjytSOLf79A=
+        b=BOqhTyctRIeYZ7KObl1NR5xqt60HAh4c5t4/8RkPGDigqvWqX0JCdUwNMmmBUMQQi
+         aGoU9nuY+pkUGNRbJ3b60J75y38ECxXtgivEnLCFrHzTsXvUAib1kCU9x3PJkM9JOW
+         OY3d2WJP2RrsHaNFfnW7SSX9xIkTZ8a21rhMgT+U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.19 45/98] Bluetooth: vhci: Fix race when opening vhci device
+        patches@lists.linux.dev, James John <me@donjajo.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.5 208/241] platform/x86: asus-wmi: Change ASUS_WMI_BRN_DOWN code from 0x20 to 0x2e
 Date:   Mon, 23 Oct 2023 12:56:34 +0200
-Message-ID: <20231023104815.204092141@linuxfoundation.org>
+Message-ID: <20231023104838.924084015@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,55 +48,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 92d4abd66f7080075793970fc8f241239e58a9e7 upstream.
+commit f37cc2fc277b371fc491890afb7d8a26e36bb3a1 upstream.
 
-When the vhci device is opened in the two-step way, i.e.: open device
-then write a vendor packet with requested controller type, the device
-shall respond with a vendor packet which includes HCI index of created
-interface.
+Older Asus laptops change the backlight level themselves and then send
+WMI events with different codes for different backlight levels.
 
-When the virtual HCI is created, the host sends a reset request to the
-controller. This request is processed by the vhci_send_frame() function.
-However, this request is send by a different thread, so it might happen
-that this HCI request will be received before the vendor response is
-queued in the read queue. This results in the HCI vendor response and
-HCI reset request inversion in the read queue which leads to improper
-behavior of btvirt:
+The asus-wmi.c code maps the entire range of codes reported on
+brightness down keypresses to an internal ASUS_WMI_BRN_DOWN code:
 
-> dmesg
-[1754256.640122] Bluetooth: MGMT ver 1.22
-[1754263.023806] Bluetooth: MGMT ver 1.22
-[1754265.043775] Bluetooth: hci1: Opcode 0x c03 failed: -110
+define NOTIFY_BRNUP_MIN                0x11
+define NOTIFY_BRNUP_MAX                0x1f
+define NOTIFY_BRNDOWN_MIN              0x20
+define NOTIFY_BRNDOWN_MAX              0x2e
 
-In order to synchronize vhci two-step open/setup process with virtual
-HCI initialization, this patch adds internal lock when queuing data in
-the vhci_send_frame() function.
+        if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
+                code = ASUS_WMI_BRN_UP;
+        else if (code >= NOTIFY_BRNDOWN_MIN && code <= NOTIFY_BRNDOWN_MAX)
+                code = ASUS_WMI_BRN_DOWN;
 
-Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Before this commit all the NOTIFY_BRNDOWN_MIN - NOTIFY_BRNDOWN_MAX
+aka 0x20 - 0x2e events were mapped to 0x20.
+
+This mapping is causing issues on new laptop models which actually
+send 0x2b events for printscreen presses and 0x2c events for
+capslock presses, which get translated into spurious brightness-down
+presses.
+
+The plan is disable the 0x11-0x2e special mapping on laptops
+where asus-wmi does not register a backlight-device to avoid
+the spurious brightness-down keypresses. New laptops always send
+0x2e for brightness-down presses, change the special internal
+ASUS_WMI_BRN_DOWN value from 0x20 to 0x2e to match this in
+preparation for fixing the spurious brightness-down presses.
+
+This change does not have any functional impact since all
+of 0x20 - 0x2e is mapped to ASUS_WMI_BRN_DOWN first and only
+then checked against the keymap code and the new 0x2e
+value is still in the 0x20 - 0x2e range.
+
+Reported-by: James John <me@donjajo.com>
+Closes: https://lore.kernel.org/platform-driver-x86/a2c441fe-457e-44cf-a146-0ecd86b037cf@donjajo.com/
+Closes: https://bbs.archlinux.org/viewtopic.php?pid=2123716
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231017090725.38163-2-hdegoede@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_vhci.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/x86/asus-wmi.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bluetooth/hci_vhci.c
-+++ b/drivers/bluetooth/hci_vhci.c
-@@ -82,7 +82,10 @@ static int vhci_send_frame(struct hci_de
- 	struct vhci_data *data = hci_get_drvdata(hdev);
+--- a/drivers/platform/x86/asus-wmi.h
++++ b/drivers/platform/x86/asus-wmi.h
+@@ -18,7 +18,7 @@
+ #include <linux/i8042.h>
  
- 	memcpy(skb_push(skb, 1), &hci_skb_pkt_type(skb), 1);
-+
-+	mutex_lock(&data->open_mutex);
- 	skb_queue_tail(&data->readq, skb);
-+	mutex_unlock(&data->open_mutex);
+ #define ASUS_WMI_KEY_IGNORE (-1)
+-#define ASUS_WMI_BRN_DOWN	0x20
++#define ASUS_WMI_BRN_DOWN	0x2e
+ #define ASUS_WMI_BRN_UP		0x2f
  
- 	wake_up_interruptible(&data->read_wait);
- 	return 0;
+ struct module;
 
 
