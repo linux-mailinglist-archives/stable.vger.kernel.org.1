@@ -2,84 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32B207D2ECE
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 11:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 973447D2EDA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 11:50:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229640AbjJWJsW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 05:48:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55250 "EHLO
+        id S229732AbjJWJue (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 05:50:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjJWJsV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 05:48:21 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3E19A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 02:48:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D9FC433C7;
-        Mon, 23 Oct 2023 09:48:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698054499;
-        bh=iMS1o9mnWuPsscKDyiduYVbM34gCmMEfTwy8U7k2xw0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=QJWsPGKY+zLh7TErxV6dIgXuUDuTnkDFmhUmJZNOy2lFJXWI3JPLL0pPo0dfQEQlA
-         4lq94RunWTMYdzVw6GXK3b54iiE/pvBMdebcNyV9B5iNNY7zs9/K09kPL8ROJlWRz+
-         JG4ZLi2jwGEQxUjJm1OOrKUCImoRdHegIT68xdNK+OHOq+ZtMfJiNLkM/KXyZ0KHwb
-         65x9m6FTen2X0hjnJaHXlhKsDZggtbEzqeUKpTwcmZlH/Z5kbKUabo0WIlN+hyo5Iy
-         LczD0c/mKaZV1HIHISJJzwCEfU8+nb+zvJYEPyTZdNENVdHCGnErmtukxMibYyX8O0
-         XGxaBFx5+pRqA==
-Date:   Mon, 23 Oct 2023 10:48:15 +0100
-From:   Lee Jones <lee@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: Re: [PATCH v5.4.y 1/3] driver: platform: Add helper for safer
- setting of driver_override
-Message-ID: <20231023094815.GE8909@google.com>
-References: <20231018120527.2110438-1-lee@kernel.org>
- <2023102037-subscript-negate-0f30@gregkh>
+        with ESMTP id S233064AbjJWJu2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 05:50:28 -0400
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C72D6E6
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 02:50:25 -0700 (PDT)
+Received: from pwmachine.numericable.fr (unknown [188.24.154.80])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 1401D20B74C0;
+        Mon, 23 Oct 2023 02:50:23 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1401D20B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1698054625;
+        bh=9lF80QwakaNxjweC4+4+yDzMOo/8RyRoSEvX93N6quU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=CnyGw4E4GAkVGzbvsxP15DqudXPzbrcganCgRrOq1JrJXgUM3keIlO50OJn26e+SG
+         Es4+6dS/yHF64/qH773MsWlha4mtKiKasfgqv64s8Q6+5qUgDB8M7Y92ZgCkp5rhrU
+         yB82a307JvtY13QbjX/qVXGoN6otI/oxxBYW9js4=
+From:   Francis Laniel <flaniel@linux.microsoft.com>
+To:     stable@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Francis Laniel <flaniel@linux.microsoft.com>
+Subject: [PATCH 4.14.y 0/1] Return EADDRNOTAVAIL when func matches several symbols during kprobe creation
+Date:   Mon, 23 Oct 2023 12:49:46 +0300
+Message-Id: <20231023094947.258663-1-flaniel@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2023102140-tartly-democrat-140d@gregkh>
+References: <2023102140-tartly-democrat-140d@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023102037-subscript-negate-0f30@gregkh>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 20 Oct 2023, Greg Kroah-Hartman wrote:
+Hi.
 
-> <snip>
-> 
-> Something went wrong with this 5.4 series you sent, I got the following
-> emails which look like 2 different versions of this series?:
-> 
->   11   C Oct 18 Lee Jones       (7.0K) [PATCH v5.4.y 1/3] driver: platform: Add helper for safer setting of driver_override
->   12   C Oct 18 Lee Jones       (2.6K) ├─>[PATCH v5.4.y 3/3] rpmsg: Fix kfree() of static memory on setting driver_override
->   13   C Oct 18 Lee Jones       (1.1K) ├─>[PATCH v5.4.y 2/3] rpmsg: Constify local variable in field store macro
->   14   C Oct 18 Lee Jones       (2.6K) ├─>[PATCH v5.4.y 2/2] rpmsg: Fix kfree() of static memory on setting driver_override
->   15   C Oct 18 Lee Jones       (1.1K) └─>[PATCH v5.4.y 1/2] rpmsg: Constify local variable in field store macro
-> 
-> And you can see it here:
-> 	https://lore.kernel.org/all/20231018120527.2110438-1-lee@kernel.org/#r
-> 
-> So I don't know what patches to take for 5.4, sorry.  Can you please resend the
-> properly ones?
 
-You're right.  They're in my inbox too.
+I received messages regarding problems to apply the upstream patch.
+I was able to reproduce the problem on the following stable kernels:
+* 4.14,
+* 4.19,
+* 5.4
+* and 5.10
+But it seems to be false positive for kernel 5.15 and 6.1, is this case possible
+or I did something wrong?
 
-One set was sent 1s after the other, so must be a tooling error.
+For kernel 4.14, I adapted the patch and tested it to confirm its behavior:
+root@vm-amd64:~# uname -a
+Linux vm-amd64 4.14.327+ #120 SMP Mon Oct 23 12:26:47 EEST 2023 x86_64 GNU/Linux
+root@vm-amd64:~# echo 'p:probe/name_show name_show' > /sys/kernel/tracing/kprobe_events
+-bash: echo: write error: Cannot assign requested address
 
-The 2 sets are identical.
+I would nonetheless like to get reviews before having it merged as it is a bit
+different from upstream patch.
+In the meanwhile, I will work on applying this patch to other kernels.
+The goal would be to have two versions of the patch:
+1. One for "older" kernels (i.e before 5.15).
+2. Another for "younger" kernels (i.e. 5.15 and above).
+I am not really sure if this is way to work with stable kernels, as this is
+first time I have to deal with such a case.
+So, any feedback on how to handle it properly would be more than welcome.
 
-1/3 == 1/3
-2/3 == 2/3
-3/3 == 3/3
+Francis Laniel (1):
+  tracing/kprobes: Return EADDRNOTAVAIL when func matches several
+    symbols
 
--- 
-Lee Jones [李琼斯]
+ kernel/trace/trace_kprobe.c | 48 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+
+
+Best regards and thank you in advance.
+--
+2.34.1
+
