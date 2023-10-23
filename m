@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39AAA7D3388
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C32317D341B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234077AbjJWLbX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:31:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41210 "EHLO
+        id S234134AbjJWLgt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:36:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233967AbjJWLbW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:22 -0400
+        with ESMTP id S234044AbjJWLgs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56F24A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3E8C433C7;
-        Mon, 23 Oct 2023 11:31:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DADEFF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F7CC433C7;
+        Mon, 23 Oct 2023 11:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060680;
-        bh=b99zhs0KGcE47oIM28oz/Sll3QZAShkGH3CbJHG/5Ds=;
+        s=korg; t=1698061006;
+        bh=jNMHDn9z6Ie4gSv7214pWSv+cn+xuionwZA5j6zbrRo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xHqOBj7FBqxPiUfy8yPFpjh5U1fbz9PRJD1ZSJyaLOdrxIv2Dm0YaYeNuvcYACRve
-         WG0B2imj3RVq3dlstn3JLTpc+rAuTEu2moDsoTKPaMA/NKrKw4DneitsESttgD3682
-         MJPNpuvvmDQaF+5tI9wT1gM7xRBCIo76B7FdlROk=
+        b=PxJ4IBc4KfjfJ7uqES2tDLXW8EDlLFliKbVyXuoonYReujx8kpWUiXT0Cr/y0nA/F
+         DrWQT4vIL4zLVllwTF2hp+kj/I7H7IhYTPVL51l+9IewPs+Tt+IPbxAQA/I/cChfOV
+         2vpo9hzrFc/E6XnozstAaDWiO719POVAK43OeDYU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
-        Eugen Hristev <eugen.hristev@collabora.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 039/123] dmaengine: mediatek: Fix deadlock caused by synchronize_irq()
-Date:   Mon, 23 Oct 2023 12:56:37 +0200
-Message-ID: <20231023104819.037540274@linuxfoundation.org>
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Simon Horman <horms@kernel.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 041/137] net: dsa: bcm_sf2: Fix possible memory leak in bcm_sf2_mdio_register()
+Date:   Mon, 23 Oct 2023 12:56:38 +0200
+Message-ID: <20231023104822.428618881@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,57 +50,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 01f1ae2733e2bb4de92fefcea5fda847d92aede1 ]
+commit 61b40cefe51af005c72dbdcf975a3d166c6e6406 upstream.
 
-The synchronize_irq(c->irq) will not return until the IRQ handler
-mtk_uart_apdma_irq_handler() is completed. If the synchronize_irq()
-holds a spin_lock and waits the IRQ handler to complete, but the
-IRQ handler also needs the same spin_lock. The deadlock will happen.
-The process is shown below:
+In bcm_sf2_mdio_register(), the class_find_device() will call get_device()
+to increment reference count for priv->master_mii_bus->dev if
+of_mdio_find_bus() succeeds. If mdiobus_alloc() or mdiobus_register()
+fails, it will call get_device() twice without decrement reference count
+for the device. And it is the same if bcm_sf2_mdio_register() succeeds but
+fails in bcm_sf2_sw_probe(), or if bcm_sf2_sw_probe() succeeds. If the
+reference count has not decremented to zero, the dev related resource will
+not be freed.
 
-          cpu0                        cpu1
-mtk_uart_apdma_device_pause() | mtk_uart_apdma_irq_handler()
-  spin_lock_irqsave()         |
-                              |   spin_lock_irqsave()
-  //hold the lock to wait     |
-  synchronize_irq()           |
+So remove the get_device() in bcm_sf2_mdio_register(), and call
+put_device() if mdiobus_alloc() or mdiobus_register() fails and in
+bcm_sf2_mdio_unregister() to solve the issue.
 
-This patch reorders the synchronize_irq(c->irq) outside the spin_lock
-in order to mitigate the bug.
+And as Simon suggested, unwind from errors for bcm_sf2_mdio_register() and
+just return 0 if it succeeds to make it cleaner.
 
-Fixes: 9135408c3ace ("dmaengine: mediatek: Add MediaTek UART APDMA support")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Reviewed-by: Eugen Hristev <eugen.hristev@collabora.com>
-Link: https://lore.kernel.org/r/20230806032511.45263-1-duoming@zju.edu.cn
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 461cd1b03e32 ("net: dsa: bcm_sf2: Register our slave MDIO bus")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Suggested-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231011032419.2423290-1-ruanjinjie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/mediatek/mtk-uart-apdma.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/dsa/bcm_sf2.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/dma/mediatek/mtk-uart-apdma.c b/drivers/dma/mediatek/mtk-uart-apdma.c
-index 7718d09e3d29f..5d1ba3ba3755a 100644
---- a/drivers/dma/mediatek/mtk-uart-apdma.c
-+++ b/drivers/dma/mediatek/mtk-uart-apdma.c
-@@ -450,9 +450,8 @@ static int mtk_uart_apdma_device_pause(struct dma_chan *chan)
- 	mtk_uart_apdma_write(c, VFF_EN, VFF_EN_CLR_B);
- 	mtk_uart_apdma_write(c, VFF_INT_EN, VFF_INT_EN_CLR_B);
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -577,17 +577,16 @@ static int bcm_sf2_mdio_register(struct
+ 	dn = of_find_compatible_node(NULL, NULL, "brcm,unimac-mdio");
+ 	priv->master_mii_bus = of_mdio_find_bus(dn);
+ 	if (!priv->master_mii_bus) {
+-		of_node_put(dn);
+-		return -EPROBE_DEFER;
++		err = -EPROBE_DEFER;
++		goto err_of_node_put;
+ 	}
  
--	synchronize_irq(c->irq);
--
- 	spin_unlock_irqrestore(&c->vc.lock, flags);
-+	synchronize_irq(c->irq);
+-	get_device(&priv->master_mii_bus->dev);
+ 	priv->master_mii_dn = dn;
  
- 	return 0;
+ 	priv->slave_mii_bus = mdiobus_alloc();
+ 	if (!priv->slave_mii_bus) {
+-		of_node_put(dn);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto err_put_master_mii_bus_dev;
+ 	}
+ 
+ 	priv->slave_mii_bus->priv = priv;
+@@ -644,11 +643,17 @@ static int bcm_sf2_mdio_register(struct
+ 	}
+ 
+ 	err = mdiobus_register(priv->slave_mii_bus);
+-	if (err && dn) {
+-		mdiobus_free(priv->slave_mii_bus);
+-		of_node_put(dn);
+-	}
++	if (err && dn)
++		goto err_free_slave_mii_bus;
++
++	return 0;
+ 
++err_free_slave_mii_bus:
++	mdiobus_free(priv->slave_mii_bus);
++err_put_master_mii_bus_dev:
++	put_device(&priv->master_mii_bus->dev);
++err_of_node_put:
++	of_node_put(dn);
+ 	return err;
  }
--- 
-2.40.1
-
+ 
+@@ -656,6 +661,7 @@ static void bcm_sf2_mdio_unregister(stru
+ {
+ 	mdiobus_unregister(priv->slave_mii_bus);
+ 	mdiobus_free(priv->slave_mii_bus);
++	put_device(&priv->master_mii_bus->dev);
+ 	of_node_put(priv->master_mii_dn);
+ }
+ 
 
 
