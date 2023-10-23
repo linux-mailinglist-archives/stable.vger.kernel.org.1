@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E95597D3288
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 374E27D34C0
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233802AbjJWLVL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:21:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
+        id S234294AbjJWLmd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:42:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46328 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233805AbjJWLVL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:11 -0400
+        with ESMTP id S234320AbjJWLmY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B4EC2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390DEC433C8;
-        Mon, 23 Oct 2023 11:21:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEBE010EB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43064C433C8;
+        Mon, 23 Oct 2023 11:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060068;
-        bh=y1V6x49j5eH5EAlkGm4z5mH6JTb31Sgmn92hMfWmvJs=;
+        s=korg; t=1698061334;
+        bh=AMwY5TskX57+HnBJ9opWoO9lO7BJBdGmZxzywtbvAGg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=znpGwKFV3zo4YzNwLYyDzy6jvdYCpzKep3giG1IirXWOmct7p/0LhSogpfEC/Nrw3
-         oQe+eXLtECmM5ur+MKwCqJMzUv6tlflhpt7k4kgfev2jozsXrU2igbX9wedxoTC4cH
-         qXUMoE2tJnMKfQQhmn0Peo4z6/jagEQtvOGlt2oM=
+        b=QQ2BnHC6UDbe2SSXL60GzyLbBxAZuGPAdPyIu9aLMkLf0uPSjGFgo06EuDOKL6zEg
+         z8xsLVXNrJzG3N4Dntmnt65WEOR6okiT39+aVOIZYp28A/5+yh3v4e4x7WRtzhNVI6
+         A6hg5ItXMkz7jXUzd/xWSgU6FPoAW3Sp9QoUQnGs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>
-Subject: [PATCH 6.1 047/196] xfrm: fix a data-race in xfrm_lookup_with_ifid()
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 005/202] platform/x86: hp-wmi:: Mark driver struct with __refdata to prevent section mismatch warning
 Date:   Mon, 23 Oct 2023 12:55:12 +0200
-Message-ID: <20231023104829.847320332@linuxfoundation.org>
+Message-ID: <20231023104826.744447233@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,84 +52,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit de5724ca38fd5e442bae9c1fab31942b6544012d upstream.
+[ Upstream commit 5b44abbc39ca15df80d0da4756078c98c831090f ]
 
-syzbot complains about a race in xfrm_lookup_with_ifid() [1]
+As described in the added code comment, a reference to .exit.text is ok
+for drivers registered via module_platform_driver_probe(). Make this
+explicit to prevent a section mismatch warning:
 
-When preparing commit 0a9e5794b21e ("xfrm: annotate data-race
-around use_time") I thought xfrm_lookup_with_ifid() was modifying
-a still private structure.
+	WARNING: modpost: drivers/platform/x86/hp/hp-wmi: section mismatch in reference: hp_wmi_driver+0x8 (section: .data) -> hp_wmi_bios_remove (section: .exit.text)
 
-[1]
-BUG: KCSAN: data-race in xfrm_lookup_with_ifid / xfrm_lookup_with_ifid
-
-write to 0xffff88813ea41108 of 8 bytes by task 8150 on cpu 1:
-xfrm_lookup_with_ifid+0xce7/0x12d0 net/xfrm/xfrm_policy.c:3218
-xfrm_lookup net/xfrm/xfrm_policy.c:3270 [inline]
-xfrm_lookup_route+0x3b/0x100 net/xfrm/xfrm_policy.c:3281
-ip6_dst_lookup_flow+0x98/0xc0 net/ipv6/ip6_output.c:1246
-send6+0x241/0x3c0 drivers/net/wireguard/socket.c:139
-wg_socket_send_skb_to_peer+0xbd/0x130 drivers/net/wireguard/socket.c:178
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work kernel/workqueue.c:2630 [inline]
-process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2703
-worker_thread+0x525/0x730 kernel/workqueue.c:2784
-kthread+0x1d7/0x210 kernel/kthread.c:388
-ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
-
-write to 0xffff88813ea41108 of 8 bytes by task 15867 on cpu 0:
-xfrm_lookup_with_ifid+0xce7/0x12d0 net/xfrm/xfrm_policy.c:3218
-xfrm_lookup net/xfrm/xfrm_policy.c:3270 [inline]
-xfrm_lookup_route+0x3b/0x100 net/xfrm/xfrm_policy.c:3281
-ip6_dst_lookup_flow+0x98/0xc0 net/ipv6/ip6_output.c:1246
-send6+0x241/0x3c0 drivers/net/wireguard/socket.c:139
-wg_socket_send_skb_to_peer+0xbd/0x130 drivers/net/wireguard/socket.c:178
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work kernel/workqueue.c:2630 [inline]
-process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2703
-worker_thread+0x525/0x730 kernel/workqueue.c:2784
-kthread+0x1d7/0x210 kernel/kthread.c:388
-ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
-
-value changed: 0x00000000651cd9d1 -> 0x00000000651cd9d2
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 15867 Comm: kworker/u4:58 Not tainted 6.6.0-rc4-syzkaller-00016-g5e62ed3b1c8a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
-Workqueue: wg-kex-wg2 wg_packet_handshake_send_worker
-
-Fixes: 0a9e5794b21e ("xfrm: annotate data-race around use_time")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c165b80cfecc ("hp-wmi: fix handling of platform device")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231004111624.2667753-1-u.kleine-koenig@pengutronix.de
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_policy.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/hp-wmi.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -3138,7 +3138,7 @@ no_transform:
- 	}
+diff --git a/drivers/platform/x86/hp-wmi.c b/drivers/platform/x86/hp-wmi.c
+index 6642d09b17b55..364d95cdaf2db 100644
+--- a/drivers/platform/x86/hp-wmi.c
++++ b/drivers/platform/x86/hp-wmi.c
+@@ -986,7 +986,13 @@ static const struct dev_pm_ops hp_wmi_pm_ops = {
+ 	.restore  = hp_wmi_resume_handler,
+ };
  
- 	for (i = 0; i < num_pols; i++)
--		pols[i]->curlft.use_time = ktime_get_real_seconds();
-+		WRITE_ONCE(pols[i]->curlft.use_time, ktime_get_real_seconds());
- 
- 	if (num_xfrms < 0) {
- 		/* Prohibit the flow */
+-static struct platform_driver hp_wmi_driver = {
++/*
++ * hp_wmi_bios_remove() lives in .exit.text. For drivers registered via
++ * module_platform_driver_probe() this is ok because they cannot get unbound at
++ * runtime. So mark the driver struct with __refdata to prevent modpost
++ * triggering a section mismatch warning.
++ */
++static struct platform_driver hp_wmi_driver __refdata = {
+ 	.driver = {
+ 		.name = "hp-wmi",
+ 		.pm = &hp_wmi_pm_ops,
+-- 
+2.40.1
+
 
 
