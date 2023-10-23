@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 809597D3225
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E947D342D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233672AbjJWLRL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:17:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
+        id S234167AbjJWLhS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjJWLRK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:10 -0400
+        with ESMTP id S234183AbjJWLhO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86C992
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82CAC433C9;
-        Mon, 23 Oct 2023 11:17:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FFA8D7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38BEEC433CB;
+        Mon, 23 Oct 2023 11:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059828;
-        bh=z7l7CPkZOMZKJPdUhUNQTc31N1GrfOm+U3AwlUGoUWM=;
+        s=korg; t=1698061031;
+        bh=kaMglhRlROZ5RFXuGZAHxYepuB/tsFUgnyE5K7/h7q8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zt9bvCEtT+0OTjFZ1G1RGpwxTcG4IzjkbzCZh0qo2WPm29SI1YM/cvUY9NJ/tFsOd
-         /KHOGUH/N9BVzP2RNT4eext38Ya7plzhqFfXn53LO/gz/4ncO3/BunK53SCqRFlYNw
-         t19gbEvR8x/m0+hW6KgWsQPC80b0TueecMprls7k=
+        b=y7NNX7Cg9H9ukMw3b5QG5yS7ZyHZmGG6uvG4GsTYcxzLqrC6N5T4pMtFUXXzX2EJ7
+         GJR1b4HT3RMs3BV/S8aGEFiGgK6AVLgLXryB3fOFoTgtgiEY8r9edlPjvtEbizKUAG
+         gCdVmcahH8bjJAJUrUBy1POkBJK5v51XW61+TTFI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
-        Milind Changire <mchangir@redhat.com>,
-        Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 4.19 29/98] ceph: fix incorrect revoked caps assert in ceph_fill_file_size()
-Date:   Mon, 23 Oct 2023 12:56:18 +0200
-Message-ID: <20231023104814.613199687@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Bla=C5=BEej=20Kraj=C5=88=C3=A1k?= <krajnak@levonet.sk>,
+        Florian Westphal <fw@strlen.de>
+Subject: [PATCH 5.15 022/137] netfilter: nft_payload: fix wrong mac header matching
+Date:   Mon, 23 Oct 2023 12:56:19 +0200
+Message-ID: <20231023104821.711812762@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,48 +50,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 15c0a870dc44ed14e01efbdd319d232234ee639f upstream.
+commit d351c1ea2de3e36e608fc355d8ae7d0cc80e6cd6 upstream.
 
-When truncating the inode the MDS will acquire the xlock for the
-ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
-But when the client just releases and flushes the 'Fw' caps to MDS,
-for exmaple, and once the MDS receives the caps flushing msg it
-just thought the revocation has finished. Then the MDS will continue
-truncating the inode and then issued the truncate notification to
-all the clients. While just before the clients receives the cap
-flushing ack they receive the truncation notification, the clients
-will detecte that the 'issued | dirty' is still holding the 'Fw'
-caps.
+mcast packets get looped back to the local machine.
+Such packets have a 0-length mac header, we should treat
+this like "mac header not set" and abort rule evaluation.
 
-Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/56693
-Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+As-is, we just copy data from the network header instead.
+
+Fixes: 96518518cc41 ("netfilter: add nftables")
+Reported-by: Blažej Krajňák <krajnak@levonet.sk>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/inode.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/netfilter/nft_payload.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -631,9 +631,7 @@ int ceph_fill_file_size(struct inode *in
- 			ci->i_truncate_seq = truncate_seq;
+--- a/net/netfilter/nft_payload.c
++++ b/net/netfilter/nft_payload.c
+@@ -133,7 +133,7 @@ void nft_payload_eval(const struct nft_e
  
- 			/* the MDS should have revoked these caps */
--			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
--					       CEPH_CAP_FILE_RD |
--					       CEPH_CAP_FILE_WR |
-+			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
- 					       CEPH_CAP_FILE_LAZYIO));
- 			/*
- 			 * If we hold relevant caps, or in the case where we're
+ 	switch (priv->base) {
+ 	case NFT_PAYLOAD_LL_HEADER:
+-		if (!skb_mac_header_was_set(skb))
++		if (!skb_mac_header_was_set(skb) || skb_mac_header_len(skb) == 0)
+ 			goto err;
+ 
+ 		if (skb_vlan_tag_present(skb)) {
 
 
