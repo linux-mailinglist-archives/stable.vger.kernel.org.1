@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D2DF7D34F8
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41B807D308A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234437AbjJWLoZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:44:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46404 "EHLO
+        id S231732AbjJWK7v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 06:59:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234322AbjJWLoP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:15 -0400
+        with ESMTP id S232382AbjJWK7t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6094E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447D6C433CC;
-        Mon, 23 Oct 2023 11:44:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E2CD10C7
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8464EC433C9;
+        Mon, 23 Oct 2023 10:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061447;
-        bh=Lvv7SPTBXbQyTU3M+rSfNKqUiRhbVubfM/VbGRMdUY0=;
+        s=korg; t=1698058785;
+        bh=ayGIM2wTkf667ms9a+s5x4TM6uwPmYhRwAvZRUOwHHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IG/8GKjo/x/5qGJzqRe4QR2xO1EMgW5XiltKyNgIvlsrkt4u7tl9lHCPWzYUQe2zJ
-         4UDhlAZlnsmxuUCr6zgvh3meAGxe7izHBrw1oRhKRJnwwJZ8jXQSDedkrA5wUUHzEb
-         eSuXVJaT2Bmts/m56j7aVYecQmYHC7R6SO1qeyXs=
+        b=t+YFNWARNwGo1VSgupVahDdB9C6OtKHODMhgprc0eR6f+Rz8VMghwS2cELbMlqAZL
+         tJJBrhD9ISD0+fickpEPm00VNPrKTGcmSVxIL/LhGT7OBRH7KgAYwa3Mi0Z9biQx1T
+         QIAe6K9vVvJXcy1Fk8sfOtmNU527ixm8RVo56bvo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Szilard Fabian <szfabian@bluemarch.art>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.10 051/202] Input: i8042 - add Fujitsu Lifebook E5411 to i8042 quirk table
+        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
+        Simon Horman <horms@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Subject: [PATCH 4.14 08/66] nfc: nci: assert requested protocol is valid
 Date:   Mon, 23 Oct 2023 12:55:58 +0200
-Message-ID: <20231023104828.071374756@linuxfoundation.org>
+Message-ID: <20231023104811.090794844@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,51 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Szilard Fabian <szfabian@bluemarch.art>
+From: Jeremy Cline <jeremy@jcline.org>
 
-commit 80f39e1c27ba9e5a1ea7e68e21c569c9d8e46062 upstream.
+[ Upstream commit 354a6e707e29cb0c007176ee5b8db8be7bd2dee0 ]
 
-In the initial boot stage the integrated keyboard of Fujitsu Lifebook E5411
-refuses to work and it's not possible to type for example a dm-crypt
-passphrase without the help of an external keyboard.
+The protocol is used in a bit mask to determine if the protocol is
+supported. Assert the provided protocol is less than the maximum
+defined so it doesn't potentially perform a shift-out-of-bounds and
+provide a clearer error for undefined protocols vs unsupported ones.
 
-i8042.nomux kernel parameter resolves this issue but using that a PS/2
-mouse is detected. This input device is unused even when the i2c-hid-acpi
-kernel module is blacklisted making the integrated ELAN touchpad
-(04F3:308A) not working at all.
-
-Since the integrated touchpad is managed by the i2c_designware input
-driver in the Linux kernel and you can't find a PS/2 mouse port on the
-computer I think it's safe to not use the PS/2 mouse port at all.
-
-Signed-off-by: Szilard Fabian <szfabian@bluemarch.art>
-Link: https://lore.kernel.org/r/20231004011749.101789-1-szfabian@bluemarch.art
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reported-and-tested-by: syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0839b78e119aae1fec78
+Signed-off-by: Jeremy Cline <jeremy@jcline.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231009200054.82557-1-jeremy@jcline.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/nfc/nci/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -610,6 +610,14 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
- 	},
- 	{
-+		/* Fujitsu Lifebook E5411 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU CLIENT COMPUTING LIMITED"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E5411"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
-+	{
- 		/* Gigabyte M912 */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "GIGABYTE"),
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 216228c39acba..d42c603dd635c 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -906,6 +906,11 @@ static int nci_activate_target(struct nfc_dev *nfc_dev,
+ 		return -EINVAL;
+ 	}
+ 
++	if (protocol >= NFC_PROTO_MAX) {
++		pr_err("the requested nfc protocol is invalid\n");
++		return -EINVAL;
++	}
++
+ 	if (!(nci_target->supported_protocols & (1 << protocol))) {
+ 		pr_err("target does not support the requested protocol 0x%x\n",
+ 		       protocol);
+-- 
+2.40.1
+
 
 
