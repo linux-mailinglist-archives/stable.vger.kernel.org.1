@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 873DB7D346C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:39:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A68BF7D357D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234240AbjJWLjg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:39:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46420 "EHLO
+        id S234528AbjJWLtA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234241AbjJWLjf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:35 -0400
+        with ESMTP id S234573AbjJWLs5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:48:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1333FDB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55331C433C7;
-        Mon, 23 Oct 2023 11:39:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2241710C
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:48:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24594C433C8;
+        Mon, 23 Oct 2023 11:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061172;
-        bh=h3nMURajGr1NLG/1X7hEHSZw3LheNT93l/7cHJDQZVI=;
+        s=korg; t=1698061734;
+        bh=yssk2AKsu2ELNdjaLnUoiIxrQke8YN5NBZXkfB4LzQw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nj1XXKvDgUTocva++xatZ4BZB9ehnAKaVOMMJsmNn+k7uaouKxoncRFxfOJAThYL1
-         m9zKCKApUKteZLM++FdwfC5JNtKW3s3KwPHXVq1hXckARcaxS/nTVEVfo1bglEGD9N
-         cXQitX4omq54Al4j7nIA9a65bOrBAHZdZJsEHVpg=
+        b=GLhvGYW8R4gFqOeBa5w/DQygtw+xkc3FHS3RGHKN6K9gYcAkq4Dah5XsqFQ9JE4JR
+         AIgNAT83tZ/apIDYrupjOmjEKxtx5iTq/YZY94csuexZ3WtA0lC8w03djGVfojLCpI
+         WTjGdLyt/8cvyZmkSxjnEHQJ2jqjfdc/qcVgdNKI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Renan Guilherme Lebre Ramos <japareaggae@gmail.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
         Hans de Goede <hdegoede@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/137] platform/x86: touchscreen_dmi: Add info for the Positivo C4128B
+        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 146/202] drm/connector: Add a fwnode pointer to drm_connector and register with ACPI (v2)
 Date:   Mon, 23 Oct 2023 12:57:33 +0200
-Message-ID: <20231023104824.117468372@linuxfoundation.org>
+Message-ID: <20231023104830.803647220@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,67 +50,146 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Renan Guilherme Lebre Ramos <japareaggae@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit aa7dcba3bae6869122828b144a3cfd231718089d ]
+[ Upstream commit 48c429c6d18db115c277b75000152d8fa4cd35d0 ]
 
-Add information for the Positivo C4128B, a notebook/tablet convertible.
+Add a fwnode pointer to struct drm_connector and register an acpi_bus_type
+for the connectors with the ACPI subsystem (when CONFIG_ACPI is enabled).
 
-Link: https://github.com/onitake/gsl-firmware/pull/217
-Signed-off-by: Renan Guilherme Lebre Ramos <japareaggae@gmail.com>
-Link: https://lore.kernel.org/r/20231004235900.426240-1-japareaggae@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+The adding of the fwnode pointer allows drivers to associate a fwnode
+that represents a connector with that connector.
+
+When the new fwnode pointer points to an ACPI-companion, then the new
+acpi_bus_type will cause the ACPI subsys to bind the device instantiated
+for the connector with the fwnode by calling acpi_bind_one(). This will
+result in a firmware_node symlink under /sys/class/card#-<connecter-name>/
+which helps to verify that the fwnode-s and connectors are properly
+matched.
+
+Changes in v2:
+- Make drm_connector_cleanup() call fwnode_handle_put() on
+  connector->fwnode and document this
+
+Co-developed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Link: https://lore.kernel.org/r/20210817215201.795062-3-hdegoede@redhat.com
+Stable-dep-of: 89434b069e46 ("usb: typec: altmodes/displayport: Signal hpd low when exiting mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/gpu/drm/drm_connector.c |  2 ++
+ drivers/gpu/drm/drm_sysfs.c     | 37 +++++++++++++++++++++++++++++++++
+ include/drm/drm_connector.h     |  8 +++++++
+ 3 files changed, 47 insertions(+)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index 90aee8b87bbe0..f129e29b295d9 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -743,6 +743,21 @@ static const struct ts_dmi_data pipo_w11_data = {
- 	.properties	= pipo_w11_props,
- };
+diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
+index 9c3bbe2c3e6f9..c08501a5620d5 100644
+--- a/drivers/gpu/drm/drm_connector.c
++++ b/drivers/gpu/drm/drm_connector.c
+@@ -471,6 +471,8 @@ void drm_connector_cleanup(struct drm_connector *connector)
+ 	drm_mode_object_unregister(dev, &connector->base);
+ 	kfree(connector->name);
+ 	connector->name = NULL;
++	fwnode_handle_put(connector->fwnode);
++	connector->fwnode = NULL;
+ 	spin_lock_irq(&dev->mode_config.connector_list_lock);
+ 	list_del(&connector->head);
+ 	dev->mode_config.num_connector--;
+diff --git a/drivers/gpu/drm/drm_sysfs.c b/drivers/gpu/drm/drm_sysfs.c
+index a3b71478c5904..71a0d9596efee 100644
+--- a/drivers/gpu/drm/drm_sysfs.c
++++ b/drivers/gpu/drm/drm_sysfs.c
+@@ -10,6 +10,7 @@
+  * Copyright (c) 2003-2004 IBM Corp.
+  */
  
-+static const struct property_entry positivo_c4128b_props[] = {
-+	PROPERTY_ENTRY_U32("touchscreen-min-x", 4),
-+	PROPERTY_ENTRY_U32("touchscreen-min-y", 13),
-+	PROPERTY_ENTRY_U32("touchscreen-size-x", 1915),
-+	PROPERTY_ENTRY_U32("touchscreen-size-y", 1269),
-+	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-positivo-c4128b.fw"),
-+	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
-+	{ }
++#include <linux/acpi.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/export.h>
+@@ -56,6 +57,39 @@ static struct device_type drm_sysfs_device_connector = {
+ 
+ struct class *drm_class;
+ 
++#ifdef CONFIG_ACPI
++static bool drm_connector_acpi_bus_match(struct device *dev)
++{
++	return dev->type == &drm_sysfs_device_connector;
++}
++
++static struct acpi_device *drm_connector_acpi_find_companion(struct device *dev)
++{
++	struct drm_connector *connector = to_drm_connector(dev);
++
++	return to_acpi_device_node(connector->fwnode);
++}
++
++static struct acpi_bus_type drm_connector_acpi_bus = {
++	.name = "drm_connector",
++	.match = drm_connector_acpi_bus_match,
++	.find_companion = drm_connector_acpi_find_companion,
 +};
 +
-+static const struct ts_dmi_data positivo_c4128b_data = {
-+	.acpi_name	= "MSSL1680:00",
-+	.properties	= positivo_c4128b_props,
-+};
++static void drm_sysfs_acpi_register(void)
++{
++	register_acpi_bus_type(&drm_connector_acpi_bus);
++}
 +
- static const struct property_entry pov_mobii_wintab_p800w_v20_props[] = {
- 	PROPERTY_ENTRY_U32("touchscreen-min-x", 32),
- 	PROPERTY_ENTRY_U32("touchscreen-min-y", 16),
-@@ -1442,6 +1457,14 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "MOMO.G.WI71C.MABMRBA02"),
- 		},
- 	},
-+	{
-+		/* Positivo C4128B */
-+		.driver_data = (void *)&positivo_c4128b_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "C4128B-1"),
-+		},
-+	},
- 	{
- 		/* Point of View mobii wintab p800w (v2.0) */
- 		.driver_data = (void *)&pov_mobii_wintab_p800w_v20_data,
++static void drm_sysfs_acpi_unregister(void)
++{
++	unregister_acpi_bus_type(&drm_connector_acpi_bus);
++}
++#else
++static void drm_sysfs_acpi_register(void) { }
++static void drm_sysfs_acpi_unregister(void) { }
++#endif
++
+ static char *drm_devnode(struct device *dev, umode_t *mode)
+ {
+ 	return kasprintf(GFP_KERNEL, "dri/%s", dev_name(dev));
+@@ -89,6 +123,8 @@ int drm_sysfs_init(void)
+ 	}
+ 
+ 	drm_class->devnode = drm_devnode;
++
++	drm_sysfs_acpi_register();
+ 	return 0;
+ }
+ 
+@@ -101,6 +137,7 @@ void drm_sysfs_destroy(void)
+ {
+ 	if (IS_ERR_OR_NULL(drm_class))
+ 		return;
++	drm_sysfs_acpi_unregister();
+ 	class_remove_file(drm_class, &class_attr_version.attr);
+ 	class_destroy(drm_class);
+ 	drm_class = NULL;
+diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
+index 928136556174c..ffad68f775cc6 100644
+--- a/include/drm/drm_connector.h
++++ b/include/drm/drm_connector.h
+@@ -1174,6 +1174,14 @@ struct drm_connector {
+ 	struct device *kdev;
+ 	/** @attr: sysfs attributes */
+ 	struct device_attribute *attr;
++	/**
++	 * @fwnode: associated fwnode supplied by platform firmware
++	 *
++	 * Drivers can set this to associate a fwnode with a connector, drivers
++	 * are expected to get a reference on the fwnode when setting this.
++	 * drm_connector_cleanup() will call fwnode_handle_put() on this.
++	 */
++	struct fwnode_handle *fwnode;
+ 
+ 	/**
+ 	 * @head:
 -- 
 2.40.1
 
