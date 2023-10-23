@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BA057D347A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 078587D3242
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234248AbjJWLkC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36758 "EHLO
+        id S233736AbjJWLSP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:18:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233678AbjJWLkB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:01 -0400
+        with ESMTP id S233729AbjJWLSO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8643E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05796C433C7;
-        Mon, 23 Oct 2023 11:39:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF05DC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4F8C433C9;
+        Mon, 23 Oct 2023 11:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061199;
-        bh=Ei0TWvd0Nh3lCNlmezKgWdah7thm0FOr/mcr3hfh4Pc=;
+        s=korg; t=1698059892;
+        bh=hJixhL1UxwV6SwGGZTkYribNktKPKV7uklKnfuwj96M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g6vN0QFF5Q0qMYzwvj1HgfwfFUE7+/vAx7EcF5MKhhDXyKJY/EHtV5/N+RGTuUPYK
-         sSOgDjz5+FQRyntpnE0MYDTL++UGkAfJX2TaItYn3g7IHJU7CmO3PN4yPVJr9XLCm1
-         h2IgyHCY5GbXpcUBnsROalR1EN+d2iUEdA4XhlJ4=
+        b=x+SAv8Ipb1EY+z0CxhpAYqxF4pIP0PsqHMCQQrDoWEBmn1E3KSmjYL3CzHZWSq0qy
+         /L866XYOzwwllc1aEJgPnKntjGW4qqswdILGSJbu6LYhCKsxrhSiA3fwe2EFnLVQh+
+         5QaMN0EprLW77+PdKlfie4DuCC4clOEEznwOCDSA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ben Greear <greearb@candelatech.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/137] wifi: iwlwifi: Ensure ack flag is properly cleared.
+        patches@lists.linux.dev, Sunil V L <sunilvl@ventanamicro.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 4.19 87/98] ACPI: irq: Fix incorrect return value in acpi_register_gsi()
 Date:   Mon, 23 Oct 2023 12:57:16 +0200
-Message-ID: <20231023104823.580148196@linuxfoundation.org>
+Message-ID: <20231023104816.616450444@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +48,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Greear <greearb@candelatech.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-[ Upstream commit e8fbe99e87877f0412655f40d7c45bf8471470ac ]
+commit 0c21a18d5d6c6a73d098fb9b4701572370942df9 upstream.
 
-Debugging indicates that nothing else is clearing the info->flags,
-so some frames were flagged as ACKed when they should not be.
-Explicitly clear the ack flag to ensure this does not happen.
+acpi_register_gsi() should return a negative value in case of failure.
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
-Acked-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230808205605.4105670-1-greearb@candelatech.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently, it returns the return value from irq_create_fwspec_mapping().
+However, irq_create_fwspec_mapping() returns 0 for failure. Fix the
+issue by returning -EINVAL if irq_create_fwspec_mapping() returns zero.
+
+Fixes: d44fa3d46079 ("ACPI: Add support for ResourceSource/IRQ domain mapping")
+Cc: 4.11+ <stable@vger.kernel.org> # 4.11+
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+[ rjw: Rename a new local variable ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/irq.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index e354918c2480f..b127e0b527ce0 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1445,6 +1445,7 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
- 		iwl_trans_free_tx_cmd(mvm->trans, info->driver_data[1]);
+--- a/drivers/acpi/irq.c
++++ b/drivers/acpi/irq.c
+@@ -55,6 +55,7 @@ int acpi_register_gsi(struct device *dev
+ 		      int polarity)
+ {
+ 	struct irq_fwspec fwspec;
++	unsigned int irq;
  
- 		memset(&info->status, 0, sizeof(info->status));
-+		info->flags &= ~(IEEE80211_TX_STAT_ACK | IEEE80211_TX_STAT_TX_FILTERED);
+ 	if (WARN_ON(!acpi_gsi_domain_id)) {
+ 		pr_warn("GSI: No registered irqchip, giving up\n");
+@@ -66,7 +67,11 @@ int acpi_register_gsi(struct device *dev
+ 	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
+ 	fwspec.param_count = 2;
  
- 		/* inform mac80211 about what happened with the frame */
- 		switch (status & TX_STATUS_MSK) {
-@@ -1790,6 +1791,8 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 		 */
- 		if (!is_flush)
- 			info->flags |= IEEE80211_TX_STAT_ACK;
-+		else
-+			info->flags &= ~IEEE80211_TX_STAT_ACK;
- 	}
+-	return irq_create_fwspec_mapping(&fwspec);
++	irq = irq_create_fwspec_mapping(&fwspec);
++	if (!irq)
++		return -EINVAL;
++
++	return irq;
+ }
+ EXPORT_SYMBOL_GPL(acpi_register_gsi);
  
- 	/*
--- 
-2.40.1
-
 
 
