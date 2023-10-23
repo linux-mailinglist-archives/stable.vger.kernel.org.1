@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 93C147D340E
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1773D7D3379
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234141AbjJWLg3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52254 "EHLO
+        id S234062AbjJWLak (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:30:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234157AbjJWLg2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:28 -0400
+        with ESMTP id S234064AbjJWLak (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABCC10C6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1B4C433C9;
-        Mon, 23 Oct 2023 11:36:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81DB7A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80DEC433C9;
+        Mon, 23 Oct 2023 11:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060984;
-        bh=4LF9tOSLzXCLUF9hdVgXMBkuH8CjGRISJc/YWkymsro=;
+        s=korg; t=1698060638;
+        bh=tp9LJLKXtfM3nX0RtCwckc7eBuLj4Z8V3jxQpRV4swU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xy0rMWMsRlilMjc/gmUlBDNJgYhhB9SdSfcaj3KNdMJZpt2naDrwAv4F6bnW+ZJ8T
-         NYW5kIIAjD2RvDcO58Bg6E1sb6x4CjthR1y1jugOUZmB/INBahk59AKKUBwtPvg1At
-         hGqXAW7E3p5kAiAsMvIWqf45X8yGu7Rhd/uZObPA=
+        b=09WkrHcRzHu5DLtGahg/RfzmrKO2tCQhtg9eY0GBUZN2mNnDLn01VygWX96eQI5kX
+         1E3j9RF5nhv8hLt4WZ2QGT3w/dvkIvWzkb6z1c1RtcdDoNERmmS7//NkmTEhCTihym
+         SvhoWkutGNprYAPtOs/+hxyX7q2eBSdLBhdx5cbo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Dohrmann <erbse.13@gmx.de>,
-        Joerg Roedel <jroedel@suse.de>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 5.15 017/137] x86/sev: Check for user-space IOIO pointing to kernel space
+        patches@lists.linux.dev, Sili Luo <rootlab@huawei.com>,
+        Eric Dumazet <edumazet@google.com>, Willy Tarreau <w@1wt.eu>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 016/123] net: nfc: fix races in nfc_llcp_sock_get() and nfc_llcp_sock_get_sn()
 Date:   Mon, 23 Oct 2023 12:56:14 +0200
-Message-ID: <20231023104821.524048898@linuxfoundation.org>
+Message-ID: <20231023104818.290045550@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,99 +51,134 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joerg Roedel <jroedel@suse.de>
+From: Eric Dumazet <edumazet@google.com>
 
-Upstream commit: 63e44bc52047f182601e7817da969a105aa1f721
+[ Upstream commit 31c07dffafce914c1d1543c135382a11ff058d93 ]
 
-Check the memory operand of INS/OUTS before emulating the instruction.
-The #VC exception can get raised from user-space, but the memory operand
-can be manipulated to access kernel memory before the emulation actually
-begins and after the exception handler has run.
+Sili Luo reported a race in nfc_llcp_sock_get(), leading to UAF.
 
-  [ bp: Massage commit message. ]
+Getting a reference on the socket found in a lookup while
+holding a lock should happen before releasing the lock.
 
-Fixes: 597cfe48212a ("x86/boot/compressed/64: Setup a GHCB-based VC Exception handler")
-Reported-by: Tom Dohrmann <erbse.13@gmx.de>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+nfc_llcp_sock_get_sn() has a similar problem.
+
+Finally nfc_llcp_recv_snl() needs to make sure the socket
+found by nfc_llcp_sock_from_sn() does not disappear.
+
+Fixes: 8f50020ed9b8 ("NFC: LLCP late binding")
+Reported-by: Sili Luo <rootlab@huawei.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willy Tarreau <w@1wt.eu>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231009123110.3735515-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/sev.c |    5 +++++
- arch/x86/kernel/sev-shared.c   |   31 +++++++++++++++++++++++++++++--
- 2 files changed, 34 insertions(+), 2 deletions(-)
+ net/nfc/llcp_core.c | 30 ++++++++++++------------------
+ 1 file changed, 12 insertions(+), 18 deletions(-)
 
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -110,6 +110,11 @@ static enum es_result vc_ioio_check(stru
- 	return ES_OK;
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index b1107570eaee8..92f70686bee0a 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -205,17 +205,13 @@ static struct nfc_llcp_sock *nfc_llcp_sock_get(struct nfc_llcp_local *local,
+ 
+ 		if (tmp_sock->ssap == ssap && tmp_sock->dsap == dsap) {
+ 			llcp_sock = tmp_sock;
++			sock_hold(&llcp_sock->sk);
+ 			break;
+ 		}
+ 	}
+ 
+ 	read_unlock(&local->sockets.lock);
+ 
+-	if (llcp_sock == NULL)
+-		return NULL;
+-
+-	sock_hold(&llcp_sock->sk);
+-
+ 	return llcp_sock;
  }
  
-+static bool fault_in_kernel_space(unsigned long address)
-+{
-+	return false;
-+}
-+
- #undef __init
- #undef __pa
- #define __init
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -213,6 +213,23 @@ fail:
- 	sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
+@@ -348,7 +344,8 @@ static int nfc_llcp_wks_sap(const char *service_name, size_t service_name_len)
+ 
+ static
+ struct nfc_llcp_sock *nfc_llcp_sock_from_sn(struct nfc_llcp_local *local,
+-					    const u8 *sn, size_t sn_len)
++					    const u8 *sn, size_t sn_len,
++					    bool needref)
+ {
+ 	struct sock *sk;
+ 	struct nfc_llcp_sock *llcp_sock, *tmp_sock;
+@@ -384,6 +381,8 @@ struct nfc_llcp_sock *nfc_llcp_sock_from_sn(struct nfc_llcp_local *local,
+ 
+ 		if (memcmp(sn, tmp_sock->service_name, sn_len) == 0) {
+ 			llcp_sock = tmp_sock;
++			if (needref)
++				sock_hold(&llcp_sock->sk);
+ 			break;
+ 		}
+ 	}
+@@ -425,7 +424,8 @@ u8 nfc_llcp_get_sdp_ssap(struct nfc_llcp_local *local,
+ 		 * to this service name.
+ 		 */
+ 		if (nfc_llcp_sock_from_sn(local, sock->service_name,
+-					  sock->service_name_len) != NULL) {
++					  sock->service_name_len,
++					  false) != NULL) {
+ 			mutex_unlock(&local->sdp_lock);
+ 
+ 			return LLCP_SAP_MAX;
+@@ -833,16 +833,7 @@ static struct nfc_llcp_sock *nfc_llcp_connecting_sock_get(struct nfc_llcp_local
+ static struct nfc_llcp_sock *nfc_llcp_sock_get_sn(struct nfc_llcp_local *local,
+ 						  const u8 *sn, size_t sn_len)
+ {
+-	struct nfc_llcp_sock *llcp_sock;
+-
+-	llcp_sock = nfc_llcp_sock_from_sn(local, sn, sn_len);
+-
+-	if (llcp_sock == NULL)
+-		return NULL;
+-
+-	sock_hold(&llcp_sock->sk);
+-
+-	return llcp_sock;
++	return nfc_llcp_sock_from_sn(local, sn, sn_len, true);
  }
  
-+static enum es_result vc_insn_string_check(struct es_em_ctxt *ctxt,
-+					   unsigned long address,
-+					   bool write)
-+{
-+	if (user_mode(ctxt->regs) && fault_in_kernel_space(address)) {
-+		ctxt->fi.vector     = X86_TRAP_PF;
-+		ctxt->fi.error_code = X86_PF_USER;
-+		ctxt->fi.cr2        = address;
-+		if (write)
-+			ctxt->fi.error_code |= X86_PF_WRITE;
-+
-+		return ES_EXCEPTION;
-+	}
-+
-+	return ES_OK;
-+}
-+
- static enum es_result vc_insn_string_read(struct es_em_ctxt *ctxt,
- 					  void *src, char *buf,
- 					  unsigned int data_size,
-@@ -220,7 +237,12 @@ static enum es_result vc_insn_string_rea
- 					  bool backwards)
- {
- 	int i, b = backwards ? -1 : 1;
--	enum es_result ret = ES_OK;
-+	unsigned long address = (unsigned long)src;
-+	enum es_result ret;
-+
-+	ret = vc_insn_string_check(ctxt, address, false);
-+	if (ret != ES_OK)
-+		return ret;
+ static const u8 *nfc_llcp_connect_sn(const struct sk_buff *skb, size_t *sn_len)
+@@ -1307,7 +1298,8 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ 			}
  
- 	for (i = 0; i < count; i++) {
- 		void *s = src + (i * data_size * b);
-@@ -241,7 +263,12 @@ static enum es_result vc_insn_string_wri
- 					   bool backwards)
- {
- 	int i, s = backwards ? -1 : 1;
--	enum es_result ret = ES_OK;
-+	unsigned long address = (unsigned long)dst;
-+	enum es_result ret;
-+
-+	ret = vc_insn_string_check(ctxt, address, true);
-+	if (ret != ES_OK)
-+		return ret;
+ 			llcp_sock = nfc_llcp_sock_from_sn(local, service_name,
+-							  service_name_len);
++							  service_name_len,
++							  true);
+ 			if (!llcp_sock) {
+ 				sap = 0;
+ 				goto add_snl;
+@@ -1327,6 +1319,7 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
  
- 	for (i = 0; i < count; i++) {
- 		void *d = dst + (i * data_size * s);
+ 				if (sap == LLCP_SAP_MAX) {
+ 					sap = 0;
++					nfc_llcp_sock_put(llcp_sock);
+ 					goto add_snl;
+ 				}
+ 
+@@ -1344,6 +1337,7 @@ static void nfc_llcp_recv_snl(struct nfc_llcp_local *local,
+ 
+ 			pr_debug("%p %d\n", llcp_sock, sap);
+ 
++			nfc_llcp_sock_put(llcp_sock);
+ add_snl:
+ 			sdp = nfc_llcp_build_sdres_tlv(tid, sap);
+ 			if (sdp == NULL)
+-- 
+2.40.1
+
 
 
