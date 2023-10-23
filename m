@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E75137D324D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 724CE7D3348
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233756AbjJWLSl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:18:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36140 "EHLO
+        id S233991AbjJWL2n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:28:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233738AbjJWLSk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:40 -0400
+        with ESMTP id S233988AbjJWL2m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA36DC
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A316C433C8;
-        Mon, 23 Oct 2023 11:18:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B3AC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D23C433C8;
+        Mon, 23 Oct 2023 11:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059918;
-        bh=bdEFSNXQd+6JnsTa9EZoNkSfUEVF0KChQ0jiw0529Y0=;
+        s=korg; t=1698060520;
+        bh=HAUlVMis6ioY8cP9KhvnvX7F0qvc3iT/iIC1GQpgc6s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L0wyoOUMZOpskqImnhV2d5pwR4lAWIvX3xrPXrlaif/1wxI2OCkRjLWA3quT4Z3Ay
-         c3RMCMKCr17t8OX2EYQTV0pjGOySrhvjkVgKBg3zsNWPT87iw11wOFTb1utqbwy25d
-         5FazZVC9wcBqlLkJnf1i5PriQ4ozEVo6IOSH5gz8=
+        b=VSgwhOcsaYq5Y9JrNfIC2J1pB9PdSsYR1SlVf2DW02uCG9TbyDTUsNYghLXAen0f+
+         lY0SXFA6heWAuWZE8tsDiZIzvawr4O09i8NZ09UpVMTF2LB568LJSEorUm3la0vjBe
+         4MilBY/xeeNUP6CKRxSDP25BxKbdEc2W0fwAKVkI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.19 89/98] USB: serial: option: add entry for Sierra EM9191 with new firmware
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.1 173/196] platform/x86: intel-uncore-freq: Conditionally create attribute for read frequency
 Date:   Mon, 23 Oct 2023 12:57:18 +0200
-Message-ID: <20231023104816.677521431@linuxfoundation.org>
+Message-ID: <20231023104833.307819145@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benoît Monin <benoit.monin@gmx.fr>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit 064f6e2ba9eb59b2c87b866e1e968e79ccedf9dd upstream.
+commit 4d73c6772ab771cbbe7e46a73e7c78ba490350fa upstream.
 
-Following a firmware update of the modem, the interface for the AT
-command port changed, so add it back.
+When the current uncore frequency can't be read, don't create attribute
+"current_freq_khz" as any read will fail later. Some user space
+applications like turbostat fail to continue with the failure. So, check
+error during attribute creation.
 
-T:  Bus=08 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=1199 ProdID=90d3 Rev=00.06
-S:  Manufacturer=Sierra Wireless, Incorporated
-S:  Product=Sierra Wireless EM9191
-S:  SerialNumber=xxxxxxxxxxxxxxxx
-C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
-I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-
-Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 414eef27283a ("platform/x86/intel/uncore-freq: Display uncore current frequency")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20231004181915.1887913-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2263,6 +2263,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
- 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
+@@ -153,7 +153,7 @@ show_uncore_data(initial_max_freq_khz);
+ 
+ static int create_attr_group(struct uncore_data *data, char *name)
+ {
+-	int ret, index = 0;
++	int ret, freq, index = 0;
+ 
+ 	init_attribute_rw(max_freq_khz);
+ 	init_attribute_rw(min_freq_khz);
+@@ -165,7 +165,11 @@ static int create_attr_group(struct unco
+ 	data->uncore_attrs[index++] = &data->min_freq_khz_dev_attr.attr;
+ 	data->uncore_attrs[index++] = &data->initial_min_freq_khz_dev_attr.attr;
+ 	data->uncore_attrs[index++] = &data->initial_max_freq_khz_dev_attr.attr;
+-	data->uncore_attrs[index++] = &data->current_freq_khz_dev_attr.attr;
++
++	ret = uncore_read_freq(data, &freq);
++	if (!ret)
++		data->uncore_attrs[index++] = &data->current_freq_khz_dev_attr.attr;
++
+ 	data->uncore_attrs[index] = NULL;
+ 
+ 	data->uncore_attr_group.name = name;
 
 
