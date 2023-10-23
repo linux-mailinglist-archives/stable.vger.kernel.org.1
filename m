@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D27C7D33D7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A09437D359E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234026AbjJWLee (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:34:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40146 "EHLO
+        id S234593AbjJWLuL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229852AbjJWLed (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:33 -0400
+        with ESMTP id S229918AbjJWLuK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05184E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1508AC433C8;
-        Mon, 23 Oct 2023 11:34:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9474EAF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:50:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57EAC433C9;
+        Mon, 23 Oct 2023 11:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060870;
-        bh=1hQpMdzFxLuzaU9K9R9zltkVngbDxpkCiVf7dRofLt4=;
+        s=korg; t=1698061808;
+        bh=MGCbT8p7rdQFxEWmWDonXpf2hcA/gPamjWGqvu7ZpUg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q0perBp5GjLrn4/l88NuV4Ew9pffT+GF5ftbtlh/ppWrUdVZxvTqUM4tJ87MBNFTy
-         NVJlKDqtZQtzhCew59Kv1H+qiZdYkstHGUgI4/zTXY02npfoD9R5Sv37EqNBIcJPeS
-         T3ev1nQT22eXYPP5PudeuP6CshVCBKTpoSmziy90=
+        b=j12MwN/4R9njoDK4tQUbMabblR+gB49M4TUurTekum9VhVF9znbKV9r0OikWcJ3eF
+         ceZd+DUcxZ27wXtz+lg1krAIRVWVmGkAYF+glZvi5fqMw0joOoYzENHw2G+ANqeItK
+         HwAi8Yi9HV8ve92w60zw3pKMK+ANHZeqp/lJoQxo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 120/123] phy: mapphone-mdm6600: Fix pinctrl_pm handling for sleep pins
+        Renan Guilherme Lebre Ramos <japareaggae@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 171/202] platform/x86: touchscreen_dmi: Add info for the Positivo C4128B
 Date:   Mon, 23 Oct 2023 12:57:58 +0200
-Message-ID: <20231023104821.822755049@linuxfoundation.org>
+Message-ID: <20231023104831.480387993@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,115 +50,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Renan Guilherme Lebre Ramos <japareaggae@gmail.com>
 
-[ Upstream commit 3b384cc74b00b5ac21d18e4c1efc3c1da5300971 ]
+[ Upstream commit aa7dcba3bae6869122828b144a3cfd231718089d ]
 
-Looks like the driver sleep pins configuration is unusable. Adding the
-sleep pins causes the usb phy to not respond. We need to use the default
-pins in probe, and only set sleep pins at phy_mdm6600_device_power_off().
+Add information for the Positivo C4128B, a notebook/tablet convertible.
 
-As the modem can also be booted to a serial port mode for firmware
-flashing, let's make the pin changes limited to probe and remove. For
-probe, we get the default pins automatically. We only need to set the
-sleep pins in phy_mdm6600_device_power_off() to prevent the modem from
-waking up because the gpio line glitches.
-
-If it turns out that we need a separate state for phy_mdm6600_power_on()
-and phy_mdm6600_power_off(), we can use the pinctrl idle state.
-
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Fixes: 2ad2af081622 ("phy: mapphone-mdm6600: Improve phy related runtime PM calls")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20230913060433.48373-3-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Link: https://github.com/onitake/gsl-firmware/pull/217
+Signed-off-by: Renan Guilherme Lebre Ramos <japareaggae@gmail.com>
+Link: https://lore.kernel.org/r/20231004235900.426240-1-japareaggae@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/motorola/phy-mapphone-mdm6600.c | 29 +++++++++------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ drivers/platform/x86/touchscreen_dmi.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-index 50a7f2a1ea16a..a79d6cf202209 100644
---- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
-+++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-@@ -122,16 +122,10 @@ static int phy_mdm6600_power_on(struct phy *x)
- {
- 	struct phy_mdm6600 *ddata = phy_get_drvdata(x);
- 	struct gpio_desc *enable_gpio = ddata->ctrl_gpios[PHY_MDM6600_ENABLE];
--	int error;
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 55a18cd0c298f..eedff2ae28511 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -726,6 +726,21 @@ static const struct ts_dmi_data pipo_w11_data = {
+ 	.properties	= pipo_w11_props,
+ };
  
- 	if (!ddata->enabled)
- 		return -ENODEV;
- 
--	error = pinctrl_pm_select_default_state(ddata->dev);
--	if (error)
--		dev_warn(ddata->dev, "%s: error with default_state: %i\n",
--			 __func__, error);
--
- 	gpiod_set_value_cansleep(enable_gpio, 1);
- 
- 	/* Allow aggressive PM for USB, it's only needed for n_gsm port */
-@@ -160,11 +154,6 @@ static int phy_mdm6600_power_off(struct phy *x)
- 
- 	gpiod_set_value_cansleep(enable_gpio, 0);
- 
--	error = pinctrl_pm_select_sleep_state(ddata->dev);
--	if (error)
--		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
--			 __func__, error);
--
- 	return 0;
- }
- 
-@@ -455,6 +444,7 @@ static void phy_mdm6600_device_power_off(struct phy_mdm6600 *ddata)
- {
- 	struct gpio_desc *reset_gpio =
- 		ddata->ctrl_gpios[PHY_MDM6600_RESET];
-+	int error;
- 
- 	ddata->enabled = false;
- 	phy_mdm6600_cmd(ddata, PHY_MDM6600_CMD_BP_SHUTDOWN_REQ);
-@@ -470,6 +460,17 @@ static void phy_mdm6600_device_power_off(struct phy_mdm6600 *ddata)
- 	} else {
- 		dev_err(ddata->dev, "Timed out powering down\n");
- 	}
++static const struct property_entry positivo_c4128b_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-min-x", 4),
++	PROPERTY_ENTRY_U32("touchscreen-min-y", 13),
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1915),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1269),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-positivo-c4128b.fw"),
++	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
++	{ }
++};
 +
-+	/*
-+	 * Keep reset gpio high with padconf internal pull-up resistor to
-+	 * prevent modem from waking up during deeper SoC idle states. The
-+	 * gpio bank lines can have glitches if not in the always-on wkup
-+	 * domain.
-+	 */
-+	error = pinctrl_pm_select_sleep_state(ddata->dev);
-+	if (error)
-+		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
-+			 __func__, error);
- }
- 
- static void phy_mdm6600_deferred_power_on(struct work_struct *work)
-@@ -570,12 +571,6 @@ static int phy_mdm6600_probe(struct platform_device *pdev)
- 	ddata->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, ddata);
- 
--	/* Active state selected in phy_mdm6600_power_on() */
--	error = pinctrl_pm_select_sleep_state(ddata->dev);
--	if (error)
--		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
--			 __func__, error);
--
- 	error = phy_mdm6600_init_lines(ddata);
- 	if (error)
- 		return error;
++static const struct ts_dmi_data positivo_c4128b_data = {
++	.acpi_name	= "MSSL1680:00",
++	.properties	= positivo_c4128b_props,
++};
++
+ static const struct property_entry pov_mobii_wintab_p800w_v20_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-min-x", 32),
+ 	PROPERTY_ENTRY_U32("touchscreen-min-y", 16),
+@@ -1389,6 +1404,14 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_BIOS_VERSION, "MOMO.G.WI71C.MABMRBA02"),
+ 		},
+ 	},
++	{
++		/* Positivo C4128B */
++		.driver_data = (void *)&positivo_c4128b_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "C4128B-1"),
++		},
++	},
+ 	{
+ 		/* Point of View mobii wintab p800w (v2.0) */
+ 		.driver_data = (void *)&pov_mobii_wintab_p800w_v20_data,
 -- 
-2.42.0
+2.40.1
 
 
 
