@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F1317D33CE
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9FA47D348B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234028AbjJWLeR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:34:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42058 "EHLO
+        id S234270AbjJWLkf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:40:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234095AbjJWLeR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:17 -0400
+        with ESMTP id S234274AbjJWLke (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7142FDB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5668C433C8;
-        Mon, 23 Oct 2023 11:34:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D53A100
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DD1C433C8;
+        Mon, 23 Oct 2023 11:40:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060855;
-        bh=2MKSEtnDQgq/y8Z0fmuiCbokEAepJSbHgqN20J5HFXI=;
+        s=korg; t=1698061232;
+        bh=ygAmHOKPduqqaFiU/NIPlDiNCuaOtGxjLllbeBi5loU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iiknMXcpb4MQ+X+N4BJIntlLY+rbbDCZ0dlxYMSDfdyK836rAYM+qYIroiINz5G+Z
-         1FqP4Gv6UnNaIQgIE0q3olVouSpy6UoS/Y9NoaFTIpOekntWNS4RqptwroCqXyXiGa
-         BjiYWAg5dbYzMGK0G9QGq6Radf59DTzrjOit1JYY=
+        b=uYT4Z1V6fObwFe/tKiqfTTD8+dHbNn4AwE+K47QZd9GSDGMyLfLgbCTUnOf8IRSKb
+         7bY4Nqq+WuR2E6JuXi7xNRQtxEADPTlSdON6zQNiLFMi9EycnanH8Y5/vCtIWoK/Py
+         F73gByyUTlCiOUndidSpPx1QxDZdaW2Tar0lWJQo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 116/123] gpio: vf610: make irq_chip immutable
+        patches@lists.linux.dev, Fabio Porcedda <fabio.porcedda@gmail.com>,
+        Daniele Palmas <dnlplm@gmail.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 117/137] USB: serial: option: add Telit LE910C4-WWX 0x1035 composition
 Date:   Mon, 23 Oct 2023 12:57:54 +0200
-Message-ID: <20231023104821.664609532@linuxfoundation.org>
+Message-ID: <20231023104824.721427493@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,127 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-[ Upstream commit e6ef4f8ede09f4af7cde000717b349b50bc62576 ]
+commit 6a7be48e9bd18d309ba25c223a27790ad1bf0fa3 upstream.
 
-Since recently, the kernel is nagging about mutable irq_chips:
+Add support for the following Telit LE910C4-WWX composition:
 
-    "not an immutable chip, please consider fixing it!"
+0x1035: TTY, TTY, ECM
 
-Drop the unneeded copy, flag it as IRQCHIP_IMMUTABLE, add the new
-helper functions and call the appropriate gpiolib functions.
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1035 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=e1b117c7
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Stable-dep-of: 430232619791 ("gpio: vf610: mask the gpio irq in system suspend and support wakeup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-vf610.c | 41 ++++++++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 18 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
-index c2c38f13801f5..a548ac3fbb207 100644
---- a/drivers/gpio/gpio-vf610.c
-+++ b/drivers/gpio/gpio-vf610.c
-@@ -29,7 +29,6 @@ struct fsl_gpio_soc_data {
- 
- struct vf610_gpio_port {
- 	struct gpio_chip gc;
--	struct irq_chip ic;
- 	void __iomem *base;
- 	void __iomem *gpio_base;
- 	const struct fsl_gpio_soc_data *sdata;
-@@ -206,20 +205,24 @@ static int vf610_gpio_irq_set_type(struct irq_data *d, u32 type)
- 
- static void vf610_gpio_irq_mask(struct irq_data *d)
- {
--	struct vf610_gpio_port *port =
--		gpiochip_get_data(irq_data_get_irq_chip_data(d));
--	void __iomem *pcr_base = port->base + PORT_PCR(d->hwirq);
-+	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
-+	struct vf610_gpio_port *port = gpiochip_get_data(gc);
-+	irq_hw_number_t gpio_num = irqd_to_hwirq(d);
-+	void __iomem *pcr_base = port->base + PORT_PCR(gpio_num);
- 
- 	vf610_gpio_writel(0, pcr_base);
-+	gpiochip_disable_irq(gc, gpio_num);
- }
- 
- static void vf610_gpio_irq_unmask(struct irq_data *d)
- {
--	struct vf610_gpio_port *port =
--		gpiochip_get_data(irq_data_get_irq_chip_data(d));
--	void __iomem *pcr_base = port->base + PORT_PCR(d->hwirq);
-+	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
-+	struct vf610_gpio_port *port = gpiochip_get_data(gc);
-+	irq_hw_number_t gpio_num = irqd_to_hwirq(d);
-+	void __iomem *pcr_base = port->base + PORT_PCR(gpio_num);
- 
--	vf610_gpio_writel(port->irqc[d->hwirq] << PORT_PCR_IRQC_OFFSET,
-+	gpiochip_enable_irq(gc, gpio_num);
-+	vf610_gpio_writel(port->irqc[gpio_num] << PORT_PCR_IRQC_OFFSET,
- 			  pcr_base);
- }
- 
-@@ -236,6 +239,17 @@ static int vf610_gpio_irq_set_wake(struct irq_data *d, u32 enable)
- 	return 0;
- }
- 
-+static const struct irq_chip vf610_irqchip = {
-+	.name = "gpio-vf610",
-+	.irq_ack = vf610_gpio_irq_ack,
-+	.irq_mask = vf610_gpio_irq_mask,
-+	.irq_unmask = vf610_gpio_irq_unmask,
-+	.irq_set_type = vf610_gpio_irq_set_type,
-+	.irq_set_wake = vf610_gpio_irq_set_wake,
-+	.flags = IRQCHIP_IMMUTABLE,
-+	GPIOCHIP_IRQ_RESOURCE_HELPERS,
-+};
-+
- static void vf610_gpio_disable_clk(void *data)
- {
- 	clk_disable_unprepare(data);
-@@ -248,7 +262,6 @@ static int vf610_gpio_probe(struct platform_device *pdev)
- 	struct vf610_gpio_port *port;
- 	struct gpio_chip *gc;
- 	struct gpio_irq_chip *girq;
--	struct irq_chip *ic;
- 	int i;
- 	int ret;
- 
-@@ -315,14 +328,6 @@ static int vf610_gpio_probe(struct platform_device *pdev)
- 	gc->direction_output = vf610_gpio_direction_output;
- 	gc->set = vf610_gpio_set;
- 
--	ic = &port->ic;
--	ic->name = "gpio-vf610";
--	ic->irq_ack = vf610_gpio_irq_ack;
--	ic->irq_mask = vf610_gpio_irq_mask;
--	ic->irq_unmask = vf610_gpio_irq_unmask;
--	ic->irq_set_type = vf610_gpio_irq_set_type;
--	ic->irq_set_wake = vf610_gpio_irq_set_wake;
--
- 	/* Mask all GPIO interrupts */
- 	for (i = 0; i < gc->ngpio; i++)
- 		vf610_gpio_writel(0, port->base + PORT_PCR(i));
-@@ -331,7 +336,7 @@ static int vf610_gpio_probe(struct platform_device *pdev)
- 	vf610_gpio_writel(~0, port->base + PORT_ISFR);
- 
- 	girq = &gc->irq;
--	girq->chip = ic;
-+	gpio_irq_chip_set_chip(girq, &vf610_irqchip);
- 	girq->parent_handler = vf610_gpio_irq_handler;
- 	girq->num_parents = 1;
- 	girq->parents = devm_kcalloc(&pdev->dev, 1,
--- 
-2.42.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1290,6 +1290,7 @@ static const struct usb_device_id option
+ 	 .driver_info = NCTRL(0) | RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1033, 0xff),	/* Telit LE910C1-EUX (ECM) */
+ 	 .driver_info = NCTRL(0) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1035, 0xff) }, /* Telit LE910C4-WWX (ECM) */
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG0),
+ 	  .driver_info = RSVD(0) | RSVD(1) | NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG1),
 
 
