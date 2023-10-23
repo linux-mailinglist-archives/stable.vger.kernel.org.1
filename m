@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCF137D3362
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 962FD7D31A7
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234001AbjJWL3s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:29:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36540 "EHLO
+        id S233587AbjJWLLj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:11:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234034AbjJWL3o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:29:44 -0400
+        with ESMTP id S233541AbjJWLLi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D049100
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:29:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF61C433C8;
-        Mon, 23 Oct 2023 11:29:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B3EEC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C23CC433C7;
+        Mon, 23 Oct 2023 11:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060582;
-        bh=abw252ozW8S50ZNKx1g8gTKc+kSfK5uHwgnH1W4U3M0=;
+        s=korg; t=1698059496;
+        bh=5zc5w87uJD10+ooMxwqknq3cPhAGci4TVmqZQScBI9U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BQ1sVbSMGZV72fGCKayxiSI5NmM1fj3lfbHXtcE6b5aYdGSYJxfQP+iJGluo2AJzq
-         /eJh3Nc971eyW7O/xl2iBMe/8B6n5WAiX/JlzCImDwSKeCsh7PHm3hAiPavYffU0wf
-         ZQFXn7cK5gYy4QlDFkXXYzLHsN+2mMNJB6tZe6MI=
+        b=he9qmQ9A6jH1vS3NZt8wwqmCf9uMgvamOSLDHq8qflcwabl+CWTPAb6OQcgSUwckl
+         th574SJ3SZUunczoAYni2uB8k/ET5+Dp4BcS5I//0uzY67CsNf6cxk8B94hs5RFuPi
+         /DvK9UVTrRLsEH0meDxCCpV2/UPd5nFDtds9AyPc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingxing Luo <xingxing.luo@unisoc.com>
-Subject: [PATCH 5.4 024/123] usb: musb: Modify the "HWVers" register address
+        patches@lists.linux.dev, Puliang Lu <puliang.lu@fibocom.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.5 196/241] USB: serial: option: add Fibocom to DELL custom modem FM101R-GL
 Date:   Mon, 23 Oct 2023 12:56:22 +0200
-Message-ID: <20231023104818.548739267@linuxfoundation.org>
+Message-ID: <20231023104838.647287434@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -47,40 +48,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingxing Luo <xingxing.luo@unisoc.com>
+From: Puliang Lu <puliang.lu@fibocom.com>
 
-commit 6658a62e1ddf726483cb2d8bf45ea3f9bd533074 upstream.
+commit 52480e1f1a259c93d749ba3961af0bffedfe7a7a upstream.
 
-musb HWVers rgister address is not 0x69, if we operate the
-wrong address 0x69, it will cause a kernel crash, because
-there is no register corresponding to this address in the
-additional control register of musb. In fact, HWVers has
-been defined in musb_register.h, and the name is
-"MUSB_HWVERS", so We need to use this macro instead of 0x69.
+Update the USB serial option driver support for the Fibocom
+FM101R-GL LTE modules as there are actually several different variants.
 
-Fixes: c2365ce5d5a0 ("usb: musb: replace hard coded registers with defines")
+- VID:PID 413C:8213, FM101R-GL are laptop M.2 cards (with
+  MBIM interfaces for Linux)
+
+- VID:PID 413C:8215, FM101R-GL ESIM are laptop M.2 cards (with
+  MBIM interface for Linux)
+
+0x8213: mbim, tty
+0x8215: mbim, tty
+
+T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=413c ProdID=8213 Rev= 5.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom FM101-GL Module
+S:  SerialNumber=a3b7cbf0
+C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=413c ProdID=8215 Rev= 5.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom FM101-GL Module
+S:  SerialNumber=a3b7cbf0
+C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Xingxing Luo <xingxing.luo@unisoc.com>
-Link: https://lore.kernel.org/r/20230922075929.31074-1-xingxing.luo@unisoc.com
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_debugfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/musb/musb_debugfs.c
-+++ b/drivers/usb/musb/musb_debugfs.c
-@@ -39,7 +39,7 @@ static const struct musb_register_map mu
- 	{ "IntrUsbE",	MUSB_INTRUSBE,	8 },
- 	{ "DevCtl",	MUSB_DEVCTL,	8 },
- 	{ "VControl",	0x68,		32 },
--	{ "HWVers",	0x69,		16 },
-+	{ "HWVers",	MUSB_HWVERS,	16 },
- 	{ "LinkInfo",	MUSB_LINKINFO,	8 },
- 	{ "VPLen",	MUSB_VPLEN,	8 },
- 	{ "HS_EOF1",	MUSB_HS_EOF1,	8 },
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -203,6 +203,9 @@ static void option_instat_callback(struc
+ #define DELL_PRODUCT_5829E_ESIM			0x81e4
+ #define DELL_PRODUCT_5829E			0x81e6
+ 
++#define DELL_PRODUCT_FM101R			0x8213
++#define DELL_PRODUCT_FM101R_ESIM		0x8215
++
+ #define KYOCERA_VENDOR_ID			0x0c88
+ #define KYOCERA_PRODUCT_KPC650			0x17da
+ #define KYOCERA_PRODUCT_KPC680			0x180a
+@@ -1108,6 +1111,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | RSVD(6) },
+ 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
+ 	  .driver_info = RSVD(0) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
++	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_500A) },
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_620UW) },
 
 
