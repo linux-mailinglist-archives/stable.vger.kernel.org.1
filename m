@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD2C37D3089
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16D9A7D34F7
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231868AbjJWK7u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 06:59:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39178 "EHLO
+        id S234434AbjJWLoY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231732AbjJWK7q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:46 -0400
+        with ESMTP id S234441AbjJWLoP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5835610C0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C3E0C433C8;
-        Mon, 23 Oct 2023 10:59:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DBC9D7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4584DC433CA;
+        Mon, 23 Oct 2023 11:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058783;
-        bh=ZNNbfj4D4R0GljfZWtLmC7PkNhsrNVmwT09rcjyF22A=;
+        s=korg; t=1698061444;
+        bh=zHvmjs8Yoe4hV5wwzZnn4VuRHeAwMWe82HA1OO797eo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rmgtwY2fbu/CiJr3TPpTeDRzzs4VVzb8a3gT8mJVS+Ocb4voxrVeTS0CrKQTObjV+
-         zuLlbW9OEfk16cWfHEKMWhU8e5RxA1/N8h+Ncl585cPkkd5cYLArVXxOkHDGsW9p8v
-         kIojYjHBx4n30QYY8LfbkADCqYU/nJiVQJYJ7V18=
+        b=ORUM/JiAVo8MmDl5HCRDfEMzbSjGfW/0Qb2Tei3RKZ3krt/zbbnlFu2mmOsadhLSg
+         8c/KJn3j/hcAhZZeQ5ya/QOwVU+HguIhzrQJgJdvFkdWKJVuKb/QItAGPY/kJKMxYX
+         aZtZyKmNDkIIZjLHibstk20BDEQ4pJWCjGQOsMvo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Simon Horman <horms@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 07/66] ixgbe: fix crash with empty VF macvlan list
+        patches@lists.linux.dev, Matthias Berndt <matthias_berndt@gmx.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 050/202] Input: xpad - add PXN V900 support
 Date:   Mon, 23 Oct 2023 12:55:57 +0200
-Message-ID: <20231023104811.052896716@linuxfoundation.org>
+Message-ID: <20231023104828.044130587@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +48,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Matthias Berndt <matthias_berndt@gmx.de>
 
-[ Upstream commit 7b5add9af567c44e12196107f0fe106e194034fd ]
+commit a65cd7ef5a864bdbbe037267c327786b7759d4c6 upstream.
 
-The adapter->vf_mvs.l list needs to be initialized even if the list is
-empty.  Otherwise it will lead to crashes.
+Add VID and PID to the xpad_device table to allow driver to use the PXN
+V900 steering wheel, which is XTYPE_XBOX360 compatible in xinput mode.
 
-Fixes: a1cbb15c1397 ("ixgbe: Add macvlan support for VF")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Link: https://lore.kernel.org/r/ZSADNdIw8zFx1xw2@kadam
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Matthias Berndt <matthias_berndt@gmx.de>
+Link: https://lore.kernel.org/r/4932699.31r3eYUQgx@fedora
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-index f36bb9e7d8d59..3698c45837d82 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-@@ -53,6 +53,9 @@ static inline void ixgbe_alloc_vf_macvlans(struct ixgbe_adapter *adapter,
- 	struct vf_macvlans *mv_list;
- 	int num_vf_macvlans, i;
- 
-+	/* Initialize list of VF macvlans */
-+	INIT_LIST_HEAD(&adapter->vf_mvs.l);
-+
- 	num_vf_macvlans = hw->mac.num_rar_entries -
- 			  (IXGBE_MAX_PF_MACVLANS + 1 + num_vfs);
- 	if (!num_vf_macvlans)
-@@ -61,8 +64,6 @@ static inline void ixgbe_alloc_vf_macvlans(struct ixgbe_adapter *adapter,
- 	mv_list = kcalloc(num_vf_macvlans, sizeof(struct vf_macvlans),
- 			  GFP_KERNEL);
- 	if (mv_list) {
--		/* Initialize list of VF macvlans */
--		INIT_LIST_HEAD(&adapter->vf_mvs.l);
- 		for (i = 0; i < num_vf_macvlans; i++) {
- 			mv_list[i].vf = -1;
- 			mv_list[i].free = true;
--- 
-2.40.1
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -252,6 +252,7 @@ static const struct xpad_device {
+ 	{ 0x1038, 0x1430, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
+ 	{ 0x1038, 0x1431, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
+ 	{ 0x11c9, 0x55f0, "Nacon GC-100XF", 0, XTYPE_XBOX360 },
++	{ 0x11ff, 0x0511, "PXN V900", 0, XTYPE_XBOX360 },
+ 	{ 0x1209, 0x2882, "Ardwiino Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x12ab, 0x0004, "Honey Bee Xbox360 dancepad", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x12ab, 0x0301, "PDP AFTERGLOW AX.1", 0, XTYPE_XBOX360 },
+@@ -446,6 +447,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOXONE_VENDOR(0x0f0d),		/* Hori Controllers */
+ 	XPAD_XBOX360_VENDOR(0x1038),		/* SteelSeries Controllers */
+ 	XPAD_XBOX360_VENDOR(0x11c9),		/* Nacon GC100XF */
++	XPAD_XBOX360_VENDOR(0x11ff),		/* PXN V900 */
+ 	XPAD_XBOX360_VENDOR(0x1209),		/* Ardwiino Controllers */
+ 	XPAD_XBOX360_VENDOR(0x12ab),		/* X-Box 360 dance pads */
+ 	XPAD_XBOX360_VENDOR(0x1430),		/* RedOctane X-Box 360 controllers */
 
 
