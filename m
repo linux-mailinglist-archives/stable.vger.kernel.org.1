@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 989507D32CF
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EA9B7D3504
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230012AbjJWLYL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33986 "EHLO
+        id S234377AbjJWLoq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233876AbjJWLYK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:10 -0400
+        with ESMTP id S234392AbjJWLol (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65DC8173A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FCDC433CC;
-        Mon, 23 Oct 2023 11:23:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC26D10E0
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D2FC433CA;
+        Mon, 23 Oct 2023 11:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060229;
-        bh=P1OGhpNQNbMttdovp41DiZ1g8lZ4KN2IERdb1OutCJI=;
+        s=korg; t=1698061474;
+        bh=jKAGsqXOfjXJ7M67HDVh7ZBpHgAHZ3l58D6qThMWHGo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pPdB/gv1Et+Fia/tsDn/4jQ97fg9EJX/7kR2z8GQsJQD20JayDRyDFfYNkvrszk9Q
-         3cfa1G4ZNCCmiU/xD9m2/98uwDmrhUQcgnblFLK77/uZG/jYlAW9RoLjZuePoUm4sm
-         JhwRrPj6MC0D09k7o3BD0JBBkkU8vNYW16wkfjRs=
+        b=lM/XGm3WJ+9FGnSdaNMN1fFce2G+mb+bC+V2VjR8ZT5R7T0zIjZtctqUhIQpJEHmP
+         H58nvf2qx6p8o71AVtRWfVSFw3p8vHfvgDi69xNGt4G7hzo0EfCyl7+k5f676V4c0j
+         LlxwRidxC4hbxpbhVrwNjWso79j2zExAynpahg/s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/196] ata: libata-eh: Fix compilation warning in ata_eh_link_report()
+        patches@lists.linux.dev, Duoming Zhou <duoming@zju.edu.cn>,
+        Eugen Hristev <eugen.hristev@collabora.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 059/202] dmaengine: mediatek: Fix deadlock caused by synchronize_irq()
 Date:   Mon, 23 Oct 2023 12:56:06 +0200
-Message-ID: <20231023104831.392855535@linuxfoundation.org>
+Message-ID: <20231023104828.286475366@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,54 +49,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 49728bdc702391902a473b9393f1620eea32acb0 ]
+[ Upstream commit 01f1ae2733e2bb4de92fefcea5fda847d92aede1 ]
 
-The 6 bytes length of the tries_buf string in ata_eh_link_report() is
-too short and results in a gcc compilation warning with W-!:
+The synchronize_irq(c->irq) will not return until the IRQ handler
+mtk_uart_apdma_irq_handler() is completed. If the synchronize_irq()
+holds a spin_lock and waits the IRQ handler to complete, but the
+IRQ handler also needs the same spin_lock. The deadlock will happen.
+The process is shown below:
 
-drivers/ata/libata-eh.c: In function ‘ata_eh_link_report’:
-drivers/ata/libata-eh.c:2371:59: warning: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 4 [-Wformat-truncation=]
- 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
-      |                                                           ^~
-drivers/ata/libata-eh.c:2371:56: note: directive argument in the range [-2147483648, 4]
- 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
-      |                                                        ^~~~~~
-drivers/ata/libata-eh.c:2371:17: note: ‘snprintf’ output between 4 and 14 bytes into a destination of size 6
- 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 2372 |                          ap->eh_tries);
-      |                          ~~~~~~~~~~~~~
+          cpu0                        cpu1
+mtk_uart_apdma_device_pause() | mtk_uart_apdma_irq_handler()
+  spin_lock_irqsave()         |
+                              |   spin_lock_irqsave()
+  //hold the lock to wait     |
+  synchronize_irq()           |
 
-Avoid this warning by increasing the string size to 16B.
+This patch reorders the synchronize_irq(c->irq) outside the spin_lock
+in order to mitigate the bug.
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 9135408c3ace ("dmaengine: mediatek: Add MediaTek UART APDMA support")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Reviewed-by: Eugen Hristev <eugen.hristev@collabora.com>
+Link: https://lore.kernel.org/r/20230806032511.45263-1-duoming@zju.edu.cn
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-eh.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/mediatek/mtk-uart-apdma.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 2a04dd36a4948..1eaaf01418ea7 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -2247,7 +2247,7 @@ static void ata_eh_link_report(struct ata_link *link)
- 	struct ata_eh_context *ehc = &link->eh_context;
- 	struct ata_queued_cmd *qc;
- 	const char *frozen, *desc;
--	char tries_buf[6] = "";
-+	char tries_buf[16] = "";
- 	int tag, nr_failed = 0;
+diff --git a/drivers/dma/mediatek/mtk-uart-apdma.c b/drivers/dma/mediatek/mtk-uart-apdma.c
+index a1517ef1f4a01..0acf6a92a4ad3 100644
+--- a/drivers/dma/mediatek/mtk-uart-apdma.c
++++ b/drivers/dma/mediatek/mtk-uart-apdma.c
+@@ -451,9 +451,8 @@ static int mtk_uart_apdma_device_pause(struct dma_chan *chan)
+ 	mtk_uart_apdma_write(c, VFF_EN, VFF_EN_CLR_B);
+ 	mtk_uart_apdma_write(c, VFF_INT_EN, VFF_INT_EN_CLR_B);
  
- 	if (ehc->i.flags & ATA_EHI_QUIET)
+-	synchronize_irq(c->irq);
+-
+ 	spin_unlock_irqrestore(&c->vc.lock, flags);
++	synchronize_irq(c->irq);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
