@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D17A7D33E1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96FDD7D34AD
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234027AbjJWLez (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:34:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
+        id S234302AbjJWLmL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234041AbjJWLey (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:54 -0400
+        with ESMTP id S234289AbjJWLmJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015D0E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B59BC433CC;
-        Mon, 23 Oct 2023 11:34:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA525D7F
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59DA7C433C9;
+        Mon, 23 Oct 2023 11:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060892;
-        bh=eM1aiEc1djzbuuy+wDteP8RBUqjqmvto4occTdBKMdw=;
+        s=korg; t=1698061307;
+        bh=ONhfmNg3h8thCwtzCAjFYDaGP22ybEteJ2LPhCLlySg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YZFnGfQKl1T+zDZ1c2XJKSG4LcgFYTp01Y6vz1xl6z8yNZk2CsGpZy2myz/8O+eeb
-         1V6RIjYIdKm2QZE+vV2lrmy83965eRPl78Wh0qubt3GOHqTqVz2pDYajDVSmkZn8Xw
-         50qUxLMcRUmWA7PDjHcD+oX2nVWn6WQ1d4ClmFs8=
+        b=mYjSqyj3hIN1ECJHaJ1OUuoOg58cnrMXVdyAueHtiZ6AxaYfAuPikmqu5Tq/UkF33
+         VW+O8HU1L8DgFAFb4VM+daQY/Ti+6PTCCJVv+rnAe+vCSCDhypU2ij8hVhcPl+8KKg
+         X41B4En7fDZHYWTWnF+rz5+XhgHIR9xK/UwxWCCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Kurbanov <mmkurbanov@sberdevices.ru>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.4 103/123] mtd: spinand: micron: correct bitmask for ecc status
+        patches@lists.linux.dev, Aviram Dali <aviramd@marvell.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Ravi Chandra Minnikanti <rminnikanti@marvell.com>
+Subject: [PATCH 5.15 104/137] mtd: rawnand: marvell: Ensure program page operations are successful
 Date:   Mon, 23 Oct 2023 12:57:41 +0200
-Message-ID: <20231023104821.165673772@linuxfoundation.org>
+Message-ID: <20231023104824.346007324@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,36 +49,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kurbanov <mmkurbanov@sberdevices.ru>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 9836a987860e33943945d4b257729a4f94eae576 upstream.
+commit 3e01d5254698ea3d18e09d96b974c762328352cd upstream.
 
-Valid bitmask is 0x70 in the status register.
+The NAND core complies with the ONFI specification, which itself
+mentions that after any program or erase operation, a status check
+should be performed to see whether the operation was finished *and*
+successful.
 
-Fixes: a508e8875e13 ("mtd: spinand: Add initial support for Micron MT29F2G01ABAGD")
-Signed-off-by: Martin Kurbanov <mmkurbanov@sberdevices.ru>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+The NAND core offers helpers to finish a page write (sending the
+"PAGE PROG" command, waiting for the NAND chip to be ready again, and
+checking the operation status). But in some cases, advanced controller
+drivers might want to optimize this and craft their own page write
+helper to leverage additional hardware capabilities, thus not always
+using the core facilities.
+
+Some drivers, like this one, do not use the core helper to finish a page
+write because the final cycles are automatically managed by the
+hardware. In this case, the additional care must be taken to manually
+perform the final status check.
+
+Let's read the NAND chip status at the end of the page write helper and
+return -EIO upon error.
+
+Cc: stable@vger.kernel.org
+Fixes: 02f26ecf8c77 ("mtd: nand: add reworked Marvell NAND controller driver")
+Reported-by: Aviram Dali <aviramd@marvell.com>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230905145637.139068-1-mmkurbanov@sberdevices.ru
+Tested-by: Ravi Chandra Minnikanti <rminnikanti@marvell.com>
+Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-1-miquel.raynal@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/spi/micron.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/marvell_nand.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/spi/micron.c
-+++ b/drivers/mtd/nand/spi/micron.c
-@@ -12,7 +12,7 @@
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -1148,6 +1148,7 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
+ 		.ndcb[2] = NDCB2_ADDR5_PAGE(page),
+ 	};
+ 	unsigned int oob_bytes = lt->spare_bytes + (raw ? lt->ecc_bytes : 0);
++	u8 status;
+ 	int ret;
  
- #define SPINAND_MFR_MICRON		0x2c
+ 	/* NFCv2 needs more information about the operation being executed */
+@@ -1181,7 +1182,18 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
  
--#define MICRON_STATUS_ECC_MASK		GENMASK(7, 4)
-+#define MICRON_STATUS_ECC_MASK		GENMASK(6, 4)
- #define MICRON_STATUS_ECC_NO_BITFLIPS	(0 << 4)
- #define MICRON_STATUS_ECC_1TO3_BITFLIPS	(1 << 4)
- #define MICRON_STATUS_ECC_4TO6_BITFLIPS	(3 << 4)
+ 	ret = marvell_nfc_wait_op(chip,
+ 				  PSEC_TO_MSEC(sdr->tPROG_max));
+-	return ret;
++	if (ret)
++		return ret;
++
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
++	return 0;
+ }
+ 
+ static int marvell_nfc_hw_ecc_hmg_write_page_raw(struct nand_chip *chip,
+@@ -1610,6 +1622,7 @@ static int marvell_nfc_hw_ecc_bch_write_
+ 	int data_len = lt->data_bytes;
+ 	int spare_len = lt->spare_bytes;
+ 	int chunk, ret;
++	u8 status;
+ 
+ 	marvell_nfc_select_target(chip, chip->cur_cs);
+ 
+@@ -1646,6 +1659,14 @@ static int marvell_nfc_hw_ecc_bch_write_
+ 	if (ret)
+ 		return ret;
+ 
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
+ 	return 0;
+ }
+ 
 
 
