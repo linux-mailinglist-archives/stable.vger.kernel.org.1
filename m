@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BCD57D35D3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:52:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4934D7D349B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:41:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234640AbjJWLwX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:52:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59642 "EHLO
+        id S234276AbjJWLlR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:41:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234644AbjJWLwW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:52:22 -0400
+        with ESMTP id S234278AbjJWLlQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:41:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0DCC1732
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:52:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86516C433C8;
-        Mon, 23 Oct 2023 11:52:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0012E8
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF77BC433C7;
+        Mon, 23 Oct 2023 11:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061923;
-        bh=POK62nZuoMzFMByz2QE6RcFxEbaUfC0PotsmIKQ24uk=;
+        s=korg; t=1698061274;
+        bh=xRh9SIfVaZnPULEC5SVkacXB5t0V/mMzXysQ/Jr/aOk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qEYvpJ8CeuqimGAXcg8hjRPeivCmEgxkKgugxbGyNzNbrqlW779J9etGwRJj1/zqa
-         8p5HS4cuLdf14AJbc8/Cpz8qqjPZQbkYhp4zalBmNF4790EeTYqKy00aGGDIQoiygj
-         UymmTf+A4dVoVxFSw/PCvWDzJ55lNlllG/pu847A=
+        b=AebwnvSSNWjfPsV+s6utTCi6zXtpSFa6IP31oiU+sBEcMbx43vVowpakZ0aVyr4Ep
+         4TN0pEpk5f+cdun5xmWEHYziwV1TagCdjUh2/8v4pA3xrljJ97mCmhAAKq3/IeOyKW
+         329K33agrMJRzF/Gjlh6Wh9vrpjMMi9FiPNn7Q9s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Avri Altman <avri.altman@wdc.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 180/202] mmc: core: Capture correct oemid-bits for eMMC cards
+        patches@lists.linux.dev,
+        Alexander Stein <alexander.stein@ew.tq-group.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 130/137] gpio: vf610: make irq_chip immutable
 Date:   Mon, 23 Oct 2023 12:58:07 +0200
-Message-ID: <20231023104831.723938064@linuxfoundation.org>
+Message-ID: <20231023104825.088662686@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,43 +52,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avri Altman <avri.altman@wdc.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 84ee19bffc9306128cd0f1c650e89767079efeff upstream.
+[ Upstream commit e6ef4f8ede09f4af7cde000717b349b50bc62576 ]
 
-The OEMID is an 8-bit binary number rather than 16-bit as the current code
-parses for. The OEMID occupies bits [111:104] in the CID register, see the
-eMMC spec JESD84-B51 paragraph 7.2.3. It seems that the 16-bit comes from
-the legacy MMC specs (v3.31 and before).
+Since recently, the kernel is nagging about mutable irq_chips:
 
-Let's fix the parsing by simply move to use 8-bit instead of 16-bit. This
-means we ignore the impact on some of those old MMC cards that may be out
-there, but on the other hand this shouldn't be a problem as the OEMID seems
-not be an important feature for these cards.
+    "not an immutable chip, please consider fixing it!"
 
-Signed-off-by: Avri Altman <avri.altman@wdc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230927071500.1791882-1-avri.altman@wdc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Drop the unneeded copy, flag it as IRQCHIP_IMMUTABLE, add the new
+helper functions and call the appropriate gpiolib functions.
+
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 430232619791 ("gpio: vf610: mask the gpio irq in system suspend and support wakeup")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/mmc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-vf610.c | 41 ++++++++++++++++++++++-----------------
+ 1 file changed, 23 insertions(+), 18 deletions(-)
 
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -95,7 +95,7 @@ static int mmc_decode_cid(struct mmc_car
- 	case 3: /* MMC v3.1 - v3.3 */
- 	case 4: /* MMC v4 */
- 		card->cid.manfid	= UNSTUFF_BITS(resp, 120, 8);
--		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 16);
-+		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 8);
- 		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
- 		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
- 		card->cid.prod_name[2]	= UNSTUFF_BITS(resp, 80, 8);
+diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
+index c3014f5f0faad..2f21440cbeb19 100644
+--- a/drivers/gpio/gpio-vf610.c
++++ b/drivers/gpio/gpio-vf610.c
+@@ -29,7 +29,6 @@ struct fsl_gpio_soc_data {
+ 
+ struct vf610_gpio_port {
+ 	struct gpio_chip gc;
+-	struct irq_chip ic;
+ 	void __iomem *base;
+ 	void __iomem *gpio_base;
+ 	const struct fsl_gpio_soc_data *sdata;
+@@ -206,20 +205,24 @@ static int vf610_gpio_irq_set_type(struct irq_data *d, u32 type)
+ 
+ static void vf610_gpio_irq_mask(struct irq_data *d)
+ {
+-	struct vf610_gpio_port *port =
+-		gpiochip_get_data(irq_data_get_irq_chip_data(d));
+-	void __iomem *pcr_base = port->base + PORT_PCR(d->hwirq);
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct vf610_gpio_port *port = gpiochip_get_data(gc);
++	irq_hw_number_t gpio_num = irqd_to_hwirq(d);
++	void __iomem *pcr_base = port->base + PORT_PCR(gpio_num);
+ 
+ 	vf610_gpio_writel(0, pcr_base);
++	gpiochip_disable_irq(gc, gpio_num);
+ }
+ 
+ static void vf610_gpio_irq_unmask(struct irq_data *d)
+ {
+-	struct vf610_gpio_port *port =
+-		gpiochip_get_data(irq_data_get_irq_chip_data(d));
+-	void __iomem *pcr_base = port->base + PORT_PCR(d->hwirq);
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
++	struct vf610_gpio_port *port = gpiochip_get_data(gc);
++	irq_hw_number_t gpio_num = irqd_to_hwirq(d);
++	void __iomem *pcr_base = port->base + PORT_PCR(gpio_num);
+ 
+-	vf610_gpio_writel(port->irqc[d->hwirq] << PORT_PCR_IRQC_OFFSET,
++	gpiochip_enable_irq(gc, gpio_num);
++	vf610_gpio_writel(port->irqc[gpio_num] << PORT_PCR_IRQC_OFFSET,
+ 			  pcr_base);
+ }
+ 
+@@ -236,6 +239,17 @@ static int vf610_gpio_irq_set_wake(struct irq_data *d, u32 enable)
+ 	return 0;
+ }
+ 
++static const struct irq_chip vf610_irqchip = {
++	.name = "gpio-vf610",
++	.irq_ack = vf610_gpio_irq_ack,
++	.irq_mask = vf610_gpio_irq_mask,
++	.irq_unmask = vf610_gpio_irq_unmask,
++	.irq_set_type = vf610_gpio_irq_set_type,
++	.irq_set_wake = vf610_gpio_irq_set_wake,
++	.flags = IRQCHIP_IMMUTABLE,
++	GPIOCHIP_IRQ_RESOURCE_HELPERS,
++};
++
+ static void vf610_gpio_disable_clk(void *data)
+ {
+ 	clk_disable_unprepare(data);
+@@ -248,7 +262,6 @@ static int vf610_gpio_probe(struct platform_device *pdev)
+ 	struct vf610_gpio_port *port;
+ 	struct gpio_chip *gc;
+ 	struct gpio_irq_chip *girq;
+-	struct irq_chip *ic;
+ 	int i;
+ 	int ret;
+ 
+@@ -315,14 +328,6 @@ static int vf610_gpio_probe(struct platform_device *pdev)
+ 	gc->direction_output = vf610_gpio_direction_output;
+ 	gc->set = vf610_gpio_set;
+ 
+-	ic = &port->ic;
+-	ic->name = "gpio-vf610";
+-	ic->irq_ack = vf610_gpio_irq_ack;
+-	ic->irq_mask = vf610_gpio_irq_mask;
+-	ic->irq_unmask = vf610_gpio_irq_unmask;
+-	ic->irq_set_type = vf610_gpio_irq_set_type;
+-	ic->irq_set_wake = vf610_gpio_irq_set_wake;
+-
+ 	/* Mask all GPIO interrupts */
+ 	for (i = 0; i < gc->ngpio; i++)
+ 		vf610_gpio_writel(0, port->base + PORT_PCR(i));
+@@ -331,7 +336,7 @@ static int vf610_gpio_probe(struct platform_device *pdev)
+ 	vf610_gpio_writel(~0, port->base + PORT_ISFR);
+ 
+ 	girq = &gc->irq;
+-	girq->chip = ic;
++	gpio_irq_chip_set_chip(girq, &vf610_irqchip);
+ 	girq->parent_handler = vf610_gpio_irq_handler;
+ 	girq->num_parents = 1;
+ 	girq->parents = devm_kcalloc(&pdev->dev, 1,
+-- 
+2.42.0
+
 
 
