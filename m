@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B64C7D337B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 989507D32CF
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234047AbjJWLar (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:30:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51082 "EHLO
+        id S230012AbjJWLYL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:24:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234068AbjJWLaq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:46 -0400
+        with ESMTP id S233876AbjJWLYK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C706E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC46DC433C9;
-        Mon, 23 Oct 2023 11:30:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65DC8173A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76FCDC433CC;
+        Mon, 23 Oct 2023 11:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060644;
-        bh=uBrvGhiM5jKZjHQbGACgmHpFheAQLh7DmswHbHkF/zg=;
+        s=korg; t=1698060229;
+        bh=P1OGhpNQNbMttdovp41DiZ1g8lZ4KN2IERdb1OutCJI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hiO9/nT5zPShiH8VQPtkwTI3zGjyyYjM6W3+erZWJI3maEN7UhukX4zkBbNibEztU
-         S24XuqLk1O9qHJrwUkkrfp+TXZg3vDflPTRKKB+yFv7kebBXS3p9MCTLOnYHS1cUHD
-         4hSLFq9unAMPpx0iS94qph0v0V8b/B309xkTAqxE=
+        b=pPdB/gv1Et+Fia/tsDn/4jQ97fg9EJX/7kR2z8GQsJQD20JayDRyDFfYNkvrszk9Q
+         3cfa1G4ZNCCmiU/xD9m2/98uwDmrhUQcgnblFLK77/uZG/jYlAW9RoLjZuePoUm4sm
+         JhwRrPj6MC0D09k7o3BD0JBBkkU8vNYW16wkfjRs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Fuzzey <martin.fuzzey@flowbird.group>,
-        Lucas Stach <l.stach@pengutronix.de>
-Subject: [PATCH 5.4 008/123] drm: etvnaviv: fix bad backport leading to warning
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 101/196] ata: libata-eh: Fix compilation warning in ata_eh_link_report()
 Date:   Mon, 23 Oct 2023 12:56:06 +0200
-Message-ID: <20231023104818.009487342@linuxfoundation.org>
+Message-ID: <20231023104831.392855535@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,87 +52,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Fuzzey <martin.fuzzey@flowbird.group>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-When updating from 5.4.219 -> 5.4.256 I started getting a runtime warning:
+[ Upstream commit 49728bdc702391902a473b9393f1620eea32acb0 ]
 
-[   58.229857] ------------[ cut here ]------------
-[   58.234599] WARNING: CPU: 1 PID: 565 at drivers/gpu/drm/drm_gem.c:1020 drm_gem_object_put+0x90/0x98
-[   58.249935] Modules linked in: qmi_wwan cdc_wdm option usb_wwan smsc95xx rsi_usb rsi_91x btrsi ci_hdrc_imx ci_hdrc
-[   58.260499] ueventd: modprobe usb:v2F8Fp7FFFd0200dc00dsc00dp00icFEisc01ip02in00 done
-[   58.288877] CPU: 1 PID: 565 Comm: android.display Not tainted 5.4.256pkn-5.4-bsp-snapshot-svn-7423 #2195
-[   58.288883] Hardware name: Freescale i.MX6 Quad/DualLite (Device Tree)
-[   58.288888] Backtrace:
-[   58.288912] [<c010e784>] (dump_backtrace) from [<c010eaa4>] (show_stack+0x20/0x24)
-[   58.288920]  r7:00000000 r6:60010013 r5:00000000 r4:c14cd224
-[   58.328337] [<c010ea84>] (show_stack) from [<c0cf9ca4>] (dump_stack+0xe8/0x120)
-[   58.335661] [<c0cf9bbc>] (dump_stack) from [<c012efd0>] (__warn+0xd4/0xe8)
-[   58.342542]  r10:eda54000 r9:c06ca53c r8:000003fc r7:00000009 r6:c111ed54 r5:00000000
-[   58.350374]  r4:00000000 r3:76cf564a
-[   58.353957] [<c012eefc>] (__warn) from [<c012f094>] (warn_slowpath_fmt+0xb0/0xc0)
-[   58.361445]  r9:00000009 r8:c06ca53c r7:000003fc r6:c111ed54 r5:c1406048 r4:00000000
-[   58.369198] [<c012efe8>] (warn_slowpath_fmt) from [<c06ca53c>] (drm_gem_object_put+0x90/0x98)
-[   58.377728]  r9:edda7e40 r8:edd39360 r7:ad16e000 r6:edda7eb0 r5:00000000 r4:edaa3200
-[   58.385524] [<c06ca4ac>] (drm_gem_object_put) from [<bf0125a8>] (etnaviv_gem_prime_mmap_obj+0x34/0x3c [etnaviv])
-[   58.395704]  r5:00000000 r4:edaa3200
-[   58.399334] [<bf012574>] (etnaviv_gem_prime_mmap_obj [etnaviv]) from [<bf0143a0>] (etnaviv_gem_mmap+0x3c/0x60 [etnaviv])
-[   58.410205]  r5:edd39360 r4:00000000
-[   58.413816] [<bf014364>] (etnaviv_gem_mmap [etnaviv]) from [<c02c5e08>] (mmap_region+0x37c/0x67c)
-[   58.422689]  r5:ad16d000 r4:edda7eb8
-[   58.426272] [<c02c5a8c>] (mmap_region) from [<c02c6528>] (do_mmap+0x420/0x544)
-[   58.433500]  r10:000000fb r9:000fffff r8:ffffffff r7:00000001 r6:00000003 r5:00000001
-[   58.441330]  r4:00001000
-[   58.443876] [<c02c6108>] (do_mmap) from [<c02a5b2c>] (vm_mmap_pgoff+0xd0/0x100)
-[   58.451190]  r10:eda54040 r9:00001000 r8:00000000 r7:00000000 r6:00000003 r5:c1406048
-[   58.459020]  r4:edb8ff24
-[   58.461561] [<c02a5a5c>] (vm_mmap_pgoff) from [<c02c3ac8>] (ksys_mmap_pgoff+0xdc/0x10c)
-[   58.469570]  r10:000000c0 r9:edb8e000 r8:ed650b40 r7:00000003 r6:00001000 r5:00000000
-[   58.477400]  r4:00000001
-[   58.479941] [<c02c39ec>] (ksys_mmap_pgoff) from [<c02c3b24>] (sys_mmap_pgoff+0x2c/0x34)
-[   58.487949]  r8:c0101224 r7:000000c0 r6:951ece38 r5:00010001 r4:00000065
-[   58.494658] [<c02c3af8>] (sys_mmap_pgoff) from [<c0101000>] (ret_fast_syscall+0x0/0x28)
+The 6 bytes length of the tries_buf string in ata_eh_link_report() is
+too short and results in a gcc compilation warning with W-!:
 
-It looks like this was a backporting error for the upstream patch
-963b2e8c428f "drm/etnaviv: fix reference leak when mmaping imported buffer"
+drivers/ata/libata-eh.c: In function ‘ata_eh_link_report’:
+drivers/ata/libata-eh.c:2371:59: warning: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 4 [-Wformat-truncation=]
+ 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
+      |                                                           ^~
+drivers/ata/libata-eh.c:2371:56: note: directive argument in the range [-2147483648, 4]
+ 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
+      |                                                        ^~~~~~
+drivers/ata/libata-eh.c:2371:17: note: ‘snprintf’ output between 4 and 14 bytes into a destination of size 6
+ 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2372 |                          ap->eh_tries);
+      |                          ~~~~~~~~~~~~~
 
-In the 5.4 kernel there are 2 variants of the object put function:
-	drm_gem_object_put() [which requires lock to be held]
-	drm_gem_object_put_unlocked() [which requires lock to be NOT held]
+Avoid this warning by increasing the string size to 16B.
 
-In later kernels [5.14+] this has gone and there just drm_gem_object_put()
-which requires lock to be NOT held.
-
-So the memory leak pach, which added a call to drm_gem_object_put() was correct
-on newer kernels but wrong on 5.4 and earlier ones.
-
-So switch back to using the _unlocked variant for old kernels.
-This should only be applied to the 5.4, 4.19 and 4.14 longterm branches;
-mainline and more recent longterms already have the correct fix.
-
-Signed-off-by: Martin Fuzzey <martin.fuzzey@flowbird.group>
-Fixes: 0c6df5364798 "drm/etnaviv: fix reference leak when mmaping imported buffer" [5.4.y]
-Fixes: 0838cb217a52 "drm/etnaviv: fix reference leak when mmaping imported buffer" [4.19.y]
-Fixes: 1c9544fbc979 "drm/etnaviv: fix reference leak when mmaping imported buffer" [4.14.y]
-Reviewed-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c |    2 +-
+ drivers/ata/libata-eh.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_gem_prime.c
-@@ -98,7 +98,7 @@ static int etnaviv_gem_prime_mmap_obj(st
- 	ret = dma_buf_mmap(etnaviv_obj->base.dma_buf, vma, 0);
- 	if (!ret) {
- 		/* Drop the reference acquired by drm_gem_mmap_obj(). */
--		drm_gem_object_put(&etnaviv_obj->base);
-+		drm_gem_object_put_unlocked(&etnaviv_obj->base);
- 	}
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 2a04dd36a4948..1eaaf01418ea7 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -2247,7 +2247,7 @@ static void ata_eh_link_report(struct ata_link *link)
+ 	struct ata_eh_context *ehc = &link->eh_context;
+ 	struct ata_queued_cmd *qc;
+ 	const char *frozen, *desc;
+-	char tries_buf[6] = "";
++	char tries_buf[16] = "";
+ 	int tag, nr_failed = 0;
  
- 	return ret;
+ 	if (ehc->i.flags & ATA_EHI_QUIET)
+-- 
+2.40.1
+
 
 
