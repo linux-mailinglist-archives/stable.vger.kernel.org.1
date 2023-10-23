@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 690E07D3178
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BE0E7D32A8
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233565AbjJWLJc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52300 "EHLO
+        id S233837AbjJWLWk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:22:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233568AbjJWLJb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:09:31 -0400
+        with ESMTP id S233845AbjJWLWj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63BBC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:09:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4B4C433C7;
-        Mon, 23 Oct 2023 11:09:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DC9FC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1196C433C8;
+        Mon, 23 Oct 2023 11:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059369;
-        bh=okdxfI3kEEIJ6J+OzEc9tLfONuc6jEpUgdaCVYzDJ/o=;
+        s=korg; t=1698060157;
+        bh=FpmgVBcRp6at5F2e5ALI/kE7qKJWhKe5dBkoEyJbXl8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m7yzrvs1teceCBr5aFibXoYGLhl0GS2eAUbOpWtuNti9miXge7grwE1/wsjaslbra
-         uopDPoqemeq/+2z+kU84CtlvceDRFD/u9lhqC9pl03tYTXytV6ncbEkDQkF2kNl5Bg
-         Qv/YNNarzv7Inkp0mHBFFQxRuSppwTT9wvzM5hok=
+        b=Qug/hCQAKfuV8C23DAtYRmTzgCA0Lfb8bD0QNAl99B0LVFrLNzrDlBJbSD/hoAIyZ
+         nS/nXtraQfLThWJA6nSRH5EH6wv3qaNMIuJcDoOKnOhuywFF8ZF3GSQDy7CW/Z/bJc
+         YgCCs1vOtONLM+uuBeLBhxqFFIZF1wd9DDTj5QkA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
-        Ariel Levkovich <lariel@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev, Juntong Deng <juntong.deng@outlook.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 155/241] net/mlx5e: Dont offload internal port if filter device is out device
-Date:   Mon, 23 Oct 2023 12:55:41 +0200
-Message-ID: <20231023104837.650911621@linuxfoundation.org>
+Subject: [PATCH 6.1 077/196] selftests/mm: fix awk usage in charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh that may cause error
+Date:   Mon, 23 Oct 2023 12:55:42 +0200
+Message-ID: <20231023104830.729040688@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,48 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-[ Upstream commit 06b4eac9c4beda520b8a4dbbb8e33dba9d1c8fba ]
+[ Upstream commit bbe246f875d064ecfb872fe4f66152e743dfd22d ]
 
-In the cited commit, if the routing device is ovs internal port, the
-out device is set to uplink, and packets go out after encapsulation.
+According to the awk manual, the -e option does not need to be specified
+in front of 'program' (unless you need to mix program-file).
 
-If filter device is uplink, it can trigger the following syndrome:
-mlx5_core 0000:08:00.0: mlx5_cmd_out_err:803:(pid 3966): SET_FLOW_TABLE_ENTRY(0x936) op_mod(0x0) failed, status bad parameter(0x3), syndrome (0xcdb051), err(-22)
+The redundant -e option can cause error when users use awk tools other
+than gawk (for example, mawk does not support the -e option).
 
-Fix this issue by not offloading internal port if filter device is out
-device. In this case, packets are not forwarded to the root table to
-be processed, the termination table is used instead to forward them
-from uplink to uplink.
+Error Example:
+awk: not an option: -e
 
-Fixes: 100ad4e2d758 ("net/mlx5e: Offload internal port as encap route device")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Ariel Levkovich <lariel@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lkml.kernel.org/r/VI1P193MB075228810591AF2FDD7D42C599C3A@VI1P193MB0752.EURP193.PROD.OUTLOOK.COM
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/vm/charge_reserved_hugetlb.sh  | 4 ++--
+ tools/testing/selftests/vm/hugetlb_reparenting_test.sh | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-index 1730f6a716eea..b10e40e1a9c14 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
-@@ -24,7 +24,8 @@ static int mlx5e_set_int_port_tunnel(struct mlx5e_priv *priv,
+diff --git a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
+index a5cb4b09a46c4..0899019a7fcb4 100644
+--- a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
+@@ -25,7 +25,7 @@ if [[ "$1" == "-cgroup-v2" ]]; then
+ fi
  
- 	route_dev = dev_get_by_index(dev_net(e->out_dev), e->route_dev_ifindex);
+ if [[ $cgroup2 ]]; then
+-  cgroup_path=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
++  cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+     cgroup_path=/dev/cgroup/memory
+     mount -t cgroup2 none $cgroup_path
+@@ -33,7 +33,7 @@ if [[ $cgroup2 ]]; then
+   fi
+   echo "+hugetlb" >$cgroup_path/cgroup.subtree_control
+ else
+-  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
++  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+     cgroup_path=/dev/cgroup/memory
+     mount -t cgroup memory,hugetlb $cgroup_path
+diff --git a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
+index bf2d2a684edfd..14d26075c8635 100644
+--- a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
++++ b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
+@@ -20,7 +20,7 @@ fi
  
--	if (!route_dev || !netif_is_ovs_master(route_dev))
-+	if (!route_dev || !netif_is_ovs_master(route_dev) ||
-+	    attr->parse_attr->filter_dev == e->out_dev)
- 		goto out;
  
- 	err = mlx5e_set_fwd_to_int_port_actions(priv, attr, e->route_dev_ifindex,
+ if [[ $cgroup2 ]]; then
+-  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
++  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$CGROUP_ROOT" ]]; then
+     CGROUP_ROOT=/dev/cgroup/memory
+     mount -t cgroup2 none $CGROUP_ROOT
+@@ -28,7 +28,7 @@ if [[ $cgroup2 ]]; then
+   fi
+   echo "+hugetlb +memory" >$CGROUP_ROOT/cgroup.subtree_control
+ else
+-  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
++  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+   if [[ -z "$CGROUP_ROOT" ]]; then
+     CGROUP_ROOT=/dev/cgroup/memory
+     mount -t cgroup memory,hugetlb $CGROUP_ROOT
 -- 
 2.40.1
 
