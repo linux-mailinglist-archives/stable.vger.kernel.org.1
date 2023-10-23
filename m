@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99FA97D384C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 15:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E91C97D390A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 16:14:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229568AbjJWNm4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 09:42:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53460 "EHLO
+        id S229452AbjJWOOc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 10:14:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230044AbjJWNmz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 09:42:55 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A22E6E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 06:42:52 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-6b89ab5ddb7so3286032b3a.0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 06:42:52 -0700 (PDT)
+        with ESMTP id S230242AbjJWOOb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 10:14:31 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8C59DF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 07:14:27 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-27d104fa285so2854027a91.2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 07:14:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698068572; x=1698673372; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698070467; x=1698675267; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=blMeHra8SjoTecPzlZ/5s3XcNc1PP0KfuitkYlFgCHo=;
-        b=wCoo4i9d/AOJsP4n2brZac5Gnq+Py64Qc8PmhA+ofGqno3kgDlo40AckGq/C0Jaxxr
-         weVMH1cG1Ll1K94JZC7zLLWxWx6VLaEiOBh7NYBEiTOO7Z8ZM98LQUss1Reqtdocmauk
-         VeOM6CqV4b8kAZFazE3RnTBj86dgESaodBxYwuWK8SNYZkrgAQOzS1fd+GsN7Wy65Lt8
-         DN+sw0JSgV+PdbvAbh/fqA5FB/WO7K9X29uTrIdkWLPnitZF/Bt6HV+1UcTwdRnLOnsp
-         vaZiPKrV9XMO8TCXqJp3tIx3A2Mv198Ger2zQRlSxERNIsrImoecP3+TZrEAa2UKbvbH
-         RR+A==
+        bh=o3AwSbs9k5/vszXrMNxj3so2nyIb1ZO5l/pwNloxqdg=;
+        b=zXFqr31Qu7GU+vDHjzlMJLe4Dz/obk4GdxCGTKprDdWiNQoGIxg5NT5xEh7wVcNQyF
+         5pCVhR91nMYg+sWW+c6lyjghz1m+cly+5JyvLtw/lFo8a38TM/mzw6UJvACS+VH1yQN0
+         Wxfs+xziFxG0EUDN4B8+Bd2SRSYIxHCqTEygz++n8uO0L/D0bcoLeEt3x1qLWUaiVY4/
+         y/zhSR5S8CvIFmz5UZRo6LmoG63eAMjhTSit6yeE5ks1t6TxxHzcmYQbkDuho3croVST
+         qdTSufc7/l/K6UbjMveOLyU3MHEGctN77Bkbu/6dVko01EbBG6TUJ6kI0CtuY/8L2WEB
+         25NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698068572; x=1698673372;
+        d=1e100.net; s=20230601; t=1698070467; x=1698675267;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=blMeHra8SjoTecPzlZ/5s3XcNc1PP0KfuitkYlFgCHo=;
-        b=n8ZQ94yp8JsXiQ8/88WQnVhpzGYJdAseYaIH7ybJRiXNBVRoTlGYdy7gsUck1E80QX
-         ye5KxdDPtEA9fpz6BFgcH9MXgvB1wbPUfx757JeK+1iriJvl0sRHt7TbWzofKwXBhfdm
-         wXoBtgqqC1nw8LpPgBUa/7ZDGLa9dkZ20JRBnCbnStnww6jf3WkTIULfsvdNX8HSWbm9
-         C92ZeUB9ScoBfFjctUxXDSy+RZQhLLVfk4jX5tK0GDNLzgfzSPtiA8OTgFjX6iu+tWPD
-         NzqO4eO9IvwHw8MEwpnKhVn2liY89m1Z0nd+zqY+MnUPtsjadQShmKNUjV/KWM90ss9B
-         x/3w==
-X-Gm-Message-State: AOJu0Yy3YJTz1DI5kRkRo42PahQOJa0kdCel9hZ4SezZ97WvUan6o0qE
-        C2wCdS4CVHCcwMpwu/xpl2fcoflt3+5Ksdb6dE1j7g==
-X-Google-Smtp-Source: AGHT+IFdzHrDPcXVDjqU1D8D1n53xzFJkljku3Cj0tkPI+LPhjsFZFQVfFCqu8N2c5QfBVXrUcrpXw==
-X-Received: by 2002:a05:6a21:a59b:b0:17a:e941:b0a3 with SMTP id gd27-20020a056a21a59b00b0017ae941b0a3mr12408033pzc.39.1698068571717;
-        Mon, 23 Oct 2023 06:42:51 -0700 (PDT)
+        bh=o3AwSbs9k5/vszXrMNxj3so2nyIb1ZO5l/pwNloxqdg=;
+        b=MBEyyRyP6sJAGFQGkhKhf8cp4uSpC6OsuZxpZFdjFm6fwA5rBftT4pZuifa7Z4rk72
+         Bvg1Mec+dojGOxT8wGyL8pGBnjf/ZPu2QId5kqjeM+BNqutA3WBS4Szch7kblMgA8H5o
+         5sSw7eMRMsCod+kJHAjO59b2N4Uub+J+y16bmrgThxgE8RLD1tCSZZHIX+UWQ0ReDMk3
+         STdmoaErnNaRPIFC99N0Vuhqh8guFvmuCDHOA14j3FrkLADGiuxGI7KOZvNwiKsRVbw/
+         +yGYnpoeUtPog3Xp/YEnd/3vNMCeiLFwmtUapbu3I20hqGSf9adgQ7RJfjZTIMQNFFz6
+         VKyg==
+X-Gm-Message-State: AOJu0YwV0lytkoX0YNCfN++Qq5GeU3HWmYdU/VIEpejyT3gp0MQu+UH2
+        VbAF4cm4/r0xvlm8rdfAhhiY6b+G9FjUawEAIaaLjw==
+X-Google-Smtp-Source: AGHT+IF4OMMdfz3o7lYk9CvMxBuJomGakWJ103KAC0Zf+YV8yEge0W2SBr+lxTAmknDEhinhN7WG9Q==
+X-Received: by 2002:a17:90a:9a90:b0:27d:4ede:75b0 with SMTP id e16-20020a17090a9a9000b0027d4ede75b0mr9016240pjp.16.1698070466877;
+        Mon, 23 Oct 2023 07:14:26 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id k126-20020a628484000000b006bddd1ee5f0sm6409718pfd.5.2023.10.23.06.42.50
+        by smtp.gmail.com with ESMTPSA id 27-20020a17090a035b00b0027ceac90684sm6384660pjf.18.2023.10.23.07.14.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Oct 2023 06:42:51 -0700 (PDT)
-Message-ID: <6536785b.620a0220.4e101.2f29@mx.google.com>
-Date:   Mon, 23 Oct 2023 06:42:51 -0700 (PDT)
+        Mon, 23 Oct 2023 07:14:26 -0700 (PDT)
+Message-ID: <65367fc2.170a0220.9544c.2902@mx.google.com>
+Date:   Mon, 23 Oct 2023 07:14:26 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.10.198-203-g38f629e2a1b6
+X-Kernelci-Kernel: v5.15.135-239-gc7721f02ed5c
 X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Branch: linux-5.15.y
 X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-5.10.y build: 19 builds: 2 failed, 17 passed, 6 errors,
- 9 warnings (v5.10.198-203-g38f629e2a1b6)
+Subject: stable-rc/linux-5.15.y build: 20 builds: 2 failed, 18 passed, 6 errors,
+ 7 warnings (v5.15.135-239-gc7721f02ed5c)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -71,16 +71,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 2 failed, 17 passed, 6 errors, 9 w=
-arnings (v5.10.198-203-g38f629e2a1b6)
+stable-rc/linux-5.15.y build: 20 builds: 2 failed, 18 passed, 6 errors, 7 w=
+arnings (v5.15.135-239-gc7721f02ed5c)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.198-203-g38f629e2a1b6/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.135-239-gc7721f02ed5c/
 
 Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.198-203-g38f629e2a1b6
-Git Commit: 38f629e2a1b66d0f082821ff1a5eb5af0a8e4862
+Branch: linux-5.15.y
+Git Describe: v5.15.135-239-gc7721f02ed5c
+Git Commit: c7721f02ed5cc1071a744d6f041469e0ac0d6d91
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
@@ -107,9 +107,10 @@ mips:
     32r2el_defconfig (gcc-10): 1 warning
 
 riscv:
-    rv32_defconfig (gcc-10): 4 warnings
 
 x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
 
 Errors summary:
 
@@ -127,12 +128,11 @@ Warnings summary:
     2    drivers/gpio/gpio-vf610.c:251:2: warning: excess elements in struc=
 t initializer
     2    cc1: some warnings being treated as errors
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -147,18 +147,19 @@ Detailed per-defconfig build reports:
 ion mismatches
 
 Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
 
 ---------------------------------------------------------------------------=
 -----
 allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
 n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -237,26 +238,18 @@ nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
 
 ---------------------------------------------------------------------------=
 -----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
 omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
 ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
 ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -265,18 +258,31 @@ ismatches
 
 ---------------------------------------------------------------------------=
 -----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
 vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
 
 ---------------------------------------------------------------------------=
 -----
 x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
+1 warning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
 
 ---
 For more info write to <info@kernelci.org>
