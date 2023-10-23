@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BB377D3536
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CDDA7D32F2
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233306AbjJWLqX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:46:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43024 "EHLO
+        id S233905AbjJWLZP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:25:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234592AbjJWLqE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:04 -0400
+        with ESMTP id S233900AbjJWLZJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 909B11704
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90E6EC433C8;
-        Mon, 23 Oct 2023 11:45:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5468BFD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF7AC433CD;
+        Mon, 23 Oct 2023 11:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061552;
-        bh=CHdY694qwkMJBO81ZXCzjfPC7szp+zFVAaq7iRd2JUw=;
+        s=korg; t=1698060306;
+        bh=sTe6AH9p+nm6hwpMig8Y1Sa8c5MtKppEr8TwXUXBH7Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Di8Brd6fSibA21HeVIMUwY99bu79BGzEQM3cFBI6Bi0IvrWcfctBqWY7lol2mG9PQ
-         XJOptdt01Uu+Nlm1UEQ5ApMr6xCNh0pQnx+R2zgc+8KwhcLYKd+o+wRtGEHVBnClZd
-         EAQCQKnD9fB8/H8XppEpTDJo3kiOcfd8oUqtg37c=
+        b=wtW3gN3hcwVeKXgUFYaqRGFyvAyncRbQ/wbRZ8gY1H2e4Xfn/1/kKQeN55lEDxi0i
+         Q4FjKEnxxXLKKNcvkP44MHwno4nd7WYirVaJ8eHepTQYENt3x/hXR4pmabs3KjMJjO
+         TWbZrsQVN9NY9P+7jM/oR/Oea9bdt8HsJ7z2Jr7U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
-Subject: [PATCH 5.10 085/202] usb: hub: Guard against accesses to uninitialized BOS descriptors
+        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 127/196] fprobe: Pass entry_data to handlers
 Date:   Mon, 23 Oct 2023 12:56:32 +0200
-Message-ID: <20231023104829.022014457@linuxfoundation.org>
+Message-ID: <20231023104832.091669040@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,136 +52,196 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit f74a7afc224acd5e922c7a2e52244d891bbe44ee upstream.
+[ Upstream commit 76d0de5729c0569c4071e7f21fcab394e502f03a ]
 
-Many functions in drivers/usb/core/hub.c and drivers/usb/core/hub.h
-access fields inside udev->bos without checking if it was allocated and
-initialized. If usb_get_bos_descriptor() fails for whatever
-reason, udev->bos will be NULL and those accesses will result in a
-crash:
+Pass the private entry_data to the entry and exit handlers so that
+they can share the context data, something like saved function
+arguments etc.
+User must specify the private entry_data size by @entry_data_size
+field before registering the fprobe.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000018
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 5 PID: 17818 Comm: kworker/5:1 Tainted: G W 5.15.108-18910-gab0e1cb584e1 #1 <HASH:1f9e 1>
-Hardware name: Google Kindred/Kindred, BIOS Google_Kindred.12672.413.0 02/03/2021
-Workqueue: usb_hub_wq hub_event
-RIP: 0010:hub_port_reset+0x193/0x788
-Code: 89 f7 e8 20 f7 15 00 48 8b 43 08 80 b8 96 03 00 00 03 75 36 0f b7 88 92 03 00 00 81 f9 10 03 00 00 72 27 48 8b 80 a8 03 00 00 <48> 83 78 18 00 74 19 48 89 df 48 8b 75 b0 ba 02 00 00 00 4c 89 e9
-RSP: 0018:ffffab740c53fcf8 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffffa1bc5f678000 RCX: 0000000000000310
-RDX: fffffffffffffdff RSI: 0000000000000286 RDI: ffffa1be9655b840
-RBP: ffffab740c53fd70 R08: 00001b7d5edaa20c R09: ffffffffb005e060
-R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
-R13: ffffab740c53fd3e R14: 0000000000000032 R15: 0000000000000000
-FS: 0000000000000000(0000) GS:ffffa1be96540000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000018 CR3: 000000022e80c005 CR4: 00000000003706e0
-Call Trace:
-hub_event+0x73f/0x156e
-? hub_activate+0x5b7/0x68f
-process_one_work+0x1a2/0x487
-worker_thread+0x11a/0x288
-kthread+0x13a/0x152
-? process_one_work+0x487/0x487
-? kthread_associate_blkcg+0x70/0x70
-ret_from_fork+0x1f/0x30
+Link: https://lkml.kernel.org/r/167526696173.433354.17408372048319432574.stgit@mhiramat.roam.corp.google.com
 
-Fall back to a default behavior if the BOS descriptor isn't accessible
-and skip all the functionalities that depend on it: LPM support checks,
-Super Speed capabilitiy checks, U1/U2 states setup.
-
-Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
-Cc: stable <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230830100418.1952143-1-ricardo.canuelo@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Florent Revest <revest@chromium.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 700b2b439766 ("fprobe: Fix to ensure the number of active retprobes is not zero")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   28 ++++++++++++++++++++++++----
- drivers/usb/core/hub.h |    2 +-
- 2 files changed, 25 insertions(+), 5 deletions(-)
+ include/linux/fprobe.h          |  8 ++++++--
+ kernel/trace/bpf_trace.c        |  2 +-
+ kernel/trace/fprobe.c           | 21 ++++++++++++++-------
+ lib/test_fprobe.c               |  6 ++++--
+ samples/fprobe/fprobe_example.c |  6 ++++--
+ 5 files changed, 29 insertions(+), 14 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -149,6 +149,10 @@ int usb_device_supports_lpm(struct usb_d
- 	if (udev->quirks & USB_QUIRK_NO_LPM)
- 		return 0;
+diff --git a/include/linux/fprobe.h b/include/linux/fprobe.h
+index 1c2bde0ead736..e0d4e61362491 100644
+--- a/include/linux/fprobe.h
++++ b/include/linux/fprobe.h
+@@ -13,6 +13,7 @@
+  * @nmissed: The counter for missing events.
+  * @flags: The status flag.
+  * @rethook: The rethook data structure. (internal data)
++ * @entry_data_size: The private data storage size.
+  * @entry_handler: The callback function for function entry.
+  * @exit_handler: The callback function for function exit.
+  */
+@@ -29,9 +30,12 @@ struct fprobe {
+ 	unsigned long		nmissed;
+ 	unsigned int		flags;
+ 	struct rethook		*rethook;
++	size_t			entry_data_size;
  
-+	/* Skip if the device BOS descriptor couldn't be read */
-+	if (!udev->bos)
-+		return 0;
-+
- 	/* USB 2.1 (and greater) devices indicate LPM support through
- 	 * their USB 2.0 Extended Capabilities BOS descriptor.
- 	 */
-@@ -325,6 +329,10 @@ static void usb_set_lpm_parameters(struc
- 	if (!udev->lpm_capable || udev->speed < USB_SPEED_SUPER)
+-	void (*entry_handler)(struct fprobe *fp, unsigned long entry_ip, struct pt_regs *regs);
+-	void (*exit_handler)(struct fprobe *fp, unsigned long entry_ip, struct pt_regs *regs);
++	void (*entry_handler)(struct fprobe *fp, unsigned long entry_ip,
++			      struct pt_regs *regs, void *entry_data);
++	void (*exit_handler)(struct fprobe *fp, unsigned long entry_ip,
++			     struct pt_regs *regs, void *entry_data);
+ };
+ 
+ /* This fprobe is soft-disabled. */
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index 8c77c54e6348b..f4a494a457c52 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2646,7 +2646,7 @@ kprobe_multi_link_prog_run(struct bpf_kprobe_multi_link *link,
+ 
+ static void
+ kprobe_multi_link_handler(struct fprobe *fp, unsigned long fentry_ip,
+-			  struct pt_regs *regs)
++			  struct pt_regs *regs, void *data)
+ {
+ 	struct bpf_kprobe_multi_link *link;
+ 
+diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+index 1322247ce6488..be28d1bc84e80 100644
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -17,14 +17,16 @@
+ struct fprobe_rethook_node {
+ 	struct rethook_node node;
+ 	unsigned long entry_ip;
++	char data[];
+ };
+ 
+ static void fprobe_handler(unsigned long ip, unsigned long parent_ip,
+ 			   struct ftrace_ops *ops, struct ftrace_regs *fregs)
+ {
+ 	struct fprobe_rethook_node *fpr;
+-	struct rethook_node *rh;
++	struct rethook_node *rh = NULL;
+ 	struct fprobe *fp;
++	void *entry_data = NULL;
+ 	int bit;
+ 
+ 	fp = container_of(ops, struct fprobe, ops);
+@@ -37,9 +39,6 @@ static void fprobe_handler(unsigned long ip, unsigned long parent_ip,
  		return;
+ 	}
  
-+	/* Skip if the device BOS descriptor couldn't be read */
-+	if (!udev->bos)
-+		return;
+-	if (fp->entry_handler)
+-		fp->entry_handler(fp, ip, ftrace_get_regs(fregs));
+-
+ 	if (fp->exit_handler) {
+ 		rh = rethook_try_get(fp->rethook);
+ 		if (!rh) {
+@@ -48,9 +47,16 @@ static void fprobe_handler(unsigned long ip, unsigned long parent_ip,
+ 		}
+ 		fpr = container_of(rh, struct fprobe_rethook_node, node);
+ 		fpr->entry_ip = ip;
+-		rethook_hook(rh, ftrace_get_regs(fregs), true);
++		if (fp->entry_data_size)
++			entry_data = fpr->data;
+ 	}
+ 
++	if (fp->entry_handler)
++		fp->entry_handler(fp, ip, ftrace_get_regs(fregs), entry_data);
 +
- 	hub = usb_hub_to_struct_hub(udev->parent);
- 	/* It doesn't take time to transition the roothub into U0, since it
- 	 * doesn't have an upstream link.
-@@ -2684,7 +2692,8 @@ out_authorized:
++	if (rh)
++		rethook_hook(rh, ftrace_get_regs(fregs), true);
++
+ out:
+ 	ftrace_test_recursion_unlock(bit);
+ }
+@@ -81,7 +87,8 @@ static void fprobe_exit_handler(struct rethook_node *rh, void *data,
+ 
+ 	fpr = container_of(rh, struct fprobe_rethook_node, node);
+ 
+-	fp->exit_handler(fp, fpr->entry_ip, regs);
++	fp->exit_handler(fp, fpr->entry_ip, regs,
++			 fp->entry_data_size ? (void *)fpr->data : NULL);
+ }
+ NOKPROBE_SYMBOL(fprobe_exit_handler);
+ 
+@@ -146,7 +153,7 @@ static int fprobe_init_rethook(struct fprobe *fp, int num)
+ 	for (i = 0; i < size; i++) {
+ 		struct fprobe_rethook_node *node;
+ 
+-		node = kzalloc(sizeof(*node), GFP_KERNEL);
++		node = kzalloc(sizeof(*node) + fp->entry_data_size, GFP_KERNEL);
+ 		if (!node) {
+ 			rethook_free(fp->rethook);
+ 			fp->rethook = NULL;
+diff --git a/lib/test_fprobe.c b/lib/test_fprobe.c
+index e0381b3ec410c..34fa5a5bbda1f 100644
+--- a/lib/test_fprobe.c
++++ b/lib/test_fprobe.c
+@@ -30,7 +30,8 @@ static noinline u32 fprobe_selftest_target2(u32 value)
+ 	return (value / div_factor) + 1;
  }
  
- /*
-- * Return 1 if port speed is SuperSpeedPlus, 0 otherwise
-+ * Return 1 if port speed is SuperSpeedPlus, 0 otherwise or if the
-+ * capability couldn't be checked.
-  * check it from the link protocol field of the current speed ID attribute.
-  * current speed ID is got from ext port status request. Sublink speed attribute
-  * table is returned with the hub BOS SSP device capability descriptor
-@@ -2694,8 +2703,12 @@ static int port_speed_is_ssp(struct usb_
- 	int ssa_count;
- 	u32 ss_attr;
- 	int i;
--	struct usb_ssp_cap_descriptor *ssp_cap = hdev->bos->ssp_cap;
-+	struct usb_ssp_cap_descriptor *ssp_cap;
- 
-+	if (!hdev->bos)
-+		return 0;
-+
-+	ssp_cap = hdev->bos->ssp_cap;
- 	if (!ssp_cap)
- 		return 0;
- 
-@@ -4114,8 +4127,15 @@ static void usb_enable_link_state(struct
- 		enum usb3_link_state state)
+-static notrace void fp_entry_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs)
++static notrace void fp_entry_handler(struct fprobe *fp, unsigned long ip,
++				     struct pt_regs *regs, void *data)
  {
- 	int timeout, ret;
--	__u8 u1_mel = udev->bos->ss_cap->bU1devExitLat;
--	__le16 u2_mel = udev->bos->ss_cap->bU2DevExitLat;
-+	__u8 u1_mel;
-+	__le16 u2_mel;
-+
-+	/* Skip if the device BOS descriptor couldn't be read */
-+	if (!udev->bos)
-+		return;
-+
-+	u1_mel = udev->bos->ss_cap->bU1devExitLat;
-+	u2_mel = udev->bos->ss_cap->bU2DevExitLat;
- 
- 	/* If the device says it doesn't have *any* exit latency to come out of
- 	 * U1 or U2, it's probably lying.  Assume it doesn't implement that link
---- a/drivers/usb/core/hub.h
-+++ b/drivers/usb/core/hub.h
-@@ -141,7 +141,7 @@ static inline int hub_is_superspeedplus(
- {
- 	return (hdev->descriptor.bDeviceProtocol == USB_HUB_PR_SS &&
- 		le16_to_cpu(hdev->descriptor.bcdUSB) >= 0x0310 &&
--		hdev->bos->ssp_cap);
-+		hdev->bos && hdev->bos->ssp_cap);
+ 	KUNIT_EXPECT_FALSE(current_test, preemptible());
+ 	/* This can be called on the fprobe_selftest_target and the fprobe_selftest_target2 */
+@@ -39,7 +40,8 @@ static notrace void fp_entry_handler(struct fprobe *fp, unsigned long ip, struct
+ 	entry_val = (rand1 / div_factor);
  }
  
- static inline unsigned hub_power_on_good_delay(struct usb_hub *hub)
+-static notrace void fp_exit_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs)
++static notrace void fp_exit_handler(struct fprobe *fp, unsigned long ip,
++				    struct pt_regs *regs, void *data)
+ {
+ 	unsigned long ret = regs_return_value(regs);
+ 
+diff --git a/samples/fprobe/fprobe_example.c b/samples/fprobe/fprobe_example.c
+index e22da8573116e..dd794990ad7ec 100644
+--- a/samples/fprobe/fprobe_example.c
++++ b/samples/fprobe/fprobe_example.c
+@@ -48,7 +48,8 @@ static void show_backtrace(void)
+ 	stack_trace_print(stacks, len, 24);
+ }
+ 
+-static void sample_entry_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs)
++static void sample_entry_handler(struct fprobe *fp, unsigned long ip,
++				 struct pt_regs *regs, void *data)
+ {
+ 	if (use_trace)
+ 		/*
+@@ -63,7 +64,8 @@ static void sample_entry_handler(struct fprobe *fp, unsigned long ip, struct pt_
+ 		show_backtrace();
+ }
+ 
+-static void sample_exit_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs)
++static void sample_exit_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs,
++				void *data)
+ {
+ 	unsigned long rip = instruction_pointer(regs);
+ 
+-- 
+2.40.1
+
 
 
