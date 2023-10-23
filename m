@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 485577D34F1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AE607D3188
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234388AbjJWLoK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:44:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57706 "EHLO
+        id S231613AbjJWLKM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:10:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234526AbjJWLoC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:02 -0400
+        with ESMTP id S233602AbjJWLKK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22021718
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A29C433C7;
-        Mon, 23 Oct 2023 11:43:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9DBFD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B936AC433C7;
+        Mon, 23 Oct 2023 11:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061433;
-        bh=yw44nUpHzfStf6wnnuw2UKVWGF7n1kFVKevT9dres3I=;
+        s=korg; t=1698059408;
+        bh=BDInuwsvJoO0e4UE2wacurZeLx//S96kbCxAl+7ckrM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uHlkePCXIct2pPK2M4VNcoVIL9wWdTFbJwe0Q0kYuqv3BfyCb5Abb5B+2GtLtk0+n
-         J81yamrkbkfZhTogCmcCV4juIUmvoyAVWkG0/VmsndNkaUm43uQYq7NCC0vYFa75wh
-         mWsSk5E/BjABy52gfh1H36YcrChPXA1+lpVU3WZw=
+        b=E3DIIP1mLS/Z/qc4kdgPsApopKRNWV1yC6D47WAARq8zscpu/J4+p+zSLCu94UwQ/
+         nn8DeGz6gcJyubclMeRamsGmizqxWjIpj6RW5HYD8no7PbyyBF4nUxO6T+3WUCwde+
+         2okMLVanylRFgfvexp+S3/IEO5XDbse62CcfmmBM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
-        Milind Changire <mchangir@redhat.com>,
-        Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.10 046/202] ceph: fix incorrect revoked caps assert in ceph_fill_file_size()
+        patches@lists.linux.dev, Michal Simek <michal.simek@amd.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.5 167/241] mtd: rawnand: arasan: Ensure program page operations are successful
 Date:   Mon, 23 Oct 2023 12:55:53 +0200
-Message-ID: <20231023104827.931658793@linuxfoundation.org>
+Message-ID: <20231023104837.949575616@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,48 +48,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 15c0a870dc44ed14e01efbdd319d232234ee639f upstream.
+commit 3a4a893dbb19e229db3b753f0462520b561dee98 upstream.
 
-When truncating the inode the MDS will acquire the xlock for the
-ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
-But when the client just releases and flushes the 'Fw' caps to MDS,
-for exmaple, and once the MDS receives the caps flushing msg it
-just thought the revocation has finished. Then the MDS will continue
-truncating the inode and then issued the truncate notification to
-all the clients. While just before the clients receives the cap
-flushing ack they receive the truncation notification, the clients
-will detecte that the 'issued | dirty' is still holding the 'Fw'
-caps.
+The NAND core complies with the ONFI specification, which itself
+mentions that after any program or erase operation, a status check
+should be performed to see whether the operation was finished *and*
+successful.
 
+The NAND core offers helpers to finish a page write (sending the
+"PAGE PROG" command, waiting for the NAND chip to be ready again, and
+checking the operation status). But in some cases, advanced controller
+drivers might want to optimize this and craft their own page write
+helper to leverage additional hardware capabilities, thus not always
+using the core facilities.
+
+Some drivers, like this one, do not use the core helper to finish a page
+write because the final cycles are automatically managed by the
+hardware. In this case, the additional care must be taken to manually
+perform the final status check.
+
+Let's read the NAND chip status at the end of the page write helper and
+return -EIO upon error.
+
+Cc: Michal Simek <michal.simek@amd.com>
 Cc: stable@vger.kernel.org
-Link: https://tracker.ceph.com/issues/56693
-Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Milind Changire <mchangir@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: 88ffef1b65cf ("mtd: rawnand: arasan: Support the hardware BCH ECC engine")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-2-miquel.raynal@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/inode.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/mtd/nand/raw/arasan-nand-controller.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -635,9 +635,7 @@ int ceph_fill_file_size(struct inode *in
- 			ci->i_truncate_seq = truncate_seq;
+--- a/drivers/mtd/nand/raw/arasan-nand-controller.c
++++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
+@@ -515,6 +515,7 @@ static int anfc_write_page_hw_ecc(struct
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	unsigned int len = mtd->writesize + (oob_required ? mtd->oobsize : 0);
+ 	dma_addr_t dma_addr;
++	u8 status;
+ 	int ret;
+ 	struct anfc_op nfc_op = {
+ 		.pkt_reg =
+@@ -561,10 +562,21 @@ static int anfc_write_page_hw_ecc(struct
+ 	}
  
- 			/* the MDS should have revoked these caps */
--			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
--					       CEPH_CAP_FILE_RD |
--					       CEPH_CAP_FILE_WR |
-+			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
- 					       CEPH_CAP_FILE_LAZYIO));
- 			/*
- 			 * If we hold relevant caps, or in the case where we're
+ 	/* Spare data is not protected */
+-	if (oob_required)
++	if (oob_required) {
+ 		ret = nand_write_oob_std(chip, page);
++		if (ret)
++			return ret;
++	}
++
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int anfc_sel_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
 
 
