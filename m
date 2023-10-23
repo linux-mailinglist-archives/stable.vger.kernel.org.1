@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF43C7D357F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0277D33B7
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234537AbjJWLtC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:49:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42132 "EHLO
+        id S233787AbjJWLdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:33:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234542AbjJWLtA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:00 -0400
+        with ESMTP id S234126AbjJWLdW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6649E9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:48:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264C5C433C7;
-        Mon, 23 Oct 2023 11:48:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC098100
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:33:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DED2C433C9;
+        Mon, 23 Oct 2023 11:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061737;
-        bh=VpfIcSAY9XWysyaaoXxxGD5DUduAT9zuR2dJjqTGivI=;
+        s=korg; t=1698060798;
+        bh=cRZDVFB3/fiU9elFx8D/JF2XFZxVDMcYY2kXcudBhKY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x3rjokFsBlOljbaAewHgM3627OBn+lJ0Rfb0nnCAj1LIcIFcliWYcE83zrPOGz1Wc
-         td78pB3uD5LNRmJ9wAbhWiR/nUzzxFek2fifZywrBFRucDu7Q8bKxHQ72dO4W7QirM
-         j0ZmY5vgKkNifdiW9hJjg+e/VbeDZKg88DclyZsM=
+        b=OEpJan673h3W5Q/VZESfeGwUX5Yex6VwJHsBi1VaN6vAkaNmXDvjZnCf6LtX4zWQ4
+         je75tzAA2GnpM7V+4nD+Kvz3vVfpRpguPR3sbbk++9/+xxZC6VOnwln0E7LaP0TYBQ
+         Og4DSbXdJW/RntbwyqknPbTWOFdHEeDMr1b6dfe0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 147/202] drm/connector: Add drm_connector_find_by_fwnode() function (v3)
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 096/123] regulator/core: Revert "fix kobject release warning and memory leak in regulator_register()"
 Date:   Mon, 23 Oct 2023 12:57:34 +0200
-Message-ID: <20231023104830.830979106@linuxfoundation.org>
+Message-ID: <20231023104820.910665366@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,167 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
 
-[ Upstream commit 3d3f7c1e68691574c1d87cd0f9f2348323bc0199 ]
+[ Upstream commit 6e800968f6a715c0661716d2ec5e1f56ed9f9c08 ]
 
-Add a function to find a connector based on a fwnode.
+This reverts commit 5f4b204b6b8153923d5be8002c5f7082985d153f.
 
-This will be used by the new drm_connector_oob_hotplug_event()
-function which is added by the next patch in this patch-set.
+Since rdev->dev now has a release() callback, the proper way of freeing
+the initialized device can be restored.
 
-Changes in v2:
-- Complete rewrite to use a global connector list in drm_connector.c
-  rather then using a class-dev-iter in drm_sysfs.c
-
-Changes in v3:
-- Add forward declaration for struct fwnode_handle to drm_crtc_internal.h
-  (fixes warning reported by kernel test robot <lkp@intel.com>)
-
-Tested-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Link: https://lore.kernel.org/r/20210817215201.795062-4-hdegoede@redhat.com
-Stable-dep-of: 89434b069e46 ("usb: typec: altmodes/displayport: Signal hpd low when exiting mode")
+Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+Link: https://lore.kernel.org/r/d7f469f3f7b1f0e1d52f9a7ede3f3c5703382090.1695077303.git.mirq-linux@rere.qmqm.pl
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_connector.c     | 50 +++++++++++++++++++++++++++++
- drivers/gpu/drm/drm_crtc_internal.h |  2 ++
- include/drm/drm_connector.h         |  8 +++++
- 3 files changed, 60 insertions(+)
+ drivers/regulator/core.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
-index c08501a5620d5..fc06f73acd3c9 100644
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -64,6 +64,14 @@
-  * support can instead use e.g. drm_helper_hpd_irq_event().
-  */
- 
-+/*
-+ * Global connector list for drm_connector_find_by_fwnode().
-+ * Note drm_connector_[un]register() first take connector->lock and then
-+ * take the connector_list_lock.
-+ */
-+static DEFINE_MUTEX(connector_list_lock);
-+static LIST_HEAD(connector_list);
-+
- struct drm_conn_prop_enum_list {
- 	int type;
- 	const char *name;
-@@ -265,6 +273,7 @@ int drm_connector_init(struct drm_device *dev,
- 		goto out_put_type_id;
- 	}
- 
-+	INIT_LIST_HEAD(&connector->global_connector_list_entry);
- 	INIT_LIST_HEAD(&connector->probed_modes);
- 	INIT_LIST_HEAD(&connector->modes);
- 	mutex_init(&connector->mutex);
-@@ -534,6 +543,9 @@ int drm_connector_register(struct drm_connector *connector)
- 	/* Let userspace know we have a new connector */
- 	drm_sysfs_hotplug_event(connector->dev);
- 
-+	mutex_lock(&connector_list_lock);
-+	list_add_tail(&connector->global_connector_list_entry, &connector_list);
-+	mutex_unlock(&connector_list_lock);
- 	goto unlock;
- 
- err_debugfs:
-@@ -562,6 +574,10 @@ void drm_connector_unregister(struct drm_connector *connector)
- 		return;
- 	}
- 
-+	mutex_lock(&connector_list_lock);
-+	list_del_init(&connector->global_connector_list_entry);
-+	mutex_unlock(&connector_list_lock);
-+
- 	if (connector->funcs->early_unregister)
- 		connector->funcs->early_unregister(connector);
- 
-@@ -2464,6 +2480,40 @@ int drm_mode_getconnector(struct drm_device *dev, void *data,
- 	return ret;
- }
- 
-+/**
-+ * drm_connector_find_by_fwnode - Find a connector based on the associated fwnode
-+ * @fwnode: fwnode for which to find the matching drm_connector
-+ *
-+ * This functions looks up a drm_connector based on its associated fwnode. When
-+ * a connector is found a reference to the connector is returned. The caller must
-+ * call drm_connector_put() to release this reference when it is done with the
-+ * connector.
-+ *
-+ * Returns: A reference to the found connector or an ERR_PTR().
-+ */
-+struct drm_connector *drm_connector_find_by_fwnode(struct fwnode_handle *fwnode)
-+{
-+	struct drm_connector *connector, *found = ERR_PTR(-ENODEV);
-+
-+	if (!fwnode)
-+		return ERR_PTR(-ENODEV);
-+
-+	mutex_lock(&connector_list_lock);
-+
-+	list_for_each_entry(connector, &connector_list, global_connector_list_entry) {
-+		if (connector->fwnode == fwnode ||
-+		    (connector->fwnode && connector->fwnode->secondary == fwnode)) {
-+			drm_connector_get(connector);
-+			found = connector;
-+			break;
-+		}
-+	}
-+
-+	mutex_unlock(&connector_list_lock);
-+
-+	return found;
-+}
-+
- 
- /**
-  * DOC: Tile group
-diff --git a/drivers/gpu/drm/drm_crtc_internal.h b/drivers/gpu/drm/drm_crtc_internal.h
-index da96b2f64d7e4..c3577eaee4164 100644
---- a/drivers/gpu/drm/drm_crtc_internal.h
-+++ b/drivers/gpu/drm/drm_crtc_internal.h
-@@ -57,6 +57,7 @@ struct drm_property;
- struct edid;
- struct kref;
- struct work_struct;
-+struct fwnode_handle;
- 
- /* drm_crtc.c */
- int drm_mode_crtc_set_obj_prop(struct drm_mode_object *obj,
-@@ -182,6 +183,7 @@ int drm_connector_set_obj_prop(struct drm_mode_object *obj,
- int drm_connector_create_standard_properties(struct drm_device *dev);
- const char *drm_get_connector_force_name(enum drm_connector_force force);
- void drm_connector_free_work_fn(struct work_struct *work);
-+struct drm_connector *drm_connector_find_by_fwnode(struct fwnode_handle *fwnode);
- 
- /* IOCTL */
- int drm_connector_property_set_ioctl(struct drm_device *dev,
-diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
-index ffad68f775cc6..d6c7554f1d405 100644
---- a/include/drm/drm_connector.h
-+++ b/include/drm/drm_connector.h
-@@ -1193,6 +1193,14 @@ struct drm_connector {
- 	 */
- 	struct list_head head;
- 
-+	/**
-+	 * @global_connector_list_entry:
-+	 *
-+	 * Connector entry in the global connector-list, used by
-+	 * drm_connector_find_by_fwnode().
-+	 */
-+	struct list_head global_connector_list_entry;
-+
- 	/** @base: base KMS object */
- 	struct drm_mode_object base;
- 
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index fe4b666edd037..87d0cd6f49ca9 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -5351,15 +5351,11 @@ regulator_register(const struct regulator_desc *regulator_desc,
+ 	mutex_lock(&regulator_list_mutex);
+ 	regulator_ena_gpio_free(rdev);
+ 	mutex_unlock(&regulator_list_mutex);
+-	put_device(&rdev->dev);
+-	rdev = NULL;
+ clean:
+ 	if (dangling_of_gpiod)
+ 		gpiod_put(config->ena_gpiod);
+-	if (rdev && rdev->dev.of_node)
+-		of_node_put(rdev->dev.of_node);
+-	kfree(rdev);
+ 	kfree(config);
++	put_device(&rdev->dev);
+ rinse:
+ 	if (dangling_cfg_gpiod)
+ 		gpiod_put(cfg->ena_gpiod);
 -- 
 2.40.1
 
