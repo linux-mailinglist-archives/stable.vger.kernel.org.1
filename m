@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17A637D326F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFF5E7D3270
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233788AbjJWLUD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:20:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48180 "EHLO
+        id S233780AbjJWLUG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:20:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233795AbjJWLUC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:02 -0400
+        with ESMTP id S233797AbjJWLUE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3D4DF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2E3C433C9;
-        Mon, 23 Oct 2023 11:19:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F86DC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AF4C433C9;
+        Mon, 23 Oct 2023 11:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059999;
-        bh=oHMZJqZ3yzDavjqrWD5yzAaGOeRDMtn69VTpHNga5eU=;
+        s=korg; t=1698060002;
+        bh=dw8i0bgr14+tg4nonFx32srNi/X4StAY3v1D7eC7m1k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y6Ks49So7D1pgk0m8W9nm05z/uIHrMlZuJn9a8BBqyhazmYCn6s7tUcqOwTMic5KZ
-         Zj/uuDljH5rIQ8N7Qez5MNO+cNJQPKu9muehT6VWWA+LoX8oFGeBtHmQm+ubgjcH7t
-         Ehk1Uof1GAMkpmKXgkdxjgvSwN4YTCPEs6F5S6/U=
+        b=Lu6K67yHVKiuTrDf/yGydOST0sfw4FkcFqDOqlpqEhQbqn5NtGNooNciaGqfrz0sZ
+         7PwewkYtXUJqIa4t6Jp+C2JAeQTsH0BitYTVOeUKHubsY+goIZ48mIoU1TBFrZJtXC
+         2PkVeUQqpF7E0PSQoZo5k4Jns23hc+m6vFafbldM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
         Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Lee@vger.kernel.org
-Subject: [PATCH 6.1 008/196] Bluetooth: hci_event: Ignore NULL link key
-Date:   Mon, 23 Oct 2023 12:54:33 +0200
-Message-ID: <20231023104828.727031857@linuxfoundation.org>
+Subject: [PATCH 6.1 009/196] Bluetooth: Reject connection with the device which has same BD_ADDR
+Date:   Mon, 23 Oct 2023 12:54:34 +0200
+Message-ID: <20231023104828.757108910@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
 References: <20231023104828.488041585@linuxfoundation.org>
@@ -55,10 +55,10 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Lee, Chun-Yi <jlee@suse.com>
 
-commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
+commit 1ffc6f8cc33268731fcf9629fc4438f6db1191fc upstream.
 
-This change is used to relieve CVE-2020-26555. The description of the
-CVE:
+This change is used to relieve CVE-2020-26555. The description of
+the CVE:
 
 Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
 1.0B through 5.2 may permit an unauthenticated nearby device to spoof
@@ -74,46 +74,65 @@ the attacked target to generate null link key (zero key) without PIN
 code. In BR/EDR, the key generation is actually handled in the controller
 which is below HCI.
 
-Thus, we can ignore null link key in the handler of "Link Key Notification
-event" to relieve the attack. A similar implementation also shows in
-btstack project. [3]
+A condition of this attack is that attacker should change the
+BR_ADDR of his hacking device (Host B) to equal to the BR_ADDR with
+the target device being attacked (Host A).
 
-v3: Drop the connection when null link key be detected.
-
-v2:
-- Used Link: tag instead of Closes:
-- Used bt_dev_dbg instead of BT_DBG
-- Added Fixes: tag
+Thus, we reject the connection with device which has same BD_ADDR
+both on HCI_Create_Connection and HCI_Connection_Request to prevent
+the attack. A similar implementation also shows in btstack project.
+[3][4]
 
 Cc: stable@vger.kernel.org
-Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
 Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
 Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3523 [3]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L7297 [4]
 Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/bluetooth/hci_conn.c  |    9 +++++++++
+ net/bluetooth/hci_event.c |   11 +++++++++++
+ 2 files changed, 20 insertions(+)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4686,6 +4686,15 @@ static void hci_link_key_notify_evt(stru
- 	if (!conn)
- 		goto unlock;
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1583,6 +1583,15 @@ struct hci_conn *hci_connect_acl(struct
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 	}
  
-+	/* Ignore NULL link key against CVE-2020-26555 */
-+	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
-+		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
-+			   &ev->bdaddr);
-+		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
-+		hci_conn_drop(conn);
-+		goto unlock;
++	/* Reject outgoing connection to device with same BD ADDR against
++	 * CVE-2020-26555
++	 */
++	if (!bacmp(&hdev->bdaddr, dst)) {
++		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
++			   dst);
++		return ERR_PTR(-ECONNREFUSED);
 +	}
 +
- 	hci_conn_hold(conn);
- 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
- 	hci_conn_drop(conn);
+ 	acl = hci_conn_hash_lookup_ba(hdev, ACL_LINK, dst);
+ 	if (!acl) {
+ 		acl = hci_conn_add(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3277,6 +3277,17 @@ static void hci_conn_request_evt(struct
+ 
+ 	bt_dev_dbg(hdev, "bdaddr %pMR type 0x%x", &ev->bdaddr, ev->link_type);
+ 
++	/* Reject incoming connection from device with same BD ADDR against
++	 * CVE-2020-26555
++	 */
++	if (!bacmp(&hdev->bdaddr, &ev->bdaddr))
++	{
++		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
++			   &ev->bdaddr);
++		hci_reject_conn(hdev, &ev->bdaddr);
++		return;
++	}
++
+ 	mask |= hci_proto_connect_ind(hdev, &ev->bdaddr, ev->link_type,
+ 				      &flags);
+ 
 
 
