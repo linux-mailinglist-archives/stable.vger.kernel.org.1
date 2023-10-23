@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1FF7D3587
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E647B7D3345
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234541AbjJWLtU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:49:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59614 "EHLO
+        id S233987AbjJWL2e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:28:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234293AbjJWLtU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:20 -0400
+        with ESMTP id S233985AbjJWL2d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85E06AF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A02C433C9;
-        Mon, 23 Oct 2023 11:49:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6D6292
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09002C433C8;
+        Mon, 23 Oct 2023 11:28:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061758;
-        bh=uQxq4hvJtB35nS6hZtvxgtxil5ISgN74d8tAAbFnmqk=;
+        s=korg; t=1698060511;
+        bh=ef1OH7mBpr3SJ1P0jrBYY76OcZeYQrCF2yntHysor4I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZpduFwgpCvrO8EP2Zmy91fkbXJg+F93vdCINyQRwgg0/SJ3caJuKvK2A9PxUKCznB
-         kQ72VqE4KSYVN8I5StnfPdr9xiQRJ/WUCvRTsD9RqDzI1yAwA6RI5UonJkbCl+0qqB
-         nBki7vd3MEKBWrv0w86JMC8MnrQGZK3Q9InPDuRQ=
+        b=bFEyRbRtkwEOZ9giZXMmW3oroOfXJLA59Ey2uzvm2docaDkzM2hDDUMnqv0GD2iWg
+         8W2TEyPL9gHoZw+5ELDCY6bHZFicy5AG0S3sJ30QSgS3qUt8UszbEUqCQDgW8NfBZs
+         9kF8MGd7irYYej60DyswzSBeWb47FKGKTBU2f2Yo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/202] ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks
+        patches@lists.linux.dev,
+        Francis Laniel <flaniel@linux.microsoft.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.1 170/196] selftests/ftrace: Add new test case which checks non unique symbol
 Date:   Mon, 23 Oct 2023 12:57:15 +0200
-Message-ID: <20231023104830.272772335@linuxfoundation.org>
+Message-ID: <20231023104833.229046676@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,51 +49,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Francis Laniel <flaniel@linux.microsoft.com>
 
-[ Upstream commit 7203481fd12b1257938519efb2460ea02b9236ee ]
+commit 03b80ff8023adae6780e491f66e932df8165e3a0 upstream.
 
-The Asus ExpertBook B2502 has the same keyboard issue as Asus Vivobook
-K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
-should be Active_Low.
+If name_show() is non unique, this test will try to install a kprobe on this
+function which should fail returning EADDRNOTAVAIL.
+On kernel where name_show() is not unique, this test is skipped.
 
-This patch adds the ExpertBook B2502 model to the existing
-quirk list of Asus laptops with this issue.
+Link: https://lore.kernel.org/all/20231020104250.9537-3-flaniel@linux.microsoft.com/
 
-Fixes: b5f9223a105d ("ACPI: resource: Skip IRQ override on Asus Vivobook S5602ZA")
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2142574
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc |   13 ++++++++++
+ 1 file changed, 13 insertions(+)
+ create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 7438e57455d17..f76147272b333 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -421,6 +421,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus ExpertBook B2502",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
-+		},
-+	},
- 	{ }
- };
- 
--- 
-2.40.1
-
+--- /dev/null
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+@@ -0,0 +1,13 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0
++# description: Test failure of registering kprobe on non unique symbol
++# requires: kprobe_events
++
++SYMBOL='name_show'
++
++# We skip this test on kernel where SYMBOL is unique or does not exist.
++if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
++	exit_unsupported
++fi
++
++! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
 
 
