@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 231D07D3392
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD867D355C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:47:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233832AbjJWLbw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:31:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45800 "EHLO
+        id S234397AbjJWLrc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:47:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233856AbjJWLbv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:51 -0400
+        with ESMTP id S234451AbjJWLrb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:47:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C10AFF9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0957BC433C9;
-        Mon, 23 Oct 2023 11:31:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC86EE4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:47:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D88C433C8;
+        Mon, 23 Oct 2023 11:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060709;
-        bh=YC+4BUEuwRD89FVgqdpGdTYsRGjBk+O8cGGvoe+INfQ=;
+        s=korg; t=1698061648;
+        bh=c3PoOwOah8w9xUG+I8EUGm2mr5M9Knr0rmo0p3i0hIc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wr/LK2zdK3EjJpuUuz/KoU5u/OVeGhhazD9kcOXDhT5Av0tmvS4w2AeY6k9I30QE2
-         XZg9opPN3XRZQhbS0P8neRl+1oJVtQRuCCK+vpE85D//+oqSSjrpy/qAH+6fPj9Ie+
-         BxdowclwNgv4DLiGsCPK4bzVQrmt4UI/J2eXKrgU=
+        b=g+BL/J4tPbBB87ZbZlDqdjkKIHJYWAz3MdwhSVsluV5D6+2aXZjukB4QdUX6t3GAm
+         febi9xIWd9RmQEunXkru6qiVgbteCEF/6/h4drGJRPTJzzEQUnh74Mpd7YwX6x6ljT
+         Z1+v+aEjCAS7saIrf89Z2hka+CjD9o4rD/S6f1lA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Simon Horman <horms@kernel.org>,
-        David Ahern <dsahern@kernel.org>,
+        patches@lists.linux.dev, Christian Theune <ct@flyingcircus.io>,
+        Budimir Markovic <markovicbudimir@gmail.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
         Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 066/123] ipv4: fib: annotate races around nh->nh_saddr_genid and nh->nh_saddr
+Subject: [PATCH 5.10 117/202] net/sched: sch_hfsc: upgrade rt to sc when it becomes a inner curve
 Date:   Mon, 23 Oct 2023 12:57:04 +0200
-Message-ID: <20231023104819.886447115@linuxfoundation.org>
+Message-ID: <20231023104829.953718949@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,114 +51,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-commit 195374d893681da43a39796e53b30ac4f20400c4 upstream.
+commit a13b67c9a015c4e21601ef9aa4ec9c5d972df1b4 upstream.
 
-syzbot reported a data-race while accessing nh->nh_saddr_genid [1]
+Christian Theune says:
+   I upgraded from 6.1.38 to 6.1.55 this morning and it broke my traffic shaping script,
+   leaving me with a non-functional uplink on a remote router.
 
-Add annotations, but leave the code lazy as intended.
+A 'rt' curve cannot be used as a inner curve (parent class), but we were
+allowing such configurations since the qdisc was introduced. Such
+configurations would trigger a UAF as Budimir explains:
+   The parent will have vttree_insert() called on it in init_vf(),
+   but will not have vttree_remove() called on it in update_vf()
+   because it does not have the HFSC_FSC flag set.
 
-[1]
-BUG: KCSAN: data-race in fib_select_path / fib_select_path
+The qdisc always assumes that inner classes have the HFSC_FSC flag set.
+This is by design as it doesn't make sense 'qdisc wise' for an 'rt'
+curve to be an inner curve.
 
-write to 0xffff8881387166f0 of 4 bytes by task 6778 on cpu 1:
-fib_info_update_nhc_saddr net/ipv4/fib_semantics.c:1334 [inline]
-fib_result_prefsrc net/ipv4/fib_semantics.c:1354 [inline]
-fib_select_path+0x292/0x330 net/ipv4/fib_semantics.c:2269
-ip_route_output_key_hash_rcu+0x659/0x12c0 net/ipv4/route.c:2810
-ip_route_output_key_hash net/ipv4/route.c:2644 [inline]
-__ip_route_output_key include/net/route.h:134 [inline]
-ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2872
-send4+0x1f5/0x520 drivers/net/wireguard/socket.c:61
-wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work kernel/workqueue.c:2630 [inline]
-process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2703
-worker_thread+0x525/0x730 kernel/workqueue.c:2784
-kthread+0x1d7/0x210 kernel/kthread.c:388
-ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+Budimir's original patch disallows users to add classes with a 'rt'
+parent, but this is too strict as it breaks users that have been using
+'rt' as a inner class. Another approach, taken by this patch, is to
+upgrade the inner 'rt' into a 'sc', warning the user in the process.
+It avoids the UAF reported by Budimir while also being more permissive
+to bad scripts/users/code using 'rt' as a inner class.
 
-read to 0xffff8881387166f0 of 4 bytes by task 6759 on cpu 0:
-fib_result_prefsrc net/ipv4/fib_semantics.c:1350 [inline]
-fib_select_path+0x1cb/0x330 net/ipv4/fib_semantics.c:2269
-ip_route_output_key_hash_rcu+0x659/0x12c0 net/ipv4/route.c:2810
-ip_route_output_key_hash net/ipv4/route.c:2644 [inline]
-__ip_route_output_key include/net/route.h:134 [inline]
-ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2872
-send4+0x1f5/0x520 drivers/net/wireguard/socket.c:61
-wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work kernel/workqueue.c:2630 [inline]
-process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2703
-worker_thread+0x525/0x730 kernel/workqueue.c:2784
-kthread+0x1d7/0x210 kernel/kthread.c:388
-ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+Users checking the `tc class ls [...]` or `tc class get [...]` dumps would
+observe the curve change and are potentially breaking with this change.
 
-value changed: 0x959d3217 -> 0x959d3218
+v1->v2: https://lore.kernel.org/all/20231013151057.2611860-1-pctammela@mojatatu.com/
+- Correct 'Fixes' tag and merge with revert (Jakub)
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 6759 Comm: kworker/u4:15 Not tainted 6.6.0-rc4-syzkaller-00029-gcbf3a2cb156a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
-Workqueue: wg-kex-wg1 wg_packet_handshake_send_worker
-
-Fixes: 436c3b66ec98 ("ipv4: Invalidate nexthop cache nh_saddr more correctly.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20231017192304.82626-1-edumazet@google.com
+Cc: Christian Theune <ct@flyingcircus.io>
+Cc: Budimir Markovic <markovicbudimir@gmail.com>
+Fixes: b3d26c5702c7 ("net/sched: sch_hfsc: Ensure inner classes have fsc curve")
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20231017143602.3191556-1-pctammela@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/fib_semantics.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/sched/sch_hfsc.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -1333,15 +1333,18 @@ __be32 fib_info_update_nhc_saddr(struct
- 				 unsigned char scope)
- {
- 	struct fib_nh *nh;
-+	__be32 saddr;
- 
- 	if (nhc->nhc_family != AF_INET)
- 		return inet_select_addr(nhc->nhc_dev, 0, scope);
- 
- 	nh = container_of(nhc, struct fib_nh, nh_common);
--	nh->nh_saddr = inet_select_addr(nh->fib_nh_dev, nh->fib_nh_gw4, scope);
--	nh->nh_saddr_genid = atomic_read(&net->ipv4.dev_addr_genid);
-+	saddr = inet_select_addr(nh->fib_nh_dev, nh->fib_nh_gw4, scope);
- 
--	return nh->nh_saddr;
-+	WRITE_ONCE(nh->nh_saddr, saddr);
-+	WRITE_ONCE(nh->nh_saddr_genid, atomic_read(&net->ipv4.dev_addr_genid));
-+
-+	return saddr;
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -903,6 +903,14 @@ hfsc_change_usc(struct hfsc_class *cl, s
+ 	cl->cl_flags |= HFSC_USC;
  }
  
- __be32 fib_result_prefsrc(struct net *net, struct fib_result *res)
-@@ -1355,8 +1358,9 @@ __be32 fib_result_prefsrc(struct net *ne
- 		struct fib_nh *nh;
- 
- 		nh = container_of(nhc, struct fib_nh, nh_common);
--		if (nh->nh_saddr_genid == atomic_read(&net->ipv4.dev_addr_genid))
--			return nh->nh_saddr;
-+		if (READ_ONCE(nh->nh_saddr_genid) ==
-+		    atomic_read(&net->ipv4.dev_addr_genid))
-+			return READ_ONCE(nh->nh_saddr);
++static void
++hfsc_upgrade_rt(struct hfsc_class *cl)
++{
++	cl->cl_fsc = cl->cl_rsc;
++	rtsc_init(&cl->cl_virtual, &cl->cl_fsc, cl->cl_vt, cl->cl_total);
++	cl->cl_flags |= HFSC_FSC;
++}
++
+ static const struct nla_policy hfsc_policy[TCA_HFSC_MAX + 1] = {
+ 	[TCA_HFSC_RSC]	= { .len = sizeof(struct tc_service_curve) },
+ 	[TCA_HFSC_FSC]	= { .len = sizeof(struct tc_service_curve) },
+@@ -1012,10 +1020,6 @@ hfsc_change_class(struct Qdisc *sch, u32
+ 		if (parent == NULL)
+ 			return -ENOENT;
  	}
+-	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
+-		NL_SET_ERR_MSG(extack, "Invalid parent - parent class must have FSC");
+-		return -EINVAL;
+-	}
  
- 	return fib_info_update_nhc_saddr(net, nhc, res->fi->fib_scope);
+ 	if (classid == 0 || TC_H_MAJ(classid ^ sch->handle) != 0)
+ 		return -EINVAL;
+@@ -1068,6 +1072,12 @@ hfsc_change_class(struct Qdisc *sch, u32
+ 	cl->cf_tree = RB_ROOT;
+ 
+ 	sch_tree_lock(sch);
++	/* Check if the inner class is a misconfigured 'rt' */
++	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
++		NL_SET_ERR_MSG(extack,
++			       "Forced curve change on parent 'rt' to 'sc'");
++		hfsc_upgrade_rt(parent);
++	}
+ 	qdisc_class_hash_insert(&q->clhash, &cl->cl_common);
+ 	list_add_tail(&cl->siblings, &parent->children);
+ 	if (parent->level == 0)
 
 
