@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D5AA7D334C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D17A7D33E1
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233995AbjJWL3D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:29:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49084 "EHLO
+        id S234027AbjJWLez (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:34:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234021AbjJWL2y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:54 -0400
+        with ESMTP id S234041AbjJWLey (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B7D10A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EBFC433C7;
-        Mon, 23 Oct 2023 11:28:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 015D0E4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B59BC433CC;
+        Mon, 23 Oct 2023 11:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060531;
-        bh=shja3mgg3GP9nhfP2Ma8mh2W8x4lAK1hufwrv7RS2zg=;
+        s=korg; t=1698060892;
+        bh=eM1aiEc1djzbuuy+wDteP8RBUqjqmvto4occTdBKMdw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FUW7BhXaVZmY2j7iNGIlCfVzcEFXm6+K5r7eP6yc9Gx9YeKTH7f3ITctTuDzD7AIg
-         BGh5jnMMnL3BYPC/J04ZuZ4tA5BvbNz44wQu/ErLSDfFHMhgiEncdaC+FkwkC8GfHl
-         0ubKWioEqyvwRo2axJLtETN/GejhfgKCXURDxtW4=
+        b=YZFnGfQKl1T+zDZ1c2XJKSG4LcgFYTp01Y6vz1xl6z8yNZk2CsGpZy2myz/8O+eeb
+         1V6RIjYIdKm2QZE+vV2lrmy83965eRPl78Wh0qubt3GOHqTqVz2pDYajDVSmkZn8Xw
+         50qUxLMcRUmWA7PDjHcD+oX2nVWn6WQ1d4ClmFs8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Matthieu Baerts <matttbe@kernel.org>,
-        Mat Martineau <martineau@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 196/196] selftests: mptcp: join: no RST when rm subflow/addr
+        patches@lists.linux.dev,
+        Martin Kurbanov <mmkurbanov@sberdevices.ru>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.4 103/123] mtd: spinand: micron: correct bitmask for ecc status
 Date:   Mon, 23 Oct 2023 12:57:41 +0200
-Message-ID: <20231023104833.892438227@linuxfoundation.org>
+Message-ID: <20231023104821.165673772@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,138 +50,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts <matttbe@kernel.org>
+From: Martin Kurbanov <mmkurbanov@sberdevices.ru>
 
-commit 2cfaa8b3b7aece3c7b13dd10db20dcea65875692 upstream.
+commit 9836a987860e33943945d4b257729a4f94eae576 upstream.
 
-Recently, we noticed that some RST were wrongly generated when removing
-the initial subflow.
+Valid bitmask is 0x70 in the status register.
 
-This patch makes sure RST are not sent when removing any subflows or any
-addresses.
-
-Fixes: c2b2ae3925b6 ("mptcp: handle correctly disconnect() failures")
-Cc: stable@vger.kernel.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231018-send-net-20231018-v1-5-17ecb002e41d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+Fixes: a508e8875e13 ("mtd: spinand: Add initial support for Micron MT29F2G01ABAGD")
+Signed-off-by: Martin Kurbanov <mmkurbanov@sberdevices.ru>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230905145637.139068-1-mmkurbanov@sberdevices.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/mtd/nand/spi/micron.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2263,6 +2263,7 @@ remove_tests()
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -1 slow
- 		chk_join_nr 1 1 1
- 		chk_rm_nr 1 1
-+		chk_rst_nr 0 0
- 	fi
+--- a/drivers/mtd/nand/spi/micron.c
++++ b/drivers/mtd/nand/spi/micron.c
+@@ -12,7 +12,7 @@
  
- 	# multiple subflows, remove
-@@ -2274,6 +2275,7 @@ remove_tests()
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -2 slow
- 		chk_join_nr 2 2 2
- 		chk_rm_nr 2 2
-+		chk_rst_nr 0 0
- 	fi
+ #define SPINAND_MFR_MICRON		0x2c
  
- 	# single address, remove
-@@ -2285,6 +2287,7 @@ remove_tests()
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
- 		chk_rm_nr 1 1 invert
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# subflow and signal, remove
-@@ -2297,6 +2300,7 @@ remove_tests()
- 		chk_join_nr 2 2 2
- 		chk_add_nr 1 1
- 		chk_rm_nr 1 1
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# subflows and signal, remove
-@@ -2310,6 +2314,7 @@ remove_tests()
- 		chk_join_nr 3 3 3
- 		chk_add_nr 1 1
- 		chk_rm_nr 2 2
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# addresses remove
-@@ -2323,6 +2328,7 @@ remove_tests()
- 		chk_join_nr 3 3 3
- 		chk_add_nr 3 3
- 		chk_rm_nr 3 3 invert
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# invalid addresses remove
-@@ -2336,6 +2342,7 @@ remove_tests()
- 		chk_join_nr 1 1 1
- 		chk_add_nr 3 3
- 		chk_rm_nr 3 1 invert
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# subflows and signal, flush
-@@ -2349,6 +2356,7 @@ remove_tests()
- 		chk_join_nr 3 3 3
- 		chk_add_nr 1 1
- 		chk_rm_nr 1 3 invert simult
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# subflows flush
-@@ -2366,6 +2374,7 @@ remove_tests()
- 		else
- 			chk_rm_nr 3 3
- 		fi
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# addresses flush
-@@ -2379,6 +2388,7 @@ remove_tests()
- 		chk_join_nr 3 3 3
- 		chk_add_nr 3 3
- 		chk_rm_nr 3 3 invert simult
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# invalid addresses flush
-@@ -2392,6 +2402,7 @@ remove_tests()
- 		chk_join_nr 1 1 1
- 		chk_add_nr 3 3
- 		chk_rm_nr 3 1 invert
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# remove id 0 subflow
-@@ -2402,6 +2413,7 @@ remove_tests()
- 		run_tests $ns1 $ns2 10.0.1.1 0 0 -9 slow
- 		chk_join_nr 1 1 1
- 		chk_rm_nr 1 1
-+		chk_rst_nr 0 0
- 	fi
- 
- 	# remove id 0 address
-@@ -2413,6 +2425,7 @@ remove_tests()
- 		chk_join_nr 1 1 1
- 		chk_add_nr 1 1
- 		chk_rm_nr 1 1 invert
-+		chk_rst_nr 0 0 invert
- 	fi
- }
- 
+-#define MICRON_STATUS_ECC_MASK		GENMASK(7, 4)
++#define MICRON_STATUS_ECC_MASK		GENMASK(6, 4)
+ #define MICRON_STATUS_ECC_NO_BITFLIPS	(0 << 4)
+ #define MICRON_STATUS_ECC_1TO3_BITFLIPS	(1 << 4)
+ #define MICRON_STATUS_ECC_4TO6_BITFLIPS	(3 << 4)
 
 
