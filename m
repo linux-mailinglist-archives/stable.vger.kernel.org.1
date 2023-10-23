@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A32947D3153
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E95597D3288
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233489AbjJWLIH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34436 "EHLO
+        id S233802AbjJWLVL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:21:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233491AbjJWLIF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:05 -0400
+        with ESMTP id S233805AbjJWLVL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBB0C10E6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B16C433C7;
-        Mon, 23 Oct 2023 11:07:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26B4EC2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390DEC433C8;
+        Mon, 23 Oct 2023 11:21:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059280;
-        bh=oo98s6TWcsB66hcwllKU5eQiBBexhnB2hrr8nuztaqE=;
+        s=korg; t=1698060068;
+        bh=y1V6x49j5eH5EAlkGm4z5mH6JTb31Sgmn92hMfWmvJs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ktyjiqElsvkUrJcjjLFcRb/vnpYotW/bB+33bBmd0kd+ME02fbqtVBCHEMJxBesJx
-         ntutVVST1FFzMF0MGDgz5hEuBQ5U+LbafpND3s/mB49bm92y3wHnDMtALwWCFZeyVH
-         ljxvAort/7mNI7azpiRPVixnR7zJjgHoZcJaW02o=
+        b=znpGwKFV3zo4YzNwLYyDzy6jvdYCpzKep3giG1IirXWOmct7p/0LhSogpfEC/Nrw3
+         oQe+eXLtECmM5ur+MKwCqJMzUv6tlflhpt7k4kgfev2jozsXrU2igbX9wedxoTC4cH
+         qXUMoE2tJnMKfQQhmn0Peo4z6/jagEQtvOGlt2oM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 125/241] regulator/core: Revert "fix kobject release warning and memory leak in regulator_register()"
-Date:   Mon, 23 Oct 2023 12:55:11 +0200
-Message-ID: <20231023104836.920176953@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 6.1 047/196] xfrm: fix a data-race in xfrm_lookup_with_ifid()
+Date:   Mon, 23 Oct 2023 12:55:12 +0200
+Message-ID: <20231023104829.847320332@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,50 +49,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6e800968f6a715c0661716d2ec5e1f56ed9f9c08 ]
+commit de5724ca38fd5e442bae9c1fab31942b6544012d upstream.
 
-This reverts commit 5f4b204b6b8153923d5be8002c5f7082985d153f.
+syzbot complains about a race in xfrm_lookup_with_ifid() [1]
 
-Since rdev->dev now has a release() callback, the proper way of freeing
-the initialized device can be restored.
+When preparing commit 0a9e5794b21e ("xfrm: annotate data-race
+around use_time") I thought xfrm_lookup_with_ifid() was modifying
+a still private structure.
 
-Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-Link: https://lore.kernel.org/r/d7f469f3f7b1f0e1d52f9a7ede3f3c5703382090.1695077303.git.mirq-linux@rere.qmqm.pl
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]
+BUG: KCSAN: data-race in xfrm_lookup_with_ifid / xfrm_lookup_with_ifid
+
+write to 0xffff88813ea41108 of 8 bytes by task 8150 on cpu 1:
+xfrm_lookup_with_ifid+0xce7/0x12d0 net/xfrm/xfrm_policy.c:3218
+xfrm_lookup net/xfrm/xfrm_policy.c:3270 [inline]
+xfrm_lookup_route+0x3b/0x100 net/xfrm/xfrm_policy.c:3281
+ip6_dst_lookup_flow+0x98/0xc0 net/ipv6/ip6_output.c:1246
+send6+0x241/0x3c0 drivers/net/wireguard/socket.c:139
+wg_socket_send_skb_to_peer+0xbd/0x130 drivers/net/wireguard/socket.c:178
+wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
+wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
+wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
+process_one_work kernel/workqueue.c:2630 [inline]
+process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2703
+worker_thread+0x525/0x730 kernel/workqueue.c:2784
+kthread+0x1d7/0x210 kernel/kthread.c:388
+ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
+ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+
+write to 0xffff88813ea41108 of 8 bytes by task 15867 on cpu 0:
+xfrm_lookup_with_ifid+0xce7/0x12d0 net/xfrm/xfrm_policy.c:3218
+xfrm_lookup net/xfrm/xfrm_policy.c:3270 [inline]
+xfrm_lookup_route+0x3b/0x100 net/xfrm/xfrm_policy.c:3281
+ip6_dst_lookup_flow+0x98/0xc0 net/ipv6/ip6_output.c:1246
+send6+0x241/0x3c0 drivers/net/wireguard/socket.c:139
+wg_socket_send_skb_to_peer+0xbd/0x130 drivers/net/wireguard/socket.c:178
+wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
+wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
+wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
+process_one_work kernel/workqueue.c:2630 [inline]
+process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2703
+worker_thread+0x525/0x730 kernel/workqueue.c:2784
+kthread+0x1d7/0x210 kernel/kthread.c:388
+ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
+ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+
+value changed: 0x00000000651cd9d1 -> 0x00000000651cd9d2
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 15867 Comm: kworker/u4:58 Not tainted 6.6.0-rc4-syzkaller-00016-g5e62ed3b1c8a #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
+Workqueue: wg-kex-wg2 wg_packet_handshake_send_worker
+
+Fixes: 0a9e5794b21e ("xfrm: annotate data-race around use_time")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/core.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ net/xfrm/xfrm_policy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 2820badc7a126..3137e40fcd3e0 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -5724,15 +5724,11 @@ regulator_register(struct device *dev,
- 	mutex_lock(&regulator_list_mutex);
- 	regulator_ena_gpio_free(rdev);
- 	mutex_unlock(&regulator_list_mutex);
--	put_device(&rdev->dev);
--	rdev = NULL;
- clean:
- 	if (dangling_of_gpiod)
- 		gpiod_put(config->ena_gpiod);
--	if (rdev && rdev->dev.of_node)
--		of_node_put(rdev->dev.of_node);
--	kfree(rdev);
- 	kfree(config);
-+	put_device(&rdev->dev);
- rinse:
- 	if (dangling_cfg_gpiod)
- 		gpiod_put(cfg->ena_gpiod);
--- 
-2.40.1
-
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3138,7 +3138,7 @@ no_transform:
+ 	}
+ 
+ 	for (i = 0; i < num_pols; i++)
+-		pols[i]->curlft.use_time = ktime_get_real_seconds();
++		WRITE_ONCE(pols[i]->curlft.use_time, ktime_get_real_seconds());
+ 
+ 	if (num_xfrms < 0) {
+ 		/* Prohibit the flow */
 
 
