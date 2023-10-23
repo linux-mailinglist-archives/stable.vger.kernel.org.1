@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FC77D3457
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:38:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E38637D3548
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234196AbjJWLip (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:38:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57890 "EHLO
+        id S234485AbjJWLq4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:46:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234198AbjJWLio (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:38:44 -0400
+        with ESMTP id S234495AbjJWLqo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEA2010C3
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:38:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20969C433C7;
-        Mon, 23 Oct 2023 11:38:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD5551725
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:46:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB27EC433C7;
+        Mon, 23 Oct 2023 11:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061121;
-        bh=PgSUZ6jwJ1E8bSMUed5TUCf9XwrYeM8595ZtnC2cm7I=;
+        s=korg; t=1698061601;
+        bh=hgTwnHeqc8QExdvsE7HPCv82fukpAG47Oqu+hfvWMoQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ESnYeIVqpFJOUBIWYA3kpf0MWYO7pWPi1sB4BUbtwMDlTM54/dZJbyA7rbyXVNK7B
-         KB2NVkYhM7J5lmK30Q++7w/OCA6W4/O4b6B871xJPFhSOsPJ/RjblAkz1qOBwD+kRD
-         1ZRNKngpM8HYOABODLW7GT1YBZPG4IqdtlFS95T8=
+        b=MdnibLVCQR6Qk/ZAwCkSo8NGZ/RgM3kHyKIfSpnrWZzd5haBcKkeKWcMTvP9pCKbm
+         POLuuNI8MjvryxN4NL1N3ld4a8emsy1HQsCUsSxtEjIdS3ZEO8EZVegA8BAr61DWvt
+         gB2kJxzUWhxpNtOPSaVZ4HiP28EloSDjVucN0gN4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/137] iio: Un-inline iio_buffer_enabled()
+        patches@lists.linux.dev, Alon Zahavi <zahavi.alon@gmail.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Christoph Hellwig <hch@lst.de>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.10 102/202] nvmet-tcp: Fix a possible UAF in queue intialization setup
 Date:   Mon, 23 Oct 2023 12:56:49 +0200
-Message-ID: <20231023104822.760459341@linuxfoundation.org>
+Message-ID: <20231023104829.515985935@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,90 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit 2f53b4adfede66f1bc1c8bb7efd7ced2bad1191a ]
+commit d920abd1e7c4884f9ecd0749d1921b7ab19ddfbd upstream.
 
-As we are going to hide the currentmode inside the opaque structure,
-this helper would soon need to call a non-inline function which would
-simply drop the benefit of having the helper defined inline in a header.
+>From Alon:
+"Due to a logical bug in the NVMe-oF/TCP subsystem in the Linux kernel,
+a malicious user can cause a UAF and a double free, which may lead to
+RCE (may also lead to an LPE in case the attacker already has local
+privileges)."
 
-One alternative is to move this helper in the core as there is no more
-interest in defining it inline in a header. We will pay the minor cost
-either way.
+Hence, when a queue initialization fails after the ahash requests are
+allocated, it is guaranteed that the queue removal async work will be
+called, hence leave the deallocation to the queue removal.
 
-Let's do like the iio_device_id() helper which also refers to the opaque
-structure and gets defined in the core.
+Also, be extra careful not to continue processing the socket, so set
+queue rcv_state to NVMET_TCP_RECV_ERR upon a socket error.
 
-Suggested-by: Jonathan Cameron <jic23@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20220207143840.707510-10-miquel.raynal@bootlin.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 7771c8c80d62 ("iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Alon Zahavi <zahavi.alon@gmail.com>
+Tested-by: Alon Zahavi <zahavi.alon@gmail.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-core.c | 12 ++++++++++++
- include/linux/iio/iio.h         | 11 +----------
- 2 files changed, 13 insertions(+), 10 deletions(-)
+ drivers/nvme/target/tcp.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index a7f5d432c95d9..f95a95fd9d0a5 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -184,6 +184,18 @@ int iio_device_id(struct iio_dev *indio_dev)
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -336,6 +336,7 @@ static void nvmet_tcp_fatal_error(struct
+ 
+ static void nvmet_tcp_socket_error(struct nvmet_tcp_queue *queue, int status)
+ {
++	queue->rcv_state = NVMET_TCP_RECV_ERR;
+ 	if (status == -EPIPE || status == -ECONNRESET)
+ 		kernel_sock_shutdown(queue->sock, SHUT_RDWR);
+ 	else
+@@ -882,15 +883,11 @@ static int nvmet_tcp_handle_icreq(struct
+ 	iov.iov_len = sizeof(*icresp);
+ 	ret = kernel_sendmsg(queue->sock, &msg, &iov, 1, iov.iov_len);
+ 	if (ret < 0)
+-		goto free_crypto;
++		return ret; /* queue removal will cleanup */
+ 
+ 	queue->state = NVMET_TCP_Q_LIVE;
+ 	nvmet_prepare_receive_pdu(queue);
+ 	return 0;
+-free_crypto:
+-	if (queue->hdr_digest || queue->data_digest)
+-		nvmet_tcp_free_crypto(queue);
+-	return ret;
  }
- EXPORT_SYMBOL_GPL(iio_device_id);
  
-+/**
-+ * iio_buffer_enabled() - helper function to test if the buffer is enabled
-+ * @indio_dev:		IIO device structure for device
-+ */
-+bool iio_buffer_enabled(struct iio_dev *indio_dev)
-+{
-+	return indio_dev->currentmode
-+		& (INDIO_BUFFER_TRIGGERED | INDIO_BUFFER_HARDWARE |
-+		   INDIO_BUFFER_SOFTWARE);
-+}
-+EXPORT_SYMBOL_GPL(iio_buffer_enabled);
-+
- /**
-  * iio_sysfs_match_string_with_gaps - matches given string in an array with gaps
-  * @array: array of strings
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 324561b7a5e86..0346acbbed2ee 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -542,6 +542,7 @@ struct iio_dev {
- };
- 
- int iio_device_id(struct iio_dev *indio_dev);
-+bool iio_buffer_enabled(struct iio_dev *indio_dev);
- 
- const struct iio_chan_spec
- *iio_find_channel_from_si(struct iio_dev *indio_dev, int si);
-@@ -671,16 +672,6 @@ struct iio_dev *devm_iio_device_alloc(struct device *parent, int sizeof_priv);
- __printf(2, 3)
- struct iio_trigger *devm_iio_trigger_alloc(struct device *parent,
- 					   const char *fmt, ...);
--/**
-- * iio_buffer_enabled() - helper function to test if the buffer is enabled
-- * @indio_dev:		IIO device structure for device
-- **/
--static inline bool iio_buffer_enabled(struct iio_dev *indio_dev)
--{
--	return indio_dev->currentmode
--		& (INDIO_BUFFER_TRIGGERED | INDIO_BUFFER_HARDWARE |
--		   INDIO_BUFFER_SOFTWARE);
--}
- 
- /**
-  * iio_get_debugfs_dentry() - helper function to get the debugfs_dentry
--- 
-2.40.1
-
+ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
 
 
