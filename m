@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBBA7D356E
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:48:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13A9F7D334B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234480AbjJWLsQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:48:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38930 "EHLO
+        id S233989AbjJWL3C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:29:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234487AbjJWLsQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:48:16 -0400
+        with ESMTP id S233995AbjJWL2u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30F410A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:48:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A9AC433C7;
-        Mon, 23 Oct 2023 11:48:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEA19FD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99EF2C433C7;
+        Mon, 23 Oct 2023 11:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061693;
-        bh=vNgXxSKjagEA6Wd524+GR+6ClUD1Q4k9SMreAZaVaI4=;
+        s=korg; t=1698060526;
+        bh=dpP/IQm3plsrRAUyocUXqePt+Q3nLaKaSeFnRfI1mOY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bNIAwq9ktYLSucZZNgXm46Nohcli509Bbz7opvu6bmgWQeDkLIIpMbzmqTBHK/TC2
-         8GQws3eiCZAz8Gh44hHCmk2nTphLgQyoUccgh0BYfMfWNpiBxefzH0xogWTtpmNIWx
-         W4VQTheL2ywDasjB+vSnxc6/CsXeHFXTxNcqzLeg=
+        b=H2smEE/6rc9emHkI3bFZhj2xTsvqk6KyzmcGusVC2fqpcMl+VR6SMaYD1TN8u/uCf
+         t/YCc4QohKuaRmI0VbYeHXz08Sc2Dg3W37Cqex2Rx6vJcWAYf5rzPDlS0GRCMXgAJA
+         UY9/bYC4szF0Oa83tf4xFU0fruL8u3puDYK0vkO8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Juntong Deng <juntong.deng@outlook.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 133/202] selftests/mm: fix awk usage in charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh that may cause error
+        patches@lists.linux.dev, James John <me@donjajo.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.1 175/196] platform/x86: asus-wmi: Only map brightness codes when using asus-wmi backlight control
 Date:   Mon, 23 Oct 2023 12:57:20 +0200
-Message-ID: <20231023104830.422673135@linuxfoundation.org>
+Message-ID: <20231023104833.358933166@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,80 +48,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juntong Deng <juntong.deng@outlook.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit bbe246f875d064ecfb872fe4f66152e743dfd22d ]
+commit a5b92be2482e5f9ef30be4e4cda12ed484381493 upstream.
 
-According to the awk manual, the -e option does not need to be specified
-in front of 'program' (unless you need to mix program-file).
+Older Asus laptops change the backlight level themselves and then send
+WMI events with different codes for different backlight levels.
 
-The redundant -e option can cause error when users use awk tools other
-than gawk (for example, mawk does not support the -e option).
+The asus-wmi.c code maps the entire range of codes reported on
+brightness down keypresses to an internal ASUS_WMI_BRN_DOWN code:
 
-Error Example:
-awk: not an option: -e
+define NOTIFY_BRNUP_MIN                0x11
+define NOTIFY_BRNUP_MAX                0x1f
+define NOTIFY_BRNDOWN_MIN              0x20
+define NOTIFY_BRNDOWN_MAX              0x2e
 
-Link: https://lkml.kernel.org/r/VI1P193MB075228810591AF2FDD7D42C599C3A@VI1P193MB0752.EURP193.PROD.OUTLOOK.COM
-Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+        if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
+                code = ASUS_WMI_BRN_UP;
+        else if (code >= NOTIFY_BRNDOWN_MIN && code <= NOTIFY_BRNDOWN_MAX)
+                code = ASUS_WMI_BRN_DOWN;
+
+This mapping is causing issues on new laptop models which actually
+send 0x2b events for printscreen presses and 0x2c events for
+capslock presses, which get translated into spurious brightness-down
+presses.
+
+This mapping is really only necessary when asus-wmi has registered
+a backlight-device for backlight control. In this case the mapping
+was used to decide to filter out the keypresss since in this case
+the firmware has already modified the brightness itself and instead
+of reporting a keypress asus-wmi will just report the new brightness
+value to userspace.
+
+OTOH when the firmware does not adjust the brightness itself then
+it seems to always report 0x2e for brightness-down presses and
+0x2f for brightness up presses independent of the actual brightness
+level. So in this case the mapping of the code is not necessary
+and this translation actually leads to spurious brightness-down
+presses being send to userspace when pressing printscreen or capslock.
+
+Modify asus_wmi_handle_event_code() to only do the mapping
+when using asus-wmi backlight control to fix the spurious
+brightness-down presses.
+
+Reported-by: James John <me@donjajo.com>
+Closes: https://lore.kernel.org/platform-driver-x86/a2c441fe-457e-44cf-a146-0ecd86b037cf@donjajo.com/
+Closes: https://bbs.archlinux.org/viewtopic.php?pid=2123716
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231017090725.38163-3-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vm/charge_reserved_hugetlb.sh  | 4 ++--
- tools/testing/selftests/vm/hugetlb_reparenting_test.sh | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/platform/x86/asus-wmi.c |   15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-index 71d3cf3bf130a..7536ff2f890a1 100644
---- a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-@@ -22,7 +22,7 @@ if [[ "$1" == "-cgroup-v2" ]]; then
- fi
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -3268,7 +3268,6 @@ static void asus_wmi_handle_event_code(i
+ {
+ 	unsigned int key_value = 1;
+ 	bool autorelease = 1;
+-	int orig_code = code;
  
- if [[ $cgroup2 ]]; then
--  cgroup_path=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
-+  cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
-     cgroup_path=/dev/cgroup/memory
-     mount -t cgroup2 none $cgroup_path
-@@ -30,7 +30,7 @@ if [[ $cgroup2 ]]; then
-   fi
-   echo "+hugetlb" >$cgroup_path/cgroup.subtree_control
- else
--  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
-+  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
-     cgroup_path=/dev/cgroup/memory
-     mount -t cgroup memory,hugetlb $cgroup_path
-diff --git a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-index 54234e12288c9..c665b16f1e370 100644
---- a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-+++ b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-@@ -17,7 +17,7 @@ fi
+ 	if (asus->driver->key_filter) {
+ 		asus->driver->key_filter(asus->driver, &code, &key_value,
+@@ -3277,16 +3276,10 @@ static void asus_wmi_handle_event_code(i
+ 			return;
+ 	}
  
+-	if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
+-		code = ASUS_WMI_BRN_UP;
+-	else if (code >= NOTIFY_BRNDOWN_MIN && code <= NOTIFY_BRNDOWN_MAX)
+-		code = ASUS_WMI_BRN_DOWN;
+-
+-	if (code == ASUS_WMI_BRN_DOWN || code == ASUS_WMI_BRN_UP) {
+-		if (acpi_video_get_backlight_type() == acpi_backlight_vendor) {
+-			asus_wmi_backlight_notify(asus, orig_code);
+-			return;
+-		}
++	if (acpi_video_get_backlight_type() == acpi_backlight_vendor &&
++	    code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNDOWN_MAX) {
++		asus_wmi_backlight_notify(asus, code);
++		return;
+ 	}
  
- if [[ $cgroup2 ]]; then
--  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
-+  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
-     CGROUP_ROOT=/dev/cgroup/memory
-     mount -t cgroup2 none $CGROUP_ROOT
-@@ -25,7 +25,7 @@ if [[ $cgroup2 ]]; then
-   fi
-   echo "+hugetlb +memory" >$CGROUP_ROOT/cgroup.subtree_control
- else
--  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
-+  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
-     CGROUP_ROOT=/dev/cgroup/memory
-     mount -t cgroup memory,hugetlb $CGROUP_ROOT
--- 
-2.40.1
-
+ 	if (code == NOTIFY_KBD_BRTUP) {
 
 
