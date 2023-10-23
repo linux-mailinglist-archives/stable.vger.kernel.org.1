@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA1D07D33C9
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B65DA7D3595
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233875AbjJWLeK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:34:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51524 "EHLO
+        id S234582AbjJWLtr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234138AbjJWLeJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:09 -0400
+        with ESMTP id S234293AbjJWLtr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94BFEFD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D916FC433CA;
-        Mon, 23 Oct 2023 11:34:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B605D7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D72C433C8;
+        Mon, 23 Oct 2023 11:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060846;
-        bh=O7Grx6i+X/C+lpPfBmsjfoNhSWy9gN9aSLK5rPs2kQQ=;
+        s=korg; t=1698061784;
+        bh=JgER7b/myTiygeIWcmpnlCPNsF4RVIKGqX12JrP0nL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yedebhuTN4riLJwXfhWqO2NeYpVvUf/c9wWRz82w60bnseKOh1N1HqwuFxzlj50yk
-         r73+T+XjjWojzCdWi+LhWFmbQPdnKARr0reLCVFE7+HnZAjvLlmkJgKPHWTQWcYfBn
-         6isi9yOvcgUzAVjyhnimeai40h2IxiyGbnDrU2n0=
+        b=g8kmrPQM1nEbOKd4+weJX3euCiNbSyM04idodFBUJzWU3tbqKLH1drYd5BvMPSltD
+         RqILEf+IH9gkgixDrkX7QIaN3dZJA9BJQCLHsViD0DnkUooL+zIk/R2wEGyHCS3R+A
+         xv/SlZSEsWVaW+V9lTyPYyenI4dbrKqk6qV2tsrk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthew Rosato <mjrosato@linux.ibm.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 5.4 113/123] s390/pci: fix iommu bitmap allocation
+        patches@lists.linux.dev, Benjamin Berg <benjamin.berg@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 164/202] wifi: cfg80211: avoid leaking stack data into trace
 Date:   Mon, 23 Oct 2023 12:57:51 +0200
-Message-ID: <20231023104821.525143064@linuxfoundation.org>
+Message-ID: <20231023104831.290089886@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,83 +49,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit c1ae1c59c8c6e0b66a718308c623e0cb394dab6b upstream.
+[ Upstream commit 334bf33eec5701a1e4e967bcb7cc8611a998334b ]
 
-Since the fixed commits both zdev->iommu_bitmap and zdev->lazy_bitmap
-are allocated as vzalloc(zdev->iommu_pages / 8). The problem is that
-zdev->iommu_bitmap is a pointer to unsigned long but the above only
-yields an allocation that is a multiple of sizeof(unsigned long) which
-is 8 on s390x if the number of IOMMU pages is a multiple of 64.
-This in turn is the case only if the effective IOMMU aperture is
-a multiple of 64 * 4K = 256K. This is usually the case and so didn't
-cause visible issues since both the virt_to_phys(high_memory) reduced
-limit and hardware limits use nice numbers.
+If the structure is not initialized then boolean types might be copied
+into the tracing data without being initialised. This causes data from
+the stack to leak into the trace and also triggers a UBSAN failure which
+can easily be avoided here.
 
-Under KVM, and in particular with QEMU limiting the IOMMU aperture to
-the vfio DMA limit (default 65535), it is possible for the reported
-aperture not to be a multiple of 256K however. In this case we end up
-with an iommu_bitmap whose allocation is not a multiple of
-8 causing bitmap operations to access it out of bounds.
-
-Sadly we can't just fix this in the obvious way and use bitmap_zalloc()
-because for large RAM systems (tested on 8 TiB) the zdev->iommu_bitmap
-grows too large for kmalloc(). So add our own bitmap_vzalloc() wrapper.
-This might be a candidate for common code, but this area of code will
-be replaced by the upcoming conversion to use the common code DMA API on
-s390 so just add a local routine.
-
-Fixes: 224593215525 ("s390/pci: use virtual memory for iommu bitmap")
-Fixes: 13954fd6913a ("s390/pci_dma: improve lazy flush for unmap")
-Cc: stable@vger.kernel.org
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Link: https://lore.kernel.org/r/20230925171855.a9271ef53b05.I8180bae663984c91a3e036b87f36a640ba409817@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_dma.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/pci/pci_dma.c
-+++ b/arch/s390/pci/pci_dma.c
-@@ -543,6 +543,17 @@ static void s390_dma_unmap_sg(struct dev
- 		s->dma_length = 0;
- 	}
- }
-+
-+static unsigned long *bitmap_vzalloc(size_t bits, gfp_t flags)
-+{
-+	size_t n = BITS_TO_LONGS(bits);
-+	size_t bytes;
-+
-+	if (unlikely(check_mul_overflow(n, sizeof(unsigned long), &bytes)))
-+		return NULL;
-+
-+	return vzalloc(bytes);
-+}
- 	
- int zpci_dma_init_device(struct zpci_dev *zdev)
- {
-@@ -579,13 +590,13 @@ int zpci_dma_init_device(struct zpci_dev
- 				zdev->end_dma - zdev->start_dma + 1);
- 	zdev->end_dma = zdev->start_dma + zdev->iommu_size - 1;
- 	zdev->iommu_pages = zdev->iommu_size >> PAGE_SHIFT;
--	zdev->iommu_bitmap = vzalloc(zdev->iommu_pages / 8);
-+	zdev->iommu_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
- 	if (!zdev->iommu_bitmap) {
- 		rc = -ENOMEM;
- 		goto free_dma_table;
- 	}
- 	if (!s390_iommu_strict) {
--		zdev->lazy_bitmap = vzalloc(zdev->iommu_pages / 8);
-+		zdev->lazy_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
- 		if (!zdev->lazy_bitmap) {
- 			rc = -ENOMEM;
- 			goto free_bitmap;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index ea36d8c47b31a..0ac829c8f1888 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -7467,7 +7467,7 @@ static int nl80211_update_mesh_config(struct sk_buff *skb,
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	struct net_device *dev = info->user_ptr[1];
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+-	struct mesh_config cfg;
++	struct mesh_config cfg = {};
+ 	u32 mask;
+ 	int err;
+ 
+-- 
+2.40.1
+
 
 
