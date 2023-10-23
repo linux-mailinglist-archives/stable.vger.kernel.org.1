@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C474D7D3432
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7BDE7D330A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233950AbjJWLha (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:37:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44712 "EHLO
+        id S233925AbjJWL0G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:26:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234176AbjJWLh2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:28 -0400
+        with ESMTP id S233926AbjJWL0F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4687F9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAA6C433C8;
-        Mon, 23 Oct 2023 11:37:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 286E7D7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405CEC433C8;
+        Mon, 23 Oct 2023 11:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061046;
-        bh=QGrnqq0ESIIGg/j7RiWk4VNGr880DHcXnDESTFJJ3Rg=;
+        s=korg; t=1698060362;
+        bh=8GumJjW4J3X87KKWs4CwsX8+L04VFPwAMzh3B27mHJw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SwqUAW4AgFaoIgRN07eSij8IJCP0XJaTDxSYRESID9iS5EOXuPL/RxJwQs497/sFo
-         NMvVaQ2RXlcQlXmIzZGltyJbbohUc4wlChs4N1oppqRbl5Kpbvr6qziUBWtIe0UFmk
-         GT2UX582gWrvVG28nimB2KB+o94NG2JjJi8LptCY=
+        b=MY5uwiS8J0mhhM7PpRXIma/cjXDSrUBlSEfFkJqQsz/R1RjXb0Tj8lrSKZPsNs6LN
+         79lVAluXHyOC1MK6uSjUCm4P8j7LiDwLITJwdecgGLulixUkd0489ulHZunpd8/4Q+
+         Bt1aauIFvGOZfR70ONSmSnu6HDMD1YxQbo8A/DTQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tzung-Bi Shih <tzungbi@kernel.org>,
-        Guenter Roeck <groeck@chromium.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 055/137] iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 147/196] mtd: physmap-core: Restore map_rom fallback
 Date:   Mon, 23 Oct 2023 12:56:52 +0200
-Message-ID: <20231023104822.850456576@linuxfoundation.org>
+Message-ID: <20231023104832.636689454@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,77 +49,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 7771c8c80d62ad065637ef74ed2962983f6c5f6d ]
+commit 6792b7fce610bcd1cf3e07af3607fe7e2c38c1d8 upstream.
 
-cros_ec_sensors_push_data() reads `indio_dev->active_scan_mask` and
-calls iio_push_to_buffers_with_timestamp() without making sure the
-`indio_dev` stays in buffer mode.  There is a race if `indio_dev` exits
-buffer mode right before cros_ec_sensors_push_data() accesses them.
+When the exact mapping type driver was not available, the old
+physmap_of_core driver fell back to mapping the region as ROM.
+Unfortunately this feature was lost when the DT and pdata cases were
+merged.  Revive this useful feature.
 
-An use-after-free on `indio_dev->active_scan_mask` was observed.  The
-call trace:
-[...]
- _find_next_bit
- cros_ec_sensors_push_data
- cros_ec_sensorhub_event
- blocking_notifier_call_chain
- cros_ec_irq_thread
-
-It was caused by a race condition: one thread just freed
-`active_scan_mask` at [1]; while another thread tried to access the
-memory at [2].
-
-Fix it by calling iio_device_claim_buffer_mode() to ensure the
-`indio_dev` can't exit buffer mode during cros_ec_sensors_push_data().
-
-[1]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/industrialio-buffer.c#L1189
-[2]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c#L198
-
-Cc: stable@vger.kernel.org
-Fixes: aa984f1ba4a4 ("iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO")
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Link: https://lore.kernel.org/r/20230829030622.1571852-1-tzungbi@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 642b1e8dbed7bbbf ("mtd: maps: Merge physmap_of.c into physmap-core.c")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/550e8c8c1da4c4baeb3d71ff79b14a18d4194f9e.1693407371.git.geert+renesas@glider.be
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mtd/maps/physmap-core.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-index f529c01ac66b2..a600ad9ed8696 100644
---- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-+++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
-@@ -196,8 +196,11 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
- 	/*
- 	 * Ignore samples if the buffer is not set: it is needed if the ODR is
- 	 * set but the buffer is not enabled yet.
-+	 *
-+	 * Note: iio_device_claim_buffer_mode() returns -EBUSY if the buffer
-+	 * is not enabled.
- 	 */
--	if (!iio_buffer_enabled(indio_dev))
-+	if (iio_device_claim_buffer_mode(indio_dev) < 0)
- 		return 0;
+--- a/drivers/mtd/maps/physmap-core.c
++++ b/drivers/mtd/maps/physmap-core.c
+@@ -552,6 +552,17 @@ static int physmap_flash_probe(struct pl
+ 		if (info->probe_type) {
+ 			info->mtds[i] = do_map_probe(info->probe_type,
+ 						     &info->maps[i]);
++
++			/* Fall back to mapping region as ROM */
++			if (!info->mtds[i] && IS_ENABLED(CONFIG_MTD_ROM) &&
++			    strcmp(info->probe_type, "map_rom")) {
++				dev_warn(&dev->dev,
++					 "map_probe() failed for type %s\n",
++					 info->probe_type);
++
++				info->mtds[i] = do_map_probe("map_rom",
++							     &info->maps[i]);
++			}
+ 		} else {
+ 			int j;
  
- 	out = (s16 *)st->samples;
-@@ -216,6 +219,7 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
- 	iio_push_to_buffers_with_timestamp(indio_dev, st->samples,
- 					   timestamp + delta);
- 
-+	iio_device_release_buffer_mode(indio_dev);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(cros_ec_sensors_push_data);
--- 
-2.40.1
-
 
 
