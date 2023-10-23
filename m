@@ -2,37 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 724CE7D3348
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 239F97D3349
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233991AbjJWL2n (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:28:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59000 "EHLO
+        id S233994AbjJWL2r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:28:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233988AbjJWL2m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:42 -0400
+        with ESMTP id S233993AbjJWL2q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88B3AC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D23C433C8;
-        Mon, 23 Oct 2023 11:28:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7396AA4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA15C433C8;
+        Mon, 23 Oct 2023 11:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060520;
-        bh=HAUlVMis6ioY8cP9KhvnvX7F0qvc3iT/iIC1GQpgc6s=;
+        s=korg; t=1698060523;
+        bh=s8uOf2P0sSgCtR+UaOdVxNeR/YOakIZ25/q5DLTSIKY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VSgwhOcsaYq5Y9JrNfIC2J1pB9PdSsYR1SlVf2DW02uCG9TbyDTUsNYghLXAen0f+
-         lY0SXFA6heWAuWZE8tsDiZIzvawr4O09i8NZ09UpVMTF2LB568LJSEorUm3la0vjBe
-         4MilBY/xeeNUP6CKRxSDP25BxKbdEc2W0fwAKVkI=
+        b=BEdtGyndOeETg8NA6g88bmvTqg+12BsgQkCM/JP/jSNyP4dDvOQAC5AsOe6hOW4LY
+         VIbFY8uULkjV393MzxBOlOMFXNniH4bcm3dYvqivBRxjsSxHjOErg8VILRplCvYf7E
+         wHEPcVJuoDrblSpdHa6tpFvSi0AjLI5dUupFMy1Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        patches@lists.linux.dev, James John <me@donjajo.com>,
         Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.1 173/196] platform/x86: intel-uncore-freq: Conditionally create attribute for read frequency
-Date:   Mon, 23 Oct 2023 12:57:18 +0200
-Message-ID: <20231023104833.307819145@linuxfoundation.org>
+Subject: [PATCH 6.1 174/196] platform/x86: asus-wmi: Change ASUS_WMI_BRN_DOWN code from 0x20 to 0x2e
+Date:   Mon, 23 Oct 2023 12:57:19 +0200
+Message-ID: <20231023104833.333810234@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
 References: <20231023104828.488041585@linuxfoundation.org>
@@ -40,7 +38,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -55,49 +52,66 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 4d73c6772ab771cbbe7e46a73e7c78ba490350fa upstream.
+commit f37cc2fc277b371fc491890afb7d8a26e36bb3a1 upstream.
 
-When the current uncore frequency can't be read, don't create attribute
-"current_freq_khz" as any read will fail later. Some user space
-applications like turbostat fail to continue with the failure. So, check
-error during attribute creation.
+Older Asus laptops change the backlight level themselves and then send
+WMI events with different codes for different backlight levels.
 
-Fixes: 414eef27283a ("platform/x86/intel/uncore-freq: Display uncore current frequency")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20231004181915.1887913-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+The asus-wmi.c code maps the entire range of codes reported on
+brightness down keypresses to an internal ASUS_WMI_BRN_DOWN code:
+
+define NOTIFY_BRNUP_MIN                0x11
+define NOTIFY_BRNUP_MAX                0x1f
+define NOTIFY_BRNDOWN_MIN              0x20
+define NOTIFY_BRNDOWN_MAX              0x2e
+
+        if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
+                code = ASUS_WMI_BRN_UP;
+        else if (code >= NOTIFY_BRNDOWN_MIN && code <= NOTIFY_BRNDOWN_MAX)
+                code = ASUS_WMI_BRN_DOWN;
+
+Before this commit all the NOTIFY_BRNDOWN_MIN - NOTIFY_BRNDOWN_MAX
+aka 0x20 - 0x2e events were mapped to 0x20.
+
+This mapping is causing issues on new laptop models which actually
+send 0x2b events for printscreen presses and 0x2c events for
+capslock presses, which get translated into spurious brightness-down
+presses.
+
+The plan is disable the 0x11-0x2e special mapping on laptops
+where asus-wmi does not register a backlight-device to avoid
+the spurious brightness-down keypresses. New laptops always send
+0x2e for brightness-down presses, change the special internal
+ASUS_WMI_BRN_DOWN value from 0x20 to 0x2e to match this in
+preparation for fixing the spurious brightness-down presses.
+
+This change does not have any functional impact since all
+of 0x20 - 0x2e is mapped to ASUS_WMI_BRN_DOWN first and only
+then checked against the keymap code and the new 0x2e
+value is still in the 0x20 - 0x2e range.
+
+Reported-by: James John <me@donjajo.com>
+Closes: https://lore.kernel.org/platform-driver-x86/a2c441fe-457e-44cf-a146-0ecd86b037cf@donjajo.com/
+Closes: https://bbs.archlinux.org/viewtopic.php?pid=2123716
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231017090725.38163-2-hdegoede@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/platform/x86/asus-wmi.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
-@@ -153,7 +153,7 @@ show_uncore_data(initial_max_freq_khz);
+--- a/drivers/platform/x86/asus-wmi.h
++++ b/drivers/platform/x86/asus-wmi.h
+@@ -18,7 +18,7 @@
+ #include <linux/i8042.h>
  
- static int create_attr_group(struct uncore_data *data, char *name)
- {
--	int ret, index = 0;
-+	int ret, freq, index = 0;
+ #define ASUS_WMI_KEY_IGNORE (-1)
+-#define ASUS_WMI_BRN_DOWN	0x20
++#define ASUS_WMI_BRN_DOWN	0x2e
+ #define ASUS_WMI_BRN_UP		0x2f
  
- 	init_attribute_rw(max_freq_khz);
- 	init_attribute_rw(min_freq_khz);
-@@ -165,7 +165,11 @@ static int create_attr_group(struct unco
- 	data->uncore_attrs[index++] = &data->min_freq_khz_dev_attr.attr;
- 	data->uncore_attrs[index++] = &data->initial_min_freq_khz_dev_attr.attr;
- 	data->uncore_attrs[index++] = &data->initial_max_freq_khz_dev_attr.attr;
--	data->uncore_attrs[index++] = &data->current_freq_khz_dev_attr.attr;
-+
-+	ret = uncore_read_freq(data, &freq);
-+	if (!ret)
-+		data->uncore_attrs[index++] = &data->current_freq_khz_dev_attr.attr;
-+
- 	data->uncore_attrs[index] = NULL;
- 
- 	data->uncore_attr_group.name = name;
+ struct module;
 
 
