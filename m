@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D14F17D3325
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEE037D30C5
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233956AbjJWL1H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:27:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53666 "EHLO
+        id S232798AbjJWLB6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233968AbjJWL1G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:06 -0400
+        with ESMTP id S232938AbjJWLB4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B122810B
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DD2C433CA;
-        Mon, 23 Oct 2023 11:27:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A5DB10CB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA2DC433C8;
+        Mon, 23 Oct 2023 11:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060422;
-        bh=R+yTtpAhv8PSuLAtDJ2mfjZUN5NlzfQHKeR7MsPl0uc=;
+        s=korg; t=1698058913;
+        bh=qpP845eCyzrqoE/OM+FE8W8KrCHAfMZemLyCDX9QzOM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yu07ChWnjqoP7eVQGDGAQczctSGo7jG8jBp9fGLMyQ6vYLe9KElzSE9wg1kvJGO0+
-         UhP9MBufixcUO1xwolB3ywyDe2X7fjGVKqMn4nGvZsTaDK/1ecOm18IaINxcjn0gbJ
-         PGydDrvwstNOjx4crIeWny90MBi2UfZexdxSAizo=
+        b=p/BmK7bBTHUBuDaAdLg9do5IdoounryNkKdMKoHUd9CYrZxwsC/FTuMhLB+GSYc5y
+         nblmhhFlyyNwOsivJVuWOIQlcWzdmloZDv2PrJL/ZHyOBR6zujJzg7WM47G2DexCr1
+         Gn3VJ/CLS4VkD9dniq5Ny8xpA+9YsmfD52wmnMow=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Aaron Conole <aconole@redhat.com>,
+        patches@lists.linux.dev, Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
         "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        kernel test robot <lkp@intel.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/196] selftests: openvswitch: Add version check for pyroute2
+Subject: [PATCH 4.14 54/66] sky2: Make sure there is at least one frag_addr available
 Date:   Mon, 23 Oct 2023 12:56:44 +0200
-Message-ID: <20231023104832.415527918@linuxfoundation.org>
+Message-ID: <20231023104812.845061083@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +57,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Conole <aconole@redhat.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 92e37f20f20a23fec4626ae72eda50f127acb130 ]
+[ Upstream commit 6a70e5cbedaf8ad10528ac9ac114f3ec20f422df ]
 
-Paolo Abeni reports that on some systems the pyroute2 version isn't
-new enough to run the test suite.  Ensure that we support a minimum
-version of 0.6 for all cases (which does include the existing ones).
-The 0.6.1 version was released in May of 2021, so should be
-propagated to most installations at this point.
+In the pathological case of building sky2 with 16k PAGE_SIZE, the
+frag_addr[] array would never be used, so the original code was correct
+that size should be 0. But the compiler now gets upset with 0 size arrays
+in places where it hasn't eliminated the code that might access such an
+array (it can't figure out that in this case an rx skb with fragments
+would never be created). To keep the compiler happy, make sure there is
+at least 1 frag_addr in struct rx_ring_info:
 
-The alternative that Paolo proposed was to only skip when the
-add-flow is being run.  This would be okay for most cases, except
-if a future test case is added that needs to do flow dump without
-an associated add (just guessing).  In that case, it could also be
-broken and we would need additional skip logic anyway.  Just draw
-a line in the sand now.
+   In file included from include/linux/skbuff.h:28,
+                    from include/net/net_namespace.h:43,
+                    from include/linux/netdevice.h:38,
+                    from drivers/net/ethernet/marvell/sky2.c:18:
+   drivers/net/ethernet/marvell/sky2.c: In function 'sky2_rx_unmap_skb':
+   include/linux/dma-mapping.h:416:36: warning: array subscript i is outside array bounds of 'dma_addr_t[0]' {aka 'long long unsigned int[]'} [-Warray-bounds=]
+     416 | #define dma_unmap_page(d, a, s, r) dma_unmap_page_attrs(d, a, s, r, 0)
+         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/ethernet/marvell/sky2.c:1257:17: note: in expansion of macro 'dma_unmap_page'
+    1257 |                 dma_unmap_page(&pdev->dev, re->frag_addr[i],
+         |                 ^~~~~~~~~~~~~~
+   In file included from drivers/net/ethernet/marvell/sky2.c:41:
+   drivers/net/ethernet/marvell/sky2.h:2198:25: note: while referencing 'frag_addr'
+    2198 |         dma_addr_t      frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
+         |                         ^~~~~~~~~
 
-Fixes: 25f16c873fb1 ("selftests: add openvswitch selftest suite")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Closes: https://lore.kernel.org/lkml/8470c431e0930d2ea204a9363a60937289b7fdbe.camel@redhat.com/
-Signed-off-by: Aaron Conole <aconole@redhat.com>
+With CONFIG_PAGE_SIZE_16KB=y, PAGE_SHIFT == 14, so:
+
+  #define ETH_JUMBO_MTU   9000
+
+causes "ETH_JUMBO_MTU >> PAGE_SHIFT" to be 0. Use "?: 1" to solve this build warning.
+
+Cc: Mirko Lindner <mlindner@marvell.com>
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309191958.UBw1cjXk-lkp@intel.com/
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/openvswitch/openvswitch.sh |  2 +-
- tools/testing/selftests/net/openvswitch/ovs-dpctl.py   | 10 +++++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/sky2.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index 5e6686398a313..52054a09d575c 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -117,7 +117,7 @@ run_test() {
- 	fi
+--- a/drivers/net/ethernet/marvell/sky2.h
++++ b/drivers/net/ethernet/marvell/sky2.h
+@@ -2201,7 +2201,7 @@ struct rx_ring_info {
+ 	struct sk_buff	*skb;
+ 	dma_addr_t	data_addr;
+ 	DEFINE_DMA_UNMAP_LEN(data_size);
+-	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
++	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT ?: 1];
+ };
  
- 	if python3 ovs-dpctl.py -h 2>&1 | \
--	     grep "Need to install the python" >/dev/null 2>&1; then
-+	     grep -E "Need to (install|upgrade) the python" >/dev/null 2>&1; then
- 		stdbuf -o0 printf "TEST: %-60s  [PYLIB]\n" "${tdesc}"
- 		return $ksft_skip
- 	fi
-diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-index 5d467d1993cb1..e787a1f967b0d 100644
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -17,8 +17,10 @@ try:
-     from pyroute2.netlink import nla
-     from pyroute2.netlink.exceptions import NetlinkError
-     from pyroute2.netlink.generic import GenericNetlinkSocket
-+    import pyroute2
-+
- except ModuleNotFoundError:
--    print("Need to install the python pyroute2 package.")
-+    print("Need to install the python pyroute2 package >= 0.6.")
-     sys.exit(0)
- 
- 
-@@ -280,6 +282,12 @@ def print_ovsdp_full(dp_lookup_rep, ifindex, ndb=NDB()):
- 
- 
- def main(argv):
-+    # version check for pyroute2
-+    prverscheck = pyroute2.__version__.split(".")
-+    if int(prverscheck[0]) == 0 and int(prverscheck[1]) < 6:
-+        print("Need to upgrade the python pyroute2 package to >= 0.6.")
-+        sys.exit(0)
-+
-     parser = argparse.ArgumentParser()
-     parser.add_argument(
-         "-v",
--- 
-2.40.1
-
+ enum flow_control {
 
 
