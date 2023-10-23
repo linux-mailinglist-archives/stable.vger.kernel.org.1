@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECB677D340F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93EDB7D31CE
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234147AbjJWLgc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:36:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52360 "EHLO
+        id S233609AbjJWLN1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:13:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234130AbjJWLgb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:31 -0400
+        with ESMTP id S233633AbjJWLN0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DC01FF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBC4C433C7;
-        Mon, 23 Oct 2023 11:36:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE23DC2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29E2C433C8;
+        Mon, 23 Oct 2023 11:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060987;
-        bh=eCWYMqgcKLJJCKBfo4FHEbljcgB8yx8x3MaDsvAinsM=;
+        s=korg; t=1698059604;
+        bh=FjztoBPM9do5wAEgkaXE13celaHS9nF40lJg6A+bAcw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lyjaGKHpa+m9Nwiv0V9kzDdEfEBxaynBvHX+nGckWCor6S9Oc6Cvwu9JJBU01r76J
-         0Vv2fb1YSKTF4rd22vRSnHB8Y2ECHbV5XE9ivfiltipH9iEW7GPv5a3YDBFOACROoq
-         GY1vu23yI1jRCntZnXm83W45L09qwO3MQ+lkBoGM=
+        b=O99eczTVSj4idJehlSY+UwS61nEwf/3Ky8tMqc/Ct9xHOlk6QS6DuBjIzc+2pZNcj
+         /r10B8U/6FzcbamJjE4HaZ3arhQ2BZLoR29Y71vY08dsaOnXW8Qp+PgMGBmGoirJh8
+         uHXjbQTdYvOrDUM6xQKt/HkBJEgD59uMzDLLi/wk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Neal Cardwell <ncardwell@google.com>,
-        Yuchung Cheng <ycheng@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 035/137] tcp: fix excessive TLP and RACK timeouts from HZ rounding
+        patches@lists.linux.dev,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.5 206/241] platform/x86: intel-uncore-freq: Conditionally create attribute for read frequency
 Date:   Mon, 23 Oct 2023 12:56:32 +0200
-Message-ID: <20231023104822.217032479@linuxfoundation.org>
+Message-ID: <20231023104838.878194334@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,100 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit 1c2709cfff1dedbb9591e989e2f001484208d914 upstream.
+commit 4d73c6772ab771cbbe7e46a73e7c78ba490350fa upstream.
 
-We discovered from packet traces of slow loss recovery on kernels with
-the default HZ=250 setting (and min_rtt < 1ms) that after reordering,
-when receiving a SACKed sequence range, the RACK reordering timer was
-firing after about 16ms rather than the desired value of roughly
-min_rtt/4 + 2ms. The problem is largely due to the RACK reorder timer
-calculation adding in TCP_TIMEOUT_MIN, which is 2 jiffies. On kernels
-with HZ=250, this is 2*4ms = 8ms. The TLP timer calculation has the
-exact same issue.
+When the current uncore frequency can't be read, don't create attribute
+"current_freq_khz" as any read will fail later. Some user space
+applications like turbostat fail to continue with the failure. So, check
+error during attribute creation.
 
-This commit fixes the TLP transmit timer and RACK reordering timer
-floor calculation to more closely match the intended 2ms floor even on
-kernels with HZ=250. It does this by adding in a new
-TCP_TIMEOUT_MIN_US floor of 2000 us and then converting to jiffies,
-instead of the current approach of converting to jiffies and then
-adding th TCP_TIMEOUT_MIN value of 2 jiffies.
-
-Our testing has verified that on kernels with HZ=1000, as expected,
-this does not produce significant changes in behavior, but on kernels
-with the default HZ=250 the latency improvement can be large. For
-example, our tests show that for HZ=250 kernels at low RTTs this fix
-roughly halves the latency for the RACK reorder timer: instead of
-mostly firing at 16ms it mostly fires at 8ms.
-
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Fixes: bb4d991a28cc ("tcp: adjust tail loss probe timeout")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231015174700.2206872-1-ncardwell.sw@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 414eef27283a ("platform/x86/intel/uncore-freq: Display uncore current frequency")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20231004181915.1887913-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tcp.h       |    3 +++
- net/ipv4/tcp_output.c   |    9 +++++----
- net/ipv4/tcp_recovery.c |    2 +-
- 3 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -141,6 +141,9 @@ void tcp_time_wait(struct sock *sk, int
- #define TCP_RTO_MAX	((unsigned)(120*HZ))
- #define TCP_RTO_MIN	((unsigned)(HZ/5))
- #define TCP_TIMEOUT_MIN	(2U) /* Min timeout for TCP timers in jiffies */
-+
-+#define TCP_TIMEOUT_MIN_US (2*USEC_PER_MSEC) /* Min TCP timeout in microsecs */
-+
- #define TCP_TIMEOUT_INIT ((unsigned)(1*HZ))	/* RFC6298 2.1 initial RTO value	*/
- #define TCP_TIMEOUT_FALLBACK ((unsigned)(3*HZ))	/* RFC 1122 initial RTO value, now
- 						 * used as a fallback RTO for the
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2731,7 +2731,7 @@ bool tcp_schedule_loss_probe(struct sock
- {
- 	struct inet_connection_sock *icsk = inet_csk(sk);
- 	struct tcp_sock *tp = tcp_sk(sk);
--	u32 timeout, rto_delta_us;
-+	u32 timeout, timeout_us, rto_delta_us;
- 	int early_retrans;
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-common.c
+@@ -176,7 +176,7 @@ show_uncore_data(initial_max_freq_khz);
  
- 	/* Don't do any loss probe on a Fast Open connection before 3WHS
-@@ -2755,11 +2755,12 @@ bool tcp_schedule_loss_probe(struct sock
- 	 * sample is available then probe after TCP_TIMEOUT_INIT.
- 	 */
- 	if (tp->srtt_us) {
--		timeout = usecs_to_jiffies(tp->srtt_us >> 2);
-+		timeout_us = tp->srtt_us >> 2;
- 		if (tp->packets_out == 1)
--			timeout += TCP_RTO_MIN;
-+			timeout_us += tcp_rto_min_us(sk);
- 		else
--			timeout += TCP_TIMEOUT_MIN;
-+			timeout_us += TCP_TIMEOUT_MIN_US;
-+		timeout = usecs_to_jiffies(timeout_us);
- 	} else {
- 		timeout = TCP_TIMEOUT_INIT;
- 	}
---- a/net/ipv4/tcp_recovery.c
-+++ b/net/ipv4/tcp_recovery.c
-@@ -109,7 +109,7 @@ bool tcp_rack_mark_lost(struct sock *sk)
- 	tp->rack.advanced = 0;
- 	tcp_rack_detect_loss(sk, &timeout);
- 	if (timeout) {
--		timeout = usecs_to_jiffies(timeout) + TCP_TIMEOUT_MIN;
-+		timeout = usecs_to_jiffies(timeout + TCP_TIMEOUT_MIN_US);
- 		inet_csk_reset_xmit_timer(sk, ICSK_TIME_REO_TIMEOUT,
- 					  timeout, inet_csk(sk)->icsk_rto);
- 	}
+ static int create_attr_group(struct uncore_data *data, char *name)
+ {
+-	int ret, index = 0;
++	int ret, freq, index = 0;
+ 
+ 	init_attribute_rw(max_freq_khz);
+ 	init_attribute_rw(min_freq_khz);
+@@ -197,7 +197,11 @@ static int create_attr_group(struct unco
+ 	data->uncore_attrs[index++] = &data->min_freq_khz_dev_attr.attr;
+ 	data->uncore_attrs[index++] = &data->initial_min_freq_khz_dev_attr.attr;
+ 	data->uncore_attrs[index++] = &data->initial_max_freq_khz_dev_attr.attr;
+-	data->uncore_attrs[index++] = &data->current_freq_khz_dev_attr.attr;
++
++	ret = uncore_read_freq(data, &freq);
++	if (!ret)
++		data->uncore_attrs[index++] = &data->current_freq_khz_dev_attr.attr;
++
+ 	data->uncore_attrs[index] = NULL;
+ 
+ 	data->uncore_attr_group.name = name;
 
 
