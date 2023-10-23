@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B25D17D31E1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E57CA7D3439
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233679AbjJWLOQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:14:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35094 "EHLO
+        id S234182AbjJWLhr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233660AbjJWLOQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:16 -0400
+        with ESMTP id S234184AbjJWLhq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A8B5A2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D42C433C7;
-        Mon, 23 Oct 2023 11:14:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60531A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9ECC433C9;
+        Mon, 23 Oct 2023 11:37:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059654;
-        bh=bt1Z/nCRlfX5BFEoMjn5q/yMVH0IgHyE+cu7YYsxMJ4=;
+        s=korg; t=1698061064;
+        bh=RUwJPIeRYgIsMDYe7YbskXxfaItez8hekDprhtGT6P4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wU1+mmlE/5C1o++OajcUXIc4fYlQHG3appwH+cODljmJVi93quNOIJgPJ6Pm0DvFn
-         Gs538iMLRcQsDVZKNWG9IsRegRi3EE8CkMXGiF+MBAPXgmrwB4XMwxR2FYWw7OQGH7
-         TdeEul9+iDDsx6YIbjR10sfWlkjVxcW1RbIbAfu4=
+        b=l/SZuWvEEU/DEeBZ/sOD4RbKhcOFJ/YePjQgA7txc1NSR2IB6w3Aj33q6sie3mevS
+         sXi4ELxZsrKJQwrEzPI0ZveNxCyvARH0RFejUZPMOLluTXZpQH3uKV6++xAc9dNXPB
+         m8KLpZ+wOjkwjDXuxtjuYa4oUbu4p2vYw9xH8wR4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrien Thierry <athierry@redhat.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 232/241] phy: qcom-qmp-combo: initialize PCS_USB registers
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 061/137] powerpc/32s: Remove capability to disable KUEP at boottime
 Date:   Mon, 23 Oct 2023 12:56:58 +0200
-Message-ID: <20231023104839.530637088@linuxfoundation.org>
+Message-ID: <20231023104823.027059168@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +50,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 76d20290d0c66a84a7a40c6231e73d1ab25994e5 ]
+[ Upstream commit df415cd758261bceff27f34a145dd8328bbfb018 ]
 
-Currently, PCS_USB registers that have their initialization data in a
-pcs_usb_tbl table are never initialized. Fix that.
+Disabling KUEP at boottime makes things unnecessarily complex.
 
-Fixes: fc64623637da ("phy: qcom-qmp-combo,usb: add support for separate PCS_USB region")
-Reported-by: Adrien Thierry <athierry@redhat.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230829-topic-8550_usbphy-v3-2-34ec434194c5@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Still allow disabling KUEP at build time, but when it's built-in
+it is always there.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/96f583f82423a29a4205c60b9721079111b35567.1634627931.git.christophe.leroy@csgroup.eu
+Stable-dep-of: f0eee815babe ("powerpc/47x: Fix 47x syscall return crash")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/include/asm/book3s/32/kup.h |  3 +--
+ arch/powerpc/mm/book3s32/kuep.c          | 10 ++--------
+ 2 files changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-index 48639b88a1e28..3e6bec4c4d6ce 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -2649,6 +2649,7 @@ static int qmp_combo_usb_power_on(struct phy *phy)
- 	void __iomem *tx2 = qmp->tx2;
- 	void __iomem *rx2 = qmp->rx2;
- 	void __iomem *pcs = qmp->pcs;
-+	void __iomem *pcs_usb = qmp->pcs_usb;
- 	void __iomem *status;
- 	unsigned int val;
- 	int ret;
-@@ -2670,6 +2671,9 @@ static int qmp_combo_usb_power_on(struct phy *phy)
+diff --git a/arch/powerpc/include/asm/book3s/32/kup.h b/arch/powerpc/include/asm/book3s/32/kup.h
+index 9f38040f0641d..fb6c39225dd19 100644
+--- a/arch/powerpc/include/asm/book3s/32/kup.h
++++ b/arch/powerpc/include/asm/book3s/32/kup.h
+@@ -12,7 +12,6 @@
+ #include <linux/jump_label.h>
  
- 	qmp_combo_configure(pcs, cfg->pcs_tbl, cfg->pcs_tbl_num);
+ extern struct static_key_false disable_kuap_key;
+-extern struct static_key_false disable_kuep_key;
  
-+	if (pcs_usb)
-+		qmp_combo_configure(pcs_usb, cfg->pcs_usb_tbl, cfg->pcs_usb_tbl_num);
-+
- 	if (cfg->has_pwrdn_delay)
- 		usleep_range(10, 20);
+ static __always_inline bool kuap_is_disabled(void)
+ {
+@@ -21,7 +20,7 @@ static __always_inline bool kuap_is_disabled(void)
  
+ static __always_inline bool kuep_is_disabled(void)
+ {
+-	return !IS_ENABLED(CONFIG_PPC_KUEP) || static_branch_unlikely(&disable_kuep_key);
++	return !IS_ENABLED(CONFIG_PPC_KUEP);
+ }
+ 
+ static inline void kuep_lock(void)
+diff --git a/arch/powerpc/mm/book3s32/kuep.c b/arch/powerpc/mm/book3s32/kuep.c
+index c20733d6e02cb..8474edce3df9a 100644
+--- a/arch/powerpc/mm/book3s32/kuep.c
++++ b/arch/powerpc/mm/book3s32/kuep.c
+@@ -3,18 +3,12 @@
+ #include <asm/kup.h>
+ #include <asm/smp.h>
+ 
+-struct static_key_false disable_kuep_key;
+-
+ void setup_kuep(bool disabled)
+ {
+-	if (!disabled)
+-		kuep_lock();
++	kuep_lock();
+ 
+ 	if (smp_processor_id() != boot_cpuid)
+ 		return;
+ 
+-	if (disabled)
+-		static_branch_enable(&disable_kuep_key);
+-	else
+-		pr_info("Activating Kernel Userspace Execution Prevention\n");
++	pr_info("Activating Kernel Userspace Execution Prevention\n");
+ }
 -- 
-2.42.0
+2.40.1
 
 
 
