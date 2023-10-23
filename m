@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C51C17D350A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 968FF7D32CB
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234422AbjJWLpB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:45:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50048 "EHLO
+        id S233865AbjJWLX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:23:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234431AbjJWLow (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:52 -0400
+        with ESMTP id S233932AbjJWLXv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D17BF10DD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0004C433C9;
-        Mon, 23 Oct 2023 11:44:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AF6D1724
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9036AC433C7;
+        Mon, 23 Oct 2023 11:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061489;
-        bh=UiSRR63HkeTmuPCSR6k3byc6X4VsvRfQbbo9TyU/4Zw=;
+        s=korg; t=1698060217;
+        bh=dEvOZ5mhvQXknnrGWwXoFSCvwaQlLZgPSR8MfCq5YH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZnRClDfNfK+Lri9ziJVfy4FbAXpyjDA/djwg4j2ZCqIeqs+IAbFvVwLyCw1eHeMCX
-         ua8EFrQxumNsURacDv1ApqufyHcHhJbaDD7BkV/sxbWzosHO8PExTXgW7j77G3mSyg
-         vEBLpRQ80v8ED+jFnlCTC0CLjvrBxP4it4NsGC0k=
+        b=C2YwdGSbQWkyv2TX0ASA2xMCZUY2Q5sQfmF7REGf6YnUErMG54wESonPTDg3pcT15
+         q+ym9nZab4FlzFsb9z6/6MueElc3wvkcgRgdjA1jvc2RRJioBDiJAbkww6zL/5842e
+         t11yF+PSEJoEzQNKgC4L1w7yTY2ZkJ3bexoIafb8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingxing Luo <xingxing.luo@unisoc.com>
-Subject: [PATCH 5.10 037/202] usb: musb: Get the musb_qh poniter after musb_giveback
-Date:   Mon, 23 Oct 2023 12:55:44 +0200
-Message-ID: <20231023104827.675959711@linuxfoundation.org>
+        patches@lists.linux.dev, Anand Moon <linux.amoon@gmail.com>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 080/196] usb: misc: onboard_usb_hub: add Genesys Logic GL3523 hub support
+Date:   Mon, 23 Oct 2023 12:55:45 +0200
+Message-ID: <20231023104830.812922029@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -47,56 +49,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingxing Luo <xingxing.luo@unisoc.com>
+From: Anand Moon <linux.amoon@gmail.com>
 
-commit 33d7e37232155aadebe4145dcc592f00dabd7a2b upstream.
+[ Upstream commit d97b4b35adcecd4b747d3e1c262e10e4a093cefa ]
 
-When multiple threads are performing USB transmission, musb->lock will be
-unlocked when musb_giveback is executed. At this time, qh may be released
-in the dequeue process in other threads, resulting in a wild pointer, so
-it needs to be here get qh again, and judge whether qh is NULL, and when
-dequeue, you need to set qh to NULL.
+Genesys Logic GL3523 is a 4-port USB 3.1 hub that has a reset pin to
+toggle and a 5.0V core supply exported though an integrated LDO is
+available for powering it.
 
-Fixes: dbac5d07d13e ("usb: musb: host: don't start next rx urb if current one failed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xingxing Luo <xingxing.luo@unisoc.com>
-Link: https://lore.kernel.org/r/20230919033055.14085-1-xingxing.luo@unisoc.com
+Add the support for this hub, for controlling the reset pin and the core
+power supply.
+
+Signed-off-by: Anand Moon <linux.amoon@gmail.com>
+[m.felsch@pengutronix.de: include review feedback & port to 6.4]
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Link: https://lore.kernel.org/r/20230623142228.4069084-2-m.felsch@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: e59e38158c61 ("usb: misc: onboard_hub: add support for Microchip USB2412 USB 2.0 hub")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/musb/musb_host.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/usb/misc/onboard_usb_hub.c | 1 +
+ drivers/usb/misc/onboard_usb_hub.h | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/drivers/usb/musb/musb_host.c
-+++ b/drivers/usb/musb/musb_host.c
-@@ -321,10 +321,16 @@ static void musb_advance_schedule(struct
- 	musb_giveback(musb, urb, status);
- 	qh->is_ready = ready;
- 
-+	/*
-+	 * musb->lock had been unlocked in musb_giveback, so qh may
-+	 * be freed, need to get it again
-+	 */
-+	qh = musb_ep_get_qh(hw_ep, is_in);
-+
- 	/* reclaim resources (and bandwidth) ASAP; deschedule it, and
- 	 * invalidate qh as soon as list_empty(&hep->urb_list)
- 	 */
--	if (list_empty(&qh->hep->urb_list)) {
-+	if (qh && list_empty(&qh->hep->urb_list)) {
- 		struct list_head	*head;
- 		struct dma_controller	*dma = musb->dma_controller;
- 
-@@ -2404,6 +2410,7 @@ static int musb_urb_dequeue(struct usb_h
- 		 * and its URB list has emptied, recycle this qh.
- 		 */
- 		if (ready && list_empty(&qh->hep->urb_list)) {
-+			musb_ep_set_qh(qh->hw_ep, is_in, NULL);
- 			qh->hep->hcpriv = NULL;
- 			list_del(&qh->ring);
- 			kfree(qh);
+diff --git a/drivers/usb/misc/onboard_usb_hub.c b/drivers/usb/misc/onboard_usb_hub.c
+index 7a1030ddf9956..8d5c83c9ff877 100644
+--- a/drivers/usb/misc/onboard_usb_hub.c
++++ b/drivers/usb/misc/onboard_usb_hub.c
+@@ -408,6 +408,7 @@ static void onboard_hub_usbdev_disconnect(struct usb_device *udev)
+ static const struct usb_device_id onboard_hub_id_table[] = {
+ 	{ USB_DEVICE(VENDOR_ID_GENESYS, 0x0608) }, /* Genesys Logic GL850G USB 2.0 */
+ 	{ USB_DEVICE(VENDOR_ID_GENESYS, 0x0610) }, /* Genesys Logic GL852G USB 2.0 */
++	{ USB_DEVICE(VENDOR_ID_GENESYS, 0x0620) }, /* Genesys Logic GL3523 USB 3.1 */
+ 	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2514) }, /* USB2514B USB 2.0 */
+ 	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2517) }, /* USB2517 USB 2.0 */
+ 	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x0411) }, /* RTS5411 USB 3.1 */
+diff --git a/drivers/usb/misc/onboard_usb_hub.h b/drivers/usb/misc/onboard_usb_hub.h
+index 0c2ab5755a7ea..61fee18f9dfc9 100644
+--- a/drivers/usb/misc/onboard_usb_hub.h
++++ b/drivers/usb/misc/onboard_usb_hub.h
+@@ -37,6 +37,7 @@ static const struct of_device_id onboard_hub_match[] = {
+ 	{ .compatible = "usb451,8142", .data = &ti_tusb8041_data, },
+ 	{ .compatible = "usb5e3,608", .data = &genesys_gl850g_data, },
+ 	{ .compatible = "usb5e3,610", .data = &genesys_gl852g_data, },
++	{ .compatible = "usb5e3,620", .data = &genesys_gl852g_data, },
+ 	{ .compatible = "usbbda,411", .data = &realtek_rts5411_data, },
+ 	{ .compatible = "usbbda,5411", .data = &realtek_rts5411_data, },
+ 	{ .compatible = "usbbda,414", .data = &realtek_rts5411_data, },
+-- 
+2.40.1
+
 
 
