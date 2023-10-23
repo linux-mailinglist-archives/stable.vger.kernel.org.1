@@ -2,43 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B703B7D3541
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E4507D3359
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234501AbjJWLqo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:46:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40474 "EHLO
+        id S234019AbjJWL32 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:29:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234496AbjJWLqa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:30 -0400
+        with ESMTP id S234056AbjJWL30 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:29:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 869991704
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:46:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A887AC433C7;
-        Mon, 23 Oct 2023 11:46:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8569BD7C
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:29:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5745C433C8;
+        Mon, 23 Oct 2023 11:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061582;
-        bh=1ASrwBHySWYAHcWzaxo+lKaPwmNQgsgcSCVqYDsaNqw=;
+        s=korg; t=1698060564;
+        bh=uOk0m1aJXZrhrbJDENs819+twT0gNwFYw1RGvUcn/7c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J/jQwgL9gZHqdbHchsdm/zcBYH8SfWEEHmZ9o+020aGvGEcXThcbLq642a3Cjq3Io
-         k5KCAqoDF+dp/4ekhVNXlUlJqyTybU/7MTklrL8ZC5Q8x+ZjdFFLUsVeFs9GqUcU+X
-         LutsmeJ7SplxlFcEhz/Y/d+zVwYGDOaHVgNa3kwU=
+        b=G4CDKzs1dv8Srw5tSuaZ0GogSVxa5qdPv0vfyCiSNi8VnPl794uchPbvY/6TtJLki
+         ui9rQRb/+M7Kas/Se/VvSPxZkvyu2C8McNd9UhgqISoCZ9dII0KlnOSkOOZF7r/VQs
+         W2lE120l+ov/3Ft/yi7OJ6fEwa9dOM0q+t7Gppc8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, ruanjinjie@huawei.com,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        James Morse <james.morse@arm.com>,
-        Joey Gouly <joey.gouly@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 069/202] arm64: split EL0/EL1 UNDEF handlers
+        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
+        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 018/123] workqueue: Override implicit ordered attribute in workqueue_apply_unbound_cpumask()
 Date:   Mon, 23 Oct 2023 12:56:16 +0200
-Message-ID: <20231023104828.565450674@linuxfoundation.org>
+Message-ID: <20231023104818.354164031@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,178 +48,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Waiman Long <longman@redhat.com>
 
-commit 61d64a376ea80f9097e7ea599bcd68671b836dc6 upstream.
+[ Upstream commit ca10d851b9ad0338c19e8e3089e24d565ebfffd7 ]
 
-In general, exceptions taken from EL1 need to be handled separately from
-exceptions taken from EL0, as the logic to handle the two cases can be
-significantly divergent, and exceptions taken from EL1 typically have
-more stringent requirements on locking and instrumentation.
+Commit 5c0338c68706 ("workqueue: restore WQ_UNBOUND/max_active==1
+to be ordered") enabled implicit ordered attribute to be added to
+WQ_UNBOUND workqueues with max_active of 1. This prevented the changing
+of attributes to these workqueues leading to fix commit 0a94efb5acbb
+("workqueue: implicit ordered attribute should be overridable").
 
-Subsequent patches will rework the way EL1 UNDEFs are handled in order
-to address longstanding soundness issues with instrumentation and RCU.
-In preparation for that rework, this patch splits the existing
-do_undefinstr() handler into separate do_el0_undef() and do_el1_undef()
-handlers.
+However, workqueue_apply_unbound_cpumask() was not updated at that time.
+So sysfs changes to wq_unbound_cpumask has no effect on WQ_UNBOUND
+workqueues with implicit ordered attribute. Since not all WQ_UNBOUND
+workqueues are visible on sysfs, we are not able to make all the
+necessary cpumask changes even if we iterates all the workqueue cpumasks
+in sysfs and changing them one by one.
 
-Prior to this patch, do_undefinstr() was marked with NOKPROBE_SYMBOL(),
-preventing instrumentation via kprobes. However, do_undefinstr() invokes
-other code which can be instrumented, and:
+Fix this problem by applying the corresponding change made
+to apply_workqueue_attrs_locked() in the fix commit to
+workqueue_apply_unbound_cpumask().
 
-* For UNDEFINED exceptions taken from EL0, there is no risk of recursion
-  within kprobes. Therefore it is safe for do_el0_undef to be
-  instrumented with kprobes, and it does not need to be marked with
-  NOKPROBE_SYMBOL().
-
-* For UNDEFINED exceptions taken from EL1, either:
-
-  (a) The exception is has been taken when manipulating SSBS; these cases
-      are limited and do not occur within code that can be invoked
-      recursively via kprobes. Hence, in these cases instrumentation
-      with kprobes is benign.
-
-  (b) The exception has been taken for an unknown reason, as other than
-      manipulating SSBS we do not expect to take UNDEFINED exceptions
-      from EL1. Any handling of these exception is best-effort.
-
-  ... and in either case, marking do_el1_undef() with NOKPROBE_SYMBOL()
-  isn't sufficient to prevent recursion via kprobes as functions it
-  calls (including die()) are instrumentable via kprobes.
-
-  Hence, it's not worthwhile to mark do_el1_undef() with
-  NOKPROBE_SYMBOL(). The same applies to do_el1_bti() and do_el1_fpac(),
-  so their NOKPROBE_SYMBOL() annotations are also removed.
-
-Aside from the new instrumentability, there should be no functional
-change as a result of this patch.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Joey Gouly <joey.gouly@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20221019144123.612388-3-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5c0338c68706 ("workqueue: restore WQ_UNBOUND/max_active==1 to be ordered")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/exception.h |    3 ++-
- arch/arm64/kernel/entry-common.c   |    4 ++--
- arch/arm64/kernel/traps.c          |   22 ++++++++++++----------
- 3 files changed, 16 insertions(+), 13 deletions(-)
+ kernel/workqueue.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/exception.h
-+++ b/arch/arm64/include/asm/exception.h
-@@ -33,7 +33,8 @@ asmlinkage void exit_to_user_mode(void);
- void arm64_enter_nmi(struct pt_regs *regs);
- void arm64_exit_nmi(struct pt_regs *regs);
- void do_mem_abort(unsigned long addr, unsigned int esr, struct pt_regs *regs);
--void do_undefinstr(struct pt_regs *regs, unsigned long esr);
-+void do_el0_undef(struct pt_regs *regs, unsigned long esr);
-+void do_el1_undef(struct pt_regs *regs, unsigned long esr);
- void do_el0_bti(struct pt_regs *regs);
- void do_el1_bti(struct pt_regs *regs, unsigned long esr);
- asmlinkage void bad_mode(struct pt_regs *regs, int reason, unsigned int esr);
---- a/arch/arm64/kernel/entry-common.c
-+++ b/arch/arm64/kernel/entry-common.c
-@@ -136,7 +136,7 @@ static void noinstr el1_undef(struct pt_
- {
- 	enter_from_kernel_mode(regs);
- 	local_daif_inherit(regs);
--	do_undefinstr(regs, esr);
-+	do_el1_undef(regs, esr);
- 	local_daif_mask();
- 	exit_to_kernel_mode(regs);
- }
-@@ -332,7 +332,7 @@ static void noinstr el0_undef(struct pt_
- {
- 	enter_from_user_mode();
- 	local_daif_restore(DAIF_PROCCTX);
--	do_undefinstr(regs, esr);
-+	do_el0_undef(regs, esr);
- }
- 
- static void noinstr el0_bti(struct pt_regs *regs)
---- a/arch/arm64/kernel/traps.c
-+++ b/arch/arm64/kernel/traps.c
-@@ -395,7 +395,7 @@ void arm64_notify_segfault(unsigned long
- 	force_signal_inject(SIGSEGV, code, addr, 0);
- }
- 
--void do_undefinstr(struct pt_regs *regs, unsigned long esr)
-+void do_el0_undef(struct pt_regs *regs, unsigned long esr)
- {
- 	/* check for AArch32 breakpoint instructions */
- 	if (!aarch32_break_handler(regs))
-@@ -404,12 +404,16 @@ void do_undefinstr(struct pt_regs *regs,
- 	if (call_undef_hook(regs) == 0)
- 		return;
- 
--	if (!user_mode(regs))
--		die("Oops - Undefined instruction", regs, esr);
--
- 	force_signal_inject(SIGILL, ILL_ILLOPC, regs->pc, 0);
- }
--NOKPROBE_SYMBOL(do_undefinstr);
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 856188b0681af..a2c4de2a11327 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5273,9 +5273,13 @@ static int workqueue_apply_unbound_cpumask(void)
+ 	list_for_each_entry(wq, &workqueues, list) {
+ 		if (!(wq->flags & WQ_UNBOUND))
+ 			continue;
 +
-+void do_el1_undef(struct pt_regs *regs, unsigned long esr)
-+{
-+	if (call_undef_hook(regs) == 0)
-+		return;
-+
-+	die("Oops - Undefined instruction", regs, esr);
-+}
+ 		/* creating multiple pwqs breaks ordering guarantee */
+-		if (wq->flags & __WQ_ORDERED)
+-			continue;
++		if (!list_empty(&wq->pwqs)) {
++			if (wq->flags & __WQ_ORDERED_EXPLICIT)
++				continue;
++			wq->flags &= ~__WQ_ORDERED;
++		}
  
- void do_el0_bti(struct pt_regs *regs)
- {
-@@ -420,7 +424,6 @@ void do_el1_bti(struct pt_regs *regs, un
- {
- 	die("Oops - BTI", regs, esr);
- }
--NOKPROBE_SYMBOL(do_el1_bti);
- 
- void do_el0_fpac(struct pt_regs *regs, unsigned long esr)
- {
-@@ -435,7 +438,6 @@ void do_el1_fpac(struct pt_regs *regs, u
- 	 */
- 	die("Oops - FPAC", regs, esr);
- }
--NOKPROBE_SYMBOL(do_el1_fpac);
- 
- #define __user_cache_maint(insn, address, res)			\
- 	if (address >= user_addr_max()) {			\
-@@ -671,7 +673,7 @@ void do_el0_cp15(unsigned long esr, stru
- 		hook_base = cp15_64_hooks;
- 		break;
- 	default:
--		do_undefinstr(regs, esr);
-+		do_el0_undef(regs, esr);
- 		return;
- 	}
- 
-@@ -686,7 +688,7 @@ void do_el0_cp15(unsigned long esr, stru
- 	 * EL0. Fall back to our usual undefined instruction handler
- 	 * so that we handle these consistently.
- 	 */
--	do_undefinstr(regs, esr);
-+	do_el0_undef(regs, esr);
- }
- #endif
- 
-@@ -705,7 +707,7 @@ void do_el0_sys(unsigned long esr, struc
- 	 * back to our usual undefined instruction handler so that we handle
- 	 * these consistently.
- 	 */
--	do_undefinstr(regs, esr);
-+	do_el0_undef(regs, esr);
- }
- 
- static const char *esr_class_str[] = {
+ 		ctx = apply_wqattrs_prepare(wq, wq->unbound_attrs);
+ 		if (!ctx) {
+-- 
+2.40.1
+
 
 
