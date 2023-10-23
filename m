@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D6AFC7D3160
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30D587D3280
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233495AbjJWLIc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:08:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57610 "EHLO
+        id S233813AbjJWLUv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233406AbjJWLIb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:31 -0400
+        with ESMTP id S233796AbjJWLUs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6967599
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0020C433C9;
-        Mon, 23 Oct 2023 11:08:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82258D6
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C20C433C7;
+        Mon, 23 Oct 2023 11:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059310;
-        bh=BoxHuBb5kbePTR/Z7Ow3Vw816SmzqPR0kJ5WTC2SZRA=;
+        s=korg; t=1698060044;
+        bh=wpZYbJi1d0V+4lLmD/hbnkHCeM2r9EQN0Yf1xCy9QaE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mpdcyLBwBcr7Bqxr3pFyu7U/Hdp3jPcSTvsyswAkEn2yoenac6o6jApn82Xvzb9PK
-         mr/rLAiZFkwF9EU/TIp7Qhp6l2lXf0iVwwDh4qQxfYEyaUYkPqeoNFDJ1zkxyaeYGL
-         AOF98vWqFNmvDLdPP+bpev4KwV51wzowMIkfMrQI=
+        b=mXviKO3ZA2NhjyE5ncnOfI++WHXTt3FlgqlTo9NqBIvH2YGBkeGY6zjoNURR2W9BW
+         Yi4T0qzc64n552sl4MCC9MF4cf0E8RltGb3IFqM/4roJM0QcqVw/Ugc5Lu7tRmCjrq
+         MEJOZp4EIMe0in9z9LDcawKs2ml0nvFNsSz3qdvg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 117/241] HID: holtek: fix slab-out-of-bounds Write in holtek_kbd_input_event
-Date:   Mon, 23 Oct 2023 12:55:03 +0200
-Message-ID: <20231023104836.735596097@linuxfoundation.org>
+        patches@lists.linux.dev, Artem Borisov <dedsa2002@gmail.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 039/196] ALSA: hda/realtek: Add quirk for ASUS ROG GU603ZV
+Date:   Mon, 23 Oct 2023 12:55:04 +0200
+Message-ID: <20231023104829.598316684@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,44 +48,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Artem Borisov <dedsa2002@gmail.com>
 
-[ Upstream commit ffe3b7837a2bb421df84d0177481db9f52c93a71 ]
+commit 5dedc9f53eef7ec07b23686381100d03fb259f50 upstream.
 
-There is a slab-out-of-bounds Write bug in hid-holtek-kbd driver.
-The problem is the driver assumes the device must have an input
-but some malicious devices violate this assumption.
+Enables the SPI-connected Cirrus amp and the required pins
+for headset mic detection.
 
-Fix this by checking hid_device's input is non-empty before its usage.
+As of BIOS version 313 it is still necessary to modify the
+ACPI table to add the related _DSD properties:
+  https://gist.github.com/Flex1911/1bce378645fc95a5743671bd5deabfc8
 
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Artem Borisov <dedsa2002@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231014075044.17474-1-dedsa2002@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-holtek-kbd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-holtek-kbd.c b/drivers/hid/hid-holtek-kbd.c
-index 403506b9697e7..b346d68a06f5a 100644
---- a/drivers/hid/hid-holtek-kbd.c
-+++ b/drivers/hid/hid-holtek-kbd.c
-@@ -130,6 +130,10 @@ static int holtek_kbd_input_event(struct input_dev *dev, unsigned int type,
- 		return -ENODEV;
- 
- 	boot_hid = usb_get_intfdata(boot_interface);
-+	if (list_empty(&boot_hid->inputs)) {
-+		hid_err(hid, "no inputs found\n");
-+		return -ENODEV;
-+	}
- 	boot_hid_input = list_first_entry(&boot_hid->inputs,
- 		struct hid_input, list);
- 
--- 
-2.40.1
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9717,6 +9717,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x1517, "Asus Zenbook UX31A", ALC269VB_FIXUP_ASUS_ZENBOOK_UX31A),
+ 	SND_PCI_QUIRK(0x1043, 0x1573, "ASUS GZ301V", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1662, "ASUS GV301QH", ALC294_FIXUP_ASUS_DUAL_SPK),
++	SND_PCI_QUIRK(0x1043, 0x1663, "ASUS GU603ZV", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1683, "ASUS UM3402YAR", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x16b2, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
+ 	SND_PCI_QUIRK(0x1043, 0x16e3, "ASUS UX50", ALC269_FIXUP_STEREO_DMIC),
 
 
