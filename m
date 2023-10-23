@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D39C37D31B5
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D3C37D32D0
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233614AbjJWLML (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:12:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46004 "EHLO
+        id S233790AbjJWLYQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:24:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233622AbjJWLMK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:10 -0400
+        with ESMTP id S233863AbjJWLYP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB509C1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1855C433C7;
-        Mon, 23 Oct 2023 11:12:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6474FC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90658C433CD;
+        Mon, 23 Oct 2023 11:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059528;
-        bh=px5ezQb4w01PX3eAbluTfNM0S6cF8WMAFS6N+3plzo8=;
+        s=korg; t=1698060232;
+        bh=MW+m38ndwu9c8/mci4bEXEK60eh/nbjutQdMRbUWFqw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OfRHZ5B3bMUsZJScmEKVH92XMbunkuvbBqJsd+YlrcT0RxJLqP/1Uz4/ujr8osEDg
-         +WpXWChqE6tBIm/6gTxFBaf25yCarUUwLdAhkq5DQuPBQcVdLZSqHBxp3gwdM1vmAN
-         aE0BWBPF86a1YaeufdueunwLqE407EhuEP/plhto=
+        b=eq4WNGSH8kVePqrt5AQvVFUxBzjToVlkSm3ScnbSQMxl3Mw4E406FmvNbdrarJk6I
+         QBlXqlRZfSSoc4BLLSSDQS+PcuEqcYXJn/dXZS5TDxZ5gJcjigr9DpeDxzCc8A4pXC
+         x4UgydbbeK2FyRkSnNLBV2Ob6PgsksteAf71NxpU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 6.5 180/241] pNFS/flexfiles: Check the layout validity in ff_layout_mirror_prepare_stats
-Date:   Mon, 23 Oct 2023 12:56:06 +0200
-Message-ID: <20231023104838.270474481@linuxfoundation.org>
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 102/196] tracing: relax trace_event_eval_update() execution with cond_resched()
+Date:   Mon, 23 Oct 2023 12:56:07 +0200
+Message-ID: <20231023104831.419071955@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,58 +52,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Clément Léger <cleger@rivosinc.com>
 
-commit e1c6cfbb3bd1377e2ddcbe06cf8fb1ec323ea7d3 upstream.
+[ Upstream commit 23cce5f25491968b23fb9c399bbfb25f13870cd9 ]
 
-Ensure that we check the layout pointer and validity after dereferencing
-it in ff_layout_mirror_prepare_stats.
+When kernel is compiled without preemption, the eval_map_work_func()
+(which calls trace_event_eval_update()) will not be preempted up to its
+complete execution. This can actually cause a problem since if another
+CPU call stop_machine(), the call will have to wait for the
+eval_map_work_func() function to finish executing in the workqueue
+before being able to be scheduled. This problem was observe on a SMP
+system at boot time, when the CPU calling the initcalls executed
+clocksource_done_booting() which in the end calls stop_machine(). We
+observed a 1 second delay because one CPU was executing
+eval_map_work_func() and was not preempted by the stop_machine() task.
 
-Fixes: 08e2e5bc6c9a ("pNFS/flexfiles: Clean up layoutstats")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Adding a call to cond_resched() in trace_event_eval_update() allows
+other tasks to be executed and thus continue working asynchronously
+like before without blocking any pending task at boot time.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230929191637.416931-1-cleger@rivosinc.com
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Tested-by: Atish Patra <atishp@rivosinc.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/flexfilelayout/flexfilelayout.c |   17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ kernel/trace/trace_events.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfs/flexfilelayout/flexfilelayout.c
-+++ b/fs/nfs/flexfilelayout/flexfilelayout.c
-@@ -2520,9 +2520,9 @@ ff_layout_mirror_prepare_stats(struct pn
- 	return i;
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 9da418442a063..2e3dce5e2575e 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -2777,6 +2777,7 @@ void trace_event_eval_update(struct trace_eval_map **map, int len)
+ 				update_event_fields(call, map[i]);
+ 			}
+ 		}
++		cond_resched();
+ 	}
+ 	up_write(&trace_event_sem);
  }
- 
--static int
--ff_layout_prepare_layoutstats(struct nfs42_layoutstat_args *args)
-+static int ff_layout_prepare_layoutstats(struct nfs42_layoutstat_args *args)
- {
-+	struct pnfs_layout_hdr *lo;
- 	struct nfs4_flexfile_layout *ff_layout;
- 	const int dev_count = PNFS_LAYOUTSTATS_MAXDEV;
- 
-@@ -2533,11 +2533,14 @@ ff_layout_prepare_layoutstats(struct nfs
- 		return -ENOMEM;
- 
- 	spin_lock(&args->inode->i_lock);
--	ff_layout = FF_LAYOUT_FROM_HDR(NFS_I(args->inode)->layout);
--	args->num_dev = ff_layout_mirror_prepare_stats(&ff_layout->generic_hdr,
--						       &args->devinfo[0],
--						       dev_count,
--						       NFS4_FF_OP_LAYOUTSTATS);
-+	lo = NFS_I(args->inode)->layout;
-+	if (lo && pnfs_layout_is_valid(lo)) {
-+		ff_layout = FF_LAYOUT_FROM_HDR(lo);
-+		args->num_dev = ff_layout_mirror_prepare_stats(
-+			&ff_layout->generic_hdr, &args->devinfo[0], dev_count,
-+			NFS4_FF_OP_LAYOUTSTATS);
-+	} else
-+		args->num_dev = 0;
- 	spin_unlock(&args->inode->i_lock);
- 	if (!args->num_dev) {
- 		kfree(args->devinfo);
+-- 
+2.40.1
+
 
 
