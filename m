@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D44B57D33A4
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:32:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BBBA7D356E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:48:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234094AbjJWLce (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:32:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33312 "EHLO
+        id S234480AbjJWLsQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234102AbjJWLcd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:32:33 -0400
+        with ESMTP id S234487AbjJWLsQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:48:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72774C1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:32:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E8DC433C7;
-        Mon, 23 Oct 2023 11:32:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30F410A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:48:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A9AC433C7;
+        Mon, 23 Oct 2023 11:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060751;
-        bh=PFGmIoEgoQcRsFiT+v/DrAoi12tAUEdm/3qy+jsonDA=;
+        s=korg; t=1698061693;
+        bh=vNgXxSKjagEA6Wd524+GR+6ClUD1Q4k9SMreAZaVaI4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ALv72F8NlPxjYj8T/mUisdnF0z13culDDFMQpnkbEIicq//9qfRN4f6pexunhCgRK
-         eDWjnXeRH9qbnKLlW1x6YgoVHZX7MIlZQ1AJCuGHGINMFdKQGjQD756l9k8WuPfMQ1
-         quDS5F0t63gIbsDaNcD6h4anSJ4GqH0Zk1PUXP5M=
+        b=bNIAwq9ktYLSucZZNgXm46Nohcli509Bbz7opvu6bmgWQeDkLIIpMbzmqTBHK/TC2
+         8GQws3eiCZAz8Gh44hHCmk2nTphLgQyoUccgh0BYfMfWNpiBxefzH0xogWTtpmNIWx
+         W4VQTheL2ywDasjB+vSnxc6/CsXeHFXTxNcqzLeg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Juntong Deng <juntong.deng@outlook.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 081/123] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CBA
-Date:   Mon, 23 Oct 2023 12:57:19 +0200
-Message-ID: <20231023104820.415130694@linuxfoundation.org>
+Subject: [PATCH 5.10 133/202] selftests/mm: fix awk usage in charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh that may cause error
+Date:   Mon, 23 Oct 2023 12:57:20 +0200
+Message-ID: <20231023104830.422673135@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-[ Upstream commit 05cda427126f30ce3fc8ffd82fd6f5196398d502 ]
+[ Upstream commit bbe246f875d064ecfb872fe4f66152e743dfd22d ]
 
-Like the ASUS ExpertBook B2502CBA and various ASUS Vivobook laptops, the
-ASUS ExpertBook B1502CBA has an ACPI DSDT table that describes IRQ 1 as
-ActiveLow while the kernel overrides it to Edge_High.
+According to the awk manual, the -e option does not need to be specified
+in front of 'program' (unless you need to mix program-file).
 
-    $ sudo dmesg | grep DMI
-    DMI: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B1502CBA_B1502CBA/B1502CBA, BIOS B1502CBA.300 01/18/2023
-    $ grep -A 40 PS2K dsdt.dsl | grep IRQ -A 1
-                    IRQ (Level, ActiveLow, Exclusive, )
-                        {1}
+The redundant -e option can cause error when users use awk tools other
+than gawk (for example, mawk does not support the -e option).
 
-This prevents the keyboard from working. To fix this issue, add this laptop
-to the skip_override_table so that the kernel does not override IRQ 1.
+Error Example:
+awk: not an option: -e
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217323
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
+Link: https://lkml.kernel.org/r/VI1P193MB075228810591AF2FDD7D42C599C3A@VI1P193MB0752.EURP193.PROD.OUTLOOK.COM
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/vm/charge_reserved_hugetlb.sh  | 4 ++--
+ tools/testing/selftests/vm/hugetlb_reparenting_test.sh | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 2375a16126077..cbd9cb82dd928 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -421,6 +421,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus ExpertBook B1502CBA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B1502CBA"),
-+		},
-+	},
- 	{
- 		.ident = "Asus ExpertBook B2402CBA",
- 		.matches = {
+diff --git a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
+index 71d3cf3bf130a..7536ff2f890a1 100644
+--- a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
++++ b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
+@@ -22,7 +22,7 @@ if [[ "$1" == "-cgroup-v2" ]]; then
+ fi
+ 
+ if [[ $cgroup2 ]]; then
+-  cgroup_path=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
++  cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+     cgroup_path=/dev/cgroup/memory
+     mount -t cgroup2 none $cgroup_path
+@@ -30,7 +30,7 @@ if [[ $cgroup2 ]]; then
+   fi
+   echo "+hugetlb" >$cgroup_path/cgroup.subtree_control
+ else
+-  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
++  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+   if [[ -z "$cgroup_path" ]]; then
+     cgroup_path=/dev/cgroup/memory
+     mount -t cgroup memory,hugetlb $cgroup_path
+diff --git a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
+index 54234e12288c9..c665b16f1e370 100644
+--- a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
++++ b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
+@@ -17,7 +17,7 @@ fi
+ 
+ 
+ if [[ $cgroup2 ]]; then
+-  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
++  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
+   if [[ -z "$CGROUP_ROOT" ]]; then
+     CGROUP_ROOT=/dev/cgroup/memory
+     mount -t cgroup2 none $CGROUP_ROOT
+@@ -25,7 +25,7 @@ if [[ $cgroup2 ]]; then
+   fi
+   echo "+hugetlb +memory" >$CGROUP_ROOT/cgroup.subtree_control
+ else
+-  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
++  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
+   if [[ -z "$CGROUP_ROOT" ]]; then
+     CGROUP_ROOT=/dev/cgroup/memory
+     mount -t cgroup memory,hugetlb $CGROUP_ROOT
 -- 
 2.40.1
 
