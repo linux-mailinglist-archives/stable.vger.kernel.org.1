@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C00C7D3198
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D49B7D32C8
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233067AbjJWLKy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:10:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42664 "EHLO
+        id S233873AbjJWLXq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:23:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233508AbjJWLKx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:53 -0400
+        with ESMTP id S233903AbjJWLXi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16DA3C5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5617BC433C8;
-        Mon, 23 Oct 2023 11:10:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EBAD1705
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF9EC433CC;
+        Mon, 23 Oct 2023 11:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059450;
-        bh=B9o7X4HPgmQAGZDdEBs7ZtceVpLfdp6/e7SkUhahtxQ=;
+        s=korg; t=1698060208;
+        bh=SqwJ7NxjqhMMkRRFLayJYiGyMTLROxxXYJQ6/J9DCx4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LkfVl1aL8GxY12DzAYyUtDhCdLEyASmXQSm2eG8r5AW1U9YWI3qlnrhGD4H/IwwEY
-         0goFJtlmS49tgkFh22Zz6v/zM2TxUWqsY0UPgSPCa5ddgOI0T+NYqAgP7O5kT4+eOi
-         Q4M59rDQT5guBTBdHphBKRhVcQIEms8g39ARNeG4=
+        b=1gxBl1xJvi55wxE/hLw1Fm74RSdGuIVCt4vKrh+7xCFeH5aFRPj1UdllESHmwWWOW
+         X6OuRXJ5SdDHU9RRnB8vyh6fSyJ0ih/l1YDT7e1WjHJGx6YcBYfENDSJlzQofYAOoW
+         u//K/RS4aqXFgyf4UjCIn1vLXvjuJtXJyjaW3suk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Avri Altman <avri.altman@wdc.com>,
-        Christian Loehle <christian.loehle@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.5 174/241] mmc: core: Fix error propagation for some ioctl commands
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/196] btrfs: return -EUCLEAN for delayed tree ref with a ref count not equals to 1
 Date:   Mon, 23 Oct 2023 12:56:00 +0200
-Message-ID: <20231023104838.127524822@linuxfoundation.org>
+Message-ID: <20231023104831.216693729@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,99 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit f19c5a73e6f78d69efce66cfdce31148c76a61a6 upstream.
+[ Upstream commit 1bf76df3fee56d6637718e267f7c34ed70d0c7dc ]
 
-Userspace has currently no way of checking the internal R1 response error
-bits for some commands. This is a problem for some commands, like RPMB for
-example. Typically, we may detect that the busy completion has successfully
-ended, while in fact the card did not complete the requested operation.
+When running a delayed tree reference, if we find a ref count different
+from 1, we return -EIO. This isn't an IO error, as it indicates either a
+bug in the delayed refs code or a memory corruption, so change the error
+code from -EIO to -EUCLEAN. Also tag the branch as 'unlikely' as this is
+not expected to ever happen, and change the error message to print the
+tree block's bytenr without the parenthesis (and there was a missing space
+between the 'block' word and the opening parenthesis), for consistency as
+that's the style we used everywhere else.
 
-To fix the problem, let's always poll with CMD13 for these commands and
-during the polling, let's also aggregate the R1 response bits. Before
-completing the ioctl request, let's propagate the R1 response bits too.
-
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Co-developed-by: Christian Loehle <christian.loehle@arm.com>
-Signed-off-by: Christian Loehle <christian.loehle@arm.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230913112921.553019-1-ulf.hansson@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |   31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ fs/btrfs/extent-tree.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -179,6 +179,7 @@ static void mmc_blk_rw_rq_prep(struct mm
- 			       struct mmc_queue *mq);
- static void mmc_blk_hsq_req_done(struct mmc_request *mrq);
- static int mmc_spi_err_check(struct mmc_card *card);
-+static int mmc_blk_busy_cb(void *cb_data, bool *busy);
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 08ff10a81cb90..2a7c9088fe1f8 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -1663,12 +1663,12 @@ static int run_delayed_tree_ref(struct btrfs_trans_handle *trans,
+ 		parent = ref->parent;
+ 	ref_root = ref->root;
  
- static struct mmc_blk_data *mmc_blk_get(struct gendisk *disk)
- {
-@@ -470,7 +471,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
- 	struct mmc_data data = {};
- 	struct mmc_request mrq = {};
- 	struct scatterlist sg;
--	bool r1b_resp, use_r1b_resp = false;
-+	bool r1b_resp;
- 	unsigned int busy_timeout_ms;
- 	int err;
- 	unsigned int target_part;
-@@ -551,8 +552,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
- 	busy_timeout_ms = idata->ic.cmd_timeout_ms ? : MMC_BLK_TIMEOUT_MS;
- 	r1b_resp = (cmd.flags & MMC_RSP_R1B) == MMC_RSP_R1B;
- 	if (r1b_resp)
--		use_r1b_resp = mmc_prepare_busy_cmd(card->host, &cmd,
--						    busy_timeout_ms);
-+		mmc_prepare_busy_cmd(card->host, &cmd, busy_timeout_ms);
- 
- 	mmc_wait_for_req(card->host, &mrq);
- 	memcpy(&idata->ic.response, cmd.resp, sizeof(cmd.resp));
-@@ -605,19 +605,28 @@ static int __mmc_blk_ioctl_cmd(struct mm
- 	if (idata->ic.postsleep_min_us)
- 		usleep_range(idata->ic.postsleep_min_us, idata->ic.postsleep_max_us);
- 
--	/* No need to poll when using HW busy detection. */
--	if ((card->host->caps & MMC_CAP_WAIT_WHILE_BUSY) && use_r1b_resp)
--		return 0;
--
- 	if (mmc_host_is_spi(card->host)) {
- 		if (idata->ic.write_flag || r1b_resp || cmd.flags & MMC_RSP_SPI_BUSY)
- 			return mmc_spi_err_check(card);
- 		return err;
+-	if (node->ref_mod != 1) {
++	if (unlikely(node->ref_mod != 1)) {
+ 		btrfs_err(trans->fs_info,
+-	"btree block(%llu) has %d references rather than 1: action %d ref_root %llu parent %llu",
++	"btree block %llu has %d references rather than 1: action %d ref_root %llu parent %llu",
+ 			  node->bytenr, node->ref_mod, node->action, ref_root,
+ 			  parent);
+-		return -EIO;
++		return -EUCLEAN;
  	}
--	/* Ensure RPMB/R1B command has completed by polling with CMD13. */
--	if (idata->rpmb || r1b_resp)
--		err = mmc_poll_for_busy(card, busy_timeout_ms, false,
--					MMC_BUSY_IO);
-+
-+	/*
-+	 * Ensure RPMB, writes and R1B responses are completed by polling with
-+	 * CMD13. Note that, usually we don't need to poll when using HW busy
-+	 * detection, but here it's needed since some commands may indicate the
-+	 * error through the R1 status bits.
-+	 */
-+	if (idata->rpmb || idata->ic.write_flag || r1b_resp) {
-+		struct mmc_blk_busy_data cb_data = {
-+			.card = card,
-+		};
-+
-+		err = __mmc_poll_for_busy(card->host, 0, busy_timeout_ms,
-+					  &mmc_blk_busy_cb, &cb_data);
-+
-+		idata->ic.response[0] = cb_data.status;
-+	}
- 
- 	return err;
- }
+ 	if (node->action == BTRFS_ADD_DELAYED_REF && insert_reserved) {
+ 		BUG_ON(!extent_op || !extent_op->update_flags);
+-- 
+2.40.1
+
 
 
