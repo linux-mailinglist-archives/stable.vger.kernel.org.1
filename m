@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AE607D3188
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8267D34F3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231613AbjJWLKM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:10:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52892 "EHLO
+        id S234425AbjJWLoN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233602AbjJWLKK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:10 -0400
+        with ESMTP id S234553AbjJWLoF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9DBFD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B936AC433C7;
-        Mon, 23 Oct 2023 11:10:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66C3F1729
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7759FC433CA;
+        Mon, 23 Oct 2023 11:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059408;
-        bh=BDInuwsvJoO0e4UE2wacurZeLx//S96kbCxAl+7ckrM=;
+        s=korg; t=1698061435;
+        bh=LMj5ja0ULzeQZwnrvseQxFyhhphlBkCXtWOiKScDGqI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E3DIIP1mLS/Z/qc4kdgPsApopKRNWV1yC6D47WAARq8zscpu/J4+p+zSLCu94UwQ/
-         nn8DeGz6gcJyubclMeRamsGmizqxWjIpj6RW5HYD8no7PbyyBF4nUxO6T+3WUCwde+
-         2okMLVanylRFgfvexp+S3/IEO5XDbse62CcfmmBM=
+        b=vS9I1ln7zeMBqG/ATYRby5lTtQ8a0DUwgeOVkFDMPrN8xlyXYRXO++ugHArQ37c7n
+         H/W9QnCFkCqfoelCtQBLQHKWpbat4LRE8es3Ku8zzcrY7+zidrXeSTk2d9H7hkeoQ4
+         cOXk0AKyxrOr0E0OE4SJlbIbNNX+cF3Yg1J66qgY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Simek <michal.simek@amd.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.5 167/241] mtd: rawnand: arasan: Ensure program page operations are successful
-Date:   Mon, 23 Oct 2023 12:55:53 +0200
-Message-ID: <20231023104837.949575616@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.10 047/202] ceph: fix type promotion bug on 32bit systems
+Date:   Mon, 23 Oct 2023 12:55:54 +0200
+Message-ID: <20231023104827.959753874@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,78 +48,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 3a4a893dbb19e229db3b753f0462520b561dee98 upstream.
+commit 07bb00ef00ace88dd6f695fadbba76565756e55c upstream.
 
-The NAND core complies with the ONFI specification, which itself
-mentions that after any program or erase operation, a status check
-should be performed to see whether the operation was finished *and*
-successful.
+In this code "ret" is type long and "src_objlen" is unsigned int.  The
+problem is that on 32bit systems, when we do the comparison signed longs
+are type promoted to unsigned int.  So negative error codes from
+do_splice_direct() are treated as success instead of failure.
 
-The NAND core offers helpers to finish a page write (sending the
-"PAGE PROG" command, waiting for the NAND chip to be ready again, and
-checking the operation status). But in some cases, advanced controller
-drivers might want to optimize this and craft their own page write
-helper to leverage additional hardware capabilities, thus not always
-using the core facilities.
-
-Some drivers, like this one, do not use the core helper to finish a page
-write because the final cycles are automatically managed by the
-hardware. In this case, the additional care must be taken to manually
-perform the final status check.
-
-Let's read the NAND chip status at the end of the page write helper and
-return -EIO upon error.
-
-Cc: Michal Simek <michal.simek@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 88ffef1b65cf ("mtd: rawnand: arasan: Support the hardware BCH ECC engine")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-2-miquel.raynal@bootlin.com
+Fixes: 1b0c3b9f91f0 ("ceph: re-org copy_file_range and fix some error paths")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/arasan-nand-controller.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ fs/ceph/file.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/arasan-nand-controller.c
-+++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
-@@ -515,6 +515,7 @@ static int anfc_write_page_hw_ecc(struct
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	unsigned int len = mtd->writesize + (oob_required ? mtd->oobsize : 0);
- 	dma_addr_t dma_addr;
-+	u8 status;
- 	int ret;
- 	struct anfc_op nfc_op = {
- 		.pkt_reg =
-@@ -561,10 +562,21 @@ static int anfc_write_page_hw_ecc(struct
- 	}
- 
- 	/* Spare data is not protected */
--	if (oob_required)
-+	if (oob_required) {
- 		ret = nand_write_oob_std(chip, page);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
- 
--	return ret;
-+	return 0;
- }
- 
- static int anfc_sel_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -2428,7 +2428,7 @@ static ssize_t __ceph_copy_file_range(st
+ 		ret = do_splice_direct(src_file, &src_off, dst_file,
+ 				       &dst_off, src_objlen, flags);
+ 		/* Abort on short copies or on error */
+-		if (ret < src_objlen) {
++		if (ret < (long)src_objlen) {
+ 			dout("Failed partial copy (%zd)\n", ret);
+ 			goto out;
+ 		}
 
 
