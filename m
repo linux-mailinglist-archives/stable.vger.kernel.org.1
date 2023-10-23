@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DAFD7D31D1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3AB37D339D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:32:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233618AbjJWLNg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:13:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52486 "EHLO
+        id S234099AbjJWLcT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:32:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233642AbjJWLNf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:35 -0400
+        with ESMTP id S234104AbjJWLcS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:32:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6844A92
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C0AC433C7;
-        Mon, 23 Oct 2023 11:13:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83451E4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:32:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B705BC433C9;
+        Mon, 23 Oct 2023 11:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059613;
-        bh=yjWgMNh2yHAZw2CC2vku21wqE6T3Bj8ZxEEYSOTwYBE=;
+        s=korg; t=1698060733;
+        bh=eAbEaxqqrLMh7+zkISuhOjqFplIni40UZUJjLtGfLTY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DsvWU64df/lVROYbfZ9FDLGKPl/7za97oYXM24260QhBEtt744yKXhsRH15KGx31G
-         uV/ez08dotYGTtiCPi4L2+4IYkGQ4Gf3Dk/pBi1lTOx8/KJsKRZPskCYUJeReXbC1V
-         My0fnwGn2gIGmRBIGL9hdCi4Z0zUmoqKp3JXbeCo=
+        b=G8ePK3Jc8VKFtUs2j8RGOcVv/HH5nKPK4gBLjqKkE6e8Eny5YGKVy4IX83h7HNb0h
+         xYo9ltm8+LaTQzigbKA60UPyYnI/VZkXGSrFjMUFvug3U/AOzsFK1fmVUD53WB5GN6
+         JXbNsIRHTVBgwmI6h4cKyGuueR0H7rVJ0DuF36AA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, James John <me@donjajo.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.5 209/241] platform/x86: asus-wmi: Only map brightness codes when using asus-wmi backlight control
+        patches@lists.linux.dev,
+        Krishna Kurapati <quic_kriskura@quicinc.com>,
+        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>
+Subject: [PATCH 5.4 037/123] usb: gadget: ncm: Handle decoding of multiple NTBs in unwrap call
 Date:   Mon, 23 Oct 2023 12:56:35 +0200
-Message-ID: <20231023104838.946931312@linuxfoundation.org>
+Message-ID: <20231023104818.975061047@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -48,93 +50,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-commit a5b92be2482e5f9ef30be4e4cda12ed484381493 upstream.
+commit 427694cfaafa565a3db5c5ea71df6bc095dca92f upstream.
 
-Older Asus laptops change the backlight level themselves and then send
-WMI events with different codes for different backlight levels.
+When NCM is used with hosts like Windows PC, it is observed that there are
+multiple NTB's contained in one usb request giveback. Since the driver
+unwraps the obtained request data assuming only one NTB is present, we
+loose the subsequent NTB's present resulting in data loss.
 
-The asus-wmi.c code maps the entire range of codes reported on
-brightness down keypresses to an internal ASUS_WMI_BRN_DOWN code:
+Fix this by checking the parsed block length with the obtained data
+length in usb request and continue parsing after the last byte of current
+NTB.
 
-define NOTIFY_BRNUP_MIN                0x11
-define NOTIFY_BRNUP_MAX                0x1f
-define NOTIFY_BRNDOWN_MIN              0x20
-define NOTIFY_BRNDOWN_MAX              0x2e
-
-        if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
-                code = ASUS_WMI_BRN_UP;
-        else if (code >= NOTIFY_BRNDOWN_MIN && code <= NOTIFY_BRNDOWN_MAX)
-                code = ASUS_WMI_BRN_DOWN;
-
-This mapping is causing issues on new laptop models which actually
-send 0x2b events for printscreen presses and 0x2c events for
-capslock presses, which get translated into spurious brightness-down
-presses.
-
-This mapping is really only necessary when asus-wmi has registered
-a backlight-device for backlight control. In this case the mapping
-was used to decide to filter out the keypresss since in this case
-the firmware has already modified the brightness itself and instead
-of reporting a keypress asus-wmi will just report the new brightness
-value to userspace.
-
-OTOH when the firmware does not adjust the brightness itself then
-it seems to always report 0x2e for brightness-down presses and
-0x2f for brightness up presses independent of the actual brightness
-level. So in this case the mapping of the code is not necessary
-and this translation actually leads to spurious brightness-down
-presses being send to userspace when pressing printscreen or capslock.
-
-Modify asus_wmi_handle_event_code() to only do the mapping
-when using asus-wmi backlight control to fix the spurious
-brightness-down presses.
-
-Reported-by: James John <me@donjajo.com>
-Closes: https://lore.kernel.org/platform-driver-x86/a2c441fe-457e-44cf-a146-0ecd86b037cf@donjajo.com/
-Closes: https://bbs.archlinux.org/viewtopic.php?pid=2123716
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231017090725.38163-3-hdegoede@redhat.com
+Cc: stable@vger.kernel.org
+Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Link: https://lore.kernel.org/r/20230927105858.12950-1-quic_kriskura@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/asus-wmi.c |   15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/usb/gadget/function/f_ncm.c |   26 +++++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -3268,7 +3268,6 @@ static void asus_wmi_handle_event_code(i
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1180,7 +1180,8 @@ static int ncm_unwrap_ntb(struct gether
+ 			  struct sk_buff_head *list)
  {
- 	unsigned int key_value = 1;
- 	bool autorelease = 1;
--	int orig_code = code;
+ 	struct f_ncm	*ncm = func_to_ncm(&port->func);
+-	__le16		*tmp = (void *) skb->data;
++	unsigned char	*ntb_ptr = skb->data;
++	__le16		*tmp;
+ 	unsigned	index, index2;
+ 	int		ndp_index;
+ 	unsigned	dg_len, dg_len2;
+@@ -1193,6 +1194,10 @@ static int ncm_unwrap_ntb(struct gether
+ 	const struct ndp_parser_opts *opts = ncm->parser_opts;
+ 	unsigned	crc_len = ncm->is_crc ? sizeof(uint32_t) : 0;
+ 	int		dgram_counter;
++	int		to_process = skb->len;
++
++parse_ntb:
++	tmp = (__le16 *)ntb_ptr;
  
- 	if (asus->driver->key_filter) {
- 		asus->driver->key_filter(asus->driver, &code, &key_value,
-@@ -3277,16 +3276,10 @@ static void asus_wmi_handle_event_code(i
- 			return;
- 	}
+ 	/* dwSignature */
+ 	if (get_unaligned_le32(tmp) != opts->nth_sign) {
+@@ -1239,7 +1244,7 @@ static int ncm_unwrap_ntb(struct gether
+ 		 * walk through NDP
+ 		 * dwSignature
+ 		 */
+-		tmp = (void *)(skb->data + ndp_index);
++		tmp = (__le16 *)(ntb_ptr + ndp_index);
+ 		if (get_unaligned_le32(tmp) != ncm->ndp_sign) {
+ 			INFO(port->func.config->cdev, "Wrong NDP SIGN\n");
+ 			goto err;
+@@ -1296,11 +1301,11 @@ static int ncm_unwrap_ntb(struct gether
+ 			if (ncm->is_crc) {
+ 				uint32_t crc, crc2;
  
--	if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
--		code = ASUS_WMI_BRN_UP;
--	else if (code >= NOTIFY_BRNDOWN_MIN && code <= NOTIFY_BRNDOWN_MAX)
--		code = ASUS_WMI_BRN_DOWN;
+-				crc = get_unaligned_le32(skb->data +
++				crc = get_unaligned_le32(ntb_ptr +
+ 							 index + dg_len -
+ 							 crc_len);
+ 				crc2 = ~crc32_le(~0,
+-						 skb->data + index,
++						 ntb_ptr + index,
+ 						 dg_len - crc_len);
+ 				if (crc != crc2) {
+ 					INFO(port->func.config->cdev,
+@@ -1327,7 +1332,7 @@ static int ncm_unwrap_ntb(struct gether
+ 							 dg_len - crc_len);
+ 			if (skb2 == NULL)
+ 				goto err;
+-			skb_put_data(skb2, skb->data + index,
++			skb_put_data(skb2, ntb_ptr + index,
+ 				     dg_len - crc_len);
+ 
+ 			skb_queue_tail(list, skb2);
+@@ -1340,10 +1345,17 @@ static int ncm_unwrap_ntb(struct gether
+ 		} while (ndp_len > 2 * (opts->dgram_item_len * 2));
+ 	} while (ndp_index);
+ 
+-	dev_consume_skb_any(skb);
 -
--	if (code == ASUS_WMI_BRN_DOWN || code == ASUS_WMI_BRN_UP) {
--		if (acpi_video_get_backlight_type() == acpi_backlight_vendor) {
--			asus_wmi_backlight_notify(asus, orig_code);
--			return;
--		}
-+	if (acpi_video_get_backlight_type() == acpi_backlight_vendor &&
-+	    code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNDOWN_MAX) {
-+		asus_wmi_backlight_notify(asus, code);
-+		return;
- 	}
- 
- 	if (code == NOTIFY_KBD_BRTUP) {
+ 	VDBG(port->func.config->cdev,
+ 	     "Parsed NTB with %d frames\n", dgram_counter);
++
++	to_process -= block_len;
++	if (to_process != 0) {
++		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
++		goto parse_ntb;
++	}
++
++	dev_consume_skb_any(skb);
++
+ 	return 0;
+ err:
+ 	skb_queue_purge(list);
 
 
