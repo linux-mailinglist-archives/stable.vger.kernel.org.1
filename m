@@ -2,85 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DBAB7D2D51
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 10:56:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEBDC7D2E45
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 11:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232478AbjJWI4B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 04:56:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55378 "EHLO
+        id S233057AbjJWJ3L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 05:29:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232588AbjJWIz6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 04:55:58 -0400
+        with ESMTP id S232856AbjJWJ3G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 05:29:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 244C010C6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 01:55:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA06C433CA;
-        Mon, 23 Oct 2023 08:55:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698051354;
-        bh=FhHNb5l1WYaaweAcJGI7Ly1H5wpRaZhCo8TRxnQereU=;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B083B7
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 02:29:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3EAC433CA;
+        Mon, 23 Oct 2023 09:29:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698053343;
+        bh=HT5FJIXb0NtZ/8xZkSTNupDHYvxznXdoBkYHMpHmDw0=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=JlexQ7RQKPD6KaoyJpx23aNo35neLfECwSDZpC2lo1hDOJNWU83Jc4rlQ2riilMvS
-         4VpCaNLcDCDLTodbKu4FIPWXXpy8wz53LtmvPxOgxcfkSFzlmCHQCt84EKs5gXxd+8
-         Fe7iPzaZ4SZcFpuhSaOd2CijTjBDkhFxEnxUTVDM=
-Date:   Mon, 23 Oct 2023 10:55:51 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Lee Jones <lee@kernel.org>
+        b=MBnIaKukikXygMHays0geDmWNfqHgR4Zm5TuUmZDIrE1BM9/2vCypU2jvS9rgSSFR
+         y5HdN0hEP5Gi2s8XdvfOD5QEY3Ypu0dUPKtKW/o+lCGfwyFBiOTR22dTjTuv262hpz
+         MqminLUR4LGTtT5ljpLehYZ3GKcY/Vddodpw1n5ilvUA/6ndkWQk3iuNE2oW4AiHq5
+         N7sP5usKTclXcwVnBNx40JRWtnF/UsepQMymx3ojmfb8mBZcrxkaqBcwWu9DLKMsIe
+         J39QsNGBuwYYzBkK3aI7stYs1va7qqse1Fa71ZkazIatfME8eDqFogK48a+QXHC8QR
+         bHf+k1xTqSgaA==
+Date:   Mon, 23 Oct 2023 10:28:59 +0100
+From:   Lee Jones <lee@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>
-Subject: Re: [PATCH v5.15.y 3/3] rpmsg: Fix kfree() of static memory on
- setting driver_override
-Message-ID: <2023102325-untie-divisibly-8b97@gregkh>
-References: <20231018120441.2110004-1-lee@kernel.org>
- <20231018120441.2110004-3-lee@kernel.org>
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH v4.14.y 1/2] driver: platform: Add helper for safer
+ setting of driver_override
+Message-ID: <20231023092859.GC8909@google.com>
+References: <20231018120611.2110876-1-lee@kernel.org>
+ <2023102055-overkill-emphases-8044@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231018120441.2110004-3-lee@kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2023102055-overkill-emphases-8044@gregkh>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 18, 2023 at 01:04:34PM +0100, Lee Jones wrote:
-> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+On Fri, 20 Oct 2023, Greg Kroah-Hartman wrote:
+
+> On Wed, Oct 18, 2023 at 01:06:06PM +0100, Lee Jones wrote:
+> > From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> > 
+> > commit 6c2f421174273de8f83cde4286d1c076d43a2d35 upstream.
 > 
-> commit 42cd402b8fd4672b692400fe5f9eecd55d2794ac upstream.
+> <snip>
 > 
-> The driver_override field from platform driver should not be initialized
-> from static memory (string literal) because the core later kfree() it,
-> for example when driver_override is set via sysfs.
+> Why only 2 4.14.y patches and not 3 like the 4.19.y and other series?
 > 
-> Use dedicated helper to set driver_override properly.
-> 
-> Fixes: 950a7388f02b ("rpmsg: Turn name service into a stand alone driver")
-> Fixes: c0cdc19f84a4 ("rpmsg: Driver for user space endpoint interface")
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Link: https://lore.kernel.org/r/20220419113435.246203-13-krzysztof.kozlowski@linaro.org
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> ---
->  drivers/rpmsg/rpmsg_internal.h | 13 +++++++++++--
->  include/linux/rpmsg.h          |  6 ++++--
->  2 files changed, 15 insertions(+), 4 deletions(-)
+> confused,
 
-Any specific reason why you missed the fixes for this commit as well?
-Turned out to need some more things after this :(
+Because the function fixed by the other [PATCH 2/3] patches doesn't
+exist in to v4.14.
 
-Why are these needed at all for the stable kernels anyway?  It's good to
-have in the tree, but who is using manual overrides for the rpmsg driver
-in the first place?
-
-I'm going to drop all of these from the stable queues now and wait for a
-fixed up set of patches with a good reason to justify their existence in
-the stable trees.
-
-thanks,
-
-greg k-h
+-- 
+Lee Jones [李琼斯]
