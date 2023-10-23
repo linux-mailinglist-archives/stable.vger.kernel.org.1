@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3FC87D32FE
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CE727D30B4
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233850AbjJWLZq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:25:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44998 "EHLO
+        id S232845AbjJWLBV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233942AbjJWLZn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:43 -0400
+        with ESMTP id S231531AbjJWLBR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2918392
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAA8C433C7;
-        Mon, 23 Oct 2023 11:25:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CB4FD7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63D2C433B7;
+        Mon, 23 Oct 2023 11:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060341;
-        bh=AN6s0PRUJnn9dabzlecQv3acwWdMIN1HfJlvphS9xQA=;
+        s=korg; t=1698058875;
+        bh=hT/UjzizhSoXzaLdjCablTE/Hic7TwU1jjyeIpDYVdk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NT/esRfcoZ+ngfRDXwyD2TLpmboiiRtT8iutA979YbQdr/El6AR3wGISjeIiYb2KZ
-         AKGZKc/NonVt9X2MHGIhntJ4RIdlH/Fue/fBaILqTBVK+3IxlBWRI6zkx4xrn5qd7R
-         vUWoUsJISjPzfhtdTlUIesDf+7StWDNSWXy6pSgM=
+        b=jvz9pwo0wmJMRCzByyvaniepIiGqTYsMRupmsTF174WA54tMIN2NIZOoiH3EfWyPc
+         scPX1e79cGWdA2vZ3tDC0F7PfS8EmJiFl5fKGFWi1v1R2zBEiZ8/rxCMn3ybgWYQJJ
+         FrBv3tUa6csC/rWKMuAUYGFttLGpjHAOk3oGZ0xw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Berg <benjamin.berg@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/196] wifi: cfg80211: avoid leaking stack data into trace
+        patches@lists.linux.dev,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 4.14 28/66] Bluetooth: Fix a refcnt underflow problem for hci_conn
 Date:   Mon, 23 Oct 2023 12:56:18 +0200
-Message-ID: <20231023104831.715431311@linuxfoundation.org>
+Message-ID: <20231023104811.878387019@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,42 +49,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit 334bf33eec5701a1e4e967bcb7cc8611a998334b ]
+commit c7f59461f5a78994613afc112cdd73688aef9076 upstream.
 
-If the structure is not initialized then boolean types might be copied
-into the tracing data without being initialised. This causes data from
-the stack to leak into the trace and also triggers a UBSAN failure which
-can easily be avoided here.
+Syzbot reports a warning as follows:
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Link: https://lore.kernel.org/r/20230925171855.a9271ef53b05.I8180bae663984c91a3e036b87f36a640ba409817@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: CPU: 1 PID: 26946 at net/bluetooth/hci_conn.c:619
+hci_conn_timeout+0x122/0x210 net/bluetooth/hci_conn.c:619
+...
+Call Trace:
+ <TASK>
+ process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
+ process_scheduled_works kernel/workqueue.c:2703 [inline]
+ worker_thread+0x8b9/0x1290 kernel/workqueue.c:2784
+ kthread+0x33c/0x440 kernel/kthread.c:388
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+ </TASK>
+
+It is because the HCI_EV_SIMPLE_PAIR_COMPLETE event handler drops
+hci_conn directly without check Simple Pairing whether be enabled. But
+the Simple Pairing process can only be used if both sides have the
+support enabled in the host stack.
+
+Add hci_conn_ssp_enabled() for hci_conn in HCI_EV_IO_CAPA_REQUEST and
+HCI_EV_SIMPLE_PAIR_COMPLETE event handlers to fix the problem.
+
+Fixes: 0493684ed239 ("[Bluetooth] Disable disconnect timer during Simple Pairing")
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_event.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1d993a490ac4b..b19b5acfaf3a9 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -8289,7 +8289,7 @@ static int nl80211_update_mesh_config(struct sk_buff *skb,
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	struct net_device *dev = info->user_ptr[1];
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
--	struct mesh_config cfg;
-+	struct mesh_config cfg = {};
- 	u32 mask;
- 	int err;
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4020,7 +4020,7 @@ static void hci_io_capa_request_evt(stru
+ 	hci_dev_lock(hdev);
  
--- 
-2.40.1
-
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+-	if (!conn)
++	if (!conn || !hci_conn_ssp_enabled(conn))
+ 		goto unlock;
+ 
+ 	hci_conn_hold(conn);
+@@ -4255,7 +4255,7 @@ static void hci_simple_pair_complete_evt
+ 	hci_dev_lock(hdev);
+ 
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+-	if (!conn)
++	if (!conn || !hci_conn_ssp_enabled(conn))
+ 		goto unlock;
+ 
+ 	/* Reset the authentication requirement to unknown */
 
 
