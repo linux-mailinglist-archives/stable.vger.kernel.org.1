@@ -2,97 +2,171 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 912257D3E85
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 20:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED867D3F1F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 20:23:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229569AbjJWSFC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 14:05:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58326 "EHLO
+        id S229807AbjJWSXb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 14:23:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229613AbjJWSFC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 14:05:02 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C23CA1;
-        Mon, 23 Oct 2023 11:05:00 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-3575c10421aso13764745ab.3;
-        Mon, 23 Oct 2023 11:05:00 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698084299; x=1698689099;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=ZvaCalzQzayJCk/KABmp9XUXaancWVHE3kqcr33/4+c=;
-        b=WWbiUOQtASx8dutKMSckYT/YBo5H5eXqGCNxFnx/yLMClCoLPPu5d7W1ePtd2ZMxU9
-         XsmT/eL5P2cI4t/YMevE8j7h8wIv7hlPw/u3yqjECpQUCufl5BNibGvAnWikh4dVlxSB
-         WxE+u3Jx5f1kj9qdKiqryEZ4DwR/8nr39rVGNaGpvNCFBi8bOOMAH8fJcTiqGBviYaZZ
-         qgrhS4MjdHmcH++/Eu6qQzQYnvTxy1B3VQlEe6ft6lGlegeN8ytsuosWGxYXkWpRnnXz
-         A8xdyXP3EcvEyqni1q4wVVw/0I9FV656DiuJnyr9XwMDO1nAF8zO8Qmmw2Sc+npRjOxu
-         81iA==
-X-Gm-Message-State: AOJu0Yx1oTiSsqLbGsSDO0aaOyRcH9i7BnreGTFAL5AGjKyFn/hjkRbK
-        DqQRJuat1pnEwZUqZKOAQvc=
-X-Google-Smtp-Source: AGHT+IEzcI9EbJuVrOt7teoTco5NUYgjO/tqXXDXGuh/gKkt7ZTYKy36mVBwWo4sRkA/twuC/zhq/A==
-X-Received: by 2002:a92:c102:0:b0:351:5acb:281 with SMTP id p2-20020a92c102000000b003515acb0281mr10243374ile.31.1698084299519;
-        Mon, 23 Oct 2023 11:04:59 -0700 (PDT)
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id a13-20020a65640d000000b0057c25885fcfsm5106167pgv.10.2023.10.23.11.04.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Oct 2023 11:04:59 -0700 (PDT)
-Date:   Mon, 23 Oct 2023 15:05:00 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-        s=2023; t=1698084295;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=ZvaCalzQzayJCk/KABmp9XUXaancWVHE3kqcr33/4+c=;
-        b=V0dXG187mF+klizP3k1CXJBKVilaedN2f/lGm63s8KbqVDZ6fLWgwqGDFTUdNJOy/05DJw
-        Y4fV2E8ICtZ3KOuoIZOASu/sMnqUBjUq27SAesNi5u6Y37CtIaK6e4I/ZhNrLbukTfpx+l
-        cH2+YjhpKXJRxokbzOA8uMib1Dsh6AmKhFC0AwlHlQoln5r3tGOOdyTjx8tluF4pfEzEwn
-        0emwdgGSee4/4fyGZIG+r06QrELSez9hMocno4fagLuGYVQzhKUywUhV0EQcagW2B/lkk1
-        cIerHYDglqYUIRSwTL5C2yO4RLX3xhFiEmtaMtTOLUlnSdai7VBvVaF7XeegfA==
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-From:   "Ricardo B. Marliere" <ricardo@marliere.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 5.15 000/137] 5.15.137-rc1 review
-Message-ID: <ulgm36lgx7r6xolhaj53u73x6x7cbljvsapiophkeew7k2gmvv@eod7oo7hkwnv>
-References: <20231023104820.849461819@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S229557AbjJWSXa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 14:23:30 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 785DB8F;
+        Mon, 23 Oct 2023 11:23:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12445C433C7;
+        Mon, 23 Oct 2023 18:23:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1698085408;
+        bh=eXLFHZNewMlXoMAyULSmHBmujAuFbjNIQiDPe5fJi5Q=;
+        h=Date:To:From:Subject:From;
+        b=dPpIX/fpiHQ2QwAMtgkAH/YsTv7Mrdwmosv7xfjhHlCCW0P9sIOA36sEY8mk39kuN
+         MGDWzUmoo0S4yTEeuoJpJ8Php9xZ8xWVOIXm7efN1rZ72ZkTuNJcgrlXT1W5M6Kp4s
+         HieIyPMQtpsHMMWMfjf0/q/4INAffD+rW4wjW2y4=
+Date:   Mon, 23 Oct 2023 11:23:27 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        brendanhiggins@google.com, sj@kernel.org, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-sysfs-remove-requested-targets-when-online-commit-inputs.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231023182328.12445C433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 23/10/23 12:55PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.137 release.
-> There are 137 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
-> Anything received after that time might be too late.
 
-System runs fine, with minor warnings:
+The patch titled
+     Subject: mm/damon/sysfs: remove requested targets when online-commit inputs
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-sysfs-remove-requested-targets-when-online-commit-inputs.patch
 
-arch/x86/kernel/head_64.o: warning: objtool: .text+0x5: unreachable instruction
-arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x43: unreachable instruction
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-remove-requested-targets-when-online-commit-inputs.patch
 
-[    0.000000] Linux version 5.15.137-rc1+ (rbmarliere@debian) (gcc (Debian 13.2.0-4) 13.2.0, GNU ld (GNU Binutils for Debian) 2.41) #1 SMP Mon Oct 23 11:18:48 -03 2023
-[    3.835504] nouveau 0000:09:00.0: DRM: core notifier timeout
-[   14.198287] nouveau 0000:09:00.0: DRM: core notifier timeout
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/sysfs: remove requested targets when online-commit inputs
+Date: Sun, 22 Oct 2023 21:07:33 +0000
+
+damon_sysfs_set_targets(), which updates the targets of the context for
+online commitment, do not remove targets that removed from the
+corresponding sysfs files.  As a result, more than intended targets of the
+context can exist and hence consume memory and monitoring CPU resource
+more than expected.
+
+Fix it by removing all targets of the context and fill up again using the
+user input.  This could cause unnecessary memory dealloc and realloc
+operations, but this is not a hot code path.  Also, note that damon_target
+is stateless, and hence no data is lost.
+
+Link: https://lkml.kernel.org/r/20231022210735.46409-2-sj@kernel.org
+Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendanhiggins@google.com>
+Cc: <stable@vger.kernel.org>	[5.19.x]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/damon/sysfs.c |   48 +++++++--------------------------------------
+ 1 file changed, 8 insertions(+), 40 deletions(-)
+
+--- a/mm/damon/sysfs.c~mm-damon-sysfs-remove-requested-targets-when-online-commit-inputs
++++ a/mm/damon/sysfs.c
+@@ -1150,58 +1150,26 @@ destroy_targets_out:
+ 	return err;
+ }
+ 
+-/*
+- * Search a target in a context that corresponds to the sysfs target input.
+- *
+- * Return: pointer to the target if found, NULL if not found, or negative
+- * error code if the search failed.
+- */
+-static struct damon_target *damon_sysfs_existing_target(
+-		struct damon_sysfs_target *sys_target, struct damon_ctx *ctx)
+-{
+-	struct pid *pid;
+-	struct damon_target *t;
+-
+-	if (!damon_target_has_pid(ctx)) {
+-		/* Up to only one target for paddr could exist */
+-		damon_for_each_target(t, ctx)
+-			return t;
+-		return NULL;
+-	}
+-
+-	/* ops.id should be DAMON_OPS_VADDR or DAMON_OPS_FVADDR */
+-	pid = find_get_pid(sys_target->pid);
+-	if (!pid)
+-		return ERR_PTR(-EINVAL);
+-	damon_for_each_target(t, ctx) {
+-		if (t->pid == pid) {
+-			put_pid(pid);
+-			return t;
+-		}
+-	}
+-	put_pid(pid);
+-	return NULL;
+-}
+-
+ static int damon_sysfs_set_targets(struct damon_ctx *ctx,
+ 		struct damon_sysfs_targets *sysfs_targets)
+ {
++	struct damon_target *t, *next;
+ 	int i, err;
+ 
+ 	/* Multiple physical address space monitoring targets makes no sense */
+ 	if (ctx->ops.id == DAMON_OPS_PADDR && sysfs_targets->nr > 1)
+ 		return -EINVAL;
+ 
++	damon_for_each_target_safe(t, next, ctx) {
++		if (damon_target_has_pid(ctx))
++			put_pid(t->pid);
++		damon_destroy_target(t);
++	}
++
+ 	for (i = 0; i < sysfs_targets->nr; i++) {
+ 		struct damon_sysfs_target *st = sysfs_targets->targets_arr[i];
+-		struct damon_target *t = damon_sysfs_existing_target(st, ctx);
+ 
+-		if (IS_ERR(t))
+-			return PTR_ERR(t);
+-		if (!t)
+-			err = damon_sysfs_add_target(st, ctx);
+-		else
+-			err = damon_sysfs_set_regions(t, st->regions);
++		err = damon_sysfs_add_target(st, ctx);
+ 		if (err)
+ 			return err;
+ 	}
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-implement-a-function-for-max-nr_accesses-safe-calculation.patch
+mm-damon-core-avoid-divide-by-zero-during-monitoring-results-update.patch
+mm-damon-ops-common-avoid-divide-by-zero-during-region-hotness-calculation.patch
+mm-damon-lru_sort-avoid-divide-by-zero-in-hot-threshold-calculation.patch
+mm-damon-sysfs-remove-requested-targets-when-online-commit-inputs.patch
+mm-damon-core-avoid-divide-by-zero-from-pseudo-moving-window-length-calculation.patch
+mm-damon-sysfs-test-add-a-unit-test-for-damon_sysfs_set_targets.patch
+
