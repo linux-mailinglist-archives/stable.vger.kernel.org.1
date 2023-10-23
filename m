@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B1727D31EB
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CFB47D33FA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233688AbjJWLOn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47102 "EHLO
+        id S234084AbjJWLfu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233694AbjJWLOn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:43 -0400
+        with ESMTP id S234052AbjJWLfs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A8A3C4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687C0C433C7;
-        Mon, 23 Oct 2023 11:14:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3383DD6E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E5CC433C9;
+        Mon, 23 Oct 2023 11:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059680;
-        bh=xhVulE8r1gDLN+krptrT07BDz7hGNm1WUDwP9Al2JMQ=;
+        s=korg; t=1698060945;
+        bh=trMC+7/EYh2fo/vxFUAGbq9ZN+8J0yAGSAXzoBku6Y8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tjiPFMB+S0We4XSIAW41FD+t+YFErOwh5g323//15iZtFCVstNZUZ2VpghISOAAaq
-         7nUpSPUL74GrgAPqptiiRbkT9j+orRZ0bko/hHiHYEgMo2GxSNRLFNYGb/WFL7P+XC
-         PU9Mnf5rZ4nP0nxGUe33ckgfg6mct3h4d2X0fGms=
+        b=TGIQ/ORrohDPP6BHsOtPZcWrAx4/SMkW3oLRKZrtGgAvDFaH9qRhQqCHGO2LvQS+9
+         lCzLLX8p2u1UXTVAemWSblVxB2lLrPZyjpPqtq3ZsumiuXdF1UjC+VFnbgCDbT14QO
+         dKV5OWtrQ1MM4AybHm0j5LGbHMxAh8uNSl2WypJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Cline <jeremy@jcline.org>,
-        Simon Horman <horms@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 17/98] nfc: nci: assert requested protocol is valid
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.15 009/137] Bluetooth: avoid memcmp() out of bounds warning
 Date:   Mon, 23 Oct 2023 12:56:06 +0200
-Message-ID: <20231023104814.193276929@linuxfoundation.org>
+Message-ID: <20231023104821.206733518@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +51,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Cline <jeremy@jcline.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 354a6e707e29cb0c007176ee5b8db8be7bd2dee0 ]
+commit 9d1a3c74746428102d55371fbf74b484733937d9 upstream.
 
-The protocol is used in a bit mask to determine if the protocol is
-supported. Assert the provided protocol is less than the maximum
-defined so it doesn't potentially perform a shift-out-of-bounds and
-provide a clearer error for undefined protocols vs unsupported ones.
+bacmp() is a wrapper around memcpy(), which contain compile-time
+checks for buffer overflow. Since the hci_conn_request_evt() also calls
+bt_dev_dbg() with an implicit NULL pointer check, the compiler is now
+aware of a case where 'hdev' is NULL and treats this as meaning that
+zero bytes are available:
 
-Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
-Reported-and-tested-by: syzbot+0839b78e119aae1fec78@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=0839b78e119aae1fec78
-Signed-off-by: Jeremy Cline <jeremy@jcline.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231009200054.82557-1-jeremy@jcline.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In file included from net/bluetooth/hci_event.c:32:
+In function 'bacmp',
+    inlined from 'hci_conn_request_evt' at net/bluetooth/hci_event.c:3276:7:
+include/net/bluetooth/bluetooth.h:364:16: error: 'memcmp' specified bound 6 exceeds source size 0 [-Werror=stringop-overread]
+  364 |         return memcmp(ba1, ba2, sizeof(bdaddr_t));
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Add another NULL pointer check before the bacmp() to ensure the compiler
+understands the code flow enough to not warn about it.  Since the patch
+that introduced the warning is marked for stable backports, this one
+should also go that way to avoid introducing build regressions.
+
+Fixes: 1ffc6f8cc332 ("Bluetooth: Reject connection with the device which has same BD_ADDR")
+Cc: Kees Cook <keescook@chromium.org>
+Cc: "Lee, Chun-Yi" <jlee@suse.com>
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/bluetooth/hci_event.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 66608e6c5b0ec..33723d843e472 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -906,6 +906,11 @@ static int nci_activate_target(struct nfc_dev *nfc_dev,
- 		return -EINVAL;
- 	}
- 
-+	if (protocol >= NFC_PROTO_MAX) {
-+		pr_err("the requested nfc protocol is invalid\n");
-+		return -EINVAL;
-+	}
-+
- 	if (!(nci_target->supported_protocols & (1 << protocol))) {
- 		pr_err("target does not support the requested protocol 0x%x\n",
- 		       protocol);
--- 
-2.40.1
-
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2797,7 +2797,7 @@ static void hci_conn_request_evt(struct
+ 	/* Reject incoming connection from device with same BD ADDR against
+ 	 * CVE-2020-26555
+ 	 */
+-	if (!bacmp(&hdev->bdaddr, &ev->bdaddr)) {
++	if (hdev && !bacmp(&hdev->bdaddr, &ev->bdaddr)) {
+ 		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
+ 			   &ev->bdaddr);
+ 		hci_reject_conn(hdev, &ev->bdaddr);
 
 
