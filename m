@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B5D97D3091
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:00:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 392D87D3526
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:45:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232855AbjJWLAI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:00:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52000 "EHLO
+        id S234531AbjJWLpo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:45:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232598AbjJWLAH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:00:07 -0400
+        with ESMTP id S234533AbjJWLpW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00EEC10DD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:00:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A686C43391;
-        Mon, 23 Oct 2023 11:00:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9259110DD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19D6C433CA;
+        Mon, 23 Oct 2023 11:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058803;
-        bh=DbrcvbD9K39Zf+6trxOpxqtx/fmcfO+UBbrRaE4PczA=;
+        s=korg; t=1698061519;
+        bh=QoutIQ8CRSfNPArKKjMBRC9HltmYVodHx4/n49hcnqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ith9Lkz1G8SlIjuzPkV/Ni5KTfAFZ1GD2ky2ghMBa/TLrAD68JLdRoZt+kMAP5zmv
-         3ExMqOr1e1R7xYpdgqvvx7be60yqlf9h9UOcJVqnwCSs8tz3HNTNp9zU7Bc56vACW5
-         noLna6QjVyQWpKJee7eDwYhpk23fEvIeyk2V/Jx4=
+        b=gT05wfGRLeoeZyfE1BMrhnnHhBYHXumhZshRgFKDpyHue0m0jGhHwiAZlGYtbkkdI
+         2FG3Rs1h3b+73yQ11qnLhNQlvw6dFPgDhQ2rJVzbPUBq+yPXSjyFXZefnn0qLD0M2Y
+         Bz1GGIc0E7nxaH9mbODVAvKjVJdS/0ItdlUClNFk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?=E9=BB=84=E6=80=9D=E8=81=AA?= <huangsicong@iie.ac.cn>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.14 32/66] nfc: nci: fix possible NULL pointer dereference in send_acknowledge()
+        patches@lists.linux.dev, ruanjinjie@huawei.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Morse <james.morse@arm.com>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 5.10 075/202] arm64: armv8_deprecated: move aarch32 helper earlier
 Date:   Mon, 23 Oct 2023 12:56:22 +0200
-Message-ID: <20231023104812.032154129@linuxfoundation.org>
+Message-ID: <20231023104828.737264467@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,39 +53,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 7937609cd387246aed994e81aa4fa951358fba41 upstream.
+commit 0c5f416219da3795dc8b33e5bb7865a6b3c4e55c upstream.
 
-Handle memory allocation failure from nci_skb_alloc() (calling
-alloc_skb()) to avoid possible NULL pointer dereference.
+Subsequent patches will rework the logic in armv8_deprecated.c.
 
-Reported-by: 黄思聪 <huangsicong@iie.ac.cn>
-Fixes: 391d8a2da787 ("NFC: Add NCI over SPI receive")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231013184129.18738-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+In preparation for subsequent changes, this patch moves some shared logic
+earlier in the file. This will make subsequent diffs simpler and easier to
+read.
+
+At the same time, drop the `__kprobes` annotation from
+aarch32_check_condition(), as this is only used for traps from compat
+userspace, and has no risk of recursion within kprobes. As this is the
+last kprobes annotation in armve8_deprecated.c, we no longer need to
+include <asm/kprobes.h>.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20221019144123.612388-9-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/spi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/armv8_deprecated.c |   39 +++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 20 deletions(-)
 
---- a/net/nfc/nci/spi.c
-+++ b/net/nfc/nci/spi.c
-@@ -163,6 +163,8 @@ static int send_acknowledge(struct nci_s
- 	int ret;
+--- a/arch/arm64/kernel/armv8_deprecated.c
++++ b/arch/arm64/kernel/armv8_deprecated.c
+@@ -17,7 +17,6 @@
+ #include <asm/sysreg.h>
+ #include <asm/system_misc.h>
+ #include <asm/traps.h>
+-#include <asm/kprobes.h>
  
- 	skb = nci_skb_alloc(nspi->ndev, 0, GFP_KERNEL);
-+	if (!skb)
-+		return -ENOMEM;
+ #define CREATE_TRACE_POINTS
+ #include "trace-events-emulation.h"
+@@ -52,6 +51,25 @@ struct insn_emulation {
+ 	int max;
+ };
  
- 	/* add the NCI SPI header to the start of the buffer */
- 	hdr = skb_push(skb, NCI_SPI_HDR_LEN);
++#define ARM_OPCODE_CONDTEST_FAIL   0
++#define ARM_OPCODE_CONDTEST_PASS   1
++#define ARM_OPCODE_CONDTEST_UNCOND 2
++
++#define	ARM_OPCODE_CONDITION_UNCOND	0xf
++
++static unsigned int aarch32_check_condition(u32 opcode, u32 psr)
++{
++	u32 cc_bits  = opcode >> 28;
++
++	if (cc_bits != ARM_OPCODE_CONDITION_UNCOND) {
++		if ((*aarch32_opcode_cond_checks[cc_bits])(psr))
++			return ARM_OPCODE_CONDTEST_PASS;
++		else
++			return ARM_OPCODE_CONDTEST_FAIL;
++	}
++	return ARM_OPCODE_CONDTEST_UNCOND;
++}
++
+ /*
+  *  Implement emulation of the SWP/SWPB instructions using load-exclusive and
+  *  store-exclusive.
+@@ -138,25 +156,6 @@ static int emulate_swpX(unsigned int add
+ 	return res;
+ }
+ 
+-#define ARM_OPCODE_CONDTEST_FAIL   0
+-#define ARM_OPCODE_CONDTEST_PASS   1
+-#define ARM_OPCODE_CONDTEST_UNCOND 2
+-
+-#define	ARM_OPCODE_CONDITION_UNCOND	0xf
+-
+-static unsigned int __kprobes aarch32_check_condition(u32 opcode, u32 psr)
+-{
+-	u32 cc_bits  = opcode >> 28;
+-
+-	if (cc_bits != ARM_OPCODE_CONDITION_UNCOND) {
+-		if ((*aarch32_opcode_cond_checks[cc_bits])(psr))
+-			return ARM_OPCODE_CONDTEST_PASS;
+-		else
+-			return ARM_OPCODE_CONDTEST_FAIL;
+-	}
+-	return ARM_OPCODE_CONDTEST_UNCOND;
+-}
+-
+ /*
+  * swp_handler logs the id of calling process, dissects the instruction, sanity
+  * checks the memory location, calls emulate_swpX for the actual operation and
 
 
