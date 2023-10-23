@@ -2,75 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 588CC7D414C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 23:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8F497D42F8
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 01:00:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230050AbjJWVBV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 17:01:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40916 "EHLO
+        id S229552AbjJWXAA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 19:00:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjJWVBU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 17:01:20 -0400
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D59FBE;
-        Mon, 23 Oct 2023 14:01:18 -0700 (PDT)
-Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-66d0252578aso22375946d6.0;
-        Mon, 23 Oct 2023 14:01:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698094877; x=1698699677; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YbeI5inRzR7k95NjvuTc2Wfz9EEbnQ9XK4gjlca4j1U=;
-        b=gC2Xu28NIoSSWgEVkek2Ez2LneJSCZmDDfZ28MeVXmDGFea9lwpr7uxoaEafqCC4fC
-         a47DmxqgWR5035gB1EglssmcW+injRm5m6UsYr6HSXBVxUYZ908BCt423nolSjSuFeoh
-         sCvtjHgzA3r/PdJg4FBAfc0rKUh+BU6J5wCatmVfs6Y7raJpdyzom7GNJF8YwFCNHZdO
-         dDZrcTpFDHmiO5PsgjX1myRZY5RPHz2sAGsy/Pww90CsVFkgQZQOlw5Tu7HQGUn8DCwu
-         D0DJAIvyW1nvw1JiXyQBXNa466urpoLuTujXDEIC4fuwkn/V80V1xe2ewjyzdXHhNe86
-         mh0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698094877; x=1698699677;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YbeI5inRzR7k95NjvuTc2Wfz9EEbnQ9XK4gjlca4j1U=;
-        b=v4FvW6UH+nwFO7Dv8QxdEuD8VGSzD2ZN5jMqvdMRhoaUsl+5opcssGl+z3b90WFWN7
-         x5P93wUDxyM9CfFpBRCssymAWkqzBLVoHLt9Oo1u9xnWA8FvIau/bhG0hmj6eV2FJFRi
-         Sg4uxQbexaFOhRDOzIuxc9SXSglDs9Y10TFX7yYTVGqzhq0K9AvEcuaFKwb4KWRCtC73
-         XLOdsGlkonEcssbqlkhdrsQUfQ/GI5MeBu/wbvFcc446x6YRm1Q4XrFecX8ljwSUHRdm
-         mXd0sL32I02hzwYVbQhzyFOzpvMZnXnwHXAaZcFQUBZ52+MBIHhsxsMWP6AuTtIHAT9P
-         B5GA==
-X-Gm-Message-State: AOJu0YwHEAOh3KZl9HY3BMdo1J3FBKwGi5cPbfr52UL3SQj//e5VhGvP
-        HQtWhw/yX05Xtgjzk2EzZEA=
-X-Google-Smtp-Source: AGHT+IFpbMGlO6hn9OtY92vdiN8s8picsYdngOOf/s+eB+0K2iCLDsU98Dk3YpMsLCbHR9aWWL5o2g==
-X-Received: by 2002:a05:6214:29c2:b0:66d:18ec:8e7b with SMTP id gh2-20020a05621429c200b0066d18ec8e7bmr13255980qvb.62.1698094877337;
-        Mon, 23 Oct 2023 14:01:17 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id l4-20020ad44084000000b0066cfb9cc087sm3148888qvp.134.2023.10.23.14.01.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Oct 2023 14:01:16 -0700 (PDT)
-Message-ID: <0dd204e6-5f16-4c85-b8f3-949b673464c2@gmail.com>
-Date:   Mon, 23 Oct 2023 14:01:06 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+        with ESMTP id S229605AbjJWW77 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 18:59:59 -0400
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F50CD68
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 15:59:57 -0700 (PDT)
+Received: from eig-obgw-6005a.ext.cloudfilter.net ([10.0.30.201])
+        by cmsmtp with ESMTPS
+        id v1tqq2HiTKOkLv3ttqeAYx; Mon, 23 Oct 2023 22:59:57 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTPS
+        id v3tsqJCl1wuSEv3tsqIUJI; Mon, 23 Oct 2023 22:59:56 +0000
+X-Authority-Analysis: v=2.4 cv=evvMc6lX c=1 sm=1 tr=0 ts=6536faec
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=5SMoDr0hu4qfrcIuQekA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=nHGUrsyN+6los7Hev7rkFyWULCCoURrFUnLf2Mtba8I=; b=f98f0DAbvUTP0eXCcxU10Ksdew
+        NaXfF+YYaq+oSSpp/ahYJ2a6Jm1NEJhsj1OpB24mGM7FjQKONCjJLdlgL+dnv8MCuSBWJc//RZuKP
+        5u7WR31NhghmlB09cqlZD9i7jorpYXRydc2Qjt5WjfSqQU1sES1ERopMvwy4dpgWkINkS5+r3ODBZ
+        QLbC5jIPtk+VT03qlDoCGp29te+PJyvHxmtuKDiBg9Bm2OQpePStNmoICCD1pMozsbPqv1y8YrMj3
+        hCOICVha5tBUlY33eCylvczoD6JZwm0wh3lYbV4rUOVz/vW36POWwX9zS3xdMgmfzVXRhD0RMaBkz
+        FLvhzA8w==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:52484 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.2)
+        (envelope-from <re@w6rz.net>)
+        id 1qv3tq-002dbf-06;
+        Mon, 23 Oct 2023 16:59:54 -0600
 Subject: Re: [PATCH 6.5 000/241] 6.5.9-rc1 review
-Content-Language: en-US
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
 Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
         torvalds@linux-foundation.org, akpm@linux-foundation.org,
         linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
 References: <20231023104833.832874523@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
 In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <785d071a-0b03-3f1e-7fb8-c8f91d08a396@w6rz.net>
+Date:   Mon, 23 Oct 2023 15:59:51 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1qv3tq-002dbf-06
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:52484
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org:  HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfCnpuFJ+DDE8koXD7900T2L9F7rhCmlxxNoPxLbxV19FyiH6BEt/rIf+1R7xj0K2YmNcqa04SmIY/fpRFIn6DGa4cbI4j2JdMPsUQqCf2wj7EvkA7v7L
+ K9QXhrk8vHDR8jBf+CTjri4NvOAsPQnUFA7ZmPuqp/aPwbT/6h7Mb2u/J7bsnsS+2BhWNpnHe924UA==
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -78,29 +94,26 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/23/23 03:53, Greg Kroah-Hartman wrote:
+On 10/23/23 3:53 AM, Greg Kroah-Hartman wrote:
 > This is the start of the stable review cycle for the 6.5.9 release.
 > There are 241 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
-> 
+>
 > Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
 > Anything received after that time might be too late.
-> 
+>
 > The whole patch series can be found in one patch at:
 > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.9-rc1.gz
 > or in the git tree and branch at:
 > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
 > and the diffstat can be found below.
-> 
+>
 > thanks,
-> 
+>
 > greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Tested-by: Ron Economos <re@w6rz.net>
 
