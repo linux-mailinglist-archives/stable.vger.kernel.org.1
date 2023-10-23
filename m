@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 151C37D3537
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42B2A7D3371
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234527AbjJWLqZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:46:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48816 "EHLO
+        id S234017AbjJWLaV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:30:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234470AbjJWLqI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:08 -0400
+        with ESMTP id S234059AbjJWLaT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A82819A9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BB8C433C9;
-        Mon, 23 Oct 2023 11:45:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E812D92
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21681C433C8;
+        Mon, 23 Oct 2023 11:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061554;
-        bh=mg4GJsExYbctqV4GE+0/6GXo1BqCwUfQxZz0e5CvzJ8=;
+        s=korg; t=1698060617;
+        bh=ppEcqYJ0fLd0DHELKcmP3RgEouj+GU6x8olpZxkU6iE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xy+cT4nqLYY8d2hbMeaStNllPW6Gw2JJrVL+9v94iTy4G08c3ToaSMrqk25JeY/wE
-         idhoiTo5SShh5eqAqjViQIx2tzturmFwG8TzIXFN8ebmSeM1ieH89hX5rBCHrrKSbz
-         D8KPpfNJoQqOoMaFhN/7xfl+CMWbTY94EK5249qo=
+        b=OuIWNONF77g/1lUbzgZKdEeuMNF2/W24gKyR6VYGbo2Xn5Igk0R6BkvM/M6MKwrNk
+         9pr0O60uO5NfOsNmKwjRJDpWmTcBYI+JTf2mIvMe1meAaAVryiecPAGq7hYMqMrJ2P
+         US+n2zO+5/uS9nFZBO0CyEwgv/F7fV9HuzygpqTE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Lee@vger.kernel.org
-Subject: [PATCH 5.10 086/202] Bluetooth: hci_event: Ignore NULL link key
+        patches@lists.linux.dev,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.4 035/123] pinctrl: avoid unsafe code pattern in find_pinctrl()
 Date:   Mon, 23 Oct 2023 12:56:33 +0200
-Message-ID: <20231023104829.049139199@linuxfoundation.org>
+Message-ID: <20231023104818.913623822@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,71 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee, Chun-Yi <jlee@suse.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
+commit c153a4edff6ab01370fcac8e46f9c89cca1060c2 upstream.
 
-This change is used to relieve CVE-2020-26555. The description of the
-CVE:
+The code in find_pinctrl() takes a mutex and traverses a list of pinctrl
+structures. Later the caller bumps up reference count on the found
+structure. Such pattern is not safe as pinctrl that was found may get
+deleted before the caller gets around to increasing the reference count.
 
-Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
-1.0B through 5.2 may permit an unauthenticated nearby device to spoof
-the BD_ADDR of the peer device to complete pairing without knowledge
-of the PIN. [1]
-
-The detail of this attack is in IEEE paper:
-BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
-[2]
-
-It's a reflection attack. The paper mentioned that attacker can induce
-the attacked target to generate null link key (zero key) without PIN
-code. In BR/EDR, the key generation is actually handled in the controller
-which is below HCI.
-
-Thus, we can ignore null link key in the handler of "Link Key Notification
-event" to relieve the attack. A similar implementation also shows in
-btstack project. [3]
-
-v3: Drop the connection when null link key be detected.
-
-v2:
-- Used Link: tag instead of Closes:
-- Used bt_dev_dbg instead of BT_DBG
-- Added Fixes: tag
+Fix this by taking the reference count in find_pinctrl(), while it still
+holds the mutex.
 
 Cc: stable@vger.kernel.org
-Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
-Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
-Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
-Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/ZQs1RgTKg6VJqmPs@google.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/pinctrl/core.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4065,6 +4065,15 @@ static void hci_link_key_notify_evt(stru
- 	if (!conn)
- 		goto unlock;
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1005,17 +1005,20 @@ static int add_setting(struct pinctrl *p
  
-+	/* Ignore NULL link key against CVE-2020-26555 */
-+	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
-+		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
-+			   &ev->bdaddr);
-+		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
-+		hci_conn_drop(conn);
-+		goto unlock;
-+	}
+ static struct pinctrl *find_pinctrl(struct device *dev)
+ {
+-	struct pinctrl *p;
++	struct pinctrl *entry, *p = NULL;
+ 
+ 	mutex_lock(&pinctrl_list_mutex);
+-	list_for_each_entry(p, &pinctrl_list, node)
+-		if (p->dev == dev) {
+-			mutex_unlock(&pinctrl_list_mutex);
+-			return p;
 +
- 	hci_conn_hold(conn);
- 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
- 	hci_conn_drop(conn);
++	list_for_each_entry(entry, &pinctrl_list, node) {
++		if (entry->dev == dev) {
++			p = entry;
++			kref_get(&p->users);
++			break;
+ 		}
++	}
+ 
+ 	mutex_unlock(&pinctrl_list_mutex);
+-	return NULL;
++	return p;
+ }
+ 
+ static void pinctrl_free(struct pinctrl *p, bool inlist);
+@@ -1124,7 +1127,6 @@ struct pinctrl *pinctrl_get(struct devic
+ 	p = find_pinctrl(dev);
+ 	if (p) {
+ 		dev_dbg(dev, "obtain a copy of previously claimed pinctrl\n");
+-		kref_get(&p->users);
+ 		return p;
+ 	}
+ 
 
 
