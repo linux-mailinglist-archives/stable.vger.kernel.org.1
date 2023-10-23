@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3132B7D332A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DC167D31C5
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233945AbjJWL1V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:27:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53454 "EHLO
+        id S233627AbjJWLNC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:13:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233975AbjJWL1U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:20 -0400
+        with ESMTP id S233644AbjJWLNA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC1FD7A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7A3C433CA;
-        Mon, 23 Oct 2023 11:27:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57EA610B
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E65AC433C7;
+        Mon, 23 Oct 2023 11:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060437;
-        bh=3ls6LZGyZixvaIaT13MSOrVXxG+Nh+gss8o/7fgxnY0=;
+        s=korg; t=1698059577;
+        bh=nD6R9MTHvsw460mt64utci+jSpcN+357AA0Zee3xvHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ig/1NeXJ0IUL/VaukmgUdA5/k4IAv9XMJULLkaGyJvx4S3uFnU9+DIjlvIBf8Of78
-         jA5clN+h74OhbwR54/Ie5nzp0pG3Mcdq8Bz/QwFbhCn26CfgGF0HeVFwK1VAoD/P9s
-         TdmDwxw1oiwh5ezUORcn6zHIaW16J0NaaJRniHIU=
+        b=vjqRMF2UDVAxdNELrGfkWo9cMRNz6kxAGmE8PCPktVES3PIseDzF/dhLts5RTl5aL
+         6rZw/pWBcqw9fv71CRO/R6EszZ+In7pOOszKg6l1BYFr43xXlm8EkYT1mZFCduyxTl
+         u52QdwJRBpecvBUgojUGMR67RNaokRqz/yd2B2FA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aviram Dali <aviramd@marvell.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Ravi Chandra Minnikanti <rminnikanti@marvell.com>
-Subject: [PATCH 6.1 144/196] mtd: rawnand: marvell: Ensure program page operations are successful
+        patches@lists.linux.dev,
+        Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        Laurent Dufour <ldufour@linux.ibm.com>,
+        Shrikanth Hegde <sshegde@linux.vnet.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Nysal Jan K.A" <nysal@linux.ibm.com>
+Subject: [PATCH 6.5 223/241] powerpc/qspinlock: Fix stale propagated yield_cpu
 Date:   Mon, 23 Oct 2023 12:56:49 +0200
-Message-ID: <20231023104832.554692353@linuxfoundation.org>
+Message-ID: <20231023104839.299887627@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,97 +53,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-commit 3e01d5254698ea3d18e09d96b974c762328352cd upstream.
+commit f9bc9bbe8afdf83412728f0b464979a72a3b9ec2 upstream.
 
-The NAND core complies with the ONFI specification, which itself
-mentions that after any program or erase operation, a status check
-should be performed to see whether the operation was finished *and*
-successful.
+yield_cpu is a sample of a preempted lock holder that gets propagated
+back through the queue. Queued waiters use this to yield to the
+preempted lock holder without continually sampling the lock word (which
+would defeat the purpose of MCS queueing by bouncing the cache line).
 
-The NAND core offers helpers to finish a page write (sending the
-"PAGE PROG" command, waiting for the NAND chip to be ready again, and
-checking the operation status). But in some cases, advanced controller
-drivers might want to optimize this and craft their own page write
-helper to leverage additional hardware capabilities, thus not always
-using the core facilities.
+The problem is that yield_cpu can become stale. It can take some time to
+be passed down the chain, and if any queued waiter gets preempted then
+it will cease to propagate the yield_cpu to later waiters.
 
-Some drivers, like this one, do not use the core helper to finish a page
-write because the final cycles are automatically managed by the
-hardware. In this case, the additional care must be taken to manually
-perform the final status check.
+This can result in yielding to a CPU that no longer holds the lock,
+which is bad, but particularly if it is currently in H_CEDE (idle),
+then it appears to be preempted and some hypervisors (PowerVM) can
+cause very long H_CONFER latencies waiting for H_CEDE wakeup. This
+results in latency spikes and hard lockups on oversubscribed
+partitions with lock contention.
 
-Let's read the NAND chip status at the end of the page write helper and
-return -EIO upon error.
+This is a minimal fix. Before yielding to yield_cpu, sample the lock
+word to confirm yield_cpu is still the owner, and bail out of it is not.
 
-Cc: stable@vger.kernel.org
-Fixes: 02f26ecf8c77 ("mtd: nand: add reworked Marvell NAND controller driver")
-Reported-by: Aviram Dali <aviramd@marvell.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Ravi Chandra Minnikanti <rminnikanti@marvell.com>
-Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-1-miquel.raynal@bootlin.com
+Thanks to a bunch of people who reported this and tracked down the
+exact problem using tracepoints and dispatch trace logs.
+
+Fixes: 28db61e207ea ("powerpc/qspinlock: allow propagation of yield CPU down the queue")
+Cc: stable@vger.kernel.org # v6.2+
+Reported-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Reported-by: Laurent Dufour <ldufour@linux.ibm.com>
+Reported-by: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
+Debugged-by: "Nysal Jan K.A" <nysal@linux.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Shrikanth Hegde <sshegde@linux.vnet.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231016124305.139923-2-npiggin@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ arch/powerpc/lib/qspinlock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -1154,6 +1154,7 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
- 		.ndcb[2] = NDCB2_ADDR5_PAGE(page),
- 	};
- 	unsigned int oob_bytes = lt->spare_bytes + (raw ? lt->ecc_bytes : 0);
-+	u8 status;
- 	int ret;
+diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
+index 253620979d0c..6dd2f46bd3ef 100644
+--- a/arch/powerpc/lib/qspinlock.c
++++ b/arch/powerpc/lib/qspinlock.c
+@@ -406,6 +406,9 @@ static __always_inline bool yield_to_prev(struct qspinlock *lock, struct qnode *
+ 	if ((yield_count & 1) == 0)
+ 		goto yield_prev; /* owner vcpu is running */
  
- 	/* NFCv2 needs more information about the operation being executed */
-@@ -1187,7 +1188,18 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
- 
- 	ret = marvell_nfc_wait_op(chip,
- 				  PSEC_TO_MSEC(sdr->tPROG_max));
--	return ret;
-+	if (ret)
-+		return ret;
++	if (get_owner_cpu(READ_ONCE(lock->val)) != yield_cpu)
++		goto yield_prev; /* re-sample lock owner */
 +
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
-+
-+	return 0;
- }
+ 	spin_end();
  
- static int marvell_nfc_hw_ecc_hmg_write_page_raw(struct nand_chip *chip,
-@@ -1616,6 +1628,7 @@ static int marvell_nfc_hw_ecc_bch_write_
- 	int data_len = lt->data_bytes;
- 	int spare_len = lt->spare_bytes;
- 	int chunk, ret;
-+	u8 status;
- 
- 	marvell_nfc_select_target(chip, chip->cur_cs);
- 
-@@ -1652,6 +1665,14 @@ static int marvell_nfc_hw_ecc_bch_write_
- 	if (ret)
- 		return ret;
- 
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
-+
- 	return 0;
- }
- 
+ 	preempted = true;
+-- 
+2.42.0
+
 
 
