@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C6E87D3367
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CD8D7D307F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233571AbjJWL35 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:29:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34342 "EHLO
+        id S230282AbjJWK7Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 06:59:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234047AbjJWL34 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:29:56 -0400
+        with ESMTP id S230449AbjJWK7Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 474B092
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:29:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DBE1C433C7;
-        Mon, 23 Oct 2023 11:29:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E6210C0
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D680EC433C9;
+        Mon, 23 Oct 2023 10:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060593;
-        bh=U65vydzV0oMB9BgM6HXe5lj7l+zlCdG3CKeutgMAkS8=;
+        s=korg; t=1698058762;
+        bh=SWG+7rs0cu9OSQgSKnREGuzL5SvzhHGNZSHrLCJY7Uk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TnsuQhsT2G5um8xnoHbMcIFC7IP90XYiGVpli+gZHre3Vtwe5P4TqPJt7WFN5bIye
-         Bo9oYN3321vj5jcE55bwh5VV4YB3/PfDIvnwS/Hajv72G4bi13axRynkHJ7/3sSplZ
-         Jt/iVO/zRthZJ+i3NlDoEakItvoes1mfy+30zQBY=
+        b=XOuXBSjFLblbd/ykd0iyVvUTQwJXFHhKB0WCHLkh27uko/RySQY78p1nTFmu9Rv2p
+         D463WAJiD36WCYuMSZEokQU66Gdqvexe34xS87TOUAiEblkOPIg+BzHxBkzGMFwfmz
+         hPw8aTH1yG4h3d5B0+lbWaFzZWNtI6ITt0a4mFHI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 010/123] ravb: Fix up dma_free_coherent() call in ravb_remove()
+        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+        syzbot+0434ac83f907a1dbdd1e@syzkaller.appspotmail.com,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 4.14 18/66] Input: powermate - fix use-after-free in powermate_config_complete
 Date:   Mon, 23 Oct 2023 12:56:08 +0200
-Message-ID: <20231023104818.079309411@linuxfoundation.org>
+Message-ID: <20231023104811.474402774@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit e6864af61493113558c502b5cd0d754c19b93277 ]
+commit 5c15c60e7be615f05a45cd905093a54b11f461bc upstream.
 
-In ravb_remove(), dma_free_coherent() should be call after
-unregister_netdev(). Otherwise, this controller is possible to use
-the freed buffer.
+syzbot has found a use-after-free bug [1] in the powermate driver. This
+happens when the device is disconnected, which leads to a memory free from
+the powermate_device struct.  When an asynchronous control message
+completes after the kfree and its callback is invoked, the lock does not
+exist anymore and hence the bug.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20231005011201.14368-2-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use usb_kill_urb() on pm->config to cancel any in-progress requests upon
+device disconnection.
+
+[1] https://syzkaller.appspot.com/bug?extid=0434ac83f907a1dbdd1e
+
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reported-by: syzbot+0434ac83f907a1dbdd1e@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/20230916-topic-powermate_use_after_free-v3-1-64412b81a7a2@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/misc/powermate.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 231a1295c4700..4698fbde7fb74 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2212,14 +2212,14 @@ static int ravb_remove(struct platform_device *pdev)
- 	if (priv->chip_id != RCAR_GEN2)
- 		ravb_ptp_stop(ndev);
- 
--	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
--			  priv->desc_bat_dma);
- 	/* Set reset mode */
- 	ravb_write(ndev, CCC_OPC_RESET, CCC);
- 	unregister_netdev(ndev);
- 	netif_napi_del(&priv->napi[RAVB_NC]);
- 	netif_napi_del(&priv->napi[RAVB_BE]);
- 	ravb_mdio_release(priv);
-+	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
-+			  priv->desc_bat_dma);
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	free_netdev(ndev);
--- 
-2.40.1
-
+--- a/drivers/input/misc/powermate.c
++++ b/drivers/input/misc/powermate.c
+@@ -424,6 +424,7 @@ static void powermate_disconnect(struct
+ 		pm->requires_update = 0;
+ 		usb_kill_urb(pm->irq);
+ 		input_unregister_device(pm->input);
++		usb_kill_urb(pm->config);
+ 		usb_free_urb(pm->irq);
+ 		usb_free_urb(pm->config);
+ 		powermate_free_buffers(interface_to_usbdev(intf), pm);
 
 
