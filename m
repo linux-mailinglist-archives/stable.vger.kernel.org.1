@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 030BB7D33C2
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C9767D35AF
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234124AbjJWLdv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:33:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48150 "EHLO
+        id S234614AbjJWLuy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:50:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234127AbjJWLdu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:50 -0400
+        with ESMTP id S234610AbjJWLuw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD32BE8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:33:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC85C433C9;
-        Mon, 23 Oct 2023 11:33:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B9F4E9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:50:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F110C433C7;
+        Mon, 23 Oct 2023 11:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060828;
-        bh=k7Y72Ejmo/pgNPcJ/8nhxUKjeCOAx8tcz75nRAv0KOw=;
+        s=korg; t=1698061849;
+        bh=ui7EYoGltp1NZbYby37CA8euQee63omYwoJS/uRVlUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I3V5OzzdFaGQdy4943dqkhqxBDyle4Pv0Re50H2Gfl8aq0tYWzd1lPQydrr6fxjWo
-         0p3j7OOxXT0IU4rQD3lMYDJUHILZ1ZrLuKHR/wTERwPWe7Zi0bRZlOLzY11/qQEsoB
-         LVYSZTEhsA697LT/OkZQVNIz31ONGLieB/l19dyc=
+        b=NsLQtNJUxdU//BD7CyRlQ57F9KulKrLWuVkwcw06L+xTkgi8Rt4kAo1oQu/0W+sXP
+         4hyoEJTHUK0NgQX5LQElCCZUx6k/zgzX6X3/8Y424/wb2Tzink+XpckMEVi4Knv5tX
+         aSj/einq0ebcMgJ3ihIx7xmbIM/sqM935bsWbZg8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.4 107/123] Revert "pinctrl: avoid unsafe code pattern in find_pinctrl()"
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        =?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+        Atish Patra <atishp@rivosinc.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 158/202] tracing: relax trace_event_eval_update() execution with cond_resched()
 Date:   Mon, 23 Oct 2023 12:57:45 +0200
-Message-ID: <20231023104821.303689635@linuxfoundation.org>
+Message-ID: <20231023104831.127231954@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,81 +52,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Clément Léger <cleger@rivosinc.com>
 
-commit 62140a1e4dec4594d5d1e1d353747bf2ef434e8b upstream.
+[ Upstream commit 23cce5f25491968b23fb9c399bbfb25f13870cd9 ]
 
-The commit breaks MMC enumeration on the Intel Merrifield
-plaform.
+When kernel is compiled without preemption, the eval_map_work_func()
+(which calls trace_event_eval_update()) will not be preempted up to its
+complete execution. This can actually cause a problem since if another
+CPU call stop_machine(), the call will have to wait for the
+eval_map_work_func() function to finish executing in the workqueue
+before being able to be scheduled. This problem was observe on a SMP
+system at boot time, when the CPU calling the initcalls executed
+clocksource_done_booting() which in the end calls stop_machine(). We
+observed a 1 second delay because one CPU was executing
+eval_map_work_func() and was not preempted by the stop_machine() task.
 
-Before:
-[   36.439057] mmc0: SDHCI controller on PCI [0000:00:01.0] using ADMA
-[   36.450924] mmc2: SDHCI controller on PCI [0000:00:01.3] using ADMA
-[   36.459355] mmc1: SDHCI controller on PCI [0000:00:01.2] using ADMA
-[   36.706399] mmc0: new DDR MMC card at address 0001
-[   37.058972] mmc2: new ultra high speed DDR50 SDIO card at address 0001
-[   37.278977] mmcblk0: mmc0:0001 H4G1d 3.64 GiB
-[   37.297300]  mmcblk0: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
+Adding a call to cond_resched() in trace_event_eval_update() allows
+other tasks to be executed and thus continue working asynchronously
+like before without blocking any pending task at boot time.
 
-After:
-[   36.436704] mmc2: SDHCI controller on PCI [0000:00:01.3] using ADMA
-[   36.436720] mmc1: SDHCI controller on PCI [0000:00:01.0] using ADMA
-[   36.463685] mmc0: SDHCI controller on PCI [0000:00:01.2] using ADMA
-[   36.720627] mmc1: new DDR MMC card at address 0001
-[   37.068181] mmc2: new ultra high speed DDR50 SDIO card at address 0001
-[   37.279998] mmcblk1: mmc1:0001 H4G1d 3.64 GiB
-[   37.302670]  mmcblk1: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
+Link: https://lore.kernel.org/linux-trace-kernel/20230929191637.416931-1-cleger@rivosinc.com
 
-This reverts commit c153a4edff6ab01370fcac8e46f9c89cca1060c2.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231017141806.535191-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Tested-by: Atish Patra <atishp@rivosinc.com>
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/core.c |   16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ kernel/trace/trace_events.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1005,20 +1005,17 @@ static int add_setting(struct pinctrl *p
- 
- static struct pinctrl *find_pinctrl(struct device *dev)
- {
--	struct pinctrl *entry, *p = NULL;
-+	struct pinctrl *p;
- 
- 	mutex_lock(&pinctrl_list_mutex);
--
--	list_for_each_entry(entry, &pinctrl_list, node) {
--		if (entry->dev == dev) {
--			p = entry;
--			kref_get(&p->users);
--			break;
-+	list_for_each_entry(p, &pinctrl_list, node)
-+		if (p->dev == dev) {
-+			mutex_unlock(&pinctrl_list_mutex);
-+			return p;
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 321cfda1b3338..c7f0a02442e50 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -2451,6 +2451,7 @@ void trace_event_eval_update(struct trace_eval_map **map, int len)
+ 				update_event_printk(call, map[i]);
+ 			}
  		}
--	}
- 
- 	mutex_unlock(&pinctrl_list_mutex);
--	return p;
-+	return NULL;
- }
- 
- static void pinctrl_free(struct pinctrl *p, bool inlist);
-@@ -1127,6 +1124,7 @@ struct pinctrl *pinctrl_get(struct devic
- 	p = find_pinctrl(dev);
- 	if (p) {
- 		dev_dbg(dev, "obtain a copy of previously claimed pinctrl\n");
-+		kref_get(&p->users);
- 		return p;
++		cond_resched();
  	}
- 
+ 	up_write(&trace_event_sem);
+ }
+-- 
+2.40.1
+
 
 
