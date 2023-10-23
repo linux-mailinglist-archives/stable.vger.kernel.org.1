@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FDF37D31C3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E2E47D324B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233612AbjJWLM6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:12:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36038 "EHLO
+        id S233470AbjJWLSi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:18:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233618AbjJWLMy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:54 -0400
+        with ESMTP id S233738AbjJWLSh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 619A5C5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B14C433C7;
-        Mon, 23 Oct 2023 11:12:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B1D2A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A599C433C9;
+        Mon, 23 Oct 2023 11:18:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059572;
-        bh=xwsonGJ71ZJkCxDecOw23S0G10ebWeBfjhVJghD35SM=;
+        s=korg; t=1698059916;
+        bh=+ZIshKI5zzKyBWzTHP9Y3P+IvYAsKvloaz27nRgPHOg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c1TReF08B+ya/qXjpvoXrhNQhzjkPfQEO5XH8lYtzIiAFTQuX8Jmlcclq5xCTCBYc
-         Gnw1hEN7RXdUBlS6qTGmzBDXsYeC2rypaDwg5OQtI1FSipTFIkLNQe3bP10bYwV/k1
-         WcBUvpf8pYAFmaxkddRD6utTbu5gSCcJwupA30Lg=
+        b=rzRuzgKJHeHJaD3hTk2fRBhMmtFbiReC3AGZGrckaCeos4uiVXelacQl81ADYEw8b
+         gvDjw4g4osHjXT0Uan5eb6ViR3wQ/ZoOI6r/+m//t6ulniNVhumxiUvVUKBd9S+/lY
+         A26VgUykdkG+AnZaiIfLJxTRgTNQzZm1ex6OPDF8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 222/241] powerpc/mm: Allow ARCH_FORCE_MAX_ORDER up to 12
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 59/98] net: usb: smsc95xx: Fix an error code in smsc95xx_reset()
 Date:   Mon, 23 Oct 2023 12:56:48 +0200
-Message-ID: <20231023104839.265815990@linuxfoundation.org>
+Message-ID: <20231023104815.694188414@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,60 +48,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit ff9e8f41513669e290f6e1904e1bc75950584491 ]
+commit c53647a5df9e66dd9fedf240198e1fe50d88c286 upstream.
 
-Christophe reported that the change to ARCH_FORCE_MAX_ORDER to limit the
-range to 10 had broken his ability to configure hugepages:
+Return a negative error code instead of success.
 
-  # echo 1 > /sys/kernel/mm/hugepages/hugepages-8192kB/nr_hugepages
-  sh: write error: Invalid argument
-
-Several of the powerpc defconfigs previously set the
-ARCH_FORCE_MAX_ORDER value to 12, via the definition in
-arch/powerpc/configs/fsl-emb-nonhw.config, used by:
-
-  mpc85xx_defconfig
-  mpc85xx_smp_defconfig
-  corenet32_smp_defconfig
-  corenet64_smp_defconfig
-  mpc86xx_defconfig
-  mpc86xx_smp_defconfig
-
-Fix it by increasing the allowed range to 12 to restore the previous
-behaviour.
-
-Fixes: 358e526a1648 ("powerpc/mm: Reinstate ARCH_FORCE_MAX_ORDER ranges")
-Reported-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Closes: https://lore.kernel.org/all/8011d806-5b30-bf26-2bfe-a08c39d57e20@csgroup.eu/
-Tested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230824122849.942072-1-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2f7ca802bdae ("net: Add SMSC LAN9500 USB2.0 10/100 ethernet adapter driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/147927f0-9ada-45cc-81ff-75a19dd30b76@moroto.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/Kconfig | 2 +-
+ drivers/net/usb/smsc95xx.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 0b1172cbeccb3..b3fdb3d268367 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -917,7 +917,7 @@ config ARCH_FORCE_MAX_ORDER
- 	default "6" if PPC32 && PPC_64K_PAGES
- 	range 4 10 if PPC32 && PPC_256K_PAGES
- 	default "4" if PPC32 && PPC_256K_PAGES
--	range 10 10
-+	range 10 12
- 	default "10"
- 	help
- 	  The kernel page allocator limits the size of maximal physically
--- 
-2.42.0
-
+--- a/drivers/net/usb/smsc95xx.c
++++ b/drivers/net/usb/smsc95xx.c
+@@ -1054,7 +1054,7 @@ static int smsc95xx_reset(struct usbnet
+ 
+ 	if (timeout >= 100) {
+ 		netdev_warn(dev->net, "timeout waiting for completion of Lite Reset\n");
+-		return ret;
++		return -ETIMEDOUT;
+ 	}
+ 
+ 	ret = smsc95xx_write_reg(dev, PM_CTRL, PM_CTL_PHY_RST_);
 
 
