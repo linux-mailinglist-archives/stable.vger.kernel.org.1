@@ -2,44 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5087E7D34B9
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BE017D35CA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:52:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234281AbjJWLmV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:42:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46222 "EHLO
+        id S234606AbjJWLwB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:52:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234299AbjJWLmT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:19 -0400
+        with ESMTP id S234649AbjJWLv6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:51:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3FBBD7C
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31541C433CB;
-        Mon, 23 Oct 2023 11:41:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5EB210F7
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:51:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF5AC433C8;
+        Mon, 23 Oct 2023 11:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061319;
-        bh=J6pZFj0E1SuAspwO1zaT6S9RA0aiVfZv6Dpp2aaEmTE=;
+        s=korg; t=1698061906;
+        bh=3PDAipX367pKIut6wOO90XEnYUBV25vqb2z1UqhCmmk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tbdEo9kYttxa2F8/IfBYWVtO3loNMwe/jpvgvcrtsXzGZ07v5Dd4zmD6MDumzT+yO
-         HyYxHdUWZH9og9nBG+xG08oKY5UzK1etFZj45hppoZu/t1Qx5AOhrFyLrygwtzMNBI
-         mbabYoEEo+cI4keRlUgbatheD9K12p28hO6x5bGo=
+        b=XbikgRtly/8PccbA159HaY94q//D2yRD9rRjenEeL1kkTJIFE7nNhsg/aoK4tSIaO
+         DIXt2MqwAfB0gVfPe2JC0ueYTGxyxHqnQv2zzsFrzqHJUyqaeyGEKUPJAxZ/gVJE88
+         bxrrFoNNeEdEIeMPFkLOCipEGbGlpgvB+/WkOAOE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 134/137] phy: mapphone-mdm6600: Fix pinctrl_pm handling for sleep pins
+        patches@lists.linux.dev, welsh@cassens.com,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.10 184/202] nvme-pci: add BOGUS_NID for Intel 0a54 device
 Date:   Mon, 23 Oct 2023 12:58:11 +0200
-Message-ID: <20231023104825.200976543@linuxfoundation.org>
+Message-ID: <20231023104831.832057816@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,115 +48,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 3b384cc74b00b5ac21d18e4c1efc3c1da5300971 ]
+commit 5c3f4066462a5f6cac04d3dd81c9f551fabbc6c7 upstream.
 
-Looks like the driver sleep pins configuration is unusable. Adding the
-sleep pins causes the usb phy to not respond. We need to use the default
-pins in probe, and only set sleep pins at phy_mdm6600_device_power_off().
+These ones claim cmic and nmic capable, so need special consideration to ignore
+their duplicate identifiers.
 
-As the modem can also be booted to a serial port mode for firmware
-flashing, let's make the pin changes limited to probe and remove. For
-probe, we get the default pins automatically. We only need to set the
-sleep pins in phy_mdm6600_device_power_off() to prevent the modem from
-waking up because the gpio line glitches.
-
-If it turns out that we need a separate state for phy_mdm6600_power_on()
-and phy_mdm6600_power_off(), we can use the pinctrl idle state.
-
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Fixes: 2ad2af081622 ("phy: mapphone-mdm6600: Improve phy related runtime PM calls")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20230913060433.48373-3-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217981
+Reported-by: welsh@cassens.com
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/motorola/phy-mapphone-mdm6600.c | 29 +++++++++------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ drivers/nvme/host/pci.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-index c3e2ab6a2a717..67802f9e40ba0 100644
---- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
-+++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-@@ -122,16 +122,10 @@ static int phy_mdm6600_power_on(struct phy *x)
- {
- 	struct phy_mdm6600 *ddata = phy_get_drvdata(x);
- 	struct gpio_desc *enable_gpio = ddata->ctrl_gpios[PHY_MDM6600_ENABLE];
--	int error;
- 
- 	if (!ddata->enabled)
- 		return -ENODEV;
- 
--	error = pinctrl_pm_select_default_state(ddata->dev);
--	if (error)
--		dev_warn(ddata->dev, "%s: error with default_state: %i\n",
--			 __func__, error);
--
- 	gpiod_set_value_cansleep(enable_gpio, 1);
- 
- 	/* Allow aggressive PM for USB, it's only needed for n_gsm port */
-@@ -160,11 +154,6 @@ static int phy_mdm6600_power_off(struct phy *x)
- 
- 	gpiod_set_value_cansleep(enable_gpio, 0);
- 
--	error = pinctrl_pm_select_sleep_state(ddata->dev);
--	if (error)
--		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
--			 __func__, error);
--
- 	return 0;
- }
- 
-@@ -456,6 +445,7 @@ static void phy_mdm6600_device_power_off(struct phy_mdm6600 *ddata)
- {
- 	struct gpio_desc *reset_gpio =
- 		ddata->ctrl_gpios[PHY_MDM6600_RESET];
-+	int error;
- 
- 	ddata->enabled = false;
- 	phy_mdm6600_cmd(ddata, PHY_MDM6600_CMD_BP_SHUTDOWN_REQ);
-@@ -471,6 +461,17 @@ static void phy_mdm6600_device_power_off(struct phy_mdm6600 *ddata)
- 	} else {
- 		dev_err(ddata->dev, "Timed out powering down\n");
- 	}
-+
-+	/*
-+	 * Keep reset gpio high with padconf internal pull-up resistor to
-+	 * prevent modem from waking up during deeper SoC idle states. The
-+	 * gpio bank lines can have glitches if not in the always-on wkup
-+	 * domain.
-+	 */
-+	error = pinctrl_pm_select_sleep_state(ddata->dev);
-+	if (error)
-+		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
-+			 __func__, error);
- }
- 
- static void phy_mdm6600_deferred_power_on(struct work_struct *work)
-@@ -571,12 +572,6 @@ static int phy_mdm6600_probe(struct platform_device *pdev)
- 	ddata->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, ddata);
- 
--	/* Active state selected in phy_mdm6600_power_on() */
--	error = pinctrl_pm_select_sleep_state(ddata->dev);
--	if (error)
--		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
--			 __func__, error);
--
- 	error = phy_mdm6600_init_lines(ddata);
- 	if (error)
- 		return error;
--- 
-2.42.0
-
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -3181,7 +3181,8 @@ static const struct pci_device_id nvme_i
+ 	{ PCI_VDEVICE(INTEL, 0x0a54),	/* Intel P4500/P4600 */
+ 		.driver_data = NVME_QUIRK_STRIPE_SIZE |
+ 				NVME_QUIRK_DEALLOCATE_ZEROES |
+-				NVME_QUIRK_IGNORE_DEV_SUBNQN, },
++				NVME_QUIRK_IGNORE_DEV_SUBNQN |
++				NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_VDEVICE(INTEL, 0x0a55),	/* Dell Express Flash P4600 */
+ 		.driver_data = NVME_QUIRK_STRIPE_SIZE |
+ 				NVME_QUIRK_DEALLOCATE_ZEROES, },
 
 
