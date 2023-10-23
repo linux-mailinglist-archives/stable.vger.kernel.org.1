@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95E4B7D34FE
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD65B7D33F6
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233247AbjJWLok (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:44:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46916 "EHLO
+        id S233298AbjJWLfn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234470AbjJWLoc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:32 -0400
+        with ESMTP id S234131AbjJWLfj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD6D10FC
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ECA4C433CA;
-        Mon, 23 Oct 2023 11:44:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928B4D7E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853D7C433C7;
+        Mon, 23 Oct 2023 11:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061465;
-        bh=EJntnXputJq2V1Q/CvlAuAb3Jbf1uK/SN42sMy48YQk=;
+        s=korg; t=1698060936;
+        bh=oDpsqnWcXfWUXRqxSpTd/rnvddJjJSq69hH+d73NdXI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uWYLM+MpmsbXZCLe07Z9hOWQu6UEaGJP2xeyhYZEqra55hUabF2DsWDdEr5M/g/Lt
-         dBi34udzH8VIWO6uyFFtaV3uvRcE6M3yjdH8t9Ovac1SsyyRje4HP+YNKqPlK+oNet
-         u/JeL9ABXwRvdyRkT6q/9XRlhpDrqciOzWZTMxMo=
+        b=sVNZYGPwr7qbHaWoOkpXFBYnzf93CGKkpPKkChaJa/8pQZf44zwJYJ5ZaNxJlRaI0
+         agmr80FkmOpEyW640kiafMPJDXULqtfNtssCqZZ5NASVDhGIMBpT2RepOzAvv4KXm1
+         n9hryY12fM1xdhjBzSATDjvB1buC3Lz0k0mOtTqA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Dharma Balasubiramani <dharma.b@microchip.com>,
-        William Breathitt Gray <william.gray@linaro.org>
-Subject: [PATCH 5.10 056/202] counter: microchip-tcb-capture: Fix the use of internal GCLK logic
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 006/137] Bluetooth: Fix a refcnt underflow problem for hci_conn
 Date:   Mon, 23 Oct 2023 12:56:03 +0200
-Message-ID: <20231023104828.204779556@linuxfoundation.org>
+Message-ID: <20231023104821.095660947@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,36 +49,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dharma Balasubiramani <dharma.b@microchip.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-commit df8fdd01c98b99d04915c04f3a5ce73f55456b7c upstream.
+commit c7f59461f5a78994613afc112cdd73688aef9076 upstream.
 
-As per the datasheet, the clock selection Bits 2:0 – TCCLKS[2:0] should
-be set to 0 while using the internal GCLK (TIMER_CLOCK1).
+Syzbot reports a warning as follows:
 
-Fixes: 106b104137fd ("counter: Add microchip TCB capture counter")
-Signed-off-by: Dharma Balasubiramani <dharma.b@microchip.com>
-Link: https://lore.kernel.org/r/20230905100835.315024-1-dharma.b@microchip.com
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+WARNING: CPU: 1 PID: 26946 at net/bluetooth/hci_conn.c:619
+hci_conn_timeout+0x122/0x210 net/bluetooth/hci_conn.c:619
+...
+Call Trace:
+ <TASK>
+ process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
+ process_scheduled_works kernel/workqueue.c:2703 [inline]
+ worker_thread+0x8b9/0x1290 kernel/workqueue.c:2784
+ kthread+0x33c/0x440 kernel/kthread.c:388
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+ </TASK>
+
+It is because the HCI_EV_SIMPLE_PAIR_COMPLETE event handler drops
+hci_conn directly without check Simple Pairing whether be enabled. But
+the Simple Pairing process can only be used if both sides have the
+support enabled in the host stack.
+
+Add hci_conn_ssp_enabled() for hci_conn in HCI_EV_IO_CAPA_REQUEST and
+HCI_EV_SIMPLE_PAIR_COMPLETE event handlers to fix the problem.
+
+Fixes: 0493684ed239 ("[Bluetooth] Disable disconnect timer during Simple Pairing")
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/microchip-tcb-capture.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_event.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/counter/microchip-tcb-capture.c
-+++ b/drivers/counter/microchip-tcb-capture.c
-@@ -111,7 +111,7 @@ static int mchp_tc_count_function_set(st
- 		priv->qdec_mode = 0;
- 		/* Set highest rate based on whether soc has gclk or not */
- 		bmr &= ~(ATMEL_TC_QDEN | ATMEL_TC_POSEN);
--		if (priv->tc_cfg->has_gclk)
-+		if (!priv->tc_cfg->has_gclk)
- 			cmr |= ATMEL_TC_TIMER_CLOCK2;
- 		else
- 			cmr |= ATMEL_TC_TIMER_CLOCK1;
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4725,7 +4725,7 @@ static void hci_io_capa_request_evt(stru
+ 	hci_dev_lock(hdev);
+ 
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+-	if (!conn)
++	if (!conn || !hci_conn_ssp_enabled(conn))
+ 		goto unlock;
+ 
+ 	hci_conn_hold(conn);
+@@ -4970,7 +4970,7 @@ static void hci_simple_pair_complete_evt
+ 	hci_dev_lock(hdev);
+ 
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+-	if (!conn)
++	if (!conn || !hci_conn_ssp_enabled(conn))
+ 		goto unlock;
+ 
+ 	/* Reset the authentication requirement to unknown */
 
 
