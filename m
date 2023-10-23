@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41E6F7D330D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2EBA7D3246
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233915AbjJWL0M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:26:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48154 "EHLO
+        id S229898AbjJWLS1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:18:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233922AbjJWL0L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:11 -0400
+        with ESMTP id S233731AbjJWLS0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 017F0A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39ECBC433C7;
-        Mon, 23 Oct 2023 11:26:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF5AC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDDE0C433C7;
+        Mon, 23 Oct 2023 11:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060368;
-        bh=FUeFBnuTXi7JnBxyLnskcj2VOqlTAy5/Ozm1Is3RZCk=;
+        s=korg; t=1698059904;
+        bh=7M8uAlThECaYBR+d6vHUSZAYKiNLs1FYSS6uVmODoKM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K9I/+M1xomMbgFOrpCoOL3Y82EXCeKEHEyYHGl5zl2EwUwdrUiAcAtcUPKjqye5FP
-         94+ENYP3+qDqQq/UdjYpkLzA7ZX45By7WebS32GCUWhFztnSawfD75cH8XLAwFZ++w
-         qkh7XxCyXNeMz+UQXyLz+hZnl50zxB8jQTsH+/jY=
+        b=JKd3zQ1TT3Ef/fxeH2Sr4UGJaJSl6m5ZQsYVoQP5R30DvWv1voYLE+GV6z52QahV+
+         BggOvUn7DFXsuS6exSkak6ZLLU5JJ6O3zn3KGJhiOqF8G3B7Vv9zck3ltOFwD73ZOz
+         3lSrjWpzvDnO34dqMd4oyPwOv3qYj3Oxtjh2nk9I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stanislaw Kardach <skardach@google.com>,
-        Sven van Ashbrook <svenva@chromium.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 149/196] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix SoCs can suspend
+        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
+        Ilya Dryomov <idryomov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 65/98] libceph: use kernel_connect()
 Date:   Mon, 23 Oct 2023 12:56:54 +0200
-Message-ID: <20231023104832.689828317@linuxfoundation.org>
+Message-ID: <20231023104815.888497086@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,171 +49,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven van Ashbrook <svenva@chromium.org>
+From: Jordan Rife <jrife@google.com>
 
-commit 1202d617e3d04c8d27a14ef30784a698c48170b3 upstream.
+[ Upstream commit 7563cf17dce0a875ba3d872acdc63a78ea344019 ]
 
-To improve the r/w performance of GL9763E, the current driver inhibits LPM
-negotiation while the device is active.
+Direct calls to ops->connect() can overwrite the address parameter when
+used in conjunction with BPF SOCK_ADDR hooks. Recent changes to
+kernel_connect() ensure that callers are insulated from such side
+effects. This patch wraps the direct call to ops->connect() with
+kernel_connect() to prevent unexpected changes to the address passed to
+ceph_tcp_connect().
 
-This prevents a large number of SoCs from suspending, notably x86 systems
-which commonly use S0ix as the suspend mechanism - for example, Intel
-Alder Lake and Raptor Lake processors.
+This change was originally part of a larger patch targeting the net tree
+addressing all instances of unprotected calls to ops->connect()
+throughout the kernel, but this change was split up into several patches
+targeting various trees.
 
-Failure description:
-1. Userspace initiates s2idle suspend (e.g. via writing to
-   /sys/power/state)
-2. This switches the runtime_pm device state to active, which disables
-   LPM negotiation, then calls the "regular" suspend callback
-3. With LPM negotiation disabled, the bus cannot enter low-power state
-4. On a large number of SoCs, if the bus not in a low-power state, S0ix
-   cannot be entered, which in turn prevents the SoC from entering
-   suspend.
-
-Fix by re-enabling LPM negotiation in the device's suspend callback.
-
-Suggested-by: Stanislaw Kardach <skardach@google.com>
-Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sven van Ashbrook <svenva@chromium.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20230831160055.v3.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/netdev/20230821100007.559638-1-jrife@google.com/
+Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Signed-off-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |  104 ++++++++++++++++++++++++---------------
- 1 file changed, 66 insertions(+), 38 deletions(-)
+ net/ceph/messenger.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -756,42 +756,6 @@ static u32 sdhci_gl9750_readl(struct sdh
- 	return value;
- }
+diff --git a/net/ceph/messenger.c b/net/ceph/messenger.c
+index 53ab8fc713a3e..7fd18e10755ec 100644
+--- a/net/ceph/messenger.c
++++ b/net/ceph/messenger.c
+@@ -487,8 +487,8 @@ static int ceph_tcp_connect(struct ceph_connection *con)
+ 	dout("connect %s\n", ceph_pr_addr(&con->peer_addr.in_addr));
  
--#ifdef CONFIG_PM_SLEEP
--static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
--{
--	struct sdhci_pci_slot *slot = chip->slots[0];
--
--	pci_free_irq_vectors(slot->chip->pdev);
--	gli_pcie_enable_msi(slot);
--
--	return sdhci_pci_resume_host(chip);
--}
--
--static int sdhci_cqhci_gli_resume(struct sdhci_pci_chip *chip)
--{
--	struct sdhci_pci_slot *slot = chip->slots[0];
--	int ret;
--
--	ret = sdhci_pci_gli_resume(chip);
--	if (ret)
--		return ret;
--
--	return cqhci_resume(slot->host->mmc);
--}
--
--static int sdhci_cqhci_gli_suspend(struct sdhci_pci_chip *chip)
--{
--	struct sdhci_pci_slot *slot = chip->slots[0];
--	int ret;
--
--	ret = cqhci_suspend(slot->host->mmc);
--	if (ret)
--		return ret;
--
--	return sdhci_suspend_host(slot->host);
--}
--#endif
--
- static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
- 					  struct mmc_ios *ios)
- {
-@@ -1040,6 +1004,70 @@ static int gl9763e_runtime_resume(struct
- }
- #endif
- 
-+#ifdef CONFIG_PM_SLEEP
-+static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
-+{
-+	struct sdhci_pci_slot *slot = chip->slots[0];
-+
-+	pci_free_irq_vectors(slot->chip->pdev);
-+	gli_pcie_enable_msi(slot);
-+
-+	return sdhci_pci_resume_host(chip);
-+}
-+
-+static int gl9763e_resume(struct sdhci_pci_chip *chip)
-+{
-+	struct sdhci_pci_slot *slot = chip->slots[0];
-+	int ret;
-+
-+	ret = sdhci_pci_gli_resume(chip);
-+	if (ret)
-+		return ret;
-+
-+	ret = cqhci_resume(slot->host->mmc);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Disable LPM negotiation to bring device back in sync
-+	 * with its runtime_pm state.
-+	 */
-+	gl9763e_set_low_power_negotiation(slot, false);
-+
-+	return 0;
-+}
-+
-+static int gl9763e_suspend(struct sdhci_pci_chip *chip)
-+{
-+	struct sdhci_pci_slot *slot = chip->slots[0];
-+	int ret;
-+
-+	/*
-+	 * Certain SoCs can suspend only with the bus in low-
-+	 * power state, notably x86 SoCs when using S0ix.
-+	 * Re-enable LPM negotiation to allow entering L1 state
-+	 * and entering system suspend.
-+	 */
-+	gl9763e_set_low_power_negotiation(slot, true);
-+
-+	ret = cqhci_suspend(slot->host->mmc);
-+	if (ret)
-+		goto err_suspend;
-+
-+	ret = sdhci_suspend_host(slot->host);
-+	if (ret)
-+		goto err_suspend_host;
-+
-+	return 0;
-+
-+err_suspend_host:
-+	cqhci_resume(slot->host->mmc);
-+err_suspend:
-+	gl9763e_set_low_power_negotiation(slot, false);
-+	return ret;
-+}
-+#endif
-+
- static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
- {
- 	struct pci_dev *pdev = slot->chip->pdev;
-@@ -1147,8 +1175,8 @@ const struct sdhci_pci_fixes sdhci_gl976
- 	.probe_slot	= gli_probe_slot_gl9763e,
- 	.ops            = &sdhci_gl9763e_ops,
- #ifdef CONFIG_PM_SLEEP
--	.resume		= sdhci_cqhci_gli_resume,
--	.suspend	= sdhci_cqhci_gli_suspend,
-+	.resume		= gl9763e_resume,
-+	.suspend	= gl9763e_suspend,
- #endif
- #ifdef CONFIG_PM
- 	.runtime_suspend = gl9763e_runtime_suspend,
+ 	con_sock_state_connecting(con);
+-	ret = sock->ops->connect(sock, (struct sockaddr *)&ss, sizeof(ss),
+-				 O_NONBLOCK);
++	ret = kernel_connect(sock, (struct sockaddr *)&ss, sizeof(ss),
++			     O_NONBLOCK);
+ 	if (ret == -EINPROGRESS) {
+ 		dout("connect %s EINPROGRESS sk_state = %u\n",
+ 		     ceph_pr_addr(&con->peer_addr.in_addr),
+-- 
+2.40.1
+
 
 
