@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48A5B7D321C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276FE7D342F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233630AbjJWLQv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:16:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54218 "EHLO
+        id S234168AbjJWLhV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233620AbjJWLQu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:50 -0400
+        with ESMTP id S234178AbjJWLhU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 201C8C1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C94EC433C7;
-        Mon, 23 Oct 2023 11:16:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0FE2D7E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D76DC433C8;
+        Mon, 23 Oct 2023 11:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059807;
-        bh=C4ZfornsxXPF0362fRDGOmGe3Tf/OtW/LjpNuWOCVho=;
+        s=korg; t=1698061037;
+        bh=vEgjS+lIiZZW+6Z61+R44mgiqwr1kI8M7Bo3Ye81Vqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mbfLbe+AxuRk/3zsroS3ICukk4etNDBxwIwZfLzrLaxqro49gQZekfhW2ieIeRN8o
-         aXVIjtV9XN3CMiZst6JSN6JZ2ztOpvj4eLb+U16ozSfvjTzPeOSBrMZsZI0BH7P2eH
-         qKap+6B8YJnBa8FbnMbupRqWG9ractYbcJE1ks3c=
+        b=17oM+8XucAudeyXiZuuTJSPQL9JH0DdNa3kmnq2QCfFTHmfGsn24anh2ezr1OeC5A
+         tAV3UmDWI4jboykOCsLrVCDSQkPX+/zViDFJvzoFD30fNuSy4ZvOhcN7n7J6HZJpLI
+         P+staNU3fFK/hUg2pBn4BPUUo0mOoTC7F8k2Jftg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthias Berndt <matthias_berndt@gmx.de>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 4.19 32/98] Input: xpad - add PXN V900 support
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 5.15 024/137] drm/i915: Retry gtt fault when out of fence registers
 Date:   Mon, 23 Oct 2023 12:56:21 +0200
-Message-ID: <20231023104814.726457093@linuxfoundation.org>
+Message-ID: <20231023104821.790399170@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -48,42 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Berndt <matthias_berndt@gmx.de>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit a65cd7ef5a864bdbbe037267c327786b7759d4c6 upstream.
+commit e339c6d628fe66c9b64bf31040a55770952aec57 upstream.
 
-Add VID and PID to the xpad_device table to allow driver to use the PXN
-V900 steering wheel, which is XTYPE_XBOX360 compatible in xinput mode.
+If we can't find a free fence register to handle a fault in the GMADR
+range just return VM_FAULT_NOPAGE without populating the PTE so that
+userspace will retry the access and trigger another fault. Eventually
+we should find a free fence and the fault will get properly handled.
 
-Signed-off-by: Matthias Berndt <matthias_berndt@gmx.de>
-Link: https://lore.kernel.org/r/4932699.31r3eYUQgx@fedora
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+A further improvement idea might be to reserve a fence (or one per CPU?)
+for the express purpose of handling faults without having to retry. But
+that would require some additional work.
+
+Looks like this may have gotten broken originally by
+commit 39965b376601 ("drm/i915: don't trash the gtt when running out of fences")
+as that changed the errno to -EDEADLK which wasn't handle by the gtt
+fault code either. But later in commit 2feeb52859fc ("drm/i915/gt: Fix
+-EDEADLK handling regression") I changed it again to -ENOBUFS as -EDEADLK
+was now getting used for the ww mutex dance. So this fix only makes
+sense after that last commit.
+
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9479
+Fixes: 2feeb52859fc ("drm/i915/gt: Fix -EDEADLK handling regression")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231012132801.16292-1-ville.syrjala@linux.intel.com
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+(cherry picked from commit 7f403caabe811b88ab0de3811ff3f4782c415761)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -266,6 +266,7 @@ static const struct xpad_device {
- 	{ 0x1038, 0x1430, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
- 	{ 0x1038, 0x1431, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
- 	{ 0x11c9, 0x55f0, "Nacon GC-100XF", 0, XTYPE_XBOX360 },
-+	{ 0x11ff, 0x0511, "PXN V900", 0, XTYPE_XBOX360 },
- 	{ 0x1209, 0x2882, "Ardwiino Controller", 0, XTYPE_XBOX360 },
- 	{ 0x12ab, 0x0004, "Honey Bee Xbox360 dancepad", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
- 	{ 0x12ab, 0x0301, "PDP AFTERGLOW AX.1", 0, XTYPE_XBOX360 },
-@@ -460,6 +461,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOXONE_VENDOR(0x0f0d),		/* Hori Controllers */
- 	XPAD_XBOX360_VENDOR(0x1038),		/* SteelSeries Controllers */
- 	XPAD_XBOX360_VENDOR(0x11c9),		/* Nacon GC100XF */
-+	XPAD_XBOX360_VENDOR(0x11ff),		/* PXN V900 */
- 	XPAD_XBOX360_VENDOR(0x1209),		/* Ardwiino Controllers */
- 	XPAD_XBOX360_VENDOR(0x12ab),		/* X-Box 360 dance pads */
- 	XPAD_XBOX360_VENDOR(0x1430),		/* RedOctane X-Box 360 controllers */
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -231,6 +231,7 @@ static vm_fault_t i915_error_to_vmf_faul
+ 	case 0:
+ 	case -EAGAIN:
+ 	case -ENOSPC: /* transient failure to evict? */
++	case -ENOBUFS: /* temporarily out of fences? */
+ 	case -ERESTARTSYS:
+ 	case -EINTR:
+ 	case -EBUSY:
 
 
