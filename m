@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 742EA7D333A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 873DB7D346C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:39:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232844AbjJWL2J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:28:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55502 "EHLO
+        id S234240AbjJWLjg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:39:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232817AbjJWL2I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:08 -0400
+        with ESMTP id S234241AbjJWLjf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54566E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 965A3C433C8;
-        Mon, 23 Oct 2023 11:28:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1333FDB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55331C433C7;
+        Mon, 23 Oct 2023 11:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060485;
-        bh=g9Alb47zBr1JvNFFiXXlzeOHwEDZlYS03mMHfBrNMvA=;
+        s=korg; t=1698061172;
+        bh=h3nMURajGr1NLG/1X7hEHSZw3LheNT93l/7cHJDQZVI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=baPAIeClgB9QSxDbBk2jPACMeU/mD9Ze7GZIpag2nq990l0HGxrC5fbDZJ2P8oKt6
-         WmrCptNvT8QgyhmbJKk2E/GQfPRXHRAXFZ8cYqcH9sLySE36sq3cxKxUgAiUrknVx/
-         6hoHDMQkKp2vnrfkMcr3N8Vxi23wlJnqRc3mGMuE=
+        b=nj1XXKvDgUTocva++xatZ4BZB9ehnAKaVOMMJsmNn+k7uaouKxoncRFxfOJAThYL1
+         m9zKCKApUKteZLM++FdwfC5JNtKW3s3KwPHXVq1hXckARcaxS/nTVEVfo1bglEGD9N
+         cXQitX4omq54Al4j7nIA9a65bOrBAHZdZJsEHVpg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev,
+        Renan Guilherme Lebre Ramos <japareaggae@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/196] gpio: vf610: mask the gpio irq in system suspend and support wakeup
-Date:   Mon, 23 Oct 2023 12:57:32 +0200
-Message-ID: <20231023104833.664598890@linuxfoundation.org>
+Subject: [PATCH 5.15 096/137] platform/x86: touchscreen_dmi: Add info for the Positivo C4128B
+Date:   Mon, 23 Oct 2023 12:57:33 +0200
+Message-ID: <20231023104824.117468372@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,46 +50,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Renan Guilherme Lebre Ramos <japareaggae@gmail.com>
 
-[ Upstream commit 430232619791e7de95191f2cd8ebaa4c380d17d0 ]
+[ Upstream commit aa7dcba3bae6869122828b144a3cfd231718089d ]
 
-Add flag IRQCHIP_MASK_ON_SUSPEND to make sure gpio irq is masked on
-suspend, if lack this flag, current irq arctitecture will not mask
-the irq, and these unmasked gpio irq will wrongly wakeup the system
-even they are not config as wakeup source.
+Add information for the Positivo C4128B, a notebook/tablet convertible.
 
-Also add flag IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND to make sure the gpio
-irq which is configed as wakeup source can work as expect.
-
-Fixes: 7f2691a19627 ("gpio: vf610: add gpiolib/IRQ chip driver for Vybrid")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://github.com/onitake/gsl-firmware/pull/217
+Signed-off-by: Renan Guilherme Lebre Ramos <japareaggae@gmail.com>
+Link: https://lore.kernel.org/r/20231004235900.426240-1-japareaggae@gmail.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-vf610.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/platform/x86/touchscreen_dmi.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
-index e8e34d648eb2a..314dfaa633857 100644
---- a/drivers/gpio/gpio-vf610.c
-+++ b/drivers/gpio/gpio-vf610.c
-@@ -247,7 +247,8 @@ static const struct irq_chip vf610_irqchip = {
- 	.irq_unmask = vf610_gpio_irq_unmask,
- 	.irq_set_type = vf610_gpio_irq_set_type,
- 	.irq_set_wake = vf610_gpio_irq_set_wake,
--	.flags = IRQCHIP_IMMUTABLE,
-+	.flags = IRQCHIP_IMMUTABLE | IRQCHIP_MASK_ON_SUSPEND
-+			| IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND,
- 	GPIOCHIP_IRQ_RESOURCE_HELPERS,
+diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
+index 90aee8b87bbe0..f129e29b295d9 100644
+--- a/drivers/platform/x86/touchscreen_dmi.c
++++ b/drivers/platform/x86/touchscreen_dmi.c
+@@ -743,6 +743,21 @@ static const struct ts_dmi_data pipo_w11_data = {
+ 	.properties	= pipo_w11_props,
  };
  
++static const struct property_entry positivo_c4128b_props[] = {
++	PROPERTY_ENTRY_U32("touchscreen-min-x", 4),
++	PROPERTY_ENTRY_U32("touchscreen-min-y", 13),
++	PROPERTY_ENTRY_U32("touchscreen-size-x", 1915),
++	PROPERTY_ENTRY_U32("touchscreen-size-y", 1269),
++	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-positivo-c4128b.fw"),
++	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
++	{ }
++};
++
++static const struct ts_dmi_data positivo_c4128b_data = {
++	.acpi_name	= "MSSL1680:00",
++	.properties	= positivo_c4128b_props,
++};
++
+ static const struct property_entry pov_mobii_wintab_p800w_v20_props[] = {
+ 	PROPERTY_ENTRY_U32("touchscreen-min-x", 32),
+ 	PROPERTY_ENTRY_U32("touchscreen-min-y", 16),
+@@ -1442,6 +1457,14 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
+ 			DMI_MATCH(DMI_BIOS_VERSION, "MOMO.G.WI71C.MABMRBA02"),
+ 		},
+ 	},
++	{
++		/* Positivo C4128B */
++		.driver_data = (void *)&positivo_c4128b_data,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "C4128B-1"),
++		},
++	},
+ 	{
+ 		/* Point of View mobii wintab p800w (v2.0) */
+ 		.driver_data = (void *)&pov_mobii_wintab_p800w_v20_data,
 -- 
-2.42.0
+2.40.1
 
 
 
