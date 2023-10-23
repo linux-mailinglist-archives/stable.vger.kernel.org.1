@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18D787D3267
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A7B7D3131
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233783AbjJWLTl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:19:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44538 "EHLO
+        id S233363AbjJWLGn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:06:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233780AbjJWLTk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:40 -0400
+        with ESMTP id S233373AbjJWLGn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:06:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 923BCDC
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A1DC433C7;
-        Mon, 23 Oct 2023 11:19:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 424EAD7B
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:06:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897FAC433C7;
+        Mon, 23 Oct 2023 11:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059978;
-        bh=phHGJbC9UHq+f3alNwn5P3+n13CSya2gNCwm31dAiLk=;
+        s=korg; t=1698059200;
+        bh=zTYUSxrJjsG7BB3M4o62av2eS3ZcXFS5Z1sfskXR8RM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KzgYjRPmLsMFCfwrd+u3txs+X7gMPjL2ciiaOncwcNoUT8LDSEM3Mgsr+FjteokGF
-         1Lr8kh5tna7FnIP/dc7sT7aphs+BQBbaTELCxBeSeAWb5KCKHYXm18ZHoNOyhU/j/T
-         +MueXeyY2OtSgVDjBbxBxV4fMd1REZVAxtIqi6KM=
+        b=ArdqoAKYjL6CG8AASuR4wFvbfkI6gkwc4gtSOTOmHB0j+X96sj0IiJb4I5o6Afm5l
+         RJeH6oSjztG9fPZ0o2wlOt2s0AoBf6gFkZnNA/M4ytNJvBdFmeAGDedSlFLkghpAhw
+         Icywlo/yrieQLn2AkG14ACk82WzqvVgTNHmhvU38=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?=E9=BB=84=E6=80=9D=E8=81=AA?= <huangsicong@iie.ac.cn>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 018/196] nfc: nci: fix possible NULL pointer dereference in send_acknowledge()
-Date:   Mon, 23 Oct 2023 12:54:43 +0200
-Message-ID: <20231023104829.004859981@linuxfoundation.org>
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Carl Philipp Klemm <philipp@uvos.xyz>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 098/241] ARM: dts: ti: omap: Fix noisy serial with overrun-throttle-ms for mapphone
+Date:   Mon, 23 Oct 2023 12:54:44 +0200
+Message-ID: <20231023104836.293424219@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,39 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Tony Lindgren <tony@atomide.com>
 
-commit 7937609cd387246aed994e81aa4fa951358fba41 upstream.
+[ Upstream commit 5ad37b5e30433afa7a5513e3eb61f69fa0976785 ]
 
-Handle memory allocation failure from nci_skb_alloc() (calling
-alloc_skb()) to avoid possible NULL pointer dereference.
+On mapphone devices we may get lots of noise on the micro-USB port in debug
+uart mode until the phy-cpcap-usb driver probes. Let's limit the noise by
+using overrun-throttle-ms.
 
-Reported-by: 黄思聪 <huangsicong@iie.ac.cn>
-Fixes: 391d8a2da787 ("NFC: Add NCI over SPI receive")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231013184129.18738-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that there is also a related separate issue where the charger cable
+connected may cause random sysrq requests until phy-cpcap-usb probes that
+still remains.
+
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Carl Philipp Klemm <philipp@uvos.xyz>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/spi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/ti/omap/motorola-mapphone-common.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/nfc/nci/spi.c
-+++ b/net/nfc/nci/spi.c
-@@ -151,6 +151,8 @@ static int send_acknowledge(struct nci_s
- 	int ret;
+diff --git a/arch/arm/boot/dts/ti/omap/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/ti/omap/motorola-mapphone-common.dtsi
+index d69f0f4b4990d..d2d516d113baa 100644
+--- a/arch/arm/boot/dts/ti/omap/motorola-mapphone-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/motorola-mapphone-common.dtsi
+@@ -640,6 +640,7 @@ &uart1 {
+ &uart3 {
+ 	interrupts-extended = <&wakeupgen GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH
+ 			       &omap4_pmx_core 0x17c>;
++	overrun-throttle-ms = <500>;
+ };
  
- 	skb = nci_skb_alloc(nspi->ndev, 0, GFP_KERNEL);
-+	if (!skb)
-+		return -ENOMEM;
- 
- 	/* add the NCI SPI header to the start of the buffer */
- 	hdr = skb_push(skb, NCI_SPI_HDR_LEN);
+ &uart4 {
+-- 
+2.40.1
+
 
 
