@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AB037D31E9
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D56C7D307B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233690AbjJWLOh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:14:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47038 "EHLO
+        id S230033AbjJWK7N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 06:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233688AbjJWLOh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:37 -0400
+        with ESMTP id S229987AbjJWK7M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F42392
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E742C433C9;
-        Mon, 23 Oct 2023 11:14:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B76EED7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EDDC433CA;
+        Mon, 23 Oct 2023 10:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059675;
-        bh=mrWc4PeitKIygLqqYT5L1avyL/2fy1VJQFdsl74/h40=;
+        s=korg; t=1698058750;
+        bh=O3mbqYE7nbvTezNo2wXsUM7cWK8Wd/3/mdbcR8n83qQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YnSqHpDaDGD1utRMgDofCTBT+KP4N4aASEJar4auO3X3qoqgH+4me2eoFwahoU6It
-         uioSLgnILlxcxZz+xQa9cvkNFVpzWKokEXIcDE8zehbItJzJm53eQORyq1dGQJheV9
-         RTirKcv7zhk1/1HfEjrduNn9CuVhN6L79dUxTgqE=
+        b=F1QCdRYS2pfXNM4JDePxS7io5TkJ8yLV5RvaA9PEblDEEYIFKE51xMM+LCk/mveSZ
+         jPIm6tZPmsBZQke7g3i32PSF1mzUpnZN78hs3EzZjXJjcus6xuoOPFEYiYQJ+7Zhkg
+         oZLi4Gg9Pd+faUnthveaWJ68G/luxaD0DvVYABMc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Simon Horman <horms@kernel.org>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 15/98] ixgbe: fix crash with empty VF macvlan list
+        patches@lists.linux.dev, Phil Elwell <phil@raspberrypi.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4.14 14/66] iio: pressure: bmp280: Fix NULL pointer exception
 Date:   Mon, 23 Oct 2023 12:56:04 +0200
-Message-ID: <20231023104814.120943940@linuxfoundation.org>
+Message-ID: <20231023104811.320665489@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Phil Elwell <phil@raspberrypi.com>
 
-[ Upstream commit 7b5add9af567c44e12196107f0fe106e194034fd ]
+commit 85dfb43bf69281adb1f345dfd9a39faf2e5a718d upstream.
 
-The adapter->vf_mvs.l list needs to be initialized even if the list is
-empty.  Otherwise it will lead to crashes.
+The bmp085 EOC IRQ support is optional, but the driver's common probe
+function queries the IRQ properties whether or not it exists, which
+can trigger a NULL pointer exception. Avoid any exception by making
+the query conditional on the possession of a valid IRQ.
 
-Fixes: a1cbb15c1397 ("ixgbe: Add macvlan support for VF")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Link: https://lore.kernel.org/r/ZSADNdIw8zFx1xw2@kadam
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: aae953949651 ("iio: pressure: bmp280: add support for BMP085 EOC interrupt")
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20230811155829.51208-1-phil@raspberrypi.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iio/pressure/bmp280-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-index 6055a4917ff69..9b463ef62be55 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
-@@ -28,6 +28,9 @@ static inline void ixgbe_alloc_vf_macvlans(struct ixgbe_adapter *adapter,
- 	struct vf_macvlans *mv_list;
- 	int num_vf_macvlans, i;
- 
-+	/* Initialize list of VF macvlans */
-+	INIT_LIST_HEAD(&adapter->vf_mvs.l);
-+
- 	num_vf_macvlans = hw->mac.num_rar_entries -
- 			  (IXGBE_MAX_PF_MACVLANS + 1 + num_vfs);
- 	if (!num_vf_macvlans)
-@@ -36,8 +39,6 @@ static inline void ixgbe_alloc_vf_macvlans(struct ixgbe_adapter *adapter,
- 	mv_list = kcalloc(num_vf_macvlans, sizeof(struct vf_macvlans),
- 			  GFP_KERNEL);
- 	if (mv_list) {
--		/* Initialize list of VF macvlans */
--		INIT_LIST_HEAD(&adapter->vf_mvs.l);
- 		for (i = 0; i < num_vf_macvlans; i++) {
- 			mv_list[i].vf = -1;
- 			mv_list[i].free = true;
--- 
-2.40.1
-
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -1050,7 +1050,7 @@ int bmp280_common_probe(struct device *d
+ 	 * however as it happens, the BMP085 shares the chip ID of BMP180
+ 	 * so we look for an IRQ if we have that.
+ 	 */
+-	if (irq > 0 || (chip_id  == BMP180_CHIP_ID)) {
++	if (irq > 0 && (chip_id  == BMP180_CHIP_ID)) {
+ 		ret = bmp085_fetch_eoc_irq(dev, name, irq, data);
+ 		if (ret)
+ 			goto out_disable_vdda;
 
 
