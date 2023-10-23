@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C0667D335A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54A5B7D31B6
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234008AbjJWL31 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:29:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59736 "EHLO
+        id S233622AbjJWLMO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:12:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234017AbjJWL3X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:29:23 -0400
+        with ESMTP id S233618AbjJWLMN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A39ABDF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:29:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD51C433C9;
-        Mon, 23 Oct 2023 11:29:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92B4999
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D417EC433C7;
+        Mon, 23 Oct 2023 11:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060561;
-        bh=0DrDmamXYjc/gRiBrB8n019xDtOfxloEuWZ5G0MF/VE=;
+        s=korg; t=1698059531;
+        bh=hagnu/DQnbWHjOzlAc5m1PCotn8o6G9Ob8JYNQAvTF4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AL5rynpVcJNfXPI29sIE1sK1UtKaoihyjHDM84M6W2L6CmG49FVTL4bfVVms9Fiu2
-         FdOZ64ahuCwz7R0bpAzCW5nPSTk7+jbtm7fMgxmD3PVzkup2dgL8dNDfgeH3Ja/NZD
-         QEPEi7l6APMG2bH4Rudb8fL+opemZXsC+8LC0E4Y=
+        b=XNMopWdyI5g79Zs7VbM8M4SaPFdoBRNFD3TPjQVHUZtOJRgWH13plLOP2awgCapyG
+         /IhNCrhGystZKN7WJzenkBq3tMQQxm/WV/hoIR46NQr6Wp/ZRsmboj17LAsVoAlf6u
+         xyBgmiXfJovKG/GYVCaFLyAQUlk5KoIbQh4KqdwU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 009/123] drm/msm/dsi: skip the wait for video mode done if not applicable
+        patches@lists.linux.dev, Olga Kornievskaia <kolga@netapp.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 6.5 181/241] NFSv4.1: fixup use EXCHGID4_FLAG_USE_PNFS_DS for DS server
 Date:   Mon, 23 Oct 2023 12:56:07 +0200
-Message-ID: <20231023104818.044606690@linuxfoundation.org>
+Message-ID: <20231023104838.294987634@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,69 +48,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit ab483e3adcc178254eb1ce0fbdfbea65f86f1006 ]
+commit 379e4adfddd6a2f95a4f2029b8ddcbacf92b21f9 upstream.
 
-dsi_wait4video_done() API waits for the DSI video mode engine to
-become idle so that we can transmit the DCS commands in the
-beginning of BLLP. However, with the current sequence, the MDP
-timing engine is turned on after the panel's pre_enable() callback
-which can send out the DCS commands needed to power up the panel.
+This patches fixes commit 51d674a5e488 "NFSv4.1: use
+EXCHGID4_FLAG_USE_PNFS_DS for DS server", purpose of that
+commit was to mark EXCHANGE_ID to the DS with the appropriate
+flag.
 
-During those cases, this API will always timeout and print out the
-error spam leading to long bootup times and log flooding.
+However, connection to MDS can return both EXCHGID4_FLAG_USE_PNFS_DS
+and EXCHGID4_FLAG_USE_PNFS_MDS set but previous patch would only
+remember the USE_PNFS_DS and for the 2nd EXCHANGE_ID send that
+to the MDS.
 
-Fix this by checking if the DSI video engine was actually busy before
-waiting for it to become idle otherwise this is a redundant wait.
+Instead, just mark the pnfs path exclusively.
 
-changes in v2:
-	- move the reg read below the video mode check
-	- minor fixes in commit text
-
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/34
-Fixes: a689554ba6ed ("drm/msm: Initial add DSI connector support")
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/557853/
-Link: https://lore.kernel.org/r/20230915204426.19011-1-quic_abhinavk@quicinc.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 51d674a5e488 ("NFSv4.1: use EXCHGID4_FLAG_USE_PNFS_DS for DS server")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/nfs/nfs4proc.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index c59764f156f94..419cad31830ea 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -1051,9 +1051,21 @@ static void dsi_wait4video_done(struct msm_dsi_host *msm_host)
- 
- static void dsi_wait4video_eng_busy(struct msm_dsi_host *msm_host)
- {
-+	u32 data;
-+
- 	if (!(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO))
- 		return;
- 
-+	data = dsi_read(msm_host, REG_DSI_STATUS0);
-+
-+	/* if video mode engine is not busy, its because
-+	 * either timing engine was not turned on or the
-+	 * DSI controller has finished transmitting the video
-+	 * data already, so no need to wait in those cases
-+	 */
-+	if (!(data & DSI_STATUS0_VIDEO_MODE_ENGINE_BUSY))
-+		return;
-+
- 	if (msm_host->power_on && msm_host->enabled) {
- 		dsi_wait4video_done(msm_host);
- 		/* delay 4 ms to skip BLLP */
--- 
-2.40.1
-
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -8870,8 +8870,6 @@ static int _nfs4_proc_exchange_id(struct
+ 	/* Save the EXCHANGE_ID verifier session trunk tests */
+ 	memcpy(clp->cl_confirm.data, argp->verifier.data,
+ 	       sizeof(clp->cl_confirm.data));
+-	if (resp->flags & EXCHGID4_FLAG_USE_PNFS_DS)
+-		set_bit(NFS_CS_DS, &clp->cl_flags);
+ out:
+ 	trace_nfs4_exchange_id(clp, status);
+ 	rpc_put_task(task);
 
 
