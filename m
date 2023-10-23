@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 628C47D32A0
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E0B87D3190
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233831AbjJWLWR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:22:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48014 "EHLO
+        id S229996AbjJWLKi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:10:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233837AbjJWLWQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:16 -0400
+        with ESMTP id S232934AbjJWLKg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D51BFD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264BBC433C9;
-        Mon, 23 Oct 2023 11:22:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DFE3DC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA96C433C8;
+        Mon, 23 Oct 2023 11:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060133;
-        bh=jjpZ8uQqPhd86TOA7h+//AQOsSg204j8D01BQue6rPw=;
+        s=korg; t=1698059432;
+        bh=Ar0La9h1vNLBvctzfDrDl0zNBH3vk19WAoiUa4OdBPQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c6OdZ6KbW1s1h/TRZg109kPfPI7sh4qkB81Dp/Btk8THwHaf1+Tda6BtcKzW+SA1f
-         sq4v9I+5gZ42P6bqh8Vr2yG1Ghlu3IBBWxo0gxzyjNfvwYP1cmrnwdnItbhzyAT4aG
-         78+axJA67zEhJiWsTAGDbw3V7JRA7kfOK+Z6+C58=
+        b=xylGSTGXV0cWpdQCfzUQClVRTM+j00OG4xvfh+X225QM5wcTetRQs5c80jtqLpy0N
+         WFiM1GQNdETXWcmO/cLAaLKniWHtCNz+OxPH0dBAKvVP+rAx8tZgkOVw9lJtUucLKO
+         XCIQVuY2xbe9tsY+yF/2eumDain/hUIvIUi1B5Xc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 069/196] netlink: Correct offload_xstats size
-Date:   Mon, 23 Oct 2023 12:55:34 +0200
-Message-ID: <20231023104830.495665583@linuxfoundation.org>
+        patches@lists.linux.dev, Shay Drory <shayd@nvidia.com>,
+        Mark Bloch <mbloch@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 149/241] net/mlx5: E-switch, register event handler before arming the event
+Date:   Mon, 23 Oct 2023 12:55:35 +0200
+Message-ID: <20231023104837.500867396@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,92 +50,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Paasch <cpaasch@apple.com>
+From: Shay Drory <shayd@nvidia.com>
 
-commit 503930f8e113edc86f92b767efb4ea57bdffffb2 upstream.
+[ Upstream commit 7624e58a8b3a251e3e5108b32f2183b34453db32 ]
 
-rtnl_offload_xstats_get_size_hw_s_info_one() conditionalizes the
-size-computation for IFLA_OFFLOAD_XSTATS_HW_S_INFO_USED based on whether
-or not the device has offload_xstats enabled.
+Currently, mlx5 is registering event handler for vport context change
+event some time after arming the event. this can lead to missing an
+event, which will result in wrong rules in the FDB.
+Hence, register the event handler before arming the event.
 
-However, rtnl_offload_xstats_fill_hw_s_info_one() is adding the u8 for
-that field uncondtionally.
+This solution is valid since FW is sending vport context change event
+only on vports which SW armed, and SW arming the vport when enabling
+it, which is done after the FDB has been created.
 
-syzkaller triggered a WARNING in rtnl_stats_get due to this:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 754 at net/core/rtnetlink.c:5982 rtnl_stats_get+0x2f4/0x300
-Modules linked in:
-CPU: 0 PID: 754 Comm: syz-executor148 Not tainted 6.6.0-rc2-g331b78eb12af #45
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-RIP: 0010:rtnl_stats_get+0x2f4/0x300 net/core/rtnetlink.c:5982
-Code: ff ff 89 ee e8 7d 72 50 ff 83 fd a6 74 17 e8 33 6e 50 ff 4c 89 ef be 02 00 00 00 e8 86 00 fa ff e9 7b fe ff ff e8 1c 6e 50 ff <0f> 0b eb e5 e8 73 79 7b 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc900006837c0 EFLAGS: 00010293
-RAX: ffffffff81cf7f24 RBX: ffff8881015d9000 RCX: ffff888101815a00
-RDX: 0000000000000000 RSI: 00000000ffffffa6 RDI: 00000000ffffffa6
-RBP: 00000000ffffffa6 R08: ffffffff81cf7f03 R09: 0000000000000001
-R10: ffff888101ba47b9 R11: ffff888101815a00 R12: ffff8881017dae00
-R13: ffff8881017dad00 R14: ffffc90000683ab8 R15: ffffffff83c1f740
-FS:  00007fbc22dbc740(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000046 CR3: 000000010264e003 CR4: 0000000000170ef0
-Call Trace:
- <TASK>
- rtnetlink_rcv_msg+0x677/0x710 net/core/rtnetlink.c:6480
- netlink_rcv_skb+0xea/0x1c0 net/netlink/af_netlink.c:2545
- netlink_unicast+0x430/0x500 net/netlink/af_netlink.c:1342
- netlink_sendmsg+0x4fc/0x620 net/netlink/af_netlink.c:1910
- sock_sendmsg+0xa8/0xd0 net/socket.c:730
- ____sys_sendmsg+0x22a/0x320 net/socket.c:2541
- ___sys_sendmsg+0x143/0x190 net/socket.c:2595
- __x64_sys_sendmsg+0xd8/0x150 net/socket.c:2624
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x47/0xa0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-RIP: 0033:0x7fbc22e8d6a9
-Code: 5c c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 4f 37 0d 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffc4320e778 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00000000004007d0 RCX: 00007fbc22e8d6a9
-RDX: 0000000000000000 RSI: 0000000020000000 RDI: 0000000000000003
-RBP: 0000000000000001 R08: 0000000000000000 R09: 00000000004007d0
-R10: 0000000000000008 R11: 0000000000000246 R12: 00007ffc4320e898
-R13: 00007ffc4320e8a8 R14: 00000000004004a0 R15: 00007fbc22fa5a80
- </TASK>
----[ end trace 0000000000000000 ]---
-
-Which didn't happen prior to commit bf9f1baa279f ("net: add dedicated
-kmem_cache for typical/small skb->head") as the skb always was large
-enough.
-
-Fixes: 0e7788fd7622 ("net: rtnetlink: Add UAPI for obtaining L3 offload xstats")
-Signed-off-by: Christoph Paasch <cpaasch@apple.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/20231013041448.8229-1-cpaasch@apple.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6933a9379559 ("net/mlx5: E-Switch, Use async events chain")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c   | 17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -5394,13 +5394,11 @@ static unsigned int
- rtnl_offload_xstats_get_size_hw_s_info_one(const struct net_device *dev,
- 					   enum netdev_offload_xstats_type type)
- {
--	bool enabled = netdev_offload_xstats_enabled(dev, type);
--
- 	return nla_total_size(0) +
- 		/* IFLA_OFFLOAD_XSTATS_HW_S_INFO_REQUEST */
- 		nla_total_size(sizeof(u8)) +
- 		/* IFLA_OFFLOAD_XSTATS_HW_S_INFO_USED */
--		(enabled ? nla_total_size(sizeof(u8)) : 0) +
-+		nla_total_size(sizeof(u8)) +
- 		0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 6e9b1b183190d..51afb97b9e452 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -1022,11 +1022,8 @@ const u32 *mlx5_esw_query_functions(struct mlx5_core_dev *dev)
+ 	return ERR_PTR(err);
  }
  
+-static void mlx5_eswitch_event_handlers_register(struct mlx5_eswitch *esw)
++static void mlx5_eswitch_event_handler_register(struct mlx5_eswitch *esw)
+ {
+-	MLX5_NB_INIT(&esw->nb, eswitch_vport_event, NIC_VPORT_CHANGE);
+-	mlx5_eq_notifier_register(esw->dev, &esw->nb);
+-
+ 	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev)) {
+ 		MLX5_NB_INIT(&esw->esw_funcs.nb, mlx5_esw_funcs_changed_handler,
+ 			     ESW_FUNCTIONS_CHANGED);
+@@ -1034,13 +1031,11 @@ static void mlx5_eswitch_event_handlers_register(struct mlx5_eswitch *esw)
+ 	}
+ }
+ 
+-static void mlx5_eswitch_event_handlers_unregister(struct mlx5_eswitch *esw)
++static void mlx5_eswitch_event_handler_unregister(struct mlx5_eswitch *esw)
+ {
+ 	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev))
+ 		mlx5_eq_notifier_unregister(esw->dev, &esw->esw_funcs.nb);
+ 
+-	mlx5_eq_notifier_unregister(esw->dev, &esw->nb);
+-
+ 	flush_workqueue(esw->work_queue);
+ }
+ 
+@@ -1419,6 +1414,9 @@ int mlx5_eswitch_enable_locked(struct mlx5_eswitch *esw, int num_vfs)
+ 
+ 	mlx5_eswitch_update_num_of_vfs(esw, num_vfs);
+ 
++	MLX5_NB_INIT(&esw->nb, eswitch_vport_event, NIC_VPORT_CHANGE);
++	mlx5_eq_notifier_register(esw->dev, &esw->nb);
++
+ 	if (esw->mode == MLX5_ESWITCH_LEGACY) {
+ 		err = esw_legacy_enable(esw);
+ 	} else {
+@@ -1431,7 +1429,7 @@ int mlx5_eswitch_enable_locked(struct mlx5_eswitch *esw, int num_vfs)
+ 
+ 	esw->fdb_table.flags |= MLX5_ESW_FDB_CREATED;
+ 
+-	mlx5_eswitch_event_handlers_register(esw);
++	mlx5_eswitch_event_handler_register(esw);
+ 
+ 	esw_info(esw->dev, "Enable: mode(%s), nvfs(%d), necvfs(%d), active vports(%d)\n",
+ 		 esw->mode == MLX5_ESWITCH_LEGACY ? "LEGACY" : "OFFLOADS",
+@@ -1558,7 +1556,8 @@ void mlx5_eswitch_disable_locked(struct mlx5_eswitch *esw)
+ 	 */
+ 	mlx5_esw_mode_change_notify(esw, MLX5_ESWITCH_LEGACY);
+ 
+-	mlx5_eswitch_event_handlers_unregister(esw);
++	mlx5_eq_notifier_unregister(esw->dev, &esw->nb);
++	mlx5_eswitch_event_handler_unregister(esw);
+ 
+ 	esw_info(esw->dev, "Disable: mode(%s), nvfs(%d), necvfs(%d), active vports(%d)\n",
+ 		 esw->mode == MLX5_ESWITCH_LEGACY ? "LEGACY" : "OFFLOADS",
+-- 
+2.40.1
+
 
 
