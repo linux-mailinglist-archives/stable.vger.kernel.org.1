@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CCFF67D33F7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AB037D31E9
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234038AbjJWLfo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:35:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51070 "EHLO
+        id S233690AbjJWLOh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:14:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234139AbjJWLfm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:42 -0400
+        with ESMTP id S233688AbjJWLOh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3622DE4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D59C433C8;
-        Mon, 23 Oct 2023 11:35:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F42392
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E742C433C9;
+        Mon, 23 Oct 2023 11:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060939;
-        bh=x+OdykWeD72AMWaydTHPjY7xzhw9/oFZzkPcz9w0uoo=;
+        s=korg; t=1698059675;
+        bh=mrWc4PeitKIygLqqYT5L1avyL/2fy1VJQFdsl74/h40=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2bXILGrjED2K5Auc7gyYyjasujEU7uojbp4/cJXkBFgqnpbE0vZCJlml2o++xLccH
-         E3vPX6LBAG5/KOBHVtqf2ZAKnhbcV2xOOIW9Ohy1dDoyt+OAg1luOUsSRtJMQyEwhB
-         EgLWvKeAzYAJqZLZUCzIvOuMJdI2oWAHbX61gCuI=
+        b=YnSqHpDaDGD1utRMgDofCTBT+KP4N4aASEJar4auO3X3qoqgH+4me2eoFwahoU6It
+         uioSLgnILlxcxZz+xQa9cvkNFVpzWKokEXIcDE8zehbItJzJm53eQORyq1dGQJheV9
+         RTirKcv7zhk1/1HfEjrduNn9CuVhN6L79dUxTgqE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.15 007/137] Bluetooth: vhci: Fix race when opening vhci device
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Simon Horman <horms@kernel.org>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 15/98] ixgbe: fix crash with empty VF macvlan list
 Date:   Mon, 23 Oct 2023 12:56:04 +0200
-Message-ID: <20231023104821.133855494@linuxfoundation.org>
+Message-ID: <20231023104814.120943940@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,55 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 92d4abd66f7080075793970fc8f241239e58a9e7 upstream.
+[ Upstream commit 7b5add9af567c44e12196107f0fe106e194034fd ]
 
-When the vhci device is opened in the two-step way, i.e.: open device
-then write a vendor packet with requested controller type, the device
-shall respond with a vendor packet which includes HCI index of created
-interface.
+The adapter->vf_mvs.l list needs to be initialized even if the list is
+empty.  Otherwise it will lead to crashes.
 
-When the virtual HCI is created, the host sends a reset request to the
-controller. This request is processed by the vhci_send_frame() function.
-However, this request is send by a different thread, so it might happen
-that this HCI request will be received before the vendor response is
-queued in the read queue. This results in the HCI vendor response and
-HCI reset request inversion in the read queue which leads to improper
-behavior of btvirt:
-
-> dmesg
-[1754256.640122] Bluetooth: MGMT ver 1.22
-[1754263.023806] Bluetooth: MGMT ver 1.22
-[1754265.043775] Bluetooth: hci1: Opcode 0x c03 failed: -110
-
-In order to synchronize vhci two-step open/setup process with virtual
-HCI initialization, this patch adds internal lock when queuing data in
-the vhci_send_frame() function.
-
-Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a1cbb15c1397 ("ixgbe: Add macvlan support for VF")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Link: https://lore.kernel.org/r/ZSADNdIw8zFx1xw2@kadam
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_vhci.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/bluetooth/hci_vhci.c
-+++ b/drivers/bluetooth/hci_vhci.c
-@@ -67,7 +67,10 @@ static int vhci_send_frame(struct hci_de
- 	struct vhci_data *data = hci_get_drvdata(hdev);
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+index 6055a4917ff69..9b463ef62be55 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_sriov.c
+@@ -28,6 +28,9 @@ static inline void ixgbe_alloc_vf_macvlans(struct ixgbe_adapter *adapter,
+ 	struct vf_macvlans *mv_list;
+ 	int num_vf_macvlans, i;
  
- 	memcpy(skb_push(skb, 1), &hci_skb_pkt_type(skb), 1);
++	/* Initialize list of VF macvlans */
++	INIT_LIST_HEAD(&adapter->vf_mvs.l);
 +
-+	mutex_lock(&data->open_mutex);
- 	skb_queue_tail(&data->readq, skb);
-+	mutex_unlock(&data->open_mutex);
- 
- 	wake_up_interruptible(&data->read_wait);
- 	return 0;
+ 	num_vf_macvlans = hw->mac.num_rar_entries -
+ 			  (IXGBE_MAX_PF_MACVLANS + 1 + num_vfs);
+ 	if (!num_vf_macvlans)
+@@ -36,8 +39,6 @@ static inline void ixgbe_alloc_vf_macvlans(struct ixgbe_adapter *adapter,
+ 	mv_list = kcalloc(num_vf_macvlans, sizeof(struct vf_macvlans),
+ 			  GFP_KERNEL);
+ 	if (mv_list) {
+-		/* Initialize list of VF macvlans */
+-		INIT_LIST_HEAD(&adapter->vf_mvs.l);
+ 		for (i = 0; i < num_vf_macvlans; i++) {
+ 			mv_list[i].vf = -1;
+ 			mv_list[i].free = true;
+-- 
+2.40.1
+
 
 
