@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35FA47D314F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 749C97D3265
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233476AbjJWLH5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:07:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34564 "EHLO
+        id S233776AbjJWLTf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:19:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233436AbjJWLH4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:56 -0400
+        with ESMTP id S233765AbjJWLTe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D398010DB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526D4C433C7;
-        Mon, 23 Oct 2023 11:07:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99AA792
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8ED3C433C7;
+        Mon, 23 Oct 2023 11:19:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059271;
-        bh=DaLQmYbwrZNzHMtpYpKmg/XUl+1hn9EacilLDn3pwZM=;
+        s=korg; t=1698059972;
+        bh=aszjtpsVxuReBJvYF07C6qmpRP2I6l6oOgwaMwb4Eko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VDacdS3jBnfDpaXRodvcvAQHjlWGf6wT7k9mN0r++Ahkmmpd5nO5EA8DoNzaoocwz
-         djLfszNdUPHAwlruWOkNeZm4kF9GdQfgm310acA8hRm0dgbunaxwSToVYBs87Vz3H9
-         J1HCT/1PNDi8fmsMbdGxvOCnXIkT7FDr36/lfB+Y=
+        b=1I9m0knA/IR+kcyTxQ6y6qRZ8sz+1DgrNP1et+Wke08IFA7QfbH6XoTdL0e83lCi/
+         zhxff6+tM/lgwb59nCeiyW/JB0xMtV5/8MmjPjFptx0D/gnF7/6Lut0maSfVmgq6MU
+         mT1OYuFOM8EgmiHfJYMWRHFvrgSGSOQNVY7Buafw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.5 095/241] net: check for altname conflicts when changing netdevs netns
+        patches@lists.linux.dev, Dust Li <dust.li@linux.alibaba.com>,
+        Alexandra Winter <wintera@linux.ibm.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 016/196] net/smc: return the right falback reason when prefix checks fail
 Date:   Mon, 23 Oct 2023 12:54:41 +0200
-Message-ID: <20231023104836.215988430@linuxfoundation.org>
+Message-ID: <20231023104828.950687339@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Dust Li <dust.li@linux.alibaba.com>
 
-commit 7663d522099ecc464512164e660bc771b2ff7b64 upstream.
+commit 4abbd2e3c1db671fa1286390f1310aec78386f1d upstream.
 
-It's currently possible to create an altname conflicting
-with an altname or real name of another device by creating
-it in another netns and moving it over:
+In the smc_listen_work(), if smc_listen_prfx_check() failed,
+the real reason: SMC_CLC_DECL_DIFFPREFIX was dropped, and
+SMC_CLC_DECL_NOSMCDEV was returned.
 
- [ ~]$ ip link add dev eth0 type dummy
+Althrough this is also kind of SMC_CLC_DECL_NOSMCDEV, but return
+the real reason is much friendly for debugging.
 
- [ ~]$ ip netns add test
- [ ~]$ ip -netns test link add dev ethX netns test type dummy
- [ ~]$ ip -netns test link property add dev ethX altname eth0
- [ ~]$ ip -netns test link set dev ethX netns 1
-
- [ ~]$ ip link
- ...
- 3: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-     link/ether 02:40:88:62:ec:b8 brd ff:ff:ff:ff:ff:ff
- ...
- 5: ethX: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-     link/ether 26:b7:28:78:38:0f brd ff:ff:ff:ff:ff:ff
-     altname eth0
-
-Create a macro for walking the altnames, this hopefully makes
-it clearer that the list we walk contains only altnames.
-Which is otherwise not entirely intuitive.
-
-Fixes: 36fbf1e52bd3 ("net: rtnetlink: add linkprop commands to add and delete alternative ifnames")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Fixes: e49300a6bf62 ("net/smc: add listen processing for SMC-Rv2")
+Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231012123729.29307-1-dust.li@linux.alibaba.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |    9 ++++++++-
- net/core/dev.h |    3 +++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ net/smc/af_smc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1079,7 +1079,8 @@ static int __dev_alloc_name(struct net *
- 
- 		for_each_netdev(net, d) {
- 			struct netdev_name_node *name_node;
--			list_for_each_entry(name_node, &d->name_node->list, list) {
-+
-+			netdev_for_each_altname(d, name_node) {
- 				if (!sscanf(name_node->name, name, &i))
- 					continue;
- 				if (i < 0 || i >= max_netdevices)
-@@ -10968,6 +10969,7 @@ EXPORT_SYMBOL(unregister_netdev);
- int __dev_change_net_namespace(struct net_device *dev, struct net *net,
- 			       const char *pat, int new_ifindex)
- {
-+	struct netdev_name_node *name_node;
- 	struct net *net_old = dev_net(dev);
- 	char new_name[IFNAMSIZ] = {};
- 	int err, new_nsid;
-@@ -11000,6 +11002,11 @@ int __dev_change_net_namespace(struct ne
- 		if (err < 0)
- 			goto out;
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -2322,7 +2322,7 @@ static int smc_listen_find_device(struct
+ 		smc_find_ism_store_rc(rc, ini);
+ 		return (!rc) ? 0 : ini->rc;
  	}
-+	/* Check that none of the altnames conflicts. */
-+	err = -EEXIST;
-+	netdev_for_each_altname(dev, name_node)
-+		if (netdev_name_in_use(net, name_node->name))
-+			goto out;
+-	return SMC_CLC_DECL_NOSMCDEV;
++	return prfx_rc;
+ }
  
- 	/* Check that new_ifindex isn't used yet. */
- 	err = -EBUSY;
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -62,6 +62,9 @@ struct netdev_name_node {
- int netdev_get_name(struct net *net, char *name, int ifindex);
- int dev_change_name(struct net_device *dev, const char *newname);
- 
-+#define netdev_for_each_altname(dev, namenode)				\
-+	list_for_each_entry((namenode), &(dev)->name_node->list, list)
-+
- int netdev_name_node_alt_create(struct net_device *dev, const char *name);
- int netdev_name_node_alt_destroy(struct net_device *dev, const char *name);
- 
+ /* listen worker: finish RDMA setup */
 
 
