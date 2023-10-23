@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEAC17D31BD
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3F947D30C2
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233605AbjJWLMf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:12:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56674 "EHLO
+        id S230412AbjJWLBw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233633AbjJWLMe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:34 -0400
+        with ESMTP id S229987AbjJWLBv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38527D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E87C433C7;
-        Mon, 23 Oct 2023 11:12:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2757AD7C
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63181C433C8;
+        Mon, 23 Oct 2023 11:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059551;
-        bh=TfQR8TfVFtgz6Rt+gDGxLks7BsjJ5XCx3NecZxRjems=;
+        s=korg; t=1698058907;
+        bh=x8WPdiSkM1BxZMQ4/c0ALudjSkYAojW/1Hi3I6bO63E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lk4D9q4SXBwT1AF9qiS1jB1C8I5kg/6p0D9uHerLejt+QFEacLMaJ3vKebnrgKNAG
-         DUg1wA6i72w0pedBWbEKzK/F2hdlQPZ6oSaCmGLpMeRJ/xuQyalZMruhlF5zMkGSwa
-         BdRSzWtrKAuOE3pA3HeMs+KtGijAy4eBBrXkqtCY=
+        b=jLAuRgOfBabbZKgP6jvb4yAdr6W38k0Aqfs33EyBBhnndnrP3ef47lgJ1WcqVNYfZ
+         Hr+TGIu1zfJ4iwH/DH5D6CRgSS69uG3vuO2DAxW5iSXxoGcP1dhUrmiPcYC4LWjBVe
+         MmJpgTuXo6JTXu/XSDkpS6iFPkTwKIiBKZ+mSkwk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 216/241] ASoC: pxa: fix a memory leak in probe()
+Subject: [PATCH 4.14 52/66] wifi: mac80211: allow transmitting EAPOL frames with tainted key
 Date:   Mon, 23 Oct 2023 12:56:42 +0200
-Message-ID: <20231023104839.117537853@linuxfoundation.org>
+Message-ID: <20231023104812.779991116@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,40 +49,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-[ Upstream commit aa6464edbd51af4a2f8db43df866a7642b244b5f ]
+[ Upstream commit 61304336c67358d49a989e5e0060d8c99bad6ca8 ]
 
-Free the "priv" pointer before returning the error code.
+Lower layer device driver stop/wake TX by calling ieee80211_stop_queue()/
+ieee80211_wake_queue() while hw scan. Sometimes hw scan and PTK rekey are
+running in parallel, when M4 sent from wpa_supplicant arrive while the TX
+queue is stopped, then the M4 will pending send, and then new key install
+from wpa_supplicant. After TX queue wake up by lower layer device driver,
+the M4 will be dropped by below call stack.
 
-Fixes: 90eb6b59d311 ("ASoC: pxa-ssp: add support for an external clock in devicetree")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/84ac2313-1420-471a-b2cb-3269a2e12a7c@moroto.mountain
-Signed-off-by: Mark Brown <broonie@kernel.org>
+When key install started, the current key flag is set KEY_FLAG_TAINTED in
+ieee80211_pairwise_rekey(), and then mac80211 wait key install complete by
+lower layer device driver. Meanwhile ieee80211_tx_h_select_key() will return
+TX_DROP for the M4 in step 12 below, and then ieee80211_free_txskb() called
+by ieee80211_tx_dequeue(), so the M4 will not send and free, then the rekey
+process failed becaue AP not receive M4. Please see details in steps below.
+
+There are a interval between KEY_FLAG_TAINTED set for current key flag and
+install key complete by lower layer device driver, the KEY_FLAG_TAINTED is
+set in this interval, all packet including M4 will be dropped in this
+interval, the interval is step 8~13 as below.
+
+issue steps:
+      TX thread                 install key thread
+1.   stop_queue                      -idle-
+2.   sending M4                      -idle-
+3.   M4 pending                      -idle-
+4.     -idle-                  starting install key from wpa_supplicant
+5.     -idle-                  =>ieee80211_key_replace()
+6.     -idle-                  =>ieee80211_pairwise_rekey() and set
+                                 currently key->flags |= KEY_FLAG_TAINTED
+7.     -idle-                  =>ieee80211_key_enable_hw_accel()
+8.     -idle-                  =>drv_set_key() and waiting key install
+                                 complete from lower layer device driver
+9.   wake_queue                     -waiting state-
+10.  re-sending M4                  -waiting state-
+11.  =>ieee80211_tx_h_select_key()  -waiting state-
+12.  drop M4 by KEY_FLAG_TAINTED    -waiting state-
+13.    -idle-                   install key complete with success/fail
+                                  success: clear flag KEY_FLAG_TAINTED
+                                  fail: start disconnect
+
+Hence add check in step 11 above to allow the EAPOL send out in the
+interval. If lower layer device driver use the old key/cipher to encrypt
+the M4, then AP received/decrypt M4 correctly, after M4 send out, lower
+layer device driver install the new key/cipher to hardware and return
+success.
+
+If lower layer device driver use new key/cipher to send the M4, then AP
+will/should drop the M4, then it is same result with this issue, AP will/
+should kick out station as well as this issue.
+
+issue log:
+kworker/u16:4-5238  [000]  6456.108926: stop_queue:           phy1 queue:0, reason:0
+wpa_supplicant-961  [003]  6456.119737: rdev_tx_control_port: wiphy_name=phy1 name=wlan0 ifindex=6 dest=ARRAY[9e, 05, 31, 20, 9b, d0] proto=36488 unencrypted=0
+wpa_supplicant-961  [003]  6456.119839: rdev_return_int_cookie: phy1, returned 0, cookie: 504
+wpa_supplicant-961  [003]  6456.120287: rdev_add_key:         phy1, netdev:wlan0(6), key_index: 0, mode: 0, pairwise: true, mac addr: 9e:05:31:20:9b:d0
+wpa_supplicant-961  [003]  6456.120453: drv_set_key:          phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 cipher:0xfac04, flags=0x9, keyidx=0, hw_key_idx=0
+kworker/u16:9-3829  [001]  6456.168240: wake_queue:           phy1 queue:0, reason:0
+kworker/u16:9-3829  [001]  6456.168255: drv_wake_tx_queue:    phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 ac:0 tid:7
+kworker/u16:9-3829  [001]  6456.168305: cfg80211_control_port_tx_status: wdev(1), cookie: 504, ack: false
+wpa_supplicant-961  [003]  6459.167982: drv_return_int:       phy1 - -110
+
+issue call stack:
+nl80211_frame_tx_status+0x230/0x340 [cfg80211]
+cfg80211_control_port_tx_status+0x1c/0x28 [cfg80211]
+ieee80211_report_used_skb+0x374/0x3e8 [mac80211]
+ieee80211_free_txskb+0x24/0x40 [mac80211]
+ieee80211_tx_dequeue+0x644/0x954 [mac80211]
+ath10k_mac_tx_push_txq+0xac/0x238 [ath10k_core]
+ath10k_mac_op_wake_tx_queue+0xac/0xe0 [ath10k_core]
+drv_wake_tx_queue+0x80/0x168 [mac80211]
+__ieee80211_wake_txqs+0xe8/0x1c8 [mac80211]
+_ieee80211_wake_txqs+0xb4/0x120 [mac80211]
+ieee80211_wake_txqs+0x48/0x80 [mac80211]
+tasklet_action_common+0xa8/0x254
+tasklet_action+0x2c/0x38
+__do_softirq+0xdc/0x384
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Link: https://lore.kernel.org/r/20230801064751.25803-1-quic_wgong@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/pxa/pxa-ssp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/pxa/pxa-ssp.c b/sound/soc/pxa/pxa-ssp.c
-index 430dd446321e5..452f0caf415b9 100644
---- a/sound/soc/pxa/pxa-ssp.c
-+++ b/sound/soc/pxa/pxa-ssp.c
-@@ -779,7 +779,7 @@ static int pxa_ssp_probe(struct snd_soc_dai *dai)
- 		if (IS_ERR(priv->extclk)) {
- 			ret = PTR_ERR(priv->extclk);
- 			if (ret == -EPROBE_DEFER)
--				return ret;
-+				goto err_priv;
- 
- 			priv->extclk = NULL;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 7e62a55a03de1..3914214dee05a 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -650,7 +650,8 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
  		}
+ 
+ 		if (unlikely(tx->key && tx->key->flags & KEY_FLAG_TAINTED &&
+-			     !ieee80211_is_deauth(hdr->frame_control)))
++			     !ieee80211_is_deauth(hdr->frame_control)) &&
++			     tx->skb->protocol != tx->sdata->control_port_protocol)
+ 			return TX_DROP;
+ 
+ 		if (!skip_hw && tx->key &&
 -- 
-2.42.0
+2.40.1
 
 
 
