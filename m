@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3DB37D30B8
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84BA77D3549
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbjJWLBa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:01:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46792 "EHLO
+        id S234415AbjJWLq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:46:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229707AbjJWLB3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:29 -0400
+        with ESMTP id S234585AbjJWLqr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 925D6D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA94C433C7;
-        Mon, 23 Oct 2023 11:01:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C40B10DE
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:46:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9574C433CB;
+        Mon, 23 Oct 2023 11:46:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058887;
-        bh=K7hrOM/jbW8LQOvUEBhnHJvHflK887+pXb6gR4Ih4gc=;
+        s=korg; t=1698061604;
+        bh=qm1g1qJ9wH59rFFgC2430vGipmc0YLtZRX2w48iftGc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tJaPDicUIUDszAuwSF7c6L8xe5THAqWMZbb1fXmhpvImDaIbCNm5v23JpFpyltGfN
-         rdl/gbsju6Qe1pAepi3znUeXRHZdebKQQF2/AY/bMA94T9F1GTcvOf01HQVd62aN3k
-         UNiqOx4PAHdU1I+PpsiOVd8v6TIx1BY6JgX8ImUg=
+        b=zsGIRiw/5uekPmGxoy+/nvwc3pImGcaWGfoD7kbM4XGUoy3QdsN5Njj3J9Va9hdRZ
+         OjD9TjkpJFhn5qnrNljcxfz+YjjDQ030O3wE5O5jmfWZzBA2hkn2Bq56ojHPLiaqRS
+         az/YUAVJ1bb3P/s/1lle0ml3OqviRVVWnwBRHRyY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Puliang Lu <puliang.lu@fibocom.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.14 60/66] USB: serial: option: add Fibocom to DELL custom modem FM101R-GL
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 5.10 103/202] drm/i915: Retry gtt fault when out of fence registers
 Date:   Mon, 23 Oct 2023 12:56:50 +0200
-Message-ID: <20231023104813.056926189@linuxfoundation.org>
+Message-ID: <20231023104829.545325210@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -48,92 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puliang Lu <puliang.lu@fibocom.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit 52480e1f1a259c93d749ba3961af0bffedfe7a7a upstream.
+commit e339c6d628fe66c9b64bf31040a55770952aec57 upstream.
 
-Update the USB serial option driver support for the Fibocom
-FM101R-GL LTE modules as there are actually several different variants.
+If we can't find a free fence register to handle a fault in the GMADR
+range just return VM_FAULT_NOPAGE without populating the PTE so that
+userspace will retry the access and trigger another fault. Eventually
+we should find a free fence and the fault will get properly handled.
 
-- VID:PID 413C:8213, FM101R-GL are laptop M.2 cards (with
-  MBIM interfaces for Linux)
+A further improvement idea might be to reserve a fence (or one per CPU?)
+for the express purpose of handling faults without having to retry. But
+that would require some additional work.
 
-- VID:PID 413C:8215, FM101R-GL ESIM are laptop M.2 cards (with
-  MBIM interface for Linux)
+Looks like this may have gotten broken originally by
+commit 39965b376601 ("drm/i915: don't trash the gtt when running out of fences")
+as that changed the errno to -EDEADLK which wasn't handle by the gtt
+fault code either. But later in commit 2feeb52859fc ("drm/i915/gt: Fix
+-EDEADLK handling regression") I changed it again to -ENOBUFS as -EDEADLK
+was now getting used for the ww mutex dance. So this fix only makes
+sense after that last commit.
 
-0x8213: mbim, tty
-0x8215: mbim, tty
-
-T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=413c ProdID=8213 Rev= 5.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom FM101-GL Module
-S:  SerialNumber=a3b7cbf0
-C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=413c ProdID=8215 Rev= 5.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom FM101-GL Module
-S:  SerialNumber=a3b7cbf0
-C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-
-Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9479
+Fixes: 2feeb52859fc ("drm/i915/gt: Fix -EDEADLK handling regression")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231012132801.16292-1-ville.syrjala@linux.intel.com
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+(cherry picked from commit 7f403caabe811b88ab0de3811ff3f4782c415761)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -206,6 +206,9 @@ static void option_instat_callback(struc
- #define DELL_PRODUCT_5829E_ESIM			0x81e4
- #define DELL_PRODUCT_5829E			0x81e6
- 
-+#define DELL_PRODUCT_FM101R			0x8213
-+#define DELL_PRODUCT_FM101R_ESIM		0x8215
-+
- #define KYOCERA_VENDOR_ID			0x0c88
- #define KYOCERA_PRODUCT_KPC650			0x17da
- #define KYOCERA_PRODUCT_KPC680			0x180a
-@@ -1111,6 +1114,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | RSVD(6) },
- 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
- 	  .driver_info = RSVD(0) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
-+	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_500A) },
- 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_620UW) },
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -222,6 +222,7 @@ static vm_fault_t i915_error_to_vmf_faul
+ 	case 0:
+ 	case -EAGAIN:
+ 	case -ENOSPC: /* transient failure to evict? */
++	case -ENOBUFS: /* temporarily out of fences? */
+ 	case -ERESTARTSYS:
+ 	case -EINTR:
+ 	case -EBUSY:
 
 
