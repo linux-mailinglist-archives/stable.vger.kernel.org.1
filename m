@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F39E7D32EE
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 694A07D320A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233880AbjJWLZG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:25:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42234 "EHLO
+        id S233753AbjJWLQH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:16:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233889AbjJWLZD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:03 -0400
+        with ESMTP id S233741AbjJWLQD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7185010D1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C04C433C8;
-        Mon, 23 Oct 2023 11:24:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E60610C0
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D259C433C8;
+        Mon, 23 Oct 2023 11:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060300;
-        bh=yuBnpFbSsG0QmitFZw8TMTOpW0jPgq3ac1ItybBwBxc=;
+        s=korg; t=1698059754;
+        bh=MV2mfuRS+2tXxWog4Jhde6fMV8gusQIt/Hr7bFuVDNk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=E7NqaaPy/ctzbfiLloI/kPEh2QM9WGJiY2LUsARdRsMssWrb08D/ogRHCmu49nJPD
-         p0NjQJwniYGVtyAlQ749yZUHnvRiowKneWF9pefYu2fNUqq/4SEXt1rahXAl/vz3Im
-         2Md2fK5Vhs7WuarbP2LUiD4yxTQjSsnCWDD3KZHA=
+        b=w9JkwMENMyg+323nU8g2LFfUQ5KyJ3i/W84T0ouursgvHGlqxjUUpiICex0WjNVgg
+         9L2OuA/7bwSX+AVQEv8eU5mGl3+5+49EYN4FjUkkdFBZiAnbS00wjHnhiWh8cEF2Q2
+         pisToenw3AwgJxE/WhbqABzpwdrKjUR1uO0u0AYo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xuewen Yan <xuewen.yan@unisoc.com>,
-        Guohua Yan <guohua.yan@unisoc.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/196] cpufreq: schedutil: Update next_freq when cpufreq_limits change
+        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Lee@vger.kernel.org
+Subject: [PATCH 4.19 42/98] Bluetooth: hci_event: Ignore NULL link key
 Date:   Mon, 23 Oct 2023 12:56:31 +0200
-Message-ID: <20231023104832.064771514@linuxfoundation.org>
+Message-ID: <20231023104815.097970059@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,73 +49,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuewen Yan <xuewen.yan@unisoc.com>
+From: Lee, Chun-Yi <jlee@suse.com>
 
-[ Upstream commit 9e0bc36ab07c550d791bf17feeb479f1dfc42d89 ]
+commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
 
-When cpufreq's policy is 'single', there is a scenario that will
-cause sg_policy's next_freq to be unable to update.
+This change is used to relieve CVE-2020-26555. The description of the
+CVE:
 
-When the CPU's util is always max, the cpufreq will be max,
-and then if we change the policy's scaling_max_freq to be a
-lower freq, indeed, the sg_policy's next_freq need change to
-be the lower freq, however, because the cpu_is_busy, the next_freq
-would keep the max_freq.
+Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
+1.0B through 5.2 may permit an unauthenticated nearby device to spoof
+the BD_ADDR of the peer device to complete pairing without knowledge
+of the PIN. [1]
 
-For example:
+The detail of this attack is in IEEE paper:
+BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
+[2]
 
-The cpu7 is a single CPU:
+It's a reflection attack. The paper mentioned that attacker can induce
+the attacked target to generate null link key (zero key) without PIN
+code. In BR/EDR, the key generation is actually handled in the controller
+which is below HCI.
 
-  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # while true;do done& [1] 4737
-  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # taskset -p 80 4737
-  pid 4737's current affinity mask: ff
-  pid 4737's new affinity mask: 80
-  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # cat scaling_max_freq
-  2301000
-  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # cat scaling_cur_freq
-  2301000
-  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # echo 2171000 > scaling_max_freq
-  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # cat scaling_max_freq
-  2171000
+Thus, we can ignore null link key in the handler of "Link Key Notification
+event" to relieve the attack. A similar implementation also shows in
+btstack project. [3]
 
-At this time, the sg_policy's next_freq would stay at 2301000, which
-is wrong.
+v3: Drop the connection when null link key be detected.
 
-To fix this, add a check for the ->need_freq_update flag.
+v2:
+- Used Link: tag instead of Closes:
+- Used bt_dev_dbg instead of BT_DBG
+- Added Fixes: tag
 
-[ mingo: Clarified the changelog. ]
-
-Co-developed-by: Guohua Yan <guohua.yan@unisoc.com>
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-Signed-off-by: Guohua Yan <guohua.yan@unisoc.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
-Link: https://lore.kernel.org/r/20230719130527.8074-1-xuewen.yan@unisoc.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
+Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
+Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
+Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/cpufreq_schedutil.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_event.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
-index 1207c78f85c11..853a07618a3cf 100644
---- a/kernel/sched/cpufreq_schedutil.c
-+++ b/kernel/sched/cpufreq_schedutil.c
-@@ -345,7 +345,8 @@ static void sugov_update_single_freq(struct update_util_data *hook, u64 time,
- 	 * Except when the rq is capped by uclamp_max.
- 	 */
- 	if (!uclamp_rq_is_capped(cpu_rq(sg_cpu->cpu)) &&
--	    sugov_cpu_is_busy(sg_cpu) && next_f < sg_policy->next_freq) {
-+	    sugov_cpu_is_busy(sg_cpu) && next_f < sg_policy->next_freq &&
-+	    !sg_policy->need_freq_update) {
- 		next_f = sg_policy->next_freq;
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3816,6 +3816,15 @@ static void hci_link_key_notify_evt(stru
+ 	if (!conn)
+ 		goto unlock;
  
- 		/* Restore cached freq as next_freq has changed */
--- 
-2.40.1
-
++	/* Ignore NULL link key against CVE-2020-26555 */
++	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
++		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
++			   &ev->bdaddr);
++		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
++		hci_conn_drop(conn);
++		goto unlock;
++	}
++
+ 	hci_conn_hold(conn);
+ 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
+ 	hci_conn_drop(conn);
 
 
