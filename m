@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B22A27D3196
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 874187D3177
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233507AbjJWLKu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:10:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42618 "EHLO
+        id S233562AbjJWLJ3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:09:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233508AbjJWLKs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:48 -0400
+        with ESMTP id S233546AbjJWLJ2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:09:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BBC0101
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F955C433C7;
-        Mon, 23 Oct 2023 11:10:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1F07C2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:09:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED737C433C7;
+        Mon, 23 Oct 2023 11:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059445;
-        bh=Dlot1Hyw4+KRWBHDIQhBCQcD1SOeZanRJzkKkcdr1K0=;
+        s=korg; t=1698059366;
+        bh=GBvvxfO5uKwFntCKO+nhToNoILsDH7OP8A27GDF+SY4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zLv+CMKIZR7/mGmbLcxNIiIjbbimuJdsF0PPy9sfWBksu+9hR4gLwH5mMU4aCwJSf
-         olDJfxV2gCVO5veJ2NwUfqKpwFBlwNWk2O4QJye/JCSOqRUUpM0s+5nfoFyRYY+6VF
-         LGV2mZqQBZllMRUhg4kGAF2c4S6dp9Bao+VfalSA=
+        b=kovkcxF+Jg+68cvU664dLPc5os3NG7GFcvSEB+B38jjkXRFfxoC120+4YSfq/9CHh
+         PQMU2PnQjjZr1ylthSnJ7r2kD/2AGmnzp6YINVkQxd0lC7uRUI2cOldiOcA7/MhHJO
+         m2t4GEr4IsImGdb3xWWUgZzgd7Y7LYtpKblcMDtA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dragos Tatulea <dtatulea@nvidia.com>,
+        patches@lists.linux.dev, Lama Kayal <lkayal@nvidia.com>,
         Tariq Toukan <tariqt@nvidia.com>,
         Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 153/241] net/mlx5e: XDP, Fix XDP_REDIRECT mpwqe page fragment leaks on shutdown
-Date:   Mon, 23 Oct 2023 12:55:39 +0200
-Message-ID: <20231023104837.601609323@linuxfoundation.org>
+Subject: [PATCH 6.5 154/241] net/mlx5e: Take RTNL lock before triggering netdev notifiers
+Date:   Mon, 23 Oct 2023 12:55:40 +0200
+Message-ID: <20231023104837.626614959@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
 References: <20231023104833.832874523@linuxfoundation.org>
@@ -54,49 +54,141 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: Lama Kayal <lkayal@nvidia.com>
 
-[ Upstream commit aaab619ccd07a32e5b29aa7e59b20de1dcc7a29e ]
+[ Upstream commit c51c673462a266fb813cf189f8190798a12d3124 ]
 
-When mlx5e_xdp_xmit is called without the XDP_XMIT_FLUSH set it is
-possible that it leaves a mpwqe session open. That is ok during runtime:
-the session will be closed on the next call to mlx5e_xdp_xmit. But
-having a mpwqe session still open at XDP sq close time is problematic:
-the pc counter is not updated before flushing the contents of the
-xdpi_fifo. This results in leaking page fragments.
+Hold RTNL lock when calling xdp_set_features() with a registered netdev,
+as the call triggers the netdev notifiers. This could happen when
+switching from nic profile to uplink representor for example.
 
-The fix is to always close the mpwqe session at the end of
-mlx5e_xdp_xmit, regardless of the XDP_XMIT_FLUSH flag being set or not.
+Similar logic which fixed a similar scenario was previously introduced in
+the following commit:
+commit 72cc65497065 net/mlx5e: Take RTNL lock when needed before calling
+xdp_set_features().
 
-Fixes: 5e0d2eef771e ("net/mlx5e: XDP, Support Enhanced Multi-Packet TX WQE")
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+This fixes the following assertion and warning call trace:
+
+RTNL: assertion failed at net/core/dev.c (1961)
+WARNING: CPU: 13 PID: 2529 at net/core/dev.c:1961
+call_netdevice_notifiers_info+0x7c/0x80
+Modules linked in: rpcrdma rdma_ucm ib_iser libiscsi
+scsi_transport_iscsi ib_umad rdma_cm ib_ipoib iw_cm ib_cm mlx5_ib
+ib_uverbs ib_core xt_conntrack xt_MASQUERADE nf_conntrack_netlink
+nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5
+auth_rpcgss oid_registry overlay mlx5_core zram zsmalloc fuse
+CPU: 13 PID: 2529 Comm: devlink Not tainted
+6.5.0_for_upstream_min_debug_2023_09_07_20_04 #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+RIP: 0010:call_netdevice_notifiers_info+0x7c/0x80
+Code: 8f ff 80 3d 77 0d 16 01 00 75 c5 ba a9 07 00 00 48
+c7 c6 c4 bb 0d 82 48 c7 c7 18 c8 06 82 c6 05 5b 0d 16 01 01 e8 44 f6 8c
+ff <0f> 0b eb a2 0f 1f 44 00 00 55 48 89 e5 41 54 48 83 e4 f0 48 83 ec
+RSP: 0018:ffff88819930f7f0 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffffffff8309f740 RCX: 0000000000000027
+RDX: ffff88885fb5b5c8 RSI: 0000000000000001 RDI: ffff88885fb5b5c0
+RBP: 0000000000000028 R08: ffff88887ffabaa8 R09: 0000000000000003
+R10: ffff88887fecbac0 R11: ffff88887ff7bac0 R12: ffff88819930f810
+R13: ffff88810b7fea40 R14: ffff8881154e8fd8 R15: ffff888107e881a0
+FS:  00007f3ad248f800(0000) GS:ffff88885fb40000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000563b85f164e0 CR3: 0000000113b5c006 CR4: 0000000000370ea0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? __warn+0x79/0x120
+ ? call_netdevice_notifiers_info+0x7c/0x80
+ ? report_bug+0x17c/0x190
+ ? handle_bug+0x3c/0x60
+ ? exc_invalid_op+0x14/0x70
+ ? asm_exc_invalid_op+0x16/0x20
+ ? call_netdevice_notifiers_info+0x7c/0x80
+ call_netdevice_notifiers+0x2e/0x50
+ mlx5e_set_xdp_feature+0x21/0x50 [mlx5_core]
+ mlx5e_build_rep_params+0x97/0x130 [mlx5_core]
+ mlx5e_init_ul_rep+0x9f/0x100 [mlx5_core]
+ mlx5e_netdev_init_profile+0x76/0x110 [mlx5_core]
+ mlx5e_netdev_attach_profile+0x1f/0x90 [mlx5_core]
+ mlx5e_netdev_change_profile+0x92/0x160 [mlx5_core]
+ mlx5e_vport_rep_load+0x329/0x4a0 [mlx5_core]
+ mlx5_esw_offloads_rep_load+0x9e/0xf0 [mlx5_core]
+ esw_offloads_enable+0x4bc/0xe90 [mlx5_core]
+ mlx5_eswitch_enable_locked+0x3c8/0x570 [mlx5_core]
+ ? kmalloc_trace+0x25/0x80
+ mlx5_devlink_eswitch_mode_set+0x224/0x680 [mlx5_core]
+ ? devlink_get_from_attrs_lock+0x9e/0x110
+ devlink_nl_cmd_eswitch_set_doit+0x60/0xe0
+ genl_family_rcv_msg_doit+0xd0/0x120
+ genl_rcv_msg+0x180/0x2b0
+ ? devlink_get_from_attrs_lock+0x110/0x110
+ ? devlink_nl_cmd_eswitch_get_doit+0x290/0x290
+ ? devlink_pernet_pre_exit+0xf0/0xf0
+ ? genl_family_rcv_msg_dumpit+0xf0/0xf0
+ netlink_rcv_skb+0x54/0x100
+ genl_rcv+0x24/0x40
+ netlink_unicast+0x1fc/0x2c0
+ netlink_sendmsg+0x232/0x4a0
+ sock_sendmsg+0x38/0x60
+ ? _copy_from_user+0x2a/0x60
+ __sys_sendto+0x110/0x160
+ ? handle_mm_fault+0x161/0x260
+ ? do_user_addr_fault+0x276/0x620
+ __x64_sys_sendto+0x20/0x30
+ do_syscall_64+0x3d/0x90
+ entry_SYSCALL_64_after_hwframe+0x46/0xb0
+RIP: 0033:0x7f3ad231340a
+Code: d8 64 89 02 48 c7 c0 ff ff ff ff eb b8 0f 1f 00 f3
+0f 1e fa 41 89 ca 64 8b 04 25 18 00 00 00 85 c0 75 15 b8 2c 00 00 00 0f
+05 <48> 3d 00 f0 ff ff 77 7e c3 0f 1f 44 00 00 41 54 48 83 ec 30 44 89
+RSP: 002b:00007ffd70aad4b8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 0000000000c36b00 RCX:00007f3ad231340a
+RDX: 0000000000000038 RSI: 0000000000c36b00 RDI: 0000000000000003
+RBP: 0000000000c36910 R08: 00007f3ad2625200 R09: 000000000000000c
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000001
+ </TASK>
+---[ end trace 0000000000000000 ]---
+------------[ cut here ]------------
+
+Fixes: 4d5ab0ad964d ("net/mlx5e: take into account device reconfiguration for xdp_features flag")
+Signed-off-by: Lama Kayal <lkayal@nvidia.com>
 Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
 Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-index 40589cebb7730..4fd4c9febab95 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-@@ -873,11 +873,11 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index 99b3843396f33..5bdd2d09a8d5c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -772,6 +772,7 @@ static int mlx5e_rep_max_nch_limit(struct mlx5_core_dev *mdev)
  
- out:
--	if (flags & XDP_XMIT_FLUSH) {
--		if (sq->mpwqe.wqe)
--			mlx5e_xdp_mpwqe_complete(sq);
-+	if (sq->mpwqe.wqe)
-+		mlx5e_xdp_mpwqe_complete(sq);
-+
-+	if (flags & XDP_XMIT_FLUSH)
- 		mlx5e_xmit_xdp_doorbell(sq);
--	}
+ static void mlx5e_build_rep_params(struct net_device *netdev)
+ {
++	const bool take_rtnl = netdev->reg_state == NETREG_REGISTERED;
+ 	struct mlx5e_priv *priv = netdev_priv(netdev);
+ 	struct mlx5e_rep_priv *rpriv = priv->ppriv;
+ 	struct mlx5_eswitch_rep *rep = rpriv->rep;
+@@ -797,8 +798,15 @@ static void mlx5e_build_rep_params(struct net_device *netdev)
+ 	/* RQ */
+ 	mlx5e_build_rq_params(mdev, params);
  
- 	return nxmit;
- }
++	/* If netdev is already registered (e.g. move from nic profile to uplink,
++	 * RTNL lock must be held before triggering netdev notifiers.
++	 */
++	if (take_rtnl)
++		rtnl_lock();
+ 	/* update XDP supported features */
+ 	mlx5e_set_xdp_feature(netdev);
++	if (take_rtnl)
++		rtnl_unlock();
+ 
+ 	/* CQ moderation params */
+ 	params->rx_dim_enabled = MLX5_CAP_GEN(mdev, cq_moderation);
 -- 
 2.40.1
 
