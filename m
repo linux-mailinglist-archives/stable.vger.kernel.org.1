@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A02587D3383
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED2DB7D354A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:47:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234073AbjJWLbL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:31:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56608 "EHLO
+        id S233441AbjJWLrA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:47:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234078AbjJWLbK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:10 -0400
+        with ESMTP id S233972AbjJWLqu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB35C1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC949C433C8;
-        Mon, 23 Oct 2023 11:31:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E680C1729
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:46:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEC0C433C8;
+        Mon, 23 Oct 2023 11:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060668;
-        bh=FEPf54/WqUWHFhhl4WqKO9CvxEKOgjvf7hYTLT2Mzv4=;
+        s=korg; t=1698061607;
+        bh=Pha7UHm9Ll0ZpSW/9ke3j5dkE2HM0sqZQfIcolVwTZw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ri6ZqQylN4gviJwC9LxZ66mTYAO/qUB+zsfWps2Y/9QIt/bFjkPJmyum9tXD+UD9x
-         BLNNikdnroyMzhsuAJn+p2K8hRBT0uGettmgrRHbH4eZT1oQ0pKAgIbReJu7Z4fu9c
-         KtBidqLYlB6OS3t0NY+vxhQJCi2xn8H+4MSuAIj0=
+        b=xjKHoGLlycStDlgbWaXxYLzEdh3VFD8fLnMGyBAEtKuRUn4stWUcs1QZxYCKA3v4x
+         dUm56KwLwBctrhnkg/v4jE0bdoHWCJi2+gQf1oqFIQQKoe1JvxyrwKh0UCD7VoMwZC
+         pvfNhAJjJ7sj33RPhg0vWcgkNZLxFOG01+VJsErY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?=E9=BB=84=E6=80=9D=E8=81=AA?= <huangsicong@iie.ac.cn>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.4 053/123] nfc: nci: fix possible NULL pointer dereference in send_acknowledge()
+        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
+        Manish Chopra <manishc@marvell.com>
+Subject: [PATCH 5.10 104/202] qed: fix LL2 RX buffer allocation
 Date:   Mon, 23 Oct 2023 12:56:51 +0200
-Message-ID: <20231023104819.475918848@linuxfoundation.org>
+Message-ID: <20231023104829.573330453@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Manish Chopra <manishc@marvell.com>
 
-commit 7937609cd387246aed994e81aa4fa951358fba41 upstream.
+commit 2f3389c73832ad90b63208c0fc281ad080114c7a upstream.
 
-Handle memory allocation failure from nci_skb_alloc() (calling
-alloc_skb()) to avoid possible NULL pointer dereference.
+Driver allocates the LL2 rx buffers from kmalloc()
+area to construct the skb using slab_build_skb()
 
-Reported-by: 黄思聪 <huangsicong@iie.ac.cn>
-Fixes: 391d8a2da787 ("NFC: Add NCI over SPI receive")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231013184129.18738-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The required size allocation seems to have overlooked
+for accounting both skb_shared_info size and device
+placement padding bytes which results into the below
+panic when doing skb_put() for a standard MTU sized frame.
+
+skbuff: skb_over_panic: text:ffffffffc0b0225f len:1514 put:1514
+head:ff3dabceaf39c000 data:ff3dabceaf39c042 tail:0x62c end:0x566
+dev:<NULL>
+…
+skb_panic+0x48/0x4a
+skb_put.cold+0x10/0x10
+qed_ll2b_complete_rx_packet+0x14f/0x260 [qed]
+qed_ll2_rxq_handle_completion.constprop.0+0x169/0x200 [qed]
+qed_ll2_rxq_completion+0xba/0x320 [qed]
+qed_int_sp_dpc+0x1a7/0x1e0 [qed]
+
+This patch fixes this by accouting skb_shared_info and device
+placement padding size bytes when allocating the buffers.
+
+Cc: David S. Miller <davem@davemloft.net>
+Fixes: 0a7fb11c23c0 ("qed: Add Light L2 support")
+Signed-off-by: Manish Chopra <manishc@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/spi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/qlogic/qed/qed_ll2.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/net/nfc/nci/spi.c
-+++ b/net/nfc/nci/spi.c
-@@ -150,6 +150,8 @@ static int send_acknowledge(struct nci_s
- 	int ret;
+--- a/drivers/net/ethernet/qlogic/qed/qed_ll2.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_ll2.c
+@@ -87,7 +87,10 @@ static void qed_ll2b_complete_tx_packet(
+ static int qed_ll2_alloc_buffer(struct qed_dev *cdev,
+ 				u8 **data, dma_addr_t *phys_addr)
+ {
+-	*data = kmalloc(cdev->ll2->rx_size, GFP_ATOMIC);
++	size_t size = cdev->ll2->rx_size + NET_SKB_PAD +
++		      SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
++
++	*data = kmalloc(size, GFP_ATOMIC);
+ 	if (!(*data)) {
+ 		DP_INFO(cdev, "Failed to allocate LL2 buffer data\n");
+ 		return -ENOMEM;
+@@ -2541,7 +2544,7 @@ static int qed_ll2_start(struct qed_dev
+ 	INIT_LIST_HEAD(&cdev->ll2->list);
+ 	spin_lock_init(&cdev->ll2->lock);
  
- 	skb = nci_skb_alloc(nspi->ndev, 0, GFP_KERNEL);
-+	if (!skb)
-+		return -ENOMEM;
+-	cdev->ll2->rx_size = NET_SKB_PAD + ETH_HLEN +
++	cdev->ll2->rx_size = PRM_DMA_PAD_BYTES_NUM + ETH_HLEN +
+ 			     L1_CACHE_BYTES + params->mtu;
  
- 	/* add the NCI SPI header to the start of the buffer */
- 	hdr = skb_push(skb, NCI_SPI_HDR_LEN);
+ 	/* Allocate memory for LL2.
 
 
