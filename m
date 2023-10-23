@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 920B47D3410
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E0CD7D32F3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234152AbjJWLgf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:36:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52418 "EHLO
+        id S233910AbjJWLZS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:25:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234048AbjJWLge (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:34 -0400
+        with ESMTP id S233908AbjJWLZQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0984610C7
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D067C433C8;
-        Mon, 23 Oct 2023 11:36:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A4010C0
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783E3C433C8;
+        Mon, 23 Oct 2023 11:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060990;
-        bh=yGSpx+eLsSxRDOO8LA1hLxVa6/tydk/fPv+wU1F5xBA=;
+        s=korg; t=1698060309;
+        bh=MtHUpp8hbYe1uo51F+NEV7bX6qoWzIPG1dTIh8glGcY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w2Fr0igPLDM7QIZELsvwZT333ognbBElT2/eaHMNMvXxgWm2z+q3hr0SKz0ratJs6
-         O9YdyURP0wyIUYFYb/+VJ1/7Y0gTYwP2Jdx1EkhPQ+FFRTn6sORb83Co4xjlMLowIb
-         lbMcfEyquo7hyD+bY4yCcX/WcmmCzpgXU7dJwfFo=
+        b=SWvB6i2f84CZ063KIrkSBXXBGh5sTJtXSWBQkKtm8cIPKmBgcF2IdW769o3BW0qHQ
+         EjrjiYggwsH50CcN0zlI5R6z3gyFsGVbly3BmO9iUMzrmOxWv00J/v1PiMGr2iiYMX
+         4xUXf0vc5Ik97DpKH99FP03jn6xwjWVksuITfxnE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Wahren <wahrenst@gmx.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Neal Cardwell <ncardwell@google.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 036/137] tcp: tsq: relax tcp_small_queue_check() when rtx queue contains a single skb
+        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Will Deacon <will@kernel.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/196] fprobe: Add nr_maxactive to specify rethook_node pool size
 Date:   Mon, 23 Oct 2023 12:56:33 +0200
-Message-ID: <20231023104822.250969311@linuxfoundation.org>
+Message-ID: <20231023104832.118749894@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,80 +52,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit f921a4a5bffa8a0005b190fb9421a7fc1fd716b6 upstream.
+[ Upstream commit 59a7a298565aa0ce44ce8e4fbcbb89a19730013a ]
 
-In commit 75eefc6c59fd ("tcp: tsq: add a shortcut in tcp_small_queue_check()")
-we allowed to send an skb regardless of TSQ limits being hit if rtx queue
-was empty or had a single skb, in order to better fill the pipe
-when/if TX completions were slow.
+Add nr_maxactive to specify rethook_node pool size. This means
+the maximum number of actively running target functions concurrently
+for probing by exit_handler. Note that if the running function is
+preempted or sleep, it is still counted as 'active'.
 
-Then later, commit 75c119afe14f ("tcp: implement rb-tree based
-retransmit queue") accidentally removed the special case for
-one skb in rtx queue.
+Link: https://lkml.kernel.org/r/167526697917.433354.17779774988245113106.stgit@mhiramat.roam.corp.google.com
 
-Stefan Wahren reported a regression in single TCP flow throughput
-using a 100Mbit fec link, starting from commit 65466904b015 ("tcp: adjust
-TSO packet sizes based on min_rtt"). This last commit only made the
-regression more visible, because it locked the TCP flow on a particular
-behavior where TSQ prevented two skbs being pushed downstream,
-adding silences on the wire between each TSO packet.
-
-Many thanks to Stefan for his invaluable help !
-
-Fixes: 75c119afe14f ("tcp: implement rb-tree based retransmit queue")
-Link: https://lore.kernel.org/netdev/7f31ddc8-9971-495e-a1f6-819df542e0af@gmx.net/
-Reported-by: Stefan Wahren <wahrenst@gmx.net>
-Tested-by: Stefan Wahren <wahrenst@gmx.net>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20231017124526.4060202-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Florent Revest <revest@chromium.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Stable-dep-of: 700b2b439766 ("fprobe: Fix to ensure the number of active retprobes is not zero")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_output.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ include/linux/fprobe.h | 2 ++
+ kernel/trace/fprobe.c  | 5 ++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -2486,6 +2486,18 @@ static bool tcp_pacing_check(struct sock
- 	return true;
- }
+diff --git a/include/linux/fprobe.h b/include/linux/fprobe.h
+index e0d4e61362491..678f741a7b330 100644
+--- a/include/linux/fprobe.h
++++ b/include/linux/fprobe.h
+@@ -14,6 +14,7 @@
+  * @flags: The status flag.
+  * @rethook: The rethook data structure. (internal data)
+  * @entry_data_size: The private data storage size.
++ * @nr_maxactive: The max number of active functions.
+  * @entry_handler: The callback function for function entry.
+  * @exit_handler: The callback function for function exit.
+  */
+@@ -31,6 +32,7 @@ struct fprobe {
+ 	unsigned int		flags;
+ 	struct rethook		*rethook;
+ 	size_t			entry_data_size;
++	int			nr_maxactive;
  
-+static bool tcp_rtx_queue_empty_or_single_skb(const struct sock *sk)
-+{
-+	const struct rb_node *node = sk->tcp_rtx_queue.rb_node;
-+
-+	/* No skb in the rtx queue. */
-+	if (!node)
-+		return true;
-+
-+	/* Only one skb in rtx queue. */
-+	return !node->rb_left && !node->rb_right;
-+}
-+
- /* TCP Small Queues :
-  * Control number of packets in qdisc/devices to two packets / or ~1 ms.
-  * (These limits are doubled for retransmits)
-@@ -2523,12 +2535,12 @@ static bool tcp_small_queue_check(struct
- 		limit += extra_bytes;
+ 	void (*entry_handler)(struct fprobe *fp, unsigned long entry_ip,
+ 			      struct pt_regs *regs, void *entry_data);
+diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+index be28d1bc84e80..441a373079213 100644
+--- a/kernel/trace/fprobe.c
++++ b/kernel/trace/fprobe.c
+@@ -143,7 +143,10 @@ static int fprobe_init_rethook(struct fprobe *fp, int num)
  	}
- 	if (refcount_read(&sk->sk_wmem_alloc) > limit) {
--		/* Always send skb if rtx queue is empty.
-+		/* Always send skb if rtx queue is empty or has one skb.
- 		 * No need to wait for TX completion to call us back,
- 		 * after softirq/tasklet schedule.
- 		 * This helps when TX completions are delayed too much.
- 		 */
--		if (tcp_rtx_queue_empty(sk))
-+		if (tcp_rtx_queue_empty_or_single_skb(sk))
- 			return false;
  
- 		set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
+ 	/* Initialize rethook if needed */
+-	size = num * num_possible_cpus() * 2;
++	if (fp->nr_maxactive)
++		size = fp->nr_maxactive;
++	else
++		size = num * num_possible_cpus() * 2;
+ 	if (size < 0)
+ 		return -E2BIG;
+ 
+-- 
+2.40.1
+
 
 
