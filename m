@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 538AF7D312E
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:06:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17A637D326F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233365AbjJWLGg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38934 "EHLO
+        id S233788AbjJWLUD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:20:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232316AbjJWLGe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:06:34 -0400
+        with ESMTP id S233795AbjJWLUC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BB99D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:06:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2654C433C8;
-        Mon, 23 Oct 2023 11:06:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D3D4DF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF2E3C433C9;
+        Mon, 23 Oct 2023 11:19:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059192;
-        bh=LBXUVVwXmg8BRdc+F6whbzQPTaU6+5R5txK42q2NO0o=;
+        s=korg; t=1698059999;
+        bh=oHMZJqZ3yzDavjqrWD5yzAaGOeRDMtn69VTpHNga5eU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wt1UfbMXBg+8JpSGhzTDVHtCzriVzx0sAFXeTo3DygLJi6jpiPVS8oMh6Iay/yRXi
-         9XjFgFNYr3jCSxVNB+Ejbha7bcuPUyo4mLg9gyHrskWqKuJmzirrM3PM6YBP99QAcE
-         RJJq2YF2U/CtUDKYQFabs0avh3ThJc3kR+m0A5tI=
+        b=Y6Ks49So7D1pgk0m8W9nm05z/uIHrMlZuJn9a8BBqyhazmYCn6s7tUcqOwTMic5KZ
+         Zj/uuDljH5rIQ8N7Qez5MNO+cNJQPKu9muehT6VWWA+LoX8oFGeBtHmQm+ubgjcH7t
+         Ehk1Uof1GAMkpmKXgkdxjgvSwN4YTCPEs6F5S6/U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.5 087/241] netfilter: nf_tables: revert do not remove elements if set backend implements .abort
+        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Lee@vger.kernel.org
+Subject: [PATCH 6.1 008/196] Bluetooth: hci_event: Ignore NULL link key
 Date:   Mon, 23 Oct 2023 12:54:33 +0200
-Message-ID: <20231023104836.011436025@linuxfoundation.org>
+Message-ID: <20231023104828.727031857@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,39 +49,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Lee, Chun-Yi <jlee@suse.com>
 
-commit f86fb94011aeb3b26337fc22204ca726aeb8bc24 upstream.
+commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
 
-nf_tables_abort_release() path calls nft_set_elem_destroy() for
-NFT_MSG_NEWSETELEM which releases the element, however, a reference to
-the element still remains in the working copy.
+This change is used to relieve CVE-2020-26555. The description of the
+CVE:
 
-Fixes: ebd032fa8818 ("netfilter: nf_tables: do not remove elements if set backend implements .abort")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
+1.0B through 5.2 may permit an unauthenticated nearby device to spoof
+the BD_ADDR of the peer device to complete pairing without knowledge
+of the PIN. [1]
+
+The detail of this attack is in IEEE paper:
+BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
+[2]
+
+It's a reflection attack. The paper mentioned that attacker can induce
+the attacked target to generate null link key (zero key) without PIN
+code. In BR/EDR, the key generation is actually handled in the controller
+which is below HCI.
+
+Thus, we can ignore null link key in the handler of "Link Key Notification
+event" to relieve the attack. A similar implementation also shows in
+btstack project. [3]
+
+v3: Drop the connection when null link key be detected.
+
+v2:
+- Used Link: tag instead of Closes:
+- Used bt_dev_dbg instead of BT_DBG
+- Added Fixes: tag
+
+Cc: stable@vger.kernel.org
+Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
+Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
+Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
+Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/bluetooth/hci_event.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10336,10 +10336,7 @@ static int __nf_tables_abort(struct net
- 				break;
- 			}
- 			te = (struct nft_trans_elem *)trans->data;
--			if (!te->set->ops->abort ||
--			    nft_setelem_is_catchall(te->set, &te->elem))
--				nft_setelem_remove(net, te->set, &te->elem);
--
-+			nft_setelem_remove(net, te->set, &te->elem);
- 			if (!nft_setelem_is_catchall(te->set, &te->elem))
- 				atomic_dec(&te->set->nelems);
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4686,6 +4686,15 @@ static void hci_link_key_notify_evt(stru
+ 	if (!conn)
+ 		goto unlock;
  
++	/* Ignore NULL link key against CVE-2020-26555 */
++	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
++		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
++			   &ev->bdaddr);
++		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
++		hci_conn_drop(conn);
++		goto unlock;
++	}
++
+ 	hci_conn_hold(conn);
+ 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
+ 	hci_conn_drop(conn);
 
 
