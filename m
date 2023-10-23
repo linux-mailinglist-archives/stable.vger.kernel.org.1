@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1929E7D32E1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 885047D3095
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:00:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233882AbjJWLYm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51640 "EHLO
+        id S230055AbjJWLAP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:00:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233876AbjJWLYl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:41 -0400
+        with ESMTP id S230076AbjJWLAN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:00:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BC88A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA8F5C433CB;
-        Mon, 23 Oct 2023 11:24:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DC7DD7C
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:00:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CDAAC433C9;
+        Mon, 23 Oct 2023 11:00:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060279;
-        bh=5Y7gM0vc4ovl0WwRXt8TGCkDs9tJVru5jWj5kqucPEg=;
+        s=korg; t=1698058809;
+        bh=rCT6mH2PwBG+1LsjG6OXGy5zh7MmnQNizdfyGWDxLlI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XC2xVF5UWeusGPk7x7p5s82AYMPA7PKp3HEKBl/VX1a6BXptDTuQWEfN7IoZ9CliN
-         f7azhYl4r53wWaU40MICImnsUkkkhK9j/oT/BODctCwFykre3ThFSPafZFh759MYn8
-         yodwJSiqozkQGhBmP40REyJG7NyO/yWrvc36gEd8=
+        b=Jyktg2au3dMU3cUF+LdpLlw5nCnFdJ3Mxy86jh3i+lLBPpYJodU45fv3cT+sYNQEI
+         grat8BoeskprdVUbsGdPWndXjEApXYVIkELDLa00t+Rfb0TogamUJj1/+jvu4YlrNc
+         c3TLCYym7nwr6y5UWsh9LcxC7m+mxDjv9ufk1bLA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/196] btrfs: error out when COWing block using a stale transaction
+        patches@lists.linux.dev, Jim Mattson <jmattson@google.com>,
+        Mingwei Zhang <mizhang@google.com>,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 4.14 34/66] KVM: x86: Mask LVTPC when handling a PMI
 Date:   Mon, 23 Oct 2023 12:56:24 +0200
-Message-ID: <20231023104831.875913420@linuxfoundation.org>
+Message-ID: <20231023104812.108111017@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,87 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jim Mattson <jmattson@google.com>
 
-[ Upstream commit 48774f3bf8b4dd3b1a0e155825c9ce48483db14c ]
+commit a16eb25b09c02a54c1c1b449d4b6cfa2cf3f013a upstream.
 
-At btrfs_cow_block() we have these checks to verify we are not using a
-stale transaction (a past transaction with an unblocked state or higher),
-and the only thing we do is to trigger a WARN with a message and a stack
-trace. This however is a critical problem, highly unexpected and if it
-happens it's most likely due to a bug, so we should error out and turn the
-fs into error state so that such issue is much more easily noticed if it's
-triggered.
+Per the SDM, "When the local APIC handles a performance-monitoring
+counters interrupt, it automatically sets the mask flag in the LVT
+performance counter register."  Add this behavior to KVM's local APIC
+emulation.
 
-The problem is critical because using such stale transaction will lead to
-not persisting the extent buffer used for the COW operation, as allocating
-a tree block adds the range of the respective extent buffer to the
-->dirty_pages iotree of the transaction, and a stale transaction, in the
-unlocked state or higher, will not flush dirty extent buffers anymore,
-therefore resulting in not persisting the tree block and resource leaks
-(not cleaning the dirty_pages iotree for example).
+Failure to mask the LVTPC entry results in spurious PMIs, e.g. when
+running Linux as a guest, PMI handlers that do a "late_ack" spew a large
+number of "dazed and confused" spurious NMI warnings.
 
-So do the following changes:
-
-1) Return -EUCLEAN if we find a stale transaction;
-
-2) Turn the fs into error state, with error -EUCLEAN, so that no
-   transaction can be committed, and generate a stack trace;
-
-3) Combine both conditions into a single if statement, as both are related
-   and have the same error message;
-
-4) Mark the check as unlikely, since this is not expected to ever happen.
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f5132b01386b ("KVM: Expose a version 2 architectural PMU to a guests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Tested-by: Mingwei Zhang <mizhang@google.com>
+Signed-off-by: Mingwei Zhang <mizhang@google.com>
+Link: https://lore.kernel.org/r/20230925173448.3518223-3-mizhang@google.com
+[sean: massage changelog, correct Fixes]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ arch/x86/kvm/lapic.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index 1a327eb3580b4..98e3e0761a4e5 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -567,14 +567,22 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
- 		btrfs_err(fs_info,
- 			"COW'ing blocks on a fs root that's being dropped");
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2085,13 +2085,17 @@ int kvm_apic_local_deliver(struct kvm_la
+ {
+ 	u32 reg = kvm_lapic_get_reg(apic, lvt_type);
+ 	int vector, mode, trig_mode;
++	int r;
  
--	if (trans->transaction != fs_info->running_transaction)
--		WARN(1, KERN_CRIT "trans %llu running %llu\n",
--		       trans->transid,
--		       fs_info->running_transaction->transid);
--
--	if (trans->transid != fs_info->generation)
--		WARN(1, KERN_CRIT "trans %llu running %llu\n",
--		       trans->transid, fs_info->generation);
-+	/*
-+	 * COWing must happen through a running transaction, which always
-+	 * matches the current fs generation (it's a transaction with a state
-+	 * less than TRANS_STATE_UNBLOCKED). If it doesn't, then turn the fs
-+	 * into error state to prevent the commit of any transaction.
-+	 */
-+	if (unlikely(trans->transaction != fs_info->running_transaction ||
-+		     trans->transid != fs_info->generation)) {
-+		btrfs_abort_transaction(trans, -EUCLEAN);
-+		btrfs_crit(fs_info,
-+"unexpected transaction when attempting to COW block %llu on root %llu, transaction %llu running transaction %llu fs generation %llu",
-+			   buf->start, btrfs_root_id(root), trans->transid,
-+			   fs_info->running_transaction->transid,
-+			   fs_info->generation);
-+		return -EUCLEAN;
-+	}
- 
- 	if (!should_cow_block(trans, root, buf)) {
- 		*cow_ret = buf;
--- 
-2.40.1
-
+ 	if (kvm_apic_hw_enabled(apic) && !(reg & APIC_LVT_MASKED)) {
+ 		vector = reg & APIC_VECTOR_MASK;
+ 		mode = reg & APIC_MODE_MASK;
+ 		trig_mode = reg & APIC_LVT_LEVEL_TRIGGER;
+-		return __apic_accept_irq(apic, mode, vector, 1, trig_mode,
+-					NULL);
++
++		r = __apic_accept_irq(apic, mode, vector, 1, trig_mode, NULL);
++		if (r && lvt_type == APIC_LVTPC)
++			kvm_lapic_set_reg(apic, APIC_LVTPC, reg | APIC_LVT_MASKED);
++		return r;
+ 	}
+ 	return 0;
+ }
 
 
