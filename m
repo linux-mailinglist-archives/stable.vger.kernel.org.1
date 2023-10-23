@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AFEEA7D3234
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 904747D332B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233719AbjJWLRt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:17:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54200 "EHLO
+        id S233953AbjJWL1Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233702AbjJWLRs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:48 -0400
+        with ESMTP id S233968AbjJWL1X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 115A0A2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538B4C433C7;
-        Mon, 23 Oct 2023 11:17:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64CFB100
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D861C433CA;
+        Mon, 23 Oct 2023 11:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059865;
-        bh=z/f4uWIBCiQBHFSKPCgA9SPGEMaQjiK2FnlboD88j84=;
+        s=korg; t=1698060440;
+        bh=RMJdTkNsf5KpFN8WYdms4Kt6Di2xYpxFVh9AL+kEkbw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DbNuoX7UMH4EfSxb1tPI3f/nLlx/u9DDfu0isvY9/kHjQ83ESykjyWtBjyslUQFrc
-         D3qQXhap7BmcRV2/niffxWSzFCUVo2Sf6KGVa/YHzssyLaDiZzqUS1L+Gg4aQDxcTp
-         JyzNgzP/2pfRfh5E+kvS73qyg/IOiCjRhr57P0Gs=
+        b=DWXt+osNF7zPksw2fmTxw4/LVDvXuE5tmcFyisfOKn+/gSeOIgnWeicwoo3Di/Ipw
+         0ojTnzpKtX7qGD3PE5votfWDYWieokgn93/BOS7t0e8MCR5g+/2qcwvUQ0kcnihixY
+         LN5DN/aQCz6aZFakJJnm7ISlXcXOp1dgwmOC/cd0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Theune <ct@flyingcircus.io>,
-        Budimir Markovic <markovicbudimir@gmail.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 61/98] net/sched: sch_hfsc: upgrade rt to sc when it becomes a inner curve
+        patches@lists.linux.dev, Michal Simek <michal.simek@amd.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 145/196] mtd: rawnand: arasan: Ensure program page operations are successful
 Date:   Mon, 23 Oct 2023 12:56:50 +0200
-Message-ID: <20231023104815.769735274@linuxfoundation.org>
+Message-ID: <20231023104832.583146848@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,94 +48,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Tammela <pctammela@mojatatu.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit a13b67c9a015c4e21601ef9aa4ec9c5d972df1b4 upstream.
+commit 3a4a893dbb19e229db3b753f0462520b561dee98 upstream.
 
-Christian Theune says:
-   I upgraded from 6.1.38 to 6.1.55 this morning and it broke my traffic shaping script,
-   leaving me with a non-functional uplink on a remote router.
+The NAND core complies with the ONFI specification, which itself
+mentions that after any program or erase operation, a status check
+should be performed to see whether the operation was finished *and*
+successful.
 
-A 'rt' curve cannot be used as a inner curve (parent class), but we were
-allowing such configurations since the qdisc was introduced. Such
-configurations would trigger a UAF as Budimir explains:
-   The parent will have vttree_insert() called on it in init_vf(),
-   but will not have vttree_remove() called on it in update_vf()
-   because it does not have the HFSC_FSC flag set.
+The NAND core offers helpers to finish a page write (sending the
+"PAGE PROG" command, waiting for the NAND chip to be ready again, and
+checking the operation status). But in some cases, advanced controller
+drivers might want to optimize this and craft their own page write
+helper to leverage additional hardware capabilities, thus not always
+using the core facilities.
 
-The qdisc always assumes that inner classes have the HFSC_FSC flag set.
-This is by design as it doesn't make sense 'qdisc wise' for an 'rt'
-curve to be an inner curve.
+Some drivers, like this one, do not use the core helper to finish a page
+write because the final cycles are automatically managed by the
+hardware. In this case, the additional care must be taken to manually
+perform the final status check.
 
-Budimir's original patch disallows users to add classes with a 'rt'
-parent, but this is too strict as it breaks users that have been using
-'rt' as a inner class. Another approach, taken by this patch, is to
-upgrade the inner 'rt' into a 'sc', warning the user in the process.
-It avoids the UAF reported by Budimir while also being more permissive
-to bad scripts/users/code using 'rt' as a inner class.
+Let's read the NAND chip status at the end of the page write helper and
+return -EIO upon error.
 
-Users checking the `tc class ls [...]` or `tc class get [...]` dumps would
-observe the curve change and are potentially breaking with this change.
-
-v1->v2: https://lore.kernel.org/all/20231013151057.2611860-1-pctammela@mojatatu.com/
-- Correct 'Fixes' tag and merge with revert (Jakub)
-
-Cc: Christian Theune <ct@flyingcircus.io>
-Cc: Budimir Markovic <markovicbudimir@gmail.com>
-Fixes: b3d26c5702c7 ("net/sched: sch_hfsc: Ensure inner classes have fsc curve")
-Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20231017143602.3191556-1-pctammela@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Michal Simek <michal.simek@amd.com>
+Cc: stable@vger.kernel.org
+Fixes: 88ffef1b65cf ("mtd: rawnand: arasan: Support the hardware BCH ECC engine")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-2-miquel.raynal@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/mtd/nand/raw/arasan-nand-controller.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -913,6 +913,14 @@ hfsc_change_usc(struct hfsc_class *cl, s
- 	cl->cl_flags |= HFSC_USC;
+--- a/drivers/mtd/nand/raw/arasan-nand-controller.c
++++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
+@@ -515,6 +515,7 @@ static int anfc_write_page_hw_ecc(struct
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	unsigned int len = mtd->writesize + (oob_required ? mtd->oobsize : 0);
+ 	dma_addr_t dma_addr;
++	u8 status;
+ 	int ret;
+ 	struct anfc_op nfc_op = {
+ 		.pkt_reg =
+@@ -561,10 +562,21 @@ static int anfc_write_page_hw_ecc(struct
+ 	}
+ 
+ 	/* Spare data is not protected */
+-	if (oob_required)
++	if (oob_required) {
+ 		ret = nand_write_oob_std(chip, page);
++		if (ret)
++			return ret;
++	}
++
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
+ 
+-	return ret;
++	return 0;
  }
  
-+static void
-+hfsc_upgrade_rt(struct hfsc_class *cl)
-+{
-+	cl->cl_fsc = cl->cl_rsc;
-+	rtsc_init(&cl->cl_virtual, &cl->cl_fsc, cl->cl_vt, cl->cl_total);
-+	cl->cl_flags |= HFSC_FSC;
-+}
-+
- static const struct nla_policy hfsc_policy[TCA_HFSC_MAX + 1] = {
- 	[TCA_HFSC_RSC]	= { .len = sizeof(struct tc_service_curve) },
- 	[TCA_HFSC_FSC]	= { .len = sizeof(struct tc_service_curve) },
-@@ -1021,10 +1029,6 @@ hfsc_change_class(struct Qdisc *sch, u32
- 		if (parent == NULL)
- 			return -ENOENT;
- 	}
--	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
--		NL_SET_ERR_MSG(extack, "Invalid parent - parent class must have FSC");
--		return -EINVAL;
--	}
- 
- 	if (classid == 0 || TC_H_MAJ(classid ^ sch->handle) != 0)
- 		return -EINVAL;
-@@ -1077,6 +1081,12 @@ hfsc_change_class(struct Qdisc *sch, u32
- 	cl->cf_tree = RB_ROOT;
- 
- 	sch_tree_lock(sch);
-+	/* Check if the inner class is a misconfigured 'rt' */
-+	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
-+		NL_SET_ERR_MSG(extack,
-+			       "Forced curve change on parent 'rt' to 'sc'");
-+		hfsc_upgrade_rt(parent);
-+	}
- 	qdisc_class_hash_insert(&q->clhash, &cl->cl_common);
- 	list_add_tail(&cl->siblings, &parent->children);
- 	if (parent->level == 0)
+ static int anfc_sel_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
 
 
