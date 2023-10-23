@@ -2,38 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B90C67D308F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73FCE7D351E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232316AbjJWLAF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:00:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37160 "EHLO
+        id S234441AbjJWLpa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:45:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232460AbjJWK77 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:59 -0400
+        with ESMTP id S234430AbjJWLpQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222A4D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A70C433C7;
-        Mon, 23 Oct 2023 10:59:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8BF5F9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F16FFC433C9;
+        Mon, 23 Oct 2023 11:45:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058797;
-        bh=GFaeN0l6YzB15kWgREQiEYgYJrNXaj8YAzDmLvaxlRs=;
+        s=korg; t=1698061513;
+        bh=MSfeGKZMs+AzxtxYSDm2MRV4CXxyeoM8tvaTnlIG+OI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CmGnpFOzn6q4o6d9LU3UFYinOsCFhAxkL+FEyOCDO90x7Q5XAXlzhrwbowklgzeeT
-         FnJJrHpiOLyABvcVn0ZkCiqgEIHvf7kCu2nlp+7U09GHchOgHlECV/nqHUh5/wiMGX
-         YSksEtcHxrUbZ4JH2HO2BniSqLII5t2KozHs4rSg=
+        b=c5olqEtT497fVrZnVOD+us9nrnWxyxLbQNN4lUM4Yb5ndB+yi/tXAGzGt31t77zwm
+         6L76B3zuq3+pItpbNpZIZi7PTVtmS/YXi0QLRmqFtDv+DD6T2G/cYrbHSdzlvkW7Wg
+         2oZMDVV5A+m+uGJLgUd7auEUDN45YSfj6THIQdQk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.14 30/66] Bluetooth: hci_event: Fix coding style
+        patches@lists.linux.dev, ruanjinjie@huawei.com,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Morse <james.morse@arm.com>,
+        Joey Gouly <joey.gouly@arm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>
+Subject: [PATCH 5.10 073/202] arm64: armv8_deprecated: fold ops into insn_emulation
 Date:   Mon, 23 Oct 2023 12:56:20 +0200
-Message-ID: <20231023104811.950602494@linuxfoundation.org>
+Message-ID: <20231023104828.675179728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,38 +53,242 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 35d91d95a0cd61ebb90e0246dc917fd25e519b8c upstream.
+commit b4453cc8a7ebbd45436a8cd3ffeaa069ceac146f upstream.
 
-This fixes the following code style problem:
+The code for emulating deprecated instructions has two related
+structures: struct insn_emulation_ops and struct insn_emulation, where
+each struct insn_emulation_ops is associated 1-1 with a struct
+insn_emulation.
 
-ERROR: that open brace { should be on the previous line
-+	if (!bacmp(&hdev->bdaddr, &ev->bdaddr))
-+	{
+It would be simpler to combine the two into a single structure, removing
+the need for (unconditional) dynamic allocation at boot time, and
+simplifying some runtime pointer chasing.
 
-Fixes: 1ffc6f8cc332 ("Bluetooth: Reject connection with the device which has same BD_ADDR")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This patch merges the two structures together.
+
+There should be no functional change as a result of this patch.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20221019144123.612388-7-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/kernel/armv8_deprecated.c |   76 +++++++++++++++--------------------
+ 1 file changed, 33 insertions(+), 43 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2250,8 +2250,7 @@ static void hci_conn_request_evt(struct
- 	/* Reject incoming connection from device with same BD ADDR against
- 	 * CVE-2020-26555
- 	 */
--	if (!bacmp(&hdev->bdaddr, &ev->bdaddr))
--	{
-+	if (!bacmp(&hdev->bdaddr, &ev->bdaddr)) {
- 		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
- 			   &ev->bdaddr);
- 		hci_reject_conn(hdev, &ev->bdaddr);
+--- a/arch/arm64/kernel/armv8_deprecated.c
++++ b/arch/arm64/kernel/armv8_deprecated.c
+@@ -41,16 +41,12 @@ enum legacy_insn_status {
+ 	INSN_OBSOLETE,
+ };
+ 
+-struct insn_emulation_ops {
+-	const char		*name;
+-	enum legacy_insn_status	status;
+-	struct undef_hook	*hooks;
+-	int			(*set_hw_mode)(bool enable);
+-};
+-
+ struct insn_emulation {
+-	struct list_head node;
+-	struct insn_emulation_ops *ops;
++	const char			*name;
++	struct list_head		node;
++	enum legacy_insn_status		status;
++	struct undef_hook		*hooks;
++	int				(*set_hw_mode)(bool enable);
+ 	int current_mode;
+ 	int min;
+ 	int max;
+@@ -61,48 +57,48 @@ static int nr_insn_emulated __initdata;
+ static DEFINE_RAW_SPINLOCK(insn_emulation_lock);
+ static DEFINE_MUTEX(insn_emulation_mutex);
+ 
+-static void register_emulation_hooks(struct insn_emulation_ops *ops)
++static void register_emulation_hooks(struct insn_emulation *insn)
+ {
+ 	struct undef_hook *hook;
+ 
+-	BUG_ON(!ops->hooks);
++	BUG_ON(!insn->hooks);
+ 
+-	for (hook = ops->hooks; hook->instr_mask; hook++)
++	for (hook = insn->hooks; hook->instr_mask; hook++)
+ 		register_undef_hook(hook);
+ 
+-	pr_notice("Registered %s emulation handler\n", ops->name);
++	pr_notice("Registered %s emulation handler\n", insn->name);
+ }
+ 
+-static void remove_emulation_hooks(struct insn_emulation_ops *ops)
++static void remove_emulation_hooks(struct insn_emulation *insn)
+ {
+ 	struct undef_hook *hook;
+ 
+-	BUG_ON(!ops->hooks);
++	BUG_ON(!insn->hooks);
+ 
+-	for (hook = ops->hooks; hook->instr_mask; hook++)
++	for (hook = insn->hooks; hook->instr_mask; hook++)
+ 		unregister_undef_hook(hook);
+ 
+-	pr_notice("Removed %s emulation handler\n", ops->name);
++	pr_notice("Removed %s emulation handler\n", insn->name);
+ }
+ 
+ static void enable_insn_hw_mode(void *data)
+ {
+ 	struct insn_emulation *insn = (struct insn_emulation *)data;
+-	if (insn->ops->set_hw_mode)
+-		insn->ops->set_hw_mode(true);
++	if (insn->set_hw_mode)
++		insn->set_hw_mode(true);
+ }
+ 
+ static void disable_insn_hw_mode(void *data)
+ {
+ 	struct insn_emulation *insn = (struct insn_emulation *)data;
+-	if (insn->ops->set_hw_mode)
+-		insn->ops->set_hw_mode(false);
++	if (insn->set_hw_mode)
++		insn->set_hw_mode(false);
+ }
+ 
+ /* Run set_hw_mode(mode) on all active CPUs */
+ static int run_all_cpu_set_hw_mode(struct insn_emulation *insn, bool enable)
+ {
+-	if (!insn->ops->set_hw_mode)
++	if (!insn->set_hw_mode)
+ 		return -EINVAL;
+ 	if (enable)
+ 		on_each_cpu(enable_insn_hw_mode, (void *)insn, true);
+@@ -126,9 +122,9 @@ static int run_all_insn_set_hw_mode(unsi
+ 	raw_spin_lock_irqsave(&insn_emulation_lock, flags);
+ 	list_for_each_entry(insn, &insn_emulation, node) {
+ 		bool enable = (insn->current_mode == INSN_HW);
+-		if (insn->ops->set_hw_mode && insn->ops->set_hw_mode(enable)) {
++		if (insn->set_hw_mode && insn->set_hw_mode(enable)) {
+ 			pr_warn("CPU[%u] cannot support the emulation of %s",
+-				cpu, insn->ops->name);
++				cpu, insn->name);
+ 			rc = -EINVAL;
+ 		}
+ 	}
+@@ -145,11 +141,11 @@ static int update_insn_emulation_mode(st
+ 	case INSN_UNDEF: /* Nothing to be done */
+ 		break;
+ 	case INSN_EMULATE:
+-		remove_emulation_hooks(insn->ops);
++		remove_emulation_hooks(insn);
+ 		break;
+ 	case INSN_HW:
+ 		if (!run_all_cpu_set_hw_mode(insn, false))
+-			pr_notice("Disabled %s support\n", insn->ops->name);
++			pr_notice("Disabled %s support\n", insn->name);
+ 		break;
+ 	}
+ 
+@@ -157,31 +153,25 @@ static int update_insn_emulation_mode(st
+ 	case INSN_UNDEF:
+ 		break;
+ 	case INSN_EMULATE:
+-		register_emulation_hooks(insn->ops);
++		register_emulation_hooks(insn);
+ 		break;
+ 	case INSN_HW:
+ 		ret = run_all_cpu_set_hw_mode(insn, true);
+ 		if (!ret)
+-			pr_notice("Enabled %s support\n", insn->ops->name);
++			pr_notice("Enabled %s support\n", insn->name);
+ 		break;
+ 	}
+ 
+ 	return ret;
+ }
+ 
+-static void __init register_insn_emulation(struct insn_emulation_ops *ops)
++static void __init register_insn_emulation(struct insn_emulation *insn)
+ {
+ 	unsigned long flags;
+-	struct insn_emulation *insn;
+-
+-	insn = kzalloc(sizeof(*insn), GFP_KERNEL);
+-	if (!insn)
+-		return;
+ 
+-	insn->ops = ops;
+ 	insn->min = INSN_UNDEF;
+ 
+-	switch (ops->status) {
++	switch (insn->status) {
+ 	case INSN_DEPRECATED:
+ 		insn->current_mode = INSN_EMULATE;
+ 		/* Disable the HW mode if it was turned on at early boot time */
+@@ -247,7 +237,7 @@ static void __init register_insn_emulati
+ 		sysctl->mode = 0644;
+ 		sysctl->maxlen = sizeof(int);
+ 
+-		sysctl->procname = insn->ops->name;
++		sysctl->procname = insn->name;
+ 		sysctl->data = &insn->current_mode;
+ 		sysctl->extra1 = &insn->min;
+ 		sysctl->extra2 = &insn->max;
+@@ -451,7 +441,7 @@ static struct undef_hook swp_hooks[] = {
+ 	{ }
+ };
+ 
+-static struct insn_emulation_ops swp_ops = {
++static struct insn_emulation insn_swp = {
+ 	.name = "swp",
+ 	.status = INSN_OBSOLETE,
+ 	.hooks = swp_hooks,
+@@ -538,7 +528,7 @@ static struct undef_hook cp15_barrier_ho
+ 	{ }
+ };
+ 
+-static struct insn_emulation_ops cp15_barrier_ops = {
++static struct insn_emulation insn_cp15_barrier = {
+ 	.name = "cp15_barrier",
+ 	.status = INSN_DEPRECATED,
+ 	.hooks = cp15_barrier_hooks,
+@@ -611,7 +601,7 @@ static struct undef_hook setend_hooks[]
+ 	{}
+ };
+ 
+-static struct insn_emulation_ops setend_ops = {
++static struct insn_emulation insn_setend = {
+ 	.name = "setend",
+ 	.status = INSN_DEPRECATED,
+ 	.hooks = setend_hooks,
+@@ -625,14 +615,14 @@ static struct insn_emulation_ops setend_
+ static int __init armv8_deprecated_init(void)
+ {
+ 	if (IS_ENABLED(CONFIG_SWP_EMULATION))
+-		register_insn_emulation(&swp_ops);
++		register_insn_emulation(&insn_swp);
+ 
+ 	if (IS_ENABLED(CONFIG_CP15_BARRIER_EMULATION))
+-		register_insn_emulation(&cp15_barrier_ops);
++		register_insn_emulation(&insn_cp15_barrier);
+ 
+ 	if (IS_ENABLED(CONFIG_SETEND_EMULATION)) {
+ 		if (system_supports_mixed_endian_el0())
+-			register_insn_emulation(&setend_ops);
++			register_insn_emulation(&insn_setend);
+ 		else
+ 			pr_info("setend instruction emulation is not supported on this system\n");
+ 	}
 
 
