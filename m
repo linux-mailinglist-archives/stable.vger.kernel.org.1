@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA6307D30B9
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20A0F7D3459
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:38:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbjJWLBf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:01:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46918 "EHLO
+        id S234198AbjJWLiu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:38:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229898AbjJWLBd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:33 -0400
+        with ESMTP id S234205AbjJWLit (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:38:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D500D7E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF09C433C7;
-        Mon, 23 Oct 2023 11:01:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD53CDB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:38:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095D3C433C7;
+        Mon, 23 Oct 2023 11:38:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058890;
-        bh=KlXK14IIP3XTaQEzPPGuLYGZ7adGFt+4aAvqlfv3Sg0=;
+        s=korg; t=1698061127;
+        bh=Eqxjxii8yxt7C9GdhYGB0bz97sBUx482/ptag/WveRs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aXTEVRqthQcK9NBj2F5nmSsunPphNVJh6qkxha/cbgN8xBp0YX9DrvvkXTQ+A1E0m
-         hBRug5P8ka7nBWBf8LvJbaLVeinuD7PnhdnbpkPtFOHXoO2naMCkym87n9cNsilTyQ
-         OSaLEFykPYeDzgAdmdUPAQF8rT9muCEzfCjjvjR8=
+        b=uDapNi1MsfdhzZTfXy8AfqY02I0BqhMZbIhfda5sqhfUTraMEzTwKLb5aSn3ZlCtn
+         jbboNwDRxMpP5iqPALmCHxicgnrXjWbBsEeMWo+pmiH7ifjOQFFDZRl/Ewqj5i3tDd
+         kfPOmAs6IL1fecsqG5glbvhMCLitxRDI7z/0Pq6Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Budimir Markovic <markovicbudimir@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 4.14 61/66] perf: Disallow mis-matched inherited group reads
+        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 054/137] iio: core: introduce iio_device_{claim|release}_buffer_mode() APIs
 Date:   Mon, 23 Oct 2023 12:56:51 +0200
-Message-ID: <20231023104813.091331673@linuxfoundation.org>
+Message-ID: <20231023104822.820738024@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,146 +52,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Nuno Sá <nuno.sa@analog.com>
 
-commit 32671e3799ca2e4590773fd0e63aaa4229e50c06 upstream.
+[ Upstream commit 0a8565425afd8ba0e1a0ea73e21da119ee6dacea ]
 
-Because group consistency is non-atomic between parent (filedesc) and children
-(inherited) events, it is possible for PERF_FORMAT_GROUP read() to try and sum
-non-matching counter groups -- with non-sensical results.
+These APIs are analogous to iio_device_claim_direct_mode() and
+iio_device_release_direct_mode() but, as the name suggests, with the
+logic flipped. While this looks odd enough, it will have at least two
+users (in following changes) and it will be important to move the IIO
+mlock to the private struct.
 
-Add group_generation to distinguish the case where a parent group removes and
-adds an event and thus has the same number, but a different configuration of
-events as inherited groups.
-
-This became a problem when commit fa8c269353d5 ("perf/core: Invert
-perf_read_group() loops") flipped the order of child_list and sibling_list.
-Previously it would iterate the group (sibling_list) first, and for each
-sibling traverse the child_list. In this order, only the group composition of
-the parent is relevant. By flipping the order the group composition of the
-child (inherited) events becomes an issue and the mis-match in group
-composition becomes evident.
-
-That said; even prior to this commit, while reading of a group that is not
-equally inherited was not broken, it still made no sense.
-
-(Ab)use ECHILD as error return to indicate issues with child process group
-composition.
-
-Fixes: fa8c269353d5 ("perf/core: Invert perf_read_group() loops")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20231018115654.GK33217@noisy.programming.kicks-ass.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20221012151620.1725215-2-nuno.sa@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 7771c8c80d62 ("iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/perf_event.h |    1 +
- kernel/events/core.c       |   39 +++++++++++++++++++++++++++++++++------
- 2 files changed, 34 insertions(+), 6 deletions(-)
+ drivers/iio/industrialio-core.c | 38 +++++++++++++++++++++++++++++++++
+ include/linux/iio/iio.h         |  2 ++
+ 2 files changed, 40 insertions(+)
 
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -579,6 +579,7 @@ struct perf_event {
- 	/* The cumulative AND of all event_caps for events in this group. */
- 	int				group_caps;
- 
-+	unsigned int			group_generation;
- 	struct perf_event		*group_leader;
- 	struct pmu			*pmu;
- 	void				*pmu_private;
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1699,6 +1699,7 @@ static void perf_group_attach(struct per
- 
- 	list_add_tail(&event->group_entry, &group_leader->sibling_list);
- 	group_leader->nr_siblings++;
-+	group_leader->group_generation++;
- 
- 	perf_event__header_size(group_leader);
- 
-@@ -1771,6 +1772,7 @@ static void perf_group_detach(struct per
- 	if (event->group_leader != event) {
- 		list_del_init(&event->group_entry);
- 		event->group_leader->nr_siblings--;
-+		event->group_leader->group_generation++;
- 		goto out;
- 	}
- 
-@@ -4483,7 +4485,7 @@ static int __perf_read_group_add(struct
- 					u64 read_format, u64 *values)
- {
- 	struct perf_event_context *ctx = leader->ctx;
--	struct perf_event *sub;
-+	struct perf_event *sub, *parent;
- 	unsigned long flags;
- 	int n = 1; /* skip @nr */
- 	int ret;
-@@ -4493,6 +4495,33 @@ static int __perf_read_group_add(struct
- 		return ret;
- 
- 	raw_spin_lock_irqsave(&ctx->lock, flags);
-+	/*
-+	 * Verify the grouping between the parent and child (inherited)
-+	 * events is still in tact.
-+	 *
-+	 * Specifically:
-+	 *  - leader->ctx->lock pins leader->sibling_list
-+	 *  - parent->child_mutex pins parent->child_list
-+	 *  - parent->ctx->mutex pins parent->sibling_list
-+	 *
-+	 * Because parent->ctx != leader->ctx (and child_list nests inside
-+	 * ctx->mutex), group destruction is not atomic between children, also
-+	 * see perf_event_release_kernel(). Additionally, parent can grow the
-+	 * group.
-+	 *
-+	 * Therefore it is possible to have parent and child groups in a
-+	 * different configuration and summing over such a beast makes no sense
-+	 * what so ever.
-+	 *
-+	 * Reject this.
-+	 */
-+	parent = leader->parent;
-+	if (parent &&
-+	    (parent->group_generation != leader->group_generation ||
-+	     parent->nr_siblings != leader->nr_siblings)) {
-+		ret = -ECHILD;
-+		goto unlock;
-+	}
- 
- 	/*
- 	 * Since we co-schedule groups, {enabled,running} times of siblings
-@@ -4522,8 +4551,9 @@ static int __perf_read_group_add(struct
- 			values[n++] = primary_event_id(sub);
- 	}
- 
-+unlock:
- 	raw_spin_unlock_irqrestore(&ctx->lock, flags);
--	return 0;
-+	return ret;
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 6145e6e4f0ffd..78c780d1ab897 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -2084,6 +2084,44 @@ void iio_device_release_direct_mode(struct iio_dev *indio_dev)
  }
+ EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
  
- static int perf_read_group(struct perf_event *event,
-@@ -4542,10 +4572,6 @@ static int perf_read_group(struct perf_e
++/**
++ * iio_device_claim_buffer_mode - Keep device in buffer mode
++ * @indio_dev:	the iio_dev associated with the device
++ *
++ * If the device is in buffer mode it is guaranteed to stay
++ * that way until iio_device_release_buffer_mode() is called.
++ *
++ * Use with iio_device_release_buffer_mode().
++ *
++ * Returns: 0 on success, -EBUSY on failure.
++ */
++int iio_device_claim_buffer_mode(struct iio_dev *indio_dev)
++{
++	mutex_lock(&indio_dev->mlock);
++
++	if (iio_buffer_enabled(indio_dev))
++		return 0;
++
++	mutex_unlock(&indio_dev->mlock);
++	return -EBUSY;
++}
++EXPORT_SYMBOL_GPL(iio_device_claim_buffer_mode);
++
++/**
++ * iio_device_release_buffer_mode - releases claim on buffer mode
++ * @indio_dev:	the iio_dev associated with the device
++ *
++ * Release the claim. Device is no longer guaranteed to stay
++ * in buffer mode.
++ *
++ * Use with iio_device_claim_buffer_mode().
++ */
++void iio_device_release_buffer_mode(struct iio_dev *indio_dev)
++{
++	mutex_unlock(&indio_dev->mlock);
++}
++EXPORT_SYMBOL_GPL(iio_device_release_buffer_mode);
++
+ /**
+  * iio_device_get_current_mode() - helper function providing read-only access to
+  *				   the @currentmode variable
+diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+index 0cac05d5ef1c3..9b43559e3acfd 100644
+--- a/include/linux/iio/iio.h
++++ b/include/linux/iio/iio.h
+@@ -575,6 +575,8 @@ int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
+ int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
+ int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
+ void iio_device_release_direct_mode(struct iio_dev *indio_dev);
++int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
++void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
  
- 	values[0] = 1 + leader->nr_siblings;
+ extern struct bus_type iio_bus_type;
  
--	/*
--	 * By locking the child_mutex of the leader we effectively
--	 * lock the child list of all siblings.. XXX explain how.
--	 */
- 	mutex_lock(&leader->child_mutex);
- 
- 	ret = __perf_read_group_add(leader, read_format, values);
-@@ -11033,6 +11059,7 @@ static int inherit_group(struct perf_eve
- 		if (IS_ERR(child_ctr))
- 			return PTR_ERR(child_ctr);
- 	}
-+	leader->group_generation = parent_event->group_generation;
- 	return 0;
- }
- 
+-- 
+2.40.1
+
 
 
