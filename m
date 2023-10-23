@@ -2,44 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8420D7D30B6
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B007B7D31F0
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231531AbjJWLBY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:01:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57382 "EHLO
+        id S233696AbjJWLO6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:14:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232778AbjJWLBX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:23 -0400
+        with ESMTP id S233697AbjJWLO6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1C1BD6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD984C433C7;
-        Mon, 23 Oct 2023 11:01:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AA46A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C1DC433C8;
+        Mon, 23 Oct 2023 11:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058881;
-        bh=I12qBV8MyzZNzl9N2ySD7sBynhOV0XEHKGSVk5d7H94=;
+        s=korg; t=1698059695;
+        bh=JoVejzIRFnbDD3UJpk5HN++MmsELeoDWZCkXPT9dwFI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZbtKUVjIwHy639SH7hrYCnhGAlitvlZmp1Me4k5WeC+8s20micyTh6lRf7TH55Ioy
-         /Kg2EzRpatAL0WyPwh1MLZlSBlt7dwYijI3EmsmB59AN0q+zq26Oog1+iZqfbk4XhZ
-         0pCY0QDJrtNh5mWOvB5ai7R28Yyx3JrgchSjlTMk=
+        b=qlf1kG9+6Ar2m5/YbwLXUdJxVxelJBVMdU4O+w9/b5c2AJk3LeCq76O7o8DE7l5Qh
+         vCsYjhr8lQwIBrtebEV7c/FKjapxmkKqXpsQEPRCXCfvcgetiTzXoJL+Kx3VoMCcQK
+         5FmAi2wgckFmeFE3GSktrZdzLSqkiQG7MnRBes1U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Firo Yang <firo.yang@suse.com>,
-        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-        Tejun Heo <tj@kernel.org>
-Subject: [PATCH 4.14 20/66] cgroup: Remove duplicates in cgroup v1 tasks file
+        patches@lists.linux.dev, Wesley Cheng <quic_wcheng@quicinc.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 4.19 21/98] usb: xhci: xhci-ring: Use sysdev for mapping bounce buffer
 Date:   Mon, 23 Oct 2023 12:56:10 +0200
-Message-ID: <20231023104811.552233034@linuxfoundation.org>
+Message-ID: <20231023104814.339362711@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,53 +48,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Koutný <mkoutny@suse.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit 1ca0b605150501b7dc59f3016271da4eb3e96fce upstream.
+commit 41a43013d2366db5b88b42bbcd8e8f040b6ccf21 upstream.
 
-One PID may appear multiple times in a preloaded pidlist.
-(Possibly due to PID recycling but we have reports of the same
-task_struct appearing with different PIDs, thus possibly involving
-transfer of PID via de_thread().)
+As mentioned in:
+  commit 474ed23a6257 ("xhci: align the last trb before link if it is
+easily splittable.")
 
-Because v1 seq_file iterator uses PIDs as position, it leads to
-a message:
-> seq_file: buggy .next function kernfs_seq_next did not update position index
+A bounce buffer is utilized for ensuring that transfers that span across
+ring segments are aligned to the EP's max packet size.  However, the device
+that is used to map the DMA buffer to is currently using the XHCI HCD,
+which does not carry any DMA operations in certain configrations.
+Migration to using the sysdev entry was introduced for DWC3 based
+implementations where the IOMMU operations are present.
 
-Conservative and quick fix consists of removing duplicates from `tasks`
-file (as opposed to removing pidlists altogether). It doesn't affect
-correctness (it's sufficient to show a PID once), performance impact
-would be hidden by unconditional sorting of the pidlist already in place
-(asymptotically).
+Replace the reference to the controller device to sysdev instead.  This
+allows the bounce buffer to be properly mapped to any implementations that
+have an IOMMU involved.
 
-Link: https://lore.kernel.org/r/20230823174804.23632-1-mkoutny@suse.com/
-Suggested-by: Firo Yang <firo.yang@suse.com>
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Cc: stable@vger.kernel.org
+cc: stable@vger.kernel.org
+Fixes: 4c39d4b949d3 ("usb: xhci: use bus->sysdev for DMA configuration")
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20230915143108.1532163-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cgroup-v1.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-ring.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/cgroup/cgroup-v1.c
-+++ b/kernel/cgroup/cgroup-v1.c
-@@ -392,10 +392,9 @@ static int pidlist_array_load(struct cgr
- 	}
- 	css_task_iter_end(&it);
- 	length = n;
--	/* now sort & (if procs) strip out duplicates */
-+	/* now sort & strip out duplicates (tgids or recycled thread PIDs) */
- 	sort(array, length, sizeof(pid_t), cmppid, NULL);
--	if (type == CGROUP_FILE_PROCS)
--		length = pidlist_uniq(array, length);
-+	length = pidlist_uniq(array, length);
- 
- 	l = cgroup_pidlist_find_create(cgrp, type);
- 	if (!l) {
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -689,7 +689,7 @@ static void xhci_giveback_urb_in_irq(str
+ static void xhci_unmap_td_bounce_buffer(struct xhci_hcd *xhci,
+ 		struct xhci_ring *ring, struct xhci_td *td)
+ {
+-	struct device *dev = xhci_to_hcd(xhci)->self.controller;
++	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_segment *seg = td->bounce_seg;
+ 	struct urb *urb = td->urb;
+ 	size_t len;
+@@ -3199,7 +3199,7 @@ static u32 xhci_td_remainder(struct xhci
+ static int xhci_align_td(struct xhci_hcd *xhci, struct urb *urb, u32 enqd_len,
+ 			 u32 *trb_buff_len, struct xhci_segment *seg)
+ {
+-	struct device *dev = xhci_to_hcd(xhci)->self.controller;
++	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	unsigned int unalign;
+ 	unsigned int max_pkt;
+ 	u32 new_buff_len;
 
 
