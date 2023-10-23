@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B510D7D3445
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 268037D322C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234186AbjJWLiC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:38:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56312 "EHLO
+        id S233681AbjJWLRb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:17:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234184AbjJWLiB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:38:01 -0400
+        with ESMTP id S233676AbjJWLRb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FB68E8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC67EC433C8;
-        Mon, 23 Oct 2023 11:37:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FFCBC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D282DC433C8;
+        Mon, 23 Oct 2023 11:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061079;
-        bh=oaRjAazGyl1/avvZs1MOoIFq3ZfC3XwFC8SRFCMTRbY=;
+        s=korg; t=1698059849;
+        bh=/IypVgfUYl6H8DxtUdJkXDMAoH3Yj9ys0vBTgLeswPY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fb/GV/tY7hNqeP67+mi6l+CwpEH8KD5hh16S8pKaXjCRklZPb8SzyR83WuWn5n+XK
-         XFp8ZzWIz7cI5YuSn12FnkFZDElFpQe1bHYd+oIOw2VJ9fIWPgERPtVzJVm+im7Z19
-         07pTGfmoBo9SLYsXiIWHfCUYin6ibg46ipZ4C/Fc=
+        b=wyJY/fpPpUaFkspztRGHVWMDvbtJO4k4aDEeQeQWUSeaufPMBh+SU1/2N2fYAvP6A
+         tEVDXSiST7a7cSb1U45/Lnon6QbyNDktfeJEIYcpwYtw7T25jKi0K7z1KHgYiXyox3
+         HkjUfLU9ZVrsFX/Ywor6nPKi7pTiON6gCXyyDz/o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sili Luo <rootlab@huawei.com>,
-        Jeremy Kerr <jk@codeconstruct.com.au>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/137] mctp: perform route lookups under a RCU read-side lock
-Date:   Mon, 23 Oct 2023 12:57:02 +0200
-Message-ID: <20231023104823.153083742@linuxfoundation.org>
+        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 74/98] HID: holtek: fix slab-out-of-bounds Write in holtek_kbd_input_event
+Date:   Mon, 23 Oct 2023 12:57:03 +0200
+Message-ID: <20231023104816.183858731@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,91 +48,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Ma Ke <make_ruc2021@163.com>
 
-[ Upstream commit 5093bbfc10ab6636b32728e35813cbd79feb063c ]
+[ Upstream commit ffe3b7837a2bb421df84d0177481db9f52c93a71 ]
 
-Our current route lookups (mctp_route_lookup and mctp_route_lookup_null)
-traverse the net's route list without the RCU read lock held. This means
-the route lookup is subject to preemption, resulting in an potential
-grace period expiry, and so an eventual kfree() while we still have the
-route pointer.
+There is a slab-out-of-bounds Write bug in hid-holtek-kbd driver.
+The problem is the driver assumes the device must have an input
+but some malicious devices violate this assumption.
 
-Add the proper read-side critical section locks around the route
-lookups, preventing premption and a possible parallel kfree.
+Fix this by checking hid_device's input is non-empty before its usage.
 
-The remaining net->mctp.routes accesses are already under a
-rcu_read_lock, or protected by the RTNL for updates.
-
-Based on an analysis from Sili Luo <rootlab@huawei.com>, where
-introducing a delay in the route lookup could cause a UAF on
-simultaneous sendmsg() and route deletion.
-
-Reported-by: Sili Luo <rootlab@huawei.com>
-Fixes: 889b7da23abf ("mctp: Add initial routing framework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/29c4b0e67dc1bf3571df3982de87df90cae9b631.1696837310.git.jk@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/route.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/hid/hid-holtek-kbd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 859f57fd3871f..5ef6b3b0a3d99 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -549,6 +549,8 @@ struct mctp_route *mctp_route_lookup(struct net *net, unsigned int dnet,
- {
- 	struct mctp_route *tmp, *rt = NULL;
+diff --git a/drivers/hid/hid-holtek-kbd.c b/drivers/hid/hid-holtek-kbd.c
+index 2f8eb66397444..72788ca260e08 100644
+--- a/drivers/hid/hid-holtek-kbd.c
++++ b/drivers/hid/hid-holtek-kbd.c
+@@ -133,6 +133,10 @@ static int holtek_kbd_input_event(struct input_dev *dev, unsigned int type,
+ 		return -ENODEV;
  
-+	rcu_read_lock();
-+
- 	list_for_each_entry_rcu(tmp, &net->mctp.routes, list) {
- 		/* TODO: add metrics */
- 		if (mctp_rt_match_eid(tmp, dnet, daddr)) {
-@@ -559,21 +561,29 @@ struct mctp_route *mctp_route_lookup(struct net *net, unsigned int dnet,
- 		}
- 	}
+ 	boot_hid = usb_get_intfdata(boot_interface);
++	if (list_empty(&boot_hid->inputs)) {
++		hid_err(hid, "no inputs found\n");
++		return -ENODEV;
++	}
+ 	boot_hid_input = list_first_entry(&boot_hid->inputs,
+ 		struct hid_input, list);
  
-+	rcu_read_unlock();
-+
- 	return rt;
- }
- 
- static struct mctp_route *mctp_route_lookup_null(struct net *net,
- 						 struct net_device *dev)
- {
--	struct mctp_route *rt;
-+	struct mctp_route *tmp, *rt = NULL;
- 
--	list_for_each_entry_rcu(rt, &net->mctp.routes, list) {
--		if (rt->dev->dev == dev && rt->type == RTN_LOCAL &&
--		    refcount_inc_not_zero(&rt->refs))
--			return rt;
-+	rcu_read_lock();
-+
-+	list_for_each_entry_rcu(tmp, &net->mctp.routes, list) {
-+		if (tmp->dev->dev == dev && tmp->type == RTN_LOCAL &&
-+		    refcount_inc_not_zero(&tmp->refs)) {
-+			rt = tmp;
-+			break;
-+		}
- 	}
- 
--	return NULL;
-+	rcu_read_unlock();
-+
-+	return rt;
- }
- 
- /* sends a skb to rt and releases the route. */
 -- 
 2.40.1
 
