@@ -2,47 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97C717D33E6
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF9B07D333E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233845AbjJWLfI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36764 "EHLO
+        id S233980AbjJWL2T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:28:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234023AbjJWLfH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:07 -0400
+        with ESMTP id S233847AbjJWL2T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7D1FE8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B1AC433C7;
-        Mon, 23 Oct 2023 11:35:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1F1C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B76EC433C8;
+        Mon, 23 Oct 2023 11:28:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060904;
-        bh=/XER+mA+uWrfZcrFhUKbWQjGFdhx2BoIsIExkoevfAE=;
+        s=korg; t=1698060496;
+        bh=79M3672aYhrt6KN6ZLZsLrYHepXjUf3tOfI4Et5yxQE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PC7FKYv1p72zIDsBPcTVu9Cq3dUV1fe40jKqCcb1OnFMXR94/BbTN3TsN7sMDy7KE
-         9mj0GesAUiM+U1Z9/bnXD62DbexfHTwNVZBt5Mursiml/WMuHaLgTnXTRG/9vtIbR0
-         DLJSTXrbWIJtouR//lHVSLhzo66CtxWjEc7ibCB8=
+        b=F9alNztfyseGxL8CVpuuvegajiFPqa0vpGcEdRnipaBKlFioknuvraEssi44bQiG1
+         qjeEg+osczU+Wy7lrANqwfV/wEwpcxEfDUieqTH2JhgrgD+ufpv4eSKEQr3Xk3h/fZ
+         CrJPN92YYFiQLis4zUPF/rjyIoKtJFIDdMOHThcQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
+        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 097/123] sky2: Make sure there is at least one frag_addr available
-Date:   Mon, 23 Oct 2023 12:57:35 +0200
-Message-ID: <20231023104820.946969859@linuxfoundation.org>
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 191/196] net: move altnames together with the netdevice
+Date:   Mon, 23 Oct 2023 12:57:36 +0200
+Message-ID: <20231023104833.766378653@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,77 +49,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 6a70e5cbedaf8ad10528ac9ac114f3ec20f422df ]
+commit 8e15aee621618a3ee3abecaf1fd8c1428098b7ef upstream.
 
-In the pathological case of building sky2 with 16k PAGE_SIZE, the
-frag_addr[] array would never be used, so the original code was correct
-that size should be 0. But the compiler now gets upset with 0 size arrays
-in places where it hasn't eliminated the code that might access such an
-array (it can't figure out that in this case an rx skb with fragments
-would never be created). To keep the compiler happy, make sure there is
-at least 1 frag_addr in struct rx_ring_info:
+The altname nodes are currently not moved to the new netns
+when netdevice itself moves:
 
-   In file included from include/linux/skbuff.h:28,
-                    from include/net/net_namespace.h:43,
-                    from include/linux/netdevice.h:38,
-                    from drivers/net/ethernet/marvell/sky2.c:18:
-   drivers/net/ethernet/marvell/sky2.c: In function 'sky2_rx_unmap_skb':
-   include/linux/dma-mapping.h:416:36: warning: array subscript i is outside array bounds of 'dma_addr_t[0]' {aka 'long long unsigned int[]'} [-Warray-bounds=]
-     416 | #define dma_unmap_page(d, a, s, r) dma_unmap_page_attrs(d, a, s, r, 0)
-         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/ethernet/marvell/sky2.c:1257:17: note: in expansion of macro 'dma_unmap_page'
-    1257 |                 dma_unmap_page(&pdev->dev, re->frag_addr[i],
-         |                 ^~~~~~~~~~~~~~
-   In file included from drivers/net/ethernet/marvell/sky2.c:41:
-   drivers/net/ethernet/marvell/sky2.h:2198:25: note: while referencing 'frag_addr'
-    2198 |         dma_addr_t      frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
-         |                         ^~~~~~~~~
+  [ ~]# ip netns add test
+  [ ~]# ip -netns test link add name eth0 type dummy
+  [ ~]# ip -netns test link property add dev eth0 altname some-name
+  [ ~]# ip -netns test link show dev some-name
+  2: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+      link/ether 1e:67:ed:19:3d:24 brd ff:ff:ff:ff:ff:ff
+      altname some-name
+  [ ~]# ip -netns test link set dev eth0 netns 1
+  [ ~]# ip link
+  ...
+  3: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+      link/ether 02:40:88:62:ec:b8 brd ff:ff:ff:ff:ff:ff
+      altname some-name
+  [ ~]# ip li show dev some-name
+  Device "some-name" does not exist.
 
-With CONFIG_PAGE_SIZE_16KB=y, PAGE_SHIFT == 14, so:
+Remove them from the hash table when device is unlisted
+and add back when listed again.
 
-  #define ETH_JUMBO_MTU   9000
-
-causes "ETH_JUMBO_MTU >> PAGE_SHIFT" to be 0. Use "?: 1" to solve this build warning.
-
-Cc: Mirko Lindner <mlindner@marvell.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309191958.UBw1cjXk-lkp@intel.com/
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 36fbf1e52bd3 ("net: rtnetlink: add linkprop commands to add and delete alternative ifnames")
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/sky2.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/dev.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/sky2.h b/drivers/net/ethernet/marvell/sky2.h
-index b02b6523083ce..99451585a45f2 100644
---- a/drivers/net/ethernet/marvell/sky2.h
-+++ b/drivers/net/ethernet/marvell/sky2.h
-@@ -2201,7 +2201,7 @@ struct rx_ring_info {
- 	struct sk_buff	*skb;
- 	dma_addr_t	data_addr;
- 	DEFINE_DMA_UNMAP_LEN(data_size);
--	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
-+	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT ?: 1];
- };
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -381,6 +381,7 @@ static void netdev_name_node_alt_flush(s
+ /* Device list insertion */
+ static void list_netdevice(struct net_device *dev)
+ {
++	struct netdev_name_node *name_node;
+ 	struct net *net = dev_net(dev);
  
- enum flow_control {
--- 
-2.40.1
-
+ 	ASSERT_RTNL();
+@@ -392,6 +393,9 @@ static void list_netdevice(struct net_de
+ 			   dev_index_hash(net, dev->ifindex));
+ 	write_unlock(&dev_base_lock);
+ 
++	netdev_for_each_altname(dev, name_node)
++		netdev_name_node_add(net, name_node);
++
+ 	dev_base_seq_inc(net);
+ }
+ 
+@@ -400,8 +404,13 @@ static void list_netdevice(struct net_de
+  */
+ static void unlist_netdevice(struct net_device *dev, bool lock)
+ {
++	struct netdev_name_node *name_node;
++
+ 	ASSERT_RTNL();
+ 
++	netdev_for_each_altname(dev, name_node)
++		netdev_name_node_del(name_node);
++
+ 	/* Unlink dev from the device chain */
+ 	if (lock)
+ 		write_lock(&dev_base_lock);
+@@ -10851,7 +10860,6 @@ void unregister_netdevice_many(struct li
+ 	synchronize_net();
+ 
+ 	list_for_each_entry(dev, head, unreg_list) {
+-		struct netdev_name_node *name_node;
+ 		struct sk_buff *skb = NULL;
+ 
+ 		/* Shutdown queueing discipline. */
+@@ -10877,9 +10885,6 @@ void unregister_netdevice_many(struct li
+ 		dev_uc_flush(dev);
+ 		dev_mc_flush(dev);
+ 
+-		netdev_for_each_altname(dev, name_node)
+-			netdev_name_node_del(name_node);
+-		synchronize_rcu();
+ 		netdev_name_node_alt_flush(dev);
+ 		netdev_name_node_free(dev->name_node);
+ 
 
 
