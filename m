@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34FE57D31C6
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6F7E7D3309
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233631AbjJWLNF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:13:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33332 "EHLO
+        id S233775AbjJWL0F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:26:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55946 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233207AbjJWLNE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:04 -0400
+        with ESMTP id S233939AbjJWL0D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30C6AF9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74BE3C433C8;
-        Mon, 23 Oct 2023 11:13:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27CCCF9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4829EC433C8;
+        Mon, 23 Oct 2023 11:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059580;
-        bh=wW3HtY5Ec4W/ZiJJ5b8Q7wq0yL7xVQB2YfqNfyBppuo=;
+        s=korg; t=1698060359;
+        bh=W+Rn5eM4JmhrYnnJpj1hOiAy14j9eXh75Yjssh8UqME=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GbwQNmF0Apd3abkNeKEt36Pzy0pG8PTTx8M+EP+LBVwN93d5rpH8ZbENBfoIFjSxa
-         nzxa3nS1fn8Zq8EKQ1YuYRceIcSZw76+vQOgVj/LpcFVoWaJZRUQ/cGgCAd7FjdQ1J
-         B72KQNTWhqX1vLXRqvcHly8jWDcHHut+mHlA/HA0=
+        b=bQsD5ZqsiZPbXW8Q9KlK/TFXy55Y81SW2s0mvOy5aytluIxJAZtchZp7Uw6U9jaJw
+         6ATGYjNHLRtPoJTC3rbqpTymHFqoWSCURKnQBsNm+4dlt+JYvK+hJebHqeZCfb7wFN
+         Lh/ZPQRkk1eEOe+NLlJpLeXecsmwyxPaWCN7qbK0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Akira Yokosawa <akiyks@gmail.com>,
-        Carlos Bilbao <carlos.bilbao@amd.com>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 224/241] docs: Move rustdoc output, cross-reference it
-Date:   Mon, 23 Oct 2023 12:56:50 +0200
-Message-ID: <20231023104839.327386371@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Martin Kurbanov <mmkurbanov@sberdevices.ru>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 146/196] mtd: spinand: micron: correct bitmask for ecc status
+Date:   Mon, 23 Oct 2023 12:56:51 +0200
+Message-ID: <20231023104832.609836762@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,102 +50,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Bilbao <carlos.bilbao@amd.com>
+From: Martin Kurbanov <mmkurbanov@sberdevices.ru>
 
-[ Upstream commit 48fadf44007568e75c7af92857083058d57be403 ]
+commit 9836a987860e33943945d4b257729a4f94eae576 upstream.
 
-Generate rustdoc documentation with the rest of subsystem's documentation
-in Documentation/output. Add a cross reference to the generated rustdoc in
-Documentation/rust/index.rst if Sphinx target rustdoc is set.
+Valid bitmask is 0x70 in the status register.
 
-Reviewed-by: Akira Yokosawa <akiyks@gmail.com>
-Signed-off-by: Carlos Bilbao <carlos.bilbao@amd.com>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20230718151534.4067460-2-carlos.bilbao@amd.com
-Stable-dep-of: cfd96726e611 ("rust: docs: fix logo replacement")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a508e8875e13 ("mtd: spinand: Add initial support for Micron MT29F2G01ABAGD")
+Signed-off-by: Martin Kurbanov <mmkurbanov@sberdevices.ru>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230905145637.139068-1-mmkurbanov@sberdevices.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/rust/index.rst |  8 ++++++++
- rust/Makefile                | 15 +++++++++------
- 2 files changed, 17 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/spi/micron.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
-index 4ae8c66b94faf..e599be2cec9ba 100644
---- a/Documentation/rust/index.rst
-+++ b/Documentation/rust/index.rst
-@@ -6,6 +6,14 @@ Rust
- Documentation related to Rust within the kernel. To start using Rust
- in the kernel, please read the quick-start.rst guide.
+--- a/drivers/mtd/nand/spi/micron.c
++++ b/drivers/mtd/nand/spi/micron.c
+@@ -12,7 +12,7 @@
  
-+.. only:: rustdoc and html
-+
-+	You can also browse `rustdoc documentation <rustdoc/kernel/index.html>`_.
-+
-+.. only:: not rustdoc and html
-+
-+	This documentation does not include rustdoc generated information.
-+
- .. toctree::
-     :maxdepth: 1
+ #define SPINAND_MFR_MICRON		0x2c
  
-diff --git a/rust/Makefile b/rust/Makefile
-index 4124bfa01798d..b9acbe5a7a5d5 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -1,5 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0
- 
-+# Where to place rustdoc generated documentation
-+rustdoc_output := $(objtree)/Documentation/output/rust/rustdoc
-+
- obj-$(CONFIG_RUST) += core.o compiler_builtins.o
- always-$(CONFIG_RUST) += exports_core_generated.h
- 
-@@ -65,7 +68,7 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(RUSTDOC) $(if $(rustdoc_host),$(rust_common_flags),$(rust_flags)) \
- 		$(rustc_target_flags) -L$(objtree)/$(obj) \
--		--output $(objtree)/$(obj)/doc \
-+		--output $(rustdoc_output) \
- 		--crate-name $(subst rustdoc-,,$@) \
- 		@$(objtree)/include/generated/rustc_cfg $<
- 
-@@ -82,15 +85,15 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
- # and then retouch the generated files.
- rustdoc: rustdoc-core rustdoc-macros rustdoc-compiler_builtins \
-     rustdoc-alloc rustdoc-kernel
--	$(Q)cp $(srctree)/Documentation/images/logo.svg $(objtree)/$(obj)/doc
--	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(objtree)/$(obj)/doc
--	$(Q)find $(objtree)/$(obj)/doc -name '*.html' -type f -print0 | xargs -0 sed -Ei \
-+	$(Q)cp $(srctree)/Documentation/images/logo.svg $(rustdoc_output)
-+	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(rustdoc_output)
-+	$(Q)find $(rustdoc_output) -name '*.html' -type f -print0 | xargs -0 sed -Ei \
- 		-e 's:rust-logo\.svg:logo.svg:g' \
- 		-e 's:rust-logo\.png:logo.svg:g' \
- 		-e 's:favicon\.svg:logo.svg:g' \
- 		-e 's:<link rel="alternate icon" type="image/png" href="[./]*favicon-(16x16|32x32)\.png">::g'
- 	$(Q)echo '.logo-container > img { object-fit: contain; }' \
--		>> $(objtree)/$(obj)/doc/rustdoc.css
-+		>> $(rustdoc_output)/rustdoc.css
- 
- rustdoc-macros: private rustdoc_host = yes
- rustdoc-macros: private rustc_target_flags = --crate-type proc-macro \
-@@ -154,7 +157,7 @@ quiet_cmd_rustdoc_test = RUSTDOC T $<
- 		@$(objtree)/include/generated/rustc_cfg \
- 		$(rustc_target_flags) $(rustdoc_test_target_flags) \
- 		--sysroot $(objtree)/$(obj)/test/sysroot $(rustdoc_test_quiet) \
--		-L$(objtree)/$(obj)/test --output $(objtree)/$(obj)/doc \
-+		-L$(objtree)/$(obj)/test --output $(rustdoc_output) \
- 		--crate-name $(subst rusttest-,,$@) $<
- 
- # We cannot use `-Zpanic-abort-tests` because some tests are dynamic,
--- 
-2.42.0
-
+-#define MICRON_STATUS_ECC_MASK		GENMASK(7, 4)
++#define MICRON_STATUS_ECC_MASK		GENMASK(6, 4)
+ #define MICRON_STATUS_ECC_NO_BITFLIPS	(0 << 4)
+ #define MICRON_STATUS_ECC_1TO3_BITFLIPS	(1 << 4)
+ #define MICRON_STATUS_ECC_4TO6_BITFLIPS	(3 << 4)
 
 
