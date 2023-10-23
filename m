@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 581CC7D34FC
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D65D97D31E6
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234349AbjJWLog (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:44:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39128 "EHLO
+        id S233684AbjJWLO2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:14:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234354AbjJWLo0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:26 -0400
+        with ESMTP id S229880AbjJWLO2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C71631726
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326B1C433CB;
-        Mon, 23 Oct 2023 11:44:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E7BC92
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C35CC433C7;
+        Mon, 23 Oct 2023 11:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061459;
-        bh=3ChMFkaFBujS++c8gs5E2M2otk37nVY96tkkL0kGjKI=;
+        s=korg; t=1698059665;
+        bh=2w7ofIH6LYVa0yUQ1hDQbtWrMA8Qvfu3WumNNyclDFQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=odVJ8WgXsIcC4WnQxKYs4iLXuEJRLBFO5ZvgQfp0g1J6zFZ37qLZzjEmuubVOPRqN
-         FFDyXbqCT6FmoZa183W4wY3jppbV9nQoMjFBSXX9O5tIsMLLQAoREWObYHtTBT/TW6
-         AU59FfszmrW14JblTrMKowllAOL1LDONqHBnKJ0c=
+        b=kc8nUXfaDNiVG6rNfpk+kAhPTXRtjNVdb9Ma8qiBw8hf+2OOAHhkc2C2BUrKlCHak
+         D6Lq6haoIKlgKXy72JyrRXLgJXT05HC4+4jKzXmwySVX3UOFQ4+pYBW3tcnM2iQOsw
+         hxirhSJXtATQ6HMOgsGnSbUVJv6Xe6Lq11BvwH1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Firo Yang <firo.yang@suse.com>,
-        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-        Tejun Heo <tj@kernel.org>
-Subject: [PATCH 5.10 054/202] cgroup: Remove duplicates in cgroup v1 tasks file
+        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 12/98] ieee802154: ca8210: Fix a potential UAF in ca8210_probe
 Date:   Mon, 23 Oct 2023 12:56:01 +0200
-Message-ID: <20231023104828.151589302@linuxfoundation.org>
+Message-ID: <20231023104814.018032913@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,53 +49,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Koutný <mkoutny@suse.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit 1ca0b605150501b7dc59f3016271da4eb3e96fce upstream.
+[ Upstream commit f990874b1c98fe8e57ee9385669f501822979258 ]
 
-One PID may appear multiple times in a preloaded pidlist.
-(Possibly due to PID recycling but we have reports of the same
-task_struct appearing with different PIDs, thus possibly involving
-transfer of PID via de_thread().)
+If of_clk_add_provider() fails in ca8210_register_ext_clock(),
+it calls clk_unregister() to release priv->clk and returns an
+error. However, the caller ca8210_probe() then calls ca8210_remove(),
+where priv->clk is freed again in ca8210_unregister_ext_clock(). In
+this case, a use-after-free may happen in the second time we call
+clk_unregister().
 
-Because v1 seq_file iterator uses PIDs as position, it leads to
-a message:
-> seq_file: buggy .next function kernfs_seq_next did not update position index
+Fix this by removing the first clk_unregister(). Also, priv->clk could
+be an error code on failure of clk_register_fixed_rate(). Use
+IS_ERR_OR_NULL to catch this case in ca8210_unregister_ext_clock().
 
-Conservative and quick fix consists of removing duplicates from `tasks`
-file (as opposed to removing pidlists altogether). It doesn't affect
-correctness (it's sufficient to show a PID once), performance impact
-would be hidden by unconditional sorting of the pidlist already in place
-(asymptotically).
-
-Link: https://lore.kernel.org/r/20230823174804.23632-1-mkoutny@suse.com/
-Suggested-by: Firo Yang <firo.yang@suse.com>
-Signed-off-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Message-ID: <20231007033049.22353-1-dinghao.liu@zju.edu.cn>
+Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup-v1.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ieee802154/ca8210.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
---- a/kernel/cgroup/cgroup-v1.c
-+++ b/kernel/cgroup/cgroup-v1.c
-@@ -361,10 +361,9 @@ static int pidlist_array_load(struct cgr
- 	}
- 	css_task_iter_end(&it);
- 	length = n;
--	/* now sort & (if procs) strip out duplicates */
-+	/* now sort & strip out duplicates (tgids or recycled thread PIDs) */
- 	sort(array, length, sizeof(pid_t), cmppid, NULL);
--	if (type == CGROUP_FILE_PROCS)
--		length = pidlist_uniq(array, length);
-+	length = pidlist_uniq(array, length);
+diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
+index f75faec23cc98..525f92e896699 100644
+--- a/drivers/net/ieee802154/ca8210.c
++++ b/drivers/net/ieee802154/ca8210.c
+@@ -2781,7 +2781,6 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
+ 	struct device_node *np = spi->dev.of_node;
+ 	struct ca8210_priv *priv = spi_get_drvdata(spi);
+ 	struct ca8210_platform_data *pdata = spi->dev.platform_data;
+-	int ret = 0;
  
- 	l = cgroup_pidlist_find_create(cgrp, type);
- 	if (!l) {
+ 	if (!np)
+ 		return -EFAULT;
+@@ -2798,18 +2797,8 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
+ 		dev_crit(&spi->dev, "Failed to register external clk\n");
+ 		return PTR_ERR(priv->clk);
+ 	}
+-	ret = of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
+-	if (ret) {
+-		clk_unregister(priv->clk);
+-		dev_crit(
+-			&spi->dev,
+-			"Failed to register external clock as clock provider\n"
+-		);
+-	} else {
+-		dev_info(&spi->dev, "External clock set as clock provider\n");
+-	}
+ 
+-	return ret;
++	return of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
+ }
+ 
+ /**
+@@ -2821,8 +2810,8 @@ static void ca8210_unregister_ext_clock(struct spi_device *spi)
+ {
+ 	struct ca8210_priv *priv = spi_get_drvdata(spi);
+ 
+-	if (!priv->clk)
+-		return
++	if (IS_ERR_OR_NULL(priv->clk))
++		return;
+ 
+ 	of_clk_del_provider(spi->dev.of_node);
+ 	clk_unregister(priv->clk);
+-- 
+2.40.1
+
 
 
