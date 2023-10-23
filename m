@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 388667D3460
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B2867D33AD
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234214AbjJWLjL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:39:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53728 "EHLO
+        id S233677AbjJWLdC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:33:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234154AbjJWLjK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:10 -0400
+        with ESMTP id S234124AbjJWLdA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706C9DB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F04C433C7;
-        Mon, 23 Oct 2023 11:39:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9328AD7E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:32:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55444C433C7;
+        Mon, 23 Oct 2023 11:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061148;
-        bh=LQeyb/HApqH0UlfDleIwtyX4pbx6jaK83CDn7dnX6mQ=;
+        s=korg; t=1698060774;
+        bh=BLPw/ay9/PP70a8X5t8Pzyimzo0CfqLAE+dpnl0SeQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mMoHk5H910B3MtyhSUD77eBRBvPb6dHML0qKaLTd3hsrC41PdvMG/buZeaHV3P/YF
-         XvjwLHK1l7DDNa7QBXLRym58uoDrocEt9Cyn2WMKCfRXkOJJEqEHwxiTOYPeeTCab/
-         7rEJiDAvA61xjIRJCVPLvEZ+4uIaP65bAsTQfJRE=
+        b=szJLvNnEu8fi3IEfPR2Lr3bKuABnaPQc4c4E8k3zNwN3U6bG7jDMKsVjLRDQdtzWV
+         7c7bZAfU8OUcVrD20UchdTatUaZhHg65uzeAvuSGUKKXL4evRZ80HNTh9Fl8TBDnvZ
+         hgx27BtOaxXkU7Z/7kiPvPTHVULTpdzM5pnsnDmk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Haller <thaller@redhat.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        David Ahern <dsahern@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Andy Shevchenko <andy@kernel.org>,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/137] ipv4/fib: send notify when delete source address routes
+Subject: [PATCH 5.4 088/123] gpio: timberdale: Fix potential deadlock on &tgpio->lock
 Date:   Mon, 23 Oct 2023 12:57:26 +0200
-Message-ID: <20231023104823.904881422@linuxfoundation.org>
+Message-ID: <20231023104820.642505735@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,114 +50,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit 4b2b606075e50cdae62ab2356b0a1e206947c354 ]
+[ Upstream commit 9e8bc2dda5a7a8e2babc9975f4b11c9a6196e490 ]
 
-After deleting an interface address in fib_del_ifaddr(), the function
-scans the fib_info list for stray entries and calls fib_flush() and
-fib_table_flush(). Then the stray entries will be deleted silently and no
-RTM_DELROUTE notification will be sent.
+As timbgpio_irq_enable()/timbgpio_irq_disable() callback could be
+executed under irq context, it could introduce double locks on
+&tgpio->lock if it preempts other execution units requiring
+the same locks.
 
-This lack of notification can make routing daemons, or monitor like
-`ip monitor route` miss the routing changes. e.g.
+timbgpio_gpio_set()
+--> timbgpio_update_bit()
+--> spin_lock(&tgpio->lock)
+<interrupt>
+   --> timbgpio_irq_disable()
+   --> spin_lock_irqsave(&tgpio->lock)
 
-+ ip link add dummy1 type dummy
-+ ip link add dummy2 type dummy
-+ ip link set dummy1 up
-+ ip link set dummy2 up
-+ ip addr add 192.168.5.5/24 dev dummy1
-+ ip route add 7.7.7.0/24 dev dummy2 src 192.168.5.5
-+ ip -4 route
-7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
-192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
-+ ip monitor route
-+ ip addr del 192.168.5.5/24 dev dummy1
-Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
-Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
-Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
+This flaw was found by an experimental static analysis tool I am
+developing for irq-related deadlock.
 
-As Ido reminded, fib_table_flush() isn't only called when an address is
-deleted, but also when an interface is deleted or put down. The lack of
-notification in these cases is deliberate. And commit 7c6bb7d2faaf
-("net/ipv6: Add knob to skip DELROUTE message on device down") introduced
-a sysctl to make IPv6 behave like IPv4 in this regard. So we can't send
-the route delete notify blindly in fib_table_flush().
+To prevent the potential deadlock, the patch uses spin_lock_irqsave()
+on &tgpio->lock inside timbgpio_gpio_set() to prevent the possible
+deadlock scenario.
 
-To fix this issue, let's add a new flag in "struct fib_info" to track the
-deleted prefer source address routes, and only send notify for them.
-
-After update:
-+ ip monitor route
-+ ip addr del 192.168.5.5/24 dev dummy1
-Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
-Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
-Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
-Deleted 7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
-
-Suggested-by: Thomas Haller <thaller@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230922075508.848925-1-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip_fib.h     | 1 +
- net/ipv4/fib_semantics.c | 1 +
- net/ipv4/fib_trie.c      | 4 ++++
- 3 files changed, 6 insertions(+)
+ drivers/gpio/gpio-timberdale.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
-index c3324a1949c3a..9f6e2a476dc28 100644
---- a/include/net/ip_fib.h
-+++ b/include/net/ip_fib.h
-@@ -151,6 +151,7 @@ struct fib_info {
- 	int			fib_nhs;
- 	bool			fib_nh_is_v6;
- 	bool			nh_updated;
-+	bool			pfsrc_removed;
- 	struct nexthop		*nh;
- 	struct rcu_head		rcu;
- 	struct fib_nh		fib_nh[];
-diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
-index 91a3d6d338874..735901b8c9f69 100644
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -1908,6 +1908,7 @@ int fib_sync_down_addr(struct net_device *dev, __be32 local)
- 			continue;
- 		if (fi->fib_prefsrc == local) {
- 			fi->fib_flags |= RTNH_F_DEAD;
-+			fi->pfsrc_removed = true;
- 			ret++;
- 		}
- 	}
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 22531aac0ccbf..0b74debeecbb1 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -2021,6 +2021,7 @@ void fib_table_flush_external(struct fib_table *tb)
- int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+diff --git a/drivers/gpio/gpio-timberdale.c b/drivers/gpio/gpio-timberdale.c
+index de14949a3fe5a..92c1f2baa4bff 100644
+--- a/drivers/gpio/gpio-timberdale.c
++++ b/drivers/gpio/gpio-timberdale.c
+@@ -43,9 +43,10 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
+ 	unsigned offset, bool enabled)
  {
- 	struct trie *t = (struct trie *)tb->tb_data;
-+	struct nl_info info = { .nl_net = net };
- 	struct key_vector *pn = t->kv;
- 	unsigned long cindex = 1;
- 	struct hlist_node *tmp;
-@@ -2083,6 +2084,9 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+ 	struct timbgpio *tgpio = gpiochip_get_data(gpio);
++	unsigned long flags;
+ 	u32 reg;
  
- 			fib_notify_alias_delete(net, n->key, &n->leaf, fa,
- 						NULL);
-+			if (fi->pfsrc_removed)
-+				rtmsg_fib(RTM_DELROUTE, htonl(n->key), fa,
-+					  KEYLENGTH - fa->fa_slen, tb->tb_id, &info, 0);
- 			hlist_del_rcu(&fa->fa_list);
- 			fib_release_info(fa->fa_info);
- 			alias_free_mem_rcu(fa);
+-	spin_lock(&tgpio->lock);
++	spin_lock_irqsave(&tgpio->lock, flags);
+ 	reg = ioread32(tgpio->membase + offset);
+ 
+ 	if (enabled)
+@@ -54,7 +55,7 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
+ 		reg &= ~(1 << index);
+ 
+ 	iowrite32(reg, tgpio->membase + offset);
+-	spin_unlock(&tgpio->lock);
++	spin_unlock_irqrestore(&tgpio->lock, flags);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
