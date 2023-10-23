@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A25B77D32C9
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 581CC7D34FC
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233937AbjJWLXv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35928 "EHLO
+        id S234349AbjJWLog (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233863AbjJWLXo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:44 -0400
+        with ESMTP id S234354AbjJWLo0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EBF410D3
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F99C433C8;
-        Mon, 23 Oct 2023 11:23:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C71631726
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326B1C433CB;
+        Mon, 23 Oct 2023 11:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060211;
-        bh=8OlAJz0uf7gOgeaSTmDCzQwx3wnWCnZUh+DSCIEN8Io=;
+        s=korg; t=1698061459;
+        bh=3ChMFkaFBujS++c8gs5E2M2otk37nVY96tkkL0kGjKI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FEAmxlqWKcYf9lJ4zoOdZDinYcrgEWQtl8qBJlFWrrUHPylIVUoCbC1L/aaob+X99
-         KGvD5CIQJwMmoTkoMmwB9j09OW7tu58nfKvbKTu4edsgtoxmOs/mBSKLx029ZM3NW3
-         7rWVR/USjUv9ZPJQ5OmGHzeMpn2GFS1m9IMUtXps=
+        b=odVJ8WgXsIcC4WnQxKYs4iLXuEJRLBFO5ZvgQfp0g1J6zFZ37qLZzjEmuubVOPRqN
+         FFDyXbqCT6FmoZa183W4wY3jppbV9nQoMjFBSXX9O5tIsMLLQAoREWObYHtTBT/TW6
+         AU59FfszmrW14JblTrMKowllAOL1LDONqHBnKJ0c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/196] btrfs: initialize start_slot in btrfs_log_prealloc_extents
+        patches@lists.linux.dev, Firo Yang <firo.yang@suse.com>,
+        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+        Tejun Heo <tj@kernel.org>
+Subject: [PATCH 5.10 054/202] cgroup: Remove duplicates in cgroup v1 tasks file
 Date:   Mon, 23 Oct 2023 12:56:01 +0200
-Message-ID: <20231023104831.243090259@linuxfoundation.org>
+Message-ID: <20231023104828.151589302@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Michal Koutný <mkoutny@suse.com>
 
-[ Upstream commit b4c639f699349880b7918b861e1bd360442ec450 ]
+commit 1ca0b605150501b7dc59f3016271da4eb3e96fce upstream.
 
-Jens reported a compiler warning when using
-CONFIG_CC_OPTIMIZE_FOR_SIZE=y that looks like this
+One PID may appear multiple times in a preloaded pidlist.
+(Possibly due to PID recycling but we have reports of the same
+task_struct appearing with different PIDs, thus possibly involving
+transfer of PID via de_thread().)
 
-  fs/btrfs/tree-log.c: In function ‘btrfs_log_prealloc_extents’:
-  fs/btrfs/tree-log.c:4828:23: warning: ‘start_slot’ may be used
-  uninitialized [-Wmaybe-uninitialized]
-   4828 |                 ret = copy_items(trans, inode, dst_path, path,
-	|                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   4829 |                                  start_slot, ins_nr, 1, 0);
-	|                                  ~~~~~~~~~~~~~~~~~~~~~~~~~
-  fs/btrfs/tree-log.c:4725:13: note: ‘start_slot’ was declared here
-   4725 |         int start_slot;
-	|             ^~~~~~~~~~
+Because v1 seq_file iterator uses PIDs as position, it leads to
+a message:
+> seq_file: buggy .next function kernfs_seq_next did not update position index
 
-The compiler is incorrect, as we only use this code when ins_len > 0,
-and when ins_len > 0 we have start_slot properly initialized.  However
-we generally find the -Wmaybe-uninitialized warnings valuable, so
-initialize start_slot to get rid of the warning.
+Conservative and quick fix consists of removing duplicates from `tasks`
+file (as opposed to removing pidlists altogether). It doesn't affect
+correctness (it's sufficient to show a PID once), performance impact
+would be hidden by unconditional sorting of the pidlist already in place
+(asymptotically).
 
-Reported-by: Jens Axboe <axboe@kernel.dk>
-Tested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20230823174804.23632-1-mkoutny@suse.com/
+Suggested-by: Firo Yang <firo.yang@suse.com>
+Signed-off-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cgroup/cgroup-v1.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index c03ff6a5a7f6b..7c33b28c02aeb 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -4767,7 +4767,7 @@ static int btrfs_log_prealloc_extents(struct btrfs_trans_handle *trans,
- 	struct extent_buffer *leaf;
- 	int slot;
- 	int ins_nr = 0;
--	int start_slot;
-+	int start_slot = 0;
- 	int ret;
+--- a/kernel/cgroup/cgroup-v1.c
++++ b/kernel/cgroup/cgroup-v1.c
+@@ -361,10 +361,9 @@ static int pidlist_array_load(struct cgr
+ 	}
+ 	css_task_iter_end(&it);
+ 	length = n;
+-	/* now sort & (if procs) strip out duplicates */
++	/* now sort & strip out duplicates (tgids or recycled thread PIDs) */
+ 	sort(array, length, sizeof(pid_t), cmppid, NULL);
+-	if (type == CGROUP_FILE_PROCS)
+-		length = pidlist_uniq(array, length);
++	length = pidlist_uniq(array, length);
  
- 	if (!(inode->flags & BTRFS_INODE_PREALLOC))
--- 
-2.40.1
-
+ 	l = cgroup_pidlist_find_create(cgrp, type);
+ 	if (!l) {
 
 
