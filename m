@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 491427D3323
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 960917D3577
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:48:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233962AbjJWL1E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:27:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53566 "EHLO
+        id S234461AbjJWLsj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233963AbjJWL1D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:03 -0400
+        with ESMTP id S234498AbjJWLsj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:48:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF5AD7B
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D6EC433C8;
-        Mon, 23 Oct 2023 11:26:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13906AF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:48:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A3AC433C8;
+        Mon, 23 Oct 2023 11:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060419;
-        bh=JztRtx4IqvvQ4QeXqRVRkpb1R0/taf4uu+13mz1Y9f4=;
+        s=korg; t=1698061716;
+        bh=zPAvn1JhndAW43thYym5s8knzjqTyaWF+LNZ1JTK0no=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ryg/35FtrCLx+W9y3+pn5EWf9OYYsqGvo4US3FYlqhzVla+JHgV4jIjC72B4+wp+R
-         hkE4uAn5qwQzCm6AND7rROFi1GFj+Qld80zBwJEfcmIi4PuEbzfjKMTWcoc5hY1g/q
-         RxKmli/gRUl/cFhGFjGgAzDJ/PLoaLbfnN65Co30=
+        b=f8GVpPKlr9UrnXDoWlHsqOT01Djn7xEuGvtDjF5l5mNSsw04rVymd91giItNnr7iS
+         a4BPZdntX99vG0XYwWe7imOgyt1HgwdZVDLZKomwYl5hs2xIMzly1TtcdRy5M+Ku7Q
+         HFd8oGoDZF83luskRO4ri1+kNx74wKKyzBWKvMfo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fabio Porcedda <fabio.porcedda@gmail.com>,
-        Daniele Palmas <dnlplm@gmail.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 165/196] USB: serial: option: add Telit LE910C4-WWX 0x1035 composition
+        patches@lists.linux.dev, John Garry <john.garry@huawei.com>,
+        Marc Zyngier <maz@kernel.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 123/202] ACPI: Drop acpi_dev_irqresource_disabled()
 Date:   Mon, 23 Oct 2023 12:57:10 +0200
-Message-ID: <20231023104833.101990156@linuxfoundation.org>
+Message-ID: <20231023104830.125382853@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,57 +50,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
+From: John Garry <john.garry@huawei.com>
 
-commit 6a7be48e9bd18d309ba25c223a27790ad1bf0fa3 upstream.
+[ Upstream commit 1c3f69b4543af0aad514c127298e5ea40392575d ]
 
-Add support for the following Telit LE910C4-WWX composition:
+The functionality of acpi_dev_irqresource_disabled() is same as in common
+irqresource_disabled(), so drop acpi_dev_irqresource_disabled() in favour
+of that function.
 
-0x1035: TTY, TTY, ECM
-
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=1bc7 ProdID=1035 Rev=00.00
-S:  Manufacturer=Telit
-S:  Product=LE910C4-WWX
-S:  SerialNumber=e1b117c7
-C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Garry <john.garry@huawei.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lore.kernel.org/r/1606905417-183214-4-git-send-email-john.garry@huawei.com
+Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/resource.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1290,6 +1290,7 @@ static const struct usb_device_id option
- 	 .driver_info = NCTRL(0) | RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1033, 0xff),	/* Telit LE910C1-EUX (ECM) */
- 	 .driver_info = NCTRL(0) },
-+	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1035, 0xff) }, /* Telit LE910C4-WWX (ECM) */
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG0),
- 	  .driver_info = RSVD(0) | RSVD(1) | NCTRL(2) | RSVD(3) },
- 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG1),
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index f2f5f1dc7c61d..20a7892c6d3fd 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -380,13 +380,6 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
+ 
+-static void acpi_dev_irqresource_disabled(struct resource *res, u32 gsi)
+-{
+-	res->start = gsi;
+-	res->end = gsi;
+-	res->flags = IORESOURCE_IRQ | IORESOURCE_DISABLED | IORESOURCE_UNSET;
+-}
+-
+ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+ 				     u8 triggering, u8 polarity, u8 shareable,
+ 				     bool legacy)
+@@ -394,7 +387,7 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+ 	int irq, p, t;
+ 
+ 	if (!valid_IRQ(gsi)) {
+-		acpi_dev_irqresource_disabled(res, gsi);
++		irqresource_disabled(res, gsi);
+ 		return;
+ 	}
+ 
+@@ -426,7 +419,7 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+ 		res->start = irq;
+ 		res->end = irq;
+ 	} else {
+-		acpi_dev_irqresource_disabled(res, gsi);
++		irqresource_disabled(res, gsi);
+ 	}
+ }
+ 
+@@ -463,7 +456,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+ 		 */
+ 		irq = &ares->data.irq;
+ 		if (index >= irq->interrupt_count) {
+-			acpi_dev_irqresource_disabled(res, 0);
++			irqresource_disabled(res, 0);
+ 			return false;
+ 		}
+ 		acpi_dev_get_irqresource(res, irq->interrupts[index],
+@@ -473,7 +466,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+ 	case ACPI_RESOURCE_TYPE_EXTENDED_IRQ:
+ 		ext_irq = &ares->data.extended_irq;
+ 		if (index >= ext_irq->interrupt_count) {
+-			acpi_dev_irqresource_disabled(res, 0);
++			irqresource_disabled(res, 0);
+ 			return false;
+ 		}
+ 		if (is_gsi(ext_irq))
+@@ -481,7 +474,7 @@ bool acpi_dev_resource_interrupt(struct acpi_resource *ares, int index,
+ 					 ext_irq->triggering, ext_irq->polarity,
+ 					 ext_irq->shareable, false);
+ 		else
+-			acpi_dev_irqresource_disabled(res, 0);
++			irqresource_disabled(res, 0);
+ 		break;
+ 	default:
+ 		res->flags = 0;
+-- 
+2.40.1
+
 
 
