@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44BAF7D3314
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8E6F7D30C3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233943AbjJWL0e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:26:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52276 "EHLO
+        id S230215AbjJWLBz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233922AbjJWL0d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:33 -0400
+        with ESMTP id S231517AbjJWLBy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3BCD10B
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48BAC433C7;
-        Mon, 23 Oct 2023 11:26:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1434B10C0
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539CAC433C7;
+        Mon, 23 Oct 2023 11:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060389;
-        bh=iM8Dz/HPNOjUQPtaPzmg2vCk2fJY5tLldEV/m3I0HHU=;
+        s=korg; t=1698058910;
+        bh=EqURKzDl9kxdfhSpjb+UfknWLgGpFG6fIUjiOT61yos=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bo3ijTiPwfp3cJtCpnNT6XmpycPNMhujXK60vKtBqaw4vEZojxbVtXzIDkAIhb5ja
-         7VJvN3NOQQikNaV6GE4NU4Y0cFoA6BMA1T1OBjFpRdLWxlJMs4tG+nKFibHkmDIKcV
-         ECXtd3oqDlJvDp3j4lb2mWvEj1cTYi3m2FbFE/xA=
+        b=K50L0eBg9H9GrMPK2YoyIyjjxYFkLONyWQwFp0r8DZ+Qa20ZCA9H2P8XHEfSuCRGq
+         /KKy4QQRC1m0DKtKLWaJgbSS1dtl5vbEE1MrIE23Vo6mxmB+8Q3VN4gX4HfX/GDSoL
+         vn+rBBY27+8xGFlpvEQq7EIRGZV4PsoAg6oIxypk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Benjamin Berg <benjamin.berg@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/196] Bluetooth: hci_event: Fix using memcmp when comparing keys
+Subject: [PATCH 4.14 53/66] wifi: cfg80211: avoid leaking stack data into trace
 Date:   Mon, 23 Oct 2023 12:56:43 +0200
-Message-ID: <20231023104832.386481385@linuxfoundation.org>
+Message-ID: <20231023104812.814267701@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,76 +49,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit b541260615f601ae1b5d6d0cc54e790de706303b ]
+[ Upstream commit 334bf33eec5701a1e4e967bcb7cc8611a998334b ]
 
-memcmp is not consider safe to use with cryptographic secrets:
+If the structure is not initialized then boolean types might be copied
+into the tracing data without being initialised. This causes data from
+the stack to leak into the trace and also triggers a UBSAN failure which
+can easily be avoided here.
 
- 'Do  not  use memcmp() to compare security critical data, such as
- cryptographic secrets, because the required CPU time depends on the
- number of equal bytes.'
-
-While usage of memcmp for ZERO_KEY may not be considered a security
-critical data, it can lead to more usage of memcmp with pairing keys
-which could introduce more security problems.
-
-Fixes: 455c2ff0a558 ("Bluetooth: Fix BR/EDR out-of-band pairing with only initiator data")
-Fixes: 33155c4aae52 ("Bluetooth: hci_event: Ignore NULL link key")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Link: https://lore.kernel.org/r/20230925171855.a9271ef53b05.I8180bae663984c91a3e036b87f36a640ba409817@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/wireless/nl80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 152da3ded3faf..c86a45344fe28 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -25,6 +25,8 @@
- /* Bluetooth HCI event handling. */
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 7085c54e6e508..b4b564182db01 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6159,7 +6159,7 @@ static int nl80211_update_mesh_config(struct sk_buff *skb,
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	struct net_device *dev = info->user_ptr[1];
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
+-	struct mesh_config cfg;
++	struct mesh_config cfg = {};
+ 	u32 mask;
+ 	int err;
  
- #include <asm/unaligned.h>
-+#include <linux/crypto.h>
-+#include <crypto/algapi.h>
- 
- #include <net/bluetooth/bluetooth.h>
- #include <net/bluetooth/hci_core.h>
-@@ -4697,7 +4699,7 @@ static void hci_link_key_notify_evt(struct hci_dev *hdev, void *data,
- 		goto unlock;
- 
- 	/* Ignore NULL link key against CVE-2020-26555 */
--	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
-+	if (!crypto_memneq(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
- 		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
- 			   &ev->bdaddr);
- 		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
-@@ -5240,8 +5242,8 @@ static u8 bredr_oob_data_present(struct hci_conn *conn)
- 		 * available, then do not declare that OOB data is
- 		 * present.
- 		 */
--		if (!memcmp(data->rand256, ZERO_KEY, 16) ||
--		    !memcmp(data->hash256, ZERO_KEY, 16))
-+		if (!crypto_memneq(data->rand256, ZERO_KEY, 16) ||
-+		    !crypto_memneq(data->hash256, ZERO_KEY, 16))
- 			return 0x00;
- 
- 		return 0x02;
-@@ -5251,8 +5253,8 @@ static u8 bredr_oob_data_present(struct hci_conn *conn)
- 	 * not supported by the hardware, then check that if
- 	 * P-192 data values are present.
- 	 */
--	if (!memcmp(data->rand192, ZERO_KEY, 16) ||
--	    !memcmp(data->hash192, ZERO_KEY, 16))
-+	if (!crypto_memneq(data->rand192, ZERO_KEY, 16) ||
-+	    !crypto_memneq(data->hash192, ZERO_KEY, 16))
- 		return 0x00;
- 
- 	return 0x01;
 -- 
 2.40.1
 
