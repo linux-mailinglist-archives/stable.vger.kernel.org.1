@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C79417D3565
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:47:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D14F17D3325
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234472AbjJWLrw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:47:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47044 "EHLO
+        id S233956AbjJWL1H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:27:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234507AbjJWLru (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:47:50 -0400
+        with ESMTP id S233968AbjJWL1G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A777410D5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:47:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5308C433C8;
-        Mon, 23 Oct 2023 11:47:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B122810B
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2DD2C433CA;
+        Mon, 23 Oct 2023 11:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061666;
-        bh=SI9YmKcQ/HlN3KLCGJFf5UptkuytH4kEJ648FQcO6sU=;
+        s=korg; t=1698060422;
+        bh=R+yTtpAhv8PSuLAtDJ2mfjZUN5NlzfQHKeR7MsPl0uc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x/q3xIfxjSuS+yTLKimkNFRdOHcD6Kt2qXzMBivZzGffMLJcWsW852yBCu6vIQjRf
-         o8dlYvTHKDDxX4qXMWM9lKEx6vQ5WMaCmjjb98TnPzp/KhWKcXM45PI3meeP2kA1J4
-         uij2+WD4ymbF5WIdIk4HHUrpe2ncbAcqN34cuokY=
+        b=Yu07ChWnjqoP7eVQGDGAQczctSGo7jG8jBp9fGLMyQ6vYLe9KElzSE9wg1kvJGO0+
+         UhP9MBufixcUO1xwolB3ywyDe2X7fjGVKqMn4nGvZsTaDK/1ecOm18IaINxcjn0gbJ
+         PGydDrvwstNOjx4crIeWny90MBi2UfZexdxSAizo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Dohrmann <erbse.13@gmx.de>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 5.10 097/202] x86/sev: Disable MMIO emulation from user mode
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Aaron Conole <aconole@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/196] selftests: openvswitch: Add version check for pyroute2
 Date:   Mon, 23 Oct 2023 12:56:44 +0200
-Message-ID: <20231023104829.380095325@linuxfoundation.org>
+Message-ID: <20231023104832.415527918@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,46 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Aaron Conole <aconole@redhat.com>
 
-Upstream commit: a37cd2a59d0cb270b1bba568fd3a3b8668b9d3ba
+[ Upstream commit 92e37f20f20a23fec4626ae72eda50f127acb130 ]
 
-A virt scenario can be constructed where MMIO memory can be user memory.
-When that happens, a race condition opens between when the hardware
-raises the #VC and when the #VC handler gets to emulate the instruction.
+Paolo Abeni reports that on some systems the pyroute2 version isn't
+new enough to run the test suite.  Ensure that we support a minimum
+version of 0.6 for all cases (which does include the existing ones).
+The 0.6.1 version was released in May of 2021, so should be
+propagated to most installations at this point.
 
-If the MOVS is replaced with a MOVS accessing kernel memory in that
-small race window, then write to kernel memory happens as the access
-checks are not done at emulation time.
+The alternative that Paolo proposed was to only skip when the
+add-flow is being run.  This would be okay for most cases, except
+if a future test case is added that needs to do flow dump without
+an associated add (just guessing).  In that case, it could also be
+broken and we would need additional skip logic anyway.  Just draw
+a line in the sand now.
 
-Disable MMIO emulation in user mode temporarily until a sensible use
-case appears and justifies properly handling the race window.
-
-Fixes: 0118b604c2c9 ("x86/sev-es: Handle MMIO String Instructions")
-Reported-by: Tom Dohrmann <erbse.13@gmx.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Tom Dohrmann <erbse.13@gmx.de>
-Cc: <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 25f16c873fb1 ("selftests: add openvswitch selftest suite")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Closes: https://lore.kernel.org/lkml/8470c431e0930d2ea204a9363a60937289b7fdbe.camel@redhat.com/
+Signed-off-by: Aaron Conole <aconole@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/sev-es.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/openvswitch/openvswitch.sh |  2 +-
+ tools/testing/selftests/net/openvswitch/ovs-dpctl.py   | 10 +++++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/sev-es.c
-+++ b/arch/x86/kernel/sev-es.c
-@@ -970,6 +970,9 @@ static enum es_result vc_handle_mmio(str
- 	enum es_result ret;
- 	long *reg_data;
+diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+index 5e6686398a313..52054a09d575c 100755
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -117,7 +117,7 @@ run_test() {
+ 	fi
  
-+	if (user_mode(ctxt->regs))
-+		return ES_UNSUPPORTED;
+ 	if python3 ovs-dpctl.py -h 2>&1 | \
+-	     grep "Need to install the python" >/dev/null 2>&1; then
++	     grep -E "Need to (install|upgrade) the python" >/dev/null 2>&1; then
+ 		stdbuf -o0 printf "TEST: %-60s  [PYLIB]\n" "${tdesc}"
+ 		return $ksft_skip
+ 	fi
+diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+index 5d467d1993cb1..e787a1f967b0d 100644
+--- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+@@ -17,8 +17,10 @@ try:
+     from pyroute2.netlink import nla
+     from pyroute2.netlink.exceptions import NetlinkError
+     from pyroute2.netlink.generic import GenericNetlinkSocket
++    import pyroute2
 +
- 	switch (insn->opcode.bytes[0]) {
- 	/* MMIO Write */
- 	case 0x88:
+ except ModuleNotFoundError:
+-    print("Need to install the python pyroute2 package.")
++    print("Need to install the python pyroute2 package >= 0.6.")
+     sys.exit(0)
+ 
+ 
+@@ -280,6 +282,12 @@ def print_ovsdp_full(dp_lookup_rep, ifindex, ndb=NDB()):
+ 
+ 
+ def main(argv):
++    # version check for pyroute2
++    prverscheck = pyroute2.__version__.split(".")
++    if int(prverscheck[0]) == 0 and int(prverscheck[1]) < 6:
++        print("Need to upgrade the python pyroute2 package to >= 0.6.")
++        sys.exit(0)
++
+     parser = argparse.ArgumentParser()
+     parser.add_argument(
+         "-v",
+-- 
+2.40.1
+
 
 
