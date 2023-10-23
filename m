@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE1AA7D3224
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6B327D352F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233668AbjJWLRI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:17:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56754 "EHLO
+        id S234589AbjJWLqE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:46:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjJWLRH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:07 -0400
+        with ESMTP id S234592AbjJWLpg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC9A092
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A264C433C7;
-        Mon, 23 Oct 2023 11:17:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C4341729
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7643C433CA;
+        Mon, 23 Oct 2023 11:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059825;
-        bh=SQ9ZC2BRDP9SkAekIY73z4Y7n3g/d/hhZV2IRquSdd0=;
+        s=korg; t=1698061534;
+        bh=wtiQ0S27A2XcgXztI3v+OonACnhWEN1uhpCS4PlMMW0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xKQxTgiJy2o5GzD1A1QLoY/7rP6NpveBIh473bZmvqSPUKUuWgXyUifRkEx1TAD62
-         BNR1jAD7QFFY8BgHAz7b9OezGyNWaI8nQx4biEb5Ax7WUSGUJz+eVcptjswT/Bxgw+
-         fzZvwrO5RtTXjx0FAeRPcP1hWkISRptKgHoIhGm0=
+        b=fVyjyPPscDZnrbsRe7OnC64VDOPCnB1lQSuaDOtyhQiepbKDGm7bo//KBDDsd+eAc
+         c53E+juwgUHmol+2L1mbvLQIYkDuwMaYU7UJoh6LE3c9q0UPeG4s8YryJE7fPpGnLl
+         RGcpGHSYUDHUssayQW7/HnGj2DrVbNELti2E4tFc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 38/98] powerpc/64e: Fix wrong test in __ptep_test_and_clear_young()
+        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 080/202] ravb: Fix use-after-free issue in ravb_tx_timeout_work()
 Date:   Mon, 23 Oct 2023 12:56:27 +0200
-Message-ID: <20231023104814.940130741@linuxfoundation.org>
+Message-ID: <20231023104828.885383317@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit 5ea0bbaa32e8f54e9a57cfee4a3b8769b80be0d2 ]
+commit 3971442870713de527684398416970cf025b4f89 upstream.
 
-Commit 45201c879469 ("powerpc/nohash: Remove hash related code from
-nohash headers.") replaced:
+The ravb_stop() should call cancel_work_sync(). Otherwise,
+ravb_tx_timeout_work() is possible to use the freed priv after
+ravb_remove() was called like below:
 
-  if ((pte_val(*ptep) & (_PAGE_ACCESSED | _PAGE_HASHPTE)) == 0)
-	return 0;
+CPU0			CPU1
+			ravb_tx_timeout()
+ravb_remove()
+unregister_netdev()
+free_netdev(ndev)
+// free priv
+			ravb_tx_timeout_work()
+			// use priv
 
-By:
+unregister_netdev() will call .ndo_stop() so that ravb_stop() is
+called. And, after phy_stop() is called, netif_carrier_off()
+is also called. So that .ndo_tx_timeout() will not be called
+after phy_stop().
 
-  if (pte_young(*ptep))
-	return 0;
-
-But it should be:
-
-  if (!pte_young(*ptep))
-	return 0;
-
-Fix it.
-
-Fixes: 45201c879469 ("powerpc/nohash: Remove hash related code from nohash headers.")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/8bb7f06494e21adada724ede47a4c3d97e879d40.1695659959.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Reported-by: Zheng Wang <zyytlz.wz@163.com>
+Closes: https://lore.kernel.org/netdev/20230725030026.1664873-1-zyytlz.wz@163.com/
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20231005011201.14368-3-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/nohash/64/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
-index 7cd6809f4d332..30fcffc02caad 100644
---- a/arch/powerpc/include/asm/nohash/64/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
-@@ -215,7 +215,7 @@ static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
- {
- 	unsigned long old;
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1706,6 +1706,8 @@ static int ravb_close(struct net_device
+ 			of_phy_deregister_fixed_link(np);
+ 	}
  
--	if (pte_young(*ptep))
-+	if (!pte_young(*ptep))
- 		return 0;
- 	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
- 	return (old & _PAGE_ACCESSED) != 0;
--- 
-2.40.1
-
++	cancel_work_sync(&priv->work);
++
+ 	if (priv->chip_id != RCAR_GEN2) {
+ 		free_irq(priv->tx_irqs[RAVB_NC], ndev);
+ 		free_irq(priv->rx_irqs[RAVB_NC], ndev);
 
 
