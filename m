@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FDB27D322D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58B687D3318
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233683AbjJWLRg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:17:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32980 "EHLO
+        id S233932AbjJWL0p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:26:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233676AbjJWLRf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:35 -0400
+        with ESMTP id S233926AbjJWL0o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7369A92
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86D2C433CA;
-        Mon, 23 Oct 2023 11:17:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C657DF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6D8C433C8;
+        Mon, 23 Oct 2023 11:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059853;
-        bh=SAQ4R6bf3kNBN/cuwBblShJEtw1fRBZ7BysokwevPXI=;
+        s=korg; t=1698060401;
+        bh=ba/jhXZD/a0FhOuBUB8KrnqanHUH0MKMc1moquPwePY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OeqJmTKO2kyzt7nN8luI4gM8zK0R71MoncNhgBcK7tiGhuZB8VLngL/6BOmbn6a/J
-         udDRdqvJSAxQ7Grr5me/qSb242sJK6jqe+ndYlNXCdDntcCYbuACiCyNgd0pOqP6QH
-         /NH2BTDreDUgsQNAR/++ZpulvTwBiq+sJCvOaACM=
+        b=A4+zTmKRA9gEMMan9SgDaKuM80Drh18B/lUPBJD9KqxP58vDp18JXOLOi36cz/GqM
+         CTH7RPAPIFuUJ4cn59H/+sF4RwBBeZRqkPIrBA6kPcBTuB5OmLpTeQZulyIfLDfozh
+         MTT8oWzKzEDKERFOK7YOlB4cV47PwqJnjqfQW+tA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 75/98] Bluetooth: Avoid redundant authentication
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@lst.de>,
+        Kanchan Joshi <joshi.k@samsung.com>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 159/196] nvme: sanitize metadata bounce buffer for reads
 Date:   Mon, 23 Oct 2023 12:57:04 +0200
-Message-ID: <20231023104816.212380051@linuxfoundation.org>
+Message-ID: <20231023104832.948074868@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,110 +51,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 1d8e801422d66e4b8c7b187c52196bef94eed887 ]
+commit 2b32c76e2b0154b98b9322ae7546b8156cd703e6 upstream.
 
-While executing the Android 13 CTS Verifier Secure Server test on a
-ChromeOS device, it was observed that the Bluetooth host initiates
-authentication for an RFCOMM connection after SSP completes.
-When this happens, some Intel Bluetooth controllers, like AC9560, would
-disconnect with "Connection Rejected due to Security Reasons (0x0e)".
+User can request more metadata bytes than the device will write. Ensure
+kernel buffer is initialized so we're not leaking unsanitized memory on
+the copy-out.
 
-Historically, BlueZ did not mandate this authentication while an
-authenticated combination key was already in use for the connection.
-This behavior was changed since commit 7b5a9241b780
-("Bluetooth: Introduce requirements for security level 4").
-So, this patch addresses the aforementioned disconnection issue by
-restoring the previous behavior.
-
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0b7f1f26f95a51a ("nvme: use the block layer for userspace passthrough metadata")
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c | 63 ++++++++++++++++++++++------------------
- 1 file changed, 35 insertions(+), 28 deletions(-)
+ drivers/nvme/host/ioctl.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 9d01cccc84ade..b876e97b61c92 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1388,34 +1388,41 @@ int hci_conn_security(struct hci_conn *conn, __u8 sec_level, __u8 auth_type,
- 	if (!test_bit(HCI_CONN_AUTH, &conn->flags))
- 		goto auth;
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -32,9 +32,13 @@ static void *nvme_add_user_metadata(stru
+ 	if (!buf)
+ 		goto out;
  
--	/* An authenticated FIPS approved combination key has sufficient
--	 * security for security level 4. */
--	if (conn->key_type == HCI_LK_AUTH_COMBINATION_P256 &&
--	    sec_level == BT_SECURITY_FIPS)
--		goto encrypt;
--
--	/* An authenticated combination key has sufficient security for
--	   security level 3. */
--	if ((conn->key_type == HCI_LK_AUTH_COMBINATION_P192 ||
--	     conn->key_type == HCI_LK_AUTH_COMBINATION_P256) &&
--	    sec_level == BT_SECURITY_HIGH)
--		goto encrypt;
--
--	/* An unauthenticated combination key has sufficient security for
--	   security level 1 and 2. */
--	if ((conn->key_type == HCI_LK_UNAUTH_COMBINATION_P192 ||
--	     conn->key_type == HCI_LK_UNAUTH_COMBINATION_P256) &&
--	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW))
--		goto encrypt;
--
--	/* A combination key has always sufficient security for the security
--	   levels 1 or 2. High security level requires the combination key
--	   is generated using maximum PIN code length (16).
--	   For pre 2.1 units. */
--	if (conn->key_type == HCI_LK_COMBINATION &&
--	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW ||
--	     conn->pin_length == 16))
--		goto encrypt;
-+	switch (conn->key_type) {
-+	case HCI_LK_AUTH_COMBINATION_P256:
-+		/* An authenticated FIPS approved combination key has
-+		 * sufficient security for security level 4 or lower.
-+		 */
-+		if (sec_level <= BT_SECURITY_FIPS)
-+			goto encrypt;
-+		break;
-+	case HCI_LK_AUTH_COMBINATION_P192:
-+		/* An authenticated combination key has sufficient security for
-+		 * security level 3 or lower.
-+		 */
-+		if (sec_level <= BT_SECURITY_HIGH)
-+			goto encrypt;
-+		break;
-+	case HCI_LK_UNAUTH_COMBINATION_P192:
-+	case HCI_LK_UNAUTH_COMBINATION_P256:
-+		/* An unauthenticated combination key has sufficient security
-+		 * for security level 2 or lower.
-+		 */
-+		if (sec_level <= BT_SECURITY_MEDIUM)
-+			goto encrypt;
-+		break;
-+	case HCI_LK_COMBINATION:
-+		/* A combination key has always sufficient security for the
-+		 * security levels 2 or lower. High security level requires the
-+		 * combination key is generated using maximum PIN code length
-+		 * (16). For pre 2.1 units.
-+		 */
-+		if (sec_level <= BT_SECURITY_MEDIUM || conn->pin_length == 16)
-+			goto encrypt;
-+		break;
-+	default:
-+		break;
+-	ret = -EFAULT;
+-	if ((req_op(req) == REQ_OP_DRV_OUT) && copy_from_user(buf, ubuf, len))
+-		goto out_free_meta;
++	if (req_op(req) == REQ_OP_DRV_OUT) {
++		ret = -EFAULT;
++		if (copy_from_user(buf, ubuf, len))
++			goto out_free_meta;
++	} else {
++		memset(buf, 0, len);
 +	}
  
- auth:
- 	if (test_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags))
--- 
-2.40.1
-
+ 	bip = bio_integrity_alloc(bio, GFP_KERNEL, 1);
+ 	if (IS_ERR(bip)) {
 
 
