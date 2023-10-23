@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F26A7D327E
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6AFC7D3160
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233745AbjJWLUl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:20:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40094 "EHLO
+        id S233495AbjJWLIc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233810AbjJWLUk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:40 -0400
+        with ESMTP id S233406AbjJWLIb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E794F92
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1CBC433C7;
-        Mon, 23 Oct 2023 11:20:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6967599
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0020C433C9;
+        Mon, 23 Oct 2023 11:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060037;
-        bh=9RHwx6c4IC8v85ijmD9fUjOfH+Uq8uCKlrm00Sr6Yf4=;
+        s=korg; t=1698059310;
+        bh=BoxHuBb5kbePTR/Z7Ow3Vw816SmzqPR0kJ5WTC2SZRA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f8BORvkb2B18ip8FErCynKqLKamjxJ2/3HYVSQNKI9lzBek7Ihza1HrLAUzqokowR
-         Qe0eC3dheHKx64TORAGrkWf4GmRW5pWehKwHKtofrDnwP/TY3G/tbsldXYnf7qY8p1
-         4A3cvGJyTxZMcG/l76MlzjBqEkALopdYDSPkRm/M=
+        b=mpdcyLBwBcr7Bqxr3pFyu7U/Hdp3jPcSTvsyswAkEn2yoenac6o6jApn82Xvzb9PK
+         mr/rLAiZFkwF9EU/TIp7Qhp6l2lXf0iVwwDh4qQxfYEyaUYkPqeoNFDJ1zkxyaeYGL
+         AOF98vWqFNmvDLdPP+bpev4KwV51wzowMIkfMrQI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 038/196] ALSA: hda/realtek - Fixed ASUS platform headset Mic issue
+        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 117/241] HID: holtek: fix slab-out-of-bounds Write in holtek_kbd_input_event
 Date:   Mon, 23 Oct 2023 12:55:03 +0200
-Message-ID: <20231023104829.565919496@linuxfoundation.org>
+Message-ID: <20231023104836.735596097@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,80 +48,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Ma Ke <make_ruc2021@163.com>
 
-commit c8c0a03ec1be6b3f3ec1ce91685351235212db19 upstream.
+[ Upstream commit ffe3b7837a2bb421df84d0177481db9f52c93a71 ]
 
-ASUS platform Headset Mic was disable by default.
-Assigned verb table for Mic pin will enable it.
+There is a slab-out-of-bounds Write bug in hid-holtek-kbd driver.
+The problem is the driver assumes the device must have an input
+but some malicious devices violate this assumption.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/1155d914c20c40569f56d36c79254879@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by checking hid_device's input is non-empty before its usage.
+
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/hid/hid-holtek-kbd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7006,6 +7006,24 @@ static void alc287_fixup_bind_dacs(struc
- 					0x0); /* Make sure 0x14 was disable */
- 	}
- }
-+/* Fix none verb table of Headset Mic pin */
-+static void alc_fixup_headset_mic(struct hda_codec *codec,
-+				   const struct hda_fixup *fix, int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+	static const struct hda_pintbl pincfgs[] = {
-+		{ 0x19, 0x03a1103c },
-+		{ }
-+	};
-+
-+	switch (action) {
-+	case HDA_FIXUP_ACT_PRE_PROBE:
-+		snd_hda_apply_pincfgs(codec, pincfgs);
-+		alc_update_coef_idx(codec, 0x45, 0xf<<12 | 1<<10, 5<<12);
-+		spec->parse_flags |= HDA_PINCFG_HEADSET_MIC;
-+		break;
+diff --git a/drivers/hid/hid-holtek-kbd.c b/drivers/hid/hid-holtek-kbd.c
+index 403506b9697e7..b346d68a06f5a 100644
+--- a/drivers/hid/hid-holtek-kbd.c
++++ b/drivers/hid/hid-holtek-kbd.c
+@@ -130,6 +130,10 @@ static int holtek_kbd_input_event(struct input_dev *dev, unsigned int type,
+ 		return -ENODEV;
+ 
+ 	boot_hid = usb_get_intfdata(boot_interface);
++	if (list_empty(&boot_hid->inputs)) {
++		hid_err(hid, "no inputs found\n");
++		return -ENODEV;
 +	}
-+}
+ 	boot_hid_input = list_first_entry(&boot_hid->inputs,
+ 		struct hid_input, list);
  
- 
- enum {
-@@ -7270,6 +7288,7 @@ enum {
- 	ALC245_FIXUP_HP_X360_MUTE_LEDS,
- 	ALC287_FIXUP_THINKPAD_I2S_SPK,
- 	ALC287_FIXUP_MG_RTKC_CSAMP_CS35L41_I2C_THINKPAD,
-+	ALC2XX_FIXUP_HEADSET_MIC,
- };
- 
- /* A special fixup for Lenovo C940 and Yoga Duet 7;
-@@ -9359,6 +9378,10 @@ static const struct hda_fixup alc269_fix
- 		.chained = true,
- 		.chain_id = ALC287_FIXUP_CS35L41_I2C_2_THINKPAD_ACPI,
- 	},
-+	[ALC2XX_FIXUP_HEADSET_MIC] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc_fixup_headset_mic,
-+	},
- };
- 
- static const struct snd_pci_quirk alc269_fixup_tbl[] = {
-@@ -10633,6 +10656,8 @@ static const struct snd_hda_pin_quirk al
- 	SND_HDA_PIN_QUIRK(0x10ec0274, 0x1028, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB,
- 		{0x19, 0x40000000},
- 		{0x1a, 0x40000000}),
-+	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1043, "ASUS", ALC2XX_FIXUP_HEADSET_MIC,
-+		{0x19, 0x40000000}),
- 	{}
- };
- 
+-- 
+2.40.1
+
 
 
