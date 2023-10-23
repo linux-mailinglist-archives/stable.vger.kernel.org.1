@@ -2,100 +2,361 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D32947D32CC
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B5147D306E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233871AbjJWLYA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36928 "EHLO
+        id S229613AbjJWK4S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 06:56:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233985AbjJWLX5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:57 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8444F1739
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E99C433C9;
-        Mon, 23 Oct 2023 11:23:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060220;
-        bh=5koiLkdkK0dXL+9AgfAaYK5M5GkzUnaeu36s413q5Wc=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=stDDBYvurLzvC4WM0ZSwnIdLja12BQGX93BXcL2uOe35UBcu3ikuVzs1mclwa7TU2
-         pmXuc16DgslICV3ipjYqTsE5ASEu09W+6QY8sUbcP7wHPmTHCyMBNAuisA9d9VM2Fr
-         LHguwiYg8KDP5kB6J09LV3JbTaKuSdNuVyqKPT2k=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        Jeff Layton <jlayton@kernel.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/196] overlayfs: set ctime when setting mtime and atime
-Date:   Mon, 23 Oct 2023 12:56:03 +0200
-Message-ID: <20231023104831.312368324@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+        with ESMTP id S229825AbjJWK4L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:56:11 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 043C710C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:56:04 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1cace3e142eso15676035ad.3
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:56:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698058564; x=1698663364; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=48g4Snt98IJWrnjZPLoA0tlK6FQ70lZDXyZ7oJIy7SE=;
+        b=yPwTGcvAYefZyabdLtUvCT05fx/f13LQH9jHYTq05UTRcN3fM1SP14fea71OR8N+ts
+         b+um+Uw+c34EA60+fntsgtFu+LfRz1mp/gF7oUeLjF3xa4k28eGDdfK2a09jbOW48/kr
+         pH5n5+MY1Zc9Bokb6UyCqkmaCCHsttvEDVavsCiMqGDzabEgt2FcGumg9DWSgK1z5eVA
+         wM1+OOQqZoMTeiZ6fIUqtcHL2oq2gjOyDfz3IW+mAXal5/8wkmpYOXurPuyzaFUJUX4Y
+         +pnMEzVm91n5Onh3ZxvswytDZVubUsS8rEEb1lkXWLiUP52KfVXuL+r9caRufrM7qLIp
+         6sDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698058564; x=1698663364;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=48g4Snt98IJWrnjZPLoA0tlK6FQ70lZDXyZ7oJIy7SE=;
+        b=DKMe3NkrakS8NHT9FXv3UQMGIg0yMw+HB1zty7j6qMb9mdcZBM7NVhUJ1LJ1Au0ABC
+         fuzk6rpIsIsWDtbEJGDaREuxdMR7/iNXOdKKMyqV/lfc4Bsi4U7CFpMeuCSh3NlEJGJK
+         WypOzJGPXO3yfeGfq0fYGDut0RRmmEajImvXwv6/JUm69zCZjtn1zemHaK30T4V6/z0s
+         nZTBTHdAMKvUyiWxgQRln/ITQKmNavLfcQl5xNVvZ1jDaFOrEi+wI7DzDyOE6KOXciUZ
+         R2wk/Ni7PTlguLf+zyWh5jmTOIfnw4FTFBWiGna5/BSNCPgXf/yrR43DNnbrArC0Cjx3
+         nIYg==
+X-Gm-Message-State: AOJu0Ywx/IAD3MajsJ9EGRwDM9mx7+y4aV1SYzV0FhDYAagxJDsdJC8m
+        3lfVyXI5cUh3yXXLeBn6bTevdZPbS0EK2aVu60kwhg==
+X-Google-Smtp-Source: AGHT+IFL5KQs6MDdq5zxS0+hx3dl8RqEVxaSjplw4VdhvsO17vsrpJUljd4v0xWRkx1kQTwnWKp+Xg==
+X-Received: by 2002:a17:903:6d0:b0:1ca:de41:753f with SMTP id kj16-20020a17090306d000b001cade41753fmr2120679plb.15.1698058563838;
+        Mon, 23 Oct 2023 03:56:03 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id c24-20020a170902d91800b001c9ab91d3d7sm5654893plz.37.2023.10.23.03.56.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Oct 2023 03:56:03 -0700 (PDT)
+Message-ID: <65365143.170a0220.5bdad.02cf@mx.google.com>
+Date:   Mon, 23 Oct 2023 03:56:03 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.4.258-124-g06ceac8d5efc
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.4.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-5.4.y build: 17 builds: 2 failed, 15 passed, 8 errors,
+ 30 warnings (v5.4.258-124-g06ceac8d5efc)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+stable-rc/linux-5.4.y build: 17 builds: 2 failed, 15 passed, 8 errors, 30 w=
+arnings (v5.4.258-124-g06ceac8d5efc)
 
-------------------
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
+/kernel/v5.4.258-124-g06ceac8d5efc/
 
-From: Jeff Layton <jlayton@kernel.org>
+Tree: stable-rc
+Branch: linux-5.4.y
+Git Describe: v5.4.258-124-g06ceac8d5efc
+Git Commit: 06ceac8d5efce3efbfb1c11a31c8d550e084ff9b
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-[ Upstream commit 03dbab3bba5f009d053635c729d1244f2c8bad38 ]
+Build Failures Detected:
 
-Nathan reported that he was seeing the new warning in
-setattr_copy_mgtime pop when starting podman containers. Overlayfs is
-trying to set the atime and mtime via notify_change without also
-setting the ctime.
+arm:
+    imx_v6_v7_defconfig: (gcc-10) FAIL
+    multi_v7_defconfig: (gcc-10) FAIL
 
-POSIX states that when the atime and mtime are updated via utimes() that
-we must also update the ctime to the current time. The situation with
-overlayfs copy-up is analogies, so add ATTR_CTIME to the bitmask.
-notify_change will fill in the value.
+Errors and Warnings Detected:
 
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Christian Brauner <brauner@kernel.org>
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Message-Id: <20230913-ctime-v1-1-c6bc509cbc27@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+    imx_v6_v7_defconfig (gcc-10): 4 errors, 2 warnings
+    multi_v7_defconfig (gcc-10): 4 errors, 2 warnings
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 4 warnings
+
+Errors summary:
+
+    2    drivers/gpio/gpio-vf610.c:340:2: error: implicit declaration of fu=
+nction =E2=80=98gpio_irq_chip_set_chip=E2=80=99 [-Werror=3Dimplicit-functio=
+n-declaration]
+    2    drivers/gpio/gpio-vf610.c:251:2: error: =E2=80=98GPIOCHIP_IRQ_RESO=
+URCE_HELPERS=E2=80=99 undeclared here (not in a function)
+    2    drivers/gpio/gpio-vf610.c:250:6: error: =E2=80=98IRQCHIP_ENABLE_WA=
+KEUP_ON_SUSPEND=E2=80=99 undeclared here (not in a function); did you mean =
+=E2=80=98IRQCHIP_MASK_ON_SUSPEND=E2=80=99?
+    2    drivers/gpio/gpio-vf610.c:249:11: error: =E2=80=98IRQCHIP_IMMUTABL=
+E=E2=80=99 undeclared here (not in a function); did you mean =E2=80=98IS_IM=
+MUTABLE=E2=80=99?
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    drivers/gpio/gpio-vf610.c:251:2: warning: excess elements in struc=
+t initializer
+    2    cc1: some warnings being treated as errors
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 4 errors, 2 warnings, 0 s=
+ection mismatches
+
+Errors:
+    drivers/gpio/gpio-vf610.c:249:11: error: =E2=80=98IRQCHIP_IMMUTABLE=E2=
+=80=99 undeclared here (not in a function); did you mean =E2=80=98IS_IMMUTA=
+BLE=E2=80=99?
+    drivers/gpio/gpio-vf610.c:250:6: error: =E2=80=98IRQCHIP_ENABLE_WAKEUP_=
+ON_SUSPEND=E2=80=99 undeclared here (not in a function); did you mean =E2=
+=80=98IRQCHIP_MASK_ON_SUSPEND=E2=80=99?
+    drivers/gpio/gpio-vf610.c:251:2: error: =E2=80=98GPIOCHIP_IRQ_RESOURCE_=
+HELPERS=E2=80=99 undeclared here (not in a function)
+    drivers/gpio/gpio-vf610.c:340:2: error: implicit declaration of functio=
+n =E2=80=98gpio_irq_chip_set_chip=E2=80=99 [-Werror=3Dimplicit-function-dec=
+laration]
+
+Warnings:
+    drivers/gpio/gpio-vf610.c:251:2: warning: excess elements in struct ini=
+tializer
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 4 errors, 2 warnings, 0 se=
+ction mismatches
+
+Errors:
+    drivers/gpio/gpio-vf610.c:249:11: error: =E2=80=98IRQCHIP_IMMUTABLE=E2=
+=80=99 undeclared here (not in a function); did you mean =E2=80=98IS_IMMUTA=
+BLE=E2=80=99?
+    drivers/gpio/gpio-vf610.c:250:6: error: =E2=80=98IRQCHIP_ENABLE_WAKEUP_=
+ON_SUSPEND=E2=80=99 undeclared here (not in a function); did you mean =E2=
+=80=98IRQCHIP_MASK_ON_SUSPEND=E2=80=99?
+    drivers/gpio/gpio-vf610.c:251:2: error: =E2=80=98GPIOCHIP_IRQ_RESOURCE_=
+HELPERS=E2=80=99 undeclared here (not in a function)
+    drivers/gpio/gpio-vf610.c:340:2: error: implicit declaration of functio=
+n =E2=80=98gpio_irq_chip_set_chip=E2=80=99 [-Werror=3Dimplicit-function-dec=
+laration]
+
+Warnings:
+    drivers/gpio/gpio-vf610.c:251:2: warning: excess elements in struct ini=
+tializer
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+4 warnings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
- fs/overlayfs/copy_up.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index e6d711f42607b..86d4b6975dbcb 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -300,7 +300,7 @@ static int ovl_set_timestamps(struct ovl_fs *ofs, struct dentry *upperdentry,
- {
- 	struct iattr attr = {
- 		.ia_valid =
--		     ATTR_ATIME | ATTR_MTIME | ATTR_ATIME_SET | ATTR_MTIME_SET,
-+		     ATTR_ATIME | ATTR_MTIME | ATTR_ATIME_SET | ATTR_MTIME_SET | ATTR_CTIME,
- 		.ia_atime = stat->atime,
- 		.ia_mtime = stat->mtime,
- 	};
--- 
-2.40.1
-
-
-
+For more info write to <info@kernelci.org>
