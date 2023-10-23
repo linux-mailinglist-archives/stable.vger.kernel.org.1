@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83B387D323B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C4AA7D334A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233722AbjJWLSA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:18:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42146 "EHLO
+        id S233960AbjJWL3B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:29:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233702AbjJWLR7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:59 -0400
+        with ESMTP id S234003AbjJWL2v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D0CA2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18FD3C433C8;
-        Mon, 23 Oct 2023 11:17:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 492DCE8
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F198C433CA;
+        Mon, 23 Oct 2023 11:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059877;
-        bh=lUW6/Zf8pUiFEFTBugiTNf9RGYaNo+X9jxdcShsGwtE=;
+        s=korg; t=1698060528;
+        bh=KNOStMEJsEdlQoAHEH6tbOZqoe6HMdO0di7Rn1ZsOQY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O9uV7bwvS1kXE1ExL+pKwOl9GkyZ04mVGKhKNnVvLTh4rkhruge4AjJrJdzUtJ2tU
-         mpBI44WzguBdf3GF4m6HoeudkfkzjjrDNOGjN8kZ1ML+yxAtjI0P2D3Lwvcn3ubAiq
-         vj+gbppHh2/pcZZ66euaH6I1BkvqB3kS2s0kmku4=
+        b=KFpes3UOYgwStOwl57Iownaf1aj405+plKNzKNxIeElpansyptUoFQTqkD44/lQ+3
+         ITVW19CIxi9f1SHWGOsFboInS0mbJCngtOyRMmrMYNyxasb86zlaEFx2eFPfg3J5N6
+         6jifECYVOgKluLQfED/X09ewPXxDMSPFTbasXBuU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 82/98] Bluetooth: hci_event: Fix using memcmp when comparing keys
+        =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 166/196] USB: serial: option: add entry for Sierra EM9191 with new firmware
 Date:   Mon, 23 Oct 2023 12:57:11 +0200
-Message-ID: <20231023104816.445892418@linuxfoundation.org>
+Message-ID: <20231023104833.128123941@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,78 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Benoît Monin <benoit.monin@gmx.fr>
 
-[ Upstream commit b541260615f601ae1b5d6d0cc54e790de706303b ]
+commit 064f6e2ba9eb59b2c87b866e1e968e79ccedf9dd upstream.
 
-memcmp is not consider safe to use with cryptographic secrets:
+Following a firmware update of the modem, the interface for the AT
+command port changed, so add it back.
 
- 'Do  not  use memcmp() to compare security critical data, such as
- cryptographic secrets, because the required CPU time depends on the
- number of equal bytes.'
+T:  Bus=08 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=1199 ProdID=90d3 Rev=00.06
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  Product=Sierra Wireless EM9191
+S:  SerialNumber=xxxxxxxxxxxxxxxx
+C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
 
-While usage of memcmp for ZERO_KEY may not be considered a security
-critical data, it can lead to more usage of memcmp with pairing keys
-which could introduce more security problems.
-
-Fixes: 455c2ff0a558 ("Bluetooth: Fix BR/EDR out-of-band pairing with only initiator data")
-Fixes: 33155c4aae52 ("Bluetooth: hci_event: Ignore NULL link key")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 843502783b268..8b59f7808628a 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -25,6 +25,8 @@
- /* Bluetooth HCI event handling. */
- 
- #include <asm/unaligned.h>
-+#include <linux/crypto.h>
-+#include <crypto/algapi.h>
- 
- #include <net/bluetooth/bluetooth.h>
- #include <net/bluetooth/hci_core.h>
-@@ -3827,7 +3829,7 @@ static void hci_link_key_notify_evt(struct hci_dev *hdev, struct sk_buff *skb)
- 		goto unlock;
- 
- 	/* Ignore NULL link key against CVE-2020-26555 */
--	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
-+	if (!crypto_memneq(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
- 		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
- 			   &ev->bdaddr);
- 		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
-@@ -4313,8 +4315,8 @@ static u8 bredr_oob_data_present(struct hci_conn *conn)
- 		 * available, then do not declare that OOB data is
- 		 * present.
- 		 */
--		if (!memcmp(data->rand256, ZERO_KEY, 16) ||
--		    !memcmp(data->hash256, ZERO_KEY, 16))
-+		if (!crypto_memneq(data->rand256, ZERO_KEY, 16) ||
-+		    !crypto_memneq(data->hash256, ZERO_KEY, 16))
- 			return 0x00;
- 
- 		return 0x02;
-@@ -4324,8 +4326,8 @@ static u8 bredr_oob_data_present(struct hci_conn *conn)
- 	 * not supported by the hardware, then check that if
- 	 * P-192 data values are present.
- 	 */
--	if (!memcmp(data->rand192, ZERO_KEY, 16) ||
--	    !memcmp(data->hash192, ZERO_KEY, 16))
-+	if (!crypto_memneq(data->rand192, ZERO_KEY, 16) ||
-+	    !crypto_memneq(data->hash192, ZERO_KEY, 16))
- 		return 0x00;
- 
- 	return 0x01;
--- 
-2.40.1
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2263,6 +2263,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
 
 
