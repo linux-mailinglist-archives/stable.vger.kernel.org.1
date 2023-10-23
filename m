@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6F7E7D3309
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7BBD7D31C7
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233775AbjJWL0F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:26:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55946 "EHLO
+        id S233640AbjJWLNH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:13:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233939AbjJWL0D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:03 -0400
+        with ESMTP id S233207AbjJWLNG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27CCCF9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4829EC433C8;
-        Mon, 23 Oct 2023 11:25:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD08DC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E8F7C433C7;
+        Mon, 23 Oct 2023 11:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060359;
-        bh=W+Rn5eM4JmhrYnnJpj1hOiAy14j9eXh75Yjssh8UqME=;
+        s=korg; t=1698059583;
+        bh=6Dw5BG2MM9vLMPYWU5F08h4DKgB7DqY1F/yyqIWg8Ac=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bQsD5ZqsiZPbXW8Q9KlK/TFXy55Y81SW2s0mvOy5aytluIxJAZtchZp7Uw6U9jaJw
-         6ATGYjNHLRtPoJTC3rbqpTymHFqoWSCURKnQBsNm+4dlt+JYvK+hJebHqeZCfb7wFN
-         Lh/ZPQRkk1eEOe+NLlJpLeXecsmwyxPaWCN7qbK0=
+        b=eqFAp0PTcEl3DUv63vJa3E1r/RPaVlACrs0NO3pzKa6G9ue1sk4DExzguGzH6q8DF
+         PNvNw/xj5+U0LZQ/Xrg8e28vgYsIRxuvakYWxAXS9Jx7ALtkNO46juRNzO4Nl5e8Ya
+         gSq8AuVFsefdTOwLzxGM14HoNI3+ZyIS5BJ8cYGA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Martin Kurbanov <mmkurbanov@sberdevices.ru>,
-        Frieder Schrempf <frieder.schrempf@kontron.de>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 146/196] mtd: spinand: micron: correct bitmask for ecc status
+        patches@lists.linux.dev, Benno Lossin <benno.lossin@proton.me>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 225/241] rust: docs: fix logo replacement
 Date:   Mon, 23 Oct 2023 12:56:51 +0200
-Message-ID: <20231023104832.609836762@linuxfoundation.org>
+Message-ID: <20231023104839.351899680@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,36 +50,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kurbanov <mmkurbanov@sberdevices.ru>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 9836a987860e33943945d4b257729a4f94eae576 upstream.
+[ Upstream commit cfd96726e61136e68a168813cedc4084f626208b ]
 
-Valid bitmask is 0x70 in the status register.
+The static files placement by `rustdoc` changed in Rust 1.67.0 [1],
+but the custom code we have to replace the logo in the generated
+HTML files did not get updated.
 
-Fixes: a508e8875e13 ("mtd: spinand: Add initial support for Micron MT29F2G01ABAGD")
-Signed-off-by: Martin Kurbanov <mmkurbanov@sberdevices.ru>
-Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230905145637.139068-1-mmkurbanov@sberdevices.ru
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus update it to have the Linux logo again in the output.
+
+Hopefully `rustdoc` will eventually support a custom logo from
+a local file [2], so that we do not need to maintain this hack
+on our side.
+
+Link: https://github.com/rust-lang/rust/pull/101702 [1]
+Link: https://github.com/rust-lang/rfcs/pull/3226 [2]
+Fixes: 3ed03f4da06e ("rust: upgrade to Rust 1.68.2")
+Cc: stable@vger.kernel.org
+Tested-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+Link: https://lore.kernel.org/r/20231018155527.1015059-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/micron.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/Makefile | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/mtd/nand/spi/micron.c
-+++ b/drivers/mtd/nand/spi/micron.c
-@@ -12,7 +12,7 @@
+diff --git a/rust/Makefile b/rust/Makefile
+index b9acbe5a7a5d5..467f50a752dbd 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -85,15 +85,14 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
+ # and then retouch the generated files.
+ rustdoc: rustdoc-core rustdoc-macros rustdoc-compiler_builtins \
+     rustdoc-alloc rustdoc-kernel
+-	$(Q)cp $(srctree)/Documentation/images/logo.svg $(rustdoc_output)
+-	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(rustdoc_output)
++	$(Q)cp $(srctree)/Documentation/images/logo.svg $(rustdoc_output)/static.files/
++	$(Q)cp $(srctree)/Documentation/images/COPYING-logo $(rustdoc_output)/static.files/
+ 	$(Q)find $(rustdoc_output) -name '*.html' -type f -print0 | xargs -0 sed -Ei \
+-		-e 's:rust-logo\.svg:logo.svg:g' \
+-		-e 's:rust-logo\.png:logo.svg:g' \
+-		-e 's:favicon\.svg:logo.svg:g' \
+-		-e 's:<link rel="alternate icon" type="image/png" href="[./]*favicon-(16x16|32x32)\.png">::g'
+-	$(Q)echo '.logo-container > img { object-fit: contain; }' \
+-		>> $(rustdoc_output)/rustdoc.css
++		-e 's:rust-logo-[0-9a-f]+\.svg:logo.svg:g' \
++		-e 's:favicon-[0-9a-f]+\.svg:logo.svg:g' \
++		-e 's:<link rel="alternate icon" type="image/png" href="[/.]+/static\.files/favicon-(16x16|32x32)-[0-9a-f]+\.png">::g'
++	$(Q)for f in $(rustdoc_output)/static.files/rustdoc-*.css; do \
++		echo ".logo-container > img { object-fit: contain; }" >> $$f; done
  
- #define SPINAND_MFR_MICRON		0x2c
- 
--#define MICRON_STATUS_ECC_MASK		GENMASK(7, 4)
-+#define MICRON_STATUS_ECC_MASK		GENMASK(6, 4)
- #define MICRON_STATUS_ECC_NO_BITFLIPS	(0 << 4)
- #define MICRON_STATUS_ECC_1TO3_BITFLIPS	(1 << 4)
- #define MICRON_STATUS_ECC_4TO6_BITFLIPS	(3 << 4)
+ rustdoc-macros: private rustdoc_host = yes
+ rustdoc-macros: private rustc_target_flags = --crate-type proc-macro \
+-- 
+2.42.0
+
 
 
