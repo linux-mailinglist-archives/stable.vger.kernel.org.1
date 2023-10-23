@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6C777D3337
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F3A97D33B1
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233977AbjJWL17 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:27:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53192 "EHLO
+        id S234101AbjJWLdL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:33:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233969AbjJWL16 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:58 -0400
+        with ESMTP id S234124AbjJWLdJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6EBD6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B290C433C7;
-        Mon, 23 Oct 2023 11:27:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0190EE8
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:33:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 731E5C433CB;
+        Mon, 23 Oct 2023 11:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060476;
-        bh=V2OW4cIZc2WD7a0quWgjq8GQGTG+uKzM3mkud601OxI=;
+        s=korg; t=1698060786;
+        bh=/bSRX9kHqiiRYhSTfS/frqwDA91kmOM1bw01TMKb0bE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=an5NujNyyXgokfI0S3sZlpzdh6WzcbJAJ8ptc4GeTEFpQz0L0glePcgwmA1CLtc4Y
-         l/FM0Ra1ftkrywtgLh/or5tVMRrgVknMGnxJLbiQAzKhCsnywc8sB+8b3qf1Ms0tCp
-         q1TchKMZ1RSvuQkO0MJg/SYjbhFisO4CuJNJbiwE=
+        b=0+4/qG4iPRtoe+zOxQUa9nHW4Jft91rAc4iQBxf54ow73oc4X5NKdtqUt86jt5tlR
+         OBx+xQhOF6Kkn7s5uXZd2qUffM0qymhLywsjph6A5L0E5gZT55xmzB7zEX8w8sfQDa
+         Jbov0fdB8l2MKBHkFd+exm99dyJGcOv/xlwTWaQ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Francis Laniel <flaniel@linux.microsoft.com>,
+        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/196] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
+Subject: [PATCH 5.4 092/123] Bluetooth: Avoid redundant authentication
 Date:   Mon, 23 Oct 2023 12:57:30 +0200
-Message-ID: <20231023104833.613819036@linuxfoundation.org>
+Message-ID: <20231023104820.776972044@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,149 +49,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francis Laniel <flaniel@linux.microsoft.com>
+From: Ying Hsu <yinghsu@chromium.org>
 
-[ Upstream commit b022f0c7e404887a7c5229788fc99eff9f9a80d5 ]
+[ Upstream commit 1d8e801422d66e4b8c7b187c52196bef94eed887 ]
 
-When a kprobe is attached to a function that's name is not unique (is
-static and shares the name with other functions in the kernel), the
-kprobe is attached to the first function it finds. This is a bug as the
-function that it is attaching to is not necessarily the one that the
-user wants to attach to.
+While executing the Android 13 CTS Verifier Secure Server test on a
+ChromeOS device, it was observed that the Bluetooth host initiates
+authentication for an RFCOMM connection after SSP completes.
+When this happens, some Intel Bluetooth controllers, like AC9560, would
+disconnect with "Connection Rejected due to Security Reasons (0x0e)".
 
-Instead of blindly picking a function to attach to what is ambiguous,
-error with EADDRNOTAVAIL to let the user know that this function is not
-unique, and that the user must use another unique function with an
-address offset to get to the function they want to attach to.
+Historically, BlueZ did not mandate this authentication while an
+authenticated combination key was already in use for the connection.
+This behavior was changed since commit 7b5a9241b780
+("Bluetooth: Introduce requirements for security level 4").
+So, this patch addresses the aforementioned disconnection issue by
+restoring the previous behavior.
 
-Link: https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.microsoft.com/
-
-Cc: stable@vger.kernel.org
-Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
-Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-Link: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_kprobe.c | 63 +++++++++++++++++++++++++++++++++++++
- kernel/trace/trace_probe.h  |  1 +
- 2 files changed, 64 insertions(+)
+ net/bluetooth/hci_conn.c | 63 ++++++++++++++++++++++------------------
+ 1 file changed, 35 insertions(+), 28 deletions(-)
 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 5a75b039e5860..22852029c6924 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -705,6 +705,25 @@ static struct notifier_block trace_kprobe_module_nb = {
- 	.priority = 1	/* Invoked after kprobe module callback */
- };
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 9ffc18c883e24..afdc0afa8ee7d 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1391,34 +1391,41 @@ int hci_conn_security(struct hci_conn *conn, __u8 sec_level, __u8 auth_type,
+ 	if (!test_bit(HCI_CONN_AUTH, &conn->flags))
+ 		goto auth;
  
-+static int count_symbols(void *data, unsigned long unused)
-+{
-+	unsigned int *count = data;
-+
-+	(*count)++;
-+
-+	return 0;
-+}
-+
-+static unsigned int number_of_same_symbols(char *func_name)
-+{
-+	unsigned int count;
-+
-+	count = 0;
-+	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
-+
-+	return count;
-+}
-+
- static int __trace_kprobe_create(int argc, const char *argv[])
- {
- 	/*
-@@ -834,6 +853,31 @@ static int __trace_kprobe_create(int argc, const char *argv[])
- 		}
- 	}
- 
-+	if (symbol && !strchr(symbol, ':')) {
-+		unsigned int count;
-+
-+		count = number_of_same_symbols(symbol);
-+		if (count > 1) {
-+			/*
-+			 * Users should use ADDR to remove the ambiguity of
-+			 * using KSYM only.
-+			 */
-+			trace_probe_log_err(0, NON_UNIQ_SYMBOL);
-+			ret = -EADDRNOTAVAIL;
-+
-+			goto error;
-+		} else if (count == 0) {
-+			/*
-+			 * We can return ENOENT earlier than when register the
-+			 * kprobe.
-+			 */
-+			trace_probe_log_err(0, BAD_PROBE_ADDR);
-+			ret = -ENOENT;
-+
-+			goto error;
-+		}
+-	/* An authenticated FIPS approved combination key has sufficient
+-	 * security for security level 4. */
+-	if (conn->key_type == HCI_LK_AUTH_COMBINATION_P256 &&
+-	    sec_level == BT_SECURITY_FIPS)
+-		goto encrypt;
+-
+-	/* An authenticated combination key has sufficient security for
+-	   security level 3. */
+-	if ((conn->key_type == HCI_LK_AUTH_COMBINATION_P192 ||
+-	     conn->key_type == HCI_LK_AUTH_COMBINATION_P256) &&
+-	    sec_level == BT_SECURITY_HIGH)
+-		goto encrypt;
+-
+-	/* An unauthenticated combination key has sufficient security for
+-	   security level 1 and 2. */
+-	if ((conn->key_type == HCI_LK_UNAUTH_COMBINATION_P192 ||
+-	     conn->key_type == HCI_LK_UNAUTH_COMBINATION_P256) &&
+-	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW))
+-		goto encrypt;
+-
+-	/* A combination key has always sufficient security for the security
+-	   levels 1 or 2. High security level requires the combination key
+-	   is generated using maximum PIN code length (16).
+-	   For pre 2.1 units. */
+-	if (conn->key_type == HCI_LK_COMBINATION &&
+-	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW ||
+-	     conn->pin_length == 16))
+-		goto encrypt;
++	switch (conn->key_type) {
++	case HCI_LK_AUTH_COMBINATION_P256:
++		/* An authenticated FIPS approved combination key has
++		 * sufficient security for security level 4 or lower.
++		 */
++		if (sec_level <= BT_SECURITY_FIPS)
++			goto encrypt;
++		break;
++	case HCI_LK_AUTH_COMBINATION_P192:
++		/* An authenticated combination key has sufficient security for
++		 * security level 3 or lower.
++		 */
++		if (sec_level <= BT_SECURITY_HIGH)
++			goto encrypt;
++		break;
++	case HCI_LK_UNAUTH_COMBINATION_P192:
++	case HCI_LK_UNAUTH_COMBINATION_P256:
++		/* An unauthenticated combination key has sufficient security
++		 * for security level 2 or lower.
++		 */
++		if (sec_level <= BT_SECURITY_MEDIUM)
++			goto encrypt;
++		break;
++	case HCI_LK_COMBINATION:
++		/* A combination key has always sufficient security for the
++		 * security levels 2 or lower. High security level requires the
++		 * combination key is generated using maximum PIN code length
++		 * (16). For pre 2.1 units.
++		 */
++		if (sec_level <= BT_SECURITY_MEDIUM || conn->pin_length == 16)
++			goto encrypt;
++		break;
++	default:
++		break;
 +	}
-+
- 	trace_probe_log_set_index(0);
- 	if (event) {
- 		ret = traceprobe_parse_event_name(&event, &group, gbuf,
-@@ -1744,6 +1788,7 @@ static int unregister_kprobe_event(struct trace_kprobe *tk)
- }
  
- #ifdef CONFIG_PERF_EVENTS
-+
- /* create a trace_kprobe, but don't add it to global lists */
- struct trace_event_call *
- create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
-@@ -1754,6 +1799,24 @@ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
- 	int ret;
- 	char *event;
- 
-+	if (func) {
-+		unsigned int count;
-+
-+		count = number_of_same_symbols(func);
-+		if (count > 1)
-+			/*
-+			 * Users should use addr to remove the ambiguity of
-+			 * using func only.
-+			 */
-+			return ERR_PTR(-EADDRNOTAVAIL);
-+		else if (count == 0)
-+			/*
-+			 * We can return ENOENT earlier than when register the
-+			 * kprobe.
-+			 */
-+			return ERR_PTR(-ENOENT);
-+	}
-+
- 	/*
- 	 * local trace_kprobes are not added to dyn_event, so they are never
- 	 * searched in find_trace_kprobe(). Therefore, there is no concern of
-diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index f41c330bd60f1..f48b3ed20b095 100644
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -404,6 +404,7 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
- 	C(BAD_MAXACT,		"Invalid maxactive number"),		\
- 	C(MAXACT_TOO_BIG,	"Maxactive is too big"),		\
- 	C(BAD_PROBE_ADDR,	"Invalid probed address or symbol"),	\
-+	C(NON_UNIQ_SYMBOL,	"The symbol is not unique"),		\
- 	C(BAD_RETPROBE,		"Retprobe address must be an function entry"), \
- 	C(BAD_ADDR_SUFFIX,	"Invalid probed address suffix"), \
- 	C(NO_GROUP_NAME,	"Group name is not specified"),		\
+ auth:
+ 	if (test_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags))
 -- 
-2.42.0
+2.40.1
 
 
 
