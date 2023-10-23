@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F15D57D34C1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 894E37D3161
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234327AbjJWLme (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:42:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46262 "EHLO
+        id S233491AbjJWLIg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234329AbjJWLmZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:25 -0400
+        with ESMTP id S233406AbjJWLIf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC4D10F3
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A34DC433C9;
-        Mon, 23 Oct 2023 11:42:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A34FA4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98015C433C8;
+        Mon, 23 Oct 2023 11:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061337;
-        bh=5I6xTcRtt1YOVgD1JDAtzQI/DvDnqHlSOplU5YL4aLI=;
+        s=korg; t=1698059313;
+        bh=lbUy9yM1rCMIrWMARrTQfoAwhrEWFwzNVg7KjPk3VZs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qG2NbLCKGjiHCruzDGqKbDLC50QtIcVcUz3REnj7MUtJHnFYYYPMnbGfATjLw4F0W
-         0Q2SRA8iC4Il82gGqRKVBQcca7aNMB32QxTQgp171zLmItdPl5DAt49ZKhtHmh6Woa
-         O4r0m1r5wFu3yZAap5ERf1CLSw6xFCldIM0lcKOA=
+        b=XuC8T/E04YCjFevPJIjJi/ISv5n6XdFJDnOqshA55D/4peFHWCrujB5m0R5iGLjsv
+         U8tRO/ZVVzgg27N7rsHZL0OEn5lKWBQ4mqD06r1hEET5kw5sKjM6ZuHJb6EZhLN/Hk
+         pl+EIl4CyfR/1qBAL64CmO+nYLIn7FLfrOp3Lhq0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/202] ieee802154: ca8210: Fix a potential UAF in ca8210_probe
+Subject: [PATCH 6.5 135/241] btrfs: error out when reallocating block for defrag using a stale transaction
 Date:   Mon, 23 Oct 2023 12:55:21 +0200
-Message-ID: <20231023104827.029205324@linuxfoundation.org>
+Message-ID: <20231023104837.161104442@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,77 +49,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit f990874b1c98fe8e57ee9385669f501822979258 ]
+[ Upstream commit e36f94914021e58ee88a8856c7fdf35adf9c7ee1 ]
 
-If of_clk_add_provider() fails in ca8210_register_ext_clock(),
-it calls clk_unregister() to release priv->clk and returns an
-error. However, the caller ca8210_probe() then calls ca8210_remove(),
-where priv->clk is freed again in ca8210_unregister_ext_clock(). In
-this case, a use-after-free may happen in the second time we call
-clk_unregister().
+At btrfs_realloc_node() we have these checks to verify we are not using a
+stale transaction (a past transaction with an unblocked state or higher),
+and the only thing we do is to trigger two WARN_ON(). This however is a
+critical problem, highly unexpected and if it happens it's most likely due
+to a bug, so we should error out and turn the fs into error state so that
+such issue is much more easily noticed if it's triggered.
 
-Fix this by removing the first clk_unregister(). Also, priv->clk could
-be an error code on failure of clk_register_fixed_rate(). Use
-IS_ERR_OR_NULL to catch this case in ca8210_unregister_ext_clock().
+The problem is critical because in btrfs_realloc_node() we COW tree blocks,
+and using such stale transaction will lead to not persisting the extent
+buffers used for the COW operations, as allocating tree block adds the
+range of the respective extent buffers to the ->dirty_pages iotree of the
+transaction, and a stale transaction, in the unlocked state or higher,
+will not flush dirty extent buffers anymore, therefore resulting in not
+persisting the tree block and resource leaks (not cleaning the dirty_pages
+iotree for example).
 
-Fixes: ded845a781a5 ("ieee802154: Add CA8210 IEEE 802.15.4 device driver")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Message-ID: <20231007033049.22353-1-dinghao.liu@zju.edu.cn>
-Signed-off-by: Stefan Schmidt <stefan@datenfreihafen.org>
+So do the following changes:
+
+1) Return -EUCLEAN if we find a stale transaction;
+
+2) Turn the fs into error state, with error -EUCLEAN, so that no
+   transaction can be committed, and generate a stack trace;
+
+3) Combine both conditions into a single if statement, as both are related
+   and have the same error message;
+
+4) Mark the check as unlikely, since this is not expected to ever happen.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/ca8210.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ fs/btrfs/ctree.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ieee802154/ca8210.c b/drivers/net/ieee802154/ca8210.c
-index 1c5d70c60354b..0ce426c0c0bf1 100644
---- a/drivers/net/ieee802154/ca8210.c
-+++ b/drivers/net/ieee802154/ca8210.c
-@@ -2783,7 +2783,6 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
- 	struct device_node *np = spi->dev.of_node;
- 	struct ca8210_priv *priv = spi_get_drvdata(spi);
- 	struct ca8210_platform_data *pdata = spi->dev.platform_data;
--	int ret = 0;
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index db1f3bc7f3284..da519c1b6ad08 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -817,8 +817,22 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
+ 	int progress_passed = 0;
+ 	struct btrfs_disk_key disk_key;
  
- 	if (!np)
- 		return -EFAULT;
-@@ -2800,18 +2799,8 @@ static int ca8210_register_ext_clock(struct spi_device *spi)
- 		dev_crit(&spi->dev, "Failed to register external clk\n");
- 		return PTR_ERR(priv->clk);
- 	}
--	ret = of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
--	if (ret) {
--		clk_unregister(priv->clk);
--		dev_crit(
--			&spi->dev,
--			"Failed to register external clock as clock provider\n"
--		);
--	} else {
--		dev_info(&spi->dev, "External clock set as clock provider\n");
--	}
+-	WARN_ON(trans->transaction != fs_info->running_transaction);
+-	WARN_ON(trans->transid != fs_info->generation);
++	/*
++	 * COWing must happen through a running transaction, which always
++	 * matches the current fs generation (it's a transaction with a state
++	 * less than TRANS_STATE_UNBLOCKED). If it doesn't, then turn the fs
++	 * into error state to prevent the commit of any transaction.
++	 */
++	if (unlikely(trans->transaction != fs_info->running_transaction ||
++		     trans->transid != fs_info->generation)) {
++		btrfs_abort_transaction(trans, -EUCLEAN);
++		btrfs_crit(fs_info,
++"unexpected transaction when attempting to reallocate parent %llu for root %llu, transaction %llu running transaction %llu fs generation %llu",
++			   parent->start, btrfs_root_id(root), trans->transid,
++			   fs_info->running_transaction->transid,
++			   fs_info->generation);
++		return -EUCLEAN;
++	}
  
--	return ret;
-+	return of_clk_add_provider(np, of_clk_src_simple_get, priv->clk);
- }
- 
- /**
-@@ -2823,8 +2812,8 @@ static void ca8210_unregister_ext_clock(struct spi_device *spi)
- {
- 	struct ca8210_priv *priv = spi_get_drvdata(spi);
- 
--	if (!priv->clk)
--		return
-+	if (IS_ERR_OR_NULL(priv->clk))
-+		return;
- 
- 	of_clk_del_provider(spi->dev.of_node);
- 	clk_unregister(priv->clk);
+ 	parent_nritems = btrfs_header_nritems(parent);
+ 	blocksize = fs_info->nodesize;
 -- 
 2.40.1
 
