@@ -2,47 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD7627D3158
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 187C87D329E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231144AbjJWLIP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:08:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55632 "EHLO
+        id S233841AbjJWLWL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:22:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233406AbjJWLIO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:14 -0400
+        with ESMTP id S233832AbjJWLWK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDFD699
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9982CC433C7;
-        Mon, 23 Oct 2023 11:08:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDE6DD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9DDC433C9;
+        Mon, 23 Oct 2023 11:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059292;
-        bh=xvfO7LxZUzWluuraflXkEgE6nuqlSw9WqGkQrxlBTFg=;
+        s=korg; t=1698060127;
+        bh=/0Msz1EWgZKVE9KByF1yCbiwHY1kdWe6aHPyawY4P7U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZehO/rgK980EY7d8QX4kv4iDKZHQUiC/3s78NTon9Fd7xp3ihukQlI9uhTfKfIvc9
-         wWT8uNq5jHQdLR5r0nXQbZjm7C9AVmIUlmC1+RhJVFKeSqc13XUMWQrZaGj5iKX+cb
-         RMnT4bL/6Ku6T5aPaCY8zJ3wetji8TC2cTiMezzQ=
+        b=b6s/gC+CUfQ3ou3ec8u9fc/Z99ewLoibgbUuOC4V0g0zJzE3WtfdNJhsnBwuzXYbz
+         rL58sk+g450kQxIJfipPl9Hlkae2AETSx0u+1vw/o53gEhpJ1AcNPixYTR9aa2QF39
+         LQ+cFi4GOsnn1Uyt74Bwa24UK3467ysLo75Mu6ac=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 129/241] sky2: Make sure there is at least one frag_addr available
+        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.1 050/196] wifi: cfg80211: use system_unbound_wq for wiphy work
 Date:   Mon, 23 Oct 2023 12:55:15 +0200
-Message-ID: <20231023104837.012775048@linuxfoundation.org>
+Message-ID: <20231023104829.935017764@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,77 +48,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 6a70e5cbedaf8ad10528ac9ac114f3ec20f422df ]
+commit 91d20ab9d9ca035527af503d00e1e30d6c375f2a upstream.
 
-In the pathological case of building sky2 with 16k PAGE_SIZE, the
-frag_addr[] array would never be used, so the original code was correct
-that size should be 0. But the compiler now gets upset with 0 size arrays
-in places where it hasn't eliminated the code that might access such an
-array (it can't figure out that in this case an rx skb with fragments
-would never be created). To keep the compiler happy, make sure there is
-at least 1 frag_addr in struct rx_ring_info:
+Since wiphy work items can run pretty much arbitrary
+code in the stack/driver, it can take longer to run
+all of this, so we shouldn't be using system_wq via
+schedule_work(). Also, we lock the wiphy (which is
+the reason this exists), so use system_unbound_wq.
 
-   In file included from include/linux/skbuff.h:28,
-                    from include/net/net_namespace.h:43,
-                    from include/linux/netdevice.h:38,
-                    from drivers/net/ethernet/marvell/sky2.c:18:
-   drivers/net/ethernet/marvell/sky2.c: In function 'sky2_rx_unmap_skb':
-   include/linux/dma-mapping.h:416:36: warning: array subscript i is outside array bounds of 'dma_addr_t[0]' {aka 'long long unsigned int[]'} [-Warray-bounds=]
-     416 | #define dma_unmap_page(d, a, s, r) dma_unmap_page_attrs(d, a, s, r, 0)
-         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/ethernet/marvell/sky2.c:1257:17: note: in expansion of macro 'dma_unmap_page'
-    1257 |                 dma_unmap_page(&pdev->dev, re->frag_addr[i],
-         |                 ^~~~~~~~~~~~~~
-   In file included from drivers/net/ethernet/marvell/sky2.c:41:
-   drivers/net/ethernet/marvell/sky2.h:2198:25: note: while referencing 'frag_addr'
-    2198 |         dma_addr_t      frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
-         |                         ^~~~~~~~~
-
-With CONFIG_PAGE_SIZE_16KB=y, PAGE_SHIFT == 14, so:
-
-  #define ETH_JUMBO_MTU   9000
-
-causes "ETH_JUMBO_MTU >> PAGE_SHIFT" to be 0. Use "?: 1" to solve this build warning.
-
-Cc: Mirko Lindner <mlindner@marvell.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309191958.UBw1cjXk-lkp@intel.com/
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: Kalle Valo <kvalo@kernel.org>
+Fixes: a3ee4dc84c4e ("wifi: cfg80211: add a work abstraction with special semantics")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/sky2.h | 2 +-
+ net/wireless/core.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/sky2.h b/drivers/net/ethernet/marvell/sky2.h
-index ddec1627f1a7b..8d0bacf4e49cc 100644
---- a/drivers/net/ethernet/marvell/sky2.h
-+++ b/drivers/net/ethernet/marvell/sky2.h
-@@ -2195,7 +2195,7 @@ struct rx_ring_info {
- 	struct sk_buff	*skb;
- 	dma_addr_t	data_addr;
- 	DEFINE_DMA_UNMAP_LEN(data_size);
--	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
-+	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT ?: 1];
- };
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1618,7 +1618,7 @@ void wiphy_work_queue(struct wiphy *wiph
+ 		list_add_tail(&work->entry, &rdev->wiphy_work_list);
+ 	spin_unlock_irqrestore(&rdev->wiphy_work_lock, flags);
  
- enum flow_control {
--- 
-2.40.1
-
+-	schedule_work(&rdev->wiphy_work);
++	queue_work(system_unbound_wq, &rdev->wiphy_work);
+ }
+ EXPORT_SYMBOL_GPL(wiphy_work_queue);
+ 
 
 
