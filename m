@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 677BB7D31A3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19FA97D33F4
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230344AbjJWLL0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34846 "EHLO
+        id S234127AbjJWLfg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233534AbjJWLLZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:25 -0400
+        with ESMTP id S234132AbjJWLff (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8984FC2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD612C433C7;
-        Mon, 23 Oct 2023 11:11:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A42210CF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AA8C433C9;
+        Mon, 23 Oct 2023 11:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059483;
-        bh=OzOXlNAqqA9vaN8jC54Na6VhqB4vW28UKKJ5uWBzzm0=;
+        s=korg; t=1698060931;
+        bh=sbkha+b0+RLZQN3fl2fvdrmqbyz171mKxj/2mHz6Ck4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x8jh42oI+M0+QzzSyP0jrPIfI869xQsNlWQecWiMLpiqvP/nV265CGHt8MhmDVbk0
-         pMWNAIpEjv6MtYp1y/rXRWLMFfjEgv0zJ4RGHnd7oSorTxW9uccqLE6hLkz1KEVL8A
-         4Jo9BgADu+BftuA2fCLS/gJYRpdAvWBienFjDu1w=
+        b=jBlbggRGkdNzqbDIb8FnfKTpuBc0e+pqNG+hyf73BB+V/flejHKmNitAyEnY+RobJ
+         uf812UVNWKHzLTNM+LAoN1rIquTGeoBLdyRifH0v766sVnipgbbytFV6wg/OHPLAx1
+         6D6NMvq9biFreCXaQGkaEehcsba/jqdowWOi7vEc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.5 175/241] mmc: core: sdio: hold retuning if sdio in 1-bit mode
+        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Lee@vger.kernel.org
+Subject: [PATCH 5.15 004/137] Bluetooth: hci_event: Ignore NULL link key
 Date:   Mon, 23 Oct 2023 12:56:01 +0200
-Message-ID: <20231023104838.152437084@linuxfoundation.org>
+Message-ID: <20231023104821.019139361@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,49 +49,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Lee, Chun-Yi <jlee@suse.com>
 
-commit 32a9cdb8869dc111a0c96cf8e1762be9684af15b upstream.
+commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
 
-tuning only support in 4-bit mode or 8 bit mode, so in 1-bit mode,
-need to hold retuning.
+This change is used to relieve CVE-2020-26555. The description of the
+CVE:
 
-Find this issue when use manual tuning method on imx93. When system
-resume back, SDIO WIFI try to switch back to 4 bit mode, first will
-trigger retuning, and all tuning command failed.
+Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
+1.0B through 5.2 may permit an unauthenticated nearby device to spoof
+the BD_ADDR of the peer device to complete pairing without knowledge
+of the PIN. [1]
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Fixes: dfa13ebbe334 ("mmc: host: Add facility to support re-tuning")
+The detail of this attack is in IEEE paper:
+BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
+[2]
+
+It's a reflection attack. The paper mentioned that attacker can induce
+the attacked target to generate null link key (zero key) without PIN
+code. In BR/EDR, the key generation is actually handled in the controller
+which is below HCI.
+
+Thus, we can ignore null link key in the handler of "Link Key Notification
+event" to relieve the attack. A similar implementation also shows in
+btstack project. [3]
+
+v3: Drop the connection when null link key be detected.
+
+v2:
+- Used Link: tag instead of Closes:
+- Used bt_dev_dbg instead of BT_DBG
+- Added Fixes: tag
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230830093922.3095850-1-haibo.chen@nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
+Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
+Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
+Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/sdio.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_event.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -1089,8 +1089,14 @@ static int mmc_sdio_resume(struct mmc_ho
- 		}
- 		err = mmc_sdio_reinit_card(host);
- 	} else if (mmc_card_wake_sdio_irq(host)) {
--		/* We may have switched to 1-bit mode during suspend */
-+		/*
-+		 * We may have switched to 1-bit mode during suspend,
-+		 * need to hold retuning, because tuning only supprt
-+		 * 4-bit mode or 8 bit mode.
-+		 */
-+		mmc_retune_hold_now(host);
- 		err = sdio_enable_4bit_bus(host->card);
-+		mmc_retune_release(host);
- 	}
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4173,6 +4173,15 @@ static void hci_link_key_notify_evt(stru
+ 	if (!conn)
+ 		goto unlock;
  
- 	if (err)
++	/* Ignore NULL link key against CVE-2020-26555 */
++	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
++		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
++			   &ev->bdaddr);
++		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
++		hci_conn_drop(conn);
++		goto unlock;
++	}
++
+ 	hci_conn_hold(conn);
+ 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
+ 	hci_conn_drop(conn);
 
 
