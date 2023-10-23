@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E76697D33A0
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:32:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EE407D3346
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234113AbjJWLcZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:32:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48888 "EHLO
+        id S233985AbjJWL2h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:28:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234100AbjJWLcY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:32:24 -0400
+        with ESMTP id S233988AbjJWL2g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D8E8A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:32:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72A3C433C7;
-        Mon, 23 Oct 2023 11:32:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82CBC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5224C433C7;
+        Mon, 23 Oct 2023 11:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060742;
-        bh=4iuL26jHVMNyqehR8D3RaACDBp9bllzI28rfGhySHqc=;
+        s=korg; t=1698060514;
+        bh=1NUB0RCI84/IYRPCFkDDItqP4IzEGUD5H1WucKY3VSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ls/Uu0gPNHcUs0vmdBRugOGBvBmxVc+jRu1DqP41VivF9H45T6a08NqzG/iI/Tx27
-         nB1Jspkrkh5ay9X8wJJfL92Nw+Qc2ilHgKNOc8EbLcOT7PLF8lRp4AYKinhuPT81l4
-         Gp8AlxIS5H27dmG+kQmFctkm+COzAIbYJPKCLLsU=
+        b=vBXI5MnLkCooQ2BQNjtD3wX0RSlNQmG46fxuMVi4cmleYgyAt9FuVkRFv0ErGPtC2
+         /6GW2QI0CxJHW1+Q3qi/R7A1gnwrLw7FzAtc0wE/nw5OhuG0zC2FV9pQpC1k2t4j3S
+         vnnLJ2p+3k0r0/1x6E9GsX2NVE4ytdx76GJmj7Z8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dzmitry <wrkedm@gmail.com>,
-        Tamim Khan <tamim@fusetak.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 078/123] ACPI: resource: Skip IRQ override on Asus Vivobook S5602ZA
+        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Peter Oberparleiter <oberpar@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.1 171/196] s390/cio: fix a memleak in css_alloc_subchannel
 Date:   Mon, 23 Oct 2023 12:57:16 +0200
-Message-ID: <20231023104820.316793391@linuxfoundation.org>
+Message-ID: <20231023104833.254418900@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tamim Khan <tamim@fusetak.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit b5f9223a105d9b56954ad1ca3eace4eaf26c99ed ]
+commit 63e8b94ad1840f02462633abdb363397f56bc642 upstream.
 
-Like the Asus Vivobook K3402ZA/K3502ZA/S5402ZA Asus Vivobook S5602ZA
-has an ACPI DSDT table the describes IRQ 1 as ActiveLow while the kernel
-overrides it to Edge_High. This prevents the keyboard on this laptop
-from working. To fix this add this laptop to the skip_override_table so
-that the kernel does not override IRQ 1.
+When dma_set_coherent_mask() fails, sch->lock has not been
+freed, which is allocated in css_sch_create_locks(), leading
+to a memleak.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216579
-Tested-by: Dzmitry <wrkedm@gmail.com>
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4520a91a976e ("s390/cio: use dma helpers for setting masks")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Message-Id: <20230921071412.13806-1-dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/linux-s390/bd38baa8-7b9d-4d89-9422-7e943d626d6e@linux.ibm.com/
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/s390/cio/css.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 61a7f9a05f645..a34d625f6b875 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -414,6 +414,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus Vivobook S5602ZA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
-+		},
-+	},
- 	{ }
- };
+--- a/drivers/s390/cio/css.c
++++ b/drivers/s390/cio/css.c
+@@ -233,17 +233,19 @@ struct subchannel *css_alloc_subchannel(
+ 	 */
+ 	ret = dma_set_coherent_mask(&sch->dev, DMA_BIT_MASK(31));
+ 	if (ret)
+-		goto err;
++		goto err_lock;
+ 	/*
+ 	 * But we don't have such restrictions imposed on the stuff that
+ 	 * is handled by the streaming API.
+ 	 */
+ 	ret = dma_set_mask(&sch->dev, DMA_BIT_MASK(64));
+ 	if (ret)
+-		goto err;
++		goto err_lock;
  
--- 
-2.40.1
-
+ 	return sch;
+ 
++err_lock:
++	kfree(sch->lock);
+ err:
+ 	kfree(sch);
+ 	return ERR_PTR(ret);
 
 
