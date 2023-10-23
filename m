@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF5E7D3270
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6E197D313A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233780AbjJWLUG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:20:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48274 "EHLO
+        id S233404AbjJWLHH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:07:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233797AbjJWLUE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:04 -0400
+        with ESMTP id S233409AbjJWLHG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67F86DC
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AF4C433C9;
-        Mon, 23 Oct 2023 11:20:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995B4D7E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BECC433C7;
+        Mon, 23 Oct 2023 11:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060002;
-        bh=dw8i0bgr14+tg4nonFx32srNi/X4StAY3v1D7eC7m1k=;
+        s=korg; t=1698059224;
+        bh=5EtgBvODPS/MDGdp223TCuAnisUqlItihkfpJvkhgsc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lu6K67yHVKiuTrDf/yGydOST0sfw4FkcFqDOqlpqEhQbqn5NtGNooNciaGqfrz0sZ
-         7PwewkYtXUJqIa4t6Jp+C2JAeQTsH0BitYTVOeUKHubsY+goIZ48mIoU1TBFrZJtXC
-         2PkVeUQqpF7E0PSQoZo5k4Jns23hc+m6vFafbldM=
+        b=uJSyUlqhUu2be7TGDVBMW715tfRie1udQa8tWof+4Qcj0S7hOf3hVxtK0SjSl+bz9
+         PgkPLZTujDTZsu4IU+GrpxErXaMOQtDipt3rFfMK3i2EzVJVvqxm2m+q03emqBC0pV
+         jYlDMS19XBvblaUxRjla8VdHyqSJZ3kfbbSrrkSc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Lee@vger.kernel.org
-Subject: [PATCH 6.1 009/196] Bluetooth: Reject connection with the device which has same BD_ADDR
+        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
+        Aaron Conole <aconole@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 088/241] selftests: openvswitch: Add version check for pyroute2
 Date:   Mon, 23 Oct 2023 12:54:34 +0200
-Message-ID: <20231023104828.757108910@linuxfoundation.org>
+Message-ID: <20231023104836.036041968@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,90 +49,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee, Chun-Yi <jlee@suse.com>
+From: Aaron Conole <aconole@redhat.com>
 
-commit 1ffc6f8cc33268731fcf9629fc4438f6db1191fc upstream.
+commit 92e37f20f20a23fec4626ae72eda50f127acb130 upstream.
 
-This change is used to relieve CVE-2020-26555. The description of
-the CVE:
+Paolo Abeni reports that on some systems the pyroute2 version isn't
+new enough to run the test suite.  Ensure that we support a minimum
+version of 0.6 for all cases (which does include the existing ones).
+The 0.6.1 version was released in May of 2021, so should be
+propagated to most installations at this point.
 
-Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
-1.0B through 5.2 may permit an unauthenticated nearby device to spoof
-the BD_ADDR of the peer device to complete pairing without knowledge
-of the PIN. [1]
+The alternative that Paolo proposed was to only skip when the
+add-flow is being run.  This would be okay for most cases, except
+if a future test case is added that needs to do flow dump without
+an associated add (just guessing).  In that case, it could also be
+broken and we would need additional skip logic anyway.  Just draw
+a line in the sand now.
 
-The detail of this attack is in IEEE paper:
-BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
-[2]
-
-It's a reflection attack. The paper mentioned that attacker can induce
-the attacked target to generate null link key (zero key) without PIN
-code. In BR/EDR, the key generation is actually handled in the controller
-which is below HCI.
-
-A condition of this attack is that attacker should change the
-BR_ADDR of his hacking device (Host B) to equal to the BR_ADDR with
-the target device being attacked (Host A).
-
-Thus, we reject the connection with device which has same BD_ADDR
-both on HCI_Create_Connection and HCI_Connection_Request to prevent
-the attack. A similar implementation also shows in btstack project.
-[3][4]
-
-Cc: stable@vger.kernel.org
-Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
-Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3523 [3]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L7297 [4]
-Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 25f16c873fb1 ("selftests: add openvswitch selftest suite")
+Reported-by: Paolo Abeni <pabeni@redhat.com>
+Closes: https://lore.kernel.org/lkml/8470c431e0930d2ea204a9363a60937289b7fdbe.camel@redhat.com/
+Signed-off-by: Aaron Conole <aconole@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c  |    9 +++++++++
- net/bluetooth/hci_event.c |   11 +++++++++++
- 2 files changed, 20 insertions(+)
+ tools/testing/selftests/net/openvswitch/openvswitch.sh |    2 +-
+ tools/testing/selftests/net/openvswitch/ovs-dpctl.py   |   10 +++++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1583,6 +1583,15 @@ struct hci_conn *hci_connect_acl(struct
- 		return ERR_PTR(-EOPNOTSUPP);
- 	}
+--- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
++++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+@@ -204,7 +204,7 @@ run_test() {
+ 	fi
  
-+	/* Reject outgoing connection to device with same BD ADDR against
-+	 * CVE-2020-26555
-+	 */
-+	if (!bacmp(&hdev->bdaddr, dst)) {
-+		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
-+			   dst);
-+		return ERR_PTR(-ECONNREFUSED);
-+	}
+ 	if python3 ovs-dpctl.py -h 2>&1 | \
+-	     grep "Need to install the python" >/dev/null 2>&1; then
++	     grep -E "Need to (install|upgrade) the python" >/dev/null 2>&1; then
+ 		stdbuf -o0 printf "TEST: %-60s  [PYLIB]\n" "${tdesc}"
+ 		return $ksft_skip
+ 	fi
+--- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
++++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+@@ -25,8 +25,10 @@ try:
+     from pyroute2.netlink import nlmsg_atoms
+     from pyroute2.netlink.exceptions import NetlinkError
+     from pyroute2.netlink.generic import GenericNetlinkSocket
++    import pyroute2
 +
- 	acl = hci_conn_hash_lookup_ba(hdev, ACL_LINK, dst);
- 	if (!acl) {
- 		acl = hci_conn_add(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3277,6 +3277,17 @@ static void hci_conn_request_evt(struct
+ except ModuleNotFoundError:
+-    print("Need to install the python pyroute2 package.")
++    print("Need to install the python pyroute2 package >= 0.6.")
+     sys.exit(0)
  
- 	bt_dev_dbg(hdev, "bdaddr %pMR type 0x%x", &ev->bdaddr, ev->link_type);
  
-+	/* Reject incoming connection from device with same BD ADDR against
-+	 * CVE-2020-26555
-+	 */
-+	if (!bacmp(&hdev->bdaddr, &ev->bdaddr))
-+	{
-+		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
-+			   &ev->bdaddr);
-+		hci_reject_conn(hdev, &ev->bdaddr);
-+		return;
-+	}
+@@ -1459,6 +1461,12 @@ def main(argv):
+     nlmsg_atoms.ovskey = ovskey
+     nlmsg_atoms.ovsactions = ovsactions
+ 
++    # version check for pyroute2
++    prverscheck = pyroute2.__version__.split(".")
++    if int(prverscheck[0]) == 0 and int(prverscheck[1]) < 6:
++        print("Need to upgrade the python pyroute2 package to >= 0.6.")
++        sys.exit(0)
 +
- 	mask |= hci_proto_connect_ind(hdev, &ev->bdaddr, ev->link_type,
- 				      &flags);
- 
+     parser = argparse.ArgumentParser()
+     parser.add_argument(
+         "-v",
 
 
