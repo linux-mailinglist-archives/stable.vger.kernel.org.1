@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B9C77D31F4
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:15:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 248A97D3430
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233705AbjJWLPH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:15:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53956 "EHLO
+        id S234171AbjJWLhY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34164 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233710AbjJWLPF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:15:05 -0400
+        with ESMTP id S234186AbjJWLhX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59D51DD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298F6C433C7;
-        Mon, 23 Oct 2023 11:15:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD1C510C2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C00C433C9;
+        Mon, 23 Oct 2023 11:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059701;
-        bh=7enSTrMjs3o9oDo890htzwLxM7ysNJQoY6yirrjEeAo=;
+        s=korg; t=1698061040;
+        bh=dbNxpTiaycmt+9SX9nAsTYyKInsEnDsi2fnM8IUVoms=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tXvReyDLNqLALETPTh8ps2j4xw87Q1LQDpLPTUCmj+Hbi09PbWKMZVySldeT/Y9nE
-         BIbCpwo3nUe/DYYHhDCh0O/9r7FqMu5R2LThng/N0LvqtmK8Wg6ohPBKm06Cjgcr1Y
-         PKTOk0uZ03ccAikERvcBZA26e8/W04z/TGMhiwEQ=
+        b=t+zRSMgKPDskRTdsmxGRfkHBWEy5+3FaEa/E4+JhC3sKTpgYFsiCNNf3Rb8lOx693
+         rtz4p6mof/kEl+a5Ob4j7XO9yAJoVAxoZW7ZmFSOwbqmxkwzo5A2exZyyGdhUMzMty
+         l04Ck/BhyHyjSFz8CHr5aj7lryGZBhVbCNbq77FE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kenta Sato <tosainu.maple@gmail.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 4.19 23/98] usb: dwc3: Soft reset phy on probe for host
+        patches@lists.linux.dev, Tom Dohrmann <erbse.13@gmx.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 5.15 015/137] x86/sev: Disable MMIO emulation from user mode
 Date:   Mon, 23 Oct 2023 12:56:12 +0200
-Message-ID: <20231023104814.407011568@linuxfoundation.org>
+Message-ID: <20231023104821.451137647@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,86 +48,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b upstream.
+Upstream commit: a37cd2a59d0cb270b1bba568fd3a3b8668b9d3ba
 
-When there's phy initialization, we need to initiate a soft-reset
-sequence. That's done through USBCMD.HCRST in the xHCI driver and its
-initialization, However, the dwc3 driver may modify core configs before
-the soft-reset. This may result in some connection instability. So,
-ensure the phy is ready before the controller updates the GCTL.PRTCAPDIR
-or other settings by issuing phy soft-reset.
+A virt scenario can be constructed where MMIO memory can be user memory.
+When that happens, a race condition opens between when the hardware
+raises the #VC and when the #VC handler gets to emulate the instruction.
 
-Note that some host-mode configurations may not expose device registers
-to initiate the controller soft-reset (via DCTL.CoreSftRst). So we reset
-through GUSB3PIPECTL and GUSB2PHYCFG instead.
+If the MOVS is replaced with a MOVS accessing kernel memory in that
+small race window, then write to kernel memory happens as the access
+checks are not done at emulation time.
 
-Cc: stable@vger.kernel.org
-Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
-Reported-by: Kenta Sato <tosainu.maple@gmail.com>
-Closes: https://lore.kernel.org/linux-usb/ZPUciRLUcjDywMVS@debian.me/
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Tested-by: Kenta Sato <tosainu.maple@gmail.com>
-Link: https://lore.kernel.org/r/70aea513215d273669152696cc02b20ddcdb6f1a.1694564261.git.Thinh.Nguyen@synopsys.com
+Disable MMIO emulation in user mode temporarily until a sensible use
+case appears and justifies properly handling the race window.
+
+Fixes: 0118b604c2c9 ("x86/sev-es: Handle MMIO String Instructions")
+Reported-by: Tom Dohrmann <erbse.13@gmx.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tom Dohrmann <erbse.13@gmx.de>
+Cc: <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |   39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ arch/x86/kernel/sev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -244,9 +244,46 @@ static int dwc3_core_soft_reset(struct d
- 	 * XHCI driver will reset the host block. If dwc3 was configured for
- 	 * host-only mode or current role is host, then we can return early.
- 	 */
--	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
-+	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
- 		return 0;
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -1004,6 +1004,9 @@ static enum es_result vc_handle_mmio(str
+ 	enum es_result ret;
+ 	long *reg_data;
  
-+	/*
-+	 * If the dr_mode is host and the dwc->current_dr_role is not the
-+	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
-+	 * isn't executed yet. Ensure the phy is ready before the controller
-+	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
-+	 * the phy.
-+	 *
-+	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
-+	 * is port index. If this is a multiport host, then we need to reset
-+	 * all active ports.
-+	 */
-+	if (dwc->dr_mode == USB_DR_MODE_HOST) {
-+		u32 usb3_port;
-+		u32 usb2_port;
++	if (user_mode(ctxt->regs))
++		return ES_UNSUPPORTED;
 +
-+		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
-+		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
-+
-+		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
-+		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
-+
-+		/* Small delay for phy reset assertion */
-+		usleep_range(1000, 2000);
-+
-+		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
-+
-+		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
-+
-+		/* Wait for clock synchronization */
-+		msleep(50);
-+		return 0;
-+	}
-+
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
- 	reg |= DWC3_DCTL_CSFTRST;
- 	dwc3_writel(dwc->regs, DWC3_DCTL, reg);
+ 	switch (insn->opcode.bytes[0]) {
+ 	/* MMIO Write */
+ 	case 0x88:
 
 
