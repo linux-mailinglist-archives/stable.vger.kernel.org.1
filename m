@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BFDD7D32A3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C44207D3192
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233846AbjJWLW1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:22:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59658 "EHLO
+        id S232511AbjJWLKl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:10:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233855AbjJWLW0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:26 -0400
+        with ESMTP id S232934AbjJWLKl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0093E100
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6EFC433C8;
-        Mon, 23 Oct 2023 11:22:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 622E0C2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98B57C433C7;
+        Mon, 23 Oct 2023 11:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060142;
-        bh=OnKnlbgX1oCBCL1CqcNPo2P3iGNB/XmLwNO01Iw7Mvk=;
+        s=korg; t=1698059439;
+        bh=UiCM2xUJr/+xFkaZlcWM0w/5sj+6jR8eay4tx/6MnQs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=piWgr9paUzw6A49ZVj28hX9dF6C8YDjHCf582+2NX4Enhz7qcWWh1iNZdm7NQsCzJ
-         KzKM4PT8QAqPuuM+hCTCaMEN8rQ5ec+iHoAa7+IHmi8+eN1goExAqIUeJwYPahJNqS
-         0Eg0fWxHrtRdD1B6Sg1tsnkM5jl2YwCP8O8mXddk=
+        b=MFpZpMQ/DHXbxqJd1/AJFI6YVpKHuhhpLboO/KkX/Jp6EN9Fb6amdvyTrVUDf+PTw
+         CeGpFyr9GpWKmo54R0etXrfuabLfdZvW5yrsNk8z7qYboDws4KG45E4Gf+ZWMaJaRo
+         0997Q1EM1ddejbJtGBr4b5Dy9KY4aLsg07tV1UXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Justin Chen <justin.chen@broadcom.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 072/196] net: phy: bcm7xxx: Add missing 16nm EPHY statistics
+        patches@lists.linux.dev, Chris Mason <clm@fb.com>,
+        Dragos Tatulea <dtatulea@nvidia.com>,
+        Tariq Toukan <tariqt@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 151/241] net/mlx5e: RX, Fix page_pool allocation failure recovery for striding rq
 Date:   Mon, 23 Oct 2023 12:55:37 +0200
-Message-ID: <20231023104830.584188543@linuxfoundation.org>
+Message-ID: <20231023104837.550759581@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-commit 6200e00e112ce2d17b066a20dd2476d9aecbefa6 upstream.
+[ Upstream commit be43b7489a3c4702799e50179da69c3df7d6899b ]
 
-The .probe() function would allocate the necessary space and ensure that
-the library call sizes the number of statistics but the callbacks
-necessary to fetch the name and values were not wired up.
+When a page allocation fails during refill in mlx5e_post_rx_mpwqes, the
+page will be released again on the next refill call. This triggers the
+page_pool negative page fragment count warning below:
 
-Reported-by: Justin Chen <justin.chen@broadcom.com>
-Fixes: f68d08c437f9 ("net: phy: bcm7xxx: Add EPHY entry for 72165")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231017205119.416392-1-florian.fainelli@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ [ 2436.447717] WARNING: CPU: 1 PID: 2419 at include/net/page_pool/helpers.h:130 mlx5e_page_release_fragmented.isra.0+0x42/0x50 [mlx5_core]
+ ...
+ [ 2436.447895] RIP: 0010:mlx5e_page_release_fragmented.isra.0+0x42/0x50 [mlx5_core]
+ [ 2436.447991] Call Trace:
+ [ 2436.447975]  mlx5e_post_rx_mpwqes+0x1d5/0xcf0 [mlx5_core]
+ [ 2436.447994]  <IRQ>
+ [ 2436.447996]  ? __warn+0x7d/0x120
+ [ 2436.448009]  ? mlx5e_handle_rx_cqe_mpwrq+0x109/0x1d0 [mlx5_core]
+ [ 2436.448002]  ? mlx5e_page_release_fragmented.isra.0+0x42/0x50 [mlx5_core]
+ [ 2436.448044]  ? mlx5e_poll_rx_cq+0x87/0x6e0 [mlx5_core]
+ [ 2436.448061]  ? report_bug+0x155/0x180
+ [ 2436.448065]  ? handle_bug+0x36/0x70
+ [ 2436.448067]  ? exc_invalid_op+0x13/0x60
+ [ 2436.448070]  ? asm_exc_invalid_op+0x16/0x20
+ [ 2436.448079]  mlx5e_napi_poll+0x122/0x6b0 [mlx5_core]
+ [ 2436.448077]  ? mlx5e_page_release_fragmented.isra.0+0x42/0x50 [mlx5_core]
+ [ 2436.448113]  ? generic_exec_single+0x35/0x100
+ [ 2436.448117]  __napi_poll+0x25/0x1a0
+ [ 2436.448120]  net_rx_action+0x28a/0x300
+ [ 2436.448122]  __do_softirq+0xcd/0x279
+ [ 2436.448126]  irq_exit_rcu+0x6a/0x90
+ [ 2436.448128]  sysvec_apic_timer_interrupt+0x6e/0x90
+ [ 2436.448130]  </IRQ>
+
+This patch fixes the striding rq case by setting the skip flag on all
+the wqe pages that were expected to have new pages allocated.
+
+Fixes: 4c2a13236807 ("net/mlx5e: RX, Defer page release in striding rq for better recycling")
+Tested-by: Chris Mason <clm@fb.com>
+Reported-by: Chris Mason <clm@fb.com>
+Closes: https://lore.kernel.org/netdev/117FF31A-7BE0-4050-B2BB-E41F224FF72F@meta.com
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/bcm7xxx.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/phy/bcm7xxx.c
-+++ b/drivers/net/phy/bcm7xxx.c
-@@ -907,6 +907,9 @@ static void bcm7xxx_28nm_remove(struct p
- 	.name		= _name,					\
- 	/* PHY_BASIC_FEATURES */					\
- 	.flags		= PHY_IS_INTERNAL,				\
-+	.get_sset_count	= bcm_phy_get_sset_count,			\
-+	.get_strings	= bcm_phy_get_strings,				\
-+	.get_stats	= bcm7xxx_28nm_get_phy_stats,			\
- 	.probe		= bcm7xxx_28nm_probe,				\
- 	.remove		= bcm7xxx_28nm_remove,				\
- 	.config_init	= bcm7xxx_16nm_ephy_config_init,		\
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+index 41d37159e027b..0b558db1a9455 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rx.c
+@@ -816,6 +816,8 @@ static int mlx5e_alloc_rx_mpwqe(struct mlx5e_rq *rq, u16 ix)
+ 		mlx5e_page_release_fragmented(rq, frag_page);
+ 	}
+ 
++	bitmap_fill(wi->skip_release_bitmap, rq->mpwqe.pages_per_wqe);
++
+ err:
+ 	rq->stats->buff_alloc_err++;
+ 
+-- 
+2.40.1
+
 
 
