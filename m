@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ADF67D35A4
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2825C7D3496
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:41:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234595AbjJWLu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:50:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36330 "EHLO
+        id S234132AbjJWLlH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:41:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234597AbjJWLuZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:25 -0400
+        with ESMTP id S234274AbjJWLlF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:41:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B8FADE
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:50:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97429C433CA;
-        Mon, 23 Oct 2023 11:50:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06AF110C
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22316C433C8;
+        Mon, 23 Oct 2023 11:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061823;
-        bh=DtptvEwHAZSKg2IN87fTGBJYcWPc40oje24av1a+K+0=;
+        s=korg; t=1698061262;
+        bh=8rXOSqqiedXy9bC7A+gLBloYIKgONcWZuP40EDrBIkg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IATjs+HCPMsCZ/XlZZrE6J0PvHL9xWxv4srKjBDyYvXXJD7Mh1WUwccDJqGYtzwmK
-         VWpcKQluZxO3CoY4TWKVJPnXq4bh7meh+rwAWsNY1W1FJUxk9BTgcG5S+YHF/CYVd2
-         p3f60jOo8ZhuLP8T+g4rjPnPzXCz2CXGHYopLJLg=
+        b=utQV0TUnqgmBnLuSOwW397sMN9WUx6raVJ78yauB597A8n4R5oE97KBB7MRRx6Ewg
+         9I3XQcPhOnkB0+NvuQHrHOS71gE5tyy7Cbzvbpl21sdnhILMfTXmqwfhooEoYPU8uK
+         j3snXyepkQ9ofpwyFzNbcYCfDoZQurhO+tJYgaxc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Simek <michal.simek@amd.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 176/202] mtd: rawnand: arasan: Ensure program page operations are successful
+        patches@lists.linux.dev, James John <me@donjajo.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 5.15 126/137] platform/x86: asus-wmi: Map 0x2a code, Ignore 0x2b and 0x2c events
 Date:   Mon, 23 Oct 2023 12:58:03 +0200
-Message-ID: <20231023104831.616037758@linuxfoundation.org>
+Message-ID: <20231023104824.973008354@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,78 +48,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 3a4a893dbb19e229db3b753f0462520b561dee98 upstream.
+commit 235985d1763f7aba92c1c64e5f5aaec26c2c9b18 upstream.
 
-The NAND core complies with the ONFI specification, which itself
-mentions that after any program or erase operation, a status check
-should be performed to see whether the operation was finished *and*
-successful.
+Newer Asus laptops send the following new WMI event codes when some
+of the F1 - F12 "media" hotkeys are pressed:
 
-The NAND core offers helpers to finish a page write (sending the
-"PAGE PROG" command, waiting for the NAND chip to be ready again, and
-checking the operation status). But in some cases, advanced controller
-drivers might want to optimize this and craft their own page write
-helper to leverage additional hardware capabilities, thus not always
-using the core facilities.
+0x2a Screen Capture
+0x2b PrintScreen
+0x2c CapsLock
 
-Some drivers, like this one, do not use the core helper to finish a page
-write because the final cycles are automatically managed by the
-hardware. In this case, the additional care must be taken to manually
-perform the final status check.
+Map 0x2a to KEY_SELECTIVE_SCREENSHOT mirroring how similar hotkeys
+are mapped on other laptops.
 
-Let's read the NAND chip status at the end of the page write helper and
-return -EIO upon error.
+PrintScreem and CapsLock are also reported as normal PS/2 keyboard events,
+map these event codes to KE_IGNORE to avoid "Unknown key code 0x%x\n" log
+messages.
 
-Cc: Michal Simek <michal.simek@amd.com>
-Cc: stable@vger.kernel.org
-Fixes: 88ffef1b65cf ("mtd: rawnand: arasan: Support the hardware BCH ECC engine")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Acked-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-2-miquel.raynal@bootlin.com
+Reported-by: James John <me@donjajo.com>
+Closes: https://lore.kernel.org/platform-driver-x86/a2c441fe-457e-44cf-a146-0ecd86b037cf@donjajo.com/
+Closes: https://bbs.archlinux.org/viewtopic.php?pid=2123716
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231017090725.38163-4-hdegoede@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/arasan-nand-controller.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/platform/x86/asus-nb-wmi.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/nand/raw/arasan-nand-controller.c
-+++ b/drivers/mtd/nand/raw/arasan-nand-controller.c
-@@ -451,6 +451,7 @@ static int anfc_write_page_hw_ecc(struct
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	unsigned int len = mtd->writesize + (oob_required ? mtd->oobsize : 0);
- 	dma_addr_t dma_addr;
-+	u8 status;
- 	int ret;
- 	struct anfc_op nfc_op = {
- 		.pkt_reg =
-@@ -497,10 +498,21 @@ static int anfc_write_page_hw_ecc(struct
- 	}
- 
- 	/* Spare data is not protected */
--	if (oob_required)
-+	if (oob_required) {
- 		ret = nand_write_oob_std(chip, page);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
- 
--	return ret;
-+	return 0;
- }
- 
- static int anfc_sel_write_page_hw_ecc(struct nand_chip *chip, const u8 *buf,
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -518,6 +518,9 @@ static void asus_nb_wmi_quirks(struct as
+ static const struct key_entry asus_nb_wmi_keymap[] = {
+ 	{ KE_KEY, ASUS_WMI_BRN_DOWN, { KEY_BRIGHTNESSDOWN } },
+ 	{ KE_KEY, ASUS_WMI_BRN_UP, { KEY_BRIGHTNESSUP } },
++	{ KE_KEY, 0x2a, { KEY_SELECTIVE_SCREENSHOT } },
++	{ KE_IGNORE, 0x2b, }, /* PrintScreen (also send via PS/2) on newer models */
++	{ KE_IGNORE, 0x2c, }, /* CapsLock (also send via PS/2) on newer models */
+ 	{ KE_KEY, 0x30, { KEY_VOLUMEUP } },
+ 	{ KE_KEY, 0x31, { KEY_VOLUMEDOWN } },
+ 	{ KE_KEY, 0x32, { KEY_MUTE } },
 
 
