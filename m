@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 802DC7D3408
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C95B77D32E3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234107AbjJWLgQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:36:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41118 "EHLO
+        id S233686AbjJWLYs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:24:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234118AbjJWLgJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:09 -0400
+        with ESMTP id S233702AbjJWLYr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFE90102
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3128EC433C7;
-        Mon, 23 Oct 2023 11:36:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91420E4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A6EC433C7;
+        Mon, 23 Oct 2023 11:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060966;
-        bh=Oqy30A7LiXtonQhsj0yqSaUOQyOKc6ccUcOI6igwjZk=;
+        s=korg; t=1698060285;
+        bh=GC23r4Wl8FKFwK6CVFE5jTfi8x5Fr1Mlq8Pp/DEoP64=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nQo8JaNYk3jQdvRJAMIVfk8cF2mQQ9ecoizYjCL1fygAUJYBT0FxORd/+oA/gKb3A
-         kfAgslQM/FpbwsNt0yGxi+NKZ+iFT0Ro2NjamqMaf/NxxamP3qxBImINOeak4r76GT
-         VSTYPPF5g06C016QPhCahGB/wZbcAoJnW3+FvsVk=
+        b=dS/j2Pn1lU+Qmk02pqFdKlcJsB3tCGSZAoSe4u8YKp3hjaB4fsSL5D2IqX+90hRlI
+         g4+ZvsaeM6yOCy9TMObHXKiSofFafPYxnuHsoC4RFkyLe1BoR7NGLHI6/pFLKVFbCy
+         uYT4WOwEeqppzcuRMv3Eon4/J2G0s7GHmGEPkJqU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Manish Chopra <manishc@marvell.com>
-Subject: [PATCH 5.15 029/137] qed: fix LL2 RX buffer allocation
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 121/196] btrfs: error out when reallocating block for defrag using a stale transaction
 Date:   Mon, 23 Oct 2023 12:56:26 +0200
-Message-ID: <20231023104821.991112082@linuxfoundation.org>
+Message-ID: <20231023104831.930217530@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,67 +49,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Chopra <manishc@marvell.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 2f3389c73832ad90b63208c0fc281ad080114c7a upstream.
+[ Upstream commit e36f94914021e58ee88a8856c7fdf35adf9c7ee1 ]
 
-Driver allocates the LL2 rx buffers from kmalloc()
-area to construct the skb using slab_build_skb()
+At btrfs_realloc_node() we have these checks to verify we are not using a
+stale transaction (a past transaction with an unblocked state or higher),
+and the only thing we do is to trigger two WARN_ON(). This however is a
+critical problem, highly unexpected and if it happens it's most likely due
+to a bug, so we should error out and turn the fs into error state so that
+such issue is much more easily noticed if it's triggered.
 
-The required size allocation seems to have overlooked
-for accounting both skb_shared_info size and device
-placement padding bytes which results into the below
-panic when doing skb_put() for a standard MTU sized frame.
+The problem is critical because in btrfs_realloc_node() we COW tree blocks,
+and using such stale transaction will lead to not persisting the extent
+buffers used for the COW operations, as allocating tree block adds the
+range of the respective extent buffers to the ->dirty_pages iotree of the
+transaction, and a stale transaction, in the unlocked state or higher,
+will not flush dirty extent buffers anymore, therefore resulting in not
+persisting the tree block and resource leaks (not cleaning the dirty_pages
+iotree for example).
 
-skbuff: skb_over_panic: text:ffffffffc0b0225f len:1514 put:1514
-head:ff3dabceaf39c000 data:ff3dabceaf39c042 tail:0x62c end:0x566
-dev:<NULL>
-…
-skb_panic+0x48/0x4a
-skb_put.cold+0x10/0x10
-qed_ll2b_complete_rx_packet+0x14f/0x260 [qed]
-qed_ll2_rxq_handle_completion.constprop.0+0x169/0x200 [qed]
-qed_ll2_rxq_completion+0xba/0x320 [qed]
-qed_int_sp_dpc+0x1a7/0x1e0 [qed]
+So do the following changes:
 
-This patch fixes this by accouting skb_shared_info and device
-placement padding size bytes when allocating the buffers.
+1) Return -EUCLEAN if we find a stale transaction;
 
-Cc: David S. Miller <davem@davemloft.net>
-Fixes: 0a7fb11c23c0 ("qed: Add Light L2 support")
-Signed-off-by: Manish Chopra <manishc@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+2) Turn the fs into error state, with error -EUCLEAN, so that no
+   transaction can be committed, and generate a stack trace;
+
+3) Combine both conditions into a single if statement, as both are related
+   and have the same error message;
+
+4) Mark the check as unlikely, since this is not expected to ever happen.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_ll2.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/btrfs/ctree.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/qlogic/qed/qed_ll2.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_ll2.c
-@@ -87,7 +87,10 @@ static void qed_ll2b_complete_tx_packet(
- static int qed_ll2_alloc_buffer(struct qed_dev *cdev,
- 				u8 **data, dma_addr_t *phys_addr)
- {
--	*data = kmalloc(cdev->ll2->rx_size, GFP_ATOMIC);
-+	size_t size = cdev->ll2->rx_size + NET_SKB_PAD +
-+		      SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+
-+	*data = kmalloc(size, GFP_ATOMIC);
- 	if (!(*data)) {
- 		DP_INFO(cdev, "Failed to allocate LL2 buffer data\n");
- 		return -ENOMEM;
-@@ -2548,7 +2551,7 @@ static int qed_ll2_start(struct qed_dev
- 	INIT_LIST_HEAD(&cdev->ll2->list);
- 	spin_lock_init(&cdev->ll2->lock);
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 98f68bd1383a3..e08688844f1e1 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -698,8 +698,22 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
+ 	int progress_passed = 0;
+ 	struct btrfs_disk_key disk_key;
  
--	cdev->ll2->rx_size = NET_SKB_PAD + ETH_HLEN +
-+	cdev->ll2->rx_size = PRM_DMA_PAD_BYTES_NUM + ETH_HLEN +
- 			     L1_CACHE_BYTES + params->mtu;
+-	WARN_ON(trans->transaction != fs_info->running_transaction);
+-	WARN_ON(trans->transid != fs_info->generation);
++	/*
++	 * COWing must happen through a running transaction, which always
++	 * matches the current fs generation (it's a transaction with a state
++	 * less than TRANS_STATE_UNBLOCKED). If it doesn't, then turn the fs
++	 * into error state to prevent the commit of any transaction.
++	 */
++	if (unlikely(trans->transaction != fs_info->running_transaction ||
++		     trans->transid != fs_info->generation)) {
++		btrfs_abort_transaction(trans, -EUCLEAN);
++		btrfs_crit(fs_info,
++"unexpected transaction when attempting to reallocate parent %llu for root %llu, transaction %llu running transaction %llu fs generation %llu",
++			   parent->start, btrfs_root_id(root), trans->transid,
++			   fs_info->running_transaction->transid,
++			   fs_info->generation);
++		return -EUCLEAN;
++	}
  
- 	/* Allocate memory for LL2.
+ 	parent_nritems = btrfs_header_nritems(parent);
+ 	blocksize = fs_info->nodesize;
+-- 
+2.40.1
+
 
 
