@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8E907D3229
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B94F67D343E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229912AbjJWLRW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:17:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57678 "EHLO
+        id S234185AbjJWLhy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233675AbjJWLRW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:22 -0400
+        with ESMTP id S234184AbjJWLhx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D2A5A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5C8C433C7;
-        Mon, 23 Oct 2023 11:17:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872CAFD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8355C433CB;
+        Mon, 23 Oct 2023 11:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059840;
-        bh=572KN/TaHGUt7ry0Hj3mLW1R5xRf7uXMeqCy64xxA7U=;
+        s=korg; t=1698061070;
+        bh=zVRJAtK7ceQZvphqagsqvl0ff8slhK0Xi1WUFeIFybc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qMWYmQg7soQAPgnko7X9dctCcKHN6TdHFJn0VhafDokCee63Io65cVSB3RIx9Jq5v
-         gYqZP9KdNp0Fk68QDEsMaOQq/pp56JkmJkGKeXhN8VKeaLcPoe8ZFeBZu/cbdzP8r7
-         jyBudTCQ/W7HjwFCjJMeUYQGijrPlCIapDyHbsr0=
+        b=xKJ7LeRnpPvvZsu0qHv7KyNu6sC5tLBWGo30Ujgf7nY+6dZm8jUXwiYXudPFoXgSX
+         m+e1I8DhyHZVcMEyJc5SB4gdxWciRC4vvBrxsQOdWszn1ZhSjJWQ6FSY1rI3T5HUz4
+         gpyoeY+4pzvl+3SxvCyTZrf4Bx1TRN2/PdiLv1GQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        patches@lists.linux.dev, Eddie James <eajames@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 71/98] gpio: timberdale: Fix potential deadlock on &tgpio->lock
+Subject: [PATCH 5.15 063/137] powerpc/47x: Fix 47x syscall return crash
 Date:   Mon, 23 Oct 2023 12:57:00 +0200
-Message-ID: <20231023104816.079759304@linuxfoundation.org>
+Message-ID: <20231023104823.094578060@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,66 +51,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 9e8bc2dda5a7a8e2babc9975f4b11c9a6196e490 ]
+[ Upstream commit f0eee815babed70a749d2496a7678be5b45b4c14 ]
 
-As timbgpio_irq_enable()/timbgpio_irq_disable() callback could be
-executed under irq context, it could introduce double locks on
-&tgpio->lock if it preempts other execution units requiring
-the same locks.
+Eddie reported that newer kernels were crashing during boot on his 476
+FSP2 system:
 
-timbgpio_gpio_set()
---> timbgpio_update_bit()
---> spin_lock(&tgpio->lock)
-<interrupt>
-   --> timbgpio_irq_disable()
-   --> spin_lock_irqsave(&tgpio->lock)
+  kernel tried to execute user page (b7ee2000) - exploit attempt? (uid: 0)
+  BUG: Unable to handle kernel instruction fetch
+  Faulting instruction address: 0xb7ee2000
+  Oops: Kernel access of bad area, sig: 11 [#1]
+  BE PAGE_SIZE=4K FSP-2
+  Modules linked in:
+  CPU: 0 PID: 61 Comm: mount Not tainted 6.1.55-d23900f.ppcnf-fsp2 #1
+  Hardware name: ibm,fsp2 476fpe 0x7ff520c0 FSP-2
+  NIP:  b7ee2000 LR: 8c008000 CTR: 00000000
+  REGS: bffebd83 TRAP: 0400   Not tainted (6.1.55-d23900f.ppcnf-fs p2)
+  MSR:  00000030 <IR,DR>  CR: 00001000  XER: 20000000
+  GPR00: c00110ac bffebe63 bffebe7e bffebe88 8c008000 00001000 00000d12 b7ee2000
+  GPR08: 00000033 00000000 00000000 c139df10 48224824 1016c314 10160000 00000000
+  GPR16: 10160000 10160000 00000008 00000000 10160000 00000000 10160000 1017f5b0
+  GPR24: 1017fa50 1017f4f0 1017fa50 1017f740 1017f630 00000000 00000000 1017f4f0
+  NIP [b7ee2000] 0xb7ee2000
+  LR [8c008000] 0x8c008000
+  Call Trace:
+  Instruction dump:
+  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
+  ---[ end trace 0000000000000000 ]---
 
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
+The problem is in ret_from_syscall where the check for
+icache_44x_need_flush is done. When the flush is needed the code jumps
+out-of-line to do the flush, and then intends to jump back to continue
+the syscall return.
 
-To prevent the potential deadlock, the patch uses spin_lock_irqsave()
-on &tgpio->lock inside timbgpio_gpio_set() to prevent the possible
-deadlock scenario.
+However the branch back to label 1b doesn't return to the correct
+location, instead branching back just prior to the return to userspace,
+causing bogus register values to be used by the rfi.
 
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+The breakage was introduced by commit 6f76a01173cc
+("powerpc/syscall: implement system call entry/exit logic in C for PPC32") which
+inadvertently removed the "1" label and reused it elsewhere.
+
+Fix it by adding named local labels in the correct locations. Note that
+the return label needs to be outside the ifdef so that CONFIG_PPC_47x=n
+compiles.
+
+Fixes: 6f76a01173cc ("powerpc/syscall: implement system call entry/exit logic in C for PPC32")
+Cc: stable@vger.kernel.org # v5.12+
+Reported-by: Eddie James <eajames@linux.ibm.com>
+Tested-by: Eddie James <eajames@linux.ibm.com>
+Link: https://lore.kernel.org/linuxppc-dev/fdaadc46-7476-9237-e104-1d2168526e72@linux.ibm.com/
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://msgid.link/20231010114750.847794-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-timberdale.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/entry_32.S | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpio/gpio-timberdale.c b/drivers/gpio/gpio-timberdale.c
-index 314e300d6ba33..1e6925c27ae29 100644
---- a/drivers/gpio/gpio-timberdale.c
-+++ b/drivers/gpio/gpio-timberdale.c
-@@ -55,9 +55,10 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
- 	unsigned offset, bool enabled)
- {
- 	struct timbgpio *tgpio = gpiochip_get_data(gpio);
-+	unsigned long flags;
- 	u32 reg;
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index 0756829b2f7fa..3eb3c74e402b5 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -136,8 +136,9 @@ ret_from_syscall:
+ 	lis	r4,icache_44x_need_flush@ha
+ 	lwz	r5,icache_44x_need_flush@l(r4)
+ 	cmplwi	cr0,r5,0
+-	bne-	2f
++	bne-	.L44x_icache_flush
+ #endif /* CONFIG_PPC_47x */
++.L44x_icache_flush_return:
+ 	kuep_unlock
+ 	lwz	r4,_LINK(r1)
+ 	lwz	r5,_CCR(r1)
+@@ -173,10 +174,11 @@ syscall_exit_finish:
+ 	b	1b
  
--	spin_lock(&tgpio->lock);
-+	spin_lock_irqsave(&tgpio->lock, flags);
- 	reg = ioread32(tgpio->membase + offset);
+ #ifdef CONFIG_44x
+-2:	li	r7,0
++.L44x_icache_flush:
++	li	r7,0
+ 	iccci	r0,r0
+ 	stw	r7,icache_44x_need_flush@l(r4)
+-	b	1b
++	b	.L44x_icache_flush_return
+ #endif  /* CONFIG_44x */
  
- 	if (enabled)
-@@ -66,7 +67,7 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
- 		reg &= ~(1 << index);
- 
- 	iowrite32(reg, tgpio->membase + offset);
--	spin_unlock(&tgpio->lock);
-+	spin_unlock_irqrestore(&tgpio->lock, flags);
- 
- 	return 0;
- }
+ 	.globl	ret_from_fork
 -- 
 2.40.1
 
