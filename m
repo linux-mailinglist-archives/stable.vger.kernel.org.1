@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C13BD7D35B0
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5FF97D33C3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234610AbjJWLu4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:50:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49802 "EHLO
+        id S234128AbjJWLdz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:33:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234609AbjJWLuz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:55 -0400
+        with ESMTP id S234133AbjJWLdx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D91C4F5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:50:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBEEC433C8;
-        Mon, 23 Oct 2023 11:50:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFEA6DB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:33:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF75C433C8;
+        Mon, 23 Oct 2023 11:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061852;
-        bh=38qBZx41nuwd23dV8eVG33b1nfrdQJ/AELimoyvNYVc=;
+        s=korg; t=1698060831;
+        bh=c9cx6s+AelES8P2VGa5IpduVOutLBYmsK8HACIWIWvA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fq+maIWWBKc3fivbdxDGUjO+bQkoCyxubqg3ynOYxaeMnNilUzhDC61yog4L71NCd
-         qw9D2pvLUnoDYC8Pi0tIgxJsHmSKgSQoPif2jLkyJSmMB7Vj3BZosTH3zmCs6RN4PE
-         E7G75qu+OwV9qsVuwTh3ztmHe2MgqFjMEDM2HLF8=
+        b=mF96HNyt7xPYDgJ+1rBF+xjGmmG7Zu4pzz5ao2MvnvCg4XgksmRDL9OxjnCrjtn+6
+         fR4camM8kQzB4+b8fLZsFe+gi8LsCzyxkyLFTezVjM6UhxLdFR8Muj8fTWRhJ70ODp
+         /5F9tM6RmNCD3ApI0ca3zJ3tyX4obiNRBkvmvCKI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 159/202] HID: holtek: fix slab-out-of-bounds Write in holtek_kbd_input_event
+        patches@lists.linux.dev, Sunil V L <sunilvl@ventanamicro.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 108/123] ACPI: irq: Fix incorrect return value in acpi_register_gsi()
 Date:   Mon, 23 Oct 2023 12:57:46 +0200
-Message-ID: <20231023104831.154185496@linuxfoundation.org>
+Message-ID: <20231023104821.340659529@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,44 +48,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-[ Upstream commit ffe3b7837a2bb421df84d0177481db9f52c93a71 ]
+commit 0c21a18d5d6c6a73d098fb9b4701572370942df9 upstream.
 
-There is a slab-out-of-bounds Write bug in hid-holtek-kbd driver.
-The problem is the driver assumes the device must have an input
-but some malicious devices violate this assumption.
+acpi_register_gsi() should return a negative value in case of failure.
 
-Fix this by checking hid_device's input is non-empty before its usage.
+Currently, it returns the return value from irq_create_fwspec_mapping().
+However, irq_create_fwspec_mapping() returns 0 for failure. Fix the
+issue by returning -EINVAL if irq_create_fwspec_mapping() returns zero.
 
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d44fa3d46079 ("ACPI: Add support for ResourceSource/IRQ domain mapping")
+Cc: 4.11+ <stable@vger.kernel.org> # 4.11+
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+[ rjw: Rename a new local variable ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-holtek-kbd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/irq.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-holtek-kbd.c b/drivers/hid/hid-holtek-kbd.c
-index 403506b9697e7..b346d68a06f5a 100644
---- a/drivers/hid/hid-holtek-kbd.c
-+++ b/drivers/hid/hid-holtek-kbd.c
-@@ -130,6 +130,10 @@ static int holtek_kbd_input_event(struct input_dev *dev, unsigned int type,
- 		return -ENODEV;
+--- a/drivers/acpi/irq.c
++++ b/drivers/acpi/irq.c
+@@ -52,6 +52,7 @@ int acpi_register_gsi(struct device *dev
+ 		      int polarity)
+ {
+ 	struct irq_fwspec fwspec;
++	unsigned int irq;
  
- 	boot_hid = usb_get_intfdata(boot_interface);
-+	if (list_empty(&boot_hid->inputs)) {
-+		hid_err(hid, "no inputs found\n");
-+		return -ENODEV;
-+	}
- 	boot_hid_input = list_first_entry(&boot_hid->inputs,
- 		struct hid_input, list);
+ 	if (WARN_ON(!acpi_gsi_domain_id)) {
+ 		pr_warn("GSI: No registered irqchip, giving up\n");
+@@ -63,7 +64,11 @@ int acpi_register_gsi(struct device *dev
+ 	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
+ 	fwspec.param_count = 2;
  
--- 
-2.40.1
-
+-	return irq_create_fwspec_mapping(&fwspec);
++	irq = irq_create_fwspec_mapping(&fwspec);
++	if (!irq)
++		return -EINVAL;
++
++	return irq;
+ }
+ EXPORT_SYMBOL_GPL(acpi_register_gsi);
+ 
 
 
