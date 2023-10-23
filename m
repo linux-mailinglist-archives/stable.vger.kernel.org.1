@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00C187D32DE
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 425317D33FD
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233789AbjJWLYj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
+        id S233294AbjJWLf4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233901AbjJWLYf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:35 -0400
+        with ESMTP id S234131AbjJWLfz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59DADE4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23A4C433C7;
-        Mon, 23 Oct 2023 11:24:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7575D10A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C783C433C7;
+        Mon, 23 Oct 2023 11:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060270;
-        bh=EQbvuCRc5NdvCuDfcbJYqriwxtqNwrcc+GkHcBcX9sY=;
+        s=korg; t=1698060951;
+        bh=aIVkrum+cRm3NOaHBUQ+esfKkoTW3TjIeLSOKQEtwZM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QttXQHDolbUjzWm0y+rid5iksYj6g9LAv5SAFZul2bGy4vgX7llxMHK57nXdiS9cm
-         zp9c3hSgbi9QAW2xuC+4g9qxuWQtnk4Ku9bpzZVJVuStXvX0FyD+eT9905VxfR/0JJ
-         MSQgD51AjD2EMJmoL5jcC5XE5yKieB40ejLxCPPc=
+        b=OhyabDrxcrJc4grcpT34MFsMSOXC5OjAAZnFf8YAN4R3g6Kl6Vuhbq63AasXIOyLT
+         0NDI2kD7W4s8/PRSQGDtBXwVEgiaPQDloZebSw27bxfiuiUjuxnkIrcG69syka0bt/
+         9TMfRTinL1GrIYXSSm5cWbDMWHWoy2ajTPBMZmNQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/196] Bluetooth: Avoid redundant authentication
+        patches@lists.linux.dev, Tom Dohrmann <erbse.13@gmx.de>,
+        Joerg Roedel <jroedel@suse.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 5.15 016/137] x86/sev: Check IOBM for IOIO exceptions from user-space
 Date:   Mon, 23 Oct 2023 12:56:13 +0200
-Message-ID: <20231023104831.581865904@linuxfoundation.org>
+Message-ID: <20231023104821.488529561@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,110 +49,176 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Joerg Roedel <jroedel@suse.de>
 
-[ Upstream commit 1d8e801422d66e4b8c7b187c52196bef94eed887 ]
+Upstream commit: b9cb9c45583b911e0db71d09caa6b56469eb2bdf
 
-While executing the Android 13 CTS Verifier Secure Server test on a
-ChromeOS device, it was observed that the Bluetooth host initiates
-authentication for an RFCOMM connection after SSP completes.
-When this happens, some Intel Bluetooth controllers, like AC9560, would
-disconnect with "Connection Rejected due to Security Reasons (0x0e)".
+Check the IO permission bitmap (if present) before emulating IOIO #VC
+exceptions for user-space. These permissions are checked by hardware
+already before the #VC is raised, but due to the VC-handler decoding
+race it needs to be checked again in software.
 
-Historically, BlueZ did not mandate this authentication while an
-authenticated combination key was already in use for the connection.
-This behavior was changed since commit 7b5a9241b780
-("Bluetooth: Introduce requirements for security level 4").
-So, this patch addresses the aforementioned disconnection issue by
-restoring the previous behavior.
-
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 25189d08e516 ("x86/sev-es: Add support for handling IOIO exceptions")
+Reported-by: Tom Dohrmann <erbse.13@gmx.de>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tom Dohrmann <erbse.13@gmx.de>
+Cc: <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c | 63 ++++++++++++++++++++++------------------
- 1 file changed, 35 insertions(+), 28 deletions(-)
+ arch/x86/boot/compressed/sev.c |    5 +++++
+ arch/x86/kernel/sev-shared.c   |   22 +++++++++++++++-------
+ arch/x86/kernel/sev.c          |   27 +++++++++++++++++++++++++++
+ 3 files changed, 47 insertions(+), 7 deletions(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index f8ba3f5aa877b..728be9307f526 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -2364,34 +2364,41 @@ int hci_conn_security(struct hci_conn *conn, __u8 sec_level, __u8 auth_type,
- 	if (!test_bit(HCI_CONN_AUTH, &conn->flags))
- 		goto auth;
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -105,6 +105,11 @@ static enum es_result vc_read_mem(struct
+ 	return ES_OK;
+ }
  
--	/* An authenticated FIPS approved combination key has sufficient
--	 * security for security level 4. */
--	if (conn->key_type == HCI_LK_AUTH_COMBINATION_P256 &&
--	    sec_level == BT_SECURITY_FIPS)
--		goto encrypt;
--
--	/* An authenticated combination key has sufficient security for
--	   security level 3. */
--	if ((conn->key_type == HCI_LK_AUTH_COMBINATION_P192 ||
--	     conn->key_type == HCI_LK_AUTH_COMBINATION_P256) &&
--	    sec_level == BT_SECURITY_HIGH)
--		goto encrypt;
--
--	/* An unauthenticated combination key has sufficient security for
--	   security level 1 and 2. */
--	if ((conn->key_type == HCI_LK_UNAUTH_COMBINATION_P192 ||
--	     conn->key_type == HCI_LK_UNAUTH_COMBINATION_P256) &&
--	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW))
--		goto encrypt;
--
--	/* A combination key has always sufficient security for the security
--	   levels 1 or 2. High security level requires the combination key
--	   is generated using maximum PIN code length (16).
--	   For pre 2.1 units. */
--	if (conn->key_type == HCI_LK_COMBINATION &&
--	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW ||
--	     conn->pin_length == 16))
--		goto encrypt;
-+	switch (conn->key_type) {
-+	case HCI_LK_AUTH_COMBINATION_P256:
-+		/* An authenticated FIPS approved combination key has
-+		 * sufficient security for security level 4 or lower.
-+		 */
-+		if (sec_level <= BT_SECURITY_FIPS)
-+			goto encrypt;
-+		break;
-+	case HCI_LK_AUTH_COMBINATION_P192:
-+		/* An authenticated combination key has sufficient security for
-+		 * security level 3 or lower.
-+		 */
-+		if (sec_level <= BT_SECURITY_HIGH)
-+			goto encrypt;
-+		break;
-+	case HCI_LK_UNAUTH_COMBINATION_P192:
-+	case HCI_LK_UNAUTH_COMBINATION_P256:
-+		/* An unauthenticated combination key has sufficient security
-+		 * for security level 2 or lower.
-+		 */
-+		if (sec_level <= BT_SECURITY_MEDIUM)
-+			goto encrypt;
-+		break;
-+	case HCI_LK_COMBINATION:
-+		/* A combination key has always sufficient security for the
-+		 * security levels 2 or lower. High security level requires the
-+		 * combination key is generated using maximum PIN code length
-+		 * (16). For pre 2.1 units.
-+		 */
-+		if (sec_level <= BT_SECURITY_MEDIUM || conn->pin_length == 16)
-+			goto encrypt;
-+		break;
-+	default:
-+		break;
++static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t size)
++{
++	return ES_OK;
++}
++
+ #undef __init
+ #undef __pa
+ #define __init
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -277,6 +277,9 @@ static enum es_result vc_insn_string_wri
+ static enum es_result vc_ioio_exitinfo(struct es_em_ctxt *ctxt, u64 *exitinfo)
+ {
+ 	struct insn *insn = &ctxt->insn;
++	size_t size;
++	u64 port;
++
+ 	*exitinfo = 0;
+ 
+ 	switch (insn->opcode.bytes[0]) {
+@@ -285,7 +288,7 @@ static enum es_result vc_ioio_exitinfo(s
+ 	case 0x6d:
+ 		*exitinfo |= IOIO_TYPE_INS;
+ 		*exitinfo |= IOIO_SEG_ES;
+-		*exitinfo |= (ctxt->regs->dx & 0xffff) << 16;
++		port	   = ctxt->regs->dx & 0xffff;
+ 		break;
+ 
+ 	/* OUTS opcodes */
+@@ -293,41 +296,43 @@ static enum es_result vc_ioio_exitinfo(s
+ 	case 0x6f:
+ 		*exitinfo |= IOIO_TYPE_OUTS;
+ 		*exitinfo |= IOIO_SEG_DS;
+-		*exitinfo |= (ctxt->regs->dx & 0xffff) << 16;
++		port	   = ctxt->regs->dx & 0xffff;
+ 		break;
+ 
+ 	/* IN immediate opcodes */
+ 	case 0xe4:
+ 	case 0xe5:
+ 		*exitinfo |= IOIO_TYPE_IN;
+-		*exitinfo |= (u8)insn->immediate.value << 16;
++		port	   = (u8)insn->immediate.value & 0xffff;
+ 		break;
+ 
+ 	/* OUT immediate opcodes */
+ 	case 0xe6:
+ 	case 0xe7:
+ 		*exitinfo |= IOIO_TYPE_OUT;
+-		*exitinfo |= (u8)insn->immediate.value << 16;
++		port	   = (u8)insn->immediate.value & 0xffff;
+ 		break;
+ 
+ 	/* IN register opcodes */
+ 	case 0xec:
+ 	case 0xed:
+ 		*exitinfo |= IOIO_TYPE_IN;
+-		*exitinfo |= (ctxt->regs->dx & 0xffff) << 16;
++		port	   = ctxt->regs->dx & 0xffff;
+ 		break;
+ 
+ 	/* OUT register opcodes */
+ 	case 0xee:
+ 	case 0xef:
+ 		*exitinfo |= IOIO_TYPE_OUT;
+-		*exitinfo |= (ctxt->regs->dx & 0xffff) << 16;
++		port	   = ctxt->regs->dx & 0xffff;
+ 		break;
+ 
+ 	default:
+ 		return ES_DECODE_FAILED;
+ 	}
+ 
++	*exitinfo |= port << 16;
++
+ 	switch (insn->opcode.bytes[0]) {
+ 	case 0x6c:
+ 	case 0x6e:
+@@ -337,12 +342,15 @@ static enum es_result vc_ioio_exitinfo(s
+ 	case 0xee:
+ 		/* Single byte opcodes */
+ 		*exitinfo |= IOIO_DATA_8;
++		size       = 1;
+ 		break;
+ 	default:
+ 		/* Length determined by instruction parsing */
+ 		*exitinfo |= (insn->opnd_bytes == 2) ? IOIO_DATA_16
+ 						     : IOIO_DATA_32;
++		size       = (insn->opnd_bytes == 2) ? 2 : 4;
+ 	}
++
+ 	switch (insn->addr_bytes) {
+ 	case 2:
+ 		*exitinfo |= IOIO_ADDR_16;
+@@ -358,7 +366,7 @@ static enum es_result vc_ioio_exitinfo(s
+ 	if (insn_has_rep_prefix(insn))
+ 		*exitinfo |= IOIO_REP;
+ 
+-	return ES_OK;
++	return vc_ioio_check(ctxt, (u16)port, size);
+ }
+ 
+ static enum es_result vc_handle_ioio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -482,6 +482,33 @@ static enum es_result vc_slow_virt_to_ph
+ 	return ES_OK;
+ }
+ 
++static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t size)
++{
++	BUG_ON(size > 4);
++
++	if (user_mode(ctxt->regs)) {
++		struct thread_struct *t = &current->thread;
++		struct io_bitmap *iobm = t->io_bitmap;
++		size_t idx;
++
++		if (!iobm)
++			goto fault;
++
++		for (idx = port; idx < port + size; ++idx) {
++			if (test_bit(idx, iobm->bitmap))
++				goto fault;
++		}
 +	}
++
++	return ES_OK;
++
++fault:
++	ctxt->fi.vector = X86_TRAP_GP;
++	ctxt->fi.error_code = 0;
++
++	return ES_EXCEPTION;
++}
++
+ /* Include code shared with pre-decompression boot stage */
+ #include "sev-shared.c"
  
- auth:
- 	if (test_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags))
--- 
-2.40.1
-
 
 
