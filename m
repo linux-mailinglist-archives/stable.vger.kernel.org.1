@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 171257D3508
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 153FE7D32DD
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234369AbjJWLo6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:44:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36980 "EHLO
+        id S233887AbjJWLYh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:24:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234392AbjJWLot (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:49 -0400
+        with ESMTP id S233919AbjJWLYf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A478BFF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C87C433C8;
-        Mon, 23 Oct 2023 11:44:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6E1FC2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8F9C43391;
+        Mon, 23 Oct 2023 11:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061486;
-        bh=SojQXAHtkxasikaB+kjeLS6BzVgq/68V0jvcTjzWEh0=;
+        s=korg; t=1698060267;
+        bh=xu3rHB4Wao+xb73wd/oM03QPow3vlSi1ZPfLGJGflWI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BX7JrIBBhyGGNVEdKPCUBRIQ5p8ODzuLYQZjyIcsVCSPHf76cYjNhqjMuIE3yjfXs
-         GGmoMFo5PjWFTO7Y1R7aeCuT6QJbj/dTFm0uxQgkV5pMSw6My9l6Frd2SsP/5/1+SF
-         Wcac/KPZL4o3k9XWWZuFSfv9D+5CKKcHQiKjhIlI=
+        b=flVjRF1+YQ7RQ3y6/0rxdgpGxDj9SpKLgRD6bQTqrFO4xChq0Ukz5uvlfEbp2iDCb
+         Av81oMS1Zvbh+H738Udkq1aMRvqgqoYnGg7mH+7Ayq4s9xtKMBqA8CeU/u2HCwT9U/
+         i3h3h6JfpFDURjt8xB9Ui89Sd5sr2x6b2TdkdmDE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kenta Sato <tosainu.maple@gmail.com>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.10 036/202] usb: dwc3: Soft reset phy on probe for host
+        patches@lists.linux.dev, Icenowy Zheng <uwu@icenowy.me>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 078/196] usb: misc: onboard_usb_hub: add Genesys Logic GL850G hub support
 Date:   Mon, 23 Oct 2023 12:55:43 +0200
-Message-ID: <20231023104827.647518146@linuxfoundation.org>
+Message-ID: <20231023104830.754735961@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,86 +49,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Icenowy Zheng <uwu@icenowy.me>
 
-commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b upstream.
+[ Upstream commit 9bae996ffa28ac03b6d95382a2a082eb219e745a ]
 
-When there's phy initialization, we need to initiate a soft-reset
-sequence. That's done through USBCMD.HCRST in the xHCI driver and its
-initialization, However, the dwc3 driver may modify core configs before
-the soft-reset. This may result in some connection instability. So,
-ensure the phy is ready before the controller updates the GCTL.PRTCAPDIR
-or other settings by issuing phy soft-reset.
+Genesys Logic GL850G is a 4-port USB 2.0 STT hub that has a reset pin to
+toggle and a 3.3V core supply exported (although an integrated LDO is
+available for powering it with 5V).
 
-Note that some host-mode configurations may not expose device registers
-to initiate the controller soft-reset (via DCTL.CoreSftRst). So we reset
-through GUSB3PIPECTL and GUSB2PHYCFG instead.
+Add the support for this hub, for controlling the reset pin and the core
+power supply.
 
-Cc: stable@vger.kernel.org
-Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
-Reported-by: Kenta Sato <tosainu.maple@gmail.com>
-Closes: https://lore.kernel.org/linux-usb/ZPUciRLUcjDywMVS@debian.me/
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Tested-by: Kenta Sato <tosainu.maple@gmail.com>
-Link: https://lore.kernel.org/r/70aea513215d273669152696cc02b20ddcdb6f1a.1694564261.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
+Acked-by: Matthias Kaehlcke <mka@chromium.org>
+Link: https://lore.kernel.org/r/20221206055228.306074-4-uwu@icenowy.me
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: e59e38158c61 ("usb: misc: onboard_hub: add support for Microchip USB2412 USB 2.0 hub")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c |   39 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 38 insertions(+), 1 deletion(-)
+ drivers/usb/misc/onboard_usb_hub.c | 2 ++
+ drivers/usb/misc/onboard_usb_hub.h | 5 +++++
+ 2 files changed, 7 insertions(+)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -277,9 +277,46 @@ int dwc3_core_soft_reset(struct dwc3 *dw
- 	 * XHCI driver will reset the host block. If dwc3 was configured for
- 	 * host-only mode or current role is host, then we can return early.
- 	 */
--	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
-+	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
- 		return 0;
+diff --git a/drivers/usb/misc/onboard_usb_hub.c b/drivers/usb/misc/onboard_usb_hub.c
+index 832d3ba9368ff..87df27425ec5f 100644
+--- a/drivers/usb/misc/onboard_usb_hub.c
++++ b/drivers/usb/misc/onboard_usb_hub.c
+@@ -329,6 +329,7 @@ static struct platform_driver onboard_hub_driver = {
  
-+	/*
-+	 * If the dr_mode is host and the dwc->current_dr_role is not the
-+	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
-+	 * isn't executed yet. Ensure the phy is ready before the controller
-+	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
-+	 * the phy.
-+	 *
-+	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
-+	 * is port index. If this is a multiport host, then we need to reset
-+	 * all active ports.
-+	 */
-+	if (dwc->dr_mode == USB_DR_MODE_HOST) {
-+		u32 usb3_port;
-+		u32 usb2_port;
+ /************************** USB driver **************************/
+ 
++#define VENDOR_ID_GENESYS	0x05e3
+ #define VENDOR_ID_MICROCHIP	0x0424
+ #define VENDOR_ID_REALTEK	0x0bda
+ #define VENDOR_ID_TI		0x0451
+@@ -405,6 +406,7 @@ static void onboard_hub_usbdev_disconnect(struct usb_device *udev)
+ }
+ 
+ static const struct usb_device_id onboard_hub_id_table[] = {
++	{ USB_DEVICE(VENDOR_ID_GENESYS, 0x0608) }, /* Genesys Logic GL850G USB 2.0 */
+ 	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2514) }, /* USB2514B USB 2.0 */
+ 	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2517) }, /* USB2517 USB 2.0 */
+ 	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x0411) }, /* RTS5411 USB 3.1 */
+diff --git a/drivers/usb/misc/onboard_usb_hub.h b/drivers/usb/misc/onboard_usb_hub.h
+index 2cde54b69eede..a97b0594773fa 100644
+--- a/drivers/usb/misc/onboard_usb_hub.h
++++ b/drivers/usb/misc/onboard_usb_hub.h
+@@ -22,11 +22,16 @@ static const struct onboard_hub_pdata ti_tusb8041_data = {
+ 	.reset_us = 3000,
+ };
+ 
++static const struct onboard_hub_pdata genesys_gl850g_data = {
++	.reset_us = 3,
++};
 +
-+		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
-+		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
-+
-+		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
-+		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
-+
-+		/* Small delay for phy reset assertion */
-+		usleep_range(1000, 2000);
-+
-+		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
-+
-+		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
-+		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
-+
-+		/* Wait for clock synchronization */
-+		msleep(50);
-+		return 0;
-+	}
-+
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
- 	reg |= DWC3_DCTL_CSFTRST;
- 	reg &= ~DWC3_DCTL_RUN_STOP;
+ static const struct of_device_id onboard_hub_match[] = {
+ 	{ .compatible = "usb424,2514", .data = &microchip_usb424_data, },
+ 	{ .compatible = "usb424,2517", .data = &microchip_usb424_data, },
+ 	{ .compatible = "usb451,8140", .data = &ti_tusb8041_data, },
+ 	{ .compatible = "usb451,8142", .data = &ti_tusb8041_data, },
++	{ .compatible = "usb5e3,608", .data = &genesys_gl850g_data, },
+ 	{ .compatible = "usbbda,411", .data = &realtek_rts5411_data, },
+ 	{ .compatible = "usbbda,5411", .data = &realtek_rts5411_data, },
+ 	{ .compatible = "usbbda,414", .data = &realtek_rts5411_data, },
+-- 
+2.40.1
+
 
 
