@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8957D3491
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 827E37D33DA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234285AbjJWLkz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:40:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
+        id S233970AbjJWLek (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234274AbjJWLkx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:53 -0400
+        with ESMTP id S234013AbjJWLej (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACB1310C0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44D4C433C9;
-        Mon, 23 Oct 2023 11:40:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08DECE8;
+        Mon, 23 Oct 2023 04:34:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183C7C433CA;
+        Mon, 23 Oct 2023 11:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061250;
-        bh=ZivDvSzoOLvROvGaCqfKDA/3rTG8ZYrxJMbLXnpaWek=;
+        s=korg; t=1698060876;
+        bh=1qN74NTpDOxA+hLJZqeG+tKDrGAFby2kDNk7aaej4aA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XjF5xtwxA2z2T6svPD8rLiJ190GapjyHWb3kF0C4Erv91QIOk+mebtyswKEYABXkq
-         2u6SMjs6C4oXI8VdQgxJX9fwIlC9tSx/t8StXStP5nxMEGPnqyvGd93Y6gaIroyT7+
-         tFBf1P4wg+P5znMJhsLa9wAkNO29uJLBtmwTZ12Y=
+        b=pSmLVWu8/HFdg3Eei7NmE5uSXmFTooJDWPdlE3Fw5D+bVKU9raMzxgMs26bqSe3rD
+         fvWeQIMH4hp/+HHwRwMLpnNe8RdZRNM/QxciVm4o6DojmZYX/h4oMu+QY10646DAi6
+         KSUjgsYDdTFu/Nl9bj2oH/d+Teh/I8wGXKrh8ryU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dinghao Liu <dinghao.liu@zju.edu.cn>,
-        Halil Pasic <pasic@linux.ibm.com>,
-        Peter Oberparleiter <oberpar@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 5.15 123/137] s390/cio: fix a memleak in css_alloc_subchannel
+        patches@lists.linux.dev,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Edward AD <twuufnxlz@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.4 122/123] Bluetooth: hci_sock: Correctly bounds check and pad HCI_MON_NEW_INDEX name
 Date:   Mon, 23 Oct 2023 12:58:00 +0200
-Message-ID: <20231023104824.887572336@linuxfoundation.org>
+Message-ID: <20231023104821.892882185@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,58 +57,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Kees Cook <keescook@chromium.org>
 
-commit 63e8b94ad1840f02462633abdb363397f56bc642 upstream.
+commit cb3871b1cd135a6662b732fbc6b3db4afcdb4a64 upstream.
 
-When dma_set_coherent_mask() fails, sch->lock has not been
-freed, which is allocated in css_sch_create_locks(), leading
-to a memleak.
+The code pattern of memcpy(dst, src, strlen(src)) is almost always
+wrong. In this case it is wrong because it leaves memory uninitialized
+if it is less than sizeof(ni->name), and overflows ni->name when longer.
 
-Fixes: 4520a91a976e ("s390/cio: use dma helpers for setting masks")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Message-Id: <20230921071412.13806-1-dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/linux-s390/bd38baa8-7b9d-4d89-9422-7e943d626d6e@linux.ibm.com/
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Normally strtomem_pad() could be used here, but since ni->name is a
+trailing array in struct hci_mon_new_index, compilers that don't support
+-fstrict-flex-arrays=3 can't tell how large this array is via
+__builtin_object_size(). Instead, open-code the helper and use sizeof()
+since it will work correctly.
+
+Additionally mark ni->name as __nonstring since it appears to not be a
+%NUL terminated C string.
+
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Edward AD <twuufnxlz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Johan Hedberg <johan.hedberg@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-bluetooth@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Fixes: 18f547f3fc07 ("Bluetooth: hci_sock: fix slab oob read in create_monitor_event")
+Link: https://lore.kernel.org/lkml/202310110908.F2639D3276@keescook/
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/css.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/net/bluetooth/hci_mon.h |    2 +-
+ net/bluetooth/hci_sock.c        |    3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/cio/css.c b/drivers/s390/cio/css.c
-index 3ef636935a54..3ff46fc694f8 100644
---- a/drivers/s390/cio/css.c
-+++ b/drivers/s390/cio/css.c
-@@ -233,17 +233,19 @@ struct subchannel *css_alloc_subchannel(struct subchannel_id schid,
- 	 */
- 	ret = dma_set_coherent_mask(&sch->dev, DMA_BIT_MASK(31));
- 	if (ret)
--		goto err;
-+		goto err_lock;
- 	/*
- 	 * But we don't have such restrictions imposed on the stuff that
- 	 * is handled by the streaming API.
- 	 */
- 	ret = dma_set_mask(&sch->dev, DMA_BIT_MASK(64));
- 	if (ret)
--		goto err;
-+		goto err_lock;
+--- a/include/net/bluetooth/hci_mon.h
++++ b/include/net/bluetooth/hci_mon.h
+@@ -54,7 +54,7 @@ struct hci_mon_new_index {
+ 	__u8		type;
+ 	__u8		bus;
+ 	bdaddr_t	bdaddr;
+-	char		name[8];
++	char		name[8] __nonstring;
+ } __packed;
+ #define HCI_MON_NEW_INDEX_SIZE 16
  
- 	return sch;
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -430,7 +430,8 @@ static struct sk_buff *create_monitor_ev
+ 		ni->type = hdev->dev_type;
+ 		ni->bus = hdev->bus;
+ 		bacpy(&ni->bdaddr, &hdev->bdaddr);
+-		memcpy(ni->name, hdev->name, strlen(hdev->name));
++		memcpy_and_pad(ni->name, sizeof(ni->name), hdev->name,
++			       strnlen(hdev->name, sizeof(ni->name)), '\0');
  
-+err_lock:
-+	kfree(sch->lock);
- err:
- 	kfree(sch);
- 	return ERR_PTR(ret);
--- 
-2.42.0
-
+ 		opcode = cpu_to_le16(HCI_MON_NEW_INDEX);
+ 		break;
 
 
