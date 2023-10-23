@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A5B7D31B6
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1337E7D31EC
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233622AbjJWLMO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:12:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46054 "EHLO
+        id S233692AbjJWLOq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:14:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233618AbjJWLMN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:13 -0400
+        with ESMTP id S233694AbjJWLOq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92B4999
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D417EC433C7;
-        Mon, 23 Oct 2023 11:12:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 237A7C2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657D1C433C7;
+        Mon, 23 Oct 2023 11:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059531;
-        bh=hagnu/DQnbWHjOzlAc5m1PCotn8o6G9Ob8JYNQAvTF4=;
+        s=korg; t=1698059683;
+        bh=GN4iYH6NN5SIfS0TPrbNpnWmwbA2FbORMQiRAYzhOcw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XNMopWdyI5g79Zs7VbM8M4SaPFdoBRNFD3TPjQVHUZtOJRgWH13plLOP2awgCapyG
-         /IhNCrhGystZKN7WJzenkBq3tMQQxm/WV/hoIR46NQr6Wp/ZRsmboj17LAsVoAlf6u
-         xyBgmiXfJovKG/GYVCaFLyAQUlk5KoIbQh4KqdwU=
+        b=g5B4k3AZkyi+WvZ94a8H3/PvJqVe7jBVRCPH83yUx9oYeDQ9jRDXor/MIb9dHLKX4
+         oZe48jgdmKlACaqaaKWwb0ql2dx8cOgBL2AESrhzJaeSXoRkYLFzvSVfOHhXb5AilY
+         NUqGIR5TiyCqha4pqESWpBTt9DR12j1xuwsrRriw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Kornievskaia <kolga@netapp.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 6.5 181/241] NFSv4.1: fixup use EXCHGID4_FLAG_USE_PNFS_DS for DS server
+        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
+        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 18/98] workqueue: Override implicit ordered attribute in workqueue_apply_unbound_cpumask()
 Date:   Mon, 23 Oct 2023 12:56:07 +0200
-Message-ID: <20231023104838.294987634@linuxfoundation.org>
+Message-ID: <20231023104814.230194431@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,44 +48,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Waiman Long <longman@redhat.com>
 
-commit 379e4adfddd6a2f95a4f2029b8ddcbacf92b21f9 upstream.
+[ Upstream commit ca10d851b9ad0338c19e8e3089e24d565ebfffd7 ]
 
-This patches fixes commit 51d674a5e488 "NFSv4.1: use
-EXCHGID4_FLAG_USE_PNFS_DS for DS server", purpose of that
-commit was to mark EXCHANGE_ID to the DS with the appropriate
-flag.
+Commit 5c0338c68706 ("workqueue: restore WQ_UNBOUND/max_active==1
+to be ordered") enabled implicit ordered attribute to be added to
+WQ_UNBOUND workqueues with max_active of 1. This prevented the changing
+of attributes to these workqueues leading to fix commit 0a94efb5acbb
+("workqueue: implicit ordered attribute should be overridable").
 
-However, connection to MDS can return both EXCHGID4_FLAG_USE_PNFS_DS
-and EXCHGID4_FLAG_USE_PNFS_MDS set but previous patch would only
-remember the USE_PNFS_DS and for the 2nd EXCHANGE_ID send that
-to the MDS.
+However, workqueue_apply_unbound_cpumask() was not updated at that time.
+So sysfs changes to wq_unbound_cpumask has no effect on WQ_UNBOUND
+workqueues with implicit ordered attribute. Since not all WQ_UNBOUND
+workqueues are visible on sysfs, we are not able to make all the
+necessary cpumask changes even if we iterates all the workqueue cpumasks
+in sysfs and changing them one by one.
 
-Instead, just mark the pnfs path exclusively.
+Fix this problem by applying the corresponding change made
+to apply_workqueue_attrs_locked() in the fix commit to
+workqueue_apply_unbound_cpumask().
 
-Fixes: 51d674a5e488 ("NFSv4.1: use EXCHGID4_FLAG_USE_PNFS_DS for DS server")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5c0338c68706 ("workqueue: restore WQ_UNBOUND/max_active==1 to be ordered")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c |    2 --
- 1 file changed, 2 deletions(-)
+ kernel/workqueue.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -8870,8 +8870,6 @@ static int _nfs4_proc_exchange_id(struct
- 	/* Save the EXCHANGE_ID verifier session trunk tests */
- 	memcpy(clp->cl_confirm.data, argp->verifier.data,
- 	       sizeof(clp->cl_confirm.data));
--	if (resp->flags & EXCHGID4_FLAG_USE_PNFS_DS)
--		set_bit(NFS_CS_DS, &clp->cl_flags);
- out:
- 	trace_nfs4_exchange_id(clp, status);
- 	rpc_put_task(task);
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 5533206cb6f48..0179390974517 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5087,9 +5087,13 @@ static int workqueue_apply_unbound_cpumask(void)
+ 	list_for_each_entry(wq, &workqueues, list) {
+ 		if (!(wq->flags & WQ_UNBOUND))
+ 			continue;
++
+ 		/* creating multiple pwqs breaks ordering guarantee */
+-		if (wq->flags & __WQ_ORDERED)
+-			continue;
++		if (!list_empty(&wq->pwqs)) {
++			if (wq->flags & __WQ_ORDERED_EXPLICIT)
++				continue;
++			wq->flags &= ~__WQ_ORDERED;
++		}
+ 
+ 		ctx = apply_wqattrs_prepare(wq, wq->unbound_attrs);
+ 		if (!ctx) {
+-- 
+2.40.1
+
 
 
