@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F147D3328
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 744387D321B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233955AbjJWL1R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:27:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53626 "EHLO
+        id S233646AbjJWLQs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:16:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233995AbjJWL1O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:14 -0400
+        with ESMTP id S233662AbjJWLQr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DBD410C
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D7F4C433C8;
-        Mon, 23 Oct 2023 11:27:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31376A2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E2AC433C8;
+        Mon, 23 Oct 2023 11:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060431;
-        bh=RAMaX4GZtndFx7fD8etK6XZ0RNmproMJj/nH/eUYZrk=;
+        s=korg; t=1698059804;
+        bh=TeqSShdVz+4nswovjkRRHGCCQyEGqIJFpbqoM5gmOOg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yQHVqa0l7FNb0pvSeY5ZjqlYlukLMvOnZ2L7EvUBWj+g+4z0EAU3EzmE/1p4uKleg
-         9d95PbrOm/hUkWzCwalRyrW98Unx950RlYcuy+XM0pf/p/FRTBc/sm6gKpmAuM/22x
-         cgXFhBaZaHKetVqAjwa+jKayyInJnvVyTL2etslI=
+        b=WRcQ/IrIG0zqqgMhV+BE4jlGFnQIy6lclbOmajfpsKtxfDyyVCmAHWtzbeusYeUoh
+         XaAGXNnDqdOFgdZEKsNOoAvjMDhtppWSVZ+iGBLfgVFQWowVq5HabLYBg5ZFYN7dFY
+         o8z024D9HtofG5Ua52d3+x4CzuWGXqpzl6HQIUsY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Manivannan Sadhasivam <mani@kernel.org>,
-        Bibek Kumar Patro <quic_bibekkum@quicinc.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 142/196] mtd: rawnand: qcom: Unmap the right resource upon probe failure
+        patches@lists.linux.dev, Stefan Wahren <wahrenst@gmx.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 58/98] tcp: tsq: relax tcp_small_queue_check() when rtx queue contains a single skb
 Date:   Mon, 23 Oct 2023 12:56:47 +0200
-Message-ID: <20231023104832.497073880@linuxfoundation.org>
+Message-ID: <20231023104815.661613824@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +50,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibek Kumar Patro <quic_bibekkum@quicinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 5279f4a9eed3ee7d222b76511ea7a22c89e7eefd upstream.
+commit f921a4a5bffa8a0005b190fb9421a7fc1fd716b6 upstream.
 
-We currently provide the physical address of the DMA region
-rather than the output of dma_map_resource() which is obviously wrong.
+In commit 75eefc6c59fd ("tcp: tsq: add a shortcut in tcp_small_queue_check()")
+we allowed to send an skb regardless of TSQ limits being hit if rtx queue
+was empty or had a single skb, in order to better fill the pipe
+when/if TX completions were slow.
 
-Fixes: 7330fc505af4 ("mtd: rawnand: qcom: stop using phys_to_dma()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bibek Kumar Patro <quic_bibekkum@quicinc.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230913070702.12707-1-quic_bibekkum@quicinc.com
+Then later, commit 75c119afe14f ("tcp: implement rb-tree based
+retransmit queue") accidentally removed the special case for
+one skb in rtx queue.
+
+Stefan Wahren reported a regression in single TCP flow throughput
+using a 100Mbit fec link, starting from commit 65466904b015 ("tcp: adjust
+TSO packet sizes based on min_rtt"). This last commit only made the
+regression more visible, because it locked the TCP flow on a particular
+behavior where TSQ prevented two skbs being pushed downstream,
+adding silences on the wire between each TSO packet.
+
+Many thanks to Stefan for his invaluable help !
+
+Fixes: 75c119afe14f ("tcp: implement rb-tree based retransmit queue")
+Link: https://lore.kernel.org/netdev/7f31ddc8-9971-495e-a1f6-819df542e0af@gmx.net/
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Tested-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20231017124526.4060202-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_output.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -3310,7 +3310,7 @@ err_nandc_alloc:
- err_aon_clk:
- 	clk_disable_unprepare(nandc->core_clk);
- err_core_clk:
--	dma_unmap_resource(dev, res->start, resource_size(res),
-+	dma_unmap_resource(dev, nandc->base_dma, resource_size(res),
- 			   DMA_BIDIRECTIONAL, 0);
- 	return ret;
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2220,6 +2220,18 @@ static int tcp_mtu_probe(struct sock *sk
+ 	return -1;
  }
+ 
++static bool tcp_rtx_queue_empty_or_single_skb(const struct sock *sk)
++{
++	const struct rb_node *node = sk->tcp_rtx_queue.rb_node;
++
++	/* No skb in the rtx queue. */
++	if (!node)
++		return true;
++
++	/* Only one skb in rtx queue. */
++	return !node->rb_left && !node->rb_right;
++}
++
+ /* TCP Small Queues :
+  * Control number of packets in qdisc/devices to two packets / or ~1 ms.
+  * (These limits are doubled for retransmits)
+@@ -2242,12 +2254,12 @@ static bool tcp_small_queue_check(struct
+ 	limit <<= factor;
+ 
+ 	if (refcount_read(&sk->sk_wmem_alloc) > limit) {
+-		/* Always send skb if rtx queue is empty.
++		/* Always send skb if rtx queue is empty or has one skb.
+ 		 * No need to wait for TX completion to call us back,
+ 		 * after softirq/tasklet schedule.
+ 		 * This helps when TX completions are delayed too much.
+ 		 */
+-		if (tcp_rtx_queue_empty(sk))
++		if (tcp_rtx_queue_empty_or_single_skb(sk))
+ 			return false;
+ 
+ 		set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
 
 
