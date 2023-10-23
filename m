@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E0CD7D32F3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 151C37D3537
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233910AbjJWLZS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:25:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42426 "EHLO
+        id S234527AbjJWLqZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:46:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233908AbjJWLZQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:16 -0400
+        with ESMTP id S234470AbjJWLqI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74A4010C0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783E3C433C8;
-        Mon, 23 Oct 2023 11:25:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A82819A9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BB8C433C9;
+        Mon, 23 Oct 2023 11:45:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060309;
-        bh=MtHUpp8hbYe1uo51F+NEV7bX6qoWzIPG1dTIh8glGcY=;
+        s=korg; t=1698061554;
+        bh=mg4GJsExYbctqV4GE+0/6GXo1BqCwUfQxZz0e5CvzJ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SWvB6i2f84CZ063KIrkSBXXBGh5sTJtXSWBQkKtm8cIPKmBgcF2IdW769o3BW0qHQ
-         EjrjiYggwsH50CcN0zlI5R6z3gyFsGVbly3BmO9iUMzrmOxWv00J/v1PiMGr2iiYMX
-         4xUXf0vc5Ik97DpKH99FP03jn6xwjWVksuITfxnE=
+        b=Xy+cT4nqLYY8d2hbMeaStNllPW6Gw2JJrVL+9v94iTy4G08c3ToaSMrqk25JeY/wE
+         idhoiTo5SShh5eqAqjViQIx2tzturmFwG8TzIXFN8ebmSeM1ieH89hX5rBCHrrKSbz
+         D8KPpfNJoQqOoMaFhN/7xfl+CMWbTY94EK5249qo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/196] fprobe: Add nr_maxactive to specify rethook_node pool size
+        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Lee@vger.kernel.org
+Subject: [PATCH 5.10 086/202] Bluetooth: hci_event: Ignore NULL link key
 Date:   Mon, 23 Oct 2023 12:56:33 +0200
-Message-ID: <20231023104832.118749894@linuxfoundation.org>
+Message-ID: <20231023104829.049139199@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,71 +49,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Lee, Chun-Yi <jlee@suse.com>
 
-[ Upstream commit 59a7a298565aa0ce44ce8e4fbcbb89a19730013a ]
+commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
 
-Add nr_maxactive to specify rethook_node pool size. This means
-the maximum number of actively running target functions concurrently
-for probing by exit_handler. Note that if the running function is
-preempted or sleep, it is still counted as 'active'.
+This change is used to relieve CVE-2020-26555. The description of the
+CVE:
 
-Link: https://lkml.kernel.org/r/167526697917.433354.17779774988245113106.stgit@mhiramat.roam.corp.google.com
+Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
+1.0B through 5.2 may permit an unauthenticated nearby device to spoof
+the BD_ADDR of the peer device to complete pairing without knowledge
+of the PIN. [1]
 
-Cc: Florent Revest <revest@chromium.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 700b2b439766 ("fprobe: Fix to ensure the number of active retprobes is not zero")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The detail of this attack is in IEEE paper:
+BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
+[2]
+
+It's a reflection attack. The paper mentioned that attacker can induce
+the attacked target to generate null link key (zero key) without PIN
+code. In BR/EDR, the key generation is actually handled in the controller
+which is below HCI.
+
+Thus, we can ignore null link key in the handler of "Link Key Notification
+event" to relieve the attack. A similar implementation also shows in
+btstack project. [3]
+
+v3: Drop the connection when null link key be detected.
+
+v2:
+- Used Link: tag instead of Closes:
+- Used bt_dev_dbg instead of BT_DBG
+- Added Fixes: tag
+
+Cc: stable@vger.kernel.org
+Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
+Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
+Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
+Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/fprobe.h | 2 ++
- kernel/trace/fprobe.c  | 5 ++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_event.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/linux/fprobe.h b/include/linux/fprobe.h
-index e0d4e61362491..678f741a7b330 100644
---- a/include/linux/fprobe.h
-+++ b/include/linux/fprobe.h
-@@ -14,6 +14,7 @@
-  * @flags: The status flag.
-  * @rethook: The rethook data structure. (internal data)
-  * @entry_data_size: The private data storage size.
-+ * @nr_maxactive: The max number of active functions.
-  * @entry_handler: The callback function for function entry.
-  * @exit_handler: The callback function for function exit.
-  */
-@@ -31,6 +32,7 @@ struct fprobe {
- 	unsigned int		flags;
- 	struct rethook		*rethook;
- 	size_t			entry_data_size;
-+	int			nr_maxactive;
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -4065,6 +4065,15 @@ static void hci_link_key_notify_evt(stru
+ 	if (!conn)
+ 		goto unlock;
  
- 	void (*entry_handler)(struct fprobe *fp, unsigned long entry_ip,
- 			      struct pt_regs *regs, void *entry_data);
-diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index be28d1bc84e80..441a373079213 100644
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -143,7 +143,10 @@ static int fprobe_init_rethook(struct fprobe *fp, int num)
- 	}
- 
- 	/* Initialize rethook if needed */
--	size = num * num_possible_cpus() * 2;
-+	if (fp->nr_maxactive)
-+		size = fp->nr_maxactive;
-+	else
-+		size = num * num_possible_cpus() * 2;
- 	if (size < 0)
- 		return -E2BIG;
- 
--- 
-2.40.1
-
++	/* Ignore NULL link key against CVE-2020-26555 */
++	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
++		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
++			   &ev->bdaddr);
++		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
++		hci_conn_drop(conn);
++		goto unlock;
++	}
++
+ 	hci_conn_hold(conn);
+ 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
+ 	hci_conn_drop(conn);
 
 
