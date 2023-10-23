@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4F797D33BB
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 048BD7D3582
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233902AbjJWLda (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:33:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56414 "EHLO
+        id S234550AbjJWLtK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234117AbjJWLd3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:29 -0400
+        with ESMTP id S234541AbjJWLtJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBCE092
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:33:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6FCC433CD;
-        Mon, 23 Oct 2023 11:33:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85FCEAF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C563FC433C7;
+        Mon, 23 Oct 2023 11:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060807;
-        bh=nCBgFcL3PghXoGVcanSR5jHfO6zGzFKwQ06jakhukOk=;
+        s=korg; t=1698061746;
+        bh=1om9pX3vrdJyo9X2Jaax6fex1Qgc93VXU8bZXOWOIYA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gj3W6XLTiK3QKATiph1eTgQ4UaZUhuncHmITT1lkF/sHXgvEAqjBazae6WVb1siOo
-         3OlDOnTkbkEMiUWtlIsXuikcItiHWF3KiE7MeskJN4U/ywai8g3tz95sXlxGmchlo1
-         PFE4ENJXCIE2UE/wzAp9C88VucaGDxHjgoDpqC2U=
+        b=zaKyiQGphc5w7CY2ljsnwGxKDo3A0ReGURO49Z03A1rnwjNz3jgO2KxbC3yt5G6SR
+         WPPc23pbzrN7dKdJeJQscggV9PD6A7JcX3SDlHAWvE5VIcWMj1MpYxlZ6DEiii0QUP
+         tYfSQrzKA1CC9hNakZny3XBrfR7cbzCVMZitxJ88=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 072/123] net: pktgen: Fix interface flags printing
-Date:   Mon, 23 Oct 2023 12:57:10 +0200
-Message-ID: <20231023104820.094477794@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Manuel Krause <manuelkrause@netscape.net>,
+        Hui Wang <hui.wang@canonical.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 124/202] ACPI: resources: Add DMI-based legacy IRQ override quirk
+Date:   Mon, 23 Oct 2023 12:57:11 +0200
+Message-ID: <20231023104830.155781962@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,64 +51,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Hui Wang <hui.wang@canonical.com>
 
-commit 1d30162f35c7a73fc2f8cdcdcdbd690bedb99d1a upstream.
+[ Upstream commit 892a012699fc0b91a2ed6309078936191447f480 ]
 
-Device flags are displayed incorrectly:
-1) The comparison (i == F_FLOW_SEQ) is always false, because F_FLOW_SEQ
-is equal to (1 << FLOW_SEQ_SHIFT) == 2048, and the maximum value
-of the 'i' variable is (NR_PKT_FLAG - 1) == 17. It should be compared
-with FLOW_SEQ_SHIFT.
+After the commit 0ec4e55e9f57 ("ACPI: resources: Add checks for ACPI
+IRQ override") is reverted, the keyboard on Medion laptops can't
+work again.
 
-2) Similarly to the F_IPSEC flag.
+To fix the keyboard issue, add a DMI-based override check that will
+not affect other machines along the lines of prt_quirks[] in
+drivers/acpi/pci_irq.c.
 
-3) Also add spaces to the print end of the string literal "spi:%u"
-to prevent the output from merging with the flag that follows.
+If similar issues are seen on other platforms, the quirk table could
+be expanded in the future.
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with SVACE.
-
-Fixes: 99c6d3d20d62 ("pktgen: Remove brute-force printing of flags")
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=213031
+BugLink: http://bugs.launchpad.net/bugs/1909814
+Suggested-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Manuel Krause <manuelkrause@netscape.net>
+Tested-by: Manuel Krause <manuelkrause@netscape.net>
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/pktgen.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/acpi/resource.c | 49 +++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 47 insertions(+), 2 deletions(-)
 
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -645,19 +645,19 @@ static int pktgen_if_show(struct seq_fil
- 	seq_puts(seq, "     Flags: ");
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 20a7892c6d3fd..bf7c2deafb0a9 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -16,6 +16,7 @@
+ #include <linux/ioport.h>
+ #include <linux/slab.h>
+ #include <linux/irq.h>
++#include <linux/dmi.h>
  
- 	for (i = 0; i < NR_PKT_FLAGS; i++) {
--		if (i == F_FLOW_SEQ)
-+		if (i == FLOW_SEQ_SHIFT)
- 			if (!pkt_dev->cflows)
- 				continue;
+ #ifdef CONFIG_X86
+ #define valid_IRQ(i) (((i) != 0) && ((i) != 2))
+@@ -380,9 +381,51 @@ unsigned int acpi_dev_get_irq_type(int triggering, int polarity)
+ }
+ EXPORT_SYMBOL_GPL(acpi_dev_get_irq_type);
  
--		if (pkt_dev->flags & (1 << i))
-+		if (pkt_dev->flags & (1 << i)) {
- 			seq_printf(seq, "%s  ", pkt_flag_names[i]);
--		else if (i == F_FLOW_SEQ)
--			seq_puts(seq, "FLOW_RND  ");
--
- #ifdef CONFIG_XFRM
--		if (i == F_IPSEC && pkt_dev->spi)
--			seq_printf(seq, "spi:%u", pkt_dev->spi);
-+			if (i == IPSEC_SHIFT && pkt_dev->spi)
-+				seq_printf(seq, "spi:%u  ", pkt_dev->spi);
- #endif
-+		} else if (i == FLOW_SEQ_SHIFT) {
-+			seq_puts(seq, "FLOW_RND  ");
-+		}
- 	}
++static const struct dmi_system_id medion_laptop[] = {
++	{
++		.ident = "MEDION P15651",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "MEDION"),
++			DMI_MATCH(DMI_BOARD_NAME, "M15T"),
++		},
++	},
++	{ }
++};
++
++struct irq_override_cmp {
++	const struct dmi_system_id *system;
++	unsigned char irq;
++	unsigned char triggering;
++	unsigned char polarity;
++	unsigned char shareable;
++};
++
++static const struct irq_override_cmp skip_override_table[] = {
++	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
++};
++
++static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
++				  u8 shareable)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(skip_override_table); i++) {
++		const struct irq_override_cmp *entry = &skip_override_table[i];
++
++		if (dmi_check_system(entry->system) &&
++		    entry->irq == gsi &&
++		    entry->triggering == triggering &&
++		    entry->polarity == polarity &&
++		    entry->shareable == shareable)
++			return false;
++	}
++
++	return true;
++}
++
+ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+ 				     u8 triggering, u8 polarity, u8 shareable,
+-				     bool legacy)
++				     bool check_override)
+ {
+ 	int irq, p, t;
  
- 	seq_puts(seq, "\n");
+@@ -401,7 +444,9 @@ static void acpi_dev_get_irqresource(struct resource *res, u32 gsi,
+ 	 * using extended IRQ descriptors we take the IRQ configuration
+ 	 * from _CRS directly.
+ 	 */
+-	if (legacy && !acpi_get_override_irq(gsi, &t, &p)) {
++	if (check_override &&
++	    acpi_dev_irq_override(gsi, triggering, polarity, shareable) &&
++	    !acpi_get_override_irq(gsi, &t, &p)) {
+ 		u8 trig = t ? ACPI_LEVEL_SENSITIVE : ACPI_EDGE_SENSITIVE;
+ 		u8 pol = p ? ACPI_ACTIVE_LOW : ACPI_ACTIVE_HIGH;
+ 
+-- 
+2.40.1
+
 
 
