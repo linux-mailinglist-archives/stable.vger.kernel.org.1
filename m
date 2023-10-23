@@ -2,95 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 824E97D4338
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 01:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F48E7D4546
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 04:01:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230032AbjJWXaU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 19:30:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46318 "EHLO
+        id S231740AbjJXCBu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 22:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229441AbjJWXaT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 19:30:19 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A65A6;
-        Mon, 23 Oct 2023 16:30:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34448C433C7;
-        Mon, 23 Oct 2023 23:30:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698103817;
-        bh=/Cp0OWUVyZIik3/L+URbEHtp91y6DDa0GoZFwNGqVMk=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=Kpad+aHh5nu0l7B4yeOPwCDVBB26oZaqTCNYorKEJfmhfDxGfNPZf+tA5YAhZWdKV
-         NUIaFcQX7uNAk1QG+wuDXryuxFU9a6S7PzBWkuHIou5M0LXFZhZdUaWtUzu5Fyq7Cg
-         /EselnecXKyodJzfQroPpKzrOdgkUFYPk6USD5gVdbXBNT5aH2mWz0SwkvM0alP+cU
-         ryd9fwsuUedqfjrFpzAbSqhPSLk6UBgEsBKk6x9asCy3416Vmz/1VTTbhW+PTdQZCc
-         Pjqv9Fv/EOTIzxLKHCi042Malcym3yrRaYbaapQ7REq3MqYOUD7rm0Zz6yiC71aAT3
-         a7oEgQ5t1Xdrg==
-Mime-Version: 1.0
+        with ESMTP id S231858AbjJXCBt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 22:01:49 -0400
+X-Greylist: delayed 9427 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 23 Oct 2023 19:01:44 PDT
+Received: from mail.tehinnovacii.ru (mail.tehinnovacii.ru [185.221.212.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 749A1BC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 19:01:43 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.tehinnovacii.ru (Postfix) with ESMTP id 71F1B862BCD56;
+        Tue, 24 Oct 2023 00:28:29 +0300 (MSK)
+Received: from mail.tehinnovacii.ru ([127.0.0.1])
+        by localhost (mail.tehinnovacii.ru [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id QjKdBLDVwJGM; Tue, 24 Oct 2023 00:28:29 +0300 (MSK)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.tehinnovacii.ru (Postfix) with ESMTP id D9183862BCD50;
+        Tue, 24 Oct 2023 00:28:24 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.tehinnovacii.ru D9183862BCD50
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tehinnovacii.ru;
+        s=mail; t=1698096504;
+        bh=Ws5TcS6EV4V7aiUY6u9eol5cuGGKUQT0mSrLKF+Le3s=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=bGJemwjLV2Oxgb2G2xDTsFdqifUyiLRM+0RPMNWf/pxyu61LxBL+UNt1shR1OxA45
+         vVYBAAasJlEDYpF3oh6yuAbMY4y4t9bBOkmuwqhSoRHq/e2AIAbUZzPufCEKgyr3B/
+         bB99DWnlCuawS6lpCkGwV+iTmone0/vobt8GoFM9JjiLPBnXcYHWPEQ90MTLz8gzSq
+         KhlhcrAaczP4wPZWP5X5XHDaQekpev7aIME8VD/bvtqAVnihtpHcvDNKcAQ7IqT43K
+         frnyJ5M7nh8hf0E3vVVcypqJ04zP7tUpbco9Twwo9hxQAkl8x0wZj8sMsdV/asdyQg
+         BPmXfsut1hsDg==
+Received: from mail.tehinnovacii.ru ([127.0.0.1])
+        by localhost (mail.tehinnovacii.ru [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id p_JZqRD-S2f4; Tue, 24 Oct 2023 00:28:24 +0300 (MSK)
+Received: from DESKTOP-0AG4O9B.lan (unknown [41.157.248.166])
+        by mail.tehinnovacii.ru (Postfix) with ESMTPSA id 17E3E862BBE1F;
+        Tue, 24 Oct 2023 00:28:15 +0300 (MSK)
+Content-Type: text/plain; charset="iso-8859-1"
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Tue, 24 Oct 2023 02:30:13 +0300
-Message-Id: <CWG7KARCO4TX.257MYGX7AHV8T@suppilovahvero>
-Cc:     <reinette.chatre@intel.com>, <kai.huang@intel.com>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] x86/sgx: Return VM_FAULT_SIGBUS for EPC exhaustion
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Haitao Huang" <haitao.huang@linux.intel.com>,
-        <dave.hansen@linux.intel.com>, <linux-sgx@vger.kernel.org>,
-        <x86@kernel.org>
-X-Mailer: aerc 0.15.2
-References: <20231020025353.29691-1-haitao.huang@linux.intel.com>
-In-Reply-To: <20231020025353.29691-1-haitao.huang@linux.intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Description: Mail message body
+Subject: Brauchen Sie einen Kredit?
+To:     Recipients <zp@tehinnovacii.ru>
+From:   Georg Johannes Proksch <zp@tehinnovacii.ru>
+Date:   Mon, 23 Oct 2023 14:27:13 -0700
+Reply-To: kreditschufadeutsch0@gmail.com
+Message-Id: <20231023212816.17E3E862BBE1F@mail.tehinnovacii.ru>
+X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_BL_SPAMCOP_NET,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri Oct 20, 2023 at 5:53 AM EEST, Haitao Huang wrote:
-> In the EAUG on page fault path, VM_FAULT_OOM is returned when the
-> Enclave Page Cache (EPC) runs out. This may trigger unneeded OOM kill
-> that will not free any EPCs. Return VM_FAULT_SIGBUS instead.
->
-> Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized =
-enclave")
-> Cc: stable@vger.kernel.org # v6.0+
-> Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
-> ---
->  arch/x86/kernel/cpu/sgx/encl.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/enc=
-l.c
-> index 279148e72459..d13b7e4ad0f5 100644
-> --- a/arch/x86/kernel/cpu/sgx/encl.c
-> +++ b/arch/x86/kernel/cpu/sgx/encl.c
-> @@ -322,7 +322,7 @@ struct sgx_encl_page *sgx_encl_load_page(struct sgx_e=
-ncl *encl,
->   * ENCLS[EAUG] instruction.
->   *
->   * Returns: Appropriate vm_fault_t: VM_FAULT_NOPAGE when PTE was install=
-ed
-> - * successfully, VM_FAULT_SIGBUS or VM_FAULT_OOM as error otherwise.
-> + * successfully, VM_FAULT_SIGBUS as error otherwise.
->   */
->  static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
->  				     struct sgx_encl *encl, unsigned long addr)
-> @@ -348,7 +348,7 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_s=
-truct *vma,
->  	secinfo_flags =3D SGX_SECINFO_R | SGX_SECINFO_W | SGX_SECINFO_X;
->  	encl_page =3D sgx_encl_page_alloc(encl, addr - encl->base, secinfo_flag=
-s);
->  	if (IS_ERR(encl_page))
-> -		return VM_FAULT_OOM;
-> +		return VM_FAULT_SIGBUS;
-> =20
->  	mutex_lock(&encl->lock);
-> =20
+Brauchen Sie einen Kredit?
+Tr=E4umen Sie davon, ein Unternehmen zu gr=FCnden?
+Sie ben=F6tigen Geld f=FCr Ihre Gesch=E4ftsidee, ben=F6tigen aber eine gro=
+=DFe Finanzierung?
+Besitzen Sie ein Unternehmen und m=F6chten expandieren?
 
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Wir bieten Gesch=E4ftskredite, Privatkredite, Projektkredite und Autokredit=
+e mit einem Zinssatz von 2 % an.
 
-BR, Jarkko
+Vollst=E4ndiger Name:
+Kreditbetrag:
+Kreditlaufzeit:
+Land:
+Telefonnummer:
+
+Herr Georg Johannes Proksch
+Kreditberater/Berater
