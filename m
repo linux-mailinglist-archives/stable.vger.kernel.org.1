@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67BA37D3290
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8617F7D3271
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233811AbjJWLVe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:21:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60498 "EHLO
+        id S230335AbjJWLUL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233818AbjJWLVe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:34 -0400
+        with ESMTP id S233802AbjJWLUK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B72AC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B038AC433C7;
-        Mon, 23 Oct 2023 11:21:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8970A101
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAA3C433C7;
+        Mon, 23 Oct 2023 11:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060092;
-        bh=tLupdmBeiR28xtA3L+BbwkL3eWItcOxoUONOH+xWYp0=;
+        s=korg; t=1698060008;
+        bh=kgDRL7snNTQuyWmm3RKRPS43F0WouPB/+xIT8dkuUGk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PJPryWCwmum5IAIp/q770EEYmPyT+mUH/eDr6PuPKZl7+vAKk1dY6D/Pw8Wr1tI6F
-         2Pn4K9eF7rKgQowIa98ERw4yKHvWQPk4oxldA4luvIsLD4ArTwbdi3+9/1HPEAUjsk
-         6+zwLVmuEHuKBjyl2OU/0G0A6mu8AlepyfRD+tSU=
+        b=NGZN3P16+3dBYi86Jrl35flJdnmhAOxIpp1meYDxr6+kXUkIJdqlXcN8VAVS7jFVi
+         FsBaJFaNi0RA7W6Zx7MwO/1fwp/c4GouMWOZli7NXBkypGeRApxFa7+7DExsZKPOa1
+         eLyJbuG8DEIpBltx9rORGC8Mnp4DckkrvuV/n9uY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 019/196] regmap: fix NULL deref on lookup
-Date:   Mon, 23 Oct 2023 12:54:44 +0200
-Message-ID: <20231023104829.031149949@linuxfoundation.org>
+        patches@lists.linux.dev, Jim Mattson <jmattson@google.com>,
+        Mingwei Zhang <mizhang@google.com>,
+        Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 020/196] KVM: x86: Mask LVTPC when handling a PMI
+Date:   Mon, 23 Oct 2023 12:54:45 +0200
+Message-ID: <20231023104829.058093502@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
 References: <20231023104828.488041585@linuxfoundation.org>
@@ -53,35 +53,53 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Jim Mattson <jmattson@google.com>
 
-commit c6df843348d6b71ea986266c12831cb60c2cf325 upstream.
+commit a16eb25b09c02a54c1c1b449d4b6cfa2cf3f013a upstream.
 
-Not all regmaps have a name so make sure to check for that to avoid
-dereferencing a NULL pointer when dev_get_regmap() is used to lookup a
-named regmap.
+Per the SDM, "When the local APIC handles a performance-monitoring
+counters interrupt, it automatically sets the mask flag in the LVT
+performance counter register."  Add this behavior to KVM's local APIC
+emulation.
 
-Fixes: e84861fec32d ("regmap: dev_get_regmap_match(): fix string comparison")
-Cc: stable@vger.kernel.org      # 5.8
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231006082104.16707-1-johan+linaro@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Failure to mask the LVTPC entry results in spurious PMIs, e.g. when
+running Linux as a guest, PMI handlers that do a "late_ack" spew a large
+number of "dazed and confused" spurious NMI warnings.
+
+Fixes: f5132b01386b ("KVM: Expose a version 2 architectural PMU to a guests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Tested-by: Mingwei Zhang <mizhang@google.com>
+Signed-off-by: Mingwei Zhang <mizhang@google.com>
+Link: https://lore.kernel.org/r/20230925173448.3518223-3-mizhang@google.com
+[sean: massage changelog, correct Fixes]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/lapic.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -1572,7 +1572,7 @@ static int dev_get_regmap_match(struct d
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2535,13 +2535,17 @@ int kvm_apic_local_deliver(struct kvm_la
+ {
+ 	u32 reg = kvm_lapic_get_reg(apic, lvt_type);
+ 	int vector, mode, trig_mode;
++	int r;
  
- 	/* If the user didn't specify a name match any */
- 	if (data)
--		return !strcmp((*r)->name, data);
-+		return (*r)->name && !strcmp((*r)->name, data);
- 	else
- 		return 1;
+ 	if (kvm_apic_hw_enabled(apic) && !(reg & APIC_LVT_MASKED)) {
+ 		vector = reg & APIC_VECTOR_MASK;
+ 		mode = reg & APIC_MODE_MASK;
+ 		trig_mode = reg & APIC_LVT_LEVEL_TRIGGER;
+-		return __apic_accept_irq(apic, mode, vector, 1, trig_mode,
+-					NULL);
++
++		r = __apic_accept_irq(apic, mode, vector, 1, trig_mode, NULL);
++		if (r && lvt_type == APIC_LVTPC)
++			kvm_lapic_set_reg(apic, APIC_LVTPC, reg | APIC_LVT_MASKED);
++		return r;
+ 	}
+ 	return 0;
  }
 
 
