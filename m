@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21A5B7D32FB
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBE7A7D30AC
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233917AbjJWLZh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:25:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48672 "EHLO
+        id S229880AbjJWLBK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233923AbjJWLZg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:36 -0400
+        with ESMTP id S230033AbjJWLBJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D5DE102
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D346C433C8;
-        Mon, 23 Oct 2023 11:25:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9297D7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC712C433C9;
+        Mon, 23 Oct 2023 11:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060332;
-        bh=3gsYD+HIBmcQUqMr3+Kni5asdv/IM39bH8437v2InIk=;
+        s=korg; t=1698058866;
+        bh=hHccltMc1fLkWjY1jdTOAN2Ik8Wv3WGopUtkHBlwg18=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EvkUpqEDfKSTiwm3dVxqTenYo5iyrLcgaVBmZlB0uTDVXMJnSRGCLvX011rbBIOvs
-         ljcWW7q4zFwybTvKb9toc2T+fyCjY1+/VBw4txTh0YwLFBBHq8ndczoW+sQjwpiwDm
-         WBKebjJikz9uSgRrHCjfn1+j7MZ3/9qgVyARNvXg=
+        b=lnG5aBnGKxkLMYYhM24j6Ccw0Y9FMlhJgV1HvrgJw+aR5XRVmUheMgxUo2bxdCUw8
+         qf3aCq2pDX7dBw2+az3vpbvBjFlfuT+0bTh4ijvpqw74TOWBR0+3hv1XDuk9H00ki4
+         xqTsxFAnkk6rvod5r/LY3WtAjAcp6YUCCVqWv83o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilan Peer <ilan.peer@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/196] wifi: cfg80211: Fix 6GHz scan configuration
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ricardo=20Ca=C3=B1uelo?= <ricardo.canuelo@collabora.com>
+Subject: [PATCH 4.14 25/66] usb: hub: Guard against accesses to uninitialized BOS descriptors
 Date:   Mon, 23 Oct 2023 12:56:15 +0200
-Message-ID: <20231023104831.635811301@linuxfoundation.org>
+Message-ID: <20231023104811.762381622@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,44 +49,136 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
 
-[ Upstream commit 0914468adf92296c4cba8a2134e06e3dea150f2e ]
+commit f74a7afc224acd5e922c7a2e52244d891bbe44ee upstream.
 
-When the scan request includes a non broadcast BSSID, when adding the
-scan parameters for 6GHz collocated scanning, do not include entries
-that do not match the given BSSID.
+Many functions in drivers/usb/core/hub.c and drivers/usb/core/hub.h
+access fields inside udev->bos without checking if it was allocated and
+initialized. If usb_get_bos_descriptor() fails for whatever
+reason, udev->bos will be NULL and those accesses will result in a
+crash:
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230918140607.6d31d2a96baf.I6c4e3e3075d1d1878ee41f45190fdc6b86f18708@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: kernel NULL pointer dereference, address: 0000000000000018
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 5 PID: 17818 Comm: kworker/5:1 Tainted: G W 5.15.108-18910-gab0e1cb584e1 #1 <HASH:1f9e 1>
+Hardware name: Google Kindred/Kindred, BIOS Google_Kindred.12672.413.0 02/03/2021
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:hub_port_reset+0x193/0x788
+Code: 89 f7 e8 20 f7 15 00 48 8b 43 08 80 b8 96 03 00 00 03 75 36 0f b7 88 92 03 00 00 81 f9 10 03 00 00 72 27 48 8b 80 a8 03 00 00 <48> 83 78 18 00 74 19 48 89 df 48 8b 75 b0 ba 02 00 00 00 4c 89 e9
+RSP: 0018:ffffab740c53fcf8 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffffa1bc5f678000 RCX: 0000000000000310
+RDX: fffffffffffffdff RSI: 0000000000000286 RDI: ffffa1be9655b840
+RBP: ffffab740c53fd70 R08: 00001b7d5edaa20c R09: ffffffffb005e060
+R10: 0000000000000001 R11: 0000000000000000 R12: 0000000000000000
+R13: ffffab740c53fd3e R14: 0000000000000032 R15: 0000000000000000
+FS: 0000000000000000(0000) GS:ffffa1be96540000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000018 CR3: 000000022e80c005 CR4: 00000000003706e0
+Call Trace:
+hub_event+0x73f/0x156e
+? hub_activate+0x5b7/0x68f
+process_one_work+0x1a2/0x487
+worker_thread+0x11a/0x288
+kthread+0x13a/0x152
+? process_one_work+0x487/0x487
+? kthread_associate_blkcg+0x70/0x70
+ret_from_fork+0x1f/0x30
+
+Fall back to a default behavior if the BOS descriptor isn't accessible
+and skip all the functionalities that depend on it: LPM support checks,
+Super Speed capabilitiy checks, U1/U2 states setup.
+
+Signed-off-by: Ricardo Cañuelo <ricardo.canuelo@collabora.com>
+Cc: stable <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230830100418.1952143-1-ricardo.canuelo@collabora.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/scan.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/core/hub.c |   28 ++++++++++++++++++++++++----
+ drivers/usb/core/hub.h |    2 +-
+ 2 files changed, 25 insertions(+), 5 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index e5c1510c098fd..b7e1631b3d80d 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -876,6 +876,10 @@ static int cfg80211_scan_6ghz(struct cfg80211_registered_device *rdev)
- 		    !cfg80211_find_ssid_match(ap, request))
- 			continue;
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -143,6 +143,10 @@ int usb_device_supports_lpm(struct usb_d
+ 	if (udev->quirks & USB_QUIRK_NO_LPM)
+ 		return 0;
  
-+		if (!is_broadcast_ether_addr(request->bssid) &&
-+		    !ether_addr_equal(request->bssid, ap->bssid))
-+			continue;
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return 0;
 +
- 		if (!request->n_ssids && ap->multi_bss && !ap->transmitted_bssid)
- 			continue;
+ 	/* USB 2.1 (and greater) devices indicate LPM support through
+ 	 * their USB 2.0 Extended Capabilities BOS descriptor.
+ 	 */
+@@ -316,6 +320,10 @@ static void usb_set_lpm_parameters(struc
+ 	if (!udev->lpm_capable || udev->speed < USB_SPEED_SUPER)
+ 		return;
  
--- 
-2.40.1
-
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return;
++
+ 	hub = usb_hub_to_struct_hub(udev->parent);
+ 	/* It doesn't take time to transition the roothub into U0, since it
+ 	 * doesn't have an upstream link.
+@@ -2621,7 +2629,8 @@ out_authorized:
+ }
+ 
+ /*
+- * Return 1 if port speed is SuperSpeedPlus, 0 otherwise
++ * Return 1 if port speed is SuperSpeedPlus, 0 otherwise or if the
++ * capability couldn't be checked.
+  * check it from the link protocol field of the current speed ID attribute.
+  * current speed ID is got from ext port status request. Sublink speed attribute
+  * table is returned with the hub BOS SSP device capability descriptor
+@@ -2631,8 +2640,12 @@ static int port_speed_is_ssp(struct usb_
+ 	int ssa_count;
+ 	u32 ss_attr;
+ 	int i;
+-	struct usb_ssp_cap_descriptor *ssp_cap = hdev->bos->ssp_cap;
++	struct usb_ssp_cap_descriptor *ssp_cap;
+ 
++	if (!hdev->bos)
++		return 0;
++
++	ssp_cap = hdev->bos->ssp_cap;
+ 	if (!ssp_cap)
+ 		return 0;
+ 
+@@ -3968,8 +3981,15 @@ static void usb_enable_link_state(struct
+ 		enum usb3_link_state state)
+ {
+ 	int timeout, ret;
+-	__u8 u1_mel = udev->bos->ss_cap->bU1devExitLat;
+-	__le16 u2_mel = udev->bos->ss_cap->bU2DevExitLat;
++	__u8 u1_mel;
++	__le16 u2_mel;
++
++	/* Skip if the device BOS descriptor couldn't be read */
++	if (!udev->bos)
++		return;
++
++	u1_mel = udev->bos->ss_cap->bU1devExitLat;
++	u2_mel = udev->bos->ss_cap->bU2DevExitLat;
+ 
+ 	/* If the device says it doesn't have *any* exit latency to come out of
+ 	 * U1 or U2, it's probably lying.  Assume it doesn't implement that link
+--- a/drivers/usb/core/hub.h
++++ b/drivers/usb/core/hub.h
+@@ -145,7 +145,7 @@ static inline int hub_is_superspeedplus(
+ {
+ 	return (hdev->descriptor.bDeviceProtocol == USB_HUB_PR_SS &&
+ 		le16_to_cpu(hdev->descriptor.bcdUSB) >= 0x0310 &&
+-		hdev->bos->ssp_cap);
++		hdev->bos && hdev->bos->ssp_cap);
+ }
+ 
+ static inline unsigned hub_power_on_good_delay(struct usb_hub *hub)
 
 
