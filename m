@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C28D7D31EE
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03E6E7D32DB
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233695AbjJWLOw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:14:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33310 "EHLO
+        id S233903AbjJWLYf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:24:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233694AbjJWLOw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:52 -0400
+        with ESMTP id S233879AbjJWLYc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A767DD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD8AC433C9;
-        Mon, 23 Oct 2023 11:14:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FBEF10D5
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD83C433CD;
+        Mon, 23 Oct 2023 11:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059689;
-        bh=xBkJaE+Om76tVCcpYMSGsR9Zdh4UgEZW8zB+l6UT/UY=;
+        s=korg; t=1698060261;
+        bh=kDd9nFmoPEib1WzNGG7xj89HeChOpZnDgiCvndt3iHg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SQeMg3NGNlKUoTaTX7o2YDqbRgAMrlF/PlxAA5kESEpTvZfWS5fva1SKoid+QdvSL
-         NLvdKPbnhPWIAwbeM06AoTH9uIK8yAN0EF4B1yGNM3TccvZp/7ejUzqOP/ebbtqEEF
-         utPvuxa4+n0sTD4aXzd9sh3JEfnpQ3+GB9qnbvX0=
+        b=qBqZcUagUFgk3ipbCSoI8brifuNUad3+Zy4yxM/lgPkAKe813walacRSFAqWKwHAu
+         6mc+5oiF+cd+hxw4RNXHHnWqTzLHu9DFUOAcyVhCPT7ZkcX9EOpKSp3eBxpU5alkLh
+         +nP/ldNMpTl6tni9YcC8nQGKUd3Nvjd+b/IUiVac=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Udit Kumar <u-kumar1@ti.com>,
+        Thomas Richard <thomas.richard@bootlin.com>,
+        Tony Lindgren <tony@atomide.com>, Dhruva Gole <d-gole@ti.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 02/98] net: use indirect calls helpers at the socket layer
+Subject: [PATCH 6.1 086/196] serial: 8250_omap: Fix errors with no_console_suspend
 Date:   Mon, 23 Oct 2023 12:55:51 +0200
-Message-ID: <20231023104813.672778736@linuxfoundation.org>
+Message-ID: <20231023104830.972662863@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,82 +51,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 8c3c447b3cec27cf6f77080f4d157d53b64e9555 ]
+[ Upstream commit 560706eff7c8e5621b0d63afe0866e0e1906e87e ]
 
-This avoids an indirect call per {send,recv}msg syscall in
-the common (IPv6 or IPv4 socket) case.
+We now get errors on system suspend if no_console_suspend is set as
+reported by Thomas. The errors started with commit 20a41a62618d ("serial:
+8250_omap: Use force_suspend and resume for system suspend").
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 86a7e0b69bd5 ("net: prevent rewrite of msg_name in sock_sendmsg()")
+Let's fix the issue by checking for console_suspend_enabled in the system
+suspend and resume path.
+
+Note that with this fix the checks for console_suspend_enabled in
+omap8250_runtime_suspend() become useless. We now keep runtime PM usage
+count for an attached kernel console starting with commit bedb404e91bb
+("serial: 8250_port: Don't use power management for kernel console").
+
+Fixes: 20a41a62618d ("serial: 8250_omap: Use force_suspend and resume for system suspend")
+Cc: stable <stable@kernel.org>
+Cc: Udit Kumar <u-kumar1@ti.com>
+Reported-by: Thomas Richard <thomas.richard@bootlin.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Thomas Richard <thomas.richard@bootlin.com>
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Link: https://lore.kernel.org/r/20230926061319.15140-1-tony@atomide.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/socket.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ drivers/tty/serial/8250/8250_omap.c | 25 ++++++++++---------------
+ 1 file changed, 10 insertions(+), 15 deletions(-)
 
-diff --git a/net/socket.c b/net/socket.c
-index db9d908198f21..dc4d4ecd6cea2 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -90,6 +90,7 @@
- #include <linux/slab.h>
- #include <linux/xattr.h>
- #include <linux/nospec.h>
-+#include <linux/indirect_call_wrapper.h>
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index 0aed614110090..05f8675925ed6 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1516,7 +1516,7 @@ static int omap8250_suspend(struct device *dev)
+ {
+ 	struct omap8250_priv *priv = dev_get_drvdata(dev);
+ 	struct uart_8250_port *up = serial8250_get_port(priv->line);
+-	int err;
++	int err = 0;
  
- #include <linux/uaccess.h>
- #include <asm/unistd.h>
-@@ -108,6 +109,13 @@
- #include <net/busy_poll.h>
- #include <linux/errqueue.h>
+ 	serial8250_suspend_port(priv->line);
  
-+/* proto_ops for ipv4 and ipv6 use the same {recv,send}msg function */
-+#if IS_ENABLED(CONFIG_INET)
-+#define INDIRECT_CALL_INET4(f, f1, ...) INDIRECT_CALL_1(f, f1, __VA_ARGS__)
-+#else
-+#define INDIRECT_CALL_INET4(f, f1, ...) f(__VA_ARGS__)
-+#endif
+@@ -1526,7 +1526,8 @@ static int omap8250_suspend(struct device *dev)
+ 	if (!device_may_wakeup(dev))
+ 		priv->wer = 0;
+ 	serial_out(up, UART_OMAP_WER, priv->wer);
+-	err = pm_runtime_force_suspend(dev);
++	if (uart_console(&up->port) && console_suspend_enabled)
++		err = pm_runtime_force_suspend(dev);
+ 	flush_work(&priv->qos_work);
+ 
+ 	return err;
+@@ -1535,11 +1536,15 @@ static int omap8250_suspend(struct device *dev)
+ static int omap8250_resume(struct device *dev)
+ {
+ 	struct omap8250_priv *priv = dev_get_drvdata(dev);
++	struct uart_8250_port *up = serial8250_get_port(priv->line);
+ 	int err;
+ 
+-	err = pm_runtime_force_resume(dev);
+-	if (err)
+-		return err;
++	if (uart_console(&up->port) && console_suspend_enabled) {
++		err = pm_runtime_force_resume(dev);
++		if (err)
++			return err;
++	}
 +
- #ifdef CONFIG_NET_RX_BUSY_POLL
- unsigned int sysctl_net_busy_read __read_mostly;
- unsigned int sysctl_net_busy_poll __read_mostly;
-@@ -645,10 +653,12 @@ EXPORT_SYMBOL(__sock_tx_timestamp);
-  *	Sends @msg through @sock, passing through LSM.
-  *	Returns the number of bytes sent, or an error code.
-  */
--
-+INDIRECT_CALLABLE_DECLARE(int inet_sendmsg(struct socket *, struct msghdr *,
-+					   size_t));
- static inline int sock_sendmsg_nosec(struct socket *sock, struct msghdr *msg)
- {
--	int ret = sock->ops->sendmsg(sock, msg, msg_data_left(msg));
-+	int ret = INDIRECT_CALL_INET4(sock->ops->sendmsg, inet_sendmsg, sock,
-+				      msg, msg_data_left(msg));
- 	BUG_ON(ret == -EIOCBQUEUED);
- 	return ret;
- }
-@@ -852,11 +862,13 @@ EXPORT_SYMBOL_GPL(__sock_recv_ts_and_drops);
-  *	Receives @msg from @sock, passing through LSM. Returns the total number
-  *	of bytes received, or an error.
-  */
--
-+INDIRECT_CALLABLE_DECLARE(int inet_recvmsg(struct socket *, struct msghdr *,
-+					   size_t , int ));
- static inline int sock_recvmsg_nosec(struct socket *sock, struct msghdr *msg,
- 				     int flags)
- {
--	return sock->ops->recvmsg(sock, msg, msg_data_left(msg), flags);
-+	return INDIRECT_CALL_INET4(sock->ops->recvmsg, inet_recvmsg, sock, msg,
-+				   msg_data_left(msg), flags);
- }
+ 	serial8250_resume_port(priv->line);
+ 	/* Paired with pm_runtime_resume_and_get() in omap8250_suspend() */
+ 	pm_runtime_mark_last_busy(dev);
+@@ -1616,16 +1621,6 @@ static int omap8250_runtime_suspend(struct device *dev)
  
- int sock_recvmsg(struct socket *sock, struct msghdr *msg, int flags)
+ 	if (priv->line >= 0)
+ 		up = serial8250_get_port(priv->line);
+-	/*
+-	 * When using 'no_console_suspend', the console UART must not be
+-	 * suspended. Since driver suspend is managed by runtime suspend,
+-	 * preventing runtime suspend (by returning error) will keep device
+-	 * active during suspend.
+-	 */
+-	if (priv->is_suspending && !console_suspend_enabled) {
+-		if (up && uart_console(&up->port))
+-			return -EBUSY;
+-	}
+ 
+ 	if (priv->habit & UART_ERRATA_CLOCK_DISABLE) {
+ 		int ret;
 -- 
 2.40.1
 
