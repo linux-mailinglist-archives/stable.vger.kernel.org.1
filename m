@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40A5B7D3176
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3AFF7D34D4
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233572AbjJWLJ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:09:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50140 "EHLO
+        id S234336AbjJWLnI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:43:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233562AbjJWLJZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:09:25 -0400
+        with ESMTP id S234365AbjJWLm5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F31A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:09:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBDAC433CC;
-        Mon, 23 Oct 2023 11:09:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 785DF1992
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05EEC433C9;
+        Mon, 23 Oct 2023 11:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059363;
-        bh=l2Ke88IK5zoub5QncbR8AK8z5fy+V8/XiklX61Ix9AU=;
+        s=korg; t=1698061370;
+        bh=Lbu2wJ25cC7wY+0QDN2JXEFzJnjLxxZ/SAST+Vpg6ek=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1vzXeGRnw+7eNaVxFhvGE8lWeP55fO1W1a3GwmirERn1DDmnVBpNUMuGdUBV8P+3P
-         2e1vF0Gv0Fs+9AksB07Dm4jv56sufVfOI4DvHeNkvY83MNXMYBKzsGoCNQOt45c90U
-         RL4Jcvmy54LwZbFgICusTvdreQ8yPAusmhnbEdOY=
+        b=LhiwOWtLy0tYy5MlywsucvpjINIvQwG9o3qE88h4Fu7iguMi499R47JKHGr/Ciay7
+         uOvaf1AjNOsNYuGphQaTxWHWKi1YUzb/Skx7MJHrH4ane6wJ/fSKJUOE/6OdR9NG1r
+         1q5NAv51eRUCXShZnNLSRjjlRC3ISvVVV3XUf/qA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Ralph Siemsen <ralph.siemsen@linaro.org>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 145/241] Bluetooth: hci_sync: Introduce PTR_UINT/UINT_PTR macros
+Subject: [PATCH 5.10 024/202] pinctrl: renesas: rzn1: Enable missing PINMUX
 Date:   Mon, 23 Oct 2023 12:55:31 +0200
-Message-ID: <20231023104837.406502947@linuxfoundation.org>
+Message-ID: <20231023104827.316217212@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,145 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Ralph Siemsen <ralph.siemsen@linaro.org>
 
-[ Upstream commit a1f6c3aef13c9e7f8d459bd464e9e34da1342c0c ]
+[ Upstream commit f055ff23c331f28aa4ace4b72dc56f63b9a726c8 ]
 
-This introduces PTR_UINT/UINT_PTR macros and replace the use of
-PTR_ERR/ERR_PTR.
+Enable pin muxing (eg. programmable function), so that the RZ/N1 GPIO
+pins will be configured as specified by the pinmux in the DTS.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: acab8ff29a2a ("Bluetooth: ISO: Fix invalid context error")
+This used to be enabled implicitly via CONFIG_GENERIC_PINMUX_FUNCTIONS,
+however that was removed, since the RZ/N1 driver does not call any of
+the generic pinmux functions.
+
+Fixes: 1308fb4e4eae14e6 ("pinctrl: rzn1: Do not select GENERIC_PIN{CTRL_GROUPS,MUX_FUNCTIONS}")
+Signed-off-by: Ralph Siemsen <ralph.siemsen@linaro.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20231004200008.1306798-1-ralph.siemsen@linaro.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_sync.h |  3 +++
- net/bluetooth/hci_conn.c         | 19 ++++++++++---------
- net/bluetooth/hci_sync.c         |  4 ++--
- 3 files changed, 15 insertions(+), 11 deletions(-)
+ drivers/pinctrl/renesas/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index b516a0f4a55b8..57eeb07aeb251 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -5,6 +5,9 @@
-  * Copyright (C) 2021 Intel Corporation
-  */
+diff --git a/drivers/pinctrl/renesas/Kconfig b/drivers/pinctrl/renesas/Kconfig
+index e941b8440dbc8..39559ce9d1ed9 100644
+--- a/drivers/pinctrl/renesas/Kconfig
++++ b/drivers/pinctrl/renesas/Kconfig
+@@ -212,6 +212,7 @@ config PINCTRL_RZN1
+ 	depends on OF
+ 	depends on ARCH_RZN1 || COMPILE_TEST
+ 	select GENERIC_PINCONF
++	select PINMUX
+ 	help
+ 	  This selects pinctrl driver for Renesas RZ/N1 devices.
  
-+#define UINT_PTR(_handle)		((void *)((uintptr_t)_handle))
-+#define PTR_UINT(_ptr)			((uintptr_t)((void *)_ptr))
-+
- typedef int (*hci_cmd_sync_work_func_t)(struct hci_dev *hdev, void *data);
- typedef void (*hci_cmd_sync_work_destroy_t)(struct hci_dev *hdev, void *data,
- 					    int err);
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 4e9654fe89c9e..6d6192f514d0f 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -874,7 +874,7 @@ static void bis_cleanup(struct hci_conn *conn)
- 
- static int remove_cig_sync(struct hci_dev *hdev, void *data)
- {
--	u8 handle = PTR_ERR(data);
-+	u8 handle = PTR_UINT(data);
- 
- 	return hci_le_remove_cig_sync(hdev, handle);
- }
-@@ -883,7 +883,8 @@ static int hci_le_remove_cig(struct hci_dev *hdev, u8 handle)
- {
- 	bt_dev_dbg(hdev, "handle 0x%2.2x", handle);
- 
--	return hci_cmd_sync_queue(hdev, remove_cig_sync, ERR_PTR(handle), NULL);
-+	return hci_cmd_sync_queue(hdev, remove_cig_sync, UINT_PTR(handle),
-+				  NULL);
- }
- 
- static void find_cis(struct hci_conn *conn, void *data)
-@@ -1278,7 +1279,7 @@ u8 hci_conn_set_handle(struct hci_conn *conn, u16 handle)
- static void create_le_conn_complete(struct hci_dev *hdev, void *data, int err)
- {
- 	struct hci_conn *conn;
--	u16 handle = PTR_ERR(data);
-+	u16 handle = PTR_UINT(data);
- 
- 	conn = hci_conn_hash_lookup_handle(hdev, handle);
- 	if (!conn)
-@@ -1308,7 +1309,7 @@ static void create_le_conn_complete(struct hci_dev *hdev, void *data, int err)
- static int hci_connect_le_sync(struct hci_dev *hdev, void *data)
- {
- 	struct hci_conn *conn;
--	u16 handle = PTR_ERR(data);
-+	u16 handle = PTR_UINT(data);
- 
- 	conn = hci_conn_hash_lookup_handle(hdev, handle);
- 	if (!conn)
-@@ -1390,7 +1391,7 @@ struct hci_conn *hci_connect_le(struct hci_dev *hdev, bdaddr_t *dst,
- 	clear_bit(HCI_CONN_SCANNING, &conn->flags);
- 
- 	err = hci_cmd_sync_queue(hdev, hci_connect_le_sync,
--				 ERR_PTR(conn->handle),
-+				 UINT_PTR(conn->handle),
- 				 create_le_conn_complete);
- 	if (err) {
- 		hci_conn_del(conn);
-@@ -1767,7 +1768,7 @@ static int hci_le_create_big(struct hci_conn *conn, struct bt_iso_qos *qos)
- 
- static int set_cig_params_sync(struct hci_dev *hdev, void *data)
- {
--	u8 cig_id = PTR_ERR(data);
-+	u8 cig_id = PTR_UINT(data);
- 	struct hci_conn *conn;
- 	struct bt_iso_qos *qos;
- 	struct iso_cig_params pdu;
-@@ -1877,7 +1878,7 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
- 
- done:
- 	if (hci_cmd_sync_queue(hdev, set_cig_params_sync,
--			       ERR_PTR(qos->ucast.cig), NULL) < 0)
-+			       UINT_PTR(qos->ucast.cig), NULL) < 0)
- 		return false;
- 
- 	return true;
-@@ -2891,7 +2892,7 @@ u32 hci_conn_get_phy(struct hci_conn *conn)
- static int abort_conn_sync(struct hci_dev *hdev, void *data)
- {
- 	struct hci_conn *conn;
--	u16 handle = PTR_ERR(data);
-+	u16 handle = PTR_UINT(data);
- 
- 	conn = hci_conn_hash_lookup_handle(hdev, handle);
- 	if (!conn)
-@@ -2931,6 +2932,6 @@ int hci_abort_conn(struct hci_conn *conn, u8 reason)
- 		}
- 	}
- 
--	return hci_cmd_sync_queue(hdev, abort_conn_sync, ERR_PTR(conn->handle),
-+	return hci_cmd_sync_queue(hdev, abort_conn_sync, UINT_PTR(conn->handle),
- 				  NULL);
- }
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index caf4263ef9b77..73cdd051dd464 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6545,7 +6545,7 @@ int hci_get_random_address(struct hci_dev *hdev, bool require_privacy,
- 
- static int _update_adv_data_sync(struct hci_dev *hdev, void *data)
- {
--	u8 instance = PTR_ERR(data);
-+	u8 instance = PTR_UINT(data);
- 
- 	return hci_update_adv_data_sync(hdev, instance);
- }
-@@ -6553,5 +6553,5 @@ static int _update_adv_data_sync(struct hci_dev *hdev, void *data)
- int hci_update_adv_data(struct hci_dev *hdev, u8 instance)
- {
- 	return hci_cmd_sync_queue(hdev, _update_adv_data_sync,
--				  ERR_PTR(instance), NULL);
-+				  UINT_PTR(instance), NULL);
- }
 -- 
 2.40.1
 
