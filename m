@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D49B7D32C8
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B74697D33F3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233873AbjJWLXq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:23:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38242 "EHLO
+        id S234112AbjJWLff (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233903AbjJWLXi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:38 -0400
+        with ESMTP id S234084AbjJWLfb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EBAD1705
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF9EC433CC;
-        Mon, 23 Oct 2023 11:23:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BD7FD6E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC29DC433C8;
+        Mon, 23 Oct 2023 11:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060208;
-        bh=SqwJ7NxjqhMMkRRFLayJYiGyMTLROxxXYJQ6/J9DCx4=;
+        s=korg; t=1698060928;
+        bh=tJlxqb0y78VnZYWonIPJsXnsylT5yiDHFMmgtAAwYq8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1gxBl1xJvi55wxE/hLw1Fm74RSdGuIVCt4vKrh+7xCFeH5aFRPj1UdllESHmwWWOW
-         X6OuRXJ5SdDHU9RRnB8vyh6fSyJ0ih/l1YDT7e1WjHJGx6YcBYfENDSJlzQofYAOoW
-         u//K/RS4aqXFgyf4UjCIn1vLXvjuJtXJyjaW3suk=
+        b=gFIvwsllY9QUaiTaJBmS36rUeJpqqN3ROgaj3mc2EyTzERZBHbBxJmm2fee//2lXC
+         Z/QSTnpr1ffg97VM/Dr4W5Ssk4Jtp9NIzTAYnhHKBaefJNLIQNyh7CiUX8gu4kkOYo
+         y6eKa8pert9AGmlKF3zQU7K0VOIfMk8Qfmj6JhLg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/196] btrfs: return -EUCLEAN for delayed tree ref with a ref count not equals to 1
+        patches@lists.linux.dev, Ian Kent <raven@themaw.net>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Dave Chinner <dchinner@redhat.com>,
+        Chandan Babu R <chandanbabu@kernel.org>,
+        Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 5.15 003/137] xfs: dont expose internal symlink metadata buffers to the vfs
 Date:   Mon, 23 Oct 2023 12:56:00 +0200
-Message-ID: <20231023104831.216693729@linuxfoundation.org>
+Message-ID: <20231023104820.980891981@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +51,159 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 1bf76df3fee56d6637718e267f7c34ed70d0c7dc ]
+commit 7b7820b83f230036fc48c3e7fb280c48c58adebf upstream.
 
-When running a delayed tree reference, if we find a ref count different
-from 1, we return -EIO. This isn't an IO error, as it indicates either a
-bug in the delayed refs code or a memory corruption, so change the error
-code from -EIO to -EUCLEAN. Also tag the branch as 'unlikely' as this is
-not expected to ever happen, and change the error message to print the
-tree block's bytenr without the parenthesis (and there was a missing space
-between the 'block' word and the opening parenthesis), for consistency as
-that's the style we used everywhere else.
+Ian Kent reported that for inline symlinks, it's possible for
+vfs_readlink to hang on to the target buffer returned by
+_vn_get_link_inline long after it's been freed by xfs inode reclaim.
+This is a layering violation -- we should never expose XFS internals to
+the VFS.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When the symlink has a remote target, we allocate a separate buffer,
+copy the internal information, and let the VFS manage the new buffer's
+lifetime.  Let's adapt the inline code paths to do this too.  It's
+less efficient, but fixes the layering violation and avoids the need to
+adapt the if_data lifetime to rcu rules.  Clearly I don't care about
+readlink benchmarks.
+
+As a side note, this fixes the minor locking violation where we can
+access the inode data fork without taking any locks; proper locking (and
+eliminating the possibility of having to switch inode_operations on a
+live inode) is essential to online repair coordinating repairs
+correctly.
+
+Reported-by: Ian Kent <raven@themaw.net>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Tested-by: Chandan Babu R <chandanbabu@kernel.org>
+Acked-by: Leah Rumancik <leah.rumancik@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/xfs/xfs_iops.c    |   34 +---------------------------------
+ fs/xfs/xfs_symlink.c |   29 +++++++++++++++++++----------
+ 2 files changed, 20 insertions(+), 43 deletions(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 08ff10a81cb90..2a7c9088fe1f8 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1663,12 +1663,12 @@ static int run_delayed_tree_ref(struct btrfs_trans_handle *trans,
- 		parent = ref->parent;
- 	ref_root = ref->root;
+--- a/fs/xfs/xfs_iops.c
++++ b/fs/xfs/xfs_iops.c
+@@ -511,27 +511,6 @@ xfs_vn_get_link(
+ 	return ERR_PTR(error);
+ }
  
--	if (node->ref_mod != 1) {
-+	if (unlikely(node->ref_mod != 1)) {
- 		btrfs_err(trans->fs_info,
--	"btree block(%llu) has %d references rather than 1: action %d ref_root %llu parent %llu",
-+	"btree block %llu has %d references rather than 1: action %d ref_root %llu parent %llu",
- 			  node->bytenr, node->ref_mod, node->action, ref_root,
- 			  parent);
--		return -EIO;
-+		return -EUCLEAN;
+-STATIC const char *
+-xfs_vn_get_link_inline(
+-	struct dentry		*dentry,
+-	struct inode		*inode,
+-	struct delayed_call	*done)
+-{
+-	struct xfs_inode	*ip = XFS_I(inode);
+-	char			*link;
+-
+-	ASSERT(ip->i_df.if_format == XFS_DINODE_FMT_LOCAL);
+-
+-	/*
+-	 * The VFS crashes on a NULL pointer, so return -EFSCORRUPTED if
+-	 * if_data is junk.
+-	 */
+-	link = ip->i_df.if_u1.if_data;
+-	if (XFS_IS_CORRUPT(ip->i_mount, !link))
+-		return ERR_PTR(-EFSCORRUPTED);
+-	return link;
+-}
+-
+ static uint32_t
+ xfs_stat_blksize(
+ 	struct xfs_inode	*ip)
+@@ -1200,14 +1179,6 @@ static const struct inode_operations xfs
+ 	.update_time		= xfs_vn_update_time,
+ };
+ 
+-static const struct inode_operations xfs_inline_symlink_inode_operations = {
+-	.get_link		= xfs_vn_get_link_inline,
+-	.getattr		= xfs_vn_getattr,
+-	.setattr		= xfs_vn_setattr,
+-	.listxattr		= xfs_vn_listxattr,
+-	.update_time		= xfs_vn_update_time,
+-};
+-
+ /* Figure out if this file actually supports DAX. */
+ static bool
+ xfs_inode_supports_dax(
+@@ -1358,10 +1329,7 @@ xfs_setup_iops(
+ 		inode->i_fop = &xfs_dir_file_operations;
+ 		break;
+ 	case S_IFLNK:
+-		if (ip->i_df.if_format == XFS_DINODE_FMT_LOCAL)
+-			inode->i_op = &xfs_inline_symlink_inode_operations;
+-		else
+-			inode->i_op = &xfs_symlink_inode_operations;
++		inode->i_op = &xfs_symlink_inode_operations;
+ 		break;
+ 	default:
+ 		inode->i_op = &xfs_inode_operations;
+--- a/fs/xfs/xfs_symlink.c
++++ b/fs/xfs/xfs_symlink.c
+@@ -22,6 +22,7 @@
+ #include "xfs_trace.h"
+ #include "xfs_trans.h"
+ #include "xfs_ialloc.h"
++#include "xfs_error.h"
+ 
+ /* ----- Kernel only functions below ----- */
+ int
+@@ -96,17 +97,15 @@ xfs_readlink_bmap_ilocked(
+ 
+ int
+ xfs_readlink(
+-	struct xfs_inode *ip,
+-	char		*link)
++	struct xfs_inode	*ip,
++	char			*link)
+ {
+-	struct xfs_mount *mp = ip->i_mount;
+-	xfs_fsize_t	pathlen;
+-	int		error = 0;
++	struct xfs_mount	*mp = ip->i_mount;
++	xfs_fsize_t		pathlen;
++	int			error = -EFSCORRUPTED;
+ 
+ 	trace_xfs_readlink(ip);
+ 
+-	ASSERT(ip->i_df.if_format != XFS_DINODE_FMT_LOCAL);
+-
+ 	if (xfs_is_shutdown(mp))
+ 		return -EIO;
+ 
+@@ -121,12 +120,22 @@ xfs_readlink(
+ 			 __func__, (unsigned long long) ip->i_ino,
+ 			 (long long) pathlen);
+ 		ASSERT(0);
+-		error = -EFSCORRUPTED;
+ 		goto out;
  	}
- 	if (node->action == BTRFS_ADD_DELAYED_REF && insert_reserved) {
- 		BUG_ON(!extent_op || !extent_op->update_flags);
--- 
-2.40.1
-
+ 
+-
+-	error = xfs_readlink_bmap_ilocked(ip, link);
++	if (ip->i_df.if_format == XFS_DINODE_FMT_LOCAL) {
++		/*
++		 * The VFS crashes on a NULL pointer, so return -EFSCORRUPTED
++		 * if if_data is junk.
++		 */
++		if (XFS_IS_CORRUPT(ip->i_mount, !ip->i_df.if_u1.if_data))
++			goto out;
++
++		memcpy(link, ip->i_df.if_u1.if_data, pathlen + 1);
++		error = 0;
++	} else {
++		error = xfs_readlink_bmap_ilocked(ip, link);
++	}
+ 
+  out:
+ 	xfs_iunlock(ip, XFS_ILOCK_SHARED);
 
 
