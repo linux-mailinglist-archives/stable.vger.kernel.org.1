@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB077D3393
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C7107D353C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233856AbjJWLbz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:31:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45854 "EHLO
+        id S234555AbjJWLqe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233385AbjJWLby (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:54 -0400
+        with ESMTP id S234560AbjJWLqU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA1892
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD980C433C8;
-        Mon, 23 Oct 2023 11:31:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FDFA1738
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:46:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F73CC433C7;
+        Mon, 23 Oct 2023 11:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060712;
-        bh=LBYxX5p0AeG4tAoziJJCtducElrpG5fdHEUk60EEpkE=;
+        s=korg; t=1698061570;
+        bh=+zNiI8FkiETCHe8Z98bqHEXGpLL70K/rvsFNnmP4+BI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wrdL8Ss67cZ6TeB5/6KUGOcuZTImD2OAgktDIdQFIP4hhD0xYj33tUU2lO/gtGejP
-         2qlXxzIasGSdXrScblSz2K65nIj8WzTE018uZZZRi78cRTJ+Z10NXCiovLghWr9LTJ
-         kH5mHIqvIa1ZeWLzu9SHNF05pMW49uELu6nbQBQY=
+        b=W4/mo4B1pcdlSlAcUBt18s+DwNUmw8MteO8z5A55ieCtnf1aE83wsiPMCtpalOfxf
+         Hwb+6Zdo5A8IIVMEXSVWt5xBuO0UxRSRZSKzbQ8W24vvjbY3Kqj5wjvThOF7NYrTsd
+         yVdcuwnmrdrsDg1RpM/ADBwRCcqSX1H+pF1Ri1vk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 040/123] powerpc/8xx: Fix pte_access_permitted() for PAGE_NONE
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 091/202] Bluetooth: avoid memcmp() out of bounds warning
 Date:   Mon, 23 Oct 2023 12:56:38 +0200
-Message-ID: <20231023104819.067330728@linuxfoundation.org>
+Message-ID: <20231023104829.189274911@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,66 +51,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5d9cea8a552ee122e21fbd5a3c5d4eb85f648e06 ]
+commit 9d1a3c74746428102d55371fbf74b484733937d9 upstream.
 
-On 8xx, PAGE_NONE is handled by setting _PAGE_NA instead of clearing
-_PAGE_USER.
+bacmp() is a wrapper around memcpy(), which contain compile-time
+checks for buffer overflow. Since the hci_conn_request_evt() also calls
+bt_dev_dbg() with an implicit NULL pointer check, the compiler is now
+aware of a case where 'hdev' is NULL and treats this as meaning that
+zero bytes are available:
 
-But then pte_user() returns 1 also for PAGE_NONE.
+In file included from net/bluetooth/hci_event.c:32:
+In function 'bacmp',
+    inlined from 'hci_conn_request_evt' at net/bluetooth/hci_event.c:3276:7:
+include/net/bluetooth/bluetooth.h:364:16: error: 'memcmp' specified bound 6 exceeds source size 0 [-Werror=stringop-overread]
+  364 |         return memcmp(ba1, ba2, sizeof(bdaddr_t));
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As _PAGE_NA prevent reads, add a specific version of pte_read()
-that returns 0 when _PAGE_NA is set instead of always returning 1.
+Add another NULL pointer check before the bacmp() to ensure the compiler
+understands the code flow enough to not warn about it.  Since the patch
+that introduced the warning is marked for stable backports, this one
+should also go that way to avoid introducing build regressions.
 
-Fixes: 351750331fc1 ("powerpc/mm: Introduce _PAGE_NA")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/57bcfbe578e43123f9ed73e040229b80f1ad56ec.1695659959.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1ffc6f8cc332 ("Bluetooth: Reject connection with the device which has same BD_ADDR")
+Cc: Kees Cook <keescook@chromium.org>
+Cc: "Lee, Chun-Yi" <jlee@suse.com>
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/nohash/32/pte-8xx.h | 7 +++++++
- arch/powerpc/include/asm/nohash/pgtable.h    | 2 ++
- 2 files changed, 9 insertions(+)
+ net/bluetooth/hci_event.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-index c9e4b2d90f65c..93ecf4e80ca70 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-@@ -91,6 +91,13 @@ static inline pte_t pte_wrprotect(pte_t pte)
- 
- #define pte_wrprotect pte_wrprotect
- 
-+static inline int pte_read(pte_t pte)
-+{
-+	return (pte_val(pte) & _PAGE_RO) != _PAGE_NA;
-+}
-+
-+#define pte_read pte_read
-+
- static inline int pte_write(pte_t pte)
- {
- 	return !(pte_val(pte) & _PAGE_RO);
-diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
-index 3d2a78ab051a7..15dec9994c780 100644
---- a/arch/powerpc/include/asm/nohash/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/pgtable.h
-@@ -45,7 +45,9 @@ static inline int pte_write(pte_t pte)
- 	return pte_val(pte) & _PAGE_RW;
- }
- #endif
-+#ifndef pte_read
- static inline int pte_read(pte_t pte)		{ return 1; }
-+#endif
- static inline int pte_dirty(pte_t pte)		{ return pte_val(pte) & _PAGE_DIRTY; }
- static inline int pte_special(pte_t pte)	{ return pte_val(pte) & _PAGE_SPECIAL; }
- static inline int pte_none(pte_t pte)		{ return (pte_val(pte) & ~_PTE_NONE_MASK) == 0; }
--- 
-2.40.1
-
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2704,7 +2704,7 @@ static void hci_conn_request_evt(struct
+ 	/* Reject incoming connection from device with same BD ADDR against
+ 	 * CVE-2020-26555
+ 	 */
+-	if (!bacmp(&hdev->bdaddr, &ev->bdaddr)) {
++	if (hdev && !bacmp(&hdev->bdaddr, &ev->bdaddr)) {
+ 		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
+ 			   &ev->bdaddr);
+ 		hci_reject_conn(hdev, &ev->bdaddr);
 
 
