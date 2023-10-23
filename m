@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7BDE7D330A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFEEC7D3244
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233925AbjJWL0G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:26:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55946 "EHLO
+        id S233734AbjJWLSV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:18:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233926AbjJWL0F (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:05 -0400
+        with ESMTP id S233729AbjJWLSU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 286E7D7A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405CEC433C8;
-        Mon, 23 Oct 2023 11:26:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B13B2D6
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC21BC433C9;
+        Mon, 23 Oct 2023 11:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060362;
-        bh=8GumJjW4J3X87KKWs4CwsX8+L04VFPwAMzh3B27mHJw=;
+        s=korg; t=1698059898;
+        bh=IMd5UjRlRzcTEScv+EWk5BZkupM9dYkh2oIMpUHhI4M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MY5uwiS8J0mhhM7PpRXIma/cjXDSrUBlSEfFkJqQsz/R1RjXb0Tj8lrSKZPsNs6LN
-         79lVAluXHyOC1MK6uSjUCm4P8j7LiDwLITJwdecgGLulixUkd0489ulHZunpd8/4Q+
-         Bt1aauIFvGOZfR70ONSmSnu6HDMD1YxQbo8A/DTQ=
+        b=fgT3uql/6XjVszd6LNfuaJSEVMO0ZgsnOUOkRsQTfqQ8a3mSpSWHSswsUTVWTVHH3
+         ajWm2MZ9kI+OhVTKJvSricFuIjDH2TZ6Ezo/LJKQEg5O369IlepnsHSA0BB9LDm3Mv
+         9HSjG2i/brt9C1UzdIF0crPmFw4TJX5pnatnkA1c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 147/196] mtd: physmap-core: Restore map_rom fallback
+        patches@lists.linux.dev, Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 63/98] net: pktgen: Fix interface flags printing
 Date:   Mon, 23 Oct 2023 12:56:52 +0200
-Message-ID: <20231023104832.636689454@linuxfoundation.org>
+Message-ID: <20231023104815.830352416@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +48,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-commit 6792b7fce610bcd1cf3e07af3607fe7e2c38c1d8 upstream.
+commit 1d30162f35c7a73fc2f8cdcdcdbd690bedb99d1a upstream.
 
-When the exact mapping type driver was not available, the old
-physmap_of_core driver fell back to mapping the region as ROM.
-Unfortunately this feature was lost when the DT and pdata cases were
-merged.  Revive this useful feature.
+Device flags are displayed incorrectly:
+1) The comparison (i == F_FLOW_SEQ) is always false, because F_FLOW_SEQ
+is equal to (1 << FLOW_SEQ_SHIFT) == 2048, and the maximum value
+of the 'i' variable is (NR_PKT_FLAG - 1) == 17. It should be compared
+with FLOW_SEQ_SHIFT.
 
-Fixes: 642b1e8dbed7bbbf ("mtd: maps: Merge physmap_of.c into physmap-core.c")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/550e8c8c1da4c4baeb3d71ff79b14a18d4194f9e.1693407371.git.geert+renesas@glider.be
+2) Similarly to the F_IPSEC flag.
+
+3) Also add spaces to the print end of the string literal "spi:%u"
+to prevent the output from merging with the flag that follows.
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
+
+Fixes: 99c6d3d20d62 ("pktgen: Remove brute-force printing of flags")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/maps/physmap-core.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/core/pktgen.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/mtd/maps/physmap-core.c
-+++ b/drivers/mtd/maps/physmap-core.c
-@@ -552,6 +552,17 @@ static int physmap_flash_probe(struct pl
- 		if (info->probe_type) {
- 			info->mtds[i] = do_map_probe(info->probe_type,
- 						     &info->maps[i]);
-+
-+			/* Fall back to mapping region as ROM */
-+			if (!info->mtds[i] && IS_ENABLED(CONFIG_MTD_ROM) &&
-+			    strcmp(info->probe_type, "map_rom")) {
-+				dev_warn(&dev->dev,
-+					 "map_probe() failed for type %s\n",
-+					 info->probe_type);
-+
-+				info->mtds[i] = do_map_probe("map_rom",
-+							     &info->maps[i]);
-+			}
- 		} else {
- 			int j;
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -651,19 +651,19 @@ static int pktgen_if_show(struct seq_fil
+ 	seq_puts(seq, "     Flags: ");
  
+ 	for (i = 0; i < NR_PKT_FLAGS; i++) {
+-		if (i == F_FLOW_SEQ)
++		if (i == FLOW_SEQ_SHIFT)
+ 			if (!pkt_dev->cflows)
+ 				continue;
+ 
+-		if (pkt_dev->flags & (1 << i))
++		if (pkt_dev->flags & (1 << i)) {
+ 			seq_printf(seq, "%s  ", pkt_flag_names[i]);
+-		else if (i == F_FLOW_SEQ)
+-			seq_puts(seq, "FLOW_RND  ");
+-
+ #ifdef CONFIG_XFRM
+-		if (i == F_IPSEC && pkt_dev->spi)
+-			seq_printf(seq, "spi:%u", pkt_dev->spi);
++			if (i == IPSEC_SHIFT && pkt_dev->spi)
++				seq_printf(seq, "spi:%u  ", pkt_dev->spi);
+ #endif
++		} else if (i == FLOW_SEQ_SHIFT) {
++			seq_puts(seq, "FLOW_RND  ");
++		}
+ 	}
+ 
+ 	seq_puts(seq, "\n");
 
 
