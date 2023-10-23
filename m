@@ -2,47 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C647D3302
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 520D97D335F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233929AbjJWLZv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:25:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44958 "EHLO
+        id S234015AbjJWL3o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:29:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233922AbjJWLZu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:50 -0400
+        with ESMTP id S234066AbjJWL3l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:29:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36494E6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E1DC433C8;
-        Mon, 23 Oct 2023 11:25:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E65310C2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:29:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30BBC433C8;
+        Mon, 23 Oct 2023 11:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060347;
-        bh=yzzOezg/81F/MpbZzKRv7FzMGp66sO7JwXmPhPnMK9s=;
+        s=korg; t=1698060576;
+        bh=a3KUnl5Q2UfJ+BC0j97Cnr21/bGHYxPjSCr7+8Xhhd4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D4hRs9hWjhz6PnqyUsGaPAh99FPsmTeNHGuc5mO+Qqw9xW59WbzxbjD6aLNli7P4K
-         nhiiPudG+NGk+w8DI4El5rjLRDdHtM8LcCoRJ68VIQygfZkKWSIgl2sQyjG02+lLMt
-         DeqY5tUaio4lFFEecCFFvdQUi+5tXE5irdzmdlus=
+        b=AJ5K4gSGRCyHEJEACD3OTsPNYeFg+c3qI1icjTIL63r1U5SBwIQpGqHiv58K7X5kb
+         6DlldJzQhuFHyNesfinW0XEmVCA3bCCxzUW2l4BtQqeSs7f2w10rouyFEX+poEJBd4
+         Zi/liCVVFLjCOfw3ETAModea3P38/sVMJQGilkpE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mirko Lindner <mlindner@marvell.com>,
-        Stephen Hemminger <stephen@networkplumber.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        kernel test robot <lkp@intel.com>,
-        Alexander Lobakin <aleksander.lobakin@intel.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/196] sky2: Make sure there is at least one frag_addr available
+        patches@lists.linux.dev, Kenta Sato <tosainu.maple@gmail.com>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.4 022/123] usb: dwc3: Soft reset phy on probe for host
 Date:   Mon, 23 Oct 2023 12:56:20 +0200
-Message-ID: <20231023104831.768989916@linuxfoundation.org>
+Message-ID: <20231023104818.475387590@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,77 +48,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 6a70e5cbedaf8ad10528ac9ac114f3ec20f422df ]
+commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b upstream.
 
-In the pathological case of building sky2 with 16k PAGE_SIZE, the
-frag_addr[] array would never be used, so the original code was correct
-that size should be 0. But the compiler now gets upset with 0 size arrays
-in places where it hasn't eliminated the code that might access such an
-array (it can't figure out that in this case an rx skb with fragments
-would never be created). To keep the compiler happy, make sure there is
-at least 1 frag_addr in struct rx_ring_info:
+When there's phy initialization, we need to initiate a soft-reset
+sequence. That's done through USBCMD.HCRST in the xHCI driver and its
+initialization, However, the dwc3 driver may modify core configs before
+the soft-reset. This may result in some connection instability. So,
+ensure the phy is ready before the controller updates the GCTL.PRTCAPDIR
+or other settings by issuing phy soft-reset.
 
-   In file included from include/linux/skbuff.h:28,
-                    from include/net/net_namespace.h:43,
-                    from include/linux/netdevice.h:38,
-                    from drivers/net/ethernet/marvell/sky2.c:18:
-   drivers/net/ethernet/marvell/sky2.c: In function 'sky2_rx_unmap_skb':
-   include/linux/dma-mapping.h:416:36: warning: array subscript i is outside array bounds of 'dma_addr_t[0]' {aka 'long long unsigned int[]'} [-Warray-bounds=]
-     416 | #define dma_unmap_page(d, a, s, r) dma_unmap_page_attrs(d, a, s, r, 0)
-         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/net/ethernet/marvell/sky2.c:1257:17: note: in expansion of macro 'dma_unmap_page'
-    1257 |                 dma_unmap_page(&pdev->dev, re->frag_addr[i],
-         |                 ^~~~~~~~~~~~~~
-   In file included from drivers/net/ethernet/marvell/sky2.c:41:
-   drivers/net/ethernet/marvell/sky2.h:2198:25: note: while referencing 'frag_addr'
-    2198 |         dma_addr_t      frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
-         |                         ^~~~~~~~~
+Note that some host-mode configurations may not expose device registers
+to initiate the controller soft-reset (via DCTL.CoreSftRst). So we reset
+through GUSB3PIPECTL and GUSB2PHYCFG instead.
 
-With CONFIG_PAGE_SIZE_16KB=y, PAGE_SHIFT == 14, so:
-
-  #define ETH_JUMBO_MTU   9000
-
-causes "ETH_JUMBO_MTU >> PAGE_SHIFT" to be 0. Use "?: 1" to solve this build warning.
-
-Cc: Mirko Lindner <mlindner@marvell.com>
-Cc: Stephen Hemminger <stephen@networkplumber.org>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309191958.UBw1cjXk-lkp@intel.com/
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
+Reported-by: Kenta Sato <tosainu.maple@gmail.com>
+Closes: https://lore.kernel.org/linux-usb/ZPUciRLUcjDywMVS@debian.me/
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Tested-by: Kenta Sato <tosainu.maple@gmail.com>
+Link: https://lore.kernel.org/r/70aea513215d273669152696cc02b20ddcdb6f1a.1694564261.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/sky2.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c |   39 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/sky2.h b/drivers/net/ethernet/marvell/sky2.h
-index ddec1627f1a7b..8d0bacf4e49cc 100644
---- a/drivers/net/ethernet/marvell/sky2.h
-+++ b/drivers/net/ethernet/marvell/sky2.h
-@@ -2195,7 +2195,7 @@ struct rx_ring_info {
- 	struct sk_buff	*skb;
- 	dma_addr_t	data_addr;
- 	DEFINE_DMA_UNMAP_LEN(data_size);
--	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
-+	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT ?: 1];
- };
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -250,9 +250,46 @@ int dwc3_core_soft_reset(struct dwc3 *dw
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+ 	 * host-only mode or current role is host, then we can return early.
+ 	 */
+-	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
- enum flow_control {
--- 
-2.40.1
-
++	/*
++	 * If the dr_mode is host and the dwc->current_dr_role is not the
++	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
++	 * isn't executed yet. Ensure the phy is ready before the controller
++	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
++	 * the phy.
++	 *
++	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
++	 * is port index. If this is a multiport host, then we need to reset
++	 * all active ports.
++	 */
++	if (dwc->dr_mode == USB_DR_MODE_HOST) {
++		u32 usb3_port;
++		u32 usb2_port;
++
++		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
++		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
++		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
++
++		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
++		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
++		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
++
++		/* Small delay for phy reset assertion */
++		usleep_range(1000, 2000);
++
++		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
++		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
++
++		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
++		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
++
++		/* Wait for clock synchronization */
++		msleep(50);
++		return 0;
++	}
++
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 	reg |= DWC3_DCTL_CSFTRST;
+ 	dwc3_writel(dwc->regs, DWC3_DCTL, reg);
 
 
