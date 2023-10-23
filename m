@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCFD67D3433
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAEFB7D330C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234177AbjJWLhb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:37:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44752 "EHLO
+        id S233912AbjJWL0K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:26:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234176AbjJWLhb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:31 -0400
+        with ESMTP id S233933AbjJWL0I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9294100
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FD2C433C7;
-        Mon, 23 Oct 2023 11:37:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1424DDD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4751CC433C7;
+        Mon, 23 Oct 2023 11:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061049;
-        bh=QNAcABvDN48FM1jlykd6kHRabxP45u5cF21f8UUOaDo=;
+        s=korg; t=1698060365;
+        bh=cpYnA431QBcXozcBtKXLmgK8d+XsPK9s7K7vI6C01y8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w/C6eI/EszhGg1dhFz8NNKxx2bB18nwxAdwJSTlEu5w5MLgW57KE0zpAJWHU6rj38
-         pBzUXbvLydEnJ2tWoSWUGrCFnfIBF2Qa/f4znfJL3O6KiguyujkroKdm+E06SH67A5
-         XSF19R8SKYRztHfulUqAomCDEdH4rBmXy9mpJsaA=
+        b=ZXJpLMyta8J05m/9d/eFdsL/MTuz94lFtjxKNcTVOTlXBdqUJ/gjLLnMOOLyLXpKg
+         qOoNURPXhIuh1mk6zDexlw4EAcZ/VAUMd3G8sgln/s4fhhb0SrY9D92ltfLEmBSgW7
+         cZ+jsXIQOPfjwUNOIFXktOeNN2qakBYbhsNGoge4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Alisa-Dariana Roman <alisa.roman@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/137] iio: adc: ad7192: Correct reference voltage
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 148/196] dt-bindings: mmc: sdhci-msm: correct minimum number of clocks
 Date:   Mon, 23 Oct 2023 12:56:53 +0200
-Message-ID: <20231023104822.881295379@linuxfoundation.org>
+Message-ID: <20231023104832.663102928@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alisa-Dariana Roman <alisa.roman@analog.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 7e7dcab620cd6d34939f615cac63fc0ef7e81c72 ]
+commit 1bbac8d6af085408885675c1e29b2581250be124 upstream.
 
-The avdd and the reference voltage are two different sources but the
-reference voltage was assigned according to the avdd supply.
+In the TXT binding before conversion, the "xo" clock was listed as
+optional.  Conversion kept it optional in "clock-names", but not in
+"clocks".  This fixes dbts_check warnings like:
 
-Add vref regulator structure and set the reference voltage according to
-the vref supply from the devicetree.
+  qcom-sdx65-mtp.dtb: mmc@8804000: clocks: [[13, 59], [13, 58]] is too short
 
-In case vref supply is missing, reference voltage is set according to
-the avdd supply for compatibility with old devicetrees.
-
-Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
-Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230924152149.41884-1-alisadariana@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: a45537723f4b ("dt-bindings: mmc: sdhci-msm: Convert bindings to yaml")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Link: https://lore.kernel.org/r/20230825135503.282135-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7192.c | 29 +++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ Documentation/devicetree/bindings/mmc/sdhci-msm.yaml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 6df435e3c4218..31461d46c5941 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -177,6 +177,7 @@ struct ad7192_state {
- 	const struct ad7192_chip_info	*chip_info;
- 	struct regulator		*avdd;
- 	struct regulator		*dvdd;
-+	struct regulator		*vref;
- 	struct clk			*mclk;
- 	u16				int_vref_mv;
- 	u32				fclk;
-@@ -962,10 +963,30 @@ static int ad7192_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
+--- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
++++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
+@@ -59,7 +59,7 @@ properties:
+     maxItems: 4
  
--	ret = regulator_get_voltage(st->avdd);
--	if (ret < 0) {
--		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
--		return ret;
-+	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
-+	if (IS_ERR(st->vref)) {
-+		if (PTR_ERR(st->vref) != -ENODEV)
-+			return PTR_ERR(st->vref);
-+
-+		ret = regulator_get_voltage(st->avdd);
-+		if (ret < 0)
-+			return dev_err_probe(&spi->dev, ret,
-+					     "Device tree error, AVdd voltage undefined\n");
-+	} else {
-+		ret = regulator_enable(st->vref);
-+		if (ret) {
-+			dev_err(&spi->dev, "Failed to enable specified Vref supply\n");
-+			return ret;
-+		}
-+
-+		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->vref);
-+		if (ret)
-+			return ret;
-+
-+		ret = regulator_get_voltage(st->vref);
-+		if (ret < 0)
-+			return dev_err_probe(&spi->dev, ret,
-+					     "Device tree error, Vref voltage undefined\n");
- 	}
- 	st->int_vref_mv = ret / 1000;
- 
--- 
-2.40.1
-
+   clocks:
+-    minItems: 3
++    minItems: 2
+     items:
+       - description: Main peripheral bus clock, PCLK/HCLK - AHB Bus clock
+       - description: SDC MMC clock, MCLK
 
 
