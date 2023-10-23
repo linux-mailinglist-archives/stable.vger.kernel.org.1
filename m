@@ -2,39 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED76E7D348F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D27C7D33D7
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234269AbjJWLks (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:40:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60358 "EHLO
+        id S234026AbjJWLee (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234258AbjJWLkr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:47 -0400
+        with ESMTP id S229852AbjJWLed (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8581B10A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0772C433C8;
-        Mon, 23 Oct 2023 11:40:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05184E4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1508AC433C8;
+        Mon, 23 Oct 2023 11:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061244;
-        bh=5cLTywvk3Xql/QHDDZUAGT00XtwgEJER/mOpu9SoZfg=;
+        s=korg; t=1698060870;
+        bh=1hQpMdzFxLuzaU9K9R9zltkVngbDxpkCiVf7dRofLt4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Eyj6fcrk8phI6O7ScPUXUpuADG5yMXUD8nTMS1Zr0agIf1/kK7YqwQK6rHVVys62G
-         w6FBMRo95S7FwkCSBNDv0rzu/qzuSf0k+hW8KeXlxXP7l204SxepwEwnfQ54nk3817
-         mzTerG0T09+9sY+kcEDDaMS4IcxRxK9Z9PbEwZX0=
+        b=q0perBp5GjLrn4/l88NuV4Ew9pffT+GF5ftbtlh/ppWrUdVZxvTqUM4tJ87MBNFTy
+         NVJlKDqtZQtzhCew59Kv1H+qiZdYkstHGUgI4/zTXY02npfoD9R5Sv37EqNBIcJPeS
+         T3ev1nQT22eXYPP5PudeuP6CshVCBKTpoSmziy90=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthew Rosato <mjrosato@linux.ibm.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 5.15 121/137] s390/pci: fix iommu bitmap allocation
+        patches@lists.linux.dev,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 120/123] phy: mapphone-mdm6600: Fix pinctrl_pm handling for sleep pins
 Date:   Mon, 23 Oct 2023 12:57:58 +0200
-Message-ID: <20231023104824.832547492@linuxfoundation.org>
+Message-ID: <20231023104821.822755049@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,83 +54,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit c1ae1c59c8c6e0b66a718308c623e0cb394dab6b upstream.
+[ Upstream commit 3b384cc74b00b5ac21d18e4c1efc3c1da5300971 ]
 
-Since the fixed commits both zdev->iommu_bitmap and zdev->lazy_bitmap
-are allocated as vzalloc(zdev->iommu_pages / 8). The problem is that
-zdev->iommu_bitmap is a pointer to unsigned long but the above only
-yields an allocation that is a multiple of sizeof(unsigned long) which
-is 8 on s390x if the number of IOMMU pages is a multiple of 64.
-This in turn is the case only if the effective IOMMU aperture is
-a multiple of 64 * 4K = 256K. This is usually the case and so didn't
-cause visible issues since both the virt_to_phys(high_memory) reduced
-limit and hardware limits use nice numbers.
+Looks like the driver sleep pins configuration is unusable. Adding the
+sleep pins causes the usb phy to not respond. We need to use the default
+pins in probe, and only set sleep pins at phy_mdm6600_device_power_off().
 
-Under KVM, and in particular with QEMU limiting the IOMMU aperture to
-the vfio DMA limit (default 65535), it is possible for the reported
-aperture not to be a multiple of 256K however. In this case we end up
-with an iommu_bitmap whose allocation is not a multiple of
-8 causing bitmap operations to access it out of bounds.
+As the modem can also be booted to a serial port mode for firmware
+flashing, let's make the pin changes limited to probe and remove. For
+probe, we get the default pins automatically. We only need to set the
+sleep pins in phy_mdm6600_device_power_off() to prevent the modem from
+waking up because the gpio line glitches.
 
-Sadly we can't just fix this in the obvious way and use bitmap_zalloc()
-because for large RAM systems (tested on 8 TiB) the zdev->iommu_bitmap
-grows too large for kmalloc(). So add our own bitmap_vzalloc() wrapper.
-This might be a candidate for common code, but this area of code will
-be replaced by the upcoming conversion to use the common code DMA API on
-s390 so just add a local routine.
+If it turns out that we need a separate state for phy_mdm6600_power_on()
+and phy_mdm6600_power_off(), we can use the pinctrl idle state.
 
-Fixes: 224593215525 ("s390/pci: use virtual memory for iommu bitmap")
-Fixes: 13954fd6913a ("s390/pci_dma: improve lazy flush for unmap")
-Cc: stable@vger.kernel.org
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Fixes: 2ad2af081622 ("phy: mapphone-mdm6600: Improve phy related runtime PM calls")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20230913060433.48373-3-tony@atomide.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_dma.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/phy/motorola/phy-mapphone-mdm6600.c | 29 +++++++++------------
+ 1 file changed, 12 insertions(+), 17 deletions(-)
 
---- a/arch/s390/pci/pci_dma.c
-+++ b/arch/s390/pci/pci_dma.c
-@@ -542,6 +542,17 @@ static void s390_dma_unmap_sg(struct dev
- 		s->dma_length = 0;
- 	}
- }
-+
-+static unsigned long *bitmap_vzalloc(size_t bits, gfp_t flags)
-+{
-+	size_t n = BITS_TO_LONGS(bits);
-+	size_t bytes;
-+
-+	if (unlikely(check_mul_overflow(n, sizeof(unsigned long), &bytes)))
-+		return NULL;
-+
-+	return vzalloc(bytes);
-+}
- 	
- int zpci_dma_init_device(struct zpci_dev *zdev)
+diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+index 50a7f2a1ea16a..a79d6cf202209 100644
+--- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
++++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+@@ -122,16 +122,10 @@ static int phy_mdm6600_power_on(struct phy *x)
  {
-@@ -578,13 +589,13 @@ int zpci_dma_init_device(struct zpci_dev
- 				zdev->end_dma - zdev->start_dma + 1);
- 	zdev->end_dma = zdev->start_dma + zdev->iommu_size - 1;
- 	zdev->iommu_pages = zdev->iommu_size >> PAGE_SHIFT;
--	zdev->iommu_bitmap = vzalloc(zdev->iommu_pages / 8);
-+	zdev->iommu_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
- 	if (!zdev->iommu_bitmap) {
- 		rc = -ENOMEM;
- 		goto free_dma_table;
+ 	struct phy_mdm6600 *ddata = phy_get_drvdata(x);
+ 	struct gpio_desc *enable_gpio = ddata->ctrl_gpios[PHY_MDM6600_ENABLE];
+-	int error;
+ 
+ 	if (!ddata->enabled)
+ 		return -ENODEV;
+ 
+-	error = pinctrl_pm_select_default_state(ddata->dev);
+-	if (error)
+-		dev_warn(ddata->dev, "%s: error with default_state: %i\n",
+-			 __func__, error);
+-
+ 	gpiod_set_value_cansleep(enable_gpio, 1);
+ 
+ 	/* Allow aggressive PM for USB, it's only needed for n_gsm port */
+@@ -160,11 +154,6 @@ static int phy_mdm6600_power_off(struct phy *x)
+ 
+ 	gpiod_set_value_cansleep(enable_gpio, 0);
+ 
+-	error = pinctrl_pm_select_sleep_state(ddata->dev);
+-	if (error)
+-		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
+-			 __func__, error);
+-
+ 	return 0;
+ }
+ 
+@@ -455,6 +444,7 @@ static void phy_mdm6600_device_power_off(struct phy_mdm6600 *ddata)
+ {
+ 	struct gpio_desc *reset_gpio =
+ 		ddata->ctrl_gpios[PHY_MDM6600_RESET];
++	int error;
+ 
+ 	ddata->enabled = false;
+ 	phy_mdm6600_cmd(ddata, PHY_MDM6600_CMD_BP_SHUTDOWN_REQ);
+@@ -470,6 +460,17 @@ static void phy_mdm6600_device_power_off(struct phy_mdm6600 *ddata)
+ 	} else {
+ 		dev_err(ddata->dev, "Timed out powering down\n");
  	}
- 	if (!s390_iommu_strict) {
--		zdev->lazy_bitmap = vzalloc(zdev->iommu_pages / 8);
-+		zdev->lazy_bitmap = bitmap_vzalloc(zdev->iommu_pages, GFP_KERNEL);
- 		if (!zdev->lazy_bitmap) {
- 			rc = -ENOMEM;
- 			goto free_bitmap;
++
++	/*
++	 * Keep reset gpio high with padconf internal pull-up resistor to
++	 * prevent modem from waking up during deeper SoC idle states. The
++	 * gpio bank lines can have glitches if not in the always-on wkup
++	 * domain.
++	 */
++	error = pinctrl_pm_select_sleep_state(ddata->dev);
++	if (error)
++		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
++			 __func__, error);
+ }
+ 
+ static void phy_mdm6600_deferred_power_on(struct work_struct *work)
+@@ -570,12 +571,6 @@ static int phy_mdm6600_probe(struct platform_device *pdev)
+ 	ddata->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, ddata);
+ 
+-	/* Active state selected in phy_mdm6600_power_on() */
+-	error = pinctrl_pm_select_sleep_state(ddata->dev);
+-	if (error)
+-		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
+-			 __func__, error);
+-
+ 	error = phy_mdm6600_init_lines(ddata);
+ 	if (error)
+ 		return error;
+-- 
+2.42.0
+
 
 
