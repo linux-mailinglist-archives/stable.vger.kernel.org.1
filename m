@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 894E37D3161
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA4EE7D32B8
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233491AbjJWLIg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:08:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57652 "EHLO
+        id S233853AbjJWLXE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233406AbjJWLIf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:35 -0400
+        with ESMTP id S233881AbjJWLXC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A34FA4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98015C433C8;
-        Mon, 23 Oct 2023 11:08:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58701DF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84F7AC433C8;
+        Mon, 23 Oct 2023 11:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059313;
-        bh=lbUy9yM1rCMIrWMARrTQfoAwhrEWFwzNVg7KjPk3VZs=;
+        s=korg; t=1698060178;
+        bh=/LucthUuZTKVi/tG5t1sfAhkTeqEp8AgC2nTZ8QOJ4E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XuC8T/E04YCjFevPJIjJi/ISv5n6XdFJDnOqshA55D/4peFHWCrujB5m0R5iGLjsv
-         U8tRO/ZVVzgg27N7rsHZL0OEn5lKWBQ4mqD06r1hEET5kw5sKjM6ZuHJb6EZhLN/Hk
-         pl+EIl4CyfR/1qBAL64CmO+nYLIn7FLfrOp3Lhq0=
+        b=NN6DMKZftdw8S2C7cg52osQxkLelHMdwqnLIiYjPxhtt1sD1T/TVAdncEPt+NMngS
+         X5F9r4yLLTGPEGV17DaFXXIyEW7iat5ceK02UR25+G5l+35qxsHXlVhp8b3I4I5vEF
+         npWBL5Ezv8AgoQUs+cN2QnswuWm9w+CI9b59I/aM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 135/241] btrfs: error out when reallocating block for defrag using a stale transaction
-Date:   Mon, 23 Oct 2023 12:55:21 +0200
-Message-ID: <20231023104837.161104442@linuxfoundation.org>
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 057/196] tun: prevent negative ifindex
+Date:   Mon, 23 Oct 2023 12:55:22 +0200
+Message-ID: <20231023104830.150577380@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,81 +51,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e36f94914021e58ee88a8856c7fdf35adf9c7ee1 ]
+commit cbfbfe3aee718dc4c3c837f5d2463170ee59d78c upstream.
 
-At btrfs_realloc_node() we have these checks to verify we are not using a
-stale transaction (a past transaction with an unblocked state or higher),
-and the only thing we do is to trigger two WARN_ON(). This however is a
-critical problem, highly unexpected and if it happens it's most likely due
-to a bug, so we should error out and turn the fs into error state so that
-such issue is much more easily noticed if it's triggered.
+After commit 956db0a13b47 ("net: warn about attempts to register
+negative ifindex") syzbot is able to trigger the following splat.
 
-The problem is critical because in btrfs_realloc_node() we COW tree blocks,
-and using such stale transaction will lead to not persisting the extent
-buffers used for the COW operations, as allocating tree block adds the
-range of the respective extent buffers to the ->dirty_pages iotree of the
-transaction, and a stale transaction, in the unlocked state or higher,
-will not flush dirty extent buffers anymore, therefore resulting in not
-persisting the tree block and resource leaks (not cleaning the dirty_pages
-iotree for example).
+Negative ifindex are not supported.
 
-So do the following changes:
+WARNING: CPU: 1 PID: 6003 at net/core/dev.c:9596 dev_index_reserve+0x104/0x210
+Modules linked in:
+CPU: 1 PID: 6003 Comm: syz-executor926 Not tainted 6.6.0-rc4-syzkaller-g19af4a4ed414 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
+pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : dev_index_reserve+0x104/0x210
+lr : dev_index_reserve+0x100/0x210
+sp : ffff800096a878e0
+x29: ffff800096a87930 x28: ffff0000d04380d0 x27: ffff0000d04380f8
+x26: ffff0000d04380f0 x25: 1ffff00012d50f20 x24: 1ffff00012d50f1c
+x23: dfff800000000000 x22: ffff8000929c21c0 x21: 00000000ffffffea
+x20: ffff0000d04380e0 x19: ffff800096a87900 x18: ffff800096a874c0
+x17: ffff800084df5008 x16: ffff80008051f9c4 x15: 0000000000000001
+x14: 1fffe0001a087198 x13: 0000000000000000 x12: 0000000000000000
+x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+x8 : ffff0000d41c9bc0 x7 : 0000000000000000 x6 : 0000000000000000
+x5 : ffff800091763d88 x4 : 0000000000000000 x3 : ffff800084e04748
+x2 : 0000000000000001 x1 : 00000000fead71c7 x0 : 0000000000000000
+Call trace:
+dev_index_reserve+0x104/0x210
+register_netdevice+0x598/0x1074 net/core/dev.c:10084
+tun_set_iff+0x630/0xb0c drivers/net/tun.c:2850
+__tun_chr_ioctl+0x788/0x2af8 drivers/net/tun.c:3118
+tun_chr_ioctl+0x38/0x4c drivers/net/tun.c:3403
+vfs_ioctl fs/ioctl.c:51 [inline]
+__do_sys_ioctl fs/ioctl.c:871 [inline]
+__se_sys_ioctl fs/ioctl.c:857 [inline]
+__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:857
+__invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
+invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
+el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
+do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
+el0_svc+0x58/0x16c arch/arm64/kernel/entry-common.c:678
+el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:696
+el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:595
+irq event stamp: 11348
+hardirqs last enabled at (11347): [<ffff80008a716574>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:151 [inline]
+hardirqs last enabled at (11347): [<ffff80008a716574>] _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:194
+hardirqs last disabled at (11348): [<ffff80008a627820>] el1_dbg+0x24/0x80 arch/arm64/kernel/entry-common.c:436
+softirqs last enabled at (11138): [<ffff8000887ca53c>] spin_unlock_bh include/linux/spinlock.h:396 [inline]
+softirqs last enabled at (11138): [<ffff8000887ca53c>] release_sock+0x15c/0x1b0 net/core/sock.c:3531
+softirqs last disabled at (11136): [<ffff8000887ca41c>] spin_lock_bh include/linux/spinlock.h:356 [inline]
+softirqs last disabled at (11136): [<ffff8000887ca41c>] release_sock+0x3c/0x1b0 net/core/sock.c:3518
 
-1) Return -EUCLEAN if we find a stale transaction;
-
-2) Turn the fs into error state, with error -EUCLEAN, so that no
-   transaction can be committed, and generate a stack trace;
-
-3) Combine both conditions into a single if statement, as both are related
-   and have the same error message;
-
-4) Mark the check as unlikely, since this is not expected to ever happen.
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fb7589a16216 ("tun: Add ability to create tun device with given index")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://lore.kernel.org/r/20231016180851.3560092-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ctree.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/net/tun.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index db1f3bc7f3284..da519c1b6ad08 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -817,8 +817,22 @@ int btrfs_realloc_node(struct btrfs_trans_handle *trans,
- 	int progress_passed = 0;
- 	struct btrfs_disk_key disk_key;
- 
--	WARN_ON(trans->transaction != fs_info->running_transaction);
--	WARN_ON(trans->transid != fs_info->generation);
-+	/*
-+	 * COWing must happen through a running transaction, which always
-+	 * matches the current fs generation (it's a transaction with a state
-+	 * less than TRANS_STATE_UNBLOCKED). If it doesn't, then turn the fs
-+	 * into error state to prevent the commit of any transaction.
-+	 */
-+	if (unlikely(trans->transaction != fs_info->running_transaction ||
-+		     trans->transid != fs_info->generation)) {
-+		btrfs_abort_transaction(trans, -EUCLEAN);
-+		btrfs_crit(fs_info,
-+"unexpected transaction when attempting to reallocate parent %llu for root %llu, transaction %llu running transaction %llu fs generation %llu",
-+			   parent->start, btrfs_root_id(root), trans->transid,
-+			   fs_info->running_transaction->transid,
-+			   fs_info->generation);
-+		return -EUCLEAN;
-+	}
- 
- 	parent_nritems = btrfs_header_nritems(parent);
- 	blocksize = fs_info->nodesize;
--- 
-2.40.1
-
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -3056,10 +3056,11 @@ static long __tun_chr_ioctl(struct file
+ 	struct net *net = sock_net(&tfile->sk);
+ 	struct tun_struct *tun;
+ 	void __user* argp = (void __user*)arg;
+-	unsigned int ifindex, carrier;
++	unsigned int carrier;
+ 	struct ifreq ifr;
+ 	kuid_t owner;
+ 	kgid_t group;
++	int ifindex;
+ 	int sndbuf;
+ 	int vnet_hdr_sz;
+ 	int le;
+@@ -3115,7 +3116,9 @@ static long __tun_chr_ioctl(struct file
+ 		ret = -EFAULT;
+ 		if (copy_from_user(&ifindex, argp, sizeof(ifindex)))
+ 			goto unlock;
+-
++		ret = -EINVAL;
++		if (ifindex < 0)
++			goto unlock;
+ 		ret = 0;
+ 		tfile->ifindex = ifindex;
+ 		goto unlock;
 
 
