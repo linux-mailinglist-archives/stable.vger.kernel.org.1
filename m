@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C48A37D32FC
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 846287D30B2
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233924AbjJWLZk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:25:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48680 "EHLO
+        id S232228AbjJWLBP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233921AbjJWLZj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:39 -0400
+        with ESMTP id S229906AbjJWLBN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D86AE4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8CAC433CA;
-        Mon, 23 Oct 2023 11:25:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A61D6E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5259C433C9;
+        Mon, 23 Oct 2023 11:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060335;
-        bh=bYj9fRVFkj9WjCM/wwqVppLvRzJGI11Bar5q2KjuVL8=;
+        s=korg; t=1698058869;
+        bh=wSr1l1aBykWYClGexQuVQOaHNcdt5aJT3i4Gi7YGV0E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rNkWgV/Ul0ueSChc2XQj/GYY3hwGcyZgG5CvwN7ZCPQ2fbVx4XTdAQqe/hcT4/wAf
-         pmoMxWWqUb3YPeqw7Ovzv5CJPBYWZ91rsWzVeloowATleIVgfSZIgQ2Puz+Ok/5bs+
-         1MAq7U4bTSWGCFQs4bOS+VmKhCCA6VGGeNps0XF8=
+        b=LTPvg40moQmJx1aFh/2IzsprUHXiClLh1Mhhx8okJSNmwGtkWaEA/hBtHKijzgtOH
+         dg3WE4BXFKwZP1KBioljqOXgfVQwwQa2pOqlSYqO+nl0pcTvHUIWAjDEfMlJGiBt7d
+         hFeDd16VTwE09IjFdSi+Ndj07CrvmtlZ04qBMdZA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 111/196] wifi: mac80211: work around Cisco AP 9115 VHT MPDU length
+        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Lee@vger.kernel.org
+Subject: [PATCH 4.14 26/66] Bluetooth: hci_event: Ignore NULL link key
 Date:   Mon, 23 Oct 2023 12:56:16 +0200
-Message-ID: <20231023104831.662581089@linuxfoundation.org>
+Message-ID: <20231023104811.795940763@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,181 +49,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Lee, Chun-Yi <jlee@suse.com>
 
-[ Upstream commit 084cf2aeca97566db4fa15d55653c1cba2db83ed ]
+commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
 
-Cisco AP module 9115 with FW 17.3 has a bug and sends a too
-large maximum MPDU length in the association response
-(indicating 12k) that it cannot actually process.
+This change is used to relieve CVE-2020-26555. The description of the
+CVE:
 
-Work around that by taking the minimum between what's in the
-association response and the BSS elements (from beacon or
-probe response).
+Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
+1.0B through 5.2 may permit an unauthenticated nearby device to spoof
+the BD_ADDR of the peer device to complete pairing without knowledge
+of the PIN. [1]
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230918140607.d1966a9a532e.I090225babb7cd4d1081ee9acd40e7de7e41c15ae@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The detail of this attack is in IEEE paper:
+BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
+[2]
+
+It's a reflection attack. The paper mentioned that attacker can induce
+the attacked target to generate null link key (zero key) without PIN
+code. In BR/EDR, the key generation is actually handled in the controller
+which is below HCI.
+
+Thus, we can ignore null link key in the handler of "Link Key Notification
+event" to relieve the attack. A similar implementation also shows in
+btstack project. [3]
+
+v3: Drop the connection when null link key be detected.
+
+v2:
+- Used Link: tag instead of Closes:
+- Used bt_dev_dbg instead of BT_DBG
+- Added Fixes: tag
+
+Cc: stable@vger.kernel.org
+Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
+Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
+Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
+Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c         |  3 ++-
- net/mac80211/ibss.c        |  2 +-
- net/mac80211/ieee80211_i.h |  1 +
- net/mac80211/mesh_plink.c  |  2 +-
- net/mac80211/mlme.c        | 27 +++++++++++++++++++++++++--
- net/mac80211/vht.c         | 16 ++++++++++++++--
- 6 files changed, 44 insertions(+), 7 deletions(-)
+ net/bluetooth/hci_event.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 0167413d56972..ee9f455bb2d18 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1748,7 +1748,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 	/* VHT can override some HT caps such as the A-MSDU max length */
- 	if (params->vht_capa)
- 		ieee80211_vht_cap_ie_to_sta_vht_cap(sdata, sband,
--						    params->vht_capa, link_sta);
-+						    params->vht_capa, NULL,
-+						    link_sta);
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3494,6 +3494,15 @@ static void hci_link_key_notify_evt(stru
+ 	if (!conn)
+ 		goto unlock;
  
- 	if (params->he_capa)
- 		ieee80211_he_cap_ie_to_sta_he_cap(sdata, sband,
-diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
-index 9dffc30795887..79d2c55052897 100644
---- a/net/mac80211/ibss.c
-+++ b/net/mac80211/ibss.c
-@@ -1068,7 +1068,7 @@ static void ieee80211_update_sta_info(struct ieee80211_sub_if_data *sdata,
- 						   &chandef);
- 			memcpy(&cap_ie, elems->vht_cap_elem, sizeof(cap_ie));
- 			ieee80211_vht_cap_ie_to_sta_vht_cap(sdata, sband,
--							    &cap_ie,
-+							    &cap_ie, NULL,
- 							    &sta->deflink);
- 			if (memcmp(&cap, &sta->sta.deflink.vht_cap, sizeof(cap)))
- 				rates_updated |= true;
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 27479bbb093ac..99a976ea17498 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2062,6 +2062,7 @@ void
- ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
- 				    struct ieee80211_supported_band *sband,
- 				    const struct ieee80211_vht_cap *vht_cap_ie,
-+				    const struct ieee80211_vht_cap *vht_cap_ie2,
- 				    struct link_sta_info *link_sta);
- enum ieee80211_sta_rx_bandwidth
- ieee80211_sta_cap_rx_bw(struct link_sta_info *link_sta);
-diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-index ddfe5102b9a43..bd0b7c189adfa 100644
---- a/net/mac80211/mesh_plink.c
-+++ b/net/mac80211/mesh_plink.c
-@@ -443,7 +443,7 @@ static void mesh_sta_info_init(struct ieee80211_sub_if_data *sdata,
- 		changed |= IEEE80211_RC_BW_CHANGED;
- 
- 	ieee80211_vht_cap_ie_to_sta_vht_cap(sdata, sband,
--					    elems->vht_cap_elem,
-+					    elems->vht_cap_elem, NULL,
- 					    &sta->deflink);
- 
- 	ieee80211_he_cap_ie_to_sta_he_cap(sdata, sband, elems->he_cap,
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index dc9e7eb7dd857..c07645c999f9a 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4083,10 +4083,33 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
- 						  elems->ht_cap_elem,
- 						  link_sta);
- 
--	if (elems->vht_cap_elem && !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_VHT))
-+	if (elems->vht_cap_elem &&
-+	    !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_VHT)) {
-+		const struct ieee80211_vht_cap *bss_vht_cap = NULL;
-+		const struct cfg80211_bss_ies *ies;
-+
-+		/*
-+		 * Cisco AP module 9115 with FW 17.3 has a bug and sends a
-+		 * too large maximum MPDU length in the association response
-+		 * (indicating 12k) that it cannot actually process ...
-+		 * Work around that.
-+		 */
-+		rcu_read_lock();
-+		ies = rcu_dereference(cbss->ies);
-+		if (ies) {
-+			const struct element *elem;
-+
-+			elem = cfg80211_find_elem(WLAN_EID_VHT_CAPABILITY,
-+						  ies->data, ies->len);
-+			if (elem && elem->datalen >= sizeof(*bss_vht_cap))
-+				bss_vht_cap = (const void *)elem->data;
-+		}
-+
- 		ieee80211_vht_cap_ie_to_sta_vht_cap(sdata, sband,
- 						    elems->vht_cap_elem,
--						    link_sta);
-+						    bss_vht_cap, link_sta);
-+		rcu_read_unlock();
++	/* Ignore NULL link key against CVE-2020-26555 */
++	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
++		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
++			   &ev->bdaddr);
++		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
++		hci_conn_drop(conn);
++		goto unlock;
 +	}
- 
- 	if (elems->he_operation && !(link->u.mgd.conn_flags & IEEE80211_CONN_DISABLE_HE) &&
- 	    elems->he_cap) {
-diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
-index 803de58814852..f7526be8a1c7e 100644
---- a/net/mac80211/vht.c
-+++ b/net/mac80211/vht.c
-@@ -4,7 +4,7 @@
-  *
-  * Portions of this file
-  * Copyright(c) 2015 - 2016 Intel Deutschland GmbH
-- * Copyright (C) 2018 - 2022 Intel Corporation
-+ * Copyright (C) 2018 - 2023 Intel Corporation
-  */
- 
- #include <linux/ieee80211.h>
-@@ -116,12 +116,14 @@ void
- ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
- 				    struct ieee80211_supported_band *sband,
- 				    const struct ieee80211_vht_cap *vht_cap_ie,
-+				    const struct ieee80211_vht_cap *vht_cap_ie2,
- 				    struct link_sta_info *link_sta)
- {
- 	struct ieee80211_sta_vht_cap *vht_cap = &link_sta->pub->vht_cap;
- 	struct ieee80211_sta_vht_cap own_cap;
- 	u32 cap_info, i;
- 	bool have_80mhz;
-+	u32 mpdu_len;
- 
- 	memset(vht_cap, 0, sizeof(*vht_cap));
- 
-@@ -317,11 +319,21 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
- 
- 	link_sta->pub->bandwidth = ieee80211_sta_cur_vht_bw(link_sta);
- 
-+	/*
-+	 * Work around the Cisco 9115 FW 17.3 bug by taking the min of
-+	 * both reported MPDU lengths.
-+	 */
-+	mpdu_len = vht_cap->cap & IEEE80211_VHT_CAP_MAX_MPDU_MASK;
-+	if (vht_cap_ie2)
-+		mpdu_len = min_t(u32, mpdu_len,
-+				 le32_get_bits(vht_cap_ie2->vht_cap_info,
-+					       IEEE80211_VHT_CAP_MAX_MPDU_MASK));
 +
- 	/*
- 	 * FIXME - should the amsdu len be per link? store per link
- 	 * and maintain a minimum?
- 	 */
--	switch (vht_cap->cap & IEEE80211_VHT_CAP_MAX_MPDU_MASK) {
-+	switch (mpdu_len) {
- 	case IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454:
- 		link_sta->pub->agg.max_amsdu_len = IEEE80211_MAX_MPDU_LEN_VHT_11454;
- 		break;
--- 
-2.40.1
-
+ 	hci_conn_hold(conn);
+ 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
+ 	hci_conn_drop(conn);
 
 
