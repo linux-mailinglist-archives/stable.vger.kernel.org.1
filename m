@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E0E27D3173
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B3C87D34BE
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233570AbjJWLJV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:09:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50028 "EHLO
+        id S234340AbjJWLma (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:42:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233572AbjJWLJU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:09:20 -0400
+        with ESMTP id S234336AbjJWLmU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE67DD7E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:09:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBA5C433C8;
-        Mon, 23 Oct 2023 11:09:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0F610C2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27E6EC43391;
+        Mon, 23 Oct 2023 11:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059357;
-        bh=KQGIXsSlZCYxfse2TDgubtirV3RkgeR5KB7wtaDpHME=;
+        s=korg; t=1698061328;
+        bh=bKTV+YJzYqondK2S+tlU/vDL+K1GmZLjXI+vIEF9Kp8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y2MZFNMzyoPsnC4jfxW8WNRVR28ICTb/z9hd2OYFW+fA29KCG4R6effoKr/yQxvkv
-         KsWQIH7ayyfbA30KqFeNz1d2nSnpijs6VngB8nXxGMgNFLpY5XrEmZeg4FkndCH5oG
-         HFsQfzUDh//FiXCnMdIMczgfkvJyIOGwUngqRjMU=
+        b=ssOo4NzSdN2bfIPOmX2BdRI1C3S7tuh+wmnPZwxU0HZx2PgUQX+27Rbq8iOYN4g0V
+         1dzjpB8wuX8FVynAomEu1oqzn17hNoDhNtcFhaNJndGQRXY8sPyFksbcHe62A4InU8
+         aIjdIc9SSnDcSHbMQG2PYFxbsAih4lr4Y6OuoRUg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Berg <benjamin.berg@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 124/241] wifi: cfg80211: avoid leaking stack data into trace
+Subject: [PATCH 5.10 003/202] RDMA/cxgb4: Check skb value for failure to allocate
 Date:   Mon, 23 Oct 2023 12:55:10 +0200
-Message-ID: <20231023104836.897116571@linuxfoundation.org>
+Message-ID: <20231023104826.672727852@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,40 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit 334bf33eec5701a1e4e967bcb7cc8611a998334b ]
+[ Upstream commit 8fb8a82086f5bda6893ea6557c5a458e4549c6d7 ]
 
-If the structure is not initialized then boolean types might be copied
-into the tracing data without being initialised. This causes data from
-the stack to leak into the trace and also triggers a UBSAN failure which
-can easily be avoided here.
+get_skb() can fail to allocate skb, so check it.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Link: https://lore.kernel.org/r/20230925171855.a9271ef53b05.I8180bae663984c91a3e036b87f36a640ba409817@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 5be78ee924ae ("RDMA/cxgb4: Fix LE hash collision bug for active open connection")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Link: https://lore.kernel.org/r/20230905124048.284165-1-artem.chernyshev@red-soft.ru
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/cxgb4/cm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 3d286f3a60e60..bf968cdbfbb51 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -8502,7 +8502,7 @@ static int nl80211_update_mesh_config(struct sk_buff *skb,
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
- 	struct net_device *dev = info->user_ptr[1];
- 	struct wireless_dev *wdev = dev->ieee80211_ptr;
--	struct mesh_config cfg;
-+	struct mesh_config cfg = {};
- 	u32 mask;
- 	int err;
+diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+index e42c812e74c3c..8c54b1be04424 100644
+--- a/drivers/infiniband/hw/cxgb4/cm.c
++++ b/drivers/infiniband/hw/cxgb4/cm.c
+@@ -1965,6 +1965,9 @@ static int send_fw_act_open_req(struct c4iw_ep *ep, unsigned int atid)
+ 	int win;
  
+ 	skb = get_skb(NULL, sizeof(*req), GFP_KERNEL);
++	if (!skb)
++		return -ENOMEM;
++
+ 	req = __skb_put_zero(skb, sizeof(*req));
+ 	req->op_compl = htonl(WR_OP_V(FW_OFLD_CONNECTION_WR));
+ 	req->len16_pkd = htonl(FW_WR_LEN16_V(DIV_ROUND_UP(sizeof(*req), 16)));
 -- 
 2.40.1
 
