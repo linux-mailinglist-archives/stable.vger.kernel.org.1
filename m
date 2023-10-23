@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 296807D34A6
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C13BD7D35B0
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234283AbjJWLl4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:41:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59092 "EHLO
+        id S234610AbjJWLu4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:50:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234223AbjJWLlz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:41:55 -0400
+        with ESMTP id S234609AbjJWLuz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 306D710F1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD27EC433CA;
-        Mon, 23 Oct 2023 11:41:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D91C4F5
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:50:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBEEC433C8;
+        Mon, 23 Oct 2023 11:50:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061292;
-        bh=F9i3FVCFzUTLNLb7UUPSJ6c0XkCbtKKHYT9qFBOWKS8=;
+        s=korg; t=1698061852;
+        bh=38qBZx41nuwd23dV8eVG33b1nfrdQJ/AELimoyvNYVc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Jq4IIIfKwEOYadl5wD+Um7CfAty95BEzvLPgPmfMHhTnWXmaj+4+ylD6AuDWdiX6
-         SatqSDzp6AsUH6RausQ3djYFNrtL4F6d32rgf440JH2vohP5wyANiG1Ih5++VDjPEo
-         jjsP4ewEFVSNM8L+p9ayca2LP1dxbXGEI+43EQHg=
+        b=Fq+maIWWBKc3fivbdxDGUjO+bQkoCyxubqg3ynOYxaeMnNilUzhDC61yog4L71NCd
+         qw9D2pvLUnoDYC8Pi0tIgxJsHmSKgSQoPif2jLkyJSmMB7Vj3BZosTH3zmCs6RN4PE
+         E7G75qu+OwV9qsVuwTh3ztmHe2MgqFjMEDM2HLF8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 109/137] mmc: core: sdio: hold retuning if sdio in 1-bit mode
+        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 159/202] HID: holtek: fix slab-out-of-bounds Write in holtek_kbd_input_event
 Date:   Mon, 23 Oct 2023 12:57:46 +0200
-Message-ID: <20231023104824.484540544@linuxfoundation.org>
+Message-ID: <20231023104831.154185496@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,49 +48,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Ma Ke <make_ruc2021@163.com>
 
-commit 32a9cdb8869dc111a0c96cf8e1762be9684af15b upstream.
+[ Upstream commit ffe3b7837a2bb421df84d0177481db9f52c93a71 ]
 
-tuning only support in 4-bit mode or 8 bit mode, so in 1-bit mode,
-need to hold retuning.
+There is a slab-out-of-bounds Write bug in hid-holtek-kbd driver.
+The problem is the driver assumes the device must have an input
+but some malicious devices violate this assumption.
 
-Find this issue when use manual tuning method on imx93. When system
-resume back, SDIO WIFI try to switch back to 4 bit mode, first will
-trigger retuning, and all tuning command failed.
+Fix this by checking hid_device's input is non-empty before its usage.
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Fixes: dfa13ebbe334 ("mmc: host: Add facility to support re-tuning")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230830093922.3095850-1-haibo.chen@nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/sdio.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/hid/hid-holtek-kbd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -1073,8 +1073,14 @@ static int mmc_sdio_resume(struct mmc_ho
- 		}
- 		err = mmc_sdio_reinit_card(host);
- 	} else if (mmc_card_wake_sdio_irq(host)) {
--		/* We may have switched to 1-bit mode during suspend */
-+		/*
-+		 * We may have switched to 1-bit mode during suspend,
-+		 * need to hold retuning, because tuning only supprt
-+		 * 4-bit mode or 8 bit mode.
-+		 */
-+		mmc_retune_hold_now(host);
- 		err = sdio_enable_4bit_bus(host->card);
-+		mmc_retune_release(host);
- 	}
+diff --git a/drivers/hid/hid-holtek-kbd.c b/drivers/hid/hid-holtek-kbd.c
+index 403506b9697e7..b346d68a06f5a 100644
+--- a/drivers/hid/hid-holtek-kbd.c
++++ b/drivers/hid/hid-holtek-kbd.c
+@@ -130,6 +130,10 @@ static int holtek_kbd_input_event(struct input_dev *dev, unsigned int type,
+ 		return -ENODEV;
  
- 	if (err)
+ 	boot_hid = usb_get_intfdata(boot_interface);
++	if (list_empty(&boot_hid->inputs)) {
++		hid_err(hid, "no inputs found\n");
++		return -ENODEV;
++	}
+ 	boot_hid_input = list_first_entry(&boot_hid->inputs,
+ 		struct hid_input, list);
+ 
+-- 
+2.40.1
+
 
 
