@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 051937D31A4
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 663AA7D335E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233538AbjJWLL2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59168 "EHLO
+        id S234056AbjJWL3m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:29:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233534AbjJWLL2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:28 -0400
+        with ESMTP id S234055AbjJWL3l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:29:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 864E099
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4862C433C8;
-        Mon, 23 Oct 2023 11:11:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87D6710C
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:29:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE367C43391;
+        Mon, 23 Oct 2023 11:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059486;
-        bh=t5qLN3MxYJfBbwxP3YNL+cG5kXg1B8z6xBvmRZOG5Dc=;
+        s=korg; t=1698060573;
+        bh=o/TeZjgkjfcgKpeQQeOjM7bZ4Y+bVXFuzN0D9SbN2qo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RqGi9Su5YfjrSYHiMoPsKdJf2dvmInAWIYJx1HoPIs12k4FRSLnzthjVsuM6K3fP/
-         a/6shWg5ZL+3OEnO2Z1lPL6sim1MzTmN+HnCYjslLreazI9G1FjE6u6lb4sku37PYL
-         aqkolknd6SVTzxCKgAVoqaD4qY2t3hIVoycmJuhg=
+        b=bLQzCKNkV7J+uCT+U7nOP/dq/ebhZvUsIpObnfaaGqCcPY95ZWAFnjTP+ZyrAqjAi
+         ln7IZu6DpgGxG5icSOgh/AS4d1bF9y1Ed690QCQajYChqV3LiNEzKHrWsM5U+iO9Th
+         ULrWQxsXZ3tzO8vp/L1bXAKtxvJR7AniBolUzrEI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maurizio Lombardi <mlombard@redhat.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Yi Zhang <yi.zhang@redhat.com>, Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.5 193/241] nvme-rdma: do not try to stop unallocated queues
+        patches@lists.linux.dev,
+        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+        Peter Korsgaard <peter@korsgaard.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 021/123] net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read
 Date:   Mon, 23 Oct 2023 12:56:19 +0200
-Message-ID: <20231023104838.579160459@linuxfoundation.org>
+Message-ID: <20231023104818.446932573@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 3820c4fdc247b6f0a4162733bdb8ddf8f2e8a1e4 upstream.
+commit 8f8abb863fa5a4cc18955c6a0e17af0ded3e4a76 upstream.
 
-Trying to stop a queue which hasn't been allocated will result
-in a warning due to calling mutex_lock() against an uninitialized mutex.
+syzbot has found an uninit-value bug triggered by the dm9601 driver [1].
 
- DEBUG_LOCKS_WARN_ON(lock->magic != lock)
- WARNING: CPU: 4 PID: 104150 at kernel/locking/mutex.c:579
+This error happens because the variable res is not updated if the call
+to dm_read_shared_word returns an error. In this particular case -EPROTO
+was returned and res stayed uninitialized.
 
- Call trace:
-  RIP: 0010:__mutex_lock+0x1173/0x14a0
-  nvme_rdma_stop_queue+0x1b/0xa0 [nvme_rdma]
-  nvme_rdma_teardown_io_queues.part.0+0xb0/0x1d0 [nvme_rdma]
-  nvme_rdma_delete_ctrl+0x50/0x100 [nvme_rdma]
-  nvme_do_delete_ctrl+0x149/0x158 [nvme_core]
+This can be avoided by checking the return value of dm_read_shared_word
+and propagating the error if the read operation failed.
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+[1] https://syzkaller.appspot.com/bug?extid=1f53a30781af65d2c955
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reported-and-tested-by: syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Fixes: d0374f4f9c35cdfbee0 ("USB: Davicom DM9601 usbnet driver")
+Link: https://lore.kernel.org/r/20231009-topic-dm9601_uninit_mdio_read-v2-1-f2fe39739b6c@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/rdma.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/dm9601.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/rdma.c
-+++ b/drivers/nvme/host/rdma.c
-@@ -638,6 +638,9 @@ static void __nvme_rdma_stop_queue(struc
+--- a/drivers/net/usb/dm9601.c
++++ b/drivers/net/usb/dm9601.c
+@@ -221,13 +221,18 @@ static int dm9601_mdio_read(struct net_d
+ 	struct usbnet *dev = netdev_priv(netdev);
  
- static void nvme_rdma_stop_queue(struct nvme_rdma_queue *queue)
- {
-+	if (!test_bit(NVME_RDMA_Q_ALLOCATED, &queue->flags))
-+		return;
-+
- 	mutex_lock(&queue->queue_lock);
- 	if (test_and_clear_bit(NVME_RDMA_Q_LIVE, &queue->flags))
- 		__nvme_rdma_stop_queue(queue);
+ 	__le16 res;
++	int err;
+ 
+ 	if (phy_id) {
+ 		netdev_dbg(dev->net, "Only internal phy supported\n");
+ 		return 0;
+ 	}
+ 
+-	dm_read_shared_word(dev, 1, loc, &res);
++	err = dm_read_shared_word(dev, 1, loc, &res);
++	if (err < 0) {
++		netdev_err(dev->net, "MDIO read error: %d\n", err);
++		return err;
++	}
+ 
+ 	netdev_dbg(dev->net,
+ 		   "dm9601_mdio_read() phy_id=0x%02x, loc=0x%02x, returns=0x%04x\n",
 
 
