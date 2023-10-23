@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE4DF7D3295
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D8117D3166
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233824AbjJWLVu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:21:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41022 "EHLO
+        id S233499AbjJWLIv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233822AbjJWLVt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:49 -0400
+        with ESMTP id S233508AbjJWLIu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49930D6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84122C433C7;
-        Mon, 23 Oct 2023 11:21:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E6B2DD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B469C433C7;
+        Mon, 23 Oct 2023 11:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060106;
-        bh=IxvX5XmsWRsdG5hAeouKLBAJstE8yL2TR4T7T4ghq+Y=;
+        s=korg; t=1698059327;
+        bh=k7sN8yHVXawPOo11DamZbl2/OB1S3TE71vIbLHUeBkI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qN939yGq5RkWrJgJ2L4crLM9BCfu7q8rg3FLQqy1kD20ZAMFt0gp7WE/nIZbKu4lq
-         ud+hl2nJbKu3rkAwzfPcOpt45ho6x06Gz2sbQZpnedcYgiyMcMCLTQ6/lIvnFwO4sF
-         OHO0kAUW/ppEZXMFQSkLVJGpSsB5KqMb62U/kdB4=
+        b=trrj8EYoJoZcBTxq1xeXhB9Q6ZAySy6Vb6Nl1yv+891XzDEhzJbIO5BziziKOHwaG
+         91KnnaSTS6cjsmWWAiZ0ZaPZB0LejAS10Wwd7WhEdQkxwHv/fSR3dXmZGbomP9vh2x
+         YZXrSBHpZsYvJ8L5lWoz/koNWL6pNwlz+/M3fTPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 061/196] i40e: prevent crash on probe if hw registers have invalid values
+        patches@lists.linux.dev, Fabian Vogt <fabian@ritter-vogt.de>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 140/241] HID: Add quirk to ignore the touchscreen battery on HP ENVY 15-eu0556ng
 Date:   Mon, 23 Oct 2023 12:55:26 +0200
-Message-ID: <20231023104830.263670208@linuxfoundation.org>
+Message-ID: <20231023104837.284378939@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,61 +48,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Fabian Vogt <fabian@ritter-vogt.de>
 
-commit fc6f716a5069180c40a8c9b63631e97da34f64a3 upstream.
+[ Upstream commit b009aa38a380becd98cc4e01c9b7626a11cb4905 ]
 
-The hardware provides the indexes of the first and the last available
-queue and VF. From the indexes, the driver calculates the numbers of
-queues and VFs. In theory, a faulty device might say the last index is
-smaller than the first index. In that case, the driver's calculation
-would underflow, it would attempt to write to non-existent registers
-outside of the ioremapped range and crash.
+Like various other devices using similar hardware, this model reports a
+perpetually empty battery (0-1%).
 
-I ran into this not by having a faulty device, but by an operator error.
-I accidentally ran a QE test meant for i40e devices on an ice device.
-The test used 'echo i40e > /sys/...ice PCI device.../driver_override',
-bound the driver to the device and crashed in one of the wr32 calls in
-i40e_clear_hw.
+Join the others and apply HID_BATTERY_QUIRK_IGNORE.
 
-Add checks to prevent underflows in the calculations of num_queues and
-num_vfs. With this fix, the wrong device probing reports errors and
-returns a failure without crashing.
-
-Fixes: 838d41d92a90 ("i40e: clear all queues and interrupts")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Link: https://lore.kernel.org/r/20231011233334.336092-2-jacob.e.keller@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Fabian Vogt <fabian@ritter-vogt.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_common.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-ids.h   | 1 +
+ drivers/hid/hid-input.c | 2 ++
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -1082,7 +1082,7 @@ void i40e_clear_hw(struct i40e_hw *hw)
- 		     I40E_PFLAN_QALLOC_FIRSTQ_SHIFT;
- 	j = (val & I40E_PFLAN_QALLOC_LASTQ_MASK) >>
- 	    I40E_PFLAN_QALLOC_LASTQ_SHIFT;
--	if (val & I40E_PFLAN_QALLOC_VALID_MASK)
-+	if (val & I40E_PFLAN_QALLOC_VALID_MASK && j >= base_queue)
- 		num_queues = (j - base_queue) + 1;
- 	else
- 		num_queues = 0;
-@@ -1092,7 +1092,7 @@ void i40e_clear_hw(struct i40e_hw *hw)
- 	    I40E_PF_VT_PFALLOC_FIRSTVF_SHIFT;
- 	j = (val & I40E_PF_VT_PFALLOC_LASTVF_MASK) >>
- 	    I40E_PF_VT_PFALLOC_LASTVF_SHIFT;
--	if (val & I40E_PF_VT_PFALLOC_VALID_MASK)
-+	if (val & I40E_PF_VT_PFALLOC_VALID_MASK && j >= i)
- 		num_vfs = (j - i) + 1;
- 	else
- 		num_vfs = 0;
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 8a310f8ff20f5..cc0d0186a0d95 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -425,6 +425,7 @@
+ #define I2C_DEVICE_ID_HP_SPECTRE_X360_13T_AW100	0x29F5
+ #define I2C_DEVICE_ID_HP_SPECTRE_X360_14T_EA100_V1	0x2BED
+ #define I2C_DEVICE_ID_HP_SPECTRE_X360_14T_EA100_V2	0x2BEE
++#define I2C_DEVICE_ID_HP_ENVY_X360_15_EU0556NG		0x2D02
+ 
+ #define USB_VENDOR_ID_ELECOM		0x056e
+ #define USB_DEVICE_ID_ELECOM_BM084	0x0061
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index 40a5645f8fe81..5e2f721855e59 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -406,6 +406,8 @@ static const struct hid_device_id hid_battery_quirks[] = {
+ 	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_SPECTRE_X360_14T_EA100_V2),
+ 	  HID_BATTERY_QUIRK_IGNORE },
++	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_HP_ENVY_X360_15_EU0556NG),
++	  HID_BATTERY_QUIRK_IGNORE },
+ 	{}
+ };
+ 
+-- 
+2.40.1
+
 
 
