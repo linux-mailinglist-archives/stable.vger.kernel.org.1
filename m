@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EB297D3567
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:47:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A25117D3327
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234018AbjJWLr4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:47:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47082 "EHLO
+        id S233963AbjJWL1P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:27:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234487AbjJWLrz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:47:55 -0400
+        with ESMTP id S233971AbjJWL1M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF6FFE8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:47:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7963C433C9;
-        Mon, 23 Oct 2023 11:47:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2CADC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809DAC433C7;
+        Mon, 23 Oct 2023 11:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061672;
-        bh=VP5EPKpSrUN08MRmC8nKc7bgqZih1V7yYLbjbCenRts=;
+        s=korg; t=1698060428;
+        bh=+TYXpIV8iNu7l/UVPr9nl34Es6rFRFGbCArg1QnayJk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G+CNx3X5Osz1OJb+OuqLQmkthPCn1fw0czGYPcqcLpBNUKMB6MdE+bERsCCu3pLY4
-         uS0BfbvLwn5RF7XjZr/rWULOWR9b6ud0j7jYIGEFVkX4qbFuJ2cbhXx4sxOf/U8UKD
-         9ADw+XWGT0un+g3y8RpmvRzR9uv74ijLl/1qHt5A=
+        b=LO1EXHwLEdnSNO7ZzRpveDMlnJpIqLqSVxmPgUo0vkMj7u1lmHaIsOftJ9nmpr1mu
+         +AxNXlxQelbryr+x96AXl8zVOXMOBXCw8g+4SxsYGNw6BHiWFqxkaqGhujYpI+062U
+         qFGsoao6WG5TIzPO9uRy6PwZ9vcBSnXnNyaEu/48=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Dohrmann <erbse.13@gmx.de>,
-        Joerg Roedel <jroedel@suse.de>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
-Subject: [PATCH 5.10 099/202] x86/sev: Check for user-space IOIO pointing to kernel space
+        patches@lists.linux.dev,
+        Albert Huang <huangjie.albert@bytedance.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 141/196] net/smc: fix smc clc failed issue when netdevice not in init_net
 Date:   Mon, 23 Oct 2023 12:56:46 +0200
-Message-ID: <20231023104829.434234077@linuxfoundation.org>
+Message-ID: <20231023104832.470368643@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,99 +52,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joerg Roedel <jroedel@suse.de>
+From: Albert Huang <huangjie.albert@bytedance.com>
 
-Upstream commit: 63e44bc52047f182601e7817da969a105aa1f721
+[ Upstream commit c68681ae46eaaa1640b52fe366d21a93b2185df5 ]
 
-Check the memory operand of INS/OUTS before emulating the instruction.
-The #VC exception can get raised from user-space, but the memory operand
-can be manipulated to access kernel memory before the emulation actually
-begins and after the exception handler has run.
+If the netdevice is within a container and communicates externally
+through network technologies such as VxLAN, we won't be able to find
+routing information in the init_net namespace. To address this issue,
+we need to add a struct net parameter to the smc_ib_find_route function.
+This allow us to locate the routing information within the corresponding
+net namespace, ensuring the correct completion of the SMC CLC interaction.
 
-  [ bp: Massage commit message. ]
-
-Fixes: 597cfe48212a ("x86/boot/compressed/64: Setup a GHCB-based VC Exception handler")
-Reported-by: Tom Dohrmann <erbse.13@gmx.de>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e5c4744cfb59 ("net/smc: add SMC-Rv2 connection establishment")
+Signed-off-by: Albert Huang <huangjie.albert@bytedance.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231011074851.95280-1-huangjie.albert@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/sev-es.c |    5 +++++
- arch/x86/kernel/sev-es-shared.c   |   31 +++++++++++++++++++++++++++++--
- 2 files changed, 34 insertions(+), 2 deletions(-)
+ net/smc/af_smc.c | 3 ++-
+ net/smc/smc_ib.c | 7 ++++---
+ net/smc/smc_ib.h | 2 +-
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
---- a/arch/x86/boot/compressed/sev-es.c
-+++ b/arch/x86/boot/compressed/sev-es.c
-@@ -111,6 +111,11 @@ static enum es_result vc_ioio_check(stru
- 	return ES_OK;
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 9fe62b5b02974..4ea41d6e36969 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -1187,6 +1187,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
+ 	struct smc_clc_first_contact_ext *fce =
+ 		(struct smc_clc_first_contact_ext *)
+ 			(((u8 *)clc_v2) + sizeof(*clc_v2));
++	struct net *net = sock_net(&smc->sk);
+ 
+ 	if (!ini->first_contact_peer || aclc->hdr.version == SMC_V1)
+ 		return 0;
+@@ -1195,7 +1196,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
+ 		memcpy(ini->smcrv2.nexthop_mac, &aclc->r0.lcl.mac, ETH_ALEN);
+ 		ini->smcrv2.uses_gateway = false;
+ 	} else {
+-		if (smc_ib_find_route(smc->clcsock->sk->sk_rcv_saddr,
++		if (smc_ib_find_route(net, smc->clcsock->sk->sk_rcv_saddr,
+ 				      smc_ib_gid_to_ipv4(aclc->r0.lcl.gid),
+ 				      ini->smcrv2.nexthop_mac,
+ 				      &ini->smcrv2.uses_gateway))
+diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
+index 854772dd52fd1..ace8611735321 100644
+--- a/net/smc/smc_ib.c
++++ b/net/smc/smc_ib.c
+@@ -193,7 +193,7 @@ bool smc_ib_port_active(struct smc_ib_device *smcibdev, u8 ibport)
+ 	return smcibdev->pattr[ibport - 1].state == IB_PORT_ACTIVE;
  }
  
-+static bool fault_in_kernel_space(unsigned long address)
-+{
-+	return false;
-+}
-+
- #undef __init
- #undef __pa
- #define __init
---- a/arch/x86/kernel/sev-es-shared.c
-+++ b/arch/x86/kernel/sev-es-shared.c
-@@ -217,6 +217,23 @@ fail:
- 		asm volatile("hlt\n");
- }
- 
-+static enum es_result vc_insn_string_check(struct es_em_ctxt *ctxt,
-+					   unsigned long address,
-+					   bool write)
-+{
-+	if (user_mode(ctxt->regs) && fault_in_kernel_space(address)) {
-+		ctxt->fi.vector     = X86_TRAP_PF;
-+		ctxt->fi.error_code = X86_PF_USER;
-+		ctxt->fi.cr2        = address;
-+		if (write)
-+			ctxt->fi.error_code |= X86_PF_WRITE;
-+
-+		return ES_EXCEPTION;
-+	}
-+
-+	return ES_OK;
-+}
-+
- static enum es_result vc_insn_string_read(struct es_em_ctxt *ctxt,
- 					  void *src, char *buf,
- 					  unsigned int data_size,
-@@ -224,7 +241,12 @@ static enum es_result vc_insn_string_rea
- 					  bool backwards)
+-int smc_ib_find_route(__be32 saddr, __be32 daddr,
++int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
+ 		      u8 nexthop_mac[], u8 *uses_gateway)
  {
- 	int i, b = backwards ? -1 : 1;
--	enum es_result ret = ES_OK;
-+	unsigned long address = (unsigned long)src;
-+	enum es_result ret;
-+
-+	ret = vc_insn_string_check(ctxt, address, false);
-+	if (ret != ES_OK)
-+		return ret;
+ 	struct neighbour *neigh = NULL;
+@@ -205,7 +205,7 @@ int smc_ib_find_route(__be32 saddr, __be32 daddr,
  
- 	for (i = 0; i < count; i++) {
- 		void *s = src + (i * data_size * b);
-@@ -245,7 +267,12 @@ static enum es_result vc_insn_string_wri
- 					   bool backwards)
- {
- 	int i, s = backwards ? -1 : 1;
--	enum es_result ret = ES_OK;
-+	unsigned long address = (unsigned long)dst;
-+	enum es_result ret;
-+
-+	ret = vc_insn_string_check(ctxt, address, true);
-+	if (ret != ES_OK)
-+		return ret;
+ 	if (daddr == cpu_to_be32(INADDR_NONE))
+ 		goto out;
+-	rt = ip_route_output_flow(&init_net, &fl4, NULL);
++	rt = ip_route_output_flow(net, &fl4, NULL);
+ 	if (IS_ERR(rt))
+ 		goto out;
+ 	if (rt->rt_uses_gateway && rt->rt_gw_family != AF_INET)
+@@ -235,6 +235,7 @@ static int smc_ib_determine_gid_rcu(const struct net_device *ndev,
+ 	if (smcrv2 && attr->gid_type == IB_GID_TYPE_ROCE_UDP_ENCAP &&
+ 	    smc_ib_gid_to_ipv4((u8 *)&attr->gid) != cpu_to_be32(INADDR_NONE)) {
+ 		struct in_device *in_dev = __in_dev_get_rcu(ndev);
++		struct net *net = dev_net(ndev);
+ 		const struct in_ifaddr *ifa;
+ 		bool subnet_match = false;
  
- 	for (i = 0; i < count; i++) {
- 		void *d = dst + (i * data_size * s);
+@@ -248,7 +249,7 @@ static int smc_ib_determine_gid_rcu(const struct net_device *ndev,
+ 		}
+ 		if (!subnet_match)
+ 			goto out;
+-		if (smcrv2->daddr && smc_ib_find_route(smcrv2->saddr,
++		if (smcrv2->daddr && smc_ib_find_route(net, smcrv2->saddr,
+ 						       smcrv2->daddr,
+ 						       smcrv2->nexthop_mac,
+ 						       &smcrv2->uses_gateway))
+diff --git a/net/smc/smc_ib.h b/net/smc/smc_ib.h
+index 034295676e881..ebcb05ede7f55 100644
+--- a/net/smc/smc_ib.h
++++ b/net/smc/smc_ib.h
+@@ -113,7 +113,7 @@ void smc_ib_sync_sg_for_device(struct smc_link *lnk,
+ int smc_ib_determine_gid(struct smc_ib_device *smcibdev, u8 ibport,
+ 			 unsigned short vlan_id, u8 gid[], u8 *sgid_index,
+ 			 struct smc_init_info_smcrv2 *smcrv2);
+-int smc_ib_find_route(__be32 saddr, __be32 daddr,
++int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
+ 		      u8 nexthop_mac[], u8 *uses_gateway);
+ bool smc_ib_is_valid_local_systemid(void);
+ int smcr_nl_get_device(struct sk_buff *skb, struct netlink_callback *cb);
+-- 
+2.40.1
+
 
 
