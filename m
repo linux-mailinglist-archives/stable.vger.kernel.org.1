@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E16AD7D319A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 909697D32D4
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230351AbjJWLLB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36260 "EHLO
+        id S233891AbjJWLY0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:24:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233537AbjJWLLA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:00 -0400
+        with ESMTP id S233899AbjJWLYY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38497FD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42524C433C7;
-        Mon, 23 Oct 2023 11:10:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1793210FD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69102C433C7;
+        Mon, 23 Oct 2023 11:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059456;
-        bh=nzRpaXyFnm1ZNeeAgkETRyZpsHCwkQNCuDFEJ9HICog=;
+        s=korg; t=1698060240;
+        bh=IyU/ioMbhzT/lmu5hBpHRQhDek+uQ2twA6KbLkB0RLQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jKyvddbS6RQuaWfEUvmoDTZXmoqToAouaZStMdOCeGo9Q6/aBw/c+XwoHVi3W0RRm
-         iOOaTXd2DbJCfJYPdmZsmYqWsMn++tUNHLzQbt94AU4xq/KbY2tNi6HuysFpECTnJZ
-         dMSxLx0leL7SWL0tw8405sox2iuS0lLxFgbQTF34=
+        b=FcCJfoQ13TjkHLBY0AjgQ3zcI3KWh0wuTFTowsy80I0+lNkbtpWNUxbTjEF6gIajK
+         AzQPd1buTwxhRSyARUCJkrgJVeKNzWt/eyflTis2CIJRJceRUD1u0uAmN6C82GI8/8
+         1x4HHUm7A4qfFt/R3xpqdosFZX+k8pWFaihmoBto=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
-        Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 6.5 184/241] perf dlfilter: Fix use of addr_location__exit() in dlfilter__object_code()
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
+        Bastien Nocera <hadess@hadess.net>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/196] HID: logitech-hidpp: Add Bluetooth ID for the Logitech M720 Triathlon mouse
 Date:   Mon, 23 Oct 2023 12:56:10 +0200
-Message-ID: <20231023104838.368460241@linuxfoundation.org>
+Message-ID: <20231023104831.499776049@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,87 +49,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 7a48b58eb5ff3798f0480d2da16bf27df9654fc7 upstream.
+[ Upstream commit 2d866603e25b1ce7e536839f62d1faae1c03d92f ]
 
-Stop calling addr_location__exit() when addr_location__init() was not
-called.
+Using hidpp for the M720 adds battery info reporting and hires
+scrolling support.
 
-Fixes: 0dd5041c9a0e ("perf addr_location: Add init/exit/copy functions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20230928071605.17624-1-adrian.hunter@intel.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Bastien Nocera <hadess@hadess.net>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/dlfilter.c |   34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ drivers/hid/hid-logitech-hidpp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/perf/util/dlfilter.c
-+++ b/tools/perf/util/dlfilter.c
-@@ -280,13 +280,21 @@ static struct perf_event_attr *dlfilter_
- 	return &d->evsel->core.attr;
- }
- 
-+static __s32 code_read(__u64 ip, struct map *map, struct machine *machine, void *buf, __u32 len)
-+{
-+	u64 offset = map__map_ip(map, ip);
-+
-+	if (ip + len >= map__end(map))
-+		len = map__end(map) - ip;
-+
-+	return dso__data_read_offset(map__dso(map), machine, offset, buf, len);
-+}
-+
- static __s32 dlfilter__object_code(void *ctx, __u64 ip, void *buf, __u32 len)
- {
- 	struct dlfilter *d = (struct dlfilter *)ctx;
- 	struct addr_location *al;
- 	struct addr_location a;
--	struct map *map;
--	u64 offset;
- 	__s32 ret;
- 
- 	if (!d->ctx_valid)
-@@ -296,27 +304,17 @@ static __s32 dlfilter__object_code(void
- 	if (!al)
- 		return -1;
- 
--	map = al->map;
--
--	if (map && ip >= map__start(map) && ip < map__end(map) &&
-+	if (al->map && ip >= map__start(al->map) && ip < map__end(al->map) &&
- 	    machine__kernel_ip(d->machine, ip) == machine__kernel_ip(d->machine, d->sample->ip))
--		goto have_map;
-+		return code_read(ip, al->map, d->machine, buf, len);
- 
- 	addr_location__init(&a);
-+
- 	thread__find_map_fb(al->thread, d->sample->cpumode, ip, &a);
--	if (!a.map) {
--		ret = -1;
--		goto out;
--	}
--
--	map = a.map;
--have_map:
--	offset = map__map_ip(map, ip);
--	if (ip + len >= map__end(map))
--		len = map__end(map) - ip;
--	ret = dso__data_read_offset(map__dso(map), d->machine, offset, buf, len);
--out:
-+	ret = a.map ? code_read(ip, a.map, d->machine, buf, len) : -1;
-+
- 	addr_location__exit(&a);
-+
- 	return ret;
- }
- 
+diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+index fb427391c3b86..8d0dad12b2d37 100644
+--- a/drivers/hid/hid-logitech-hidpp.c
++++ b/drivers/hid/hid-logitech-hidpp.c
+@@ -4427,6 +4427,8 @@ static const struct hid_device_id hidpp_devices[] = {
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb008) },
+ 	{ /* MX Master mouse over Bluetooth */
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb012) },
++	{ /* M720 Triathlon mouse over Bluetooth */
++	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb015) },
+ 	{ /* MX Ergo trackball over Bluetooth */
+ 	  HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb01d) },
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_LOGITECH, 0xb01e) },
+-- 
+2.40.1
+
 
 
