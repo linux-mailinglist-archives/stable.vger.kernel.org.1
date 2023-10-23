@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E54667D31B0
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E5337D31E8
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233606AbjJWLMC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:12:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34216 "EHLO
+        id S233691AbjJWLOf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:14:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233614AbjJWLMB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:01 -0400
+        with ESMTP id S233690AbjJWLOe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7FB9D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D91C433C8;
-        Mon, 23 Oct 2023 11:11:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59FE592
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D0EC433C7;
+        Mon, 23 Oct 2023 11:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059519;
-        bh=Nd4aurxRobVm9DhIUoz7un6lpjg6XJgPo9xnKbzwhf0=;
+        s=korg; t=1698059671;
+        bh=pzv62eony7DMxuiXBbFyRrkbtOpU9WkiT9tRoWas0YA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kl9OMfHIHvqKB9hsod/MRVBq7OC6HgSb5zT8rUIknIbX2uhmYMmUMejt4qUXO/orx
-         /fDtNqbWLe8escumXcT5xCMKEyLYoHX9qpC7vPQyCobiw0F+2wLv1DvrPWo75WeZMm
-         PtybsS2posFR0lb3WbcirDiLnaELw2/t6eqQwP7Q=
+        b=UV10M6xmgyE8T0wjffxo2YhgoK9lTbRqNykGXy3uDR1P1//Rto4meqH9vaD/BNWf2
+         E12vgcSj0RXCN89fXQ7wIt6SjgnTq/sitv5GCVaCcRZxifJZnGKVsDnD4Ilbo5YfbN
+         wl1bMQssQAnCsi9sws7b79ocWeEzawXXfRqu3Cg8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.5 177/241] pinctrl: qcom: lpass-lpi: fix concurrent register updates
+        patches@lists.linux.dev,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Zack Rusin <zackr@vmware.com>, Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 4.19 14/98] drm/vmwgfx: fix typo of sizeof argument
 Date:   Mon, 23 Oct 2023 12:56:03 +0200
-Message-ID: <20231023104838.199697338@linuxfoundation.org>
+Message-ID: <20231023104814.085936019@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,127 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-commit c8befdc411e5fd1bf95a13e8744c8ca79b412bee upstream.
+[ Upstream commit 39465cac283702a7d4a507a558db81898029c6d3 ]
 
-The Qualcomm LPASS LPI pin controller driver uses one lock for guarding
-Read-Modify-Write code for slew rate registers.  However the pin
-configuration and muxing registers have exactly the same RMW code but
-are not protected.
+Since size of 'header' pointer and '*header' structure is equal on 64-bit
+machines issue probably didn't cause any wrong behavior. But anyway,
+fixing typo is required.
 
-Pin controller framework does not provide locking here, thus it is
-possible to trigger simultaneous change of pin configuration registers
-resulting in non-atomic changes.
-
-Protect from concurrent access by re-using the same lock used to cover
-the slew rate register.  Using the same lock instead of adding second
-one will make more sense, once we add support for newer Qualcomm SoC,
-where slew rate is configured in the same register as pin
-configuration/muxing.
-
-Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231013145705.219954-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7a73ba7469cb ("drm/vmwgfx: Use TTM handles instead of SIDs as user-space surface handles.")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230905100203.1716731-1-konstantin.meskhidze@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-lpass-lpi.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-@@ -31,7 +31,8 @@ struct lpi_pinctrl {
- 	char __iomem *tlmm_base;
- 	char __iomem *slew_base;
- 	struct clk_bulk_data clks[MAX_LPI_NUM_CLKS];
--	struct mutex slew_access_lock;
-+	/* Protects from concurrent register updates */
-+	struct mutex lock;
- 	DECLARE_BITMAP(ever_gpio, MAX_NR_GPIO);
- 	const struct lpi_pinctrl_variant_data *data;
- };
-@@ -102,6 +103,7 @@ static int lpi_gpio_set_mux(struct pinct
- 	if (WARN_ON(i == g->nfuncs))
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index e65554f5a89d5..2480afa466f2b 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1834,7 +1834,7 @@ static int vmw_cmd_tex_state(struct vmw_private *dev_priv,
+ 	} *cmd;
  
-+	mutex_lock(&pctrl->lock);
- 	val = lpi_gpio_read(pctrl, pin, LPI_GPIO_CFG_REG);
- 
- 	/*
-@@ -127,6 +129,7 @@ static int lpi_gpio_set_mux(struct pinct
- 
- 	u32p_replace_bits(&val, i, LPI_GPIO_FUNCTION_MASK);
- 	lpi_gpio_write(pctrl, pin, LPI_GPIO_CFG_REG, val);
-+	mutex_unlock(&pctrl->lock);
- 
- 	return 0;
- }
-@@ -232,14 +235,14 @@ static int lpi_config_set(struct pinctrl
- 			if (slew_offset == LPI_NO_SLEW)
- 				break;
- 
--			mutex_lock(&pctrl->slew_access_lock);
-+			mutex_lock(&pctrl->lock);
- 
- 			sval = ioread32(pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
- 			sval &= ~(LPI_SLEW_RATE_MASK << slew_offset);
- 			sval |= arg << slew_offset;
- 			iowrite32(sval, pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
- 
--			mutex_unlock(&pctrl->slew_access_lock);
-+			mutex_unlock(&pctrl->lock);
- 			break;
- 		default:
- 			return -EINVAL;
-@@ -255,6 +258,7 @@ static int lpi_config_set(struct pinctrl
- 		lpi_gpio_write(pctrl, group, LPI_GPIO_VALUE_REG, val);
- 	}
- 
-+	mutex_lock(&pctrl->lock);
- 	val = lpi_gpio_read(pctrl, group, LPI_GPIO_CFG_REG);
- 
- 	u32p_replace_bits(&val, pullup, LPI_GPIO_PULL_MASK);
-@@ -263,6 +267,7 @@ static int lpi_config_set(struct pinctrl
- 	u32p_replace_bits(&val, output_enabled, LPI_GPIO_OE_MASK);
- 
- 	lpi_gpio_write(pctrl, group, LPI_GPIO_CFG_REG, val);
-+	mutex_unlock(&pctrl->lock);
- 
- 	return 0;
- }
-@@ -464,7 +469,7 @@ int lpi_pinctrl_probe(struct platform_de
- 	pctrl->chip.label = dev_name(dev);
- 	pctrl->chip.can_sleep = false;
- 
--	mutex_init(&pctrl->slew_access_lock);
-+	mutex_init(&pctrl->lock);
- 
- 	pctrl->ctrl = devm_pinctrl_register(dev, &pctrl->desc, pctrl);
- 	if (IS_ERR(pctrl->ctrl)) {
-@@ -486,7 +491,7 @@ int lpi_pinctrl_probe(struct platform_de
- 	return 0;
- 
- err_pinctrl:
--	mutex_destroy(&pctrl->slew_access_lock);
-+	mutex_destroy(&pctrl->lock);
- 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
- 
- 	return ret;
-@@ -498,7 +503,7 @@ int lpi_pinctrl_remove(struct platform_d
- 	struct lpi_pinctrl *pctrl = platform_get_drvdata(pdev);
- 	int i;
- 
--	mutex_destroy(&pctrl->slew_access_lock);
-+	mutex_destroy(&pctrl->lock);
- 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
- 
- 	for (i = 0; i < pctrl->data->npins; i++)
+ 	SVGA3dTextureState *last_state = (SVGA3dTextureState *)
+-	  ((unsigned long) header + header->size + sizeof(header));
++	  ((unsigned long) header + header->size + sizeof(*header));
+ 	SVGA3dTextureState *cur_state = (SVGA3dTextureState *)
+ 		((unsigned long) header + sizeof(struct vmw_tex_state_cmd));
+ 	struct vmw_resource_val_node *ctx_node;
+-- 
+2.40.1
+
 
 
