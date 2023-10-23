@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2248C7D3453
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:38:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E4D67D30C7
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234208AbjJWLig (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:38:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53650 "EHLO
+        id S232725AbjJWLCG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:02:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234201AbjJWLif (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:38:35 -0400
+        with ESMTP id S232844AbjJWLCD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:02:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C591E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:38:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C3CC433C9;
-        Mon, 23 Oct 2023 11:38:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E965D7B
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:02:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D20AC433C7;
+        Mon, 23 Oct 2023 11:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061112;
-        bh=P9VR7M285L92vfg2YR4QMp28rh+tasBmgiGMIMJfAYg=;
+        s=korg; t=1698058919;
+        bh=8gjtS4H7828daiOLbD8BnncGNCSZx4pa1AyfB45V8p4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uekdYFacAPxHH/PK2Dtknmn1gEKPNDXRz0tw6DfWFoP56CufvlCoYxwmJfFYXiw1F
-         LZsSKNl7QfF1+5GZpnwRpILqa+QqU5JX65BWyKkrAVttwIvCcFKtLCjg7+VRI2m+2m
-         YjAQ/Rm9DtfHxLRzeQ3tN+fSMscnbo4r84BADDOA=
+        b=bD9mGqZkJqvtBCX/9MsvLOw8B3cv0KivruKmA4fgK0g4VxlVOTjw9f6O+2GYKX4EG
+         GtRLZiA2+YRGZY4PBbj3FGj7TAfpcbgzbOGdwxu1dLWlOm3p3QrJ2C6tEjyQE6qFZM
+         Xq32bfJEPPjPoSY9RvIIpq+dDtmRAJVsvLLESRLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Juntong Deng <juntong.deng@outlook.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 049/137] selftests/mm: fix awk usage in charge_reserved_hugetlb.sh and hugetlb_reparenting_test.sh that may cause error
+        patches@lists.linux.dev,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 4.14 56/66] Revert "pinctrl: avoid unsafe code pattern in find_pinctrl()"
 Date:   Mon, 23 Oct 2023 12:56:46 +0200
-Message-ID: <20231023104822.667002718@linuxfoundation.org>
+Message-ID: <20231023104812.917228983@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,80 +49,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juntong Deng <juntong.deng@outlook.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit bbe246f875d064ecfb872fe4f66152e743dfd22d ]
+commit 62140a1e4dec4594d5d1e1d353747bf2ef434e8b upstream.
 
-According to the awk manual, the -e option does not need to be specified
-in front of 'program' (unless you need to mix program-file).
+The commit breaks MMC enumeration on the Intel Merrifield
+plaform.
 
-The redundant -e option can cause error when users use awk tools other
-than gawk (for example, mawk does not support the -e option).
+Before:
+[   36.439057] mmc0: SDHCI controller on PCI [0000:00:01.0] using ADMA
+[   36.450924] mmc2: SDHCI controller on PCI [0000:00:01.3] using ADMA
+[   36.459355] mmc1: SDHCI controller on PCI [0000:00:01.2] using ADMA
+[   36.706399] mmc0: new DDR MMC card at address 0001
+[   37.058972] mmc2: new ultra high speed DDR50 SDIO card at address 0001
+[   37.278977] mmcblk0: mmc0:0001 H4G1d 3.64 GiB
+[   37.297300]  mmcblk0: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
 
-Error Example:
-awk: not an option: -e
+After:
+[   36.436704] mmc2: SDHCI controller on PCI [0000:00:01.3] using ADMA
+[   36.436720] mmc1: SDHCI controller on PCI [0000:00:01.0] using ADMA
+[   36.463685] mmc0: SDHCI controller on PCI [0000:00:01.2] using ADMA
+[   36.720627] mmc1: new DDR MMC card at address 0001
+[   37.068181] mmc2: new ultra high speed DDR50 SDIO card at address 0001
+[   37.279998] mmcblk1: mmc1:0001 H4G1d 3.64 GiB
+[   37.302670]  mmcblk1: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
 
-Link: https://lkml.kernel.org/r/VI1P193MB075228810591AF2FDD7D42C599C3A@VI1P193MB0752.EURP193.PROD.OUTLOOK.COM
-Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This reverts commit c153a4edff6ab01370fcac8e46f9c89cca1060c2.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20231017141806.535191-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/vm/charge_reserved_hugetlb.sh  | 4 ++--
- tools/testing/selftests/vm/hugetlb_reparenting_test.sh | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/pinctrl/core.c |   16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-index a5cb4b09a46c4..0899019a7fcb4 100644
---- a/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-+++ b/tools/testing/selftests/vm/charge_reserved_hugetlb.sh
-@@ -25,7 +25,7 @@ if [[ "$1" == "-cgroup-v2" ]]; then
- fi
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -973,20 +973,17 @@ static int add_setting(struct pinctrl *p
  
- if [[ $cgroup2 ]]; then
--  cgroup_path=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
-+  cgroup_path=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
-     cgroup_path=/dev/cgroup/memory
-     mount -t cgroup2 none $cgroup_path
-@@ -33,7 +33,7 @@ if [[ $cgroup2 ]]; then
-   fi
-   echo "+hugetlb" >$cgroup_path/cgroup.subtree_control
- else
--  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
-+  cgroup_path=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$cgroup_path" ]]; then
-     cgroup_path=/dev/cgroup/memory
-     mount -t cgroup memory,hugetlb $cgroup_path
-diff --git a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-index bf2d2a684edfd..14d26075c8635 100644
---- a/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-+++ b/tools/testing/selftests/vm/hugetlb_reparenting_test.sh
-@@ -20,7 +20,7 @@ fi
+ static struct pinctrl *find_pinctrl(struct device *dev)
+ {
+-	struct pinctrl *entry, *p = NULL;
++	struct pinctrl *p;
  
+ 	mutex_lock(&pinctrl_list_mutex);
+-
+-	list_for_each_entry(entry, &pinctrl_list, node) {
+-		if (entry->dev == dev) {
+-			p = entry;
+-			kref_get(&p->users);
+-			break;
++	list_for_each_entry(p, &pinctrl_list, node)
++		if (p->dev == dev) {
++			mutex_unlock(&pinctrl_list_mutex);
++			return p;
+ 		}
+-	}
  
- if [[ $cgroup2 ]]; then
--  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk -e '{print $3}')
-+  CGROUP_ROOT=$(mount -t cgroup2 | head -1 | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
-     CGROUP_ROOT=/dev/cgroup/memory
-     mount -t cgroup2 none $CGROUP_ROOT
-@@ -28,7 +28,7 @@ if [[ $cgroup2 ]]; then
-   fi
-   echo "+hugetlb +memory" >$CGROUP_ROOT/cgroup.subtree_control
- else
--  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk -e '{print $3}')
-+  CGROUP_ROOT=$(mount -t cgroup | grep ",hugetlb" | awk '{print $3}')
-   if [[ -z "$CGROUP_ROOT" ]]; then
-     CGROUP_ROOT=/dev/cgroup/memory
-     mount -t cgroup memory,hugetlb $CGROUP_ROOT
--- 
-2.40.1
-
+ 	mutex_unlock(&pinctrl_list_mutex);
+-	return p;
++	return NULL;
+ }
+ 
+ static void pinctrl_free(struct pinctrl *p, bool inlist);
+@@ -1095,6 +1092,7 @@ struct pinctrl *pinctrl_get(struct devic
+ 	p = find_pinctrl(dev);
+ 	if (p) {
+ 		dev_dbg(dev, "obtain a copy of previously claimed pinctrl\n");
++		kref_get(&p->users);
+ 		return p;
+ 	}
+ 
 
 
