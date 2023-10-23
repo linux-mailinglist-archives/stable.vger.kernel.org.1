@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68E387D34C2
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F307D3163
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234353AbjJWLmg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:42:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46586 "EHLO
+        id S233496AbjJWLIl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234359AbjJWLm0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:26 -0400
+        with ESMTP id S229973AbjJWLIk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEEE51703
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25379C433CA;
-        Mon, 23 Oct 2023 11:42:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CC199
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD959C433C7;
+        Mon, 23 Oct 2023 11:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061340;
-        bh=OElWDHAj7sPjUCdXE2/G9KV1sdrZyeLrUIzY2uVNTCA=;
+        s=korg; t=1698059319;
+        bh=PQ+SVLY1BXc7vfU22Dw4WBgvWkAATLkowOmpJ/idphY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=md68cTFux8PfBJufmOrGl7LM0+QUZ+jjLYmApcE8rkqVU72px4qPiaOEFvA2qLR49
-         yWuvBTCK9OEE7/2zUN6ztmr4U6Mnz6iBAPsgbzPwpS+U0i0NA+vrfqXznkk6aHMNur
-         myamUygIHSKKkpmzffqEVuIdGHa9w7aXMQbHMzs8=
+        b=WUgr4KvfQY2II3h0Cf1ILmflGUD6itW5SgW7Sgf3vD4bnOnQFcwzJBrhKgGmkmWs4
+         brc9Yq+GYnTp857nLvXmiXhgn6pgwikx6NjW0MCIBJJub1PGq7GzBVbCIrOlfqBvo8
+         nUBQ4r+w2v1lYki30yurEfSq75P/jq+V0JII0VUc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Petr Machata <petrm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Kenneth Feng <kenneth.feng@amd.com>,
+        Feifei Xu <Feifei.Xu@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/202] mlxsw: fix mlxsw_sp2_nve_vxlan_learning_set() return type
-Date:   Mon, 23 Oct 2023 12:55:22 +0200
-Message-ID: <20231023104827.056122774@linuxfoundation.org>
+Subject: [PATCH 6.5 137/241] drm/amd/pm: add unique_id for gc 11.0.3
+Date:   Mon, 23 Oct 2023 12:55:23 +0200
+Message-ID: <20231023104837.206555059@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +50,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Kenneth Feng <kenneth.feng@amd.com>
 
-[ Upstream commit 1e0b72a2a6432c0ef67ee5ce8d9172a7c20bba25 ]
+[ Upstream commit 4953856f280b2b606089a72a93a1e9212a3adaca ]
 
-The mlxsw_sp2_nve_vxlan_learning_set() function is supposed to return
-zero on success or negative error codes.  So it needs to be type int
-instead of bool.
+add unique_id for gc 11.0.3
 
-Fixes: 4ee70efab68d ("mlxsw: spectrum_nve: Add support for VXLAN on Spectrum-2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
+Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c
-index 05517c7feaa56..a20ba23f0ed7a 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_nve_vxlan.c
-@@ -294,8 +294,8 @@ const struct mlxsw_sp_nve_ops mlxsw_sp1_nve_vxlan_ops = {
- 	.fdb_clear_offload = mlxsw_sp_nve_vxlan_clear_offload,
- };
- 
--static bool mlxsw_sp2_nve_vxlan_learning_set(struct mlxsw_sp *mlxsw_sp,
--					     bool learning_en)
-+static int mlxsw_sp2_nve_vxlan_learning_set(struct mlxsw_sp *mlxsw_sp,
-+					    bool learning_en)
- {
- 	char tnpc_pl[MLXSW_REG_TNPC_LEN];
- 
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+index d68fe5474676b..7f7a476b6829c 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -2077,6 +2077,7 @@ static int default_attr_update(struct amdgpu_device *adev, struct amdgpu_device_
+ 		case IP_VERSION(11, 0, 0):
+ 		case IP_VERSION(11, 0, 1):
+ 		case IP_VERSION(11, 0, 2):
++		case IP_VERSION(11, 0, 3):
+ 			*states = ATTR_STATE_SUPPORTED;
+ 			break;
+ 		default:
 -- 
 2.40.1
 
