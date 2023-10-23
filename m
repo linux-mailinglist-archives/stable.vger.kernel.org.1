@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F52D7D32A1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 866AC7D3191
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233765AbjJWLWU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:22:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35744 "EHLO
+        id S230438AbjJWLKk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:10:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233839AbjJWLWU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:20 -0400
+        with ESMTP id S232934AbjJWLKj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF5FC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CD2C433C8;
-        Mon, 23 Oct 2023 11:22:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81100DD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A708DC433C8;
+        Mon, 23 Oct 2023 11:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060136;
-        bh=FdKZusTjfdV+U9YytaiS00rVRYdSQjj+kZMbgFcr2o0=;
+        s=korg; t=1698059436;
+        bh=fKBFiW7uDzxRIjuMuxxRu97eVjK25QNY0W/WiErMIVs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0PH15/5nZMxBveCn7/RULNK1pLonaZoPXv0D40xVYsVgRz59rnW4EyOfAQ3oALWnH
-         K182mzkRmHh9dUBg33ivL6QSED8i5vofxBsiz9ec48Q+mN2c7DTlTOVD1dJiMmNsl/
-         fOJ1Tu/xRy9CEF/JJaI0c48vn4H/W9R2wYEb4rao=
+        b=wD5Gx1AoLdhdrEWC7Mbvk42GfN9RLUvfmGXFdN3afYaAUwAFia54+ZiTvHNbC7IMo
+         ShlAvC6mqNbRo6dh+m/Os/Yfimpf4AqG763QID+3KteIzsmpO6XrGg7mAQgJ7pMdms
+         w6/n2eZHH/Dkgp9QkfMzuPp9504FC17/VRjqNhU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.1 070/196] netfilter: nf_tables: do not remove elements if set backend implements .abort
-Date:   Mon, 23 Oct 2023 12:55:35 +0200
-Message-ID: <20231023104830.522368047@linuxfoundation.org>
+        patches@lists.linux.dev, Maher Sanalla <msanalla@nvidia.com>,
+        Shay Drory <shayd@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 150/241] net/mlx5: Handle fw tracer change ownership event based on MTRC
+Date:   Mon, 23 Oct 2023 12:55:36 +0200
+Message-ID: <20231023104837.525941548@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,40 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-commit ebd032fa881882fef2acb9da1bbde48d8233241d upstream.
+[ Upstream commit 92fd39634541eb0a11bf1bafbc8ba92d6ddb8dba ]
 
-pipapo set backend maintains two copies of the datastructure, removing
-the elements from the copy that is going to be discarded slows down
-the abort path significantly, from several minutes to few seconds after
-this patch.
+Currently, whenever fw issues a change ownership event, the PF that owns
+the fw tracer drops its ownership directly and the other PFs try to pick
+up the ownership via what MTRC register suggests.
 
-Fixes: 212ed75dc5fb ("netfilter: nf_tables: integrate pipapo into commit protocol")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In some cases, driver releases the ownership of the tracer and reacquires
+it later on. Whenever the driver releases ownership of the tracer, fw
+issues a change ownership event. This event can be delayed and come after
+driver has reacquired ownership of the tracer. Thus the late event will
+trigger the tracer owner PF to release the ownership again and lead to a
+scenario where no PF is owning the tracer.
+
+To prevent the scenario described above, when handling a change
+ownership event, do not drop ownership of the tracer directly, instead
+read the fw MTRC register to retrieve the up-to-date owner of the tracer
+and set it accordingly in driver level.
+
+Fixes: f53aaa31cce7 ("net/mlx5: FW tracer, implement tracer logic")
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Reviewed-by: Shay Drory <shayd@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9931,7 +9931,10 @@ static int __nf_tables_abort(struct net
- 				break;
- 			}
- 			te = (struct nft_trans_elem *)trans->data;
--			nft_setelem_remove(net, te->set, &te->elem);
-+			if (!te->set->ops->abort ||
-+			    nft_setelem_is_catchall(te->set, &te->elem))
-+				nft_setelem_remove(net, te->set, &te->elem);
-+
- 			if (!nft_setelem_is_catchall(te->set, &te->elem))
- 				atomic_dec(&te->set->nelems);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index 7c0f2adbea000..ad789349c06e6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -848,7 +848,7 @@ static void mlx5_fw_tracer_ownership_change(struct work_struct *work)
  
+ 	mlx5_core_dbg(tracer->dev, "FWTracer: ownership changed, current=(%d)\n", tracer->owner);
+ 	if (tracer->owner) {
+-		tracer->owner = false;
++		mlx5_fw_tracer_ownership_acquire(tracer);
+ 		return;
+ 	}
+ 
+-- 
+2.40.1
+
 
 
