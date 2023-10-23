@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 759357D3077
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C00C7D3198
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbjJWK7B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 06:59:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33604 "EHLO
+        id S233067AbjJWLKy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:10:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjJWK7A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:00 -0400
+        with ESMTP id S233508AbjJWLKx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F381ED6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:58:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D011C433C7;
-        Mon, 23 Oct 2023 10:58:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16DA3C5
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5617BC433C8;
+        Mon, 23 Oct 2023 11:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058738;
-        bh=QiagPxZIlB4EZk8RMUPx2EXceJ4XEoTflqnyV7eXHDg=;
+        s=korg; t=1698059450;
+        bh=B9o7X4HPgmQAGZDdEBs7ZtceVpLfdp6/e7SkUhahtxQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=H2Xbm5BPnBL4FSs5lpUXfemNNB1p/IV3XEJXBDSVE9wxxiLs29QMxpTUJD0Cp9mLx
-         i8v9z4bEo9HS2KHfX930KJVnNa2l8PM8PYpGqEShEqo2S8w+o4cGVMxrPdA6fqr9K8
-         rFA9w9so3AxmeofGVVfzzUt2+t+eMYS2EoSOKHwc=
+        b=LkfVl1aL8GxY12DzAYyUtDhCdLEyASmXQSm2eG8r5AW1U9YWI3qlnrhGD4H/IwwEY
+         0goFJtlmS49tgkFh22Zz6v/zM2TxUWqsY0UPgSPCa5ddgOI0T+NYqAgP7O5kT4+eOi
+         Q4M59rDQT5guBTBdHphBKRhVcQIEms8g39ARNeG4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wesley Cheng <quic_wcheng@quicinc.com>,
-        Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 4.14 10/66] usb: xhci: xhci-ring: Use sysdev for mapping bounce buffer
+        patches@lists.linux.dev, Avri Altman <avri.altman@wdc.com>,
+        Christian Loehle <christian.loehle@arm.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.5 174/241] mmc: core: Fix error propagation for some ioctl commands
 Date:   Mon, 23 Oct 2023 12:56:00 +0200
-Message-ID: <20231023104811.167118678@linuxfoundation.org>
+Message-ID: <20231023104838.127524822@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,58 +49,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit 41a43013d2366db5b88b42bbcd8e8f040b6ccf21 upstream.
+commit f19c5a73e6f78d69efce66cfdce31148c76a61a6 upstream.
 
-As mentioned in:
-  commit 474ed23a6257 ("xhci: align the last trb before link if it is
-easily splittable.")
+Userspace has currently no way of checking the internal R1 response error
+bits for some commands. This is a problem for some commands, like RPMB for
+example. Typically, we may detect that the busy completion has successfully
+ended, while in fact the card did not complete the requested operation.
 
-A bounce buffer is utilized for ensuring that transfers that span across
-ring segments are aligned to the EP's max packet size.  However, the device
-that is used to map the DMA buffer to is currently using the XHCI HCD,
-which does not carry any DMA operations in certain configrations.
-Migration to using the sysdev entry was introduced for DWC3 based
-implementations where the IOMMU operations are present.
+To fix the problem, let's always poll with CMD13 for these commands and
+during the polling, let's also aggregate the R1 response bits. Before
+completing the ioctl request, let's propagate the R1 response bits too.
 
-Replace the reference to the controller device to sysdev instead.  This
-allows the bounce buffer to be properly mapped to any implementations that
-have an IOMMU involved.
-
-cc: stable@vger.kernel.org
-Fixes: 4c39d4b949d3 ("usb: xhci: use bus->sysdev for DMA configuration")
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20230915143108.1532163-2-mathias.nyman@linux.intel.com
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Co-developed-by: Christian Loehle <christian.loehle@arm.com>
+Signed-off-by: Christian Loehle <christian.loehle@arm.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230913112921.553019-1-ulf.hansson@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/core/block.c |   31 ++++++++++++++++++++-----------
+ 1 file changed, 20 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -700,7 +700,7 @@ static void xhci_giveback_urb_in_irq(str
- static void xhci_unmap_td_bounce_buffer(struct xhci_hcd *xhci,
- 		struct xhci_ring *ring, struct xhci_td *td)
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -179,6 +179,7 @@ static void mmc_blk_rw_rq_prep(struct mm
+ 			       struct mmc_queue *mq);
+ static void mmc_blk_hsq_req_done(struct mmc_request *mrq);
+ static int mmc_spi_err_check(struct mmc_card *card);
++static int mmc_blk_busy_cb(void *cb_data, bool *busy);
+ 
+ static struct mmc_blk_data *mmc_blk_get(struct gendisk *disk)
  {
--	struct device *dev = xhci_to_hcd(xhci)->self.controller;
-+	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
- 	struct xhci_segment *seg = td->bounce_seg;
- 	struct urb *urb = td->urb;
- 	size_t len;
-@@ -3272,7 +3272,7 @@ static u32 xhci_td_remainder(struct xhci
- static int xhci_align_td(struct xhci_hcd *xhci, struct urb *urb, u32 enqd_len,
- 			 u32 *trb_buff_len, struct xhci_segment *seg)
- {
--	struct device *dev = xhci_to_hcd(xhci)->self.controller;
-+	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
- 	unsigned int unalign;
- 	unsigned int max_pkt;
- 	u32 new_buff_len;
+@@ -470,7 +471,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	struct mmc_data data = {};
+ 	struct mmc_request mrq = {};
+ 	struct scatterlist sg;
+-	bool r1b_resp, use_r1b_resp = false;
++	bool r1b_resp;
+ 	unsigned int busy_timeout_ms;
+ 	int err;
+ 	unsigned int target_part;
+@@ -551,8 +552,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	busy_timeout_ms = idata->ic.cmd_timeout_ms ? : MMC_BLK_TIMEOUT_MS;
+ 	r1b_resp = (cmd.flags & MMC_RSP_R1B) == MMC_RSP_R1B;
+ 	if (r1b_resp)
+-		use_r1b_resp = mmc_prepare_busy_cmd(card->host, &cmd,
+-						    busy_timeout_ms);
++		mmc_prepare_busy_cmd(card->host, &cmd, busy_timeout_ms);
+ 
+ 	mmc_wait_for_req(card->host, &mrq);
+ 	memcpy(&idata->ic.response, cmd.resp, sizeof(cmd.resp));
+@@ -605,19 +605,28 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	if (idata->ic.postsleep_min_us)
+ 		usleep_range(idata->ic.postsleep_min_us, idata->ic.postsleep_max_us);
+ 
+-	/* No need to poll when using HW busy detection. */
+-	if ((card->host->caps & MMC_CAP_WAIT_WHILE_BUSY) && use_r1b_resp)
+-		return 0;
+-
+ 	if (mmc_host_is_spi(card->host)) {
+ 		if (idata->ic.write_flag || r1b_resp || cmd.flags & MMC_RSP_SPI_BUSY)
+ 			return mmc_spi_err_check(card);
+ 		return err;
+ 	}
+-	/* Ensure RPMB/R1B command has completed by polling with CMD13. */
+-	if (idata->rpmb || r1b_resp)
+-		err = mmc_poll_for_busy(card, busy_timeout_ms, false,
+-					MMC_BUSY_IO);
++
++	/*
++	 * Ensure RPMB, writes and R1B responses are completed by polling with
++	 * CMD13. Note that, usually we don't need to poll when using HW busy
++	 * detection, but here it's needed since some commands may indicate the
++	 * error through the R1 status bits.
++	 */
++	if (idata->rpmb || idata->ic.write_flag || r1b_resp) {
++		struct mmc_blk_busy_data cb_data = {
++			.card = card,
++		};
++
++		err = __mmc_poll_for_busy(card->host, 0, busy_timeout_ms,
++					  &mmc_blk_busy_cb, &cb_data);
++
++		idata->ic.response[0] = cb_data.status;
++	}
+ 
+ 	return err;
+ }
 
 
