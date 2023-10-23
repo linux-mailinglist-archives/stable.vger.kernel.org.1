@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31A727D3495
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19EC37D35A3
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234262AbjJWLlC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:41:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44222 "EHLO
+        id S234604AbjJWLuX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:50:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234264AbjJWLlB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:41:01 -0400
+        with ESMTP id S234594AbjJWLuW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD35BFD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269D4C433C7;
-        Mon, 23 Oct 2023 11:40:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75483AF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:50:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4462C433C8;
+        Mon, 23 Oct 2023 11:50:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061259;
-        bh=1xWya84bQ1MeSVas5L/dGJZVMofiDycfTS9kOG5Xf9E=;
+        s=korg; t=1698061820;
+        bh=0GNu3ImH74vau3drmfSXzoGzwJEy1gap0OEOrjxXx98=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J+sL80yoH2byo+MzDjGpxvJs2cnUpap/7nZqZXo101AIRqDjm9fYoNlJow30G31il
-         fHo8nKYmgX+g0uKw4IUh7Asn7jMsB/4/4Ram9T1MfsndwuZxBW3fj5oZUQaokYNhdN
-         tktpExfXKR/BBryTesEgT9Aj0VT5F1XWXvSguk7s=
+        b=exRtngF5ovNZ9a+IUbDSaFVtfyeTCjfldJ1ZfP7I9ORDWaPQ29o4qDJ200C7f4bPf
+         FnY0MIFC0IbQRWk3cxPPGWJI7XbmmFYGr01IMt5EHts7wyjHYnRWxix+8U28NJy3B1
+         un94t1sTA++9bs2bEwf+Y5xLEbY1TJoWF66CCIMk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, James John <me@donjajo.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 5.15 125/137] platform/x86: asus-wmi: Change ASUS_WMI_BRN_DOWN code from 0x20 to 0x2e
+        patches@lists.linux.dev, Aviram Dali <aviramd@marvell.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Ravi Chandra Minnikanti <rminnikanti@marvell.com>
+Subject: [PATCH 5.10 175/202] mtd: rawnand: marvell: Ensure program page operations are successful
 Date:   Mon, 23 Oct 2023 12:58:02 +0200
-Message-ID: <20231023104824.945817232@linuxfoundation.org>
+Message-ID: <20231023104831.590434512@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,70 +49,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit f37cc2fc277b371fc491890afb7d8a26e36bb3a1 upstream.
+commit 3e01d5254698ea3d18e09d96b974c762328352cd upstream.
 
-Older Asus laptops change the backlight level themselves and then send
-WMI events with different codes for different backlight levels.
+The NAND core complies with the ONFI specification, which itself
+mentions that after any program or erase operation, a status check
+should be performed to see whether the operation was finished *and*
+successful.
 
-The asus-wmi.c code maps the entire range of codes reported on
-brightness down keypresses to an internal ASUS_WMI_BRN_DOWN code:
+The NAND core offers helpers to finish a page write (sending the
+"PAGE PROG" command, waiting for the NAND chip to be ready again, and
+checking the operation status). But in some cases, advanced controller
+drivers might want to optimize this and craft their own page write
+helper to leverage additional hardware capabilities, thus not always
+using the core facilities.
 
-define NOTIFY_BRNUP_MIN                0x11
-define NOTIFY_BRNUP_MAX                0x1f
-define NOTIFY_BRNDOWN_MIN              0x20
-define NOTIFY_BRNDOWN_MAX              0x2e
+Some drivers, like this one, do not use the core helper to finish a page
+write because the final cycles are automatically managed by the
+hardware. In this case, the additional care must be taken to manually
+perform the final status check.
 
-        if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
-                code = ASUS_WMI_BRN_UP;
-        else if (code >= NOTIFY_BRNDOWN_MIN && code <= NOTIFY_BRNDOWN_MAX)
-                code = ASUS_WMI_BRN_DOWN;
+Let's read the NAND chip status at the end of the page write helper and
+return -EIO upon error.
 
-Before this commit all the NOTIFY_BRNDOWN_MIN - NOTIFY_BRNDOWN_MAX
-aka 0x20 - 0x2e events were mapped to 0x20.
-
-This mapping is causing issues on new laptop models which actually
-send 0x2b events for printscreen presses and 0x2c events for
-capslock presses, which get translated into spurious brightness-down
-presses.
-
-The plan is disable the 0x11-0x2e special mapping on laptops
-where asus-wmi does not register a backlight-device to avoid
-the spurious brightness-down keypresses. New laptops always send
-0x2e for brightness-down presses, change the special internal
-ASUS_WMI_BRN_DOWN value from 0x20 to 0x2e to match this in
-preparation for fixing the spurious brightness-down presses.
-
-This change does not have any functional impact since all
-of 0x20 - 0x2e is mapped to ASUS_WMI_BRN_DOWN first and only
-then checked against the keymap code and the new 0x2e
-value is still in the 0x20 - 0x2e range.
-
-Reported-by: James John <me@donjajo.com>
-Closes: https://lore.kernel.org/platform-driver-x86/a2c441fe-457e-44cf-a146-0ecd86b037cf@donjajo.com/
-Closes: https://bbs.archlinux.org/viewtopic.php?pid=2123716
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231017090725.38163-2-hdegoede@redhat.com
+Cc: stable@vger.kernel.org
+Fixes: 02f26ecf8c77 ("mtd: nand: add reworked Marvell NAND controller driver")
+Reported-by: Aviram Dali <aviramd@marvell.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Ravi Chandra Minnikanti <rminnikanti@marvell.com>
+Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-1-miquel.raynal@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/asus-wmi.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/marvell_nand.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/asus-wmi.h
-+++ b/drivers/platform/x86/asus-wmi.h
-@@ -18,7 +18,7 @@
- #include <linux/i8042.h>
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -1148,6 +1148,7 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
+ 		.ndcb[2] = NDCB2_ADDR5_PAGE(page),
+ 	};
+ 	unsigned int oob_bytes = lt->spare_bytes + (raw ? lt->ecc_bytes : 0);
++	u8 status;
+ 	int ret;
  
- #define ASUS_WMI_KEY_IGNORE (-1)
--#define ASUS_WMI_BRN_DOWN	0x20
-+#define ASUS_WMI_BRN_DOWN	0x2e
- #define ASUS_WMI_BRN_UP		0x2f
+ 	/* NFCv2 needs more information about the operation being executed */
+@@ -1181,7 +1182,18 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
  
- struct module;
+ 	ret = marvell_nfc_wait_op(chip,
+ 				  PSEC_TO_MSEC(sdr->tPROG_max));
+-	return ret;
++	if (ret)
++		return ret;
++
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
++	return 0;
+ }
+ 
+ static int marvell_nfc_hw_ecc_hmg_write_page_raw(struct nand_chip *chip,
+@@ -1610,6 +1622,7 @@ static int marvell_nfc_hw_ecc_bch_write_
+ 	int data_len = lt->data_bytes;
+ 	int spare_len = lt->spare_bytes;
+ 	int chunk, ret;
++	u8 status;
+ 
+ 	marvell_nfc_select_target(chip, chip->cur_cs);
+ 
+@@ -1646,6 +1659,14 @@ static int marvell_nfc_hw_ecc_bch_write_
+ 	if (ret)
+ 		return ret;
+ 
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
+ 	return 0;
+ }
+ 
 
 
