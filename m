@@ -2,59 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E377D325D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 953037D3269
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233438AbjJWLTQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:19:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34656 "EHLO
+        id S233793AbjJWLTo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:19:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233783AbjJWLTO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:14 -0400
+        with ESMTP id S233791AbjJWLTo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A739DC
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D9FC433C8;
-        Mon, 23 Oct 2023 11:19:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC234A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4562C433C7;
+        Mon, 23 Oct 2023 11:19:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059951;
-        bh=ZUtodJewW5wO3r4yHFwQ1YgPM14JIU5cImn28r0D7xU=;
+        s=korg; t=1698059981;
+        bh=NuLOjatT2690W5n/TceQOxtxbW/Uegw5caIfb8oWP60=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JUea84aQ9spkwUFwoLWl7KMZLex0lPb9xEPaY7X0vb7givLwQMwq4F2g8LO9CtuPP
-         sk5oFlCKKvMNqoX0TnGWihbrLANRHadD0hBSUf0gBT1xRJgNiQojmDpYhlVSEmU/4m
-         jKmb/XiGgPcF5ZAfDlgnup2PKJ3C4vWT1MUiz4ns=
+        b=UxlnKXOiI0dCvHFMLmki31KK9urwRNi/RJeZb3UAFf+YcNixcgJIoDGJsDjoeseyD
+         brMzggMJeqOM4d89sYlru9smtvznzCxh5vEa6t1MK8dEC2sS9Kro8xfL9zTk7gedhz
+         +tN+jpwBkLAHlEixKsOtBym3TWhSukvWAN2Ob1DI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        Ben Segall <bsegall@google.com>,
-        Christoph Lameter <cl@linux.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        David Rientjes <rientjes@google.com>,
-        Dennis Zhou <dennis@kernel.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Muchun Song <muchun.song@linux.dev>,
-        Pekka Enberg <penberg@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Shakeel Butt <shakeelb@google.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Tejun Heo <tj@kernel.org>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Luiz Capitulino <luizcap@amazon.com>
-Subject: [PATCH 6.1 001/196] lib/Kconfig.debug: do not enable DEBUG_PREEMPT by default
-Date:   Mon, 23 Oct 2023 12:54:26 +0200
-Message-ID: <20231023104828.533286108@linuxfoundation.org>
+        patches@lists.linux.dev, Tan Tee Min <tee.min.tan@linux.intel.com>,
+        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 002/196] igc: remove I226 Qbv BaseTime restriction
+Date:   Mon, 23 Oct 2023 12:54:27 +0200
+Message-ID: <20231023104828.560245055@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
 References: <20231023104828.488041585@linuxfoundation.org>
@@ -76,85 +54,207 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
 
-commit cc6003916ed46d7a67d91ee32de0f9138047d55f upstream.
+commit b8897dc54e3bc9d25281bbb42a7d730782ff4588 upstream.
 
-In workloads where this_cpu operations are frequently performed,
-enabling DEBUG_PREEMPT may result in significant increase in
-runtime overhead due to frequent invocation of
-__this_cpu_preempt_check() function.
+Remove the Qbv BaseTime restriction for I226 so that the BaseTime can be
+scheduled to the future time. A new register bit of Tx Qav Control
+(Bit-7: FutScdDis) was introduced to allow I226 scheduling future time as
+Qbv BaseTime and not having the Tx hang timeout issue.
 
-This can be demonstrated through benchmarks such as hackbench where this
-configuration results in a 10% reduction in performance, primarily due to
-the added overhead within memcg charging path.
+Besides, according to datasheet section 7.5.2.9.3.3, FutScdDis bit has to
+be configured first before the cycle time and base time.
 
-Therefore, do not to enable DEBUG_PREEMPT by default and make users aware
-of its potential impact on performance in some workloads.
+Indeed the FutScdDis bit is only active on re-configuration, thus we have
+to set the BASET_L to zero and then only set it to the desired value.
 
-hackbench-process-sockets
-		      debug_preempt	 no_debug_preempt
-Amean     1       0.4743 (   0.00%)      0.4295 *   9.45%*
-Amean     4       1.4191 (   0.00%)      1.2650 *  10.86%*
-Amean     7       2.2677 (   0.00%)      2.0094 *  11.39%*
-Amean     12      3.6821 (   0.00%)      3.2115 *  12.78%*
-Amean     21      6.6752 (   0.00%)      5.7956 *  13.18%*
-Amean     30      9.6646 (   0.00%)      8.5197 *  11.85%*
-Amean     48     15.3363 (   0.00%)     13.5559 *  11.61%*
-Amean     79     24.8603 (   0.00%)     22.0597 *  11.27%*
-Amean     96     30.1240 (   0.00%)     26.8073 *  11.01%*
+Please also note that the Qbv configuration flow is moved around based on
+the Qbv programming guideline that is documented in the latest datasheet.
 
-Link: https://lkml.kernel.org/r/20230121033942.350387-1-42.hyeyoo@gmail.com
-Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-Acked-by: Davidlohr Bueso <dave@stgolabs.net>
-Cc: Ben Segall <bsegall@google.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Pekka Enberg <penberg@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Shakeel Butt <shakeelb@google.com>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Valentin Schneider <vschneid@redhat.com>
-Cc: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Luiz Capitulino <luizcap@amazon.com>
+Co-developed-by: Tan Tee Min <tee.min.tan@linux.intel.com>
+Signed-off-by: Tan Tee Min <tee.min.tan@linux.intel.com>
+Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/Kconfig.debug |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_base.c    |   29 +++++++++++++++++
+ drivers/net/ethernet/intel/igc/igc_base.h    |    2 +
+ drivers/net/ethernet/intel/igc/igc_defines.h |    1 
+ drivers/net/ethernet/intel/igc/igc_main.c    |    5 ++-
+ drivers/net/ethernet/intel/igc/igc_tsn.c     |   44 +++++++++++++++++----------
+ 5 files changed, 65 insertions(+), 16 deletions(-)
 
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -1219,13 +1219,16 @@ config DEBUG_TIMEKEEPING
- config DEBUG_PREEMPT
- 	bool "Debug preemptible kernel"
- 	depends on DEBUG_KERNEL && PREEMPTION && TRACE_IRQFLAGS_SUPPORT
--	default y
- 	help
- 	  If you say Y here then the kernel will use a debug variant of the
- 	  commonly used smp_processor_id() function and will print warnings
- 	  if kernel code uses it in a preemption-unsafe way. Also, the kernel
- 	  will detect preemption count underflows.
+--- a/drivers/net/ethernet/intel/igc/igc_base.c
++++ b/drivers/net/ethernet/intel/igc/igc_base.c
+@@ -396,6 +396,35 @@ void igc_rx_fifo_flush_base(struct igc_h
+ 	rd32(IGC_MPC);
+ }
  
-+	  This option has potential to introduce high runtime overhead,
-+	  depending on workload as it triggers debugging routines for each
-+	  this_cpu operation. It should only be used for debugging purposes.
++bool igc_is_device_id_i225(struct igc_hw *hw)
++{
++	switch (hw->device_id) {
++	case IGC_DEV_ID_I225_LM:
++	case IGC_DEV_ID_I225_V:
++	case IGC_DEV_ID_I225_I:
++	case IGC_DEV_ID_I225_K:
++	case IGC_DEV_ID_I225_K2:
++	case IGC_DEV_ID_I225_LMVP:
++	case IGC_DEV_ID_I225_IT:
++		return true;
++	default:
++		return false;
++	}
++}
 +
- menu "Lock Debugging (spinlocks, mutexes, etc...)"
++bool igc_is_device_id_i226(struct igc_hw *hw)
++{
++	switch (hw->device_id) {
++	case IGC_DEV_ID_I226_LM:
++	case IGC_DEV_ID_I226_V:
++	case IGC_DEV_ID_I226_K:
++	case IGC_DEV_ID_I226_IT:
++		return true;
++	default:
++		return false;
++	}
++}
++
+ static struct igc_mac_operations igc_mac_ops_base = {
+ 	.init_hw		= igc_init_hw_base,
+ 	.check_for_link		= igc_check_for_copper_link,
+--- a/drivers/net/ethernet/intel/igc/igc_base.h
++++ b/drivers/net/ethernet/intel/igc/igc_base.h
+@@ -7,6 +7,8 @@
+ /* forward declaration */
+ void igc_rx_fifo_flush_base(struct igc_hw *hw);
+ void igc_power_down_phy_copper_base(struct igc_hw *hw);
++bool igc_is_device_id_i225(struct igc_hw *hw);
++bool igc_is_device_id_i226(struct igc_hw *hw);
  
- config LOCK_DEBUGGING_SUPPORT
+ /* Transmit Descriptor - Advanced */
+ union igc_adv_tx_desc {
+--- a/drivers/net/ethernet/intel/igc/igc_defines.h
++++ b/drivers/net/ethernet/intel/igc/igc_defines.h
+@@ -515,6 +515,7 @@
+ /* Transmit Scheduling */
+ #define IGC_TQAVCTRL_TRANSMIT_MODE_TSN	0x00000001
+ #define IGC_TQAVCTRL_ENHANCED_QAV	0x00000008
++#define IGC_TQAVCTRL_FUTSCDDIS		0x00000080
+ 
+ #define IGC_TXQCTL_QUEUE_MODE_LAUNCHT	0x00000001
+ #define IGC_TXQCTL_STRICT_CYCLE		0x00000002
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6035,6 +6035,7 @@ static bool validate_schedule(struct igc
+ 			      const struct tc_taprio_qopt_offload *qopt)
+ {
+ 	int queue_uses[IGC_MAX_TX_QUEUES] = { };
++	struct igc_hw *hw = &adapter->hw;
+ 	struct timespec64 now;
+ 	size_t n;
+ 
+@@ -6047,8 +6048,10 @@ static bool validate_schedule(struct igc
+ 	 * in the future, it will hold all the packets until that
+ 	 * time, causing a lot of TX Hangs, so to avoid that, we
+ 	 * reject schedules that would start in the future.
++	 * Note: Limitation above is no longer in i226.
+ 	 */
+-	if (!is_base_time_past(qopt->base_time, &now))
++	if (!is_base_time_past(qopt->base_time, &now) &&
++	    igc_is_device_id_i225(hw))
+ 		return false;
+ 
+ 	for (n = 0; n < qopt->num_entries; n++) {
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -2,6 +2,7 @@
+ /* Copyright (c)  2019 Intel Corporation */
+ 
+ #include "igc.h"
++#include "igc_hw.h"
+ #include "igc_tsn.h"
+ 
+ static bool is_any_launchtime(struct igc_adapter *adapter)
+@@ -62,7 +63,8 @@ static int igc_tsn_disable_offload(struc
+ 
+ 	tqavctrl = rd32(IGC_TQAVCTRL);
+ 	tqavctrl &= ~(IGC_TQAVCTRL_TRANSMIT_MODE_TSN |
+-		      IGC_TQAVCTRL_ENHANCED_QAV);
++		      IGC_TQAVCTRL_ENHANCED_QAV | IGC_TQAVCTRL_FUTSCDDIS);
++
+ 	wr32(IGC_TQAVCTRL, tqavctrl);
+ 
+ 	for (i = 0; i < adapter->num_tx_queues; i++) {
+@@ -87,20 +89,10 @@ static int igc_tsn_enable_offload(struct
+ 	ktime_t base_time, systim;
+ 	int i;
+ 
+-	cycle = adapter->cycle_time;
+-	base_time = adapter->base_time;
+-
+ 	wr32(IGC_TSAUXC, 0);
+ 	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_TSN);
+ 	wr32(IGC_TXPBS, IGC_TXPBSIZE_TSN);
+ 
+-	tqavctrl = rd32(IGC_TQAVCTRL);
+-	tqavctrl |= IGC_TQAVCTRL_TRANSMIT_MODE_TSN | IGC_TQAVCTRL_ENHANCED_QAV;
+-	wr32(IGC_TQAVCTRL, tqavctrl);
+-
+-	wr32(IGC_QBVCYCLET_S, cycle);
+-	wr32(IGC_QBVCYCLET, cycle);
+-
+ 	for (i = 0; i < adapter->num_tx_queues; i++) {
+ 		struct igc_ring *ring = adapter->tx_ring[i];
+ 		u32 txqctl = 0;
+@@ -203,21 +195,43 @@ skip_cbs:
+ 		wr32(IGC_TXQCTL(i), txqctl);
+ 	}
+ 
++	tqavctrl = rd32(IGC_TQAVCTRL);
++	tqavctrl |= IGC_TQAVCTRL_TRANSMIT_MODE_TSN | IGC_TQAVCTRL_ENHANCED_QAV;
++
++	cycle = adapter->cycle_time;
++	base_time = adapter->base_time;
++
+ 	nsec = rd32(IGC_SYSTIML);
+ 	sec = rd32(IGC_SYSTIMH);
+ 
+ 	systim = ktime_set(sec, nsec);
+-
+ 	if (ktime_compare(systim, base_time) > 0) {
+-		s64 n;
++		s64 n = div64_s64(ktime_sub_ns(systim, base_time), cycle);
+ 
+-		n = div64_s64(ktime_sub_ns(systim, base_time), cycle);
+ 		base_time = ktime_add_ns(base_time, (n + 1) * cycle);
++	} else {
++		/* According to datasheet section 7.5.2.9.3.3, FutScdDis bit
++		 * has to be configured before the cycle time and base time.
++		 */
++		if (igc_is_device_id_i226(hw))
++			tqavctrl |= IGC_TQAVCTRL_FUTSCDDIS;
+ 	}
+ 
+-	baset_h = div_s64_rem(base_time, NSEC_PER_SEC, &baset_l);
++	wr32(IGC_TQAVCTRL, tqavctrl);
++
++	wr32(IGC_QBVCYCLET_S, cycle);
++	wr32(IGC_QBVCYCLET, cycle);
+ 
++	baset_h = div_s64_rem(base_time, NSEC_PER_SEC, &baset_l);
+ 	wr32(IGC_BASET_H, baset_h);
++
++	/* In i226, Future base time is only supported when FutScdDis bit
++	 * is enabled and only active for re-configuration.
++	 * In this case, initialize the base time with zero to create
++	 * "re-configuration" scenario then only set the desired base time.
++	 */
++	if (tqavctrl & IGC_TQAVCTRL_FUTSCDDIS)
++		wr32(IGC_BASET_L, 0);
+ 	wr32(IGC_BASET_L, baset_l);
+ 
+ 	return 0;
 
 
