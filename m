@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B66197D3211
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DE907D31A5
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233763AbjJWLQ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:16:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49568 "EHLO
+        id S233534AbjJWLLc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:11:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233726AbjJWLQW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:22 -0400
+        with ESMTP id S233540AbjJWLLc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0355510F0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28371C433CA;
-        Mon, 23 Oct 2023 11:16:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76012DC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE33FC433C8;
+        Mon, 23 Oct 2023 11:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059775;
-        bh=J4SUCrBuu44GJCyGhK8xug/NRgGBi1/DTvUze0VGFtY=;
+        s=korg; t=1698059489;
+        bh=+ZHaD8gQccye+Ilm1hp8fsyZq+gTspwuuIak8kBO5u8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CXTgPu4R84pLAOlmC+B1pqRW2b7lD629pHhtieL9Qqrw5dL1S3wOhG7PUSSULmSOV
-         VXJUzo/F2T9q5H7oV9fJKr2R7e8QAMV5LI+U5z2tBxo3LZcPU2SgDUxwfFWEvth2EL
-         qpEvfWYoXVVpEOK3PO2FP9q75PNwJZDgY3fdGcdk=
+        b=2YMzYc4C1V3loqgFaIm7UCGNZxlQC+0tXcMtufLiCa2bFTLVNFrtteUmZ4H19oRpo
+         3UFcp/vLK9p36TF8W0hU3BgShWJFH2myULKhLrSbQr0uFgezV1hmk7JrGwyUUzdmiw
+         rjqTOabccumqbPoK4tCYMXUlFc9etNXfgQqtPt3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thorsten Leemhuis <linux@leemhuis.info>,
-        Jeffery Miller <jefferymiller@google.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 4.19 31/98] Input: psmouse - fix fast_reconnect function for PS/2 mode
+        patches@lists.linux.dev, Fabio Porcedda <fabio.porcedda@gmail.com>,
+        Daniele Palmas <dnlplm@gmail.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.5 194/241] USB: serial: option: add Telit LE910C4-WWX 0x1035 composition
 Date:   Mon, 23 Oct 2023 12:56:20 +0200
-Message-ID: <20231023104814.687949445@linuxfoundation.org>
+Message-ID: <20231023104838.602148088@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,62 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeffery Miller <jefferymiller@google.com>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit e2cb5cc822b6c9ee72c56ce1d81671b22c05406a upstream.
+commit 6a7be48e9bd18d309ba25c223a27790ad1bf0fa3 upstream.
 
-When the SMBus connection is attempted psmouse_smbus_init() sets
-the fast_reconnect pointer to psmouse_smbus_reconnecti(). If SMBus
-initialization fails, elantech_setup_ps2() and synaptics_init_ps2() will
-fallback to PS/2 mode, replacing the psmouse private data. This can cause
-issues on resume, since psmouse_smbus_reconnect() expects to find an
-instance of struct psmouse_smbus_dev in psmouse->private.
+Add support for the following Telit LE910C4-WWX composition:
 
-The issue was uncovered when in 92e24e0e57f7 ("Input: psmouse - add
-delay when deactivating for SMBus mode") psmouse_smbus_reconnect()
-started attempting to use more of the data structure. The commit was
-since reverted, not because it was at fault, but because there was found
-a better way of doing what it was attempting to do.
+0x1035: TTY, TTY, ECM
 
-Fix the problem by resetting the fast_reconnect pointer in psmouse
-structure in elantech_setup_ps2() and synaptics_init_ps2() when the PS/2
-mode is used.
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1035 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=e1b117c7
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Reported-by: Thorsten Leemhuis <linux@leemhuis.info>
-Tested-by: Thorsten Leemhuis <linux@leemhuis.info>
-Signed-off-by: Jeffery Miller <jefferymiller@google.com>
-Fixes: bf232e460a35 ("Input: psmouse-smbus - allow to control psmouse_deactivate")
-Link: https://lore.kernel.org/r/20231005002249.554877-1-jefferymiller@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/elantech.c  |    1 +
- drivers/input/mouse/synaptics.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/mouse/elantech.c
-+++ b/drivers/input/mouse/elantech.c
-@@ -1996,6 +1996,7 @@ static int elantech_setup_ps2(struct psm
- 	psmouse->protocol_handler = elantech_process_byte;
- 	psmouse->disconnect = elantech_disconnect;
- 	psmouse->reconnect = elantech_reconnect;
-+	psmouse->fast_reconnect = NULL;
- 	psmouse->pktsize = info->hw_version > 1 ? 6 : 4;
- 
- 	return 0;
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -1620,6 +1620,7 @@ static int synaptics_init_ps2(struct psm
- 	psmouse->set_rate = synaptics_set_rate;
- 	psmouse->disconnect = synaptics_disconnect;
- 	psmouse->reconnect = synaptics_reconnect;
-+	psmouse->fast_reconnect = NULL;
- 	psmouse->cleanup = synaptics_reset;
- 	/* Synaptics can usually stay in sync without extra help */
- 	psmouse->resync_time = 0;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1290,6 +1290,7 @@ static const struct usb_device_id option
+ 	 .driver_info = NCTRL(0) | RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1033, 0xff),	/* Telit LE910C1-EUX (ECM) */
+ 	 .driver_info = NCTRL(0) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1035, 0xff) }, /* Telit LE910C4-WWX (ECM) */
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG0),
+ 	  .driver_info = RSVD(0) | RSVD(1) | NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG1),
 
 
