@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E38D7D3542
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E3DF7D32FD
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234376AbjJWLqq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:46:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51884 "EHLO
+        id S233872AbjJWLZo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:25:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234418AbjJWLqc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:32 -0400
+        with ESMTP id S233782AbjJWLZl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7784910FD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:46:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5563C433C8;
-        Mon, 23 Oct 2023 11:46:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4500DC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A0C2C433C8;
+        Mon, 23 Oct 2023 11:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061585;
-        bh=jDAIHk6BrdQm8lOGvD0/EdydP5CDE+W+LGWgsdu62Yc=;
+        s=korg; t=1698060338;
+        bh=axR6dHPaP1OYJitm6jD8qB0sPQW/Bb0yfdakyljpcdQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UPSm8TJJsN9YldeHXL1bNOZZOjyFi8r3gR3/cHdJB0kcHw1PILM60k/8EVbu7gMvR
-         1TTOX2/CkJxAG5pEPEpssIWjmHeCkS1MY8fMxjhDbf5zpWk0fDZF7G02T+j21nD5u4
-         al85Q/Iw4J4U91F2ZT8sQrhLjXzbCtHiO/UBLWZE=
+        b=LyYCnMVJQrUaD43GKoN3qVrBViYpsK60uWZYviqy6J3dymSLEwPHQXU1oGqH93BLl
+         E1GzISau2rr0AnbeLLM6X3VxkiScfCAjhWxCEqTPDx/d1fZYss0CQKV33peOOGuatk
+         DIxlH6fUrIqw63rcYz5e+B0XNIwD5lRdOnEHWA3E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, ruanjinjie@huawei.com,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        James Morse <james.morse@arm.com>,
-        Joey Gouly <joey.gouly@arm.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 5.10 070/202] arm64: factor out EL1 SSBS emulation hook
+        patches@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 112/196] wifi: mac80211: allow transmitting EAPOL frames with tainted key
 Date:   Mon, 23 Oct 2023 12:56:17 +0200
-Message-ID: <20231023104828.593308610@linuxfoundation.org>
+Message-ID: <20231023104831.688898996@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,167 +49,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-commit bff8f413c71ffc3cb679dbd9a5632b33af563f9f upstream.
+[ Upstream commit 61304336c67358d49a989e5e0060d8c99bad6ca8 ]
 
-Currently call_undef_hook() is used to handle UNDEFINED exceptions from
-EL0 and EL1. As support for deprecated instructions may be enabled
-independently, the handlers for individual instructions are organised as
-a linked list of struct undef_hook which can be manipulated dynamically.
-As this can be manipulated dynamically, the list is protected with a
-raw_spinlock which must be acquired when handling UNDEFINED exceptions
-or when manipulating the list of handlers.
+Lower layer device driver stop/wake TX by calling ieee80211_stop_queue()/
+ieee80211_wake_queue() while hw scan. Sometimes hw scan and PTK rekey are
+running in parallel, when M4 sent from wpa_supplicant arrive while the TX
+queue is stopped, then the M4 will pending send, and then new key install
+from wpa_supplicant. After TX queue wake up by lower layer device driver,
+the M4 will be dropped by below call stack.
 
-This locking is unfortunate as it serialises handling of UNDEFINED
-exceptions, and requires RCU to be enabled for lockdep, requiring the
-use of RCU_NONIDLE() in resume path of cpu_suspend() since commit:
+When key install started, the current key flag is set KEY_FLAG_TAINTED in
+ieee80211_pairwise_rekey(), and then mac80211 wait key install complete by
+lower layer device driver. Meanwhile ieee80211_tx_h_select_key() will return
+TX_DROP for the M4 in step 12 below, and then ieee80211_free_txskb() called
+by ieee80211_tx_dequeue(), so the M4 will not send and free, then the rekey
+process failed becaue AP not receive M4. Please see details in steps below.
 
-  a2c42bbabbe260b7 ("arm64: spectre: Prevent lockdep splat on v4 mitigation enable path")
+There are a interval between KEY_FLAG_TAINTED set for current key flag and
+install key complete by lower layer device driver, the KEY_FLAG_TAINTED is
+set in this interval, all packet including M4 will be dropped in this
+interval, the interval is step 8~13 as below.
 
-The list of UNDEFINED handlers largely consist of handlers for
-exceptions taken from EL0, and the only handler for exceptions taken
-from EL1 handles `MSR SSBS, #imm` on CPUs which feature PSTATE.SSBS but
-lack the corresponding MSR (Immediate) instruction. Other than this we
-never expect to take an UNDEFINED exception from EL1 in normal
-operation.
+issue steps:
+      TX thread                 install key thread
+1.   stop_queue                      -idle-
+2.   sending M4                      -idle-
+3.   M4 pending                      -idle-
+4.     -idle-                  starting install key from wpa_supplicant
+5.     -idle-                  =>ieee80211_key_replace()
+6.     -idle-                  =>ieee80211_pairwise_rekey() and set
+                                 currently key->flags |= KEY_FLAG_TAINTED
+7.     -idle-                  =>ieee80211_key_enable_hw_accel()
+8.     -idle-                  =>drv_set_key() and waiting key install
+                                 complete from lower layer device driver
+9.   wake_queue                     -waiting state-
+10.  re-sending M4                  -waiting state-
+11.  =>ieee80211_tx_h_select_key()  -waiting state-
+12.  drop M4 by KEY_FLAG_TAINTED    -waiting state-
+13.    -idle-                   install key complete with success/fail
+                                  success: clear flag KEY_FLAG_TAINTED
+                                  fail: start disconnect
 
-This patch reworks do_el0_undef() to invoke the EL1 SSBS handler
-directly, relegating call_undef_hook() to only handle EL0 UNDEFs. This
-removes redundant work to iterate the list for EL1 UNDEFs, and removes
-the need for locking, permitting EL1 UNDEFs to be handled in parallel
-without contention.
+Hence add check in step 11 above to allow the EAPOL send out in the
+interval. If lower layer device driver use the old key/cipher to encrypt
+the M4, then AP received/decrypt M4 correctly, after M4 send out, lower
+layer device driver install the new key/cipher to hardware and return
+success.
 
-The RCU_NONIDLE() call in cpu_suspend() will be removed in a subsequent
-patch, as there are other potential issues with the use of
-instrumentable code and RCU in the CPU suspend code.
+If lower layer device driver use new key/cipher to send the M4, then AP
+will/should drop the M4, then it is same result with this issue, AP will/
+should kick out station as well as this issue.
 
-I've tested this by forcing the detection of SSBS on a CPU that doesn't
-have it, and verifying that the try_emulate_el1_ssbs() callback is
-invoked.
+issue log:
+kworker/u16:4-5238  [000]  6456.108926: stop_queue:           phy1 queue:0, reason:0
+wpa_supplicant-961  [003]  6456.119737: rdev_tx_control_port: wiphy_name=phy1 name=wlan0 ifindex=6 dest=ARRAY[9e, 05, 31, 20, 9b, d0] proto=36488 unencrypted=0
+wpa_supplicant-961  [003]  6456.119839: rdev_return_int_cookie: phy1, returned 0, cookie: 504
+wpa_supplicant-961  [003]  6456.120287: rdev_add_key:         phy1, netdev:wlan0(6), key_index: 0, mode: 0, pairwise: true, mac addr: 9e:05:31:20:9b:d0
+wpa_supplicant-961  [003]  6456.120453: drv_set_key:          phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 cipher:0xfac04, flags=0x9, keyidx=0, hw_key_idx=0
+kworker/u16:9-3829  [001]  6456.168240: wake_queue:           phy1 queue:0, reason:0
+kworker/u16:9-3829  [001]  6456.168255: drv_wake_tx_queue:    phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 ac:0 tid:7
+kworker/u16:9-3829  [001]  6456.168305: cfg80211_control_port_tx_status: wdev(1), cookie: 504, ack: false
+wpa_supplicant-961  [003]  6459.167982: drv_return_int:       phy1 - -110
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Joey Gouly <joey.gouly@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20221019144123.612388-4-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+issue call stack:
+nl80211_frame_tx_status+0x230/0x340 [cfg80211]
+cfg80211_control_port_tx_status+0x1c/0x28 [cfg80211]
+ieee80211_report_used_skb+0x374/0x3e8 [mac80211]
+ieee80211_free_txskb+0x24/0x40 [mac80211]
+ieee80211_tx_dequeue+0x644/0x954 [mac80211]
+ath10k_mac_tx_push_txq+0xac/0x238 [ath10k_core]
+ath10k_mac_op_wake_tx_queue+0xac/0xe0 [ath10k_core]
+drv_wake_tx_queue+0x80/0x168 [mac80211]
+__ieee80211_wake_txqs+0xe8/0x1c8 [mac80211]
+_ieee80211_wake_txqs+0xb4/0x120 [mac80211]
+ieee80211_wake_txqs+0x48/0x80 [mac80211]
+tasklet_action_common+0xa8/0x254
+tasklet_action+0x2c/0x38
+__do_softirq+0xdc/0x384
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Link: https://lore.kernel.org/r/20230801064751.25803-1-quic_wgong@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/spectre.h |    2 ++
- arch/arm64/kernel/proton-pack.c  |   26 +++++++-------------------
- arch/arm64/kernel/traps.c        |   15 ++++++++-------
- 3 files changed, 17 insertions(+), 26 deletions(-)
+ net/mac80211/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/spectre.h
-+++ b/arch/arm64/include/asm/spectre.h
-@@ -18,6 +18,7 @@ enum mitigation_state {
- 	SPECTRE_VULNERABLE,
- };
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 2f9e1abdf375d..2db103a56a28f 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -680,7 +680,8 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+ 		}
  
-+struct pt_regs;
- struct task_struct;
+ 		if (unlikely(tx->key && tx->key->flags & KEY_FLAG_TAINTED &&
+-			     !ieee80211_is_deauth(hdr->frame_control)))
++			     !ieee80211_is_deauth(hdr->frame_control)) &&
++			     tx->skb->protocol != tx->sdata->control_port_protocol)
+ 			return TX_DROP;
  
- enum mitigation_state arm64_get_spectre_v2_state(void);
-@@ -33,4 +34,5 @@ enum mitigation_state arm64_get_spectre_
- bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
- u8 spectre_bhb_loop_affected(int scope);
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
-+bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
- #endif	/* __ASM_SPECTRE_H */
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -537,10 +537,13 @@ bool has_spectre_v4(const struct arm64_c
- 	return state != SPECTRE_UNAFFECTED;
- }
- 
--static int ssbs_emulation_handler(struct pt_regs *regs, u32 instr)
-+bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr)
- {
--	if (user_mode(regs))
--		return 1;
-+	const u32 instr_mask = ~(1U << PSTATE_Imm_shift);
-+	const u32 instr_val = 0xd500401f | PSTATE_SSBS;
-+
-+	if ((instr & instr_mask) != instr_val)
-+		return false;
- 
- 	if (instr & BIT(PSTATE_Imm_shift))
- 		regs->pstate |= PSR_SSBS_BIT;
-@@ -548,19 +551,11 @@ static int ssbs_emulation_handler(struct
- 		regs->pstate &= ~PSR_SSBS_BIT;
- 
- 	arm64_skip_faulting_instruction(regs, 4);
--	return 0;
-+	return true;
- }
- 
--static struct undef_hook ssbs_emulation_hook = {
--	.instr_mask	= ~(1U << PSTATE_Imm_shift),
--	.instr_val	= 0xd500401f | PSTATE_SSBS,
--	.fn		= ssbs_emulation_handler,
--};
--
- static enum mitigation_state spectre_v4_enable_hw_mitigation(void)
- {
--	static bool undef_hook_registered = false;
--	static DEFINE_RAW_SPINLOCK(hook_lock);
- 	enum mitigation_state state;
- 
- 	/*
-@@ -571,13 +566,6 @@ static enum mitigation_state spectre_v4_
- 	if (state != SPECTRE_MITIGATED || !this_cpu_has_cap(ARM64_SSBS))
- 		return state;
- 
--	raw_spin_lock(&hook_lock);
--	if (!undef_hook_registered) {
--		register_undef_hook(&ssbs_emulation_hook);
--		undef_hook_registered = true;
--	}
--	raw_spin_unlock(&hook_lock);
--
- 	if (spectre_v4_mitigations_off()) {
- 		sysreg_clear_set(sctlr_el1, 0, SCTLR_ELx_DSSBS);
- 		asm volatile(SET_PSTATE_SSBS(1));
---- a/arch/arm64/kernel/traps.c
-+++ b/arch/arm64/kernel/traps.c
-@@ -311,12 +311,7 @@ static int call_undef_hook(struct pt_reg
- 	int (*fn)(struct pt_regs *regs, u32 instr) = NULL;
- 	void __user *pc = (void __user *)instruction_pointer(regs);
- 
--	if (!user_mode(regs)) {
--		__le32 instr_le;
--		if (get_kernel_nofault(instr_le, (__force __le32 *)pc))
--			goto exit;
--		instr = le32_to_cpu(instr_le);
--	} else if (compat_thumb_mode(regs)) {
-+	if (compat_thumb_mode(regs)) {
- 		/* 16-bit Thumb instruction */
- 		__le16 instr_le;
- 		if (get_user(instr_le, (__le16 __user *)pc))
-@@ -409,9 +404,15 @@ void do_el0_undef(struct pt_regs *regs,
- 
- void do_el1_undef(struct pt_regs *regs, unsigned long esr)
- {
--	if (call_undef_hook(regs) == 0)
-+	u32 insn;
-+
-+	if (aarch64_insn_read((void *)regs->pc, &insn))
-+		goto out_err;
-+
-+	if (try_emulate_el1_ssbs(regs, insn))
- 		return;
- 
-+out_err:
- 	die("Oops - Undefined instruction", regs, esr);
- }
- 
+ 		if (!skip_hw && tx->key &&
+-- 
+2.40.1
+
 
 
