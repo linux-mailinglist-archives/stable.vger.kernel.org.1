@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 628AA7D3336
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FFA17D3466
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:39:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233974AbjJWL14 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:27:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56352 "EHLO
+        id S234238AbjJWLjU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:39:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233969AbjJWL1z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:55 -0400
+        with ESMTP id S234218AbjJWLjT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EF05E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90439C433C7;
-        Mon, 23 Oct 2023 11:27:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CC4EE4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3BA9C433C8;
+        Mon, 23 Oct 2023 11:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060473;
-        bh=Vui3eJrnpHziMPwQq/vrVa3JtFcO8wIwMmpiAJKDRtY=;
+        s=korg; t=1698061157;
+        bh=NWFJwP6bqD1rR5TYHK1nXKlmJFI2WY11MrqN+LDM8o4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oxKZarNFbGx1ovc+s8+K2xZLR2Te7DoU8ADDKFK2nRBxBoUXkpeffEk0/r/o5o9yw
-         4+mCdYEFyeovnC0SNXY1lukinq1R/FKNhHe1obrD0ztObHDApAPgAGT47yHl7/lrVl
-         E8wJwbG5Wjq1rll/fBFbgWbe6VSftsMhxTDPD9RE=
+        b=AiE0Ym5mec6Z+6BAsjJLR1dToMzUs4tB4rKL4DsUHNUpEi9CEJ/ZCTkUQXq43BrT7
+         p6y24Xpzx5gGK/HtKBRBOrpB/ZR8UQaipVS9Ksllh6NchzoTfl3AFD7fktoLfE6NYW
+         1TsFlAs5aDAdeVIWXDW9kRgpyPlq8r4qGRmA8uBQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhen Lei <thunder.leizhen@huawei.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
+        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/196] kallsyms: Add helper kallsyms_on_each_match_symbol()
+Subject: [PATCH 5.15 092/137] btrfs: error out when COWing block using a stale transaction
 Date:   Mon, 23 Oct 2023 12:57:29 +0200
-Message-ID: <20231023104833.588256511@linuxfoundation.org>
+Message-ID: <20231023104824.003250697@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,97 +49,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 4dc533e0f2c04174e1ae4aa98e7cffc1c04b9998 ]
+[ Upstream commit 48774f3bf8b4dd3b1a0e155825c9ce48483db14c ]
 
-Function kallsyms_on_each_symbol() traverses all symbols and submits each
-symbol to the hook 'fn' for judgment and processing. For some cases, the
-hook actually only handles the matched symbol, such as livepatch.
+At btrfs_cow_block() we have these checks to verify we are not using a
+stale transaction (a past transaction with an unblocked state or higher),
+and the only thing we do is to trigger a WARN with a message and a stack
+trace. This however is a critical problem, highly unexpected and if it
+happens it's most likely due to a bug, so we should error out and turn the
+fs into error state so that such issue is much more easily noticed if it's
+triggered.
 
-Because all symbols are currently sorted by name, all the symbols with the
-same name are clustered together. Function kallsyms_lookup_names() gets
-the start and end positions of the set corresponding to the specified
-name. So we can easily and quickly traverse all the matches.
+The problem is critical because using such stale transaction will lead to
+not persisting the extent buffer used for the COW operation, as allocating
+a tree block adds the range of the respective extent buffer to the
+->dirty_pages iotree of the transaction, and a stale transaction, in the
+unlocked state or higher, will not flush dirty extent buffers anymore,
+therefore resulting in not persisting the tree block and resource leaks
+(not cleaning the dirty_pages iotree for example).
 
-The test results are as follows (twice): (x86)
-kallsyms_on_each_match_symbol:     7454,     7984
-kallsyms_on_each_symbol      : 11733809, 11785803
+So do the following changes:
 
-kallsyms_on_each_match_symbol() consumes only 0.066% of
-kallsyms_on_each_symbol()'s time. In other words, 1523x better
-performance.
+1) Return -EUCLEAN if we find a stale transaction;
 
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
-Stable-dep-of: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+2) Turn the fs into error state, with error -EUCLEAN, so that no
+   transaction can be committed, and generate a stack trace;
+
+3) Combine both conditions into a single if statement, as both are related
+   and have the same error message;
+
+4) Mark the check as unlikely, since this is not expected to ever happen.
+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kallsyms.h |  8 ++++++++
- kernel/kallsyms.c        | 18 ++++++++++++++++++
- 2 files changed, 26 insertions(+)
+ fs/btrfs/ctree.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index 649faac31ddb1..0cd33be7142ad 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -69,6 +69,8 @@ static inline void *dereference_symbol_descriptor(void *ptr)
- int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
- 				      unsigned long),
- 			    void *data);
-+int kallsyms_on_each_match_symbol(int (*fn)(void *, unsigned long),
-+				  const char *name, void *data);
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index a648dff2becec..8bc1166215138 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -549,14 +549,22 @@ noinline int btrfs_cow_block(struct btrfs_trans_handle *trans,
+ 		btrfs_err(fs_info,
+ 			"COW'ing blocks on a fs root that's being dropped");
  
- /* Lookup the address for a symbol. Returns 0 if not found. */
- unsigned long kallsyms_lookup_name(const char *name);
-@@ -168,6 +170,12 @@ static inline int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct
- {
- 	return -EOPNOTSUPP;
- }
-+
-+static inline int kallsyms_on_each_match_symbol(int (*fn)(void *, unsigned long),
-+						const char *name, void *data)
-+{
-+	return -EOPNOTSUPP;
-+}
- #endif /*CONFIG_KALLSYMS*/
- 
- static inline void print_ip_sym(const char *loglvl, unsigned long ip)
-diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
-index 32cba13eee6c4..824bcc7b5dbc3 100644
---- a/kernel/kallsyms.c
-+++ b/kernel/kallsyms.c
-@@ -303,6 +303,24 @@ int kallsyms_on_each_symbol(int (*fn)(void *, const char *, struct module *,
- 	return 0;
- }
- 
-+int kallsyms_on_each_match_symbol(int (*fn)(void *, unsigned long),
-+				  const char *name, void *data)
-+{
-+	int ret;
-+	unsigned int i, start, end;
-+
-+	ret = kallsyms_lookup_names(name, &start, &end);
-+	if (ret)
-+		return 0;
-+
-+	for (i = start; !ret && i <= end; i++) {
-+		ret = fn(data, kallsyms_sym_address(get_symbol_seq(i)));
-+		cond_resched();
+-	if (trans->transaction != fs_info->running_transaction)
+-		WARN(1, KERN_CRIT "trans %llu running %llu\n",
+-		       trans->transid,
+-		       fs_info->running_transaction->transid);
+-
+-	if (trans->transid != fs_info->generation)
+-		WARN(1, KERN_CRIT "trans %llu running %llu\n",
+-		       trans->transid, fs_info->generation);
++	/*
++	 * COWing must happen through a running transaction, which always
++	 * matches the current fs generation (it's a transaction with a state
++	 * less than TRANS_STATE_UNBLOCKED). If it doesn't, then turn the fs
++	 * into error state to prevent the commit of any transaction.
++	 */
++	if (unlikely(trans->transaction != fs_info->running_transaction ||
++		     trans->transid != fs_info->generation)) {
++		btrfs_abort_transaction(trans, -EUCLEAN);
++		btrfs_crit(fs_info,
++"unexpected transaction when attempting to COW block %llu on root %llu, transaction %llu running transaction %llu fs generation %llu",
++			   buf->start, btrfs_root_id(root), trans->transid,
++			   fs_info->running_transaction->transid,
++			   fs_info->generation);
++		return -EUCLEAN;
 +	}
-+
-+	return ret;
-+}
-+
- static unsigned long get_symbol_pos(unsigned long addr,
- 				    unsigned long *symbolsize,
- 				    unsigned long *offset)
+ 
+ 	if (!should_cow_block(trans, root, buf)) {
+ 		*cow_ret = buf;
 -- 
-2.42.0
+2.40.1
 
 
 
