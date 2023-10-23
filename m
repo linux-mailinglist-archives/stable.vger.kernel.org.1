@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 713127D314B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A1BB7D3261
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233419AbjJWLHn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:07:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55340 "EHLO
+        id S233781AbjJWLT1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:19:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233406AbjJWLHm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:42 -0400
+        with ESMTP id S233780AbjJWLT0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F7B5D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E19DC433C7;
-        Mon, 23 Oct 2023 11:07:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33BCC2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02260C433C7;
+        Mon, 23 Oct 2023 11:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059259;
-        bh=kSY42+fR68Adgo1EnYnYIec3S5fbAk3xpejJzPxmEpU=;
+        s=korg; t=1698059963;
+        bh=6GJyOz/IYAMi2p2k8X4G91eZNgbSuV8AHS0xQWt5wOc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jyj10dIMxf82K2Q6ntOUW+gb93UwTDrAms36Pm3l94LfrFv2CS1SG2R57LWJvx3sz
-         oXQ4kzYgtmYY+40efyPBwutDIheE3bOPhjTgIqsHcASHFYxVZ7He8973b4wxkXKMaT
-         PEVMPjXp+jI/5RVydvaoi5+xvTj/nAS9tfHZ12cw=
+        b=rMhlaGuw28rgg3UMXO9sW69r5z+gz6pmaXOUBsfMKtsKsdNb3Bc59FRHaPxhTAUWp
+         Dy1KrNNHYUEH4L9kURV5wAd0o/SG1NS5COlDDn+rD6KrtkvP8JV9UiEtHFQzOJ5lo6
+         YBKgJt9P+lIhCUaiz7m+yO5isYTBmWJwmOijKoQY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+01cdbc31e9c0ae9b33ac@syzkaller.appspotmail.com,
-        syzbot+c99d835ff081ca30f986@syzkaller.appspotmail.com,
-        Willem de Bruijn <willemb@google.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Jason Wang <jasowang@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 091/241] net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation
-Date:   Mon, 23 Oct 2023 12:54:37 +0200
-Message-ID: <20231023104836.111766102@linuxfoundation.org>
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.1 013/196] Bluetooth: avoid memcmp() out of bounds warning
+Date:   Mon, 23 Oct 2023 12:54:38 +0200
+Message-ID: <20231023104828.869473808@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,92 +51,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit fc8b2a619469378717e7270d2a4e1ef93c585f7a upstream.
+commit 9d1a3c74746428102d55371fbf74b484733937d9 upstream.
 
-Syzbot reported two new paths to hit an internal WARNING using the
-new virtio gso type VIRTIO_NET_HDR_GSO_UDP_L4.
+bacmp() is a wrapper around memcpy(), which contain compile-time
+checks for buffer overflow. Since the hci_conn_request_evt() also calls
+bt_dev_dbg() with an implicit NULL pointer check, the compiler is now
+aware of a case where 'hdev' is NULL and treats this as meaning that
+zero bytes are available:
 
-    RIP: 0010:skb_checksum_help+0x4a2/0x600 net/core/dev.c:3260
-    skb len=64521 gso_size=344
-and
+In file included from net/bluetooth/hci_event.c:32:
+In function 'bacmp',
+    inlined from 'hci_conn_request_evt' at net/bluetooth/hci_event.c:3276:7:
+include/net/bluetooth/bluetooth.h:364:16: error: 'memcmp' specified bound 6 exceeds source size 0 [-Werror=stringop-overread]
+  364 |         return memcmp(ba1, ba2, sizeof(bdaddr_t));
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    RIP: 0010:skb_warn_bad_offload+0x118/0x240 net/core/dev.c:3262
+Add another NULL pointer check before the bacmp() to ensure the compiler
+understands the code flow enough to not warn about it.  Since the patch
+that introduced the warning is marked for stable backports, this one
+should also go that way to avoid introducing build regressions.
 
-Older virtio types have historically had loose restrictions, leading
-to many entirely impractical fuzzer generated packets causing
-problems deep in the kernel stack. Ideally, we would have had strict
-validation for all types from the start.
-
-New virtio types can have tighter validation. Limit UDP GSO packets
-inserted via virtio to the same limits imposed by the UDP_SEGMENT
-socket interface:
-
-1. must use checksum offload
-2. checksum offload matches UDP header
-3. no more segments than UDP_MAX_SEGMENTS
-4. UDP GSO does not take modifier flags, notably SKB_GSO_TCP_ECN
-
-Fixes: 860b7f27b8f7 ("linux/virtio_net.h: Support USO offload in vnet header.")
-Reported-by: syzbot+01cdbc31e9c0ae9b33ac@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/0000000000005039270605eb0b7f@google.com/
-Reported-by: syzbot+c99d835ff081ca30f986@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/0000000000005426680605eb0b9f@google.com/
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1ffc6f8cc332 ("Bluetooth: Reject connection with the device which has same BD_ADDR")
+Cc: Kees Cook <keescook@chromium.org>
+Cc: "Lee, Chun-Yi" <jlee@suse.com>
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/virtio_net.h | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ net/bluetooth/hci_event.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 7b4dd69555e4..27cc1d464321 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -3,8 +3,8 @@
- #define _LINUX_VIRTIO_NET_H
- 
- #include <linux/if_vlan.h>
-+#include <linux/udp.h>
- #include <uapi/linux/tcp.h>
--#include <uapi/linux/udp.h>
- #include <uapi/linux/virtio_net.h>
- 
- static inline bool virtio_net_hdr_match_proto(__be16 protocol, __u8 gso_type)
-@@ -151,9 +151,22 @@ retry:
- 		unsigned int nh_off = p_off;
- 		struct skb_shared_info *shinfo = skb_shinfo(skb);
- 
--		/* UFO may not include transport header in gso_size. */
--		if (gso_type & SKB_GSO_UDP)
-+		switch (gso_type & ~SKB_GSO_TCP_ECN) {
-+		case SKB_GSO_UDP:
-+			/* UFO may not include transport header in gso_size. */
- 			nh_off -= thlen;
-+			break;
-+		case SKB_GSO_UDP_L4:
-+			if (!(hdr->flags & VIRTIO_NET_HDR_F_NEEDS_CSUM))
-+				return -EINVAL;
-+			if (skb->csum_offset != offsetof(struct udphdr, check))
-+				return -EINVAL;
-+			if (skb->len - p_off > gso_size * UDP_MAX_SEGMENTS)
-+				return -EINVAL;
-+			if (gso_type != SKB_GSO_UDP_L4)
-+				return -EINVAL;
-+			break;
-+		}
- 
- 		/* Kernel has a special handling for GSO_BY_FRAGS. */
- 		if (gso_size == GSO_BY_FRAGS)
--- 
-2.42.0
-
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -3280,7 +3280,7 @@ static void hci_conn_request_evt(struct
+ 	/* Reject incoming connection from device with same BD ADDR against
+ 	 * CVE-2020-26555
+ 	 */
+-	if (!bacmp(&hdev->bdaddr, &ev->bdaddr)) {
++	if (hdev && !bacmp(&hdev->bdaddr, &ev->bdaddr)) {
+ 		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
+ 			   &ev->bdaddr);
+ 		hci_reject_conn(hdev, &ev->bdaddr);
 
 
