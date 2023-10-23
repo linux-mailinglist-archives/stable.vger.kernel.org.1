@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8555D7D32DC
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BC607D3187
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233885AbjJWLYg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50374 "EHLO
+        id S232536AbjJWLKJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:10:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233905AbjJWLYe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:34 -0400
+        with ESMTP id S231613AbjJWLKH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B75E10E5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF89C433C9;
-        Mon, 23 Oct 2023 11:24:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82420DD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A93C433C8;
+        Mon, 23 Oct 2023 11:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060264;
-        bh=wTWWJeETtMnHsJjS0NyJKMVdTVI1e3DfYP9Vj8wWri0=;
+        s=korg; t=1698059405;
+        bh=xslx0r/bFRrCuz7iVBeg6KCBuQqhNoG8rqCHYtTlBpk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G3UOPQj810Pg7kOurdF5/sPjIWMJY7XVa61iqr0vcG7f4MROkHADHJvRw6B45GEv/
-         FlGuXpe3PwcLfVnRBLZdFt/xEcgVAIMQWf44KKAdjFnkBmHJZZ7ItIYVlPE6T1Y2Yg
-         Pf5D63/fwOQ4dFdx8TTin11y3n0P759HgfzJozgk=
+        b=N3Yv96W8VTP/JKeHTrcFYT9skRn9K/YUr8GyVrlDR3IkcNqqMInipKxM4wxA6HPRc
+         YKRAw3l245mRVvltYwo84EuURmgvig6Dr/PfRkigvX6uvUU12D/5yaI3lfAggAjr6/
+         EXVU4LKuP6Uea9s2qXUHoRPt9onG76XZitL/8qLM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/196] iio: core: introduce iio_device_{claim|release}_buffer_mode() APIs
+        patches@lists.linux.dev, Aviram Dali <aviramd@marvell.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Ravi Chandra Minnikanti <rminnikanti@marvell.com>
+Subject: [PATCH 6.5 166/241] mtd: rawnand: marvell: Ensure program page operations are successful
 Date:   Mon, 23 Oct 2023 12:55:52 +0200
-Message-ID: <20231023104831.001191842@linuxfoundation.org>
+Message-ID: <20231023104837.924723740@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,95 +49,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 0a8565425afd8ba0e1a0ea73e21da119ee6dacea ]
+commit 3e01d5254698ea3d18e09d96b974c762328352cd upstream.
 
-These APIs are analogous to iio_device_claim_direct_mode() and
-iio_device_release_direct_mode() but, as the name suggests, with the
-logic flipped. While this looks odd enough, it will have at least two
-users (in following changes) and it will be important to move the IIO
-mlock to the private struct.
+The NAND core complies with the ONFI specification, which itself
+mentions that after any program or erase operation, a status check
+should be performed to see whether the operation was finished *and*
+successful.
 
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20221012151620.1725215-2-nuno.sa@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 7771c8c80d62 ("iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The NAND core offers helpers to finish a page write (sending the
+"PAGE PROG" command, waiting for the NAND chip to be ready again, and
+checking the operation status). But in some cases, advanced controller
+drivers might want to optimize this and craft their own page write
+helper to leverage additional hardware capabilities, thus not always
+using the core facilities.
+
+Some drivers, like this one, do not use the core helper to finish a page
+write because the final cycles are automatically managed by the
+hardware. In this case, the additional care must be taken to manually
+perform the final status check.
+
+Let's read the NAND chip status at the end of the page write helper and
+return -EIO upon error.
+
+Cc: stable@vger.kernel.org
+Fixes: 02f26ecf8c77 ("mtd: nand: add reworked Marvell NAND controller driver")
+Reported-by: Aviram Dali <aviramd@marvell.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Ravi Chandra Minnikanti <rminnikanti@marvell.com>
+Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-1-miquel.raynal@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-core.c | 38 +++++++++++++++++++++++++++++++++
- include/linux/iio/iio.h         |  2 ++
- 2 files changed, 40 insertions(+)
+ drivers/mtd/nand/raw/marvell_nand.c |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index f3f8392623a46..c9614982cb671 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -2084,6 +2084,44 @@ void iio_device_release_direct_mode(struct iio_dev *indio_dev)
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -1162,6 +1162,7 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
+ 		.ndcb[2] = NDCB2_ADDR5_PAGE(page),
+ 	};
+ 	unsigned int oob_bytes = lt->spare_bytes + (raw ? lt->ecc_bytes : 0);
++	u8 status;
+ 	int ret;
+ 
+ 	/* NFCv2 needs more information about the operation being executed */
+@@ -1195,7 +1196,18 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
+ 
+ 	ret = marvell_nfc_wait_op(chip,
+ 				  PSEC_TO_MSEC(sdr->tPROG_max));
+-	return ret;
++	if (ret)
++		return ret;
++
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
++	return 0;
  }
- EXPORT_SYMBOL_GPL(iio_device_release_direct_mode);
  
-+/**
-+ * iio_device_claim_buffer_mode - Keep device in buffer mode
-+ * @indio_dev:	the iio_dev associated with the device
-+ *
-+ * If the device is in buffer mode it is guaranteed to stay
-+ * that way until iio_device_release_buffer_mode() is called.
-+ *
-+ * Use with iio_device_release_buffer_mode().
-+ *
-+ * Returns: 0 on success, -EBUSY on failure.
-+ */
-+int iio_device_claim_buffer_mode(struct iio_dev *indio_dev)
-+{
-+	mutex_lock(&indio_dev->mlock);
-+
-+	if (iio_buffer_enabled(indio_dev))
-+		return 0;
-+
-+	mutex_unlock(&indio_dev->mlock);
-+	return -EBUSY;
-+}
-+EXPORT_SYMBOL_GPL(iio_device_claim_buffer_mode);
-+
-+/**
-+ * iio_device_release_buffer_mode - releases claim on buffer mode
-+ * @indio_dev:	the iio_dev associated with the device
-+ *
-+ * Release the claim. Device is no longer guaranteed to stay
-+ * in buffer mode.
-+ *
-+ * Use with iio_device_claim_buffer_mode().
-+ */
-+void iio_device_release_buffer_mode(struct iio_dev *indio_dev)
-+{
-+	mutex_unlock(&indio_dev->mlock);
-+}
-+EXPORT_SYMBOL_GPL(iio_device_release_buffer_mode);
-+
- /**
-  * iio_device_get_current_mode() - helper function providing read-only access to
-  *				   the opaque @currentmode variable
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index f0ec8a5e5a7a9..9d3bd6379eb87 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -629,6 +629,8 @@ int __devm_iio_device_register(struct device *dev, struct iio_dev *indio_dev,
- int iio_push_event(struct iio_dev *indio_dev, u64 ev_code, s64 timestamp);
- int iio_device_claim_direct_mode(struct iio_dev *indio_dev);
- void iio_device_release_direct_mode(struct iio_dev *indio_dev);
-+int iio_device_claim_buffer_mode(struct iio_dev *indio_dev);
-+void iio_device_release_buffer_mode(struct iio_dev *indio_dev);
+ static int marvell_nfc_hw_ecc_hmg_write_page_raw(struct nand_chip *chip,
+@@ -1624,6 +1636,7 @@ static int marvell_nfc_hw_ecc_bch_write_
+ 	int data_len = lt->data_bytes;
+ 	int spare_len = lt->spare_bytes;
+ 	int chunk, ret;
++	u8 status;
  
- extern struct bus_type iio_bus_type;
+ 	marvell_nfc_select_target(chip, chip->cur_cs);
  
--- 
-2.40.1
-
+@@ -1660,6 +1673,14 @@ static int marvell_nfc_hw_ecc_bch_write_
+ 	if (ret)
+ 		return ret;
+ 
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
+ 	return 0;
+ }
+ 
 
 
