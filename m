@@ -2,47 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05EE27D31E7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6513D7D32CA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229880AbjJWLOd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:14:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58880 "EHLO
+        id S229807AbjJWLX6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:23:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233691AbjJWLOb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:31 -0400
+        with ESMTP id S233900AbjJWLXq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4537BC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81EE6C433C8;
-        Mon, 23 Oct 2023 11:14:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95123D7F
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8242CC43391;
+        Mon, 23 Oct 2023 11:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059668;
-        bh=r4UcIMnulL5dtu1tt54g/sh9Q/aUYCYyZ293YCmcyJs=;
+        s=korg; t=1698060214;
+        bh=EJW3aD7GrDit2+xpaMM0UaMXZMI6W2Fgm0thNZrUBAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TZvhdJxmuqrEaH640ndj8+tMErVW8DR6tQh7HIvliA8UrHenlIqu+O4uOgr/71GF4
-         P1re4/tFNqWfn0wVtgWZ6CUI9eV5VrfTdmwXL8EY6Q1IUxBTWvh8WOYgVd+5EKPnNH
-         ZKXdjXzFLg8GBJRWWCIFcHIpfkbFMjCVHboMHcEE=
+        b=2Ii+pux2+7Z8ep8E9PcgFH3iwTMkuMLlt2t3L7rdFp/8nDH7LHiWQ2IDNn9Q9ixs+
+         1/EHjFhmqtpOAlDatOOn2oVXYJ70nFKvoq/4A6XfnnVlRm4o6XC4Wz5qq8getQ/tjl
+         uhxgh6FBZdkbbSPY8tYcW2LnUrUu9cS51cLPpYR0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-        Ross Lagerwall <ross.lagerwall@citrix.com>,
-        Wei Liu <wei.liu@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Peter Rosin <peda@axentia.se>, Wolfram Sang <wsa@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 13/98] xen-netback: use default TX queue size for vifs
+Subject: [PATCH 6.1 097/196] i2c: mux: Avoid potential false error message in i2c_mux_add_adapter
 Date:   Mon, 23 Oct 2023 12:56:02 +0200
-Message-ID: <20231023104814.053135992@linuxfoundation.org>
+Message-ID: <20231023104831.271644675@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,52 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 66cf7435a26917c0c4d6245ad9137e7606e84fdf ]
+[ Upstream commit b13e59e74ff71a1004e0508107e91e9a84fd7388 ]
 
-Do not set netback interfaces (vifs) default TX queue size to the ring size.
-The TX queue size is not related to the ring size, and using the ring size (32)
-as the queue size can lead to packet drops.  Note the TX side of the vif
-interface in the netback domain is the one receiving packets to be injected
-to the guest.
+I2C_CLASS_DEPRECATED is a flag and not an actual class.
+There's nothing speaking against both, parent and child, having
+I2C_CLASS_DEPRECATED set. Therefore exclude it from the check.
 
-Do not explicitly set the TX queue length to any value when creating the
-interface, and instead use the system default.  Note that the queue length can
-also be adjusted at runtime.
-
-Fixes: f942dc2552b8 ('xen network backend driver')
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Reviewed-by: Ross Lagerwall <ross.lagerwall@citrix.com>
-Acked-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Acked-by: Peter Rosin <peda@axentia.se>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netback/interface.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/i2c/i2c-mux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/xen-netback/interface.c
-+++ b/drivers/net/xen-netback/interface.c
-@@ -41,7 +41,6 @@
- #include <asm/xen/hypercall.h>
- #include <xen/balloon.h>
+diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
+index 313904be5f3bd..57ff09f18c371 100644
+--- a/drivers/i2c/i2c-mux.c
++++ b/drivers/i2c/i2c-mux.c
+@@ -341,7 +341,7 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 		priv->adap.lock_ops = &i2c_parent_lock_ops;
  
--#define XENVIF_QUEUE_LENGTH 32
- #define XENVIF_NAPI_WEIGHT  64
- 
- /* Number of bytes allowed on the internal guest Rx queue. */
-@@ -526,8 +525,6 @@ struct xenvif *xenvif_alloc(struct devic
- 	dev->features = dev->hw_features | NETIF_F_RXCSUM;
- 	dev->ethtool_ops = &xenvif_ethtool_ops;
- 
--	dev->tx_queue_len = XENVIF_QUEUE_LENGTH;
--
- 	dev->min_mtu = ETH_MIN_MTU;
- 	dev->max_mtu = ETH_MAX_MTU - VLAN_ETH_HLEN;
- 
+ 	/* Sanity check on class */
+-	if (i2c_mux_parent_classes(parent) & class)
++	if (i2c_mux_parent_classes(parent) & class & ~I2C_CLASS_DEPRECATED)
+ 		dev_err(&parent->dev,
+ 			"Segment %d behind mux can't share classes with ancestors\n",
+ 			chan_id);
+-- 
+2.40.1
+
 
 
