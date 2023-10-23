@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C17287D3426
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41C47D31F8
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:15:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234175AbjJWLhE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:37:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54042 "EHLO
+        id S229698AbjJWLPR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:15:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234170AbjJWLhD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:03 -0400
+        with ESMTP id S233702AbjJWLPP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:15:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5FDE100
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C934C433C8;
-        Mon, 23 Oct 2023 11:36:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D161FC2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F89C433C7;
+        Mon, 23 Oct 2023 11:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061020;
-        bh=5wiBpbB3xN3kP22V6ToPDL7xqqavfHBOqzwkEK0zWVE=;
+        s=korg; t=1698059713;
+        bh=v+8iHwjLJjDx0lG2Dm4kMWvqzgUdm7h2wdCrcQ0xjWg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vtrx3ZG9IDPZNBgs3muepC1cHSeoh6lZum2o43gbnkZYAXYRq9eVI8sucJbwAY8A0
-         Ix1i4m8A/b45wk0DE12SUtoyHoJlBUaZntwj9PdwSNAozCuyPa6gnGfyM13/d3/qLa
-         LT1IrvWPeqcaeZYaifT4vLZoeg5Hub7+/br0rWdY=
+        b=BpgZYSZrLQR0JD6pj5TTBx34x9GsdRcreXFISbUDrOsuHiYkB9kDw8O4vsix/Muqm
+         JeZFblkBORpcX2UH/Jw12UDJ1hifS7q1a4g44eAqaH0xFR6FI7izwi0leyr9wZVv8v
+         GO1+t+jxAJtzPnGnGaODpLYOkqroHGDnBOPW6Hbk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
-        Mat Martineau <martineau@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 018/137] tcp: check mptcp-level constraints for backlog coalescing
-Date:   Mon, 23 Oct 2023 12:56:15 +0200
-Message-ID: <20231023104821.561259654@linuxfoundation.org>
+        patches@lists.linux.dev, Alexander Zangerl <az@breathe-safe.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4.19 27/98] iio: pressure: ms5611: ms5611_prom_is_valid false negative bug
+Date:   Mon, 23 Oct 2023 12:56:16 +0200
+Message-ID: <20231023104814.543806837@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Alexander Zangerl <az@breathe-safe.com>
 
-commit 6db8a37dfc541e059851652cfd4f0bb13b8ff6af upstream.
+commit fd39d9668f2ce9f4b05ad55e8c8d80c098073e0b upstream.
 
-The MPTCP protocol can acquire the subflow-level socket lock and
-cause the tcp backlog usage. When inserting new skbs into the
-backlog, the stack will try to coalesce them.
+The ms5611 driver falsely rejects lots of MS5607-02BA03-50 chips
+with "PROM integrity check failed" because it doesn't accept a prom crc
+value of zero as legitimate.
 
-Currently, we have no check in place to ensure that such coalescing
-will respect the MPTCP-level DSS, and that may cause data stream
-corruption, as reported by Christoph.
+According to the datasheet for this chip (and the manufacturer's
+application note about the PROM CRC), none of the possible values for the
+CRC are excluded - but the current code in ms5611_prom_is_valid() ends with
 
-Address the issue by adding the relevant admission check for coalescing
-in tcp_add_backlog().
+return crc_orig != 0x0000 && crc == crc_orig
 
-Note the issue is not easy to reproduce, as the MPTCP protocol tries
-hard to avoid acquiring the subflow-level socket lock.
+Discussed with the driver author (Tomasz Duszynski) and he indicated that
+at that time (2015) he was dealing with some faulty chip samples which
+returned blank data under some circumstances and/or followed example code
+which indicated CRC zero being bad.
 
-Fixes: 648ef4b88673 ("mptcp: Implement MPTCP receive path")
-Cc: stable@vger.kernel.org
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/420
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231018-send-net-20231018-v1-2-17ecb002e41d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As far as I can tell this exception should not be applied anymore; We've
+got a few hundred custom boards here with this chip where large numbers
+of the prom have a legitimate CRC value 0, and do work fine, but which the
+current driver code wrongly rejects.
+
+Signed-off-by: Alexander Zangerl <az@breathe-safe.com>
+Fixes: c0644160a8b5 ("iio: pressure: add support for MS5611 pressure and temperature sensor")
+Link: https://lore.kernel.org/r/2535-1695168070.831792@Ze3y.dhYT.s3fx
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_ipv4.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/pressure/ms5611_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1863,6 +1863,7 @@ bool tcp_add_backlog(struct sock *sk, st
- #ifdef CONFIG_TLS_DEVICE
- 	    tail->decrypted != skb->decrypted ||
- #endif
-+	    !mptcp_skb_can_collapse(tail, skb) ||
- 	    thtail->doff != th->doff ||
- 	    memcmp(thtail + 1, th + 1, hdrlen - sizeof(*th)))
- 		goto no_coalesce;
+--- a/drivers/iio/pressure/ms5611_core.c
++++ b/drivers/iio/pressure/ms5611_core.c
+@@ -79,7 +79,7 @@ static bool ms5611_prom_is_valid(u16 *pr
+ 
+ 	crc = (crc >> 12) & 0x000F;
+ 
+-	return crc_orig != 0x0000 && crc == crc_orig;
++	return crc == crc_orig;
+ }
+ 
+ static int ms5611_read_prom(struct iio_dev *indio_dev)
 
 
