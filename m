@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F4D77D31AE
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D5E77D33F5
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233131AbjJWLMA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:12:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34088 "EHLO
+        id S234089AbjJWLfi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229740AbjJWLL6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:58 -0400
+        with ESMTP id S234038AbjJWLfh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF38C5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE70C433C7;
-        Mon, 23 Oct 2023 11:11:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5FE7FD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDF1C433C7;
+        Mon, 23 Oct 2023 11:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059516;
-        bh=ROk9UdBFCPd0RZ5m8PhSgAOjoSpsZcsWwohdFPwwqOM=;
+        s=korg; t=1698060934;
+        bh=amKSaBN1XMGsgR7m6r6VpdpsKQNYF4rUDYiUYewWVNc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cGPiT05WfdNKIrvuNdwk/2jKuvZ7DsZA4+Hj5e8tFdxN5bRUkcEXcW7/cogpJnUWJ
-         a+DnjDKWHMF5tUFkyvnG3iakoXuAWKV1l6uvjceSfIKnSPlniWfMdIrlnfOM3S4ynO
-         qEO0j4XEOJ3FvOLWACfqU9n8FqUYIuvK3K7wGOvw=
+        b=ZfdnZfYqpj5SbwirtHFTG9NY4XRQtmPj1m/l7pJwaKuMUnHnxt+8LrG8N5pl+BOXP
+         OhAlZqf7gToASSC2dOiU2EW05yYetlfP8MXxVpSUBw4nLy4bdVrjUf1gwLmBCG2V21
+         1yNcIC7cGCEqSvlcn67459Byd5PfXj0hajAnFhis=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Avri Altman <avri.altman@wdc.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.5 176/241] mmc: core: Capture correct oemid-bits for eMMC cards
+        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Lee@vger.kernel.org
+Subject: [PATCH 5.15 005/137] Bluetooth: Reject connection with the device which has same BD_ADDR
 Date:   Mon, 23 Oct 2023 12:56:02 +0200
-Message-ID: <20231023104838.176168312@linuxfoundation.org>
+Message-ID: <20231023104821.058390206@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,43 +49,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avri Altman <avri.altman@wdc.com>
+From: Lee, Chun-Yi <jlee@suse.com>
 
-commit 84ee19bffc9306128cd0f1c650e89767079efeff upstream.
+commit 1ffc6f8cc33268731fcf9629fc4438f6db1191fc upstream.
 
-The OEMID is an 8-bit binary number rather than 16-bit as the current code
-parses for. The OEMID occupies bits [111:104] in the CID register, see the
-eMMC spec JESD84-B51 paragraph 7.2.3. It seems that the 16-bit comes from
-the legacy MMC specs (v3.31 and before).
+This change is used to relieve CVE-2020-26555. The description of
+the CVE:
 
-Let's fix the parsing by simply move to use 8-bit instead of 16-bit. This
-means we ignore the impact on some of those old MMC cards that may be out
-there, but on the other hand this shouldn't be a problem as the OEMID seems
-not be an important feature for these cards.
+Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
+1.0B through 5.2 may permit an unauthenticated nearby device to spoof
+the BD_ADDR of the peer device to complete pairing without knowledge
+of the PIN. [1]
 
-Signed-off-by: Avri Altman <avri.altman@wdc.com>
+The detail of this attack is in IEEE paper:
+BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
+[2]
+
+It's a reflection attack. The paper mentioned that attacker can induce
+the attacked target to generate null link key (zero key) without PIN
+code. In BR/EDR, the key generation is actually handled in the controller
+which is below HCI.
+
+A condition of this attack is that attacker should change the
+BR_ADDR of his hacking device (Host B) to equal to the BR_ADDR with
+the target device being attacked (Host A).
+
+Thus, we reject the connection with device which has same BD_ADDR
+both on HCI_Create_Connection and HCI_Connection_Request to prevent
+the attack. A similar implementation also shows in btstack project.
+[3][4]
+
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230927071500.1791882-1-avri.altman@wdc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
+Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3523 [3]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L7297 [4]
+Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/mmc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c  |    9 +++++++++
+ net/bluetooth/hci_event.c |   11 +++++++++++
+ 2 files changed, 20 insertions(+)
 
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -104,7 +104,7 @@ static int mmc_decode_cid(struct mmc_car
- 	case 3: /* MMC v3.1 - v3.3 */
- 	case 4: /* MMC v4 */
- 		card->cid.manfid	= UNSTUFF_BITS(resp, 120, 8);
--		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 16);
-+		card->cid.oemid		= UNSTUFF_BITS(resp, 104, 8);
- 		card->cid.prod_name[0]	= UNSTUFF_BITS(resp, 96, 8);
- 		card->cid.prod_name[1]	= UNSTUFF_BITS(resp, 88, 8);
- 		card->cid.prod_name[2]	= UNSTUFF_BITS(resp, 80, 8);
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1300,6 +1300,15 @@ struct hci_conn *hci_connect_acl(struct
+ 		return ERR_PTR(-EOPNOTSUPP);
+ 	}
+ 
++	/* Reject outgoing connection to device with same BD ADDR against
++	 * CVE-2020-26555
++	 */
++	if (!bacmp(&hdev->bdaddr, dst)) {
++		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
++			   dst);
++		return ERR_PTR(-ECONNREFUSED);
++	}
++
+ 	acl = hci_conn_hash_lookup_ba(hdev, ACL_LINK, dst);
+ 	if (!acl) {
+ 		acl = hci_conn_add(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2794,6 +2794,17 @@ static void hci_conn_request_evt(struct
+ 	BT_DBG("%s bdaddr %pMR type 0x%x", hdev->name, &ev->bdaddr,
+ 	       ev->link_type);
+ 
++	/* Reject incoming connection from device with same BD ADDR against
++	 * CVE-2020-26555
++	 */
++	if (!bacmp(&hdev->bdaddr, &ev->bdaddr))
++	{
++		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
++			   &ev->bdaddr);
++		hci_reject_conn(hdev, &ev->bdaddr);
++		return;
++	}
++
+ 	mask |= hci_proto_connect_ind(hdev, &ev->bdaddr, ev->link_type,
+ 				      &flags);
+ 
 
 
