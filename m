@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF2B77D359B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6B847D348D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234583AbjJWLuD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:50:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56860 "EHLO
+        id S234267AbjJWLkn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:40:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234592AbjJWLuC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:02 -0400
+        with ESMTP id S234282AbjJWLkk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C44FCF9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEFAC433C8;
-        Mon, 23 Oct 2023 11:49:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 950F4D7F
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21C7C433C8;
+        Mon, 23 Oct 2023 11:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061799;
-        bh=E6kqcn5oFxARWAyDgyxmtzSTswCjTKYGKyzi3SMv2SQ=;
+        s=korg; t=1698061238;
+        bh=t3BN54va3Gtc2lMfC5/u9NxcyUJwVTPCuHy0z+d1FYc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lp8yFjtp2lsv+MT3Zzo6r0hivig+7h3OlUwjZ+HAB3z+p9UBRDyQELRM2F68Gjgh9
-         s2fTm8VU3VLEojziDdvlg1r6aVp78Yl7L6BjO4N3Krt16whw7JGtjoBfG3IwUdiXSi
-         mK4Cfw76rSE2V7Wcoq7fq3P+wVqlM6EVa5JgyI/k=
+        b=IuJWoUuVi/+Xwi7/Lgu4crOcwJw5b1c0mSuJBWU2+c6xUX2Wi+P/kOYXd6H7OYS0c
+         c1BFBe8ZY2J4kfjEvLR3WuA4kHPrBtEPhXy6tuG2RN4aMvg7UWzkenzXE+qVug5FGJ
+         lOZK8hMiisiOBLBD19+z/KblIAIiZ+TaEFdahDWE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 169/202] btrfs: fix some -Wmaybe-uninitialized warnings in ioctl.c
+        patches@lists.linux.dev, Puliang Lu <puliang.lu@fibocom.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 119/137] USB: serial: option: add Fibocom to DELL custom modem FM101R-GL
 Date:   Mon, 23 Oct 2023 12:57:56 +0200
-Message-ID: <20231023104831.426705120@linuxfoundation.org>
+Message-ID: <20231023104824.776440360@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,107 +48,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Puliang Lu <puliang.lu@fibocom.com>
 
-[ Upstream commit 9147b9ded499d9853bdf0e9804b7eaa99c4429ed ]
+commit 52480e1f1a259c93d749ba3961af0bffedfe7a7a upstream.
 
-Jens reported the following warnings from -Wmaybe-uninitialized recent
-Linus' branch.
+Update the USB serial option driver support for the Fibocom
+FM101R-GL LTE modules as there are actually several different variants.
 
-  In file included from ./include/asm-generic/rwonce.h:26,
-		   from ./arch/arm64/include/asm/rwonce.h:71,
-		   from ./include/linux/compiler.h:246,
-		   from ./include/linux/export.h:5,
-		   from ./include/linux/linkage.h:7,
-		   from ./include/linux/kernel.h:17,
-		   from fs/btrfs/ioctl.c:6:
-  In function ‘instrument_copy_from_user_before’,
-      inlined from ‘_copy_from_user’ at ./include/linux/uaccess.h:148:3,
-      inlined from ‘copy_from_user’ at ./include/linux/uaccess.h:183:7,
-      inlined from ‘btrfs_ioctl_space_info’ at fs/btrfs/ioctl.c:2999:6,
-      inlined from ‘btrfs_ioctl’ at fs/btrfs/ioctl.c:4616:10:
-  ./include/linux/kasan-checks.h:38:27: warning: ‘space_args’ may be used
-  uninitialized [-Wmaybe-uninitialized]
-     38 | #define kasan_check_write __kasan_check_write
-  ./include/linux/instrumented.h:129:9: note: in expansion of macro
-  ‘kasan_check_write’
-    129 |         kasan_check_write(to, n);
-	|         ^~~~~~~~~~~~~~~~~
-  ./include/linux/kasan-checks.h: In function ‘btrfs_ioctl’:
-  ./include/linux/kasan-checks.h:20:6: note: by argument 1 of type ‘const
-  volatile void *’ to ‘__kasan_check_write’ declared here
-     20 | bool __kasan_check_write(const volatile void *p, unsigned int
-	size);
-	|      ^~~~~~~~~~~~~~~~~~~
-  fs/btrfs/ioctl.c:2981:39: note: ‘space_args’ declared here
-   2981 |         struct btrfs_ioctl_space_args space_args;
-	|                                       ^~~~~~~~~~
-  In function ‘instrument_copy_from_user_before’,
-      inlined from ‘_copy_from_user’ at ./include/linux/uaccess.h:148:3,
-      inlined from ‘copy_from_user’ at ./include/linux/uaccess.h:183:7,
-      inlined from ‘_btrfs_ioctl_send’ at fs/btrfs/ioctl.c:4343:9,
-      inlined from ‘btrfs_ioctl’ at fs/btrfs/ioctl.c:4658:10:
-  ./include/linux/kasan-checks.h:38:27: warning: ‘args32’ may be used
-  uninitialized [-Wmaybe-uninitialized]
-     38 | #define kasan_check_write __kasan_check_write
-  ./include/linux/instrumented.h:129:9: note: in expansion of macro
-  ‘kasan_check_write’
-    129 |         kasan_check_write(to, n);
-	|         ^~~~~~~~~~~~~~~~~
-  ./include/linux/kasan-checks.h: In function ‘btrfs_ioctl’:
-  ./include/linux/kasan-checks.h:20:6: note: by argument 1 of type ‘const
-  volatile void *’ to ‘__kasan_check_write’ declared here
-     20 | bool __kasan_check_write(const volatile void *p, unsigned int
-	size);
-	|      ^~~~~~~~~~~~~~~~~~~
-  fs/btrfs/ioctl.c:4341:49: note: ‘args32’ declared here
-   4341 |                 struct btrfs_ioctl_send_args_32 args32;
-	|                                                 ^~~~~~
+- VID:PID 413C:8213, FM101R-GL are laptop M.2 cards (with
+  MBIM interfaces for Linux)
 
-This was due to his config options and having KASAN turned on,
-which adds some extra checks around copy_from_user(), which then
-triggered the -Wmaybe-uninitialized checker for these cases.
+- VID:PID 413C:8215, FM101R-GL ESIM are laptop M.2 cards (with
+  MBIM interface for Linux)
 
-Fix the warnings by initializing the different structs we're copying
-into.
+0x8213: mbim, tty
+0x8215: mbim, tty
 
-Reported-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=413c ProdID=8213 Rev= 5.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom FM101-GL Module
+S:  SerialNumber=a3b7cbf0
+C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+T:  Bus=04 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=413c ProdID=8215 Rev= 5.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom FM101-GL Module
+S:  SerialNumber=a3b7cbf0
+C:* #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=0e Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=(none)
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+
+Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 930126b094add..cffd149faf639 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -3518,7 +3518,7 @@ static void get_block_group_info(struct list_head *groups_list,
- static long btrfs_ioctl_space_info(struct btrfs_fs_info *fs_info,
- 				   void __user *arg)
- {
--	struct btrfs_ioctl_space_args space_args;
-+	struct btrfs_ioctl_space_args space_args = { 0 };
- 	struct btrfs_ioctl_space_info space;
- 	struct btrfs_ioctl_space_info *dest;
- 	struct btrfs_ioctl_space_info *dest_orig;
-@@ -4858,7 +4858,7 @@ static int _btrfs_ioctl_send(struct file *file, void __user *argp, bool compat)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -203,6 +203,9 @@ static void option_instat_callback(struc
+ #define DELL_PRODUCT_5829E_ESIM			0x81e4
+ #define DELL_PRODUCT_5829E			0x81e6
  
- 	if (compat) {
- #if defined(CONFIG_64BIT) && defined(CONFIG_COMPAT)
--		struct btrfs_ioctl_send_args_32 args32;
-+		struct btrfs_ioctl_send_args_32 args32 = { 0 };
- 
- 		ret = copy_from_user(&args32, argp, sizeof(args32));
- 		if (ret)
--- 
-2.40.1
-
++#define DELL_PRODUCT_FM101R			0x8213
++#define DELL_PRODUCT_FM101R_ESIM		0x8215
++
+ #define KYOCERA_VENDOR_ID			0x0c88
+ #define KYOCERA_PRODUCT_KPC650			0x17da
+ #define KYOCERA_PRODUCT_KPC680			0x180a
+@@ -1108,6 +1111,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | RSVD(6) },
+ 	{ USB_DEVICE(DELL_VENDOR_ID, DELL_PRODUCT_5829E_ESIM),
+ 	  .driver_info = RSVD(0) | RSVD(6) },
++	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R, 0xff) },
++	{ USB_DEVICE_INTERFACE_CLASS(DELL_VENDOR_ID, DELL_PRODUCT_FM101R_ESIM, 0xff) },
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_E100A) },	/* ADU-E100, ADU-310 */
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_500A) },
+ 	{ USB_DEVICE(ANYDATA_VENDOR_ID, ANYDATA_PRODUCT_ADU_620UW) },
 
 
