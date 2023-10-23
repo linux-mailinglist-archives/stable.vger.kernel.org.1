@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABAB57D33C7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97D077D3594
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233309AbjJWLeG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:34:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48164 "EHLO
+        id S234570AbjJWLtp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234138AbjJWLeF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:05 -0400
+        with ESMTP id S234293AbjJWLto (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A625CE4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8178C433C8;
-        Mon, 23 Oct 2023 11:34:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C0E6100
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F04C433C7;
+        Mon, 23 Oct 2023 11:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060843;
-        bh=MejTkWNhPg6F+kFWKR+w1JT9s79kHAIrLDkJFMfE67s=;
+        s=korg; t=1698061781;
+        bh=kr+ePa7JMXLbZ9viufkR7zzU19rV2t4T+Yp4fJcbmKY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=btbu2KBW+nSndPxbOvcO4i8WMLZVv5X7hqH7HLfKOyXPneCSF7cQKzgVyI7S9qbrQ
-         tVEHHjSSA9roWPVBLmKcbibkVIUa8XGBehnZh1h1iMBhJQThaaTz6CRdnKgQADRMkE
-         NA4z1I8ucWzq6MvnM0KFhBQOVh8XP6xExJt+lQMY=
+        b=vduDJRLUBi2k+kNCbVsLmlTjqD79IrEiNVTTe6FL0zDQpt/bPB/gqa3mAAMy/3usW
+         +yscUsbMnRJm2/2rIZx7TWwLmRh1NoIRVZ9ngIohSAG8I+XGiphMDtc1SJ5jmxSuEE
+         ht4QAv4YB/FwhX8vVtuS1dVtcpyQ8e1lDJgYIm+Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Budimir Markovic <markovicbudimir@gmail.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.4 112/123] perf: Disallow mis-matched inherited group reads
+        patches@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 163/202] wifi: mac80211: allow transmitting EAPOL frames with tainted key
 Date:   Mon, 23 Oct 2023 12:57:50 +0200
-Message-ID: <20231023104821.487473165@linuxfoundation.org>
+Message-ID: <20231023104831.259330251@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,146 +49,114 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-commit 32671e3799ca2e4590773fd0e63aaa4229e50c06 upstream.
+[ Upstream commit 61304336c67358d49a989e5e0060d8c99bad6ca8 ]
 
-Because group consistency is non-atomic between parent (filedesc) and children
-(inherited) events, it is possible for PERF_FORMAT_GROUP read() to try and sum
-non-matching counter groups -- with non-sensical results.
+Lower layer device driver stop/wake TX by calling ieee80211_stop_queue()/
+ieee80211_wake_queue() while hw scan. Sometimes hw scan and PTK rekey are
+running in parallel, when M4 sent from wpa_supplicant arrive while the TX
+queue is stopped, then the M4 will pending send, and then new key install
+from wpa_supplicant. After TX queue wake up by lower layer device driver,
+the M4 will be dropped by below call stack.
 
-Add group_generation to distinguish the case where a parent group removes and
-adds an event and thus has the same number, but a different configuration of
-events as inherited groups.
+When key install started, the current key flag is set KEY_FLAG_TAINTED in
+ieee80211_pairwise_rekey(), and then mac80211 wait key install complete by
+lower layer device driver. Meanwhile ieee80211_tx_h_select_key() will return
+TX_DROP for the M4 in step 12 below, and then ieee80211_free_txskb() called
+by ieee80211_tx_dequeue(), so the M4 will not send and free, then the rekey
+process failed becaue AP not receive M4. Please see details in steps below.
 
-This became a problem when commit fa8c269353d5 ("perf/core: Invert
-perf_read_group() loops") flipped the order of child_list and sibling_list.
-Previously it would iterate the group (sibling_list) first, and for each
-sibling traverse the child_list. In this order, only the group composition of
-the parent is relevant. By flipping the order the group composition of the
-child (inherited) events becomes an issue and the mis-match in group
-composition becomes evident.
+There are a interval between KEY_FLAG_TAINTED set for current key flag and
+install key complete by lower layer device driver, the KEY_FLAG_TAINTED is
+set in this interval, all packet including M4 will be dropped in this
+interval, the interval is step 8~13 as below.
 
-That said; even prior to this commit, while reading of a group that is not
-equally inherited was not broken, it still made no sense.
+issue steps:
+      TX thread                 install key thread
+1.   stop_queue                      -idle-
+2.   sending M4                      -idle-
+3.   M4 pending                      -idle-
+4.     -idle-                  starting install key from wpa_supplicant
+5.     -idle-                  =>ieee80211_key_replace()
+6.     -idle-                  =>ieee80211_pairwise_rekey() and set
+                                 currently key->flags |= KEY_FLAG_TAINTED
+7.     -idle-                  =>ieee80211_key_enable_hw_accel()
+8.     -idle-                  =>drv_set_key() and waiting key install
+                                 complete from lower layer device driver
+9.   wake_queue                     -waiting state-
+10.  re-sending M4                  -waiting state-
+11.  =>ieee80211_tx_h_select_key()  -waiting state-
+12.  drop M4 by KEY_FLAG_TAINTED    -waiting state-
+13.    -idle-                   install key complete with success/fail
+                                  success: clear flag KEY_FLAG_TAINTED
+                                  fail: start disconnect
 
-(Ab)use ECHILD as error return to indicate issues with child process group
-composition.
+Hence add check in step 11 above to allow the EAPOL send out in the
+interval. If lower layer device driver use the old key/cipher to encrypt
+the M4, then AP received/decrypt M4 correctly, after M4 send out, lower
+layer device driver install the new key/cipher to hardware and return
+success.
 
-Fixes: fa8c269353d5 ("perf/core: Invert perf_read_group() loops")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20231018115654.GK33217@noisy.programming.kicks-ass.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If lower layer device driver use new key/cipher to send the M4, then AP
+will/should drop the M4, then it is same result with this issue, AP will/
+should kick out station as well as this issue.
+
+issue log:
+kworker/u16:4-5238  [000]  6456.108926: stop_queue:           phy1 queue:0, reason:0
+wpa_supplicant-961  [003]  6456.119737: rdev_tx_control_port: wiphy_name=phy1 name=wlan0 ifindex=6 dest=ARRAY[9e, 05, 31, 20, 9b, d0] proto=36488 unencrypted=0
+wpa_supplicant-961  [003]  6456.119839: rdev_return_int_cookie: phy1, returned 0, cookie: 504
+wpa_supplicant-961  [003]  6456.120287: rdev_add_key:         phy1, netdev:wlan0(6), key_index: 0, mode: 0, pairwise: true, mac addr: 9e:05:31:20:9b:d0
+wpa_supplicant-961  [003]  6456.120453: drv_set_key:          phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 cipher:0xfac04, flags=0x9, keyidx=0, hw_key_idx=0
+kworker/u16:9-3829  [001]  6456.168240: wake_queue:           phy1 queue:0, reason:0
+kworker/u16:9-3829  [001]  6456.168255: drv_wake_tx_queue:    phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 ac:0 tid:7
+kworker/u16:9-3829  [001]  6456.168305: cfg80211_control_port_tx_status: wdev(1), cookie: 504, ack: false
+wpa_supplicant-961  [003]  6459.167982: drv_return_int:       phy1 - -110
+
+issue call stack:
+nl80211_frame_tx_status+0x230/0x340 [cfg80211]
+cfg80211_control_port_tx_status+0x1c/0x28 [cfg80211]
+ieee80211_report_used_skb+0x374/0x3e8 [mac80211]
+ieee80211_free_txskb+0x24/0x40 [mac80211]
+ieee80211_tx_dequeue+0x644/0x954 [mac80211]
+ath10k_mac_tx_push_txq+0xac/0x238 [ath10k_core]
+ath10k_mac_op_wake_tx_queue+0xac/0xe0 [ath10k_core]
+drv_wake_tx_queue+0x80/0x168 [mac80211]
+__ieee80211_wake_txqs+0xe8/0x1c8 [mac80211]
+_ieee80211_wake_txqs+0xb4/0x120 [mac80211]
+ieee80211_wake_txqs+0x48/0x80 [mac80211]
+tasklet_action_common+0xa8/0x254
+tasklet_action+0x2c/0x38
+__do_softirq+0xdc/0x384
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Link: https://lore.kernel.org/r/20230801064751.25803-1-quic_wgong@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/perf_event.h |    1 +
- kernel/events/core.c       |   39 +++++++++++++++++++++++++++++++++------
- 2 files changed, 34 insertions(+), 6 deletions(-)
+ net/mac80211/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -607,6 +607,7 @@ struct perf_event {
- 	/* The cumulative AND of all event_caps for events in this group. */
- 	int				group_caps;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index bbbcc678c655c..788b6a3c14191 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -656,7 +656,8 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+ 		}
  
-+	unsigned int			group_generation;
- 	struct perf_event		*group_leader;
- 	struct pmu			*pmu;
- 	void				*pmu_private;
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1849,6 +1849,7 @@ static void perf_group_attach(struct per
+ 		if (unlikely(tx->key && tx->key->flags & KEY_FLAG_TAINTED &&
+-			     !ieee80211_is_deauth(hdr->frame_control)))
++			     !ieee80211_is_deauth(hdr->frame_control)) &&
++			     tx->skb->protocol != tx->sdata->control_port_protocol)
+ 			return TX_DROP;
  
- 	list_add_tail(&event->sibling_list, &group_leader->sibling_list);
- 	group_leader->nr_siblings++;
-+	group_leader->group_generation++;
- 
- 	perf_event__header_size(group_leader);
- 
-@@ -2004,6 +2005,7 @@ static void perf_group_detach(struct per
- 	if (event->group_leader != event) {
- 		list_del_init(&event->sibling_list);
- 		event->group_leader->nr_siblings--;
-+		event->group_leader->group_generation++;
- 		goto out;
- 	}
- 
-@@ -4854,7 +4856,7 @@ static int __perf_read_group_add(struct
- 					u64 read_format, u64 *values)
- {
- 	struct perf_event_context *ctx = leader->ctx;
--	struct perf_event *sub;
-+	struct perf_event *sub, *parent;
- 	unsigned long flags;
- 	int n = 1; /* skip @nr */
- 	int ret;
-@@ -4864,6 +4866,33 @@ static int __perf_read_group_add(struct
- 		return ret;
- 
- 	raw_spin_lock_irqsave(&ctx->lock, flags);
-+	/*
-+	 * Verify the grouping between the parent and child (inherited)
-+	 * events is still in tact.
-+	 *
-+	 * Specifically:
-+	 *  - leader->ctx->lock pins leader->sibling_list
-+	 *  - parent->child_mutex pins parent->child_list
-+	 *  - parent->ctx->mutex pins parent->sibling_list
-+	 *
-+	 * Because parent->ctx != leader->ctx (and child_list nests inside
-+	 * ctx->mutex), group destruction is not atomic between children, also
-+	 * see perf_event_release_kernel(). Additionally, parent can grow the
-+	 * group.
-+	 *
-+	 * Therefore it is possible to have parent and child groups in a
-+	 * different configuration and summing over such a beast makes no sense
-+	 * what so ever.
-+	 *
-+	 * Reject this.
-+	 */
-+	parent = leader->parent;
-+	if (parent &&
-+	    (parent->group_generation != leader->group_generation ||
-+	     parent->nr_siblings != leader->nr_siblings)) {
-+		ret = -ECHILD;
-+		goto unlock;
-+	}
- 
- 	/*
- 	 * Since we co-schedule groups, {enabled,running} times of siblings
-@@ -4893,8 +4922,9 @@ static int __perf_read_group_add(struct
- 			values[n++] = primary_event_id(sub);
- 	}
- 
-+unlock:
- 	raw_spin_unlock_irqrestore(&ctx->lock, flags);
--	return 0;
-+	return ret;
- }
- 
- static int perf_read_group(struct perf_event *event,
-@@ -4913,10 +4943,6 @@ static int perf_read_group(struct perf_e
- 
- 	values[0] = 1 + leader->nr_siblings;
- 
--	/*
--	 * By locking the child_mutex of the leader we effectively
--	 * lock the child list of all siblings.. XXX explain how.
--	 */
- 	mutex_lock(&leader->child_mutex);
- 
- 	ret = __perf_read_group_add(leader, read_format, values);
-@@ -11989,6 +12015,7 @@ static int inherit_group(struct perf_eve
- 		    !perf_get_aux_event(child_ctr, leader))
- 			return -EINVAL;
- 	}
-+	leader->group_generation = parent_event->group_generation;
- 	return 0;
- }
- 
+ 		if (!skip_hw && tx->key &&
+-- 
+2.40.1
+
 
 
