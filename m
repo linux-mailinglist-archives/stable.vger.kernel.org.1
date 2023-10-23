@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED2DB7D354A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:47:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 396397D3384
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233441AbjJWLrA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50696 "EHLO
+        id S234078AbjJWLbP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:31:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233972AbjJWLqu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:50 -0400
+        with ESMTP id S234074AbjJWLbN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E680C1729
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:46:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEC0C433C8;
-        Mon, 23 Oct 2023 11:46:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A49A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49E2C433C9;
+        Mon, 23 Oct 2023 11:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061607;
-        bh=Pha7UHm9Ll0ZpSW/9ke3j5dkE2HM0sqZQfIcolVwTZw=;
+        s=korg; t=1698060671;
+        bh=XPHkzFylGX8i1iZmLwPrGWFHybccEVXB6ZT6fQq7eEk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xjKHoGLlycStDlgbWaXxYLzEdh3VFD8fLnMGyBAEtKuRUn4stWUcs1QZxYCKA3v4x
-         dUm56KwLwBctrhnkg/v4jE0bdoHWCJi2+gQf1oqFIQQKoe1JvxyrwKh0UCD7VoMwZC
-         pvfNhAJjJ7sj33RPhg0vWcgkNZLxFOG01+VJsErY=
+        b=rXgF+aaSw+nGErsfQiy6l4OsQfCJZrcQyn1GIMw1ofkQOKs21/6ve2fu7BefyGfeS
+         0tpDUykwQQSecd26D75O7aJ0zR/TVyhJHPkkjLadysHgO82JWIBp7og2IH3yC4XOr1
+         Fn9ItEmDUdt7mG0V7cxRAVxiolojxSxXZ6wpSEWs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
-        Manish Chopra <manishc@marvell.com>
-Subject: [PATCH 5.10 104/202] qed: fix LL2 RX buffer allocation
-Date:   Mon, 23 Oct 2023 12:56:51 +0200
-Message-ID: <20231023104829.573330453@linuxfoundation.org>
+        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.4 054/123] regmap: fix NULL deref on lookup
+Date:   Mon, 23 Oct 2023 12:56:52 +0200
+Message-ID: <20231023104819.514240624@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,67 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manish Chopra <manishc@marvell.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 2f3389c73832ad90b63208c0fc281ad080114c7a upstream.
+commit c6df843348d6b71ea986266c12831cb60c2cf325 upstream.
 
-Driver allocates the LL2 rx buffers from kmalloc()
-area to construct the skb using slab_build_skb()
+Not all regmaps have a name so make sure to check for that to avoid
+dereferencing a NULL pointer when dev_get_regmap() is used to lookup a
+named regmap.
 
-The required size allocation seems to have overlooked
-for accounting both skb_shared_info size and device
-placement padding bytes which results into the below
-panic when doing skb_put() for a standard MTU sized frame.
-
-skbuff: skb_over_panic: text:ffffffffc0b0225f len:1514 put:1514
-head:ff3dabceaf39c000 data:ff3dabceaf39c042 tail:0x62c end:0x566
-dev:<NULL>
-…
-skb_panic+0x48/0x4a
-skb_put.cold+0x10/0x10
-qed_ll2b_complete_rx_packet+0x14f/0x260 [qed]
-qed_ll2_rxq_handle_completion.constprop.0+0x169/0x200 [qed]
-qed_ll2_rxq_completion+0xba/0x320 [qed]
-qed_int_sp_dpc+0x1a7/0x1e0 [qed]
-
-This patch fixes this by accouting skb_shared_info and device
-placement padding size bytes when allocating the buffers.
-
-Cc: David S. Miller <davem@davemloft.net>
-Fixes: 0a7fb11c23c0 ("qed: Add Light L2 support")
-Signed-off-by: Manish Chopra <manishc@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e84861fec32d ("regmap: dev_get_regmap_match(): fix string comparison")
+Cc: stable@vger.kernel.org      # 5.8
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231006082104.16707-1-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qlogic/qed/qed_ll2.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/base/regmap/regmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/qlogic/qed/qed_ll2.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_ll2.c
-@@ -87,7 +87,10 @@ static void qed_ll2b_complete_tx_packet(
- static int qed_ll2_alloc_buffer(struct qed_dev *cdev,
- 				u8 **data, dma_addr_t *phys_addr)
- {
--	*data = kmalloc(cdev->ll2->rx_size, GFP_ATOMIC);
-+	size_t size = cdev->ll2->rx_size + NET_SKB_PAD +
-+		      SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+
-+	*data = kmalloc(size, GFP_ATOMIC);
- 	if (!(*data)) {
- 		DP_INFO(cdev, "Failed to allocate LL2 buffer data\n");
- 		return -ENOMEM;
-@@ -2541,7 +2544,7 @@ static int qed_ll2_start(struct qed_dev
- 	INIT_LIST_HEAD(&cdev->ll2->list);
- 	spin_lock_init(&cdev->ll2->lock);
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1363,7 +1363,7 @@ static int dev_get_regmap_match(struct d
  
--	cdev->ll2->rx_size = NET_SKB_PAD + ETH_HLEN +
-+	cdev->ll2->rx_size = PRM_DMA_PAD_BYTES_NUM + ETH_HLEN +
- 			     L1_CACHE_BYTES + params->mtu;
- 
- 	/* Allocate memory for LL2.
+ 	/* If the user didn't specify a name match any */
+ 	if (data)
+-		return !strcmp((*r)->name, data);
++		return (*r)->name && !strcmp((*r)->name, data);
+ 	else
+ 		return 1;
+ }
 
 
