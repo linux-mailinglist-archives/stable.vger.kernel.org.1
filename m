@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E01BC7D3407
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5996C7D3099
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:00:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234159AbjJWLgP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:36:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52230 "EHLO
+        id S229453AbjJWLAZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:00:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34446 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234145AbjJWLgM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:12 -0400
+        with ESMTP id S229740AbjJWLAY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:00:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3302D7F
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38523C433C9;
-        Mon, 23 Oct 2023 11:36:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5C4BD7C
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:00:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110D1C433C8;
+        Mon, 23 Oct 2023 11:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060969;
-        bh=RDAbcKoAhehQrUUwZCIVETNHc2vKaAaViqIf/XiVOF8=;
+        s=korg; t=1698058821;
+        bh=Hz9gBX4NkWqm65S8ZP2PHR2F5X6KXh4H7sDMgjr5V7o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UCNTpmg0QJJHarWMcTuEN3ap0SJkQXErXwyMNGR0v28RlX8KqL3xcPIXessVkMulm
-         q8xtbK3DdPKF6k0wZoZCe5Q/J6bWhj6UkHS3dWXfS0UNZ8Vwx0FcEifzaA2r+Memtn
-         tF3gjpZGs2je40VhLWvu0OSJpOk+FEPb/f0KDc6Y=
+        b=W7s68WbjT/cfb6pL5bXdRG8icU5TONpd8+df2e/4kFsmTF1cPMZDQMsPOEbsJdrpS
+         ChNNRz9wBJ7zoh5DXsWxfQdvpnwm8n03GPNU4k/yq251LgPpwKncXsiOo4wSiVZttc
+         I6Q540fo2BmtJoPKyqzLQisfLk8cz2mNMXmQejlI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.15 030/137] xfrm: fix a data-race in xfrm_gen_index()
-Date:   Mon, 23 Oct 2023 12:56:27 +0200
-Message-ID: <20231023104822.026348977@linuxfoundation.org>
+        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 4.14 38/66] net: ipv6: fix return value check in esp_remove_trailer
+Date:   Mon, 23 Oct 2023 12:56:28 +0200
+Message-ID: <20231023104812.263433768@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,105 +48,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ma Ke <make_ruc2021@163.com>
 
-commit 3e4bc23926b83c3c67e5f61ae8571602754131a6 upstream.
+commit dad4e491e30b20f4dc615c9da65d2142d703b5c2 upstream.
 
-xfrm_gen_index() mutual exclusion uses net->xfrm.xfrm_policy_lock.
+In esp_remove_trailer(), to avoid an unexpected result returned by
+pskb_trim, we should check the return value of pskb_trim().
 
-This means we must use a per-netns idx_generator variable,
-instead of a static one.
-Alternative would be to use an atomic variable.
-
-syzbot reported:
-
-BUG: KCSAN: data-race in xfrm_sk_policy_insert / xfrm_sk_policy_insert
-
-write to 0xffffffff87005938 of 4 bytes by task 29466 on cpu 0:
-xfrm_gen_index net/xfrm/xfrm_policy.c:1385 [inline]
-xfrm_sk_policy_insert+0x262/0x640 net/xfrm/xfrm_policy.c:2347
-xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
-do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
-ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
-rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
-sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
-__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
-__do_sys_setsockopt net/socket.c:2274 [inline]
-__se_sys_setsockopt net/socket.c:2271 [inline]
-__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffffffff87005938 of 4 bytes by task 29460 on cpu 1:
-xfrm_sk_policy_insert+0x13e/0x640
-xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
-do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
-ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
-rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
-sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
-__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
-__do_sys_setsockopt net/socket.c:2274 [inline]
-__se_sys_setsockopt net/socket.c:2271 [inline]
-__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0x00006ad8 -> 0x00006b18
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 29460 Comm: syz-executor.1 Not tainted 6.5.0-rc5-syzkaller-00243-g9106536c1aa3 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-
-Fixes: 1121994c803f ("netns xfrm: policy insertion in netns")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netns/xfrm.h |    1 +
- net/xfrm/xfrm_policy.c   |    6 ++----
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ net/ipv6/esp6.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/include/net/netns/xfrm.h
-+++ b/include/net/netns/xfrm.h
-@@ -50,6 +50,7 @@ struct netns_xfrm {
- 	struct list_head	policy_all;
- 	struct hlist_head	*policy_byidx;
- 	unsigned int		policy_idx_hmask;
-+	unsigned int		idx_generator;
- 	struct hlist_head	policy_inexact[XFRM_POLICY_MAX];
- 	struct xfrm_policy_hash	policy_bydst[XFRM_POLICY_MAX];
- 	unsigned int		policy_count[XFRM_POLICY_MAX * 2];
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -1371,8 +1371,6 @@ EXPORT_SYMBOL(xfrm_policy_hash_rebuild);
-  * of an absolute inpredictability of ordering of rules. This will not pass. */
- static u32 xfrm_gen_index(struct net *net, int dir, u32 index)
- {
--	static u32 idx_generator;
--
- 	for (;;) {
- 		struct hlist_head *list;
- 		struct xfrm_policy *p;
-@@ -1380,8 +1378,8 @@ static u32 xfrm_gen_index(struct net *ne
- 		int found;
+--- a/net/ipv6/esp6.c
++++ b/net/ipv6/esp6.c
+@@ -499,7 +499,9 @@ static inline int esp_remove_trailer(str
+ 		skb->csum = csum_block_sub(skb->csum, csumdiff,
+ 					   skb->len - trimlen);
+ 	}
+-	pskb_trim(skb, skb->len - trimlen);
++	ret = pskb_trim(skb, skb->len - trimlen);
++	if (unlikely(ret))
++		return ret;
  
- 		if (!index) {
--			idx = (idx_generator | dir);
--			idx_generator += 8;
-+			idx = (net->xfrm.idx_generator | dir);
-+			net->xfrm.idx_generator += 8;
- 		} else {
- 			idx = index;
- 			index = 0;
+ 	ret = nexthdr[1];
+ 
 
 
