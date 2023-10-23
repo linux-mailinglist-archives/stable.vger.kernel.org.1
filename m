@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1D3B7D3449
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 665EC7D31DC
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234184AbjJWLiM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:38:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35470 "EHLO
+        id S233670AbjJWLOJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:14:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234192AbjJWLiL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:38:11 -0400
+        with ESMTP id S233659AbjJWLOI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABD43F9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:38:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB2AC433C9;
-        Mon, 23 Oct 2023 11:38:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B06BCC1;
+        Mon, 23 Oct 2023 04:14:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C343FC433C8;
+        Mon, 23 Oct 2023 11:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061088;
-        bh=Nel8p7MuBBYv3e1DwvBYosInTB2XyuGFPG7v1KMnFYs=;
+        s=korg; t=1698059645;
+        bh=5OSVgscMeo/pdoyuHr6CBuHK4bByW7njaZ/cSNspMfE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QXkSct24tMpz/a/vvvxHHMLaZOmgVEVXCqhPqFHc05eHzf35s6LPkU48hvpTj2Trz
-         pMC2EKAO/M1NlQ1+mAQWUg6noklcyIrRXttHKtfBnigGdKJLVphH8jCHtDJvhWWrXB
-         fXrVt6dyfgk09YIgm3LECUI4fVAOfi+K6+bBA4fo=
+        b=Y1MIK2NBvprSFsCekykra5EcB70LeYpNzqcRxSq2469Tstwnk5FQigclTSzIklgCw
+         a2jgQLY1V4865s6DmbMX/PEw97MnchjuOca4L/1qDs24UTdFPQlzSXKuiOGAesf5OU
+         LTSzXtx2On4e1fzlnGsGN4Qm16PJufAgijCVYpCw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 068/137] ARM: dts: ti: omap: Fix noisy serial with overrun-throttle-ms for mapphone
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Edward AD <twuufnxlz@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.5 239/241] Bluetooth: hci_sock: Correctly bounds check and pad HCI_MON_NEW_INDEX name
 Date:   Mon, 23 Oct 2023 12:57:05 +0200
-Message-ID: <20231023104823.244487291@linuxfoundation.org>
+Message-ID: <20231023104839.700901748@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,47 +57,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 5ad37b5e30433afa7a5513e3eb61f69fa0976785 ]
+commit cb3871b1cd135a6662b732fbc6b3db4afcdb4a64 upstream.
 
-On mapphone devices we may get lots of noise on the micro-USB port in debug
-uart mode until the phy-cpcap-usb driver probes. Let's limit the noise by
-using overrun-throttle-ms.
+The code pattern of memcpy(dst, src, strlen(src)) is almost always
+wrong. In this case it is wrong because it leaves memory uninitialized
+if it is less than sizeof(ni->name), and overflows ni->name when longer.
 
-Note that there is also a related separate issue where the charger cable
-connected may cause random sysrq requests until phy-cpcap-usb probes that
-still remains.
+Normally strtomem_pad() could be used here, but since ni->name is a
+trailing array in struct hci_mon_new_index, compilers that don't support
+-fstrict-flex-arrays=3 can't tell how large this array is via
+__builtin_object_size(). Instead, open-code the helper and use sizeof()
+since it will work correctly.
 
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Additionally mark ni->name as __nonstring since it appears to not be a
+%NUL terminated C string.
+
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Edward AD <twuufnxlz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Johan Hedberg <johan.hedberg@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-bluetooth@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Fixes: 18f547f3fc07 ("Bluetooth: hci_sock: fix slab oob read in create_monitor_event")
+Link: https://lore.kernel.org/lkml/202310110908.F2639D3276@keescook/
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/motorola-mapphone-common.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/bluetooth/hci_mon.h |    2 +-
+ net/bluetooth/hci_sock.c        |    3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/motorola-mapphone-common.dtsi b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-index 67c68c61ae029..2ac1ed8ad8197 100644
---- a/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-+++ b/arch/arm/boot/dts/motorola-mapphone-common.dtsi
-@@ -640,6 +640,7 @@ &uart1 {
- &uart3 {
- 	interrupts-extended = <&wakeupgen GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH
- 			       &omap4_pmx_core 0x17c>;
-+	overrun-throttle-ms = <500>;
- };
+--- a/include/net/bluetooth/hci_mon.h
++++ b/include/net/bluetooth/hci_mon.h
+@@ -56,7 +56,7 @@ struct hci_mon_new_index {
+ 	__u8		type;
+ 	__u8		bus;
+ 	bdaddr_t	bdaddr;
+-	char		name[8];
++	char		name[8] __nonstring;
+ } __packed;
+ #define HCI_MON_NEW_INDEX_SIZE 16
  
- &uart4 {
--- 
-2.40.1
-
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -439,7 +439,8 @@ static struct sk_buff *create_monitor_ev
+ 		ni->type = hdev->dev_type;
+ 		ni->bus = hdev->bus;
+ 		bacpy(&ni->bdaddr, &hdev->bdaddr);
+-		memcpy(ni->name, hdev->name, strlen(hdev->name));
++		memcpy_and_pad(ni->name, sizeof(ni->name), hdev->name,
++			       strnlen(hdev->name, sizeof(ni->name)), '\0');
+ 
+ 		opcode = cpu_to_le16(HCI_MON_NEW_INDEX);
+ 		break;
 
 
