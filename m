@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D7AE7D33EB
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3A9D7D3507
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234041AbjJWLfS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:35:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36940 "EHLO
+        id S234342AbjJWLo4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234038AbjJWLfP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:15 -0400
+        with ESMTP id S234372AbjJWLop (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C46FE4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13E4C433C9;
-        Mon, 23 Oct 2023 11:35:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDFD5F9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDC3CC433C7;
+        Mon, 23 Oct 2023 11:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060913;
-        bh=323e7ZPBxUerWjSU6JDOH1uHcQCs5HNegQ0iZeElMLc=;
+        s=korg; t=1698061483;
+        bh=U1ngJBwG2outroxx6Q37hgX9lBSfrDY4H/aktK9QhhQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1bweaR8xrgqUdN8ShJ5+Ft85Hc9P1p0NmZXXm23HRpbZl9jFtDrBPFxE1b/nnJ9us
-         Q3tjqt1/MP1jauVr+gz+slQ5LxcfKN3y+Vk6UJQZCtOPcMy33j6oE4IG58bAjCt1jj
-         UR8jsVIxQRBdczzt8/L6H6xsxSro+GrxQ3/2cL/E=
+        b=yeLl9TSHwtQ12CYC09sxXz9lI4bD1mlmjZKrhoNkbl+Sfbd7jYyp7dyoO+IXbaWyg
+         r454phnpn3tXC/CVNUxDqP9DPW16Bkl1FwBxC2p/7vAxE/FFl6aWNZdCYIR0sJ0b3a
+         hgNnyn/gRdlLmINhQGwm36c9kujj8ZXMFmtiG61c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vishal Agrawal <vagrawal@redhat.com>,
-        Jay Vosburgh <jay.vosburgh@canonical.com>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.15 011/137] ice: reset first in crash dump kernels
-Date:   Mon, 23 Oct 2023 12:56:08 +0200
-Message-ID: <20231023104821.282489932@linuxfoundation.org>
+        patches@lists.linux.dev, Fei Yang <fei.yang@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 062/202] x86/alternatives: Disable KASAN in apply_alternatives()
+Date:   Mon, 23 Oct 2023 12:56:09 +0200
+Message-ID: <20231023104828.369748414@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,75 +51,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Brandeburg <jesse.brandeburg@intel.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-commit 0288c3e709e5fabd51e84715c5c798a02f43061a upstream.
+commit d35652a5fc9944784f6f50a5c979518ff8dacf61 upstream.
 
-When the system boots into the crash dump kernel after a panic, the ice
-networking device may still have pending transactions that can cause errors
-or machine checks when the device is re-enabled. This can prevent the crash
-dump kernel from loading the driver or collecting the crash data.
+Fei has reported that KASAN triggers during apply_alternatives() on
+a 5-level paging machine:
 
-To avoid this issue, perform a function level reset (FLR) on the ice device
-via PCIe config space before enabling it on the crash kernel. This will
-clear any outstanding transactions and stop all queues and interrupts.
-Restore the config space after the FLR, otherwise it was found in testing
-that the driver wouldn't load successfully.
+	BUG: KASAN: out-of-bounds in rcu_is_watching()
+	Read of size 4 at addr ff110003ee6419a0 by task swapper/0/0
+	...
+	__asan_load4()
+	rcu_is_watching()
+	trace_hardirqs_on()
+	text_poke_early()
+	apply_alternatives()
+	...
 
-The following sequence causes the original issue:
-- Load the ice driver with modprobe ice
-- Enable SR-IOV with 2 VFs: echo 2 > /sys/class/net/eth0/device/sriov_num_vfs
-- Trigger a crash with echo c > /proc/sysrq-trigger
-- Load the ice driver again (or let it load automatically) with modprobe ice
-- The system crashes again during pcim_enable_device()
+On machines with 5-level paging, cpu_feature_enabled(X86_FEATURE_LA57)
+gets patched. It includes KASAN code, where KASAN_SHADOW_START depends on
+__VIRTUAL_MASK_SHIFT, which is defined with cpu_feature_enabled().
 
-Fixes: 837f08fdecbe ("ice: Add basic driver framework for Intel(R) E800 Series")
-Reported-by: Vishal Agrawal <vagrawal@redhat.com>
-Reviewed-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Link: https://lore.kernel.org/r/20231011233334.336092-3-jacob.e.keller@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+KASAN gets confused when apply_alternatives() patches the
+KASAN_SHADOW_START users. A test patch that makes KASAN_SHADOW_START
+static, by replacing __VIRTUAL_MASK_SHIFT with 56, works around the issue.
+
+Fix it for real by disabling KASAN while the kernel is patching alternatives.
+
+[ mingo: updated the changelog ]
+
+Fixes: 6657fca06e3f ("x86/mm: Allow to boot without LA57 if CONFIG_X86_5LEVEL=y")
+Reported-by: Fei Yang <fei.yang@intel.com>
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231012100424.1456-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ arch/x86/kernel/alternative.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -6,6 +6,7 @@
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -424,6 +424,17 @@ void __init_or_module noinline apply_alt
+ 	u8 insn_buff[MAX_PATCH_LEN];
  
- #include <generated/utsrelease.h>
-+#include <linux/crash_dump.h>
- #include "ice.h"
- #include "ice_base.h"
- #include "ice_lib.h"
-@@ -4255,6 +4256,20 @@ ice_probe(struct pci_dev *pdev, const st
- 		return -EINVAL;
- 	}
- 
-+	/* when under a kdump kernel initiate a reset before enabling the
-+	 * device in order to clear out any pending DMA transactions. These
-+	 * transactions can cause some systems to machine check when doing
-+	 * the pcim_enable_device() below.
-+	 */
-+	if (is_kdump_kernel()) {
-+		pci_save_state(pdev);
-+		pci_clear_master(pdev);
-+		err = pcie_flr(pdev);
-+		if (err)
-+			return err;
-+		pci_restore_state(pdev);
-+	}
+ 	DPRINTK("alt table %px, -> %px", start, end);
 +
- 	/* this driver uses devres, see
- 	 * Documentation/driver-api/driver-model/devres.rst
- 	 */
++	/*
++	 * In the case CONFIG_X86_5LEVEL=y, KASAN_SHADOW_START is defined using
++	 * cpu_feature_enabled(X86_FEATURE_LA57) and is therefore patched here.
++	 * During the process, KASAN becomes confused seeing partial LA57
++	 * conversion and triggers a false-positive out-of-bound report.
++	 *
++	 * Disable KASAN until the patching is complete.
++	 */
++	kasan_disable_current();
++
+ 	/*
+ 	 * The scan order should be from start to end. A later scanned
+ 	 * alternative code can overwrite previously scanned alternative code.
+@@ -491,6 +502,8 @@ void __init_or_module noinline apply_alt
+ next:
+ 		optimize_nops(instr, a->instrlen);
+ 	}
++
++	kasan_enable_current();
+ }
+ 
+ #if defined(CONFIG_RETPOLINE) && defined(CONFIG_STACK_VALIDATION)
 
 
