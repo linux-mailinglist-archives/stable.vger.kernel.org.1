@@ -2,40 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8E307D3208
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5772D7D3531
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233751AbjJWLQC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:16:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44100 "EHLO
+        id S234372AbjJWLqM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:46:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233715AbjJWLPv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:15:51 -0400
+        with ESMTP id S234543AbjJWLpr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63AC4D7A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AD7C433CB;
-        Mon, 23 Oct 2023 11:15:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B7C41990
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7A6C433C8;
+        Mon, 23 Oct 2023 11:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059748;
-        bh=H0zgPKtooeFAF2VN/yn1l/unshUhBB9OMDQBmDIgOHs=;
+        s=korg; t=1698061540;
+        bh=4/bd8zIyusHzJSfyySzgWSnjsv+KAc3LXedFKl1y3Pg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iJ+VHJII0DK00cl/i/yReKW922wpnMam924obEVYwFSag86mkJkMPBSt8EpBp1y3O
-         8BvNf8JFG2VZkzzgSLpnZy8kdlFKf/bF0+oa7obMWMRfs7AG1BgpAEAi8Z5F5VdrO1
-         bHvlAiPs7usMbF4WJznS43uwgcDAbOK/vDaRTnfc=
+        b=mI0PBukmjFpErUhgcURRxKT0GDKm41cBvA8deiqsx74amcfJwqdd53MGJI6kLvwIN
+         C3Iw00TdYxcVjL0MguLPGuGMo8bgMDSI/t8HXIfWKs4NMO6idCbE10nVHcSsvFfecS
+         sEIfqQ8pBoJkWPmVUgYG9JJjqWRCArUdpL7EdMhQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 4.19 40/98] dev_forward_skb: do not scrub skb mark within the same name space
+        patches@lists.linux.dev, Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Ben Segall <bsegall@google.com>,
+        Christoph Lameter <cl@linux.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        David Rientjes <rientjes@google.com>,
+        Dennis Zhou <dennis@kernel.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Pekka Enberg <penberg@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Shakeel Butt <shakeelb@google.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Tejun Heo <tj@kernel.org>,
+        Valentin Schneider <vschneid@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Luiz Capitulino <luizcap@amazon.com>
+Subject: [PATCH 5.10 082/202] lib/Kconfig.debug: do not enable DEBUG_PREEMPT by default
 Date:   Mon, 23 Oct 2023 12:56:29 +0200
-Message-ID: <20231023104815.011824493@linuxfoundation.org>
+Message-ID: <20231023104828.939961475@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +72,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Hyeonggon Yoo <42.hyeyoo@gmail.com>
 
-commit ff70202b2d1ad522275c6aadc8c53519b6a22c57 upstream.
+commit cc6003916ed46d7a67d91ee32de0f9138047d55f upstream.
 
-The goal is to keep the mark during a bpf_redirect(), like it is done for
-legacy encapsulation / decapsulation, when there is no x-netns.
-This was initially done in commit 213dd74aee76 ("skbuff: Do not scrub skb
-mark within the same name space").
+In workloads where this_cpu operations are frequently performed,
+enabling DEBUG_PREEMPT may result in significant increase in
+runtime overhead due to frequent invocation of
+__this_cpu_preempt_check() function.
 
-When the call to skb_scrub_packet() was added in dev_forward_skb() (commit
-8b27f27797ca ("skb: allow skb_scrub_packet() to be used by tunnels")), the
-second argument (xnet) was set to true to force a call to skb_orphan(). At
-this time, the mark was always cleanned up by skb_scrub_packet(), whatever
-xnet value was.
-This call to skb_orphan() was removed later in commit
-9c4c325252c5 ("skbuff: preserve sock reference when scrubbing the skb.").
-But this 'true' stayed here without any real reason.
+This can be demonstrated through benchmarks such as hackbench where this
+configuration results in a 10% reduction in performance, primarily due to
+the added overhead within memcg charging path.
 
-Let's correctly set xnet in ____dev_forward_skb(), this function has access
-to the previous interface and to the new interface.
+Therefore, do not to enable DEBUG_PREEMPT by default and make users aware
+of its potential impact on performance in some workloads.
 
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
+hackbench-process-sockets
+		      debug_preempt	 no_debug_preempt
+Amean     1       0.4743 (   0.00%)      0.4295 *   9.45%*
+Amean     4       1.4191 (   0.00%)      1.2650 *  10.86%*
+Amean     7       2.2677 (   0.00%)      2.0094 *  11.39%*
+Amean     12      3.6821 (   0.00%)      3.2115 *  12.78%*
+Amean     21      6.6752 (   0.00%)      5.7956 *  13.18%*
+Amean     30      9.6646 (   0.00%)      8.5197 *  11.85%*
+Amean     48     15.3363 (   0.00%)     13.5559 *  11.61%*
+Amean     79     24.8603 (   0.00%)     22.0597 *  11.27%*
+Amean     96     30.1240 (   0.00%)     26.8073 *  11.01%*
+
+Link: https://lkml.kernel.org/r/20230121033942.350387-1-42.hyeyoo@gmail.com
+Signed-off-by: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Acked-by: Davidlohr Bueso <dave@stgolabs.net>
+Cc: Ben Segall <bsegall@google.com>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Daniel Bristot de Oliveira <bristot@redhat.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Luiz Capitulino <luizcap@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netdevice.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/Kconfig.debug |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3661,7 +3661,7 @@ static __always_inline int ____dev_forwa
- 		return NET_RX_DROP;
- 	}
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -1136,13 +1136,16 @@ config DEBUG_TIMEKEEPING
+ config DEBUG_PREEMPT
+ 	bool "Debug preemptible kernel"
+ 	depends on DEBUG_KERNEL && PREEMPTION && TRACE_IRQFLAGS_SUPPORT
+-	default y
+ 	help
+ 	  If you say Y here then the kernel will use a debug variant of the
+ 	  commonly used smp_processor_id() function and will print warnings
+ 	  if kernel code uses it in a preemption-unsafe way. Also, the kernel
+ 	  will detect preemption count underflows.
  
--	skb_scrub_packet(skb, true);
-+	skb_scrub_packet(skb, !net_eq(dev_net(dev), dev_net(skb->dev)));
- 	skb->priority = 0;
- 	return 0;
- }
++	  This option has potential to introduce high runtime overhead,
++	  depending on workload as it triggers debugging routines for each
++	  this_cpu operation. It should only be used for debugging purposes.
++
+ menu "Lock Debugging (spinlocks, mutexes, etc...)"
+ 
+ config LOCK_DEBUGGING_SUPPORT
 
 
