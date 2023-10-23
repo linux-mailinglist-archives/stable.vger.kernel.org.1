@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F0C7D3560
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:47:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3C357D33AB
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:32:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234460AbjJWLrk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:47:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41086 "EHLO
+        id S234115AbjJWLcy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:32:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234440AbjJWLrj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:47:39 -0400
+        with ESMTP id S234117AbjJWLcv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:32:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BADDB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:47:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FF8C433C8;
-        Mon, 23 Oct 2023 11:47:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62CFCD7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:32:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780E0C433C8;
+        Mon, 23 Oct 2023 11:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061657;
-        bh=wiGO7zYLJ1ZTrWwIwILYgwSzCQsad4gPR1/3RJy9UPE=;
+        s=korg; t=1698060768;
+        bh=4WzcPJQtWs6uMj71DKPMJoEhWMi4QWvcLkaSpIYtFhU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yr9S6uFB5+X8kucx5aa+La6tvf2TSM/Fb1XYt+ZFesWSaYh70jbsXiuq2YQhIIWkT
-         swKxfwEVKTTr0OTjJ5YUN201qkbxQ1KwAHI/UaeaROrYLu12mkUbuSG19Z4bJGx4hv
-         I5KG/rVahsFnMpsk06TEXhZK+h7joh8+/1v2lARw=
+        b=k5Zp2P9sZQV8mfM8/sCyxVoOHFmgYkBFvRBcSMXTl68svuiKuU8yZr3buz87KosWO
+         Ld6Ig2kuVV+VJDtMzkilVjC9ytezyxjYdE5+8c+KmsygRLpzujP3nlv6A544ldrB1f
+         WhAYYPxm77Ru7BYeFjQ/oRzJveCnGgbhmT+Aysb4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 120/202] net: pktgen: Fix interface flags printing
+        patches@lists.linux.dev, Christian Theune <ct@flyingcircus.io>,
+        Budimir Markovic <markovicbudimir@gmail.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 069/123] net/sched: sch_hfsc: upgrade rt to sc when it becomes a inner curve
 Date:   Mon, 23 Oct 2023 12:57:07 +0200
-Message-ID: <20231023104830.041672433@linuxfoundation.org>
+Message-ID: <20231023104819.983502622@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,64 +51,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-commit 1d30162f35c7a73fc2f8cdcdcdbd690bedb99d1a upstream.
+commit a13b67c9a015c4e21601ef9aa4ec9c5d972df1b4 upstream.
 
-Device flags are displayed incorrectly:
-1) The comparison (i == F_FLOW_SEQ) is always false, because F_FLOW_SEQ
-is equal to (1 << FLOW_SEQ_SHIFT) == 2048, and the maximum value
-of the 'i' variable is (NR_PKT_FLAG - 1) == 17. It should be compared
-with FLOW_SEQ_SHIFT.
+Christian Theune says:
+   I upgraded from 6.1.38 to 6.1.55 this morning and it broke my traffic shaping script,
+   leaving me with a non-functional uplink on a remote router.
 
-2) Similarly to the F_IPSEC flag.
+A 'rt' curve cannot be used as a inner curve (parent class), but we were
+allowing such configurations since the qdisc was introduced. Such
+configurations would trigger a UAF as Budimir explains:
+   The parent will have vttree_insert() called on it in init_vf(),
+   but will not have vttree_remove() called on it in update_vf()
+   because it does not have the HFSC_FSC flag set.
 
-3) Also add spaces to the print end of the string literal "spi:%u"
-to prevent the output from merging with the flag that follows.
+The qdisc always assumes that inner classes have the HFSC_FSC flag set.
+This is by design as it doesn't make sense 'qdisc wise' for an 'rt'
+curve to be an inner curve.
 
-Found by InfoTeCS on behalf of Linux Verification Center
-(linuxtesting.org) with SVACE.
+Budimir's original patch disallows users to add classes with a 'rt'
+parent, but this is too strict as it breaks users that have been using
+'rt' as a inner class. Another approach, taken by this patch, is to
+upgrade the inner 'rt' into a 'sc', warning the user in the process.
+It avoids the UAF reported by Budimir while also being more permissive
+to bad scripts/users/code using 'rt' as a inner class.
 
-Fixes: 99c6d3d20d62 ("pktgen: Remove brute-force printing of flags")
-Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Users checking the `tc class ls [...]` or `tc class get [...]` dumps would
+observe the curve change and are potentially breaking with this change.
+
+v1->v2: https://lore.kernel.org/all/20231013151057.2611860-1-pctammela@mojatatu.com/
+- Correct 'Fixes' tag and merge with revert (Jakub)
+
+Cc: Christian Theune <ct@flyingcircus.io>
+Cc: Budimir Markovic <markovicbudimir@gmail.com>
+Fixes: b3d26c5702c7 ("net/sched: sch_hfsc: Ensure inner classes have fsc curve")
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20231017143602.3191556-1-pctammela@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/pktgen.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/sched/sch_hfsc.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -645,19 +645,19 @@ static int pktgen_if_show(struct seq_fil
- 	seq_puts(seq, "     Flags: ");
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -903,6 +903,14 @@ hfsc_change_usc(struct hfsc_class *cl, s
+ 	cl->cl_flags |= HFSC_USC;
+ }
  
- 	for (i = 0; i < NR_PKT_FLAGS; i++) {
--		if (i == F_FLOW_SEQ)
-+		if (i == FLOW_SEQ_SHIFT)
- 			if (!pkt_dev->cflows)
- 				continue;
- 
--		if (pkt_dev->flags & (1 << i))
-+		if (pkt_dev->flags & (1 << i)) {
- 			seq_printf(seq, "%s  ", pkt_flag_names[i]);
--		else if (i == F_FLOW_SEQ)
--			seq_puts(seq, "FLOW_RND  ");
--
- #ifdef CONFIG_XFRM
--		if (i == F_IPSEC && pkt_dev->spi)
--			seq_printf(seq, "spi:%u", pkt_dev->spi);
-+			if (i == IPSEC_SHIFT && pkt_dev->spi)
-+				seq_printf(seq, "spi:%u  ", pkt_dev->spi);
- #endif
-+		} else if (i == FLOW_SEQ_SHIFT) {
-+			seq_puts(seq, "FLOW_RND  ");
-+		}
++static void
++hfsc_upgrade_rt(struct hfsc_class *cl)
++{
++	cl->cl_fsc = cl->cl_rsc;
++	rtsc_init(&cl->cl_virtual, &cl->cl_fsc, cl->cl_vt, cl->cl_total);
++	cl->cl_flags |= HFSC_FSC;
++}
++
+ static const struct nla_policy hfsc_policy[TCA_HFSC_MAX + 1] = {
+ 	[TCA_HFSC_RSC]	= { .len = sizeof(struct tc_service_curve) },
+ 	[TCA_HFSC_FSC]	= { .len = sizeof(struct tc_service_curve) },
+@@ -1012,10 +1020,6 @@ hfsc_change_class(struct Qdisc *sch, u32
+ 		if (parent == NULL)
+ 			return -ENOENT;
  	}
+-	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
+-		NL_SET_ERR_MSG(extack, "Invalid parent - parent class must have FSC");
+-		return -EINVAL;
+-	}
  
- 	seq_puts(seq, "\n");
+ 	if (classid == 0 || TC_H_MAJ(classid ^ sch->handle) != 0)
+ 		return -EINVAL;
+@@ -1068,6 +1072,12 @@ hfsc_change_class(struct Qdisc *sch, u32
+ 	cl->cf_tree = RB_ROOT;
+ 
+ 	sch_tree_lock(sch);
++	/* Check if the inner class is a misconfigured 'rt' */
++	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
++		NL_SET_ERR_MSG(extack,
++			       "Forced curve change on parent 'rt' to 'sc'");
++		hfsc_upgrade_rt(parent);
++	}
+ 	qdisc_class_hash_insert(&q->clhash, &cl->cl_common);
+ 	list_add_tail(&cl->siblings, &parent->children);
+ 	if (parent->level == 0)
 
 
