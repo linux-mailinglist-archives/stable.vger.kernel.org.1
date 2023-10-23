@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8EBE7D3215
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4859F7D30B7
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233715AbjJWLQe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:16:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38840 "EHLO
+        id S232598AbjJWLB1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233746AbjJWLQ3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:29 -0400
+        with ESMTP id S230215AbjJWLB0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BDA9C1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5841C433C8;
-        Mon, 23 Oct 2023 11:16:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85184D7E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DA0C433CB;
+        Mon, 23 Oct 2023 11:01:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059787;
-        bh=kEKYuMC+SLXJuuWhxm0RmUNhYcCMG18/qIgjLY3EfZU=;
+        s=korg; t=1698058884;
+        bh=it2SWKvcYpEIOySHF5yTzSd9WGXfUHUXMydg4C5XmV8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eRtbgzsBOX6UJYJ4mIk3nKgvna+dLN5p4jKiWVs0QfpMo/EYyKVCgMtDaaUtvONtl
-         tvpRx07r4QOK4WPEg5KfuaA3V5vHJwiyL4tsLEUTdz0TiEapBIZ03/kwwxzOKSYYhs
-         +OctHHKuQ2f9xdVbcUMr2NElxD/W0D4KLLycqYZg=
+        b=jFsV7iMC1b5QGCxvJQ3bvUrZnglQEVFlQTCT1GLEXxcyzOcYhhXI0wgxpZSk4n17/
+         gIT7jvvGgE9xNFeG/XoV1tdinXVteSVqniZ/+/D4X8zpwBE/+aFbMvvlf4iIFoKgv3
+         P43In0F/R5CQ4vK/2JTlHAnMzC5SG7Am/RUyCGsM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 4.19 52/98] xfrm: fix a data-race in xfrm_gen_index()
+        patches@lists.linux.dev,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 51/66] Bluetooth: hci_core: Fix build warnings
 Date:   Mon, 23 Oct 2023 12:56:41 +0200
-Message-ID: <20231023104815.448047498@linuxfoundation.org>
+Message-ID: <20231023104812.741873467@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,105 +50,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 3e4bc23926b83c3c67e5f61ae8571602754131a6 upstream.
+[ Upstream commit dcda165706b9fbfd685898d46a6749d7d397e0c0 ]
 
-xfrm_gen_index() mutual exclusion uses net->xfrm.xfrm_policy_lock.
+This fixes the following warnings:
 
-This means we must use a per-netns idx_generator variable,
-instead of a static one.
-Alternative would be to use an atomic variable.
+net/bluetooth/hci_core.c: In function ‘hci_register_dev’:
+net/bluetooth/hci_core.c:2620:54: warning: ‘%d’ directive output may
+be truncated writing between 1 and 10 bytes into a region of size 5
+[-Wformat-truncation=]
+ 2620 |         snprintf(hdev->name, sizeof(hdev->name), "hci%d", id);
+      |                                                      ^~
+net/bluetooth/hci_core.c:2620:50: note: directive argument in the range
+[0, 2147483647]
+ 2620 |         snprintf(hdev->name, sizeof(hdev->name), "hci%d", id);
+      |                                                  ^~~~~~~
+net/bluetooth/hci_core.c:2620:9: note: ‘snprintf’ output between 5 and
+14 bytes into a destination of size 8
+ 2620 |         snprintf(hdev->name, sizeof(hdev->name), "hci%d", id);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-syzbot reported:
-
-BUG: KCSAN: data-race in xfrm_sk_policy_insert / xfrm_sk_policy_insert
-
-write to 0xffffffff87005938 of 4 bytes by task 29466 on cpu 0:
-xfrm_gen_index net/xfrm/xfrm_policy.c:1385 [inline]
-xfrm_sk_policy_insert+0x262/0x640 net/xfrm/xfrm_policy.c:2347
-xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
-do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
-ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
-rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
-sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
-__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
-__do_sys_setsockopt net/socket.c:2274 [inline]
-__se_sys_setsockopt net/socket.c:2271 [inline]
-__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffffffff87005938 of 4 bytes by task 29460 on cpu 1:
-xfrm_sk_policy_insert+0x13e/0x640
-xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
-do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
-ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
-rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
-sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
-__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
-__do_sys_setsockopt net/socket.c:2274 [inline]
-__se_sys_setsockopt net/socket.c:2271 [inline]
-__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0x00006ad8 -> 0x00006b18
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 29460 Comm: syz-executor.1 Not tainted 6.5.0-rc5-syzkaller-00243-g9106536c1aa3 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-
-Fixes: 1121994c803f ("netns xfrm: policy insertion in netns")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netns/xfrm.h |    1 +
- net/xfrm/xfrm_policy.c   |    6 ++----
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ include/net/bluetooth/hci_core.h | 2 +-
+ net/bluetooth/hci_core.c         | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/include/net/netns/xfrm.h
-+++ b/include/net/netns/xfrm.h
-@@ -48,6 +48,7 @@ struct netns_xfrm {
- 	struct list_head	policy_all;
- 	struct hlist_head	*policy_byidx;
- 	unsigned int		policy_idx_hmask;
-+	unsigned int		idx_generator;
- 	struct hlist_head	policy_inexact[XFRM_POLICY_MAX];
- 	struct xfrm_policy_hash	policy_bydst[XFRM_POLICY_MAX];
- 	unsigned int		policy_count[XFRM_POLICY_MAX * 2];
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -654,8 +654,6 @@ EXPORT_SYMBOL(xfrm_policy_hash_rebuild);
-  * of an absolute inpredictability of ordering of rules. This will not pass. */
- static u32 xfrm_gen_index(struct net *net, int dir, u32 index)
- {
--	static u32 idx_generator;
--
- 	for (;;) {
- 		struct hlist_head *list;
- 		struct xfrm_policy *p;
-@@ -663,8 +661,8 @@ static u32 xfrm_gen_index(struct net *ne
- 		int found;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index d42288a06af61..8f899ad4a7546 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -205,7 +205,7 @@ struct hci_dev {
+ 	struct list_head list;
+ 	struct mutex	lock;
  
- 		if (!index) {
--			idx = (idx_generator | dir);
--			idx_generator += 8;
-+			idx = (net->xfrm.idx_generator | dir);
-+			net->xfrm.idx_generator += 8;
- 		} else {
- 			idx = index;
- 			index = 0;
+-	char		name[8];
++	const char	*name;
+ 	unsigned long	flags;
+ 	__u16		id;
+ 	__u8		bus;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 7052434c1061f..2bf0bdee7186d 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3113,7 +3113,11 @@ int hci_register_dev(struct hci_dev *hdev)
+ 	if (id < 0)
+ 		return id;
+ 
+-	snprintf(hdev->name, sizeof(hdev->name), "hci%d", id);
++	error = dev_set_name(&hdev->dev, "hci%u", id);
++	if (error)
++		return error;
++
++	hdev->name = dev_name(&hdev->dev);
+ 	hdev->id = id;
+ 
+ 	BT_DBG("%p name %s bus %d", hdev, hdev->name, hdev->bus);
+@@ -3135,8 +3139,6 @@ int hci_register_dev(struct hci_dev *hdev)
+ 	if (!IS_ERR_OR_NULL(bt_debugfs))
+ 		hdev->debugfs = debugfs_create_dir(hdev->name, bt_debugfs);
+ 
+-	dev_set_name(&hdev->dev, "%s", hdev->name);
+-
+ 	error = device_add(&hdev->dev);
+ 	if (error < 0)
+ 		goto err_wqueue;
+-- 
+2.40.1
+
 
 
