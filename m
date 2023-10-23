@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD9567D3213
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6A317D32F9
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233716AbjJWLQa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:16:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32960 "EHLO
+        id S233893AbjJWLZa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:25:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233759AbjJWLQZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:25 -0400
+        with ESMTP id S233927AbjJWLZ2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA46D7C
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02077C433C7;
-        Mon, 23 Oct 2023 11:16:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30B8BA4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F187C433C7;
+        Mon, 23 Oct 2023 11:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059781;
-        bh=seOWjltZWi1v8SIetp7Ru9/amYgV7YycCB/09cq5Bac=;
+        s=korg; t=1698060326;
+        bh=pJJ/RUvvfFsnhYfotZVXYNEXfQz8XX8k4MPj2C/ucVs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hEAT4WhUhyPMaWd3Fu/ZQ1vDEVITRbFRbWBXxW471NdwZirqeSP67WSssQZPDEdgF
-         xztmhOwE0USsH8WwAexKgb/eJPjaL4csihy03mK4Ydyr+AtDx/j704NJAUNjlvmw8X
-         9nKZpw2uWiCJv7MSMadaTY1c7SsgTWdsCdkKCV0s=
+        b=ppu8AKmMEZ9gWsHLxjhXQa1ImZE89lZoRB557oWEoxE4gC4q5JWVUrIouj4idxEIJ
+         UDqsNZeoFLOMc5ADVmktB7hU0gYoMBjU9AaarA1+4+MdNch4sY4HG+bT9LxYrGAB2t
+         RYpUHS1nH8d2IUXAvc5Jv30h/H8vk4AYi0H3PZys=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jim Mattson <jmattson@google.com>,
-        Mingwei Zhang <mizhang@google.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 4.19 50/98] KVM: x86: Mask LVTPC when handling a PMI
+        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
+        Ariel Levkovich <lariel@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 134/196] net/mlx5e: Dont offload internal port if filter device is out device
 Date:   Mon, 23 Oct 2023 12:56:39 +0200
-Message-ID: <20231023104815.378615397@linuxfoundation.org>
+Message-ID: <20231023104832.277904083@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,57 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit a16eb25b09c02a54c1c1b449d4b6cfa2cf3f013a upstream.
+[ Upstream commit 06b4eac9c4beda520b8a4dbbb8e33dba9d1c8fba ]
 
-Per the SDM, "When the local APIC handles a performance-monitoring
-counters interrupt, it automatically sets the mask flag in the LVT
-performance counter register."  Add this behavior to KVM's local APIC
-emulation.
+In the cited commit, if the routing device is ovs internal port, the
+out device is set to uplink, and packets go out after encapsulation.
 
-Failure to mask the LVTPC entry results in spurious PMIs, e.g. when
-running Linux as a guest, PMI handlers that do a "late_ack" spew a large
-number of "dazed and confused" spurious NMI warnings.
+If filter device is uplink, it can trigger the following syndrome:
+mlx5_core 0000:08:00.0: mlx5_cmd_out_err:803:(pid 3966): SET_FLOW_TABLE_ENTRY(0x936) op_mod(0x0) failed, status bad parameter(0x3), syndrome (0xcdb051), err(-22)
 
-Fixes: f5132b01386b ("KVM: Expose a version 2 architectural PMU to a guests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Tested-by: Mingwei Zhang <mizhang@google.com>
-Signed-off-by: Mingwei Zhang <mizhang@google.com>
-Link: https://lore.kernel.org/r/20230925173448.3518223-3-mizhang@google.com
-[sean: massage changelog, correct Fixes]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this issue by not offloading internal port if filter device is out
+device. In this case, packets are not forwarded to the root table to
+be processed, the termination table is used instead to forward them
+from uplink to uplink.
+
+Fixes: 100ad4e2d758 ("net/mlx5e: Offload internal port as encap route device")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Ariel Levkovich <lariel@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/lapic.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2201,13 +2201,17 @@ int kvm_apic_local_deliver(struct kvm_la
- {
- 	u32 reg = kvm_lapic_get_reg(apic, lvt_type);
- 	int vector, mode, trig_mode;
-+	int r;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+index cd15d36b1507e..907ad6ffe7275 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+@@ -23,7 +23,8 @@ static int mlx5e_set_int_port_tunnel(struct mlx5e_priv *priv,
  
- 	if (kvm_apic_hw_enabled(apic) && !(reg & APIC_LVT_MASKED)) {
- 		vector = reg & APIC_VECTOR_MASK;
- 		mode = reg & APIC_MODE_MASK;
- 		trig_mode = reg & APIC_LVT_LEVEL_TRIGGER;
--		return __apic_accept_irq(apic, mode, vector, 1, trig_mode,
--					NULL);
-+
-+		r = __apic_accept_irq(apic, mode, vector, 1, trig_mode, NULL);
-+		if (r && lvt_type == APIC_LVTPC)
-+			kvm_lapic_set_reg(apic, APIC_LVTPC, reg | APIC_LVT_MASKED);
-+		return r;
- 	}
- 	return 0;
- }
+ 	route_dev = dev_get_by_index(dev_net(e->out_dev), e->route_dev_ifindex);
+ 
+-	if (!route_dev || !netif_is_ovs_master(route_dev))
++	if (!route_dev || !netif_is_ovs_master(route_dev) ||
++	    attr->parse_attr->filter_dev == e->out_dev)
+ 		goto out;
+ 
+ 	err = mlx5e_set_fwd_to_int_port_actions(priv, attr, e->route_dev_ifindex,
+-- 
+2.40.1
+
 
 
