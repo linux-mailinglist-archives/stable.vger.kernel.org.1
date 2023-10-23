@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B17FC7D334D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B36AC7D3477
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233988AbjJWL3D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:29:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45724 "EHLO
+        id S234247AbjJWLj4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:39:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234034AbjJWL25 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:57 -0400
+        with ESMTP id S234242AbjJWLj4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D83C1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 604E2C433C8;
-        Mon, 23 Oct 2023 11:28:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C88102
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21173C433C8;
+        Mon, 23 Oct 2023 11:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060534;
-        bh=58I5N/DRAU6i986MpVOMnQsnN6oywa0KlGMMSSeelkE=;
+        s=korg; t=1698061193;
+        bh=QVR9U5wfbVjhAEpA9KO45FKN0/k0RsNSncZjDq/eVVo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yCoj3o+X51njC+YXyH6UNa38LcwpL26TB0llSLGnTTh1PeEcYW59rOtGgXSb4FYSX
-         /oRHpm2zwKu2iGmh+bsRBFmMhATjUiexljtMZyGflK1WoT37p4ERX8yfigws4tMEsI
-         BZWY6NCIl9U3K2eaIdTUUou1tzOwQspkEEFyfFMA=
+        b=aOsdgp8HkPgeKk9JP2T2U9Zil2g9b+dxwd3/OG/2h4az+WXkoGXFy6CNo5X8PtgPo
+         kevseGWw39bzIgN7kGZ2qmNrC3NYzvrSEdjJr/vieErYeaPMp8i33n2VMD6QkMRiBU
+         /krOXXdRBLBnQB9nsPwdnieCu+H6aLUjBu/P/dPo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
-        Matthieu Baerts <matttbe@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 195/196] selftests: mptcp: join: correctly check for no RST
+        patches@lists.linux.dev, Michal Simek <michal.simek@amd.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 103/137] mtd: rawnand: pl353: Ensure program page operations are successful
 Date:   Mon, 23 Oct 2023 12:57:40 +0200
-Message-ID: <20231023104833.867550121@linuxfoundation.org>
+Message-ID: <20231023104824.317582511@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,59 +48,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts <matttbe@kernel.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit b134a5805455d1886662a6516c965cdb9df9fbcc upstream.
+commit 9777cc13fd2c3212618904636354be60835e10bb upstream.
 
-The commit mentioned below was more tolerant with the number of RST seen
-during a test because in some uncontrollable situations, multiple RST
-can be generated.
+The NAND core complies with the ONFI specification, which itself
+mentions that after any program or erase operation, a status check
+should be performed to see whether the operation was finished *and*
+successful.
 
-But it was not taking into account the case where no RST are expected:
-this validation was then no longer reporting issues for the 0 RST case
-because it is not possible to have less than 0 RST in the counter. This
-patch fixes the issue by adding a specific condition.
+The NAND core offers helpers to finish a page write (sending the
+"PAGE PROG" command, waiting for the NAND chip to be ready again, and
+checking the operation status). But in some cases, advanced controller
+drivers might want to optimize this and craft their own page write
+helper to leverage additional hardware capabilities, thus not always
+using the core facilities.
 
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
+Some drivers, like this one, do not use the core helper to finish a page
+write because the final cycles are automatically managed by the
+hardware. In this case, the additional care must be taken to manually
+perform the final status check.
+
+Let's read the NAND chip status at the end of the page write helper and
+return -EIO upon error.
+
+Cc: Michal Simek <michal.simek@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231018-send-net-20231018-v1-1-17ecb002e41d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+Fixes: 08d8c62164a3 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-3-miquel.raynal@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/pl35x-nand-controller.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -1413,7 +1413,9 @@ chk_rst_nr()
- 	count=$(get_counter ${ns_tx} "MPTcpExtMPRstTx")
- 	if [ -z "$count" ]; then
- 		echo -n "[skip]"
--	elif [ $count -lt $rst_tx ]; then
-+	# accept more rst than expected except if we don't expect any
-+	elif { [ $rst_tx -ne 0 ] && [ $count -lt $rst_tx ]; } ||
-+	     { [ $rst_tx -eq 0 ] && [ $count -ne 0 ]; }; then
- 		echo "[fail] got $count MP_RST[s] TX expected $rst_tx"
- 		fail_test
- 		dump_stats=1
-@@ -1425,7 +1427,9 @@ chk_rst_nr()
- 	count=$(get_counter ${ns_rx} "MPTcpExtMPRstRx")
- 	if [ -z "$count" ]; then
- 		echo -n "[skip]"
--	elif [ "$count" -lt "$rst_rx" ]; then
-+	# accept more rst than expected except if we don't expect any
-+	elif { [ $rst_rx -ne 0 ] && [ $count -lt $rst_rx ]; } ||
-+	     { [ $rst_rx -eq 0 ] && [ $count -ne 0 ]; }; then
- 		echo "[fail] got $count MP_RST[s] RX expected $rst_rx"
- 		fail_test
- 		dump_stats=1
+--- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
++++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+@@ -513,6 +513,7 @@ static int pl35x_nand_write_page_hwecc(s
+ 	u32 addr1 = 0, addr2 = 0, row;
+ 	u32 cmd_addr;
+ 	int i, ret;
++	u8 status;
+ 
+ 	ret = pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_APB);
+ 	if (ret)
+@@ -565,6 +566,14 @@ static int pl35x_nand_write_page_hwecc(s
+ 	if (ret)
+ 		goto disable_ecc_engine;
+ 
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		goto disable_ecc_engine;
++
++	if (status & NAND_STATUS_FAIL)
++		ret = -EIO;
++
+ disable_ecc_engine:
+ 	pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_BYPASS);
+ 
 
 
