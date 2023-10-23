@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D3E07D34E3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46A737D3156
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230031AbjJWLnb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:43:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60018 "EHLO
+        id S230036AbjJWLIN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234373AbjJWLnW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:43:22 -0400
+        with ESMTP id S233495AbjJWLIL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9061510DE
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD51C433C9;
-        Mon, 23 Oct 2023 11:43:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89BDB101
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31B3C433C7;
+        Mon, 23 Oct 2023 11:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061397;
-        bh=K+JeQcm4rEkXWaFngKK2DWXBAlvl0MFASQY7pV1KzcU=;
+        s=korg; t=1698059289;
+        bh=k0kPx7dEa6xOJMdf8fYjYOzJEx9p6GGOBm63XViqet0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EI+2xnyD3HamlmGvjl31iBHjb6zRuXG2SORJ/VtO0dHIIvmCU9BAYo87VZlU7TVQS
-         GHjS8XlDXKv9+1Vlpo7j1KXGQeUQRSxDOihsZcZFpNe9Qz9HJfv30gokMlsGaYDMR/
-         kI2a7dlO8W5cb+UmxXcjmWFh/IsMrN2LLqLERn6c=
+        b=D54NzdYCw6co23l/pg6kzwsPGP1+sYZP0SqIbKGA6tTvTtYJVZObn5vMQ6wWKl9sr
+         YhWkoRzbmS2JDdel5HsYbX3j/YZCvw7k806Bu87Wbkv65bPbSCX52Pg24QKd1tehQp
+         Li3v2x+jn2v2W7DdZxqhNboCs89arknwzhnS6bPQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
-        Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 5.10 007/202] HID: logitech-hidpp: Fix kernel crash on receiver USB disconnect
+        patches@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
+        Benjamin Coddington <bcodding@redhat.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 128/241] nfs: decrement nrequests counter before releasing the req
 Date:   Mon, 23 Oct 2023 12:55:14 +0200
-Message-ID: <20231023104826.805833274@linuxfoundation.org>
+Message-ID: <20231023104836.989758276@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,181 +50,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit dac501397b9d81e4782232c39f94f4307b137452 upstream.
+[ Upstream commit dd1b2026323a2d075ac553cecfd7a0c23c456c59 ]
 
-hidpp_connect_event() has *four* time-of-check vs time-of-use (TOCTOU)
-races when it races with itself.
+I hit this panic in testing:
 
-hidpp_connect_event() primarily runs from a workqueue but it also runs
-on probe() and if a "device-connected" packet is received by the hw
-when the thread running hidpp_connect_event() from probe() is waiting on
-the hw, then a second thread running hidpp_connect_event() will be
-started from the workqueue.
+[ 6235.500016] run fstests generic/464 at 2023-09-18 22:51:24
+[ 6288.410761] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[ 6288.412174] #PF: supervisor read access in kernel mode
+[ 6288.413160] #PF: error_code(0x0000) - not-present page
+[ 6288.413992] PGD 0 P4D 0
+[ 6288.414603] Oops: 0000 [#1] PREEMPT SMP PTI
+[ 6288.415419] CPU: 0 PID: 340798 Comm: kworker/u18:8 Not tainted 6.6.0-rc1-gdcf620ceebac #95
+[ 6288.416538] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-1.fc38 04/01/2014
+[ 6288.417701] Workqueue: nfsiod rpc_async_release [sunrpc]
+[ 6288.418676] RIP: 0010:nfs_inode_remove_request+0xc8/0x150 [nfs]
+[ 6288.419836] Code: ff ff 48 8b 43 38 48 8b 7b 10 a8 04 74 5b 48 85 ff 74 56 48 8b 07 a9 00 00 08 00 74 58 48 8b 07 f6 c4 10 74 50 e8 c8 44 b3 d5 <48> 8b 00 f0 48 ff 88 30 ff ff ff 5b 5d 41 5c c3 cc cc cc cc 48 8b
+[ 6288.422389] RSP: 0018:ffffbd618353bda8 EFLAGS: 00010246
+[ 6288.423234] RAX: 0000000000000000 RBX: ffff9a29f9a25280 RCX: 0000000000000000
+[ 6288.424351] RDX: ffff9a29f9a252b4 RSI: 000000000000000b RDI: ffffef41448e3840
+[ 6288.425345] RBP: ffffef41448e3840 R08: 0000000000000038 R09: ffffffffffffffff
+[ 6288.426334] R10: 0000000000033f80 R11: ffff9a2a7fffa000 R12: ffff9a29093f98c4
+[ 6288.427353] R13: 0000000000000000 R14: ffff9a29230f62e0 R15: ffff9a29230f62d0
+[ 6288.428358] FS:  0000000000000000(0000) GS:ffff9a2a77c00000(0000) knlGS:0000000000000000
+[ 6288.429513] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 6288.430427] CR2: 0000000000000000 CR3: 0000000264748002 CR4: 0000000000770ef0
+[ 6288.431553] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 6288.432715] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[ 6288.433698] PKRU: 55555554
+[ 6288.434196] Call Trace:
+[ 6288.434667]  <TASK>
+[ 6288.435132]  ? __die+0x1f/0x70
+[ 6288.435723]  ? page_fault_oops+0x159/0x450
+[ 6288.436389]  ? try_to_wake_up+0x98/0x5d0
+[ 6288.437044]  ? do_user_addr_fault+0x65/0x660
+[ 6288.437728]  ? exc_page_fault+0x7a/0x180
+[ 6288.438368]  ? asm_exc_page_fault+0x22/0x30
+[ 6288.439137]  ? nfs_inode_remove_request+0xc8/0x150 [nfs]
+[ 6288.440112]  ? nfs_inode_remove_request+0xa0/0x150 [nfs]
+[ 6288.440924]  nfs_commit_release_pages+0x16e/0x340 [nfs]
+[ 6288.441700]  ? __pfx_call_transmit+0x10/0x10 [sunrpc]
+[ 6288.442475]  ? _raw_spin_lock_irqsave+0x23/0x50
+[ 6288.443161]  nfs_commit_release+0x15/0x40 [nfs]
+[ 6288.443926]  rpc_free_task+0x36/0x60 [sunrpc]
+[ 6288.444741]  rpc_async_release+0x29/0x40 [sunrpc]
+[ 6288.445509]  process_one_work+0x171/0x340
+[ 6288.446135]  worker_thread+0x277/0x3a0
+[ 6288.446724]  ? __pfx_worker_thread+0x10/0x10
+[ 6288.447376]  kthread+0xf0/0x120
+[ 6288.447903]  ? __pfx_kthread+0x10/0x10
+[ 6288.448500]  ret_from_fork+0x2d/0x50
+[ 6288.449078]  ? __pfx_kthread+0x10/0x10
+[ 6288.449665]  ret_from_fork_asm+0x1b/0x30
+[ 6288.450283]  </TASK>
+[ 6288.450688] Modules linked in: rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace sunrpc nls_iso8859_1 nls_cp437 vfat fat 9p netfs ext4 kvm_intel crc16 mbcache jbd2 joydev kvm xfs irqbypass virtio_net pcspkr net_failover psmouse failover 9pnet_virtio cirrus drm_shmem_helper virtio_balloon drm_kms_helper button evdev drm loop dm_mod zram zsmalloc crct10dif_pclmul crc32_pclmul ghash_clmulni_intel sha512_ssse3 sha512_generic virtio_blk nvme aesni_intel crypto_simd cryptd nvme_core t10_pi i6300esb crc64_rocksoft_generic crc64_rocksoft crc64 virtio_pci virtio virtio_pci_legacy_dev virtio_pci_modern_dev virtio_ring serio_raw btrfs blake2b_generic libcrc32c crc32c_generic crc32c_intel xor raid6_pq autofs4
+[ 6288.460211] CR2: 0000000000000000
+[ 6288.460787] ---[ end trace 0000000000000000 ]---
+[ 6288.461571] RIP: 0010:nfs_inode_remove_request+0xc8/0x150 [nfs]
+[ 6288.462500] Code: ff ff 48 8b 43 38 48 8b 7b 10 a8 04 74 5b 48 85 ff 74 56 48 8b 07 a9 00 00 08 00 74 58 48 8b 07 f6 c4 10 74 50 e8 c8 44 b3 d5 <48> 8b 00 f0 48 ff 88 30 ff ff ff 5b 5d 41 5c c3 cc cc cc cc 48 8b
+[ 6288.465136] RSP: 0018:ffffbd618353bda8 EFLAGS: 00010246
+[ 6288.465963] RAX: 0000000000000000 RBX: ffff9a29f9a25280 RCX: 0000000000000000
+[ 6288.467035] RDX: ffff9a29f9a252b4 RSI: 000000000000000b RDI: ffffef41448e3840
+[ 6288.468093] RBP: ffffef41448e3840 R08: 0000000000000038 R09: ffffffffffffffff
+[ 6288.469121] R10: 0000000000033f80 R11: ffff9a2a7fffa000 R12: ffff9a29093f98c4
+[ 6288.470109] R13: 0000000000000000 R14: ffff9a29230f62e0 R15: ffff9a29230f62d0
+[ 6288.471106] FS:  0000000000000000(0000) GS:ffff9a2a77c00000(0000) knlGS:0000000000000000
+[ 6288.472216] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 6288.473059] CR2: 0000000000000000 CR3: 0000000264748002 CR4: 0000000000770ef0
+[ 6288.474096] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 6288.475097] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[ 6288.476148] PKRU: 55555554
+[ 6288.476665] note: kworker/u18:8[340798] exited with irqs disabled
 
-This opens the following races (note the below code is simplified):
+Once we've released "req", it's not safe to dereference it anymore.
+Decrement the nrequests counter before dropping the reference.
 
-1. Retrieving + printing the protocol (harmless race):
-
-	if (!hidpp->protocol_major) {
-		hidpp_root_get_protocol_version()
-		hidpp->protocol_major = response.rap.params[0];
-	}
-
-We can actually see this race hit in the dmesg in the abrt output
-attached to rhbz#2227968:
-
-[ 3064.624215] logitech-hidpp-device 0003:046D:4071.0049: HID++ 4.5 device connected.
-[ 3064.658184] logitech-hidpp-device 0003:046D:4071.0049: HID++ 4.5 device connected.
-
-Testing with extra logging added has shown that after this the 2 threads
-take turn grabbing the hw access mutex (send_mutex) so they ping-pong
-through all the other TOCTOU cases managing to hit all of them:
-
-2. Updating the name to the HIDPP name (harmless race):
-
-	if (hidpp->name == hdev->name) {
-		...
-		hidpp->name = new_name;
-	}
-
-3. Initializing the power_supply class for the battery (problematic!):
-
-hidpp_initialize_battery()
-{
-        if (hidpp->battery.ps)
-                return 0;
-
-	probe_battery(); /* Blocks, threads take turns executing this */
-
-	hidpp->battery.desc.properties =
-		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
-
-	hidpp->battery.ps =
-		devm_power_supply_register(&hidpp->hid_dev->dev,
-					   &hidpp->battery.desc, cfg);
-}
-
-4. Creating delayed input_device (potentially problematic):
-
-	if (hidpp->delayed_input)
-		return;
-
-	hidpp->delayed_input = hidpp_allocate_input(hdev);
-
-The really big problem here is 3. Hitting the race leads to the following
-sequence:
-
-	hidpp->battery.desc.properties =
-		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
-
-	hidpp->battery.ps =
-		devm_power_supply_register(&hidpp->hid_dev->dev,
-					   &hidpp->battery.desc, cfg);
-
-	...
-
-	hidpp->battery.desc.properties =
-		devm_kmemdup(dev, hidpp_battery_props, cnt, GFP_KERNEL);
-
-	hidpp->battery.ps =
-		devm_power_supply_register(&hidpp->hid_dev->dev,
-					   &hidpp->battery.desc, cfg);
-
-So now we have registered 2 power supplies for the same battery,
-which looks a bit weird from userspace's pov but this is not even
-the really big problem.
-
-Notice how:
-
-1. This is all devm-maganaged
-2. The hidpp->battery.desc struct is shared between the 2 power supplies
-3. hidpp->battery.desc.properties points to the result from the second
-   devm_kmemdup()
-
-This causes a use after free scenario on USB disconnect of the receiver:
-1. The last registered power supply class device gets unregistered
-2. The memory from the last devm_kmemdup() call gets freed,
-   hidpp->battery.desc.properties now points to freed memory
-3. The first registered power supply class device gets unregistered,
-   this involves sending a remove uevent to userspace which invokes
-   power_supply_uevent() to fill the uevent data
-4. power_supply_uevent() uses hidpp->battery.desc.properties which
-   now points to freed memory leading to backtraces like this one:
-
-Sep 22 20:01:35 eric kernel: BUG: unable to handle page fault for address: ffffb2140e017f08
-...
-Sep 22 20:01:35 eric kernel: Workqueue: usb_hub_wq hub_event
-Sep 22 20:01:35 eric kernel: RIP: 0010:power_supply_uevent+0xee/0x1d0
-...
-Sep 22 20:01:35 eric kernel:  ? asm_exc_page_fault+0x26/0x30
-Sep 22 20:01:35 eric kernel:  ? power_supply_uevent+0xee/0x1d0
-Sep 22 20:01:35 eric kernel:  ? power_supply_uevent+0x10d/0x1d0
-Sep 22 20:01:35 eric kernel:  dev_uevent+0x10f/0x2d0
-Sep 22 20:01:35 eric kernel:  kobject_uevent_env+0x291/0x680
-Sep 22 20:01:35 eric kernel:  power_supply_unregister+0x8e/0xa0
-Sep 22 20:01:35 eric kernel:  release_nodes+0x3d/0xb0
-Sep 22 20:01:35 eric kernel:  devres_release_group+0xfc/0x130
-Sep 22 20:01:35 eric kernel:  hid_device_remove+0x56/0xa0
-Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
-Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
-Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
-Sep 22 20:01:35 eric kernel:  ? __queue_work+0x1df/0x440
-Sep 22 20:01:35 eric kernel:  hid_destroy_device+0x4b/0x60
-Sep 22 20:01:35 eric kernel:  logi_dj_remove+0x9a/0x100 [hid_logitech_dj 5c91534a0ead2b65e04dd799a0437e3b99b21bc4]
-Sep 22 20:01:35 eric kernel:  hid_device_remove+0x44/0xa0
-Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
-Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
-Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
-Sep 22 20:01:35 eric kernel:  ? __queue_work+0x1df/0x440
-Sep 22 20:01:35 eric kernel:  hid_destroy_device+0x4b/0x60
-Sep 22 20:01:35 eric kernel:  usbhid_disconnect+0x47/0x60 [usbhid 727dcc1c0b94e6b4418727a468398ac3bca492f3]
-Sep 22 20:01:35 eric kernel:  usb_unbind_interface+0x90/0x270
-Sep 22 20:01:35 eric kernel:  device_release_driver_internal+0x19f/0x200
-Sep 22 20:01:35 eric kernel:  bus_remove_device+0xc6/0x130
-Sep 22 20:01:35 eric kernel:  device_del+0x15c/0x3f0
-Sep 22 20:01:35 eric kernel:  ? kobject_put+0xa0/0x1d0
-Sep 22 20:01:35 eric kernel:  usb_disable_device+0xcd/0x1e0
-Sep 22 20:01:35 eric kernel:  usb_disconnect+0xde/0x2c0
-Sep 22 20:01:35 eric kernel:  usb_disconnect+0xc3/0x2c0
-Sep 22 20:01:35 eric kernel:  hub_event+0xe80/0x1c10
-
-There have been quite a few bug reports (see Link tags) about this crash.
-
-Fix all the TOCTOU issues, including the really bad power-supply related
-system crash on USB disconnect, by making probe() use the workqueue for
-running hidpp_connect_event() too, so that it can never run more then once.
-
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227221
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227968
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2227968
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2242189
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217412#c58
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231005182638.3776-1-hdegoede@redhat.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Tested-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-hidpp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/write.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -3936,7 +3936,8 @@ static int hidpp_probe(struct hid_device
- 			goto hid_hw_init_fail;
+diff --git a/fs/nfs/write.c b/fs/nfs/write.c
+index 8c1ee1a1a28f1..7720b5e43014b 100644
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -802,8 +802,8 @@ static void nfs_inode_remove_request(struct nfs_page *req)
  	}
  
--	hidpp_connect_event(hidpp);
-+	schedule_work(&hidpp->work);
-+	flush_work(&hidpp->work);
+ 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
+-		nfs_release_request(req);
+ 		atomic_long_dec(&NFS_I(nfs_page_to_inode(req))->nrequests);
++		nfs_release_request(req);
+ 	}
+ }
  
- 	if (will_restart) {
- 		/* Reset the HID node state */
+-- 
+2.40.1
+
 
 
