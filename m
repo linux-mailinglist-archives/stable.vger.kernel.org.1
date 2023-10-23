@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1337E7D31EC
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E8D7D307E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233692AbjJWLOq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:14:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47152 "EHLO
+        id S230393AbjJWK7W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 06:59:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233694AbjJWLOq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:46 -0400
+        with ESMTP id S230282AbjJWK7V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 237A7C2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657D1C433C7;
-        Mon, 23 Oct 2023 11:14:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A58ADD7B
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7A7C433C8;
+        Mon, 23 Oct 2023 10:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059683;
-        bh=GN4iYH6NN5SIfS0TPrbNpnWmwbA2FbORMQiRAYzhOcw=;
+        s=korg; t=1698058759;
+        bh=fL5ns77IheIJFHiKQGIh4RdFSRrtlYavQ/lx2kLl7Dc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g5B4k3AZkyi+WvZ94a8H3/PvJqVe7jBVRCPH83yUx9oYeDQ9jRDXor/MIb9dHLKX4
-         oZe48jgdmKlACaqaaKWwb0ql2dx8cOgBL2AESrhzJaeSXoRkYLFzvSVfOHhXb5AilY
-         NUqGIR5TiyCqha4pqESWpBTt9DR12j1xuwsrRriw=
+        b=p8PPe5oL3G/KiQx8DDftZQy4WhsPNWbyivV6UREw+5cVU8B3cW3r0+Lu1ozm9JYCX
+         ItAIGuQY5MniVuJtI9Nnn0Rhw3DgEuQns0xKy17rlUjB6hWD5vJcZ9qTSNq8aixqjK
+         CXZ5QqdBHTco6GJiaReT1ZIm9IT+Fgow5jw2UQY0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
-        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 18/98] workqueue: Override implicit ordered attribute in workqueue_apply_unbound_cpumask()
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 4.14 17/66] ceph: fix incorrect revoked caps assert in ceph_fill_file_size()
 Date:   Mon, 23 Oct 2023 12:56:07 +0200
-Message-ID: <20231023104814.230194431@linuxfoundation.org>
+Message-ID: <20231023104811.433841736@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,61 +49,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit ca10d851b9ad0338c19e8e3089e24d565ebfffd7 ]
+commit 15c0a870dc44ed14e01efbdd319d232234ee639f upstream.
 
-Commit 5c0338c68706 ("workqueue: restore WQ_UNBOUND/max_active==1
-to be ordered") enabled implicit ordered attribute to be added to
-WQ_UNBOUND workqueues with max_active of 1. This prevented the changing
-of attributes to these workqueues leading to fix commit 0a94efb5acbb
-("workqueue: implicit ordered attribute should be overridable").
+When truncating the inode the MDS will acquire the xlock for the
+ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
+But when the client just releases and flushes the 'Fw' caps to MDS,
+for exmaple, and once the MDS receives the caps flushing msg it
+just thought the revocation has finished. Then the MDS will continue
+truncating the inode and then issued the truncate notification to
+all the clients. While just before the clients receives the cap
+flushing ack they receive the truncation notification, the clients
+will detecte that the 'issued | dirty' is still holding the 'Fw'
+caps.
 
-However, workqueue_apply_unbound_cpumask() was not updated at that time.
-So sysfs changes to wq_unbound_cpumask has no effect on WQ_UNBOUND
-workqueues with implicit ordered attribute. Since not all WQ_UNBOUND
-workqueues are visible on sysfs, we are not able to make all the
-necessary cpumask changes even if we iterates all the workqueue cpumasks
-in sysfs and changing them one by one.
-
-Fix this problem by applying the corresponding change made
-to apply_workqueue_attrs_locked() in the fix commit to
-workqueue_apply_unbound_cpumask().
-
-Fixes: 5c0338c68706 ("workqueue: restore WQ_UNBOUND/max_active==1 to be ordered")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/56693
+Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/workqueue.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/ceph/inode.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index 5533206cb6f48..0179390974517 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -5087,9 +5087,13 @@ static int workqueue_apply_unbound_cpumask(void)
- 	list_for_each_entry(wq, &workqueues, list) {
- 		if (!(wq->flags & WQ_UNBOUND))
- 			continue;
-+
- 		/* creating multiple pwqs breaks ordering guarantee */
--		if (wq->flags & __WQ_ORDERED)
--			continue;
-+		if (!list_empty(&wq->pwqs)) {
-+			if (wq->flags & __WQ_ORDERED_EXPLICIT)
-+				continue;
-+			wq->flags &= ~__WQ_ORDERED;
-+		}
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -615,9 +615,7 @@ int ceph_fill_file_size(struct inode *in
+ 			ci->i_truncate_seq = truncate_seq;
  
- 		ctx = apply_wqattrs_prepare(wq, wq->unbound_attrs);
- 		if (!ctx) {
--- 
-2.40.1
-
+ 			/* the MDS should have revoked these caps */
+-			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
+-					       CEPH_CAP_FILE_RD |
+-					       CEPH_CAP_FILE_WR |
++			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
+ 					       CEPH_CAP_FILE_LAZYIO));
+ 			/*
+ 			 * If we hold relevant caps, or in the case where we're
 
 
