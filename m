@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B94F67D343E
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 005257D3313
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234185AbjJWLhy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:37:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44448 "EHLO
+        id S233888AbjJWL0a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:26:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234184AbjJWLhx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:53 -0400
+        with ESMTP id S233928AbjJWL03 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872CAFD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8355C433CB;
-        Mon, 23 Oct 2023 11:37:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E9092
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA77EC433C9;
+        Mon, 23 Oct 2023 11:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061070;
-        bh=zVRJAtK7ceQZvphqagsqvl0ff8slhK0Xi1WUFeIFybc=;
+        s=korg; t=1698060386;
+        bh=OMxN+MAuJTEM3cNtG/ORCZ5nABEUjPPn8G/dSlpQF58=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xKJ7LeRnpPvvZsu0qHv7KyNu6sC5tLBWGo30Ujgf7nY+6dZm8jUXwiYXudPFoXgSX
-         m+e1I8DhyHZVcMEyJc5SB4gdxWciRC4vvBrxsQOdWszn1ZhSjJWQ6FSY1rI3T5HUz4
-         gpyoeY+4pzvl+3SxvCyTZrf4Bx1TRN2/PdiLv1GQ=
+        b=yaTbZoFEiSvUdZ21eTceYYOKMqWSM7A9v2+lRjjQM3ERY0jckalqo+vOGpZLu4T23
+         45J/hy0zyu5x2PEVIoJqQT9dyevbGqOCOQ12va7VJIN2uzhmQ8s987xnJav7xmSzpN
+         csVDJD80yWqFx5dWhekk/KwF5/uRC56My9XkUZKk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eddie James <eajames@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 063/137] powerpc/47x: Fix 47x syscall return crash
+        patches@lists.linux.dev,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 6.1 155/196] pNFS/flexfiles: Check the layout validity in ff_layout_mirror_prepare_stats
 Date:   Mon, 23 Oct 2023 12:57:00 +0200
-Message-ID: <20231023104823.094578060@linuxfoundation.org>
+Message-ID: <20231023104832.846229351@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,101 +49,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit f0eee815babed70a749d2496a7678be5b45b4c14 ]
+commit e1c6cfbb3bd1377e2ddcbe06cf8fb1ec323ea7d3 upstream.
 
-Eddie reported that newer kernels were crashing during boot on his 476
-FSP2 system:
+Ensure that we check the layout pointer and validity after dereferencing
+it in ff_layout_mirror_prepare_stats.
 
-  kernel tried to execute user page (b7ee2000) - exploit attempt? (uid: 0)
-  BUG: Unable to handle kernel instruction fetch
-  Faulting instruction address: 0xb7ee2000
-  Oops: Kernel access of bad area, sig: 11 [#1]
-  BE PAGE_SIZE=4K FSP-2
-  Modules linked in:
-  CPU: 0 PID: 61 Comm: mount Not tainted 6.1.55-d23900f.ppcnf-fsp2 #1
-  Hardware name: ibm,fsp2 476fpe 0x7ff520c0 FSP-2
-  NIP:  b7ee2000 LR: 8c008000 CTR: 00000000
-  REGS: bffebd83 TRAP: 0400   Not tainted (6.1.55-d23900f.ppcnf-fs p2)
-  MSR:  00000030 <IR,DR>  CR: 00001000  XER: 20000000
-  GPR00: c00110ac bffebe63 bffebe7e bffebe88 8c008000 00001000 00000d12 b7ee2000
-  GPR08: 00000033 00000000 00000000 c139df10 48224824 1016c314 10160000 00000000
-  GPR16: 10160000 10160000 00000008 00000000 10160000 00000000 10160000 1017f5b0
-  GPR24: 1017fa50 1017f4f0 1017fa50 1017f740 1017f630 00000000 00000000 1017f4f0
-  NIP [b7ee2000] 0xb7ee2000
-  LR [8c008000] 0x8c008000
-  Call Trace:
-  Instruction dump:
-  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-  XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-  ---[ end trace 0000000000000000 ]---
-
-The problem is in ret_from_syscall where the check for
-icache_44x_need_flush is done. When the flush is needed the code jumps
-out-of-line to do the flush, and then intends to jump back to continue
-the syscall return.
-
-However the branch back to label 1b doesn't return to the correct
-location, instead branching back just prior to the return to userspace,
-causing bogus register values to be used by the rfi.
-
-The breakage was introduced by commit 6f76a01173cc
-("powerpc/syscall: implement system call entry/exit logic in C for PPC32") which
-inadvertently removed the "1" label and reused it elsewhere.
-
-Fix it by adding named local labels in the correct locations. Note that
-the return label needs to be outside the ifdef so that CONFIG_PPC_47x=n
-compiles.
-
-Fixes: 6f76a01173cc ("powerpc/syscall: implement system call entry/exit logic in C for PPC32")
-Cc: stable@vger.kernel.org # v5.12+
-Reported-by: Eddie James <eajames@linux.ibm.com>
-Tested-by: Eddie James <eajames@linux.ibm.com>
-Link: https://lore.kernel.org/linuxppc-dev/fdaadc46-7476-9237-e104-1d2168526e72@linux.ibm.com/
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Link: https://msgid.link/20231010114750.847794-1-mpe@ellerman.id.au
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 08e2e5bc6c9a ("pNFS/flexfiles: Clean up layoutstats")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/entry_32.S | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/nfs/flexfilelayout/flexfilelayout.c |   17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
-index 0756829b2f7fa..3eb3c74e402b5 100644
---- a/arch/powerpc/kernel/entry_32.S
-+++ b/arch/powerpc/kernel/entry_32.S
-@@ -136,8 +136,9 @@ ret_from_syscall:
- 	lis	r4,icache_44x_need_flush@ha
- 	lwz	r5,icache_44x_need_flush@l(r4)
- 	cmplwi	cr0,r5,0
--	bne-	2f
-+	bne-	.L44x_icache_flush
- #endif /* CONFIG_PPC_47x */
-+.L44x_icache_flush_return:
- 	kuep_unlock
- 	lwz	r4,_LINK(r1)
- 	lwz	r5,_CCR(r1)
-@@ -173,10 +174,11 @@ syscall_exit_finish:
- 	b	1b
+--- a/fs/nfs/flexfilelayout/flexfilelayout.c
++++ b/fs/nfs/flexfilelayout/flexfilelayout.c
+@@ -2520,9 +2520,9 @@ ff_layout_mirror_prepare_stats(struct pn
+ 	return i;
+ }
  
- #ifdef CONFIG_44x
--2:	li	r7,0
-+.L44x_icache_flush:
-+	li	r7,0
- 	iccci	r0,r0
- 	stw	r7,icache_44x_need_flush@l(r4)
--	b	1b
-+	b	.L44x_icache_flush_return
- #endif  /* CONFIG_44x */
+-static int
+-ff_layout_prepare_layoutstats(struct nfs42_layoutstat_args *args)
++static int ff_layout_prepare_layoutstats(struct nfs42_layoutstat_args *args)
+ {
++	struct pnfs_layout_hdr *lo;
+ 	struct nfs4_flexfile_layout *ff_layout;
+ 	const int dev_count = PNFS_LAYOUTSTATS_MAXDEV;
  
- 	.globl	ret_from_fork
--- 
-2.40.1
-
+@@ -2533,11 +2533,14 @@ ff_layout_prepare_layoutstats(struct nfs
+ 		return -ENOMEM;
+ 
+ 	spin_lock(&args->inode->i_lock);
+-	ff_layout = FF_LAYOUT_FROM_HDR(NFS_I(args->inode)->layout);
+-	args->num_dev = ff_layout_mirror_prepare_stats(&ff_layout->generic_hdr,
+-						       &args->devinfo[0],
+-						       dev_count,
+-						       NFS4_FF_OP_LAYOUTSTATS);
++	lo = NFS_I(args->inode)->layout;
++	if (lo && pnfs_layout_is_valid(lo)) {
++		ff_layout = FF_LAYOUT_FROM_HDR(lo);
++		args->num_dev = ff_layout_mirror_prepare_stats(
++			&ff_layout->generic_hdr, &args->devinfo[0], dev_count,
++			NFS4_FF_OP_LAYOUTSTATS);
++	} else
++		args->num_dev = 0;
+ 	spin_unlock(&args->inode->i_lock);
+ 	if (!args->num_dev) {
+ 		kfree(args->devinfo);
 
 
