@@ -2,47 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2E067D34B4
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A857D35CD
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:52:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234315AbjJWLmT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:42:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46218 "EHLO
+        id S234629AbjJWLwK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:52:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234281AbjJWLmS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:18 -0400
+        with ESMTP id S234625AbjJWLwK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:52:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D618198D;
-        Mon, 23 Oct 2023 04:41:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5FBC43395;
-        Mon, 23 Oct 2023 11:41:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AA6E172A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:51:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA11FC433C9;
+        Mon, 23 Oct 2023 11:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061313;
-        bh=GGRNanOMwehvibyFuWKummVXRCevGq8X/wg5Jadc/cE=;
+        s=korg; t=1698061912;
+        bh=UixIQcYj07dljWYH5Hb//yQmSteF3oyGv4VrM+vkgPQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VYszL7YRnvRvAbYjmqfslZdXbgaF6RaMsgxMrQv5Hn/7fv4kOSfr1AEvLrTKn73IY
-         IGrPnmo3htVXF6n+g/zvXHIdNpUnIXCwcqqLwxpaSo/uFI0d0G5I7P7HSg2h0uuP2X
-         9oQyW9EtyvBHVny74qWEvFhlr3VhWXXOyZxCi830=
+        b=Py8LCw1PQu9VIpRBvPbiKGPAFhM3R/pTOMpgCewglLDQutQcSX22Xegyup9xeaNvU
+         HksPIlUYBW9Hzl5fD8SBlmcIXB/vtMrx4iaec4gDEE/aGT/yTVlgFsfq96mP+7oOVg
+         gUu5qhxvJNydmDXegMrtmS3xF3e5UB3K6QAANG2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Edward AD <twuufnxlz@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 5.15 136/137] Bluetooth: hci_sock: Correctly bounds check and pad HCI_MON_NEW_INDEX name
+        patches@lists.linux.dev, Fabio Porcedda <fabio.porcedda@gmail.com>,
+        Daniele Palmas <dnlplm@gmail.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 186/202] USB: serial: option: add Telit LE910C4-WWX 0x1035 composition
 Date:   Mon, 23 Oct 2023 12:58:13 +0200
-Message-ID: <20231023104825.258229633@linuxfoundation.org>
+Message-ID: <20231023104831.884474801@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,69 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit cb3871b1cd135a6662b732fbc6b3db4afcdb4a64 upstream.
+commit 6a7be48e9bd18d309ba25c223a27790ad1bf0fa3 upstream.
 
-The code pattern of memcpy(dst, src, strlen(src)) is almost always
-wrong. In this case it is wrong because it leaves memory uninitialized
-if it is less than sizeof(ni->name), and overflows ni->name when longer.
+Add support for the following Telit LE910C4-WWX composition:
 
-Normally strtomem_pad() could be used here, but since ni->name is a
-trailing array in struct hci_mon_new_index, compilers that don't support
--fstrict-flex-arrays=3 can't tell how large this array is via
-__builtin_object_size(). Instead, open-code the helper and use sizeof()
-since it will work correctly.
+0x1035: TTY, TTY, ECM
 
-Additionally mark ni->name as __nonstring since it appears to not be a
-%NUL terminated C string.
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1035 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=e1b117c7
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Edward AD <twuufnxlz@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-bluetooth@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Fixes: 18f547f3fc07 ("Bluetooth: hci_sock: fix slab oob read in create_monitor_event")
-Link: https://lore.kernel.org/lkml/202310110908.F2639D3276@keescook/
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_mon.h |    2 +-
- net/bluetooth/hci_sock.c        |    3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/net/bluetooth/hci_mon.h
-+++ b/include/net/bluetooth/hci_mon.h
-@@ -56,7 +56,7 @@ struct hci_mon_new_index {
- 	__u8		type;
- 	__u8		bus;
- 	bdaddr_t	bdaddr;
--	char		name[8];
-+	char		name[8] __nonstring;
- } __packed;
- #define HCI_MON_NEW_INDEX_SIZE 16
- 
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -438,7 +438,8 @@ static struct sk_buff *create_monitor_ev
- 		ni->type = hdev->dev_type;
- 		ni->bus = hdev->bus;
- 		bacpy(&ni->bdaddr, &hdev->bdaddr);
--		memcpy(ni->name, hdev->name, strlen(hdev->name));
-+		memcpy_and_pad(ni->name, sizeof(ni->name), hdev->name,
-+			       strnlen(hdev->name, sizeof(ni->name)), '\0');
- 
- 		opcode = cpu_to_le16(HCI_MON_NEW_INDEX);
- 		break;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1290,6 +1290,7 @@ static const struct usb_device_id option
+ 	 .driver_info = NCTRL(0) | RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1033, 0xff),	/* Telit LE910C1-EUX (ECM) */
+ 	 .driver_info = NCTRL(0) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1035, 0xff) }, /* Telit LE910C4-WWX (ECM) */
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG0),
+ 	  .driver_info = RSVD(0) | RSVD(1) | NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG1),
 
 
