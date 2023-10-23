@@ -2,35 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A93267D3497
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBA6B7D3498
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:41:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230474AbjJWLlH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:41:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44292 "EHLO
+        id S233923AbjJWLlL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:41:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233923AbjJWLlH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:41:07 -0400
+        with ESMTP id S234260AbjJWLlK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:41:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFA0AE8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D8DC433C7;
-        Mon, 23 Oct 2023 11:41:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56D6F9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC4DC433C7;
+        Mon, 23 Oct 2023 11:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061265;
-        bh=EkYg/f/+ePLg9ltLyxxNNbAGDM275vAozOqnKZzxjRU=;
+        s=korg; t=1698061268;
+        bh=Xy3xfJzdcG5qMh9jGEWkFGZL+34GRynBQiwY/SosX20=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wUZB/r50qBmkmfLjYyDf7YMcnS/7rMqvHo+U87m8Xk6fFSzW8XPpNZ/c7pDf6K1g1
-         2W43/XEGsNPfLdLqSM+ddNS4OxdKasMBMFHa4ydiPiO/DIcOachi0cmGR/7ut9XzJi
-         BjUl18wBf/4VDsjKeoGvZNn+ZFfvnRTjBhEe5OoQ=
+        b=B7Uc6SdFR/kGhL8SgSI5HERLtj7c13GjKmMikxcLfdokGbhIDGpZajDcmt8QL5FZn
+         Qkczw5Jp0X2keXH7b3BPaqNv7U5qidYkIJQNjhXSrX+rDUVA5efHqyxHO6LQca67Da
+         4J566aH9UZM5+CSKiJo4a6z0+xHrTVrpUGD5mUb0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 5.15 127/137] gpio: vf610: set value before the direction to avoid a glitch
-Date:   Mon, 23 Oct 2023 12:58:04 +0200
-Message-ID: <20231023104825.001702486@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 128/137] ASoC: pxa: fix a memory leak in probe()
+Date:   Mon, 23 Oct 2023 12:58:05 +0200
+Message-ID: <20231023104825.032852886@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
 References: <20231023104820.849461819@linuxfoundation.org>
@@ -52,41 +53,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit fc363413ef8ea842ae7a99e3caf5465dafdd3a49 upstream.
+[ Upstream commit aa6464edbd51af4a2f8db43df866a7642b244b5f ]
 
-We found a glitch when configuring the pad as output high. To avoid this
-glitch, move the data value setting before direction config in the
-function vf610_gpio_direction_output().
+Free the "priv" pointer before returning the error code.
 
-Fixes: 659d8a62311f ("gpio: vf610: add imx7ulp support")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-[Bartosz: tweak the commit message]
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 90eb6b59d311 ("ASoC: pxa-ssp: add support for an external clock in devicetree")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/84ac2313-1420-471a-b2cb-3269a2e12a7c@moroto.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-vf610.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/pxa/pxa-ssp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-vf610.c
-+++ b/drivers/gpio/gpio-vf610.c
-@@ -127,14 +127,14 @@ static int vf610_gpio_direction_output(s
- 	unsigned long mask = BIT(gpio);
- 	u32 val;
+diff --git a/sound/soc/pxa/pxa-ssp.c b/sound/soc/pxa/pxa-ssp.c
+index 7f13a35e9cc14..d6a2af293f458 100644
+--- a/sound/soc/pxa/pxa-ssp.c
++++ b/sound/soc/pxa/pxa-ssp.c
+@@ -779,7 +779,7 @@ static int pxa_ssp_probe(struct snd_soc_dai *dai)
+ 		if (IS_ERR(priv->extclk)) {
+ 			ret = PTR_ERR(priv->extclk);
+ 			if (ret == -EPROBE_DEFER)
+-				return ret;
++				goto err_priv;
  
-+	vf610_gpio_set(chip, gpio, value);
-+
- 	if (port->sdata && port->sdata->have_paddr) {
- 		val = vf610_gpio_readl(port->gpio_base + GPIO_PDDR);
- 		val |= mask;
- 		vf610_gpio_writel(val, port->gpio_base + GPIO_PDDR);
- 	}
- 
--	vf610_gpio_set(chip, gpio, value);
--
- 	return pinctrl_gpio_direction_output(chip->base + gpio);
- }
- 
+ 			priv->extclk = NULL;
+ 		}
+-- 
+2.42.0
+
 
 
