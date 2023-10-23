@@ -2,44 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 908917D3247
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 211687D30C1
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233739AbjJWLSa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:18:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
+        id S232778AbjJWLBu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233731AbjJWLS3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:29 -0400
+        with ESMTP id S232938AbjJWLBs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3D1FC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD40C433C7;
-        Mon, 23 Oct 2023 11:18:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FE21D7B
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7006CC433C7;
+        Mon, 23 Oct 2023 11:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059907;
-        bh=BL3oPa17BFM9whotBj2dmrK32x6lhMKyWudlypXbH3c=;
+        s=korg; t=1698058904;
+        bh=d7kCKKsg4iMhqOvBj2b/CQ6ok4UKC6PbXGRSwXJpbW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XY5EST6nucfJYpgzFuA1O51/vRFsZGmEuce8vDErSQ12n3dillP7uI5yxuPdcN29f
-         XYLp2NOUGVvvQi+WeUwGJmbUQ4X/aeONnS0ce/r45r/goAUKXv5+lDy612b3t8V9/P
-         GKeFM/yXkg55S0Ml/ogA3Hbfjbr5aiYDgWjj9VJQ=
+        b=GgGnYeO2HTOy8mDKX8XoYfVZuVaRIy/nKWkSSi9G47F1dxpDIPsDEIdldyep5Tz2O
+         b3OZIkum9OLuHyoyjTtqWbvr2VbGYu2N/i57yMgnStwyfYB54kcySMsOhgow1o+0aN
+         vDFtSHciF5hpsV5MzPiMgYHhCpf/a8g0jVIhbVmA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Carl Philipp Klemm <philipp@uvos.xyz>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 66/98] ARM: dts: ti: omap: Fix noisy serial with overrun-throttle-ms for mapphone
-Date:   Mon, 23 Oct 2023 12:56:55 +0200
-Message-ID: <20231023104815.921121881@linuxfoundation.org>
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 4.14 66/66] Bluetooth: hci_event: Fix using memcmp when comparing keys
+Date:   Mon, 23 Oct 2023 12:56:56 +0200
+Message-ID: <20231023104813.281406942@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,47 +48,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 5ad37b5e30433afa7a5513e3eb61f69fa0976785 ]
+commit b541260615f601ae1b5d6d0cc54e790de706303b upstream.
 
-On mapphone devices we may get lots of noise on the micro-USB port in debug
-uart mode until the phy-cpcap-usb driver probes. Let's limit the noise by
-using overrun-throttle-ms.
+memcmp is not consider safe to use with cryptographic secrets:
 
-Note that there is also a related separate issue where the charger cable
-connected may cause random sysrq requests until phy-cpcap-usb probes that
-still remains.
+ 'Do  not  use memcmp() to compare security critical data, such as
+ cryptographic secrets, because the required CPU time depends on the
+ number of equal bytes.'
 
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Carl Philipp Klemm <philipp@uvos.xyz>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While usage of memcmp for ZERO_KEY may not be considered a security
+critical data, it can lead to more usage of memcmp with pairing keys
+which could introduce more security problems.
+
+Fixes: 455c2ff0a558 ("Bluetooth: Fix BR/EDR out-of-band pairing with only initiator data")
+Fixes: 33155c4aae52 ("Bluetooth: hci_event: Ignore NULL link key")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/omap4-droid4-xt894.dts | 1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/hci_event.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap4-droid4-xt894.dts b/arch/arm/boot/dts/omap4-droid4-xt894.dts
-index 459720f5f5586..91c8a05ab67ae 100644
---- a/arch/arm/boot/dts/omap4-droid4-xt894.dts
-+++ b/arch/arm/boot/dts/omap4-droid4-xt894.dts
-@@ -669,6 +669,7 @@ &uart1 {
- &uart3 {
- 	interrupts-extended = <&wakeupgen GIC_SPI 74 IRQ_TYPE_LEVEL_HIGH
- 			       &omap4_pmx_core 0x17c>;
-+	overrun-throttle-ms = <500>;
- };
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -25,6 +25,8 @@
+ /* Bluetooth HCI event handling. */
  
- &uart4 {
--- 
-2.40.1
-
+ #include <asm/unaligned.h>
++#include <linux/crypto.h>
++#include <crypto/algapi.h>
+ 
+ #include <net/bluetooth/bluetooth.h>
+ #include <net/bluetooth/hci_core.h>
+@@ -3505,7 +3507,7 @@ static void hci_link_key_notify_evt(stru
+ 		goto unlock;
+ 
+ 	/* Ignore NULL link key against CVE-2020-26555 */
+-	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
++	if (!crypto_memneq(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
+ 		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
+ 			   &ev->bdaddr);
+ 		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
+@@ -3991,8 +3993,8 @@ static u8 bredr_oob_data_present(struct
+ 		 * available, then do not declare that OOB data is
+ 		 * present.
+ 		 */
+-		if (!memcmp(data->rand256, ZERO_KEY, 16) ||
+-		    !memcmp(data->hash256, ZERO_KEY, 16))
++		if (!crypto_memneq(data->rand256, ZERO_KEY, 16) ||
++		    !crypto_memneq(data->hash256, ZERO_KEY, 16))
+ 			return 0x00;
+ 
+ 		return 0x02;
+@@ -4002,8 +4004,8 @@ static u8 bredr_oob_data_present(struct
+ 	 * not supported by the hardware, then check that if
+ 	 * P-192 data values are present.
+ 	 */
+-	if (!memcmp(data->rand192, ZERO_KEY, 16) ||
+-	    !memcmp(data->hash192, ZERO_KEY, 16))
++	if (!crypto_memneq(data->rand192, ZERO_KEY, 16) ||
++	    !crypto_memneq(data->hash192, ZERO_KEY, 16))
+ 		return 0x00;
+ 
+ 	return 0x01;
 
 
