@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3413C7D320C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 920B47D3410
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233747AbjJWLQI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:16:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49526 "EHLO
+        id S234152AbjJWLgf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233762AbjJWLQF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:05 -0400
+        with ESMTP id S234048AbjJWLge (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 527CE10E6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6BFC433C8;
-        Mon, 23 Oct 2023 11:16:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0984610C7
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D067C433C8;
+        Mon, 23 Oct 2023 11:36:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059760;
-        bh=ze+5giE2EtgciGXGlWvUCvHo/GEpsJl8ILmk7uMYk5E=;
+        s=korg; t=1698060990;
+        bh=yGSpx+eLsSxRDOO8LA1hLxVa6/tydk/fPv+wU1F5xBA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pTnfHAMC8LuzhBuffRwnTuC/KCVdSObw+d3ukIJZ41LMw6t4fqCRwbrtmaW6SMoyz
-         PbQr2H7PEIO8tw/IGgmo5I7dtRFH4JMwa/qunlCZPgnks6crXrI1cg7vEH9jUUqzMk
-         fqZpZIPiMBrj2KrKe/7UKTY5P/WlTH/VODeC4LXg=
+        b=w2Fr0igPLDM7QIZELsvwZT333ognbBElT2/eaHMNMvXxgWm2z+q3hr0SKz0ratJs6
+         O9YdyURP0wyIUYFYb/+VJ1/7Y0gTYwP2Jdx1EkhPQ+FFRTn6sORb83Co4xjlMLowIb
+         lbMcfEyquo7hyD+bY4yCcX/WcmmCzpgXU7dJwfFo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.19 44/98] Bluetooth: Fix a refcnt underflow problem for hci_conn
+        patches@lists.linux.dev, Stefan Wahren <wahrenst@gmx.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 036/137] tcp: tsq: relax tcp_small_queue_check() when rtx queue contains a single skb
 Date:   Mon, 23 Oct 2023 12:56:33 +0200
-Message-ID: <20231023104815.165829682@linuxfoundation.org>
+Message-ID: <20231023104822.250969311@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,64 +50,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit c7f59461f5a78994613afc112cdd73688aef9076 upstream.
+commit f921a4a5bffa8a0005b190fb9421a7fc1fd716b6 upstream.
 
-Syzbot reports a warning as follows:
+In commit 75eefc6c59fd ("tcp: tsq: add a shortcut in tcp_small_queue_check()")
+we allowed to send an skb regardless of TSQ limits being hit if rtx queue
+was empty or had a single skb, in order to better fill the pipe
+when/if TX completions were slow.
 
-WARNING: CPU: 1 PID: 26946 at net/bluetooth/hci_conn.c:619
-hci_conn_timeout+0x122/0x210 net/bluetooth/hci_conn.c:619
-...
-Call Trace:
- <TASK>
- process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
- process_scheduled_works kernel/workqueue.c:2703 [inline]
- worker_thread+0x8b9/0x1290 kernel/workqueue.c:2784
- kthread+0x33c/0x440 kernel/kthread.c:388
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
- </TASK>
+Then later, commit 75c119afe14f ("tcp: implement rb-tree based
+retransmit queue") accidentally removed the special case for
+one skb in rtx queue.
 
-It is because the HCI_EV_SIMPLE_PAIR_COMPLETE event handler drops
-hci_conn directly without check Simple Pairing whether be enabled. But
-the Simple Pairing process can only be used if both sides have the
-support enabled in the host stack.
+Stefan Wahren reported a regression in single TCP flow throughput
+using a 100Mbit fec link, starting from commit 65466904b015 ("tcp: adjust
+TSO packet sizes based on min_rtt"). This last commit only made the
+regression more visible, because it locked the TCP flow on a particular
+behavior where TSQ prevented two skbs being pushed downstream,
+adding silences on the wire between each TSO packet.
 
-Add hci_conn_ssp_enabled() for hci_conn in HCI_EV_IO_CAPA_REQUEST and
-HCI_EV_SIMPLE_PAIR_COMPLETE event handlers to fix the problem.
+Many thanks to Stefan for his invaluable help !
 
-Fixes: 0493684ed239 ("[Bluetooth] Disable disconnect timer during Simple Pairing")
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 75c119afe14f ("tcp: implement rb-tree based retransmit queue")
+Link: https://lore.kernel.org/netdev/7f31ddc8-9971-495e-a1f6-819df542e0af@gmx.net/
+Reported-by: Stefan Wahren <wahrenst@gmx.net>
+Tested-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20231017124526.4060202-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_output.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4342,7 +4342,7 @@ static void hci_io_capa_request_evt(stru
- 	hci_dev_lock(hdev);
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -2486,6 +2486,18 @@ static bool tcp_pacing_check(struct sock
+ 	return true;
+ }
  
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
--	if (!conn)
-+	if (!conn || !hci_conn_ssp_enabled(conn))
- 		goto unlock;
++static bool tcp_rtx_queue_empty_or_single_skb(const struct sock *sk)
++{
++	const struct rb_node *node = sk->tcp_rtx_queue.rb_node;
++
++	/* No skb in the rtx queue. */
++	if (!node)
++		return true;
++
++	/* Only one skb in rtx queue. */
++	return !node->rb_left && !node->rb_right;
++}
++
+ /* TCP Small Queues :
+  * Control number of packets in qdisc/devices to two packets / or ~1 ms.
+  * (These limits are doubled for retransmits)
+@@ -2523,12 +2535,12 @@ static bool tcp_small_queue_check(struct
+ 		limit += extra_bytes;
+ 	}
+ 	if (refcount_read(&sk->sk_wmem_alloc) > limit) {
+-		/* Always send skb if rtx queue is empty.
++		/* Always send skb if rtx queue is empty or has one skb.
+ 		 * No need to wait for TX completion to call us back,
+ 		 * after softirq/tasklet schedule.
+ 		 * This helps when TX completions are delayed too much.
+ 		 */
+-		if (tcp_rtx_queue_empty(sk))
++		if (tcp_rtx_queue_empty_or_single_skb(sk))
+ 			return false;
  
- 	hci_conn_hold(conn);
-@@ -4577,7 +4577,7 @@ static void hci_simple_pair_complete_evt
- 	hci_dev_lock(hdev);
- 
- 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
--	if (!conn)
-+	if (!conn || !hci_conn_ssp_enabled(conn))
- 		goto unlock;
- 
- 	/* Reset the authentication requirement to unknown */
+ 		set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
 
 
