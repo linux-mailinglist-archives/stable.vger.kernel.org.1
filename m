@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEC787D32A6
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBAE77D34ED
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233843AbjJWLWd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:22:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59824 "EHLO
+        id S230329AbjJWLoG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233837AbjJWLWd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:33 -0400
+        with ESMTP id S234355AbjJWLno (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:43:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9B492
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08ADEC433C8;
-        Mon, 23 Oct 2023 11:22:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E67B9D7B
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0E3C433C7;
+        Mon, 23 Oct 2023 11:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060151;
-        bh=n28umSft8qD2aUw7vnXlzOdywxORX3ojv9LTrWYmBKk=;
+        s=korg; t=1698061421;
+        bh=sSCjHeaKN51Lx96pIBlribKtCbW2mZraF00/zWFGpf8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YoLc14wq9gRAUp/PqwfLSccD0ZrerpSmSKcJpiiyjvx0peCpqH/aaiPYi8jiB8js9
-         hbES9qCH/8ichkFknwu7WT3HoMbB552NuHULfH/UH7syLvrFqj5P7ejQZbIMrybeMD
-         qFBamqf+GBchKKznQcFw2yi/NMrC7dc2iwFze+Xg=
+        b=1gShG9V+7dfXk6/ex24pWjBowE/TE11fHSCUXJ1zDlJYCk1pw+EROfukl1mYoWBU0
+         i0OQbkp4ybBxnrJBEyXN7CNYohnHZykRf14S4hs4/gZ4Dcq3gjfY+d9qZWYwVbyjA4
+         xrFksPRWJC59MVOMjB8XO1t4gev4rUkMKs5MhcMI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        Jiri Pirko <jiri@nvidia.com>, Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 075/196] net: fix ifname in netlink ntf during netns move
-Date:   Mon, 23 Oct 2023 12:55:40 +0200
-Message-ID: <20231023104830.672031052@linuxfoundation.org>
+        patches@lists.linux.dev, Wesley Cheng <quic_wcheng@quicinc.com>,
+        Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 034/202] usb: xhci: xhci-ring: Use sysdev for mapping bounce buffer
+Date:   Mon, 23 Oct 2023 12:55:41 +0200
+Message-ID: <20231023104827.591405957@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,128 +48,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-commit 311cca40661f428b7aa114fb5af578cfdbe3e8b6 upstream.
+commit 41a43013d2366db5b88b42bbcd8e8f040b6ccf21 upstream.
 
-dev_get_valid_name() overwrites the netdev's name on success.
-This makes it hard to use in prepare-commit-like fashion,
-where we do validation first, and "commit" to the change
-later.
+As mentioned in:
+  commit 474ed23a6257 ("xhci: align the last trb before link if it is
+easily splittable.")
 
-Factor out a helper which lets us save the new name to a buffer.
-Use it to fix the problem of notification on netns move having
-incorrect name:
+A bounce buffer is utilized for ensuring that transfers that span across
+ring segments are aligned to the EP's max packet size.  However, the device
+that is used to map the DMA buffer to is currently using the XHCI HCD,
+which does not carry any DMA operations in certain configrations.
+Migration to using the sysdev entry was introduced for DWC3 based
+implementations where the IOMMU operations are present.
 
- 5: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default
-     link/ether be:4d:58:f9:d5:40 brd ff:ff:ff:ff:ff:ff
- 6: eth1: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default
-     link/ether 1e:4a:34:36:e3:cd brd ff:ff:ff:ff:ff:ff
+Replace the reference to the controller device to sysdev instead.  This
+allows the bounce buffer to be properly mapped to any implementations that
+have an IOMMU involved.
 
- [ ~]# ip link set dev eth0 netns 1 name eth1
-
-ip monitor inside netns:
- Deleted inet eth0
- Deleted inet6 eth0
- Deleted 5: eth1: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default
-     link/ether be:4d:58:f9:d5:40 brd ff:ff:ff:ff:ff:ff new-netnsid 0 new-ifindex 7
-
-Name is reported as eth1 in old netns for ifindex 5, already renamed.
-
-Fixes: d90310243fd7 ("net: device name allocation cleanups")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+cc: stable@vger.kernel.org
+Fixes: 4c39d4b949d3 ("usb: xhci: use bus->sysdev for DMA configuration")
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20230915143108.1532163-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |   44 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 31 insertions(+), 13 deletions(-)
+ drivers/usb/host/xhci-ring.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1091,6 +1091,26 @@ static int __dev_alloc_name(struct net *
- 	return -ENFILE;
- }
- 
-+static int dev_prep_valid_name(struct net *net, struct net_device *dev,
-+			       const char *want_name, char *out_name)
-+{
-+	int ret;
-+
-+	if (!dev_valid_name(want_name))
-+		return -EINVAL;
-+
-+	if (strchr(want_name, '%')) {
-+		ret = __dev_alloc_name(net, want_name, out_name);
-+		return ret < 0 ? ret : 0;
-+	} else if (netdev_name_in_use(net, want_name)) {
-+		return -EEXIST;
-+	} else if (out_name != want_name) {
-+		strscpy(out_name, want_name, IFNAMSIZ);
-+	}
-+
-+	return 0;
-+}
-+
- static int dev_alloc_name_ns(struct net *net,
- 			     struct net_device *dev,
- 			     const char *name)
-@@ -1128,19 +1148,13 @@ EXPORT_SYMBOL(dev_alloc_name);
- static int dev_get_valid_name(struct net *net, struct net_device *dev,
- 			      const char *name)
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -742,7 +742,7 @@ static void xhci_giveback_urb_in_irq(str
+ static void xhci_unmap_td_bounce_buffer(struct xhci_hcd *xhci,
+ 		struct xhci_ring *ring, struct xhci_td *td)
  {
--	BUG_ON(!net);
--
--	if (!dev_valid_name(name))
--		return -EINVAL;
--
--	if (strchr(name, '%'))
--		return dev_alloc_name_ns(net, dev, name);
--	else if (netdev_name_in_use(net, name))
--		return -EEXIST;
--	else if (dev->name != name)
--		strscpy(dev->name, name, IFNAMSIZ);
-+	char buf[IFNAMSIZ];
-+	int ret;
- 
--	return 0;
-+	ret = dev_prep_valid_name(net, dev, name, buf);
-+	if (ret >= 0)
-+		strscpy(dev->name, buf, IFNAMSIZ);
-+	return ret;
- }
- 
- /**
-@@ -10936,6 +10950,7 @@ int __dev_change_net_namespace(struct ne
- 			       const char *pat, int new_ifindex)
+-	struct device *dev = xhci_to_hcd(xhci)->self.controller;
++	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_segment *seg = td->bounce_seg;
+ 	struct urb *urb = td->urb;
+ 	size_t len;
+@@ -3325,7 +3325,7 @@ static u32 xhci_td_remainder(struct xhci
+ static int xhci_align_td(struct xhci_hcd *xhci, struct urb *urb, u32 enqd_len,
+ 			 u32 *trb_buff_len, struct xhci_segment *seg)
  {
- 	struct net *net_old = dev_net(dev);
-+	char new_name[IFNAMSIZ] = {};
- 	int err, new_nsid;
- 
- 	ASSERT_RTNL();
-@@ -10962,7 +10977,7 @@ int __dev_change_net_namespace(struct ne
- 		/* We get here if we can't use the current device name */
- 		if (!pat)
- 			goto out;
--		err = dev_get_valid_name(net, dev, pat);
-+		err = dev_prep_valid_name(net, dev, pat, new_name);
- 		if (err < 0)
- 			goto out;
- 	}
-@@ -11030,6 +11045,9 @@ int __dev_change_net_namespace(struct ne
- 	kobject_uevent(&dev->dev.kobj, KOBJ_ADD);
- 	netdev_adjacent_add_links(dev);
- 
-+	if (new_name[0]) /* Rename the netdev to prepared name */
-+		strscpy(dev->name, new_name, IFNAMSIZ);
-+
- 	/* Fixup kobjects */
- 	err = device_rename(&dev->dev, dev->name);
- 	WARN_ON(err);
+-	struct device *dev = xhci_to_hcd(xhci)->self.controller;
++	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	unsigned int unalign;
+ 	unsigned int max_pkt;
+ 	u32 new_buff_len;
 
 
