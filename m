@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA08B7D337F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17F977D31C2
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234076AbjJWLa7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:30:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50754 "EHLO
+        id S233632AbjJWLMy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:12:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234070AbjJWLa6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:58 -0400
+        with ESMTP id S233654AbjJWLMv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F1CBC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D159BC433C8;
-        Mon, 23 Oct 2023 11:30:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B4F410D1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E89C433C7;
+        Mon, 23 Oct 2023 11:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060656;
-        bh=T0i5DQIyKOtjqQFTbylI5GMZ0ddcDvBpZUNi/VbSg5Q=;
+        s=korg; t=1698059569;
+        bh=KvG9OEUnugvKhzABfeNr+AKxma4IlHSG2ffCMkTo+dw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nXfzoRkjBAA13XZX9ma3zLLD9LcgEmL4VTHFhPE2ZKpLP5HYjxrNTbOpgvIURuQ/Y
-         9bs1Mr/BQgFlZ5XRrRaXPCXZe30bc+8OnEiGaOU0ZiCKnRXvy8ezU7tsD3Di4+nnqC
-         /qVuI2Uy2nya7X6mIEVpD8dwZ5AzxUE+/sWYlqrc=
+        b=UkHG8An247M2kS9u97cKpOVOiMcjANvJwLGFcJG/9RHueLc589Pfl879/LdmylSZW
+         2FzTX3S7wBGStHG7KIw0U65i2SwXzmcc/CfZD3dsyc3rrzquHOB0D6KrcdTo3mosJ9
+         q75+/I5momvxfzze19fNiScsST2IebL1H/D6eW/M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.4 049/123] Bluetooth: vhci: Fix race when opening vhci device
+        patches@lists.linux.dev, Felix Kuehling <Felix.Kuehling@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 221/241] drm/amdgpu: Fix possible null pointer dereference
 Date:   Mon, 23 Oct 2023 12:56:47 +0200
-Message-ID: <20231023104819.356398501@linuxfoundation.org>
+Message-ID: <20231023104839.240002020@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,55 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+From: Felix Kuehling <Felix.Kuehling@amd.com>
 
-commit 92d4abd66f7080075793970fc8f241239e58a9e7 upstream.
+[ Upstream commit 51b79f33817544e3b4df838d86e8e8e4388ff684 ]
 
-When the vhci device is opened in the two-step way, i.e.: open device
-then write a vendor packet with requested controller type, the device
-shall respond with a vendor packet which includes HCI index of created
-interface.
+abo->tbo.resource may be NULL in amdgpu_vm_bo_update.
 
-When the virtual HCI is created, the host sends a reset request to the
-controller. This request is processed by the vhci_send_frame() function.
-However, this request is send by a different thread, so it might happen
-that this HCI request will be received before the vendor response is
-queued in the read queue. This results in the HCI vendor response and
-HCI reset request inversion in the read queue which leads to improper
-behavior of btvirt:
-
-> dmesg
-[1754256.640122] Bluetooth: MGMT ver 1.22
-[1754263.023806] Bluetooth: MGMT ver 1.22
-[1754265.043775] Bluetooth: hci1: Opcode 0x c03 failed: -110
-
-In order to synchronize vhci two-step open/setup process with virtual
-HCI initialization, this patch adds internal lock when queuing data in
-the vhci_send_frame() function.
-
-Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 180253782038 ("drm/ttm: stop allocating dummy resources during BO creation")
+Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_vhci.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/hci_vhci.c
-+++ b/drivers/bluetooth/hci_vhci.c
-@@ -67,7 +67,10 @@ static int vhci_send_frame(struct hci_de
- 	struct vhci_data *data = hci_get_drvdata(hdev);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index ec1ec08d40584..7a67bb1490159 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -1094,7 +1094,8 @@ int amdgpu_vm_bo_update(struct amdgpu_device *adev, struct amdgpu_bo_va *bo_va,
+ 			struct drm_gem_object *gobj = dma_buf->priv;
+ 			struct amdgpu_bo *abo = gem_to_amdgpu_bo(gobj);
  
- 	memcpy(skb_push(skb, 1), &hci_skb_pkt_type(skb), 1);
-+
-+	mutex_lock(&data->open_mutex);
- 	skb_queue_tail(&data->readq, skb);
-+	mutex_unlock(&data->open_mutex);
- 
- 	wake_up_interruptible(&data->read_wait);
- 	return 0;
+-			if (abo->tbo.resource->mem_type == TTM_PL_VRAM)
++			if (abo->tbo.resource &&
++			    abo->tbo.resource->mem_type == TTM_PL_VRAM)
+ 				bo = gem_to_amdgpu_bo(gobj);
+ 		}
+ 		mem = bo->tbo.resource;
+-- 
+2.42.0
+
 
 
