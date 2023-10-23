@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7E7D7D30B5
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76A127D342E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232382AbjJWLBX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:01:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57396 "EHLO
+        id S234173AbjJWLhS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34000 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232817AbjJWLBU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:20 -0400
+        with ESMTP id S234191AbjJWLhR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F9D510C3
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0564C433CA;
-        Mon, 23 Oct 2023 11:01:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F020A10D3
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F557C433C7;
+        Mon, 23 Oct 2023 11:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058878;
-        bh=9ZTfNpl8Feoe8vdg9cphyAJl8qwSTC2XlZDX5YnyoDQ=;
+        s=korg; t=1698061034;
+        bh=nLHmUUBzpfttDHUzJLZX/lMf3+aAL2AKb0W+xPEbIpA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=da2Tj7ef1fZ4gQ7763nEPoQmfid95ZixaQ50QhDlrCY0nU7IK+brhr85ABsGA2Jkf
-         SRdflwWqRS7ZSQSqwM25C1GpZ5Lxn+oMMmGcUX/5MVUrFQJ1fzx3bJWHqpqSVaj5fv
-         xyH7qhSwBWHdD2Xi1c0OT5Dr60iAxatF4YrEYjlw=
+        b=Ankc4dE4YL/HaGecngXjyQnnvgZFP1PSkjzrKDPbQyzdUI8JQMEVoiafv1TEyTNEr
+         aIQsBxNxflv/s2DMeo5NhTiEz+RRuGwzuQamZF2AcRDfOhcQ1e0KnuNsDkABcNVqEH
+         EmOgs+PF0v/1DtMFsBgBOe46rsZlf+qenDeNhS/c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 4.14 29/66] Bluetooth: vhci: Fix race when opening vhci device
-Date:   Mon, 23 Oct 2023 12:56:19 +0200
-Message-ID: <20231023104811.914460622@linuxfoundation.org>
+        patches@lists.linux.dev, Alon Zahavi <zahavi.alon@gmail.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Christoph Hellwig <hch@lst.de>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 5.15 023/137] nvmet-tcp: Fix a possible UAF in queue intialization setup
+Date:   Mon, 23 Oct 2023 12:56:20 +0200
+Message-ID: <20231023104821.753041473@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,55 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-commit 92d4abd66f7080075793970fc8f241239e58a9e7 upstream.
+commit d920abd1e7c4884f9ecd0749d1921b7ab19ddfbd upstream.
 
-When the vhci device is opened in the two-step way, i.e.: open device
-then write a vendor packet with requested controller type, the device
-shall respond with a vendor packet which includes HCI index of created
-interface.
+>From Alon:
+"Due to a logical bug in the NVMe-oF/TCP subsystem in the Linux kernel,
+a malicious user can cause a UAF and a double free, which may lead to
+RCE (may also lead to an LPE in case the attacker already has local
+privileges)."
 
-When the virtual HCI is created, the host sends a reset request to the
-controller. This request is processed by the vhci_send_frame() function.
-However, this request is send by a different thread, so it might happen
-that this HCI request will be received before the vendor response is
-queued in the read queue. This results in the HCI vendor response and
-HCI reset request inversion in the read queue which leads to improper
-behavior of btvirt:
+Hence, when a queue initialization fails after the ahash requests are
+allocated, it is guaranteed that the queue removal async work will be
+called, hence leave the deallocation to the queue removal.
 
-> dmesg
-[1754256.640122] Bluetooth: MGMT ver 1.22
-[1754263.023806] Bluetooth: MGMT ver 1.22
-[1754265.043775] Bluetooth: hci1: Opcode 0x c03 failed: -110
+Also, be extra careful not to continue processing the socket, so set
+queue rcv_state to NVMET_TCP_RECV_ERR upon a socket error.
 
-In order to synchronize vhci two-step open/setup process with virtual
-HCI initialization, this patch adds internal lock when queuing data in
-the vhci_send_frame() function.
-
-Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: stable@vger.kernel.org
+Reported-by: Alon Zahavi <zahavi.alon@gmail.com>
+Tested-by: Alon Zahavi <zahavi.alon@gmail.com>
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_vhci.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/target/tcp.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/bluetooth/hci_vhci.c
-+++ b/drivers/bluetooth/hci_vhci.c
-@@ -82,7 +82,10 @@ static int vhci_send_frame(struct hci_de
- 	struct vhci_data *data = hci_get_drvdata(hdev);
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -348,6 +348,7 @@ static void nvmet_tcp_fatal_error(struct
  
- 	memcpy(skb_push(skb, 1), &hci_skb_pkt_type(skb), 1);
-+
-+	mutex_lock(&data->open_mutex);
- 	skb_queue_tail(&data->readq, skb);
-+	mutex_unlock(&data->open_mutex);
+ static void nvmet_tcp_socket_error(struct nvmet_tcp_queue *queue, int status)
+ {
++	queue->rcv_state = NVMET_TCP_RECV_ERR;
+ 	if (status == -EPIPE || status == -ECONNRESET)
+ 		kernel_sock_shutdown(queue->sock, SHUT_RDWR);
+ 	else
+@@ -894,15 +895,11 @@ static int nvmet_tcp_handle_icreq(struct
+ 	iov.iov_len = sizeof(*icresp);
+ 	ret = kernel_sendmsg(queue->sock, &msg, &iov, 1, iov.iov_len);
+ 	if (ret < 0)
+-		goto free_crypto;
++		return ret; /* queue removal will cleanup */
  
- 	wake_up_interruptible(&data->read_wait);
+ 	queue->state = NVMET_TCP_Q_LIVE;
+ 	nvmet_prepare_receive_pdu(queue);
  	return 0;
+-free_crypto:
+-	if (queue->hdr_digest || queue->data_digest)
+-		nvmet_tcp_free_crypto(queue);
+-	return ret;
+ }
+ 
+ static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
 
 
