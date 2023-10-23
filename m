@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 485D17D32CD
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCFF67D33F7
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233866AbjJWLYE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36928 "EHLO
+        id S234038AbjJWLfo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233885AbjJWLYB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:01 -0400
+        with ESMTP id S234139AbjJWLfm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9244A198A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C41AC433CA;
-        Mon, 23 Oct 2023 11:23:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3622DE4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D59C433C8;
+        Mon, 23 Oct 2023 11:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060223;
-        bh=HW0uTMRxwCTLzEHAqDrQ3KpizPSv65CXBMUlVt0Xt/8=;
+        s=korg; t=1698060939;
+        bh=x+OdykWeD72AMWaydTHPjY7xzhw9/oFZzkPcz9w0uoo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bUcQsj3ZMwgtlxkBv+m95DsRSoCdR8/blDBKRZANaf64niRH1QC2HVZZ5t6dlCSLZ
-         aN9KkpTDPqmwDIIOp7o8jRuWzN18qw/98Bqw0dAeFjMatpHjvitBNu1CeOg7GyyuZx
-         IItDoxlH19xckXYTwwZyppIoKzG4tGSQFni9l7XA=
+        b=2bXILGrjED2K5Auc7gyYyjasujEU7uojbp4/cJXkBFgqnpbE0vZCJlml2o++xLccH
+         E3vPX6LBAG5/KOBHVtqf2ZAKnhbcV2xOOIW9Ohy1dDoyt+OAg1luOUsSRtJMQyEwhB
+         EgLWvKeAzYAJqZLZUCzIvOuMJdI2oWAHbX61gCuI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/196] gpio: timberdale: Fix potential deadlock on &tgpio->lock
+        patches@lists.linux.dev,
+        Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 007/137] Bluetooth: vhci: Fix race when opening vhci device
 Date:   Mon, 23 Oct 2023 12:56:04 +0200
-Message-ID: <20231023104831.339158207@linuxfoundation.org>
+Message-ID: <20231023104821.133855494@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,68 +49,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
 
-[ Upstream commit 9e8bc2dda5a7a8e2babc9975f4b11c9a6196e490 ]
+commit 92d4abd66f7080075793970fc8f241239e58a9e7 upstream.
 
-As timbgpio_irq_enable()/timbgpio_irq_disable() callback could be
-executed under irq context, it could introduce double locks on
-&tgpio->lock if it preempts other execution units requiring
-the same locks.
+When the vhci device is opened in the two-step way, i.e.: open device
+then write a vendor packet with requested controller type, the device
+shall respond with a vendor packet which includes HCI index of created
+interface.
 
-timbgpio_gpio_set()
---> timbgpio_update_bit()
---> spin_lock(&tgpio->lock)
-<interrupt>
-   --> timbgpio_irq_disable()
-   --> spin_lock_irqsave(&tgpio->lock)
+When the virtual HCI is created, the host sends a reset request to the
+controller. This request is processed by the vhci_send_frame() function.
+However, this request is send by a different thread, so it might happen
+that this HCI request will be received before the vendor response is
+queued in the read queue. This results in the HCI vendor response and
+HCI reset request inversion in the read queue which leads to improper
+behavior of btvirt:
 
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
+> dmesg
+[1754256.640122] Bluetooth: MGMT ver 1.22
+[1754263.023806] Bluetooth: MGMT ver 1.22
+[1754265.043775] Bluetooth: hci1: Opcode 0x c03 failed: -110
 
-To prevent the potential deadlock, the patch uses spin_lock_irqsave()
-on &tgpio->lock inside timbgpio_gpio_set() to prevent the possible
-deadlock scenario.
+In order to synchronize vhci two-step open/setup process with virtual
+HCI initialization, this patch adds internal lock when queuing data in
+the vhci_send_frame() function.
 
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Arkadiusz Bokowy <arkadiusz.bokowy@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-timberdale.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/bluetooth/hci_vhci.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpio/gpio-timberdale.c b/drivers/gpio/gpio-timberdale.c
-index de14949a3fe5a..92c1f2baa4bff 100644
---- a/drivers/gpio/gpio-timberdale.c
-+++ b/drivers/gpio/gpio-timberdale.c
-@@ -43,9 +43,10 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
- 	unsigned offset, bool enabled)
- {
- 	struct timbgpio *tgpio = gpiochip_get_data(gpio);
-+	unsigned long flags;
- 	u32 reg;
+--- a/drivers/bluetooth/hci_vhci.c
++++ b/drivers/bluetooth/hci_vhci.c
+@@ -67,7 +67,10 @@ static int vhci_send_frame(struct hci_de
+ 	struct vhci_data *data = hci_get_drvdata(hdev);
  
--	spin_lock(&tgpio->lock);
-+	spin_lock_irqsave(&tgpio->lock, flags);
- 	reg = ioread32(tgpio->membase + offset);
+ 	memcpy(skb_push(skb, 1), &hci_skb_pkt_type(skb), 1);
++
++	mutex_lock(&data->open_mutex);
+ 	skb_queue_tail(&data->readq, skb);
++	mutex_unlock(&data->open_mutex);
  
- 	if (enabled)
-@@ -54,7 +55,7 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
- 		reg &= ~(1 << index);
- 
- 	iowrite32(reg, tgpio->membase + offset);
--	spin_unlock(&tgpio->lock);
-+	spin_unlock_irqrestore(&tgpio->lock, flags);
- 
+ 	wake_up_interruptible(&data->read_wait);
  	return 0;
- }
--- 
-2.40.1
-
 
 
