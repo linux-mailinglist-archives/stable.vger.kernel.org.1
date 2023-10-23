@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 266C07D35AD
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1670A7D3492
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234605AbjJWLur (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55026 "EHLO
+        id S234266AbjJWLk4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:40:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234610AbjJWLuq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:46 -0400
+        with ESMTP id S234288AbjJWLkz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2EA5E8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:50:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458F2C433C8;
-        Mon, 23 Oct 2023 11:50:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C100110C7
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0723DC433C7;
+        Mon, 23 Oct 2023 11:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061843;
-        bh=gbVeZubi0QB0WXukDhmLAq55WciJ1QGJiexm5MBIjWU=;
+        s=korg; t=1698061253;
+        bh=RpaJpKIBwxLXn+/YGg6vXjDjNfNMtWLw3OSakt497+Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bljvf6g6TF9eG2j0QRChOryFuW4qn+Xw4Bm3AcFIxIl/SkZX/PKOQZ0EpRa3QYBMD
-         zo3GE8Jip9T+Wb+dblfFso0yh37T2tvLrj1YehIcrz/iwi81w/xgg+TTH9nAgCMf6L
-         gxW0+yNw9vwVMBIp3R78+nfnrfO9lqX/6mjWxbnc=
+        b=v9FNxba1bmci3Wdob2DJZS0tuSDGbZSeiGr1TSzrNmxMJqpPVUz2/jMcJXoLlbj69
+         ggbvLUjKHfAm419S/wHxhT7QKA1X7rub3pq+ll0pNDYuYuNgaCkSJymzb+NodjJbgp
+         KZ2Clctj2fgppx9XcJbc7H5jX/hLo7UQHlAlP//A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
-        Andy Shevchenko <andy@kernel.org>,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 156/202] gpio: timberdale: Fix potential deadlock on &tgpio->lock
+        patches@lists.linux.dev,
+        Martin Kurbanov <mmkurbanov@sberdevices.ru>,
+        Frieder Schrempf <frieder.schrempf@kontron.de>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 106/137] mtd: spinand: micron: correct bitmask for ecc status
 Date:   Mon, 23 Oct 2023 12:57:43 +0200
-Message-ID: <20231023104831.072464689@linuxfoundation.org>
+Message-ID: <20231023104824.403161800@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,68 +50,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Martin Kurbanov <mmkurbanov@sberdevices.ru>
 
-[ Upstream commit 9e8bc2dda5a7a8e2babc9975f4b11c9a6196e490 ]
+commit 9836a987860e33943945d4b257729a4f94eae576 upstream.
 
-As timbgpio_irq_enable()/timbgpio_irq_disable() callback could be
-executed under irq context, it could introduce double locks on
-&tgpio->lock if it preempts other execution units requiring
-the same locks.
+Valid bitmask is 0x70 in the status register.
 
-timbgpio_gpio_set()
---> timbgpio_update_bit()
---> spin_lock(&tgpio->lock)
-<interrupt>
-   --> timbgpio_irq_disable()
-   --> spin_lock_irqsave(&tgpio->lock)
-
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
-
-To prevent the potential deadlock, the patch uses spin_lock_irqsave()
-on &tgpio->lock inside timbgpio_gpio_set() to prevent the possible
-deadlock scenario.
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a508e8875e13 ("mtd: spinand: Add initial support for Micron MT29F2G01ABAGD")
+Signed-off-by: Martin Kurbanov <mmkurbanov@sberdevices.ru>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230905145637.139068-1-mmkurbanov@sberdevices.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-timberdale.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/spi/micron.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-timberdale.c b/drivers/gpio/gpio-timberdale.c
-index de14949a3fe5a..92c1f2baa4bff 100644
---- a/drivers/gpio/gpio-timberdale.c
-+++ b/drivers/gpio/gpio-timberdale.c
-@@ -43,9 +43,10 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
- 	unsigned offset, bool enabled)
- {
- 	struct timbgpio *tgpio = gpiochip_get_data(gpio);
-+	unsigned long flags;
- 	u32 reg;
+--- a/drivers/mtd/nand/spi/micron.c
++++ b/drivers/mtd/nand/spi/micron.c
+@@ -12,7 +12,7 @@
  
--	spin_lock(&tgpio->lock);
-+	spin_lock_irqsave(&tgpio->lock, flags);
- 	reg = ioread32(tgpio->membase + offset);
+ #define SPINAND_MFR_MICRON		0x2c
  
- 	if (enabled)
-@@ -54,7 +55,7 @@ static int timbgpio_update_bit(struct gpio_chip *gpio, unsigned index,
- 		reg &= ~(1 << index);
- 
- 	iowrite32(reg, tgpio->membase + offset);
--	spin_unlock(&tgpio->lock);
-+	spin_unlock_irqrestore(&tgpio->lock, flags);
- 
- 	return 0;
- }
--- 
-2.40.1
-
+-#define MICRON_STATUS_ECC_MASK		GENMASK(7, 4)
++#define MICRON_STATUS_ECC_MASK		GENMASK(6, 4)
+ #define MICRON_STATUS_ECC_NO_BITFLIPS	(0 << 4)
+ #define MICRON_STATUS_ECC_1TO3_BITFLIPS	(1 << 4)
+ #define MICRON_STATUS_ECC_4TO6_BITFLIPS	(3 << 4)
 
 
