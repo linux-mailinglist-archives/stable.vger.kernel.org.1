@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6513D7D32CA
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E54667D31B0
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229807AbjJWLX6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:23:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36020 "EHLO
+        id S233606AbjJWLMC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:12:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233900AbjJWLXq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:46 -0400
+        with ESMTP id S233614AbjJWLMB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95123D7F
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8242CC43391;
-        Mon, 23 Oct 2023 11:23:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7FB9D6E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D91C433C8;
+        Mon, 23 Oct 2023 11:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060214;
-        bh=EJW3aD7GrDit2+xpaMM0UaMXZMI6W2Fgm0thNZrUBAY=;
+        s=korg; t=1698059519;
+        bh=Nd4aurxRobVm9DhIUoz7un6lpjg6XJgPo9xnKbzwhf0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2Ii+pux2+7Z8ep8E9PcgFH3iwTMkuMLlt2t3L7rdFp/8nDH7LHiWQ2IDNn9Q9ixs+
-         1/EHjFhmqtpOAlDatOOn2oVXYJ70nFKvoq/4A6XfnnVlRm4o6XC4Wz5qq8getQ/tjl
-         uhxgh6FBZdkbbSPY8tYcW2LnUrUu9cS51cLPpYR0=
+        b=Kl9OMfHIHvqKB9hsod/MRVBq7OC6HgSb5zT8rUIknIbX2uhmYMmUMejt4qUXO/orx
+         /fDtNqbWLe8escumXcT5xCMKEyLYoHX9qpC7vPQyCobiw0F+2wLv1DvrPWo75WeZMm
+         PtybsS2posFR0lb3WbcirDiLnaELw2/t6eqQwP7Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        Peter Rosin <peda@axentia.se>, Wolfram Sang <wsa@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/196] i2c: mux: Avoid potential false error message in i2c_mux_add_adapter
-Date:   Mon, 23 Oct 2023 12:56:02 +0200
-Message-ID: <20231023104831.271644675@linuxfoundation.org>
+        patches@lists.linux.dev, Linus Walleij <linus.walleij@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.5 177/241] pinctrl: qcom: lpass-lpi: fix concurrent register updates
+Date:   Mon, 23 Oct 2023 12:56:03 +0200
+Message-ID: <20231023104838.199697338@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +48,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit b13e59e74ff71a1004e0508107e91e9a84fd7388 ]
+commit c8befdc411e5fd1bf95a13e8744c8ca79b412bee upstream.
 
-I2C_CLASS_DEPRECATED is a flag and not an actual class.
-There's nothing speaking against both, parent and child, having
-I2C_CLASS_DEPRECATED set. Therefore exclude it from the check.
+The Qualcomm LPASS LPI pin controller driver uses one lock for guarding
+Read-Modify-Write code for slew rate registers.  However the pin
+configuration and muxing registers have exactly the same RMW code but
+are not protected.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Acked-by: Peter Rosin <peda@axentia.se>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Pin controller framework does not provide locking here, thus it is
+possible to trigger simultaneous change of pin configuration registers
+resulting in non-atomic changes.
+
+Protect from concurrent access by re-using the same lock used to cover
+the slew rate register.  Using the same lock instead of adding second
+one will make more sense, once we add support for newer Qualcomm SoC,
+where slew rate is configured in the same register as pin
+configuration/muxing.
+
+Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231013145705.219954-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-mux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
-index 313904be5f3bd..57ff09f18c371 100644
---- a/drivers/i2c/i2c-mux.c
-+++ b/drivers/i2c/i2c-mux.c
-@@ -341,7 +341,7 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
- 		priv->adap.lock_ops = &i2c_parent_lock_ops;
+--- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+@@ -31,7 +31,8 @@ struct lpi_pinctrl {
+ 	char __iomem *tlmm_base;
+ 	char __iomem *slew_base;
+ 	struct clk_bulk_data clks[MAX_LPI_NUM_CLKS];
+-	struct mutex slew_access_lock;
++	/* Protects from concurrent register updates */
++	struct mutex lock;
+ 	DECLARE_BITMAP(ever_gpio, MAX_NR_GPIO);
+ 	const struct lpi_pinctrl_variant_data *data;
+ };
+@@ -102,6 +103,7 @@ static int lpi_gpio_set_mux(struct pinct
+ 	if (WARN_ON(i == g->nfuncs))
+ 		return -EINVAL;
  
- 	/* Sanity check on class */
--	if (i2c_mux_parent_classes(parent) & class)
-+	if (i2c_mux_parent_classes(parent) & class & ~I2C_CLASS_DEPRECATED)
- 		dev_err(&parent->dev,
- 			"Segment %d behind mux can't share classes with ancestors\n",
- 			chan_id);
--- 
-2.40.1
-
++	mutex_lock(&pctrl->lock);
+ 	val = lpi_gpio_read(pctrl, pin, LPI_GPIO_CFG_REG);
+ 
+ 	/*
+@@ -127,6 +129,7 @@ static int lpi_gpio_set_mux(struct pinct
+ 
+ 	u32p_replace_bits(&val, i, LPI_GPIO_FUNCTION_MASK);
+ 	lpi_gpio_write(pctrl, pin, LPI_GPIO_CFG_REG, val);
++	mutex_unlock(&pctrl->lock);
+ 
+ 	return 0;
+ }
+@@ -232,14 +235,14 @@ static int lpi_config_set(struct pinctrl
+ 			if (slew_offset == LPI_NO_SLEW)
+ 				break;
+ 
+-			mutex_lock(&pctrl->slew_access_lock);
++			mutex_lock(&pctrl->lock);
+ 
+ 			sval = ioread32(pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
+ 			sval &= ~(LPI_SLEW_RATE_MASK << slew_offset);
+ 			sval |= arg << slew_offset;
+ 			iowrite32(sval, pctrl->slew_base + LPI_SLEW_RATE_CTL_REG);
+ 
+-			mutex_unlock(&pctrl->slew_access_lock);
++			mutex_unlock(&pctrl->lock);
+ 			break;
+ 		default:
+ 			return -EINVAL;
+@@ -255,6 +258,7 @@ static int lpi_config_set(struct pinctrl
+ 		lpi_gpio_write(pctrl, group, LPI_GPIO_VALUE_REG, val);
+ 	}
+ 
++	mutex_lock(&pctrl->lock);
+ 	val = lpi_gpio_read(pctrl, group, LPI_GPIO_CFG_REG);
+ 
+ 	u32p_replace_bits(&val, pullup, LPI_GPIO_PULL_MASK);
+@@ -263,6 +267,7 @@ static int lpi_config_set(struct pinctrl
+ 	u32p_replace_bits(&val, output_enabled, LPI_GPIO_OE_MASK);
+ 
+ 	lpi_gpio_write(pctrl, group, LPI_GPIO_CFG_REG, val);
++	mutex_unlock(&pctrl->lock);
+ 
+ 	return 0;
+ }
+@@ -464,7 +469,7 @@ int lpi_pinctrl_probe(struct platform_de
+ 	pctrl->chip.label = dev_name(dev);
+ 	pctrl->chip.can_sleep = false;
+ 
+-	mutex_init(&pctrl->slew_access_lock);
++	mutex_init(&pctrl->lock);
+ 
+ 	pctrl->ctrl = devm_pinctrl_register(dev, &pctrl->desc, pctrl);
+ 	if (IS_ERR(pctrl->ctrl)) {
+@@ -486,7 +491,7 @@ int lpi_pinctrl_probe(struct platform_de
+ 	return 0;
+ 
+ err_pinctrl:
+-	mutex_destroy(&pctrl->slew_access_lock);
++	mutex_destroy(&pctrl->lock);
+ 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
+ 
+ 	return ret;
+@@ -498,7 +503,7 @@ int lpi_pinctrl_remove(struct platform_d
+ 	struct lpi_pinctrl *pctrl = platform_get_drvdata(pdev);
+ 	int i;
+ 
+-	mutex_destroy(&pctrl->slew_access_lock);
++	mutex_destroy(&pctrl->lock);
+ 	clk_bulk_disable_unprepare(MAX_LPI_NUM_CLKS, pctrl->clks);
+ 
+ 	for (i = 0; i < pctrl->data->npins; i++)
 
 
