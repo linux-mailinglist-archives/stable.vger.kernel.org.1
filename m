@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13C917D319D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93C147D340E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:36:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233523AbjJWLLH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44520 "EHLO
+        id S234141AbjJWLg3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:36:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233521AbjJWLLH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:07 -0400
+        with ESMTP id S234157AbjJWLg2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:36:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA80C99
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 166E3C433CA;
-        Mon, 23 Oct 2023 11:11:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABCC10C6
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:36:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1B4C433C9;
+        Mon, 23 Oct 2023 11:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059465;
-        bh=KNPtezlZ5hvGu2WTqWXxnVup4nSRBGNOdsJUYFIDgIg=;
+        s=korg; t=1698060984;
+        bh=4LF9tOSLzXCLUF9hdVgXMBkuH8CjGRISJc/YWkymsro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OxtZIkLQaZ95xRy1+MDqZUBf1CiG/MIjiQjUljHK3V8QB1d72dztxNmmJh4lSF12W
-         PAiN1npXgrhJy5ma60pGMQwUCbpHpSh0Fv9Tt6Jcao2bRUi6VQV1s4k/SasEzMCvwS
-         yv41qls3Ft8SUcafCbOE82RkJhnSxsAah6LeGo3c=
+        b=xy0rMWMsRlilMjc/gmUlBDNJgYhhB9SdSfcaj3KNdMJZpt2naDrwAv4F6bnW+ZJ8T
+         NYW5kIIAjD2RvDcO58Bg6E1sb6x4CjthR1y1jugOUZmB/INBahk59AKKUBwtPvg1At
+         hGqXAW7E3p5kAiAsMvIWqf45X8yGu7Rhd/uZObPA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Scott Mayhew <smayhew@redhat.com>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 6.5 187/241] NFS: Fix potential oops in nfs_inode_remove_request()
-Date:   Mon, 23 Oct 2023 12:56:13 +0200
-Message-ID: <20231023104838.440109672@linuxfoundation.org>
+        patches@lists.linux.dev, Tom Dohrmann <erbse.13@gmx.de>,
+        Joerg Roedel <jroedel@suse.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 5.15 017/137] x86/sev: Check for user-space IOIO pointing to kernel space
+Date:   Mon, 23 Oct 2023 12:56:14 +0200
+Message-ID: <20231023104821.524048898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +49,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Joerg Roedel <jroedel@suse.de>
 
-commit 6a6d4644ce935ddec4f76223ac0ca68da56bd2d3 upstream.
+Upstream commit: 63e44bc52047f182601e7817da969a105aa1f721
 
-Once a folio's private data has been cleared, it's possible for another
-process to clear the folio->mapping (e.g. via invalidate_complete_folio2
-or evict_mapping_folio), so it wouldn't be safe to call
-nfs_page_to_inode() after that.
+Check the memory operand of INS/OUTS before emulating the instruction.
+The #VC exception can get raised from user-space, but the memory operand
+can be manipulated to access kernel memory before the emulation actually
+begins and after the exception handler has run.
 
-Fixes: 0c493b5cf16e ("NFS: Convert buffered writes to use folios")
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Tested-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+  [ bp: Massage commit message. ]
+
+Fixes: 597cfe48212a ("x86/boot/compressed/64: Setup a GHCB-based VC Exception handler")
+Reported-by: Tom Dohrmann <erbse.13@gmx.de>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/write.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/boot/compressed/sev.c |    5 +++++
+ arch/x86/kernel/sev-shared.c   |   31 +++++++++++++++++++++++++++++--
+ 2 files changed, 34 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index 7720b5e43014..9d82d50ce0b1 100644
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -788,6 +788,8 @@ static void nfs_inode_add_request(struct nfs_page *req)
-  */
- static void nfs_inode_remove_request(struct nfs_page *req)
- {
-+	struct nfs_inode *nfsi = NFS_I(nfs_page_to_inode(req));
-+
- 	if (nfs_page_group_sync_on_bit(req, PG_REMOVE)) {
- 		struct folio *folio = nfs_page_to_folio(req->wb_head);
- 		struct address_space *mapping = folio_file_mapping(folio);
-@@ -802,7 +804,7 @@ static void nfs_inode_remove_request(struct nfs_page *req)
- 	}
- 
- 	if (test_and_clear_bit(PG_INODE_REF, &req->wb_flags)) {
--		atomic_long_dec(&NFS_I(nfs_page_to_inode(req))->nrequests);
-+		atomic_long_dec(&nfsi->nrequests);
- 		nfs_release_request(req);
- 	}
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -110,6 +110,11 @@ static enum es_result vc_ioio_check(stru
+ 	return ES_OK;
  }
--- 
-2.42.0
-
+ 
++static bool fault_in_kernel_space(unsigned long address)
++{
++	return false;
++}
++
+ #undef __init
+ #undef __pa
+ #define __init
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -213,6 +213,23 @@ fail:
+ 	sev_es_terminate(GHCB_SEV_ES_REASON_GENERAL_REQUEST);
+ }
+ 
++static enum es_result vc_insn_string_check(struct es_em_ctxt *ctxt,
++					   unsigned long address,
++					   bool write)
++{
++	if (user_mode(ctxt->regs) && fault_in_kernel_space(address)) {
++		ctxt->fi.vector     = X86_TRAP_PF;
++		ctxt->fi.error_code = X86_PF_USER;
++		ctxt->fi.cr2        = address;
++		if (write)
++			ctxt->fi.error_code |= X86_PF_WRITE;
++
++		return ES_EXCEPTION;
++	}
++
++	return ES_OK;
++}
++
+ static enum es_result vc_insn_string_read(struct es_em_ctxt *ctxt,
+ 					  void *src, char *buf,
+ 					  unsigned int data_size,
+@@ -220,7 +237,12 @@ static enum es_result vc_insn_string_rea
+ 					  bool backwards)
+ {
+ 	int i, b = backwards ? -1 : 1;
+-	enum es_result ret = ES_OK;
++	unsigned long address = (unsigned long)src;
++	enum es_result ret;
++
++	ret = vc_insn_string_check(ctxt, address, false);
++	if (ret != ES_OK)
++		return ret;
+ 
+ 	for (i = 0; i < count; i++) {
+ 		void *s = src + (i * data_size * b);
+@@ -241,7 +263,12 @@ static enum es_result vc_insn_string_wri
+ 					   bool backwards)
+ {
+ 	int i, s = backwards ? -1 : 1;
+-	enum es_result ret = ES_OK;
++	unsigned long address = (unsigned long)dst;
++	enum es_result ret;
++
++	ret = vc_insn_string_check(ctxt, address, true);
++	if (ret != ES_OK)
++		return ret;
+ 
+ 	for (i = 0; i < count; i++) {
+ 		void *d = dst + (i * data_size * s);
 
 
