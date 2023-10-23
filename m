@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 699FE7D3394
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1E117D30A8
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234088AbjJWLb7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:31:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57828 "EHLO
+        id S229601AbjJWLBA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:01:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234089AbjJWLb5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:57 -0400
+        with ESMTP id S229753AbjJWLA7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:00:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4805DB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D675BC433C9;
-        Mon, 23 Oct 2023 11:31:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 819BAD6E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:00:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1939C433C7;
+        Mon, 23 Oct 2023 11:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060715;
-        bh=h5p4xmQ4wmJMfQeULjNBs70GiN6on0KkZOMZh0OOENo=;
+        s=korg; t=1698058857;
+        bh=J8Cy3bgd90JSHGMnTHsNOT7TfeO1mCRGZo8F1nf4oTQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gDIFpWQvjmw07IE79jjMy+6avusLl4TTb0tiiWnEu99JsETomLQ69QHM/U5V7T78H
-         75nTZhs+BQGuNpUmuL9bmRj1VAKtrIANGw+kyTrYUj15W9Ybq/OzZD3nZ1LhpX4lg6
-         cm1P/+fCbCM23rcFytYEim6PsK8+5vgxUJiKx+U4=
+        b=o1S7zwqVxmaFH/+TW26DP4zjf3o+QUocIJNxZLgWnPCSYcUxjGPYJNxM581+0whsu
+         wDElFyo/7INqyX8CG31NV6pTWwuZ2sP7xUq/UEdIqBD2/i0QsA36M+sXbWR+IQrj0/
+         Z7ukdVt+wW75TGYUOkTI06OFgcEI8jyo02ehSnwM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/123] powerpc/64e: Fix wrong test in __ptep_test_and_clear_young()
+        patches@lists.linux.dev, Ma Ke <make_ruc2021@163.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 49/66] HID: holtek: fix slab-out-of-bounds Write in holtek_kbd_input_event
 Date:   Mon, 23 Oct 2023 12:56:39 +0200
-Message-ID: <20231023104819.103119139@linuxfoundation.org>
+Message-ID: <20231023104812.665793535@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +48,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Ma Ke <make_ruc2021@163.com>
 
-[ Upstream commit 5ea0bbaa32e8f54e9a57cfee4a3b8769b80be0d2 ]
+[ Upstream commit ffe3b7837a2bb421df84d0177481db9f52c93a71 ]
 
-Commit 45201c879469 ("powerpc/nohash: Remove hash related code from
-nohash headers.") replaced:
+There is a slab-out-of-bounds Write bug in hid-holtek-kbd driver.
+The problem is the driver assumes the device must have an input
+but some malicious devices violate this assumption.
 
-  if ((pte_val(*ptep) & (_PAGE_ACCESSED | _PAGE_HASHPTE)) == 0)
-	return 0;
+Fix this by checking hid_device's input is non-empty before its usage.
 
-By:
-
-  if (pte_young(*ptep))
-	return 0;
-
-But it should be:
-
-  if (!pte_young(*ptep))
-	return 0;
-
-Fix it.
-
-Fixes: 45201c879469 ("powerpc/nohash: Remove hash related code from nohash headers.")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/8bb7f06494e21adada724ede47a4c3d97e879d40.1695659959.git.christophe.leroy@csgroup.eu
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/nohash/64/pgtable.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-holtek-kbd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/nohash/64/pgtable.h b/arch/powerpc/include/asm/nohash/64/pgtable.h
-index 9a33b8bd842d9..c32cb88a15750 100644
---- a/arch/powerpc/include/asm/nohash/64/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/64/pgtable.h
-@@ -244,7 +244,7 @@ static inline int __ptep_test_and_clear_young(struct mm_struct *mm,
- {
- 	unsigned long old;
+diff --git a/drivers/hid/hid-holtek-kbd.c b/drivers/hid/hid-holtek-kbd.c
+index 2f8eb66397444..72788ca260e08 100644
+--- a/drivers/hid/hid-holtek-kbd.c
++++ b/drivers/hid/hid-holtek-kbd.c
+@@ -133,6 +133,10 @@ static int holtek_kbd_input_event(struct input_dev *dev, unsigned int type,
+ 		return -ENODEV;
  
--	if (pte_young(*ptep))
-+	if (!pte_young(*ptep))
- 		return 0;
- 	old = pte_update(mm, addr, ptep, _PAGE_ACCESSED, 0, 0);
- 	return (old & _PAGE_ACCESSED) != 0;
+ 	boot_hid = usb_get_intfdata(boot_interface);
++	if (list_empty(&boot_hid->inputs)) {
++		hid_err(hid, "no inputs found\n");
++		return -ENODEV;
++	}
+ 	boot_hid_input = list_first_entry(&boot_hid->inputs,
+ 		struct hid_input, list);
+ 
 -- 
 2.40.1
 
