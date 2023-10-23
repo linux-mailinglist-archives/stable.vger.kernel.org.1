@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CE1F7D33B8
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 368287D358D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234121AbjJWLdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48216 "EHLO
+        id S234562AbjJWLtd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234114AbjJWLdY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:33:24 -0400
+        with ESMTP id S234560AbjJWLt3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 540CA1A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:33:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34306C433C7;
-        Mon, 23 Oct 2023 11:33:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 602C9F5
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D41C433C8;
+        Mon, 23 Oct 2023 11:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060801;
-        bh=aLoBhnxgBl3WGzVMP4xFqB1HNmbs5zhIdT9rQVNGdeo=;
+        s=korg; t=1698061767;
+        bh=CSlHwl3t7kbx4FTd9HY1HYKuKV+RWZBzBbThpBj1UAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VB897XNWVNDTw40zfq+Az1u45yL23pJK/9AGdac1IQfc4wi0jxpBf8SRvF7v6jk4L
-         Kcbb5d2c2veMkEa+pZ9j5XMIbOBP5HB0tl5g5wO6bLCYS2yoRCl5drC3KrLgyynasD
-         QALPjObEUKljDDKZUaAEkalB9i1L2wOF+2rIpmkg=
+        b=JrNHcudMfdziAueMV1W0mW4CbsXk9QU9NLt76XhFDGAFRiPHrtazsBNMWsVmp1UgO
+         LW1/xBcE7+8LgZ/T53x8ExCjseGb5nBgrBqwbzuU6mjd70H/Yfdbhk6YyYIWc7cU0B
+         qLQIqg63s/GQl0hsRBWAr/hZpN/9K4z7DVnLKegk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Simon Horman <horms@kernel.org>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 070/123] neighbor: tracing: Move pin6 inside CONFIG_IPV6=y section
+        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
+        Konrad J Hambrick <kjhambrick@gmail.com>,
+        Calvin Walton <calvin.walton@kepstin.ca>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 121/202] thunderbolt: Workaround an IOMMU fault on certain systems with Intel Maple Ridge
 Date:   Mon, 23 Oct 2023 12:57:08 +0200
-Message-ID: <20231023104820.013431470@linuxfoundation.org>
+Message-ID: <20231023104830.067979336@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,100 +51,228 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-commit 2915240eddba96b37de4c7e9a3d0ac6f9548454b upstream.
+[ Upstream commit 582620d9f6b352552bc9a3316fe2b1c3acd8742d ]
 
-When CONFIG_IPV6=n, and building with W=1:
+On some systems the IOMMU blocks the first couple of driver ready
+messages to the connection manager firmware as can be seen in below
+excerpts:
 
-    In file included from include/trace/define_trace.h:102,
-		     from include/trace/events/neigh.h:255,
-		     from net/core/net-traces.c:51:
-    include/trace/events/neigh.h: In function ‘trace_event_raw_event_neigh_create’:
-    include/trace/events/neigh.h:42:34: error: variable ‘pin6’ set but not used [-Werror=unused-but-set-variable]
-       42 |                 struct in6_addr *pin6;
-	  |                                  ^~~~
-    include/trace/trace_events.h:402:11: note: in definition of macro ‘DECLARE_EVENT_CLASS’
-      402 |         { assign; }                                                     \
-	  |           ^~~~~~
-    include/trace/trace_events.h:44:30: note: in expansion of macro ‘PARAMS’
-       44 |                              PARAMS(assign),                   \
-	  |                              ^~~~~~
-    include/trace/events/neigh.h:23:1: note: in expansion of macro ‘TRACE_EVENT’
-       23 | TRACE_EVENT(neigh_create,
-	  | ^~~~~~~~~~~
-    include/trace/events/neigh.h:41:9: note: in expansion of macro ‘TP_fast_assign’
-       41 |         TP_fast_assign(
-	  |         ^~~~~~~~~~~~~~
-    In file included from include/trace/define_trace.h:103,
-		     from include/trace/events/neigh.h:255,
-		     from net/core/net-traces.c:51:
-    include/trace/events/neigh.h: In function ‘perf_trace_neigh_create’:
-    include/trace/events/neigh.h:42:34: error: variable ‘pin6’ set but not used [-Werror=unused-but-set-variable]
-       42 |                 struct in6_addr *pin6;
-	  |                                  ^~~~
-    include/trace/perf.h:51:11: note: in definition of macro ‘DECLARE_EVENT_CLASS’
-       51 |         { assign; }                                                     \
-	  |           ^~~~~~
-    include/trace/trace_events.h:44:30: note: in expansion of macro ‘PARAMS’
-       44 |                              PARAMS(assign),                   \
-	  |                              ^~~~~~
-    include/trace/events/neigh.h:23:1: note: in expansion of macro ‘TRACE_EVENT’
-       23 | TRACE_EVENT(neigh_create,
-	  | ^~~~~~~~~~~
-    include/trace/events/neigh.h:41:9: note: in expansion of macro ‘TP_fast_assign’
-       41 |         TP_fast_assign(
-	  |         ^~~~~~~~~~~~~~
+  thunderbolt 0000:06:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0010 address=0xbb0e3400 flags=0x0020]
 
-Indeed, the variable pin6 is declared and initialized unconditionally,
-while it is only used and needlessly re-initialized when support for
-IPv6 is enabled.
+or
 
-Fix this by dropping the unused variable initialization, and moving the
-variable declaration inside the existing section protected by a check
-for CONFIG_IPV6.
+  DMAR: DRHD: handling fault status reg 2
+  DMAR: [DMA Write] Request device [04:00.0] PASID ffffffff fault addr 69974000 [fault reason 05] PTE Write access is not set
 
-Fixes: fc651001d2c5ca4f ("neighbor: Add tracepoint to __neigh_create")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The reason is unknown and hard to debug because we were not able to
+reproduce this locally. This only happens on certain systems with Intel
+Maple Ridge Thunderbolt controller. If there is a device connected when
+the driver is loaded the issue does not happen either. Only when there
+is nothing connected (so typically when the system is booted up).
+
+We can work this around by sending the driver ready several times. After
+a couple of retries the message goes through and the controller works
+just fine. For this reason make the number of retries a parameter for
+icm_request() and then for Maple Ridge (and Titan Ridge as they us the
+same function but this should not matter) increase number of retries
+while shortening the timeout accordingly.
+
+Reported-by: Werner Sembach <wse@tuxedocomputers.com>
+Reported-by: Konrad J Hambrick <kjhambrick@gmail.com>
+Reported-by: Calvin Walton <calvin.walton@kepstin.ca>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=214259
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/neigh.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/thunderbolt/icm.c | 38 +++++++++++++++++++-------------------
+ 1 file changed, 19 insertions(+), 19 deletions(-)
 
---- a/include/trace/events/neigh.h
-+++ b/include/trace/events/neigh.h
-@@ -39,7 +39,6 @@ TRACE_EVENT(neigh_create,
- 	),
+diff --git a/drivers/thunderbolt/icm.c b/drivers/thunderbolt/icm.c
+index b2fb3397310e4..90f1d9a534614 100644
+--- a/drivers/thunderbolt/icm.c
++++ b/drivers/thunderbolt/icm.c
+@@ -41,6 +41,7 @@
+ #define PHY_PORT_CS1_LINK_STATE_SHIFT	26
  
- 	TP_fast_assign(
--		struct in6_addr *pin6;
- 		__be32 *p32;
+ #define ICM_TIMEOUT			5000	/* ms */
++#define ICM_RETRIES			3
+ #define ICM_APPROVE_TIMEOUT		10000	/* ms */
+ #define ICM_MAX_LINK			4
  
- 		__entry->family = tbl->family;
-@@ -47,7 +46,6 @@ TRACE_EVENT(neigh_create,
- 		__entry->entries = atomic_read(&tbl->gc_entries);
- 		__entry->created = n != NULL;
- 		__entry->gc_exempt = exempt_from_gc;
--		pin6 = (struct in6_addr *)__entry->primary_key6;
- 		p32 = (__be32 *)__entry->primary_key4;
+@@ -280,10 +281,9 @@ static bool icm_copy(struct tb_cfg_request *req, const struct ctl_pkg *pkg)
  
- 		if (tbl->family == AF_INET)
-@@ -57,6 +55,8 @@ TRACE_EVENT(neigh_create,
+ static int icm_request(struct tb *tb, const void *request, size_t request_size,
+ 		       void *response, size_t response_size, size_t npackets,
+-		       unsigned int timeout_msec)
++		       int retries, unsigned int timeout_msec)
+ {
+ 	struct icm *icm = tb_priv(tb);
+-	int retries = 3;
  
- #if IS_ENABLED(CONFIG_IPV6)
- 		if (tbl->family == AF_INET6) {
-+			struct in6_addr *pin6;
-+
- 			pin6 = (struct in6_addr *)__entry->primary_key6;
- 			*pin6 = *(struct in6_addr *)pkey;
- 		}
+ 	do {
+ 		struct tb_cfg_request *req;
+@@ -394,7 +394,7 @@ static int icm_fr_get_route(struct tb *tb, u8 link, u8 depth, u64 *route)
+ 		return -ENOMEM;
+ 
+ 	ret = icm_request(tb, &request, sizeof(request), switches,
+-			  sizeof(*switches), npackets, ICM_TIMEOUT);
++			  sizeof(*switches), npackets, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		goto err_free;
+ 
+@@ -447,7 +447,7 @@ icm_fr_driver_ready(struct tb *tb, enum tb_security_level *security_level,
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -472,7 +472,7 @@ static int icm_fr_approve_switch(struct tb *tb, struct tb_switch *sw)
+ 	memset(&reply, 0, sizeof(reply));
+ 	/* Use larger timeout as establishing tunnels can take some time */
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_APPROVE_TIMEOUT);
++			  1, ICM_RETRIES, ICM_APPROVE_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -499,7 +499,7 @@ static int icm_fr_add_switch_key(struct tb *tb, struct tb_switch *sw)
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -527,7 +527,7 @@ static int icm_fr_challenge_switch_key(struct tb *tb, struct tb_switch *sw,
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -559,7 +559,7 @@ static int icm_fr_approve_xdomain_paths(struct tb *tb, struct tb_xdomain *xd)
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -996,7 +996,7 @@ icm_tr_driver_ready(struct tb *tb, enum tb_security_level *security_level,
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, 20000);
++			  1, 10, 2000);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1026,7 +1026,7 @@ static int icm_tr_approve_switch(struct tb *tb, struct tb_switch *sw)
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_APPROVE_TIMEOUT);
++			  1, ICM_RETRIES, ICM_APPROVE_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1054,7 +1054,7 @@ static int icm_tr_add_switch_key(struct tb *tb, struct tb_switch *sw)
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1083,7 +1083,7 @@ static int icm_tr_challenge_switch_key(struct tb *tb, struct tb_switch *sw,
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1115,7 +1115,7 @@ static int icm_tr_approve_xdomain_paths(struct tb *tb, struct tb_xdomain *xd)
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1141,7 +1141,7 @@ static int icm_tr_xdomain_tear_down(struct tb *tb, struct tb_xdomain *xd,
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1460,7 +1460,7 @@ icm_ar_driver_ready(struct tb *tb, enum tb_security_level *security_level,
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1486,7 +1486,7 @@ static int icm_ar_get_route(struct tb *tb, u8 link, u8 depth, u64 *route)
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1507,7 +1507,7 @@ static int icm_ar_get_boot_acl(struct tb *tb, uuid_t *uuids, size_t nuuids)
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1568,7 +1568,7 @@ static int icm_ar_set_boot_acl(struct tb *tb, const uuid_t *uuids,
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, ICM_TIMEOUT);
++			  1, ICM_RETRIES, ICM_TIMEOUT);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1590,7 +1590,7 @@ icm_icl_driver_ready(struct tb *tb, enum tb_security_level *security_level,
+ 
+ 	memset(&reply, 0, sizeof(reply));
+ 	ret = icm_request(tb, &request, sizeof(request), &reply, sizeof(reply),
+-			  1, 20000);
++			  1, ICM_RETRIES, 20000);
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.40.1
+
 
 
