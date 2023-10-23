@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBED77D3277
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C4F27D3144
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230427AbjJWLUa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:20:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40048 "EHLO
+        id S233494AbjJWLHZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:07:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233821AbjJWLU1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:27 -0400
+        with ESMTP id S233537AbjJWLHX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6666D101
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A673AC433C7;
-        Mon, 23 Oct 2023 11:20:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D105810F4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95290C433C7;
+        Mon, 23 Oct 2023 11:07:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060017;
-        bh=Fr6+9CGjE9AveJKK+fpX/e1UKRPuwGG/Yc+ltycHdzY=;
+        s=korg; t=1698059239;
+        bh=om8IqGEF+0CnBECsQjWILHqXydGv1s4Cq75gI8ne+bA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DIUGCeplkT4T3eAPJscEl1ZvF205Ygk3iGpcebvPuEDWZunl1DlIJTte8PvPKuve6
-         MSKVmi1n9ZCAh1wmMhQ81OA4839rDDEsvR0yB/Sp2gYaixEskYKdKqvmNrdsljhMd8
-         9BceiuA0ZBdqeobp0dnh3jwk1K5E8vvlZ6B7Elso=
+        b=zjcsfJxPAuHKnEQtl8nApJ9awQsh2i+6eLhxScj/JUDv0MWFbFS5wVvP8fXkI/czE
+         i43yyuHc6tuJ8OYSv+mSd2bvLjvyKJB09neAnkOFojts2TS/MqVs7r9nOejaaSy5qP
+         SACpSYNKwXWEP8VUnsF31uyrEW7wmd48RlMV4bZo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+60cf892fc31d1f4358fc@syzkaller.appspotmail.com,
-        Ziqi Zhao <astrajoan@yahoo.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.1 031/196] fs/ntfs3: Fix possible null-pointer dereference in hdr_find_e()
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 110/241] ata: libata-eh: Fix compilation warning in ata_eh_link_report()
 Date:   Mon, 23 Oct 2023 12:54:56 +0200
-Message-ID: <20231023104829.370213063@linuxfoundation.org>
+Message-ID: <20231023104836.574785318@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,57 +52,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Zhao <astrajoan@yahoo.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 1f9b94af923c88539426ed811ae7e9543834a5c5 upstream.
+[ Upstream commit 49728bdc702391902a473b9393f1620eea32acb0 ]
 
-Upon investigation of the C reproducer provided by Syzbot, it seemed
-the reproducer was trying to mount a corrupted NTFS filesystem, then
-issue a rename syscall to some nodes in the filesystem. This can be
-shown by modifying the reproducer to only include the mount syscall,
-and investigating the filesystem by e.g. `ls` and `rm` commands. As a
-result, during the problematic call to `hdr_fine_e`, the `inode` being
-supplied did not go through `indx_init`, hence the `cmp` function
-pointer was never set.
+The 6 bytes length of the tries_buf string in ata_eh_link_report() is
+too short and results in a gcc compilation warning with W-!:
 
-The fix is simply to check whether `cmp` is not set, and return NULL
-if that's the case, in order to be consistent with other error
-scenarios of the `hdr_find_e` method. The rationale behind this patch
-is that:
+drivers/ata/libata-eh.c: In function ‘ata_eh_link_report’:
+drivers/ata/libata-eh.c:2371:59: warning: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 4 [-Wformat-truncation=]
+ 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
+      |                                                           ^~
+drivers/ata/libata-eh.c:2371:56: note: directive argument in the range [-2147483648, 4]
+ 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
+      |                                                        ^~~~~~
+drivers/ata/libata-eh.c:2371:17: note: ‘snprintf’ output between 4 and 14 bytes into a destination of size 6
+ 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 2372 |                          ap->eh_tries);
+      |                          ~~~~~~~~~~~~~
 
-- We should prevent crashing the kernel even if the mounted filesystem
-  is corrupted. Any syscalls made on the filesystem could return
-  invalid, but the kernel should be able to sustain these calls.
+Avoid this warning by increasing the string size to 16B.
 
-- Only very specific corruption would lead to this bug, so it would be
-  a pretty rare case in actual usage anyways. Therefore, introducing a
-  check to specifically protect against this bug seems appropriate.
-  Because of its rarity, an `unlikely` clause is used to wrap around
-  this nullity check.
-
-Reported-by: syzbot+60cf892fc31d1f4358fc@syzkaller.appspotmail.com
-Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/index.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/ata/libata-eh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -729,6 +729,9 @@ static struct NTFS_DE *hdr_find_e(const
- 	u32 total = le32_to_cpu(hdr->total);
- 	u16 offs[128];
+diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
+index 150e7ab62d1ae..e7c4edb04f8ed 100644
+--- a/drivers/ata/libata-eh.c
++++ b/drivers/ata/libata-eh.c
+@@ -2366,7 +2366,7 @@ static void ata_eh_link_report(struct ata_link *link)
+ 	struct ata_eh_context *ehc = &link->eh_context;
+ 	struct ata_queued_cmd *qc;
+ 	const char *frozen, *desc;
+-	char tries_buf[6] = "";
++	char tries_buf[16] = "";
+ 	int tag, nr_failed = 0;
  
-+	if (unlikely(!cmp))
-+		return NULL;
-+
- fill_table:
- 	if (end > total)
- 		return NULL;
+ 	if (ehc->i.flags & ATA_EHI_QUIET)
+-- 
+2.40.1
+
 
 
