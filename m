@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FF157D3134
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FD647D3289
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233394AbjJWLGy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:06:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41612 "EHLO
+        id S233815AbjJWLVP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:21:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233381AbjJWLGx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:06:53 -0400
+        with ESMTP id S233806AbjJWLVO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34C9BD7E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:06:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64897C433C9;
-        Mon, 23 Oct 2023 11:06:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CBD5C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204E6C433C7;
+        Mon, 23 Oct 2023 11:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059209;
-        bh=/eCy4nO5Ivg/PrEg+4kjOllb24ilMj6ivOhVb++GPRQ=;
+        s=korg; t=1698060071;
+        bh=gc8nbAlCrkUOhHZ3mNAPTpLN6w4QOWfviZ8DJHev2B8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TGQbQgrVdvDHi21i1dlpQQBHeF4ZBvHQiS058/Wr8Q9jR6Q78mFCywRP6Lr59AZy7
-         YvXJ5P71PrUqWXuO20pkRhzihxch8w/IEcXcrnh6JLmiduzg7ypdNOYeQS+10mNBOL
-         XEBjthjvJU1HzhAHbTLR0AhUssiuYw0t5yQN7B98=
+        b=0dPhznaoQvesGIuIKk4fZmq+HRaxvRnhnqzJ1jLksqXoC1+31DjBH5kw5VXom6OiB
+         +48hHGi+vXtJ5JpnHSOiyQXkmhwqEALm8PfEny7BDzzGwdc8ZRlsIOfUDe5h5f7Fwi
+         mkw0FVOScKEx2kqWuQTl6m1UhprqUrMytJhwSFdk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 101/241] btrfs: fix race when refilling delayed refs block reserve
+        patches@lists.linux.dev, Tom Dohrmann <erbse.13@gmx.de>,
+        Joerg Roedel <jroedel@suse.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 6.1 022/196] x86/sev: Check IOBM for IOIO exceptions from user-space
 Date:   Mon, 23 Oct 2023 12:54:47 +0200
-Message-ID: <20231023104836.366715271@linuxfoundation.org>
+Message-ID: <20231023104829.112186748@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,112 +49,176 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Joerg Roedel <jroedel@suse.de>
 
-[ Upstream commit 2ed45c0f1879079b30248568c515cf60fc668d8a ]
+Upstream commit: b9cb9c45583b911e0db71d09caa6b56469eb2bdf
 
-If we have two (or more) tasks attempting to refill the delayed refs block
-reserve we can end up with the delayed block reserve being over reserved,
-that is, with a reserved space greater than its size. If this happens, we
-are holding to more reserved space than necessary for a while.
+Check the IO permission bitmap (if present) before emulating IOIO #VC
+exceptions for user-space. These permissions are checked by hardware
+already before the #VC is raised, but due to the VC-handler decoding
+race it needs to be checked again in software.
 
-The race happens like this:
-
-1) The delayed refs block reserve has a size of 8M and a reserved space of
-   6M for example;
-
-2) Task A calls btrfs_delayed_refs_rsv_refill();
-
-3) Task B also calls btrfs_delayed_refs_rsv_refill();
-
-4) Task A sees there's a 2M difference between the size and the reserved
-   space of the delayed refs rsv, so it will reserve 2M of space by
-   calling btrfs_reserve_metadata_bytes();
-
-5) Task B also sees that 2M difference, and like task A, it reserves
-   another 2M of metadata space;
-
-6) Both task A and task B increase the reserved space of block reserve
-   by 2M, by calling btrfs_block_rsv_add_bytes(), so the block reserve
-   ends up with a size of 8M and a reserved space of 10M;
-
-7) The extra, over reserved space will eventually be freed by some task
-   calling btrfs_delayed_refs_rsv_release() -> btrfs_block_rsv_release()
-   -> block_rsv_release_bytes(), as there we will detect the over reserve
-   and release that space.
-
-So fix this by checking if we still need to add space to the delayed refs
-block reserve after reserving the metadata space, and if we don't, just
-release that space immediately.
-
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 25189d08e516 ("x86/sev-es: Add support for handling IOIO exceptions")
+Reported-by: Tom Dohrmann <erbse.13@gmx.de>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tom Dohrmann <erbse.13@gmx.de>
+Cc: <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-ref.c | 37 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 34 insertions(+), 3 deletions(-)
+ arch/x86/boot/compressed/sev.c |    5 +++++
+ arch/x86/kernel/sev-shared.c   |   22 +++++++++++++++-------
+ arch/x86/kernel/sev.c          |   27 +++++++++++++++++++++++++++
+ 3 files changed, 47 insertions(+), 7 deletions(-)
 
-diff --git a/fs/btrfs/delayed-ref.c b/fs/btrfs/delayed-ref.c
-index 6a13cf00218bc..1043f66cc130d 100644
---- a/fs/btrfs/delayed-ref.c
-+++ b/fs/btrfs/delayed-ref.c
-@@ -163,6 +163,8 @@ int btrfs_delayed_refs_rsv_refill(struct btrfs_fs_info *fs_info,
- 	struct btrfs_block_rsv *block_rsv = &fs_info->delayed_refs_rsv;
- 	u64 limit = btrfs_calc_delayed_ref_bytes(fs_info, 1);
- 	u64 num_bytes = 0;
-+	u64 refilled_bytes;
-+	u64 to_free;
- 	int ret = -ENOSPC;
- 
- 	spin_lock(&block_rsv->lock);
-@@ -178,9 +180,38 @@ int btrfs_delayed_refs_rsv_refill(struct btrfs_fs_info *fs_info,
- 	ret = btrfs_reserve_metadata_bytes(fs_info, block_rsv, num_bytes, flush);
- 	if (ret)
- 		return ret;
--	btrfs_block_rsv_add_bytes(block_rsv, num_bytes, false);
--	trace_btrfs_space_reservation(fs_info, "delayed_refs_rsv",
--				      0, num_bytes, 1);
-+
-+	/*
-+	 * We may have raced with someone else, so check again if we the block
-+	 * reserve is still not full and release any excess space.
-+	 */
-+	spin_lock(&block_rsv->lock);
-+	if (block_rsv->reserved < block_rsv->size) {
-+		u64 needed = block_rsv->size - block_rsv->reserved;
-+
-+		if (num_bytes >= needed) {
-+			block_rsv->reserved += needed;
-+			block_rsv->full = true;
-+			to_free = num_bytes - needed;
-+			refilled_bytes = needed;
-+		} else {
-+			block_rsv->reserved += num_bytes;
-+			to_free = 0;
-+			refilled_bytes = num_bytes;
-+		}
-+	} else {
-+		to_free = num_bytes;
-+		refilled_bytes = 0;
-+	}
-+	spin_unlock(&block_rsv->lock);
-+
-+	if (to_free > 0)
-+		btrfs_space_info_free_bytes_may_use(fs_info, block_rsv->space_info,
-+						    to_free);
-+
-+	if (refilled_bytes > 0)
-+		trace_btrfs_space_reservation(fs_info, "delayed_refs_rsv", 0,
-+					      refilled_bytes, 1);
- 	return 0;
+--- a/arch/x86/boot/compressed/sev.c
++++ b/arch/x86/boot/compressed/sev.c
+@@ -103,6 +103,11 @@ static enum es_result vc_read_mem(struct
+ 	return ES_OK;
  }
  
--- 
-2.40.1
-
++static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t size)
++{
++	return ES_OK;
++}
++
+ #undef __init
+ #undef __pa
+ #define __init
+--- a/arch/x86/kernel/sev-shared.c
++++ b/arch/x86/kernel/sev-shared.c
+@@ -693,6 +693,9 @@ static enum es_result vc_insn_string_wri
+ static enum es_result vc_ioio_exitinfo(struct es_em_ctxt *ctxt, u64 *exitinfo)
+ {
+ 	struct insn *insn = &ctxt->insn;
++	size_t size;
++	u64 port;
++
+ 	*exitinfo = 0;
+ 
+ 	switch (insn->opcode.bytes[0]) {
+@@ -701,7 +704,7 @@ static enum es_result vc_ioio_exitinfo(s
+ 	case 0x6d:
+ 		*exitinfo |= IOIO_TYPE_INS;
+ 		*exitinfo |= IOIO_SEG_ES;
+-		*exitinfo |= (ctxt->regs->dx & 0xffff) << 16;
++		port	   = ctxt->regs->dx & 0xffff;
+ 		break;
+ 
+ 	/* OUTS opcodes */
+@@ -709,41 +712,43 @@ static enum es_result vc_ioio_exitinfo(s
+ 	case 0x6f:
+ 		*exitinfo |= IOIO_TYPE_OUTS;
+ 		*exitinfo |= IOIO_SEG_DS;
+-		*exitinfo |= (ctxt->regs->dx & 0xffff) << 16;
++		port	   = ctxt->regs->dx & 0xffff;
+ 		break;
+ 
+ 	/* IN immediate opcodes */
+ 	case 0xe4:
+ 	case 0xe5:
+ 		*exitinfo |= IOIO_TYPE_IN;
+-		*exitinfo |= (u8)insn->immediate.value << 16;
++		port	   = (u8)insn->immediate.value & 0xffff;
+ 		break;
+ 
+ 	/* OUT immediate opcodes */
+ 	case 0xe6:
+ 	case 0xe7:
+ 		*exitinfo |= IOIO_TYPE_OUT;
+-		*exitinfo |= (u8)insn->immediate.value << 16;
++		port	   = (u8)insn->immediate.value & 0xffff;
+ 		break;
+ 
+ 	/* IN register opcodes */
+ 	case 0xec:
+ 	case 0xed:
+ 		*exitinfo |= IOIO_TYPE_IN;
+-		*exitinfo |= (ctxt->regs->dx & 0xffff) << 16;
++		port	   = ctxt->regs->dx & 0xffff;
+ 		break;
+ 
+ 	/* OUT register opcodes */
+ 	case 0xee:
+ 	case 0xef:
+ 		*exitinfo |= IOIO_TYPE_OUT;
+-		*exitinfo |= (ctxt->regs->dx & 0xffff) << 16;
++		port	   = ctxt->regs->dx & 0xffff;
+ 		break;
+ 
+ 	default:
+ 		return ES_DECODE_FAILED;
+ 	}
+ 
++	*exitinfo |= port << 16;
++
+ 	switch (insn->opcode.bytes[0]) {
+ 	case 0x6c:
+ 	case 0x6e:
+@@ -753,12 +758,15 @@ static enum es_result vc_ioio_exitinfo(s
+ 	case 0xee:
+ 		/* Single byte opcodes */
+ 		*exitinfo |= IOIO_DATA_8;
++		size       = 1;
+ 		break;
+ 	default:
+ 		/* Length determined by instruction parsing */
+ 		*exitinfo |= (insn->opnd_bytes == 2) ? IOIO_DATA_16
+ 						     : IOIO_DATA_32;
++		size       = (insn->opnd_bytes == 2) ? 2 : 4;
+ 	}
++
+ 	switch (insn->addr_bytes) {
+ 	case 2:
+ 		*exitinfo |= IOIO_ADDR_16;
+@@ -774,7 +782,7 @@ static enum es_result vc_ioio_exitinfo(s
+ 	if (insn_has_rep_prefix(insn))
+ 		*exitinfo |= IOIO_REP;
+ 
+-	return ES_OK;
++	return vc_ioio_check(ctxt, (u16)port, size);
+ }
+ 
+ static enum es_result vc_handle_ioio(struct ghcb *ghcb, struct es_em_ctxt *ctxt)
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -512,6 +512,33 @@ static enum es_result vc_slow_virt_to_ph
+ 	return ES_OK;
+ }
+ 
++static enum es_result vc_ioio_check(struct es_em_ctxt *ctxt, u16 port, size_t size)
++{
++	BUG_ON(size > 4);
++
++	if (user_mode(ctxt->regs)) {
++		struct thread_struct *t = &current->thread;
++		struct io_bitmap *iobm = t->io_bitmap;
++		size_t idx;
++
++		if (!iobm)
++			goto fault;
++
++		for (idx = port; idx < port + size; ++idx) {
++			if (test_bit(idx, iobm->bitmap))
++				goto fault;
++		}
++	}
++
++	return ES_OK;
++
++fault:
++	ctxt->fi.vector = X86_TRAP_GP;
++	ctxt->fi.error_code = 0;
++
++	return ES_EXCEPTION;
++}
++
+ /* Include code shared with pre-decompression boot stage */
+ #include "sev-shared.c"
+ 
 
 
