@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50ACC7D3396
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8EBE7D3215
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234083AbjJWLcF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:32:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58054 "EHLO
+        id S233715AbjJWLQe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234057AbjJWLcD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:32:03 -0400
+        with ESMTP id S233746AbjJWLQ3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FA0CC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:32:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7335C433C9;
-        Mon, 23 Oct 2023 11:32:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BDA9C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5841C433C8;
+        Mon, 23 Oct 2023 11:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060721;
-        bh=/EwrvyJTTR2gjOSKKEMfvAR1Up5soAnDslAw/XrsD+g=;
+        s=korg; t=1698059787;
+        bh=kEKYuMC+SLXJuuWhxm0RmUNhYcCMG18/qIgjLY3EfZU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TgTDSwHZGKoQIeqxzEl6IldedI+Z+OfCGxHLsP9AZZoVP9BEebYhYPbo7A+QhJcQd
-         QoyyvtcyqyWVZpyRZRTqOKX4g7fb8B7NI4Sy+Y+maQCULsEWFO2SKZf7j2Tn3h0WUa
-         iGHo/LtjU5A7f1DTfdZIVDJYXx4xpQZWe7HISrtw=
+        b=eRtbgzsBOX6UJYJ4mIk3nKgvna+dLN5p4jKiWVs0QfpMo/EYyKVCgMtDaaUtvONtl
+         tvpRx07r4QOK4WPEg5KfuaA3V5vHJwiyL4tsLEUTdz0TiEapBIZ03/kwwxzOKSYYhs
+         +OctHHKuQ2f9xdVbcUMr2NElxD/W0D4KLLycqYZg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 5.4 043/123] dev_forward_skb: do not scrub skb mark within the same name space
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 4.19 52/98] xfrm: fix a data-race in xfrm_gen_index()
 Date:   Mon, 23 Oct 2023 12:56:41 +0200
-Message-ID: <20231023104819.167179971@linuxfoundation.org>
+Message-ID: <20231023104815.448047498@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +50,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit ff70202b2d1ad522275c6aadc8c53519b6a22c57 upstream.
+commit 3e4bc23926b83c3c67e5f61ae8571602754131a6 upstream.
 
-The goal is to keep the mark during a bpf_redirect(), like it is done for
-legacy encapsulation / decapsulation, when there is no x-netns.
-This was initially done in commit 213dd74aee76 ("skbuff: Do not scrub skb
-mark within the same name space").
+xfrm_gen_index() mutual exclusion uses net->xfrm.xfrm_policy_lock.
 
-When the call to skb_scrub_packet() was added in dev_forward_skb() (commit
-8b27f27797ca ("skb: allow skb_scrub_packet() to be used by tunnels")), the
-second argument (xnet) was set to true to force a call to skb_orphan(). At
-this time, the mark was always cleanned up by skb_scrub_packet(), whatever
-xnet value was.
-This call to skb_orphan() was removed later in commit
-9c4c325252c5 ("skbuff: preserve sock reference when scrubbing the skb.").
-But this 'true' stayed here without any real reason.
+This means we must use a per-netns idx_generator variable,
+instead of a static one.
+Alternative would be to use an atomic variable.
 
-Let's correctly set xnet in ____dev_forward_skb(), this function has access
-to the previous interface and to the new interface.
+syzbot reported:
 
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Cc: Daniel Borkmann <daniel@iogearbox.net>
+BUG: KCSAN: data-race in xfrm_sk_policy_insert / xfrm_sk_policy_insert
+
+write to 0xffffffff87005938 of 4 bytes by task 29466 on cpu 0:
+xfrm_gen_index net/xfrm/xfrm_policy.c:1385 [inline]
+xfrm_sk_policy_insert+0x262/0x640 net/xfrm/xfrm_policy.c:2347
+xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
+do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
+ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
+rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
+sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
+__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
+__do_sys_setsockopt net/socket.c:2274 [inline]
+__se_sys_setsockopt net/socket.c:2271 [inline]
+__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read to 0xffffffff87005938 of 4 bytes by task 29460 on cpu 1:
+xfrm_sk_policy_insert+0x13e/0x640
+xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
+do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
+ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
+rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
+sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
+__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
+__do_sys_setsockopt net/socket.c:2274 [inline]
+__se_sys_setsockopt net/socket.c:2271 [inline]
+__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x00006ad8 -> 0x00006b18
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 1 PID: 29460 Comm: syz-executor.1 Not tainted 6.5.0-rc5-syzkaller-00243-g9106536c1aa3 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+
+Fixes: 1121994c803f ("netns xfrm: policy insertion in netns")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netdevice.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netns/xfrm.h |    1 +
+ net/xfrm/xfrm_policy.c   |    6 ++----
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -3763,7 +3763,7 @@ static __always_inline int ____dev_forwa
- 		return NET_RX_DROP;
- 	}
+--- a/include/net/netns/xfrm.h
++++ b/include/net/netns/xfrm.h
+@@ -48,6 +48,7 @@ struct netns_xfrm {
+ 	struct list_head	policy_all;
+ 	struct hlist_head	*policy_byidx;
+ 	unsigned int		policy_idx_hmask;
++	unsigned int		idx_generator;
+ 	struct hlist_head	policy_inexact[XFRM_POLICY_MAX];
+ 	struct xfrm_policy_hash	policy_bydst[XFRM_POLICY_MAX];
+ 	unsigned int		policy_count[XFRM_POLICY_MAX * 2];
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -654,8 +654,6 @@ EXPORT_SYMBOL(xfrm_policy_hash_rebuild);
+  * of an absolute inpredictability of ordering of rules. This will not pass. */
+ static u32 xfrm_gen_index(struct net *net, int dir, u32 index)
+ {
+-	static u32 idx_generator;
+-
+ 	for (;;) {
+ 		struct hlist_head *list;
+ 		struct xfrm_policy *p;
+@@ -663,8 +661,8 @@ static u32 xfrm_gen_index(struct net *ne
+ 		int found;
  
--	skb_scrub_packet(skb, true);
-+	skb_scrub_packet(skb, !net_eq(dev_net(dev), dev_net(skb->dev)));
- 	skb->priority = 0;
- 	return 0;
- }
+ 		if (!index) {
+-			idx = (idx_generator | dir);
+-			idx_generator += 8;
++			idx = (net->xfrm.idx_generator | dir);
++			net->xfrm.idx_generator += 8;
+ 		} else {
+ 			idx = index;
+ 			index = 0;
 
 
