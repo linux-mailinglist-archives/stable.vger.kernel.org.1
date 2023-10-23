@@ -2,44 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BBBD7D3569
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F6067D30C9
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:02:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234451AbjJWLsC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58396 "EHLO
+        id S232844AbjJWLCJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:02:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234470AbjJWLsB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:48:01 -0400
+        with ESMTP id S232817AbjJWLCI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:02:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FDE5F5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:47:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF85C433C7;
-        Mon, 23 Oct 2023 11:47:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45BF0D7F
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:02:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3483CC433C7;
+        Mon, 23 Oct 2023 11:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061678;
-        bh=ZUN4jbT3wbnzjNqQJNyBLqocaeIIzNKGb59r41Swlk8=;
+        s=korg; t=1698058925;
+        bh=uP9abwcHIBr3sZtAKuFECHBlmLD6pXjRncWbcE1/Mqk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zoorDtQWfl0dY9wdUH95kTHbschQvQfyTly4VUj0mF7+KGVYCv+AGS7JbYkfS8KbP
-         FFm36GN6wh8PDr2+G0wwpl9Bx9c4FOP9Ip6k9DMpq/oHz4Aqo3tTfHqzn7sWIZwDk/
-         M+ZJhL5cGok7LZ/Qv3nGu8j0uQF3HnOObzcKXNVU=
+        b=RsP2x1uwNdbDTIgK1oT9oIBcazgrE8eVn5pdBsMq0jHw7IQbiZw1g7zwWaG+/EJAW
+         O8RfIrP057Y5Z68285dpSAcdBLZa8ZWe8b9LODzezB+xw8gg5MyKLEK3HAQJJgqhm7
+         r55B9WLJN5SKJ4RWD4pA7nGqwhjPDqDVrFmBeG2k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Bla=C5=BEej=20Kraj=C5=88=C3=A1k?= <krajnak@levonet.sk>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 5.10 101/202] netfilter: nft_payload: fix wrong mac header matching
+        patches@lists.linux.dev, Fabio Porcedda <fabio.porcedda@gmail.com>,
+        Daniele Palmas <dnlplm@gmail.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.14 58/66] USB: serial: option: add Telit LE910C4-WWX 0x1035 composition
 Date:   Mon, 23 Oct 2023 12:56:48 +0200
-Message-ID: <20231023104829.487352943@linuxfoundation.org>
+Message-ID: <20231023104812.981524998@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,38 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-commit d351c1ea2de3e36e608fc355d8ae7d0cc80e6cd6 upstream.
+commit 6a7be48e9bd18d309ba25c223a27790ad1bf0fa3 upstream.
 
-mcast packets get looped back to the local machine.
-Such packets have a 0-length mac header, we should treat
-this like "mac header not set" and abort rule evaluation.
+Add support for the following Telit LE910C4-WWX composition:
 
-As-is, we just copy data from the network header instead.
+0x1035: TTY, TTY, ECM
 
-Fixes: 96518518cc41 ("netfilter: add nftables")
-Reported-by: Blažej Krajňák <krajnak@levonet.sk>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1035 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=e1b117c7
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_payload.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -93,7 +93,7 @@ void nft_payload_eval(const struct nft_e
- 
- 	switch (priv->base) {
- 	case NFT_PAYLOAD_LL_HEADER:
--		if (!skb_mac_header_was_set(skb))
-+		if (!skb_mac_header_was_set(skb) || skb_mac_header_len(skb) == 0)
- 			goto err;
- 
- 		if (skb_vlan_tag_present(skb)) {
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1293,6 +1293,7 @@ static const struct usb_device_id option
+ 	 .driver_info = NCTRL(0) | RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1033, 0xff),	/* Telit LE910C1-EUX (ECM) */
+ 	 .driver_info = NCTRL(0) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1035, 0xff) }, /* Telit LE910C4-WWX (ECM) */
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG0),
+ 	  .driver_info = RSVD(0) | RSVD(1) | NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG1),
 
 
