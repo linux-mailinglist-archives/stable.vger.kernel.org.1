@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 495C37D34DA
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C91557D318F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233270AbjJWLnT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:43:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34770 "EHLO
+        id S229984AbjJWLKc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:10:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234299AbjJWLnI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:43:08 -0400
+        with ESMTP id S232511AbjJWLKc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E0D110A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CDAC433C9;
-        Mon, 23 Oct 2023 11:42:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A021DC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C81DC433C8;
+        Mon, 23 Oct 2023 11:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061379;
-        bh=enQrtwsRTi/iga77M1fOc81DLZ0jlH210A7pY/F22Jw=;
+        s=korg; t=1698059429;
+        bh=8YHNhdAj3J2SBXU9Tg3+reXFMHeTklAwxiVHiybWZl4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G9PqUNi2BzCr4pwTBrWN7lpOw9V4di5F2cjpTTBPRwjie2eBF/9Eld8hZFilyoCYd
-         gylsUxjV5SkLJ3TjZWcBI9JtfjM1Sxr4+gzU2MZWdbsHOj4VxhwltntcvVbHLr2NCR
-         4Pbo+hYJLRohFJ5km+fwm7Pfx8eBaFLyzahWZFo0=
+        b=gbaHXRc67mvuNmNBxOk6ctRHroZMbcNr5deDT/JSunA6e/fgdwq2oKZ6YL/Ojg+V7
+         uWKwEEM1QKT19GW3B4jFRH8NptH9gAz+FiIQ9dEud6Xq9qFCvTeX0nXe6oO+Y5vIzn
+         zrYsAthXEz4mrot1vhqvjdhgDFAN6ad+iuq7qIhk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 027/202] Revert "spi: zynqmp-gqspi: fix clock imbalance on probe failure"
+        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 148/241] Bluetooth: hci_sync: always check if connection is alive before deleting
 Date:   Mon, 23 Oct 2023 12:55:34 +0200
-Message-ID: <20231023104827.400210044@linuxfoundation.org>
+Message-ID: <20231023104837.477017728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -47,53 +49,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit 19f3d5d13b756b913be582a9e0d0afdeca9c397e.
+From: Pauli Virtanen <pav@iki.fi>
 
-Reported issues with backport, revert for now.
+[ Upstream commit a239110ee8e0b0aafa265f0d54f7a16744855e70 ]
 
+In hci_abort_conn_sync it is possible that conn is deleted concurrently
+by something else, also e.g. when waiting for hdev->lock.  This causes
+double deletion of the conn, so UAF or conn_hash.list corruption.
+
+Fix by having all code paths check that the connection is still in
+conn_hash before deleting it, while holding hdev->lock which prevents
+any races.
+
+Log (when powering off while BAP streaming, occurs rarely):
+=======================================================================
+kernel BUG at lib/list_debug.c:56!
+...
+ ? __list_del_entry_valid (lib/list_debug.c:56)
+ hci_conn_del (net/bluetooth/hci_conn.c:154) bluetooth
+ hci_abort_conn_sync (net/bluetooth/hci_sync.c:5415) bluetooth
+ ? __pfx_hci_abort_conn_sync+0x10/0x10 [bluetooth]
+ ? lock_release+0x1d5/0x3c0
+ ? hci_disconnect_all_sync.constprop.0+0xb2/0x230 [bluetooth]
+ ? __pfx_lock_release+0x10/0x10
+ ? __kmem_cache_free+0x14d/0x2e0
+ hci_disconnect_all_sync.constprop.0+0xda/0x230 [bluetooth]
+ ? __pfx_hci_disconnect_all_sync.constprop.0+0x10/0x10 [bluetooth]
+ ? hci_clear_adv_sync+0x14f/0x170 [bluetooth]
+ ? __pfx_set_powered_sync+0x10/0x10 [bluetooth]
+ hci_set_powered_sync+0x293/0x450 [bluetooth]
+=======================================================================
+
+Fixes: 94d9ba9f9888 ("Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ net/bluetooth/hci_sync.c | 26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index 12d9c5d6b9e26..ed68e237314fb 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1197,9 +1197,9 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	return 0;
- 
- clk_dis_all:
--	pm_runtime_disable(&pdev->dev);
--	pm_runtime_put_noidle(&pdev->dev);
-+	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 	clk_disable_unprepare(xqspi->refclk);
- clk_dis_pclk:
- 	clk_disable_unprepare(xqspi->pclk);
-@@ -1223,15 +1223,11 @@ static int zynqmp_qspi_remove(struct platform_device *pdev)
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index d21127e992c0f..360813ab0c4db 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5374,6 +5374,7 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
  {
- 	struct zynqmp_qspi *xqspi = platform_get_drvdata(pdev);
+ 	int err = 0;
+ 	u16 handle = conn->handle;
++	bool disconnect = false;
+ 	struct hci_conn *c;
  
--	pm_runtime_get_sync(&pdev->dev);
--
- 	zynqmp_gqspi_write(xqspi, GQSPI_EN_OFST, 0x0);
--
--	pm_runtime_disable(&pdev->dev);
--	pm_runtime_put_noidle(&pdev->dev);
--	pm_runtime_set_suspended(&pdev->dev);
- 	clk_disable_unprepare(xqspi->refclk);
- 	clk_disable_unprepare(xqspi->pclk);
-+	pm_runtime_set_suspended(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
+ 	switch (conn->state) {
+@@ -5389,24 +5390,15 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
+ 		break;
+ 	case BT_OPEN:
+ 	case BT_BOUND:
+-		hci_dev_lock(hdev);
+-		hci_conn_failed(conn, reason);
+-		hci_dev_unlock(hdev);
+-		return 0;
++		break;
+ 	default:
+-		hci_dev_lock(hdev);
+-		conn->state = BT_CLOSED;
+-		hci_disconn_cfm(conn, reason);
+-		hci_conn_del(conn);
+-		hci_dev_unlock(hdev);
+-		return 0;
++		disconnect = true;
++		break;
+ 	}
  
- 	return 0;
- }
+ 	hci_dev_lock(hdev);
+ 
+-	/* Check if the connection hasn't been cleanup while waiting
+-	 * commands to complete.
+-	 */
++	/* Check if the connection has been cleaned up concurrently */
+ 	c = hci_conn_hash_lookup_handle(hdev, handle);
+ 	if (!c || c != conn) {
+ 		err = 0;
+@@ -5418,7 +5410,13 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
+ 	 * or in case of LE it was still scanning so it can be cleanup
+ 	 * safely.
+ 	 */
+-	hci_conn_failed(conn, reason);
++	if (disconnect) {
++		conn->state = BT_CLOSED;
++		hci_disconn_cfm(conn, reason);
++		hci_conn_del(conn);
++	} else {
++		hci_conn_failed(conn, reason);
++	}
+ 
+ unlock:
+ 	hci_dev_unlock(hdev);
 -- 
 2.40.1
 
