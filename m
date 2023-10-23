@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 029C07D343F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A79037D3316
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234156AbjJWLh4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:37:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44504 "EHLO
+        id S233922AbjJWL0k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:26:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234186AbjJWLhz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:55 -0400
+        with ESMTP id S233959AbjJWL0i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88E9CE4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C189FC433C9;
-        Mon, 23 Oct 2023 11:37:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 559DDA4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921E1C433C8;
+        Mon, 23 Oct 2023 11:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061073;
-        bh=oh2vqTPSyTeEZgng8UniDsAeTmcNOQHTEjekvCgmt4s=;
+        s=korg; t=1698060395;
+        bh=W03cFtJB8ppZZEcedQ2NS9soX2R5H7NfJAQoRAO8p7o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x3NlDgQ0ZwLT8NdcWrKpPQWzp3O6bGam2L+0h1ogKKewmYuoBRjtF2/5iMj55C7RS
-         3ihxRY53SAsna34CE3sFfPEyEoMAy1RunTqkfkRB61HdYiQpz7ZfaviPAzUso5oKzq
-         R7FvZnYNTKUzrfUBhiYPIW1e3Mx2yQ8VayHBiNt8=
+        b=LnpeXEZT7lVqZcwlVwK6D9fsFemrnUPfzDj+oLxxyYEu+//OaF48hbkaWTMjoXPBh
+         Fc2fArtlkbmjc6KHpnB4Mh5Sm9pXRuWqucD7WuY3cA5kFWLKssGA6ZB20AzXWZ22TH
+         suSccVYqUOpKJrbbLHCun7Ir9jK4Lt9kRqJeH5bg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeremy Kerr <jk@codeconstruct.com.au>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 064/137] mctp: Allow local delivery to the null EID
-Date:   Mon, 23 Oct 2023 12:57:01 +0200
-Message-ID: <20231023104823.125179465@linuxfoundation.org>
+        patches@lists.linux.dev, Sunil V L <sunilvl@ventanamicro.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 157/196] ACPI: irq: Fix incorrect return value in acpi_register_gsi()
+Date:   Mon, 23 Oct 2023 12:57:02 +0200
+Message-ID: <20231023104832.896253301@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,78 +48,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Sunil V L <sunilvl@ventanamicro.com>
 
-[ Upstream commit 1f6c77ac9e6ecef152fd5df94c4b3c346adb197a ]
+commit 0c21a18d5d6c6a73d098fb9b4701572370942df9 upstream.
 
-We may need to receive packets addressed to the null EID (==0), but
-addressed to us at the physical layer.
+acpi_register_gsi() should return a negative value in case of failure.
 
-This change adds a lookup for local routes when we see a packet
-addressed to EID 0, and a local phys address.
+Currently, it returns the return value from irq_create_fwspec_mapping().
+However, irq_create_fwspec_mapping() returns 0 for failure. Fix the
+issue by returning -EINVAL if irq_create_fwspec_mapping() returns zero.
 
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 5093bbfc10ab ("mctp: perform route lookups under a RCU read-side lock")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d44fa3d46079 ("ACPI: Add support for ResourceSource/IRQ domain mapping")
+Cc: 4.11+ <stable@vger.kernel.org> # 4.11+
+Signed-off-by: Sunil V L <sunilvl@ventanamicro.com>
+[ rjw: Rename a new local variable ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mctp/route.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/acpi/irq.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/mctp/route.c b/net/mctp/route.c
-index 89e67399249b4..859f57fd3871f 100644
---- a/net/mctp/route.c
-+++ b/net/mctp/route.c
-@@ -480,6 +480,10 @@ static int mctp_alloc_local_tag(struct mctp_sock *msk,
- 	int rc = -EAGAIN;
- 	u8 tagbits;
- 
-+	/* for NULL destination EIDs, we may get a response from any peer */
-+	if (daddr == MCTP_ADDR_NULL)
-+		daddr = MCTP_ADDR_ANY;
-+
- 	/* be optimistic, alloc now */
- 	key = mctp_key_alloc(msk, saddr, daddr, 0, GFP_KERNEL);
- 	if (!key)
-@@ -558,6 +562,20 @@ struct mctp_route *mctp_route_lookup(struct net *net, unsigned int dnet,
- 	return rt;
- }
- 
-+static struct mctp_route *mctp_route_lookup_null(struct net *net,
-+						 struct net_device *dev)
-+{
-+	struct mctp_route *rt;
-+
-+	list_for_each_entry_rcu(rt, &net->mctp.routes, list) {
-+		if (rt->dev->dev == dev && rt->type == RTN_LOCAL &&
-+		    refcount_inc_not_zero(&rt->refs))
-+			return rt;
-+	}
-+
-+	return NULL;
-+}
-+
- /* sends a skb to rt and releases the route. */
- int mctp_do_route(struct mctp_route *rt, struct sk_buff *skb)
+--- a/drivers/acpi/irq.c
++++ b/drivers/acpi/irq.c
+@@ -57,6 +57,7 @@ int acpi_register_gsi(struct device *dev
+ 		      int polarity)
  {
-@@ -853,6 +871,11 @@ static int mctp_pkttype_receive(struct sk_buff *skb, struct net_device *dev,
- 	rcu_read_unlock();
+ 	struct irq_fwspec fwspec;
++	unsigned int irq;
  
- 	rt = mctp_route_lookup(net, cb->net, mh->dest);
-+
-+	/* NULL EID, but addressed to our physical address */
-+	if (!rt && mh->dest == MCTP_ADDR_NULL && skb->pkt_type == PACKET_HOST)
-+		rt = mctp_route_lookup_null(net, dev);
-+
- 	if (!rt)
- 		goto err_drop;
+ 	fwspec.fwnode = acpi_get_gsi_domain_id(gsi);
+ 	if (WARN_ON(!fwspec.fwnode)) {
+@@ -68,7 +69,11 @@ int acpi_register_gsi(struct device *dev
+ 	fwspec.param[1] = acpi_dev_get_irq_type(trigger, polarity);
+ 	fwspec.param_count = 2;
  
--- 
-2.40.1
-
+-	return irq_create_fwspec_mapping(&fwspec);
++	irq = irq_create_fwspec_mapping(&fwspec);
++	if (!irq)
++		return -EINVAL;
++
++	return irq;
+ }
+ EXPORT_SYMBOL_GPL(acpi_register_gsi);
+ 
 
 
