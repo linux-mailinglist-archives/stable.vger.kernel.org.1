@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B8857D3078
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D6377D34FD
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbjJWK7E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 06:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33618 "EHLO
+        id S234354AbjJWLoh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229563AbjJWK7D (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:03 -0400
+        with ESMTP id S234369AbjJWLo1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2951DD7A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2DBC433C8;
-        Mon, 23 Oct 2023 10:59:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BD81A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243BFC433C8;
+        Mon, 23 Oct 2023 11:44:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058741;
-        bh=+0vuXxj/fJqSyEhPDchtLurCamAw/9vi644oMSKh2KI=;
+        s=korg; t=1698061462;
+        bh=zPyVd/TGILm4sdqGK4uAWUfLmVORXAT+OkaFPkwQ3yg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CZvnqnsQDb4oSybwUCzB1SxDkqiCzw/v5sW7UudBN+PXccBcJyLyv9kcZIIMsjHjn
-         OALuPRGewv6oCu6PnatCZ0qhgQRbrR5qRZwtIGlefe8xAaQJNuOs059czTsbyM4iAF
-         GdvlPWR75OZLqanUgEGoknhnqnhfQAGrEi5bhq3A=
+        b=E+bEeFGfV+GP/hV4p/b9l6Ai/bC52k3Ghkh4/puphMxzmLM4arfxs5XwxJDyvVIHX
+         pqRVMXkNl34zaIhyoJmCkUT4xRDngKiK+OWKg9rhO632shHxvj2/tt4cdNpeDd4bV0
+         KK2MZw5J99p/l7Jag7cZMkyGGN0+PcK7Axq1Dxao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-        Peter Korsgaard <peter@korsgaard.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com
-Subject: [PATCH 4.14 11/66] net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read
-Date:   Mon, 23 Oct 2023 12:56:01 +0200
-Message-ID: <20231023104811.204416919@linuxfoundation.org>
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.10 055/202] pinctrl: avoid unsafe code pattern in find_pinctrl()
+Date:   Mon, 23 Oct 2023 12:56:02 +0200
+Message-ID: <20231023104828.178170740@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +49,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 8f8abb863fa5a4cc18955c6a0e17af0ded3e4a76 upstream.
+commit c153a4edff6ab01370fcac8e46f9c89cca1060c2 upstream.
 
-syzbot has found an uninit-value bug triggered by the dm9601 driver [1].
+The code in find_pinctrl() takes a mutex and traverses a list of pinctrl
+structures. Later the caller bumps up reference count on the found
+structure. Such pattern is not safe as pinctrl that was found may get
+deleted before the caller gets around to increasing the reference count.
 
-This error happens because the variable res is not updated if the call
-to dm_read_shared_word returns an error. In this particular case -EPROTO
-was returned and res stayed uninitialized.
-
-This can be avoided by checking the return value of dm_read_shared_word
-and propagating the error if the read operation failed.
-
-[1] https://syzkaller.appspot.com/bug?extid=1f53a30781af65d2c955
+Fix this by taking the reference count in find_pinctrl(), while it still
+holds the mutex.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Reported-and-tested-by: syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com
-Acked-by: Peter Korsgaard <peter@korsgaard.com>
-Fixes: d0374f4f9c35cdfbee0 ("USB: Davicom DM9601 usbnet driver")
-Link: https://lore.kernel.org/r/20231009-topic-dm9601_uninit_mdio_read-v2-1-f2fe39739b6c@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/ZQs1RgTKg6VJqmPs@google.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/dm9601.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/pinctrl/core.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/net/usb/dm9601.c
-+++ b/drivers/net/usb/dm9601.c
-@@ -221,13 +221,18 @@ static int dm9601_mdio_read(struct net_d
- 	struct usbnet *dev = netdev_priv(netdev);
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1007,17 +1007,20 @@ static int add_setting(struct pinctrl *p
  
- 	__le16 res;
-+	int err;
+ static struct pinctrl *find_pinctrl(struct device *dev)
+ {
+-	struct pinctrl *p;
++	struct pinctrl *entry, *p = NULL;
  
- 	if (phy_id) {
- 		netdev_dbg(dev->net, "Only internal phy supported\n");
- 		return 0;
- 	}
- 
--	dm_read_shared_word(dev, 1, loc, &res);
-+	err = dm_read_shared_word(dev, 1, loc, &res);
-+	if (err < 0) {
-+		netdev_err(dev->net, "MDIO read error: %d\n", err);
-+		return err;
+ 	mutex_lock(&pinctrl_list_mutex);
+-	list_for_each_entry(p, &pinctrl_list, node)
+-		if (p->dev == dev) {
+-			mutex_unlock(&pinctrl_list_mutex);
+-			return p;
++
++	list_for_each_entry(entry, &pinctrl_list, node) {
++		if (entry->dev == dev) {
++			p = entry;
++			kref_get(&p->users);
++			break;
+ 		}
 +	}
  
- 	netdev_dbg(dev->net,
- 		   "dm9601_mdio_read() phy_id=0x%02x, loc=0x%02x, returns=0x%04x\n",
+ 	mutex_unlock(&pinctrl_list_mutex);
+-	return NULL;
++	return p;
+ }
+ 
+ static void pinctrl_free(struct pinctrl *p, bool inlist);
+@@ -1126,7 +1129,6 @@ struct pinctrl *pinctrl_get(struct devic
+ 	p = find_pinctrl(dev);
+ 	if (p) {
+ 		dev_dbg(dev, "obtain a copy of previously claimed pinctrl\n");
+-		kref_get(&p->users);
+ 		return p;
+ 	}
+ 
 
 
