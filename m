@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 250247D313C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F2DF7D328E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233443AbjJWLHL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:07:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49748 "EHLO
+        id S233817AbjJWLV3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:21:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233428AbjJWLHJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:09 -0400
+        with ESMTP id S233811AbjJWLV2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E72710C2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C125EC433C7;
-        Mon, 23 Oct 2023 11:07:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F650C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D20DFC433C9;
+        Mon, 23 Oct 2023 11:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059227;
-        bh=9mfEBrFbo7Cs6jqqZ4FKE0naTJxj9N2rVqsbtV+Golc=;
+        s=korg; t=1698060086;
+        bh=1pnBUCPiiv20hdkoVfQ4JH/XgFn5ktQTLghTDwuEScs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=beF7hEHIDk/hgH5gGKCFRN6fTq/O8n5RYZXtgqPxgohFhMPON1f9vLcMhEV8T4V5R
-         T+FywxObeys/SU5qstiitVd3Y3XodhBc4z1uico40tRmMqwX9WBH7OWLVyUum9YdgB
-         5sIBRowDdTcvazGnulItnmRTFbAOZ2KvNBqoQ/oc=
+        b=ntoGDnD5oVE6gvc7b0Fv/YatokVXtzGUmGgfI7AuLVFGhX3k20S/Q31UysSvzP328
+         BqF+/wY7UbTFSy3wnq+NpYpLe4+H4w3zNED9EhI2ysx5LxhTzXl0WR5XUtc20dOmQp
+         Hkmxiz2o1FInX3hM0Q9XlpClCosPpFDCwgqhUyCs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
-        Jeff Layton <jlayton@kernel.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 106/241] overlayfs: set ctime when setting mtime and atime
+        patches@lists.linux.dev, Maxim Levitsky <mlevitsk@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 027/196] x86: KVM: SVM: refresh AVIC inhibition in svm_leave_nested()
 Date:   Mon, 23 Oct 2023 12:54:52 +0200
-Message-ID: <20231023104836.482994845@linuxfoundation.org>
+Message-ID: <20231023104829.249564275@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +49,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Maxim Levitsky <mlevitsk@redhat.com>
 
-[ Upstream commit 03dbab3bba5f009d053635c729d1244f2c8bad38 ]
+commit 3fdc6087df3be73a212a81ce5dd6516638568806 upstream.
 
-Nathan reported that he was seeing the new warning in
-setattr_copy_mgtime pop when starting podman containers. Overlayfs is
-trying to set the atime and mtime via notify_change without also
-setting the ctime.
+svm_leave_nested() similar to a nested VM exit, get the vCPU out of nested
+mode and thus should end the local inhibition of AVIC on this vCPU.
 
-POSIX states that when the atime and mtime are updated via utimes() that
-we must also update the ctime to the current time. The situation with
-overlayfs copy-up is analogies, so add ATTR_CTIME to the bitmask.
-notify_change will fill in the value.
+Failure to do so, can lead to hangs on guest reboot.
 
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Christian Brauner <brauner@kernel.org>
-Acked-by: Amir Goldstein <amir73il@gmail.com>
-Message-Id: <20230913-ctime-v1-1-c6bc509cbc27@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Raise the KVM_REQ_APICV_UPDATE request to refresh the AVIC state of the
+current vCPU in this case.
+
+Fixes: f44509f849fe ("KVM: x86: SVM: allow AVIC to co-exist with a nested guest running")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230928173354.217464-4-mlevitsk@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/copy_up.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
-index 986d37a4c2750..ab32c6b28d400 100644
---- a/fs/overlayfs/copy_up.c
-+++ b/fs/overlayfs/copy_up.c
-@@ -337,7 +337,7 @@ static int ovl_set_timestamps(struct ovl_fs *ofs, struct dentry *upperdentry,
- {
- 	struct iattr attr = {
- 		.ia_valid =
--		     ATTR_ATIME | ATTR_MTIME | ATTR_ATIME_SET | ATTR_MTIME_SET,
-+		     ATTR_ATIME | ATTR_MTIME | ATTR_ATIME_SET | ATTR_MTIME_SET | ATTR_CTIME,
- 		.ia_atime = stat->atime,
- 		.ia_mtime = stat->mtime,
- 	};
--- 
-2.40.1
-
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -1164,6 +1164,9 @@ void svm_leave_nested(struct kvm_vcpu *v
+ 
+ 		nested_svm_uninit_mmu_context(vcpu);
+ 		vmcb_mark_all_dirty(svm->vmcb);
++
++		if (kvm_apicv_activated(vcpu->kvm))
++			kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
+ 	}
+ 
+ 	kvm_clear_request(KVM_REQ_GET_NESTED_STATE_PAGES, vcpu);
 
 
