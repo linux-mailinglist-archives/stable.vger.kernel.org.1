@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E171A7D3139
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A1717D328D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233392AbjJWLHG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:07:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57656 "EHLO
+        id S233805AbjJWLV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:21:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229685AbjJWLHE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:04 -0400
+        with ESMTP id S233811AbjJWLVZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEDA1D7A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE42DC433C8;
-        Mon, 23 Oct 2023 11:07:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9140DF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E475AC433C8;
+        Mon, 23 Oct 2023 11:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059221;
-        bh=tn9U+zJFW73tmbPFvb+5FqbSPyEiXmFejR6LvZJZp7w=;
+        s=korg; t=1698060083;
+        bh=4y6ZUexOOI0Yq82i/qACE8tl9OvHiT8IDRp7G6BL9S0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WpzQxrqAO3bqAsvmIR5r4bgjfO5acf1jgiyevQyDWz46CVD6zr1TQ+M371lstW7D6
-         82VP0LARCgSyUMydu48ajBv5zF1YUypdbMMrEDCgQndac81E7YRup6SgZ4Ugm6qaxt
-         FV5YyMqZxd8yRa69ueobpibOhe0i6EIGAL9ncCy8=
+        b=tlwZiezXKCACKp3u6OOrPIrVGfPCYST8aCtE3Ml6zr+hxLu33M3Om2Mqw8J+JsAbz
+         jUfKwvS/FETLRD6QGV35M4PhP4GvF5GFwHKZbszPVIwtjxiCbDQpAfFftnYB9uCSPX
+         4ENp6p83X4L9cq2ypUe6E/hdH8JEUgM5NBpmFNQo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        Peter Rosin <peda@axentia.se>, Wolfram Sang <wsa@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 105/241] i2c: mux: Avoid potential false error message in i2c_mux_add_adapter
+        patches@lists.linux.dev, Maxim Levitsky <mlevitsk@redhat.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 026/196] x86: KVM: SVM: add support for Invalid IPI Vector interception
 Date:   Mon, 23 Oct 2023 12:54:51 +0200
-Message-ID: <20231023104836.459582403@linuxfoundation.org>
+Message-ID: <20231023104829.221164257@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +49,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Maxim Levitsky <mlevitsk@redhat.com>
 
-[ Upstream commit b13e59e74ff71a1004e0508107e91e9a84fd7388 ]
+commit 2dcf37abf9d3aab7f975002d29fc7c17272def38 upstream.
 
-I2C_CLASS_DEPRECATED is a flag and not an actual class.
-There's nothing speaking against both, parent and child, having
-I2C_CLASS_DEPRECATED set. Therefore exclude it from the check.
+In later revisions of AMD's APM, there is a new 'incomplete IPI' exit code:
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Acked-by: Peter Rosin <peda@axentia.se>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+"Invalid IPI Vector - The vector for the specified IPI was set to an
+illegal value (VEC < 16)"
+
+Note that tests on Zen2 machine show that this VM exit doesn't happen and
+instead AVIC just does nothing.
+
+Add support for this exit code by doing nothing, instead of filling
+the kernel log with errors.
+
+Also replace an unthrottled 'pr_err()' if another unknown incomplete
+IPI exit happens with vcpu_unimpl()
+
+(e.g in case AMD adds yet another 'Invalid IPI' exit reason)
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230928173354.217464-3-mlevitsk@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-mux.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/svm.h |    1 +
+ arch/x86/kvm/svm/avic.c    |    5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
-index 313904be5f3bd..57ff09f18c371 100644
---- a/drivers/i2c/i2c-mux.c
-+++ b/drivers/i2c/i2c-mux.c
-@@ -341,7 +341,7 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
- 		priv->adap.lock_ops = &i2c_parent_lock_ops;
+--- a/arch/x86/include/asm/svm.h
++++ b/arch/x86/include/asm/svm.h
+@@ -259,6 +259,7 @@ enum avic_ipi_failure_cause {
+ 	AVIC_IPI_FAILURE_TARGET_NOT_RUNNING,
+ 	AVIC_IPI_FAILURE_INVALID_TARGET,
+ 	AVIC_IPI_FAILURE_INVALID_BACKING_PAGE,
++	AVIC_IPI_FAILURE_INVALID_IPI_VECTOR,
+ };
  
- 	/* Sanity check on class */
--	if (i2c_mux_parent_classes(parent) & class)
-+	if (i2c_mux_parent_classes(parent) & class & ~I2C_CLASS_DEPRECATED)
- 		dev_err(&parent->dev,
- 			"Segment %d behind mux can't share classes with ancestors\n",
- 			chan_id);
--- 
-2.40.1
-
+ #define AVIC_PHYSICAL_MAX_INDEX_MASK	GENMASK_ULL(8, 0)
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -542,8 +542,11 @@ int avic_incomplete_ipi_interception(str
+ 	case AVIC_IPI_FAILURE_INVALID_BACKING_PAGE:
+ 		WARN_ONCE(1, "Invalid backing page\n");
+ 		break;
++	case AVIC_IPI_FAILURE_INVALID_IPI_VECTOR:
++		/* Invalid IPI with vector < 16 */
++		break;
+ 	default:
+-		pr_err("Unknown IPI interception\n");
++		vcpu_unimpl(vcpu, "Unknown avic incomplete IPI interception\n");
+ 	}
+ 
+ 	return 1;
 
 
