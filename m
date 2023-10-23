@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E947D342D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E90C07D3202
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234167AbjJWLhS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:37:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42482 "EHLO
+        id S233711AbjJWLPq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:15:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234183AbjJWLhO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:14 -0400
+        with ESMTP id S230031AbjJWLPp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:15:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FFA8D7A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38BEEC433CB;
-        Mon, 23 Oct 2023 11:37:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5152DDC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9771AC433C9;
+        Mon, 23 Oct 2023 11:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061031;
-        bh=kaMglhRlROZ5RFXuGZAHxYepuB/tsFUgnyE5K7/h7q8=;
+        s=korg; t=1698059743;
+        bh=poPTQtm1osShE9l7vJuBFZL9SmqgbdoEVINNjWn9yr4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y7NNX7Cg9H9ukMw3b5QG5yS7ZyHZmGG6uvG4GsTYcxzLqrC6N5T4pMtFUXXzX2EJ7
-         GJR1b4HT3RMs3BV/S8aGEFiGgK6AVLgLXryB3fOFoTgtgiEY8r9edlPjvtEbizKUAG
-         gCdVmcahH8bjJAJUrUBy1POkBJK5v51XW61+TTFI=
+        b=VKXFtJJTnusiG8KhlSYpbxdI1gADKveTzSWTNIKInqTSbstSWUchxXfwPIJrR9o+u
+         JOaimzVlW+FbJDwMptZBuSrz8ELVTaB/nsiOf79DVhoeBQVj/f+qcXHdvweJtp3Kau
+         DoVslCxTXLfSv1S+SocFarXxk9RkyOPS6SAejzHM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Bla=C5=BEej=20Kraj=C5=88=C3=A1k?= <krajnak@levonet.sk>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 5.15 022/137] netfilter: nft_payload: fix wrong mac header matching
+        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+        syzbot+0434ac83f907a1dbdd1e@syzkaller.appspotmail.com,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 4.19 30/98] Input: powermate - fix use-after-free in powermate_config_complete
 Date:   Mon, 23 Oct 2023 12:56:19 +0200
-Message-ID: <20231023104821.711812762@linuxfoundation.org>
+Message-ID: <20231023104814.649355905@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,38 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit d351c1ea2de3e36e608fc355d8ae7d0cc80e6cd6 upstream.
+commit 5c15c60e7be615f05a45cd905093a54b11f461bc upstream.
 
-mcast packets get looped back to the local machine.
-Such packets have a 0-length mac header, we should treat
-this like "mac header not set" and abort rule evaluation.
+syzbot has found a use-after-free bug [1] in the powermate driver. This
+happens when the device is disconnected, which leads to a memory free from
+the powermate_device struct.  When an asynchronous control message
+completes after the kfree and its callback is invoked, the lock does not
+exist anymore and hence the bug.
 
-As-is, we just copy data from the network header instead.
+Use usb_kill_urb() on pm->config to cancel any in-progress requests upon
+device disconnection.
 
-Fixes: 96518518cc41 ("netfilter: add nftables")
-Reported-by: Blažej Krajňák <krajnak@levonet.sk>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+[1] https://syzkaller.appspot.com/bug?extid=0434ac83f907a1dbdd1e
+
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reported-by: syzbot+0434ac83f907a1dbdd1e@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/r/20230916-topic-powermate_use_after_free-v3-1-64412b81a7a2@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_payload.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/misc/powermate.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/netfilter/nft_payload.c
-+++ b/net/netfilter/nft_payload.c
-@@ -133,7 +133,7 @@ void nft_payload_eval(const struct nft_e
- 
- 	switch (priv->base) {
- 	case NFT_PAYLOAD_LL_HEADER:
--		if (!skb_mac_header_was_set(skb))
-+		if (!skb_mac_header_was_set(skb) || skb_mac_header_len(skb) == 0)
- 			goto err;
- 
- 		if (skb_vlan_tag_present(skb)) {
+--- a/drivers/input/misc/powermate.c
++++ b/drivers/input/misc/powermate.c
+@@ -424,6 +424,7 @@ static void powermate_disconnect(struct
+ 		pm->requires_update = 0;
+ 		usb_kill_urb(pm->irq);
+ 		input_unregister_device(pm->input);
++		usb_kill_urb(pm->config);
+ 		usb_free_urb(pm->irq);
+ 		usb_free_urb(pm->config);
+ 		powermate_free_buffers(interface_to_usbdev(intf), pm);
 
 
