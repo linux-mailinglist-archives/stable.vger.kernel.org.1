@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5B137D327B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F8537D327C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:20:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233196AbjJWLUf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:20:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40088 "EHLO
+        id S233799AbjJWLUg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:20:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233805AbjJWLUb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:31 -0400
+        with ESMTP id S233796AbjJWLUf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:20:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24209F9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551FEC433C7;
-        Mon, 23 Oct 2023 11:20:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6298E10CF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:20:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D34AC433C8;
+        Mon, 23 Oct 2023 11:20:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060028;
-        bh=aoE1GJs595+TIXEQ8d2BgLE26M94DkqlfdLBOvL/4qk=;
+        s=korg; t=1698060031;
+        bh=NggiUtJkhzBhhnaSRyj1jfmHoKjU73afe86saeUB1e0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=psnZt8/D9wFSaNa/Nh8O4h3nLkbel1teZkQEb/9CJP12URMQ87QGeoP2brpfBDffz
-         DlKKkhOE0yUyWkPla46JWVDk4+AaDg8IcwI17ISGftaOTzpm1VuqPplR9OLHQHchna
-         J4irwSsL2JrbxDvrf5vCpzs0gcteJz5CRfWt3RHg=
+        b=soENaebLvL9lIrVDmGDcoZQ3AWGq9BIj+XrJci0zqR7Ts4zSQN0aVpoB9XaYW8KSD
+         yPhqtfSUGwxjg5VIoZm78L4lyTPrPe53esGIuci9CcLjwTJ6db3qB9VI67+Vafwra8
+         JE0cIcTBghgfYwYJta/vALTq2ZTmSr0GwHjMUxJY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alon Zahavi <zahavi.alon@gmail.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Christoph Hellwig <hch@lst.de>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.1 035/196] nvmet-tcp: Fix a possible UAF in queue intialization setup
-Date:   Mon, 23 Oct 2023 12:55:00 +0200
-Message-ID: <20231023104829.479315245@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.1 036/196] drm/i915: Retry gtt fault when out of fence registers
+Date:   Mon, 23 Oct 2023 12:55:01 +0200
+Message-ID: <20231023104829.505921680@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
 References: <20231023104828.488041585@linuxfoundation.org>
@@ -41,6 +41,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -55,61 +56,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit d920abd1e7c4884f9ecd0749d1921b7ab19ddfbd upstream.
+commit e339c6d628fe66c9b64bf31040a55770952aec57 upstream.
 
->From Alon:
-"Due to a logical bug in the NVMe-oF/TCP subsystem in the Linux kernel,
-a malicious user can cause a UAF and a double free, which may lead to
-RCE (may also lead to an LPE in case the attacker already has local
-privileges)."
+If we can't find a free fence register to handle a fault in the GMADR
+range just return VM_FAULT_NOPAGE without populating the PTE so that
+userspace will retry the access and trigger another fault. Eventually
+we should find a free fence and the fault will get properly handled.
 
-Hence, when a queue initialization fails after the ahash requests are
-allocated, it is guaranteed that the queue removal async work will be
-called, hence leave the deallocation to the queue removal.
+A further improvement idea might be to reserve a fence (or one per CPU?)
+for the express purpose of handling faults without having to retry. But
+that would require some additional work.
 
-Also, be extra careful not to continue processing the socket, so set
-queue rcv_state to NVMET_TCP_RECV_ERR upon a socket error.
+Looks like this may have gotten broken originally by
+commit 39965b376601 ("drm/i915: don't trash the gtt when running out of fences")
+as that changed the errno to -EDEADLK which wasn't handle by the gtt
+fault code either. But later in commit 2feeb52859fc ("drm/i915/gt: Fix
+-EDEADLK handling regression") I changed it again to -ENOBUFS as -EDEADLK
+was now getting used for the ww mutex dance. So this fix only makes
+sense after that last commit.
 
 Cc: stable@vger.kernel.org
-Reported-by: Alon Zahavi <zahavi.alon@gmail.com>
-Tested-by: Alon Zahavi <zahavi.alon@gmail.com>
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9479
+Fixes: 2feeb52859fc ("drm/i915/gt: Fix -EDEADLK handling regression")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231012132801.16292-1-ville.syrjala@linux.intel.com
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+(cherry picked from commit 7f403caabe811b88ab0de3811ff3f4782c415761)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/gem/i915_gem_mman.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -345,6 +345,7 @@ static void nvmet_tcp_fatal_error(struct
- 
- static void nvmet_tcp_socket_error(struct nvmet_tcp_queue *queue, int status)
- {
-+	queue->rcv_state = NVMET_TCP_RECV_ERR;
- 	if (status == -EPIPE || status == -ECONNRESET)
- 		kernel_sock_shutdown(queue->sock, SHUT_RDWR);
- 	else
-@@ -871,15 +872,11 @@ static int nvmet_tcp_handle_icreq(struct
- 	iov.iov_len = sizeof(*icresp);
- 	ret = kernel_sendmsg(queue->sock, &msg, &iov, 1, iov.iov_len);
- 	if (ret < 0)
--		goto free_crypto;
-+		return ret; /* queue removal will cleanup */
- 
- 	queue->state = NVMET_TCP_Q_LIVE;
- 	nvmet_prepare_receive_pdu(queue);
- 	return 0;
--free_crypto:
--	if (queue->hdr_digest || queue->data_digest)
--		nvmet_tcp_free_crypto(queue);
--	return ret;
- }
- 
- static void nvmet_tcp_handle_req_failure(struct nvmet_tcp_queue *queue,
+--- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
+@@ -235,6 +235,7 @@ static vm_fault_t i915_error_to_vmf_faul
+ 	case 0:
+ 	case -EAGAIN:
+ 	case -ENOSPC: /* transient failure to evict? */
++	case -ENOBUFS: /* temporarily out of fences? */
+ 	case -ERESTARTSYS:
+ 	case -EINTR:
+ 	case -EBUSY:
 
 
