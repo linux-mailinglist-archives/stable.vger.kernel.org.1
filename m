@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 714DD7D358A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D18017D325C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233337AbjJWLt1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:49:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58652 "EHLO
+        id S233767AbjJWLTO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234293AbjJWLt0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:26 -0400
+        with ESMTP id S233548AbjJWLTK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D1C4E9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD649C433C8;
-        Mon, 23 Oct 2023 11:49:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A7FBC2
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4624AC433C8;
+        Mon, 23 Oct 2023 11:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061764;
-        bh=XRwFHqpQoaGUXYbkkr0JkIcnvRTt5CEJFjPVw7RFEb4=;
+        s=korg; t=1698059948;
+        bh=dyecFSiw6v7LOELoKYNgLz7nKgkrsdyu4f56khH1MJs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VltYzLUruad2f4l/KRmUHxAJXa6h1W0J4MhWBPoUqFQbO9sDCeic00qWdjO/ktsPr
-         LAtwFXzRBU0dXU7i/sJvXOIQ32xtA/k4ES9lCoGkENWeMdEJYX2Kh6L2mqDJIEaCD+
-         K7+vlFFQNw1dRyoxoqgy+fSjMN//MNR7SDHtKsNA=
+        b=ujlpJyyiiRdbZPf925hHSErJyfo4J1J2HgnqGWLFiR88OZ3zs3+3YSUDBXLDw8gSo
+         wiUh5TRegvRzaVTeNfObn6zXq2M16zRbgRCGNv3o/2AfDS3YdH4A7YV/8M2aSuVTmb
+         rSyhQ/fEfXpDWhGBPi0KK56oypVQkAXLkCPRKb9k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paul Menzel <pmenzel@molgen.mpg.de>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 130/202] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CBA
+        patches@lists.linux.dev, Fabio Porcedda <fabio.porcedda@gmail.com>,
+        Daniele Palmas <dnlplm@gmail.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 88/98] USB: serial: option: add Telit LE910C4-WWX 0x1035 composition
 Date:   Mon, 23 Oct 2023 12:57:17 +0200
-Message-ID: <20231023104830.333434449@linuxfoundation.org>
+Message-ID: <20231023104816.646867609@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,56 +49,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Menzel <pmenzel@molgen.mpg.de>
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
 
-[ Upstream commit 05cda427126f30ce3fc8ffd82fd6f5196398d502 ]
+commit 6a7be48e9bd18d309ba25c223a27790ad1bf0fa3 upstream.
 
-Like the ASUS ExpertBook B2502CBA and various ASUS Vivobook laptops, the
-ASUS ExpertBook B1502CBA has an ACPI DSDT table that describes IRQ 1 as
-ActiveLow while the kernel overrides it to Edge_High.
+Add support for the following Telit LE910C4-WWX composition:
 
-    $ sudo dmesg | grep DMI
-    DMI: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B1502CBA_B1502CBA/B1502CBA, BIOS B1502CBA.300 01/18/2023
-    $ grep -A 40 PS2K dsdt.dsl | grep IRQ -A 1
-                    IRQ (Level, ActiveLow, Exclusive, )
-                        {1}
+0x1035: TTY, TTY, ECM
 
-This prevents the keyboard from working. To fix this issue, add this laptop
-to the skip_override_table so that the kernel does not override IRQ 1.
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  5 Spd=480 MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=1bc7 ProdID=1035 Rev=00.00
+S:  Manufacturer=Telit
+S:  Product=LE910C4-WWX
+S:  SerialNumber=e1b117c7
+C:  #Ifs= 4 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:  If#= 0 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=fe Prot=ff Driver=option
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 1 Cls=02(commc) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+I:  If#= 3 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217323
-Signed-off-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 57e8ba44df741..a49acf8ddacae 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -421,6 +421,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
- 		},
- 	},
-+	{
-+		.ident = "Asus ExpertBook B1502CBA",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B1502CBA"),
-+		},
-+	},
- 	{
- 		.ident = "Asus ExpertBook B2402CBA",
- 		.matches = {
--- 
-2.40.1
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1290,6 +1290,7 @@ static const struct usb_device_id option
+ 	 .driver_info = NCTRL(0) | RSVD(3) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1033, 0xff),	/* Telit LE910C1-EUX (ECM) */
+ 	 .driver_info = NCTRL(0) },
++	{ USB_DEVICE_INTERFACE_CLASS(TELIT_VENDOR_ID, 0x1035, 0xff) }, /* Telit LE910C4-WWX (ECM) */
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG0),
+ 	  .driver_info = RSVD(0) | RSVD(1) | NCTRL(2) | RSVD(3) },
+ 	{ USB_DEVICE(TELIT_VENDOR_ID, TELIT_PRODUCT_LE922_USBCFG1),
 
 
