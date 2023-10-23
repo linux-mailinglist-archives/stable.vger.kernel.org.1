@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1B7D7D32DF
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 171C47D321D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233879AbjJWLYj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50286 "EHLO
+        id S233620AbjJWLQy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:16:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233932AbjJWLYg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:36 -0400
+        with ESMTP id S233665AbjJWLQw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9443EA4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16D3C433C8;
-        Mon, 23 Oct 2023 11:24:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FF5EDC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEAFC433C9;
+        Mon, 23 Oct 2023 11:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060273;
-        bh=Sxr94YQXeA89CQiEaNysI2fCx6/mHsp88Yhtmb0EQYk=;
+        s=korg; t=1698059810;
+        bh=xHPIltksSc4KgdeeEXtW1xf8OJIGfYdbro7Xj+9PvME=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nhVwJfpQJPVZlXidsYBP2OdObDwWpYDFWeWTTu/qtw4NDELIxgiVPM7iaotfItgn8
-         7tcIPi+W+bsqomhEAUIf/PXnfce8yTEa/YSAXx2BXnlEWMLn0KIk2sCwNMi0HxqEOq
-         ADOZk+sWByozkRfbM+7khmZEa+x18fbL8tosyJJw=
+        b=UD9zbD+JY1XGJmBanL3TTzmiRLIMxZXXxbm4a+h5N8TQk15mXYQncCMIr7YHNWC4X
+         EQE2Pq6M5ETGFS02XqyoP2KvLEib+XivNZAue8iPV+vAECwEbnhvq2PbblPMFjTwra
+         QI6zhbqsEFm9RIkdzuVciWLfxG9YSSrU7cMaSy6w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kai Uwe Broulik <foss-linux@broulik.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/196] drm: panel-orientation-quirks: Add quirk for One Mix 2S
+        patches@lists.linux.dev, Firo Yang <firo.yang@suse.com>,
+        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+        Tejun Heo <tj@kernel.org>
+Subject: [PATCH 4.19 33/98] cgroup: Remove duplicates in cgroup v1 tasks file
 Date:   Mon, 23 Oct 2023 12:56:22 +0200
-Message-ID: <20231023104831.823158838@linuxfoundation.org>
+Message-ID: <20231023104814.763557639@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,63 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Uwe Broulik <foss-linux@broulik.de>
+From: Michal Koutný <mkoutny@suse.com>
 
-[ Upstream commit cbb7eb2dbd9472816e42a1b0fdb51af49abbf812 ]
+commit 1ca0b605150501b7dc59f3016271da4eb3e96fce upstream.
 
-The One Mix 2S is a mini laptop with a 1200x1920 portrait screen
-mounted in a landscape oriented clamshell case. Because of the too
-generic DMI strings this entry is also doing bios-date matching.
+One PID may appear multiple times in a preloaded pidlist.
+(Possibly due to PID recycling but we have reports of the same
+task_struct appearing with different PIDs, thus possibly involving
+transfer of PID via de_thread().)
 
-Signed-off-by: Kai Uwe Broulik <foss-linux@broulik.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231001114710.336172-1-foss-linux@broulik.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Because v1 seq_file iterator uses PIDs as position, it leads to
+a message:
+> seq_file: buggy .next function kernfs_seq_next did not update position index
+
+Conservative and quick fix consists of removing duplicates from `tasks`
+file (as opposed to removing pidlists altogether). It doesn't affect
+correctness (it's sufficient to show a PID once), performance impact
+would be hidden by unconditional sorting of the pidlist already in place
+(asymptotically).
+
+Link: https://lore.kernel.org/r/20230823174804.23632-1-mkoutny@suse.com/
+Suggested-by: Firo Yang <firo.yang@suse.com>
+Signed-off-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ kernel/cgroup/cgroup-v1.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 0cb646cb04ee1..d5c15292ae937 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -38,6 +38,14 @@ static const struct drm_dmi_panel_orientation_data gpd_micropc = {
- 	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
- };
+--- a/kernel/cgroup/cgroup-v1.c
++++ b/kernel/cgroup/cgroup-v1.c
+@@ -395,10 +395,9 @@ static int pidlist_array_load(struct cgr
+ 	}
+ 	css_task_iter_end(&it);
+ 	length = n;
+-	/* now sort & (if procs) strip out duplicates */
++	/* now sort & strip out duplicates (tgids or recycled thread PIDs) */
+ 	sort(array, length, sizeof(pid_t), cmppid, NULL);
+-	if (type == CGROUP_FILE_PROCS)
+-		length = pidlist_uniq(array, length);
++	length = pidlist_uniq(array, length);
  
-+static const struct drm_dmi_panel_orientation_data gpd_onemix2s = {
-+	.width = 1200,
-+	.height = 1920,
-+	.bios_dates = (const char * const []){ "05/21/2018", "10/26/2018",
-+		"03/04/2019", NULL },
-+	.orientation = DRM_MODE_PANEL_ORIENTATION_RIGHT_UP,
-+};
-+
- static const struct drm_dmi_panel_orientation_data gpd_pocket = {
- 	.width = 1200,
- 	.height = 1920,
-@@ -401,6 +409,14 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "LTH17"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
-+	}, {	/* One Mix 2S (generic strings, also match on bios date) */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Default string"),
-+		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Default string"),
-+		  DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "Default string"),
-+		  DMI_EXACT_MATCH(DMI_BOARD_NAME, "Default string"),
-+		},
-+		.driver_data = (void *)&gpd_onemix2s,
- 	},
- 	{}
- };
--- 
-2.40.1
-
+ 	l = cgroup_pidlist_find_create(cgrp, type);
+ 	if (!l) {
 
 
