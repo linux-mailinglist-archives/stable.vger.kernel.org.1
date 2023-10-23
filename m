@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA2367D333D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C717D33E6
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232817AbjJWL2Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55598 "EHLO
+        id S233845AbjJWLfI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233981AbjJWL2Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:16 -0400
+        with ESMTP id S234023AbjJWLfH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FA64DB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9191BC433C8;
-        Mon, 23 Oct 2023 11:28:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7D1FE8
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B1AC433C7;
+        Mon, 23 Oct 2023 11:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060494;
-        bh=hEIuqLVJTHNf//B2VR4QQ1vWKyvfWydgaKbvLVxBUiM=;
+        s=korg; t=1698060904;
+        bh=/XER+mA+uWrfZcrFhUKbWQjGFdhx2BoIsIExkoevfAE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c6uAZ2xOkM2x+BxQYQeM/p3ORuvA26vNqXK0OZk+qK7rXrubKDKYq+LxMhHDHm8YO
-         8wwR1NncqEh+dQZPzScxXISRrfbVjLUlhXyr/dmvsQH4mVu4Fifn1RDBFrSnLBgxwD
-         qfojM2D1SPjjW8RGYQRXQEvitzR880HpneiqgwEY=
+        b=PC7FKYv1p72zIDsBPcTVu9Cq3dUV1fe40jKqCcb1OnFMXR94/BbTN3TsN7sMDy7KE
+         9mj0GesAUiM+U1Z9/bnXD62DbexfHTwNVZBt5Mursiml/WMuHaLgTnXTRG/9vtIbR0
+         DLJSTXrbWIJtouR//lHVSLhzo66CtxWjEc7ibCB8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/196] phy: mapphone-mdm6600: Fix pinctrl_pm handling for sleep pins
+        patches@lists.linux.dev, Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        kernel test robot <lkp@intel.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 097/123] sky2: Make sure there is at least one frag_addr available
 Date:   Mon, 23 Oct 2023 12:57:35 +0200
-Message-ID: <20231023104833.742177300@linuxfoundation.org>
+Message-ID: <20231023104820.946969859@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,115 +57,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 3b384cc74b00b5ac21d18e4c1efc3c1da5300971 ]
+[ Upstream commit 6a70e5cbedaf8ad10528ac9ac114f3ec20f422df ]
 
-Looks like the driver sleep pins configuration is unusable. Adding the
-sleep pins causes the usb phy to not respond. We need to use the default
-pins in probe, and only set sleep pins at phy_mdm6600_device_power_off().
+In the pathological case of building sky2 with 16k PAGE_SIZE, the
+frag_addr[] array would never be used, so the original code was correct
+that size should be 0. But the compiler now gets upset with 0 size arrays
+in places where it hasn't eliminated the code that might access such an
+array (it can't figure out that in this case an rx skb with fragments
+would never be created). To keep the compiler happy, make sure there is
+at least 1 frag_addr in struct rx_ring_info:
 
-As the modem can also be booted to a serial port mode for firmware
-flashing, let's make the pin changes limited to probe and remove. For
-probe, we get the default pins automatically. We only need to set the
-sleep pins in phy_mdm6600_device_power_off() to prevent the modem from
-waking up because the gpio line glitches.
+   In file included from include/linux/skbuff.h:28,
+                    from include/net/net_namespace.h:43,
+                    from include/linux/netdevice.h:38,
+                    from drivers/net/ethernet/marvell/sky2.c:18:
+   drivers/net/ethernet/marvell/sky2.c: In function 'sky2_rx_unmap_skb':
+   include/linux/dma-mapping.h:416:36: warning: array subscript i is outside array bounds of 'dma_addr_t[0]' {aka 'long long unsigned int[]'} [-Warray-bounds=]
+     416 | #define dma_unmap_page(d, a, s, r) dma_unmap_page_attrs(d, a, s, r, 0)
+         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/ethernet/marvell/sky2.c:1257:17: note: in expansion of macro 'dma_unmap_page'
+    1257 |                 dma_unmap_page(&pdev->dev, re->frag_addr[i],
+         |                 ^~~~~~~~~~~~~~
+   In file included from drivers/net/ethernet/marvell/sky2.c:41:
+   drivers/net/ethernet/marvell/sky2.h:2198:25: note: while referencing 'frag_addr'
+    2198 |         dma_addr_t      frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
+         |                         ^~~~~~~~~
 
-If it turns out that we need a separate state for phy_mdm6600_power_on()
-and phy_mdm6600_power_off(), we can use the pinctrl idle state.
+With CONFIG_PAGE_SIZE_16KB=y, PAGE_SHIFT == 14, so:
 
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Fixes: 2ad2af081622 ("phy: mapphone-mdm6600: Improve phy related runtime PM calls")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20230913060433.48373-3-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+  #define ETH_JUMBO_MTU   9000
+
+causes "ETH_JUMBO_MTU >> PAGE_SHIFT" to be 0. Use "?: 1" to solve this build warning.
+
+Cc: Mirko Lindner <mlindner@marvell.com>
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309191958.UBw1cjXk-lkp@intel.com/
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/motorola/phy-mapphone-mdm6600.c | 29 +++++++++------------
- 1 file changed, 12 insertions(+), 17 deletions(-)
+ drivers/net/ethernet/marvell/sky2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-index c3e2ab6a2a717..67802f9e40ba0 100644
---- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
-+++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-@@ -122,16 +122,10 @@ static int phy_mdm6600_power_on(struct phy *x)
- {
- 	struct phy_mdm6600 *ddata = phy_get_drvdata(x);
- 	struct gpio_desc *enable_gpio = ddata->ctrl_gpios[PHY_MDM6600_ENABLE];
--	int error;
+diff --git a/drivers/net/ethernet/marvell/sky2.h b/drivers/net/ethernet/marvell/sky2.h
+index b02b6523083ce..99451585a45f2 100644
+--- a/drivers/net/ethernet/marvell/sky2.h
++++ b/drivers/net/ethernet/marvell/sky2.h
+@@ -2201,7 +2201,7 @@ struct rx_ring_info {
+ 	struct sk_buff	*skb;
+ 	dma_addr_t	data_addr;
+ 	DEFINE_DMA_UNMAP_LEN(data_size);
+-	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
++	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT ?: 1];
+ };
  
- 	if (!ddata->enabled)
- 		return -ENODEV;
- 
--	error = pinctrl_pm_select_default_state(ddata->dev);
--	if (error)
--		dev_warn(ddata->dev, "%s: error with default_state: %i\n",
--			 __func__, error);
--
- 	gpiod_set_value_cansleep(enable_gpio, 1);
- 
- 	/* Allow aggressive PM for USB, it's only needed for n_gsm port */
-@@ -160,11 +154,6 @@ static int phy_mdm6600_power_off(struct phy *x)
- 
- 	gpiod_set_value_cansleep(enable_gpio, 0);
- 
--	error = pinctrl_pm_select_sleep_state(ddata->dev);
--	if (error)
--		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
--			 __func__, error);
--
- 	return 0;
- }
- 
-@@ -456,6 +445,7 @@ static void phy_mdm6600_device_power_off(struct phy_mdm6600 *ddata)
- {
- 	struct gpio_desc *reset_gpio =
- 		ddata->ctrl_gpios[PHY_MDM6600_RESET];
-+	int error;
- 
- 	ddata->enabled = false;
- 	phy_mdm6600_cmd(ddata, PHY_MDM6600_CMD_BP_SHUTDOWN_REQ);
-@@ -471,6 +461,17 @@ static void phy_mdm6600_device_power_off(struct phy_mdm6600 *ddata)
- 	} else {
- 		dev_err(ddata->dev, "Timed out powering down\n");
- 	}
-+
-+	/*
-+	 * Keep reset gpio high with padconf internal pull-up resistor to
-+	 * prevent modem from waking up during deeper SoC idle states. The
-+	 * gpio bank lines can have glitches if not in the always-on wkup
-+	 * domain.
-+	 */
-+	error = pinctrl_pm_select_sleep_state(ddata->dev);
-+	if (error)
-+		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
-+			 __func__, error);
- }
- 
- static void phy_mdm6600_deferred_power_on(struct work_struct *work)
-@@ -571,12 +572,6 @@ static int phy_mdm6600_probe(struct platform_device *pdev)
- 	ddata->dev = &pdev->dev;
- 	platform_set_drvdata(pdev, ddata);
- 
--	/* Active state selected in phy_mdm6600_power_on() */
--	error = pinctrl_pm_select_sleep_state(ddata->dev);
--	if (error)
--		dev_warn(ddata->dev, "%s: error with sleep_state: %i\n",
--			 __func__, error);
--
- 	error = phy_mdm6600_init_lines(ddata);
- 	if (error)
- 		return error;
+ enum flow_control {
 -- 
-2.42.0
+2.40.1
 
 
 
