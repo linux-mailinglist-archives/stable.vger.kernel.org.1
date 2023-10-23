@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EF097D346D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:39:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4267C7D333C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234232AbjJWLjj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:39:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58352 "EHLO
+        id S233969AbjJWL2O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:28:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234153AbjJWLji (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:38 -0400
+        with ESMTP id S232817AbjJWL2N (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFAEAE8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A5EC433C7;
-        Mon, 23 Oct 2023 11:39:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B607E4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD5EC433CA;
+        Mon, 23 Oct 2023 11:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061175;
-        bh=5C+IAq2jHYFe5YdXhzVqDp9X5/wCGXuTk+KylFKZrFw=;
+        s=korg; t=1698060491;
+        bh=GGZhJvHtoT1ol+o5VaJK2XODKWUEbKZD5Fv9/dBGI4I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RqsrMn1SYwFvcRjLShnHsnFVKXy3OBCPxQqrB9YgDYlSGGJgXyBfY0+iilPUSO/Mh
-         maXA2pMKw6jW2IUCrv/LeN5H04CC/aFkhvEFbkWieDTJcqIoR9rotQbzy3JwXFB4x4
-         LwrGXlphHV6TA0WU0TuZXqHuW5ISJu23rEx5RSf8=
+        b=VK3c6ByD8rtJ4hSssvKreH1TmIXy6yFCcx+pfDxR4HnWyJS1UrSD9STuhZRGYN9aE
+         gRyHzH8FHxpfYBP2zLNOU1U0IUNSHqGw/ZFhgRx/sJU6n9fUkroGfzOwEWokpc7DS0
+         71UAx3gFmhU1QpmbA37Qli/hNZ4fDCKiwKUo+6Os=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maher Sanalla <msanalla@nvidia.com>,
-        Shay Drory <shayd@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/137] net/mlx5: Handle fw tracer change ownership event based on MTRC
+        patches@lists.linux.dev,
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 189/196] phy: mapphone-mdm6600: Fix runtime PM for remove
 Date:   Mon, 23 Oct 2023 12:57:34 +0200
-Message-ID: <20231023104824.145766293@linuxfoundation.org>
+Message-ID: <20231023104833.716841507@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 92fd39634541eb0a11bf1bafbc8ba92d6ddb8dba ]
+[ Upstream commit b99e0ba9633af51638e5ee1668da2e33620c134f ]
 
-Currently, whenever fw issues a change ownership event, the PF that owns
-the fw tracer drops its ownership directly and the other PFs try to pick
-up the ownership via what MTRC register suggests.
+Otherwise we will get an underflow on remove.
 
-In some cases, driver releases the ownership of the tracer and reacquires
-it later on. Whenever the driver releases ownership of the tracer, fw
-issues a change ownership event. This event can be delayed and come after
-driver has reacquired ownership of the tracer. Thus the late event will
-trigger the tracer owner PF to release the ownership again and lead to a
-scenario where no PF is owning the tracer.
-
-To prevent the scenario described above, when handling a change
-ownership event, do not drop ownership of the tracer directly, instead
-read the fw MTRC register to retrieve the up-to-date owner of the tracer
-and set it accordingly in driver level.
-
-Fixes: f53aaa31cce7 ("net/mlx5: FW tracer, implement tracer logic")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Fixes: f7f50b2a7b05 ("phy: mapphone-mdm6600: Add runtime PM support for n_gsm on USB suspend")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20230913060433.48373-2-tony@atomide.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/motorola/phy-mapphone-mdm6600.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 958cdb9755598..b69ab30ecf03b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -821,7 +821,7 @@ static void mlx5_fw_tracer_ownership_change(struct work_struct *work)
+diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+index 436b5ab6dc6d5..c3e2ab6a2a717 100644
+--- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
++++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+@@ -641,6 +641,7 @@ static int phy_mdm6600_remove(struct platform_device *pdev)
+ 	struct phy_mdm6600 *ddata = platform_get_drvdata(pdev);
+ 	struct gpio_desc *reset_gpio = ddata->ctrl_gpios[PHY_MDM6600_RESET];
  
- 	mlx5_core_dbg(tracer->dev, "FWTracer: ownership changed, current=(%d)\n", tracer->owner);
- 	if (tracer->owner) {
--		tracer->owner = false;
-+		mlx5_fw_tracer_ownership_acquire(tracer);
- 		return;
- 	}
- 
++	pm_runtime_get_noresume(ddata->dev);
+ 	pm_runtime_dont_use_autosuspend(ddata->dev);
+ 	pm_runtime_put_sync(ddata->dev);
+ 	pm_runtime_disable(ddata->dev);
 -- 
-2.40.1
+2.42.0
 
 
 
