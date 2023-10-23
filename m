@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B01727D3505
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB3B17D33EA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234393AbjJWLot (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:44:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41678 "EHLO
+        id S234036AbjJWLfN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:35:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234413AbjJWLom (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:42 -0400
+        with ESMTP id S234042AbjJWLfM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C52D10A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C4FC433C8;
-        Mon, 23 Oct 2023 11:44:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99FA81A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9077C433C7;
+        Mon, 23 Oct 2023 11:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061477;
-        bh=M+BhfojAXe68ha5FClY4qkg0WT7F0Vj79442c5yZOAA=;
+        s=korg; t=1698060910;
+        bh=DmROKb6fPj1Cs6EBZAn3TpS0dzqJJfInm/J5eFvPBOM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ag6j9mvz3yh4fwHBkIdI38n9G4GafD9IjZRuCpgzzSJjVqUqRZN6oE9UokzaR7El2
-         bOvkn6CTcMDkXRMlCLjjJbNY4xH9XqXoPtpFdb/aQ7+SV/HLaC271ZTk9GWcUJQg5r
-         /SMLtN0atBYN8dmZA0NYfZSwHQGIGGJkIsvwO4Cg=
+        b=BFBGJ80JhStZIdLTPvdJ3OaMX/w8iF7CdxWqjJP3ZgZC5g3vIQB/MwUGvrQMXJtq7
+         o9all6d3HMxqo3pezx7emWsKUCSparoLwuEUV+or6pX1clT1Q/sd0CFNRpMVdljxr3
+         VnTHLcKFMasVLra076bBPTIIazRZiEKColCRIPR8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/202] powerpc/8xx: Fix pte_access_permitted() for PAGE_NONE
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Simon Horman <horms@kernel.org>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 010/137] ice: fix over-shifted variable
 Date:   Mon, 23 Oct 2023 12:56:07 +0200
-Message-ID: <20231023104828.314142464@linuxfoundation.org>
+Message-ID: <20231023104821.235756082@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,66 +53,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-[ Upstream commit 5d9cea8a552ee122e21fbd5a3c5d4eb85f648e06 ]
+commit 242e34500a32631f85c2b4eb6cb42a368a39e54f upstream.
 
-On 8xx, PAGE_NONE is handled by setting _PAGE_NA instead of clearing
-_PAGE_USER.
+Since the introduction of the ice driver the code has been
+double-shifting the RSS enabling field, because the define already has
+shifts in it and can't have the regular pattern of "a << shiftval &
+mask" applied.
 
-But then pte_user() returns 1 also for PAGE_NONE.
+Most places in the code got it right, but one line was still wrong. Fix
+this one location for easy backports to stable. An in-progress patch
+fixes the defines to "standard" and will be applied as part of the
+regular -next process sometime after this one.
 
-As _PAGE_NA prevent reads, add a specific version of pte_read()
-that returns 0 when _PAGE_NA is set instead of always returning 1.
-
-Fixes: 351750331fc1 ("powerpc/mm: Introduce _PAGE_NA")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/57bcfbe578e43123f9ed73e040229b80f1ad56ec.1695659959.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d76a60ba7afb ("ice: Add support for VLANs and offloads")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20231010203101.406248-1-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/include/asm/nohash/32/pte-8xx.h | 7 +++++++
- arch/powerpc/include/asm/nohash/pgtable.h    | 2 ++
- 2 files changed, 9 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_lib.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-index 1581204467e1d..2b06da0ffd2d2 100644
---- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-+++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
-@@ -94,6 +94,13 @@ static inline pte_t pte_wrprotect(pte_t pte)
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -954,8 +954,7 @@ static void ice_set_rss_vsi_ctx(struct i
  
- #define pte_wrprotect pte_wrprotect
- 
-+static inline int pte_read(pte_t pte)
-+{
-+	return (pte_val(pte) & _PAGE_RO) != _PAGE_NA;
-+}
-+
-+#define pte_read pte_read
-+
- static inline int pte_write(pte_t pte)
- {
- 	return !(pte_val(pte) & _PAGE_RO);
-diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
-index ac75f4ab0dba1..7ad1d1b042a60 100644
---- a/arch/powerpc/include/asm/nohash/pgtable.h
-+++ b/arch/powerpc/include/asm/nohash/pgtable.h
-@@ -45,7 +45,9 @@ static inline int pte_write(pte_t pte)
- 	return pte_val(pte) & _PAGE_RW;
+ 	ctxt->info.q_opt_rss = ((lut_type << ICE_AQ_VSI_Q_OPT_RSS_LUT_S) &
+ 				ICE_AQ_VSI_Q_OPT_RSS_LUT_M) |
+-				((hash_type << ICE_AQ_VSI_Q_OPT_RSS_HASH_S) &
+-				 ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
++				(hash_type & ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
  }
- #endif
-+#ifndef pte_read
- static inline int pte_read(pte_t pte)		{ return 1; }
-+#endif
- static inline int pte_dirty(pte_t pte)		{ return pte_val(pte) & _PAGE_DIRTY; }
- static inline int pte_special(pte_t pte)	{ return pte_val(pte) & _PAGE_SPECIAL; }
- static inline int pte_none(pte_t pte)		{ return (pte_val(pte) & ~_PTE_NONE_MASK) == 0; }
--- 
-2.40.1
-
+ 
+ /**
 
 
