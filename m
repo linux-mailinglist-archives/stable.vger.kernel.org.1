@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 908037D31C9
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCFD67D3433
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230363AbjJWLNN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43510 "EHLO
+        id S234177AbjJWLhb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233609AbjJWLNL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:11 -0400
+        with ESMTP id S234176AbjJWLhb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15A31A2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 582C4C433C7;
-        Mon, 23 Oct 2023 11:13:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9294100
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FD2C433C7;
+        Mon, 23 Oct 2023 11:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059589;
-        bh=ZPiQZHBpZWh0h4qSfPdFyMFfaISEgfeiLI67fasQo/w=;
+        s=korg; t=1698061049;
+        bh=QNAcABvDN48FM1jlykd6kHRabxP45u5cF21f8UUOaDo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QGmA+pte66c6BdoNzoVi1q4Jaw5J5+drCIAN9QqEOvGnatKdhgjplxeqPLt2O7lvQ
-         7/UT8uUeiwa7XwaLlorRdBDKDtOE7IHC3ugbOsS273utfC0kNnr2Yzkns1lu7z+T2f
-         mCsKWTIr8L9g7DDcXIXrOfkdb9rCsi20GlDwSk2M=
+        b=w/C6eI/EszhGg1dhFz8NNKxx2bB18nwxAdwJSTlEu5w5MLgW57KE0zpAJWHU6rj38
+         pBzUXbvLydEnJ2tWoSWUGrCFnfIBF2Qa/f4znfJL3O6KiguyujkroKdm+E06SH67A5
+         XSF19R8SKYRztHfulUqAomCDEdH4rBmXy9mpJsaA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-        Merlijn Wajer <merlijn@wizzup.org>,
-        Pavel Machek <pavel@ucw.cz>,
-        Sebastian Reichel <sre@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 227/241] phy: mapphone-mdm6600: Fix runtime PM for remove
+        Alisa-Dariana Roman <alisa.roman@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 056/137] iio: adc: ad7192: Correct reference voltage
 Date:   Mon, 23 Oct 2023 12:56:53 +0200
-Message-ID: <20231023104839.403234572@linuxfoundation.org>
+Message-ID: <20231023104822.881295379@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,44 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Alisa-Dariana Roman <alisa.roman@analog.com>
 
-[ Upstream commit b99e0ba9633af51638e5ee1668da2e33620c134f ]
+[ Upstream commit 7e7dcab620cd6d34939f615cac63fc0ef7e81c72 ]
 
-Otherwise we will get an underflow on remove.
+The avdd and the reference voltage are two different sources but the
+reference voltage was assigned according to the avdd supply.
 
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Cc: Merlijn Wajer <merlijn@wizzup.org>
-Cc: Pavel Machek <pavel@ucw.cz>
-Cc: Sebastian Reichel <sre@kernel.org>
-Fixes: f7f50b2a7b05 ("phy: mapphone-mdm6600: Add runtime PM support for n_gsm on USB suspend")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Link: https://lore.kernel.org/r/20230913060433.48373-2-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Add vref regulator structure and set the reference voltage according to
+the vref supply from the devicetree.
+
+In case vref supply is missing, reference voltage is set according to
+the avdd supply for compatibility with old devicetrees.
+
+Fixes: b581f748cce0 ("staging: iio: adc: ad7192: move out of staging")
+Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230924152149.41884-1-alisadariana@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/motorola/phy-mapphone-mdm6600.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/adc/ad7192.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-index 0147112f77b17..df48b1becebe6 100644
---- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
-+++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
-@@ -641,6 +641,7 @@ static void phy_mdm6600_remove(struct platform_device *pdev)
- 	struct phy_mdm6600 *ddata = platform_get_drvdata(pdev);
- 	struct gpio_desc *reset_gpio = ddata->ctrl_gpios[PHY_MDM6600_RESET];
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 6df435e3c4218..31461d46c5941 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -177,6 +177,7 @@ struct ad7192_state {
+ 	const struct ad7192_chip_info	*chip_info;
+ 	struct regulator		*avdd;
+ 	struct regulator		*dvdd;
++	struct regulator		*vref;
+ 	struct clk			*mclk;
+ 	u16				int_vref_mv;
+ 	u32				fclk;
+@@ -962,10 +963,30 @@ static int ad7192_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return ret;
  
-+	pm_runtime_get_noresume(ddata->dev);
- 	pm_runtime_dont_use_autosuspend(ddata->dev);
- 	pm_runtime_put_sync(ddata->dev);
- 	pm_runtime_disable(ddata->dev);
+-	ret = regulator_get_voltage(st->avdd);
+-	if (ret < 0) {
+-		dev_err(&spi->dev, "Device tree error, reference voltage undefined\n");
+-		return ret;
++	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
++	if (IS_ERR(st->vref)) {
++		if (PTR_ERR(st->vref) != -ENODEV)
++			return PTR_ERR(st->vref);
++
++		ret = regulator_get_voltage(st->avdd);
++		if (ret < 0)
++			return dev_err_probe(&spi->dev, ret,
++					     "Device tree error, AVdd voltage undefined\n");
++	} else {
++		ret = regulator_enable(st->vref);
++		if (ret) {
++			dev_err(&spi->dev, "Failed to enable specified Vref supply\n");
++			return ret;
++		}
++
++		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->vref);
++		if (ret)
++			return ret;
++
++		ret = regulator_get_voltage(st->vref);
++		if (ret < 0)
++			return dev_err_probe(&spi->dev, ret,
++					     "Device tree error, Vref voltage undefined\n");
+ 	}
+ 	st->int_vref_mv = ret / 1000;
+ 
 -- 
-2.42.0
+2.40.1
 
 
 
