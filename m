@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5FC37D32A7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 690E07D3178
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233844AbjJWLWi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:22:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57874 "EHLO
+        id S233565AbjJWLJc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:09:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52300 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233847AbjJWLWh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:37 -0400
+        with ESMTP id S233568AbjJWLJb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:09:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE83492
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0288CC433C7;
-        Mon, 23 Oct 2023 11:22:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63BBC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:09:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF4B4C433C7;
+        Mon, 23 Oct 2023 11:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060154;
-        bh=HTwWeekizCdQoXAtIzHBgWtL7IDRWZUmYdxN7ddKFNg=;
+        s=korg; t=1698059369;
+        bh=okdxfI3kEEIJ6J+OzEc9tLfONuc6jEpUgdaCVYzDJ/o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y95ubzTAGrHLuIdF8xvGCBVcL3Kr8H8r2WMTIInGE+G0XsuQpPRxZ1gR/aubsgf+s
-         xkT8TwbgBY2ZOGLyy6IkgRRpCnJvW8tQcQvkt0h9tawll7PuCvrr4AZ32hnDeQcVwl
-         Yhyp/e70UB2seBzgdLKg18yhyFWyKbrK8shYSXaw=
+        b=m7yzrvs1teceCBr5aFibXoYGLhl0GS2eAUbOpWtuNti9miXge7grwE1/wsjaslbra
+         uopDPoqemeq/+2z+kU84CtlvceDRFD/u9lhqC9pl03tYTXytV6ncbEkDQkF2kNl5Bg
+         Qv/YNNarzv7Inkp0mHBFFQxRuSppwTT9wvzM5hok=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 076/196] net: check for altname conflicts when changing netdevs netns
+        patches@lists.linux.dev, Jianbo Liu <jianbol@nvidia.com>,
+        Ariel Levkovich <lariel@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 155/241] net/mlx5e: Dont offload internal port if filter device is out device
 Date:   Mon, 23 Oct 2023 12:55:41 +0200
-Message-ID: <20231023104830.698361283@linuxfoundation.org>
+Message-ID: <20231023104837.650911621@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit 7663d522099ecc464512164e660bc771b2ff7b64 upstream.
+[ Upstream commit 06b4eac9c4beda520b8a4dbbb8e33dba9d1c8fba ]
 
-It's currently possible to create an altname conflicting
-with an altname or real name of another device by creating
-it in another netns and moving it over:
+In the cited commit, if the routing device is ovs internal port, the
+out device is set to uplink, and packets go out after encapsulation.
 
- [ ~]$ ip link add dev eth0 type dummy
+If filter device is uplink, it can trigger the following syndrome:
+mlx5_core 0000:08:00.0: mlx5_cmd_out_err:803:(pid 3966): SET_FLOW_TABLE_ENTRY(0x936) op_mod(0x0) failed, status bad parameter(0x3), syndrome (0xcdb051), err(-22)
 
- [ ~]$ ip netns add test
- [ ~]$ ip -netns test link add dev ethX netns test type dummy
- [ ~]$ ip -netns test link property add dev ethX altname eth0
- [ ~]$ ip -netns test link set dev ethX netns 1
+Fix this issue by not offloading internal port if filter device is out
+device. In this case, packets are not forwarded to the root table to
+be processed, the termination table is used instead to forward them
+from uplink to uplink.
 
- [ ~]$ ip link
- ...
- 3: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-     link/ether 02:40:88:62:ec:b8 brd ff:ff:ff:ff:ff:ff
- ...
- 5: ethX: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-     link/ether 26:b7:28:78:38:0f brd ff:ff:ff:ff:ff:ff
-     altname eth0
-
-Create a macro for walking the altnames, this hopefully makes
-it clearer that the list we walk contains only altnames.
-Which is otherwise not entirely intuitive.
-
-Fixes: 36fbf1e52bd3 ("net: rtnetlink: add linkprop commands to add and delete alternative ifnames")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 100ad4e2d758 ("net/mlx5e: Offload internal port as encap route device")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Ariel Levkovich <lariel@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c |    9 ++++++++-
- net/core/dev.h |    3 +++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -1054,7 +1054,8 @@ static int __dev_alloc_name(struct net *
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+index 1730f6a716eea..b10e40e1a9c14 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_encap.c
+@@ -24,7 +24,8 @@ static int mlx5e_set_int_port_tunnel(struct mlx5e_priv *priv,
  
- 		for_each_netdev(net, d) {
- 			struct netdev_name_node *name_node;
--			list_for_each_entry(name_node, &d->name_node->list, list) {
-+
-+			netdev_for_each_altname(d, name_node) {
- 				if (!sscanf(name_node->name, name, &i))
- 					continue;
- 				if (i < 0 || i >= max_netdevices)
-@@ -10949,6 +10950,7 @@ EXPORT_SYMBOL(unregister_netdev);
- int __dev_change_net_namespace(struct net_device *dev, struct net *net,
- 			       const char *pat, int new_ifindex)
- {
-+	struct netdev_name_node *name_node;
- 	struct net *net_old = dev_net(dev);
- 	char new_name[IFNAMSIZ] = {};
- 	int err, new_nsid;
-@@ -10981,6 +10983,11 @@ int __dev_change_net_namespace(struct ne
- 		if (err < 0)
- 			goto out;
- 	}
-+	/* Check that none of the altnames conflicts. */
-+	err = -EEXIST;
-+	netdev_for_each_altname(dev, name_node)
-+		if (netdev_name_in_use(net, name_node->name))
-+			goto out;
+ 	route_dev = dev_get_by_index(dev_net(e->out_dev), e->route_dev_ifindex);
  
- 	/* Check that new_ifindex isn't used yet. */
- 	err = -EBUSY;
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -61,6 +61,9 @@ struct netdev_name_node {
- int netdev_get_name(struct net *net, char *name, int ifindex);
- int dev_change_name(struct net_device *dev, const char *newname);
+-	if (!route_dev || !netif_is_ovs_master(route_dev))
++	if (!route_dev || !netif_is_ovs_master(route_dev) ||
++	    attr->parse_attr->filter_dev == e->out_dev)
+ 		goto out;
  
-+#define netdev_for_each_altname(dev, namenode)				\
-+	list_for_each_entry((namenode), &(dev)->name_node->list, list)
-+
- int netdev_name_node_alt_create(struct net_device *dev, const char *name);
- int netdev_name_node_alt_destroy(struct net_device *dev, const char *name);
- 
+ 	err = mlx5e_set_fwd_to_int_port_actions(priv, attr, e->route_dev_ifindex,
+-- 
+2.40.1
+
 
 
