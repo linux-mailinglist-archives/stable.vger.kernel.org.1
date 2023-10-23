@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89D1E7D3226
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC7257D30CA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:02:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233673AbjJWLRO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:17:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56794 "EHLO
+        id S231517AbjJWLCM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:02:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjJWLRN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:13 -0400
+        with ESMTP id S233005AbjJWLCL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:02:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3B1EA2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F11A9C433C8;
-        Mon, 23 Oct 2023 11:17:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 329E010C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:02:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E7BC433C9;
+        Mon, 23 Oct 2023 11:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059831;
-        bh=txzMAzRMB4zHXnCdzcmw2U6qxjcEArFD8FmySzRhCsY=;
+        s=korg; t=1698058928;
+        bh=cIzGsWAaNl/uobJxDNYqktuHZJsP/CMJKiENaEeFvfE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q4r+js+OLB+hK8fOHsdiSAfNSkO31daGZnqKGxONfnEPB/klIGg8SZp9hLD+lKALl
-         z9k4UyRspNjYasAc1IsFJ4GSkd4iM7bENUiX5l4/OBAI+rXgeQ3DzDUVgdbTUVEyO/
-         /KbsGaUm2bSJzXkXcmQKWvdEc8aT/xhFPnB4TA9c=
+        b=qPOC+3FvOm6eAjHpHb63XViMFQOE4guqBaOLMpLMh3jHQAY3XUvYJ3fgU4HSl2XRh
+         IUjOgs93uvIwlzbVckri8Qit2PW32uxCSoOxaOjMCnxox04UYgEMFkM5T1KK37uKPx
+         UmpMZ62gXMF6ZE+TdUMjHWO9vjD17u4Xwjz/vqGk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 4.19 60/98] i40e: prevent crash on probe if hw registers have invalid values
+        patches@lists.linux.dev,
+        =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.14 59/66] USB: serial: option: add entry for Sierra EM9191 with new firmware
 Date:   Mon, 23 Oct 2023 12:56:49 +0200
-Message-ID: <20231023104815.732145791@linuxfoundation.org>
+Message-ID: <20231023104813.012790184@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,61 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Benoît Monin <benoit.monin@gmx.fr>
 
-commit fc6f716a5069180c40a8c9b63631e97da34f64a3 upstream.
+commit 064f6e2ba9eb59b2c87b866e1e968e79ccedf9dd upstream.
 
-The hardware provides the indexes of the first and the last available
-queue and VF. From the indexes, the driver calculates the numbers of
-queues and VFs. In theory, a faulty device might say the last index is
-smaller than the first index. In that case, the driver's calculation
-would underflow, it would attempt to write to non-existent registers
-outside of the ioremapped range and crash.
+Following a firmware update of the modem, the interface for the AT
+command port changed, so add it back.
 
-I ran into this not by having a faulty device, but by an operator error.
-I accidentally ran a QE test meant for i40e devices on an ice device.
-The test used 'echo i40e > /sys/...ice PCI device.../driver_override',
-bound the driver to the device and crashed in one of the wr32 calls in
-i40e_clear_hw.
+T:  Bus=08 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=1199 ProdID=90d3 Rev=00.06
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  Product=Sierra Wireless EM9191
+S:  SerialNumber=xxxxxxxxxxxxxxxx
+C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
 
-Add checks to prevent underflows in the calculations of num_queues and
-num_vfs. With this fix, the wrong device probing reports errors and
-returns a failure without crashing.
-
-Fixes: 838d41d92a90 ("i40e: clear all queues and interrupts")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Link: https://lore.kernel.org/r/20231011233334.336092-2-jacob.e.keller@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_common.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -1332,7 +1332,7 @@ void i40e_clear_hw(struct i40e_hw *hw)
- 		     I40E_PFLAN_QALLOC_FIRSTQ_SHIFT;
- 	j = (val & I40E_PFLAN_QALLOC_LASTQ_MASK) >>
- 	    I40E_PFLAN_QALLOC_LASTQ_SHIFT;
--	if (val & I40E_PFLAN_QALLOC_VALID_MASK)
-+	if (val & I40E_PFLAN_QALLOC_VALID_MASK && j >= base_queue)
- 		num_queues = (j - base_queue) + 1;
- 	else
- 		num_queues = 0;
-@@ -1342,7 +1342,7 @@ void i40e_clear_hw(struct i40e_hw *hw)
- 	    I40E_PF_VT_PFALLOC_FIRSTVF_SHIFT;
- 	j = (val & I40E_PF_VT_PFALLOC_LASTVF_MASK) >>
- 	    I40E_PF_VT_PFALLOC_LASTVF_SHIFT;
--	if (val & I40E_PF_VT_PFALLOC_VALID_MASK)
-+	if (val & I40E_PF_VT_PFALLOC_VALID_MASK && j >= i)
- 		num_vfs = (j - i) + 1;
- 	else
- 		num_vfs = 0;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2265,6 +2265,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
 
 
