@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E66A7D316A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E25F7D329A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233202AbjJWLJA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:09:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59440 "EHLO
+        id S233834AbjJWLV7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:21:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233501AbjJWLI7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:59 -0400
+        with ESMTP id S233829AbjJWLV6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50504C1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DDBC433C7;
-        Mon, 23 Oct 2023 11:08:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35629C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781CDC433C8;
+        Mon, 23 Oct 2023 11:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059336;
-        bh=1slv8re9flLQ1E15Cth8l3Musu8H+H4r30SP9UnojsQ=;
+        s=korg; t=1698060115;
+        bh=Fp3HDS8oe9dH6uw5jdmlASJTLsWb0xhJD/gMHf9bK8k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vR33j9ivDx0wK1gURkXuPCHuL/CwSx671Bb3dcMjTgOtf6zJ0N8bAbecskK0DZKmI
-         FAOqwvO2OcpaG2pl5iiI3e6ErFnEys2EHgfa5DF07DKtMpmiyJDuuh/yHS7zr10/hJ
-         58r6d8w4v/TgE2DtOySyJE7ohupaQYUzU5OUS5+I=
+        b=iyhyonfJSwC6hzB5Ms9CjXrPko7+yW9pUKrIbUGnJ4zQke4ZEup+YJjZDK6+RoknR
+         K4XoqeKiD8bncHWgTMjvvtE59GhkGZpCsyUMJ2bh2seXNsv9zZtafLH4r95Re94w0N
+         MJtge5m8Xek0yzSVJWn9NqQCfIN5QVYxo+cB4MXE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeff Moyer <jmoyer@redhat.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 143/241] io-wq: fully initialize wqe before calling cpuhp_state_add_instance_nocalls()
+        patches@lists.linux.dev, Christian Theune <ct@flyingcircus.io>,
+        Budimir Markovic <markovicbudimir@gmail.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 064/196] net/sched: sch_hfsc: upgrade rt to sc when it becomes a inner curve
 Date:   Mon, 23 Oct 2023 12:55:29 +0200
-Message-ID: <20231023104837.360365541@linuxfoundation.org>
+Message-ID: <20231023104830.350678184@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,109 +51,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Moyer <jmoyer@redhat.com>
+From: Pedro Tammela <pctammela@mojatatu.com>
 
-[ Upstream commit 0f8baa3c9802fbfe313c901e1598397b61b91ada ]
+commit a13b67c9a015c4e21601ef9aa4ec9c5d972df1b4 upstream.
 
-I received a bug report with the following signature:
+Christian Theune says:
+   I upgraded from 6.1.38 to 6.1.55 this morning and it broke my traffic shaping script,
+   leaving me with a non-functional uplink on a remote router.
 
-[ 1759.937637] BUG: unable to handle page fault for address: ffffffffffffffe8
-[ 1759.944564] #PF: supervisor read access in kernel mode
-[ 1759.949732] #PF: error_code(0x0000) - not-present page
-[ 1759.954901] PGD 7ab615067 P4D 7ab615067 PUD 7ab617067 PMD 0
-[ 1759.960596] Oops: 0000 1 PREEMPT SMP PTI
-[ 1759.964804] CPU: 15 PID: 109 Comm: cpuhp/15 Kdump: loaded Tainted: G X ------- — 5.14.0-362.3.1.el9_3.x86_64 #1
-[ 1759.976609] Hardware name: HPE ProLiant DL380 Gen10/ProLiant DL380 Gen10, BIOS U30 06/20/2018
-[ 1759.985181] RIP: 0010:io_wq_for_each_worker.isra.0+0x24/0xa0
-[ 1759.990877] Code: 90 90 90 90 90 90 0f 1f 44 00 00 41 56 41 55 41 54 55 48 8d 6f 78 53 48 8b 47 78 48 39 c5 74 4f 49 89 f5 49 89 d4 48 8d 58 e8 <8b> 13 85 d2 74 32 8d 4a 01 89 d0 f0 0f b1 0b 75 5c 09 ca 78 3d 48
-[ 1760.009758] RSP: 0000:ffffb6f403603e20 EFLAGS: 00010286
-[ 1760.015013] RAX: 0000000000000000 RBX: ffffffffffffffe8 RCX: 0000000000000000
-[ 1760.022188] RDX: ffffb6f403603e50 RSI: ffffffffb11e95b0 RDI: ffff9f73b09e9400
-[ 1760.029362] RBP: ffff9f73b09e9478 R08: 000000000000000f R09: 0000000000000000
-[ 1760.036536] R10: ffffffffffffff00 R11: ffffb6f403603d80 R12: ffffb6f403603e50
-[ 1760.043712] R13: ffffffffb11e95b0 R14: ffffffffb28531e8 R15: ffff9f7a6fbdf548
-[ 1760.050887] FS: 0000000000000000(0000) GS:ffff9f7a6fbc0000(0000) knlGS:0000000000000000
-[ 1760.059025] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 1760.064801] CR2: ffffffffffffffe8 CR3: 00000007ab610002 CR4: 00000000007706e0
-[ 1760.071976] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 1760.079150] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 1760.086325] PKRU: 55555554
-[ 1760.089044] Call Trace:
-[ 1760.091501] <TASK>
-[ 1760.093612] ? show_trace_log_lvl+0x1c4/0x2df
-[ 1760.097995] ? show_trace_log_lvl+0x1c4/0x2df
-[ 1760.102377] ? __io_wq_cpu_online+0x54/0xb0
-[ 1760.106584] ? __die_body.cold+0x8/0xd
-[ 1760.110356] ? page_fault_oops+0x134/0x170
-[ 1760.114479] ? kernelmode_fixup_or_oops+0x84/0x110
-[ 1760.119298] ? exc_page_fault+0xa8/0x150
-[ 1760.123247] ? asm_exc_page_fault+0x22/0x30
-[ 1760.127458] ? __pfx_io_wq_worker_affinity+0x10/0x10
-[ 1760.132453] ? __pfx_io_wq_worker_affinity+0x10/0x10
-[ 1760.137446] ? io_wq_for_each_worker.isra.0+0x24/0xa0
-[ 1760.142527] __io_wq_cpu_online+0x54/0xb0
-[ 1760.146558] cpuhp_invoke_callback+0x109/0x460
-[ 1760.151029] ? __pfx_io_wq_cpu_offline+0x10/0x10
-[ 1760.155673] ? __pfx_smpboot_thread_fn+0x10/0x10
-[ 1760.160320] cpuhp_thread_fun+0x8d/0x140
-[ 1760.164266] smpboot_thread_fn+0xd3/0x1a0
-[ 1760.168297] kthread+0xdd/0x100
-[ 1760.171457] ? __pfx_kthread+0x10/0x10
-[ 1760.175225] ret_from_fork+0x29/0x50
-[ 1760.178826] </TASK>
-[ 1760.181022] Modules linked in: rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs rfkill sunrpc vfat fat dm_multipath intel_rapl_msr intel_rapl_common isst_if_common ipmi_ssif nfit libnvdimm mgag200 i2c_algo_bit ioatdma drm_shmem_helper drm_kms_helper acpi_ipmi syscopyarea x86_pkg_temp_thermal sysfillrect ipmi_si intel_powerclamp sysimgblt ipmi_devintf coretemp acpi_power_meter ipmi_msghandler rapl pcspkr dca intel_pch_thermal intel_cstate ses lpc_ich intel_uncore enclosure hpilo mei_me mei acpi_tad fuse drm xfs sd_mod sg bnx2x nvme nvme_core crct10dif_pclmul crc32_pclmul nvme_common ghash_clmulni_intel smartpqi tg3 t10_pi mdio uas libcrc32c crc32c_intel scsi_transport_sas usb_storage hpwdt wmi dm_mirror dm_region_hash dm_log dm_mod
-[ 1760.248623] CR2: ffffffffffffffe8
+A 'rt' curve cannot be used as a inner curve (parent class), but we were
+allowing such configurations since the qdisc was introduced. Such
+configurations would trigger a UAF as Budimir explains:
+   The parent will have vttree_insert() called on it in init_vf(),
+   but will not have vttree_remove() called on it in update_vf()
+   because it does not have the HFSC_FSC flag set.
 
-A cpu hotplug callback was issued before wq->all_list was initialized.
-This results in a null pointer dereference.  The fix is to fully setup
-the io_wq before calling cpuhp_state_add_instance_nocalls().
+The qdisc always assumes that inner classes have the HFSC_FSC flag set.
+This is by design as it doesn't make sense 'qdisc wise' for an 'rt'
+curve to be an inner curve.
 
-Signed-off-by: Jeff Moyer <jmoyer@redhat.com>
-Link: https://lore.kernel.org/r/x49y1ghnecs.fsf@segfault.boston.devel.redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Budimir's original patch disallows users to add classes with a 'rt'
+parent, but this is too strict as it breaks users that have been using
+'rt' as a inner class. Another approach, taken by this patch, is to
+upgrade the inner 'rt' into a 'sc', warning the user in the process.
+It avoids the UAF reported by Budimir while also being more permissive
+to bad scripts/users/code using 'rt' as a inner class.
+
+Users checking the `tc class ls [...]` or `tc class get [...]` dumps would
+observe the curve change and are potentially breaking with this change.
+
+v1->v2: https://lore.kernel.org/all/20231013151057.2611860-1-pctammela@mojatatu.com/
+- Correct 'Fixes' tag and merge with revert (Jakub)
+
+Cc: Christian Theune <ct@flyingcircus.io>
+Cc: Budimir Markovic <markovicbudimir@gmail.com>
+Fixes: b3d26c5702c7 ("net/sched: sch_hfsc: Ensure inner classes have fsc curve")
+Signed-off-by: Pedro Tammela <pctammela@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://lore.kernel.org/r/20231017143602.3191556-1-pctammela@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io-wq.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/sched/sch_hfsc.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 2c03bc881edfd..fbab9b2727fde 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1130,9 +1130,6 @@ struct io_wq *io_wq_create(unsigned bounded, struct io_wq_data *data)
- 	wq = kzalloc(sizeof(struct io_wq), GFP_KERNEL);
- 	if (!wq)
- 		return ERR_PTR(-ENOMEM);
--	ret = cpuhp_state_add_instance_nocalls(io_wq_online, &wq->cpuhp_node);
--	if (ret)
--		goto err_wq;
- 
- 	refcount_inc(&data->hash->refs);
- 	wq->hash = data->hash;
-@@ -1165,13 +1162,14 @@ struct io_wq *io_wq_create(unsigned bounded, struct io_wq_data *data)
- 	wq->task = get_task_struct(data->task);
- 	atomic_set(&wq->worker_refs, 1);
- 	init_completion(&wq->worker_done);
-+	ret = cpuhp_state_add_instance_nocalls(io_wq_online, &wq->cpuhp_node);
-+	if (ret)
-+		goto err;
-+
- 	return wq;
- err:
- 	io_wq_put_hash(data->hash);
--	cpuhp_state_remove_instance_nocalls(io_wq_online, &wq->cpuhp_node);
--
- 	free_cpumask_var(wq->cpu_mask);
--err_wq:
- 	kfree(wq);
- 	return ERR_PTR(ret);
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -903,6 +903,14 @@ hfsc_change_usc(struct hfsc_class *cl, s
+ 	cl->cl_flags |= HFSC_USC;
  }
--- 
-2.40.1
-
+ 
++static void
++hfsc_upgrade_rt(struct hfsc_class *cl)
++{
++	cl->cl_fsc = cl->cl_rsc;
++	rtsc_init(&cl->cl_virtual, &cl->cl_fsc, cl->cl_vt, cl->cl_total);
++	cl->cl_flags |= HFSC_FSC;
++}
++
+ static const struct nla_policy hfsc_policy[TCA_HFSC_MAX + 1] = {
+ 	[TCA_HFSC_RSC]	= { .len = sizeof(struct tc_service_curve) },
+ 	[TCA_HFSC_FSC]	= { .len = sizeof(struct tc_service_curve) },
+@@ -1012,10 +1020,6 @@ hfsc_change_class(struct Qdisc *sch, u32
+ 		if (parent == NULL)
+ 			return -ENOENT;
+ 	}
+-	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
+-		NL_SET_ERR_MSG(extack, "Invalid parent - parent class must have FSC");
+-		return -EINVAL;
+-	}
+ 
+ 	if (classid == 0 || TC_H_MAJ(classid ^ sch->handle) != 0)
+ 		return -EINVAL;
+@@ -1066,6 +1070,12 @@ hfsc_change_class(struct Qdisc *sch, u32
+ 	cl->cf_tree = RB_ROOT;
+ 
+ 	sch_tree_lock(sch);
++	/* Check if the inner class is a misconfigured 'rt' */
++	if (!(parent->cl_flags & HFSC_FSC) && parent != &q->root) {
++		NL_SET_ERR_MSG(extack,
++			       "Forced curve change on parent 'rt' to 'sc'");
++		hfsc_upgrade_rt(parent);
++	}
+ 	qdisc_class_hash_insert(&q->clhash, &cl->cl_common);
+ 	list_add_tail(&cl->siblings, &parent->children);
+ 	if (parent->level == 0)
 
 
