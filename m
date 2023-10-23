@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6AF17D32F8
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB077D3393
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233907AbjJWLZ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:25:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37562 "EHLO
+        id S233856AbjJWLbz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:31:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233917AbjJWLZ0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:26 -0400
+        with ESMTP id S233385AbjJWLby (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43AA2A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FFAC433C7;
-        Mon, 23 Oct 2023 11:25:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA1892
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD980C433C8;
+        Mon, 23 Oct 2023 11:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060323;
-        bh=jS8qe+hIdgTlGppTmRcrRtYyfwLYWm54Wv5ihO44/Eg=;
+        s=korg; t=1698060712;
+        bh=LBYxX5p0AeG4tAoziJJCtducElrpG5fdHEUk60EEpkE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K2vk2BryH97/M/qwD1TwShZcYuLSsWNP57N92t+XasQ3K4VV83aEBlsetQuV7mqQF
-         jLFKWtiqnoKMjh1lK2Udqh3ZKGRg+LBGZG5RNvE+oevgoNFB/ZOy08Bymm4egcTwlN
-         v2KL/w1SmCOMamOu6iWE/hMsox1Y15J9uRcGLzC0=
+        b=wrdL8Ss67cZ6TeB5/6KUGOcuZTImD2OAgktDIdQFIP4hhD0xYj33tUU2lO/gtGejP
+         2qlXxzIasGSdXrScblSz2K65nIj8WzTE018uZZZRi78cRTJ+Z10NXCiovLghWr9LTJ
+         kH5mHIqvIa1ZeWLzu9SHNF05pMW49uELu6nbQBQY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maher Sanalla <msanalla@nvidia.com>,
-        Shay Drory <shayd@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/196] net/mlx5: Handle fw tracer change ownership event based on MTRC
+Subject: [PATCH 5.4 040/123] powerpc/8xx: Fix pte_access_permitted() for PAGE_NONE
 Date:   Mon, 23 Oct 2023 12:56:38 +0200
-Message-ID: <20231023104832.251200557@linuxfoundation.org>
+Message-ID: <20231023104819.067330728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maher Sanalla <msanalla@nvidia.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 92fd39634541eb0a11bf1bafbc8ba92d6ddb8dba ]
+[ Upstream commit 5d9cea8a552ee122e21fbd5a3c5d4eb85f648e06 ]
 
-Currently, whenever fw issues a change ownership event, the PF that owns
-the fw tracer drops its ownership directly and the other PFs try to pick
-up the ownership via what MTRC register suggests.
+On 8xx, PAGE_NONE is handled by setting _PAGE_NA instead of clearing
+_PAGE_USER.
 
-In some cases, driver releases the ownership of the tracer and reacquires
-it later on. Whenever the driver releases ownership of the tracer, fw
-issues a change ownership event. This event can be delayed and come after
-driver has reacquired ownership of the tracer. Thus the late event will
-trigger the tracer owner PF to release the ownership again and lead to a
-scenario where no PF is owning the tracer.
+But then pte_user() returns 1 also for PAGE_NONE.
 
-To prevent the scenario described above, when handling a change
-ownership event, do not drop ownership of the tracer directly, instead
-read the fw MTRC register to retrieve the up-to-date owner of the tracer
-and set it accordingly in driver level.
+As _PAGE_NA prevent reads, add a specific version of pte_read()
+that returns 0 when _PAGE_NA is set instead of always returning 1.
 
-Fixes: f53aaa31cce7 ("net/mlx5: FW tracer, implement tracer logic")
-Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
-Reviewed-by: Shay Drory <shayd@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 351750331fc1 ("powerpc/mm: Introduce _PAGE_NA")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/57bcfbe578e43123f9ed73e040229b80f1ad56ec.1695659959.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h | 7 +++++++
+ arch/powerpc/include/asm/nohash/pgtable.h    | 2 ++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index c4e40834e3ff9..374c0011a127b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -821,7 +821,7 @@ static void mlx5_fw_tracer_ownership_change(struct work_struct *work)
+diff --git a/arch/powerpc/include/asm/nohash/32/pte-8xx.h b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+index c9e4b2d90f65c..93ecf4e80ca70 100644
+--- a/arch/powerpc/include/asm/nohash/32/pte-8xx.h
++++ b/arch/powerpc/include/asm/nohash/32/pte-8xx.h
+@@ -91,6 +91,13 @@ static inline pte_t pte_wrprotect(pte_t pte)
  
- 	mlx5_core_dbg(tracer->dev, "FWTracer: ownership changed, current=(%d)\n", tracer->owner);
- 	if (tracer->owner) {
--		tracer->owner = false;
-+		mlx5_fw_tracer_ownership_acquire(tracer);
- 		return;
- 	}
+ #define pte_wrprotect pte_wrprotect
  
++static inline int pte_read(pte_t pte)
++{
++	return (pte_val(pte) & _PAGE_RO) != _PAGE_NA;
++}
++
++#define pte_read pte_read
++
+ static inline int pte_write(pte_t pte)
+ {
+ 	return !(pte_val(pte) & _PAGE_RO);
+diff --git a/arch/powerpc/include/asm/nohash/pgtable.h b/arch/powerpc/include/asm/nohash/pgtable.h
+index 3d2a78ab051a7..15dec9994c780 100644
+--- a/arch/powerpc/include/asm/nohash/pgtable.h
++++ b/arch/powerpc/include/asm/nohash/pgtable.h
+@@ -45,7 +45,9 @@ static inline int pte_write(pte_t pte)
+ 	return pte_val(pte) & _PAGE_RW;
+ }
+ #endif
++#ifndef pte_read
+ static inline int pte_read(pte_t pte)		{ return 1; }
++#endif
+ static inline int pte_dirty(pte_t pte)		{ return pte_val(pte) & _PAGE_DIRTY; }
+ static inline int pte_special(pte_t pte)	{ return pte_val(pte) & _PAGE_SPECIAL; }
+ static inline int pte_none(pte_t pte)		{ return (pte_val(pte) & ~_PTE_NONE_MASK) == 0; }
 -- 
 2.40.1
 
