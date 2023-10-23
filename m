@@ -2,42 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C3FA7D32AD
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC2957D315D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233840AbjJWLWu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:22:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34532 "EHLO
+        id S233409AbjJWLIY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233848AbjJWLWs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:48 -0400
+        with ESMTP id S233406AbjJWLIX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79ADCD6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2527C433C7;
-        Mon, 23 Oct 2023 11:22:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86CDBC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C33CCC433C9;
+        Mon, 23 Oct 2023 11:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060166;
-        bh=2Ec9ThD4GedrZSz2iTnyNopnRoyDm0LJrnCWfs7nXYY=;
+        s=korg; t=1698059301;
+        bh=66/pjuUVMXrWiTyuatPfOQnUhxKgtgHjQ9wE56kKY/Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W0GoTRQVCXiBT+yGWG05rIuL5UhvvY29FL1vEemAb317AXAOnwouVmbMb33N7Y4SE
-         sELayDKzn9hH1Udui4dUeHcMfRQmmsOoK/hrG8PsaC4blh0Bee8Ze1UvwlNMZVUa9f
-         fZRVKKnifU+8HEM5z295O8eGJCoyr9QDjiQ6ccoU=
+        b=ixFe0yLzL5qkm2ur2mED1To4S5NfxnrDoxmcHTSG/vmubiVWHTx25Fy0VeggyN2pH
+         +2dvUze8c25Kzq7HoanTjbVUDkESVwNmmLTDVfTvq1gT1BK62cnQK74jVnIaA3SheS
+         4dve+LfgKkh7W3m+Xtd67NUwaApElqANvGkJNL6A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josua Mayer <josua@solid-run.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 053/196] net: rfkill: gpio: prevent value glitch during probe
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 132/241] btrfs: fix some -Wmaybe-uninitialized warnings in ioctl.c
 Date:   Mon, 23 Oct 2023 12:55:18 +0200
-Message-ID: <20231023104830.030818476@linuxfoundation.org>
+Message-ID: <20231023104837.091564576@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -48,60 +51,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josua Mayer <josua@solid-run.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit b2f750c3a80b285cd60c9346f8c96bd0a2a66cde upstream.
+[ Upstream commit 9147b9ded499d9853bdf0e9804b7eaa99c4429ed ]
 
-When either reset- or shutdown-gpio have are initially deasserted,
-e.g. after a reboot - or when the hardware does not include pull-down,
-there will be a short toggle of both IOs to logical 0 and back to 1.
+Jens reported the following warnings from -Wmaybe-uninitialized recent
+Linus' branch.
 
-It seems that the rfkill default is unblocked, so the driver should not
-glitch to output low during probe.
-It can lead e.g. to unexpected lte modem reconnect:
+  In file included from ./include/asm-generic/rwonce.h:26,
+		   from ./arch/arm64/include/asm/rwonce.h:71,
+		   from ./include/linux/compiler.h:246,
+		   from ./include/linux/export.h:5,
+		   from ./include/linux/linkage.h:7,
+		   from ./include/linux/kernel.h:17,
+		   from fs/btrfs/ioctl.c:6:
+  In function ‘instrument_copy_from_user_before’,
+      inlined from ‘_copy_from_user’ at ./include/linux/uaccess.h:148:3,
+      inlined from ‘copy_from_user’ at ./include/linux/uaccess.h:183:7,
+      inlined from ‘btrfs_ioctl_space_info’ at fs/btrfs/ioctl.c:2999:6,
+      inlined from ‘btrfs_ioctl’ at fs/btrfs/ioctl.c:4616:10:
+  ./include/linux/kasan-checks.h:38:27: warning: ‘space_args’ may be used
+  uninitialized [-Wmaybe-uninitialized]
+     38 | #define kasan_check_write __kasan_check_write
+  ./include/linux/instrumented.h:129:9: note: in expansion of macro
+  ‘kasan_check_write’
+    129 |         kasan_check_write(to, n);
+	|         ^~~~~~~~~~~~~~~~~
+  ./include/linux/kasan-checks.h: In function ‘btrfs_ioctl’:
+  ./include/linux/kasan-checks.h:20:6: note: by argument 1 of type ‘const
+  volatile void *’ to ‘__kasan_check_write’ declared here
+     20 | bool __kasan_check_write(const volatile void *p, unsigned int
+	size);
+	|      ^~~~~~~~~~~~~~~~~~~
+  fs/btrfs/ioctl.c:2981:39: note: ‘space_args’ declared here
+   2981 |         struct btrfs_ioctl_space_args space_args;
+	|                                       ^~~~~~~~~~
+  In function ‘instrument_copy_from_user_before’,
+      inlined from ‘_copy_from_user’ at ./include/linux/uaccess.h:148:3,
+      inlined from ‘copy_from_user’ at ./include/linux/uaccess.h:183:7,
+      inlined from ‘_btrfs_ioctl_send’ at fs/btrfs/ioctl.c:4343:9,
+      inlined from ‘btrfs_ioctl’ at fs/btrfs/ioctl.c:4658:10:
+  ./include/linux/kasan-checks.h:38:27: warning: ‘args32’ may be used
+  uninitialized [-Wmaybe-uninitialized]
+     38 | #define kasan_check_write __kasan_check_write
+  ./include/linux/instrumented.h:129:9: note: in expansion of macro
+  ‘kasan_check_write’
+    129 |         kasan_check_write(to, n);
+	|         ^~~~~~~~~~~~~~~~~
+  ./include/linux/kasan-checks.h: In function ‘btrfs_ioctl’:
+  ./include/linux/kasan-checks.h:20:6: note: by argument 1 of type ‘const
+  volatile void *’ to ‘__kasan_check_write’ declared here
+     20 | bool __kasan_check_write(const volatile void *p, unsigned int
+	size);
+	|      ^~~~~~~~~~~~~~~~~~~
+  fs/btrfs/ioctl.c:4341:49: note: ‘args32’ declared here
+   4341 |                 struct btrfs_ioctl_send_args_32 args32;
+	|                                                 ^~~~~~
 
-[1] root@localhost:~# dmesg | grep "usb 2-1"
-[    2.136124] usb 2-1: new SuperSpeed USB device number 2 using xhci-hcd
-[   21.215278] usb 2-1: USB disconnect, device number 2
-[   28.833977] usb 2-1: new SuperSpeed USB device number 3 using xhci-hcd
+This was due to his config options and having KASAN turned on,
+which adds some extra checks around copy_from_user(), which then
+triggered the -Wmaybe-uninitialized checker for these cases.
 
-The glitch has been discovered on an arm64 board, now that device-tree
-support for the rfkill-gpio driver has finally appeared :).
+Fix the warnings by initializing the different structs we're copying
+into.
 
-Change the flags for devm_gpiod_get_optional from GPIOD_OUT_LOW to
-GPIOD_ASIS to avoid any glitches.
-The rfkill driver will set the intended value during rfkill_sync_work.
-
-Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
-Signed-off-by: Josua Mayer <josua@solid-run.com>
-Link: https://lore.kernel.org/r/20231004163928.14609-1-josua@solid-run.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/rfkill-gpio.c |    4 ++--
+ fs/btrfs/ioctl.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -98,13 +98,13 @@ static int rfkill_gpio_probe(struct plat
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index d27b0d86b8e2c..bf35b6fce8f07 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -2978,7 +2978,7 @@ static void get_block_group_info(struct list_head *groups_list,
+ static long btrfs_ioctl_space_info(struct btrfs_fs_info *fs_info,
+ 				   void __user *arg)
+ {
+-	struct btrfs_ioctl_space_args space_args;
++	struct btrfs_ioctl_space_args space_args = { 0 };
+ 	struct btrfs_ioctl_space_info space;
+ 	struct btrfs_ioctl_space_info *dest;
+ 	struct btrfs_ioctl_space_info *dest_orig;
+@@ -4338,7 +4338,7 @@ static int _btrfs_ioctl_send(struct inode *inode, void __user *argp, bool compat
  
- 	rfkill->clk = devm_clk_get(&pdev->dev, NULL);
+ 	if (compat) {
+ #if defined(CONFIG_64BIT) && defined(CONFIG_COMPAT)
+-		struct btrfs_ioctl_send_args_32 args32;
++		struct btrfs_ioctl_send_args_32 args32 = { 0 };
  
--	gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_OUT_LOW);
-+	gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_ASIS);
- 	if (IS_ERR(gpio))
- 		return PTR_ERR(gpio);
- 
- 	rfkill->reset_gpio = gpio;
- 
--	gpio = devm_gpiod_get_optional(&pdev->dev, "shutdown", GPIOD_OUT_LOW);
-+	gpio = devm_gpiod_get_optional(&pdev->dev, "shutdown", GPIOD_ASIS);
- 	if (IS_ERR(gpio))
- 		return PTR_ERR(gpio);
- 
+ 		ret = copy_from_user(&args32, argp, sizeof(args32));
+ 		if (ret)
+-- 
+2.40.1
+
 
 
