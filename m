@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DD147D3130
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18D787D3267
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233372AbjJWLGk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:06:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53230 "EHLO
+        id S233783AbjJWLTl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:19:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233363AbjJWLGj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:06:39 -0400
+        with ESMTP id S233780AbjJWLTk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EE28D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:06:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1522C433C9;
-        Mon, 23 Oct 2023 11:06:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 923BCDC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A1DC433C7;
+        Mon, 23 Oct 2023 11:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059198;
-        bh=nq5yN3K6q7NxWbpCeH5FkGik/q9K3WXpeRB2xsZ4U28=;
+        s=korg; t=1698059978;
+        bh=phHGJbC9UHq+f3alNwn5P3+n13CSya2gNCwm31dAiLk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xjZmjyK9iyjDapaaWObz6fraQ6ivLg72ptfzcyyzIWS+wJ4vrlaNVUghwyS3utGvd
-         R3oivnZghGAODARkTgbBOy/UhrXMDDNN04GQYvLZevqnQVXpn8aEFrzvpkLYM/vtzP
-         sOS5e7f8zvQbjjQDMQ5Z+ZxT0vWSfBG5ZEPX7Rgo=
+        b=KzgYjRPmLsMFCfwrd+u3txs+X7gMPjL2ciiaOncwcNoUT8LDSEM3Mgsr+FjteokGF
+         1Lr8kh5tna7FnIP/dc7sT7aphs+BQBbaTELCxBeSeAWb5KCKHYXm18ZHoNOyhU/j/T
+         +MueXeyY2OtSgVDjBbxBxV4fMd1REZVAxtIqi6KM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Thompson <davthompson@nvidia.com>,
-        Asmaa Mnebhi <asmaa@nvidia.com>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 097/241] pwr-mlxbf: extend Kconfig to include gpio-mlxbf3 dependency
+        patches@lists.linux.dev,
+        =?UTF-8?q?=E9=BB=84=E6=80=9D=E8=81=AA?= <huangsicong@iie.ac.cn>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 018/196] nfc: nci: fix possible NULL pointer dereference in send_acknowledge()
 Date:   Mon, 23 Oct 2023 12:54:43 +0200
-Message-ID: <20231023104836.267508462@linuxfoundation.org>
+Message-ID: <20231023104829.004859981@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,45 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 82f07f1acf417b81e793145c167dd5e156024de4 ]
+commit 7937609cd387246aed994e81aa4fa951358fba41 upstream.
 
-The BlueField power handling driver (pwr-mlxbf.c) provides
-functionality for both BlueField-2 and BlueField-3 based
-platforms.  This driver also depends on the SoC-specific
-BlueField GPIO driver, whether gpio-mlxbf2 or gpio-mlxbf3.
-This patch extends the Kconfig definition to include the
-dependency on the gpio-mlxbf3 driver, if applicable.
+Handle memory allocation failure from nci_skb_alloc() (calling
+alloc_skb()) to avoid possible NULL pointer dereference.
 
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Link: https://lore.kernel.org/r/20230823133743.31275-1-davthompson@nvidia.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: 黄思聪 <huangsicong@iie.ac.cn>
+Fixes: 391d8a2da787 ("NFC: Add NCI over SPI receive")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231013184129.18738-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/reset/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/nfc/nci/spi.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/power/reset/Kconfig b/drivers/power/reset/Kconfig
-index fff07b2bd77b9..62f592e617339 100644
---- a/drivers/power/reset/Kconfig
-+++ b/drivers/power/reset/Kconfig
-@@ -307,7 +307,7 @@ config NVMEM_REBOOT_MODE
+--- a/net/nfc/nci/spi.c
++++ b/net/nfc/nci/spi.c
+@@ -151,6 +151,8 @@ static int send_acknowledge(struct nci_s
+ 	int ret;
  
- config POWER_MLXBF
- 	tristate "Mellanox BlueField power handling driver"
--	depends on (GPIO_MLXBF2 && ACPI)
-+	depends on (GPIO_MLXBF2 || GPIO_MLXBF3) && ACPI
- 	help
- 	  This driver supports reset or low power mode handling for Mellanox BlueField.
+ 	skb = nci_skb_alloc(nspi->ndev, 0, GFP_KERNEL);
++	if (!skb)
++		return -ENOMEM;
  
--- 
-2.40.1
-
+ 	/* add the NCI SPI header to the start of the buffer */
+ 	hdr = skb_push(skb, NCI_SPI_HDR_LEN);
 
 
