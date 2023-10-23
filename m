@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC2A47D3535
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F39E7D32EE
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234569AbjJWLqU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:46:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51908 "EHLO
+        id S233880AbjJWLZG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:25:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234574AbjJWLqB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:46:01 -0400
+        with ESMTP id S233889AbjJWLZD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F8E170B
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98ED1C433C7;
-        Mon, 23 Oct 2023 11:45:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7185010D1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C04C433C8;
+        Mon, 23 Oct 2023 11:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061549;
-        bh=X4EHtzdvG4e5pft3fdLCRJUoiT0y4jBblRueJxgWxDM=;
+        s=korg; t=1698060300;
+        bh=yuBnpFbSsG0QmitFZw8TMTOpW0jPgq3ac1ItybBwBxc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WOUCgiDKRttD7jDotjb6Oi9OJ4Xoxggo2lnfCFgJCKynMnHZJIdbxQOL7hCFCPAY5
-         XgR3hIiZEkYOf+0TixO+nZOcTeltQehi56B55QkXh2Y27NNZp2pl1aEkYdCCkLG57E
-         cAWhNwxzd3jz4KqChZhvx3RIVJrL6FtIAYBY1E/k=
+        b=E7NqaaPy/ctzbfiLloI/kPEh2QM9WGJiY2LUsARdRsMssWrb08D/ogRHCmu49nJPD
+         p0NjQJwniYGVtyAlQ749yZUHnvRiowKneWF9pefYu2fNUqq/4SEXt1rahXAl/vz3Im
+         2Md2fK5Vhs7WuarbP2LUiD4yxTQjSsnCWDD3KZHA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Rothwell <sfr@canb.auug.org.au>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Ben Hutchings <ben@decadent.org.uk>
-Subject: [PATCH 5.10 084/202] Documentation: sysctl: align cells in second content column
+        patches@lists.linux.dev, Xuewen Yan <xuewen.yan@unisoc.com>,
+        Guohua Yan <guohua.yan@unisoc.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 126/196] cpufreq: schedutil: Update next_freq when cpufreq_limits change
 Date:   Mon, 23 Oct 2023 12:56:31 +0200
-Message-ID: <20231023104828.995782524@linuxfoundation.org>
+Message-ID: <20231023104832.064771514@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,78 +51,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bagas Sanjaya <bagasdotme@gmail.com>
+From: Xuewen Yan <xuewen.yan@unisoc.com>
 
-commit 1faa34672f8a17a3e155e74bde9648564e9480d6 upstream.
+[ Upstream commit 9e0bc36ab07c550d791bf17feeb479f1dfc42d89 ]
 
-Stephen Rothwell reported htmldocs warning when merging net-next tree:
+When cpufreq's policy is 'single', there is a scenario that will
+cause sg_policy's next_freq to be unable to update.
 
-Documentation/admin-guide/sysctl/net.rst:37: WARNING: Malformed table.
-Text in column margin in table line 4.
+When the CPU's util is always max, the cpufreq will be max,
+and then if we change the policy's scaling_max_freq to be a
+lower freq, indeed, the sg_policy's next_freq need change to
+be the lower freq, however, because the cpu_is_busy, the next_freq
+would keep the max_freq.
 
-========= =================== = ========== ==================
-Directory Content               Directory  Content
-========= =================== = ========== ==================
-802       E802 protocol         mptcp     Multipath TCP
-appletalk Appletalk protocol    netfilter Network Filter
-ax25      AX25                  netrom     NET/ROM
-bridge    Bridging              rose      X.25 PLP layer
-core      General parameter     tipc      TIPC
-ethernet  Ethernet protocol     unix      Unix domain sockets
-ipv4      IP version 4          x25       X.25 protocol
-ipv6      IP version 6
-========= =================== = ========== ==================
+For example:
 
-The warning above is caused by cells in second "Content" column of
-/proc/sys/net subdirectory table which are in column margin.
+The cpu7 is a single CPU:
 
-Align these cells against the column header to fix the warning.
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # while true;do done& [1] 4737
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # taskset -p 80 4737
+  pid 4737's current affinity mask: ff
+  pid 4737's new affinity mask: 80
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # cat scaling_max_freq
+  2301000
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # cat scaling_cur_freq
+  2301000
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # echo 2171000 > scaling_max_freq
+  unisoc:/sys/devices/system/cpu/cpufreq/policy7 # cat scaling_max_freq
+  2171000
 
-Link: https://lore.kernel.org/linux-next/20220823134905.57ed08d5@canb.auug.org.au/
-Fixes: 1202cdd665315c ("Remove DECnet support from kernel")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Link: https://lore.kernel.org/r/20220824035804.204322-1-bagasdotme@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Cc: Ben Hutchings <ben@decadent.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+At this time, the sg_policy's next_freq would stay at 2301000, which
+is wrong.
+
+To fix this, add a check for the ->need_freq_update flag.
+
+[ mingo: Clarified the changelog. ]
+
+Co-developed-by: Guohua Yan <guohua.yan@unisoc.com>
+Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+Signed-off-by: Guohua Yan <guohua.yan@unisoc.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Link: https://lore.kernel.org/r/20230719130527.8074-1-xuewen.yan@unisoc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/sysctl/net.rst |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ kernel/sched/cpufreq_schedutil.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/Documentation/admin-guide/sysctl/net.rst
-+++ b/Documentation/admin-guide/sysctl/net.rst
-@@ -31,18 +31,18 @@ see only some of them, depending on your
+diff --git a/kernel/sched/cpufreq_schedutil.c b/kernel/sched/cpufreq_schedutil.c
+index 1207c78f85c11..853a07618a3cf 100644
+--- a/kernel/sched/cpufreq_schedutil.c
++++ b/kernel/sched/cpufreq_schedutil.c
+@@ -345,7 +345,8 @@ static void sugov_update_single_freq(struct update_util_data *hook, u64 time,
+ 	 * Except when the rq is capped by uclamp_max.
+ 	 */
+ 	if (!uclamp_rq_is_capped(cpu_rq(sg_cpu->cpu)) &&
+-	    sugov_cpu_is_busy(sg_cpu) && next_f < sg_policy->next_freq) {
++	    sugov_cpu_is_busy(sg_cpu) && next_f < sg_policy->next_freq &&
++	    !sg_policy->need_freq_update) {
+ 		next_f = sg_policy->next_freq;
  
- Table : Subdirectories in /proc/sys/net
- 
-- ========= =================== = ========== ==================
-+ ========= =================== = ========== ===================
-  Directory Content               Directory  Content
-- ========= =================== = ========== ==================
-- 802       E802 protocol         mptcp     Multipath TCP
-- appletalk Appletalk protocol    netfilter Network Filter
-+ ========= =================== = ========== ===================
-+ 802       E802 protocol         mptcp      Multipath TCP
-+ appletalk Appletalk protocol    netfilter  Network Filter
-  ax25      AX25                  netrom     NET/ROM
-- bridge    Bridging              rose      X.25 PLP layer
-- core      General parameter     tipc      TIPC
-- ethernet  Ethernet protocol     unix      Unix domain sockets
-- ipv4      IP version 4          x25       X.25 protocol
-+ bridge    Bridging              rose       X.25 PLP layer
-+ core      General parameter     tipc       TIPC
-+ ethernet  Ethernet protocol     unix       Unix domain sockets
-+ ipv4      IP version 4          x25        X.25 protocol
-  ipv6      IP version 6
-- ========= =================== = ========== ==================
-+ ========= =================== = ========== ===================
- 
- 1. /proc/sys/net/core - Network core options
- ============================================
+ 		/* Restore cached freq as next_freq has changed */
+-- 
+2.40.1
+
 
 
