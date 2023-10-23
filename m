@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 23C647D3186
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9BE97D3076
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233589AbjJWLKF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:10:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
+        id S229753AbjJWK66 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 06:58:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233602AbjJWLKF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:05 -0400
+        with ESMTP id S229563AbjJWK65 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:58:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B954A99
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5B9C433C8;
-        Mon, 23 Oct 2023 11:10:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12726D7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:58:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B0BAC433C8;
+        Mon, 23 Oct 2023 10:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059402;
-        bh=eSZDGzjZnCry1pW/gshQFJeby5A4F+UD5vYKi8IDgGA=;
+        s=korg; t=1698058735;
+        bh=o5n3GFRsTsjyBVtv4ONTvryifFzmUf0gEX6MM7OJGB4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jJOViV+nJpGlBDw2N0OeMI3cekVcCn4WQcX8s+go3e8JJFeYWOAAQJ4br6PGoqVdS
-         /iBCk5wtRYMBN9833T1sHS/Y8r/otzRkAuNguN4ghLi+cVkE/vkwu396FNNSIs9I53
-         qOxJwGh0R+a86sZitmCE3tHRG6X9mu5guSZv54JY=
+        b=mQZdArAarRQtv8xcVThMM+cNeCLR/hmIqDRpo4YXaPK2BHfX2pE2DAaYs9TuFMF4V
+         wmOTdSGoUFlxHUB9vr8ROzWqU+BiUbbnm/0VH50VpXI9lrg2M3QTPJh1oARMB/yQIm
+         njPtNG1JBP+W2KIu4FHU6RJUQOONpO+7YmwO24Q0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Simek <michal.simek@amd.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.5 165/241] mtd: rawnand: pl353: Ensure program page operations are successful
+        patches@lists.linux.dev,
+        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 01/66] RDMA/cxgb4: Check skb value for failure to allocate
 Date:   Mon, 23 Oct 2023 12:55:51 +0200
-Message-ID: <20231023104837.899319351@linuxfoundation.org>
+Message-ID: <20231023104810.836687095@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,69 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-commit 9777cc13fd2c3212618904636354be60835e10bb upstream.
+[ Upstream commit 8fb8a82086f5bda6893ea6557c5a458e4549c6d7 ]
 
-The NAND core complies with the ONFI specification, which itself
-mentions that after any program or erase operation, a status check
-should be performed to see whether the operation was finished *and*
-successful.
+get_skb() can fail to allocate skb, so check it.
 
-The NAND core offers helpers to finish a page write (sending the
-"PAGE PROG" command, waiting for the NAND chip to be ready again, and
-checking the operation status). But in some cases, advanced controller
-drivers might want to optimize this and craft their own page write
-helper to leverage additional hardware capabilities, thus not always
-using the core facilities.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Some drivers, like this one, do not use the core helper to finish a page
-write because the final cycles are automatically managed by the
-hardware. In this case, the additional care must be taken to manually
-perform the final status check.
-
-Let's read the NAND chip status at the end of the page write helper and
-return -EIO upon error.
-
-Cc: Michal Simek <michal.simek@amd.com>
-Cc: stable@vger.kernel.org
-Fixes: 08d8c62164a3 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-3-miquel.raynal@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5be78ee924ae ("RDMA/cxgb4: Fix LE hash collision bug for active open connection")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Link: https://lore.kernel.org/r/20230905124048.284165-1-artem.chernyshev@red-soft.ru
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/pl35x-nand-controller.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/infiniband/hw/cxgb4/cm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
-+++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-@@ -513,6 +513,7 @@ static int pl35x_nand_write_page_hwecc(s
- 	u32 addr1 = 0, addr2 = 0, row;
- 	u32 cmd_addr;
- 	int i, ret;
-+	u8 status;
+diff --git a/drivers/infiniband/hw/cxgb4/cm.c b/drivers/infiniband/hw/cxgb4/cm.c
+index 357960d48e668..2086844dfade9 100644
+--- a/drivers/infiniband/hw/cxgb4/cm.c
++++ b/drivers/infiniband/hw/cxgb4/cm.c
+@@ -1902,6 +1902,9 @@ static int send_fw_act_open_req(struct c4iw_ep *ep, unsigned int atid)
+ 	int win;
  
- 	ret = pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_APB);
- 	if (ret)
-@@ -565,6 +566,14 @@ static int pl35x_nand_write_page_hwecc(s
- 	if (ret)
- 		goto disable_ecc_engine;
- 
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		goto disable_ecc_engine;
+ 	skb = get_skb(NULL, sizeof(*req), GFP_KERNEL);
++	if (!skb)
++		return -ENOMEM;
 +
-+	if (status & NAND_STATUS_FAIL)
-+		ret = -EIO;
-+
- disable_ecc_engine:
- 	pl35x_smc_set_ecc_mode(nfc, chip, PL35X_SMC_ECC_CFG_MODE_BYPASS);
- 
+ 	req = __skb_put_zero(skb, sizeof(*req));
+ 	req->op_compl = htonl(WR_OP_V(FW_OFLD_CONNECTION_WR));
+ 	req->len16_pkd = htonl(FW_WR_LEN16_V(DIV_ROUND_UP(sizeof(*req), 16)));
+-- 
+2.40.1
+
 
 
