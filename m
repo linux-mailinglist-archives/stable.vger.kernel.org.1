@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BA9A7D31C4
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D8637D3370
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233648AbjJWLNB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:13:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56686 "EHLO
+        id S234034AbjJWLaS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:30:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230363AbjJWLM6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:58 -0400
+        with ESMTP id S234055AbjJWLaQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E4B810C
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73CA2C433C8;
-        Mon, 23 Oct 2023 11:12:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9CDBC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060E5C433C8;
+        Mon, 23 Oct 2023 11:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059574;
-        bh=eJd7klf4TBhAykFGgRMFhg42v1wp6RjHf6mKc9Jk0e0=;
+        s=korg; t=1698060614;
+        bh=DhF1AgEuBCtEzQydIXzz+9YdQfVl4BD/nJ6r5k2zIPY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sB0pNnCNMgu8iw4wElURI4s72o6W9GhpWSgIGC2wN0ymBHuYvn4fnwMZh8HLQKucG
-         9LzGSR9X2iKnHd0Pid/4B+bGlG4qf8LfzRD4ok+5km+xRmTT1YflAsBH0ugq50t+AP
-         GQnkAz+TvP3QPNvIqt4i6CMBTi5yHykAOE95N14I=
+        b=w5NI3cXZ4CfL5RLc64Ve7Af72p43nT1NEjjfl+54zlJ87Mpo1VHsNBzTr84NEwJB6
+         D9NYJW8Bznx58xkH+AhtNIUlhCUVRfzJzSx9ozU878qza08k7tLiDWN05d99W7IOtw
+         zphAYhRd0a//ERJCcgg/n7QtHy3uzOQnR1m+n0qQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
-        Maximilian Luz <luzmaximilian@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.5 205/241] platform/surface: platform_profile: Propagate error if profile registration fails
-Date:   Mon, 23 Oct 2023 12:56:31 +0200
-Message-ID: <20231023104838.855556594@linuxfoundation.org>
+        patches@lists.linux.dev, Firo Yang <firo.yang@suse.com>,
+        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+        Tejun Heo <tj@kernel.org>
+Subject: [PATCH 5.4 034/123] cgroup: Remove duplicates in cgroup v1 tasks file
+Date:   Mon, 23 Oct 2023 12:56:32 +0200
+Message-ID: <20231023104818.883885526@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,45 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Michal Koutný <mkoutny@suse.com>
 
-commit fe0e04cf66a12ffe6d1b43725ddaabd5599d024f upstream.
+commit 1ca0b605150501b7dc59f3016271da4eb3e96fce upstream.
 
-If platform_profile_register() fails, the driver does not propagate
-the error, but instead probes successfully. This means when the driver
-unbinds, the a warning might be issued by platform_profile_remove().
+One PID may appear multiple times in a preloaded pidlist.
+(Possibly due to PID recycling but we have reports of the same
+task_struct appearing with different PIDs, thus possibly involving
+transfer of PID via de_thread().)
 
-Fix this by propagating the error back to the caller of
-surface_platform_profile_probe().
+Because v1 seq_file iterator uses PIDs as position, it leads to
+a message:
+> seq_file: buggy .next function kernfs_seq_next did not update position index
 
-Compile-tested only.
+Conservative and quick fix consists of removing duplicates from `tasks`
+file (as opposed to removing pidlists altogether). It doesn't affect
+correctness (it's sufficient to show a PID once), performance impact
+would be hidden by unconditional sorting of the pidlist already in place
+(asymptotically).
 
-Fixes: b78b4982d763 ("platform/surface: Add platform profile driver")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
-Tested-by: Maximilian Luz <luzmaximilian@gmail.com>
-Link: https://lore.kernel.org/r/20231014235449.288702-1-W_Armin@gmx.de
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20230823174804.23632-1-mkoutny@suse.com/
+Suggested-by: Firo Yang <firo.yang@suse.com>
+Signed-off-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/surface/surface_platform_profile.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/cgroup/cgroup-v1.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/platform/surface/surface_platform_profile.c
-+++ b/drivers/platform/surface/surface_platform_profile.c
-@@ -159,8 +159,7 @@ static int surface_platform_profile_prob
- 	set_bit(PLATFORM_PROFILE_BALANCED_PERFORMANCE, tpd->handler.choices);
- 	set_bit(PLATFORM_PROFILE_PERFORMANCE, tpd->handler.choices);
+--- a/kernel/cgroup/cgroup-v1.c
++++ b/kernel/cgroup/cgroup-v1.c
+@@ -367,10 +367,9 @@ static int pidlist_array_load(struct cgr
+ 	}
+ 	css_task_iter_end(&it);
+ 	length = n;
+-	/* now sort & (if procs) strip out duplicates */
++	/* now sort & strip out duplicates (tgids or recycled thread PIDs) */
+ 	sort(array, length, sizeof(pid_t), cmppid, NULL);
+-	if (type == CGROUP_FILE_PROCS)
+-		length = pidlist_uniq(array, length);
++	length = pidlist_uniq(array, length);
  
--	platform_profile_register(&tpd->handler);
--	return 0;
-+	return platform_profile_register(&tpd->handler);
- }
- 
- static void surface_platform_profile_remove(struct ssam_device *sdev)
+ 	l = cgroup_pidlist_find_create(cgrp, type);
+ 	if (!l) {
 
 
