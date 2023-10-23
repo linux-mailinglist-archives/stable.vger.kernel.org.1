@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C7517D3243
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A02587D3383
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233730AbjJWLSS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:18:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58834 "EHLO
+        id S234073AbjJWLbL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233729AbjJWLSR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:17 -0400
+        with ESMTP id S234078AbjJWLbK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B82BCC2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DDEC433C7;
-        Mon, 23 Oct 2023 11:18:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB35C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC949C433C8;
+        Mon, 23 Oct 2023 11:31:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059895;
-        bh=hiW/Y1KIkHl0HAoWz8sARvzyiHspDX+vHsM73QHYB2M=;
+        s=korg; t=1698060668;
+        bh=FEPf54/WqUWHFhhl4WqKO9CvxEKOgjvf7hYTLT2Mzv4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UU7aXUDP38exSytM4I3UN7FWMuTMpGUJTZO4OIMXv/DHxhcjshBXEAmy6Obq2bJy0
-         /TGSE6kh7Jt8PRVtR+K3XcFqwZJQzGfqCBC5RQrOnND6yJy6cRENm466Apkh1PvJOD
-         YrQI+JgjCAlfKcGQlKaPizphC8xyWuzvUSe0ZxQM=
+        b=Ri6ZqQylN4gviJwC9LxZ66mTYAO/qUB+zsfWps2Y/9QIt/bFjkPJmyum9tXD+UD9x
+         BLNNikdnroyMzhsuAJn+p2K8hRBT0uGettmgrRHbH4eZT1oQ0pKAgIbReJu7Z4fu9c
+         KtBidqLYlB6OS3t0NY+vxhQJCi2xn8H+4MSuAIj0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 4.19 62/98] netfilter: nft_set_rbtree: .deactivate fails if element has expired
+        patches@lists.linux.dev,
+        =?UTF-8?q?=E9=BB=84=E6=80=9D=E8=81=AA?= <huangsicong@iie.ac.cn>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 053/123] nfc: nci: fix possible NULL pointer dereference in send_acknowledge()
 Date:   Mon, 23 Oct 2023 12:56:51 +0200
-Message-ID: <20231023104815.799881309@linuxfoundation.org>
+Message-ID: <20231023104819.475918848@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -48,38 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit d111692a59c1470ae530cbb39bcf0346c950ecc7 upstream.
+commit 7937609cd387246aed994e81aa4fa951358fba41 upstream.
 
-This allows to remove an expired element which is not possible in other
-existing set backends, this is more noticeable if gc-interval is high so
-expired elements remain in the tree. On-demand gc also does not help in
-this case, because this is delete element path. Return NULL if element
-has expired.
+Handle memory allocation failure from nci_skb_alloc() (calling
+alloc_skb()) to avoid possible NULL pointer dereference.
 
-Fixes: 8d8540c4f5e0 ("netfilter: nft_set_rbtree: add timeout support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Reported-by: 黄思聪 <huangsicong@iie.ac.cn>
+Fixes: 391d8a2da787 ("NFC: Add NCI over SPI receive")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231013184129.18738-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_rbtree.c |    2 ++
+ net/nfc/nci/spi.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -326,6 +326,8 @@ static void *nft_rbtree_deactivate(const
- 				   nft_rbtree_interval_end(this)) {
- 				parent = parent->rb_right;
- 				continue;
-+			} else if (nft_set_elem_expired(&rbe->ext)) {
-+				break;
- 			} else if (!nft_set_elem_active(&rbe->ext, genmask)) {
- 				parent = parent->rb_left;
- 				continue;
+--- a/net/nfc/nci/spi.c
++++ b/net/nfc/nci/spi.c
+@@ -150,6 +150,8 @@ static int send_acknowledge(struct nci_s
+ 	int ret;
+ 
+ 	skb = nci_skb_alloc(nspi->ndev, 0, GFP_KERNEL);
++	if (!skb)
++		return -ENOMEM;
+ 
+ 	/* add the NCI SPI header to the start of the buffer */
+ 	hdr = skb_push(skb, NCI_SPI_HDR_LEN);
 
 
