@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C1087D351A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:45:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEC787D32A6
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231732AbjJWLp0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:45:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43148 "EHLO
+        id S233843AbjJWLWd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:22:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234487AbjJWLpK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:10 -0400
+        with ESMTP id S233837AbjJWLWd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCD9310F6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:45:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DA7C433C7;
-        Mon, 23 Oct 2023 11:45:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB9B492
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08ADEC433C8;
+        Mon, 23 Oct 2023 11:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061507;
-        bh=oEs8NRkcoiv/MgC/ViO5QDawxghHgCHB6KUS2sChhiY=;
+        s=korg; t=1698060151;
+        bh=n28umSft8qD2aUw7vnXlzOdywxORX3ojv9LTrWYmBKk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OydhQNEClpDyt5tTSwOOT5RWlV1pv+sORGXc6Ai+oH+RjArwJdsBqkqfWlSZtKy73
-         1lRbauLqq16rCxqdoZg0AUH+29erHufoxGZzHS/0ROIS283qaOMGlrUptw1LtN36Ka
-         o65JZFsxqU1WcFKEiufIO52oZum02c6YsjQgS3vs=
+        b=YoLc14wq9gRAUp/PqwfLSccD0ZrerpSmSKcJpiiyjvx0peCpqH/aaiPYi8jiB8js9
+         hbES9qCH/8ichkFknwu7WT3HoMbB552NuHULfH/UH7syLvrFqj5P7ejQZbIMrybeMD
+         qFBamqf+GBchKKznQcFw2yi/NMrC7dc2iwFze+Xg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 033/202] dmaengine: stm32-mdma: abort resume if no ongoing transfer
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        Jiri Pirko <jiri@nvidia.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 075/196] net: fix ifname in netlink ntf during netns move
 Date:   Mon, 23 Oct 2023 12:55:40 +0200
-Message-ID: <20231023104827.564746783@linuxfoundation.org>
+Message-ID: <20231023104830.672031052@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +48,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 81337b9a72dc58a5fa0ae8a042e8cb59f9bdec4a upstream.
+commit 311cca40661f428b7aa114fb5af578cfdbe3e8b6 upstream.
 
-chan->desc can be null, if transfer is terminated when resume is called,
-leading to a NULL pointer when retrieving the hwdesc.
-To avoid this case, check that chan->desc is not null and channel is
-disabled (transfer previously paused or terminated).
+dev_get_valid_name() overwrites the netdev's name on success.
+This makes it hard to use in prepare-commit-like fashion,
+where we do validation first, and "commit" to the change
+later.
 
-Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231004163531.2864160-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Factor out a helper which lets us save the new name to a buffer.
+Use it to fix the problem of notification on netns move having
+incorrect name:
+
+ 5: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default
+     link/ether be:4d:58:f9:d5:40 brd ff:ff:ff:ff:ff:ff
+ 6: eth1: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default
+     link/ether 1e:4a:34:36:e3:cd brd ff:ff:ff:ff:ff:ff
+
+ [ ~]# ip link set dev eth0 netns 1 name eth1
+
+ip monitor inside netns:
+ Deleted inet eth0
+ Deleted inet6 eth0
+ Deleted 5: eth1: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN group default
+     link/ether be:4d:58:f9:d5:40 brd ff:ff:ff:ff:ff:ff new-netnsid 0 new-ifindex 7
+
+Name is reported as eth1 in old netns for ifindex 5, already renamed.
+
+Fixes: d90310243fd7 ("net: device name allocation cleanups")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/stm32-mdma.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/core/dev.c |   44 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 31 insertions(+), 13 deletions(-)
 
---- a/drivers/dma/stm32-mdma.c
-+++ b/drivers/dma/stm32-mdma.c
-@@ -1206,6 +1206,10 @@ static int stm32_mdma_resume(struct dma_
- 	unsigned long flags;
- 	u32 status, reg;
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -1091,6 +1091,26 @@ static int __dev_alloc_name(struct net *
+ 	return -ENFILE;
+ }
  
-+	/* Transfer can be terminated */
-+	if (!chan->desc || (stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & STM32_MDMA_CCR_EN))
-+		return -EPERM;
++static int dev_prep_valid_name(struct net *net, struct net_device *dev,
++			       const char *want_name, char *out_name)
++{
++	int ret;
 +
- 	hwdesc = chan->desc->node[chan->curr_hwdesc].hwdesc;
++	if (!dev_valid_name(want_name))
++		return -EINVAL;
++
++	if (strchr(want_name, '%')) {
++		ret = __dev_alloc_name(net, want_name, out_name);
++		return ret < 0 ? ret : 0;
++	} else if (netdev_name_in_use(net, want_name)) {
++		return -EEXIST;
++	} else if (out_name != want_name) {
++		strscpy(out_name, want_name, IFNAMSIZ);
++	}
++
++	return 0;
++}
++
+ static int dev_alloc_name_ns(struct net *net,
+ 			     struct net_device *dev,
+ 			     const char *name)
+@@ -1128,19 +1148,13 @@ EXPORT_SYMBOL(dev_alloc_name);
+ static int dev_get_valid_name(struct net *net, struct net_device *dev,
+ 			      const char *name)
+ {
+-	BUG_ON(!net);
+-
+-	if (!dev_valid_name(name))
+-		return -EINVAL;
+-
+-	if (strchr(name, '%'))
+-		return dev_alloc_name_ns(net, dev, name);
+-	else if (netdev_name_in_use(net, name))
+-		return -EEXIST;
+-	else if (dev->name != name)
+-		strscpy(dev->name, name, IFNAMSIZ);
++	char buf[IFNAMSIZ];
++	int ret;
  
- 	spin_lock_irqsave(&chan->vchan.lock, flags);
+-	return 0;
++	ret = dev_prep_valid_name(net, dev, name, buf);
++	if (ret >= 0)
++		strscpy(dev->name, buf, IFNAMSIZ);
++	return ret;
+ }
+ 
+ /**
+@@ -10936,6 +10950,7 @@ int __dev_change_net_namespace(struct ne
+ 			       const char *pat, int new_ifindex)
+ {
+ 	struct net *net_old = dev_net(dev);
++	char new_name[IFNAMSIZ] = {};
+ 	int err, new_nsid;
+ 
+ 	ASSERT_RTNL();
+@@ -10962,7 +10977,7 @@ int __dev_change_net_namespace(struct ne
+ 		/* We get here if we can't use the current device name */
+ 		if (!pat)
+ 			goto out;
+-		err = dev_get_valid_name(net, dev, pat);
++		err = dev_prep_valid_name(net, dev, pat, new_name);
+ 		if (err < 0)
+ 			goto out;
+ 	}
+@@ -11030,6 +11045,9 @@ int __dev_change_net_namespace(struct ne
+ 	kobject_uevent(&dev->dev.kobj, KOBJ_ADD);
+ 	netdev_adjacent_add_links(dev);
+ 
++	if (new_name[0]) /* Rename the netdev to prepared name */
++		strscpy(dev->name, new_name, IFNAMSIZ);
++
+ 	/* Fixup kobjects */
+ 	err = device_rename(&dev->dev, dev->name);
+ 	WARN_ON(err);
 
 
