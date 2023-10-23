@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A3377D31A8
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 686277D3093
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:00:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229575AbjJWLLm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37772 "EHLO
+        id S229835AbjJWLAO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:00:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233541AbjJWLLm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:42 -0400
+        with ESMTP id S232778AbjJWLAL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:00:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6B9C5
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923ADC433C7;
-        Mon, 23 Oct 2023 11:11:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3132010D3
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:00:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AC2C433CB;
+        Mon, 23 Oct 2023 11:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059499;
-        bh=X5SEx12bApcOGg2fww70UtIsTHN/K15ElC4dTYG/02Y=;
+        s=korg; t=1698058806;
+        bh=sPeE4Xs3x0Hp9CPsYT3ASFekDqcNJ1yUUIkZOQpEiEw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uPvNSyWOydcC1Ib6ZRId2OY1xfI3ZIVU+OGaN7qx/jq4bekFn+CJOW+JqCkTdB6iW
-         ARbpD46tGDh6/QECzAt3eBdjObG+TO7cIoMx1wtPECDtZfoIVdqJcpC9qk6r/oeHq0
-         Cuntox/qm35krJrC4ZFmgs7O2mxKgSstP5DkrDCI=
+        b=vZNRQekpBZR3Jg4+zdx+pqKqGCA7FD6RhMKdPUzgwxusWmpXhO379aNSP5UZZhV+G
+         rtv7ZhyspGAtTQtY098kTuMN2Do0Kk81dLIK5aq04IX4a+XVDKMQE31p4Lzc6QRv+a
+         5atl40d019seZiL3sXqHKO/FJgT2T1/YU1IiDKDo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gil Fine <gil.fine@linux.intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.5 197/241] thunderbolt: Call tb_switch_put() once DisplayPort bandwidth request is finished
+        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 4.14 33/66] regmap: fix NULL deref on lookup
 Date:   Mon, 23 Oct 2023 12:56:23 +0200
-Message-ID: <20231023104838.669907021@linuxfoundation.org>
+Message-ID: <20231023104812.069360510@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,77 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gil Fine <gil.fine@linux.intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit ec4405ed92036f5bb487b5c2f9a28f9e36a3e3d5 upstream.
+commit c6df843348d6b71ea986266c12831cb60c2cf325 upstream.
 
-When handling DisplayPort bandwidth request tb_switch_find_by_route() is
-called and it returns a router structure with reference count increased.
-In order to avoid resource leak call tb_switch_put() when finished.
+Not all regmaps have a name so make sure to check for that to avoid
+dereferencing a NULL pointer when dev_get_regmap() is used to lookup a
+named regmap.
 
-Fixes: 6ce3563520be ("thunderbolt: Add support for DisplayPort bandwidth allocation mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: e84861fec32d ("regmap: dev_get_regmap_match(): fix string comparison")
+Cc: stable@vger.kernel.org      # 5.8
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231006082104.16707-1-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/tb.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/base/regmap/regmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
-index dd0a1ef8cf12..27bd6ca6f99e 100644
---- a/drivers/thunderbolt/tb.c
-+++ b/drivers/thunderbolt/tb.c
-@@ -1907,14 +1907,14 @@ static void tb_handle_dp_bandwidth_request(struct work_struct *work)
- 	in = &sw->ports[ev->port];
- 	if (!tb_port_is_dpin(in)) {
- 		tb_port_warn(in, "bandwidth request to non-DP IN adapter\n");
--		goto unlock;
-+		goto put_sw;
- 	}
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -1242,7 +1242,7 @@ static int dev_get_regmap_match(struct d
  
- 	tb_port_dbg(in, "handling bandwidth allocation request\n");
- 
- 	if (!usb4_dp_port_bandwidth_mode_enabled(in)) {
- 		tb_port_warn(in, "bandwidth allocation mode not enabled\n");
--		goto unlock;
-+		goto put_sw;
- 	}
- 
- 	ret = usb4_dp_port_requested_bandwidth(in);
-@@ -1923,7 +1923,7 @@ static void tb_handle_dp_bandwidth_request(struct work_struct *work)
- 			tb_port_dbg(in, "no bandwidth request active\n");
- 		else
- 			tb_port_warn(in, "failed to read requested bandwidth\n");
--		goto unlock;
-+		goto put_sw;
- 	}
- 	requested_bw = ret;
- 
-@@ -1932,7 +1932,7 @@ static void tb_handle_dp_bandwidth_request(struct work_struct *work)
- 	tunnel = tb_find_tunnel(tb, TB_TUNNEL_DP, in, NULL);
- 	if (!tunnel) {
- 		tb_port_warn(in, "failed to find tunnel\n");
--		goto unlock;
-+		goto put_sw;
- 	}
- 
- 	out = tunnel->dst_port;
-@@ -1959,6 +1959,8 @@ static void tb_handle_dp_bandwidth_request(struct work_struct *work)
- 		tb_recalc_estimated_bandwidth(tb);
- 	}
- 
-+put_sw:
-+	tb_switch_put(sw);
- unlock:
- 	mutex_unlock(&tb->lock);
- 
--- 
-2.42.0
-
+ 	/* If the user didn't specify a name match any */
+ 	if (data)
+-		return !strcmp((*r)->name, data);
++		return (*r)->name && !strcmp((*r)->name, data);
+ 	else
+ 		return 1;
+ }
 
 
