@@ -2,47 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D2247D3258
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 388667D3460
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:39:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233762AbjJWLTI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49458 "EHLO
+        id S234214AbjJWLjL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:39:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229685AbjJWLTH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:07 -0400
+        with ESMTP id S234154AbjJWLjK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 172CAC1;
-        Mon, 23 Oct 2023 04:19:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA6BC433C8;
-        Mon, 23 Oct 2023 11:19:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 706C9DB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F04C433C7;
+        Mon, 23 Oct 2023 11:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059945;
-        bh=XAbZ5kaxm126V21Hl92FcJE28deK8jqjpD30zUe88iY=;
+        s=korg; t=1698061148;
+        bh=LQeyb/HApqH0UlfDleIwtyX4pbx6jaK83CDn7dnX6mQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q44aBE86Ze0NSV7+dSYblZ76wq0GSg6DgKtHgg+dFcPRT/aiVa3qnhXv4Cav3a2JD
-         /MN+BZUnEGsh2xqdlOnKybPcCTEfnx+AXcbOs+w+IAp3sFCVv2ZNjpmezAwDYKGFo0
-         U2jiKdcQr6PGVIxfjCDuBC+dXidORy2vKrCvKGsQ=
+        b=mMoHk5H910B3MtyhSUD77eBRBvPb6dHML0qKaLTd3hsrC41PdvMG/buZeaHV3P/YF
+         XvjwLHK1l7DDNa7QBXLRym58uoDrocEt9Cyn2WMKCfRXkOJJEqEHwxiTOYPeeTCab/
+         7rEJiDAvA61xjIRJCVPLvEZ+4uIaP65bAsTQfJRE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Edward AD <twuufnxlz@gmail.com>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Thomas Haller <thaller@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        David Ahern <dsahern@kernel.org>,
         Paolo Abeni <pabeni@redhat.com>,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-        Kees Cook <keescook@chromium.org>
-Subject: [PATCH 4.19 97/98] Bluetooth: hci_sock: Correctly bounds check and pad HCI_MON_NEW_INDEX name
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 089/137] ipv4/fib: send notify when delete source address routes
 Date:   Mon, 23 Oct 2023 12:57:26 +0200
-Message-ID: <20231023104816.941063966@linuxfoundation.org>
+Message-ID: <20231023104823.904881422@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,57 +52,116 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit cb3871b1cd135a6662b732fbc6b3db4afcdb4a64 upstream.
+[ Upstream commit 4b2b606075e50cdae62ab2356b0a1e206947c354 ]
 
-The code pattern of memcpy(dst, src, strlen(src)) is almost always
-wrong. In this case it is wrong because it leaves memory uninitialized
-if it is less than sizeof(ni->name), and overflows ni->name when longer.
+After deleting an interface address in fib_del_ifaddr(), the function
+scans the fib_info list for stray entries and calls fib_flush() and
+fib_table_flush(). Then the stray entries will be deleted silently and no
+RTM_DELROUTE notification will be sent.
 
-Normally strtomem_pad() could be used here, but since ni->name is a
-trailing array in struct hci_mon_new_index, compilers that don't support
--fstrict-flex-arrays=3 can't tell how large this array is via
-__builtin_object_size(). Instead, open-code the helper and use sizeof()
-since it will work correctly.
+This lack of notification can make routing daemons, or monitor like
+`ip monitor route` miss the routing changes. e.g.
 
-Additionally mark ni->name as __nonstring since it appears to not be a
-%NUL terminated C string.
++ ip link add dummy1 type dummy
++ ip link add dummy2 type dummy
++ ip link set dummy1 up
++ ip link set dummy2 up
++ ip addr add 192.168.5.5/24 dev dummy1
++ ip route add 7.7.7.0/24 dev dummy2 src 192.168.5.5
++ ip -4 route
+7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
+192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
++ ip monitor route
++ ip addr del 192.168.5.5/24 dev dummy1
+Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
+Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
+Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
 
-Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Edward AD <twuufnxlz@gmail.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: linux-bluetooth@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Fixes: 18f547f3fc07 ("Bluetooth: hci_sock: fix slab oob read in create_monitor_event")
-Link: https://lore.kernel.org/lkml/202310110908.F2639D3276@keescook/
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As Ido reminded, fib_table_flush() isn't only called when an address is
+deleted, but also when an interface is deleted or put down. The lack of
+notification in these cases is deliberate. And commit 7c6bb7d2faaf
+("net/ipv6: Add knob to skip DELROUTE message on device down") introduced
+a sysctl to make IPv6 behave like IPv4 in this regard. So we can't send
+the route delete notify blindly in fib_table_flush().
+
+To fix this issue, let's add a new flag in "struct fib_info" to track the
+deleted prefer source address routes, and only send notify for them.
+
+After update:
++ ip monitor route
++ ip addr del 192.168.5.5/24 dev dummy1
+Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
+Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
+Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
+Deleted 7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
+
+Suggested-by: Thomas Haller <thaller@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230922075508.848925-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sock.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/ip_fib.h     | 1 +
+ net/ipv4/fib_semantics.c | 1 +
+ net/ipv4/fib_trie.c      | 4 ++++
+ 3 files changed, 6 insertions(+)
 
---- a/net/bluetooth/hci_sock.c
-+++ b/net/bluetooth/hci_sock.c
-@@ -430,7 +430,8 @@ static struct sk_buff *create_monitor_ev
- 		ni->type = hdev->dev_type;
- 		ni->bus = hdev->bus;
- 		bacpy(&ni->bdaddr, &hdev->bdaddr);
--		memcpy(ni->name, hdev->name, strlen(hdev->name));
-+		memcpy_and_pad(ni->name, sizeof(ni->name), hdev->name,
-+			       strnlen(hdev->name, sizeof(ni->name)), '\0');
+diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
+index c3324a1949c3a..9f6e2a476dc28 100644
+--- a/include/net/ip_fib.h
++++ b/include/net/ip_fib.h
+@@ -151,6 +151,7 @@ struct fib_info {
+ 	int			fib_nhs;
+ 	bool			fib_nh_is_v6;
+ 	bool			nh_updated;
++	bool			pfsrc_removed;
+ 	struct nexthop		*nh;
+ 	struct rcu_head		rcu;
+ 	struct fib_nh		fib_nh[];
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 91a3d6d338874..735901b8c9f69 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -1908,6 +1908,7 @@ int fib_sync_down_addr(struct net_device *dev, __be32 local)
+ 			continue;
+ 		if (fi->fib_prefsrc == local) {
+ 			fi->fib_flags |= RTNH_F_DEAD;
++			fi->pfsrc_removed = true;
+ 			ret++;
+ 		}
+ 	}
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index 22531aac0ccbf..0b74debeecbb1 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -2021,6 +2021,7 @@ void fib_table_flush_external(struct fib_table *tb)
+ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+ {
+ 	struct trie *t = (struct trie *)tb->tb_data;
++	struct nl_info info = { .nl_net = net };
+ 	struct key_vector *pn = t->kv;
+ 	unsigned long cindex = 1;
+ 	struct hlist_node *tmp;
+@@ -2083,6 +2084,9 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
  
- 		opcode = cpu_to_le16(HCI_MON_NEW_INDEX);
- 		break;
+ 			fib_notify_alias_delete(net, n->key, &n->leaf, fa,
+ 						NULL);
++			if (fi->pfsrc_removed)
++				rtmsg_fib(RTM_DELROUTE, htonl(n->key), fa,
++					  KEYLENGTH - fa->fa_slen, tb->tb_id, &info, 0);
+ 			hlist_del_rcu(&fa->fa_list);
+ 			fib_release_info(fa->fa_info);
+ 			alias_free_mem_rcu(fa);
+-- 
+2.40.1
+
 
 
