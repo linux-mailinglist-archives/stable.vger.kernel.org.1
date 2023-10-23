@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBE527D324E
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2241D7D3334
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233746AbjJWLSp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:18:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36218 "EHLO
+        id S233973AbjJWL1t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:27:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233738AbjJWLSo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:44 -0400
+        with ESMTP id S233974AbjJWL1t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 423FDDD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E22C433C7;
-        Mon, 23 Oct 2023 11:18:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AFE7E4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BFAC433C8;
+        Mon, 23 Oct 2023 11:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059921;
-        bh=ZXTG/7Z6MexGNsx4CNfEym3TwijYKs8oAFwDCErjx+0=;
+        s=korg; t=1698060467;
+        bh=x3se2kq6xWS8YxuUwnpu7/eLDRtC29MT4FvGypsarPQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m2eS5nJc3PJs7eGkp3n6zDOwgi/DwrHRv5Nhw/0qQPB+l0cJ2eH3hiaYSJRLf4nte
-         aH22r1PYhuyGtsaVeqVD9yrXImuO9n/TPn+JQWM6MP+p+kaonYVMNqy3e2RTzbA4Yj
-         WHJX9tCoSHR2GjbQzbfDpkBDHrDfsXGbJ6/FQEqs=
+        b=Su/qpA/z9X7t/lRW5TykXbg+NKKt0UucPvE8O4imbP6VO5QDJmkhw6vrZd6aBx5Qt
+         iZl5BNt6OlAJcH9abwRvfffNK/evGYsKP1gseqLA37nhhLPPxAKozRtRbVMx+o3NnT
+         0wDGir7CM5aKXpHF8peN/KMPJ4vwSwJCEisBGSoY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Zhang Changzhong <zhangchangzhong@huawei.com>,
-        Xin Long <lucien.xin@gmail.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 98/98] xfrm6: fix inet6_dev refcount underflow problem
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 6.1 182/196] serial: 8250: omap: convert to modern PM ops
 Date:   Mon, 23 Oct 2023 12:57:27 +0200
-Message-ID: <20231023104816.972470673@linuxfoundation.org>
+Message-ID: <20231023104833.537515280@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,60 +48,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Changzhong <zhangchangzhong@huawei.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit cc9b364bb1d58d3dae270c7a931a8cc717dc2b3b ]
+commit ae62c49c0ceff20dc7c1fad4a5b8f91d64b4f628 upstream.
 
-There are race conditions that may lead to inet6_dev refcount underflow
-in xfrm6_dst_destroy() and rt6_uncached_list_flush_dev().
+The new uart_write() function is only called from suspend/resume code, causing
+a build warning when those are left out:
 
-One of the refcount underflow bugs is shown below:
-	(cpu 1)                	|	(cpu 2)
-xfrm6_dst_destroy()             |
-  ...                           |
-  in6_dev_put()                 |
-				|  rt6_uncached_list_flush_dev()
-  ...				|    ...
-				|    in6_dev_put()
-  rt6_uncached_list_del()       |    ...
-  ...                           |
+drivers/tty/serial/8250/8250_omap.c:169:13: error: 'uart_write' defined but not used [-Werror=unused-function]
 
-xfrm6_dst_destroy() calls rt6_uncached_list_del() after in6_dev_put(),
-so rt6_uncached_list_flush_dev() has a chance to call in6_dev_put()
-again for the same inet6_dev.
+Remove the #ifdefs and use the modern pm_ops/pm_sleep_ops and their wrappers
+to let the compiler see where it's used but still drop the dead code.
 
-Fix it by moving in6_dev_put() after rt6_uncached_list_del() in
-xfrm6_dst_destroy().
-
-Fixes: 510c321b5571 ("xfrm: reuse uncached_list to track xdsts")
-Signed-off-by: Zhang Changzhong <zhangchangzhong@huawei.com>
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 398cecc24846 ("serial: 8250: omap: Fix imprecise external abort for omap_8250_pm()")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230517202012.634386-1-arnd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/xfrm6_policy.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/8250/8250_omap.c |   17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
---- a/net/ipv6/xfrm6_policy.c
-+++ b/net/ipv6/xfrm6_policy.c
-@@ -243,11 +243,11 @@ static void xfrm6_dst_destroy(struct dst
- {
- 	struct xfrm_dst *xdst = (struct xfrm_dst *)dst;
- 
--	if (likely(xdst->u.rt6.rt6i_idev))
--		in6_dev_put(xdst->u.rt6.rt6i_idev);
- 	dst_destroy_metrics_generic(dst);
- 	if (xdst->u.rt6.rt6i_uncached_list)
- 		rt6_uncached_list_del(&xdst->u.rt6);
-+	if (likely(xdst->u.rt6.rt6i_idev))
-+		in6_dev_put(xdst->u.rt6.rt6i_idev);
- 	xfrm_dst_destroy(xdst);
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1487,7 +1487,6 @@ static int omap8250_remove(struct platfo
+ 	return 0;
  }
  
+-#ifdef CONFIG_PM_SLEEP
+ static int omap8250_prepare(struct device *dev)
+ {
+ 	struct omap8250_priv *priv = dev_get_drvdata(dev);
+@@ -1547,12 +1546,7 @@ static int omap8250_resume(struct device
+ 
+ 	return 0;
+ }
+-#else
+-#define omap8250_prepare NULL
+-#define omap8250_complete NULL
+-#endif
+ 
+-#ifdef CONFIG_PM
+ static int omap8250_lost_context(struct uart_8250_port *up)
+ {
+ 	u32 val;
+@@ -1664,7 +1658,6 @@ static int omap8250_runtime_resume(struc
+ 	schedule_work(&priv->qos_work);
+ 	return 0;
+ }
+-#endif
+ 
+ #ifdef CONFIG_SERIAL_8250_OMAP_TTYO_FIXUP
+ static int __init omap8250_console_fixup(void)
+@@ -1707,17 +1700,17 @@ console_initcall(omap8250_console_fixup)
+ #endif
+ 
+ static const struct dev_pm_ops omap8250_dev_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(omap8250_suspend, omap8250_resume)
+-	SET_RUNTIME_PM_OPS(omap8250_runtime_suspend,
++	SYSTEM_SLEEP_PM_OPS(omap8250_suspend, omap8250_resume)
++	RUNTIME_PM_OPS(omap8250_runtime_suspend,
+ 			   omap8250_runtime_resume, NULL)
+-	.prepare        = omap8250_prepare,
+-	.complete       = omap8250_complete,
++	.prepare        = pm_sleep_ptr(omap8250_prepare),
++	.complete       = pm_sleep_ptr(omap8250_complete),
+ };
+ 
+ static struct platform_driver omap8250_platform_driver = {
+ 	.driver = {
+ 		.name		= "omap8250",
+-		.pm		= &omap8250_dev_pm_ops,
++		.pm		= pm_ptr(&omap8250_dev_pm_ops),
+ 		.of_match_table = omap8250_dt_ids,
+ 	},
+ 	.probe			= omap8250_probe,
 
 
