@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ED797D319B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FBA17D31F1
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:15:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233508AbjJWLLD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36246 "EHLO
+        id S233697AbjJWLPB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:15:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233538AbjJWLLC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:02 -0400
+        with ESMTP id S233701AbjJWLPA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:15:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2AC0F9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4E0C433C8;
-        Mon, 23 Oct 2023 11:10:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D324A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D956C433C8;
+        Mon, 23 Oct 2023 11:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059459;
-        bh=7ydRu4IwGxYmBrRap5DsszHknT7eWKpZdlJ3yBGRoSQ=;
+        s=korg; t=1698059698;
+        bh=XNwws2NeYFJKLQFdn1vcFeuoUlJDxB3Mq1nRR7yejFc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B+BzKq1wzPxinLgwhbNtygOEw81B6yL69Jyak8U0wBV9D8WKniRScnJ7vcMGpNrvj
-         GNkVdIbpKTWKFUXBFXhcfHmuk4m7JriCBOh1OMq2yBixCR6kB2SpzWwdUHBAd/WsQA
-         s7vYTGJ8VOysTQr91mPhxd6QKwuuBT9p3jOVYI4Q=
+        b=MWv823M9ftCU5ASTx61UyoxeBlxjITif5PCtwtkFI3a7x/gOQhLIL1Trd9QEVkr/m
+         EHb5ZZXm4YA8aaDdkqXxbv8U0KHj3w/CY6dQu4N47wbShmPAMvbVpCQKr7SYR4aZGT
+         8mmOWiwFnZA/VrHG81XoAopBJjmlQPZJxv81A23Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Karol Wachowski <karol.wachowski@linux.intel.com>,
-        Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Subject: [PATCH 6.5 185/241] Revert "accel/ivpu: Use cached buffers for FW loading"
+        Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+        Peter Korsgaard <peter@korsgaard.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 22/98] net: usb: dm9601: fix uninitialized variable use in dm9601_mdio_read
 Date:   Mon, 23 Oct 2023 12:56:11 +0200
-Message-ID: <20231023104838.392682259@linuxfoundation.org>
+Message-ID: <20231023104814.376075835@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit 610b5d219d1ccac8064556310cc0e62e3c202389 upstream.
+commit 8f8abb863fa5a4cc18955c6a0e17af0ded3e4a76 upstream.
 
-This reverts commit 645d694559cab36fe6a57c717efcfa27d9321396.
+syzbot has found an uninit-value bug triggered by the dm9601 driver [1].
 
-The commit cause issues with memory access from the device side.
-Switch back to write-combined memory mappings until the issues
-will be properly addressed.
+This error happens because the variable res is not updated if the call
+to dm_read_shared_word returns an error. In this particular case -EPROTO
+was returned and res stayed uninitialized.
 
-Add extra wmb() needed when boot_params->save_restore_ret_address() is
-modified.
+This can be avoided by checking the return value of dm_read_shared_word
+and propagating the error if the read operation failed.
 
-Reviewed-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231017121353.532466-1-stanislaw.gruszka@linux.intel.com
+[1] https://syzkaller.appspot.com/bug?extid=1f53a30781af65d2c955
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Reported-and-tested-by: syzbot+1f53a30781af65d2c955@syzkaller.appspotmail.com
+Acked-by: Peter Korsgaard <peter@korsgaard.com>
+Fixes: d0374f4f9c35cdfbee0 ("USB: Davicom DM9601 usbnet driver")
+Link: https://lore.kernel.org/r/20231009-topic-dm9601_uninit_mdio_read-v2-1-f2fe39739b6c@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_fw.c  |    9 ++++-----
- drivers/accel/ivpu/ivpu_gem.h |    5 -----
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ drivers/net/usb/dm9601.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/accel/ivpu/ivpu_fw.c
-+++ b/drivers/accel/ivpu/ivpu_fw.c
-@@ -195,8 +195,7 @@ static int ivpu_fw_mem_init(struct ivpu_
- 	if (ret)
- 		return ret;
+--- a/drivers/net/usb/dm9601.c
++++ b/drivers/net/usb/dm9601.c
+@@ -221,13 +221,18 @@ static int dm9601_mdio_read(struct net_d
+ 	struct usbnet *dev = netdev_priv(netdev);
  
--	fw->mem = ivpu_bo_alloc_internal(vdev, fw->runtime_addr, fw->runtime_size,
--					 DRM_IVPU_BO_CACHED | DRM_IVPU_BO_NOSNOOP);
-+	fw->mem = ivpu_bo_alloc_internal(vdev, fw->runtime_addr, fw->runtime_size, DRM_IVPU_BO_WC);
- 	if (!fw->mem) {
- 		ivpu_err(vdev, "Failed to allocate firmware runtime memory\n");
- 		return -ENOMEM;
-@@ -273,7 +272,7 @@ int ivpu_fw_load(struct ivpu_device *vde
- 		memset(start, 0, size);
+ 	__le16 res;
++	int err;
+ 
+ 	if (phy_id) {
+ 		netdev_dbg(dev->net, "Only internal phy supported\n");
+ 		return 0;
  	}
  
--	clflush_cache_range(fw->mem->kvaddr, fw->mem->base.size);
-+	wmb(); /* Flush WC buffers after writing fw->mem */
+-	dm_read_shared_word(dev, 1, loc, &res);
++	err = dm_read_shared_word(dev, 1, loc, &res);
++	if (err < 0) {
++		netdev_err(dev->net, "MDIO read error: %d\n", err);
++		return err;
++	}
  
- 	return 0;
- }
-@@ -375,7 +374,7 @@ void ivpu_fw_boot_params_setup(struct iv
- 	if (!ivpu_fw_is_cold_boot(vdev)) {
- 		boot_params->save_restore_ret_address = 0;
- 		vdev->pm->is_warmboot = true;
--		clflush_cache_range(vdev->fw->mem->kvaddr, SZ_4K);
-+		wmb(); /* Flush WC buffers after writing save_restore_ret_address */
- 		return;
- 	}
- 
-@@ -430,7 +429,7 @@ void ivpu_fw_boot_params_setup(struct iv
- 	boot_params->punit_telemetry_sram_size = ivpu_hw_reg_telemetry_size_get(vdev);
- 	boot_params->vpu_telemetry_enable = ivpu_hw_reg_telemetry_enable_get(vdev);
- 
--	clflush_cache_range(vdev->fw->mem->kvaddr, SZ_4K);
-+	wmb(); /* Flush WC buffers after writing bootparams */
- 
- 	ivpu_fw_boot_params_print(vdev, boot_params);
- }
---- a/drivers/accel/ivpu/ivpu_gem.h
-+++ b/drivers/accel/ivpu/ivpu_gem.h
-@@ -8,8 +8,6 @@
- #include <drm/drm_gem.h>
- #include <drm/drm_mm.h>
- 
--#define DRM_IVPU_BO_NOSNOOP       0x10000000
--
- struct dma_buf;
- struct ivpu_bo_ops;
- struct ivpu_file_priv;
-@@ -85,9 +83,6 @@ static inline u32 ivpu_bo_cache_mode(str
- 
- static inline bool ivpu_bo_is_snooped(struct ivpu_bo *bo)
- {
--	if (bo->flags & DRM_IVPU_BO_NOSNOOP)
--		return false;
--
- 	return ivpu_bo_cache_mode(bo) == DRM_IVPU_BO_CACHED;
- }
- 
+ 	netdev_dbg(dev->net,
+ 		   "dm9601_mdio_read() phy_id=0x%02x, loc=0x%02x, returns=0x%04x\n",
 
 
