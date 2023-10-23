@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00A717D3248
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C96F97D330F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:26:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233744AbjJWLSc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:18:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
+        id S233848AbjJWL0T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:26:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233731AbjJWLSc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:32 -0400
+        with ESMTP id S233922AbjJWL0S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:26:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9A2DD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF745C433C7;
-        Mon, 23 Oct 2023 11:18:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E70992
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:26:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A3CC433C7;
+        Mon, 23 Oct 2023 11:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059910;
-        bh=rwIUsgw4/7HYb1UQeqvp0rO+fIeEAbNN+pk26nvU2GQ=;
+        s=korg; t=1698060374;
+        bh=AXyqz1o3Kl94+xIE3Z+jVv5yEo8YcJSASti+7mjpdtA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eOzaGNKPw2lCcmeO9cVxObeM8gxwB0EbZRqGPS/XFzdnTj3dtX/MIQWYLK9FfaYr9
-         Lhbe84e70J+3AG0KhWUaCxzr97is266lTYd3xJqufWKb4mQz5nNtvR4qpVOHumXNDJ
-         gmt1+Wwr4YRKvSTiHJwjtbfEJvPmQDV0ZICT1OXU=
+        b=N6vfaj83mVImiRh78k6yEjp6ScQT2C94P3bs9CxiGwREo+zXsxlC1BEKlRVSEoDA+
+         n60rVyWkbtkDWo5gza4qvo5a3ZPKDiMrLJEAUfgpEnKYpQ16zZEUMeHxJYsMv8EfXb
+         OVUwI9h8srmvjCkHWHpFpKJEtOM0BzlaoN4U5lzA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
-        Filipe Manana <fdmanana@suse.com>,
-        David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 67/98] btrfs: return -EUCLEAN for delayed tree ref with a ref count not equals to 1
+        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 151/196] mmc: core: sdio: hold retuning if sdio in 1-bit mode
 Date:   Mon, 23 Oct 2023 12:56:56 +0200
-Message-ID: <20231023104815.954409527@linuxfoundation.org>
+Message-ID: <20231023104832.746647248@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +49,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit 1bf76df3fee56d6637718e267f7c34ed70d0c7dc ]
+commit 32a9cdb8869dc111a0c96cf8e1762be9684af15b upstream.
 
-When running a delayed tree reference, if we find a ref count different
-from 1, we return -EIO. This isn't an IO error, as it indicates either a
-bug in the delayed refs code or a memory corruption, so change the error
-code from -EIO to -EUCLEAN. Also tag the branch as 'unlikely' as this is
-not expected to ever happen, and change the error message to print the
-tree block's bytenr without the parenthesis (and there was a missing space
-between the 'block' word and the opening parenthesis), for consistency as
-that's the style we used everywhere else.
+tuning only support in 4-bit mode or 8 bit mode, so in 1-bit mode,
+need to hold retuning.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Find this issue when use manual tuning method on imx93. When system
+resume back, SDIO WIFI try to switch back to 4 bit mode, first will
+trigger retuning, and all tuning command failed.
+
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Fixes: dfa13ebbe334 ("mmc: host: Add facility to support re-tuning")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230830093922.3095850-1-haibo.chen@nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mmc/core/sdio.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index bb05b0a82c8ba..902ab00bfd7ab 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -2327,12 +2327,12 @@ static int run_delayed_tree_ref(struct btrfs_trans_handle *trans,
- 		parent = ref->parent;
- 	ref_root = ref->root;
- 
--	if (node->ref_mod != 1) {
-+	if (unlikely(node->ref_mod != 1)) {
- 		btrfs_err(trans->fs_info,
--	"btree block(%llu) has %d references rather than 1: action %d ref_root %llu parent %llu",
-+	"btree block %llu has %d references rather than 1: action %d ref_root %llu parent %llu",
- 			  node->bytenr, node->ref_mod, node->action, ref_root,
- 			  parent);
--		return -EIO;
-+		return -EUCLEAN;
+--- a/drivers/mmc/core/sdio.c
++++ b/drivers/mmc/core/sdio.c
+@@ -1089,8 +1089,14 @@ static int mmc_sdio_resume(struct mmc_ho
+ 		}
+ 		err = mmc_sdio_reinit_card(host);
+ 	} else if (mmc_card_wake_sdio_irq(host)) {
+-		/* We may have switched to 1-bit mode during suspend */
++		/*
++		 * We may have switched to 1-bit mode during suspend,
++		 * need to hold retuning, because tuning only supprt
++		 * 4-bit mode or 8 bit mode.
++		 */
++		mmc_retune_hold_now(host);
+ 		err = sdio_enable_4bit_bus(host->card);
++		mmc_retune_release(host);
  	}
- 	if (node->action == BTRFS_ADD_DELAYED_REF && insert_reserved) {
- 		BUG_ON(!extent_op || !extent_op->update_flags);
--- 
-2.40.1
-
+ 
+ 	if (err)
 
 
