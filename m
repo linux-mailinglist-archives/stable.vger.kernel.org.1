@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA6D07D34DB
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F52D7D32A1
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234331AbjJWLnU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:43:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59966 "EHLO
+        id S233765AbjJWLWU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:22:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234365AbjJWLnK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:43:10 -0400
+        with ESMTP id S233839AbjJWLWU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:22:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4992110CB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B370CC433C7;
-        Mon, 23 Oct 2023 11:43:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEF5FC1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:22:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CD2C433C8;
+        Mon, 23 Oct 2023 11:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061382;
-        bh=Kmktf8a95zWsFQBZlH+ubMGadE9eZwO3839XqvOyfqc=;
+        s=korg; t=1698060136;
+        bh=FdKZusTjfdV+U9YytaiS00rVRYdSQjj+kZMbgFcr2o0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CTkFLpd9zWI9mmwq8fddNEQHcxiE8jswEtNlKck6f9qJhX8OOlhAHlah/A48MhNVw
-         MyLKckh0bX6CtJ11G6uBngYScN+NsjYE9TU547Scyc5IvYLIgP8ab6fI9a1Z8cfB2W
-         IdOTYCmgszt7UXKMSVJ3CZEuzvcYTW9efdAauSS4=
+        b=0PH15/5nZMxBveCn7/RULNK1pLonaZoPXv0D40xVYsVgRz59rnW4EyOfAQ3oALWnH
+         K182mzkRmHh9dUBg33ivL6QSED8i5vofxBsiz9ec48Q+mN2c7DTlTOVD1dJiMmNsl/
+         fOJ1Tu/xRy9CEF/JJaI0c48vn4H/W9R2wYEb4rao=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 028/202] Revert "spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in zynqmp_qspi_probe"
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.1 070/196] netfilter: nf_tables: do not remove elements if set backend implements .abort
 Date:   Mon, 23 Oct 2023 12:55:35 +0200
-Message-ID: <20231023104827.426892974@linuxfoundation.org>
+Message-ID: <20231023104830.522368047@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -47,66 +48,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-This reverts commit 2cdec9c13f81313dd9f41f09c7cdecbfa4bea91d.
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-Reported issues with the backport, revert for now.
+commit ebd032fa881882fef2acb9da1bbde48d8233241d upstream.
 
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+pipapo set backend maintains two copies of the datastructure, removing
+the elements from the copy that is going to be discarded slows down
+the abort path significantly, from several minutes to few seconds after
+this patch.
+
+Fixes: 212ed75dc5fb ("netfilter: nf_tables: integrate pipapo into commit protocol")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-zynqmp-gqspi.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ net/netfilter/nf_tables_api.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-zynqmp-gqspi.c b/drivers/spi/spi-zynqmp-gqspi.c
-index ed68e237314fb..3d3ac48243ebd 100644
---- a/drivers/spi/spi-zynqmp-gqspi.c
-+++ b/drivers/spi/spi-zynqmp-gqspi.c
-@@ -1147,16 +1147,11 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, SPI_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
--
--	ret = pm_runtime_get_sync(&pdev->dev);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "Failed to pm_runtime_get_sync: %d\n", ret);
--		goto clk_dis_all;
--	}
--
- 	/* QSPI controller initializations */
- 	zynqmp_qspi_init_hw(xqspi);
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9931,7 +9931,10 @@ static int __nf_tables_abort(struct net
+ 				break;
+ 			}
+ 			te = (struct nft_trans_elem *)trans->data;
+-			nft_setelem_remove(net, te->set, &te->elem);
++			if (!te->set->ops->abort ||
++			    nft_setelem_is_catchall(te->set, &te->elem))
++				nft_setelem_remove(net, te->set, &te->elem);
++
+ 			if (!nft_setelem_is_catchall(te->set, &te->elem))
+ 				atomic_dec(&te->set->nelems);
  
-+	pm_runtime_mark_last_busy(&pdev->dev);
-+	pm_runtime_put_autosuspend(&pdev->dev);
- 	xqspi->irq = platform_get_irq(pdev, 0);
- 	if (xqspi->irq <= 0) {
- 		ret = -ENXIO;
-@@ -1183,7 +1178,6 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 	ctlr->mode_bits = SPI_CPOL | SPI_CPHA | SPI_RX_DUAL | SPI_RX_QUAD |
- 			    SPI_TX_DUAL | SPI_TX_QUAD;
- 	ctlr->dev.of_node = np;
--	ctlr->auto_runtime_pm = true;
- 
- 	ret = devm_spi_register_controller(&pdev->dev, ctlr);
- 	if (ret) {
-@@ -1191,13 +1185,9 @@ static int zynqmp_qspi_probe(struct platform_device *pdev)
- 		goto clk_dis_all;
- 	}
- 
--	pm_runtime_mark_last_busy(&pdev->dev);
--	pm_runtime_put_autosuspend(&pdev->dev);
--
- 	return 0;
- 
- clk_dis_all:
--	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_set_suspended(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	clk_disable_unprepare(xqspi->refclk);
--- 
-2.40.1
-
 
 
