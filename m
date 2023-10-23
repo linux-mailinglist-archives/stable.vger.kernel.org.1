@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B807D3122
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:05:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF9507D326A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233316AbjJWLF7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:05:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46672 "EHLO
+        id S233800AbjJWLTu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:19:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233313AbjJWLF6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:05:58 -0400
+        with ESMTP id S233798AbjJWLTt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16508D7B
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:05:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D6BC433C7;
-        Mon, 23 Oct 2023 11:05:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A413CDB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E716AC433C7;
+        Mon, 23 Oct 2023 11:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059156;
-        bh=LNSV4+dAvswF+ybo8xImDBmrjllpXDd95JvulVdh59s=;
+        s=korg; t=1698059984;
+        bh=+lfd1ASHF/agqTrZ31RpNn4I3Ffj8F5m/xh8JT24yzI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O+zv729b2nGNPq/7PqwtE8fdKofEq52CQFS+qXUGR5TmX3YmKjJtHvRCEUW5kYt18
-         pMNU6/bvHGSSs04UNuswZkXc+y/AZkNZhse/aXTotVgpV78qdjm1RzIG1U+JGaNHsg
-         4agcvvknzSMtN3hYaDqIndC7MYkTTNaMCFqV8S6I=
+        b=OsaHBpWFwd7W87i4MEU54Lcd8Tk8NqXJlQLwREP9k7ek11Fd1Zq+rW9bC9hhE81sq
+         m/4NcxpQOhTZVmSpwfln5eSdADARuHlw+vbcml9rkCH2SfeZ8+tb3M7Kni6a25+fb/
+         R6YvPV6R9+BoaBbsEHrWZOUHxL4PKX624D98l2ck=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Paasch <cpaasch@apple.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.5 082/241] netlink: Correct offload_xstats size
+        patches@lists.linux.dev, Tan Tee Min <tee.min.tan@linux.intel.com>,
+        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 003/196] igc: enable Qbv configuration for 2nd GCL
 Date:   Mon, 23 Oct 2023 12:54:28 +0200
-Message-ID: <20231023104835.885866305@linuxfoundation.org>
+Message-ID: <20231023104828.586508815@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,92 +50,127 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Paasch <cpaasch@apple.com>
+From: Tan Tee Min <tee.min.tan@linux.intel.com>
 
-commit 503930f8e113edc86f92b767efb4ea57bdffffb2 upstream.
+commit 5ac1231ac14d1b8a1098048e51cad45f11b85c0a upstream.
 
-rtnl_offload_xstats_get_size_hw_s_info_one() conditionalizes the
-size-computation for IFLA_OFFLOAD_XSTATS_HW_S_INFO_USED based on whether
-or not the device has offload_xstats enabled.
+Make reset task only executes for i225 and Qbv disabling to allow
+i226 configure for 2nd GCL without resetting the adapter.
 
-However, rtnl_offload_xstats_fill_hw_s_info_one() is adding the u8 for
-that field uncondtionally.
+In i226, Tx won't hang if there is a GCL is already running, so in
+this case we don't need to set FutScdDis bit.
 
-syzkaller triggered a WARNING in rtnl_stats_get due to this:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 754 at net/core/rtnetlink.c:5982 rtnl_stats_get+0x2f4/0x300
-Modules linked in:
-CPU: 0 PID: 754 Comm: syz-executor148 Not tainted 6.6.0-rc2-g331b78eb12af #45
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-RIP: 0010:rtnl_stats_get+0x2f4/0x300 net/core/rtnetlink.c:5982
-Code: ff ff 89 ee e8 7d 72 50 ff 83 fd a6 74 17 e8 33 6e 50 ff 4c 89 ef be 02 00 00 00 e8 86 00 fa ff e9 7b fe ff ff e8 1c 6e 50 ff <0f> 0b eb e5 e8 73 79 7b 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90
-RSP: 0018:ffffc900006837c0 EFLAGS: 00010293
-RAX: ffffffff81cf7f24 RBX: ffff8881015d9000 RCX: ffff888101815a00
-RDX: 0000000000000000 RSI: 00000000ffffffa6 RDI: 00000000ffffffa6
-RBP: 00000000ffffffa6 R08: ffffffff81cf7f03 R09: 0000000000000001
-R10: ffff888101ba47b9 R11: ffff888101815a00 R12: ffff8881017dae00
-R13: ffff8881017dad00 R14: ffffc90000683ab8 R15: ffffffff83c1f740
-FS:  00007fbc22dbc740(0000) GS:ffff88813bc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000046 CR3: 000000010264e003 CR4: 0000000000170ef0
-Call Trace:
- <TASK>
- rtnetlink_rcv_msg+0x677/0x710 net/core/rtnetlink.c:6480
- netlink_rcv_skb+0xea/0x1c0 net/netlink/af_netlink.c:2545
- netlink_unicast+0x430/0x500 net/netlink/af_netlink.c:1342
- netlink_sendmsg+0x4fc/0x620 net/netlink/af_netlink.c:1910
- sock_sendmsg+0xa8/0xd0 net/socket.c:730
- ____sys_sendmsg+0x22a/0x320 net/socket.c:2541
- ___sys_sendmsg+0x143/0x190 net/socket.c:2595
- __x64_sys_sendmsg+0xd8/0x150 net/socket.c:2624
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x47/0xa0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-RIP: 0033:0x7fbc22e8d6a9
-Code: 5c c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 4f 37 0d 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffc4320e778 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00000000004007d0 RCX: 00007fbc22e8d6a9
-RDX: 0000000000000000 RSI: 0000000020000000 RDI: 0000000000000003
-RBP: 0000000000000001 R08: 0000000000000000 R09: 00000000004007d0
-R10: 0000000000000008 R11: 0000000000000246 R12: 00007ffc4320e898
-R13: 00007ffc4320e8a8 R14: 00000000004004a0 R15: 00007fbc22fa5a80
- </TASK>
----[ end trace 0000000000000000 ]---
-
-Which didn't happen prior to commit bf9f1baa279f ("net: add dedicated
-kmem_cache for typical/small skb->head") as the skb always was large
-enough.
-
-Fixes: 0e7788fd7622 ("net: rtnetlink: Add UAPI for obtaining L3 offload xstats")
-Signed-off-by: Christoph Paasch <cpaasch@apple.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Link: https://lore.kernel.org/r/20231013041448.8229-1-cpaasch@apple.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tan Tee Min <tee.min.tan@linux.intel.com>
+Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c |    9 +++++----
+ drivers/net/ethernet/intel/igc/igc_tsn.c  |   13 +++++++++----
+ drivers/net/ethernet/intel/igc/igc_tsn.h  |    2 +-
+ 3 files changed, 15 insertions(+), 9 deletions(-)
 
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -5504,13 +5504,11 @@ static unsigned int
- rtnl_offload_xstats_get_size_hw_s_info_one(const struct net_device *dev,
- 					   enum netdev_offload_xstats_type type)
- {
--	bool enabled = netdev_offload_xstats_enabled(dev, type);
--
- 	return nla_total_size(0) +
- 		/* IFLA_OFFLOAD_XSTATS_HW_S_INFO_REQUEST */
- 		nla_total_size(sizeof(u8)) +
- 		/* IFLA_OFFLOAD_XSTATS_HW_S_INFO_USED */
--		(enabled ? nla_total_size(sizeof(u8)) : 0) +
-+		nla_total_size(sizeof(u8)) +
- 		0;
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6097,7 +6097,7 @@ static int igc_tsn_enable_launchtime(str
+ 	if (err)
+ 		return err;
+ 
+-	return igc_tsn_offload_apply(adapter);
++	return igc_tsn_offload_apply(adapter, qopt->enable);
  }
  
+ static int igc_tsn_clear_schedule(struct igc_adapter *adapter)
+@@ -6121,6 +6121,7 @@ static int igc_save_qbv_schedule(struct
+ 				 struct tc_taprio_qopt_offload *qopt)
+ {
+ 	bool queue_configured[IGC_MAX_TX_QUEUES] = { };
++	struct igc_hw *hw = &adapter->hw;
+ 	u32 start_time = 0, end_time = 0;
+ 	size_t n;
+ 	int i;
+@@ -6133,7 +6134,7 @@ static int igc_save_qbv_schedule(struct
+ 	if (qopt->base_time < 0)
+ 		return -ERANGE;
+ 
+-	if (adapter->base_time)
++	if (igc_is_device_id_i225(hw) && adapter->base_time)
+ 		return -EALREADY;
+ 
+ 	if (!validate_schedule(adapter, qopt))
+@@ -6210,7 +6211,7 @@ static int igc_tsn_enable_qbv_scheduling
+ 	if (err)
+ 		return err;
+ 
+-	return igc_tsn_offload_apply(adapter);
++	return igc_tsn_offload_apply(adapter, qopt->enable);
+ }
+ 
+ static int igc_save_cbs_params(struct igc_adapter *adapter, int queue,
+@@ -6278,7 +6279,7 @@ static int igc_tsn_enable_cbs(struct igc
+ 	if (err)
+ 		return err;
+ 
+-	return igc_tsn_offload_apply(adapter);
++	return igc_tsn_offload_apply(adapter, qopt->enable);
+ }
+ 
+ static int igc_setup_tc(struct net_device *dev, enum tc_setup_type type,
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -195,7 +195,7 @@ skip_cbs:
+ 		wr32(IGC_TXQCTL(i), txqctl);
+ 	}
+ 
+-	tqavctrl = rd32(IGC_TQAVCTRL);
++	tqavctrl = rd32(IGC_TQAVCTRL) & ~IGC_TQAVCTRL_FUTSCDDIS;
+ 	tqavctrl |= IGC_TQAVCTRL_TRANSMIT_MODE_TSN | IGC_TQAVCTRL_ENHANCED_QAV;
+ 
+ 	cycle = adapter->cycle_time;
+@@ -212,8 +212,11 @@ skip_cbs:
+ 	} else {
+ 		/* According to datasheet section 7.5.2.9.3.3, FutScdDis bit
+ 		 * has to be configured before the cycle time and base time.
++		 * Tx won't hang if there is a GCL is already running,
++		 * so in this case we don't need to set FutScdDis.
+ 		 */
+-		if (igc_is_device_id_i226(hw))
++		if (igc_is_device_id_i226(hw) &&
++		    !(rd32(IGC_BASET_H) || rd32(IGC_BASET_L)))
+ 			tqavctrl |= IGC_TQAVCTRL_FUTSCDDIS;
+ 	}
+ 
+@@ -256,11 +259,13 @@ int igc_tsn_reset(struct igc_adapter *ad
+ 	return err;
+ }
+ 
+-int igc_tsn_offload_apply(struct igc_adapter *adapter)
++int igc_tsn_offload_apply(struct igc_adapter *adapter, bool enable)
+ {
++	struct igc_hw *hw = &adapter->hw;
+ 	int err;
+ 
+-	if (netif_running(adapter->netdev)) {
++	if (netif_running(adapter->netdev) &&
++	    (igc_is_device_id_i225(hw) || !enable)) {
+ 		schedule_work(&adapter->reset_task);
+ 		return 0;
+ 	}
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.h
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.h
+@@ -4,7 +4,7 @@
+ #ifndef _IGC_TSN_H_
+ #define _IGC_TSN_H_
+ 
+-int igc_tsn_offload_apply(struct igc_adapter *adapter);
++int igc_tsn_offload_apply(struct igc_adapter *adapter, bool enable);
+ int igc_tsn_reset(struct igc_adapter *adapter);
+ 
+ #endif /* _IGC_BASE_H */
 
 
