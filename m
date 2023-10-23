@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97D077D3594
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F69F7D34AC
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234570AbjJWLtp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34586 "EHLO
+        id S234223AbjJWLmH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:42:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234293AbjJWLto (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:44 -0400
+        with ESMTP id S234284AbjJWLmF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C0E6100
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F04C433C7;
-        Mon, 23 Oct 2023 11:49:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 976741723
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9D8C433CD;
+        Mon, 23 Oct 2023 11:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061781;
-        bh=kr+ePa7JMXLbZ9viufkR7zzU19rV2t4T+Yp4fJcbmKY=;
+        s=korg; t=1698061303;
+        bh=ecA5/z0L0kRpulKBC8vbVL91OtJ9aNrOJ3RDuNn9mIQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vduDJRLUBi2k+kNCbVsLmlTjqD79IrEiNVTTe6FL0zDQpt/bPB/gqa3mAAMy/3usW
-         +yscUsbMnRJm2/2rIZx7TWwLmRh1NoIRVZ9ngIohSAG8I+XGiphMDtc1SJ5jmxSuEE
-         ht4QAv4YB/FwhX8vVtuS1dVtcpyQ8e1lDJgYIm+Q=
+        b=Btd0NRjVUJYK9VmnNVzbDCZQTXFzPzRHN/iFPG5qdBJ2AqqrT20ppxelgzkN7+cP6
+         jFe2p84zLToGaUy9ayII+acoLa1J26++AVM1eGWacnL+5j0LBqWoKRUl0ki2piYkr4
+         wfmhXAr9V01v1c9mZW03rby4adwqkNW94S3syID4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 163/202] wifi: mac80211: allow transmitting EAPOL frames with tainted key
+        patches@lists.linux.dev, Olga Kornievskaia <kolga@netapp.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>
+Subject: [PATCH 5.15 113/137] NFSv4.1: fixup use EXCHGID4_FLAG_USE_PNFS_DS for DS server
 Date:   Mon, 23 Oct 2023 12:57:50 +0200
-Message-ID: <20231023104831.259330251@linuxfoundation.org>
+Message-ID: <20231023104824.598597594@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,114 +48,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gong <quic_wgong@quicinc.com>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit 61304336c67358d49a989e5e0060d8c99bad6ca8 ]
+commit 379e4adfddd6a2f95a4f2029b8ddcbacf92b21f9 upstream.
 
-Lower layer device driver stop/wake TX by calling ieee80211_stop_queue()/
-ieee80211_wake_queue() while hw scan. Sometimes hw scan and PTK rekey are
-running in parallel, when M4 sent from wpa_supplicant arrive while the TX
-queue is stopped, then the M4 will pending send, and then new key install
-from wpa_supplicant. After TX queue wake up by lower layer device driver,
-the M4 will be dropped by below call stack.
+This patches fixes commit 51d674a5e488 "NFSv4.1: use
+EXCHGID4_FLAG_USE_PNFS_DS for DS server", purpose of that
+commit was to mark EXCHANGE_ID to the DS with the appropriate
+flag.
 
-When key install started, the current key flag is set KEY_FLAG_TAINTED in
-ieee80211_pairwise_rekey(), and then mac80211 wait key install complete by
-lower layer device driver. Meanwhile ieee80211_tx_h_select_key() will return
-TX_DROP for the M4 in step 12 below, and then ieee80211_free_txskb() called
-by ieee80211_tx_dequeue(), so the M4 will not send and free, then the rekey
-process failed becaue AP not receive M4. Please see details in steps below.
+However, connection to MDS can return both EXCHGID4_FLAG_USE_PNFS_DS
+and EXCHGID4_FLAG_USE_PNFS_MDS set but previous patch would only
+remember the USE_PNFS_DS and for the 2nd EXCHANGE_ID send that
+to the MDS.
 
-There are a interval between KEY_FLAG_TAINTED set for current key flag and
-install key complete by lower layer device driver, the KEY_FLAG_TAINTED is
-set in this interval, all packet including M4 will be dropped in this
-interval, the interval is step 8~13 as below.
+Instead, just mark the pnfs path exclusively.
 
-issue steps:
-      TX thread                 install key thread
-1.   stop_queue                      -idle-
-2.   sending M4                      -idle-
-3.   M4 pending                      -idle-
-4.     -idle-                  starting install key from wpa_supplicant
-5.     -idle-                  =>ieee80211_key_replace()
-6.     -idle-                  =>ieee80211_pairwise_rekey() and set
-                                 currently key->flags |= KEY_FLAG_TAINTED
-7.     -idle-                  =>ieee80211_key_enable_hw_accel()
-8.     -idle-                  =>drv_set_key() and waiting key install
-                                 complete from lower layer device driver
-9.   wake_queue                     -waiting state-
-10.  re-sending M4                  -waiting state-
-11.  =>ieee80211_tx_h_select_key()  -waiting state-
-12.  drop M4 by KEY_FLAG_TAINTED    -waiting state-
-13.    -idle-                   install key complete with success/fail
-                                  success: clear flag KEY_FLAG_TAINTED
-                                  fail: start disconnect
-
-Hence add check in step 11 above to allow the EAPOL send out in the
-interval. If lower layer device driver use the old key/cipher to encrypt
-the M4, then AP received/decrypt M4 correctly, after M4 send out, lower
-layer device driver install the new key/cipher to hardware and return
-success.
-
-If lower layer device driver use new key/cipher to send the M4, then AP
-will/should drop the M4, then it is same result with this issue, AP will/
-should kick out station as well as this issue.
-
-issue log:
-kworker/u16:4-5238  [000]  6456.108926: stop_queue:           phy1 queue:0, reason:0
-wpa_supplicant-961  [003]  6456.119737: rdev_tx_control_port: wiphy_name=phy1 name=wlan0 ifindex=6 dest=ARRAY[9e, 05, 31, 20, 9b, d0] proto=36488 unencrypted=0
-wpa_supplicant-961  [003]  6456.119839: rdev_return_int_cookie: phy1, returned 0, cookie: 504
-wpa_supplicant-961  [003]  6456.120287: rdev_add_key:         phy1, netdev:wlan0(6), key_index: 0, mode: 0, pairwise: true, mac addr: 9e:05:31:20:9b:d0
-wpa_supplicant-961  [003]  6456.120453: drv_set_key:          phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 cipher:0xfac04, flags=0x9, keyidx=0, hw_key_idx=0
-kworker/u16:9-3829  [001]  6456.168240: wake_queue:           phy1 queue:0, reason:0
-kworker/u16:9-3829  [001]  6456.168255: drv_wake_tx_queue:    phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 ac:0 tid:7
-kworker/u16:9-3829  [001]  6456.168305: cfg80211_control_port_tx_status: wdev(1), cookie: 504, ack: false
-wpa_supplicant-961  [003]  6459.167982: drv_return_int:       phy1 - -110
-
-issue call stack:
-nl80211_frame_tx_status+0x230/0x340 [cfg80211]
-cfg80211_control_port_tx_status+0x1c/0x28 [cfg80211]
-ieee80211_report_used_skb+0x374/0x3e8 [mac80211]
-ieee80211_free_txskb+0x24/0x40 [mac80211]
-ieee80211_tx_dequeue+0x644/0x954 [mac80211]
-ath10k_mac_tx_push_txq+0xac/0x238 [ath10k_core]
-ath10k_mac_op_wake_tx_queue+0xac/0xe0 [ath10k_core]
-drv_wake_tx_queue+0x80/0x168 [mac80211]
-__ieee80211_wake_txqs+0xe8/0x1c8 [mac80211]
-_ieee80211_wake_txqs+0xb4/0x120 [mac80211]
-ieee80211_wake_txqs+0x48/0x80 [mac80211]
-tasklet_action_common+0xa8/0x254
-tasklet_action+0x2c/0x38
-__do_softirq+0xdc/0x384
-
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-Link: https://lore.kernel.org/r/20230801064751.25803-1-quic_wgong@quicinc.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 51d674a5e488 ("NFSv4.1: use EXCHGID4_FLAG_USE_PNFS_DS for DS server")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tx.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index bbbcc678c655c..788b6a3c14191 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -656,7 +656,8 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
- 		}
- 
- 		if (unlikely(tx->key && tx->key->flags & KEY_FLAG_TAINTED &&
--			     !ieee80211_is_deauth(hdr->frame_control)))
-+			     !ieee80211_is_deauth(hdr->frame_control)) &&
-+			     tx->skb->protocol != tx->sdata->control_port_protocol)
- 			return TX_DROP;
- 
- 		if (!skip_hw && tx->key &&
--- 
-2.40.1
-
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -8794,8 +8794,6 @@ static int _nfs4_proc_exchange_id(struct
+ 	/* Save the EXCHANGE_ID verifier session trunk tests */
+ 	memcpy(clp->cl_confirm.data, argp->verifier.data,
+ 	       sizeof(clp->cl_confirm.data));
+-	if (resp->flags & EXCHGID4_FLAG_USE_PNFS_DS)
+-		set_bit(NFS_CS_DS, &clp->cl_flags);
+ out:
+ 	trace_nfs4_exchange_id(clp, status);
+ 	rpc_put_task(task);
 
 
