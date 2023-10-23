@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 151497D339F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC1FF7D3587
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234098AbjJWLcX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:32:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48784 "EHLO
+        id S234541AbjJWLtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234092AbjJWLcW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:32:22 -0400
+        with ESMTP id S234293AbjJWLtU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A53F102
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:32:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38AFC433C8;
-        Mon, 23 Oct 2023 11:32:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85E06AF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A02C433C9;
+        Mon, 23 Oct 2023 11:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060739;
-        bh=asjBv9fSXQQUYLt/ZfsaV29ZGYfj12TmzMzfy+yz8i0=;
+        s=korg; t=1698061758;
+        bh=uQxq4hvJtB35nS6hZtvxgtxil5ISgN74d8tAAbFnmqk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NnW8+O70LjdAliBRnACzsGfHQrdct8gFukmqmU+aKFxXocJm8+QMsK3scFdQZQSbZ
-         bsLozaorpsWEOvg4xQK0FzZ1y9hCsr0F3bFoZprw4vYpB/9/xbOwcU+Gt1Sc+LfwOc
-         XPCKWa5aS7E6OmaLAj0snG/oOi05KbGdW+k/Gs5g=
+        b=ZpduFwgpCvrO8EP2Zmy91fkbXJg+F93vdCINyQRwgg0/SJ3caJuKvK2A9PxUKCznB
+         kQ72VqE4KSYVN8I5StnfPdr9xiQRJ/WUCvRTsD9RqDzI1yAwA6RI5UonJkbCl+0qqB
+         nBki7vd3MEKBWrv0w86JMC8MnrQGZK3Q9InPDuRQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kellen Renshaw <kellen.renshaw@canonical.com>,
+        patches@lists.linux.dev, Hans de Goede <hdegoede@redhat.com>,
         "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 077/123] ACPI: resource: Add ASUS model S5402ZA to quirks
+Subject: [PATCH 5.10 128/202] ACPI: resource: Add Asus ExpertBook B2502 to Asus quirks
 Date:   Mon, 23 Oct 2023 12:57:15 +0200
-Message-ID: <20231023104820.281237794@linuxfoundation.org>
+Message-ID: <20231023104830.272772335@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,23 +49,24 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kellen Renshaw <kellen.renshaw@canonical.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6e5cbe7c4b41824e500acbb42411da692d1435f1 ]
+[ Upstream commit 7203481fd12b1257938519efb2460ea02b9236ee ]
 
-The Asus Vivobook S5402ZA has the same keyboard issue as Asus Vivobook
+The Asus ExpertBook B2502 has the same keyboard issue as Asus Vivobook
 K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
 should be Active_Low.
 
-This patch adds the S5402ZA model to the quirk list.
+This patch adds the ExpertBook B2502 model to the existing
+quirk list of Asus laptops with this issue.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216158
-Tested-by: Kellen Renshaw <kellen.renshaw@canonical.com>
-Signed-off-by: Kellen Renshaw <kellen.renshaw@canonical.com>
+Fixes: b5f9223a105d ("ACPI: resource: Skip IRQ override on Asus Vivobook S5602ZA")
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2142574
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -75,18 +75,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+)
 
 diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 27b364e23c60b..61a7f9a05f645 100644
+index 7438e57455d17..f76147272b333 100644
 --- a/drivers/acpi/resource.c
 +++ b/drivers/acpi/resource.c
-@@ -407,6 +407,13 @@ static const struct dmi_system_id asus_laptop[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
+@@ -421,6 +421,13 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "S5602ZA"),
  		},
  	},
 +	{
-+		.ident = "Asus Vivobook S5402ZA",
++		.ident = "Asus ExpertBook B2502",
 +		.matches = {
 +			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
++			DMI_MATCH(DMI_BOARD_NAME, "B2502CBA"),
 +		},
 +	},
  	{ }
