@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B74697D33F3
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E51F47D31E4
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234112AbjJWLff (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:35:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51042 "EHLO
+        id S233680AbjJWLOZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:14:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234084AbjJWLfb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:31 -0400
+        with ESMTP id S229880AbjJWLOY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BD7FD6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC29DC433C8;
-        Mon, 23 Oct 2023 11:35:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5622192
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD7CC433C7;
+        Mon, 23 Oct 2023 11:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060928;
-        bh=tJlxqb0y78VnZYWonIPJsXnsylT5yiDHFMmgtAAwYq8=;
+        s=korg; t=1698059663;
+        bh=tmW/nX7+6CN8DgBthDCqJ6YaXZHP6i+hBwZQ5FvZwz8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gFIvwsllY9QUaiTaJBmS36rUeJpqqN3ROgaj3mc2EyTzERZBHbBxJmm2fee//2lXC
-         Z/QSTnpr1ffg97VM/Dr4W5Ssk4Jtp9NIzTAYnhHKBaefJNLIQNyh7CiUX8gu4kkOYo
-         y6eKa8pert9AGmlKF3zQU7K0VOIfMk8Qfmj6JhLg=
+        b=jEfiLa3jI5gw65d+936u4cco3LFxlNwoNjdW3sBROztDAyk35VfnSRjAG7CBvxgoM
+         Difkxph/QMzJwRZMSyjiud5+vIs4nvhXblJm/qKZLc45LRi/Io9T+iaf3e9z8/TrAV
+         MFoqzUJcGdhJQibrRmLlk6uFmqPMRWxjsBpd0CyE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ian Kent <raven@themaw.net>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Dave Chinner <dchinner@redhat.com>,
-        Chandan Babu R <chandanbabu@kernel.org>,
-        Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 5.15 003/137] xfs: dont expose internal symlink metadata buffers to the vfs
+        patches@lists.linux.dev, Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 11/98] drm/msm/dsi: skip the wait for video mode done if not applicable
 Date:   Mon, 23 Oct 2023 12:56:00 +0200
-Message-ID: <20231023104820.980891981@linuxfoundation.org>
+Message-ID: <20231023104813.980754071@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,159 +49,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-commit 7b7820b83f230036fc48c3e7fb280c48c58adebf upstream.
+[ Upstream commit ab483e3adcc178254eb1ce0fbdfbea65f86f1006 ]
 
-Ian Kent reported that for inline symlinks, it's possible for
-vfs_readlink to hang on to the target buffer returned by
-_vn_get_link_inline long after it's been freed by xfs inode reclaim.
-This is a layering violation -- we should never expose XFS internals to
-the VFS.
+dsi_wait4video_done() API waits for the DSI video mode engine to
+become idle so that we can transmit the DCS commands in the
+beginning of BLLP. However, with the current sequence, the MDP
+timing engine is turned on after the panel's pre_enable() callback
+which can send out the DCS commands needed to power up the panel.
 
-When the symlink has a remote target, we allocate a separate buffer,
-copy the internal information, and let the VFS manage the new buffer's
-lifetime.  Let's adapt the inline code paths to do this too.  It's
-less efficient, but fixes the layering violation and avoids the need to
-adapt the if_data lifetime to rcu rules.  Clearly I don't care about
-readlink benchmarks.
+During those cases, this API will always timeout and print out the
+error spam leading to long bootup times and log flooding.
 
-As a side note, this fixes the minor locking violation where we can
-access the inode data fork without taking any locks; proper locking (and
-eliminating the possibility of having to switch inode_operations on a
-live inode) is essential to online repair coordinating repairs
-correctly.
+Fix this by checking if the DSI video engine was actually busy before
+waiting for it to become idle otherwise this is a redundant wait.
 
-Reported-by: Ian Kent <raven@themaw.net>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Tested-by: Chandan Babu R <chandanbabu@kernel.org>
-Acked-by: Leah Rumancik <leah.rumancik@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+changes in v2:
+	- move the reg read below the video mode check
+	- minor fixes in commit text
+
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/34
+Fixes: a689554ba6ed ("drm/msm: Initial add DSI connector support")
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/557853/
+Link: https://lore.kernel.org/r/20230915204426.19011-1-quic_abhinavk@quicinc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_iops.c    |   34 +---------------------------------
- fs/xfs/xfs_symlink.c |   29 +++++++++++++++++++----------
- 2 files changed, 20 insertions(+), 43 deletions(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/xfs/xfs_iops.c
-+++ b/fs/xfs/xfs_iops.c
-@@ -511,27 +511,6 @@ xfs_vn_get_link(
- 	return ERR_PTR(error);
- }
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index 059578faa1c6d..5f4dd3659bf96 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -1059,9 +1059,21 @@ static void dsi_wait4video_done(struct msm_dsi_host *msm_host)
  
--STATIC const char *
--xfs_vn_get_link_inline(
--	struct dentry		*dentry,
--	struct inode		*inode,
--	struct delayed_call	*done)
--{
--	struct xfs_inode	*ip = XFS_I(inode);
--	char			*link;
--
--	ASSERT(ip->i_df.if_format == XFS_DINODE_FMT_LOCAL);
--
--	/*
--	 * The VFS crashes on a NULL pointer, so return -EFSCORRUPTED if
--	 * if_data is junk.
--	 */
--	link = ip->i_df.if_u1.if_data;
--	if (XFS_IS_CORRUPT(ip->i_mount, !link))
--		return ERR_PTR(-EFSCORRUPTED);
--	return link;
--}
--
- static uint32_t
- xfs_stat_blksize(
- 	struct xfs_inode	*ip)
-@@ -1200,14 +1179,6 @@ static const struct inode_operations xfs
- 	.update_time		= xfs_vn_update_time,
- };
- 
--static const struct inode_operations xfs_inline_symlink_inode_operations = {
--	.get_link		= xfs_vn_get_link_inline,
--	.getattr		= xfs_vn_getattr,
--	.setattr		= xfs_vn_setattr,
--	.listxattr		= xfs_vn_listxattr,
--	.update_time		= xfs_vn_update_time,
--};
--
- /* Figure out if this file actually supports DAX. */
- static bool
- xfs_inode_supports_dax(
-@@ -1358,10 +1329,7 @@ xfs_setup_iops(
- 		inode->i_fop = &xfs_dir_file_operations;
- 		break;
- 	case S_IFLNK:
--		if (ip->i_df.if_format == XFS_DINODE_FMT_LOCAL)
--			inode->i_op = &xfs_inline_symlink_inode_operations;
--		else
--			inode->i_op = &xfs_symlink_inode_operations;
-+		inode->i_op = &xfs_symlink_inode_operations;
- 		break;
- 	default:
- 		inode->i_op = &xfs_inode_operations;
---- a/fs/xfs/xfs_symlink.c
-+++ b/fs/xfs/xfs_symlink.c
-@@ -22,6 +22,7 @@
- #include "xfs_trace.h"
- #include "xfs_trans.h"
- #include "xfs_ialloc.h"
-+#include "xfs_error.h"
- 
- /* ----- Kernel only functions below ----- */
- int
-@@ -96,17 +97,15 @@ xfs_readlink_bmap_ilocked(
- 
- int
- xfs_readlink(
--	struct xfs_inode *ip,
--	char		*link)
-+	struct xfs_inode	*ip,
-+	char			*link)
+ static void dsi_wait4video_eng_busy(struct msm_dsi_host *msm_host)
  {
--	struct xfs_mount *mp = ip->i_mount;
--	xfs_fsize_t	pathlen;
--	int		error = 0;
-+	struct xfs_mount	*mp = ip->i_mount;
-+	xfs_fsize_t		pathlen;
-+	int			error = -EFSCORRUPTED;
- 
- 	trace_xfs_readlink(ip);
- 
--	ASSERT(ip->i_df.if_format != XFS_DINODE_FMT_LOCAL);
--
- 	if (xfs_is_shutdown(mp))
- 		return -EIO;
- 
-@@ -121,12 +120,22 @@ xfs_readlink(
- 			 __func__, (unsigned long long) ip->i_ino,
- 			 (long long) pathlen);
- 		ASSERT(0);
--		error = -EFSCORRUPTED;
- 		goto out;
- 	}
- 
--
--	error = xfs_readlink_bmap_ilocked(ip, link);
-+	if (ip->i_df.if_format == XFS_DINODE_FMT_LOCAL) {
-+		/*
-+		 * The VFS crashes on a NULL pointer, so return -EFSCORRUPTED
-+		 * if if_data is junk.
-+		 */
-+		if (XFS_IS_CORRUPT(ip->i_mount, !ip->i_df.if_u1.if_data))
-+			goto out;
++	u32 data;
 +
-+		memcpy(link, ip->i_df.if_u1.if_data, pathlen + 1);
-+		error = 0;
-+	} else {
-+		error = xfs_readlink_bmap_ilocked(ip, link);
-+	}
+ 	if (!(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO))
+ 		return;
  
-  out:
- 	xfs_iunlock(ip, XFS_ILOCK_SHARED);
++	data = dsi_read(msm_host, REG_DSI_STATUS0);
++
++	/* if video mode engine is not busy, its because
++	 * either timing engine was not turned on or the
++	 * DSI controller has finished transmitting the video
++	 * data already, so no need to wait in those cases
++	 */
++	if (!(data & DSI_STATUS0_VIDEO_MODE_ENGINE_BUSY))
++		return;
++
+ 	if (msm_host->power_on && msm_host->enabled) {
+ 		dsi_wait4video_done(msm_host);
+ 		/* delay 4 ms to skip BLLP */
+-- 
+2.40.1
+
 
 
