@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A19A87D34CB
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF1C97D3165
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234332AbjJWLmz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:42:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34700 "EHLO
+        id S229973AbjJWLIs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:08:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234385AbjJWLmh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:37 -0400
+        with ESMTP id S233499AbjJWLIr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E985D7E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18FAC433C8;
-        Mon, 23 Oct 2023 11:42:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC4499
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80ECCC433C7;
+        Mon, 23 Oct 2023 11:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061349;
-        bh=jDJN+c2+M65q3Gn5rc9+xezeuK/IJNbUeEpY9Dn+uOU=;
+        s=korg; t=1698059324;
+        bh=lpxY9B7KJkEOJ1a6f0nC2SXp4BJ+3rEMRZNgjnfvRMs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wSu27yL62qqJw+Gyl3TTFJ7Rh5ZaG27DwuOWKEv3qU1gbo1m1uUfr3vHb13RfaV/v
-         gjIP73FcVkImZF8QQnKkVSzewwWIHEI2XRmJuCaRhFjL2Zs3146mu5/NvN8JYrH1BO
-         lfsUuHJQI2k2i2obTJ9eahxZyUiLnsajgQlvJv/4=
+        b=UoeDsu7Bzo2ZkVjMxGkIbkyxlV3LZknTjLSesjWKvD9uWWG+6PI7HpJbP6Z3paz5a
+         1kuS6eaCW4k39lqFYv/TPEZ9N6Ee/E65Phy1G6HZuSax5PHaRAvpJl0KESgpD89MMs
+         iYfyOApYUKimYAHKO+s5mhWbPlOfzKPoaROOeAWQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/202] riscv, bpf: Sign-extend return values
+        patches@lists.linux.dev, Martino Fontana <tinozzo123@gmail.com>,
+        "Daniel J. Ogorchock" <djogorchock@gmail.com>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 139/241] HID: nintendo: reinitialize USB Pro Controller after resuming from suspend
 Date:   Mon, 23 Oct 2023 12:55:25 +0200
-Message-ID: <20231023104827.141312597@linuxfoundation.org>
+Message-ID: <20231023104837.253291685@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,82 +49,266 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Björn Töpel <bjorn@rivosinc.com>
+From: Martino Fontana <tinozzo123@gmail.com>
 
-[ Upstream commit 2f1b0d3d733169eb11680bfa97c266ae5e757148 ]
+[ Upstream commit 95ea4d9fd385fe335b989f22d409df079a042b7a ]
 
-The RISC-V architecture does not expose sub-registers, and hold all
-32-bit values in a sign-extended format [1] [2]:
+When suspending the computer, a Switch Pro Controller connected via USB will
+lose its internal status. However, because the USB connection was technically
+never lost, when resuming the computer, the driver will attempt to communicate
+with the controller as if nothing happened (and fail).
+Because of this, the user was forced to manually disconnect the controller
+(or to press the sync button on the controller to power it off), so that it
+can be re-initialized.
 
-  | The compiler and calling convention maintain an invariant that all
-  | 32-bit values are held in a sign-extended format in 64-bit
-  | registers. Even 32-bit unsigned integers extend bit 31 into bits
-  | 63 through 32. Consequently, conversion between unsigned and
-  | signed 32-bit integers is a no-op, as is conversion from a signed
-  | 32-bit integer to a signed 64-bit integer.
+With this patch, the controller will be automatically re-initialized after
+resuming from suspend.
 
-While BPF, on the other hand, exposes sub-registers, and use
-zero-extension (similar to arm64/x86).
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216233
 
-This has led to some subtle bugs, where a BPF JITted program has not
-sign-extended the a0 register (return value in RISC-V land), passed
-the return value up the kernel, e.g.:
-
-  | int from_bpf(void);
-  |
-  | long foo(void)
-  | {
-  |    return from_bpf();
-  | }
-
-Here, a0 would be 0xffff_ffff, instead of the expected
-0xffff_ffff_ffff_ffff.
-
-Internally, the RISC-V JIT uses a5 as a dedicated register for BPF
-return values.
-
-Keep a5 zero-extended, but explicitly sign-extend a0 (which is used
-outside BPF land). Now that a0 (RISC-V ABI) and a5 (BPF ABI) differs,
-a0 is only moved to a5 for non-BPF native calls (BPF_PSEUDO_CALL).
-
-Fixes: 2353ecc6f91f ("bpf, riscv: add BPF JIT for RV64G")
-Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://github.com/riscv/riscv-isa-manual/releases/download/riscv-isa-release-056b6ff-2023-10-02/unpriv-isa-asciidoc.pdf # [2]
-Link: https://github.com/riscv-non-isa/riscv-elf-psabi-doc/releases/download/draft-20230929-e5c800e661a53efe3c2678d71a306323b60eb13b/riscv-abi.pdf # [2]
-Link: https://lore.kernel.org/bpf/20231004120706.52848-2-bjorn@kernel.org
+Signed-off-by: Martino Fontana <tinozzo123@gmail.com>
+Reviewed-by: Daniel J. Ogorchock <djogorchock@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/net/bpf_jit_comp64.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/hid/hid-nintendo.c | 175 ++++++++++++++++++++++---------------
+ 1 file changed, 103 insertions(+), 72 deletions(-)
 
-diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
-index 53d1f520c5890..0cc3dd9d32e64 100644
---- a/arch/riscv/net/bpf_jit_comp64.c
-+++ b/arch/riscv/net/bpf_jit_comp64.c
-@@ -201,7 +201,7 @@ static void __build_epilogue(bool is_tail_call, struct rv_jit_context *ctx)
- 	emit_addi(RV_REG_SP, RV_REG_SP, stack_adjust, ctx);
- 	/* Set return value. */
- 	if (!is_tail_call)
--		emit_mv(RV_REG_A0, RV_REG_A5, ctx);
-+		emit_addiw(RV_REG_A0, RV_REG_A5, 0, ctx);
- 	emit_jalr(RV_REG_ZERO, is_tail_call ? RV_REG_T3 : RV_REG_RA,
- 		  is_tail_call ? 4 : 0, /* skip TCC init */
- 		  ctx);
-@@ -856,7 +856,8 @@ int bpf_jit_emit_insn(const struct bpf_insn *insn, struct rv_jit_context *ctx,
- 		if (ret)
- 			return ret;
+diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
+index 250f5d2f888ab..10468f727e5bb 100644
+--- a/drivers/hid/hid-nintendo.c
++++ b/drivers/hid/hid-nintendo.c
+@@ -2088,7 +2088,9 @@ static int joycon_read_info(struct joycon_ctlr *ctlr)
+ 	struct joycon_input_report *report;
  
--		emit_mv(bpf_to_rv_reg(BPF_REG_0, ctx), RV_REG_A0, ctx);
-+		if (insn->src_reg != BPF_PSEUDO_CALL)
-+			emit_mv(bpf_to_rv_reg(BPF_REG_0, ctx), RV_REG_A0, ctx);
- 		break;
+ 	req.subcmd_id = JC_SUBCMD_REQ_DEV_INFO;
++	mutex_lock(&ctlr->output_mutex);
+ 	ret = joycon_send_subcmd(ctlr, &req, 0, HZ);
++	mutex_unlock(&ctlr->output_mutex);
+ 	if (ret) {
+ 		hid_err(ctlr->hdev, "Failed to get joycon info; ret=%d\n", ret);
+ 		return ret;
+@@ -2117,6 +2119,85 @@ static int joycon_read_info(struct joycon_ctlr *ctlr)
+ 	return 0;
+ }
+ 
++static int joycon_init(struct hid_device *hdev)
++{
++	struct joycon_ctlr *ctlr = hid_get_drvdata(hdev);
++	int ret = 0;
++
++	mutex_lock(&ctlr->output_mutex);
++	/* if handshake command fails, assume ble pro controller */
++	if ((jc_type_is_procon(ctlr) || jc_type_is_chrggrip(ctlr)) &&
++	    !joycon_send_usb(ctlr, JC_USB_CMD_HANDSHAKE, HZ)) {
++		hid_dbg(hdev, "detected USB controller\n");
++		/* set baudrate for improved latency */
++		ret = joycon_send_usb(ctlr, JC_USB_CMD_BAUDRATE_3M, HZ);
++		if (ret) {
++			hid_err(hdev, "Failed to set baudrate; ret=%d\n", ret);
++			goto out_unlock;
++		}
++		/* handshake */
++		ret = joycon_send_usb(ctlr, JC_USB_CMD_HANDSHAKE, HZ);
++		if (ret) {
++			hid_err(hdev, "Failed handshake; ret=%d\n", ret);
++			goto out_unlock;
++		}
++		/*
++		 * Set no timeout (to keep controller in USB mode).
++		 * This doesn't send a response, so ignore the timeout.
++		 */
++		joycon_send_usb(ctlr, JC_USB_CMD_NO_TIMEOUT, HZ/10);
++	} else if (jc_type_is_chrggrip(ctlr)) {
++		hid_err(hdev, "Failed charging grip handshake\n");
++		ret = -ETIMEDOUT;
++		goto out_unlock;
++	}
++
++	/* get controller calibration data, and parse it */
++	ret = joycon_request_calibration(ctlr);
++	if (ret) {
++		/*
++		 * We can function with default calibration, but it may be
++		 * inaccurate. Provide a warning, and continue on.
++		 */
++		hid_warn(hdev, "Analog stick positions may be inaccurate\n");
++	}
++
++	/* get IMU calibration data, and parse it */
++	ret = joycon_request_imu_calibration(ctlr);
++	if (ret) {
++		/*
++		 * We can function with default calibration, but it may be
++		 * inaccurate. Provide a warning, and continue on.
++		 */
++		hid_warn(hdev, "Unable to read IMU calibration data\n");
++	}
++
++	/* Set the reporting mode to 0x30, which is the full report mode */
++	ret = joycon_set_report_mode(ctlr);
++	if (ret) {
++		hid_err(hdev, "Failed to set report mode; ret=%d\n", ret);
++		goto out_unlock;
++	}
++
++	/* Enable rumble */
++	ret = joycon_enable_rumble(ctlr);
++	if (ret) {
++		hid_err(hdev, "Failed to enable rumble; ret=%d\n", ret);
++		goto out_unlock;
++	}
++
++	/* Enable the IMU */
++	ret = joycon_enable_imu(ctlr);
++	if (ret) {
++		hid_err(hdev, "Failed to enable the IMU; ret=%d\n", ret);
++		goto out_unlock;
++	}
++
++out_unlock:
++	mutex_unlock(&ctlr->output_mutex);
++	return ret;
++}
++
+ /* Common handler for parsing inputs */
+ static int joycon_ctlr_read_handler(struct joycon_ctlr *ctlr, u8 *data,
+ 							      int size)
+@@ -2248,85 +2329,19 @@ static int nintendo_hid_probe(struct hid_device *hdev,
+ 
+ 	hid_device_io_start(hdev);
+ 
+-	/* Initialize the controller */
+-	mutex_lock(&ctlr->output_mutex);
+-	/* if handshake command fails, assume ble pro controller */
+-	if ((jc_type_is_procon(ctlr) || jc_type_is_chrggrip(ctlr)) &&
+-	    !joycon_send_usb(ctlr, JC_USB_CMD_HANDSHAKE, HZ)) {
+-		hid_dbg(hdev, "detected USB controller\n");
+-		/* set baudrate for improved latency */
+-		ret = joycon_send_usb(ctlr, JC_USB_CMD_BAUDRATE_3M, HZ);
+-		if (ret) {
+-			hid_err(hdev, "Failed to set baudrate; ret=%d\n", ret);
+-			goto err_mutex;
+-		}
+-		/* handshake */
+-		ret = joycon_send_usb(ctlr, JC_USB_CMD_HANDSHAKE, HZ);
+-		if (ret) {
+-			hid_err(hdev, "Failed handshake; ret=%d\n", ret);
+-			goto err_mutex;
+-		}
+-		/*
+-		 * Set no timeout (to keep controller in USB mode).
+-		 * This doesn't send a response, so ignore the timeout.
+-		 */
+-		joycon_send_usb(ctlr, JC_USB_CMD_NO_TIMEOUT, HZ/10);
+-	} else if (jc_type_is_chrggrip(ctlr)) {
+-		hid_err(hdev, "Failed charging grip handshake\n");
+-		ret = -ETIMEDOUT;
+-		goto err_mutex;
+-	}
+-
+-	/* get controller calibration data, and parse it */
+-	ret = joycon_request_calibration(ctlr);
++	ret = joycon_init(hdev);
+ 	if (ret) {
+-		/*
+-		 * We can function with default calibration, but it may be
+-		 * inaccurate. Provide a warning, and continue on.
+-		 */
+-		hid_warn(hdev, "Analog stick positions may be inaccurate\n");
+-	}
+-
+-	/* get IMU calibration data, and parse it */
+-	ret = joycon_request_imu_calibration(ctlr);
+-	if (ret) {
+-		/*
+-		 * We can function with default calibration, but it may be
+-		 * inaccurate. Provide a warning, and continue on.
+-		 */
+-		hid_warn(hdev, "Unable to read IMU calibration data\n");
+-	}
+-
+-	/* Set the reporting mode to 0x30, which is the full report mode */
+-	ret = joycon_set_report_mode(ctlr);
+-	if (ret) {
+-		hid_err(hdev, "Failed to set report mode; ret=%d\n", ret);
+-		goto err_mutex;
+-	}
+-
+-	/* Enable rumble */
+-	ret = joycon_enable_rumble(ctlr);
+-	if (ret) {
+-		hid_err(hdev, "Failed to enable rumble; ret=%d\n", ret);
+-		goto err_mutex;
+-	}
+-
+-	/* Enable the IMU */
+-	ret = joycon_enable_imu(ctlr);
+-	if (ret) {
+-		hid_err(hdev, "Failed to enable the IMU; ret=%d\n", ret);
+-		goto err_mutex;
++		hid_err(hdev, "Failed to initialize controller; ret=%d\n", ret);
++		goto err_close;
  	}
- 	/* tail call */
+ 
+ 	ret = joycon_read_info(ctlr);
+ 	if (ret) {
+ 		hid_err(hdev, "Failed to retrieve controller info; ret=%d\n",
+ 			ret);
+-		goto err_mutex;
++		goto err_close;
+ 	}
+ 
+-	mutex_unlock(&ctlr->output_mutex);
+-
+ 	/* Initialize the leds */
+ 	ret = joycon_leds_create(ctlr);
+ 	if (ret) {
+@@ -2352,8 +2367,6 @@ static int nintendo_hid_probe(struct hid_device *hdev,
+ 	hid_dbg(hdev, "probe - success\n");
+ 	return 0;
+ 
+-err_mutex:
+-	mutex_unlock(&ctlr->output_mutex);
+ err_close:
+ 	hid_hw_close(hdev);
+ err_stop:
+@@ -2383,6 +2396,20 @@ static void nintendo_hid_remove(struct hid_device *hdev)
+ 	hid_hw_stop(hdev);
+ }
+ 
++#ifdef CONFIG_PM
++
++static int nintendo_hid_resume(struct hid_device *hdev)
++{
++	int ret = joycon_init(hdev);
++
++	if (ret)
++		hid_err(hdev, "Failed to restore controller after resume");
++
++	return ret;
++}
++
++#endif
++
+ static const struct hid_device_id nintendo_hid_devices[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_NINTENDO,
+ 			 USB_DEVICE_ID_NINTENDO_PROCON) },
+@@ -2404,6 +2431,10 @@ static struct hid_driver nintendo_hid_driver = {
+ 	.probe		= nintendo_hid_probe,
+ 	.remove		= nintendo_hid_remove,
+ 	.raw_event	= nintendo_hid_event,
++
++#ifdef CONFIG_PM
++	.resume		= nintendo_hid_resume,
++#endif
+ };
+ module_hid_driver(nintendo_hid_driver);
+ 
 -- 
 2.40.1
 
