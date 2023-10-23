@@ -2,45 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 597587D3353
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C3AB7D3079
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233993AbjJWL3N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49086 "EHLO
+        id S229563AbjJWK7H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 06:59:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234014AbjJWL3J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:29:09 -0400
+        with ESMTP id S229613AbjJWK7G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 040DBE4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:29:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E57C433D9;
-        Mon, 23 Oct 2023 11:29:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11FAD6E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10226C433C7;
+        Mon, 23 Oct 2023 10:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060546;
-        bh=9eAKNzb2K0W7ZMwk/j1JDoofgBkMSGBgqpYELoIFssY=;
+        s=korg; t=1698058744;
+        bh=IYWuRSk7en6USt3y11Ks3LQXWdqJ3qjiPBiLv53AOl8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=F4nCaoZQCbyuu5JrgboT403gDKal/5EKnndN5dyLspWc8Ck6VqA2lbSGOXEQGlEnu
-         ehGwTpXmDeI4h1/W/pJYIB4gO7jvqJZlSkxUA9q7C+FpxtOUkAqWQOluekK1OdNXBG
-         vTOAP9uop7Do7UQdW0WCX6zWPPDC3q0pGFLhfFnQ=
+        b=xbR+5S0+1sXrt9ij3sxaFwEiiWTCZ+hE2YxgQ6fz+tmS9deCacPnk8VmGG89e+MJs
+         t7NSul7blcqJVvCFAb47VeFys/gTBB+x1c2xjwesU96fnJx2fZhEoqUn2gRu3IjOT/
+         CkA1oe92sbiaCIykdF2yNsCSiQR5TdNN6WoQ3MIc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Thierry Reding <thierry.reding@gmail.com>
-Subject: [PATCH 5.4 004/123] pwm: hibvt: Explicitly set .polarity in .get_state()
+        patches@lists.linux.dev, Xingxing Luo <xingxing.luo@unisoc.com>
+Subject: [PATCH 4.14 12/66] usb: musb: Get the musb_qh poniter after musb_giveback
 Date:   Mon, 23 Oct 2023 12:56:02 +0200
-Message-ID: <20231023104817.870105759@linuxfoundation.org>
+Message-ID: <20231023104811.248609221@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,36 +47,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Xingxing Luo <xingxing.luo@unisoc.com>
 
-commit 6f57937980142715e927697a6ffd2050f38ed6f6 upstream.
+commit 33d7e37232155aadebe4145dcc592f00dabd7a2b upstream.
 
-The driver only both polarities. Complete the implementation of
-.get_state() by setting .polarity according to the configured hardware
-state.
+When multiple threads are performing USB transmission, musb->lock will be
+unlocked when musb_giveback is executed. At this time, qh may be released
+in the dequeue process in other threads, resulting in a wild pointer, so
+it needs to be here get qh again, and judge whether qh is NULL, and when
+dequeue, you need to set qh to NULL.
 
-Fixes: d09f00810850 ("pwm: Add PWM driver for HiSilicon BVT SOCs")
-Link: https://lore.kernel.org/r/20230228135508.1798428-2-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Fixes: dbac5d07d13e ("usb: musb: host: don't start next rx urb if current one failed")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xingxing Luo <xingxing.luo@unisoc.com>
+Link: https://lore.kernel.org/r/20230919033055.14085-1-xingxing.luo@unisoc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-hibvt.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/musb/musb_host.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-hibvt.c
-+++ b/drivers/pwm/pwm-hibvt.c
-@@ -146,6 +146,7 @@ static void hibvt_pwm_get_state(struct p
+--- a/drivers/usb/musb/musb_host.c
++++ b/drivers/usb/musb/musb_host.c
+@@ -366,10 +366,16 @@ static void musb_advance_schedule(struct
+ 	musb_giveback(musb, urb, status);
+ 	qh->is_ready = ready;
  
- 	value = readl(base + PWM_CTRL_ADDR(pwm->hwpwm));
- 	state->enabled = (PWM_ENABLE_MASK & value);
-+	state->polarity = (PWM_POLARITY_MASK & value) ? PWM_POLARITY_INVERSED : PWM_POLARITY_NORMAL;
- }
++	/*
++	 * musb->lock had been unlocked in musb_giveback, so qh may
++	 * be freed, need to get it again
++	 */
++	qh = musb_ep_get_qh(hw_ep, is_in);
++
+ 	/* reclaim resources (and bandwidth) ASAP; deschedule it, and
+ 	 * invalidate qh as soon as list_empty(&hep->urb_list)
+ 	 */
+-	if (list_empty(&qh->hep->urb_list)) {
++	if (qh && list_empty(&qh->hep->urb_list)) {
+ 		struct list_head	*head;
+ 		struct dma_controller	*dma = musb->dma_controller;
  
- static int hibvt_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+@@ -2459,6 +2465,7 @@ static int musb_urb_dequeue(struct usb_h
+ 		 * and its URB list has emptied, recycle this qh.
+ 		 */
+ 		if (ready && list_empty(&qh->hep->urb_list)) {
++			musb_ep_set_qh(qh->hw_ep, is_in, NULL);
+ 			qh->hep->hcpriv = NULL;
+ 			list_del(&qh->ring);
+ 			kfree(qh);
 
 
