@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E197D313A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28CA37D3149
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233404AbjJWLHH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:07:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49710 "EHLO
+        id S229835AbjJWLHg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:07:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233409AbjJWLHG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:06 -0400
+        with ESMTP id S233427AbjJWLHf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 995B4D7E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BECC433C7;
-        Mon, 23 Oct 2023 11:07:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26BC9D7C
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CE2C433CB;
+        Mon, 23 Oct 2023 11:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059224;
-        bh=5EtgBvODPS/MDGdp223TCuAnisUqlItihkfpJvkhgsc=;
+        s=korg; t=1698059253;
+        bh=PSsnyk3iOjdqG8GmVKXhcbzoyT/H4yt0/BAGSI+H6o4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uJSyUlqhUu2be7TGDVBMW715tfRie1udQa8tWof+4Qcj0S7hOf3hVxtK0SjSl+bz9
-         PgkPLZTujDTZsu4IU+GrpxErXaMOQtDipt3rFfMK3i2EzVJVvqxm2m+q03emqBC0pV
-         jYlDMS19XBvblaUxRjla8VdHyqSJZ3kfbbSrrkSc=
+        b=RXUaUW5wHPULj+NCh4ptmcK42tD+yoNRBOuNN7b0b+j5e5HkXWeUN15WuVNjs+X2b
+         AN3VVA1+3s3MObv0rlWn9h2qKmQ21aushXcxss8AQV5gu0SvwjY6j/SwN2hOf54Rvm
+         pW/fBcVp62VP9bAtUG0s9Gwb+Rylojp8c2QmZaT8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Abeni <pabeni@redhat.com>,
-        Aaron Conole <aconole@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 088/241] selftests: openvswitch: Add version check for pyroute2
-Date:   Mon, 23 Oct 2023 12:54:34 +0200
-Message-ID: <20231023104836.036041968@linuxfoundation.org>
+        patches@lists.linux.dev, Justin Chen <justin.chen@broadcom.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.5 089/241] net: phy: bcm7xxx: Add missing 16nm EPHY statistics
+Date:   Mon, 23 Oct 2023 12:54:35 +0200
+Message-ID: <20231023104836.060936286@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
 References: <20231023104833.832874523@linuxfoundation.org>
@@ -53,71 +55,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Aaron Conole <aconole@redhat.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit 92e37f20f20a23fec4626ae72eda50f127acb130 upstream.
+commit 6200e00e112ce2d17b066a20dd2476d9aecbefa6 upstream.
 
-Paolo Abeni reports that on some systems the pyroute2 version isn't
-new enough to run the test suite.  Ensure that we support a minimum
-version of 0.6 for all cases (which does include the existing ones).
-The 0.6.1 version was released in May of 2021, so should be
-propagated to most installations at this point.
+The .probe() function would allocate the necessary space and ensure that
+the library call sizes the number of statistics but the callbacks
+necessary to fetch the name and values were not wired up.
 
-The alternative that Paolo proposed was to only skip when the
-add-flow is being run.  This would be okay for most cases, except
-if a future test case is added that needs to do flow dump without
-an associated add (just guessing).  In that case, it could also be
-broken and we would need additional skip logic anyway.  Just draw
-a line in the sand now.
-
-Fixes: 25f16c873fb1 ("selftests: add openvswitch selftest suite")
-Reported-by: Paolo Abeni <pabeni@redhat.com>
-Closes: https://lore.kernel.org/lkml/8470c431e0930d2ea204a9363a60937289b7fdbe.camel@redhat.com/
-Signed-off-by: Aaron Conole <aconole@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Justin Chen <justin.chen@broadcom.com>
+Fixes: f68d08c437f9 ("net: phy: bcm7xxx: Add EPHY entry for 72165")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231017205119.416392-1-florian.fainelli@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/openvswitch/openvswitch.sh |    2 +-
- tools/testing/selftests/net/openvswitch/ovs-dpctl.py   |   10 +++++++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/net/phy/bcm7xxx.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -204,7 +204,7 @@ run_test() {
- 	fi
- 
- 	if python3 ovs-dpctl.py -h 2>&1 | \
--	     grep "Need to install the python" >/dev/null 2>&1; then
-+	     grep -E "Need to (install|upgrade) the python" >/dev/null 2>&1; then
- 		stdbuf -o0 printf "TEST: %-60s  [PYLIB]\n" "${tdesc}"
- 		return $ksft_skip
- 	fi
---- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-+++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
-@@ -25,8 +25,10 @@ try:
-     from pyroute2.netlink import nlmsg_atoms
-     from pyroute2.netlink.exceptions import NetlinkError
-     from pyroute2.netlink.generic import GenericNetlinkSocket
-+    import pyroute2
-+
- except ModuleNotFoundError:
--    print("Need to install the python pyroute2 package.")
-+    print("Need to install the python pyroute2 package >= 0.6.")
-     sys.exit(0)
- 
- 
-@@ -1459,6 +1461,12 @@ def main(argv):
-     nlmsg_atoms.ovskey = ovskey
-     nlmsg_atoms.ovsactions = ovsactions
- 
-+    # version check for pyroute2
-+    prverscheck = pyroute2.__version__.split(".")
-+    if int(prverscheck[0]) == 0 and int(prverscheck[1]) < 6:
-+        print("Need to upgrade the python pyroute2 package to >= 0.6.")
-+        sys.exit(0)
-+
-     parser = argparse.ArgumentParser()
-     parser.add_argument(
-         "-v",
+--- a/drivers/net/phy/bcm7xxx.c
++++ b/drivers/net/phy/bcm7xxx.c
+@@ -894,6 +894,9 @@ static int bcm7xxx_28nm_probe(struct phy
+ 	.name		= _name,					\
+ 	/* PHY_BASIC_FEATURES */					\
+ 	.flags		= PHY_IS_INTERNAL,				\
++	.get_sset_count	= bcm_phy_get_sset_count,			\
++	.get_strings	= bcm_phy_get_strings,				\
++	.get_stats	= bcm7xxx_28nm_get_phy_stats,			\
+ 	.probe		= bcm7xxx_28nm_probe,				\
+ 	.config_init	= bcm7xxx_16nm_ephy_config_init,		\
+ 	.config_aneg	= genphy_config_aneg,				\
 
 
