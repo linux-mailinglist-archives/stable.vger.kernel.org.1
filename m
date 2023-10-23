@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DEFC7D3292
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A2587D34C4
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233818AbjJWLVl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:21:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36446 "EHLO
+        id S234316AbjJWLmj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:42:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39078 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233826AbjJWLVk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:40 -0400
+        with ESMTP id S234371AbjJWLmb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A21D6
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96057C433C9;
-        Mon, 23 Oct 2023 11:21:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2FEB10F9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C77BC433C9;
+        Mon, 23 Oct 2023 11:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060098;
-        bh=PuL6+/stWqGawMsw4BnWcy2hinYEcBvqWhj/I3FwAX4=;
+        s=korg; t=1698061343;
+        bh=xZUqhsoRCu/dB6gCK7DGBobwx/eMSRalt9P4WMvhjTU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EtvEmxLPwuVfm13JLHLjbDWm9OflH1Vd5Kk8bfERlt41MTZngY4KrY9aOifLLJOHJ
-         9fJzmvP9jUj3KTCXIE/ko36iggURBeYuywehFKq9vqp4gseBYbdWtCpkK189cyOLH+
-         fVt4iZHoi5b7c7nlH4H2c+TbXrXzZntzijO606SI=
+        b=PAZ1ni9QJOeRnstgxcQOQSmmb03T8YVJ+KEqCN6sOjgOoLUM74tyhY17sWuqb2V6p
+         E2QUJPo/r2r36lX5p8ELTbjfCRHIdKuR+RzBqDWPEUPWBuIG8j39H/yCh+tF8kLUe3
+         9h7KfMMXIqI86BDXv//s0QVnbge19kd+47DWnBH8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Simon Horman <horms@kernel.org>,
-        David Ahern <dsahern@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 058/196] ipv4: fib: annotate races around nh->nh_saddr_genid and nh->nh_saddr
+        patches@lists.linux.dev,
+        =?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+        Ross Lagerwall <ross.lagerwall@citrix.com>,
+        Wei Liu <wei.liu@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 016/202] xen-netback: use default TX queue size for vifs
 Date:   Mon, 23 Oct 2023 12:55:23 +0200
-Message-ID: <20231023104830.178342581@linuxfoundation.org>
+Message-ID: <20231023104827.083254773@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,114 +53,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-commit 195374d893681da43a39796e53b30ac4f20400c4 upstream.
+[ Upstream commit 66cf7435a26917c0c4d6245ad9137e7606e84fdf ]
 
-syzbot reported a data-race while accessing nh->nh_saddr_genid [1]
+Do not set netback interfaces (vifs) default TX queue size to the ring size.
+The TX queue size is not related to the ring size, and using the ring size (32)
+as the queue size can lead to packet drops.  Note the TX side of the vif
+interface in the netback domain is the one receiving packets to be injected
+to the guest.
 
-Add annotations, but leave the code lazy as intended.
+Do not explicitly set the TX queue length to any value when creating the
+interface, and instead use the system default.  Note that the queue length can
+also be adjusted at runtime.
 
-[1]
-BUG: KCSAN: data-race in fib_select_path / fib_select_path
-
-write to 0xffff8881387166f0 of 4 bytes by task 6778 on cpu 1:
-fib_info_update_nhc_saddr net/ipv4/fib_semantics.c:1334 [inline]
-fib_result_prefsrc net/ipv4/fib_semantics.c:1354 [inline]
-fib_select_path+0x292/0x330 net/ipv4/fib_semantics.c:2269
-ip_route_output_key_hash_rcu+0x659/0x12c0 net/ipv4/route.c:2810
-ip_route_output_key_hash net/ipv4/route.c:2644 [inline]
-__ip_route_output_key include/net/route.h:134 [inline]
-ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2872
-send4+0x1f5/0x520 drivers/net/wireguard/socket.c:61
-wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work kernel/workqueue.c:2630 [inline]
-process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2703
-worker_thread+0x525/0x730 kernel/workqueue.c:2784
-kthread+0x1d7/0x210 kernel/kthread.c:388
-ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
-
-read to 0xffff8881387166f0 of 4 bytes by task 6759 on cpu 0:
-fib_result_prefsrc net/ipv4/fib_semantics.c:1350 [inline]
-fib_select_path+0x1cb/0x330 net/ipv4/fib_semantics.c:2269
-ip_route_output_key_hash_rcu+0x659/0x12c0 net/ipv4/route.c:2810
-ip_route_output_key_hash net/ipv4/route.c:2644 [inline]
-__ip_route_output_key include/net/route.h:134 [inline]
-ip_route_output_flow+0xa6/0x150 net/ipv4/route.c:2872
-send4+0x1f5/0x520 drivers/net/wireguard/socket.c:61
-wg_socket_send_skb_to_peer+0x94/0x130 drivers/net/wireguard/socket.c:175
-wg_socket_send_buffer_to_peer+0xd6/0x100 drivers/net/wireguard/socket.c:200
-wg_packet_send_handshake_initiation drivers/net/wireguard/send.c:40 [inline]
-wg_packet_handshake_send_worker+0x10c/0x150 drivers/net/wireguard/send.c:51
-process_one_work kernel/workqueue.c:2630 [inline]
-process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2703
-worker_thread+0x525/0x730 kernel/workqueue.c:2784
-kthread+0x1d7/0x210 kernel/kthread.c:388
-ret_from_fork+0x48/0x60 arch/x86/kernel/process.c:147
-ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
-
-value changed: 0x959d3217 -> 0x959d3218
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 6759 Comm: kworker/u4:15 Not tainted 6.6.0-rc4-syzkaller-00029-gcbf3a2cb156a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
-Workqueue: wg-kex-wg1 wg_packet_handshake_send_worker
-
-Fixes: 436c3b66ec98 ("ipv4: Invalidate nexthop cache nh_saddr more correctly.")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20231017192304.82626-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f942dc2552b8 ('xen network backend driver')
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Reviewed-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Acked-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fib_semantics.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/xen-netback/interface.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/net/ipv4/fib_semantics.c
-+++ b/net/ipv4/fib_semantics.c
-@@ -1325,15 +1325,18 @@ __be32 fib_info_update_nhc_saddr(struct
- 				 unsigned char scope)
- {
- 	struct fib_nh *nh;
-+	__be32 saddr;
+--- a/drivers/net/xen-netback/interface.c
++++ b/drivers/net/xen-netback/interface.c
+@@ -41,7 +41,6 @@
+ #include <asm/xen/hypercall.h>
+ #include <xen/balloon.h>
  
- 	if (nhc->nhc_family != AF_INET)
- 		return inet_select_addr(nhc->nhc_dev, 0, scope);
+-#define XENVIF_QUEUE_LENGTH 32
+ #define XENVIF_NAPI_WEIGHT  64
  
- 	nh = container_of(nhc, struct fib_nh, nh_common);
--	nh->nh_saddr = inet_select_addr(nh->fib_nh_dev, nh->fib_nh_gw4, scope);
--	nh->nh_saddr_genid = atomic_read(&net->ipv4.dev_addr_genid);
-+	saddr = inet_select_addr(nh->fib_nh_dev, nh->fib_nh_gw4, scope);
+ /* Number of bytes allowed on the internal guest Rx queue. */
+@@ -528,8 +527,6 @@ struct xenvif *xenvif_alloc(struct devic
+ 	dev->features = dev->hw_features | NETIF_F_RXCSUM;
+ 	dev->ethtool_ops = &xenvif_ethtool_ops;
  
--	return nh->nh_saddr;
-+	WRITE_ONCE(nh->nh_saddr, saddr);
-+	WRITE_ONCE(nh->nh_saddr_genid, atomic_read(&net->ipv4.dev_addr_genid));
-+
-+	return saddr;
- }
+-	dev->tx_queue_len = XENVIF_QUEUE_LENGTH;
+-
+ 	dev->min_mtu = ETH_MIN_MTU;
+ 	dev->max_mtu = ETH_MAX_MTU - VLAN_ETH_HLEN;
  
- __be32 fib_result_prefsrc(struct net *net, struct fib_result *res)
-@@ -1347,8 +1350,9 @@ __be32 fib_result_prefsrc(struct net *ne
- 		struct fib_nh *nh;
- 
- 		nh = container_of(nhc, struct fib_nh, nh_common);
--		if (nh->nh_saddr_genid == atomic_read(&net->ipv4.dev_addr_genid))
--			return nh->nh_saddr;
-+		if (READ_ONCE(nh->nh_saddr_genid) ==
-+		    atomic_read(&net->ipv4.dev_addr_genid))
-+			return READ_ONCE(nh->nh_saddr);
- 	}
- 
- 	return fib_info_update_nhc_saddr(net, nhc, res->fi->fib_scope);
 
 
