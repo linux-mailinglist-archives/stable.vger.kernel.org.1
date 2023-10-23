@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 694A07D320A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3EE27D336F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233753AbjJWLQH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:16:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49552 "EHLO
+        id S234006AbjJWLaO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:30:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233741AbjJWLQD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:03 -0400
+        with ESMTP id S234060AbjJWLaN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E60610C0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D259C433C8;
-        Mon, 23 Oct 2023 11:15:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2130C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21150C433CA;
+        Mon, 23 Oct 2023 11:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059754;
-        bh=MV2mfuRS+2tXxWog4Jhde6fMV8gusQIt/Hr7bFuVDNk=;
+        s=korg; t=1698060611;
+        bh=zA9MD4TWSTcGnAsvMiwwg+0d0eO1c8JLdUIKriowHok=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=w9JkwMENMyg+323nU8g2LFfUQ5KyJ3i/W84T0ouursgvHGlqxjUUpiICex0WjNVgg
-         9L2OuA/7bwSX+AVQEv8eU5mGl3+5+49EYN4FjUkkdFBZiAnbS00wjHnhiWh8cEF2Q2
-         pisToenw3AwgJxE/WhbqABzpwdrKjUR1uO0u0AYo=
+        b=KVr+ik2DlrtbRJFimdqPDUhMNa6s41E/gM347A9Amw8m5CCX1U6tlt/8pe1R3T4ci
+         y2tHmSuEBr+67DrIWucsINV5jHtSl/08g2SejJU2SkhRe912Qh3+769Ra1UtekOAn0
+         xmm0ps3sKCFuej51F8ajiQmpAfjPQu9gKNij0pZQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Lee@vger.kernel.org
-Subject: [PATCH 4.19 42/98] Bluetooth: hci_event: Ignore NULL link key
+        patches@lists.linux.dev, Matthias Berndt <matthias_berndt@gmx.de>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 033/123] Input: xpad - add PXN V900 support
 Date:   Mon, 23 Oct 2023 12:56:31 +0200
-Message-ID: <20231023104815.097970059@linuxfoundation.org>
+Message-ID: <20231023104818.852413788@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,71 +48,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee, Chun-Yi <jlee@suse.com>
+From: Matthias Berndt <matthias_berndt@gmx.de>
 
-commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
+commit a65cd7ef5a864bdbbe037267c327786b7759d4c6 upstream.
 
-This change is used to relieve CVE-2020-26555. The description of the
-CVE:
+Add VID and PID to the xpad_device table to allow driver to use the PXN
+V900 steering wheel, which is XTYPE_XBOX360 compatible in xinput mode.
 
-Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
-1.0B through 5.2 may permit an unauthenticated nearby device to spoof
-the BD_ADDR of the peer device to complete pairing without knowledge
-of the PIN. [1]
-
-The detail of this attack is in IEEE paper:
-BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
-[2]
-
-It's a reflection attack. The paper mentioned that attacker can induce
-the attacked target to generate null link key (zero key) without PIN
-code. In BR/EDR, the key generation is actually handled in the controller
-which is below HCI.
-
-Thus, we can ignore null link key in the handler of "Link Key Notification
-event" to relieve the attack. A similar implementation also shows in
-btstack project. [3]
-
-v3: Drop the connection when null link key be detected.
-
-v2:
-- Used Link: tag instead of Closes:
-- Used bt_dev_dbg instead of BT_DBG
-- Added Fixes: tag
-
-Cc: stable@vger.kernel.org
-Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
-Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
-Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
-Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Matthias Berndt <matthias_berndt@gmx.de>
+Link: https://lore.kernel.org/r/4932699.31r3eYUQgx@fedora
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3816,6 +3816,15 @@ static void hci_link_key_notify_evt(stru
- 	if (!conn)
- 		goto unlock;
- 
-+	/* Ignore NULL link key against CVE-2020-26555 */
-+	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
-+		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
-+			   &ev->bdaddr);
-+		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
-+		hci_conn_drop(conn);
-+		goto unlock;
-+	}
-+
- 	hci_conn_hold(conn);
- 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
- 	hci_conn_drop(conn);
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -252,6 +252,7 @@ static const struct xpad_device {
+ 	{ 0x1038, 0x1430, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
+ 	{ 0x1038, 0x1431, "SteelSeries Stratus Duo", 0, XTYPE_XBOX360 },
+ 	{ 0x11c9, 0x55f0, "Nacon GC-100XF", 0, XTYPE_XBOX360 },
++	{ 0x11ff, 0x0511, "PXN V900", 0, XTYPE_XBOX360 },
+ 	{ 0x1209, 0x2882, "Ardwiino Controller", 0, XTYPE_XBOX360 },
+ 	{ 0x12ab, 0x0004, "Honey Bee Xbox360 dancepad", MAP_DPAD_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x12ab, 0x0301, "PDP AFTERGLOW AX.1", 0, XTYPE_XBOX360 },
+@@ -446,6 +447,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOXONE_VENDOR(0x0f0d),		/* Hori Controllers */
+ 	XPAD_XBOX360_VENDOR(0x1038),		/* SteelSeries Controllers */
+ 	XPAD_XBOX360_VENDOR(0x11c9),		/* Nacon GC100XF */
++	XPAD_XBOX360_VENDOR(0x11ff),		/* PXN V900 */
+ 	XPAD_XBOX360_VENDOR(0x1209),		/* Ardwiino Controllers */
+ 	XPAD_XBOX360_VENDOR(0x12ab),		/* X-Box 360 dance pads */
+ 	XPAD_XBOX360_VENDOR(0x1430),		/* RedOctane X-Box 360 controllers */
 
 
