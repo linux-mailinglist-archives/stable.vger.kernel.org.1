@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96FDD7D34AD
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D475B7D35AA
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:50:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234302AbjJWLmL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:42:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52760 "EHLO
+        id S234598AbjJWLuk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:50:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234289AbjJWLmJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:09 -0400
+        with ESMTP id S234605AbjJWLuk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:50:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA525D7F
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59DA7C433C9;
-        Mon, 23 Oct 2023 11:41:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ACFCDE
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:50:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B5A4C433C9;
+        Mon, 23 Oct 2023 11:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061307;
-        bh=ONhfmNg3h8thCwtzCAjFYDaGP22ybEteJ2LPhCLlySg=;
+        s=korg; t=1698061837;
+        bh=+zORocFQ/LlJLFpiguTTdxIjh73g22yaQdomoMLigug=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mYjSqyj3hIN1ECJHaJ1OUuoOg58cnrMXVdyAueHtiZ6AxaYfAuPikmqu5Tq/UkF33
-         VW+O8HU1L8DgFAFb4VM+daQY/Ti+6PTCCJVv+rnAe+vCSCDhypU2ij8hVhcPl+8KKg
-         X41B4En7fDZHYWTWnF+rz5+XhgHIR9xK/UwxWCCM=
+        b=0y14VP1hC54XyVeyhK0+VZUtXtNCOFmcOws7UlU9mYjVlOkhf9MElzEwpWOjV2/bY
+         S5mkXLwfJl5L3HhDHP9+HVKVpm0UbfioABxxW8ZG5feF5j26XQz8zhf5CNOrskD/e9
+         gizKlJDYGNNDKTGnxfd02fQwmcFeAOn2SYXiV320=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aviram Dali <aviramd@marvell.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Ravi Chandra Minnikanti <rminnikanti@marvell.com>
-Subject: [PATCH 5.15 104/137] mtd: rawnand: marvell: Ensure program page operations are successful
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Peter Rosin <peda@axentia.se>, Wolfram Sang <wsa@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 154/202] i2c: mux: Avoid potential false error message in i2c_mux_add_adapter
 Date:   Mon, 23 Oct 2023 12:57:41 +0200
-Message-ID: <20231023104824.346007324@linuxfoundation.org>
+Message-ID: <20231023104831.017129031@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,97 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 3e01d5254698ea3d18e09d96b974c762328352cd upstream.
+[ Upstream commit b13e59e74ff71a1004e0508107e91e9a84fd7388 ]
 
-The NAND core complies with the ONFI specification, which itself
-mentions that after any program or erase operation, a status check
-should be performed to see whether the operation was finished *and*
-successful.
+I2C_CLASS_DEPRECATED is a flag and not an actual class.
+There's nothing speaking against both, parent and child, having
+I2C_CLASS_DEPRECATED set. Therefore exclude it from the check.
 
-The NAND core offers helpers to finish a page write (sending the
-"PAGE PROG" command, waiting for the NAND chip to be ready again, and
-checking the operation status). But in some cases, advanced controller
-drivers might want to optimize this and craft their own page write
-helper to leverage additional hardware capabilities, thus not always
-using the core facilities.
-
-Some drivers, like this one, do not use the core helper to finish a page
-write because the final cycles are automatically managed by the
-hardware. In this case, the additional care must be taken to manually
-perform the final status check.
-
-Let's read the NAND chip status at the end of the page write helper and
-return -EIO upon error.
-
-Cc: stable@vger.kernel.org
-Fixes: 02f26ecf8c77 ("mtd: nand: add reworked Marvell NAND controller driver")
-Reported-by: Aviram Dali <aviramd@marvell.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Ravi Chandra Minnikanti <rminnikanti@marvell.com>
-Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-1-miquel.raynal@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Acked-by: Peter Rosin <peda@axentia.se>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ drivers/i2c/i2c-mux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -1148,6 +1148,7 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
- 		.ndcb[2] = NDCB2_ADDR5_PAGE(page),
- 	};
- 	unsigned int oob_bytes = lt->spare_bytes + (raw ? lt->ecc_bytes : 0);
-+	u8 status;
- 	int ret;
+diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
+index 774507b54b57b..c90cec8d9656d 100644
+--- a/drivers/i2c/i2c-mux.c
++++ b/drivers/i2c/i2c-mux.c
+@@ -340,7 +340,7 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+ 		priv->adap.lock_ops = &i2c_parent_lock_ops;
  
- 	/* NFCv2 needs more information about the operation being executed */
-@@ -1181,7 +1182,18 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
- 
- 	ret = marvell_nfc_wait_op(chip,
- 				  PSEC_TO_MSEC(sdr->tPROG_max));
--	return ret;
-+	if (ret)
-+		return ret;
-+
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
-+
-+	return 0;
- }
- 
- static int marvell_nfc_hw_ecc_hmg_write_page_raw(struct nand_chip *chip,
-@@ -1610,6 +1622,7 @@ static int marvell_nfc_hw_ecc_bch_write_
- 	int data_len = lt->data_bytes;
- 	int spare_len = lt->spare_bytes;
- 	int chunk, ret;
-+	u8 status;
- 
- 	marvell_nfc_select_target(chip, chip->cur_cs);
- 
-@@ -1646,6 +1659,14 @@ static int marvell_nfc_hw_ecc_bch_write_
- 	if (ret)
- 		return ret;
- 
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
-+
- 	return 0;
- }
- 
+ 	/* Sanity check on class */
+-	if (i2c_mux_parent_classes(parent) & class)
++	if (i2c_mux_parent_classes(parent) & class & ~I2C_CLASS_DEPRECATED)
+ 		dev_err(&parent->dev,
+ 			"Segment %d behind mux can't share classes with ancestors\n",
+ 			chan_id);
+-- 
+2.40.1
+
 
 
