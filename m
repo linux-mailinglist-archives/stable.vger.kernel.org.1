@@ -2,118 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E8F497D42F8
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 01:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 824E97D4338
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 01:30:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbjJWXAA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 19:00:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57114 "EHLO
+        id S230032AbjJWXaU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 19:30:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229605AbjJWW77 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 18:59:59 -0400
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F50CD68
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 15:59:57 -0700 (PDT)
-Received: from eig-obgw-6005a.ext.cloudfilter.net ([10.0.30.201])
-        by cmsmtp with ESMTPS
-        id v1tqq2HiTKOkLv3ttqeAYx; Mon, 23 Oct 2023 22:59:57 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id v3tsqJCl1wuSEv3tsqIUJI; Mon, 23 Oct 2023 22:59:56 +0000
-X-Authority-Analysis: v=2.4 cv=evvMc6lX c=1 sm=1 tr=0 ts=6536faec
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=5SMoDr0hu4qfrcIuQekA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=nHGUrsyN+6los7Hev7rkFyWULCCoURrFUnLf2Mtba8I=; b=f98f0DAbvUTP0eXCcxU10Ksdew
-        NaXfF+YYaq+oSSpp/ahYJ2a6Jm1NEJhsj1OpB24mGM7FjQKONCjJLdlgL+dnv8MCuSBWJc//RZuKP
-        5u7WR31NhghmlB09cqlZD9i7jorpYXRydc2Qjt5WjfSqQU1sES1ERopMvwy4dpgWkINkS5+r3ODBZ
-        QLbC5jIPtk+VT03qlDoCGp29te+PJyvHxmtuKDiBg9Bm2OQpePStNmoICCD1pMozsbPqv1y8YrMj3
-        hCOICVha5tBUlY33eCylvczoD6JZwm0wh3lYbV4rUOVz/vW36POWwX9zS3xdMgmfzVXRhD0RMaBkz
-        FLvhzA8w==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:52484 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96.2)
-        (envelope-from <re@w6rz.net>)
-        id 1qv3tq-002dbf-06;
-        Mon, 23 Oct 2023 16:59:54 -0600
-Subject: Re: [PATCH 6.5 000/241] 6.5.9-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231023104833.832874523@linuxfoundation.org>
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <785d071a-0b03-3f1e-7fb8-c8f91d08a396@w6rz.net>
-Date:   Mon, 23 Oct 2023 15:59:51 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1qv3tq-002dbf-06
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:52484
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfCnpuFJ+DDE8koXD7900T2L9F7rhCmlxxNoPxLbxV19FyiH6BEt/rIf+1R7xj0K2YmNcqa04SmIY/fpRFIn6DGa4cbI4j2JdMPsUQqCf2wj7EvkA7v7L
- K9QXhrk8vHDR8jBf+CTjri4NvOAsPQnUFA7ZmPuqp/aPwbT/6h7Mb2u/J7bsnsS+2BhWNpnHe924UA==
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229441AbjJWXaT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 19:30:19 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09A65A6;
+        Mon, 23 Oct 2023 16:30:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34448C433C7;
+        Mon, 23 Oct 2023 23:30:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698103817;
+        bh=/Cp0OWUVyZIik3/L+URbEHtp91y6DDa0GoZFwNGqVMk=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=Kpad+aHh5nu0l7B4yeOPwCDVBB26oZaqTCNYorKEJfmhfDxGfNPZf+tA5YAhZWdKV
+         NUIaFcQX7uNAk1QG+wuDXryuxFU9a6S7PzBWkuHIou5M0LXFZhZdUaWtUzu5Fyq7Cg
+         /EselnecXKyodJzfQroPpKzrOdgkUFYPk6USD5gVdbXBNT5aH2mWz0SwkvM0alP+cU
+         ryd9fwsuUedqfjrFpzAbSqhPSLk6UBgEsBKk6x9asCy3416Vmz/1VTTbhW+PTdQZCc
+         Pjqv9Fv/EOTIzxLKHCi042Malcym3yrRaYbaapQ7REq3MqYOUD7rm0Zz6yiC71aAT3
+         a7oEgQ5t1Xdrg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Tue, 24 Oct 2023 02:30:13 +0300
+Message-Id: <CWG7KARCO4TX.257MYGX7AHV8T@suppilovahvero>
+Cc:     <reinette.chatre@intel.com>, <kai.huang@intel.com>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] x86/sgx: Return VM_FAULT_SIGBUS for EPC exhaustion
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Haitao Huang" <haitao.huang@linux.intel.com>,
+        <dave.hansen@linux.intel.com>, <linux-sgx@vger.kernel.org>,
+        <x86@kernel.org>
+X-Mailer: aerc 0.15.2
+References: <20231020025353.29691-1-haitao.huang@linux.intel.com>
+In-Reply-To: <20231020025353.29691-1-haitao.huang@linux.intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/23/23 3:53 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.9 release.
-> There are 241 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri Oct 20, 2023 at 5:53 AM EEST, Haitao Huang wrote:
+> In the EAUG on page fault path, VM_FAULT_OOM is returned when the
+> Enclave Page Cache (EPC) runs out. This may trigger unneeded OOM kill
+> that will not free any EPCs. Return VM_FAULT_SIGBUS instead.
 >
-> Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
-> Anything received after that time might be too late.
+> Fixes: 5a90d2c3f5ef ("x86/sgx: Support adding of pages to an initialized =
+enclave")
+> Cc: stable@vger.kernel.org # v6.0+
+> Signed-off-by: Haitao Huang <haitao.huang@linux.intel.com>
+> ---
+>  arch/x86/kernel/cpu/sgx/encl.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 >
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.9-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/enc=
+l.c
+> index 279148e72459..d13b7e4ad0f5 100644
+> --- a/arch/x86/kernel/cpu/sgx/encl.c
+> +++ b/arch/x86/kernel/cpu/sgx/encl.c
+> @@ -322,7 +322,7 @@ struct sgx_encl_page *sgx_encl_load_page(struct sgx_e=
+ncl *encl,
+>   * ENCLS[EAUG] instruction.
+>   *
+>   * Returns: Appropriate vm_fault_t: VM_FAULT_NOPAGE when PTE was install=
+ed
+> - * successfully, VM_FAULT_SIGBUS or VM_FAULT_OOM as error otherwise.
+> + * successfully, VM_FAULT_SIGBUS as error otherwise.
+>   */
+>  static vm_fault_t sgx_encl_eaug_page(struct vm_area_struct *vma,
+>  				     struct sgx_encl *encl, unsigned long addr)
+> @@ -348,7 +348,7 @@ static vm_fault_t sgx_encl_eaug_page(struct vm_area_s=
+truct *vma,
+>  	secinfo_flags =3D SGX_SECINFO_R | SGX_SECINFO_W | SGX_SECINFO_X;
+>  	encl_page =3D sgx_encl_page_alloc(encl, addr - encl->base, secinfo_flag=
+s);
+>  	if (IS_ERR(encl_page))
+> -		return VM_FAULT_OOM;
+> +		return VM_FAULT_SIGBUS;
+> =20
+>  	mutex_lock(&encl->lock);
+> =20
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Tested-by: Ron Economos <re@w6rz.net>
-
+BR, Jarkko
