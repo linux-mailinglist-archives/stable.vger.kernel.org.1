@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E5337D31E8
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:14:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21ED67D307A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 12:59:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233691AbjJWLOf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:14:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58886 "EHLO
+        id S229613AbjJWK7K (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 06:59:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233690AbjJWLOe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:14:34 -0400
+        with ESMTP id S229987AbjJWK7J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 06:59:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59FE592
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:14:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D0EC433C7;
-        Mon, 23 Oct 2023 11:14:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAC74D6E
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 03:59:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FF3C433C8;
+        Mon, 23 Oct 2023 10:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059671;
-        bh=pzv62eony7DMxuiXBbFyRrkbtOpU9WkiT9tRoWas0YA=;
+        s=korg; t=1698058747;
+        bh=NTSPUw0AUPt/Hx7dYKjrhbI6OPNOsqljmJZJxRAzVhY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UV10M6xmgyE8T0wjffxo2YhgoK9lTbRqNykGXy3uDR1P1//Rto4meqH9vaD/BNWf2
-         E12vgcSj0RXCN89fXQ7wIt6SjgnTq/sitv5GCVaCcRZxifJZnGKVsDnD4Ilbo5YfbN
-         wl1bMQssQAnCsi9sws7b79ocWeEzawXXfRqu3Cg8=
+        b=rMuyQYyJY0UmDhuXrIe3xi/35xq22FlH5fCpFSiEV+jm4pJRyzBYSfg0bnhiIIn54
+         gfv3s5t5wttszsqKqTBjrFWduElKphBhdIaUUeBBTQki7iqRax9lpyelIVZQ+NlFIq
+         +NuYTT8/cOxeMiMQhOQLBd9mww6b+hkJeew69PG0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
-        Zack Rusin <zackr@vmware.com>, Sasha Levin <sashal@kernel.org>,
-        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Subject: [PATCH 4.19 14/98] drm/vmwgfx: fix typo of sizeof argument
+        patches@lists.linux.dev, Xingxing Luo <xingxing.luo@unisoc.com>
+Subject: [PATCH 4.14 13/66] usb: musb: Modify the "HWVers" register address
 Date:   Mon, 23 Oct 2023 12:56:03 +0200
-Message-ID: <20231023104814.085936019@linuxfoundation.org>
+Message-ID: <20231023104811.281977477@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +47,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+From: Xingxing Luo <xingxing.luo@unisoc.com>
 
-[ Upstream commit 39465cac283702a7d4a507a558db81898029c6d3 ]
+commit 6658a62e1ddf726483cb2d8bf45ea3f9bd533074 upstream.
 
-Since size of 'header' pointer and '*header' structure is equal on 64-bit
-machines issue probably didn't cause any wrong behavior. But anyway,
-fixing typo is required.
+musb HWVers rgister address is not 0x69, if we operate the
+wrong address 0x69, it will cause a kernel crash, because
+there is no register corresponding to this address in the
+additional control register of musb. In fact, HWVers has
+been defined in musb_register.h, and the name is
+"MUSB_HWVERS", so We need to use this macro instead of 0x69.
 
-Fixes: 7a73ba7469cb ("drm/vmwgfx: Use TTM handles instead of SIDs as user-space surface handles.")
-Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
-Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
-Reviewed-by: Zack Rusin <zackr@vmware.com>
-Signed-off-by: Zack Rusin <zackr@vmware.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230905100203.1716731-1-konstantin.meskhidze@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c2365ce5d5a0 ("usb: musb: replace hard coded registers with defines")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xingxing Luo <xingxing.luo@unisoc.com>
+Link: https://lore.kernel.org/r/20230922075929.31074-1-xingxing.luo@unisoc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 2 +-
+ drivers/usb/musb/musb_debugfs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index e65554f5a89d5..2480afa466f2b 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1834,7 +1834,7 @@ static int vmw_cmd_tex_state(struct vmw_private *dev_priv,
- 	} *cmd;
- 
- 	SVGA3dTextureState *last_state = (SVGA3dTextureState *)
--	  ((unsigned long) header + header->size + sizeof(header));
-+	  ((unsigned long) header + header->size + sizeof(*header));
- 	SVGA3dTextureState *cur_state = (SVGA3dTextureState *)
- 		((unsigned long) header + sizeof(struct vmw_tex_state_cmd));
- 	struct vmw_resource_val_node *ctx_node;
--- 
-2.40.1
-
+--- a/drivers/usb/musb/musb_debugfs.c
++++ b/drivers/usb/musb/musb_debugfs.c
+@@ -64,7 +64,7 @@ static const struct musb_register_map mu
+ 	{ "IntrUsbE",	MUSB_INTRUSBE,	8 },
+ 	{ "DevCtl",	MUSB_DEVCTL,	8 },
+ 	{ "VControl",	0x68,		32 },
+-	{ "HWVers",	0x69,		16 },
++	{ "HWVers",	MUSB_HWVERS,	16 },
+ 	{ "LinkInfo",	MUSB_LINKINFO,	8 },
+ 	{ "VPLen",	MUSB_VPLEN,	8 },
+ 	{ "HS_EOF1",	MUSB_HS_EOF1,	8 },
 
 
