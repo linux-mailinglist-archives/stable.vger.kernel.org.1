@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 276FE7D342F
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 965957D3304
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234168AbjJWLhV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:37:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42500 "EHLO
+        id S233899AbjJWLZz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:25:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234178AbjJWLhU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:20 -0400
+        with ESMTP id S233894AbjJWLZy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0FE2D7E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D76DC433C8;
-        Mon, 23 Oct 2023 11:37:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20275DC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 530B4C433C7;
+        Mon, 23 Oct 2023 11:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061037;
-        bh=vEgjS+lIiZZW+6Z61+R44mgiqwr1kI8M7Bo3Ye81Vqg=;
+        s=korg; t=1698060350;
+        bh=o/TAo4EMqpoV6FredEnQdRfqpTMfqHwrS60GCHDgBQo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=17oM+8XucAudeyXiZuuTJSPQL9JH0DdNa3kmnq2QCfFTHmfGsn24anh2ezr1OeC5A
-         tAV3UmDWI4jboykOCsLrVCDSQkPX+/zViDFJvzoFD30fNuSy4ZvOhcN7n7J6HZJpLI
-         P+staNU3fFK/hUg2pBn4BPUUo0mOoTC7F8k2Jftg=
+        b=M7OwejAGGyE0tc44Rk5zr1XQqCB2IXrKDj3aNkOjVNEN3mDmfrsbzfatK0bHFPVRl
+         bQvddb14CwMDuGu8Hs4rlAaoQgdXFIzLpknU+nb/XB8G1TGoFow0lEIGTWmrB4yJD3
+         GRpPXEkBOUPZpoTrogQC347p+ksvWq9jIR3Xt7vQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
-        <ville.syrjala@linux.intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 5.15 024/137] drm/i915: Retry gtt fault when out of fence registers
+        patches@lists.linux.dev, Thomas Haller <thaller@redhat.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        David Ahern <dsahern@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 116/196] ipv4/fib: send notify when delete source address routes
 Date:   Mon, 23 Oct 2023 12:56:21 +0200
-Message-ID: <20231023104821.790399170@linuxfoundation.org>
+Message-ID: <20231023104831.796790524@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,53 +52,116 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit e339c6d628fe66c9b64bf31040a55770952aec57 upstream.
+[ Upstream commit 4b2b606075e50cdae62ab2356b0a1e206947c354 ]
 
-If we can't find a free fence register to handle a fault in the GMADR
-range just return VM_FAULT_NOPAGE without populating the PTE so that
-userspace will retry the access and trigger another fault. Eventually
-we should find a free fence and the fault will get properly handled.
+After deleting an interface address in fib_del_ifaddr(), the function
+scans the fib_info list for stray entries and calls fib_flush() and
+fib_table_flush(). Then the stray entries will be deleted silently and no
+RTM_DELROUTE notification will be sent.
 
-A further improvement idea might be to reserve a fence (or one per CPU?)
-for the express purpose of handling faults without having to retry. But
-that would require some additional work.
+This lack of notification can make routing daemons, or monitor like
+`ip monitor route` miss the routing changes. e.g.
 
-Looks like this may have gotten broken originally by
-commit 39965b376601 ("drm/i915: don't trash the gtt when running out of fences")
-as that changed the errno to -EDEADLK which wasn't handle by the gtt
-fault code either. But later in commit 2feeb52859fc ("drm/i915/gt: Fix
--EDEADLK handling regression") I changed it again to -ENOBUFS as -EDEADLK
-was now getting used for the ww mutex dance. So this fix only makes
-sense after that last commit.
++ ip link add dummy1 type dummy
++ ip link add dummy2 type dummy
++ ip link set dummy1 up
++ ip link set dummy2 up
++ ip addr add 192.168.5.5/24 dev dummy1
++ ip route add 7.7.7.0/24 dev dummy2 src 192.168.5.5
++ ip -4 route
+7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
+192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
++ ip monitor route
++ ip addr del 192.168.5.5/24 dev dummy1
+Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
+Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
+Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9479
-Fixes: 2feeb52859fc ("drm/i915/gt: Fix -EDEADLK handling regression")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231012132801.16292-1-ville.syrjala@linux.intel.com
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-(cherry picked from commit 7f403caabe811b88ab0de3811ff3f4782c415761)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As Ido reminded, fib_table_flush() isn't only called when an address is
+deleted, but also when an interface is deleted or put down. The lack of
+notification in these cases is deliberate. And commit 7c6bb7d2faaf
+("net/ipv6: Add knob to skip DELROUTE message on device down") introduced
+a sysctl to make IPv6 behave like IPv4 in this regard. So we can't send
+the route delete notify blindly in fib_table_flush().
+
+To fix this issue, let's add a new flag in "struct fib_info" to track the
+deleted prefer source address routes, and only send notify for them.
+
+After update:
++ ip monitor route
++ ip addr del 192.168.5.5/24 dev dummy1
+Deleted 192.168.5.0/24 dev dummy1 proto kernel scope link src 192.168.5.5
+Deleted broadcast 192.168.5.255 dev dummy1 table local proto kernel scope link src 192.168.5.5
+Deleted local 192.168.5.5 dev dummy1 table local proto kernel scope host src 192.168.5.5
+Deleted 7.7.7.0/24 dev dummy2 scope link src 192.168.5.5
+
+Suggested-by: Thomas Haller <thaller@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/20230922075508.848925-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gem/i915_gem_mman.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/ip_fib.h     | 1 +
+ net/ipv4/fib_semantics.c | 1 +
+ net/ipv4/fib_trie.c      | 4 ++++
+ 3 files changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_mman.c
-@@ -231,6 +231,7 @@ static vm_fault_t i915_error_to_vmf_faul
- 	case 0:
- 	case -EAGAIN:
- 	case -ENOSPC: /* transient failure to evict? */
-+	case -ENOBUFS: /* temporarily out of fences? */
- 	case -ERESTARTSYS:
- 	case -EINTR:
- 	case -EBUSY:
+diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
+index f0c13864180e2..15de07d365405 100644
+--- a/include/net/ip_fib.h
++++ b/include/net/ip_fib.h
+@@ -154,6 +154,7 @@ struct fib_info {
+ 	int			fib_nhs;
+ 	bool			fib_nh_is_v6;
+ 	bool			nh_updated;
++	bool			pfsrc_removed;
+ 	struct nexthop		*nh;
+ 	struct rcu_head		rcu;
+ 	struct fib_nh		fib_nh[];
+diff --git a/net/ipv4/fib_semantics.c b/net/ipv4/fib_semantics.c
+index 894d8ac6b9d0e..5eb1b8d302bbd 100644
+--- a/net/ipv4/fib_semantics.c
++++ b/net/ipv4/fib_semantics.c
+@@ -1891,6 +1891,7 @@ int fib_sync_down_addr(struct net_device *dev, __be32 local)
+ 			continue;
+ 		if (fi->fib_prefsrc == local) {
+ 			fi->fib_flags |= RTNH_F_DEAD;
++			fi->pfsrc_removed = true;
+ 			ret++;
+ 		}
+ 	}
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index d13fb9e76b971..9bdfdab906fe0 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -2027,6 +2027,7 @@ void fib_table_flush_external(struct fib_table *tb)
+ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+ {
+ 	struct trie *t = (struct trie *)tb->tb_data;
++	struct nl_info info = { .nl_net = net };
+ 	struct key_vector *pn = t->kv;
+ 	unsigned long cindex = 1;
+ 	struct hlist_node *tmp;
+@@ -2089,6 +2090,9 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+ 
+ 			fib_notify_alias_delete(net, n->key, &n->leaf, fa,
+ 						NULL);
++			if (fi->pfsrc_removed)
++				rtmsg_fib(RTM_DELROUTE, htonl(n->key), fa,
++					  KEYLENGTH - fa->fa_slen, tb->tb_id, &info, 0);
+ 			hlist_del_rcu(&fa->fa_list);
+ 			fib_release_info(fa->fa_info);
+ 			alias_free_mem_rcu(fa);
+-- 
+2.40.1
+
 
 
