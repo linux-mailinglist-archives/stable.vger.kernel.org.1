@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA3927D31FB
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:15:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 485577D34F1
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbjJWLP0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:15:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33988 "EHLO
+        id S234388AbjJWLoK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229730AbjJWLPZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:15:25 -0400
+        with ESMTP id S234526AbjJWLoC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:44:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0131EDC
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E5AC433C7;
-        Mon, 23 Oct 2023 11:15:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E22021718
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A29C433C7;
+        Mon, 23 Oct 2023 11:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059722;
-        bh=i6gtapZHBoJ91PbYTHeJpkOmTSPXV1899NQSFHY1n7s=;
+        s=korg; t=1698061433;
+        bh=yw44nUpHzfStf6wnnuw2UKVWGF7n1kFVKevT9dres3I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k8Wh2H+jJ1nd6tZlWlSFeJneb/2UY0vc+w7ClVryWoqJabYCFLJ1rHXFAqFk2/+8Y
-         N5XNNcu20fng3mtRHXlk0jWMu9ATRqEvEdVan25I1Ht+8TvupMDHQz3F3sZKBsVX/B
-         0QqC3vTwXFDDs2Lidkpj5Gf5/EWTECUgx1qAUGUI=
+        b=uHlkePCXIct2pPK2M4VNcoVIL9wWdTFbJwe0Q0kYuqv3BfyCb5Abb5B+2GtLtk0+n
+         J81yamrkbkfZhTogCmcCV4juIUmvoyAVWkG0/VmsndNkaUm43uQYq7NCC0vYFa75wh
+         mWsSk5E/BjABy52gfh1H36YcrChPXA1+lpVU3WZw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
-        Jordan Rife <jrife@google.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 04/98] net: prevent rewrite of msg_name in sock_sendmsg()
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.10 046/202] ceph: fix incorrect revoked caps assert in ceph_fill_file_size()
 Date:   Mon, 23 Oct 2023 12:55:53 +0200
-Message-ID: <20231023104813.746004398@linuxfoundation.org>
+Message-ID: <20231023104827.931658793@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,114 +49,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 86a7e0b69bd5b812e48a20c66c2161744f3caa16 ]
+commit 15c0a870dc44ed14e01efbdd319d232234ee639f upstream.
 
-Callers of sock_sendmsg(), and similarly kernel_sendmsg(), in kernel
-space may observe their value of msg_name change in cases where BPF
-sendmsg hooks rewrite the send address. This has been confirmed to break
-NFS mounts running in UDP mode and has the potential to break other
-systems.
+When truncating the inode the MDS will acquire the xlock for the
+ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
+But when the client just releases and flushes the 'Fw' caps to MDS,
+for exmaple, and once the MDS receives the caps flushing msg it
+just thought the revocation has finished. Then the MDS will continue
+truncating the inode and then issued the truncate notification to
+all the clients. While just before the clients receives the cap
+flushing ack they receive the truncation notification, the clients
+will detecte that the 'issued | dirty' is still holding the 'Fw'
+caps.
 
-This patch:
-
-1) Creates a new function called __sock_sendmsg() with same logic as the
-   old sock_sendmsg() function.
-2) Replaces calls to sock_sendmsg() made by __sys_sendto() and
-   __sys_sendmsg() with __sock_sendmsg() to avoid an unnecessary copy,
-   as these system calls are already protected.
-3) Modifies sock_sendmsg() so that it makes a copy of msg_name if
-   present before passing it down the stack to insulate callers from
-   changes to the send address.
-
-Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
-Fixes: 1cedee13d25a ("bpf: Hooks for sys_sendmsg")
 Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://tracker.ceph.com/issues/56693
+Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/socket.c | 29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ fs/ceph/inode.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/socket.c b/net/socket.c
-index adf1fb37c17c6..d9eaab948d69f 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -655,6 +655,14 @@ static inline int sock_sendmsg_nosec(struct socket *sock, struct msghdr *msg)
- 	return ret;
- }
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -635,9 +635,7 @@ int ceph_fill_file_size(struct inode *in
+ 			ci->i_truncate_seq = truncate_seq;
  
-+static int __sock_sendmsg(struct socket *sock, struct msghdr *msg)
-+{
-+	int err = security_socket_sendmsg(sock, msg,
-+					  msg_data_left(msg));
-+
-+	return err ?: sock_sendmsg_nosec(sock, msg);
-+}
-+
- /**
-  *	sock_sendmsg - send a message through @sock
-  *	@sock: socket
-@@ -665,10 +673,19 @@ static inline int sock_sendmsg_nosec(struct socket *sock, struct msghdr *msg)
-  */
- int sock_sendmsg(struct socket *sock, struct msghdr *msg)
- {
--	int err = security_socket_sendmsg(sock, msg,
--					  msg_data_left(msg));
-+	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
-+	struct sockaddr_storage address;
-+	int ret;
- 
--	return err ?: sock_sendmsg_nosec(sock, msg);
-+	if (msg->msg_name) {
-+		memcpy(&address, msg->msg_name, msg->msg_namelen);
-+		msg->msg_name = &address;
-+	}
-+
-+	ret = __sock_sendmsg(sock, msg);
-+	msg->msg_name = save_addr;
-+
-+	return ret;
- }
- EXPORT_SYMBOL(sock_sendmsg);
- 
-@@ -975,7 +992,7 @@ static ssize_t sock_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 	if (sock->type == SOCK_SEQPACKET)
- 		msg.msg_flags |= MSG_EOR;
- 
--	res = sock_sendmsg(sock, &msg);
-+	res = __sock_sendmsg(sock, &msg);
- 	*from = msg.msg_iter;
- 	return res;
- }
-@@ -1908,7 +1925,7 @@ int __sys_sendto(int fd, void __user *buff, size_t len, unsigned int flags,
- 	if (sock->file->f_flags & O_NONBLOCK)
- 		flags |= MSG_DONTWAIT;
- 	msg.msg_flags = flags;
--	err = sock_sendmsg(sock, &msg);
-+	err = __sock_sendmsg(sock, &msg);
- 
- out_put:
- 	fput_light(sock->file, fput_needed);
-@@ -2236,7 +2253,7 @@ static int ___sys_sendmsg(struct socket *sock, struct user_msghdr __user *msg,
- 		err = sock_sendmsg_nosec(sock, msg_sys);
- 		goto out_freectl;
- 	}
--	err = sock_sendmsg(sock, msg_sys);
-+	err = __sock_sendmsg(sock, msg_sys);
- 	/*
- 	 * If this is sendmmsg() and sending to current destination address was
- 	 * successful, remember it.
--- 
-2.40.1
-
+ 			/* the MDS should have revoked these caps */
+-			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
+-					       CEPH_CAP_FILE_RD |
+-					       CEPH_CAP_FILE_WR |
++			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
+ 					       CEPH_CAP_FILE_LAZYIO));
+ 			/*
+ 			 * If we hold relevant caps, or in the case where we're
 
 
