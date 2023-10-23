@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D0187D3343
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A79957D33DF
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:34:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233984AbjJWL22 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:28:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37044 "EHLO
+        id S233269AbjJWLet (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:34:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38374 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233981AbjJWL21 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:27 -0400
+        with ESMTP id S234033AbjJWLes (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:34:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2CB8A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30562C433C8;
-        Mon, 23 Oct 2023 11:28:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDDE9D7C
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:34:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3360EC433C7;
+        Mon, 23 Oct 2023 11:34:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060505;
-        bh=5Xhl9qr09WtscU36y0mkLap+vG8t1XlB8anFbrDPH3I=;
+        s=korg; t=1698060885;
+        bh=ReK6ISd9eVjCpB+fR4Gkrcg7hH7Ud4mUZbPuTLNYNLg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FIExHcN0r3Z3lzgmohUlRSozIMGEMoYiLzwD9BCazuscYzk8THJAgPDdWUOc1W1+k
-         FWNok6Kejtr5Lv2xjxU2G29DyHfH6rzvF8PpqKHj5YmFr6YP6FG670aHMlZgKw3akv
-         zXztfTv/2V/qpXPk1Z4gTtVA6tLP3W5JlWI5/TLY=
+        b=Jd1ZjRwHEays35gwF8LIXUTYKp56NszCUxoOe2vfXRkjGPnLsPdk5HbcnsW2XrBsz
+         b5IzFlQzMgUziiMG3xxpb3BogmdUslme5c8rB/NgIoClWpibCoTq4LN1gPFRBroHVl
+         H6oRPPMVSUtvygL0HT1wbYh++ijM1knc5kK2q+N8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matthieu Baerts <matttbe@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Geliang Tang <geliang.tang@suse.com>,
-        Mat Martineau <martineau@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 194/196] mptcp: avoid sending RST when closing the initial subflow
+        patches@lists.linux.dev,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 101/123] Bluetooth: hci_event: Fix using memcmp when comparing keys
 Date:   Mon, 23 Oct 2023 12:57:39 +0200
-Message-ID: <20231023104833.841969105@linuxfoundation.org>
+Message-ID: <20231023104821.090928013@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,98 +49,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geliang Tang <geliang.tang@suse.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 14c56686a64c65ba716ff48f1f4b19c85f4cb2a9 upstream.
+[ Upstream commit b541260615f601ae1b5d6d0cc54e790de706303b ]
 
-When closing the first subflow, the MPTCP protocol unconditionally
-calls tcp_disconnect(), which in turn generates a reset if the subflow
-is established.
+memcmp is not consider safe to use with cryptographic secrets:
 
-That is unexpected and different from what MPTCP does with MPJ
-subflows, where resets are generated only on FASTCLOSE and other edge
-scenarios.
+ 'Do  not  use memcmp() to compare security critical data, such as
+ cryptographic secrets, because the required CPU time depends on the
+ number of equal bytes.'
 
-We can't reuse for the first subflow the same code in place for MPJ
-subflows, as MPTCP clean them up completely via a tcp_close() call,
-while must keep the first subflow socket alive for later re-usage, due
-to implementation constraints.
+While usage of memcmp for ZERO_KEY may not be considered a security
+critical data, it can lead to more usage of memcmp with pairing keys
+which could introduce more security problems.
 
-This patch adds a new helper __mptcp_subflow_disconnect() that
-encapsulates, a logic similar to tcp_close, issuing a reset only when
-the MPTCP_CF_FASTCLOSE flag is set, and performing a clean shutdown
-otherwise.
-
-Fixes: c2b2ae3925b6 ("mptcp: handle correctly disconnect() failures")
-Cc: stable@vger.kernel.org
-Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
-Co-developed-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Geliang Tang <geliang.tang@suse.com>
-Signed-off-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20231018-send-net-20231018-v1-4-17ecb002e41d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 455c2ff0a558 ("Bluetooth: Fix BR/EDR out-of-band pairing with only initiator data")
+Fixes: 33155c4aae52 ("Bluetooth: hci_event: Ignore NULL link key")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ net/bluetooth/hci_event.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -2368,6 +2368,26 @@ bool __mptcp_retransmit_pending_data(str
- #define MPTCP_CF_PUSH		BIT(1)
- #define MPTCP_CF_FASTCLOSE	BIT(2)
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index 0fe01b543b185..f182a7d3e44cf 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -25,6 +25,8 @@
+ /* Bluetooth HCI event handling. */
  
-+/* be sure to send a reset only if the caller asked for it, also
-+ * clean completely the subflow status when the subflow reaches
-+ * TCP_CLOSE state
-+ */
-+static void __mptcp_subflow_disconnect(struct sock *ssk,
-+				       struct mptcp_subflow_context *subflow,
-+				       unsigned int flags)
-+{
-+	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
-+	    (flags & MPTCP_CF_FASTCLOSE)) {
-+		/* The MPTCP code never wait on the subflow sockets, TCP-level
-+		 * disconnect should never fail
-+		 */
-+		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
-+		mptcp_subflow_ctx_reset(subflow);
-+	} else {
-+		tcp_shutdown(ssk, SEND_SHUTDOWN);
-+	}
-+}
-+
- /* subflow sockets can be either outgoing (connect) or incoming
-  * (accept).
-  *
-@@ -2405,7 +2425,7 @@ static void __mptcp_close_ssk(struct soc
- 	lock_sock_nested(ssk, SINGLE_DEPTH_NESTING);
+ #include <asm/unaligned.h>
++#include <linux/crypto.h>
++#include <crypto/algapi.h>
  
- 	if ((flags & MPTCP_CF_FASTCLOSE) && !__mptcp_check_fallback(msk)) {
--		/* be sure to force the tcp_disconnect() path,
-+		/* be sure to force the tcp_close path
- 		 * to generate the egress reset
+ #include <net/bluetooth/bluetooth.h>
+ #include <net/bluetooth/hci_core.h>
+@@ -3946,7 +3948,7 @@ static void hci_link_key_notify_evt(struct hci_dev *hdev, struct sk_buff *skb)
+ 		goto unlock;
+ 
+ 	/* Ignore NULL link key against CVE-2020-26555 */
+-	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
++	if (!crypto_memneq(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
+ 		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
+ 			   &ev->bdaddr);
+ 		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
+@@ -4445,8 +4447,8 @@ static u8 bredr_oob_data_present(struct hci_conn *conn)
+ 		 * available, then do not declare that OOB data is
+ 		 * present.
  		 */
- 		ssk->sk_lingertime = 0;
-@@ -2415,12 +2435,8 @@ static void __mptcp_close_ssk(struct soc
+-		if (!memcmp(data->rand256, ZERO_KEY, 16) ||
+-		    !memcmp(data->hash256, ZERO_KEY, 16))
++		if (!crypto_memneq(data->rand256, ZERO_KEY, 16) ||
++		    !crypto_memneq(data->hash256, ZERO_KEY, 16))
+ 			return 0x00;
  
- 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
- 	if (!dispose_it) {
--		/* The MPTCP code never wait on the subflow sockets, TCP-level
--		 * disconnect should never fail
--		 */
--		WARN_ON_ONCE(tcp_disconnect(ssk, 0));
-+		__mptcp_subflow_disconnect(ssk, subflow, flags);
- 		msk->subflow->state = SS_UNCONNECTED;
--		mptcp_subflow_ctx_reset(subflow);
- 		release_sock(ssk);
+ 		return 0x02;
+@@ -4456,8 +4458,8 @@ static u8 bredr_oob_data_present(struct hci_conn *conn)
+ 	 * not supported by the hardware, then check that if
+ 	 * P-192 data values are present.
+ 	 */
+-	if (!memcmp(data->rand192, ZERO_KEY, 16) ||
+-	    !memcmp(data->hash192, ZERO_KEY, 16))
++	if (!crypto_memneq(data->rand192, ZERO_KEY, 16) ||
++	    !crypto_memneq(data->hash192, ZERO_KEY, 16))
+ 		return 0x00;
  
- 		goto out;
+ 	return 0x01;
+-- 
+2.40.1
+
 
 
