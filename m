@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A68BF7D357D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A3377D333B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234528AbjJWLtA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:49:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42032 "EHLO
+        id S233979AbjJWL2L (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:28:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234573AbjJWLs5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:48:57 -0400
+        with ESMTP id S233969AbjJWL2K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:28:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2241710C
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:48:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24594C433C8;
-        Mon, 23 Oct 2023 11:48:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 760D2C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:28:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FFD9C433C9;
+        Mon, 23 Oct 2023 11:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061734;
-        bh=yssk2AKsu2ELNdjaLnUoiIxrQke8YN5NBZXkfB4LzQw=;
+        s=korg; t=1698060488;
+        bh=/QWifo5v/pcML2/8ISTcLLm/qjxeTAeEd3Cdr4n/V/M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GLhvGYW8R4gFqOeBa5w/DQygtw+xkc3FHS3RGHKN6K9gYcAkq4Dah5XsqFQ9JE4JR
-         AIgNAT83tZ/apIDYrupjOmjEKxtx5iTq/YZY94csuexZ3WtA0lC8w03djGVfojLCpI
-         WTjGdLyt/8cvyZmkSxjnEHQJ2jqjfdc/qcVgdNKI=
+        b=Kz4TOsW4WD89GkkaPl0aFuQV0hJLaxhTGUVd4CnyXIwhICARsnWyW16j6v7dFKQ5b
+         B0Cnl5FGPWnSwdavrxcykaQazTrrowy69EGfJsuU2sB4rpTFt58H2fFe5wcCNox7O5
+         ttLQp5oMzH3WIy8s2Xd3mweGdzqKWSlr/pjJglmk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 146/202] drm/connector: Add a fwnode pointer to drm_connector and register with ACPI (v2)
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Miaoqian Lin <linmq006@gmail.com>, Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Tony Lindgren <tony@atomide.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 188/196] phy: mapphone-mdm6600: Fix runtime disable on probe
 Date:   Mon, 23 Oct 2023 12:57:33 +0200
-Message-ID: <20231023104830.803647220@linuxfoundation.org>
+Message-ID: <20231023104833.691235362@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,148 +53,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 48c429c6d18db115c277b75000152d8fa4cd35d0 ]
+[ Upstream commit 719606154c7033c068a5d4c1dc5f9163b814b3c8 ]
 
-Add a fwnode pointer to struct drm_connector and register an acpi_bus_type
-for the connectors with the ACPI subsystem (when CONFIG_ACPI is enabled).
+Commit d644e0d79829 ("phy: mapphone-mdm6600: Fix PM error handling in
+phy_mdm6600_probe") caused a regression where we now unconditionally
+disable runtime PM at the end of the probe while it is only needed on
+errors.
 
-The adding of the fwnode pointer allows drivers to associate a fwnode
-that represents a connector with that connector.
-
-When the new fwnode pointer points to an ACPI-companion, then the new
-acpi_bus_type will cause the ACPI subsys to bind the device instantiated
-for the connector with the fwnode by calling acpi_bind_one(). This will
-result in a firmware_node symlink under /sys/class/card#-<connecter-name>/
-which helps to verify that the fwnode-s and connectors are properly
-matched.
-
-Changes in v2:
-- Make drm_connector_cleanup() call fwnode_handle_put() on
-  connector->fwnode and document this
-
-Co-developed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Link: https://lore.kernel.org/r/20210817215201.795062-3-hdegoede@redhat.com
-Stable-dep-of: 89434b069e46 ("usb: typec: altmodes/displayport: Signal hpd low when exiting mode")
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Cc: Pavel Machek <pavel@ucw.cz>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: d644e0d79829 ("phy: mapphone-mdm6600: Fix PM error handling in phy_mdm6600_probe")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230913060433.48373-1-tony@atomide.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_connector.c |  2 ++
- drivers/gpu/drm/drm_sysfs.c     | 37 +++++++++++++++++++++++++++++++++
- include/drm/drm_connector.h     |  8 +++++++
- 3 files changed, 47 insertions(+)
+ drivers/phy/motorola/phy-mapphone-mdm6600.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_connector.c b/drivers/gpu/drm/drm_connector.c
-index 9c3bbe2c3e6f9..c08501a5620d5 100644
---- a/drivers/gpu/drm/drm_connector.c
-+++ b/drivers/gpu/drm/drm_connector.c
-@@ -471,6 +471,8 @@ void drm_connector_cleanup(struct drm_connector *connector)
- 	drm_mode_object_unregister(dev, &connector->base);
- 	kfree(connector->name);
- 	connector->name = NULL;
-+	fwnode_handle_put(connector->fwnode);
-+	connector->fwnode = NULL;
- 	spin_lock_irq(&dev->mode_config.connector_list_lock);
- 	list_del(&connector->head);
- 	dev->mode_config.num_connector--;
-diff --git a/drivers/gpu/drm/drm_sysfs.c b/drivers/gpu/drm/drm_sysfs.c
-index a3b71478c5904..71a0d9596efee 100644
---- a/drivers/gpu/drm/drm_sysfs.c
-+++ b/drivers/gpu/drm/drm_sysfs.c
-@@ -10,6 +10,7 @@
-  * Copyright (c) 2003-2004 IBM Corp.
-  */
+diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+index 3cd4d51c247c3..436b5ab6dc6d5 100644
+--- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
++++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+@@ -627,10 +627,12 @@ static int phy_mdm6600_probe(struct platform_device *pdev)
+ 	pm_runtime_put_autosuspend(ddata->dev);
  
-+#include <linux/acpi.h>
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/export.h>
-@@ -56,6 +57,39 @@ static struct device_type drm_sysfs_device_connector = {
- 
- struct class *drm_class;
- 
-+#ifdef CONFIG_ACPI
-+static bool drm_connector_acpi_bus_match(struct device *dev)
-+{
-+	return dev->type == &drm_sysfs_device_connector;
-+}
+ cleanup:
+-	if (error < 0)
++	if (error < 0) {
+ 		phy_mdm6600_device_power_off(ddata);
+-	pm_runtime_disable(ddata->dev);
+-	pm_runtime_dont_use_autosuspend(ddata->dev);
++		pm_runtime_disable(ddata->dev);
++		pm_runtime_dont_use_autosuspend(ddata->dev);
++	}
 +
-+static struct acpi_device *drm_connector_acpi_find_companion(struct device *dev)
-+{
-+	struct drm_connector *connector = to_drm_connector(dev);
-+
-+	return to_acpi_device_node(connector->fwnode);
-+}
-+
-+static struct acpi_bus_type drm_connector_acpi_bus = {
-+	.name = "drm_connector",
-+	.match = drm_connector_acpi_bus_match,
-+	.find_companion = drm_connector_acpi_find_companion,
-+};
-+
-+static void drm_sysfs_acpi_register(void)
-+{
-+	register_acpi_bus_type(&drm_connector_acpi_bus);
-+}
-+
-+static void drm_sysfs_acpi_unregister(void)
-+{
-+	unregister_acpi_bus_type(&drm_connector_acpi_bus);
-+}
-+#else
-+static void drm_sysfs_acpi_register(void) { }
-+static void drm_sysfs_acpi_unregister(void) { }
-+#endif
-+
- static char *drm_devnode(struct device *dev, umode_t *mode)
- {
- 	return kasprintf(GFP_KERNEL, "dri/%s", dev_name(dev));
-@@ -89,6 +123,8 @@ int drm_sysfs_init(void)
- 	}
- 
- 	drm_class->devnode = drm_devnode;
-+
-+	drm_sysfs_acpi_register();
- 	return 0;
+ 	return error;
  }
  
-@@ -101,6 +137,7 @@ void drm_sysfs_destroy(void)
- {
- 	if (IS_ERR_OR_NULL(drm_class))
- 		return;
-+	drm_sysfs_acpi_unregister();
- 	class_remove_file(drm_class, &class_attr_version.attr);
- 	class_destroy(drm_class);
- 	drm_class = NULL;
-diff --git a/include/drm/drm_connector.h b/include/drm/drm_connector.h
-index 928136556174c..ffad68f775cc6 100644
---- a/include/drm/drm_connector.h
-+++ b/include/drm/drm_connector.h
-@@ -1174,6 +1174,14 @@ struct drm_connector {
- 	struct device *kdev;
- 	/** @attr: sysfs attributes */
- 	struct device_attribute *attr;
-+	/**
-+	 * @fwnode: associated fwnode supplied by platform firmware
-+	 *
-+	 * Drivers can set this to associate a fwnode with a connector, drivers
-+	 * are expected to get a reference on the fwnode when setting this.
-+	 * drm_connector_cleanup() will call fwnode_handle_put() on this.
-+	 */
-+	struct fwnode_handle *fwnode;
- 
- 	/**
- 	 * @head:
 -- 
-2.40.1
+2.42.0
 
 
 
