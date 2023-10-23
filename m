@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC357D30D2
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AD097D30D4
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232874AbjJWLCf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:02:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50986 "EHLO
+        id S233014AbjJWLCi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:02:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230468AbjJWLCf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:02:35 -0400
+        with ESMTP id S233005AbjJWLCi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:02:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C502D7A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:02:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF804C433C7;
-        Mon, 23 Oct 2023 11:02:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6508ED7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:02:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5533C433CA;
+        Mon, 23 Oct 2023 11:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058953;
-        bh=ZUuCEGUb6+ybOh1dpmImSjx/OnVt4vpdr7mBcbvdxog=;
+        s=korg; t=1698058956;
+        bh=ZOhgvJVu0PGo5kOKyrE05QFkRozauQS0Hus/lBAXsNQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gck/gc1N/pOhm1EyeLJ9j7AXJynnYeElee7q0cd2ecWtkJe6EmLyHbUcWvlwUjys3
-         nq0sFEqVLoL/W01+mMRN3ZNClaXxEihgdBKNT3Aeh0r6K431kPsFa0E5WH9Ga2LW08
-         vZvXGIiPyBHCuqmloGmobPNWEhPcuIGqSSe0kImA=
+        b=2PQMrZmQDPed9q3/QpXbQTVCVxHn+A1yQo893vE8Vw3t7a8uAtrSejlgSCMIaQ6MG
+         tvawwCZaoezpQWyxX16VH9HcNk4R4AHdTDl+P9OJhyEoS6dtMByH7nHT5oEaQIOLD9
+         JUrVy/V0zLftmLFyrhkDiat5CvfWpgcn0TSqQ+FU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jim Mattson <jmattson@google.com>,
-        Mingwei Zhang <mizhang@google.com>,
-        Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.5 015/241] KVM: x86: Mask LVTPC when handling a PMI
-Date:   Mon, 23 Oct 2023 12:53:21 +0200
-Message-ID: <20231023104834.283868564@linuxfoundation.org>
+        patches@lists.linux.dev, Tom Dohrmann <erbse.13@gmx.de>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>, stable@kernel.org
+Subject: [PATCH 6.5 016/241] x86/sev: Disable MMIO emulation from user mode
+Date:   Mon, 23 Oct 2023 12:53:22 +0200
+Message-ID: <20231023104834.311154880@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
 References: <20231023104833.832874523@linuxfoundation.org>
@@ -53,53 +52,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-commit a16eb25b09c02a54c1c1b449d4b6cfa2cf3f013a upstream.
+Upstream commit: a37cd2a59d0cb270b1bba568fd3a3b8668b9d3ba
 
-Per the SDM, "When the local APIC handles a performance-monitoring
-counters interrupt, it automatically sets the mask flag in the LVT
-performance counter register."  Add this behavior to KVM's local APIC
-emulation.
+A virt scenario can be constructed where MMIO memory can be user memory.
+When that happens, a race condition opens between when the hardware
+raises the #VC and when the #VC handler gets to emulate the instruction.
 
-Failure to mask the LVTPC entry results in spurious PMIs, e.g. when
-running Linux as a guest, PMI handlers that do a "late_ack" spew a large
-number of "dazed and confused" spurious NMI warnings.
+If the MOVS is replaced with a MOVS accessing kernel memory in that
+small race window, then write to kernel memory happens as the access
+checks are not done at emulation time.
 
-Fixes: f5132b01386b ("KVM: Expose a version 2 architectural PMU to a guests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Tested-by: Mingwei Zhang <mizhang@google.com>
-Signed-off-by: Mingwei Zhang <mizhang@google.com>
-Link: https://lore.kernel.org/r/20230925173448.3518223-3-mizhang@google.com
-[sean: massage changelog, correct Fixes]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Disable MMIO emulation in user mode temporarily until a sensible use
+case appears and justifies properly handling the race window.
+
+Fixes: 0118b604c2c9 ("x86/sev-es: Handle MMIO String Instructions")
+Reported-by: Tom Dohrmann <erbse.13@gmx.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Tom Dohrmann <erbse.13@gmx.de>
+Cc: <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/x86/kernel/sev.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2738,13 +2738,17 @@ int kvm_apic_local_deliver(struct kvm_la
- {
- 	u32 reg = kvm_lapic_get_reg(apic, lvt_type);
- 	int vector, mode, trig_mode;
-+	int r;
- 
- 	if (kvm_apic_hw_enabled(apic) && !(reg & APIC_LVT_MASKED)) {
- 		vector = reg & APIC_VECTOR_MASK;
- 		mode = reg & APIC_MODE_MASK;
- 		trig_mode = reg & APIC_LVT_LEVEL_TRIGGER;
--		return __apic_accept_irq(apic, mode, vector, 1, trig_mode,
--					NULL);
-+
-+		r = __apic_accept_irq(apic, mode, vector, 1, trig_mode, NULL);
-+		if (r && lvt_type == APIC_LVTPC)
-+			kvm_lapic_set_reg(apic, APIC_LVTPC, reg | APIC_LVT_MASKED);
-+		return r;
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -1508,6 +1508,9 @@ static enum es_result vc_handle_mmio(str
+ 			return ES_DECODE_FAILED;
  	}
- 	return 0;
- }
+ 
++	if (user_mode(ctxt->regs))
++		return ES_UNSUPPORTED;
++
+ 	switch (mmio) {
+ 	case INSN_MMIO_WRITE:
+ 		memcpy(ghcb->shared_buffer, reg_data, bytes);
 
 
