@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E09A7D337D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48A6C7D3452
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:38:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234068AbjJWLay (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44938 "EHLO
+        id S234197AbjJWLic (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:38:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234070AbjJWLax (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:53 -0400
+        with ESMTP id S233168AbjJWLib (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:38:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A366CE8
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF24C433C7;
-        Mon, 23 Oct 2023 11:30:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C2B1A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:38:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61A3C433C7;
+        Mon, 23 Oct 2023 11:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060650;
-        bh=rZX0yFrN73evKz135jlVCArDnF63DXTf1rk8KBryulg=;
+        s=korg; t=1698061109;
+        bh=Smf/1YDRMQtiyZVixiidGV1lAz4Ng/k4PSPS2Ln4Vsg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uuZ5MpW1RgPJNbueoKQQbpi23TeWREBvPKJjzUsHWD2n/oZ7kVFDumnQwQvuPI56z
-         nzmH539tVJgdqAb2MG0J4x+JFiN9uXeKbl63/QrmeeMmpBaM+3g3B3Lj/hqYZ/DW8T
-         ZRw/fI1TFME0kaWDSXFsChtu1YywoPHffGenI8vI=
+        b=seUMdL5VDitnD9tyGemJXPi+Mh9K8yCUxDGTXtfrP7VBp5gPZRE949Cay1tDMnc0E
+         CmqJmyw1qItr34ieyBmn4lcrmZtUSShoSGtmOG8XaWShlEphK3ayyMtGeQk2z4n1Up
+         Y9gpuG4j66YlKSey3nvHax/hE9b0CmYTdWu6tylc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Lee@vger.kernel.org
-Subject: [PATCH 5.4 047/123] Bluetooth: Reject connection with the device which has same BD_ADDR
+        patches@lists.linux.dev, Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 048/137] net: pktgen: Fix interface flags printing
 Date:   Mon, 23 Oct 2023 12:56:45 +0200
-Message-ID: <20231023104819.294859794@linuxfoundation.org>
+Message-ID: <20231023104822.632968114@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,90 +48,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee, Chun-Yi <jlee@suse.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-commit 1ffc6f8cc33268731fcf9629fc4438f6db1191fc upstream.
+commit 1d30162f35c7a73fc2f8cdcdcdbd690bedb99d1a upstream.
 
-This change is used to relieve CVE-2020-26555. The description of
-the CVE:
+Device flags are displayed incorrectly:
+1) The comparison (i == F_FLOW_SEQ) is always false, because F_FLOW_SEQ
+is equal to (1 << FLOW_SEQ_SHIFT) == 2048, and the maximum value
+of the 'i' variable is (NR_PKT_FLAG - 1) == 17. It should be compared
+with FLOW_SEQ_SHIFT.
 
-Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
-1.0B through 5.2 may permit an unauthenticated nearby device to spoof
-the BD_ADDR of the peer device to complete pairing without knowledge
-of the PIN. [1]
+2) Similarly to the F_IPSEC flag.
 
-The detail of this attack is in IEEE paper:
-BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
-[2]
+3) Also add spaces to the print end of the string literal "spi:%u"
+to prevent the output from merging with the flag that follows.
 
-It's a reflection attack. The paper mentioned that attacker can induce
-the attacked target to generate null link key (zero key) without PIN
-code. In BR/EDR, the key generation is actually handled in the controller
-which is below HCI.
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with SVACE.
 
-A condition of this attack is that attacker should change the
-BR_ADDR of his hacking device (Host B) to equal to the BR_ADDR with
-the target device being attacked (Host A).
-
-Thus, we reject the connection with device which has same BD_ADDR
-both on HCI_Create_Connection and HCI_Connection_Request to prevent
-the attack. A similar implementation also shows in btstack project.
-[3][4]
-
-Cc: stable@vger.kernel.org
-Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
-Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3523 [3]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L7297 [4]
-Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 99c6d3d20d62 ("pktgen: Remove brute-force printing of flags")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c  |    9 +++++++++
- net/bluetooth/hci_event.c |   11 +++++++++++
- 2 files changed, 20 insertions(+)
+ net/core/pktgen.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1207,6 +1207,15 @@ struct hci_conn *hci_connect_acl(struct
- 		return ERR_PTR(-EOPNOTSUPP);
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -668,19 +668,19 @@ static int pktgen_if_show(struct seq_fil
+ 	seq_puts(seq, "     Flags: ");
+ 
+ 	for (i = 0; i < NR_PKT_FLAGS; i++) {
+-		if (i == F_FLOW_SEQ)
++		if (i == FLOW_SEQ_SHIFT)
+ 			if (!pkt_dev->cflows)
+ 				continue;
+ 
+-		if (pkt_dev->flags & (1 << i))
++		if (pkt_dev->flags & (1 << i)) {
+ 			seq_printf(seq, "%s  ", pkt_flag_names[i]);
+-		else if (i == F_FLOW_SEQ)
+-			seq_puts(seq, "FLOW_RND  ");
+-
+ #ifdef CONFIG_XFRM
+-		if (i == F_IPSEC && pkt_dev->spi)
+-			seq_printf(seq, "spi:%u", pkt_dev->spi);
++			if (i == IPSEC_SHIFT && pkt_dev->spi)
++				seq_printf(seq, "spi:%u  ", pkt_dev->spi);
+ #endif
++		} else if (i == FLOW_SEQ_SHIFT) {
++			seq_puts(seq, "FLOW_RND  ");
++		}
  	}
  
-+	/* Reject outgoing connection to device with same BD ADDR against
-+	 * CVE-2020-26555
-+	 */
-+	if (!bacmp(&hdev->bdaddr, dst)) {
-+		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
-+			   dst);
-+		return ERR_PTR(-ECONNREFUSED);
-+	}
-+
- 	acl = hci_conn_hash_lookup_ba(hdev, ACL_LINK, dst);
- 	if (!acl) {
- 		acl = hci_conn_add(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -2594,6 +2594,17 @@ static void hci_conn_request_evt(struct
- 	BT_DBG("%s bdaddr %pMR type 0x%x", hdev->name, &ev->bdaddr,
- 	       ev->link_type);
- 
-+	/* Reject incoming connection from device with same BD ADDR against
-+	 * CVE-2020-26555
-+	 */
-+	if (!bacmp(&hdev->bdaddr, &ev->bdaddr))
-+	{
-+		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
-+			   &ev->bdaddr);
-+		hci_reject_conn(hdev, &ev->bdaddr);
-+		return;
-+	}
-+
- 	mask |= hci_proto_connect_ind(hdev, &ev->bdaddr, ev->link_type,
- 				      &flags);
- 
+ 	seq_puts(seq, "\n");
 
 
