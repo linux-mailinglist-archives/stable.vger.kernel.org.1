@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19FA97D33F4
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A25B77D32C9
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:23:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234127AbjJWLfg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51132 "EHLO
+        id S233937AbjJWLXv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:23:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234132AbjJWLff (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:35:35 -0400
+        with ESMTP id S233863AbjJWLXo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:23:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A42210CF
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:35:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AA8C433C9;
-        Mon, 23 Oct 2023 11:35:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EBF410D3
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:23:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F99C433C8;
+        Mon, 23 Oct 2023 11:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060931;
-        bh=sbkha+b0+RLZQN3fl2fvdrmqbyz171mKxj/2mHz6Ck4=;
+        s=korg; t=1698060211;
+        bh=8OlAJz0uf7gOgeaSTmDCzQwx3wnWCnZUh+DSCIEN8Io=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jBlbggRGkdNzqbDIb8FnfKTpuBc0e+pqNG+hyf73BB+V/flejHKmNitAyEnY+RobJ
-         uf812UVNWKHzLTNM+LAoN1rIquTGeoBLdyRifH0v766sVnipgbbytFV6wg/OHPLAx1
-         6D6NMvq9biFreCXaQGkaEehcsba/jqdowWOi7vEc=
+        b=FEAmxlqWKcYf9lJ4zoOdZDinYcrgEWQtl8qBJlFWrrUHPylIVUoCbC1L/aaob+X99
+         KGvD5CIQJwMmoTkoMmwB9j09OW7tu58nfKvbKTu4edsgtoxmOs/mBSKLx029ZM3NW3
+         7rWVR/USjUv9ZPJQ5OmGHzeMpn2GFS1m9IMUtXps=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Lee@vger.kernel.org
-Subject: [PATCH 5.15 004/137] Bluetooth: hci_event: Ignore NULL link key
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 096/196] btrfs: initialize start_slot in btrfs_log_prealloc_extents
 Date:   Mon, 23 Oct 2023 12:56:01 +0200
-Message-ID: <20231023104821.019139361@linuxfoundation.org>
+Message-ID: <20231023104831.243090259@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,71 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee, Chun-Yi <jlee@suse.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
+[ Upstream commit b4c639f699349880b7918b861e1bd360442ec450 ]
 
-This change is used to relieve CVE-2020-26555. The description of the
-CVE:
+Jens reported a compiler warning when using
+CONFIG_CC_OPTIMIZE_FOR_SIZE=y that looks like this
 
-Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
-1.0B through 5.2 may permit an unauthenticated nearby device to spoof
-the BD_ADDR of the peer device to complete pairing without knowledge
-of the PIN. [1]
+  fs/btrfs/tree-log.c: In function ‘btrfs_log_prealloc_extents’:
+  fs/btrfs/tree-log.c:4828:23: warning: ‘start_slot’ may be used
+  uninitialized [-Wmaybe-uninitialized]
+   4828 |                 ret = copy_items(trans, inode, dst_path, path,
+	|                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   4829 |                                  start_slot, ins_nr, 1, 0);
+	|                                  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  fs/btrfs/tree-log.c:4725:13: note: ‘start_slot’ was declared here
+   4725 |         int start_slot;
+	|             ^~~~~~~~~~
 
-The detail of this attack is in IEEE paper:
-BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
-[2]
+The compiler is incorrect, as we only use this code when ins_len > 0,
+and when ins_len > 0 we have start_slot properly initialized.  However
+we generally find the -Wmaybe-uninitialized warnings valuable, so
+initialize start_slot to get rid of the warning.
 
-It's a reflection attack. The paper mentioned that attacker can induce
-the attacked target to generate null link key (zero key) without PIN
-code. In BR/EDR, the key generation is actually handled in the controller
-which is below HCI.
-
-Thus, we can ignore null link key in the handler of "Link Key Notification
-event" to relieve the attack. A similar implementation also shows in
-btstack project. [3]
-
-v3: Drop the connection when null link key be detected.
-
-v2:
-- Used Link: tag instead of Closes:
-- Used bt_dev_dbg instead of BT_DBG
-- Added Fixes: tag
-
-Cc: stable@vger.kernel.org
-Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
-Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
-Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
-Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jens Axboe <axboe@kernel.dk>
+Tested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/btrfs/tree-log.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -4173,6 +4173,15 @@ static void hci_link_key_notify_evt(stru
- 	if (!conn)
- 		goto unlock;
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index c03ff6a5a7f6b..7c33b28c02aeb 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -4767,7 +4767,7 @@ static int btrfs_log_prealloc_extents(struct btrfs_trans_handle *trans,
+ 	struct extent_buffer *leaf;
+ 	int slot;
+ 	int ins_nr = 0;
+-	int start_slot;
++	int start_slot = 0;
+ 	int ret;
  
-+	/* Ignore NULL link key against CVE-2020-26555 */
-+	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
-+		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
-+			   &ev->bdaddr);
-+		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
-+		hci_conn_drop(conn);
-+		goto unlock;
-+	}
-+
- 	hci_conn_hold(conn);
- 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
- 	hci_conn_drop(conn);
+ 	if (!(inode->flags & BTRFS_INODE_PREALLOC))
+-- 
+2.40.1
+
 
 
