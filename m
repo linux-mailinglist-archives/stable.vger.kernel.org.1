@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66B947D3557
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE8757D3228
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233145AbjJWLrT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34200 "EHLO
+        id S233674AbjJWLRU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234465AbjJWLrQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:47:16 -0400
+        with ESMTP id S230137AbjJWLRU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40568B0
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:47:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723AAC433C9;
-        Mon, 23 Oct 2023 11:47:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93186C1
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D700BC433C9;
+        Mon, 23 Oct 2023 11:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061633;
-        bh=8+fQaqLR2u8vmqiUFizB9MPSHbscvhUb8OBbc4uSDDI=;
+        s=korg; t=1698059837;
+        bh=u4pd1UXlu3GrL9fmG6FDCk2wA5e5a/h2gsh4S5PEnG0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oYKoirN2OjU4ipi2RUmVuLpRleUaNpWNIbTkfM6vx8L6V3wj8yye05O0qZZpFo/EU
-         PfBzbSMX8ndZYnAZmj7Rc1VXMAuWwb9Q6fAkPz4Gv6bGKs1S5Etnmw1c2t0h8uRXaG
-         7k6BhC0clqlRjaVh0jHyYBzAnoPBVl8yB9Dg8ZiI=
+        b=FcOhcI07HJUPHQo8+92XQI4RxdxpyUP36gYuuIpozp5B1BXh50f3W/1QGurB2LLc1
+         GIzwqrnNtQ+lUhxOq4gp1IZ+VT1htQ+wqevY8L/lxw8fxh1BiZTpLmyE9HKLwDVRYj
+         NWqadC2AEUA/LF1eof8LFfaAGteS7wlwFwxe2pAE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 112/202] tun: prevent negative ifindex
+        patches@lists.linux.dev, Nathan Chancellor <nathan@kernel.org>,
+        Jeff Layton <jlayton@kernel.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 70/98] overlayfs: set ctime when setting mtime and atime
 Date:   Mon, 23 Oct 2023 12:56:59 +0200
-Message-ID: <20231023104829.808688358@linuxfoundation.org>
+Message-ID: <20231023104816.047780555@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,100 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit cbfbfe3aee718dc4c3c837f5d2463170ee59d78c upstream.
+[ Upstream commit 03dbab3bba5f009d053635c729d1244f2c8bad38 ]
 
-After commit 956db0a13b47 ("net: warn about attempts to register
-negative ifindex") syzbot is able to trigger the following splat.
+Nathan reported that he was seeing the new warning in
+setattr_copy_mgtime pop when starting podman containers. Overlayfs is
+trying to set the atime and mtime via notify_change without also
+setting the ctime.
 
-Negative ifindex are not supported.
+POSIX states that when the atime and mtime are updated via utimes() that
+we must also update the ctime to the current time. The situation with
+overlayfs copy-up is analogies, so add ATTR_CTIME to the bitmask.
+notify_change will fill in the value.
 
-WARNING: CPU: 1 PID: 6003 at net/core/dev.c:9596 dev_index_reserve+0x104/0x210
-Modules linked in:
-CPU: 1 PID: 6003 Comm: syz-executor926 Not tainted 6.6.0-rc4-syzkaller-g19af4a4ed414 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/06/2023
-pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : dev_index_reserve+0x104/0x210
-lr : dev_index_reserve+0x100/0x210
-sp : ffff800096a878e0
-x29: ffff800096a87930 x28: ffff0000d04380d0 x27: ffff0000d04380f8
-x26: ffff0000d04380f0 x25: 1ffff00012d50f20 x24: 1ffff00012d50f1c
-x23: dfff800000000000 x22: ffff8000929c21c0 x21: 00000000ffffffea
-x20: ffff0000d04380e0 x19: ffff800096a87900 x18: ffff800096a874c0
-x17: ffff800084df5008 x16: ffff80008051f9c4 x15: 0000000000000001
-x14: 1fffe0001a087198 x13: 0000000000000000 x12: 0000000000000000
-x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-x8 : ffff0000d41c9bc0 x7 : 0000000000000000 x6 : 0000000000000000
-x5 : ffff800091763d88 x4 : 0000000000000000 x3 : ffff800084e04748
-x2 : 0000000000000001 x1 : 00000000fead71c7 x0 : 0000000000000000
-Call trace:
-dev_index_reserve+0x104/0x210
-register_netdevice+0x598/0x1074 net/core/dev.c:10084
-tun_set_iff+0x630/0xb0c drivers/net/tun.c:2850
-__tun_chr_ioctl+0x788/0x2af8 drivers/net/tun.c:3118
-tun_chr_ioctl+0x38/0x4c drivers/net/tun.c:3403
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:871 [inline]
-__se_sys_ioctl fs/ioctl.c:857 [inline]
-__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:857
-__invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
-invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
-el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
-do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
-el0_svc+0x58/0x16c arch/arm64/kernel/entry-common.c:678
-el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:696
-el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:595
-irq event stamp: 11348
-hardirqs last enabled at (11347): [<ffff80008a716574>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:151 [inline]
-hardirqs last enabled at (11347): [<ffff80008a716574>] _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:194
-hardirqs last disabled at (11348): [<ffff80008a627820>] el1_dbg+0x24/0x80 arch/arm64/kernel/entry-common.c:436
-softirqs last enabled at (11138): [<ffff8000887ca53c>] spin_unlock_bh include/linux/spinlock.h:396 [inline]
-softirqs last enabled at (11138): [<ffff8000887ca53c>] release_sock+0x15c/0x1b0 net/core/sock.c:3531
-softirqs last disabled at (11136): [<ffff8000887ca41c>] spin_lock_bh include/linux/spinlock.h:356 [inline]
-softirqs last disabled at (11136): [<ffff8000887ca41c>] release_sock+0x3c/0x1b0 net/core/sock.c:3518
-
-Fixes: fb7589a16216 ("tun: Add ability to create tun device with given index")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Link: https://lore.kernel.org/r/20231016180851.3560092-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Christian Brauner <brauner@kernel.org>
+Acked-by: Amir Goldstein <amir73il@gmail.com>
+Message-Id: <20230913-ctime-v1-1-c6bc509cbc27@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/tun.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/overlayfs/copy_up.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -3064,10 +3064,11 @@ static long __tun_chr_ioctl(struct file
- 	struct net *net = sock_net(&tfile->sk);
- 	struct tun_struct *tun;
- 	void __user* argp = (void __user*)arg;
--	unsigned int ifindex, carrier;
-+	unsigned int carrier;
- 	struct ifreq ifr;
- 	kuid_t owner;
- 	kgid_t group;
-+	int ifindex;
- 	int sndbuf;
- 	int vnet_hdr_sz;
- 	int le;
-@@ -3124,7 +3125,9 @@ static long __tun_chr_ioctl(struct file
- 		ret = -EFAULT;
- 		if (copy_from_user(&ifindex, argp, sizeof(ifindex)))
- 			goto unlock;
--
-+		ret = -EINVAL;
-+		if (ifindex < 0)
-+			goto unlock;
- 		ret = 0;
- 		tfile->ifindex = ifindex;
- 		goto unlock;
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index 3d7a700350c1d..debcac35a51dc 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -195,7 +195,7 @@ static int ovl_set_timestamps(struct dentry *upperdentry, struct kstat *stat)
+ {
+ 	struct iattr attr = {
+ 		.ia_valid =
+-		     ATTR_ATIME | ATTR_MTIME | ATTR_ATIME_SET | ATTR_MTIME_SET,
++		     ATTR_ATIME | ATTR_MTIME | ATTR_ATIME_SET | ATTR_MTIME_SET | ATTR_CTIME,
+ 		.ia_atime = stat->atime,
+ 		.ia_mtime = stat->mtime,
+ 	};
+-- 
+2.40.1
+
 
 
