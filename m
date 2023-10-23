@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C6F67D3332
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:27:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD9467D345F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233968AbjJWL1o (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:27:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50448 "EHLO
+        id S234220AbjJWLjI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:39:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233965AbjJWL1n (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:27:43 -0400
+        with ESMTP id S234154AbjJWLjH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5371A92
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:27:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9282AC433C7;
-        Mon, 23 Oct 2023 11:27:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935E5DB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B65C433C7;
+        Mon, 23 Oct 2023 11:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060461;
-        bh=gDLuBmdfh9Khc5w00oiL+ds59cvSfyPnL4hRcnSb8QE=;
+        s=korg; t=1698061145;
+        bh=5l+MIx+wov2nrKb9ZO+zwsydS/9fDW9TMEz+SwA7Lsk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jymS1SSfycvpYqa0Mj/i4jj7Kr42p41aVwUNWppCKPFkUsUS1JCG4LxjpMFzmDdna
-         6+uv/h7EJxO8ehYSJ0GY+viyu/Relts9acwQqxwxT7z3Lnn5BHj6avxI3nJbA+byay
-         8VvmBW9qYAz3J0/STUXF3FO8wUHkmW2QKkzAsWGE=
+        b=uZEQw0wLcNn2vTBboHofOosiGXgicpsE9tnIrn0YFtZQ71REOfIgu+8kXebSXmq+G
+         Y2175y3m49V0RAtvSFdr8snRvJqimH0DrDfFLYrcXQpk5DSmpfXSoOGd8kf8quDtby
+         0PJLv7WndFtMjiT3jkQbK9bxrFJxfk7i5FD/+8Rw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Anton Bambura <jenneron@postmarketos.org>,
-        Hsin-Yi Wang <hsinyi@chromium.org>,
-        Douglas Anderson <dianders@chromium.org>,
+        patches@lists.linux.dev, Mirko Lindner <mlindner@marvell.com>,
+        Stephen Hemminger <stephen@networkplumber.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        kernel test robot <lkp@intel.com>,
+        Alexander Lobakin <aleksander.lobakin@intel.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/196] drm/panel: Move AUX B116XW03 out of panel-edp back to panel-simple
+Subject: [PATCH 5.15 088/137] sky2: Make sure there is at least one frag_addr available
 Date:   Mon, 23 Oct 2023 12:57:25 +0200
-Message-ID: <20231023104833.486886775@linuxfoundation.org>
+Message-ID: <20231023104823.873594518@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,161 +57,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit ad3e33fe071dffea07279f96dab4f3773c430fe2 ]
+[ Upstream commit 6a70e5cbedaf8ad10528ac9ac114f3ec20f422df ]
 
-In commit 5f04e7ce392d ("drm/panel-edp: Split eDP panels out of
-panel-simple") I moved a pile of panels out of panel-simple driver
-into the newly created panel-edp driver. One of those panels, however,
-shouldn't have been moved.
+In the pathological case of building sky2 with 16k PAGE_SIZE, the
+frag_addr[] array would never be used, so the original code was correct
+that size should be 0. But the compiler now gets upset with 0 size arrays
+in places where it hasn't eliminated the code that might access such an
+array (it can't figure out that in this case an rx skb with fragments
+would never be created). To keep the compiler happy, make sure there is
+at least 1 frag_addr in struct rx_ring_info:
 
-As is clear from commit e35e305eff0f ("drm/panel: simple: Add AUO
-B116XW03 panel support"), AUX B116XW03 is an LVDS panel. It's used in
-exynos5250-snow and exynos5420-peach-pit where it's clear that the
-panel is hooked up with LVDS. Furthermore, searching for datasheets I
-found one that makes it clear that this panel is LVDS.
+   In file included from include/linux/skbuff.h:28,
+                    from include/net/net_namespace.h:43,
+                    from include/linux/netdevice.h:38,
+                    from drivers/net/ethernet/marvell/sky2.c:18:
+   drivers/net/ethernet/marvell/sky2.c: In function 'sky2_rx_unmap_skb':
+   include/linux/dma-mapping.h:416:36: warning: array subscript i is outside array bounds of 'dma_addr_t[0]' {aka 'long long unsigned int[]'} [-Warray-bounds=]
+     416 | #define dma_unmap_page(d, a, s, r) dma_unmap_page_attrs(d, a, s, r, 0)
+         |                                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   drivers/net/ethernet/marvell/sky2.c:1257:17: note: in expansion of macro 'dma_unmap_page'
+    1257 |                 dma_unmap_page(&pdev->dev, re->frag_addr[i],
+         |                 ^~~~~~~~~~~~~~
+   In file included from drivers/net/ethernet/marvell/sky2.c:41:
+   drivers/net/ethernet/marvell/sky2.h:2198:25: note: while referencing 'frag_addr'
+    2198 |         dma_addr_t      frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
+         |                         ^~~~~~~~~
 
-As far as I can tell, I got confused because in commit 88d3457ceb82
-("drm/panel: auo,b116xw03: fix flash backlight when power on") Jitao
-Shi added "DRM_MODE_CONNECTOR_eDP". That seems wrong. Looking at the
-downstream ChromeOS trees, it seems like some Mediatek boards are
-using a panel that they call "auo,b116xw03" that's an eDP panel. The
-best I can guess is that they actually have a different panel that has
-similar timing. If so then the proper panel should be used or they
-should switch to the generic "edp-panel" compatible.
+With CONFIG_PAGE_SIZE_16KB=y, PAGE_SHIFT == 14, so:
 
-When moving this back to panel-edp, I wasn't sure what to use for
-.bus_flags and .bus_format and whether to add the extra "enable" delay
-from commit 88d3457ceb82 ("drm/panel: auo,b116xw03: fix flash
-backlight when power on"). I've added formats/flags/delays based on my
-(inexpert) analysis of the datasheet. These are untested.
+  #define ETH_JUMBO_MTU   9000
 
-NOTE: if/when this is backported to stable, we might run into some
-trouble. Specifically, before 474c162878ba ("arm64: dts: mt8183:
-jacuzzi: Move panel under aux-bus") this panel was used by
-"mt8183-kukui-jacuzzi", which assumed it was an eDP panel. I don't
-know what to suggest for that other than someone making up a bogus
-panel for jacuzzi that's just for the stable channel.
+causes "ETH_JUMBO_MTU >> PAGE_SHIFT" to be 0. Use "?: 1" to solve this build warning.
 
-Fixes: 88d3457ceb82 ("drm/panel: auo,b116xw03: fix flash backlight when power on")
-Fixes: 5f04e7ce392d ("drm/panel-edp: Split eDP panels out of panel-simple")
-Tested-by: Anton Bambura <jenneron@postmarketos.org>
-Acked-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230925150010.1.Iff672233861bcc4cf25a7ad0a81308adc3bda8a4@changeid
+Cc: Mirko Lindner <mlindner@marvell.com>
+Cc: Stephen Hemminger <stephen@networkplumber.org>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309191958.UBw1cjXk-lkp@intel.com/
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-edp.c    | 29 -----------------------
- drivers/gpu/drm/panel/panel-simple.c | 35 ++++++++++++++++++++++++++++
- 2 files changed, 35 insertions(+), 29 deletions(-)
+ drivers/net/ethernet/marvell/sky2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index a163585a2a52b..2d22de9322281 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -978,32 +978,6 @@ static const struct panel_desc auo_b116xak01 = {
- 	},
+diff --git a/drivers/net/ethernet/marvell/sky2.h b/drivers/net/ethernet/marvell/sky2.h
+index ddec1627f1a7b..8d0bacf4e49cc 100644
+--- a/drivers/net/ethernet/marvell/sky2.h
++++ b/drivers/net/ethernet/marvell/sky2.h
+@@ -2195,7 +2195,7 @@ struct rx_ring_info {
+ 	struct sk_buff	*skb;
+ 	dma_addr_t	data_addr;
+ 	DEFINE_DMA_UNMAP_LEN(data_size);
+-	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT];
++	dma_addr_t	frag_addr[ETH_JUMBO_MTU >> PAGE_SHIFT ?: 1];
  };
  
--static const struct drm_display_mode auo_b116xw03_mode = {
--	.clock = 70589,
--	.hdisplay = 1366,
--	.hsync_start = 1366 + 40,
--	.hsync_end = 1366 + 40 + 40,
--	.htotal = 1366 + 40 + 40 + 32,
--	.vdisplay = 768,
--	.vsync_start = 768 + 10,
--	.vsync_end = 768 + 10 + 12,
--	.vtotal = 768 + 10 + 12 + 6,
--	.flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
--};
--
--static const struct panel_desc auo_b116xw03 = {
--	.modes = &auo_b116xw03_mode,
--	.num_modes = 1,
--	.bpc = 6,
--	.size = {
--		.width = 256,
--		.height = 144,
--	},
--	.delay = {
--		.enable = 400,
--	},
--};
--
- static const struct drm_display_mode auo_b133han05_mode = {
- 	.clock = 142600,
- 	.hdisplay = 1920,
-@@ -1727,9 +1701,6 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "auo,b116xa01",
- 		.data = &auo_b116xak01,
--	}, {
--		.compatible = "auo,b116xw03",
--		.data = &auo_b116xw03,
- 	}, {
- 		.compatible = "auo,b133han05",
- 		.data = &auo_b133han05,
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 0e8622ccd3a0f..00bb34c51d0cb 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -893,6 +893,38 @@ static const struct panel_desc auo_b101xtn01 = {
- 	},
- };
- 
-+static const struct drm_display_mode auo_b116xw03_mode = {
-+	.clock = 70589,
-+	.hdisplay = 1366,
-+	.hsync_start = 1366 + 40,
-+	.hsync_end = 1366 + 40 + 40,
-+	.htotal = 1366 + 40 + 40 + 32,
-+	.vdisplay = 768,
-+	.vsync_start = 768 + 10,
-+	.vsync_end = 768 + 10 + 12,
-+	.vtotal = 768 + 10 + 12 + 6,
-+	.flags = DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
-+};
-+
-+static const struct panel_desc auo_b116xw03 = {
-+	.modes = &auo_b116xw03_mode,
-+	.num_modes = 1,
-+	.bpc = 6,
-+	.size = {
-+		.width = 256,
-+		.height = 144,
-+	},
-+	.delay = {
-+		.prepare = 1,
-+		.enable = 200,
-+		.disable = 200,
-+		.unprepare = 500,
-+	},
-+	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
-+	.connector_type = DRM_MODE_CONNECTOR_LVDS,
-+};
-+
- static const struct display_timing auo_g070vvn01_timings = {
- 	.pixelclock = { 33300000, 34209000, 45000000 },
- 	.hactive = { 800, 800, 800 },
-@@ -3952,6 +3984,9 @@ static const struct of_device_id platform_of_match[] = {
- 	}, {
- 		.compatible = "auo,b101xtn01",
- 		.data = &auo_b101xtn01,
-+	}, {
-+		.compatible = "auo,b116xw03",
-+		.data = &auo_b116xw03,
- 	}, {
- 		.compatible = "auo,g070vvn01",
- 		.data = &auo_g070vvn01,
+ enum flow_control {
 -- 
-2.42.0
+2.40.1
 
 
 
