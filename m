@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 490807D338A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00A717D3248
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234085AbjJWLb3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:31:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34196 "EHLO
+        id S233744AbjJWLSc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:18:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234081AbjJWLb2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:28 -0400
+        with ESMTP id S233731AbjJWLSc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5ABDCC1
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81306C433C9;
-        Mon, 23 Oct 2023 11:31:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9A2DD
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF745C433C7;
+        Mon, 23 Oct 2023 11:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060685;
-        bh=er+5tfsim9YerYmDQ27obsJntkLJuw3GzNjyCXRcnNU=;
+        s=korg; t=1698059910;
+        bh=rwIUsgw4/7HYb1UQeqvp0rO+fIeEAbNN+pk26nvU2GQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ptuvZ+AFaO91Lc4Wy9FUPvVQ4U8eQR/lY/lQHvO0zJ0N7ZJERAvXHuVxA2ztSvt8E
-         OdtETg3EvC459jux5a1cCSF1CZtTx/0hf/WlLmcFFUQdbkRada0wekxv9YOjC1IzfS
-         ZbtFWORdYt8cJnGMqoxtfq1bKQ7s1VxWf802S538=
+        b=eOzaGNKPw2lCcmeO9cVxObeM8gxwB0EbZRqGPS/XFzdnTj3dtX/MIQWYLK9FfaYr9
+         Lhbe84e70J+3AG0KhWUaCxzr97is266lTYd3xJqufWKb4mQz5nNtvR4qpVOHumXNDJ
+         gmt1+Wwr4YRKvSTiHJwjtbfEJvPmQDV0ZICT1OXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.4 058/123] xfrm: fix a data-race in xfrm_gen_index()
+        patches@lists.linux.dev, Josef Bacik <josef@toxicpanda.com>,
+        Filipe Manana <fdmanana@suse.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 67/98] btrfs: return -EUCLEAN for delayed tree ref with a ref count not equals to 1
 Date:   Mon, 23 Oct 2023 12:56:56 +0200
-Message-ID: <20231023104819.636757167@linuxfoundation.org>
+Message-ID: <20231023104815.954409527@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
-References: <20231023104817.691299567@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,105 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 3e4bc23926b83c3c67e5f61ae8571602754131a6 upstream.
+[ Upstream commit 1bf76df3fee56d6637718e267f7c34ed70d0c7dc ]
 
-xfrm_gen_index() mutual exclusion uses net->xfrm.xfrm_policy_lock.
+When running a delayed tree reference, if we find a ref count different
+from 1, we return -EIO. This isn't an IO error, as it indicates either a
+bug in the delayed refs code or a memory corruption, so change the error
+code from -EIO to -EUCLEAN. Also tag the branch as 'unlikely' as this is
+not expected to ever happen, and change the error message to print the
+tree block's bytenr without the parenthesis (and there was a missing space
+between the 'block' word and the opening parenthesis), for consistency as
+that's the style we used everywhere else.
 
-This means we must use a per-netns idx_generator variable,
-instead of a static one.
-Alternative would be to use an atomic variable.
-
-syzbot reported:
-
-BUG: KCSAN: data-race in xfrm_sk_policy_insert / xfrm_sk_policy_insert
-
-write to 0xffffffff87005938 of 4 bytes by task 29466 on cpu 0:
-xfrm_gen_index net/xfrm/xfrm_policy.c:1385 [inline]
-xfrm_sk_policy_insert+0x262/0x640 net/xfrm/xfrm_policy.c:2347
-xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
-do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
-ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
-rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
-sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
-__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
-__do_sys_setsockopt net/socket.c:2274 [inline]
-__se_sys_setsockopt net/socket.c:2271 [inline]
-__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffffffff87005938 of 4 bytes by task 29460 on cpu 1:
-xfrm_sk_policy_insert+0x13e/0x640
-xfrm_user_policy+0x413/0x540 net/xfrm/xfrm_state.c:2639
-do_ipv6_setsockopt+0x1317/0x2ce0 net/ipv6/ipv6_sockglue.c:943
-ipv6_setsockopt+0x57/0x130 net/ipv6/ipv6_sockglue.c:1012
-rawv6_setsockopt+0x21e/0x410 net/ipv6/raw.c:1054
-sock_common_setsockopt+0x61/0x70 net/core/sock.c:3697
-__sys_setsockopt+0x1c9/0x230 net/socket.c:2263
-__do_sys_setsockopt net/socket.c:2274 [inline]
-__se_sys_setsockopt net/socket.c:2271 [inline]
-__x64_sys_setsockopt+0x66/0x80 net/socket.c:2271
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0x00006ad8 -> 0x00006b18
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 1 PID: 29460 Comm: syz-executor.1 Not tainted 6.5.0-rc5-syzkaller-00243-g9106536c1aa3 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-
-Fixes: 1121994c803f ("netns xfrm: policy insertion in netns")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Acked-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netns/xfrm.h |    1 +
- net/xfrm/xfrm_policy.c   |    6 ++----
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ fs/btrfs/extent-tree.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/include/net/netns/xfrm.h
-+++ b/include/net/netns/xfrm.h
-@@ -49,6 +49,7 @@ struct netns_xfrm {
- 	struct list_head	policy_all;
- 	struct hlist_head	*policy_byidx;
- 	unsigned int		policy_idx_hmask;
-+	unsigned int		idx_generator;
- 	struct hlist_head	policy_inexact[XFRM_POLICY_MAX];
- 	struct xfrm_policy_hash	policy_bydst[XFRM_POLICY_MAX];
- 	unsigned int		policy_count[XFRM_POLICY_MAX * 2];
---- a/net/xfrm/xfrm_policy.c
-+++ b/net/xfrm/xfrm_policy.c
-@@ -1369,8 +1369,6 @@ EXPORT_SYMBOL(xfrm_policy_hash_rebuild);
-  * of an absolute inpredictability of ordering of rules. This will not pass. */
- static u32 xfrm_gen_index(struct net *net, int dir, u32 index)
- {
--	static u32 idx_generator;
--
- 	for (;;) {
- 		struct hlist_head *list;
- 		struct xfrm_policy *p;
-@@ -1378,8 +1376,8 @@ static u32 xfrm_gen_index(struct net *ne
- 		int found;
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index bb05b0a82c8ba..902ab00bfd7ab 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -2327,12 +2327,12 @@ static int run_delayed_tree_ref(struct btrfs_trans_handle *trans,
+ 		parent = ref->parent;
+ 	ref_root = ref->root;
  
- 		if (!index) {
--			idx = (idx_generator | dir);
--			idx_generator += 8;
-+			idx = (net->xfrm.idx_generator | dir);
-+			net->xfrm.idx_generator += 8;
- 		} else {
- 			idx = index;
- 			index = 0;
+-	if (node->ref_mod != 1) {
++	if (unlikely(node->ref_mod != 1)) {
+ 		btrfs_err(trans->fs_info,
+-	"btree block(%llu) has %d references rather than 1: action %d ref_root %llu parent %llu",
++	"btree block %llu has %d references rather than 1: action %d ref_root %llu parent %llu",
+ 			  node->bytenr, node->ref_mod, node->action, ref_root,
+ 			  parent);
+-		return -EIO;
++		return -EUCLEAN;
+ 	}
+ 	if (node->action == BTRFS_ADD_DELAYED_REF && insert_reserved) {
+ 		BUG_ON(!extent_op || !extent_op->update_flags);
+-- 
+2.40.1
+
 
 
