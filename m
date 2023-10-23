@@ -2,39 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B27827D35CC
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2E067D34B4
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234624AbjJWLwG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:52:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33448 "EHLO
+        id S234315AbjJWLmT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:42:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234625AbjJWLwF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:52:05 -0400
+        with ESMTP id S234281AbjJWLmS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EBB610A
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:51:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68D1C433CB;
-        Mon, 23 Oct 2023 11:51:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D618198D;
+        Mon, 23 Oct 2023 04:41:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5FBC43395;
+        Mon, 23 Oct 2023 11:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061909;
-        bh=MVmF+qfdUsJf8sWXGa/X3MTCeqVQJLl7V4co7TQFmK0=;
+        s=korg; t=1698061313;
+        bh=GGRNanOMwehvibyFuWKummVXRCevGq8X/wg5Jadc/cE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kgKiOcgrMA4BSGllOGL0Efd/GpI+Iz/8wzI4bZ2VmNfg/XTVKiyBn2etvytDwuPQP
-         Zcdn0QYjji1ZX36EkPRp04osVPsUICCqmKHESvPvanA481bvNIIEOU8r2AXJnQonXr
-         5Ksp/pRqKYGwkMwhPE/qZQWxO+D0+OrJnGC33aZI=
+        b=VYszL7YRnvRvAbYjmqfslZdXbgaF6RaMsgxMrQv5Hn/7fv4kOSfr1AEvLrTKn73IY
+         IGrPnmo3htVXF6n+g/zvXHIdNpUnIXCwcqqLwxpaSo/uFI0d0G5I7P7HSg2h0uuP2X
+         9oQyW9EtyvBHVny74qWEvFhlr3VhWXXOyZxCi830=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maurizio Lombardi <mlombard@redhat.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Yi Zhang <yi.zhang@redhat.com>, Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.10 185/202] nvme-rdma: do not try to stop unallocated queues
-Date:   Mon, 23 Oct 2023 12:58:12 +0200
-Message-ID: <20231023104831.857762177@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Edward AD <twuufnxlz@gmail.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.15 136/137] Bluetooth: hci_sock: Correctly bounds check and pad HCI_MON_NEW_INDEX name
+Date:   Mon, 23 Oct 2023 12:58:13 +0200
+Message-ID: <20231023104825.258229633@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +57,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit 3820c4fdc247b6f0a4162733bdb8ddf8f2e8a1e4 upstream.
+commit cb3871b1cd135a6662b732fbc6b3db4afcdb4a64 upstream.
 
-Trying to stop a queue which hasn't been allocated will result
-in a warning due to calling mutex_lock() against an uninitialized mutex.
+The code pattern of memcpy(dst, src, strlen(src)) is almost always
+wrong. In this case it is wrong because it leaves memory uninitialized
+if it is less than sizeof(ni->name), and overflows ni->name when longer.
 
- DEBUG_LOCKS_WARN_ON(lock->magic != lock)
- WARNING: CPU: 4 PID: 104150 at kernel/locking/mutex.c:579
+Normally strtomem_pad() could be used here, but since ni->name is a
+trailing array in struct hci_mon_new_index, compilers that don't support
+-fstrict-flex-arrays=3 can't tell how large this array is via
+__builtin_object_size(). Instead, open-code the helper and use sizeof()
+since it will work correctly.
 
- Call trace:
-  RIP: 0010:__mutex_lock+0x1173/0x14a0
-  nvme_rdma_stop_queue+0x1b/0xa0 [nvme_rdma]
-  nvme_rdma_teardown_io_queues.part.0+0xb0/0x1d0 [nvme_rdma]
-  nvme_rdma_delete_ctrl+0x50/0x100 [nvme_rdma]
-  nvme_do_delete_ctrl+0x149/0x158 [nvme_core]
+Additionally mark ni->name as __nonstring since it appears to not be a
+%NUL terminated C string.
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: Edward AD <twuufnxlz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Johan Hedberg <johan.hedberg@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: linux-bluetooth@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Fixes: 18f547f3fc07 ("Bluetooth: hci_sock: fix slab oob read in create_monitor_event")
+Link: https://lore.kernel.org/lkml/202310110908.F2639D3276@keescook/
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/rdma.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/net/bluetooth/hci_mon.h |    2 +-
+ net/bluetooth/hci_sock.c        |    3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/nvme/host/rdma.c
-+++ b/drivers/nvme/host/rdma.c
-@@ -644,6 +644,9 @@ static void __nvme_rdma_stop_queue(struc
+--- a/include/net/bluetooth/hci_mon.h
++++ b/include/net/bluetooth/hci_mon.h
+@@ -56,7 +56,7 @@ struct hci_mon_new_index {
+ 	__u8		type;
+ 	__u8		bus;
+ 	bdaddr_t	bdaddr;
+-	char		name[8];
++	char		name[8] __nonstring;
+ } __packed;
+ #define HCI_MON_NEW_INDEX_SIZE 16
  
- static void nvme_rdma_stop_queue(struct nvme_rdma_queue *queue)
- {
-+	if (!test_bit(NVME_RDMA_Q_ALLOCATED, &queue->flags))
-+		return;
-+
- 	mutex_lock(&queue->queue_lock);
- 	if (test_and_clear_bit(NVME_RDMA_Q_LIVE, &queue->flags))
- 		__nvme_rdma_stop_queue(queue);
+--- a/net/bluetooth/hci_sock.c
++++ b/net/bluetooth/hci_sock.c
+@@ -438,7 +438,8 @@ static struct sk_buff *create_monitor_ev
+ 		ni->type = hdev->dev_type;
+ 		ni->bus = hdev->bus;
+ 		bacpy(&ni->bdaddr, &hdev->bdaddr);
+-		memcpy(ni->name, hdev->name, strlen(hdev->name));
++		memcpy_and_pad(ni->name, sizeof(ni->name), hdev->name,
++			       strnlen(hdev->name, sizeof(ni->name)), '\0');
+ 
+ 		opcode = cpu_to_le16(HCI_MON_NEW_INDEX);
+ 		break;
 
 
