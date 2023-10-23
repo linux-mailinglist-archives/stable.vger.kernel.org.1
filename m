@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D9487D32E7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED3677D336A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:30:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233777AbjJWLYz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:24:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45868 "EHLO
+        id S234000AbjJWLaG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:30:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233787AbjJWLYy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:54 -0400
+        with ESMTP id S234034AbjJWLaF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:30:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 940E6102
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C857DC433C9;
-        Mon, 23 Oct 2023 11:24:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E178DB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:30:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4979CC433C7;
+        Mon, 23 Oct 2023 11:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060291;
-        bh=VcBkhqdZNm9ObN8M5Rf+QBCIyLNyEuVW7yoxfmrebZE=;
+        s=korg; t=1698060602;
+        bh=8knGkJumqiZFbwTKkwE2HCfYKJE3370k99y6c6TAzHA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lH5zRKA6vhSSOS6Fz/KihAsbGS8UUiaJhhDOBqiBNYm8KGYAQVMelQ4e6CrgerIiT
-         1ulk6Tlcr0wb1VjslR2ON0mk0/sMyvi69qwkxtdZz6L9hQmDasLjiZk5O5tgjWBvA0
-         p3oQd7ELmrDeCq+chWXUVurtr+vKjCyKLRbQcfuQ=
+        b=KowUHl3QmzG8okc2DIpbDCzrmZOfun7QpufiRYieYy5tSHwO073VApeZZPfvRMmj9
+         RBG95lD73fZtw6gjifQjpEltGVYPcs8UVsXUH6+0edtJp+wkNS3UG7sqzDjHPB0rd4
+         Nsh2Le0qMpclqXB3JJJHSo+2QttVz1QleIquK9Ws=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rain <rain@sunshowers.io>,
-        Rahul Rameshbabu <sergeantsagara@protonmail.com>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/196] HID: multitouch: Add required quirk for Synaptics 0xcd7e device
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.4 030/123] ceph: fix incorrect revoked caps assert in ceph_fill_file_size()
 Date:   Mon, 23 Oct 2023 12:56:28 +0200
-Message-ID: <20231023104831.986234860@linuxfoundation.org>
+Message-ID: <20231023104818.753397615@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +49,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 1437e4547edf41689d7135faaca4222ef0081bc1 ]
+commit 15c0a870dc44ed14e01efbdd319d232234ee639f upstream.
 
-Register the Synaptics device as a special multitouch device with certain
-quirks that may improve usability of the touchpad device.
+When truncating the inode the MDS will acquire the xlock for the
+ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
+But when the client just releases and flushes the 'Fw' caps to MDS,
+for exmaple, and once the MDS receives the caps flushing msg it
+just thought the revocation has finished. Then the MDS will continue
+truncating the inode and then issued the truncate notification to
+all the clients. While just before the clients receives the cap
+flushing ack they receive the truncation notification, the clients
+will detecte that the 'issued | dirty' is still holding the 'Fw'
+caps.
 
-Reported-by: Rain <rain@sunshowers.io>
-Closes: https://lore.kernel.org/linux-input/2bbb8e1d-1793-4df1-810f-cb0137341ff4@app.fastmail.com/
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/56693
+Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-multitouch.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ceph/inode.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 521b2ffb42449..8db4ae05febc8 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -2144,6 +2144,10 @@ static const struct hid_device_id mt_devices[] = {
- 			USB_DEVICE_ID_MTP_STM)},
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -619,9 +619,7 @@ int ceph_fill_file_size(struct inode *in
+ 			ci->i_truncate_seq = truncate_seq;
  
- 	/* Synaptics devices */
-+	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
-+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
-+			USB_VENDOR_ID_SYNAPTICS, 0xcd7e) },
-+
- 	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT,
- 		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
- 			USB_VENDOR_ID_SYNAPTICS, 0xce08) },
--- 
-2.40.1
-
+ 			/* the MDS should have revoked these caps */
+-			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
+-					       CEPH_CAP_FILE_RD |
+-					       CEPH_CAP_FILE_WR |
++			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
+ 					       CEPH_CAP_FILE_LAZYIO));
+ 			/*
+ 			 * If we hold relevant caps, or in the case where we're
 
 
