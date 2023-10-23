@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9478A7D34AA
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18D3C7D3591
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234264AbjJWLmD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:42:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44472 "EHLO
+        id S234587AbjJWLtk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234260AbjJWLmC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:02 -0400
+        with ESMTP id S234590AbjJWLtj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2923A10DD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4402C433C7;
-        Mon, 23 Oct 2023 11:41:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3895310A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76255C433C9;
+        Mon, 23 Oct 2023 11:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061298;
-        bh=kEC99zSIa4o80kGriha3wozIt7G/UnV9u+tdvZts/Bs=;
+        s=korg; t=1698061775;
+        bh=RXBTMICAFuhc1lk2TZwafJIaFtaTTaqi//Vr193iK8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BQVpImg5ZFs109/aWdWqPIFceOBff4e6FjL+rMHaH/oykRleBqnPAG/FAfw3BPvho
-         rBgWQtc5i5FI70rxOkUEigS3zaUR/K8M7XPH9KOMmaRHvg4zF8obQ8mZCEMKdyC5kY
-         vbC8ofAqvbVU+yEQukZeBaDkynbXciQKxWGQUIBI=
+        b=GOyd+2sxejfdq2Ab7IIiN5Wll6sIbggPq/KXOGSO09OhqHc12cGmSnd13ljpp7543
+         sMdjhPLjdxFiA8PW1CbBRqgdxQHg7ZSwUQgI/EbjtmV0/GDqETlbAsJm+by9bDr4La
+         +k0zk+rkNDPnEfPfUnE4t14Wlm0mqvgDUUYMe5jU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.15 111/137] Revert "pinctrl: avoid unsafe code pattern in find_pinctrl()"
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 161/202] Bluetooth: hci_core: Fix build warnings
 Date:   Mon, 23 Oct 2023 12:57:48 +0200
-Message-ID: <20231023104824.542752534@linuxfoundation.org>
+Message-ID: <20231023104831.207251724@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,81 +50,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 62140a1e4dec4594d5d1e1d353747bf2ef434e8b upstream.
+[ Upstream commit dcda165706b9fbfd685898d46a6749d7d397e0c0 ]
 
-The commit breaks MMC enumeration on the Intel Merrifield
-plaform.
+This fixes the following warnings:
 
-Before:
-[   36.439057] mmc0: SDHCI controller on PCI [0000:00:01.0] using ADMA
-[   36.450924] mmc2: SDHCI controller on PCI [0000:00:01.3] using ADMA
-[   36.459355] mmc1: SDHCI controller on PCI [0000:00:01.2] using ADMA
-[   36.706399] mmc0: new DDR MMC card at address 0001
-[   37.058972] mmc2: new ultra high speed DDR50 SDIO card at address 0001
-[   37.278977] mmcblk0: mmc0:0001 H4G1d 3.64 GiB
-[   37.297300]  mmcblk0: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
+net/bluetooth/hci_core.c: In function ‘hci_register_dev’:
+net/bluetooth/hci_core.c:2620:54: warning: ‘%d’ directive output may
+be truncated writing between 1 and 10 bytes into a region of size 5
+[-Wformat-truncation=]
+ 2620 |         snprintf(hdev->name, sizeof(hdev->name), "hci%d", id);
+      |                                                      ^~
+net/bluetooth/hci_core.c:2620:50: note: directive argument in the range
+[0, 2147483647]
+ 2620 |         snprintf(hdev->name, sizeof(hdev->name), "hci%d", id);
+      |                                                  ^~~~~~~
+net/bluetooth/hci_core.c:2620:9: note: ‘snprintf’ output between 5 and
+14 bytes into a destination of size 8
+ 2620 |         snprintf(hdev->name, sizeof(hdev->name), "hci%d", id);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-After:
-[   36.436704] mmc2: SDHCI controller on PCI [0000:00:01.3] using ADMA
-[   36.436720] mmc1: SDHCI controller on PCI [0000:00:01.0] using ADMA
-[   36.463685] mmc0: SDHCI controller on PCI [0000:00:01.2] using ADMA
-[   36.720627] mmc1: new DDR MMC card at address 0001
-[   37.068181] mmc2: new ultra high speed DDR50 SDIO card at address 0001
-[   37.279998] mmcblk1: mmc1:0001 H4G1d 3.64 GiB
-[   37.302670]  mmcblk1: p1 p2 p3 p4 p5 p6 p7 p8 p9 p10
-
-This reverts commit c153a4edff6ab01370fcac8e46f9c89cca1060c2.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231017141806.535191-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/core.c |   16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ include/net/bluetooth/hci_core.h | 2 +-
+ net/bluetooth/hci_core.c         | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1007,20 +1007,17 @@ static int add_setting(struct pinctrl *p
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 11a92bb4d7a9f..e33433ec4a98f 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -287,7 +287,7 @@ struct hci_dev {
+ 	struct list_head list;
+ 	struct mutex	lock;
  
- static struct pinctrl *find_pinctrl(struct device *dev)
- {
--	struct pinctrl *entry, *p = NULL;
-+	struct pinctrl *p;
+-	char		name[8];
++	const char	*name;
+ 	unsigned long	flags;
+ 	__u16		id;
+ 	__u8		bus;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 46e1e51ff28e3..e33fe4b1c4e29 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3734,7 +3734,11 @@ int hci_register_dev(struct hci_dev *hdev)
+ 	if (id < 0)
+ 		return id;
  
- 	mutex_lock(&pinctrl_list_mutex);
+-	snprintf(hdev->name, sizeof(hdev->name), "hci%d", id);
++	error = dev_set_name(&hdev->dev, "hci%u", id);
++	if (error)
++		return error;
++
++	hdev->name = dev_name(&hdev->dev);
+ 	hdev->id = id;
+ 
+ 	BT_DBG("%p name %s bus %d", hdev, hdev->name, hdev->bus);
+@@ -3756,8 +3760,6 @@ int hci_register_dev(struct hci_dev *hdev)
+ 	if (!IS_ERR_OR_NULL(bt_debugfs))
+ 		hdev->debugfs = debugfs_create_dir(hdev->name, bt_debugfs);
+ 
+-	dev_set_name(&hdev->dev, "%s", hdev->name);
 -
--	list_for_each_entry(entry, &pinctrl_list, node) {
--		if (entry->dev == dev) {
--			p = entry;
--			kref_get(&p->users);
--			break;
-+	list_for_each_entry(p, &pinctrl_list, node)
-+		if (p->dev == dev) {
-+			mutex_unlock(&pinctrl_list_mutex);
-+			return p;
- 		}
--	}
- 
- 	mutex_unlock(&pinctrl_list_mutex);
--	return p;
-+	return NULL;
- }
- 
- static void pinctrl_free(struct pinctrl *p, bool inlist);
-@@ -1129,6 +1126,7 @@ struct pinctrl *pinctrl_get(struct devic
- 	p = find_pinctrl(dev);
- 	if (p) {
- 		dev_dbg(dev, "obtain a copy of previously claimed pinctrl\n");
-+		kref_get(&p->users);
- 		return p;
- 	}
- 
+ 	error = device_add(&hdev->dev);
+ 	if (error < 0)
+ 		goto err_wqueue;
+-- 
+2.40.1
+
 
 
