@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A3127D34BD
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:42:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D386A7D3174
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234321AbjJWLm1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:42:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46216 "EHLO
+        id S233564AbjJWLJW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:09:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234314AbjJWLmT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:42:19 -0400
+        with ESMTP id S233568AbjJWLJU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:09:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B75810CB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:42:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131DDC433CC;
-        Mon, 23 Oct 2023 11:42:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8C5FF9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:09:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C6EC433C7;
+        Mon, 23 Oct 2023 11:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061325;
-        bh=dgauo/7yKoDXSh6OYZRO9zZF+3Mwgwi2dgHUCfJyVZI=;
+        s=korg; t=1698059354;
+        bh=5B1dw+d60ziU506DJR/8ENW4+hNH/9vu8g4p/m72KZk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0NPE9O/mZBawrvjbCdixeu76+QuX/G4GWAVv7PfaybD5xIJmbalhCKNKmz6pc2jAV
-         i7o2m/baF8c24TW0I43d/0gAdAt6o+grbXr/KW7c88JRUm3tTwB97gGPR0wT1i6Yvw
-         LNq/iQHTVDPr8scFrsTjZdPNs/lOzkqmQ4x4mRy4=
+        b=bGgolk6ccdu7JnBuIi60dkGxLG/k6n1b6/Bt/YAtkeaT7awjNkcER9Ek87DQg6Fvo
+         kSfPQcpVgm4U0fePL1XyrNgLsegDfugm6SoFqJrn+8nOJNYUpptApjGfTKKq8gec2m
+         VGMYG+2fj3NtNU7RF6CxIGk25c+7oajH5IHu7R+E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
-        Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Wen Gong <quic_wgong@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/202] RDMA/srp: Do not call scsi_done() from srp_abort()
+Subject: [PATCH 6.5 123/241] wifi: mac80211: allow transmitting EAPOL frames with tainted key
 Date:   Mon, 23 Oct 2023 12:55:09 +0200
-Message-ID: <20231023104826.639859777@linuxfoundation.org>
+Message-ID: <20231023104836.874901659@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,73 +49,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-[ Upstream commit e193b7955dfad68035b983a0011f4ef3590c85eb ]
+[ Upstream commit 61304336c67358d49a989e5e0060d8c99bad6ca8 ]
 
-After scmd_eh_abort_handler() has called the SCSI LLD eh_abort_handler
-callback, it performs one of the following actions:
-* Call scsi_queue_insert().
-* Call scsi_finish_command().
-* Call scsi_eh_scmd_add().
-Hence, SCSI abort handlers must not call scsi_done(). Otherwise all
-the above actions would trigger a use-after-free. Hence remove the
-scsi_done() call from srp_abort(). Keep the srp_free_req() call
-before returning SUCCESS because we may not see the command again if
-SUCCESS is returned.
+Lower layer device driver stop/wake TX by calling ieee80211_stop_queue()/
+ieee80211_wake_queue() while hw scan. Sometimes hw scan and PTK rekey are
+running in parallel, when M4 sent from wpa_supplicant arrive while the TX
+queue is stopped, then the M4 will pending send, and then new key install
+from wpa_supplicant. After TX queue wake up by lower layer device driver,
+the M4 will be dropped by below call stack.
 
-Cc: Bob Pearson <rpearsonhpe@gmail.com>
-Cc: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Fixes: d8536670916a ("IB/srp: Avoid having aborted requests hang")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20230823205727.505681-1-bvanassche@acm.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+When key install started, the current key flag is set KEY_FLAG_TAINTED in
+ieee80211_pairwise_rekey(), and then mac80211 wait key install complete by
+lower layer device driver. Meanwhile ieee80211_tx_h_select_key() will return
+TX_DROP for the M4 in step 12 below, and then ieee80211_free_txskb() called
+by ieee80211_tx_dequeue(), so the M4 will not send and free, then the rekey
+process failed becaue AP not receive M4. Please see details in steps below.
+
+There are a interval between KEY_FLAG_TAINTED set for current key flag and
+install key complete by lower layer device driver, the KEY_FLAG_TAINTED is
+set in this interval, all packet including M4 will be dropped in this
+interval, the interval is step 8~13 as below.
+
+issue steps:
+      TX thread                 install key thread
+1.   stop_queue                      -idle-
+2.   sending M4                      -idle-
+3.   M4 pending                      -idle-
+4.     -idle-                  starting install key from wpa_supplicant
+5.     -idle-                  =>ieee80211_key_replace()
+6.     -idle-                  =>ieee80211_pairwise_rekey() and set
+                                 currently key->flags |= KEY_FLAG_TAINTED
+7.     -idle-                  =>ieee80211_key_enable_hw_accel()
+8.     -idle-                  =>drv_set_key() and waiting key install
+                                 complete from lower layer device driver
+9.   wake_queue                     -waiting state-
+10.  re-sending M4                  -waiting state-
+11.  =>ieee80211_tx_h_select_key()  -waiting state-
+12.  drop M4 by KEY_FLAG_TAINTED    -waiting state-
+13.    -idle-                   install key complete with success/fail
+                                  success: clear flag KEY_FLAG_TAINTED
+                                  fail: start disconnect
+
+Hence add check in step 11 above to allow the EAPOL send out in the
+interval. If lower layer device driver use the old key/cipher to encrypt
+the M4, then AP received/decrypt M4 correctly, after M4 send out, lower
+layer device driver install the new key/cipher to hardware and return
+success.
+
+If lower layer device driver use new key/cipher to send the M4, then AP
+will/should drop the M4, then it is same result with this issue, AP will/
+should kick out station as well as this issue.
+
+issue log:
+kworker/u16:4-5238  [000]  6456.108926: stop_queue:           phy1 queue:0, reason:0
+wpa_supplicant-961  [003]  6456.119737: rdev_tx_control_port: wiphy_name=phy1 name=wlan0 ifindex=6 dest=ARRAY[9e, 05, 31, 20, 9b, d0] proto=36488 unencrypted=0
+wpa_supplicant-961  [003]  6456.119839: rdev_return_int_cookie: phy1, returned 0, cookie: 504
+wpa_supplicant-961  [003]  6456.120287: rdev_add_key:         phy1, netdev:wlan0(6), key_index: 0, mode: 0, pairwise: true, mac addr: 9e:05:31:20:9b:d0
+wpa_supplicant-961  [003]  6456.120453: drv_set_key:          phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 cipher:0xfac04, flags=0x9, keyidx=0, hw_key_idx=0
+kworker/u16:9-3829  [001]  6456.168240: wake_queue:           phy1 queue:0, reason:0
+kworker/u16:9-3829  [001]  6456.168255: drv_wake_tx_queue:    phy1 vif:wlan0(2) sta:9e:05:31:20:9b:d0 ac:0 tid:7
+kworker/u16:9-3829  [001]  6456.168305: cfg80211_control_port_tx_status: wdev(1), cookie: 504, ack: false
+wpa_supplicant-961  [003]  6459.167982: drv_return_int:       phy1 - -110
+
+issue call stack:
+nl80211_frame_tx_status+0x230/0x340 [cfg80211]
+cfg80211_control_port_tx_status+0x1c/0x28 [cfg80211]
+ieee80211_report_used_skb+0x374/0x3e8 [mac80211]
+ieee80211_free_txskb+0x24/0x40 [mac80211]
+ieee80211_tx_dequeue+0x644/0x954 [mac80211]
+ath10k_mac_tx_push_txq+0xac/0x238 [ath10k_core]
+ath10k_mac_op_wake_tx_queue+0xac/0xe0 [ath10k_core]
+drv_wake_tx_queue+0x80/0x168 [mac80211]
+__ieee80211_wake_txqs+0xe8/0x1c8 [mac80211]
+_ieee80211_wake_txqs+0xb4/0x120 [mac80211]
+ieee80211_wake_txqs+0x48/0x80 [mac80211]
+tasklet_action_common+0xa8/0x254
+tasklet_action+0x2c/0x38
+__do_softirq+0xdc/0x384
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Link: https://lore.kernel.org/r/20230801064751.25803-1-quic_wgong@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/srp/ib_srp.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ net/mac80211/tx.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
-index f47d104e6c9d7..12bc24ee2d131 100644
---- a/drivers/infiniband/ulp/srp/ib_srp.c
-+++ b/drivers/infiniband/ulp/srp/ib_srp.c
-@@ -2781,7 +2781,6 @@ static int srp_abort(struct scsi_cmnd *scmnd)
- 	u32 tag;
- 	u16 ch_idx;
- 	struct srp_rdma_ch *ch;
--	int ret;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 7fe7280e84374..d45d4be63dd87 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -665,7 +665,8 @@ ieee80211_tx_h_select_key(struct ieee80211_tx_data *tx)
+ 		}
  
- 	shost_printk(KERN_ERR, target->scsi_host, "SRP abort called\n");
+ 		if (unlikely(tx->key && tx->key->flags & KEY_FLAG_TAINTED &&
+-			     !ieee80211_is_deauth(hdr->frame_control)))
++			     !ieee80211_is_deauth(hdr->frame_control)) &&
++			     tx->skb->protocol != tx->sdata->control_port_protocol)
+ 			return TX_DROP;
  
-@@ -2797,19 +2796,14 @@ static int srp_abort(struct scsi_cmnd *scmnd)
- 	shost_printk(KERN_ERR, target->scsi_host,
- 		     "Sending SRP abort for tag %#x\n", tag);
- 	if (srp_send_tsk_mgmt(ch, tag, scmnd->device->lun,
--			      SRP_TSK_ABORT_TASK, NULL) == 0)
--		ret = SUCCESS;
--	else if (target->rport->state == SRP_RPORT_LOST)
--		ret = FAST_IO_FAIL;
--	else
--		ret = FAILED;
--	if (ret == SUCCESS) {
-+			      SRP_TSK_ABORT_TASK, NULL) == 0) {
- 		srp_free_req(ch, req, scmnd, 0);
--		scmnd->result = DID_ABORT << 16;
--		scmnd->scsi_done(scmnd);
-+		return SUCCESS;
- 	}
-+	if (target->rport->state == SRP_RPORT_LOST)
-+		return FAST_IO_FAIL;
- 
--	return ret;
-+	return FAILED;
- }
- 
- static int srp_reset_device(struct scsi_cmnd *scmnd)
+ 		if (!skip_hw && tx->key &&
 -- 
 2.40.1
 
