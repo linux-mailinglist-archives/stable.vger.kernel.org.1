@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5D0D7D328C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27BA57D3138
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233816AbjJWLVZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:21:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48062 "EHLO
+        id S233413AbjJWLHF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:07:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233818AbjJWLVZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:25 -0400
+        with ESMTP id S233392AbjJWLHC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCA14C2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1675C433C7;
-        Mon, 23 Oct 2023 11:21:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA95210D0
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:06:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110B3C433C9;
+        Mon, 23 Oct 2023 11:06:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060080;
-        bh=5zA+0Jbi+LwdrXcUywgQjO7QJl/nPbUCua6qLqV4tMM=;
+        s=korg; t=1698059218;
+        bh=aYtds9nwlphMN/awtAwNBEPkvafTWChSoCH0HRtgFFs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UOuTykNTcmqG6L+lQBogeqZbsOMyOSLBCR52LcTcQsC/rtsThifMm8kNCJt/GTpLz
-         XhbkivXtYSiPtxwrThkQmNxNp/isLvfNthpyz0kVxCU6oAHFTUlixad/xm0jXfYxBs
-         i1ifvMEi0+u/qdwMNXFj6UIExtMluNU5V0mrV7nY=
+        b=1zh+v3lRIxCHJ9HXlzqgSgS5OYkfvNBYDUvy3l8WPIAAQEGK5RCZM+5av7eiZRi10
+         hedHJIl6KPmOHOjbiRYxS9hKsG8C+JTwpEx9CzwPQwnUVo0JIrsHFFg1dQhrvabeqK
+         031yqPP6uLREOBctIXaHZ4N9yKw/l0hbhP8f2AjE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tyler Stachecki <stachecki.tyler@gmail.com>,
-        Leonardo Bras <leobras@redhat.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 025/196] KVM: x86: Constrain guest-supported xfeatures only at KVM_GET_XSAVE{2}
+        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>,
+        Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 104/241] btrfs: initialize start_slot in btrfs_log_prealloc_extents
 Date:   Mon, 23 Oct 2023 12:54:50 +0200
-Message-ID: <20231023104829.195202788@linuxfoundation.org>
+Message-ID: <20231023104836.436870059@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,119 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 8647c52e9504c99752a39f1d44f6268f82c40a5c upstream.
+[ Upstream commit b4c639f699349880b7918b861e1bd360442ec450 ]
 
-Mask off xfeatures that aren't exposed to the guest only when saving guest
-state via KVM_GET_XSAVE{2} instead of modifying user_xfeatures directly.
-Preserving the maximal set of xfeatures in user_xfeatures restores KVM's
-ABI for KVM_SET_XSAVE, which prior to commit ad856280ddea ("x86/kvm/fpu:
-Limit guest user_xfeatures to supported bits of XCR0") allowed userspace
-to load xfeatures that are supported by the host, irrespective of what
-xfeatures are exposed to the guest.
+Jens reported a compiler warning when using
+CONFIG_CC_OPTIMIZE_FOR_SIZE=y that looks like this
 
-There is no known use case where userspace *intentionally* loads xfeatures
-that aren't exposed to the guest, but the bug fixed by commit ad856280ddea
-was specifically that KVM_GET_SAVE{2} would save xfeatures that weren't
-exposed to the guest, e.g. would lead to userspace unintentionally loading
-guest-unsupported xfeatures when live migrating a VM.
+  fs/btrfs/tree-log.c: In function ‘btrfs_log_prealloc_extents’:
+  fs/btrfs/tree-log.c:4828:23: warning: ‘start_slot’ may be used
+  uninitialized [-Wmaybe-uninitialized]
+   4828 |                 ret = copy_items(trans, inode, dst_path, path,
+	|                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   4829 |                                  start_slot, ins_nr, 1, 0);
+	|                                  ~~~~~~~~~~~~~~~~~~~~~~~~~
+  fs/btrfs/tree-log.c:4725:13: note: ‘start_slot’ was declared here
+   4725 |         int start_slot;
+	|             ^~~~~~~~~~
 
-Restricting KVM_SET_XSAVE to guest-supported xfeatures is especially
-problematic for QEMU-based setups, as QEMU has a bug where instead of
-terminating the VM if KVM_SET_XSAVE fails, QEMU instead simply stops
-loading guest state, i.e. resumes the guest after live migration with
-incomplete guest state, and ultimately results in guest data corruption.
+The compiler is incorrect, as we only use this code when ins_len > 0,
+and when ins_len > 0 we have start_slot properly initialized.  However
+we generally find the -Wmaybe-uninitialized warnings valuable, so
+initialize start_slot to get rid of the warning.
 
-Note, letting userspace restore all host-supported xfeatures does not fix
-setups where a VM is migrated from a host *without* commit ad856280ddea,
-to a target with a subset of host-supported xfeatures.  However there is
-no way to safely address that scenario, e.g. KVM could silently drop the
-unsupported features, but that would be a clear violation of KVM's ABI and
-so would require userspace to opt-in, at which point userspace could
-simply be updated to sanitize the to-be-loaded XSAVE state.
-
-Reported-by: Tyler Stachecki <stachecki.tyler@gmail.com>
-Closes: https://lore.kernel.org/all/20230914010003.358162-1-tstachecki@bloomberg.net
-Fixes: ad856280ddea ("x86/kvm/fpu: Limit guest user_xfeatures to supported bits of XCR0")
-Cc: stable@vger.kernel.org
-Cc: Leonardo Bras <leobras@redhat.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Message-Id: <20230928001956.924301-3-seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jens Axboe <axboe@kernel.dk>
+Tested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/fpu/xstate.c |    5 +----
- arch/x86/kvm/cpuid.c         |    8 --------
- arch/x86/kvm/x86.c           |   18 ++++++++++++++++--
- 3 files changed, 17 insertions(+), 14 deletions(-)
+ fs/btrfs/tree-log.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -1543,10 +1543,7 @@ static int fpstate_realloc(u64 xfeatures
- 		fpregs_restore_userregs();
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 365a1cc0a3c35..a00e7a0bc713d 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -4722,7 +4722,7 @@ static int btrfs_log_prealloc_extents(struct btrfs_trans_handle *trans,
+ 	struct extent_buffer *leaf;
+ 	int slot;
+ 	int ins_nr = 0;
+-	int start_slot;
++	int start_slot = 0;
+ 	int ret;
  
- 	newfps->xfeatures = curfps->xfeatures | xfeatures;
--
--	if (!guest_fpu)
--		newfps->user_xfeatures = curfps->user_xfeatures | xfeatures;
--
-+	newfps->user_xfeatures = curfps->user_xfeatures | xfeatures;
- 	newfps->xfd = curfps->xfd & ~xfeatures;
- 
- 	/* Do the final updates within the locked region */
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -338,14 +338,6 @@ static void kvm_vcpu_after_set_cpuid(str
- 	vcpu->arch.guest_supported_xcr0 =
- 		cpuid_get_supported_xcr0(vcpu->arch.cpuid_entries, vcpu->arch.cpuid_nent);
- 
--	/*
--	 * FP+SSE can always be saved/restored via KVM_{G,S}ET_XSAVE, even if
--	 * XSAVE/XCRO are not exposed to the guest, and even if XSAVE isn't
--	 * supported by the host.
--	 */
--	vcpu->arch.guest_fpu.fpstate->user_xfeatures = vcpu->arch.guest_supported_xcr0 |
--						       XFEATURE_MASK_FPSSE;
--
- 	kvm_update_pv_runtime(vcpu);
- 
- 	vcpu->arch.maxphyaddr = cpuid_query_maxphyaddr(vcpu);
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5305,12 +5305,26 @@ static int kvm_vcpu_ioctl_x86_set_debugr
- static void kvm_vcpu_ioctl_x86_get_xsave2(struct kvm_vcpu *vcpu,
- 					  u8 *state, unsigned int size)
- {
-+	/*
-+	 * Only copy state for features that are enabled for the guest.  The
-+	 * state itself isn't problematic, but setting bits in the header for
-+	 * features that are supported in *this* host but not exposed to the
-+	 * guest can result in KVM_SET_XSAVE failing when live migrating to a
-+	 * compatible host without the features that are NOT exposed to the
-+	 * guest.
-+	 *
-+	 * FP+SSE can always be saved/restored via KVM_{G,S}ET_XSAVE, even if
-+	 * XSAVE/XCRO are not exposed to the guest, and even if XSAVE isn't
-+	 * supported by the host.
-+	 */
-+	u64 supported_xcr0 = vcpu->arch.guest_supported_xcr0 |
-+			     XFEATURE_MASK_FPSSE;
-+
- 	if (fpstate_is_confidential(&vcpu->arch.guest_fpu))
- 		return;
- 
- 	fpu_copy_guest_fpstate_to_uabi(&vcpu->arch.guest_fpu, state, size,
--				       vcpu->arch.guest_fpu.fpstate->user_xfeatures,
--				       vcpu->arch.pkru);
-+				       supported_xcr0, vcpu->arch.pkru);
- }
- 
- static void kvm_vcpu_ioctl_x86_get_xsave(struct kvm_vcpu *vcpu,
+ 	if (!(inode->flags & BTRFS_INODE_PREALLOC))
+-- 
+2.40.1
+
 
 
