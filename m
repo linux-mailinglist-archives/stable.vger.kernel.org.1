@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BC607D3187
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:10:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 318157D34F0
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:44:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232536AbjJWLKJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:10:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52816 "EHLO
+        id S234355AbjJWLoH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:44:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231613AbjJWLKH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:10:07 -0400
+        with ESMTP id S234494AbjJWLn6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:43:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82420DD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:10:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A93C433C8;
-        Mon, 23 Oct 2023 11:10:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A1B310E6
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:43:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C42BC433C9;
+        Mon, 23 Oct 2023 11:43:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059405;
-        bh=xslx0r/bFRrCuz7iVBeg6KCBuQqhNoG8rqCHYtTlBpk=;
+        s=korg; t=1698061429;
+        bh=dYjNoT4bx169WfGpx6BQcnyj1kCCTdgN5gZCPFEABHI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N3Yv96W8VTP/JKeHTrcFYT9skRn9K/YUr8GyVrlDR3IkcNqqMInipKxM4wxA6HPRc
-         YKRAw3l245mRVvltYwo84EuURmgvig6Dr/PfRkigvX6uvUU12D/5yaI3lfAggAjr6/
-         EXVU4LKuP6Uea9s2qXUHoRPt9onG76XZitL/8qLM=
+        b=DTOa+2uzQbTT3wYiugvwG/QV7HZZ7uef8HDVBcatdovxX1dv9vrwcD3x+GUigp6I5
+         w5ijMl33oKxncjAcavFdGT70estBLwLqet8Q9c0ZLwMwRft0Gf7jmWNSCNc7orAHha
+         za2hxCHDWNMp1Y9hh8kx9/UfEwG2Pt3OidcimCE4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aviram Dali <aviramd@marvell.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Ravi Chandra Minnikanti <rminnikanti@marvell.com>
-Subject: [PATCH 6.5 166/241] mtd: rawnand: marvell: Ensure program page operations are successful
+        patches@lists.linux.dev, Jordan Rife <jrife@google.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 5.10 045/202] libceph: use kernel_connect()
 Date:   Mon, 23 Oct 2023 12:55:52 +0200
-Message-ID: <20231023104837.924723740@linuxfoundation.org>
+Message-ID: <20231023104827.902778502@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,97 +48,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Jordan Rife <jrife@google.com>
 
-commit 3e01d5254698ea3d18e09d96b974c762328352cd upstream.
+commit 7563cf17dce0a875ba3d872acdc63a78ea344019 upstream.
 
-The NAND core complies with the ONFI specification, which itself
-mentions that after any program or erase operation, a status check
-should be performed to see whether the operation was finished *and*
-successful.
+Direct calls to ops->connect() can overwrite the address parameter when
+used in conjunction with BPF SOCK_ADDR hooks. Recent changes to
+kernel_connect() ensure that callers are insulated from such side
+effects. This patch wraps the direct call to ops->connect() with
+kernel_connect() to prevent unexpected changes to the address passed to
+ceph_tcp_connect().
 
-The NAND core offers helpers to finish a page write (sending the
-"PAGE PROG" command, waiting for the NAND chip to be ready again, and
-checking the operation status). But in some cases, advanced controller
-drivers might want to optimize this and craft their own page write
-helper to leverage additional hardware capabilities, thus not always
-using the core facilities.
-
-Some drivers, like this one, do not use the core helper to finish a page
-write because the final cycles are automatically managed by the
-hardware. In this case, the additional care must be taken to manually
-perform the final status check.
-
-Let's read the NAND chip status at the end of the page write helper and
-return -EIO upon error.
+This change was originally part of a larger patch targeting the net tree
+addressing all instances of unprotected calls to ops->connect()
+throughout the kernel, but this change was split up into several patches
+targeting various trees.
 
 Cc: stable@vger.kernel.org
-Fixes: 02f26ecf8c77 ("mtd: nand: add reworked Marvell NAND controller driver")
-Reported-by: Aviram Dali <aviramd@marvell.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Ravi Chandra Minnikanti <rminnikanti@marvell.com>
-Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-1-miquel.raynal@bootlin.com
+Link: https://lore.kernel.org/netdev/20230821100007.559638-1-jrife@google.com/
+Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Signed-off-by: Jordan Rife <jrife@google.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/marvell_nand.c |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ net/ceph/messenger.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/marvell_nand.c
-+++ b/drivers/mtd/nand/raw/marvell_nand.c
-@@ -1162,6 +1162,7 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
- 		.ndcb[2] = NDCB2_ADDR5_PAGE(page),
- 	};
- 	unsigned int oob_bytes = lt->spare_bytes + (raw ? lt->ecc_bytes : 0);
-+	u8 status;
- 	int ret;
+--- a/net/ceph/messenger.c
++++ b/net/ceph/messenger.c
+@@ -477,8 +477,8 @@ static int ceph_tcp_connect(struct ceph_
+ 	dout("connect %s\n", ceph_pr_addr(&con->peer_addr));
  
- 	/* NFCv2 needs more information about the operation being executed */
-@@ -1195,7 +1196,18 @@ static int marvell_nfc_hw_ecc_hmg_do_wri
- 
- 	ret = marvell_nfc_wait_op(chip,
- 				  PSEC_TO_MSEC(sdr->tPROG_max));
--	return ret;
-+	if (ret)
-+		return ret;
-+
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
-+
-+	return 0;
- }
- 
- static int marvell_nfc_hw_ecc_hmg_write_page_raw(struct nand_chip *chip,
-@@ -1624,6 +1636,7 @@ static int marvell_nfc_hw_ecc_bch_write_
- 	int data_len = lt->data_bytes;
- 	int spare_len = lt->spare_bytes;
- 	int chunk, ret;
-+	u8 status;
- 
- 	marvell_nfc_select_target(chip, chip->cur_cs);
- 
-@@ -1660,6 +1673,14 @@ static int marvell_nfc_hw_ecc_bch_write_
- 	if (ret)
- 		return ret;
- 
-+	/* Check write status on the chip side */
-+	ret = nand_status_op(chip, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (status & NAND_STATUS_FAIL)
-+		return -EIO;
-+
- 	return 0;
- }
- 
+ 	con_sock_state_connecting(con);
+-	ret = sock->ops->connect(sock, (struct sockaddr *)&ss, sizeof(ss),
+-				 O_NONBLOCK);
++	ret = kernel_connect(sock, (struct sockaddr *)&ss, sizeof(ss),
++			     O_NONBLOCK);
+ 	if (ret == -EINPROGRESS) {
+ 		dout("connect %s EINPROGRESS sk_state = %u\n",
+ 		     ceph_pr_addr(&con->peer_addr),
 
 
