@@ -2,39 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11F597D35C2
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:51:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C10507D34A1
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229870AbjJWLvi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:51:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50692 "EHLO
+        id S234139AbjJWLl0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:41:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234644AbjJWLvf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:51:35 -0400
+        with ESMTP id S234278AbjJWLlZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:41:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB6B0F9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:51:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B89C433C9;
-        Mon, 23 Oct 2023 11:51:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAC92E4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:41:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F76C433C7;
+        Mon, 23 Oct 2023 11:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061891;
-        bh=1arOhbXKhuJmGETMZs/9yMRcysWOnhvrxtO9PwyPulU=;
+        s=korg; t=1698061283;
+        bh=xA8ILK7krTV+BEkH5wuvXp17JESaS+0WFILke1LRmEs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=16x+dwv2TuQHBg4ltGrNwLK7gY4e5SYNhLLGScyvKgp85qWg1wYvjuBtpx6cw9R+l
-         CcixMHWltOE1hS8VKNZZ/ur2wTNFHJdf4q+p9l3X5KWcKutDM/hsvl0JrtDnx0c+gY
-         wgY50olc3+lDmR01YP5k3ZHA1suAoBN7xKH22Uio=
+        b=q886yPiMTwgkj+x8gkDJCQG+t+2usGSjb2gIeXCqH6KEvV2ShraZy9a0FYW0Io/cY
+         7yhwxOyMnP2pQtQzxagZcj5RC3Mn85GSvKB5/eMa1TKmSGP+wX3tTPW/LFaHME5eLc
+         see3AtLhUDIreykVSXmIngyY/tz+vOwoX5Z5mraY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>
-Subject: [PATCH 5.10 182/202] pNFS: Fix a hang in nfs4_evict_inode()
-Date:   Mon, 23 Oct 2023 12:58:09 +0200
-Message-ID: <20231023104831.776195603@linuxfoundation.org>
+        Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
+        Merlijn Wajer <merlijn@wizzup.org>,
+        Pavel Machek <pavel@ucw.cz>,
+        Sebastian Reichel <sre@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 133/137] phy: mapphone-mdm6600: Fix runtime PM for remove
+Date:   Mon, 23 Oct 2023 12:58:10 +0200
+Message-ID: <20231023104825.173116982@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,88 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit f63955721a8020e979b99cc417dcb6da3106aa24 upstream.
+[ Upstream commit b99e0ba9633af51638e5ee1668da2e33620c134f ]
 
-We are not allowed to call pnfs_mark_matching_lsegs_return() without
-also holding a reference to the layout header, since doing so could lead
-to the reference count going to zero when we call
-pnfs_layout_remove_lseg(). This again can lead to a hang when we get to
-nfs4_evict_inode() and are unable to clear the layout pointer.
+Otherwise we will get an underflow on remove.
 
-pnfs_layout_return_unused_byserver() is guilty of this behaviour, and
-has been seen to trigger the refcount warning prior to a hang.
-
-Fixes: b6d49ecd1081 ("NFSv4: Fix a pNFS layout related use-after-free race when freeing the inode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+Cc: Merlijn Wajer <merlijn@wizzup.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Fixes: f7f50b2a7b05 ("phy: mapphone-mdm6600: Add runtime PM support for n_gsm on USB suspend")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Link: https://lore.kernel.org/r/20230913060433.48373-2-tony@atomide.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c |   33 +++++++++++++++++++++++----------
- 1 file changed, 23 insertions(+), 10 deletions(-)
+ drivers/phy/motorola/phy-mapphone-mdm6600.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2633,31 +2633,44 @@ pnfs_should_return_unused_layout(struct
- 	return mode == 0;
- }
+diff --git a/drivers/phy/motorola/phy-mapphone-mdm6600.c b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+index 436b5ab6dc6d5..c3e2ab6a2a717 100644
+--- a/drivers/phy/motorola/phy-mapphone-mdm6600.c
++++ b/drivers/phy/motorola/phy-mapphone-mdm6600.c
+@@ -641,6 +641,7 @@ static int phy_mdm6600_remove(struct platform_device *pdev)
+ 	struct phy_mdm6600 *ddata = platform_get_drvdata(pdev);
+ 	struct gpio_desc *reset_gpio = ddata->ctrl_gpios[PHY_MDM6600_RESET];
  
--static int
--pnfs_layout_return_unused_byserver(struct nfs_server *server, void *data)
-+static int pnfs_layout_return_unused_byserver(struct nfs_server *server,
-+					      void *data)
- {
- 	const struct pnfs_layout_range *range = data;
-+	const struct cred *cred;
- 	struct pnfs_layout_hdr *lo;
- 	struct inode *inode;
-+	nfs4_stateid stateid;
-+	enum pnfs_iomode iomode;
-+
- restart:
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(lo, &server->layouts, plh_layouts) {
--		if (!pnfs_layout_can_be_returned(lo) ||
-+		inode = lo->plh_inode;
-+		if (!inode || !pnfs_layout_can_be_returned(lo) ||
- 		    test_bit(NFS_LAYOUT_RETURN_REQUESTED, &lo->plh_flags))
- 			continue;
--		inode = lo->plh_inode;
- 		spin_lock(&inode->i_lock);
--		if (!pnfs_should_return_unused_layout(lo, range)) {
-+		if (!lo->plh_inode ||
-+		    !pnfs_should_return_unused_layout(lo, range)) {
- 			spin_unlock(&inode->i_lock);
- 			continue;
- 		}
-+		pnfs_get_layout_hdr(lo);
-+		pnfs_set_plh_return_info(lo, range->iomode, 0);
-+		if (pnfs_mark_matching_lsegs_return(lo, &lo->plh_return_segs,
-+						    range, 0) != 0 ||
-+		    !pnfs_prepare_layoutreturn(lo, &stateid, &cred, &iomode)) {
-+			spin_unlock(&inode->i_lock);
-+			rcu_read_unlock();
-+			pnfs_put_layout_hdr(lo);
-+			cond_resched();
-+			goto restart;
-+		}
- 		spin_unlock(&inode->i_lock);
--		inode = pnfs_grab_inode_layout_hdr(lo);
--		if (!inode)
--			continue;
- 		rcu_read_unlock();
--		pnfs_mark_layout_for_return(inode, range);
--		iput(inode);
-+		pnfs_send_layoutreturn(lo, &stateid, &cred, iomode, false);
-+		pnfs_put_layout_hdr(lo);
- 		cond_resched();
- 		goto restart;
- 	}
++	pm_runtime_get_noresume(ddata->dev);
+ 	pm_runtime_dont_use_autosuspend(ddata->dev);
+ 	pm_runtime_put_sync(ddata->dev);
+ 	pm_runtime_disable(ddata->dev);
+-- 
+2.42.0
+
 
 
