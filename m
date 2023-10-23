@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0A127D3479
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 151497D339F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:32:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234242AbjJWLkA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:40:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36726 "EHLO
+        id S234098AbjJWLcX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:32:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234250AbjJWLj7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:39:59 -0400
+        with ESMTP id S234092AbjJWLcW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:32:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E0101A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:39:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 164DDC433C8;
-        Mon, 23 Oct 2023 11:39:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A53F102
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:32:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38AFC433C8;
+        Mon, 23 Oct 2023 11:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061196;
-        bh=HsmlTkv0oL49chyMGjUSQQONQMZKpfvmHv003lOjhzo=;
+        s=korg; t=1698060739;
+        bh=asjBv9fSXQQUYLt/ZfsaV29ZGYfj12TmzMzfy+yz8i0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yjiu8/g9z2jD0rEZ+ZgPTqQV3TQGOnswBsaAzBwG59GYFsF6mNcT49xRFq/zRl2Z4
-         VoHUu24eN3ZzPxeitkQfWz5LltriLfIe+RfWazkq7nZSF+ZeD9c8MSLjIqWV776oUF
-         0Lown9ZyLIBzy++YDSV8YAj6+7kGzXQegXdn39Fw=
+        b=NnW8+O70LjdAliBRnACzsGfHQrdct8gFukmqmU+aKFxXocJm8+QMsK3scFdQZQSbZ
+         bsLozaorpsWEOvg4xQK0FzZ1y9hCsr0F3bFoZprw4vYpB/9/xbOwcU+Gt1Sc+LfwOc
+         XPCKWa5aS7E6OmaLAj0snG/oOi05KbGdW+k/Gs5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Williams <dcbw@redhat.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 078/137] wifi: mwifiex: Sanity check tlv_len and tlv_bitmap_len
+        patches@lists.linux.dev,
+        Kellen Renshaw <kellen.renshaw@canonical.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 077/123] ACPI: resource: Add ASUS model S5402ZA to quirks
 Date:   Mon, 23 Oct 2023 12:57:15 +0200
-Message-ID: <20231023104823.549687999@linuxfoundation.org>
+Message-ID: <20231023104820.281237794@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,64 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Kellen Renshaw <kellen.renshaw@canonical.com>
 
-[ Upstream commit d5a93b7d2877aae4ba7590ad6cb65f8d33079489 ]
+[ Upstream commit 6e5cbe7c4b41824e500acbb42411da692d1435f1 ]
 
-Add sanity checks for both `tlv_len` and `tlv_bitmap_len` before
-decoding data from `event_buf`.
+The Asus Vivobook S5402ZA has the same keyboard issue as Asus Vivobook
+K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
+should be Active_Low.
 
-This prevents any malicious or buggy firmware from overflowing
-`event_buf` through large values for `tlv_len` and `tlv_bitmap_len`.
+This patch adds the S5402ZA model to the quirk list.
 
-Suggested-by: Dan Williams <dcbw@redhat.com>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/d4f8780527d551552ee96f17a0229e02e1c200d1.1692931954.git.gustavoars@kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216158
+Tested-by: Kellen Renshaw <kellen.renshaw@canonical.com>
+Signed-off-by: Kellen Renshaw <kellen.renshaw@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/marvell/mwifiex/11n_rxreorder.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-index cbe4a200e4eaf..e5f34805c92cc 100644
---- a/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-+++ b/drivers/net/wireless/marvell/mwifiex/11n_rxreorder.c
-@@ -933,6 +933,14 @@ void mwifiex_11n_rxba_sync_event(struct mwifiex_private *priv,
- 	while (tlv_buf_left >= sizeof(*tlv_rxba)) {
- 		tlv_type = le16_to_cpu(tlv_rxba->header.type);
- 		tlv_len  = le16_to_cpu(tlv_rxba->header.len);
-+		if (size_add(sizeof(tlv_rxba->header), tlv_len) > tlv_buf_left) {
-+			mwifiex_dbg(priv->adapter, WARN,
-+				    "TLV size (%zu) overflows event_buf buf_left=%d\n",
-+				    size_add(sizeof(tlv_rxba->header), tlv_len),
-+				    tlv_buf_left);
-+			return;
-+		}
-+
- 		if (tlv_type != TLV_TYPE_RXBA_SYNC) {
- 			mwifiex_dbg(priv->adapter, ERROR,
- 				    "Wrong TLV id=0x%x\n", tlv_type);
-@@ -941,6 +949,14 @@ void mwifiex_11n_rxba_sync_event(struct mwifiex_private *priv,
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 27b364e23c60b..61a7f9a05f645 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -407,6 +407,13 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
+ 		},
+ 	},
++	{
++		.ident = "Asus Vivobook S5402ZA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
++		},
++	},
+ 	{ }
+ };
  
- 		tlv_seq_num = le16_to_cpu(tlv_rxba->seq_num);
- 		tlv_bitmap_len = le16_to_cpu(tlv_rxba->bitmap_len);
-+		if (size_add(sizeof(*tlv_rxba), tlv_bitmap_len) > tlv_buf_left) {
-+			mwifiex_dbg(priv->adapter, WARN,
-+				    "TLV size (%zu) overflows event_buf buf_left=%d\n",
-+				    size_add(sizeof(*tlv_rxba), tlv_bitmap_len),
-+				    tlv_buf_left);
-+			return;
-+		}
-+
- 		mwifiex_dbg(priv->adapter, INFO,
- 			    "%pM tid=%d seq_num=%d bitmap_len=%d\n",
- 			    tlv_rxba->mac, tlv_rxba->tid, tlv_seq_num,
 -- 
 2.40.1
 
