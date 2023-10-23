@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B05B7D323D
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FAD97D3583
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233728AbjJWLSD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:18:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54270 "EHLO
+        id S234559AbjJWLtM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233727AbjJWLSC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:02 -0400
+        with ESMTP id S234295AbjJWLtL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD2B992
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F03BCC433C7;
-        Mon, 23 Oct 2023 11:17:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FC36AF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33CAC433C7;
+        Mon, 23 Oct 2023 11:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059880;
-        bh=z9ckJKR7kJF42bybsY0TPF0yQg6JQejZlBHhZdussUU=;
+        s=korg; t=1698061749;
+        bh=jt5COwqqeWDBGr6gmgpmJIQYS3FBO727LoN82F46iNg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xNCySgL2Ub2eXb/6hPakiyvSLyHhuZSxsPUAAszkRhblouGqoMDnRnA0ncAWTPspm
-         sqU2/sPJK3nvgpg0MlOiGE44sxH/PlEi6YjhiTv2zy8/dwDCvqHPBbBoiFzKyN4xAd
-         3f4y/vYQGlju1YW6SYg9E357NMsfxq69C7vqw6PA=
+        b=OsdrM2/d3zK+Q29K9iWdtynrc4MEoOb8oIHNgXeF6mTAX8ZLEZ27lHbIhNK6cn//B
+         xpTImxZiWS5eDMfitn+Qgrye4iRNdago+suaOih+mSUnQNg8/HHxAFc7QrZl0RbgW5
+         +V+z7z0K4D9wLRdG+qxQS8dpQfzT8RUaouywiWEk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Manivannan Sadhasivam <mani@kernel.org>,
-        Bibek Kumar Patro <quic_bibekkum@quicinc.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 4.19 83/98] mtd: rawnand: qcom: Unmap the right resource upon probe failure
+        patches@lists.linux.dev, Hui Wang <hui.wang@canonical.com>,
+        Tamim Khan <tamim@fusetak.com>,
+        Sunand <sunandchakradhar@gmail.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 125/202] ACPI: resource: Skip IRQ override on Asus Vivobook K3402ZA/K3502ZA
 Date:   Mon, 23 Oct 2023 12:57:12 +0200
-Message-ID: <20231023104816.476411135@linuxfoundation.org>
+Message-ID: <20231023104830.187350352@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,38 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibek Kumar Patro <quic_bibekkum@quicinc.com>
+From: Tamim Khan <tamim@fusetak.com>
 
-commit 5279f4a9eed3ee7d222b76511ea7a22c89e7eefd upstream.
+[ Upstream commit e12dee3736731e24b1e7367f87d66ac0fcd73ce7 ]
 
-We currently provide the physical address of the DMA region
-rather than the output of dma_map_resource() which is obviously wrong.
+In the ACPI DSDT table for Asus VivoBook K3402ZA/K3502ZA
+IRQ 1 is described as ActiveLow; however, the kernel overrides
+it to Edge_High. This prevents the internal keyboard from working
+on these laptops. In order to fix this add these laptops to the
+skip_override_table so that the kernel does not override IRQ 1 to
+Edge_High.
 
-Fixes: 7330fc505af4 ("mtd: rawnand: qcom: stop using phys_to_dma()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bibek Kumar Patro <quic_bibekkum@quicinc.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230913070702.12707-1-quic_bibekkum@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216158
+Reviewed-by: Hui Wang <hui.wang@canonical.com>
+Tested-by: Tamim Khan <tamim@fusetak.com>
+Tested-by: Sunand <sunandchakradhar@gmail.com>
+Signed-off-by: Tamim Khan <tamim@fusetak.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/resource.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2987,7 +2987,7 @@ err_nandc_alloc:
- err_aon_clk:
- 	clk_disable_unprepare(nandc->core_clk);
- err_core_clk:
--	dma_unmap_resource(dev, res->start, resource_size(res),
-+	dma_unmap_resource(dev, nandc->base_dma, resource_size(res),
- 			   DMA_BIDIRECTIONAL, 0);
- 	return ret;
- }
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index bf7c2deafb0a9..602c44821fb45 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -392,6 +392,24 @@ static const struct dmi_system_id medion_laptop[] = {
+ 	{ }
+ };
+ 
++static const struct dmi_system_id asus_laptop[] = {
++	{
++		.ident = "Asus Vivobook K3402ZA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "K3402ZA"),
++		},
++	},
++	{
++		.ident = "Asus Vivobook K3502ZA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
++		},
++	},
++	{ }
++};
++
+ struct irq_override_cmp {
+ 	const struct dmi_system_id *system;
+ 	unsigned char irq;
+@@ -402,6 +420,7 @@ struct irq_override_cmp {
+ 
+ static const struct irq_override_cmp skip_override_table[] = {
+ 	{ medion_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
++	{ asus_laptop, 1, ACPI_LEVEL_SENSITIVE, ACPI_ACTIVE_LOW, 0 },
+ };
+ 
+ static bool acpi_dev_irq_override(u32 gsi, u8 triggering, u8 polarity,
+-- 
+2.40.1
+
 
 
