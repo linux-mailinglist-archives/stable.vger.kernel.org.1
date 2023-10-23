@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 762397D345B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:38:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D08B7D3585
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:49:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234210AbjJWLi6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:38:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35358 "EHLO
+        id S234543AbjJWLtP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:49:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234229AbjJWLiz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:38:55 -0400
+        with ESMTP id S234295AbjJWLtO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:49:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4479DB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:38:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE31EC433C8;
-        Mon, 23 Oct 2023 11:38:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C135AF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:49:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D81C433C8;
+        Mon, 23 Oct 2023 11:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061133;
-        bh=3D48ZYBggmnVd/rnHhoWGCU0oGiYazjbAbLuBSQInB4=;
+        s=korg; t=1698061752;
+        bh=K3MnpYb8J72vsKTodMsDiwWlxutj71IE7z2+q5Y7tfI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rzV41q6FQxoY8fv0u6gMVQQpgpiFSJnSeQbm5xogAL0+p8rfdy3iTy6+Z+EHkAbHT
-         Fj+mkegvdE7SCXWAXxfzd6Oq3r6RwInOfo1IwiNEcXbwhvanbYooZErxJnHK4dmWyI
-         U5jrDC2mh6nbTxwzzgyC6w7XIH8L4D8wj596Wvnw=
+        b=qqi4h+mzQ1IE67zrrcUsTiBoS72LtE++yDSKPH2GJTT8/NSs7tqjgZctlY2fX8d41
+         WPfqal+sNQSxCdL34JHtFbb1QbJbSh/16Hb2rvt3EKZ0UKOhpAYjSQrEDG3WOPVRgg
+         wZ93/YhQsAAUv8OFxNS9mWi2bv9c7lA9m4KJ/54E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
-        Hannes Reinecke <hare@suse.de>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Kellen Renshaw <kellen.renshaw@canonical.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/137] ata: libata-eh: Fix compilation warning in ata_eh_link_report()
+Subject: [PATCH 5.10 126/202] ACPI: resource: Add ASUS model S5402ZA to quirks
 Date:   Mon, 23 Oct 2023 12:57:13 +0200
-Message-ID: <20231023104823.490996609@linuxfoundation.org>
+Message-ID: <20231023104830.216990050@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
+References: <20231023104826.569169691@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,54 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Kellen Renshaw <kellen.renshaw@canonical.com>
 
-[ Upstream commit 49728bdc702391902a473b9393f1620eea32acb0 ]
+[ Upstream commit 6e5cbe7c4b41824e500acbb42411da692d1435f1 ]
 
-The 6 bytes length of the tries_buf string in ata_eh_link_report() is
-too short and results in a gcc compilation warning with W-!:
+The Asus Vivobook S5402ZA has the same keyboard issue as Asus Vivobook
+K3402ZA/K3502ZA. The kernel overrides IRQ 1 to Edge_High when it
+should be Active_Low.
 
-drivers/ata/libata-eh.c: In function ‘ata_eh_link_report’:
-drivers/ata/libata-eh.c:2371:59: warning: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 4 [-Wformat-truncation=]
- 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
-      |                                                           ^~
-drivers/ata/libata-eh.c:2371:56: note: directive argument in the range [-2147483648, 4]
- 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
-      |                                                        ^~~~~~
-drivers/ata/libata-eh.c:2371:17: note: ‘snprintf’ output between 4 and 14 bytes into a destination of size 6
- 2371 |                 snprintf(tries_buf, sizeof(tries_buf), " t%d",
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 2372 |                          ap->eh_tries);
-      |                          ~~~~~~~~~~~~~
+This patch adds the S5402ZA model to the quirk list.
 
-Avoid this warning by increasing the string size to 16B.
-
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216158
+Tested-by: Kellen Renshaw <kellen.renshaw@canonical.com>
+Signed-off-by: Kellen Renshaw <kellen.renshaw@canonical.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: c1ed72171ed5 ("ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CBA")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-eh.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/ata/libata-eh.c b/drivers/ata/libata-eh.c
-index 8444832008703..10742d72f44fb 100644
---- a/drivers/ata/libata-eh.c
-+++ b/drivers/ata/libata-eh.c
-@@ -2223,7 +2223,7 @@ static void ata_eh_link_report(struct ata_link *link)
- 	struct ata_eh_context *ehc = &link->eh_context;
- 	struct ata_queued_cmd *qc;
- 	const char *frozen, *desc;
--	char tries_buf[6] = "";
-+	char tries_buf[16] = "";
- 	int tag, nr_failed = 0;
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index 602c44821fb45..50ab81a333cdd 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -407,6 +407,13 @@ static const struct dmi_system_id asus_laptop[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "K3502ZA"),
+ 		},
+ 	},
++	{
++		.ident = "Asus Vivobook S5402ZA",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "S5402ZA"),
++		},
++	},
+ 	{ }
+ };
  
- 	if (ehc->i.flags & ATA_EHI_QUIET)
 -- 
 2.40.1
 
