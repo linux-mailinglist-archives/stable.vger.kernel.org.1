@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A46D7D3512
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7B077D317F
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:09:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234404AbjJWLpO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:45:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40420 "EHLO
+        id S233580AbjJWLJv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:09:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234419AbjJWLpB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:45:01 -0400
+        with ESMTP id S233582AbjJWLJv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:09:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB66A10C3
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:44:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB582C433C7;
-        Mon, 23 Oct 2023 11:44:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2BDFA4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:09:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47BAC433C8;
+        Mon, 23 Oct 2023 11:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061498;
-        bh=gqPUaerMaT6ukM9b8U9cVPXlkB/7CoZ5KKvncTGTg3g=;
+        s=korg; t=1698059387;
+        bh=uLKE75M24s8c8tKeRMlLuzZUSG52iz6EChGtoBmjMQs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QlbyY55W3yTAssi5BDxKH/0lo6LjDPJ10dCrS+f2CFw88Y2cvcB7PPQDepELkoW1g
-         vpJWL3fDVO0L0lTaHJCXA6idA/R3Z1sMxcCuJyg8s+2yNYnZ7TRS8hyK/jRqFXQ+mU
-         aOuaDmI9KqripAj91RmBoLGKWwV5v2Ok35wJsHhE=
+        b=GYjcS66Dh14eb6X6fsGH4XPLVLx+BJuxv0wAkuNZincmAHUDkXaoxbC05x8i2e9O6
+         GHJSD1n3RrbrziTu0/72uRl+RTiv+Ir+/qYZJ6X4NjK+dr1B23reg/kctlUWd8rWfs
+         SIkih73lzP4tksRLHwwAWzfWjnWwaPQhBVMW+iOg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lakshmi Yadlapati <lakshmiy@us.ibm.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 040/202] iio: pressure: dps310: Adjust Timeout Settings
+        patches@lists.linux.dev,
+        Albert Huang <huangjie.albert@bytedance.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Wenjia Zhang <wenjia@linux.ibm.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 161/241] net/smc: fix smc clc failed issue when netdevice not in init_net
 Date:   Mon, 23 Oct 2023 12:55:47 +0200
-Message-ID: <20231023104827.760504168@linuxfoundation.org>
+Message-ID: <20231023104837.800243857@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104826.569169691@linuxfoundation.org>
-References: <20231023104826.569169691@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,59 +52,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
+From: Albert Huang <huangjie.albert@bytedance.com>
 
-commit 901a293fd96fb9bab843ba4cc7be3094a5aa7c94 upstream.
+[ Upstream commit c68681ae46eaaa1640b52fe366d21a93b2185df5 ]
 
-The DPS310 sensor chip has been encountering intermittent errors while
-reading the sensor device across various system designs. This issue causes
-the chip to become "stuck," preventing the indication of "ready" status
-for pressure and temperature measurements in the MEAS_CFG register.
+If the netdevice is within a container and communicates externally
+through network technologies such as VxLAN, we won't be able to find
+routing information in the init_net namespace. To address this issue,
+we need to add a struct net parameter to the smc_ib_find_route function.
+This allow us to locate the routing information within the corresponding
+net namespace, ensuring the correct completion of the SMC CLC interaction.
 
-To address this issue, this commit fixes the timeout settings to improve
-sensor stability:
-- After sending a reset command to the chip, the timeout has been extended
-  from 2.5 ms to 15 ms, aligning with the DPS310 specification.
-- The read timeout value of the MEAS_CFG register has been adjusted from
-  20ms to 30ms to match the specification.
-
-Signed-off-by: Lakshmi Yadlapati <lakshmiy@us.ibm.com>
-Fixes: 7b4ab4abcea4 ("iio: pressure: dps310: Reset chip after timeout")
-Link: https://lore.kernel.org/r/20230829180222.3431926-2-lakshmiy@us.ibm.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e5c4744cfb59 ("net/smc: add SMC-Rv2 connection establishment")
+Signed-off-by: Albert Huang <huangjie.albert@bytedance.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231011074851.95280-1-huangjie.albert@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/dps310.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/smc/af_smc.c | 3 ++-
+ net/smc/smc_ib.c | 7 ++++---
+ net/smc/smc_ib.h | 2 +-
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/pressure/dps310.c
-+++ b/drivers/iio/pressure/dps310.c
-@@ -57,8 +57,8 @@
- #define  DPS310_RESET_MAGIC	0x09
- #define DPS310_COEF_BASE	0x10
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index fa7b8015cd7bb..01bd576ffa5e1 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -1199,6 +1199,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
+ 		(struct smc_clc_msg_accept_confirm_v2 *)aclc;
+ 	struct smc_clc_first_contact_ext *fce =
+ 		smc_get_clc_first_contact_ext(clc_v2, false);
++	struct net *net = sock_net(&smc->sk);
+ 	int rc;
  
--/* Make sure sleep time is <= 20ms for usleep_range */
--#define DPS310_POLL_SLEEP_US(t)		min(20000, (t) / 8)
-+/* Make sure sleep time is <= 30ms for usleep_range */
-+#define DPS310_POLL_SLEEP_US(t)		min(30000, (t) / 8)
- /* Silently handle error in rate value here */
- #define DPS310_POLL_TIMEOUT_US(rc)	((rc) <= 0 ? 1000000 : 1000000 / (rc))
- 
-@@ -402,8 +402,8 @@ static int dps310_reset_wait(struct dps3
- 	if (rc)
- 		return rc;
- 
--	/* Wait for device chip access: 2.5ms in specification */
--	usleep_range(2500, 12000);
-+	/* Wait for device chip access: 15ms in specification */
-+	usleep_range(15000, 55000);
- 	return 0;
+ 	if (!ini->first_contact_peer || aclc->hdr.version == SMC_V1)
+@@ -1208,7 +1209,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
+ 		memcpy(ini->smcrv2.nexthop_mac, &aclc->r0.lcl.mac, ETH_ALEN);
+ 		ini->smcrv2.uses_gateway = false;
+ 	} else {
+-		if (smc_ib_find_route(smc->clcsock->sk->sk_rcv_saddr,
++		if (smc_ib_find_route(net, smc->clcsock->sk->sk_rcv_saddr,
+ 				      smc_ib_gid_to_ipv4(aclc->r0.lcl.gid),
+ 				      ini->smcrv2.nexthop_mac,
+ 				      &ini->smcrv2.uses_gateway))
+diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
+index 9b66d6aeeb1ae..89981dbe46c94 100644
+--- a/net/smc/smc_ib.c
++++ b/net/smc/smc_ib.c
+@@ -193,7 +193,7 @@ bool smc_ib_port_active(struct smc_ib_device *smcibdev, u8 ibport)
+ 	return smcibdev->pattr[ibport - 1].state == IB_PORT_ACTIVE;
  }
  
+-int smc_ib_find_route(__be32 saddr, __be32 daddr,
++int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
+ 		      u8 nexthop_mac[], u8 *uses_gateway)
+ {
+ 	struct neighbour *neigh = NULL;
+@@ -205,7 +205,7 @@ int smc_ib_find_route(__be32 saddr, __be32 daddr,
+ 
+ 	if (daddr == cpu_to_be32(INADDR_NONE))
+ 		goto out;
+-	rt = ip_route_output_flow(&init_net, &fl4, NULL);
++	rt = ip_route_output_flow(net, &fl4, NULL);
+ 	if (IS_ERR(rt))
+ 		goto out;
+ 	if (rt->rt_uses_gateway && rt->rt_gw_family != AF_INET)
+@@ -235,6 +235,7 @@ static int smc_ib_determine_gid_rcu(const struct net_device *ndev,
+ 	if (smcrv2 && attr->gid_type == IB_GID_TYPE_ROCE_UDP_ENCAP &&
+ 	    smc_ib_gid_to_ipv4((u8 *)&attr->gid) != cpu_to_be32(INADDR_NONE)) {
+ 		struct in_device *in_dev = __in_dev_get_rcu(ndev);
++		struct net *net = dev_net(ndev);
+ 		const struct in_ifaddr *ifa;
+ 		bool subnet_match = false;
+ 
+@@ -248,7 +249,7 @@ static int smc_ib_determine_gid_rcu(const struct net_device *ndev,
+ 		}
+ 		if (!subnet_match)
+ 			goto out;
+-		if (smcrv2->daddr && smc_ib_find_route(smcrv2->saddr,
++		if (smcrv2->daddr && smc_ib_find_route(net, smcrv2->saddr,
+ 						       smcrv2->daddr,
+ 						       smcrv2->nexthop_mac,
+ 						       &smcrv2->uses_gateway))
+diff --git a/net/smc/smc_ib.h b/net/smc/smc_ib.h
+index 034295676e881..ebcb05ede7f55 100644
+--- a/net/smc/smc_ib.h
++++ b/net/smc/smc_ib.h
+@@ -113,7 +113,7 @@ void smc_ib_sync_sg_for_device(struct smc_link *lnk,
+ int smc_ib_determine_gid(struct smc_ib_device *smcibdev, u8 ibport,
+ 			 unsigned short vlan_id, u8 gid[], u8 *sgid_index,
+ 			 struct smc_init_info_smcrv2 *smcrv2);
+-int smc_ib_find_route(__be32 saddr, __be32 daddr,
++int smc_ib_find_route(struct net *net, __be32 saddr, __be32 daddr,
+ 		      u8 nexthop_mac[], u8 *uses_gateway);
+ bool smc_ib_is_valid_local_systemid(void);
+ int smcr_nl_get_device(struct sk_buff *skb, struct netlink_callback *cb);
+-- 
+2.40.1
+
 
 
