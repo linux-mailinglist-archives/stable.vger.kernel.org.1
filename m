@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB8907D3123
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:06:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45D987D326C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230226AbjJWLGE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:06:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46718 "EHLO
+        id S233794AbjJWLTy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:19:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233317AbjJWLGD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:06:03 -0400
+        with ESMTP id S233784AbjJWLTw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C172D7C
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:06:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F80C433C8;
-        Mon, 23 Oct 2023 11:05:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC71DA4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEB23C433C8;
+        Mon, 23 Oct 2023 11:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059159;
-        bh=jzNGlTmoxwcxyoVFuBKe0q0Klc5hk31NYMg8YOSVb6o=;
+        s=korg; t=1698059990;
+        bh=SMJr7FbW95kA4WpSWcWzWzFSp7nKaEOGdTkAWV9t8Wo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0c7YshEALBNPas+wHceA1h1Qcib/V+C23avh0yUXYge+w4Q3vinrcw0lW+h2gxmE5
-         jbrSyIutZB9+MrMLqeixgo3vlZ77TKwUJKH8DyJ0h8M4WH3ww6Y1DeUSVH5lUbRJa7
-         5cTEYgshFCkh8nyALNv4oQ5Kmx5D/wVFoJDVKock=
+        b=Fe5LdUHQrkzDFPIl+zTsu/DD0ZhqYmFmkEJ1Z2xCGVq7ps0fac8EGbKMcpeQzUZIV
+         dIXRj/GLs/fUGWtw+C/Oue/aUT3nE2TpnQiyuoKr2yO+lkPQC97W0/p2xb5M+/FUE6
+         Np2LCMwMzfqIvSfrS1AySSi43Qd4H7QFnDQur61o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.5 083/241] netfilter: nf_tables: do not refresh timeout when resetting element
-Date:   Mon, 23 Oct 2023 12:54:29 +0200
-Message-ID: <20231023104835.910201407@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 005/196] igc: Add qbv_config_change_errors counter
+Date:   Mon, 23 Oct 2023 12:54:30 +0200
+Message-ID: <20231023104828.640779088@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,69 +50,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
 
-commit 4c90bba60c26db7dc7df450f748e86440149786e upstream.
+commit ae4fe46983007bc46d87dcb284a5e5851c3e1c84 upstream.
 
-The dump and reset command should not refresh the timeout, this command
-is intended to allow users to list existing stateful objects and reset
-them, element expiration should be refresh via transaction instead with
-a specific command to achieve this, otherwise this is entering combo
-semantics that will be hard to be undone later (eg. a user asking to
-retrieve counters but _not_ requiring to refresh expiration).
+Add ConfigChangeError(qbv_config_change_errors) when user try to set the
+AdminBaseTime to past value while the current GCL is still running.
 
-Fixes: 079cd633219d ("netfilter: nf_tables: Introduce NFT_MSG_GETSETELEM_RESET")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+The ConfigChangeError counter should not be increased when a gate control
+list is scheduled into the future.
+
+User can use "ethtool -S <interface> | grep qbv_config_change_errors"
+command to check the counter values.
+
+Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/intel/igc/igc.h         |    1 +
+ drivers/net/ethernet/intel/igc/igc_ethtool.c |    1 +
+ drivers/net/ethernet/intel/igc/igc_main.c    |    1 +
+ drivers/net/ethernet/intel/igc/igc_tsn.c     |   12 ++++++++++++
+ 4 files changed, 15 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5553,7 +5553,6 @@ static int nf_tables_fill_setelem(struct
- 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
- 	unsigned char *b = skb_tail_pointer(skb);
- 	struct nlattr *nest;
--	u64 timeout = 0;
+--- a/drivers/net/ethernet/intel/igc/igc.h
++++ b/drivers/net/ethernet/intel/igc/igc.h
+@@ -186,6 +186,7 @@ struct igc_adapter {
+ 	ktime_t base_time;
+ 	ktime_t cycle_time;
+ 	bool qbv_enable;
++	u32 qbv_config_change_errors;
  
- 	nest = nla_nest_start_noflag(skb, NFTA_LIST_ELEM);
- 	if (nest == NULL)
-@@ -5589,15 +5588,11 @@ static int nf_tables_fill_setelem(struct
- 		         htonl(*nft_set_ext_flags(ext))))
- 		goto nla_put_failure;
+ 	/* OS defined structs */
+ 	struct pci_dev *pdev;
+--- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
++++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+@@ -67,6 +67,7 @@ static const struct igc_stats igc_gstrin
+ 	IGC_STAT("rx_hwtstamp_cleared", rx_hwtstamp_cleared),
+ 	IGC_STAT("tx_lpi_counter", stats.tlpic),
+ 	IGC_STAT("rx_lpi_counter", stats.rlpic),
++	IGC_STAT("qbv_config_change_errors", qbv_config_change_errors),
+ };
  
--	if (nft_set_ext_exists(ext, NFT_SET_EXT_TIMEOUT)) {
--		timeout = *nft_set_ext_timeout(ext);
--		if (nla_put_be64(skb, NFTA_SET_ELEM_TIMEOUT,
--				 nf_jiffies64_to_msecs(timeout),
--				 NFTA_SET_ELEM_PAD))
--			goto nla_put_failure;
--	} else if (set->flags & NFT_SET_TIMEOUT) {
--		timeout = READ_ONCE(set->timeout);
--	}
-+	if (nft_set_ext_exists(ext, NFT_SET_EXT_TIMEOUT) &&
-+	    nla_put_be64(skb, NFTA_SET_ELEM_TIMEOUT,
-+			 nf_jiffies64_to_msecs(*nft_set_ext_timeout(ext)),
-+			 NFTA_SET_ELEM_PAD))
-+		goto nla_put_failure;
+ #define IGC_NETDEV_STAT(_net_stat) { \
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6106,6 +6106,7 @@ static int igc_tsn_clear_schedule(struct
  
- 	if (nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION)) {
- 		u64 expires, now = get_jiffies_64();
-@@ -5612,9 +5607,6 @@ static int nf_tables_fill_setelem(struct
- 				 nf_jiffies64_to_msecs(expires),
- 				 NFTA_SET_ELEM_PAD))
- 			goto nla_put_failure;
--
--		if (reset)
--			*nft_set_ext_expiration(ext) = now + timeout;
+ 	adapter->base_time = 0;
+ 	adapter->cycle_time = NSEC_PER_SEC;
++	adapter->qbv_config_change_errors = 0;
+ 
+ 	for (i = 0; i < adapter->num_tx_queues; i++) {
+ 		struct igc_ring *ring = adapter->tx_ring[i];
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -84,6 +84,7 @@ static int igc_tsn_disable_offload(struc
+ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
++	bool tsn_mode_reconfig = false;
+ 	u32 tqavctrl, baset_l, baset_h;
+ 	u32 sec, nsec, cycle;
+ 	ktime_t base_time, systim;
+@@ -196,6 +197,10 @@ skip_cbs:
  	}
  
- 	if (nft_set_ext_exists(ext, NFT_SET_EXT_USERDATA)) {
+ 	tqavctrl = rd32(IGC_TQAVCTRL) & ~IGC_TQAVCTRL_FUTSCDDIS;
++
++	if (tqavctrl & IGC_TQAVCTRL_TRANSMIT_MODE_TSN)
++		tsn_mode_reconfig = true;
++
+ 	tqavctrl |= IGC_TQAVCTRL_TRANSMIT_MODE_TSN | IGC_TQAVCTRL_ENHANCED_QAV;
+ 
+ 	cycle = adapter->cycle_time;
+@@ -209,6 +214,13 @@ skip_cbs:
+ 		s64 n = div64_s64(ktime_sub_ns(systim, base_time), cycle);
+ 
+ 		base_time = ktime_add_ns(base_time, (n + 1) * cycle);
++
++		/* Increase the counter if scheduling into the past while
++		 * Gate Control List (GCL) is running.
++		 */
++		if ((rd32(IGC_BASET_H) || rd32(IGC_BASET_L)) &&
++		    tsn_mode_reconfig)
++			adapter->qbv_config_change_errors++;
+ 	} else {
+ 		/* According to datasheet section 7.5.2.9.3.3, FutScdDis bit
+ 		 * has to be configured before the cycle time and base time.
 
 
