@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB4557D3167
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:08:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69E097D3296
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229848AbjJWLIy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:08:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39394 "EHLO
+        id S233819AbjJWLVx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:21:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233522AbjJWLIx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:08:53 -0400
+        with ESMTP id S233822AbjJWLVw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:21:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4771B99
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:08:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87930C433C9;
-        Mon, 23 Oct 2023 11:08:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427DC92
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:21:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8191EC433C8;
+        Mon, 23 Oct 2023 11:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059330;
-        bh=6bowPTYvC6wSX+PXqF/Mnuj/jqczWk3cQf4+/gnDVrQ=;
+        s=korg; t=1698060109;
+        bh=eP1MP/no/EukDk9EJb/c5PKWzckmiiDncWF+93Z0kJ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pRM5tdxmwMWmODfaX65qoD98fudpKv7FgXBoXio5+0/IeosiJKGRUT9UchguLKnlo
-         XhNOwW1i0TlO4OzeHCdX0eojvi/P1I2ywTukDuYJYtO9hCI+PD9zZ7q5GJrMJQVYTW
-         ooBCsBI9BbluX1uWl25y5g5IgmbuXQqNfjUiTvJ4=
+        b=GpVPaigCmoTgYMht+//vS4J54PC+obzPjAB+jXPqFd5tJqdBW352ODgAaZmI4gtPI
+         Q7W+jGws8hLgX2QpAh5vpb6FfJ9qg6R5HcgsxBBnV1KTvRbh7FaxxgLN2UpivMuJrK
+         ngDJY/Q+ps+TIWbbspyyMSSiSFFxZGjwDU1KeOec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Renan Guilherme Lebre Ramos <japareaggae@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 141/241] platform/x86: touchscreen_dmi: Add info for the Positivo C4128B
+        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
+        Simon Horman <horms@kernel.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 062/196] net: dsa: bcm_sf2: Fix possible memory leak in bcm_sf2_mdio_register()
 Date:   Mon, 23 Oct 2023 12:55:27 +0200
-Message-ID: <20231023104837.313367077@linuxfoundation.org>
+Message-ID: <20231023104830.292770739@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,69 +50,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Renan Guilherme Lebre Ramos <japareaggae@gmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit aa7dcba3bae6869122828b144a3cfd231718089d ]
+commit 61b40cefe51af005c72dbdcf975a3d166c6e6406 upstream.
 
-Add information for the Positivo C4128B, a notebook/tablet convertible.
+In bcm_sf2_mdio_register(), the class_find_device() will call get_device()
+to increment reference count for priv->master_mii_bus->dev if
+of_mdio_find_bus() succeeds. If mdiobus_alloc() or mdiobus_register()
+fails, it will call get_device() twice without decrement reference count
+for the device. And it is the same if bcm_sf2_mdio_register() succeeds but
+fails in bcm_sf2_sw_probe(), or if bcm_sf2_sw_probe() succeeds. If the
+reference count has not decremented to zero, the dev related resource will
+not be freed.
 
-Link: https://github.com/onitake/gsl-firmware/pull/217
-Signed-off-by: Renan Guilherme Lebre Ramos <japareaggae@gmail.com>
-Link: https://lore.kernel.org/r/20231004235900.426240-1-japareaggae@gmail.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So remove the get_device() in bcm_sf2_mdio_register(), and call
+put_device() if mdiobus_alloc() or mdiobus_register() fails and in
+bcm_sf2_mdio_unregister() to solve the issue.
+
+And as Simon suggested, unwind from errors for bcm_sf2_mdio_register() and
+just return 0 if it succeeds to make it cleaner.
+
+Fixes: 461cd1b03e32 ("net: dsa: bcm_sf2: Register our slave MDIO bus")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Suggested-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231011032419.2423290-1-ruanjinjie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/touchscreen_dmi.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/net/dsa/bcm_sf2.c |   24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/platform/x86/touchscreen_dmi.c b/drivers/platform/x86/touchscreen_dmi.c
-index 363a9848e2b88..0c67337726984 100644
---- a/drivers/platform/x86/touchscreen_dmi.c
-+++ b/drivers/platform/x86/touchscreen_dmi.c
-@@ -771,6 +771,21 @@ static const struct ts_dmi_data pipo_w11_data = {
- 	.properties	= pipo_w11_props,
- };
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -617,17 +617,16 @@ static int bcm_sf2_mdio_register(struct
+ 	dn = of_find_compatible_node(NULL, NULL, "brcm,unimac-mdio");
+ 	priv->master_mii_bus = of_mdio_find_bus(dn);
+ 	if (!priv->master_mii_bus) {
+-		of_node_put(dn);
+-		return -EPROBE_DEFER;
++		err = -EPROBE_DEFER;
++		goto err_of_node_put;
+ 	}
  
-+static const struct property_entry positivo_c4128b_props[] = {
-+	PROPERTY_ENTRY_U32("touchscreen-min-x", 4),
-+	PROPERTY_ENTRY_U32("touchscreen-min-y", 13),
-+	PROPERTY_ENTRY_U32("touchscreen-size-x", 1915),
-+	PROPERTY_ENTRY_U32("touchscreen-size-y", 1269),
-+	PROPERTY_ENTRY_STRING("firmware-name", "gsl1680-positivo-c4128b.fw"),
-+	PROPERTY_ENTRY_U32("silead,max-fingers", 10),
-+	{ }
-+};
+-	get_device(&priv->master_mii_bus->dev);
+ 	priv->master_mii_dn = dn;
+ 
+ 	priv->slave_mii_bus = mdiobus_alloc();
+ 	if (!priv->slave_mii_bus) {
+-		of_node_put(dn);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto err_put_master_mii_bus_dev;
+ 	}
+ 
+ 	priv->slave_mii_bus->priv = priv;
+@@ -684,11 +683,17 @@ static int bcm_sf2_mdio_register(struct
+ 	}
+ 
+ 	err = mdiobus_register(priv->slave_mii_bus);
+-	if (err && dn) {
+-		mdiobus_free(priv->slave_mii_bus);
+-		of_node_put(dn);
+-	}
++	if (err && dn)
++		goto err_free_slave_mii_bus;
 +
-+static const struct ts_dmi_data positivo_c4128b_data = {
-+	.acpi_name	= "MSSL1680:00",
-+	.properties	= positivo_c4128b_props,
-+};
-+
- static const struct property_entry pov_mobii_wintab_p800w_v20_props[] = {
- 	PROPERTY_ENTRY_U32("touchscreen-min-x", 32),
- 	PROPERTY_ENTRY_U32("touchscreen-min-y", 16),
-@@ -1502,6 +1517,14 @@ const struct dmi_system_id touchscreen_dmi_table[] = {
- 			DMI_MATCH(DMI_BIOS_VERSION, "MOMO.G.WI71C.MABMRBA02"),
- 		},
- 	},
-+	{
-+		/* Positivo C4128B */
-+		.driver_data = (void *)&positivo_c4128b_data,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Positivo Tecnologia SA"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "C4128B-1"),
-+		},
-+	},
- 	{
- 		/* Point of View mobii wintab p800w (v2.0) */
- 		.driver_data = (void *)&pov_mobii_wintab_p800w_v20_data,
--- 
-2.40.1
-
++	return 0;
+ 
++err_free_slave_mii_bus:
++	mdiobus_free(priv->slave_mii_bus);
++err_put_master_mii_bus_dev:
++	put_device(&priv->master_mii_bus->dev);
++err_of_node_put:
++	of_node_put(dn);
+ 	return err;
+ }
+ 
+@@ -696,6 +701,7 @@ static void bcm_sf2_mdio_unregister(stru
+ {
+ 	mdiobus_unregister(priv->slave_mii_bus);
+ 	mdiobus_free(priv->slave_mii_bus);
++	put_device(&priv->master_mii_bus->dev);
+ 	of_node_put(priv->master_mii_dn);
+ }
+ 
 
 
