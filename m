@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A598C7D31A2
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A6CE7D342A
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233537AbjJWLLX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34824 "EHLO
+        id S233227AbjJWLhL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230344AbjJWLLW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:22 -0400
+        with ESMTP id S234168AbjJWLhK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3216A4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E493FC433C7;
-        Mon, 23 Oct 2023 11:11:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15DAEDB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5102CC433C8;
+        Mon, 23 Oct 2023 11:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059480;
-        bh=LsU1XAqc1e/0jVO/ypT0aq/VyDM4YaHxX6lbcvgq3Gg=;
+        s=korg; t=1698061028;
+        bh=EA4CVGGiSDHPwgKnXvh7JtSeNXRB9hLivIqCoZVTRlE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QFy3P/mMCXbAkPb8fe5wWP+HKhJz6dk4x8j5cR6M/kvQQVt1z9FTM/KmgB380XTCS
-         XPkirNKr1KyCbVtUylbN/F23yqKNAm2AIdpi1oWWLcTZtF2F1dTgTp2UhXfw3G+I4X
-         L9JzVJhmN6aZiChE8c3Q+X8yeOo0ubaTyXqtu9zY=
+        b=0vyX/uUDEH+uz8C8vTNbvcGsDuqLzheZdWejKf98nwXdokZgSo+ecRglLVLPx9pc0
+         Z8Oa7jHrRIvCCV24BUSYdpm7QcXJjMPo485pViO0rzUvNi6rvS+Gf57D2UV5ps6p/6
+         ImvAcMdZrn/Og5pIIjeJ+HhNL/R7GJnKU/tbVR7I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maurizio Lombardi <mlombard@redhat.com>,
-        Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.5 192/241] nvmet-auth: complete a request only after freeing the dhchap pointers
+        patches@lists.linux.dev,
+        syzbot+e94d98936a0ed08bde43@syzkaller.appspotmail.com,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 5.15 021/137] fs/ntfs3: fix deadlock in mark_as_free_ex
 Date:   Mon, 23 Oct 2023 12:56:18 +0200
-Message-ID: <20231023104838.556596997@linuxfoundation.org>
+Message-ID: <20231023104821.672041558@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,104 +49,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit f965b281fd872b2e18bd82dd97730db9834d0750 upstream.
+commit bfbe5b31caa74ab97f1784fe9ade5f45e0d3de91 upstream.
 
-It may happen that the work to destroy a queue
-(for example nvmet_tcp_release_queue_work()) is started while
-an auth-send or auth-receive command is still completing.
-
-nvmet_sq_destroy() will block, waiting for all the references
-to the sq to be dropped, the last reference is then
-dropped when nvmet_req_complete() is called.
-
-When this happens, both nvmet_sq_destroy() and
-nvmet_execute_auth_send()/_receive() will free the dhchap pointers by
-calling nvmet_auth_sq_free().
-Since there isn't any lock, the two threads may race against each other,
-causing double frees and memory corruptions, as reported by KASAN.
-
-Reproduced by stress blktests nvme/041 nvme/042 nvme/043
-
- nvme nvme2: qid 0: authenticated with hash hmac(sha512) dhgroup ffdhe4096
- ==================================================================
- BUG: KASAN: double-free in kfree+0xec/0x4b0
-
- Call Trace:
-  <TASK>
-  kfree+0xec/0x4b0
-  nvmet_auth_sq_free+0xe1/0x160 [nvmet]
-  nvmet_execute_auth_send+0x482/0x16d0 [nvmet]
-  process_one_work+0x8e5/0x1510
-
- Allocated by task 191846:
-  __kasan_kmalloc+0x81/0xa0
-  nvmet_auth_ctrl_sesskey+0xf6/0x380 [nvmet]
-  nvmet_auth_reply+0x119/0x990 [nvmet]
-
- Freed by task 143270:
-  kfree+0xec/0x4b0
-  nvmet_auth_sq_free+0xe1/0x160 [nvmet]
-  process_one_work+0x8e5/0x1510
-
-Fix this bug by calling nvmet_req_complete() only after freeing the
-pointers, so we will prevent the race by holding the sq reference.
-
-V2: remove redundant code
-
-Fixes: db1312dd9548 ("nvmet: implement basic In-Band Authentication")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reported-by: syzbot+e94d98936a0ed08bde43@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/fabrics-cmd-auth.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/ntfs3/fsntfs.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/target/fabrics-cmd-auth.c
-+++ b/drivers/nvme/target/fabrics-cmd-auth.c
-@@ -333,19 +333,21 @@ done:
- 			 __func__, ctrl->cntlid, req->sq->qid,
- 			 status, req->error_loc);
- 	req->cqe->result.u64 = 0;
--	nvmet_req_complete(req, status);
- 	if (req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2 &&
- 	    req->sq->dhchap_step != NVME_AUTH_DHCHAP_MESSAGE_FAILURE2) {
- 		unsigned long auth_expire_secs = ctrl->kato ? ctrl->kato : 120;
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -2458,10 +2458,12 @@ void mark_as_free_ex(struct ntfs_sb_info
+ {
+ 	CLST end, i;
+ 	struct wnd_bitmap *wnd = &sbi->used.bitmap;
++	bool dirty = false;
  
- 		mod_delayed_work(system_wq, &req->sq->auth_expired_work,
- 				 auth_expire_secs * HZ);
--		return;
-+		goto complete;
- 	}
- 	/* Final states, clear up variables */
- 	nvmet_auth_sq_free(req->sq);
- 	if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_FAILURE2)
- 		nvmet_ctrl_fatal_error(ctrl);
-+
-+complete:
-+	nvmet_req_complete(req, status);
+ 	down_write_nested(&wnd->rw_lock, BITMAP_MUTEX_CLUSTERS);
+ 	if (!wnd_is_used(wnd, lcn, len)) {
+-		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
++		/* mark volume as dirty out of wnd->rw_lock */
++		dirty = true;
+ 
+ 		end = lcn + len;
+ 		len = 0;
+@@ -2493,6 +2495,8 @@ void mark_as_free_ex(struct ntfs_sb_info
+ 
+ out:
+ 	up_write(&wnd->rw_lock);
++	if (dirty)
++		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
  }
  
- static int nvmet_auth_challenge(struct nvmet_req *req, void *d, int al)
-@@ -514,11 +516,12 @@ void nvmet_execute_auth_receive(struct n
- 	kfree(d);
- done:
- 	req->cqe->result.u64 = 0;
--	nvmet_req_complete(req, status);
-+
- 	if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_SUCCESS2)
- 		nvmet_auth_sq_free(req->sq);
- 	else if (req->sq->dhchap_step == NVME_AUTH_DHCHAP_MESSAGE_FAILURE1) {
- 		nvmet_auth_sq_free(req->sq);
- 		nvmet_ctrl_fatal_error(ctrl);
- 	}
-+	nvmet_req_complete(req, status);
- }
+ /*
 
 
