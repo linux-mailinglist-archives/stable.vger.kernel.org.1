@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E3A07D3200
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:15:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 374E47D31B8
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:12:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233712AbjJWLPo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:15:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33986 "EHLO
+        id S233628AbjJWLMV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233704AbjJWLPj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:15:39 -0400
+        with ESMTP id S233624AbjJWLMU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:12:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6852DC2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91C4C433C9;
-        Mon, 23 Oct 2023 11:15:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 668D9C5
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:12:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E633C433C7;
+        Mon, 23 Oct 2023 11:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059737;
-        bh=mR5wNJgCT2aUH35qsk5XKO6/aoONaxoLEGBl5yPeMwI=;
+        s=korg; t=1698059537;
+        bh=g0LhbdN5v1HR7G62+4TdMi6YsiYq0ZD+VJKpB6wFEz8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vVnN57ZuyrI39PnegDQenpZRFh9ffQ1iCjeUTLXFH2Zm0hz2mHWzFLjPBN1x9jZeg
-         rMm+GKaedgcGkMzOTkCUCIk3rMR87SbvWyACfn439CbXeG5z5T+6P72CPdYbq8F0Vd
-         FbZSC2i9RgsrDIzotsxhTCoz5NGcRzhT0RRxoClk=
+        b=CnvmYFdQey5haBsVGZD2HBtJigDyE+tGZY/UcFZ+cnKy0DACwID2DRzlXgDrU92A7
+         lW8NKQ3d243D/yGeq2RpEbjDFJfOCrhd1MsV+GI+TSrhR19X7p5FZu9QIKBCRKyKq4
+         lvlX7EcjyJD7taIkev2nsOXsgijMPPn7OZh0Rx/M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
-        Jordan Rife <jrife@google.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 09/98] net: prevent address rewrite in kernel_bind()
-Date:   Mon, 23 Oct 2023 12:55:58 +0200
-Message-ID: <20231023104813.906875007@linuxfoundation.org>
+        patches@lists.linux.dev, Pablo Sun <pablo.sun@mediatek.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioachino.delregno@collabora.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.5 173/241] mmc: mtk-sd: Use readl_poll_timeout_atomic in msdc_reset_hw
+Date:   Mon, 23 Oct 2023 12:55:59 +0200
+Message-ID: <20231023104838.101938791@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,93 +51,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Pablo Sun <pablo.sun@mediatek.com>
 
-commit c889a99a21bf124c3db08d09df919f0eccc5ea4c upstream.
+commit c7bb120c1c66672b657e95d0942c989b8275aeb3 upstream.
 
-Similar to the change in commit 0bdf399342c5("net: Avoid address
-overwrite in kernel_connect"), BPF hooks run on bind may rewrite the
-address passed to kernel_bind(). This change
+Use atomic readl_poll_timeout_atomic, because msdc_reset_hw
+may be invoked in IRQ handler in the following context:
 
-1) Makes a copy of the bind address in kernel_bind() to insulate
-   callers.
-2) Replaces direct calls to sock->ops->bind() in net with kernel_bind()
+  msdc_irq() -> msdc_cmd_done() -> msdc_reset_hw()
 
-Link: https://lore.kernel.org/netdev/20230912013332.2048422-1-jrife@google.com/
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+The following kernel BUG stack trace can be observed on
+Genio 1200 EVK after initializing MSDC1 hardware during kernel boot:
+
+[    1.187441] BUG: scheduling while atomic: swapper/0/0/0x00010002
+[    1.189157] Modules linked in:
+[    1.204633] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G        W         5.15.42-mtk+modified #1
+[    1.205713] Hardware name: MediaTek Genio 1200 EVK-P1V2-EMMC (DT)
+[    1.206484] Call trace:
+[    1.206796]  dump_backtrace+0x0/0x1ac
+[    1.207266]  show_stack+0x24/0x30
+[    1.207692]  dump_stack_lvl+0x68/0x84
+[    1.208162]  dump_stack+0x1c/0x38
+[    1.208587]  __schedule_bug+0x68/0x80
+[    1.209056]  __schedule+0x6ec/0x7c0
+[    1.209502]  schedule+0x7c/0x110
+[    1.209915]  schedule_hrtimeout_range_clock+0xc4/0x1f0
+[    1.210569]  schedule_hrtimeout_range+0x20/0x30
+[    1.211148]  usleep_range_state+0x84/0xc0
+[    1.211661]  msdc_reset_hw+0xc8/0x1b0
+[    1.212134]  msdc_cmd_done.isra.0+0x4ac/0x5f0
+[    1.212693]  msdc_irq+0x104/0x2d4
+[    1.213121]  __handle_irq_event_percpu+0x68/0x280
+[    1.213725]  handle_irq_event+0x70/0x15c
+[    1.214230]  handle_fasteoi_irq+0xb0/0x1a4
+[    1.214755]  handle_domain_irq+0x6c/0x9c
+[    1.215260]  gic_handle_irq+0xc4/0x180
+[    1.215741]  call_on_irq_stack+0x2c/0x54
+[    1.216245]  do_interrupt_handler+0x5c/0x70
+[    1.216782]  el1_interrupt+0x30/0x80
+[    1.217242]  el1h_64_irq_handler+0x1c/0x2c
+[    1.217769]  el1h_64_irq+0x78/0x7c
+[    1.218206]  cpuidle_enter_state+0xc8/0x600
+[    1.218744]  cpuidle_enter+0x44/0x5c
+[    1.219205]  do_idle+0x224/0x2d0
+[    1.219624]  cpu_startup_entry+0x30/0x80
+[    1.220129]  rest_init+0x108/0x134
+[    1.220568]  arch_call_rest_init+0x1c/0x28
+[    1.221094]  start_kernel+0x6c0/0x700
+[    1.221564]  __primary_switched+0xc0/0xc8
+
+Fixes: ffaea6ebfe9c ("mmc: mtk-sd: Use readl_poll_timeout instead of open-coded polling")
+Signed-off-by: Pablo Sun <pablo.sun@mediatek.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioachino.delregno@collabora.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: Jordan Rife <jrife@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/r/20230922095348.22182-1-pablo.sun@mediatek.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_sync.c |    4 ++--
- net/rds/tcp_connect.c           |    2 +-
- net/rds/tcp_listen.c            |    2 +-
- net/socket.c                    |    6 +++++-
- 4 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/mmc/host/mtk-sd.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/net/netfilter/ipvs/ip_vs_sync.c
-+++ b/net/netfilter/ipvs/ip_vs_sync.c
-@@ -1444,7 +1444,7 @@ static int bind_mcastif_addr(struct sock
- 	sin.sin_addr.s_addr  = addr;
- 	sin.sin_port         = 0;
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -671,11 +671,11 @@ static void msdc_reset_hw(struct msdc_ho
+ 	u32 val;
  
--	return sock->ops->bind(sock, (struct sockaddr*)&sin, sizeof(sin));
-+	return kernel_bind(sock, (struct sockaddr *)&sin, sizeof(sin));
- }
+ 	sdr_set_bits(host->base + MSDC_CFG, MSDC_CFG_RST);
+-	readl_poll_timeout(host->base + MSDC_CFG, val, !(val & MSDC_CFG_RST), 0, 0);
++	readl_poll_timeout_atomic(host->base + MSDC_CFG, val, !(val & MSDC_CFG_RST), 0, 0);
  
- static void get_mcast_sockaddr(union ipvs_sockaddr *sa, int *salen,
-@@ -1551,7 +1551,7 @@ static int make_receive_sock(struct netn
+ 	sdr_set_bits(host->base + MSDC_FIFOCS, MSDC_FIFOCS_CLR);
+-	readl_poll_timeout(host->base + MSDC_FIFOCS, val,
+-			   !(val & MSDC_FIFOCS_CLR), 0, 0);
++	readl_poll_timeout_atomic(host->base + MSDC_FIFOCS, val,
++				  !(val & MSDC_FIFOCS_CLR), 0, 0);
  
- 	get_mcast_sockaddr(&mcast_addr, &salen, &ipvs->bcfg, id);
- 	sock->sk->sk_bound_dev_if = dev->ifindex;
--	result = sock->ops->bind(sock, (struct sockaddr *)&mcast_addr, salen);
-+	result = kernel_bind(sock, (struct sockaddr *)&mcast_addr, salen);
- 	if (result < 0) {
- 		pr_err("Error binding to the multicast addr\n");
- 		goto error;
---- a/net/rds/tcp_connect.c
-+++ b/net/rds/tcp_connect.c
-@@ -141,7 +141,7 @@ int rds_tcp_conn_path_connect(struct rds
- 		addrlen = sizeof(sin);
- 	}
- 
--	ret = sock->ops->bind(sock, addr, addrlen);
-+	ret = kernel_bind(sock, addr, addrlen);
- 	if (ret) {
- 		rdsdebug("bind failed with %d at address %pI6c\n",
- 			 ret, &conn->c_laddr);
---- a/net/rds/tcp_listen.c
-+++ b/net/rds/tcp_listen.c
-@@ -332,7 +332,7 @@ struct socket *rds_tcp_listen_init(struc
- 		addr_len = sizeof(*sin);
- 	}
- 
--	ret = sock->ops->bind(sock, (struct sockaddr *)&ss, addr_len);
-+	ret = kernel_bind(sock, (struct sockaddr *)&ss, addr_len);
- 	if (ret < 0) {
- 		rdsdebug("could not bind %s listener socket: %d\n",
- 			 isv6 ? "IPv6" : "IPv4", ret);
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -3427,7 +3427,11 @@ static long compat_sock_ioctl(struct fil
- 
- int kernel_bind(struct socket *sock, struct sockaddr *addr, int addrlen)
- {
--	return sock->ops->bind(sock, addr, addrlen);
-+	struct sockaddr_storage address;
-+
-+	memcpy(&address, addr, addrlen);
-+
-+	return sock->ops->bind(sock, (struct sockaddr *)&address, addrlen);
- }
- EXPORT_SYMBOL(kernel_bind);
- 
+ 	val = readl(host->base + MSDC_INT);
+ 	writel(val, host->base + MSDC_INT);
 
 
