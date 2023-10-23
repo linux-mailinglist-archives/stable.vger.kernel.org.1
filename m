@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 241287D3262
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276DC7D314D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:07:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230215AbjJWLT3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:19:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55910 "EHLO
+        id S233428AbjJWLHt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:07:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233776AbjJWLT3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:19:29 -0400
+        with ESMTP id S233406AbjJWLHs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:07:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA769E4
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:19:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED104C433C8;
-        Mon, 23 Oct 2023 11:19:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 416F4D7A
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:07:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E1A7C433C8;
+        Mon, 23 Oct 2023 11:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059966;
-        bh=3I0e2W4wjqAK5lQ0kxREsE3JUFAZVgVkI1HKcigUSsI=;
+        s=korg; t=1698059265;
+        bh=c82bco+lSGBdFLnYHKXR1BE9eWuwZRccSxB1m8Ke/xE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HY5p/MZJuillNiU1EoKD8JQvwu06n/Z83iH8/LAuQ92UF0LpeZK2bsnFaOy8v9ryg
-         XyoS7K3k2X/BCJNir+VHM3SpRiv1E40Ym7CRy2e+yut798dAUxCSCOvanS0Rv4tQCX
-         qQCCGtV0pF3IIAzsgE3jcDAMFDA17cKBRHFpt9Sg=
+        b=iuS2YGyx/q/5cnhKj3TvT9MjC3OU9UQj948TwkzIDhety7FcS/pgC0QRBdr6qbALI
+         NXAZGm7/own+8QLA1GL9Zs84pnMPwaaIjtJl1eqVrAxiUzfqmmPwVeuYLmAP916Bya
+         JJSyrBTrHuvEnaFP3RHZYBea2gE5c+9mx6qMxYY4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Simon Horman <horms@kernel.org>,
-        Jacob Keller <jacob.e.keller@intel.com>,
+        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 014/196] ice: fix over-shifted variable
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.5 093/241] net: avoid UAF on deleted altname
 Date:   Mon, 23 Oct 2023 12:54:39 +0200
-Message-ID: <20231023104828.896477364@linuxfoundation.org>
+Message-ID: <20231023104836.163367616@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
+References: <20231023104833.832874523@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +49,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Brandeburg <jesse.brandeburg@intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 242e34500a32631f85c2b4eb6cb42a368a39e54f upstream.
+commit 1a83f4a7c156fa6bbd6b530e89fa3270bf3d9d1b upstream.
 
-Since the introduction of the ice driver the code has been
-double-shifting the RSS enabling field, because the define already has
-shifts in it and can't have the regular pattern of "a << shiftval &
-mask" applied.
+Altnames are accessed under RCU (dev_get_by_name_rcu())
+but freed by kfree() with no synchronization point.
 
-Most places in the code got it right, but one line was still wrong. Fix
-this one location for easy backports to stable. An in-progress patch
-fixes the defines to "standard" and will be applied as part of the
-regular -next process sometime after this one.
+Each node has one or two allocations (node and a variable-size
+name, sometimes the name is netdev->name). Adding rcu_heads
+here is a bit tedious. Besides most code which unlists the names
+already has rcu barriers - so take the simpler approach of adding
+synchronize_rcu(). Note that the one on the unregistration path
+(which matters more) is removed by the next fix.
 
-Fixes: d76a60ba7afb ("ice: Add support for VLANs and offloads")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-CC: stable@vger.kernel.org
-Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20231010203101.406248-1-jacob.e.keller@intel.com
+Fixes: ff92741270bf ("net: introduce name_node struct to be used in hashlist")
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/core/dev.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -1100,8 +1100,7 @@ static void ice_set_rss_vsi_ctx(struct i
- 
- 	ctxt->info.q_opt_rss = ((lut_type << ICE_AQ_VSI_Q_OPT_RSS_LUT_S) &
- 				ICE_AQ_VSI_Q_OPT_RSS_LUT_M) |
--				((hash_type << ICE_AQ_VSI_Q_OPT_RSS_HASH_S) &
--				 ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
-+				(hash_type & ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -343,7 +343,6 @@ int netdev_name_node_alt_create(struct n
+ static void __netdev_name_node_alt_destroy(struct netdev_name_node *name_node)
+ {
+ 	list_del(&name_node->list);
+-	netdev_name_node_del(name_node);
+ 	kfree(name_node->name);
+ 	netdev_name_node_free(name_node);
  }
+@@ -362,6 +361,8 @@ int netdev_name_node_alt_destroy(struct
+ 	if (name_node == dev->name_node || name_node->dev != dev)
+ 		return -EINVAL;
  
- static void
++	netdev_name_node_del(name_node);
++	synchronize_rcu();
+ 	__netdev_name_node_alt_destroy(name_node);
+ 
+ 	return 0;
+@@ -10838,6 +10839,7 @@ void unregister_netdevice_many_notify(st
+ 	synchronize_net();
+ 
+ 	list_for_each_entry(dev, head, unreg_list) {
++		struct netdev_name_node *name_node;
+ 		struct sk_buff *skb = NULL;
+ 
+ 		/* Shutdown queueing discipline. */
+@@ -10865,6 +10867,9 @@ void unregister_netdevice_many_notify(st
+ 		dev_uc_flush(dev);
+ 		dev_mc_flush(dev);
+ 
++		netdev_for_each_altname(dev, name_node)
++			netdev_name_node_del(name_node);
++		synchronize_rcu();
+ 		netdev_name_node_alt_flush(dev);
+ 		netdev_name_node_free(dev->name_node);
+ 
 
 
