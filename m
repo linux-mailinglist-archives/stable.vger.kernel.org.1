@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CDDA7D32F2
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0912F7D320B
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233905AbjJWLZP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:25:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42340 "EHLO
+        id S233752AbjJWLQH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:16:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233900AbjJWLZJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:25:09 -0400
+        with ESMTP id S233756AbjJWLQD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5468BFD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:25:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF7AC433CD;
-        Mon, 23 Oct 2023 11:25:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3565010D9
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A13C433C7;
+        Mon, 23 Oct 2023 11:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698060306;
-        bh=sTe6AH9p+nm6hwpMig8Y1Sa8c5MtKppEr8TwXUXBH7Q=;
+        s=korg; t=1698059757;
+        bh=QhAiEby8gxzJUJjxrC5cpoIreZrGzhwmbzH9picUJJo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wtW3gN3hcwVeKXgUFYaqRGFyvAyncRbQ/wbRZ8gY1H2e4Xfn/1/kKQeN55lEDxi0i
-         Q4FjKEnxxXLKKNcvkP44MHwno4nd7WYirVaJ8eHepTQYENt3x/hXR4pmabs3KjMJjO
-         TWbZrsQVN9NY9P+7jM/oR/Oea9bdt8HsJ7z2Jr7U=
+        b=LNIAK/8ZZTsAk/cRuXN7OpKTtR+zGoML6BC5Ap5cBmn+M56J3/6yc3JG+bFGl+8bx
+         /QExec5yoJjNsq34QpdeCUNR7S5d6LPmrNPG8zBui0EXNEeIr4ZQgFaNhAQpiDkx4Z
+         28Q/BVXpffyAnwOpt8T1VofUACmJoX8qeqKxJy7I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Will Deacon <will@kernel.org>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/196] fprobe: Pass entry_data to handlers
+        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Lee@vger.kernel.org
+Subject: [PATCH 4.19 43/98] Bluetooth: Reject connection with the device which has same BD_ADDR
 Date:   Mon, 23 Oct 2023 12:56:32 +0200
-Message-ID: <20231023104832.091669040@linuxfoundation.org>
+Message-ID: <20231023104815.133991413@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,196 +49,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Lee, Chun-Yi <jlee@suse.com>
 
-[ Upstream commit 76d0de5729c0569c4071e7f21fcab394e502f03a ]
+commit 1ffc6f8cc33268731fcf9629fc4438f6db1191fc upstream.
 
-Pass the private entry_data to the entry and exit handlers so that
-they can share the context data, something like saved function
-arguments etc.
-User must specify the private entry_data size by @entry_data_size
-field before registering the fprobe.
+This change is used to relieve CVE-2020-26555. The description of
+the CVE:
 
-Link: https://lkml.kernel.org/r/167526696173.433354.17408372048319432574.stgit@mhiramat.roam.corp.google.com
+Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
+1.0B through 5.2 may permit an unauthenticated nearby device to spoof
+the BD_ADDR of the peer device to complete pairing without knowledge
+of the PIN. [1]
 
-Cc: Florent Revest <revest@chromium.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Stable-dep-of: 700b2b439766 ("fprobe: Fix to ensure the number of active retprobes is not zero")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The detail of this attack is in IEEE paper:
+BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
+[2]
+
+It's a reflection attack. The paper mentioned that attacker can induce
+the attacked target to generate null link key (zero key) without PIN
+code. In BR/EDR, the key generation is actually handled in the controller
+which is below HCI.
+
+A condition of this attack is that attacker should change the
+BR_ADDR of his hacking device (Host B) to equal to the BR_ADDR with
+the target device being attacked (Host A).
+
+Thus, we reject the connection with device which has same BD_ADDR
+both on HCI_Create_Connection and HCI_Connection_Request to prevent
+the attack. A similar implementation also shows in btstack project.
+[3][4]
+
+Cc: stable@vger.kernel.org
+Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
+Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3523 [3]
+Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L7297 [4]
+Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/fprobe.h          |  8 ++++++--
- kernel/trace/bpf_trace.c        |  2 +-
- kernel/trace/fprobe.c           | 21 ++++++++++++++-------
- lib/test_fprobe.c               |  6 ++++--
- samples/fprobe/fprobe_example.c |  6 ++++--
- 5 files changed, 29 insertions(+), 14 deletions(-)
+ net/bluetooth/hci_conn.c  |    9 +++++++++
+ net/bluetooth/hci_event.c |   11 +++++++++++
+ 2 files changed, 20 insertions(+)
 
-diff --git a/include/linux/fprobe.h b/include/linux/fprobe.h
-index 1c2bde0ead736..e0d4e61362491 100644
---- a/include/linux/fprobe.h
-+++ b/include/linux/fprobe.h
-@@ -13,6 +13,7 @@
-  * @nmissed: The counter for missing events.
-  * @flags: The status flag.
-  * @rethook: The rethook data structure. (internal data)
-+ * @entry_data_size: The private data storage size.
-  * @entry_handler: The callback function for function entry.
-  * @exit_handler: The callback function for function exit.
-  */
-@@ -29,9 +30,12 @@ struct fprobe {
- 	unsigned long		nmissed;
- 	unsigned int		flags;
- 	struct rethook		*rethook;
-+	size_t			entry_data_size;
- 
--	void (*entry_handler)(struct fprobe *fp, unsigned long entry_ip, struct pt_regs *regs);
--	void (*exit_handler)(struct fprobe *fp, unsigned long entry_ip, struct pt_regs *regs);
-+	void (*entry_handler)(struct fprobe *fp, unsigned long entry_ip,
-+			      struct pt_regs *regs, void *entry_data);
-+	void (*exit_handler)(struct fprobe *fp, unsigned long entry_ip,
-+			     struct pt_regs *regs, void *entry_data);
- };
- 
- /* This fprobe is soft-disabled. */
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 8c77c54e6348b..f4a494a457c52 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2646,7 +2646,7 @@ kprobe_multi_link_prog_run(struct bpf_kprobe_multi_link *link,
- 
- static void
- kprobe_multi_link_handler(struct fprobe *fp, unsigned long fentry_ip,
--			  struct pt_regs *regs)
-+			  struct pt_regs *regs, void *data)
- {
- 	struct bpf_kprobe_multi_link *link;
- 
-diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index 1322247ce6488..be28d1bc84e80 100644
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -17,14 +17,16 @@
- struct fprobe_rethook_node {
- 	struct rethook_node node;
- 	unsigned long entry_ip;
-+	char data[];
- };
- 
- static void fprobe_handler(unsigned long ip, unsigned long parent_ip,
- 			   struct ftrace_ops *ops, struct ftrace_regs *fregs)
- {
- 	struct fprobe_rethook_node *fpr;
--	struct rethook_node *rh;
-+	struct rethook_node *rh = NULL;
- 	struct fprobe *fp;
-+	void *entry_data = NULL;
- 	int bit;
- 
- 	fp = container_of(ops, struct fprobe, ops);
-@@ -37,9 +39,6 @@ static void fprobe_handler(unsigned long ip, unsigned long parent_ip,
- 		return;
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1204,6 +1204,15 @@ struct hci_conn *hci_connect_acl(struct
+ 		return ERR_PTR(-EOPNOTSUPP);
  	}
  
--	if (fp->entry_handler)
--		fp->entry_handler(fp, ip, ftrace_get_regs(fregs));
--
- 	if (fp->exit_handler) {
- 		rh = rethook_try_get(fp->rethook);
- 		if (!rh) {
-@@ -48,9 +47,16 @@ static void fprobe_handler(unsigned long ip, unsigned long parent_ip,
- 		}
- 		fpr = container_of(rh, struct fprobe_rethook_node, node);
- 		fpr->entry_ip = ip;
--		rethook_hook(rh, ftrace_get_regs(fregs), true);
-+		if (fp->entry_data_size)
-+			entry_data = fpr->data;
- 	}
- 
-+	if (fp->entry_handler)
-+		fp->entry_handler(fp, ip, ftrace_get_regs(fregs), entry_data);
++	/* Reject outgoing connection to device with same BD ADDR against
++	 * CVE-2020-26555
++	 */
++	if (!bacmp(&hdev->bdaddr, dst)) {
++		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
++			   dst);
++		return ERR_PTR(-ECONNREFUSED);
++	}
 +
-+	if (rh)
-+		rethook_hook(rh, ftrace_get_regs(fregs), true);
+ 	acl = hci_conn_hash_lookup_ba(hdev, ACL_LINK, dst);
+ 	if (!acl) {
+ 		acl = hci_conn_add(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2510,6 +2510,17 @@ static void hci_conn_request_evt(struct
+ 	BT_DBG("%s bdaddr %pMR type 0x%x", hdev->name, &ev->bdaddr,
+ 	       ev->link_type);
+ 
++	/* Reject incoming connection from device with same BD ADDR against
++	 * CVE-2020-26555
++	 */
++	if (!bacmp(&hdev->bdaddr, &ev->bdaddr))
++	{
++		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
++			   &ev->bdaddr);
++		hci_reject_conn(hdev, &ev->bdaddr);
++		return;
++	}
 +
- out:
- 	ftrace_test_recursion_unlock(bit);
- }
-@@ -81,7 +87,8 @@ static void fprobe_exit_handler(struct rethook_node *rh, void *data,
+ 	mask |= hci_proto_connect_ind(hdev, &ev->bdaddr, ev->link_type,
+ 				      &flags);
  
- 	fpr = container_of(rh, struct fprobe_rethook_node, node);
- 
--	fp->exit_handler(fp, fpr->entry_ip, regs);
-+	fp->exit_handler(fp, fpr->entry_ip, regs,
-+			 fp->entry_data_size ? (void *)fpr->data : NULL);
- }
- NOKPROBE_SYMBOL(fprobe_exit_handler);
- 
-@@ -146,7 +153,7 @@ static int fprobe_init_rethook(struct fprobe *fp, int num)
- 	for (i = 0; i < size; i++) {
- 		struct fprobe_rethook_node *node;
- 
--		node = kzalloc(sizeof(*node), GFP_KERNEL);
-+		node = kzalloc(sizeof(*node) + fp->entry_data_size, GFP_KERNEL);
- 		if (!node) {
- 			rethook_free(fp->rethook);
- 			fp->rethook = NULL;
-diff --git a/lib/test_fprobe.c b/lib/test_fprobe.c
-index e0381b3ec410c..34fa5a5bbda1f 100644
---- a/lib/test_fprobe.c
-+++ b/lib/test_fprobe.c
-@@ -30,7 +30,8 @@ static noinline u32 fprobe_selftest_target2(u32 value)
- 	return (value / div_factor) + 1;
- }
- 
--static notrace void fp_entry_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs)
-+static notrace void fp_entry_handler(struct fprobe *fp, unsigned long ip,
-+				     struct pt_regs *regs, void *data)
- {
- 	KUNIT_EXPECT_FALSE(current_test, preemptible());
- 	/* This can be called on the fprobe_selftest_target and the fprobe_selftest_target2 */
-@@ -39,7 +40,8 @@ static notrace void fp_entry_handler(struct fprobe *fp, unsigned long ip, struct
- 	entry_val = (rand1 / div_factor);
- }
- 
--static notrace void fp_exit_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs)
-+static notrace void fp_exit_handler(struct fprobe *fp, unsigned long ip,
-+				    struct pt_regs *regs, void *data)
- {
- 	unsigned long ret = regs_return_value(regs);
- 
-diff --git a/samples/fprobe/fprobe_example.c b/samples/fprobe/fprobe_example.c
-index e22da8573116e..dd794990ad7ec 100644
---- a/samples/fprobe/fprobe_example.c
-+++ b/samples/fprobe/fprobe_example.c
-@@ -48,7 +48,8 @@ static void show_backtrace(void)
- 	stack_trace_print(stacks, len, 24);
- }
- 
--static void sample_entry_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs)
-+static void sample_entry_handler(struct fprobe *fp, unsigned long ip,
-+				 struct pt_regs *regs, void *data)
- {
- 	if (use_trace)
- 		/*
-@@ -63,7 +64,8 @@ static void sample_entry_handler(struct fprobe *fp, unsigned long ip, struct pt_
- 		show_backtrace();
- }
- 
--static void sample_exit_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs)
-+static void sample_exit_handler(struct fprobe *fp, unsigned long ip, struct pt_regs *regs,
-+				void *data)
- {
- 	unsigned long rip = instruction_pointer(regs);
- 
--- 
-2.40.1
-
 
 
