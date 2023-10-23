@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF987D31D7
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E6CA7D338E
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:31:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233644AbjJWLN6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:13:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53584 "EHLO
+        id S234087AbjJWLbm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:31:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233661AbjJWLNx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:13:53 -0400
+        with ESMTP id S233832AbjJWLbk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:31:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23F8AC2
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:13:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65073C433C7;
-        Mon, 23 Oct 2023 11:13:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20F26DF
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:31:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D8D2C433C7;
+        Mon, 23 Oct 2023 11:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059630;
-        bh=2Oo4pVteAcCf3WO1hnymkT0QJ52sQDUoAcZnPH9iUnM=;
+        s=korg; t=1698060697;
+        bh=zLBTwQs1uDGk9Y4ThJQkmFmB8G4DcdLLOROCw3o/qJ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c34JTCNeUYHIE9fCdc98L+oaC4tXKB216BoB/RLSAzygbxHagujRd5OiUTjHUY0Dz
-         vWnwpiZ6KFry1adv0xrY6FZmRRX1DxlI9p1cVVwyl28r7x6X+dVRVDk21ot3P7sY5U
-         Mekx00J/FFZTEJaXrGqGOmQ6943zaYRkZs0pqUKc=
+        b=UwYNB4hZCEmwjize8VJic+xzQo3gCoZlV+EQ7W7Z42j3vdb9TZPjCIb12sdt3CBXZ
+         YnYgIJXBGAHX1WRN4tFqzMi4LgJC6dEz4PjZieA+KJH+2zW8+aTeeLKkOvfTF1Dplf
+         KQLvO3MZhgg6tFQlHMc/RpvXYTJgLh4B/dXaQYw4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiri Pirko <jiri@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.5 234/241] net: move altnames together with the netdevice
+        patches@lists.linux.dev, Josua Mayer <josua@solid-run.com>,
+        Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.4 062/123] net: rfkill: gpio: prevent value glitch during probe
 Date:   Mon, 23 Oct 2023 12:57:00 +0200
-Message-ID: <20231023104839.579691257@linuxfoundation.org>
+Message-ID: <20231023104819.764770322@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
+References: <20231023104817.691299567@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,96 +48,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Josua Mayer <josua@solid-run.com>
 
-commit 8e15aee621618a3ee3abecaf1fd8c1428098b7ef upstream.
+commit b2f750c3a80b285cd60c9346f8c96bd0a2a66cde upstream.
 
-The altname nodes are currently not moved to the new netns
-when netdevice itself moves:
+When either reset- or shutdown-gpio have are initially deasserted,
+e.g. after a reboot - or when the hardware does not include pull-down,
+there will be a short toggle of both IOs to logical 0 and back to 1.
 
-  [ ~]# ip netns add test
-  [ ~]# ip -netns test link add name eth0 type dummy
-  [ ~]# ip -netns test link property add dev eth0 altname some-name
-  [ ~]# ip -netns test link show dev some-name
-  2: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-      link/ether 1e:67:ed:19:3d:24 brd ff:ff:ff:ff:ff:ff
-      altname some-name
-  [ ~]# ip -netns test link set dev eth0 netns 1
-  [ ~]# ip link
-  ...
-  3: eth0: <BROADCAST,NOARP> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-      link/ether 02:40:88:62:ec:b8 brd ff:ff:ff:ff:ff:ff
-      altname some-name
-  [ ~]# ip li show dev some-name
-  Device "some-name" does not exist.
+It seems that the rfkill default is unblocked, so the driver should not
+glitch to output low during probe.
+It can lead e.g. to unexpected lte modem reconnect:
 
-Remove them from the hash table when device is unlisted
-and add back when listed again.
+[1] root@localhost:~# dmesg | grep "usb 2-1"
+[    2.136124] usb 2-1: new SuperSpeed USB device number 2 using xhci-hcd
+[   21.215278] usb 2-1: USB disconnect, device number 2
+[   28.833977] usb 2-1: new SuperSpeed USB device number 3 using xhci-hcd
 
-Fixes: 36fbf1e52bd3 ("net: rtnetlink: add linkprop commands to add and delete alternative ifnames")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The glitch has been discovered on an arm64 board, now that device-tree
+support for the rfkill-gpio driver has finally appeared :).
+
+Change the flags for devm_gpiod_get_optional from GPIOD_OUT_LOW to
+GPIOD_ASIS to avoid any glitches.
+The rfkill driver will set the intended value during rfkill_sync_work.
+
+Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Link: https://lore.kernel.org/r/20231004163928.14609-1-josua@solid-run.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ net/rfkill/rfkill-gpio.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -379,6 +379,7 @@ static void netdev_name_node_alt_flush(s
- /* Device list insertion */
- static void list_netdevice(struct net_device *dev)
- {
-+	struct netdev_name_node *name_node;
- 	struct net *net = dev_net(dev);
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -98,13 +98,13 @@ static int rfkill_gpio_probe(struct plat
  
- 	ASSERT_RTNL();
-@@ -390,6 +391,9 @@ static void list_netdevice(struct net_de
- 			   dev_index_hash(net, dev->ifindex));
- 	write_unlock(&dev_base_lock);
+ 	rfkill->clk = devm_clk_get(&pdev->dev, NULL);
  
-+	netdev_for_each_altname(dev, name_node)
-+		netdev_name_node_add(net, name_node);
-+
- 	dev_base_seq_inc(net);
- }
+-	gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_OUT_LOW);
++	gpio = devm_gpiod_get_optional(&pdev->dev, "reset", GPIOD_ASIS);
+ 	if (IS_ERR(gpio))
+ 		return PTR_ERR(gpio);
  
-@@ -398,8 +402,13 @@ static void list_netdevice(struct net_de
-  */
- static void unlist_netdevice(struct net_device *dev, bool lock)
- {
-+	struct netdev_name_node *name_node;
-+
- 	ASSERT_RTNL();
+ 	rfkill->reset_gpio = gpio;
  
-+	netdev_for_each_altname(dev, name_node)
-+		netdev_name_node_del(name_node);
-+
- 	/* Unlink dev from the device chain */
- 	if (lock)
- 		write_lock(&dev_base_lock);
-@@ -10854,7 +10863,6 @@ void unregister_netdevice_many_notify(st
- 	synchronize_net();
- 
- 	list_for_each_entry(dev, head, unreg_list) {
--		struct netdev_name_node *name_node;
- 		struct sk_buff *skb = NULL;
- 
- 		/* Shutdown queueing discipline. */
-@@ -10882,9 +10890,6 @@ void unregister_netdevice_many_notify(st
- 		dev_uc_flush(dev);
- 		dev_mc_flush(dev);
- 
--		netdev_for_each_altname(dev, name_node)
--			netdev_name_node_del(name_node);
--		synchronize_rcu();
- 		netdev_name_node_alt_flush(dev);
- 		netdev_name_node_free(dev->name_node);
+-	gpio = devm_gpiod_get_optional(&pdev->dev, "shutdown", GPIOD_OUT_LOW);
++	gpio = devm_gpiod_get_optional(&pdev->dev, "shutdown", GPIOD_ASIS);
+ 	if (IS_ERR(gpio))
+ 		return PTR_ERR(gpio);
  
 
 
