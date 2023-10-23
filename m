@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0912F7D320B
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3413C7D320C
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:16:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233752AbjJWLQH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:16:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49482 "EHLO
+        id S233747AbjJWLQI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:16:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233756AbjJWLQD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:03 -0400
+        with ESMTP id S233762AbjJWLQF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:16:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3565010D9
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A13C433C7;
-        Mon, 23 Oct 2023 11:15:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 527CE10E6
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:16:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6BFC433C8;
+        Mon, 23 Oct 2023 11:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059757;
-        bh=QhAiEby8gxzJUJjxrC5cpoIreZrGzhwmbzH9picUJJo=;
+        s=korg; t=1698059760;
+        bh=ze+5giE2EtgciGXGlWvUCvHo/GEpsJl8ILmk7uMYk5E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LNIAK/8ZZTsAk/cRuXN7OpKTtR+zGoML6BC5Ap5cBmn+M56J3/6yc3JG+bFGl+8bx
-         /QExec5yoJjNsq34QpdeCUNR7S5d6LPmrNPG8zBui0EXNEeIr4ZQgFaNhAQpiDkx4Z
-         28Q/BVXpffyAnwOpt8T1VofUACmJoX8qeqKxJy7I=
+        b=pTnfHAMC8LuzhBuffRwnTuC/KCVdSObw+d3ukIJZ41LMw6t4fqCRwbrtmaW6SMoyz
+         PbQr2H7PEIO8tw/IGgmo5I7dtRFH4JMwa/qunlCZPgnks6crXrI1cg7vEH9jUUqzMk
+         fqZpZIPiMBrj2KrKe/7UKTY5P/WlTH/VODeC4LXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Lee@vger.kernel.org
-Subject: [PATCH 4.19 43/98] Bluetooth: Reject connection with the device which has same BD_ADDR
-Date:   Mon, 23 Oct 2023 12:56:32 +0200
-Message-ID: <20231023104815.133991413@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 4.19 44/98] Bluetooth: Fix a refcnt underflow problem for hci_conn
+Date:   Mon, 23 Oct 2023 12:56:33 +0200
+Message-ID: <20231023104815.165829682@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
 References: <20231023104813.580375891@linuxfoundation.org>
@@ -53,86 +53,60 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Lee, Chun-Yi <jlee@suse.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-commit 1ffc6f8cc33268731fcf9629fc4438f6db1191fc upstream.
+commit c7f59461f5a78994613afc112cdd73688aef9076 upstream.
 
-This change is used to relieve CVE-2020-26555. The description of
-the CVE:
+Syzbot reports a warning as follows:
 
-Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
-1.0B through 5.2 may permit an unauthenticated nearby device to spoof
-the BD_ADDR of the peer device to complete pairing without knowledge
-of the PIN. [1]
+WARNING: CPU: 1 PID: 26946 at net/bluetooth/hci_conn.c:619
+hci_conn_timeout+0x122/0x210 net/bluetooth/hci_conn.c:619
+...
+Call Trace:
+ <TASK>
+ process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
+ process_scheduled_works kernel/workqueue.c:2703 [inline]
+ worker_thread+0x8b9/0x1290 kernel/workqueue.c:2784
+ kthread+0x33c/0x440 kernel/kthread.c:388
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+ </TASK>
 
-The detail of this attack is in IEEE paper:
-BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
-[2]
+It is because the HCI_EV_SIMPLE_PAIR_COMPLETE event handler drops
+hci_conn directly without check Simple Pairing whether be enabled. But
+the Simple Pairing process can only be used if both sides have the
+support enabled in the host stack.
 
-It's a reflection attack. The paper mentioned that attacker can induce
-the attacked target to generate null link key (zero key) without PIN
-code. In BR/EDR, the key generation is actually handled in the controller
-which is below HCI.
+Add hci_conn_ssp_enabled() for hci_conn in HCI_EV_IO_CAPA_REQUEST and
+HCI_EV_SIMPLE_PAIR_COMPLETE event handlers to fix the problem.
 
-A condition of this attack is that attacker should change the
-BR_ADDR of his hacking device (Host B) to equal to the BR_ADDR with
-the target device being attacked (Host A).
-
-Thus, we reject the connection with device which has same BD_ADDR
-both on HCI_Create_Connection and HCI_Connection_Request to prevent
-the attack. A similar implementation also shows in btstack project.
-[3][4]
-
-Cc: stable@vger.kernel.org
-Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
-Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3523 [3]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L7297 [4]
-Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
+Fixes: 0493684ed239 ("[Bluetooth] Disable disconnect timer during Simple Pairing")
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_conn.c  |    9 +++++++++
- net/bluetooth/hci_event.c |   11 +++++++++++
- 2 files changed, 20 insertions(+)
+ net/bluetooth/hci_event.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1204,6 +1204,15 @@ struct hci_conn *hci_connect_acl(struct
- 		return ERR_PTR(-EOPNOTSUPP);
- 	}
- 
-+	/* Reject outgoing connection to device with same BD ADDR against
-+	 * CVE-2020-26555
-+	 */
-+	if (!bacmp(&hdev->bdaddr, dst)) {
-+		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
-+			   dst);
-+		return ERR_PTR(-ECONNREFUSED);
-+	}
-+
- 	acl = hci_conn_hash_lookup_ba(hdev, ACL_LINK, dst);
- 	if (!acl) {
- 		acl = hci_conn_add(hdev, ACL_LINK, dst, HCI_ROLE_MASTER);
 --- a/net/bluetooth/hci_event.c
 +++ b/net/bluetooth/hci_event.c
-@@ -2510,6 +2510,17 @@ static void hci_conn_request_evt(struct
- 	BT_DBG("%s bdaddr %pMR type 0x%x", hdev->name, &ev->bdaddr,
- 	       ev->link_type);
+@@ -4342,7 +4342,7 @@ static void hci_io_capa_request_evt(stru
+ 	hci_dev_lock(hdev);
  
-+	/* Reject incoming connection from device with same BD ADDR against
-+	 * CVE-2020-26555
-+	 */
-+	if (!bacmp(&hdev->bdaddr, &ev->bdaddr))
-+	{
-+		bt_dev_dbg(hdev, "Reject connection with same BD_ADDR %pMR\n",
-+			   &ev->bdaddr);
-+		hci_reject_conn(hdev, &ev->bdaddr);
-+		return;
-+	}
-+
- 	mask |= hci_proto_connect_ind(hdev, &ev->bdaddr, ev->link_type,
- 				      &flags);
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+-	if (!conn)
++	if (!conn || !hci_conn_ssp_enabled(conn))
+ 		goto unlock;
  
+ 	hci_conn_hold(conn);
+@@ -4577,7 +4577,7 @@ static void hci_simple_pair_complete_evt
+ 	hci_dev_lock(hdev);
+ 
+ 	conn = hci_conn_hash_lookup_ba(hdev, ACL_LINK, &ev->bdaddr);
+-	if (!conn)
++	if (!conn || !hci_conn_ssp_enabled(conn))
+ 		goto unlock;
+ 
+ 	/* Reset the authentication requirement to unknown */
 
 
