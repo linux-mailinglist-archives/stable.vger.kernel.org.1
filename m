@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EC6C7D347C
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:40:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E75137D324D
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:18:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233678AbjJWLkI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:40:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34566 "EHLO
+        id S233756AbjJWLSl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:18:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234251AbjJWLkH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:40:07 -0400
+        with ESMTP id S233738AbjJWLSk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:18:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACA27FD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:40:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8454C433C8;
-        Mon, 23 Oct 2023 11:40:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA36DC
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:18:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A316C433C8;
+        Mon, 23 Oct 2023 11:18:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061205;
-        bh=2nZpdftfrMZIGP4uLGF6MC5wq/jTCEzPgyyEst8+Lmc=;
+        s=korg; t=1698059918;
+        bh=bdEFSNXQd+6JnsTa9EZoNkSfUEVF0KChQ0jiw0529Y0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i/oeJDfvIz6t7Wjav+VcdvdrxMyV/BP7rE4K324csD84O3MVxN3Sir30fv62t5xM2
-         9t2QtHl3kZGOM2K+kkYuJ4QE8JMbEt3eRXURfC2ZvlkwojI5OfQ7PaAkriMnum9GH9
-         MgcXL0wvnw3eQvgDFvWmHRx8DMyXFUPUyGZHFDx0=
+        b=L0wyoOUMZOpskqImnhV2d5pwR4lAWIvX3xrPXrlaif/1wxI2OCkRjLWA3quT4Z3Ay
+         c3RMCMKCr17t8OX2EYQTV0pjGOySrhvjkVgKBg3zsNWPT87iw11wOFTb1utqbwy25d
+         5FazZVC9wcBqlLkJnf1i5PriQ4ozEVo6IOSH5gz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rocky Liao <quic_rjliao@quicinc.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 081/137] Bluetooth: btusb: add shutdown function for QCA6174
+        patches@lists.linux.dev,
+        =?UTF-8?q?Beno=C3=AEt=20Monin?= <benoit.monin@gmx.fr>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 89/98] USB: serial: option: add entry for Sierra EM9191 with new firmware
 Date:   Mon, 23 Oct 2023 12:57:18 +0200
-Message-ID: <20231023104823.643669499@linuxfoundation.org>
+Message-ID: <20231023104816.677521431@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,38 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rocky Liao <quic_rjliao@quicinc.com>
+From: Benoît Monin <benoit.monin@gmx.fr>
 
-[ Upstream commit 187f8b648cc16f07c66ab1d89d961bdcff779bf7 ]
+commit 064f6e2ba9eb59b2c87b866e1e968e79ccedf9dd upstream.
 
-We should send hci reset command before bt turn off, which can reset bt
-firmware status.
+Following a firmware update of the modem, the interface for the AT
+command port changed, so add it back.
 
-Signed-off-by: Rocky Liao <quic_rjliao@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=08 Lev=01 Prnt=01 Port=01 Cnt=02 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=1199 ProdID=90d3 Rev=00.06
+S:  Manufacturer=Sierra Wireless, Incorporated
+S:  Product=Sierra Wireless EM9191
+S:  SerialNumber=xxxxxxxxxxxxxxxx
+C:  #Ifs= 4 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=(none)
+I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+
+Signed-off-by: Benoît Monin <benoit.monin@gmx.fr>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c | 1 +
+ drivers/usb/serial/option.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 84a42348b3bcb..c01d02f41bcb3 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3949,6 +3949,7 @@ static int btusb_probe(struct usb_interface *intf,
- 
- 	if (id->driver_info & BTUSB_QCA_ROME) {
- 		data->setup_on_usb = btusb_setup_qca;
-+		hdev->shutdown = btusb_shutdown_qca;
- 		hdev->set_bdaddr = btusb_set_bdaddr_ath3012;
- 		hdev->cmd_timeout = btusb_qca_cmd_timeout;
- 		set_bit(HCI_QUIRK_SIMULTANEOUS_DISCOVERY, &hdev->quirks);
--- 
-2.40.1
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2263,6 +2263,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x305a, 0x1406, 0xff) },			/* GosunCn GM500 ECM/NCM */
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(OPPO_VENDOR_ID, OPPO_PRODUCT_R11, 0xff, 0xff, 0x30) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
 
 
