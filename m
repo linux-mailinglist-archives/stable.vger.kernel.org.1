@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D1C7D31F5
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00C187D32DE
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:24:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233707AbjJWLPI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:15:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59504 "EHLO
+        id S233789AbjJWLYj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:24:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233702AbjJWLPH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:15:07 -0400
+        with ESMTP id S233901AbjJWLYf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:24:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4A3BFD
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:15:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134C6C433CA;
-        Mon, 23 Oct 2023 11:15:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59DADE4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:24:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23A4C433C7;
+        Mon, 23 Oct 2023 11:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059704;
-        bh=jNywYjHlfngqQTn+zspJdUcjVLztNNTj8cGatBiKZqI=;
+        s=korg; t=1698060270;
+        bh=EQbvuCRc5NdvCuDfcbJYqriwxtqNwrcc+GkHcBcX9sY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FMYSgDjVTy1C4qYri6hbKdFZn64UcLbdWMcA1GsZquKQoHOixbEs2JqJd48OURiGf
-         w6tr4KykVQkumK3Ba3XjiE4sKuHj0pwnQTQtZRo11vpth6fa893s2+WOQRZPHUh3N/
-         GABTC7jB4Cy57YwKu29xm0KXbtB7FATjLJuFCluo=
+        b=QttXQHDolbUjzWm0y+rid5iksYj6g9LAv5SAFZul2bGy4vgX7llxMHK57nXdiS9cm
+         zp9c3hSgbi9QAW2xuC+4g9qxuWQtnk4Ku9bpzZVJVuStXvX0FyD+eT9905VxfR/0JJ
+         MSQgD51AjD2EMJmoL5jcC5XE5yKieB40ejLxCPPc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xingxing Luo <xingxing.luo@unisoc.com>
-Subject: [PATCH 4.19 24/98] usb: musb: Get the musb_qh poniter after musb_giveback
+        patches@lists.linux.dev, Ying Hsu <yinghsu@chromium.org>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 108/196] Bluetooth: Avoid redundant authentication
 Date:   Mon, 23 Oct 2023 12:56:13 +0200
-Message-ID: <20231023104814.441401415@linuxfoundation.org>
+Message-ID: <20231023104831.581865904@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
-References: <20231023104813.580375891@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+References: <20231023104828.488041585@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -47,56 +49,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingxing Luo <xingxing.luo@unisoc.com>
+From: Ying Hsu <yinghsu@chromium.org>
 
-commit 33d7e37232155aadebe4145dcc592f00dabd7a2b upstream.
+[ Upstream commit 1d8e801422d66e4b8c7b187c52196bef94eed887 ]
 
-When multiple threads are performing USB transmission, musb->lock will be
-unlocked when musb_giveback is executed. At this time, qh may be released
-in the dequeue process in other threads, resulting in a wild pointer, so
-it needs to be here get qh again, and judge whether qh is NULL, and when
-dequeue, you need to set qh to NULL.
+While executing the Android 13 CTS Verifier Secure Server test on a
+ChromeOS device, it was observed that the Bluetooth host initiates
+authentication for an RFCOMM connection after SSP completes.
+When this happens, some Intel Bluetooth controllers, like AC9560, would
+disconnect with "Connection Rejected due to Security Reasons (0x0e)".
 
-Fixes: dbac5d07d13e ("usb: musb: host: don't start next rx urb if current one failed")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xingxing Luo <xingxing.luo@unisoc.com>
-Link: https://lore.kernel.org/r/20230919033055.14085-1-xingxing.luo@unisoc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Historically, BlueZ did not mandate this authentication while an
+authenticated combination key was already in use for the connection.
+This behavior was changed since commit 7b5a9241b780
+("Bluetooth: Introduce requirements for security level 4").
+So, this patch addresses the aforementioned disconnection issue by
+restoring the previous behavior.
+
+Signed-off-by: Ying Hsu <yinghsu@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/musb/musb_host.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c | 63 ++++++++++++++++++++++------------------
+ 1 file changed, 35 insertions(+), 28 deletions(-)
 
---- a/drivers/usb/musb/musb_host.c
-+++ b/drivers/usb/musb/musb_host.c
-@@ -339,10 +339,16 @@ static void musb_advance_schedule(struct
- 	musb_giveback(musb, urb, status);
- 	qh->is_ready = ready;
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index f8ba3f5aa877b..728be9307f526 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -2364,34 +2364,41 @@ int hci_conn_security(struct hci_conn *conn, __u8 sec_level, __u8 auth_type,
+ 	if (!test_bit(HCI_CONN_AUTH, &conn->flags))
+ 		goto auth;
  
-+	/*
-+	 * musb->lock had been unlocked in musb_giveback, so qh may
-+	 * be freed, need to get it again
-+	 */
-+	qh = musb_ep_get_qh(hw_ep, is_in);
-+
- 	/* reclaim resources (and bandwidth) ASAP; deschedule it, and
- 	 * invalidate qh as soon as list_empty(&hep->urb_list)
- 	 */
--	if (list_empty(&qh->hep->urb_list)) {
-+	if (qh && list_empty(&qh->hep->urb_list)) {
- 		struct list_head	*head;
- 		struct dma_controller	*dma = musb->dma_controller;
+-	/* An authenticated FIPS approved combination key has sufficient
+-	 * security for security level 4. */
+-	if (conn->key_type == HCI_LK_AUTH_COMBINATION_P256 &&
+-	    sec_level == BT_SECURITY_FIPS)
+-		goto encrypt;
+-
+-	/* An authenticated combination key has sufficient security for
+-	   security level 3. */
+-	if ((conn->key_type == HCI_LK_AUTH_COMBINATION_P192 ||
+-	     conn->key_type == HCI_LK_AUTH_COMBINATION_P256) &&
+-	    sec_level == BT_SECURITY_HIGH)
+-		goto encrypt;
+-
+-	/* An unauthenticated combination key has sufficient security for
+-	   security level 1 and 2. */
+-	if ((conn->key_type == HCI_LK_UNAUTH_COMBINATION_P192 ||
+-	     conn->key_type == HCI_LK_UNAUTH_COMBINATION_P256) &&
+-	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW))
+-		goto encrypt;
+-
+-	/* A combination key has always sufficient security for the security
+-	   levels 1 or 2. High security level requires the combination key
+-	   is generated using maximum PIN code length (16).
+-	   For pre 2.1 units. */
+-	if (conn->key_type == HCI_LK_COMBINATION &&
+-	    (sec_level == BT_SECURITY_MEDIUM || sec_level == BT_SECURITY_LOW ||
+-	     conn->pin_length == 16))
+-		goto encrypt;
++	switch (conn->key_type) {
++	case HCI_LK_AUTH_COMBINATION_P256:
++		/* An authenticated FIPS approved combination key has
++		 * sufficient security for security level 4 or lower.
++		 */
++		if (sec_level <= BT_SECURITY_FIPS)
++			goto encrypt;
++		break;
++	case HCI_LK_AUTH_COMBINATION_P192:
++		/* An authenticated combination key has sufficient security for
++		 * security level 3 or lower.
++		 */
++		if (sec_level <= BT_SECURITY_HIGH)
++			goto encrypt;
++		break;
++	case HCI_LK_UNAUTH_COMBINATION_P192:
++	case HCI_LK_UNAUTH_COMBINATION_P256:
++		/* An unauthenticated combination key has sufficient security
++		 * for security level 2 or lower.
++		 */
++		if (sec_level <= BT_SECURITY_MEDIUM)
++			goto encrypt;
++		break;
++	case HCI_LK_COMBINATION:
++		/* A combination key has always sufficient security for the
++		 * security levels 2 or lower. High security level requires the
++		 * combination key is generated using maximum PIN code length
++		 * (16). For pre 2.1 units.
++		 */
++		if (sec_level <= BT_SECURITY_MEDIUM || conn->pin_length == 16)
++			goto encrypt;
++		break;
++	default:
++		break;
++	}
  
-@@ -2424,6 +2430,7 @@ static int musb_urb_dequeue(struct usb_h
- 		 * and its URB list has emptied, recycle this qh.
- 		 */
- 		if (ready && list_empty(&qh->hep->urb_list)) {
-+			musb_ep_set_qh(qh->hw_ep, is_in, NULL);
- 			qh->hep->hcpriv = NULL;
- 			list_del(&qh->ring);
- 			kfree(qh);
+ auth:
+ 	if (test_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags))
+-- 
+2.40.1
+
 
 
