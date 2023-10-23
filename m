@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 846287D30B2
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 525B77D3428
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232228AbjJWLBP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55362 "EHLO
+        id S234165AbjJWLhI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229906AbjJWLBN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:01:13 -0400
+        with ESMTP id S234164AbjJWLhF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A61D6E
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:01:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5259C433C9;
-        Mon, 23 Oct 2023 11:01:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE9210CB
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89949C433C7;
+        Mon, 23 Oct 2023 11:37:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698058869;
-        bh=wSr1l1aBykWYClGexQuVQOaHNcdt5aJT3i4Gi7YGV0E=;
+        s=korg; t=1698061022;
+        bh=TSieIsThOxLfWagEVlDjm4uwf9zWPQMF+Kv3GJLrAIY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LTPvg40moQmJx1aFh/2IzsprUHXiClLh1Mhhx8okJSNmwGtkWaEA/hBtHKijzgtOH
-         dg3WE4BXFKwZP1KBioljqOXgfVQwwQa2pOqlSYqO+nl0pcTvHUIWAjDEfMlJGiBt7d
-         hFeDd16VTwE09IjFdSi+Ndj07CrvmtlZ04qBMdZA=
+        b=wW5xbXpUT0+5RMIPuCdppkem3eT+Vqa0Kj5Xfqfc64C+16vOuV2J0Zb8mgvZhRoGK
+         kpovpGEg+Q9s2lXczYplY3SqJ8PjzstyUDPR18uKDrUMoV62JUvPeNEI+Wk7LA0rtr
+         zrvurBNqIbksn1D9pPI0u5FrSQhbZLyKCb01dl8Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Lee, Chun-Yi" <jlee@suse.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Lee@vger.kernel.org
-Subject: [PATCH 4.14 26/66] Bluetooth: hci_event: Ignore NULL link key
+        patches@lists.linux.dev,
+        syzbot+60cf892fc31d1f4358fc@syzkaller.appspotmail.com,
+        Ziqi Zhao <astrajoan@yahoo.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 5.15 019/137] fs/ntfs3: Fix possible null-pointer dereference in hdr_find_e()
 Date:   Mon, 23 Oct 2023 12:56:16 +0200
-Message-ID: <20231023104811.795940763@linuxfoundation.org>
+Message-ID: <20231023104821.596617715@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
-References: <20231023104810.781270702@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,71 +50,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee, Chun-Yi <jlee@suse.com>
+From: Ziqi Zhao <astrajoan@yahoo.com>
 
-commit 33155c4aae5260475def6f7438e4e35564f4f3ba upstream.
+commit 1f9b94af923c88539426ed811ae7e9543834a5c5 upstream.
 
-This change is used to relieve CVE-2020-26555. The description of the
-CVE:
+Upon investigation of the C reproducer provided by Syzbot, it seemed
+the reproducer was trying to mount a corrupted NTFS filesystem, then
+issue a rename syscall to some nodes in the filesystem. This can be
+shown by modifying the reproducer to only include the mount syscall,
+and investigating the filesystem by e.g. `ls` and `rm` commands. As a
+result, during the problematic call to `hdr_fine_e`, the `inode` being
+supplied did not go through `indx_init`, hence the `cmp` function
+pointer was never set.
 
-Bluetooth legacy BR/EDR PIN code pairing in Bluetooth Core Specification
-1.0B through 5.2 may permit an unauthenticated nearby device to spoof
-the BD_ADDR of the peer device to complete pairing without knowledge
-of the PIN. [1]
+The fix is simply to check whether `cmp` is not set, and return NULL
+if that's the case, in order to be consistent with other error
+scenarios of the `hdr_find_e` method. The rationale behind this patch
+is that:
 
-The detail of this attack is in IEEE paper:
-BlueMirror: Reflections on Bluetooth Pairing and Provisioning Protocols
-[2]
+- We should prevent crashing the kernel even if the mounted filesystem
+  is corrupted. Any syscalls made on the filesystem could return
+  invalid, but the kernel should be able to sustain these calls.
 
-It's a reflection attack. The paper mentioned that attacker can induce
-the attacked target to generate null link key (zero key) without PIN
-code. In BR/EDR, the key generation is actually handled in the controller
-which is below HCI.
+- Only very specific corruption would lead to this bug, so it would be
+  a pretty rare case in actual usage anyways. Therefore, introducing a
+  check to specifically protect against this bug seems appropriate.
+  Because of its rarity, an `unlikely` clause is used to wrap around
+  this nullity check.
 
-Thus, we can ignore null link key in the handler of "Link Key Notification
-event" to relieve the attack. A similar implementation also shows in
-btstack project. [3]
-
-v3: Drop the connection when null link key be detected.
-
-v2:
-- Used Link: tag instead of Closes:
-- Used bt_dev_dbg instead of BT_DBG
-- Added Fixes: tag
-
-Cc: stable@vger.kernel.org
-Fixes: 55ed8ca10f35 ("Bluetooth: Implement link key handling for the management interface")
-Link: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2020-26555 [1]
-Link: https://ieeexplore.ieee.org/abstract/document/9474325/authors#authors [2]
-Link: https://github.com/bluekitchen/btstack/blob/master/src/hci.c#L3722 [3]
-Signed-off-by: Lee, Chun-Yi <jlee@suse.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: syzbot+60cf892fc31d1f4358fc@syzkaller.appspotmail.com
+Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_event.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/ntfs3/index.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3494,6 +3494,15 @@ static void hci_link_key_notify_evt(stru
- 	if (!conn)
- 		goto unlock;
+--- a/fs/ntfs3/index.c
++++ b/fs/ntfs3/index.c
+@@ -729,6 +729,9 @@ static struct NTFS_DE *hdr_find_e(const
+ 	u32 total = le32_to_cpu(hdr->total);
+ 	u16 offs[128];
  
-+	/* Ignore NULL link key against CVE-2020-26555 */
-+	if (!memcmp(ev->link_key, ZERO_KEY, HCI_LINK_KEY_SIZE)) {
-+		bt_dev_dbg(hdev, "Ignore NULL link key (ZERO KEY) for %pMR",
-+			   &ev->bdaddr);
-+		hci_disconnect(conn, HCI_ERROR_AUTH_FAILURE);
-+		hci_conn_drop(conn);
-+		goto unlock;
-+	}
++	if (unlikely(!cmp))
++		return NULL;
 +
- 	hci_conn_hold(conn);
- 	conn->disc_timeout = HCI_DISCONN_TIMEOUT;
- 	hci_conn_drop(conn);
+ fill_table:
+ 	if (end > total)
+ 		return NULL;
 
 
