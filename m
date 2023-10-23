@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A7C47D31A1
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:11:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B55AB7D3429
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233533AbjJWLLX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:11:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34798 "EHLO
+        id S234170AbjJWLhK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:37:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233538AbjJWLLV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:11:21 -0400
+        with ESMTP id S234181AbjJWLhI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2D1899
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:11:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1016DC433C8;
-        Mon, 23 Oct 2023 11:11:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 352AE1A4
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C63DC433C9;
+        Mon, 23 Oct 2023 11:37:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698059477;
-        bh=DJvWFvMBXmJRI0MMUDef3j+7pPZaUZL7xVLJe0SBIak=;
+        s=korg; t=1698061025;
+        bh=xEhCAEr6jJgCjKQ1qme+sF6v5f9Ti5pT9G8Qmqhq0Tc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lLjxx+TmPGJePcN8xI9ONR/bSr4xrtGNKwKs+kj3XN5kN4sdWNU7ir+yN+4iSjAbh
-         tofkE8X3wPhkJpTWQOWOo+kBTH3UEDICinZ9SwuiTDtgi67kwNHdmD1q/II5Xe37kC
-         d300YzLX16I9tntBazd/7xvO/3DCR/K2BSadQc6k=
+        b=QueFsJ8Duy086Nvl4btaRgv9Uhm8SVf6wsGmlyz05X5nWBTVMpRMSH0qIfemMBnTZ
+         0JPihSeQnwj6wjoepz0PihDQiz7xttsM/T/g44WbzcLzNjB0BNMKkJbqVgRJe1M5d3
+         9NK9BAnwXAKEAJV3H7IbaWaPMtYighi1D7mHj7HA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Wilck <mwilck@suse.com>,
-        Daniel Wagner <dwagner@suse.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Hannes Reinecke <hare@suse.de>, Christoph Hellwig <hch@lst.de>,
-        Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.5 191/241] nvme-auth: use chap->s2 to indicate bidirectional authentication
+        patches@lists.linux.dev,
+        syzbot+9fcea5ef6dc4dc72d334@syzkaller.appspotmail.com,
+        Zeng Heng <zengheng4@huawei.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 5.15 020/137] fs/ntfs3: fix panic about slab-out-of-bounds caused by ntfs_list_ea()
 Date:   Mon, 23 Oct 2023 12:56:17 +0200
-Message-ID: <20231023104838.533497316@linuxfoundation.org>
+Message-ID: <20231023104821.634601879@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-References: <20231023104833.832874523@linuxfoundation.org>
+In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
+References: <20231023104820.849461819@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +50,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Wilck <mwilck@suse.com>
+From: Zeng Heng <zengheng4@huawei.com>
 
-commit 4ae55a7dce04989f289d5c5c8c8e5c37adc36c71 upstream.
+commit 8e7e27b2ee1e19c4040d4987e345f678a74c0aed upstream.
 
-Commit 546dea18c999 ("nvme-auth: check chap ctrl_key once constructed")
-replaced the condition "if (ctrl->ctrl_key)" (indicating bidirectional
-auth) by "if (chap->ctrl_key)", because ctrl->ctrl_key is a resource shared
-with sysfs. But chap->ctrl_key is set in
-nvme_auth_process_dhchap_challenge() depending on the DHVLEN in the
-DH-HMAC-CHAP Challenge message received from the controller, and will thus
-be non-NULL for every DH-HMAC-CHAP exchange, even if unidirectional auth
-was requested. This will lead to a protocol violation by sending a Success2
-message in the unidirectional case (per NVMe base spec 2.0, the
-authentication transaction ends after the Success1 message for
-unidirectional auth). Use chap->s2 instead, which is non-zero if and only
-if the host requested bi-directional authentication from the controller.
+Here is a BUG report about linux-6.1 from syzbot, but it still remains
+within upstream:
 
-Fixes: 546dea18c999 ("nvme-auth: check chap ctrl_key once constructed")
-Signed-off-by: Martin Wilck <mwilck@suse.com>
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+BUG: KASAN: slab-out-of-bounds in ntfs_list_ea fs/ntfs3/xattr.c:191 [inline]
+BUG: KASAN: slab-out-of-bounds in ntfs_listxattr+0x401/0x570 fs/ntfs3/xattr.c:710
+Read of size 1 at addr ffff888021acaf3d by task syz-executor128/3632
+
+Call Trace:
+ kasan_report+0x139/0x170 mm/kasan/report.c:495
+ ntfs_list_ea fs/ntfs3/xattr.c:191 [inline]
+ ntfs_listxattr+0x401/0x570 fs/ntfs3/xattr.c:710
+ vfs_listxattr fs/xattr.c:457 [inline]
+ listxattr+0x293/0x2d0 fs/xattr.c:804
+ path_listxattr fs/xattr.c:828 [inline]
+ __do_sys_llistxattr fs/xattr.c:846 [inline]
+
+Before derefering field members of `ea` in unpacked_ea_size(), we need to
+check whether the EA_FULL struct is located in access validate range.
+
+Similarly, when derefering `ea->name` field member, we need to check
+whethe the ea->name is located in access validate range, too.
+
+Fixes: be71b5cba2e6 ("fs/ntfs3: Add attrib operations")
+Reported-by: syzbot+9fcea5ef6dc4dc72d334@syzkaller.appspotmail.com
+Signed-off-by: Zeng Heng <zengheng4@huawei.com>
+[almaz.alexandrovich@paragon-software.com: took the ret variable out of the loop block]
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/auth.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ntfs3/xattr.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/auth.c b/drivers/nvme/host/auth.c
-index daf5d144a8ea..064592a5d546 100644
---- a/drivers/nvme/host/auth.c
-+++ b/drivers/nvme/host/auth.c
-@@ -341,7 +341,7 @@ static int nvme_auth_process_dhchap_success1(struct nvme_ctrl *ctrl,
- 	struct nvmf_auth_dhchap_success1_data *data = chap->buf;
- 	size_t size = sizeof(*data);
+--- a/fs/ntfs3/xattr.c
++++ b/fs/ntfs3/xattr.c
+@@ -209,7 +209,8 @@ static ssize_t ntfs_list_ea(struct ntfs_
+ 	size = le32_to_cpu(info->size);
  
--	if (chap->ctrl_key)
-+	if (chap->s2)
- 		size += chap->hash_len;
+ 	/* Enumerate all xattrs. */
+-	for (ret = 0, off = 0; off < size; off += ea_size) {
++	ret = 0;
++	for (off = 0; off + sizeof(struct EA_FULL) < size; off += ea_size) {
+ 		ea = Add2Ptr(ea_all, off);
+ 		ea_size = unpacked_ea_size(ea);
  
- 	if (size > CHAP_BUF_SIZE) {
-@@ -825,7 +825,7 @@ static void nvme_queue_auth_work(struct work_struct *work)
- 		goto fail2;
- 	}
+@@ -217,6 +218,10 @@ static ssize_t ntfs_list_ea(struct ntfs_
+ 			break;
  
--	if (chap->ctrl_key) {
-+	if (chap->s2) {
- 		/* DH-HMAC-CHAP Step 5: send success2 */
- 		dev_dbg(ctrl->device, "%s: qid %d send success2\n",
- 			__func__, chap->qid);
--- 
-2.42.0
-
+ 		if (buffer) {
++			/* Check if we can use field ea->name */
++			if (off + ea_size > size)
++				break;
++
+ 			if (ret + ea->name_len + 1 > bytes_per_buffer) {
+ 				err = -ERANGE;
+ 				goto out;
 
 
