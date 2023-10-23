@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A6CE7D342A
-	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 809597D3225
+	for <lists+stable@lfdr.de>; Mon, 23 Oct 2023 13:17:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233227AbjJWLhL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 23 Oct 2023 07:37:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54124 "EHLO
+        id S233672AbjJWLRL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 23 Oct 2023 07:17:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234168AbjJWLhK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:37:10 -0400
+        with ESMTP id S230137AbjJWLRK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 23 Oct 2023 07:17:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15DAEDB
-        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:37:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5102CC433C8;
-        Mon, 23 Oct 2023 11:37:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A86C992
+        for <stable@vger.kernel.org>; Mon, 23 Oct 2023 04:17:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E82CAC433C9;
+        Mon, 23 Oct 2023 11:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698061028;
-        bh=EA4CVGGiSDHPwgKnXvh7JtSeNXRB9hLivIqCoZVTRlE=;
+        s=korg; t=1698059828;
+        bh=z7l7CPkZOMZKJPdUhUNQTc31N1GrfOm+U3AwlUGoUWM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0vyX/uUDEH+uz8C8vTNbvcGsDuqLzheZdWejKf98nwXdokZgSo+ecRglLVLPx9pc0
-         Z8Oa7jHrRIvCCV24BUSYdpm7QcXJjMPo485pViO0rzUvNi6rvS+Gf57D2UV5ps6p/6
-         ImvAcMdZrn/Og5pIIjeJ+HhNL/R7GJnKU/tbVR7I=
+        b=zt9bvCEtT+0OTjFZ1G1RGpwxTcG4IzjkbzCZh0qo2WPm29SI1YM/cvUY9NJ/tFsOd
+         /KHOGUH/N9BVzP2RNT4eext38Ya7plzhqFfXn53LO/gz/4ncO3/BunK53SCqRFlYNw
+         t19gbEvR8x/m0+hW6KgWsQPC80b0TueecMprls7k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+e94d98936a0ed08bde43@syzkaller.appspotmail.com,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 5.15 021/137] fs/ntfs3: fix deadlock in mark_as_free_ex
+        patches@lists.linux.dev, Xiubo Li <xiubli@redhat.com>,
+        Milind Changire <mchangir@redhat.com>,
+        Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 4.19 29/98] ceph: fix incorrect revoked caps assert in ceph_fill_file_size()
 Date:   Mon, 23 Oct 2023 12:56:18 +0200
-Message-ID: <20231023104821.672041558@linuxfoundation.org>
+Message-ID: <20231023104814.613199687@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231023104820.849461819@linuxfoundation.org>
-References: <20231023104820.849461819@linuxfoundation.org>
+In-Reply-To: <20231023104813.580375891@linuxfoundation.org>
+References: <20231023104813.580375891@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +49,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit bfbe5b31caa74ab97f1784fe9ade5f45e0d3de91 upstream.
+commit 15c0a870dc44ed14e01efbdd319d232234ee639f upstream.
 
-Reported-by: syzbot+e94d98936a0ed08bde43@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+When truncating the inode the MDS will acquire the xlock for the
+ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
+But when the client just releases and flushes the 'Fw' caps to MDS,
+for exmaple, and once the MDS receives the caps flushing msg it
+just thought the revocation has finished. Then the MDS will continue
+truncating the inode and then issued the truncate notification to
+all the clients. While just before the clients receives the cap
+flushing ack they receive the truncation notification, the clients
+will detecte that the 'issued | dirty' is still holding the 'Fw'
+caps.
+
+Cc: stable@vger.kernel.org
+Link: https://tracker.ceph.com/issues/56693
+Fixes: b0d7c2231015 ("ceph: introduce i_truncate_mutex")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Milind Changire <mchangir@redhat.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/fsntfs.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ceph/inode.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -2458,10 +2458,12 @@ void mark_as_free_ex(struct ntfs_sb_info
- {
- 	CLST end, i;
- 	struct wnd_bitmap *wnd = &sbi->used.bitmap;
-+	bool dirty = false;
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -631,9 +631,7 @@ int ceph_fill_file_size(struct inode *in
+ 			ci->i_truncate_seq = truncate_seq;
  
- 	down_write_nested(&wnd->rw_lock, BITMAP_MUTEX_CLUSTERS);
- 	if (!wnd_is_used(wnd, lcn, len)) {
--		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
-+		/* mark volume as dirty out of wnd->rw_lock */
-+		dirty = true;
- 
- 		end = lcn + len;
- 		len = 0;
-@@ -2493,6 +2495,8 @@ void mark_as_free_ex(struct ntfs_sb_info
- 
- out:
- 	up_write(&wnd->rw_lock);
-+	if (dirty)
-+		ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
- }
- 
- /*
+ 			/* the MDS should have revoked these caps */
+-			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
+-					       CEPH_CAP_FILE_RD |
+-					       CEPH_CAP_FILE_WR |
++			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
+ 					       CEPH_CAP_FILE_LAZYIO));
+ 			/*
+ 			 * If we hold relevant caps, or in the case where we're
 
 
