@@ -2,144 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3165C7D4B43
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 10:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 692F27D4B4D
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 10:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234208AbjJXI4O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 04:56:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34710 "EHLO
+        id S233890AbjJXI5C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 04:57:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234092AbjJXIz6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 04:55:58 -0400
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 482F01BD9
-        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 01:55:28 -0700 (PDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-        by mout02.posteo.de (Postfix) with ESMTPS id 0BD11240104
-        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 10:55:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-        t=1698137726; bh=ctRKDMA8yPGXschkZ9aIEe4B0oYbgmQ2FdUIx2Ql04c=;
-        h=Message-ID:Subject:From:To:Cc:Date:Content-Transfer-Encoding:
-         MIME-Version:From;
-        b=g+N3UbG/m++dtxlfMRT5eZiYW987UAmSEBrg6LbKtcAZWHeyJgSjjFcdofUmWWlog
-         sPk5Phuwt/hO7hNh7b/rWodpZEwHqrb0mZl2J4yBohgxywKqZyy4CAN0wcy7rS6Njf
-         XNRARQreRIXQgZN3MdSsmbAlBG4keYHIObu2lsB4es/u70YCLtC2PTZj0U4+Rc3nOI
-         Apx3JbgdIms78ZvO22kiJh5I41VhTEH0tQWEZmF1zXmCTE8h59hXpBszFcwH9ntCSm
-         RE/DFVQyto3+zPakbKHqUdi8BoMnm44C01GY0V8GGCzNhUuetsuVZa0J6slkg4nfhf
-         IOzPSTsJEbDlQ==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4SF5Vh15NZz6twT;
-        Tue, 24 Oct 2023 10:55:24 +0200 (CEST)
-Message-ID: <e32494e6e797af74cc01be99465302b711140111.camel@posteo.de>
-Subject: Re: [PATCH] hid: lenovo: Resend all settings on reset_resume for
- compact keyboards
-From:   Martin Kepplinger <martink@posteo.de>
-To:     jikos@kernel.org, benjamin.tissoires@redhat.com, jm@lentin.co.uk,
-        linux-kernel@vger.kernel.org
-Cc:     linux-input@vger.kernel.org, stable@vger.kernel.org,
-        mail@bernhard-seibold.de, hdegoede@redhat.com, iam@valdikss.org.ru
-Date:   Tue, 24 Oct 2023 08:55:22 +0000
-In-Reply-To: <20231002150914.22101-1-martink@posteo.de>
-References: <20231002150914.22101-1-martink@posteo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S229595AbjJXI4v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 04:56:51 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C97D198D;
+        Tue, 24 Oct 2023 01:56:27 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-4084095722aso34226865e9.1;
+        Tue, 24 Oct 2023 01:56:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698137785; x=1698742585; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=miTVCU04yyCrzOSAI9EkRMIhzdyP2FapJh++0rrQ6Wg=;
+        b=AYgbKKURw+ZKtLiYOW1Qg6LZq8iU/oRvhHnaURUPPk0sZM57TDn1z1fOiebtMgMGRq
+         Lp/yZSEecW7T+FViTgoh6RdF/NXowpgzKh6nPwVjylU2qn5KSaOQ7iREQJOrD2cPACA3
+         YriXTizbEaZRiapZgM9fJcEW7IGHppR4r3LXfjc/wrKJv5g3MwzJW7R//RKdDIDLUlBm
+         LZBfUEF3khtksTBaYe6AClFSpDUzFIEmFskKe92IZO8bGyGfee65Rg9T1jtDwCcQCHGe
+         jFf0FftJJaDjhUYQlDyEsiDPz//NSC28rdpTFHv4ZHs1cMz7R+CQFrNq/NOf71ljac+g
+         26Kg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698137785; x=1698742585;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=miTVCU04yyCrzOSAI9EkRMIhzdyP2FapJh++0rrQ6Wg=;
+        b=exAUAwK2dFiMXCnCyIAaCsnc5FOXvhG7WNj4ZYw3rU+tLoCEfB6Y49wofnIvoHGjYr
+         q/LptBDkY/EhzhLqTj3TBb2khTc4KMbJM2lOVQ9dRXcnBjKjeTzw1N8mJ5WFxYkagAxc
+         4PBMntg9uDTDTRfg8t+tDGUbGWob9oxQo1H9+QfvV11IB+QlG0+hflqfxv1yd9taJvyp
+         7zF2GzhbXSrbj+6mNdAdit7q/rQzvAIU2t8MThkjHvUiMguBu2fbHK6TSHUBEyyarANS
+         JYo9N5fu/pY5EgHak5Yx7RGDFUoUB3nb32gCsrQpFbORnX/2ShBYVsUdWKjVOJP4f77Z
+         00Xg==
+X-Gm-Message-State: AOJu0YwkUnp0SylvyhSdcEmlr7gWu4ZxFqeT+h243B20M5zC4CbMdhG1
+        F220pd9UTqtKXDZ1Y2UP9fw=
+X-Google-Smtp-Source: AGHT+IGetQYjoPclj/kmbwPywiuFWtEc2VzhJ8b2Vn9XlycBsIp3g0AHLZEG3uwg270sYu4L4jCDRw==
+X-Received: by 2002:a05:600c:1c97:b0:401:d803:6243 with SMTP id k23-20020a05600c1c9700b00401d8036243mr8983012wms.32.1698137785245;
+        Tue, 24 Oct 2023 01:56:25 -0700 (PDT)
+Received: from debian ([63.135.72.41])
+        by smtp.gmail.com with ESMTPSA id o27-20020a05600c511b00b004067e905f44sm11655034wms.9.2023.10.24.01.56.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Oct 2023 01:56:25 -0700 (PDT)
+Date:   Tue, 24 Oct 2023 09:56:23 +0100
+From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 5.4 000/123] 5.4.259-rc1 review
+Message-ID: <ZTeGtz7cTimKctug@debian>
+References: <20231023104817.691299567@linuxfoundation.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231023104817.691299567@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-QW0gTW9udGFnLCBkZW0gMDIuMTAuMjAyMyB1bSAxNTowOSArMDAwMCBzY2hyaWViIE1hcnRpbiBL
-ZXBwbGluZ2VyOgo+IEZyb206IEphbWllIExlbnRpbiA8am1AbGVudGluLmNvLnVrPgo+IAo+IFRo
-ZSBVU0IgQ29tcGFjdCBLZXlib2FyZCB2YXJpYW50IHJlcXVpcmVzIGEgcmVzZXRfcmVzdW1lIGZ1
-bmN0aW9uIHRvCj4gcmVzdG9yZSBrZXlib2FyZCBjb25maWd1cmF0aW9uIGFmdGVyIGEgc3VzcGVu
-ZCBpbiBzb21lIHNpdHVhdGlvbnMuCj4gTW92ZQo+IGNvbmZpZ3VyYXRpb24gbm9ybWFsbHkgZG9u
-ZSBvbiBwcm9iZSB0byBsZW5vdm9fZmVhdHVyZXNfc2V0X2NwdGtiZCgpLAo+IHRoZW4KPiByZWN5
-Y2xlIHRoaXMgZm9yIHVzZSBvbiByZXNldF9yZXN1bWUuCj4gCj4gV2l0aG91dCwgdGhlIGtleWJv
-YXJkIGFuZCBkcml2ZXIgd291bGQgZW5kIHVwIGluIGFuIGluY29uc2lzdGVudAo+IHN0YXRlLAo+
-IGJyZWFraW5nIG1pZGRsZS1idXR0b24gc2Nyb2xsaW5nIGFtb25nc3Qgb3RoZXIgcHJvYmxlbXMs
-IGFuZAo+IHR3aWRkbGluZwo+IHN5c2ZzIHZhbHVlcyB3b3VsZG4ndCBoZWxwIGFzIHRoZSBtaWRk
-bGUtYnV0dG9uIG1vZGUgd29uJ3QgYmUgc2V0Cj4gdW50aWwKPiB0aGUgZHJpdmVyIGlzIHJlbG9h
-ZGVkLgo+IAo+IFRlc3RlZCBvbiBhIFVTQiBhbmQgQmx1ZXRvb3RoIFRoaW5rcGFkIENvbXBhY3Qg
-S2V5Ym9hcmQuCj4gCj4gQ0M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcKPiBGaXhlczogOTRlZWZh
-MjcxMzIzICgiSElEOiBsZW5vdm86IFVzZSBuYXRpdmUgbWlkZGxlLWJ1dHRvbiBtb2RlIGZvcgo+
-IGNvbXBhY3Qga2V5Ym9hcmRzIikKPiBTaWduZWQtb2ZmLWJ5OiBKYW1pZSBMZW50aW4gPGptQGxl
-bnRpbi5jby51az4KPiBTaWduZWQtb2ZmLWJ5OiBNYXJ0aW4gS2VwcGxpbmdlciA8bWFydGlua0Bw
-b3N0ZW8uZGU+CgpUaGlzIGlzIHNpdHRpbmcgb3ZlciAzIHdlZWtzIGFuZCBJIHNpbXBseSBhZGQg
-QmVybmhhcmQgYW5kIEhhbnMgd2hvCndyb3RlIGJpZyBwYXJ0cyBvZiB0aGUgZHJpdmVyLiBNYXli
-ZSBtb3JlIHJldmlldyBjYW4gaGVscCB3aXRoIHF1ZXVpbmcKdGhpcyBidWdmaXggdXA/IChzY3Jv
-bGxpbmcgYW5kIGZ1bmN0aW9uIGtleXMgYXJlIGN1cnJlbnRseSBicm9rZW4gYWZ0ZXIKcmVzdW1p
-bmcpCgpJIGJhc2ljYWxseSBzZW50IEphbWllJ3MgcGF0Y2ggYmVjYXVzZSBJIGhhdmUgdGhlIGhh
-cmR3YXJlOgpodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyMzEwMDIxNTA5MTQuMjIxMDEt
-MS1tYXJ0aW5rQHBvc3Rlby5kZS8KCnRoYW5rcywKICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIG1hcnRpbgoKCj4gLS0tCj4gwqBkcml2ZXJzL2hpZC9oaWQtbGVub3ZvLmMgfCA1MCArKysr
-KysrKysrKysrKysrKysrKysrKysrKystLS0tLS0tLS0tLQo+IC0tCj4gwqAxIGZpbGUgY2hhbmdl
-ZCwgMzQgaW5zZXJ0aW9ucygrKSwgMTYgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvaGlkL2hpZC1sZW5vdm8uYyBiL2RyaXZlcnMvaGlkL2hpZC1sZW5vdm8uYwo+IGluZGV4
-IDQ0NzYzYzBkYTQ0NC4uNjE0MzIwYmZmMzlmIDEwMDY0NAo+IC0tLSBhL2RyaXZlcnMvaGlkL2hp
-ZC1sZW5vdm8uYwo+ICsrKyBiL2RyaXZlcnMvaGlkL2hpZC1sZW5vdm8uYwo+IEBAIC01MjEsNiAr
-NTIxLDE5IEBAIHN0YXRpYyB2b2lkIGxlbm92b19mZWF0dXJlc19zZXRfY3B0a2JkKHN0cnVjdAo+
-IGhpZF9kZXZpY2UgKmhkZXYpCj4gwqDCoMKgwqDCoMKgwqDCoGludCByZXQ7Cj4gwqDCoMKgwqDC
-oMKgwqDCoHN0cnVjdCBsZW5vdm9fZHJ2ZGF0YSAqY3B0a2JkX2RhdGEgPSBoaWRfZ2V0X2RydmRh
-dGEoaGRldik7Cj4gwqAKPiArwqDCoMKgwqDCoMKgwqAvKgo+ICvCoMKgwqDCoMKgwqDCoCAqIFRl
-bGwgdGhlIGtleWJvYXJkIGEgZHJpdmVyIHVuZGVyc3RhbmRzIGl0LCBhbmQgdHVybiBGNywKPiBG
-OSwgRjExIGludG8KPiArwqDCoMKgwqDCoMKgwqAgKiByZWd1bGFyIGtleXMKPiArwqDCoMKgwqDC
-oMKgwqAgKi8KPiArwqDCoMKgwqDCoMKgwqByZXQgPSBsZW5vdm9fc2VuZF9jbWRfY3B0a2JkKGhk
-ZXYsIDB4MDEsIDB4MDMpOwo+ICvCoMKgwqDCoMKgwqDCoGlmIChyZXQpCj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoGhpZF93YXJuKGhkZXYsICJGYWlsZWQgdG8gc3dpdGNoIEY3Lzkv
-MTEgbW9kZTogJWRcbiIsCj4gcmV0KTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgLyogU3dpdGNoIG1p
-ZGRsZSBidXR0b24gdG8gbmF0aXZlIG1vZGUgKi8KPiArwqDCoMKgwqDCoMKgwqByZXQgPSBsZW5v
-dm9fc2VuZF9jbWRfY3B0a2JkKGhkZXYsIDB4MDksIDB4MDEpOwo+ICvCoMKgwqDCoMKgwqDCoGlm
-IChyZXQpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGhpZF93YXJuKGhkZXYsICJG
-YWlsZWQgdG8gc3dpdGNoIG1pZGRsZSBidXR0b246Cj4gJWRcbiIsIHJldCk7Cj4gKwo+IMKgwqDC
-oMKgwqDCoMKgwqByZXQgPSBsZW5vdm9fc2VuZF9jbWRfY3B0a2JkKGhkZXYsIDB4MDUsIGNwdGti
-ZF9kYXRhLQo+ID5mbl9sb2NrKTsKPiDCoMKgwqDCoMKgwqDCoMKgaWYgKHJldCkKPiDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGhpZF9lcnIoaGRldiwgIkZuLWxvY2sgc2V0dGluZyBm
-YWlsZWQ6ICVkXG4iLCByZXQpOwo+IEBAIC0xMTI2LDIyICsxMTM5LDYgQEAgc3RhdGljIGludCBs
-ZW5vdm9fcHJvYmVfY3B0a2JkKHN0cnVjdAo+IGhpZF9kZXZpY2UgKmhkZXYpCj4gwqDCoMKgwqDC
-oMKgwqDCoH0KPiDCoMKgwqDCoMKgwqDCoMKgaGlkX3NldF9kcnZkYXRhKGhkZXYsIGNwdGtiZF9k
-YXRhKTsKPiDCoAo+IC3CoMKgwqDCoMKgwqDCoC8qCj4gLcKgwqDCoMKgwqDCoMKgICogVGVsbCB0
-aGUga2V5Ym9hcmQgYSBkcml2ZXIgdW5kZXJzdGFuZHMgaXQsIGFuZCB0dXJuIEY3LAo+IEY5LCBG
-MTEgaW50bwo+IC3CoMKgwqDCoMKgwqDCoCAqIHJlZ3VsYXIga2V5cyAoQ29tcGFjdCBvbmx5KQo+
-IC3CoMKgwqDCoMKgwqDCoCAqLwo+IC3CoMKgwqDCoMKgwqDCoGlmIChoZGV2LT5wcm9kdWN0ID09
-IFVTQl9ERVZJQ0VfSURfTEVOT1ZPX0NVU0JLQkQgfHwKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-aGRldi0+cHJvZHVjdCA9PSBVU0JfREVWSUNFX0lEX0xFTk9WT19DQlRLQkQpIHsKPiAtwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0ID0gbGVub3ZvX3NlbmRfY21kX2NwdGtiZChoZGV2
-LCAweDAxLCAweDAzKTsKPiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgaWYgKHJldCkK
-PiAtwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGhpZF93YXJu
-KGhkZXYsICJGYWlsZWQgdG8gc3dpdGNoIEY3LzkvMTEKPiBtb2RlOiAlZFxuIiwgcmV0KTsKPiAt
-wqDCoMKgwqDCoMKgwqB9Cj4gLQo+IC3CoMKgwqDCoMKgwqDCoC8qIFN3aXRjaCBtaWRkbGUgYnV0
-dG9uIHRvIG5hdGl2ZSBtb2RlICovCj4gLcKgwqDCoMKgwqDCoMKgcmV0ID0gbGVub3ZvX3NlbmRf
-Y21kX2NwdGtiZChoZGV2LCAweDA5LCAweDAxKTsKPiAtwqDCoMKgwqDCoMKgwqBpZiAocmV0KQo+
-IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBoaWRfd2FybihoZGV2LCAiRmFpbGVkIHRv
-IHN3aXRjaCBtaWRkbGUgYnV0dG9uOgo+ICVkXG4iLCByZXQpOwo+IC0KPiDCoMKgwqDCoMKgwqDC
-oMKgLyogU2V0IGtleWJvYXJkIHNldHRpbmdzIHRvIGtub3duIHN0YXRlICovCj4gwqDCoMKgwqDC
-oMKgwqDCoGNwdGtiZF9kYXRhLT5taWRkbGVidXR0b25fc3RhdGUgPSAwOwo+IMKgwqDCoMKgwqDC
-oMKgwqBjcHRrYmRfZGF0YS0+Zm5fbG9jayA9IHRydWU7Cj4gQEAgLTEyNjQsNiArMTI2MSwyNCBA
-QCBzdGF0aWMgaW50IGxlbm92b19wcm9iZShzdHJ1Y3QgaGlkX2RldmljZQo+ICpoZGV2LAo+IMKg
-wqDCoMKgwqDCoMKgwqByZXR1cm4gcmV0Owo+IMKgfQo+IMKgCj4gKyNpZmRlZiBDT05GSUdfUE0K
-PiArc3RhdGljIGludCBsZW5vdm9fcmVzZXRfcmVzdW1lKHN0cnVjdCBoaWRfZGV2aWNlICpoZGV2
-KQo+ICt7Cj4gK8KgwqDCoMKgwqDCoMKgc3dpdGNoIChoZGV2LT5wcm9kdWN0KSB7Cj4gK8KgwqDC
-oMKgwqDCoMKgY2FzZSBVU0JfREVWSUNFX0lEX0xFTk9WT19DVVNCS0JEOgo+ICvCoMKgwqDCoMKg
-wqDCoGNhc2UgVVNCX0RFVklDRV9JRF9MRU5PVk9fVFBJSVVTQktCRDoKPiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgaWYgKGhkZXYtPnR5cGUgPT0gSElEX1RZUEVfVVNCTU9VU0UpCj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBsZW5vdm9fZmVh
-dHVyZXNfc2V0X2NwdGtiZChoZGV2KTsKPiArCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoGJyZWFrOwo+ICvCoMKgwqDCoMKgwqDCoGRlZmF1bHQ6Cj4gK8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoGJyZWFrOwo+ICvCoMKgwqDCoMKgwqDCoH0KPiArCj4gK8KgwqDCoMKgwqDC
-oMKgcmV0dXJuIDA7Cj4gK30KPiArI2VuZGlmCj4gKwo+IMKgc3RhdGljIHZvaWQgbGVub3ZvX3Jl
-bW92ZV90cGtiZChzdHJ1Y3QgaGlkX2RldmljZSAqaGRldikKPiDCoHsKPiDCoMKgwqDCoMKgwqDC
-oMKgc3RydWN0IGxlbm92b19kcnZkYXRhICpkYXRhX3BvaW50ZXIgPSBoaWRfZ2V0X2RydmRhdGEo
-aGRldik7Cj4gQEAgLTEzODAsNiArMTM5NSw5IEBAIHN0YXRpYyBzdHJ1Y3QgaGlkX2RyaXZlciBs
-ZW5vdm9fZHJpdmVyID0gewo+IMKgwqDCoMKgwqDCoMKgwqAucmF3X2V2ZW50ID0gbGVub3ZvX3Jh
-d19ldmVudCwKPiDCoMKgwqDCoMKgwqDCoMKgLmV2ZW50ID0gbGVub3ZvX2V2ZW50LAo+IMKgwqDC
-oMKgwqDCoMKgwqAucmVwb3J0X2ZpeHVwID0gbGVub3ZvX3JlcG9ydF9maXh1cCwKPiArI2lmZGVm
-IENPTkZJR19QTQo+ICvCoMKgwqDCoMKgwqDCoC5yZXNldF9yZXN1bWUgPSBsZW5vdm9fcmVzZXRf
-cmVzdW1lLAo+ICsjZW5kaWYKPiDCoH07Cj4gwqBtb2R1bGVfaGlkX2RyaXZlcihsZW5vdm9fZHJp
-dmVyKTsKPiDCoAoK
+Hi Greg,
 
+On Mon, Oct 23, 2023 at 12:55:58PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.259 release.
+> There are 123 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
+> Anything received after that time might be too late.
+
+Build test (gcc version 11.3.1 20230511):
+mips: 65 configs -> no failure
+arm: 106 configs -> failed
+arm64: 2 configs -> no failure
+x86_64: 4 configs -> no failure
+alpha allmodconfig -> no failure
+powerpc allmodconfig -> no failure
+riscv allmodconfig -> no failure
+s390 allmodconfig -> no failure
+xtensa allmodconfig -> no failure
+
+Note:
+arm builds are failing with the error:
+drivers/gpio/gpio-vf610.c:251:9: error: 'GPIOCHIP_IRQ_RESOURCE_HELPERS' undeclared here (not in a function)
+  251 |         GPIOCHIP_IRQ_RESOURCE_HELPERS,
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/gpio/gpio-vf610.c:251:9: warning: excess elements in struct initializer
+drivers/gpio/gpio-vf610.c:251:9: note: (near initialization for 'vf610_irqchip')
+drivers/gpio/gpio-vf610.c: In function 'vf610_gpio_probe':
+drivers/gpio/gpio-vf610.c:340:9: error: implicit declaration of function 'gpio_irq_chip_set_chip' [-Werror=implicit-function-declaration]
+  340 |         gpio_irq_chip_set_chip(girq, &vf610_irqchip);
+      |         ^~~~~~~~~~~~~~~~~~~~~~
+
+Boot test:
+x86_64: Booted on my test laptop. No regression.
+x86_64: Booted on qemu. No regression. [1]
+
+[1]. https://openqa.qa.codethink.co.uk/tests/5353
+
+
+Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+
+--
+Regards
+Sudip
