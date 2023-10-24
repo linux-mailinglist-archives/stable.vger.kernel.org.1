@@ -2,122 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 342227D4FAA
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 14:20:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE4EA7D4FD3
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 14:33:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231531AbjJXMUm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 08:20:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35024 "EHLO
+        id S231648AbjJXMdd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 08:33:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231521AbjJXMUi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 08:20:38 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3E6B3
-        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 05:20:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698150036; x=1729686036;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=lYmBzITJOyBGYtHf4xg0RdGKmfdhdZx0HVURRbjhEvY=;
-  b=O0JnyMiVvNdT2KkZYmGnRCi/3vsOo6yMc26NHR5EkoUF9TgC5/JAETgK
-   5SBJM9Dh1WN3kJRfaEECNbwh/FO+wN6lorTb9q7+qAApa17zjkfHtOfPt
-   J6dEG9VfndaonQdziMNYbky8pgqEZh4ngSeXhFuGl77IWo/ePVp/eAqfC
-   XH0O3XuIm856dmuxtlTvWweDX3HB/TwqD0pgQuf0r894lkfjUmScn/ygj
-   yeYy8LfuMt51g0CsIQebVW7dUBVzEW2KSYQTd0Xn/crO/9KDfCNq0oSIS
-   ztm39XCl56iBwwydDwIWDRPy+8mV7useCSYEHOCX8Nv9B85L6U5AxsPLK
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="385937537"
-X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; 
-   d="scan'208";a="385937537"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 05:20:36 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; 
-   d="scan'208";a="6433810"
-Received: from yaminehx-mobl.ger.corp.intel.com (HELO intel.com) ([10.252.33.158])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 05:20:29 -0700
-Date:   Tue, 24 Oct 2023 14:20:33 +0200
-From:   Andi Shyti <andi.shyti@linux.intel.com>
-To:     Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Cc:     intel-gfx@lists.freedesktop.org, stable@vger.kernel.org
-Subject: Re: [Intel-gfx] [PATCH] drm/i915/pmu: Check if pmu is closed before
- stopping event
-Message-ID: <ZTe2ka9rOHQDxs8t@ashyti-mobl2.lan>
-References: <20231020152441.3764850-1-umesh.nerlige.ramappa@intel.com>
+        with ESMTP id S233116AbjJXMdb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 08:33:31 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40253111
+        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 05:33:29 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-53db3811d8fso9228988a12.1
+        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 05:33:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1698150808; x=1698755608; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a+d68ElJXb15txlNQvNv4dpc2clYVoBlH5oUxqTkrhg=;
+        b=v4CwPlmVjoGf+STU+UdvRuBYXIlFCvGPV3W6hScV0bT/LKFe6N2manye//X2QNkEHJ
+         trUSoi5DFfwY21qFcgvlL3vpMSyhKtQoLoN1jX1sqFE6At3Y3BTGvjCR/Zsv8BcOhKqi
+         ldecWwnCkLbYvlVZ4t9X1lY1L4/EMBEol7/jgrcyyLN7Ng51NfyQ/GomSPmO7UtWZZl2
+         ghucLEKWN3V58AI7OmeE87DhbprvnMi1ZEEWc/EezbC2eLsACZtKo7Fx2/RzjGeW8mWa
+         yP8qI2r65a3yMsUPmosoHZyVTspYaXf1HS0GXhrCjCcifSB2+rfdha+cvIpEqJSFVNSQ
+         yCWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698150808; x=1698755608;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a+d68ElJXb15txlNQvNv4dpc2clYVoBlH5oUxqTkrhg=;
+        b=jyRyrafMuM6BY5B6wjAfR7Ki29R4GNFQRy8+mLrwdhiLXDffi2wAvuceErpmgxNCFE
+         FtsZ/HSNQepGZ3ZBUiXb+LDSVKxekIqeoK7e4WpsTZgL1bKxa6RnvMV1cauaYyZRKvR5
+         Ew2ebqXnOd3FFton+3SA4jTMqcNLcwmogS8Cw0QFpxUy9tYfQnwPOu58Rd0cQTFqymQw
+         0d6/YCCSZlxVIB/SN+F+1epAn+eIryUa6XTji0wWEOFvBw2frJujDvXtyuvKf4mdspFD
+         hBg+gt7IM53U6MMdgf8tg28lL8ctHHXdLUlPx18FKwLBMC2MK708uHnZxyWofPtkexN4
+         fjrQ==
+X-Gm-Message-State: AOJu0YwM58QmAKyQ7oGFxg0SfFPTsIqhfKkVrofBNKwDxQyLlzizIz23
+        /dok+aXk47HhCOapc7Ipl2Um8MGX18mNbMcnK/PJMA==
+X-Google-Smtp-Source: AGHT+IFIE9BIMcYN4kQR4ERtaL5CfnISK2mhAZ8gLDndSgRZW3ZOJJxhy0/w+R7raxMOicROhqY26qlwaC+yMCMevAo=
+X-Received: by 2002:a05:6402:430b:b0:53e:264d:be1f with SMTP id
+ m11-20020a056402430b00b0053e264dbe1fmr13478212edc.2.1698150807522; Tue, 24
+ Oct 2023 05:33:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231020152441.3764850-1-umesh.nerlige.ramappa@intel.com>
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20231023104828.488041585@linuxfoundation.org>
+In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
+From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date:   Tue, 24 Oct 2023 21:33:16 +0900
+Message-ID: <CAKL4bV4D4VD=kQuocwjvZxjLd3h6xUCx4mKugDGhY8muxH1gNw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/196] 6.1.60-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Umesh,
+Hi Greg
 
-On Fri, Oct 20, 2023 at 08:24:41AM -0700, Umesh Nerlige Ramappa wrote:
-> When the driver unbinds, pmu is unregistered and i915->uabi_engines is
-> set to RB_ROOT. Due to this, when i915 PMU tries to stop the engine
-> events, it issues a warn_on because engine lookup fails.
-> 
-> All perf hooks are taking care of this using a pmu->closed flag that is
-> set when PMU unregisters. The stop event seems to have been left out.
-> 
-> Check for pmu->closed in pmu_event_stop as well.
-> 
-> Based on discussion here -
-> https://patchwork.freedesktop.org/patch/492079/?series=105790&rev=2
-> 
-> v2: s/is/if/ in commit title
-> v3: Add fixes tag and cc stable
-> 
-> Cc: <stable@vger.kernel.org> # v5.11+
-> Fixes: b00bccb3f0bb ("drm/i915/pmu: Handle PCI unbind")
-> Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-> Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+On Mon, Oct 23, 2023 at 8:20=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.60 release.
+> There are 196 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.60-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-argh! 4th time that this patch has been sent. Please next time
-use:
+6.1.60-rc1 tested.
 
-   git format-patch -v <version number>
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-No need to resend :-)
+Thanks
 
-Andi
-
-> ---
->  drivers/gpu/drm/i915/i915_pmu.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/i915/i915_pmu.c b/drivers/gpu/drm/i915/i915_pmu.c
-> index 108b675088ba..f861863eb7c1 100644
-> --- a/drivers/gpu/drm/i915/i915_pmu.c
-> +++ b/drivers/gpu/drm/i915/i915_pmu.c
-> @@ -831,9 +831,18 @@ static void i915_pmu_event_start(struct perf_event *event, int flags)
->  
->  static void i915_pmu_event_stop(struct perf_event *event, int flags)
->  {
-> +	struct drm_i915_private *i915 =
-> +		container_of(event->pmu, typeof(*i915), pmu.base);
-> +	struct i915_pmu *pmu = &i915->pmu;
-> +
-> +	if (pmu->closed)
-> +		goto out;
-> +
->  	if (flags & PERF_EF_UPDATE)
->  		i915_pmu_event_read(event);
->  	i915_pmu_disable(event);
-> +
-> +out:
->  	event->hw.state = PERF_HES_STOPPED;
->  }
->  
-> -- 
-> 2.38.1
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
