@@ -2,105 +2,175 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B7267D5753
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 18:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83E077D57AB
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 18:12:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344051AbjJXQE4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 12:04:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40110 "EHLO
+        id S234974AbjJXQMp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 12:12:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343834AbjJXQEz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 12:04:55 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56CA3B0;
-        Tue, 24 Oct 2023 09:04:53 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id af79cd13be357-7788fb06997so320377685a.0;
-        Tue, 24 Oct 2023 09:04:53 -0700 (PDT)
+        with ESMTP id S1344167AbjJXQMg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 12:12:36 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D628010DC
+        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 09:12:12 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id 3f1490d57ef6-d9ace5370a0so3686286276.0
+        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 09:12:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698163492; x=1698768292; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Ig+7+uPCUCps59Bni0g2YN72fr9TY5plHFKORuybG5Q=;
-        b=ioN0H65V0Oxa7BtpouZiCYXdEe3GB6O4qaSis5Ezpq73BR5ivkAlwcBDQNW6jOgh5r
-         1D+Xfz2HtkfYg96x/m4Y9+FrWKITRp9YAZfrgaM+ZrWHf/JRBoFxDqVMaFSoZ8En/0gd
-         kfjZ/Lk9W2BRB7VSuXGUAVTFiCi9dOMVHzUMIgGu6ijJ5/toWwQ4avEjGRs/GhzS84hf
-         OJAYNHDJNt91t7ZEDlhbqBJhH8MeRSoF5/xc6SVS+gWigwlfP7MiscT5BHqaelAShKdX
-         9bIWXkUPnDfszhp+t4akWviLEU0am2QxEJh6TQWyyKhW3CAEq9pb43+gO4AQ8w/gIDGP
-         SeGQ==
+        d=linaro.org; s=google; t=1698163931; x=1698768731; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=/pjBUbLx3Wj6CmYiqOhDTL336nEXm92LuAjn2RJuUXA=;
+        b=fB3MCDsolGJfkZXE5b8zs4f5XmqwhLMBgbB63lp+7mMp6sdBnXj0+8fG32rdlNOzED
+         nDHFNuIb4n/gIJJCzocYGTwdtgxCI7PjaTVsDNZ3v14s2WumO6QrZhl2Mhck8tJRXo/Y
+         zsjOOW04UFSUuJ6ADYxYcA72/jt56mREbjTyZi2plqrWuDONU2fkEQPSPyD6AQ4vMZ0D
+         WI7WweU045zlyBPLvk3xpDtdxjGS8nmlxHIdTnBQTI1HjPK/SKzjznzdixWHnhbZ8bwc
+         aIj6n/lQiU3H7WR+lmsKymv4nj7Xmy6A9SAhQvIoobUsfKSwVvRFXhS1nmSbFprCA3Zy
+         MC9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698163492; x=1698768292;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ig+7+uPCUCps59Bni0g2YN72fr9TY5plHFKORuybG5Q=;
-        b=Icaz0+8neGaDDYkSlxxbhQJNrstQWEooH1YjfRRAHi6UU8rD/17eKvzNws2a8mH2hp
-         gkbgQFdhvcSiNV/RvNb5t1SgshDqiYmuEv+EfEmx1SttIWHUNuAPTuifHtTvVIzA7p6I
-         aq39O2LRYlzjYGzdXQsdGPTL/GV5w+o1C6Wnj7xU2BPQFnH69uW9ilPChs1pLoQMjF5z
-         BYYLijnvbVnfuFc59hfeRq7DJfLVKW1G4OYhcPkBkHQxNQcfzfJ3XLbRcbhhAn/tlOrY
-         MjwHAtgF/HTRQOfxsMG2d9QhcmukTFCduYf7FN4Z5wA5J+2sabunGXYP1WbpLvoPQfFJ
-         ao8g==
-X-Gm-Message-State: AOJu0YyVk6aQEhqUF7ScLNadLzky+R7vbfv1Y2vgGoot2TPLsU/VxmUf
-        ipZukzEqOxTP+tzCuKT4uNk=
-X-Google-Smtp-Source: AGHT+IHD9IORUj+giaVfWJ3qnW9pjv2yoTszCb5asRsFB8qN4e+DsALNO3sH3Av3/40jsW6toIqX2Q==
-X-Received: by 2002:a05:620a:4248:b0:775:69b4:b4e6 with SMTP id w8-20020a05620a424800b0077569b4b4e6mr12523329qko.7.1698163492282;
-        Tue, 24 Oct 2023 09:04:52 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id y9-20020a37e309000000b007788dac6b24sm3543683qki.41.2023.10.24.09.04.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Oct 2023 09:04:51 -0700 (PDT)
-Message-ID: <c14c7f3c-ddc1-401b-9866-9d07a1b1ad00@gmail.com>
-Date:   Tue, 24 Oct 2023 09:04:49 -0700
+        d=1e100.net; s=20230601; t=1698163931; x=1698768731;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/pjBUbLx3Wj6CmYiqOhDTL336nEXm92LuAjn2RJuUXA=;
+        b=HsgUbDw8h31Gi3CCN/w5/HwFZAmZIBAZgdqO20C0QEgvePoPOlAVxThRdprsk2xqNX
+         qhfaBouLG1hdoLc2Sv2sYJUzNqKgcU6A4DOHAlUrVffX2834P9wLcb8JHAj/EplOj9ye
+         9K85OBugMByy783sD4qGsdYI/B8LrfDxYaELuh8Sxdt8P2MA4Rmi7anbtIQTHCH9v8Mo
+         3jQQsOHqKXVH0XVDTNA0f63e4CCFLfnoWcfW3ndH4/UFgudR/HKc7a4pQ/XNRsIr2YLT
+         vr1XKJL8CDyjaSHV5liwplLPRxqt4+2nY8wFW/9+DN48kdARebroom/l+RHRwsQU53HF
+         tFcQ==
+X-Gm-Message-State: AOJu0Yx+z5P4ltIJwOzOpdzBMuWuRQCquken4NEKmSewdLf597BBWeJu
+        KJZqE+0rEnplIHSn1U1uGUPdzY5h6etwuswHye0Wig==
+X-Google-Smtp-Source: AGHT+IGTTwt4rHCuJ4w6CclzOwAHuYNSeyL9ErpNapwRYZRld/tKa5wE03Hs0mv9jEAhPtzgvqw2DogicE9JUIqA2Ug=
+X-Received: by 2002:a25:b203:0:b0:da0:50e6:12c5 with SMTP id
+ i3-20020a25b203000000b00da050e612c5mr1524017ybj.62.1698163931147; Tue, 24 Oct
+ 2023 09:12:11 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/135] 5.15.137-rc2 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+References: <20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com>
+ <20231018-msm8909-cpufreq-v2-2-0962df95f654@kernkonzept.com>
+ <CAPDyKFot9=M1ooP_Q1AOgG5o_4DTQ2qsyai1ZdXAzBwf89W4uA@mail.gmail.com>
+ <CAPDyKFr5A-P=UhWs4rUMBWup3pH75WAhcZ56Y2_Sfk3=WfxRCQ@mail.gmail.com>
+ <ZTeyhR7YY7VgWQlU@kernkonzept.com> <CAPDyKFrcV8iJnJ904j1jkx0E8PaOLmiTZ7CKk7EV8qQ71AZdbA@mail.gmail.com>
+ <ZTfBZqBwqskhFydZ@kernkonzept.com>
+In-Reply-To: <ZTfBZqBwqskhFydZ@kernkonzept.com>
+From:   Ulf Hansson <ulf.hansson@linaro.org>
+Date:   Tue, 24 Oct 2023 18:11:34 +0200
+Message-ID: <CAPDyKFooPLCmJeqjhiMm7HRdW5UrEw0yHvGF9fgLvOigsgbWxg@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] cpufreq: qcom-nvmem: Enable virtual power domain devices
+To:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Ilia Lin <ilia.lin@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20231024083327.980887231@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20231024083327.980887231@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/24/23 01:36, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.137 release.
-> There are 135 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 26 Oct 2023 08:32:55 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.137-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, 24 Oct 2023 at 15:07, Stephan Gerhold
+<stephan.gerhold@kernkonzept.com> wrote:
+>
+> On Tue, Oct 24, 2023 at 02:49:32PM +0200, Ulf Hansson wrote:
+> > On Tue, 24 Oct 2023 at 14:03, Stephan Gerhold
+> > <stephan.gerhold@kernkonzept.com> wrote:
+> > >
+> > > On Thu, Oct 19, 2023 at 01:26:19PM +0200, Ulf Hansson wrote:
+> > > > On Thu, 19 Oct 2023 at 12:24, Ulf Hansson <ulf.hansson@linaro.org> wrote:
+> > > > >
+> > > > > On Wed, 18 Oct 2023 at 10:06, Stephan Gerhold
+> > > > > <stephan.gerhold@kernkonzept.com> wrote:
+> > > > > >
+> > > > > > The genpd core caches performance state votes from devices that are
+> > > > > > runtime suspended as of commit 3c5a272202c2 ("PM: domains: Improve
+> > > > > > runtime PM performance state handling"). They get applied once the
+> > > > > > device becomes active again.
+> > > > > >
+> > > > > > To attach the power domains needed by qcom-cpufreq-nvmem the OPP core
+> > > > > > calls genpd_dev_pm_attach_by_id(). This results in "virtual" dummy
+> > > > > > devices that use runtime PM only to control the enable and performance
+> > > > > > state for the attached power domain.
+> > > > > >
+> > > > > > However, at the moment nothing ever resumes the virtual devices created
+> > > > > > for qcom-cpufreq-nvmem. They remain permanently runtime suspended. This
+> > > > > > means that performance state votes made during cpufreq scaling get
+> > > > > > always cached and never applied to the hardware.
+> > > > > >
+> > > > > > Fix this by enabling the devices after attaching them and use
+> > > > > > dev_pm_syscore_device() to ensure the power domains also stay on when
+> > > > > > going to suspend. Since it supplies the CPU we can never turn it off
+> > > > > > from Linux. There are other mechanisms to turn it off when needed,
+> > > > > > usually in the RPM firmware (RPMPD) or the cpuidle path (CPR genpd).
+> > > > >
+> > > > > I believe we discussed using dev_pm_syscore_device() for the previous
+> > > > > version. It's not intended to be used for things like the above.
+> > > > >
+> > > > > Moreover, I was under the impression that it wasn't really needed. In
+> > > > > fact, I would think that this actually breaks things for system
+> > > > > suspend/resume, as in this case the cpr driver's genpd
+> > > > > ->power_on|off() callbacks are no longer getting called due this,
+> > > > > which means that the cpr state machine isn't going to be restored
+> > > > > properly. Or did I get this wrong?
+> > > >
+> > > > BTW, if you really need something like the above, the proper way to do
+> > > > it would instead be to call device_set_awake_path() for the device.
+> > > >
+> > >
+> > > Unfortunately this does not work correctly. When I use
+> > > device_set_awake_path() it does set dev->power.wakeup_path = true.
+> > > However, this flag is cleared again in device_prepare() when entering
+> > > suspend. To me it looks a bit like wakeup_path is not supposed to be set
+> > > directly by drivers? Before and after your commit 8512220c5782 ("PM /
+> > > core: Assign the wakeup_path status flag in __device_prepare()") it
+> > > seems to be internally bound to device_may_wakeup().
+> > >
+> > > It works if I make device_may_wakeup() return true, with
+> > >
+> > >         device_set_wakeup_capable(dev, true);
+> > >         device_wakeup_enable(dev);
+> > >
+> > > but that also allows *disabling* the wakeup from sysfs which doesn't
+> > > really make sense for the CPU.
+> > >
+> > > Any ideas?
+> >
+> > The device_set_awake_path() should be called from a system suspend
+> > callback. So you need to add that callback for the cpufreq driver.
+> >
+> > Sorry, if that wasn't clear.
+> >
+>
+> Hmm, but at the moment I'm calling this on the virtual genpd devices.
+> How would it work for them? I don't have a suspend callback for them.
+>
+> I guess could loop over the virtual devices in the cpufreq driver
+> suspend callback, but is my driver suspend callback really guaranteed to
+> run before the device_prepare() that clears "wakeup_path" on the virtual
+> devices?
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Yes, that's guaranteed. dpm_prepare() (which calls device_prepare())
+is always being executed before dpm_suspend().
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-  --
-Florian
+>
+> Or is this the point where we need device links to make that work?
+> A quick look suggests "wakeup_path" is just propagated to parents but
+> not device links, so I don't think that would help, either.
 
+I don't think we need device-links for this, at least the way things
+are working currently.
+
+Kind regards
+Uffe
