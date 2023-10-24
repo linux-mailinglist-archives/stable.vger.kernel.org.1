@@ -2,113 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FC147D4AE1
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 10:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33F057D4AEE
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 10:52:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233747AbjJXIvZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 04:51:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53290 "EHLO
+        id S233950AbjJXIwd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 04:52:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232462AbjJXIvZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 04:51:25 -0400
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D62110;
-        Tue, 24 Oct 2023 01:51:23 -0700 (PDT)
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-408382da7f0so34818945e9.0;
-        Tue, 24 Oct 2023 01:51:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698137481; x=1698742281; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AeBNyWOSZJ4kGFSxFtfrCpSWWHWhFOJFGqG73cu2x9o=;
-        b=P2m0Tz/n+KLlaaPmPUPS2SLROWU+/o5pG1KlcmsrSV8Zhom7X2LaSZmXr8Z19pBJfy
-         VU1uokbe49Oxns1u/l8nPoGu3P6kAmeC++9NoqH08W0XS0YlB6eVYYuo2prV0UvR0MVD
-         GNGjaxyc+QQr2llvnrTi6J2XeRW2iqZIzdA12mn1hg04CAyKJY0ML4nZYXfWz8tqiwHH
-         ggP8+/SA707OJ/mUOji/oJwofHl+AORWSBEsMB0RFD9fI/0+yvgaKcPEVWj4KOMGB/Bl
-         2LrIf+2E3UNCAGFNMxl0SN0LWjbjX2R80pX96UKzNTZmrg5tvZT0YXIqJGKaxn2rT2So
-         myrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698137481; x=1698742281;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AeBNyWOSZJ4kGFSxFtfrCpSWWHWhFOJFGqG73cu2x9o=;
-        b=sSPW4Rkq40OcZ5QHJ2iPQN12QBHx+xMcnXLqx+t65QetDRwD84k7uLWZRJ9ajAZPWN
-         aNBIAlF5Ej1fsZAczH53Af621QhDnPsuNwVW5F4rPZxRBKqvrOw0ihWD6ER9JoowLnvv
-         gDjyeBzTaTv8+7avBXszi+HozewRD8e4Cp3/Zhgn0nqO2Y1YvKo0RSN3b2isysbV2vH6
-         q4QlZHBKyRmAYGL49T81iMRP+gFXeoaH/Fj744KFWGimpstYbDNDbO0B+FpDFNvcPpwb
-         v93aLtSldVamO16iKMTWtyCq01LGLog6I6XebF0UyE98zcvF99YB7eJmquUTbVHLBtYT
-         CVfA==
-X-Gm-Message-State: AOJu0YyH/O4tP8XCejU+BTWztsobw2zfwg9k0qB5vDuz1ftjTmdGw4KN
-        bTlS5sdTVtvTsmfRaNbRvJI=
-X-Google-Smtp-Source: AGHT+IE9w6D63XEl5hV9qFn78ltfdOdyg1FtcX+URY3X/3j2HmjScxhbqOllBeM708t69ULHBZJXfQ==
-X-Received: by 2002:a05:600c:3d87:b0:3fe:1232:93fa with SMTP id bi7-20020a05600c3d8700b003fe123293famr9195220wmb.22.1698137481203;
-        Tue, 24 Oct 2023 01:51:21 -0700 (PDT)
-Received: from debian ([63.135.72.41])
-        by smtp.gmail.com with ESMTPSA id i18-20020a05600c481200b00407b93d8085sm15948043wmo.27.2023.10.24.01.51.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Oct 2023 01:51:20 -0700 (PDT)
-Date:   Tue, 24 Oct 2023 09:51:19 +0100
-From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 000/196] 6.1.60-rc1 review
-Message-ID: <ZTeFh0eCFm-F4A1s@debian>
-References: <20231023104828.488041585@linuxfoundation.org>
+        with ESMTP id S233903AbjJXIwc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 04:52:32 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6C5128;
+        Tue, 24 Oct 2023 01:52:29 -0700 (PDT)
+Date:   Tue, 24 Oct 2023 08:52:27 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1698137547;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6mc2ImTGynSFGgCS40b/9mff9y6G7SrJMB/hVyO1Y/0=;
+        b=yNs2o+s7Q1vyhVddEyHUUTuzpl/CtVi1bapzZqwPgm4o/tpIaElFfDhgexdKQy+Y3k3Knw
+        g11mynAPTR4zs3PjA3Nms1cz97sHrNfoo0MxCeE/QuM5J3W3pFR8KYs1eiwNqV9uQoelkV
+        LK0oIh96kmkVLtMhaVF14fLplkVN96nForL9eVaY3wuiRoUz9Fc2I4d+vKJ0Zpmm9yMi+F
+        fUuCrOu++JNQD1L8ucvrfRg3v/TClJmuMh8LnL1WaVpVJFYGpStdL3RD4mvWFKszDDOC4D
+        kxLg/1W3NiITvYXfIXb0BH61/xJcmQGAEVBa3LrWsOgqVG3ujy18SOAdiV9tNg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1698137547;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=6mc2ImTGynSFGgCS40b/9mff9y6G7SrJMB/hVyO1Y/0=;
+        b=LkCkGGNMjmk2f1j/fJUdiiZy/WMpB6+Zi/YMpSjbCAlEYVGplMmZ/PnkcLvrvyyY5hAX7d
+        0MX6QZa2iZMgnwCQ==
+From:   "tip-bot2 for Hao Jia" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: sched/core] sched/core: Fix RQCF_ACT_SKIP leak
+Cc:     Igor Raits <igor.raits@gmail.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Hao Jia <jiahao.os@bytedance.com>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
+References: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Message-ID: <169813754711.3135.4535193844351356313.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+The following commit has been merged into the sched/core branch of tip:
 
-On Mon, Oct 23, 2023 at 12:54:25PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.60 release.
-> There are 196 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
-> Anything received after that time might be too late.
+Commit-ID:     5ebde09d91707a4a9bec1e3d213e3c12ffde348f
+Gitweb:        https://git.kernel.org/tip/5ebde09d91707a4a9bec1e3d213e3c12ffde348f
+Author:        Hao Jia <jiahao.os@bytedance.com>
+AuthorDate:    Thu, 12 Oct 2023 17:00:03 +08:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 24 Oct 2023 10:38:42 +02:00
 
-Build test (gcc version 13.2.1 20230827):
-mips: 52 configs -> no failure
-arm: 100 configs -> no failure
-arm64: 3 configs -> no failure
-x86_64: 4 configs -> no failure
-alpha allmodconfig -> no failure
-csky allmodconfig -> no failure
-powerpc allmodconfig -> no failure
-riscv allmodconfig -> no failure
-s390 allmodconfig -> no failure
-xtensa allmodconfig -> no failure
+sched/core: Fix RQCF_ACT_SKIP leak
 
-Boot test:
-x86_64: Booted on my test laptop. No regression.
-x86_64: Booted on qemu. No regression. [1]
-arm64: Booted on rpi4b (4GB model). No regression. [2]
-mips: Booted on ci20 board. No regression. [3]
+Igor Raits and Bagas Sanjaya report a RQCF_ACT_SKIP leak warning.
 
-[1]. https://openqa.qa.codethink.co.uk/tests/5361
-[2]. https://openqa.qa.codethink.co.uk/tests/5363
-[3]. https://openqa.qa.codethink.co.uk/tests/5372
+This warning may be triggered in the following situations:
 
-Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+    CPU0                                      CPU1
 
--- 
-Regards
-Sudip
+__schedule()
+  *rq->clock_update_flags <<= 1;*   unregister_fair_sched_group()
+  pick_next_task_fair+0x4a/0x410      destroy_cfs_bandwidth()
+    newidle_balance+0x115/0x3e0       for_each_possible_cpu(i) *i=0*
+      rq_unpin_lock(this_rq, rf)      __cfsb_csd_unthrottle()
+      raw_spin_rq_unlock(this_rq)
+                                      rq_lock(*CPU0_rq*, &rf)
+                                      rq_clock_start_loop_update()
+                                      rq->clock_update_flags & RQCF_ACT_SKIP <--
+      raw_spin_rq_lock(this_rq)
+
+The purpose of RQCF_ACT_SKIP is to skip the update rq clock,
+but the update is very early in __schedule(), but we clear
+RQCF_*_SKIP very late, causing it to span that gap above
+and triggering this warning.
+
+In __schedule() we can clear the RQCF_*_SKIP flag immediately
+after update_rq_clock() to avoid this RQCF_ACT_SKIP leak warning.
+And set rq->clock_update_flags to RQCF_UPDATED to avoid
+rq->clock_update_flags < RQCF_ACT_SKIP warning that may be triggered later.
+
+Fixes: ebb83d84e49b ("sched/core: Avoid multiple calling update_rq_clock() in __cfsb_csd_unthrottle()")
+Closes: https://lore.kernel.org/all/20230913082424.73252-1-jiahao.os@bytedance.com
+Reported-by: Igor Raits <igor.raits@gmail.com>
+Reported-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Hao Jia <jiahao.os@bytedance.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com
+---
+ kernel/sched/core.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index 264c2eb..dc724f5 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -5361,8 +5361,6 @@ context_switch(struct rq *rq, struct task_struct *prev,
+ 	/* switch_mm_cid() requires the memory barriers above. */
+ 	switch_mm_cid(rq, prev, next);
+ 
+-	rq->clock_update_flags &= ~(RQCF_ACT_SKIP|RQCF_REQ_SKIP);
+-
+ 	prepare_lock_switch(rq, next, rf);
+ 
+ 	/* Here we just switch the register state and the stack. */
+@@ -6600,6 +6598,7 @@ static void __sched notrace __schedule(unsigned int sched_mode)
+ 	/* Promote REQ to ACT */
+ 	rq->clock_update_flags <<= 1;
+ 	update_rq_clock(rq);
++	rq->clock_update_flags = RQCF_UPDATED;
+ 
+ 	switch_count = &prev->nivcsw;
+ 
+@@ -6679,8 +6678,6 @@ static void __sched notrace __schedule(unsigned int sched_mode)
+ 		/* Also unlocks the rq: */
+ 		rq = context_switch(rq, prev, next, &rf);
+ 	} else {
+-		rq->clock_update_flags &= ~(RQCF_ACT_SKIP|RQCF_REQ_SKIP);
+-
+ 		rq_unpin_lock(rq, &rf);
+ 		__balance_callbacks(rq);
+ 		raw_spin_rq_unlock_irq(rq);
