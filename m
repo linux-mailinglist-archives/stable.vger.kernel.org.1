@@ -2,210 +2,192 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 130097D5A81
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 20:30:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E2CA7D5AB2
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 20:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344135AbjJXSac (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 14:30:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59204 "EHLO
+        id S1344185AbjJXShq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 14:37:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344125AbjJXSab (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 14:30:31 -0400
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18D4C10C9;
-        Tue, 24 Oct 2023 11:30:29 -0700 (PDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-507ac66a969so6468751e87.3;
-        Tue, 24 Oct 2023 11:30:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698172227; x=1698777027; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GwK66vaLYJmpizm1zY3v8spBF+jasgo//BX2lOJD5Qk=;
-        b=jIjnvbozRZrYd8m+v2AkQG1HkItzXf2xbj6hOaLf7JgvexrAjSPlpw9hNUG+UsxSeD
-         IGAccS+4/xvLPlr0WLyXMOzOlEi8UEC1zctPQP1Dx6HlUfj19+O7BY70eosKXzg2AdS0
-         75iJRTzcVvynr4i1wqyp4IOfmcGQss9XPTG6fjNmcg+Ah1Dv7HRPzTMMoeJxXbLQKm7F
-         qnbrMBGjvfGY2orIuHTI0qjVK2k2EGyn1QLMpvciY3bf2pvt2P07dxG1LKKPGBcX1Ybp
-         ZEmMuHfyj2iv1DceFYK+S5/l07vGCSBdlFQiUjX+HN4Anabvynbilq9bsW0kVTyDfSK8
-         nEbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698172227; x=1698777027;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GwK66vaLYJmpizm1zY3v8spBF+jasgo//BX2lOJD5Qk=;
-        b=VgNaJ5qQe3H6xdB7CvlnXYSbsBSwsoKy4cOpJfORIsO9n8BywAMmqw0PYqjWAP1Ruz
-         op+A9JWebZVqL6OGcB1Knqt+LLY4r1QDnCldAWHzzT2Rcss4WcQt71CNEPbckudRejxG
-         Xk5KJH/G59t8aWJ2H+vZZe8nLDLSeIe5YwI1sU2c7ekkGf+uoBOUPyQnJJoNeuSqPsnR
-         BerjGzg2g+dJHRnBJMQBMqT1CIwoYQTNVntJ8VY/iFP/PWXi/vSo1papbDjSZxpYyAUk
-         mIMx8wR+I0D4A82HWHkOq6OESL92iJkKEG2x/kwTsG+hNYMZseQJ7SYRo3dX9oJ/B4g/
-         tXuQ==
-X-Gm-Message-State: AOJu0YzV/7qKJ0dyDqA2H777AyJzGIGSAeZqEDINs5q4MwdX/kVJHs1o
-        +UwIUXZlU9X8slUchAUwEDA=
-X-Google-Smtp-Source: AGHT+IHAPfLa2V2mbjVo7qlWBj0Fhs3PJTkgKcGdwpEUak2ub1bqU3A8/lk1Y8BFaoqozbq1PyAC0A==
-X-Received: by 2002:ac2:5308:0:b0:500:a3be:1ab6 with SMTP id c8-20020ac25308000000b00500a3be1ab6mr9345538lfh.6.1698172227103;
-        Tue, 24 Oct 2023 11:30:27 -0700 (PDT)
-Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.googlemail.com with ESMTPSA id l22-20020a05600c4f1600b003fef5e76f2csm1150398wmq.0.2023.10.24.11.30.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Oct 2023 11:30:26 -0700 (PDT)
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Christian Marangi <ansuelsmth@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Jonghwa Lee <jonghwa3.lee@samsung.com>,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Subject: [PATCH 2/3] PM / devfreq: Fix buffer overflow in trans_stat_show
-Date:   Tue, 24 Oct 2023 20:30:15 +0200
-Message-Id: <20231024183016.14648-2-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231024183016.14648-1-ansuelsmth@gmail.com>
-References: <20231024183016.14648-1-ansuelsmth@gmail.com>
+        with ESMTP id S1344151AbjJXShp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 14:37:45 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.166])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F0FF10DC
+        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 11:37:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1698172477; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=n2YzjC4uF+3fBqX14R4lLu+X+5Efv0qpsvwUCqSQ5Nm7YPUGYLPqUITFSHJW7FkQ0k
+    GuMQ4cKlXw7Zz+L/XZE9UMzJliHoqVj4QJjGdW4RkgWai9kIGmC3fPK00ucOmStJsFQq
+    9rYVU3sqWncPo6HUgsf+lDm1+pgolQxg5jKGqTmnImJ1IGZXLaOMM5bG3sTVeximjqHP
+    ZWcWJtU2vtnF4xKJ5YWkZQlgMO2vuE+ERWBv25yYkh28VOdiDEBaCaaOEsA4a2PcADBd
+    Jd9s7Gvab4Ba/FUzYy7eyZoTjpAlgZ53y7iVo1STMx5sZnhlb0hfiKF5Xikq03AQQaKt
+    1h1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1698172477;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=irgnW47MlS2Q3xCqUkAQJFUtWndQeeYVGNA2HNDBznw=;
+    b=htDyC3LI/QMBTb4e6hNBoO16brfn6hnbgdy27ra5QOQKLonO7pbmSOz20zPuV1Z2Gl
+    kXT6uApptfQyEBJMGTrVeUUcd/iagc7ahZOjTwiQdxQNMsgB1NpybTMPDtlkmEZprm0i
+    7Xd20Ah3fj9UqfYtktdejX6VlmRIi4CTd24uLj19Y193Ds0g+fpAujzxZ6+gS6yn32fK
+    ax3W3QefYRPLWZ6qLP69xyBU/YhpLYPG0BY5sogEWy7DBvAdzrKsRN3rU8cYrHx+BoSn
+    8+TFRw+AmTlgXaapSUGL5DvzzetdJhA/79BTmA2x/fRPkesqewIA1YbUwOL4pc85yUXu
+    ltjA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1698172477;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=irgnW47MlS2Q3xCqUkAQJFUtWndQeeYVGNA2HNDBznw=;
+    b=OdrR0WPFKYTYeB5dz4ycnzOkkUtXvJ9Bcbs7DimiXV6JbHYYWeihh3HghWJmqk7yHo
+    esZay3B1KtEz1x3hmp97mposiQWNRWEuYXEPfI8oYB9R2pmUcgSCw3XrdO0kIn4nuu7o
+    SteVFMngkAe3mqnhs2dM6zTiT2zqlKna35TgA7uos8AZGpw/5RMwMBxrwkhMFRGn/Nx/
+    Tiy98B/B0BiC3dxBBk+OuU9LFpQW1fWn1QPMIRL/2xlRKWg9tXBy0zxj1Mka/Kj0hUDH
+    83JonFJUAUt3zyKQswc8//xsUgvJdFTDRmsU1FROCQBmtbAr+ROEwp2JSumn2CU8Yzgd
+    UxkA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1698172477;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=irgnW47MlS2Q3xCqUkAQJFUtWndQeeYVGNA2HNDBznw=;
+    b=Fm0bmcYHoP7YPaHSMTfdNXh3NY98cRR6cQNaDtkHenvcktzGjtYnnCWq6mnGlb2l0Y
+    KSwpyMwprv7OSAoVV4AQ==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjG14FZxedJy6qgO1qCHSa1GLptZHusl129OHEdFq1USEbMhpqw=="
+Received: from [IPV6:2a00:6020:4a8e:5004::923]
+    by smtp.strato.de (RZmta 49.9.0 AUTH)
+    with ESMTPSA id K48ab2z9OIYaTOF
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 24 Oct 2023 20:34:36 +0200 (CEST)
+Message-ID: <b4a1bdc2-54f8-428a-a82a-0308a4bc7f92@hartkopp.net>
+Date:   Tue, 24 Oct 2023 20:34:30 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 043/131] can: isotp: isotp_sendmsg(): fix TX state
+ detection and wait behavior
+To:     Lukas Magel <lukas.magel@posteo.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     patches@lists.linux.dev,
+        Maxime Jayat <maxime.jayat@mobile-devices.fr>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+        Michal Sojka <michal.sojka@cvut.cz>
+References: <20231016084000.050926073@linuxfoundation.org>
+ <20231016084001.142952122@linuxfoundation.org>
+Content-Language: en-US
+From:   Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <20231016084001.142952122@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Fix buffer overflow in trans_stat_show().
+Hello Lukas, hello Greg,
 
-Convert simple snprintf to the more secure scnprintf with size of
-PAGE_SIZE.
+this patch fixed the issue introduced with
 
-Add condition checking if we are exceeding PAGE_SIZE and exit early from
-loop. Also add at the end a warning that we exceeded PAGE_SIZE and that
-stats is disabled.
+79e19fa79cb5 ("can: isotp: isotp_ops: fix poll() to not report false 
+EPOLLOUT events")
 
-Return -EFBIG in the case where we don't have enough space to write the
-full transition table.
+for Linux 6.1 and Linux 6.5 which is fine.
 
-Also document in the ABI that this function can return -EFBIG error.
+Unfortunately the problematic patch has also been applied to 5.15 and 
+5.10 (referencing another upstream commit as it needed a backport).
 
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218041
-Fixes: e552bbaf5b98 ("PM / devfreq: Add sysfs node for representing frequency transition information.")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- Documentation/ABI/testing/sysfs-class-devfreq |  3 +
- drivers/devfreq/devfreq.c                     | 57 +++++++++++++------
- 2 files changed, 42 insertions(+), 18 deletions(-)
+@Lukas: The 5.x code is much more similar to the latest code, so would 
+it probably fix the issue to remove the "wq_has_sleeper(&so->wait)" 
+condition?
 
-diff --git a/Documentation/ABI/testing/sysfs-class-devfreq b/Documentation/ABI/testing/sysfs-class-devfreq
-index 5e6b74f30406..1e7e0bb4c14e 100644
---- a/Documentation/ABI/testing/sysfs-class-devfreq
-+++ b/Documentation/ABI/testing/sysfs-class-devfreq
-@@ -52,6 +52,9 @@ Description:
- 
- 			echo 0 > /sys/class/devfreq/.../trans_stat
- 
-+		If the transition table is bigger than PAGE_SIZE, reading
-+		this will return an -EFBIG error.
-+
- What:		/sys/class/devfreq/.../available_frequencies
- Date:		October 2012
- Contact:	Nishanth Menon <nm@ti.com>
-diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
-index 474d81831ad3..81d9df89dde6 100644
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -1688,7 +1688,7 @@ static ssize_t trans_stat_show(struct device *dev,
- 			       struct device_attribute *attr, char *buf)
- {
- 	struct devfreq *df = to_devfreq(dev);
--	ssize_t len;
-+	ssize_t len = 0;
- 	int i, j;
- 	unsigned int max_state;
- 
-@@ -1697,7 +1697,7 @@ static ssize_t trans_stat_show(struct device *dev,
- 	max_state = df->max_state;
- 
- 	if (max_state == 0)
--		return sprintf(buf, "Not Supported.\n");
-+		return scnprintf(buf, PAGE_SIZE, "Not Supported.\n");
- 
- 	mutex_lock(&df->lock);
- 	if (!df->stop_polling &&
-@@ -1707,31 +1707,52 @@ static ssize_t trans_stat_show(struct device *dev,
- 	}
- 	mutex_unlock(&df->lock);
- 
--	len = sprintf(buf, "     From  :   To\n");
--	len += sprintf(buf + len, "           :");
--	for (i = 0; i < max_state; i++)
--		len += sprintf(buf + len, "%10lu",
--				df->freq_table[i]);
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "     From  :   To\n");
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "           :");
-+	for (i = 0; i < max_state; i++) {
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu",
-+				 df->freq_table[i]);
-+	}
-+	if (len >= PAGE_SIZE - 1)
-+		return PAGE_SIZE - 1;
- 
--	len += sprintf(buf + len, "   time(ms)\n");
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "   time(ms)\n");
- 
- 	for (i = 0; i < max_state; i++) {
-+		if (len >= PAGE_SIZE - 1)
-+			break;
- 		if (df->freq_table[i] == df->previous_freq)
--			len += sprintf(buf + len, "*");
-+			len += scnprintf(buf + len, PAGE_SIZE - len, "*");
- 		else
--			len += sprintf(buf + len, " ");
-+			len += scnprintf(buf + len, PAGE_SIZE - len, " ");
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu:",
-+				 df->freq_table[i]);
-+		for (j = 0; j < max_state; j++) {
-+			if (len >= PAGE_SIZE - 1)
-+				break;
-+			len += scnprintf(buf + len, PAGE_SIZE - len, "%10u",
-+					 df->stats.trans_table[(i * max_state) + j]);
-+		}
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10llu\n", (u64)
-+				 jiffies64_to_msecs(df->stats.time_in_state[i]));
-+	}
- 
--		len += sprintf(buf + len, "%10lu:", df->freq_table[i]);
--		for (j = 0; j < max_state; j++)
--			len += sprintf(buf + len, "%10u",
--				df->stats.trans_table[(i * max_state) + j]);
-+	if (len < PAGE_SIZE - 1)
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "Total transition : %u\n",
-+				 df->stats.total_trans);
- 
--		len += sprintf(buf + len, "%10llu\n", (u64)
--			jiffies64_to_msecs(df->stats.time_in_state[i]));
-+	if (len >= PAGE_SIZE - 1) {
-+		pr_warn_once("devfreq transition table exceeds PAGE_SIZE. Disabling\n");
-+		return -EFBIG;
- 	}
- 
--	len += sprintf(buf + len, "Total transition : %u\n",
--					df->stats.total_trans);
- 	return len;
- }
- 
--- 
-2.40.1
+@Greg: I double checked the changes and fixes from the latest 6.6 kernel 
+compared to the 5.10 when isotp.c was introduced in the mainline kernel.
+Would it be ok, to "backport" the latest 6.6 code to the 5.x LTS trees?
+It really is the same isotp code but only some kernel API functions and 
+names have been changed.
 
+Best regards,
+Oliver
+
+On 16.10.23 10:40, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Lukas Magel <lukas.magel@posteo.net>
+> 
+> [ Upstream commit d9c2ba65e651467de739324d978b04ed8729f483 ]
+> 
+> With patch [1], isotp_poll was updated to also queue the poller in the
+> so->wait queue, which is used for send state changes. Since the queue
+> now also contains polling tasks that are not interested in sending, the
+> queue fill state can no longer be used as an indication of send
+> readiness. As a consequence, nonblocking writes can lead to a race and
+> lock-up of the socket if there is a second task polling the socket in
+> parallel.
+> 
+> With this patch, isotp_sendmsg does not consult wq_has_sleepers but
+> instead tries to atomically set so->tx.state and waits on so->wait if it
+> is unable to do so. This behavior is in alignment with isotp_poll, which
+> also checks so->tx.state to determine send readiness.
+> 
+> V2:
+> - Revert direct exit to goto err_event_drop
+> 
+> [1] https://lore.kernel.org/all/20230331125511.372783-1-michal.sojka@cvut.cz
+> 
+> Reported-by: Maxime Jayat <maxime.jayat@mobile-devices.fr>
+> Closes: https://lore.kernel.org/linux-can/11328958-453f-447f-9af8-3b5824dfb041@munic.io/
+> Signed-off-by: Lukas Magel <lukas.magel@posteo.net>
+> Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+> Fixes: 79e19fa79cb5 ("can: isotp: isotp_ops: fix poll() to not report false EPOLLOUT events")
+> Link: https://github.com/pylessard/python-udsoncan/issues/178#issuecomment-1743786590
+> Link: https://lore.kernel.org/all/20230827092205.7908-1-lukas.magel@posteo.net
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   net/can/isotp.c | 19 ++++++++-----------
+>   1 file changed, 8 insertions(+), 11 deletions(-)
+> 
+> diff --git a/net/can/isotp.c b/net/can/isotp.c
+> index 8c97f4061ffd7..545889935d39c 100644
+> --- a/net/can/isotp.c
+> +++ b/net/can/isotp.c
+> @@ -925,21 +925,18 @@ static int isotp_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+>   	if (!so->bound || so->tx.state == ISOTP_SHUTDOWN)
+>   		return -EADDRNOTAVAIL;
+>   
+> -wait_free_buffer:
+> -	/* we do not support multiple buffers - for now */
+> -	if (wq_has_sleeper(&so->wait) && (msg->msg_flags & MSG_DONTWAIT))
+> -		return -EAGAIN;
+> +	while (cmpxchg(&so->tx.state, ISOTP_IDLE, ISOTP_SENDING) != ISOTP_IDLE) {
+> +		/* we do not support multiple buffers - for now */
+> +		if (msg->msg_flags & MSG_DONTWAIT)
+> +			return -EAGAIN;
+>   
+> -	/* wait for complete transmission of current pdu */
+> -	err = wait_event_interruptible(so->wait, so->tx.state == ISOTP_IDLE);
+> -	if (err)
+> -		goto err_event_drop;
+> -
+> -	if (cmpxchg(&so->tx.state, ISOTP_IDLE, ISOTP_SENDING) != ISOTP_IDLE) {
+>   		if (so->tx.state == ISOTP_SHUTDOWN)
+>   			return -EADDRNOTAVAIL;
+>   
+> -		goto wait_free_buffer;
+> +		/* wait for complete transmission of current pdu */
+> +		err = wait_event_interruptible(so->wait, so->tx.state == ISOTP_IDLE);
+> +		if (err)
+> +			goto err_event_drop;
+>   	}
+>   
+>   	if (!size || size > MAX_MSG_LENGTH) {
