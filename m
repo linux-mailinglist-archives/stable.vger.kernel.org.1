@@ -2,96 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6CC57D5A39
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 20:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 246A27D5A3B
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 20:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343888AbjJXSMZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 14:12:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50620 "EHLO
+        id S1344093AbjJXSMu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 14:12:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344093AbjJXSMZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 14:12:25 -0400
-Received: from mail-yw1-x1136.google.com (mail-yw1-x1136.google.com [IPv6:2607:f8b0:4864:20::1136])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13BC410DC;
-        Tue, 24 Oct 2023 11:12:23 -0700 (PDT)
-Received: by mail-yw1-x1136.google.com with SMTP id 00721157ae682-5a7c7262d5eso49217577b3.1;
-        Tue, 24 Oct 2023 11:12:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698171142; x=1698775942; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E3EYlEUXN/TtJ8i/q/rreox/HAhcUMuzowMifNS8GMc=;
-        b=PZeMIXTGCQAsiMdUocr01G9sueyIrXDHTeANjs9cFU6bxTz/gKTBlyfLdL6XvwrpxE
-         PYBlmgMoUwxUQMzLviveiBPWXvxfLAhnwBzrjbRLcHOMC6toJYYAij9+Y+4XDP09xLg/
-         gcUfqJG/zEOlnMZH32u/jpyXvx8t5IKt05dfL5+padiIhleqHAZPDbB55SNRhC+gAxXf
-         meIYJ/pYdulW+t5JVCl6wjq65xR0saiG8StbnlqbKGxhSuRuP0IzORUijmlXGPyOaLbn
-         urEbpcz15vWbR6KB+b7lywGmK1BVv8EkZQIiXzfoK2frvQZnCO232W3XjOl8Co7RForE
-         9L8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698171142; x=1698775942;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E3EYlEUXN/TtJ8i/q/rreox/HAhcUMuzowMifNS8GMc=;
-        b=WHNwb5jEgzynM2bJ4MJwCkA7pQOUVOco+cy0OScaBvf1xzb/iYC30uVtRlDYciZLij
-         Gtw7yjZrSTcXFAAdn8z+v9rb9ozRXateYDlkEhfCWPxrs1F3dLQQV7rpBvk9ZuMra0SA
-         Z36hzQWnH+VKHt7cBuIkCv8gXaSW6nfI1YK6L1gNbLioegg/BCtllcWxWPsgddEJpL/m
-         wIeKBpjRwYPrkkZkPFFjdzkVQuRGW855yn8FoXqOlsFrPwCSxnXqyIRhf8aVgSAwBtN/
-         vb0D/bww+8oIurMgI2E2sGtkvwySG9l80EmgC6EVJh8jmCY7xZ6yYdIJXjdnOLs39qTh
-         V1Fw==
-X-Gm-Message-State: AOJu0YzrhWVNhKKsu2kAg6bOko2b8JiN8szZZwHv7Zli/6WoQLNWETUz
-        VAPevyIHIq323Upj1quignU=
-X-Google-Smtp-Source: AGHT+IGOfSgpOJ9UZkmStpd+Lyqgg4laPuyKw/q+P0QvkoKNB+/BPcz58iI8PlfdndlRRhfF14/lZA==
-X-Received: by 2002:a81:8415:0:b0:5a7:dad7:61dd with SMTP id u21-20020a818415000000b005a7dad761ddmr14071882ywf.20.1698171142163;
-        Tue, 24 Oct 2023 11:12:22 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id o188-20020a8173c5000000b005a7dd6b7eefsm4245315ywc.66.2023.10.24.11.12.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Oct 2023 11:12:21 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 24 Oct 2023 11:12:20 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.5 000/241] 6.5.9-rc1 review
-Message-ID: <458d7cf1-3e6d-467a-be84-5053f730533c@roeck-us.net>
-References: <20231023104833.832874523@linuxfoundation.org>
+        with ESMTP id S1344099AbjJXSMr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 14:12:47 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD8D110D4
+        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 11:12:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7E4C433C8;
+        Tue, 24 Oct 2023 18:12:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1698171165;
+        bh=CMEc/k93CnBJjRjqaUC3AM7SntceEQlg2PsE+PtOh+I=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iTyvjis5MbmJRPk5QcNVts7cJAgLI/550EfntDPl2nWFriuq+rGp+DW+/iq0MAh/3
+         I4RM08YOPh9vcPXMXlXcj8HSef3PGcK3NqQgFv0LqC8HQsJ6mqWe6iqfV3w9gLPnT3
+         2I5He2D++CZ9aJH4mLA8Owuw1UAeyYg2d0iE9Us0=
+Date:   Tue, 24 Oct 2023 20:12:42 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     John Sperbeck <jsperbeck@google.com>
+Cc:     bp@alien8.de, jpoimboe@kernel.org, patches@lists.linux.dev,
+        peterz@infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH 5.10 134/135] objtool/x86: Fixup frame-pointer vs rethunk
+Message-ID: <2023102428-implicate-predict-0966@gregkh>
+References: <20230824170617.074557800@linuxfoundation.org>
+ <20230824170623.040455914@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231023104833.832874523@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230824170623.040455914@linuxfoundation.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Oct 23, 2023 at 12:53:06PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.9 release.
-> There are 241 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Oct 24, 2023 at 05:47:54PM +0000, John Sperbeck wrote:
+> > 5.10-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Peter Zijlstra <peterz@infradead.org>
+> > 
+> > commit dbf46008775516f7f25c95b7760041c286299783 upstream.
+> > 
+> > For stack-validation of a frame-pointer build, objtool validates that
+> > every CALL instruction is preceded by a frame-setup. The new SRSO
+> > return thunks violate this with their RSB stuffing trickery.
+> > 
+> > Extend the __fentry__ exception to also cover the embedded_insn case
+> > used for this. This cures:
+> > 
+> >   vmlinux.o: warning: objtool: srso_untrain_ret+0xd: call without frame pointer save/setup
+> > 
+> > Fixes: 4ae68b26c3ab ("objtool/x86: Fix SRSO mess")
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> > Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> > Link: https://lore.kernel.org/r/20230816115921.GH980931@hirez.programming.kicks-ass.net
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  tools/objtool/check.c |   17 +++++++++++------
+> >  1 file changed, 11 insertions(+), 6 deletions(-)
+> > 
+> > --- a/tools/objtool/check.c
+> > +++ b/tools/objtool/check.c
+> > @@ -2079,12 +2079,17 @@ static int decode_sections(struct objtoo
+> >  	return 0;
+> >  }
+> >  
+> > -static bool is_fentry_call(struct instruction *insn)
+> > +static bool is_special_call(struct instruction *insn)
+> >  {
+> > -	if (insn->type == INSN_CALL &&
+> > -	    insn->call_dest &&
+> > -	    insn->call_dest->fentry)
+> > -		return true;
+> > +	if (insn->type == INSN_CALL) {
+> > +		struct symbol *dest = insn->call_dest;
+> > +
+> > +		if (!dest)
+> > +			return false;
+> > +
+> > +		if (dest->fentry)
+> > +			return true;
+> > +	}
+> >  
+> >  	return false;
+> >  }
+> > @@ -2958,7 +2963,7 @@ static int validate_branch(struct objtoo
+> >  			if (ret)
+> >  				return ret;
+> >  
+> > -			if (!no_fp && func && !is_fentry_call(insn) &&
+> > +			if (!no_fp && func && !is_special_call(insn) &&
+> >  			    !has_valid_stack_frame(&state)) {
+> >  				WARN_FUNC("call without frame pointer save/setup",
+> >  					  sec, insn->offset);
+> > 
+> > 
+> > 
 > 
-> Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
-> Anything received after that time might be too late.
+> We still see the 'srso_untrain_ret+0xd: call without frame pointer save/setup' warning with v5.15.136.  It looks like the backport might be incomplete.  Is this additional change needed?
 > 
+> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+> index 36ad0b6b94a9..c3bb96e5bfa6 100644
+> --- a/tools/objtool/check.c
+> +++ b/tools/objtool/check.c
+> @@ -2202,7 +2202,7 @@ static bool is_special_call(struct instruction *insn)
+>  		if (!dest)
+>  			return false;
+>  
+> -		if (dest->fentry)
+> +		if (dest->fentry || dest->embedded_insn)
+>  			return true;
+>  	}
+>  
 
-Build results:
-	total: 157 pass: 157 fail: 0
-Qemu test results:
-	total: 530 pass: 530 fail: 0
+Possibly, I remember this was a pain to backport.  Can you try this and
+see?  If so, can you send a working and tested patch?
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+thanks,
 
-Guenter
+greg k-h
