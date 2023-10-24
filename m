@@ -2,151 +2,175 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2434D7D5101
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 15:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F0007D513E
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 15:18:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234662AbjJXNH5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 09:07:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46134 "EHLO
+        id S232084AbjJXNSW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 09:18:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343862AbjJXNHq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 09:07:46 -0400
-Received: from mx.kernkonzept.com (serv1.kernkonzept.com [IPv6:2a01:4f8:1c1c:b490::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC173D79;
-        Tue, 24 Oct 2023 06:07:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=kernkonzept.com; s=mx1; h=In-Reply-To:Content-Type:MIME-Version:References:
-        Message-ID:Subject:Cc:To:From:Date:Content-Transfer-Encoding:Reply-To:
-        Content-ID:Content-Description;
-        bh=C0NEbr2Bu1GmyIhx8+vqJqdrFza7J7tVm5zNmo+rtEM=; b=ADmrSkg2+Vo/nMsjS9JnEWQIXA
-        qnIPxpsVa5vX7hU+d2iFiLkMCbCus5t3gQGnyi/Gna15ztciE7bHOxhxrsXZaUV/2TeSYz1WMSsYD
-        kxPy56li/HGPSAwcHTe4xw85iNjin0Zjh2I+PyE4IfCYnAXr5/pey5fxNFQ5k10fqmdKQQHZouWJL
-        91VwJaUsi1eW8Q9gNB4QAWNxAOaU4S8gF4clamZmBpWYe/3x0cQ+P9Fc0x5C2V8luReOAN9Z/4DUI
-        +MQno+CJaHqrMc2o0/48DLGBKayjODFol44/kHZYXjfhJgx5d1luLDZN+XjrVUsmLRSReydprX5iA
-        QmAY6MjQ==;
-Received: from [10.22.3.24] (helo=kernkonzept.com)
-        by mx.kernkonzept.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim 4.96)
-        id 1qvH7k-000kF4-06;
-        Tue, 24 Oct 2023 15:07:07 +0200
-Date:   Tue, 24 Oct 2023 15:07:02 +0200
-From:   Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-To:     Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] cpufreq: qcom-nvmem: Enable virtual power domain
- devices
-Message-ID: <ZTfBZqBwqskhFydZ@kernkonzept.com>
-References: <20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com>
- <20231018-msm8909-cpufreq-v2-2-0962df95f654@kernkonzept.com>
- <CAPDyKFot9=M1ooP_Q1AOgG5o_4DTQ2qsyai1ZdXAzBwf89W4uA@mail.gmail.com>
- <CAPDyKFr5A-P=UhWs4rUMBWup3pH75WAhcZ56Y2_Sfk3=WfxRCQ@mail.gmail.com>
- <ZTeyhR7YY7VgWQlU@kernkonzept.com>
- <CAPDyKFrcV8iJnJ904j1jkx0E8PaOLmiTZ7CKk7EV8qQ71AZdbA@mail.gmail.com>
+        with ESMTP id S234255AbjJXNSV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 09:18:21 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0437DE8;
+        Tue, 24 Oct 2023 06:18:17 -0700 (PDT)
+Received: from [192.168.2.43] (109-252-153-31.dynamic.spd-mgts.ru [109.252.153.31])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: dmitry.osipenko)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id E7E0A6606F65;
+        Tue, 24 Oct 2023 14:18:14 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1698153496;
+        bh=ZdNDKOXjLrdi253ASqG3On1nms5VdNUTOFAf7syjdvQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=J9AOWejTF4j3Axawxdi6Wese0sV0Fgpn1yfckKxnBdUMW9QbJ4aXHxWPq24gSILSI
+         TWA1G3NavJBoB0+HoRgbISU9iHdWULRDF89dYFpMCs83a/lrtAstQrBuOoEuf/MZq9
+         mwPlx6EbSW9dzk+I3aaPxRSKlfk6GvxrocDsuRxS/UMkgjPVfXKh2wH5EhHayCdwpu
+         qfe7hoXfms7HHUgh0znYH0vvU+NVW24crg++n5pVMw7//VS65gFjTjfO7Uhlqmh1bh
+         39zvb35EdAq9PZVGQts+k5ToyDyexWRc3HM0Nu926LXPdpMdQtVWWGIAdXFe1QmUJA
+         H/zfqim9qdkug==
+Message-ID: <46f704c2-ba42-4e16-d798-ea2171e5ba16@collabora.com>
+Date:   Tue, 24 Oct 2023 16:18:11 +0300
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFrcV8iJnJ904j1jkx0E8PaOLmiTZ7CKk7EV8qQ71AZdbA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] media: mtk-jpeg: Fix use after free bug due to error path
+ handling in mtk_jpeg_dec_device_run
+Content-Language: en-US
+To:     Zheng Wang <zyytlz.wz@163.com>
+Cc:     Kyrie.Wu@mediatek.com, bin.liu@mediatek.com, mchehab@kernel.org,
+        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, Irui.Wang@mediatek.com,
+        security@kernel.org, hackerzheng666@gmail.com,
+        1395428693sheep@gmail.com, alex000young@gmail.com,
+        amergnat@baylibre.com, wenst@chromium.org, stable@vger.kernel.org
+References: <20231020040732.2499269-1-zyytlz.wz@163.com>
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <20231020040732.2499269-1-zyytlz.wz@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 24, 2023 at 02:49:32PM +0200, Ulf Hansson wrote:
-> On Tue, 24 Oct 2023 at 14:03, Stephan Gerhold
-> <stephan.gerhold@kernkonzept.com> wrote:
-> >
-> > On Thu, Oct 19, 2023 at 01:26:19PM +0200, Ulf Hansson wrote:
-> > > On Thu, 19 Oct 2023 at 12:24, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > > >
-> > > > On Wed, 18 Oct 2023 at 10:06, Stephan Gerhold
-> > > > <stephan.gerhold@kernkonzept.com> wrote:
-> > > > >
-> > > > > The genpd core caches performance state votes from devices that are
-> > > > > runtime suspended as of commit 3c5a272202c2 ("PM: domains: Improve
-> > > > > runtime PM performance state handling"). They get applied once the
-> > > > > device becomes active again.
-> > > > >
-> > > > > To attach the power domains needed by qcom-cpufreq-nvmem the OPP core
-> > > > > calls genpd_dev_pm_attach_by_id(). This results in "virtual" dummy
-> > > > > devices that use runtime PM only to control the enable and performance
-> > > > > state for the attached power domain.
-> > > > >
-> > > > > However, at the moment nothing ever resumes the virtual devices created
-> > > > > for qcom-cpufreq-nvmem. They remain permanently runtime suspended. This
-> > > > > means that performance state votes made during cpufreq scaling get
-> > > > > always cached and never applied to the hardware.
-> > > > >
-> > > > > Fix this by enabling the devices after attaching them and use
-> > > > > dev_pm_syscore_device() to ensure the power domains also stay on when
-> > > > > going to suspend. Since it supplies the CPU we can never turn it off
-> > > > > from Linux. There are other mechanisms to turn it off when needed,
-> > > > > usually in the RPM firmware (RPMPD) or the cpuidle path (CPR genpd).
-> > > >
-> > > > I believe we discussed using dev_pm_syscore_device() for the previous
-> > > > version. It's not intended to be used for things like the above.
-> > > >
-> > > > Moreover, I was under the impression that it wasn't really needed. In
-> > > > fact, I would think that this actually breaks things for system
-> > > > suspend/resume, as in this case the cpr driver's genpd
-> > > > ->power_on|off() callbacks are no longer getting called due this,
-> > > > which means that the cpr state machine isn't going to be restored
-> > > > properly. Or did I get this wrong?
-> > >
-> > > BTW, if you really need something like the above, the proper way to do
-> > > it would instead be to call device_set_awake_path() for the device.
-> > >
-> >
-> > Unfortunately this does not work correctly. When I use
-> > device_set_awake_path() it does set dev->power.wakeup_path = true.
-> > However, this flag is cleared again in device_prepare() when entering
-> > suspend. To me it looks a bit like wakeup_path is not supposed to be set
-> > directly by drivers? Before and after your commit 8512220c5782 ("PM /
-> > core: Assign the wakeup_path status flag in __device_prepare()") it
-> > seems to be internally bound to device_may_wakeup().
-> >
-> > It works if I make device_may_wakeup() return true, with
-> >
-> >         device_set_wakeup_capable(dev, true);
-> >         device_wakeup_enable(dev);
-> >
-> > but that also allows *disabling* the wakeup from sysfs which doesn't
-> > really make sense for the CPU.
-> >
-> > Any ideas?
+On 10/20/23 07:07, Zheng Wang wrote:
+> In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
+> mtk_jpeg_job_timeout_work.
 > 
-> The device_set_awake_path() should be called from a system suspend
-> callback. So you need to add that callback for the cpufreq driver.
+> In mtk_jpeg_dec_device_run, if error happens in
+> mtk_jpeg_set_dec_dst, it will finally start the worker while
+> mark the job as finished by invoking v4l2_m2m_job_finish.
 > 
-> Sorry, if that wasn't clear.
+> There are two methods to trigger the bug. If we remove the
+> module, it which will call mtk_jpeg_remove to make cleanup.
+> The possible sequence is as follows, which will cause a
+> use-after-free bug.
 > 
+> CPU0                  CPU1
+> mtk_jpeg_dec_...    |
+>   start worker	    |
+>                     |mtk_jpeg_job_timeout_work
+> mtk_jpeg_remove     |
+>   v4l2_m2m_release  |
+>     kfree(m2m_dev); |
+>                     |
+>                     | v4l2_m2m_get_curr_priv
+>                     |   m2m_dev->curr_ctx //use
+> 
+> If we close the file descriptor, which will call mtk_jpeg_release,
+> it will have a similar sequence.
+> 
+> Fix this bug by start timeout worker only if started jpegdec worker
+> successfully so the v4l2_m2m_job_finish will only be called on
+> either mtk_jpeg_job_timeout_work or mtk_jpeg_dec_device_run.
+> 
+> This patch also reverts commit c677d7ae8314 
+> ("media: mtk-jpeg: Fix use after free bug due to uncanceled work")
+> for this patch also fixed the use-after-free bug mentioned before.
+> Before mtk_jpeg_remove is invoked, mtk_jpeg_release must be invoked
+> to close opened files. And it will call v4l2_m2m_cancel_job to wait
+> for the timeout worker finished so the canceling in mtk_jpeg_remove
+> is unnecessary.
+> 
+> Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
+> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> Cc: stable@vger.kernel.org
+> ---
+>  .../media/platform/mediatek/jpeg/mtk_jpeg_core.c    | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+> index 7194f88edc0f..c3456c700c07 100644
+> --- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+> +++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+> @@ -1021,13 +1021,13 @@ static void mtk_jpeg_dec_device_run(void *priv)
+>  	if (ret < 0)
+>  		goto dec_end;
+>  
+> -	schedule_delayed_work(&jpeg->job_timeout_work,
+> -			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
+> -
+>  	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
+>  	if (mtk_jpeg_set_dec_dst(ctx, &jpeg_src_buf->dec_param, &dst_buf->vb2_buf, &fb))
+>  		goto dec_end;
+>  
+> +	schedule_delayed_work(&jpeg->job_timeout_work,
+> +			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
+> +
+>  	spin_lock_irqsave(&jpeg->hw_lock, flags);
+>  	mtk_jpeg_dec_reset(jpeg->reg_base);
+>  	mtk_jpeg_dec_set_config(jpeg->reg_base,
+> @@ -1403,7 +1403,6 @@ static void mtk_jpeg_remove(struct platform_device *pdev)
+>  {
+>  	struct mtk_jpeg_dev *jpeg = platform_get_drvdata(pdev);
+>  
+> -	cancel_delayed_work_sync(&jpeg->job_timeout_work);
+>  	pm_runtime_disable(&pdev->dev);
+>  	video_unregister_device(jpeg->vdev);
+>  	v4l2_m2m_release(jpeg->m2m_dev);
+> @@ -1750,9 +1749,6 @@ static void mtk_jpegdec_worker(struct work_struct *work)
+>  	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
+>  	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
+>  
+> -	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
+> -			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
+> -
+>  	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
+>  	if (mtk_jpeg_set_dec_dst(ctx,
+>  				 &jpeg_src_buf->dec_param,
+> @@ -1762,6 +1758,9 @@ static void mtk_jpegdec_worker(struct work_struct *work)
+>  		goto setdst_end;
+>  	}
+>  
+> +	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
+> +			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
+> +
+>  	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
+>  	ctx->total_frame_num++;
+>  	mtk_jpeg_dec_reset(comp_jpeg[hw_id]->reg_base);
 
-Hmm, but at the moment I'm calling this on the virtual genpd devices.
-How would it work for them? I don't have a suspend callback for them.
+What about to split this patch into 3 patches:
 
-I guess could loop over the virtual devices in the cpufreq driver
-suspend callback, but is my driver suspend callback really guaranteed to
-run before the device_prepare() that clears "wakeup_path" on the virtual
-devices?
+1. will remove cancel_delayed_work_sync()
+2. will update mtk_jpeg_dec_device_run()
+3. will update mtk_jpegdec_worker()
 
-Or is this the point where we need device links to make that work?
-A quick look suggests "wakeup_path" is just propagated to parents but
-not device links, so I don't think that would help, either.
+The reason for splitting is because the multi-core mtk_jpegdec_worker()
+doesn't present in older stable kernels, and thus, the patch isn't
+backportable as-is.
 
-Thanks,
 -- 
-Stephan Gerhold <stephan.gerhold@kernkonzept.com>
-Kernkonzept GmbH at Dresden, Germany, HRB 31129, CEO Dr.-Ing. Michael Hohmuth
+Best regards,
+Dmitry
+
