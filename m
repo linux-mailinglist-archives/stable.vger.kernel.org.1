@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07B6F7D4CE7
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 11:50:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6DFF7D4D2D
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 12:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233982AbjJXJuh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 05:50:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43712 "EHLO
+        id S234258AbjJXKDL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 06:03:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234332AbjJXJuN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 05:50:13 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71BE192;
-        Tue, 24 Oct 2023 02:50:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5480C433C8;
-        Tue, 24 Oct 2023 09:50:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698141008;
-        bh=bf8MUUv/mURmaYRQm4dbKVtxt0dhZrJBf80WgzxGMyc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=F/E3CjWsR1/u9qsRzXr7KguZXMkZHQcoTz4tB3Go5D9dWup+icYxKI9vfnpmXl4lz
-         UJgbLFMMAabXUOhkNQgi/eNT4/sIUbOS7YrAJFB4UvsHu8jXdq3BLXn5mbDYsWdTDw
-         uSs0YHrCyghF2qCGxrZ+G+2DLxq9LG09Ewk0TBHg=
-Date:   Tue, 24 Oct 2023 11:50:05 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Cameron Williams <cang1@live.co.uk>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-serial <linux-serial@vger.kernel.org>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v4 06/11] tty: 8250: Fix port count of PX-257
-Message-ID: <2023102453-startup-corrosive-4b7d@gregkh>
-References: <BBPatchesV4>
- <20231020160412.118550-1-cang1@live.co.uk>
- <DU0PR02MB7899C804D9F04E727B5A0E8FC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com>
- <f21a942c-5f1e-3c1a-945c-358632edb188@linux.intel.com>
+        with ESMTP id S232558AbjJXKDJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 06:03:09 -0400
+Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76CC5DA;
+        Tue, 24 Oct 2023 03:03:06 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.astralinux.ru (Postfix) with ESMTP id 0C6C7186892A;
+        Tue, 24 Oct 2023 13:03:02 +0300 (MSK)
+Received: from mail.astralinux.ru ([127.0.0.1])
+        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id C3tx3pmHCTSt; Tue, 24 Oct 2023 13:03:01 +0300 (MSK)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.astralinux.ru (Postfix) with ESMTP id 5C7B2186864D;
+        Tue, 24 Oct 2023 13:03:01 +0300 (MSK)
+X-Virus-Scanned: amavisd-new at astralinux.ru
+Received: from mail.astralinux.ru ([127.0.0.1])
+        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id x4kXF6zs_dmk; Tue, 24 Oct 2023 13:03:01 +0300 (MSK)
+Received: from rbta-msk-lt-106062.astralinux.ru (unknown [10.177.20.58])
+        by mail.astralinux.ru (Postfix) with ESMTPSA id 2BB1C1867B6E;
+        Tue, 24 Oct 2023 13:03:00 +0300 (MSK)
+From:   Anastasia Belova <abelova@astralinux.ru>
+To:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Anastasia Belova <abelova@astralinux.ru>,
+        Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org, linux-kernel@vger.kernel.org,
+        lvc-project@linuxtesting.org
+Subject: [PATCH 5.10 0/1] smbdirect: missing rc checks while waiting for rdma events
+Date:   Tue, 24 Oct 2023 13:02:25 +0300
+Message-Id: <20231024100226.25860-1-abelova@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f21a942c-5f1e-3c1a-945c-358632edb188@linux.intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,20 +52,8 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 24, 2023 at 12:42:28PM +0300, Ilpo Järvinen wrote:
-> On Fri, 20 Oct 2023, Cameron Williams wrote:
-> 
-> > The port count of the PX-257 Rev3 is actually 2, not 4.
-> > 
-> > Fixes: ef5a03a26c87 ("tty: 8250: Add support for Brainboxes PX cards.")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Cameron Williams <cang1@live.co.uk>
-> 
-> Please arrange your series such that the patches with Fixes are first, 
-> not in the middle of your series.
+Check for return value of wait_for_completion_interruptible_timeout
+should be added in v5.10. The following patch contains necessary
+changes and can be cleanly applied.
 
-Almost all of these are going to stable, so this was ok.
-
-thanks,
-
-greg k-h
+Found by Linux Verification Center (linuxtesting.org) with Svace.
