@@ -2,118 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D2407D4BA9
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 11:13:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE7107D4CB8
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 11:42:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233778AbjJXJNW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 05:13:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49684 "EHLO
+        id S234344AbjJXJmR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 05:42:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233757AbjJXJNV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 05:13:21 -0400
-Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7625FC2
-        for <stable@vger.kernel.org>; Tue, 24 Oct 2023 02:13:19 -0700 (PDT)
-Received: from eig-obgw-6001a.ext.cloudfilter.net ([10.0.30.140])
-        by cmsmtp with ESMTPS
-        id vCviqFAMkjtZ3vDTSqkrwk; Tue, 24 Oct 2023 09:13:19 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id vDTRqIp6FNUwRvDTRqeYxM; Tue, 24 Oct 2023 09:13:17 +0000
-X-Authority-Analysis: v=2.4 cv=I852+fsg c=1 sm=1 tr=0 ts=65378aad
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=jUsbdmVdQajaWxmgKfkA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=HwQc+3Vzm4r66+bB+HTnN32Pi8QpBVIA/2Gt0OQ+td8=; b=UNgBnjXAtODJ0GWfotlgqQnOJW
-        Xw+CETIJWZeHZwLu9c5dWOhouZa8sYtidIh3qHfCdVrcrjF6U9DxZwQv03jd4MWbLji8VFO7YuRMR
-        sMHj4BczN1PKhRV3R8X6PO+WowFqgtlWcC8upXb1GaE3KsI0pIx0mzCUUvTP8j7kJ24Guwf0mZd3B
-        o08Q1pSesMeFS+Hi2cf24n1+PrVfh5eesLRRb3+/hk3P7Syf1EV3EBW0RR5XNLlRtpd8X4J93tKQX
-        EU94WYv7lxHwFVYjLsa1dkUlIeK22H+wcBmZ5lKGEdKAvaCd5rFzKuM2c+AKVG/xYJwlPUw/TvyGj
-        BzxOUBVQ==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:52540 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96.2)
-        (envelope-from <re@w6rz.net>)
-        id 1qvDTP-003aOk-0Y;
-        Tue, 24 Oct 2023 03:13:15 -0600
-Subject: Re: [PATCH 6.1 000/196] 6.1.60-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S234412AbjJXJmF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 05:42:05 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E942F1998;
+        Tue, 24 Oct 2023 02:41:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698140506; x=1729676506;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=tVQ+svt2jXvzExnt2d/wwyQCA0p17A4isUzWQkmRUDo=;
+  b=BtWA1/4rO/G+LzpzYAMCz7LLmnJk/nxSfWoyB/2to9Y2V81aJBMlidue
+   ZFMnZpViAGgW/Uu5qdxxPZsEo/aMb0JSavwOB0AW6KPH5UhdHLmNW6BhZ
+   2EQpldx0ijK9GJ4m2yMsoSS+jZ3oc1qvl5a7sJABKDdZV83L9+/P5XYgD
+   aYYex9tt00BIth47PPBNmH2do9Tm0o776K8Dxk4a1+bE0P5FpspsOgucA
+   wlXKi252JUO/15nK0KQ8dh4UtFRW4UFqfnppfOGtysZUNoaSxd1+IcWY/
+   LiARgdWzTFx430wk+3hqTKI3O4kb6QMpOqKDKms3dCe3fQTqCcTL4WgcV
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="386831913"
+X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; 
+   d="scan'208";a="386831913"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 02:41:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10872"; a="751942077"
+X-IronPort-AV: E=Sophos;i="6.03,247,1694761200"; 
+   d="scan'208";a="751942077"
+Received: from nkraljev-mobl.ger.corp.intel.com ([10.249.41.91])
+  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2023 02:41:44 -0700
+Date:   Tue, 24 Oct 2023 12:41:38 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Cameron Williams <cang1@live.co.uk>
+cc:     gregkh@linuxfoundation.org, jirislaby@kernel.org,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231023104828.488041585@linuxfoundation.org>
-In-Reply-To: <20231023104828.488041585@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <fb089c4d-b3ee-deb0-1795-048c9b2b0deb@w6rz.net>
-Date:   Tue, 24 Oct 2023 02:13:12 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+Subject: Re: [PATCH v4 05/11] tty: 8250: Add support for Intashield IS-100
+In-Reply-To: <DU0PR02MB7899A0E0CDAA505AF5A874CDC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com>
+Message-ID: <201af1d6-b82b-5588-017-5d8a9050c458@linux.intel.com>
+References: <BBPatchesV4> <20231020160412.118550-1-cang1@live.co.uk> <DU0PR02MB7899A0E0CDAA505AF5A874CDC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1qvDTP-003aOk-0Y
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:52540
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHyoY9ptrfvI+wsdEEgh58Hf/UlHLZKVNJeXpa36EUtx5aqlC/N3EFc/ueqLtbBDn9XHzQK0W0pnTImMdXlwwEMmM5/BbrtNNBuyI2qvxve+HDixGes5
- yXnImisXG0CfFfLSWpSn+VRyAcDCqPCh2GmLEDc2uJbONkmLX7CWu7XBxDFo9CxPJDXOeB+klLs5Sg==
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/23/23 3:54 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.60 release.
-> There are 196 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.60-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Fri, 20 Oct 2023, Cameron Williams wrote:
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+> Add support for the Intashield IS-100 1 port serial card.
+> 
+> Cc: stable@vger.kernel.org
 
-Tested-by: Ron Economos <re@w6rz.net>
+Why is this cc stable? I think it should be dropped.
 
+-- 
+ i.
+
+> Signed-off-by: Cameron Williams <cang1@live.co.uk>
+> ---
+> v3 - v4:
+> Add Cc: tag.
+> 
+> v2 - v3:
+> Re-submit patch series using git send-email to make threading work.
+> 
+> v1 - v2:
+> This is a resubmission series for the patch series below. That series
+> was lots of changes sent to lots of maintainers, this series is just for
+> the tty/serial/8250 subsystem.
+> 
+> [1] https://lore.kernel.org/all/DU0PR02MB789950E64D808DB57E9D7312C4F8A@DU0PR02MB7899.eurprd02.prod.outlook.com/
+> [2] https://lore.kernel.org/all/DU0PR02MB7899DE53DFC900EFB50E53F2C4F8A@DU0PR02MB7899.eurprd02.prod.outlook.com/
+> [3] https://lore.kernel.org/all/DU0PR02MB7899033E7E81EAF3694BC20AC4F8A@DU0PR02MB7899.eurprd02.prod.outlook.com/
+> [4] https://lore.kernel.org/all/DU0PR02MB7899EABA8C3DCAC94DCC79D4C4F8A@DU0PR02MB7899.eurprd02.prod.outlook.com/
+> 
+>  drivers/tty/serial/8250/8250_pci.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
+> index 1c46b65789c9..b0a632415d8e 100644
+> --- a/drivers/tty/serial/8250/8250_pci.c
+> +++ b/drivers/tty/serial/8250/8250_pci.c
+> @@ -4913,6 +4913,12 @@ static const struct pci_device_id serial_pci_tbl[] = {
+>  		0, 0,
+>  		pbn_b1_bt_1_115200 },
+>  
+> +	/*
+> +	 * IntaShield IS-100
+> +	 */
+> +	{	PCI_VENDOR_ID_INTASHIELD, 0x0D60,
+> +		PCI_ANY_ID, PCI_ANY_ID, 0, 0,
+> +		pbn_b2_1_115200 },
+>  	/*
+>  	 * IntaShield IS-200
+>  	 */
+> 
