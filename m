@@ -2,45 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B97527D5383
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 15:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE5007D540E
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 16:31:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343518AbjJXN7z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 09:59:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32864 "EHLO
+        id S232073AbjJXObx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 10:31:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234869AbjJXN7t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 09:59:49 -0400
+        with ESMTP id S1343801AbjJXO2x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 10:28:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ECF1D7B;
-        Tue, 24 Oct 2023 06:59:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3873C433C8;
-        Tue, 24 Oct 2023 13:59:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD6EA10D1;
+        Tue, 24 Oct 2023 07:28:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAC1C433C8;
+        Tue, 24 Oct 2023 14:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698155981;
-        bh=dsmBnlL6bvCmPrgmLzqlJBYDPnEdRwCx2sRSLyjJX0Y=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=HtVoJ3OGlu4I0g7c6nceoQtrXqr+/rL/LttZelrFM0wKPsJvPOqfj3iSNYKVJE2LO
-         0VIoSplFYuYpBei0qTA6kphdzyD+MgyNNRnl3g0Y03cOt8+rsYfgqp/Utq2z+PeAjy
-         hnwOWkkINyyW3UY6nQ4Yx9XSoHwBebK2UXBElN4HVFVQio2wJHThXt/gi8juZoiSaY
-         GjtlRiDTlxnqe/i6hB7btQ2B2opfa4avGMl1I7Y2MKxwVt0XwI8Tx2REMWl032JywK
-         ZPvLrC1Vor+obo/PRX3UWJ5sDsLwig85VAEOFSrdwAMIB2/t1Uyhydx6Uzwo4bEmhi
-         C/r9XXtEq4gjQ==
-From:   Kalle Valo <kvalo@kernel.org>
-To:     Johan Hovold <johan+linaro@kernel.org>
-Cc:     Jeff Johnson <quic_jjohnson@quicinc.com>,
+        s=k20201202; t=1698157730;
+        bh=ypIMNYS6FyQIe4ePxJ+5oz5tdfmsVd2FnFFM7K0THyQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=tlDwkr7Eyhll2twIrEyMEwBLTavG1kyr+CWEQ2B2ZqyPbnY/TbuAeNOX3Ll1wDHBl
+         TygyF3lpuqVhzRJGWhol+qx5QNalxy+raSfqOnt44i4R4aRRR92f3JJsDk5tXd98a5
+         V8Pnks0xHYH7gu6tpSZEWMGOyyeZDbbDAIKa7QXbHFRYvR4WM4n/TEqMZLAo6DgWJ5
+         bD5ZsFfKUqZyYBJhCL47B7ZZUz+lr6tcsxwQ/j+jLnZ403pwZ7sRplkpgp+sPaSBaj
+         IsY1wg7aqo9Fek4rcJbdICYNb2zArlG7oZVNQwBcJIakMomr1DkO4eysy7nFcHjD2l
+         lVnY0egCFg92Q==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qvIP5-0003aY-08;
+        Tue, 24 Oct 2023 16:29:07 +0200
+Date:   Tue, 24 Oct 2023 16:29:07 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Kalle Valo <kvalo@kernel.org>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
         ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
         linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH v2 1/2] wifi: ath11k: fix temperature event locking
+Message-ID: <ZTfUswqVkAgJvnye@hovoldconsulting.com>
 References: <20231019153115.26401-1-johan+linaro@kernel.org>
-        <20231019153115.26401-2-johan+linaro@kernel.org>
-Date:   Tue, 24 Oct 2023 16:59:35 +0300
-In-Reply-To: <20231019153115.26401-2-johan+linaro@kernel.org> (Johan Hovold's
-        message of "Thu, 19 Oct 2023 17:31:14 +0200")
-Message-ID: <87sf60xgs8.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+ <20231019153115.26401-2-johan+linaro@kernel.org>
+ <87sf60xgs8.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87sf60xgs8.fsf@kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -50,46 +55,27 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Johan Hovold <johan+linaro@kernel.org> writes:
+On Tue, Oct 24, 2023 at 04:59:35PM +0300, Kalle Valo wrote:
+> Johan Hovold <johan+linaro@kernel.org> writes:
+> 
+> > The ath11k active pdevs are protected by RCU but the temperature event
+> > handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+> > read-side critical section as reported by RCU lockdep:
 
-> The ath11k active pdevs are protected by RCU but the temperature event
-> handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-> read-side critical section as reported by RCU lockdep:
->
-> 	=============================
-> 	WARNING: suspicious RCU usage
-> 	6.6.0-rc6 #7 Not tainted
-> 	-----------------------------
-> 	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
->
-> 	other info that might help us debug this:
->
-> 	rcu_scheduler_active = 2, debug_locks = 1
-> 	no locks held by swapper/0/0.
-> 	...
-> 	Call trace:
-> 	...
-> 	 lockdep_rcu_suspicious+0x16c/0x22c
-> 	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
-> 	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
-> 	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
->
-> Mark the code in question as an RCU read-side critical section to avoid
-> any potential use-after-free issues.
->
-> Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
-> Cc: stable@vger.kernel.org      # 5.7
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> On what hardware and firmware version did you test this? As there's so
+> many different combos we use Tested-on tag to provide that information
+> in the commit message:
+> 
+> https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatches#tested-on_tag
+> 
+> I can add that if you let me know what you used.
 
-On what hardware and firmware version did you test this? As there's so
-many different combos we use Tested-on tag to provide that information
-in the commit message:
+I hit this on the Lenovo Thinkpad X13s and I guess the tag should be:
 
-https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatches#tested-on_tag
+Tested-on: QCNFA765 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
 
-I can add that if you let me know what you used.
+Note that I've only been able to test the ath11k fixes (not the
+corresponding ath12k) and I only tested this particular patch fully
+(e.g. since I didn't trigger any radar events).
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Johan
