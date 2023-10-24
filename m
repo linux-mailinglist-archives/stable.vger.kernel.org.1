@@ -2,28 +2,28 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF0687D49E3
-	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 10:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8AE17D49EF
+	for <lists+stable@lfdr.de>; Tue, 24 Oct 2023 10:26:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232927AbjJXIWh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 24 Oct 2023 04:22:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41324 "EHLO
+        id S233537AbjJXI0N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 24 Oct 2023 04:26:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232893AbjJXIWh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 04:22:37 -0400
+        with ESMTP id S233122AbjJXI0M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 24 Oct 2023 04:26:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7201D120;
-        Tue, 24 Oct 2023 01:22:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8337DC433C8;
-        Tue, 24 Oct 2023 08:22:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2B8799;
+        Tue, 24 Oct 2023 01:26:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CAAC433C7;
+        Tue, 24 Oct 2023 08:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698135755;
-        bh=4pSVrj+SSWFw7rLDfWopdukUhyQvQyk5SOKZaKQkS0o=;
+        s=korg; t=1698135970;
+        bh=gm0drRnvD+4lU1NBJfDjluSiLt5PHG26cjTrB3u6d+k=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YXIiJktfIv7Abl+M8zp4gbGGj0GnTXHzbrf4LD6M0kU3+1RZuMGmw4+l/2mugI9G5
-         NzUyjVtiWRV40ghQoAtw9uX5HPgnClbG/LqF2u0ghSL+1bkjWu1A9tPmpfODc9Vaa9
-         2/N6CZmcPCtUv4cfv/jRzn5l8tZouQt+uLICfyNo=
-Date:   Tue, 24 Oct 2023 10:22:32 +0200
+        b=PdnGvoWu8TSJChVrRJLSe0c1bdp1X2/VlSV5Hh1ythDQQSBeHPn/XmnRJsIKlK0kw
+         w8ueo5aXHvPEbPEyKtg8w9ZbEMkopnPkCi4rP4r4UMqwCTz3sdE9q/MljQSb2gLwkQ
+         l8SVwgDGrC3jfYWmTbL6fbJEzDv6BQzBwYy9l+g0=
+Date:   Tue, 24 Oct 2023 10:26:07 +0200
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     Guenter Roeck <linux@roeck-us.net>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -32,14 +32,14 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
         f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
         srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 4.14 00/66] 4.14.328-rc1 review
-Message-ID: <2023102417-blade-bartender-29e2@gregkh>
-References: <20231023104810.781270702@linuxfoundation.org>
- <f3b2a4ac-042d-4c20-4020-3a09822811ac@roeck-us.net>
+Subject: Re: [PATCH 5.4 000/123] 5.4.259-rc1 review
+Message-ID: <2023102452-tainted-mandolin-8c33@gregkh>
+References: <20231023104817.691299567@linuxfoundation.org>
+ <5bd191c3-a58a-e6b4-12a6-64efb9b03f2e@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f3b2a4ac-042d-4c20-4020-3a09822811ac@roeck-us.net>
+In-Reply-To: <5bd191c3-a58a-e6b4-12a6-64efb9b03f2e@roeck-us.net>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -49,10 +49,10 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Oct 23, 2023 at 07:37:36AM -0700, Guenter Roeck wrote:
+On Mon, Oct 23, 2023 at 07:36:25AM -0700, Guenter Roeck wrote:
 > On 10/23/23 03:55, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 4.14.328 release.
-> > There are 66 patches in this series, all will be posted as a response
+> > This is the start of the stable review cycle for the 5.4.259 release.
+> > There are 123 patches in this series, all will be posted as a response
 > > to this one.  If anyone has any issues with these being applied, please
 > > let me know.
 > > 
@@ -60,14 +60,25 @@ On Mon, Oct 23, 2023 at 07:37:36AM -0700, Guenter Roeck wrote:
 > > Anything received after that time might be too late.
 > > 
 > 
-> Building s390:allmodconfig ... failed
-> --------------
-> Error log:
-> In file included from include/linux/kernel.h:10,
->                  from arch/s390/pci/pci_dma.c:8:
-> arch/s390/pci/pci_dma.c: In function 'bitmap_vzalloc':
-> arch/s390/pci/pci_dma.c:536:15: error: implicit declaration of function 'check_mul_overflow'
+> drivers/gpio/gpio-vf610.c:249:18: error: 'IRQCHIP_IMMUTABLE' undeclared here (not in a function); did you mean 'IS_IMMUTABLE'?
+>   249 |         .flags = IRQCHIP_IMMUTABLE | IRQCHIP_MASK_ON_SUSPEND
+>       |                  ^~~~~~~~~~~~~~~~~
+>       |                  IS_IMMUTABLE
+> drivers/gpio/gpio-vf610.c:250:27: error: 'IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND' undeclared here (not in a function); did you mean 'IRQCHIP_MASK_ON_SUSPEND'?
+>   250 |                         | IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND,
+>       |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>       |                           IRQCHIP_MASK_ON_SUSPEND
+> drivers/gpio/gpio-vf610.c:251:9: error: 'GPIOCHIP_IRQ_RESOURCE_HELPERS' undeclared here (not in a function)
+>   251 |         GPIOCHIP_IRQ_RESOURCE_HELPERS,
+>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> drivers/gpio/gpio-vf610.c:251:9: warning: excess elements in struct initializer
+> drivers/gpio/gpio-vf610.c:251:9: note: (near initialization for 'vf610_irqchip')
+> drivers/gpio/gpio-vf610.c: In function 'vf610_gpio_probe':
+> drivers/gpio/gpio-vf610.c:340:9: error: implicit declaration of function 'gpio_irq_chip_set_chip'
+> 
+> Also affects v5.10.y and v5.15.y.
 
-Ah the header file maze.  I've fixed this up now, thanks.
+Thanks, I'll go drop the offending patches from all of these trees now
+and push out some -rc2 releases.
 
 greg k-h
