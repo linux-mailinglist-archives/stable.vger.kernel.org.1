@@ -2,78 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F2A7D67D6
-	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 12:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0963C7D67DD
+	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 12:08:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234346AbjJYKGb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 25 Oct 2023 06:06:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37250 "EHLO
+        id S233635AbjJYKIM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 25 Oct 2023 06:08:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232584AbjJYKGa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 06:06:30 -0400
-Received: from mail-yw1-x1133.google.com (mail-yw1-x1133.google.com [IPv6:2607:f8b0:4864:20::1133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFCF511F
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 03:06:27 -0700 (PDT)
-Received: by mail-yw1-x1133.google.com with SMTP id 00721157ae682-5a7d532da4bso53738817b3.2
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 03:06:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698228387; x=1698833187; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=q9wXtrZXCK+13JkLhq9pSaIeP3nLGHw9GpelTWB58cI=;
-        b=LdCBsroYTUKhoWeSTC6as9+pv8NW82IaXT4Gnif8NBEGVs3bP5sbbMKcTGNsih+/Rq
-         I5VfXVOmirNUzq+SH3u9def5xMFWiQ94xBZzRnr5xv8iEkKz4mw4NKNmaNAtBiEyAo4i
-         F9gRp06cbbeDNhnaPyRvX2XWR1URQ58xB/iw8oqgK3hTOQEXKQCf93NkCOoT2uuyNlsq
-         0lJNvHYNrU5iK6OvxoG8KTZjCVSN5dZZY/ABARe7kqjmcI1Q0Nd/I/hZbrb4zBr/QyGK
-         X73yKeWMOTiZ/qlkHk0hHHzMMBh0a3WZdIi+fnrN/ZlyGNU2bVR7/8O0IJX+RH5cYegJ
-         joXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698228387; x=1698833187;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q9wXtrZXCK+13JkLhq9pSaIeP3nLGHw9GpelTWB58cI=;
-        b=dQFwGRNv4aQSpLNksjvq3LS/5www223R2Zoii4jBciDSLKJ50hfRRBhzowzyuquMnL
-         4u2jcD9tkT85lHsGqwuzYvlpQ+9PkU2YoszP0iMLi72t/EMpd7R3er9dp06/7hdMtMh6
-         HDPwXIr/UgX5n3HZdyEiOBC0MeOxsjlsIu03y+wojTHcvEJKnPLKiL22XRByfr2SC/4h
-         +kuY9tVdmQKipAJrQ83ZO9r74gWGHfqPpFpytOmUo2G5AsIRLiKOo7jasOoFQTc5yNd8
-         twSuLQl9C2MxvL++uds5YewmplHb2xAC6KXb12xMCzP/MstFCvPF3zVrmt0eX3dqiG5O
-         vYrg==
-X-Gm-Message-State: AOJu0Yzb7P3PXI5pehbwmXZGWU3hI0H6hBN6B1/iYX8485QaJOQE6umq
-        hsaO6BC7dt5o4skcoj7xsDDGL0e0vDF+u6UngteCyA==
-X-Google-Smtp-Source: AGHT+IEulIKu5K+XkQLWBzrf2lHWc+yXcrbptuf3RzpTO2ez6RMQ5O+8XbGz9VCo7WdlKXwSrNqxi77C9q4BZM7tS8o=
-X-Received: by 2002:a0d:e84c:0:b0:5a8:277f:b378 with SMTP id
- r73-20020a0de84c000000b005a8277fb378mr14113574ywe.1.1698228386871; Wed, 25
- Oct 2023 03:06:26 -0700 (PDT)
+        with ESMTP id S232584AbjJYKIM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 06:08:12 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C343DD
+        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 03:08:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893AFC433C7;
+        Wed, 25 Oct 2023 10:08:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1698228486;
+        bh=rQZngrJPodypktqWe65fZUp4NUgFzXhqXBIT3hE1Lx0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sZjrRxW/7DDnWCl+6ML4nYPNav6rYPyJZwafUoSn/ZqXdr93aw8cfbT0sh7MYAUJ8
+         nKoxlXBzVpq2h3QTNBrqJBgbZNJ3DIw7kICRcnDlfr/jGaio27O+sM0e3UMQWVXrJ6
+         3FbkgKh5ScapRsTwyj/2aMuc1Gfb+X4bBducAwes=
+Date:   Wed, 25 Oct 2023 12:08:04 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Tony Lu <tonylu@linux.alibaba.com>,
+        Jan Karcher <jaka@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.5 159/241] net/smc: support smc release version
+ negotiation in clc handshake
+Message-ID: <2023102521-undated-edition-d501@gregkh>
+References: <20231023104833.832874523@linuxfoundation.org>
+ <20231023104837.750719920@linuxfoundation.org>
+ <80669f40-3bc5-440e-9440-e153d12e37ef@linux.alibaba.com>
 MIME-Version: 1.0
-References: <20231018-msm8909-cpufreq-v2-0-0962df95f654@kernkonzept.com>
- <20231018-msm8909-cpufreq-v2-2-0962df95f654@kernkonzept.com>
- <CAPDyKFot9=M1ooP_Q1AOgG5o_4DTQ2qsyai1ZdXAzBwf89W4uA@mail.gmail.com>
- <CAPDyKFr5A-P=UhWs4rUMBWup3pH75WAhcZ56Y2_Sfk3=WfxRCQ@mail.gmail.com>
- <ZTeyhR7YY7VgWQlU@kernkonzept.com> <CAPDyKFrcV8iJnJ904j1jkx0E8PaOLmiTZ7CKk7EV8qQ71AZdbA@mail.gmail.com>
- <ZTfBZqBwqskhFydZ@kernkonzept.com> <CAPDyKFooPLCmJeqjhiMm7HRdW5UrEw0yHvGF9fgLvOigsgbWxg@mail.gmail.com>
- <ZTfv-Dea693UqLXB@gerhold.net>
-In-Reply-To: <ZTfv-Dea693UqLXB@gerhold.net>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 25 Oct 2023 12:05:49 +0200
-Message-ID: <CAPDyKFpFJd+ipv6kb77MgnDtXtFPa3=BX2RgaKq5i5r6WpVmJQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] cpufreq: qcom-nvmem: Enable virtual power domain devices
-To:     Stephan Gerhold <stephan@gerhold.net>
-Cc:     Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Ilia Lin <ilia.lin@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>, linux-pm@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        devicetree@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <80669f40-3bc5-440e-9440-e153d12e37ef@linux.alibaba.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,101 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 24 Oct 2023 at 18:25, Stephan Gerhold <stephan@gerhold.net> wrote:
->
-> On Tue, Oct 24, 2023 at 06:11:34PM +0200, Ulf Hansson wrote:
-> > On Tue, 24 Oct 2023 at 15:07, Stephan Gerhold
-> > <stephan.gerhold@kernkonzept.com> wrote:
-> > >
-> > > On Tue, Oct 24, 2023 at 02:49:32PM +0200, Ulf Hansson wrote:
-> > > > On Tue, 24 Oct 2023 at 14:03, Stephan Gerhold
-> > > > <stephan.gerhold@kernkonzept.com> wrote:
-> > > > >
-> > > > > On Thu, Oct 19, 2023 at 01:26:19PM +0200, Ulf Hansson wrote:
-> > > > > > On Thu, 19 Oct 2023 at 12:24, Ulf Hansson <ulf.hansson@linaro.org> wrote:
-> > > > > > >
-> > > > > > > On Wed, 18 Oct 2023 at 10:06, Stephan Gerhold
-> > > > > > > <stephan.gerhold@kernkonzept.com> wrote:
-> > > > > > > >
-> > > > > > > > The genpd core caches performance state votes from devices that are
-> > > > > > > > runtime suspended as of commit 3c5a272202c2 ("PM: domains: Improve
-> > > > > > > > runtime PM performance state handling"). They get applied once the
-> > > > > > > > device becomes active again.
-> > > > > > > >
-> > > > > > > > To attach the power domains needed by qcom-cpufreq-nvmem the OPP core
-> > > > > > > > calls genpd_dev_pm_attach_by_id(). This results in "virtual" dummy
-> > > > > > > > devices that use runtime PM only to control the enable and performance
-> > > > > > > > state for the attached power domain.
-> > > > > > > >
-> > > > > > > > However, at the moment nothing ever resumes the virtual devices created
-> > > > > > > > for qcom-cpufreq-nvmem. They remain permanently runtime suspended. This
-> > > > > > > > means that performance state votes made during cpufreq scaling get
-> > > > > > > > always cached and never applied to the hardware.
-> > > > > > > >
-> > > > > > > > Fix this by enabling the devices after attaching them and use
-> > > > > > > > dev_pm_syscore_device() to ensure the power domains also stay on when
-> > > > > > > > going to suspend. Since it supplies the CPU we can never turn it off
-> > > > > > > > from Linux. There are other mechanisms to turn it off when needed,
-> > > > > > > > usually in the RPM firmware (RPMPD) or the cpuidle path (CPR genpd).
-> > > > > > >
-> > > > > > > I believe we discussed using dev_pm_syscore_device() for the previous
-> > > > > > > version. It's not intended to be used for things like the above.
-> > > > > > >
-> > > > > > > Moreover, I was under the impression that it wasn't really needed. In
-> > > > > > > fact, I would think that this actually breaks things for system
-> > > > > > > suspend/resume, as in this case the cpr driver's genpd
-> > > > > > > ->power_on|off() callbacks are no longer getting called due this,
-> > > > > > > which means that the cpr state machine isn't going to be restored
-> > > > > > > properly. Or did I get this wrong?
-> > > > > >
-> > > > > > BTW, if you really need something like the above, the proper way to do
-> > > > > > it would instead be to call device_set_awake_path() for the device.
-> > > > > >
-> > > > >
-> > > > > Unfortunately this does not work correctly. When I use
-> > > > > device_set_awake_path() it does set dev->power.wakeup_path = true.
-> > > > > However, this flag is cleared again in device_prepare() when entering
-> > > > > suspend. To me it looks a bit like wakeup_path is not supposed to be set
-> > > > > directly by drivers? Before and after your commit 8512220c5782 ("PM /
-> > > > > core: Assign the wakeup_path status flag in __device_prepare()") it
-> > > > > seems to be internally bound to device_may_wakeup().
-> > > > >
-> > > > > It works if I make device_may_wakeup() return true, with
-> > > > >
-> > > > >         device_set_wakeup_capable(dev, true);
-> > > > >         device_wakeup_enable(dev);
-> > > > >
-> > > > > but that also allows *disabling* the wakeup from sysfs which doesn't
-> > > > > really make sense for the CPU.
-> > > > >
-> > > > > Any ideas?
-> > > >
-> > > > The device_set_awake_path() should be called from a system suspend
-> > > > callback. So you need to add that callback for the cpufreq driver.
-> > > >
-> > > > Sorry, if that wasn't clear.
-> > > >
-> > >
-> > > Hmm, but at the moment I'm calling this on the virtual genpd devices.
-> > > How would it work for them? I don't have a suspend callback for them.
-> > >
-> > > I guess could loop over the virtual devices in the cpufreq driver
-> > > suspend callback, but is my driver suspend callback really guaranteed to
-> > > run before the device_prepare() that clears "wakeup_path" on the virtual
-> > > devices?
-> >
-> > Yes, that's guaranteed. dpm_prepare() (which calls device_prepare())
-> > is always being executed before dpm_suspend().
-> >
->
-> Thanks, I think I understand. Maybe. :-)
->
-> Just to confirm, I should call device_set_awake_path() for the virtual
-> genpd devices as part of the PM ->suspend() callback? And this will be
-> guaranteed to run after the "prepare" phase but before the
-> "suspend_noirq" phase where the genpd core will check the wakeup flag?
+On Mon, Oct 23, 2023 at 08:05:01PM +0800, Guangguan Wang wrote:
+> Hi, Greg.
+> 
+> [PATCH 6.5 159/241] net/smc: support smc release version negotiation in clc handshake
+> [PATCH 6.5 160/241] net/smc: support smc v2.x features validate
+> 
+> The above two patches should not backport to stable tree 6.5, which may result in unexpected
+> fallback if communication between 6.6 and 6.5(with these two patch) via SMC-R v2.1. The above
+> two patches should not exist individually without the patch 7f0620b9(net/smc: support max
+> connections per lgr negotiation) and the patch 69b888e3(net/smc: support max links per lgr 
+> negotiation in clc handshake).
+> 
+> The patch c68681ae46ea ("net/smc: fix smc clc failed issue when netdevice not in init_net")
+> does not rely the feature SMC-R v2.1. But I think it may have conflict here when backport
+> to stable tree 6.5:
+> 
+> @@ -1201,6 +1201,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
+>  		(struct smc_clc_msg_accept_confirm_v2 *)aclc;
+>  	struct smc_clc_first_contact_ext *fce =
+>  		smc_get_clc_first_contact_ext(clc_v2, false);    --conflict here
+> +	struct net *net = sock_net(&smc->sk);
+> 
+> 
+> I think it is better to resolve the confilict rather than backport more patches.
+> The resolution of the conflict should be like:
+> 
+> @@ -1201,6 +1201,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
+>  		(struct smc_clc_msg_accept_confirm_v2 *)aclc;
+>   	struct smc_clc_first_contact_ext *fce =
+> 		(struct smc_clc_first_contact_ext *)
+> 			(((u8 *)clc_v2) + sizeof(*clc_v2));      --replace the line smc_get_clc_first_contact_ext(clc_v2, false);
+> +	struct net *net = sock_net(&smc->sk);
 
-Correct!
+Thanks for letting me know.
 
-Kind regards
-Uffe
+I've dropped this patch entirely from the 6.5.y queue now (and the
+follow-on ones.)  Can you send a backported, and tested, set of patches
+to us for inclusion if you want this fixed up in the 6.5.y tree?  That
+way we make sure to get this done properly.
+
+thanks,
+
+greg k-h
