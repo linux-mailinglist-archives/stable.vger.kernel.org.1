@@ -2,29 +2,30 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5311B7D6623
-	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 11:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FD247D6622
+	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 11:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233692AbjJYJDK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 25 Oct 2023 05:03:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53998 "EHLO
+        id S232897AbjJYJDJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 25 Oct 2023 05:03:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233714AbjJYJDJ (ORCPT
+        with ESMTP id S233692AbjJYJDJ (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 05:03:09 -0400
+X-Greylist: delayed 507 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 25 Oct 2023 02:03:07 PDT
 Received: from smtp.priv.miraclelinux.com (202x210x215x66.ap202.ftth.ucom.ne.jp [202.210.215.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F2EB192
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46F1C191
         for <stable@vger.kernel.org>; Wed, 25 Oct 2023 02:03:07 -0700 (PDT)
 Received: from cip-lava-a.miraclelinux.com (cip-lava-a.miraclelinux.com [10.2.1.116])
-        by smtp.priv.miraclelinux.com (Postfix) with ESMTP id 77053140036;
-        Wed, 25 Oct 2023 17:54:38 +0900 (JST)
+        by smtp.priv.miraclelinux.com (Postfix) with ESMTP id 5E431140099;
+        Wed, 25 Oct 2023 17:55:29 +0900 (JST)
 From:   Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
 To:     linux-f2fs-devel@lists.sourceforge.net
 Cc:     hiraku.toyooka@miraclelinux.com, Chao Yu <chao@kernel.org>,
         stable@vger.kernel.org, Jaegeuk Kim <jaegeuk@kernel.org>,
         Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
-Subject: [PATCH 4.19] f2fs: fix to do sanity check on inode type during garbage collection
-Date:   Wed, 25 Oct 2023 08:54:32 +0000
-Message-Id: <20231025085432.11639-1-kazunori.kobayashi@miraclelinux.com>
+Subject: [PATCH 5.10] f2fs: fix to do sanity check on inode type during garbage collection
+Date:   Wed, 25 Oct 2023 08:56:57 +0000
+Message-Id: <20231025085657.11689-1-kazunori.kobayashi@miraclelinux.com>
 X-Mailer: git-send-email 2.17.1
 X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SORBS_DUL,RDNS_DYNAMIC,SPF_HELO_NONE,
@@ -84,19 +85,19 @@ Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index ff447bbb5248..fb4494c54484 100644
+index 8e4daee0171f..dfa99cd195b8 100644
 --- a/fs/f2fs/gc.c
 +++ b/fs/f2fs/gc.c
-@@ -958,7 +958,8 @@ static void gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
+@@ -1451,7 +1451,8 @@ static int gc_data_segment(struct f2fs_sb_info *sbi, struct f2fs_summary *sum,
  
  		if (phase == 3) {
  			inode = f2fs_iget(sb, dni.ino);
--			if (IS_ERR(inode) || is_bad_inode(inode))
+-			if (IS_ERR(inode) || is_bad_inode(inode)) {
 +			if (IS_ERR(inode) || is_bad_inode(inode) ||
-+					special_file(inode->i_mode))
++					special_file(inode->i_mode)) {
+ 				set_sbi_flag(sbi, SBI_NEED_FSCK);
  				continue;
- 
- 			if (!down_write_trylock(
+ 			}
 -- 
 2.39.2
 
