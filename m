@@ -2,187 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AB247D6776
-	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 11:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E3E77D677E
+	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 11:51:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232584AbjJYJtv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 25 Oct 2023 05:49:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37762 "EHLO
+        id S233522AbjJYJvR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 25 Oct 2023 05:51:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234088AbjJYJtu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 05:49:50 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2372EDD
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 02:49:48 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-6b1e46ca282so5448730b3a.2
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 02:49:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698227387; x=1698832187; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=2+VI1/nna5S11Z2MnXZ6BjEmqHW8DnblfTeVQ8ssaI0=;
-        b=CU1UZ3XiZ8lPg4AiAuSzGHZDRjPll+nNFTAKxsP4NWjxG8iVvZkf1QuFPJNxRa23So
-         vAB7E65qz21VK8DtKfBzn/CT+s8SlG8wLm0Ah5fw0m361j6L0AcI0SP7Jtx6rkCYiNxN
-         GG6PTLCCgPAKNQKMDqKBUOs4GJ4Irumlf9SVHzgBMj1LbakLw3F0+bPQ4QgQ+HYgASyt
-         kUJQpeRlNujHJsAUJ+zBo4RL/Nhl5CR/RWVmSGxspLu5KpXgnjr3Ps/Kuk4PgERN7oGt
-         oHxEEDMwVHTIn8Da5Hn9HF/cCu36cxVkky9Cim7y0w6WtA5ULdxPf2aEyLLZu9plijX1
-         jf2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698227387; x=1698832187;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2+VI1/nna5S11Z2MnXZ6BjEmqHW8DnblfTeVQ8ssaI0=;
-        b=k9myelmtFyTlHZEoh/mO7DH3wCaFVQznpQWXQgvyNdoPMuWGV2dXtCdjV2CP2IulSf
-         eEKT0PLptXjfJtc85Y/idVmbRGCqoMNA9ZNpM4l+9ocIxlym5UNgINRn7qktQSOGzh+g
-         v82SgYuYXLisu2UoZnUshoiiR5GCafExeluNRxR/BRAFHI7ZzMZ6Rx1LO0sOTIYdFi2t
-         FvhksHz7Gr+XHBZhv6NLVdyqOCm+RKRFOHBfrNRn2gv6+xH5kPowsbh48Odq9X9nIqR2
-         kC+LaGFYTMweVOj1J+S9uJJe7xGLiOETea9+JxaB2K6Lq3IcSxI/Mm1fdCzadUvRLXjG
-         3UJQ==
-X-Gm-Message-State: AOJu0YwMtpDuvDzNY0CYaP7SN4OwFROjiMjs57Nn/l9j5RYTOjrtMnT9
-        opFkHN7jNjTT/8EnmL3eojcrI4TipYOa5d/+M8Ujsw==
-X-Google-Smtp-Source: AGHT+IH1zpQL1+8RkXoI1MIvG/IYPs+2nWsPwoMbr0OQXYsV9sx7EtLLesTWYlFRk+PwVGwMlihzSQ==
-X-Received: by 2002:a05:6a00:1789:b0:6ba:4f2e:33ca with SMTP id s9-20020a056a00178900b006ba4f2e33camr18924028pfg.2.1698227387134;
-        Wed, 25 Oct 2023 02:49:47 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id e1-20020a630f01000000b005b856fab5e9sm8403444pgl.18.2023.10.25.02.49.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 02:49:46 -0700 (PDT)
-Message-ID: <6538e4ba.630a0220.44953.c3ba@mx.google.com>
-Date:   Wed, 25 Oct 2023 02:49:46 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230217AbjJYJvQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 05:51:16 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55C70DD;
+        Wed, 25 Oct 2023 02:51:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50ADBC433C7;
+        Wed, 25 Oct 2023 09:51:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698227473;
+        bh=+cg3kYM3oFry35hZbmbwSVjd6ek+Za/QIdrk5JlXVCU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=Mk3aBPSYzxfaNtQwgFmWCAiO3PKRxQWVvwar4NEUMMiOvsIundUsqhpzRFFMObBCE
+         QveXtgBd9HCA98TLqFTA7yovLjoI21iZM1b2zsZT+w7MRzWAckSLuIKE2YobbE61dQ
+         sgLdpJ/XgcIOmVN79MziCxoVSJzNyhWmXslfB81mka1hPexK5GDEhlcoSjoBwK0fto
+         bW9Wzd1ZHIMD7kMd60aPMQtGNiYylkYtgeclMtVyBvZnyl1bTaNtztUOlC3YFUNyfZ
+         2+dIJhrxa0fr8p8lwqkv2YcQ8y8axKaoishIr0bOR+6khcx8rQgNlfypsgPtQ8fVrF
+         QAAdapnSoULUA==
+From:   Kalle Valo <kvalo@kernel.org>
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Johan Hovold <johan+linaro@kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] wifi: ath11k: fix temperature event locking
+References: <20231019153115.26401-1-johan+linaro@kernel.org>
+        <20231019153115.26401-2-johan+linaro@kernel.org>
+        <87sf60xgs8.fsf@kernel.org> <ZTfUswqVkAgJvnye@hovoldconsulting.com>
+Date:   Wed, 25 Oct 2023 12:51:10 +0300
+In-Reply-To: <ZTfUswqVkAgJvnye@hovoldconsulting.com> (Johan Hovold's message
+        of "Tue, 24 Oct 2023 16:29:07 +0200")
+Message-ID: <87bkcnxc6p.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.10.198-200-ge31b6513c43d
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-5.10.y baseline: 162 runs,
- 2 regressions (v5.10.198-200-ge31b6513c43d)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y baseline: 162 runs, 2 regressions (v5.10.198-200-ge3=
-1b6513c43d)
+Johan Hovold <johan@kernel.org> writes:
 
-Regressions Summary
--------------------
+> On Tue, Oct 24, 2023 at 04:59:35PM +0300, Kalle Valo wrote:
+>> Johan Hovold <johan+linaro@kernel.org> writes:
+>> 
+>> > The ath11k active pdevs are protected by RCU but the temperature event
+>> > handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+>> > read-side critical section as reported by RCU lockdep:
+>
+>> On what hardware and firmware version did you test this? As there's so
+>> many different combos we use Tested-on tag to provide that information
+>> in the commit message:
+>> 
+>> https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatches#tested-on_tag
+>> 
+>> I can add that if you let me know what you used.
+>
+> I hit this on the Lenovo Thinkpad X13s and I guess the tag should be:
+>
+> Tested-on: QCNFA765 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
 
-platform        | arch  | lab          | compiler | defconfig          | re=
-gressions
-----------------+-------+--------------+----------+--------------------+---=
----------
-meson-gxbb-p200 | arm64 | lab-baylibre | gcc-10   | defconfig          | 1 =
-         =
+From ath11k point of view QCNFA765 is WCN6855 so I used this one:
 
-panda           | arm   | lab-baylibre | gcc-10   | multi_v7_defconfig | 1 =
-         =
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
 
+> Note that I've only been able to test the ath11k fixes (not the
+> corresponding ath12k) and I only tested this particular patch fully
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
-nel/v5.10.198-200-ge31b6513c43d/plan/baseline/
+Thanks, I added Tested-on to this patch 1 and for the rest I added
+"compile tested only".
 
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-5.10.y
-  Describe: v5.10.198-200-ge31b6513c43d
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      e31b6513c43d7f4efa2c5913dd7d4fbef162e736 =
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
-
-Test Regressions
----------------- =
-
-
-
-platform        | arch  | lab          | compiler | defconfig          | re=
-gressions
-----------------+-------+--------------+----------+--------------------+---=
----------
-meson-gxbb-p200 | arm64 | lab-baylibre | gcc-10   | defconfig          | 1 =
-         =
-
-
-  Details:     https://kernelci.org/test/plan/id/6538b0a3d6feff8a2cefcef9
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-98-200-ge31b6513c43d/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxb=
-b-p200.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-98-200-ge31b6513c43d/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxb=
-b-p200.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/6538b0a3d6feff8a2cefc=
-efa
-        new failure (last pass: v5.10.198-203-g38f629e2a1b6) =
-
- =
-
-
-
-platform        | arch  | lab          | compiler | defconfig          | re=
-gressions
-----------------+-------+--------------+----------+--------------------+---=
----------
-panda           | arm   | lab-baylibre | gcc-10   | multi_v7_defconfig | 1 =
-         =
-
-
-  Details:     https://kernelci.org/test/plan/id/6538b40258d09ad121efcf37
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-98-200-ge31b6513c43d/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-pa=
-nda.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
-98-200-ge31b6513c43d/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-pa=
-nda.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6538b40258d09ad121efcf3f
-        new failure (last pass: v5.10.148-5-gac0fb49345ee)
-
-    2023-10-25T06:21:25.840605  <8>[   24.813537] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 3812506_1.5.2.4.1>
-    2023-10-25T06:21:25.947233  / # #
-    2023-10-25T06:21:26.048527  export SHELL=3D/bin/sh
-    2023-10-25T06:21:26.049010  #
-    2023-10-25T06:21:26.149844  / # export SHELL=3D/bin/sh. /lava-3812506/e=
-nvironment
-    2023-10-25T06:21:26.150323  =
-
-    2023-10-25T06:21:26.251137  / # . /lava-3812506/environment/lava-381250=
-6/bin/lava-test-runner /lava-3812506/1
-    2023-10-25T06:21:26.251750  =
-
-    2023-10-25T06:21:26.257004  / # /lava-3812506/bin/lava-test-runner /lav=
-a-3812506/1
-    2023-10-25T06:21:26.315121  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (11 line(s) more)  =
-
- =20
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
