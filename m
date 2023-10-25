@@ -2,165 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 846E67D7397
-	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 20:52:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BD197D73AC
+	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 20:57:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjJYSwa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 25 Oct 2023 14:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42824 "EHLO
+        id S234937AbjJYS5j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 25 Oct 2023 14:57:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbjJYSw3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 14:52:29 -0400
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC3A4111
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 11:52:26 -0700 (PDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-        by mout01.posteo.de (Postfix) with ESMTPS id AFE56240029
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 20:52:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-        t=1698259944; bh=ItgiJHIVx2mBskg0NAe/jPDHFLXrZa6DQMucl9pTiNI=;
-        h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:
-         Content-Transfer-Encoding:From;
-        b=A5qYt9rrvozXiD3b5+hW91vMDFAMQlw6/xBbnLG5nCg+xcmTZLEXIPBUhhkVqEsVC
-         5chXN4aLuN/mGEIWLaGjFc6bHVuaF3mSJqgDRsQ3vx8b96U0f+rRTtG/Icx/UIGqaq
-         SPZHKfFFrGgVCm/uq0gLdeXbWIQ1yB8qMm+nRcSpGJokOUGMqq7AwyMv4HAhdPUkVq
-         kiY2bguy6PNrkWT5yEIyaja2hCCSL8XNHne6DwvJ1TBPwty9UICn81/ebA7B8mymTt
-         O3gjLaV0la7iUK7QwQbu6pVT2m6omH8QW5gtpNTB+D9qpKzUtF2bfsAp0hnfdOZJZi
-         ZSKsLOGH8CWEg==
-Received: from customer (localhost [127.0.0.1])
-        by submission (posteo.de) with ESMTPSA id 4SFyj33b2Hz6tw1;
-        Wed, 25 Oct 2023 20:52:23 +0200 (CEST)
-Message-ID: <06af7e06-6e8b-4d00-9512-57a2ae52ef56@posteo.net>
-Date:   Wed, 25 Oct 2023 18:52:14 +0000
-MIME-Version: 1.0
-Subject: Re: [PATCH 6.1 043/131] can: isotp: isotp_sendmsg(): fix TX state
- detection and wait behavior
-Content-Language: en-US
-To:     Oliver Hartkopp <socketcan@hartkopp.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     patches@lists.linux.dev,
-        Maxime Jayat <maxime.jayat@mobile-devices.fr>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        Michal Sojka <michal.sojka@cvut.cz>
-References: <20231016084000.050926073@linuxfoundation.org>
- <20231016084001.142952122@linuxfoundation.org>
- <b4a1bdc2-54f8-428a-a82a-0308a4bc7f92@hartkopp.net>
-From:   Lukas Magel <lukas.magel@posteo.net>
-In-Reply-To: <b4a1bdc2-54f8-428a-a82a-0308a4bc7f92@hartkopp.net>
-Content-Type: text/plain; charset=UTF-8
+        with ESMTP id S230091AbjJYS51 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 14:57:27 -0400
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2054.outbound.protection.outlook.com [40.107.223.54])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAFAA1989;
+        Wed, 25 Oct 2023 11:57:15 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bnH70jwmEf3wIw+4EnW+vvYIvnjQAsKS/sH3cfgD3JzqdpwBLGYoLckP3bLFLykTJ6NsvcLaRDIBv1KiPVFOPmoc8L1nOjvP/+johm928fgTVNIwybLLXVVCr7NXSaykYIvWIhV5HxgRngjFmLW2KcVIhIALPILfGUNCYrTIfNIOI1PYmyPUihzMKWKhcvQ8kw8Gcwd4D4o6suF3YulGQDcFeKYkT96KDjbarBb+NPh9N/FM7rYOdPS4RjqbAF2yM4EiNeA6UrC1/VzvG10b30CMmDDxrPb/m9gQlKF0uuHAx5Lc2BdSRfDmAtAxB3QPkFHAo2QqDCfWMpMJBUGCzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lDH4/uqJQARrHKD2Uta09LSGnlLmqb/CMfp6uOqCK8o=;
+ b=K1809M4wHWhW2nuMGYrm/rukkIBVK0f8VATHwe2U9Ak2KEBv4s67dEhPv70Ab90XPs6Srl4uZbLfIbMAKvqzuwxTrq5cCqR4sKi+BsTQlYpJQn4jKz3RnL+iIaTW4cFe7wI+PUf+/nLjKNy2C5tSz9ecFZI/Jg+94adjj3g/TsAYmJtJuQnmArkGcG2OgffJxmc8hOZm3Q5KaXHQXiOrAclCmpNgnku1axeakmKLuvHVF+AYJnBg45GbfV0K0CNUbb+SvPv4Si5JYl7kqioZJs4o49y4PlCDxceBQeU/qLfOCW44XEp9iRq5i6kpgWvsbmX6ZDINEI4JZnfUlEbhqQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lDH4/uqJQARrHKD2Uta09LSGnlLmqb/CMfp6uOqCK8o=;
+ b=A4oWrICxe38xrkbzmrsRjZCykU6H1K4n4Ix3ozv+vALtxd/PDBG3BVQdFyqphIyNaAAmRS0ixFvkzNgVVve/V60DhiJeippEgAhSXXVWXwyurPeTLVHl2GUR19J18alx7FdFX4IB5ReAqHt06Y6fjAqM9gjyo9S+/hBhlOMy1DXXmuFEK7XN5xFjUGn0d3q0vaf3dGnszXWNy0WaHVonpfx8hQSENODU1C5Bl0GPBfKCSW+nqhs5GLX9UGYyWQ3muYnKkDUlVmjhvltAiLOzx8J6DOc1KYXCdm17r1/mbfCSM5bul0QQI6vCBqPO420PBTbJ4CWYLmSTuJSRlY8/AQ==
+Received: from DS7PR03CA0230.namprd03.prod.outlook.com (2603:10b6:5:3ba::25)
+ by IA1PR12MB7542.namprd12.prod.outlook.com (2603:10b6:208:42e::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.19; Wed, 25 Oct
+ 2023 18:57:11 +0000
+Received: from DS1PEPF0001709C.namprd05.prod.outlook.com
+ (2603:10b6:5:3ba:cafe::be) by DS7PR03CA0230.outlook.office365.com
+ (2603:10b6:5:3ba::25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.35 via Frontend
+ Transport; Wed, 25 Oct 2023 18:57:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ DS1PEPF0001709C.mail.protection.outlook.com (10.167.18.106) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6933.15 via Frontend Transport; Wed, 25 Oct 2023 18:57:11 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 25 Oct
+ 2023 11:57:03 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.41; Wed, 25 Oct 2023 11:57:03 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
+ Transport; Wed, 25 Oct 2023 11:57:03 -0700
+From:   Jon Hunter <jonathanh@nvidia.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>,
+        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 4.14 00/66] 4.14.328-rc1 review
+In-Reply-To: <20231023104810.781270702@linuxfoundation.org>
+References: <20231023104810.781270702@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+Message-ID: <c7b63997-e59b-491a-a573-4323f1254ead@drhqmail203.nvidia.com>
+Date:   Wed, 25 Oct 2023 11:57:03 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF0001709C:EE_|IA1PR12MB7542:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1cde6643-8c9a-458a-3fca-08dbd58c3238
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 3aagqRxQl/7SB/toqAbfYJo4XTfE4nUnMi8rDuFvre+rPB8sNiQ/x36yZLCjWe5Ni9QwR+ZJL5u/OjemX+aLRbZSza893tPQp6/WX/Iishojzub8+LTLgxU9sBQMo/ZqinX2GUsug6bpXsiWAkLVKMe1dPxOBN1QpnTP7CdA8Rhs1M3GLrSq8/x9YDgljT/prbYFul80hJCDOgbwWHUUYCu2QctOBoEByEsF87/CB9j+TiGpY905TWkKeLyADYuzRNhQ99R6/M+zRPEElurAmaGk6zrCyJegktRlk6IU6/L2/iQABLVsOUcpfiBI4lfcNWFYgprHJPGPvfPU6YM5LnC+1VwHlrFfWX3fgUVv11zJjermCAuQN8iBPzmxO84YzcjVuazKN/Kghb7zoaoAb22ekdUxXfjQXuowFFtWa9Dq17k4jxuAhRK8CMmuFud50A5i4WBnuWp91IoYvYksAuovjAHzvJDekjEBu40b3r15zPrTZCpHSA8DNNWR9MJqBEiVnGqTXxnvHxhJq7IQKcrRYQnKBujUPC2biZbE6knmaq1jrXqitT4KfCqlPB9PXTBXn3zln3Nn8kWl7JgcCKA1PsotvBfLAQVRg8lS7g0EJXuxSls/1wp1igfzCpmPa2TvpqsdXC4/3IZPdAFn0wRY9nm7nR0okIbyLjUdTQGR1wvB80HPUWrCLV+nOLTQiYKeaam1kYVk062UT1CESIN1UCL8yuaGTy0r59CfoLfOJIZMNp8UWpgFEn2xVy/g6my2l5yOB6QOkXkF9LKrTXweL0X3fDP7RfHGqbMMLYI=
+X-Forefront-Antispam-Report: CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(136003)(376002)(346002)(396003)(230922051799003)(186009)(1800799009)(82310400011)(451199024)(64100799003)(46966006)(40470700004)(36840700001)(40460700003)(40480700001)(478600001)(70586007)(70206006)(54906003)(6916009)(316002)(966005)(31696002)(86362001)(36860700001)(426003)(336012)(47076005)(82740400003)(26005)(7636003)(356005)(41300700001)(8936002)(8676002)(4326008)(7416002)(5660300002)(31686004)(2906002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2023 18:57:11.6335
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1cde6643-8c9a-458a-3fca-08dbd58c3238
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF0001709C.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7542
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 24.10.23 20:34, Oliver Hartkopp wrote:
-> Hello Lukas, hello Greg,
->
-> this patch fixed the issue introduced with
->
-> 79e19fa79cb5 ("can: isotp: isotp_ops: fix poll() to not report false 
-> EPOLLOUT events")
->
-> for Linux 6.1 and Linux 6.5 which is fine.
->
-> Unfortunately the problematic patch has also been applied to 5.15 and 
-> 5.10 (referencing another upstream commit as it needed a backport).
->
-> @Lukas: The 5.x code is much more similar to the latest code, so would 
-> it probably fix the issue to remove the "wq_has_sleeper(&so->wait)" 
-> condition?
+On Mon, 23 Oct 2023 12:55:50 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.14.328 release.
+> There are 66 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 25 Oct 2023 10:47:57 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.328-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Yes, the condition is causing the culprit. With the poll patch you mentioned
-above, the queue now contains all pollers, even if they're only interested
-in reading. So it's not a valid indication of send readiness anymore.
+All tests passing for Tegra ...
 
-> @Greg: I double checked the changes and fixes from the latest 6.6 kernel 
-> compared to the 5.10 when isotp.c was introduced in the mainline kernel.
-> Would it be ok, to "backport" the latest 6.6 code to the 5.x LTS trees?
-> It really is the same isotp code but only some kernel API functions and 
-> names have been changed.
->
-> Best regards,
-> Oliver
->
-> On 16.10.23 10:40, Greg Kroah-Hartman wrote:
->> 6.1-stable review patch.  If anyone has any objections, please let me know.
->>
->> ------------------
->>
->> From: Lukas Magel <lukas.magel@posteo.net>
->>
->> [ Upstream commit d9c2ba65e651467de739324d978b04ed8729f483 ]
->>
->> With patch [1], isotp_poll was updated to also queue the poller in the
->> so->wait queue, which is used for send state changes. Since the queue
->> now also contains polling tasks that are not interested in sending, the
->> queue fill state can no longer be used as an indication of send
->> readiness. As a consequence, nonblocking writes can lead to a race and
->> lock-up of the socket if there is a second task polling the socket in
->> parallel.
->>
->> With this patch, isotp_sendmsg does not consult wq_has_sleepers but
->> instead tries to atomically set so->tx.state and waits on so->wait if it
->> is unable to do so. This behavior is in alignment with isotp_poll, which
->> also checks so->tx.state to determine send readiness.
->>
->> V2:
->> - Revert direct exit to goto err_event_drop
->>
->> [1] https://lore.kernel.org/all/20230331125511.372783-1-michal.sojka@cvut.cz
->>
->> Reported-by: Maxime Jayat <maxime.jayat@mobile-devices.fr>
->> Closes: https://lore.kernel.org/linux-can/11328958-453f-447f-9af8-3b5824dfb041@munic.io/
->> Signed-off-by: Lukas Magel <lukas.magel@posteo.net>
->> Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
->> Fixes: 79e19fa79cb5 ("can: isotp: isotp_ops: fix poll() to not report false EPOLLOUT events")
->> Link: https://github.com/pylessard/python-udsoncan/issues/178#issuecomment-1743786590
->> Link: https://lore.kernel.org/all/20230827092205.7908-1-lukas.magel@posteo.net
->> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>   net/can/isotp.c | 19 ++++++++-----------
->>   1 file changed, 8 insertions(+), 11 deletions(-)
->>
->> diff --git a/net/can/isotp.c b/net/can/isotp.c
->> index 8c97f4061ffd7..545889935d39c 100644
->> --- a/net/can/isotp.c
->> +++ b/net/can/isotp.c
->> @@ -925,21 +925,18 @@ static int isotp_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
->>   	if (!so->bound || so->tx.state == ISOTP_SHUTDOWN)
->>   		return -EADDRNOTAVAIL;
->>   
->> -wait_free_buffer:
->> -	/* we do not support multiple buffers - for now */
->> -	if (wq_has_sleeper(&so->wait) && (msg->msg_flags & MSG_DONTWAIT))
->> -		return -EAGAIN;
->> +	while (cmpxchg(&so->tx.state, ISOTP_IDLE, ISOTP_SENDING) != ISOTP_IDLE) {
->> +		/* we do not support multiple buffers - for now */
->> +		if (msg->msg_flags & MSG_DONTWAIT)
->> +			return -EAGAIN;
->>   
->> -	/* wait for complete transmission of current pdu */
->> -	err = wait_event_interruptible(so->wait, so->tx.state == ISOTP_IDLE);
->> -	if (err)
->> -		goto err_event_drop;
->> -
->> -	if (cmpxchg(&so->tx.state, ISOTP_IDLE, ISOTP_SENDING) != ISOTP_IDLE) {
->>   		if (so->tx.state == ISOTP_SHUTDOWN)
->>   			return -EADDRNOTAVAIL;
->>   
->> -		goto wait_free_buffer;
->> +		/* wait for complete transmission of current pdu */
->> +		err = wait_event_interruptible(so->wait, so->tx.state == ISOTP_IDLE);
->> +		if (err)
->> +			goto err_event_drop;
->>   	}
->>   
->>   	if (!size || size > MAX_MSG_LENGTH) {
+Test results for stable-v4.14:
+    10 builds:	10 pass, 0 fail
+    16 boots:	16 pass, 0 fail
+    32 tests:	32 pass, 0 fail
+
+Linux version:	4.14.328-rc1-gacf25a8a5520
+Boards tested:	tegra124-jetson-tk1, tegra20-ventana,
+                tegra210-p2371-2180, tegra30-cardhu-a04
+
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+
+Jon
