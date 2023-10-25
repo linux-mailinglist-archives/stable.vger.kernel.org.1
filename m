@@ -2,142 +2,214 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 217BD7D7474
-	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 21:37:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6640B7D74DC
+	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 21:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229573AbjJYThQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 25 Oct 2023 15:37:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57574 "EHLO
+        id S234062AbjJYTxz convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Wed, 25 Oct 2023 15:53:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbjJYThP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 15:37:15 -0400
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9587A137
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 12:37:13 -0700 (PDT)
-Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-27d5fe999caso56263a91.1
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 12:37:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698262633; x=1698867433; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ftDoQU+2xmtM5Ksa3K3J6mc0meUapZvx3t1CWz9FTYg=;
-        b=ZlbL88VvPtRCZnatsChiJVkWQFHBK3mQ9x1hABgZG8jhefx9fKQlqQ+eKJnHY0Js6C
-         U5VvqOKNqcPSOW1pI18K/zBIq+AjIiuuqbccrPJGVji6xpqv1iSpzuovJOb+IcykZtHH
-         zCg5o0OIvhvYkaQroHMgDZRA5h7EPTSMDAAZhDN3Ehc+PFuE8GLL41rpDwuiRSer/d9D
-         Dd8EVg7gg/1M1qaJCOS0IPvQV2RHu6ptBE84Sbzmux9+hgCjGcvyRDYe31giSVcMBwwP
-         LDCxtou1BYVYNALu5clYiRUHLRjQgi6nxe2wC0c4BiU27vIi/2KBXm/dO/CKKHAh+hq7
-         ks3Q==
+        with ESMTP id S234337AbjJYTxy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 15:53:54 -0400
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5A53C4;
+        Wed, 25 Oct 2023 12:53:51 -0700 (PDT)
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-5a7c011e113so928687b3.1;
+        Wed, 25 Oct 2023 12:53:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698262633; x=1698867433;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ftDoQU+2xmtM5Ksa3K3J6mc0meUapZvx3t1CWz9FTYg=;
-        b=Ux/HsUDwjYUMBOn1o9y0yS5YfDJMq7JN9B/tWVeZHmMzhlTRiU/ru5rd+1JSi04Nhn
-         jwORMeZRBJZg3kuG6nvUvmtEC/XOuz4kYF0/w4NjRPK+DvEZevHnPI4rLZY1iD5a1pcL
-         UQ6OWWl3c+6MrCJNR9kuWqgezb4U9xiXPGTftEqSDSgP+Q4MzUQrEy8zWaNytnRzWoDx
-         FYTGH4qYAoVSHeU/Ig0LJkk1KoJKA3cyITIaRb4+I0X3LxgAHpDreTbWjBMNNF7Vbihl
-         mN+xyZ+mhFoHFNN0hjClbhak/XgmoF6x87MXmIa+Ry+tkpTgcLaYd/JVPCqE5eKwnB41
-         MmtQ==
-X-Gm-Message-State: AOJu0YxIjFwabnaXXhw3CV7JmnJTORSe+UcnWN+8TtyTxc5qJVDM3OQX
-        8ha/vfnW7lsooRA9UA8B/WfSBx2AqgYwK6ko2p4=
-X-Google-Smtp-Source: AGHT+IGWV4SrYpVNLv5pJGZkvRbiKWIGOOhhii6ZAwvdAMkDMAOb+MZF+4exKmUHkJvkx1Z09gbHwg==
-X-Received: by 2002:a17:90b:1fce:b0:27d:e18:810d with SMTP id st14-20020a17090b1fce00b0027d0e18810dmr13227494pjb.11.1698262632705;
-        Wed, 25 Oct 2023 12:37:12 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id em4-20020a17090b014400b00274b9dd8519sm250049pjb.35.2023.10.25.12.37.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 12:37:12 -0700 (PDT)
-Message-ID: <65396e68.170a0220.2b53b.19b8@mx.google.com>
-Date:   Wed, 25 Oct 2023 12:37:12 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1698263631; x=1698868431;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Xa8+C/PTH21PNEpO4wV0awBQL0qs+5FqYNr/HCsqJnA=;
+        b=L+OuTd/D6cFOtexBBCj0LrhEum7/0nBnRvPGxr4V1IHO+2iZJe5lA8Ggl/aKoay9Oj
+         0Y97E+m7oaWkhWhQUOvCipIb9ZLogvVgRp5+dDBD5k6CZ8kiSY56iXZeVp8r6yPH683/
+         olC+GeByX1iC8hRLbNM/7u6psh+NL3pYSD73Lu6smge3U+00IaiFHwpcoAkmUgqbpJSo
+         cYCuq9Q17lZiUrZAUfU4Hpnb+jq9ESxv6RA/1fJyeaL7xLAk+Mbs7JBcODhLxGgNspnq
+         Cz547iRqbYjf5QARC20MtCJ/OQGW7jJCboY6KVRjcbaFagzsRFc8hgeJke223FcT7U5d
+         PpyA==
+X-Gm-Message-State: AOJu0YwwsOXnVvHANuGxul3k0rgptPVHrM5yV+bIMjgiZPd0E2sqopcp
+        lubGo8Nx1+nwVdanKTbzqs49jqfr9Qjb0w==
+X-Google-Smtp-Source: AGHT+IFVfhrZIQUnup/ChfpE50YvQIuJBWgCbwiyfytTQ3JRhtqtNMwFSjFWr2DKBMGUsDOOTpVgsg==
+X-Received: by 2002:a25:d38d:0:b0:d9c:2a9c:3f4f with SMTP id e135-20020a25d38d000000b00d9c2a9c3f4fmr17010723ybf.62.1698263630704;
+        Wed, 25 Oct 2023 12:53:50 -0700 (PDT)
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com. [209.85.219.181])
+        by smtp.gmail.com with ESMTPSA id f132-20020a25518a000000b00d9a36ded1besm4707536ybb.6.2023.10.25.12.53.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Oct 2023 12:53:49 -0700 (PDT)
+Received: by mail-yb1-f181.google.com with SMTP id 3f1490d57ef6-d857c8a1d50so74214276.3;
+        Wed, 25 Oct 2023 12:53:49 -0700 (PDT)
+X-Received: by 2002:a5b:c42:0:b0:da0:48df:cafa with SMTP id
+ d2-20020a5b0c42000000b00da048dfcafamr5279836ybr.16.1698263629623; Wed, 25 Oct
+ 2023 12:53:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.10.199
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable
-Subject: stable/linux-5.10.y baseline: 171 runs, 1 regressions (v5.10.199)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20231009130126.697995596@linuxfoundation.org> <ZSRVgj5AqJbDXqZU@duo.ucw.cz>
+ <ZSRe78MAQwbBdyFP@duo.ucw.cz> <ZSUy+zA0+Chm6dFb@duo.ucw.cz>
+ <ZSU+GHl1q7T/TBp5@duo.ucw.cz> <ZSWg1fv3gOyV5t+h@shikoro> <2023101057-runny-pellet-8952@gregkh>
+ <ZTgZa1ic1iFbdaTM@duo.ucw.cz> <CAMuHMdXQApuOPfU1zNKcHKN5=fCuLBSDiLtF06U7e4Tx0+noyA@mail.gmail.com>
+ <CAMuHMdVrdmBgopnPnJK_ij52wz2WVBdYRHur2KfosFnT945ULw@mail.gmail.com>
+ <CAMuHMdWZvTGrFgx_o3g3usOwkDvD2rw5QH9_ibo=OKdw17sAzg@mail.gmail.com>
+ <CAMuHMdXvpiGQ7jqAG69Zo=10wV-E0bioC9AYUHwwhRGmLXygWA@mail.gmail.com> <7d7a5a15-3349-adce-02cd-82b6cb4bebde@roeck-us.net>
+In-Reply-To: <7d7a5a15-3349-adce-02cd-82b6cb4bebde@roeck-us.net>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 25 Oct 2023 21:53:37 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXbPZ0uz0NnE1xhUD=QtaAq+TinSW-PrWPMpGe4h=7Spg@mail.gmail.com>
+Message-ID: <CAMuHMdXbPZ0uz0NnE1xhUD=QtaAq+TinSW-PrWPMpGe4h=7Spg@mail.gmail.com>
+Subject: Re: renesas_sdhi problems in 5.10-stable was Re: [PATCH 5.10 000/226]
+ 5.10.198-rc1 review
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Pavel Machek <pavel@denx.de>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        niklas.soderlund+renesas@ragnatech.se,
+        yoshihiro.shimoda.uh@renesas.com, biju.das.jz@bp.renesas.com,
+        Chris.Paterson2@renesas.com, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        linux-reneas-soc@vger.kernel.org,
+        Linux MMC List <linux-mmc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-5.10.y baseline: 171 runs, 1 regressions (v5.10.199)
+Hi Günter,
 
-Regressions Summary
--------------------
+On Wed, Oct 25, 2023 at 8:39 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> On 10/25/23 10:05, Geert Uytterhoeven wrote:
+> > On Wed, Oct 25, 2023 at 2:35 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> >> On Wed, Oct 25, 2023 at 12:53 PM Geert Uytterhoeven
+> >> <geert@linux-m68k.org> wrote:
+> >>> On Wed, Oct 25, 2023 at 12:47 PM Geert Uytterhoeven
+> >>> <geert@linux-m68k.org> wrote:
+> >>>> On Tue, Oct 24, 2023 at 9:22 PM Pavel Machek <pavel@denx.de> wrote:
+> >>>>> But we still have failures on Renesas with 5.10.199-rc2:
+> >>>>>
+> >>>>> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1047368849
+> >>>>>
+> >>>>> And they still happed during MMC init:
+> >>>>>
+> >>>>>      2.638013] renesas_sdhi_internal_dmac ee100000.mmc: Got CD GPIO
+> >>>>> [    2.638846] INFO: trying to register non-static key.
+> >>>>> [    2.644192] ledtrig-cpu: registered to indicate activity on CPUs
+> >>>>> [    2.649066] The code is fine but needs lockdep annotation, or maybe
+> >>>>> [    2.649069] you didn't initialize this object before use?
+> >>>>> [    2.649071] turning off the locking correctness validator.
+> >>>>> [    2.649080] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.199-rc2-arm64-renesas-ge31b6513c43d #1
+> >>>>> [    2.649082] Hardware name: HopeRun HiHope RZ/G2M with sub board (DT)
+> >>>>> [    2.649086] Call trace:
+> >>>>> [    2.655106] SMCCC: SOC_ID: ARCH_SOC_ID not implemented, skipping ....
+> >>>>> [    2.661354]  dump_backtrace+0x0/0x194
+> >>>>> [    2.661361]  show_stack+0x14/0x20
+> >>>>> [    2.667430] usbcore: registered new interface driver usbhid
+> >>>>> [    2.672230]  dump_stack+0xe8/0x130
+> >>>>> [    2.672238]  register_lock_class+0x480/0x514
+> >>>>> [    2.672244]  __lock_acquire+0x74/0x20ec
+> >>>>> [    2.681113] usbhid: USB HID core driver
+> >>>>> [    2.687450]  lock_acquire+0x218/0x350
+> >>>>> [    2.687456]  _raw_spin_lock+0x58/0x80
+> >>>>> [    2.687464]  tmio_mmc_irq+0x410/0x9ac
+> >>>>> [    2.688556] renesas_sdhi_internal_dmac ee160000.mmc: mmc0 base at 0x00000000ee160000, max clock rate 200 MHz
+> >>>>> [    2.744936]  __handle_irq_event_percpu+0xbc/0x340
+> >>>>> [    2.749635]  handle_irq_event+0x60/0x100
+> >>>>> [    2.753553]  handle_fasteoi_irq+0xa0/0x1ec
+> >>>>> [    2.757644]  __handle_domain_irq+0x7c/0xdc
+> >>>>> [    2.761736]  efi_header_end+0x4c/0xd0
+> >>>>> [    2.765393]  el1_irq+0xcc/0x180
+> >>>>> [    2.768530]  arch_cpu_idle+0x14/0x2c
+> >>>>> [    2.772100]  default_idle_call+0x58/0xe4
+> >>>>> [    2.776019]  do_idle+0x244/0x2c0
+> >>>>> [    2.779242]  cpu_startup_entry+0x20/0x6c
+> >>>>> [    2.783160]  rest_init+0x164/0x28c
+> >>>>> [    2.786561]  arch_call_rest_init+0xc/0x14
+> >>>>> [    2.790565]  start_kernel+0x4c4/0x4f8
+> >>>>> [    2.794233] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000014
+> >>>>> [    2.803011] Mem abort info:
+> >>>>>
+> >>>>> from https://lava.ciplatform.org/scheduler/job/1025535
+> >>>>> from
+> >>>>> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/5360973735 .
+> >>>>>
+> >>>>> Is there something else missing?
+> >>>>
+> >>>> I don't have a HopeRun HiHope RZ/G2M, but both v5.10.198 and v5.10.199
+> >>>> seem to work fine on Salvator-XS with R-Car H3 ES2.0 and Salvator-X
+> >>>> with R-Car M3-W ES1.0, using a config based on latest renesas_defconfig.
+> >>>
+> >>> Sorry, I looked at the wrong log on R-Car M3-W.
+> >>> I do see the issue with v5.10.198, but not with v5.10.199.
+> >>
+> >> It seems to be an intermittent issue. Investigating...
+> >
+> > After spending too much time on bisecting, the bad guy turns out to
+> > be commit 6d3745bbc3341d3b ("mmc: renesas_sdhi: register irqs before
+> > registering controller") in v5.10.198.
+> >
+> > Adding debug information shows the lock is mmc_host.lock.
+> >
+> > It is definitely initialized:
+> >
+> >      renesas_sdhi_probe()
+> >      {
+> >          ...
+> >          tmio_mmc_host_alloc()
+> >              mmc_alloc_host
+> >                  spin_lock_init(&host->lock);
+> >          ...
+> >          devm_request_irq()
+> >          -> tmio_mmc_irq
+> >              tmio_mmc_cmd_irq()
+> >                  spin_lock(&host->lock);
+> >          ...
+> >      }
+> >
+> > That leaves us with a missing lockdep annotation?
+>
+> Is it possible that the lock initialization is overwritten ?
+> I seem to recall a recent case where this happens.
+>
+> Also, there is
+>         spin_lock_init(&_host->lock);
+> in tmio_mmc_host_probe(), and tmio_mmc_host_probe() is called after
+> devm_request_irq().
 
-platform | arch | lab          | compiler | defconfig          | regressions
----------+------+--------------+----------+--------------------+------------
-panda    | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig | 1          =
+Unless I am missing something, that is initializing tmio_mmc_host.lock,
+which is a different lock than mmc_host.lock?
 
+> Also, how would lockdep annotation help with "Unable to handle
+> kernel NULL pointer dereference at virtual address 0000000000000014"
+> in the log above ?
 
-  Details:  https://kernelci.org/test/job/stable/branch/linux-5.10.y/kernel=
-/v5.10.199/plan/baseline/
+For the log from v5.10.198-rc1-g18c65c1b4996, that happened because
+it lacked commit 1e3d016a95067ab3 ("mmc: renesas_sdhi: only reset
+SCC when its pointer is populated"), according to earlier messages in
+this thread.
 
-  Test:     baseline
-  Tree:     stable
-  Branch:   linux-5.10.y
-  Describe: v5.10.199
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able.git
-  SHA:      cb49f0e441ce7db63ef67ccfa9d9562c22f5d6c3 =
+For the NULL pointer dereference in 5.10.199-rc2, I'm not sure.
+I didn't see that on R-Car M3-W...
 
+According to my logs, I never saw this lockdep issue in MMC on mainline
+before, so it's a bit hard to guess what's missing...
 
+Gr{oetje,eeting}s,
 
-Test Regressions
----------------- =
+                        Geert
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
-platform | arch | lab          | compiler | defconfig          | regressions
----------+------+--------------+----------+--------------------+------------
-panda    | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/65393d32c56c634badefcef3
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10
-  Plain log:   https://storage.kernelci.org//stable/linux-5.10.y/v5.10.199/=
-arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-panda.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-5.10.y/v5.10.199/=
-arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-panda.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65393d32c56c634badefcefc
-        new failure (last pass: v5.10.148)
-
-    2023-10-25T16:06:55.028018  + <8>[   24.847930] <LAVA_SIGNAL_ENDRUN 0_d=
-mesg 3813999_1.5.2.4.1>
-    2023-10-25T16:06:55.028245  set +x
-    2023-10-25T16:06:55.133717  / # #
-    2023-10-25T16:06:55.234988  export SHELL=3D/bin/sh
-    2023-10-25T16:06:55.235350  #
-    2023-10-25T16:06:55.336128  / # export SHELL=3D/bin/sh. /lava-3813999/e=
-nvironment
-    2023-10-25T16:06:55.336497  =
-
-    2023-10-25T16:06:55.437331  / # . /lava-3813999/environment/lava-381399=
-9/bin/lava-test-runner /lava-3813999/1
-    2023-10-25T16:06:55.438038  =
-
-    2023-10-25T16:06:55.443282  / # /lava-3813999/bin/lava-test-runner /lav=
-a-3813999/1 =
-
-    ... (12 line(s) more)  =
-
- =20
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
