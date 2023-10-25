@@ -2,203 +2,199 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DF967D75F0
-	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 22:44:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 242A87D7676
+	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 23:17:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229799AbjJYUoL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 25 Oct 2023 16:44:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57536 "EHLO
+        id S229596AbjJYVRI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 25 Oct 2023 17:17:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229576AbjJYUoL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 16:44:11 -0400
-Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E60A181
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 13:43:59 -0700 (PDT)
-Received: by mail-pg1-x529.google.com with SMTP id 41be03b00d2f7-5b8ece0f440so169060a12.1
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 13:43:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698266623; x=1698871423; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=BDv9nTMH77xslILNDKIE/LYp6wTEl8e8wbfyO6sqSYw=;
-        b=zkJwavF0S1fFWsBq5vnXIBNwoC98yA0GRZAz5OTqdDOd6QPgcOYTFmEY5Udts45k+s
-         1luAYm/Ua5P1MXQrXyhBGoP0zn96W0S/HPnkr5SJl/l9kz8h9aAdYgn8tf6HJmOkndXm
-         aMPHaulPntKHdZJg71vAZmSCfafjktUQFX1aSzf2fUyli6SXavOIVgEOhkuwRQ8K+KXP
-         NQrXQv2cmrG562rnLahCkqeexr5eQ088Cq1Bdv9YiCznyd8eidzVlmPLL9gOQ0T39QJt
-         FWi2HH1HHkso2dKEt1GkbXALE8ukjaxyYuauNq+bhXwCHlqFGBJKl/ix2RpwE+i+KMQT
-         aRXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698266623; x=1698871423;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BDv9nTMH77xslILNDKIE/LYp6wTEl8e8wbfyO6sqSYw=;
-        b=ScqBVlSIyFcw73yJl5gRz0ifQq/WeMVLkn7E3tP86pF737T8FOlm18pqrwbCNlxzZP
-         mpAZJBMcz43Et6c0ZZd2XQXRWKMxvIlAA4JdPCPyX9OycSjMej1o5xIhpakRr0kRODBD
-         cq4IpS4kdAd60KdS40l0sgc553QRRj0doi1kGW9HOIir7ipHUQcepfPeIWwrk05IozHj
-         V2qOdUODu/y2DH4qr91+tfiDC/THuFTIsEypqTWXw2u8nloF28RRZ1VZs4F3WAToBPds
-         hgB1pvduZxoACuhegVMb99fPW6kIvHqfRiS/rdlG/utsip5b2+HHurzhzhx3sqg9ZS88
-         kU4w==
-X-Gm-Message-State: AOJu0YzzjUNoVi+HoS8sdzRXxgcWp4VD1/iR7nnXpRNbpnYmRZlA1UL5
-        9MV0RM3LJmK7NHlJjYLL5f5OT1L2+3JRGp3eSCE=
-X-Google-Smtp-Source: AGHT+IEi2zZ7D+ua3tLXGpBI47LUGM/o07wVLDIiNb9cFSQ5i6J3usgpA/ZZupI9CIDOmg0u1h9A9g==
-X-Received: by 2002:a17:90b:1490:b0:27c:edd5:6137 with SMTP id js16-20020a17090b149000b0027cedd56137mr13937997pjb.25.1698266623369;
-        Wed, 25 Oct 2023 13:43:43 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id mt5-20020a17090b230500b00274bbfc34c8sm309627pjb.16.2023.10.25.13.43.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Oct 2023 13:43:42 -0700 (PDT)
-Message-ID: <65397dfe.170a0220.2065c.1fb7@mx.google.com>
-Date:   Wed, 25 Oct 2023 13:43:42 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229441AbjJYVRI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 17:17:08 -0400
+Received: from DM6FTOPR00CU001.outbound.protection.outlook.com (mail-centralusazon11020003.outbound.protection.outlook.com [52.101.61.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3360012A;
+        Wed, 25 Oct 2023 14:17:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cLyVX+idSIaHE8YU4gYBCuW+xDx/DdoCPCOVuknIMlU1Lp8TzyqwP857wtmF0wKrro55bBPKJKgBgwcVPiWztKjpgv8kG0CL1cztusIQK/tqUYsXqdb4RdnSqqtqIntp1HzbYq/cfVJ8P4BVhfVEf+qYYzV+55zmHqgdAV/U5bYoEUepPIEkcvYo2G4yHn7nB0X2kp3JBNot3fS7EQ6grOSeOwJYGbyoinFd6RC6U/gxRddLcJSeSvAdPrgkz0Ip1UnvFC5QWum92U83nfeBh4cuI5+NtQnh+iJqMA0ijEkME1fc9brV9oOz+qq8AOS8/V4l8dFWlHyDNOJfYYmGNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nH4MiJJ/ZgiMCLMDjIknvzzzxIedakAzBwKHVsmWbT4=;
+ b=OXHciexH3oxHXn2N0gWKkd4rBvC6nb6hZd7SZNSTiYkzmYgezc8Q7ySGsIJHxHF+QLs0rs01kmhBMWdgl2N30fs1UzJQJtCx1iKC58lCFGWPmcaxEKg7z90rWd7s7ymA4vDAIRWU/8PC59+TPi6nPA5aqePbwT6r2p1j4Gt64YeUDrWgwJ4xOmiMOIrjWX66oVpqIax785+BA+2GcFFx0yJ9rl6+fKw46EsF+souzNcDCF2W2oQXO3CMFNQA2oUeO+TaHXvdD39kIfQUc95pEA41QTigYWNxGexDwaY05CZgyBPhKAclFNK3ztry2iAmHes5i2iRmI0yl2o+aFJy7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nH4MiJJ/ZgiMCLMDjIknvzzzxIedakAzBwKHVsmWbT4=;
+ b=jh9Gytuw+2ZkZ9jekibbSOe1gD1kj89KWsPtmMaOJat5wRWhBA10U5QJKTKR2nPjeWvxjS9f7LweA3Cd+fC46QQWvS3wgIiWbqOKDWvmjJSs7DH1Yy/4Kd/1BPhM3yja/AXPClOlWc+eFYQBgoS/UrGvTv9tFPp8O/4DiECS4DY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+Received: from BY5PR21MB1443.namprd21.prod.outlook.com (2603:10b6:a03:21f::18)
+ by CY5PR21MB3614.namprd21.prod.outlook.com (2603:10b6:930:d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.3; Wed, 25 Oct
+ 2023 21:17:02 +0000
+Received: from BY5PR21MB1443.namprd21.prod.outlook.com
+ ([fe80::c099:1450:81d3:61dd]) by BY5PR21MB1443.namprd21.prod.outlook.com
+ ([fe80::c099:1450:81d3:61dd%4]) with mapi id 15.20.6954.005; Wed, 25 Oct 2023
+ 21:17:01 +0000
+From:   Haiyang Zhang <haiyangz@microsoft.com>
+To:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
+Cc:     haiyangz@microsoft.com, kys@microsoft.com, wei.liu@kernel.org,
+        decui@microsoft.com, edumazet@google.com, kuba@kernel.org,
+        pabeni@redhat.com, davem@davemloft.net,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: [PATCH net] hv_netvsc: fix race of netvsc and VF register_netdevice
+Date:   Wed, 25 Oct 2023 14:16:32 -0700
+Message-Id: <1698268592-20373-1-git-send-email-haiyangz@microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+Content-Type: text/plain
+X-ClientProxiedBy: MW4PR03CA0248.namprd03.prod.outlook.com
+ (2603:10b6:303:b4::13) To BY5PR21MB1443.namprd21.prod.outlook.com
+ (2603:10b6:a03:21f::18)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.4.259
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-5.4.y
-X-Kernelci-Tree: stable
-Subject: stable/linux-5.4.y baseline: 153 runs, 2 regressions (v5.4.259)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Sender: LKML haiyangz <lkmlhyz@microsoft.com>
+X-MS-Exchange-MessageSentRepresentingType: 2
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR21MB1443:EE_|CY5PR21MB3614:EE_
+X-MS-Office365-Filtering-Correlation-Id: a69aff3d-4ef3-4ed6-54d5-08dbd59fba9d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: PyeXBB6f+7IcaFJVdAYZzOVkv1PcGMXCPDwns7c2DMqY9Jmdv70Veh5lhEbIfyxsPWZ5dQvbTNIMBD8JiIifGf6s4075m2/gbLeH4Lt6p4RutpaKv+Kap5fpv9eESyztQNnQkXd6nm2750DzWAQgenJ6Rk4Lm9AYf68/j868e7DI8yBmIi0GGn2kDTp8tbBDGYIVDNUUEDMMXuIj3Dk/2zEpW1EQuV3SurHTjzWliWkNQHt5wI39Mmd41h//RXre0N0bBnIszO79MagC4PzGDupyOX7LwJl0L5t6J2jaqGsFpNNXr1GiytTROWddkz9B4T2LAm47US7ehiprM+lBNun71+XqZecLKC7k5euVOXz8+t2SOF4BxSOSyKOqq/IARDwtqQdaslVP32T37Evd5jExiFD2wQP4YlA8kccWrAv/YjNtVO8vFH01CAA12bvHfwAoZ6dmor7AT2WGKvPlGRQeqoRwDgSzVp9Yr/dYaOuJ8+VEbtNt/az7ZBmuAULVoVHI2yWbZaPIsuDwFz1oLbnSetxi0kueCDHwcCXcxAgrlbuEyGO8cl0ssJmx3G/bRy+bOpyqi+MmlXy9oFR0d0gmiMaBmAj5U/jMDGw/Xdxooyb/g3DNtidFEoBXZ5Uo166f8/+35t1SvnOzWTT0c3g38lwTxqIdwlP08l7un7k=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR21MB1443.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(396003)(136003)(39860400002)(366004)(230922051799003)(64100799003)(1800799009)(451199024)(186009)(66899024)(6512007)(7846003)(2616005)(6506007)(6486002)(52116002)(38100700002)(82950400001)(82960400001)(38350700005)(36756003)(26005)(6666004)(2906002)(41300700001)(10290500003)(478600001)(83380400001)(8936002)(8676002)(4326008)(5660300002)(66476007)(316002)(66556008)(66946007);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?BehMHLCTfx4KdJSrUOygJAOs3BEVfESreMG39+ddRRLxMyjqXjkIzkRuuSku?=
+ =?us-ascii?Q?N/XJksQe/o2Grs3/x8kQ2s4t/v/T0aXcZmg37kx8ilgU1xyFPio87eK2k2Hx?=
+ =?us-ascii?Q?JwRYi++8NmqYrWXoor/RksbGOHq4tT7MwuTQ3kU/nZ7DuAaIqhc33qnN6rBz?=
+ =?us-ascii?Q?8tafcVc6I5bxk7WTBGkzFj2XkPBzKx0XFJ5Tfq+OAtjIGzOnwya3qTYFVEc6?=
+ =?us-ascii?Q?IPpIrCTYMUFcY5UcaDjhAGo/F3poanhF9BWZojPSvkCrrLTr+ejsos4E8QNh?=
+ =?us-ascii?Q?NtxuzQRmj3irUFPNMwEI4hjRXLm4PVnySOt6WiMZ02e4i2XYjfdW0JfAMpxS?=
+ =?us-ascii?Q?R6YpuiIHa6PFU2f6h5jAGVbviVHJNzNyZlxXRYGMuguM8mYpYyumxSHA8foN?=
+ =?us-ascii?Q?Je57srY42U8KVt2KHlOqZ4PNWCgaRVw3DCIeDDXVlgtmH6Q/H/4o7iRPQkA/?=
+ =?us-ascii?Q?XRNt2QiJ/ExkDXFooDa20wXxxmWDJ1kmqciDZ0SJ6PGTqu6scVMhXppnOfoN?=
+ =?us-ascii?Q?6h+8Rf4uSVr2yjKAKk2cyRbMJUXCHb8ATgV/b1sEiDwvpjFc9+tfKQ+5EZ5S?=
+ =?us-ascii?Q?WViROR6WlvehJHPwgDx2gRnhw3WwsfEAI5Qig0hr5cNAVhqANDx9GI4bodgo?=
+ =?us-ascii?Q?eGuEtp2AX4IyfSSNKsKkqSCpYlf3wfPHSU4I8KFq7/P+TsCCBF7500hnZqMg?=
+ =?us-ascii?Q?XVrQcwbE/tooOquK3Dym7cHHrhuLBONhHmvBrpUwbHRXiMDA3IgKb6sQ11sr?=
+ =?us-ascii?Q?CkA6c331LQojTAzW3ybfpy8OqzNWtexDxAwTKDMqdZuFgGBf9y1bj8LfOZKD?=
+ =?us-ascii?Q?LNSr61HvDj/fWdMNAo9Sv3euD1N2oYyo1ND0G6pAVYMH9DozbrpgLyw2fyIF?=
+ =?us-ascii?Q?+Pf8ysIUCsSY6c0keP1tzLzoddkNCeFooUDpQX0c4DF3d5JvfCcV0Y1750+a?=
+ =?us-ascii?Q?CxTnq9RNhxzXWMB2Bi7YQ1rZkEIwamHswPzcpvEMq8hMimd+sBaXN6TC16Ej?=
+ =?us-ascii?Q?f00kVUMA/ycu7GWrl40W0y50oQxxXeJps0R+v85ugOGBosXPFjRp0MjXGZWL?=
+ =?us-ascii?Q?cH9VXLpYANwfC0yrPPXmENY6il79d4DErdAlWEDTua5LmD3NWecop7wYHsCw?=
+ =?us-ascii?Q?BJ3H3gcGv+5El/mLDZRAboL2KCGLjb5FwMsg3nA0v1wL8KfsWkL3rQOZzYDI?=
+ =?us-ascii?Q?F5Fe3okYPeu8I3NmANNe2tFx89W6In67CnTtst6OuSzXPLUZFoWhV1A5vHSM?=
+ =?us-ascii?Q?ULV9V3bAB/VBXv0kYtuQHx/dD97S0rlTuPB2Xx6Tw2jUEROuO+O89Y0FsEQE?=
+ =?us-ascii?Q?U/DDIJ5lcIh2+o+vrY7DoEMJyAbRinpVAPDGxabqw0OSXWgc+vVDuXrsiqTY?=
+ =?us-ascii?Q?COoGDLBYj2yZYCXrCuBML8U4JmO2hy2F48qfEPG8UrEhNwashL7vmwk+XYko?=
+ =?us-ascii?Q?eDEn/YsDbo9EpGgDXLZ3Kox2zPXwhBVgNrqEpIa+KQEXIdF5Sh2CBeIfbX3z?=
+ =?us-ascii?Q?gEiedyOHnrx1ckp6WEPIG/aKBhbPTDxdRS0SbQlfIZtSgUH2BqcZtIe4VLIV?=
+ =?us-ascii?Q?sW/lxRSPyM+KqR+e6B/8t2xPZaUqvyn6QqVYXeJD?=
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a69aff3d-4ef3-4ed6-54d5-08dbd59fba9d
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR21MB1443.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2023 21:17:01.3627
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: LWpwU/p8V0mP1UseNq+WxA2cE3oZdNRXhcciEYDPv4u2A3a97pdGaYRkaIpTGyj82XAd2UayBnaYR+Quc0IfOg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR21MB3614
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-5.4.y baseline: 153 runs, 2 regressions (v5.4.259)
+The rtnl lock also needs to be held before rndis_filter_device_add()
+which advertises nvsp_2_vsc_capability / sriov bit, and triggers
+VF NIC offering and registering. If VF NIC finished register_netdev()
+earlier it may cause name based config failure.
 
-Regressions Summary
--------------------
+To fix this issue, move the call to rtnl_lock() before
+rndis_filter_device_add(), so VF will be registered later than netvsc
+/ synthetic NIC, and gets a name numbered (ethX) after netvsc.
 
-platform | arch | lab          | compiler | defconfig           | regressio=
-ns
----------+------+--------------+----------+---------------------+----------=
---
-panda    | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig  | 1        =
-  =
+And, move register_netdevice_notifier() earlier, so the call back
+function is set before probing.
 
-panda    | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1        =
-  =
+Cc: stable@vger.kernel.org
+Fixes: e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earlier in netvsc_probe()")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
 
+---
+ drivers/net/hyperv/netvsc_drv.c | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
-  Details:  https://kernelci.org/test/job/stable/branch/linux-5.4.y/kernel/=
-v5.4.259/plan/baseline/
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index 3ba3c8fb28a5..feca1391f756 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2531,15 +2531,6 @@ static int netvsc_probe(struct hv_device *dev,
+ 		goto devinfo_failed;
+ 	}
+ 
+-	nvdev = rndis_filter_device_add(dev, device_info);
+-	if (IS_ERR(nvdev)) {
+-		ret = PTR_ERR(nvdev);
+-		netdev_err(net, "unable to add netvsc device (ret %d)\n", ret);
+-		goto rndis_failed;
+-	}
+-
+-	eth_hw_addr_set(net, device_info->mac_adr);
+-
+ 	/* We must get rtnl lock before scheduling nvdev->subchan_work,
+ 	 * otherwise netvsc_subchan_work() can get rtnl lock first and wait
+ 	 * all subchannels to show up, but that may not happen because
+@@ -2547,9 +2538,23 @@ static int netvsc_probe(struct hv_device *dev,
+ 	 * -> ... -> device_add() -> ... -> __device_attach() can't get
+ 	 * the device lock, so all the subchannels can't be processed --
+ 	 * finally netvsc_subchan_work() hangs forever.
++	 *
++	 * The rtnl lock also needs to be held before rndis_filter_device_add()
++	 * which advertises nvsp_2_vsc_capability / sriov bit, and triggers
++	 * VF NIC offering and registering. If VF NIC finished register_netdev()
++	 * earlier it may cause name based config failure.
+ 	 */
+ 	rtnl_lock();
+ 
++	nvdev = rndis_filter_device_add(dev, device_info);
++	if (IS_ERR(nvdev)) {
++		ret = PTR_ERR(nvdev);
++		netdev_err(net, "unable to add netvsc device (ret %d)\n", ret);
++		goto rndis_failed;
++	}
++
++	eth_hw_addr_set(net, device_info->mac_adr);
++
+ 	if (nvdev->num_chn > 1)
+ 		schedule_work(&nvdev->subchan_work);
+ 
+@@ -2788,11 +2793,14 @@ static int __init netvsc_drv_init(void)
+ 	}
+ 	netvsc_ring_bytes = ring_size * PAGE_SIZE;
+ 
++	register_netdevice_notifier(&netvsc_netdev_notifier);
++
+ 	ret = vmbus_driver_register(&netvsc_drv);
+-	if (ret)
++	if (ret) {
++		unregister_netdevice_notifier(&netvsc_netdev_notifier);
+ 		return ret;
++	}
+ 
+-	register_netdevice_notifier(&netvsc_netdev_notifier);
+ 	return 0;
+ }
+ 
+-- 
+2.25.1
 
-  Test:     baseline
-  Tree:     stable
-  Branch:   linux-5.4.y
-  Describe: v5.4.259
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able.git
-  SHA:      86ea40e6ad22d9d7daa54b9e8167ad1e4a8a48ee =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform | arch | lab          | compiler | defconfig           | regressio=
-ns
----------+------+--------------+----------+---------------------+----------=
---
-panda    | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig  | 1        =
-  =
-
-
-  Details:     https://kernelci.org/test/plan/id/65394d49c8ac80869cefcf15
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10
-  Plain log:   https://storage.kernelci.org//stable/linux-5.4.y/v5.4.259/ar=
-m/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-panda.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-5.4.y/v5.4.259/ar=
-m/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-panda.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65394d49c8ac80869cefcf1e
-        new failure (last pass: v5.4.218)
-
-    2023-10-25T17:15:26.648063  + <8>[   21.045318] <LAVA_SIGNAL_ENDRUN 0_d=
-mesg 3814384_1.5.2.4.1>
-    2023-10-25T17:15:26.648278  set +x
-    2023-10-25T17:15:26.752570  / # #
-    2023-10-25T17:15:26.853605  export SHELL=3D/bin/sh
-    2023-10-25T17:15:26.853922  #
-    2023-10-25T17:15:26.954642  / # export SHELL=3D/bin/sh. /lava-3814384/e=
-nvironment
-    2023-10-25T17:15:26.954955  =
-
-    2023-10-25T17:15:27.055692  / # . /lava-3814384/environment/lava-381438=
-4/bin/lava-test-runner /lava-3814384/1
-    2023-10-25T17:15:27.056224  =
-
-    2023-10-25T17:15:27.061227  / # /lava-3814384/bin/lava-test-runner /lav=
-a-3814384/1 =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform | arch | lab          | compiler | defconfig           | regressio=
-ns
----------+------+--------------+----------+---------------------+----------=
---
-panda    | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1        =
-  =
-
-
-  Details:     https://kernelci.org/test/plan/id/65394a8d7cd2f603b3efcf17
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10
-  Plain log:   https://storage.kernelci.org//stable/linux-5.4.y/v5.4.259/ar=
-m/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-panda.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-5.4.y/v5.4.259/ar=
-m/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-panda.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65394a8d7cd2f603b3efcf20
-        new failure (last pass: v5.4.218)
-
-    2023-10-25T17:03:54.091350  <8>[   20.709594] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 3814301_1.5.2.4.1>
-    2023-10-25T17:03:54.102886  <6>[   20.713592] smsc95xx 3-1.1:1.0 eth0: =
-register 'smsc95xx' at usb-4a064c00.ehci-1.1, smsc95xx USB 2.0 Ethernet, 02=
-:03:01:8c:13:b0
-    2023-10-25T17:03:54.108407  <6>[   20.728118] usbcore: registered new i=
-nterface driver smsc95xx
-    2023-10-25T17:03:54.217627  <3>[   20.735504] omap-abe-twl6040 sound: A=
-S#
-    2023-10-25T17:03:54.218477  oC: failed to init link DMIC: -517
-    2023-10-25T17:03:54.218785  / # <3>[   20.743469] omap-abe-twl6040 soun=
-d: devm_snd_soc_register_card() failed: -517
-    2023-10-25T17:03:54.320107  #export SHELL=3D/bin/sh
-    2023-10-25T17:03:54.320526  =
-
-    2023-10-25T17:03:54.320764  / # <6>[   20.881469] [drm] Cannot find any=
- crtc or sizes
-    2023-10-25T17:03:54.421686  export SHELL=3D/bin/sh. /lava-3814301/envir=
-onment =
-
-    ... (17 line(s) more)  =
-
- =20
