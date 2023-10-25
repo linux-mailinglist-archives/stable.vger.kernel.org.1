@@ -2,104 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A5B7D6C96
-	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 15:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27E097D6CF4
+	for <lists+stable@lfdr.de>; Wed, 25 Oct 2023 15:18:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344332AbjJYNAt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 25 Oct 2023 09:00:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55570 "EHLO
+        id S1343844AbjJYNSM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 25 Oct 2023 09:18:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344354AbjJYNAp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 09:00:45 -0400
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ED3B9F
-        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 06:00:41 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=guangguan.wang@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0Vuul-qK_1698238834;
-Received: from 30.221.101.240(mailfrom:guangguan.wang@linux.alibaba.com fp:SMTPD_---0Vuul-qK_1698238834)
-          by smtp.aliyun-inc.com;
-          Wed, 25 Oct 2023 21:00:35 +0800
-Message-ID: <ea9b79ce-3618-454c-bea3-abb1c59e2eaf@linux.alibaba.com>
-Date:   Wed, 25 Oct 2023 21:00:33 +0800
+        with ESMTP id S234993AbjJYNSK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 25 Oct 2023 09:18:10 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F14E111
+        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 06:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1698239844;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=IozGvl6ym7FtpXWIgUQGELou+dXeHqFgoLDxKjZILp0=;
+        b=NKCvjXfR4AH8xREssTR8wBq4foj3H4Dm4XJd2qNgAMNcgJps1qfB9S71Zg5DG37Ka+l2qh
+        u2UZyh1jhDa5w7l1l4AbiPcHTOmMlcDb8oujqzaYB8gYND+V+JSNgPzVEboT/tFkzmUAEp
+        XM+EfFChlikdkK4RYj/6942Ryo89KHQ=
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com
+ [209.85.216.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-EvJXC3fMNVaRsaV2YBySCg-1; Wed, 25 Oct 2023 09:17:22 -0400
+X-MC-Unique: EvJXC3fMNVaRsaV2YBySCg-1
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-27d3b33ea71so4275591a91.2
+        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 06:17:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698239841; x=1698844641;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IozGvl6ym7FtpXWIgUQGELou+dXeHqFgoLDxKjZILp0=;
+        b=lq1jWzQuZPmFAyL80yQbL0VOXrCt1S0FaQxum+PgBUSn+s3l1oSNLjbJQb1dTUKI41
+         20IYmfw2HelpOzL4q7DCyOrmrz8o978RAH80jqxc3hqzXFhXODoHewiHSv0IAdYN+a4O
+         jLcm48KUgyTyIOscGGr1hjGFDRknNbvZaxYMGFtSWoSBUQd1k2TYHiA2psIAswLabW2R
+         eyyvzRKzkXeEkED1OlfXoH7maq9xQkUnMEXj5D1CsdIROLcXT+RhP/3ctzGicUPiw9Rf
+         1nFTCHx7XdCJRs5NtqlXvVpwtCEU3A0TqmfdXJApBVxBdYGly/ByX+xDVqefYJl0UTZ9
+         IVfQ==
+X-Gm-Message-State: AOJu0YyZU+zq3dK2rTNHh9nsGJmZt+QB4CU75wgdc/V0tIN48RDJF/AZ
+        +MnrweL80Rr1B/Qqw5y+0L3TH8AUrNyOXE9UzY/Rqi6MjiqkDUPbTbIEiYRLr0g/ByiHnj705Lh
+        hrH+3bYcaCPgATrtdUFNCcpR7b65bnit5
+X-Received: by 2002:a17:90b:4b8a:b0:27d:4282:e3d2 with SMTP id lr10-20020a17090b4b8a00b0027d4282e3d2mr11790032pjb.30.1698239841312;
+        Wed, 25 Oct 2023 06:17:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBXLRdWrDOrQCF5FvsKobYfb7nyIu56I/K8W5F1yWLZe9klbEb/Sixm0+WmmNoJIkM4fZDAptKQq/7701Eamw=
+X-Received: by 2002:a17:90b:4b8a:b0:27d:4282:e3d2 with SMTP id
+ lr10-20020a17090b4b8a00b0027d4282e3d2mr11790015pjb.30.1698239841018; Wed, 25
+ Oct 2023 06:17:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.5 159/241] net/smc: support smc release version
- negotiation in clc handshake
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        huangjie.albert@bytedance.com
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Tony Lu <tonylu@linux.alibaba.com>,
-        Jan Karcher <jaka@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-References: <20231023104833.832874523@linuxfoundation.org>
- <20231023104837.750719920@linuxfoundation.org>
- <80669f40-3bc5-440e-9440-e153d12e37ef@linux.alibaba.com>
- <2023102521-undated-edition-d501@gregkh>
-From:   Guangguan Wang <guangguan.wang@linux.alibaba.com>
-In-Reply-To: <2023102521-undated-edition-d501@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20230904133321.104584-1-git@andred.net> <20231018111508.3913860-1-git@andred.net>
+ <717fd97a-6d14-4dc9-808c-d752d718fb80@ddn.com> <4b0b46f29955956916765d8d615f96849c8ce3f7.camel@linaro.org>
+ <fa3510f3-d3cc-45d2-b38e-e8717e2a9f83@ddn.com> <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
+ <9afc3152-5448-42eb-a7f4-4167fc8bc589@ddn.com> <5cd87a64-c506-46f2-9fed-ac8a74658631@ddn.com>
+ <8ae8ce4d-6323-4160-848a-5e94895ae60e@leemhuis.info>
+In-Reply-To: <8ae8ce4d-6323-4160-848a-5e94895ae60e@leemhuis.info>
+From:   Miklos Szeredi <mszeredi@redhat.com>
+Date:   Wed, 25 Oct 2023 15:17:09 +0200
+Message-ID: <CAOssrKdvy9qTGSwwPVqYLAYYEk0jbqhGg4Lz=jEff7U58O4Yqw@mail.gmail.com>
+Subject: Re: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set the FUSE_INIT_EXT"
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Paul Lawrence <paullawrence@google.com>,
+        Daniel Rosenberg <drosen@google.com>,
+        Alessio Balsini <balsini@android.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Bernd Schubert <bschubert@ddn.com>,
+        =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Wed, Oct 25, 2023 at 1:30=E2=80=AFPM Linux regression tracking (Thorsten
+Leemhuis) <regressions@leemhuis.info> wrote:
 
+> Miklos, I'm wondering what the status here is. The description in the
+> reverts Andr=C3=A9 sent[1] are maybe a bit vague[2], but it sounds a lot =
+like
+> he ran into a big regression that should be addressed somehow -- maybe
+> with a revert. But it seems we haven't got any closer to that in all
+> those ~7 weeks since the first revert was posted. But I might be missing
+> something, hence a quick evaluation from your side would help me a lot
+> here to understand the situation.
 
-On 2023/10/25 18:08, Greg Kroah-Hartman wrote:
-> On Mon, Oct 23, 2023 at 08:05:01PM +0800, Guangguan Wang wrote:
->> Hi, Greg.
->>
->> [PATCH 6.5 159/241] net/smc: support smc release version negotiation in clc handshake
->> [PATCH 6.5 160/241] net/smc: support smc v2.x features validate
->>
->> The above two patches should not backport to stable tree 6.5, which may result in unexpected
->> fallback if communication between 6.6 and 6.5(with these two patch) via SMC-R v2.1. The above
->> two patches should not exist individually without the patch 7f0620b9(net/smc: support max
->> connections per lgr negotiation) and the patch 69b888e3(net/smc: support max links per lgr 
->> negotiation in clc handshake).
->>
->> The patch c68681ae46ea ("net/smc: fix smc clc failed issue when netdevice not in init_net")
->> does not rely the feature SMC-R v2.1. But I think it may have conflict here when backport
->> to stable tree 6.5:
->>
->> @@ -1201,6 +1201,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
->>  		(struct smc_clc_msg_accept_confirm_v2 *)aclc;
->>  	struct smc_clc_first_contact_ext *fce =
->>  		smc_get_clc_first_contact_ext(clc_v2, false);    --conflict here
->> +	struct net *net = sock_net(&smc->sk);
->>
->>
->> I think it is better to resolve the confilict rather than backport more patches.
->> The resolution of the conflict should be like:
->>
->> @@ -1201,6 +1201,7 @@ static int smc_connect_rdma_v2_prepare(struct smc_sock *smc,
->>  		(struct smc_clc_msg_accept_confirm_v2 *)aclc;
->>   	struct smc_clc_first_contact_ext *fce =
->> 		(struct smc_clc_first_contact_ext *)
->> 			(((u8 *)clc_v2) + sizeof(*clc_v2));      --replace the line smc_get_clc_first_contact_ext(clc_v2, false);
->> +	struct net *net = sock_net(&smc->sk);
-> 
-> Thanks for letting me know.
-> 
-> I've dropped this patch entirely from the 6.5.y queue now (and the
-> follow-on ones.)  Can you send a backported, and tested, set of patches
-> to us for inclusion if you want this fixed up in the 6.5.y tree?  That
-> way we make sure to get this done properly.
-> 
-> thanks,
-> 
-> greg k-h
+I don't think the Android use case counts as a regression.
 
-I think it is more appropriate for Albert Huang, who is the author of the patch("net/smc: fix smc clc failed issue when
-netdevice not in init_net"), to do this because he knows the background of the fix and how to test it.
+If they'd use an unmodified upstream kernel, it would be a different case.
+
+But they modify the kernel heavily, and AFAICS this breakage is
+related to such a modification (as pointed out by Bernd upthread).
+
+Andr=C3=A9 might want to clarify, but I've not seen any concrete real world
+examples of regressions caused by this change outside of Android.
 
 Thanks,
-Guangguan Wang
+Miklos
 
