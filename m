@@ -2,262 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFD3C7D8244
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 14:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0978A7D826F
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 14:19:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230505AbjJZMIi convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 26 Oct 2023 08:08:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35382 "EHLO
+        id S231287AbjJZMTB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 26 Oct 2023 08:19:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229642AbjJZMIh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 08:08:37 -0400
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E4A21A6;
-        Thu, 26 Oct 2023 05:08:35 -0700 (PDT)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5a7a80a96dbso17192987b3.0;
-        Thu, 26 Oct 2023 05:08:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698322114; x=1698926914;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3KKbxpaRdKQQQLvpY2x+Hdf2Y5BAYNzBsK+Et59KcX8=;
-        b=ADxCBZjkuPmbALPFjGI0cRx5TBP6YQYRzuMWM8y3VNYdibuyVDxwu/dZruIXPN0JlL
-         MDqmSV+lzBsKEKJQgmcVqrBfRbgsi36IroW3865gzKvSl1mYnLfbwduO+e/XyI04mHxT
-         Lig7rPWmRU8nphSuyqGl//Zb/tL8+x5aIv8OdogZKYLODd1AvE3z1cfFM2Sp3BkIVeYF
-         C3j3EFhm2N9w/dt0znjgvv5ygj2drJNwapnUaGlR2Y9ziAmbcb3HZ1AQSrKtydoaV8/8
-         mDbRofo+V0wF2o94fxMYphPxMc0h9XT+oWixewvyRROzG7WAct2Gejw3VSd4fdetzDHA
-         BgXQ==
-X-Gm-Message-State: AOJu0Yx1q4SuiDSOBfV+4DdCpbTGFTeDsFjuxad9ILP1980lfTfzeKfT
-        zFJbbb1206JmxdTdf7+TDWV/bB/Srk6FbQ==
-X-Google-Smtp-Source: AGHT+IGKOtB5Vdi4SScA8sBNSp1erZ9WAmvPnQ2C3ohONPE3QNZ6GzYGBtj5vdT5/zgcz9CsqJT+kg==
-X-Received: by 2002:a0d:e682:0:b0:5a7:dac8:2fa with SMTP id p124-20020a0de682000000b005a7dac802famr4070833ywe.24.1698322114027;
-        Thu, 26 Oct 2023 05:08:34 -0700 (PDT)
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
-        by smtp.gmail.com with ESMTPSA id f5-20020a0ddc05000000b005a7bf2aff15sm5976139ywe.95.2023.10.26.05.08.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Oct 2023 05:08:33 -0700 (PDT)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-59e88a28b98so7109127b3.1;
-        Thu, 26 Oct 2023 05:08:33 -0700 (PDT)
-X-Received: by 2002:a81:eb04:0:b0:5a7:a896:3f54 with SMTP id
- n4-20020a81eb04000000b005a7a8963f54mr3275652ywm.26.1698322113544; Thu, 26 Oct
- 2023 05:08:33 -0700 (PDT)
+        with ESMTP id S235000AbjJZMS7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 08:18:59 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1BB510A;
+        Thu, 26 Oct 2023 05:18:52 -0700 (PDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39QCCL3G008403;
+        Thu, 26 Oct 2023 12:18:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=sdZdlAU9glRvACkHBKlOXwhT6KEbD7cXDC4qYhJBw/8=;
+ b=TG6Uv//K+oXq55yNHuK6PUzgL9c53lEc6xH9C7VKv38UV8o/tM+nTijnE9HScm9sN2cH
+ uGNaQoE2ag4aVS/FncujV209v8+fQ2fl9Y5YhgneKCVa43lBLvtPZGcrS03kQLiPMske
+ EdsPGQ7Bq8lnxdlN/8gR66F4O5KzQtFvgURQs7TuT8vMOv4GPc6oDo0vaRVvmUCmYKLO
+ FOkGJE+OLIOvqkidNKcHbStWNHmFtptmx8l9T7QwFptMNloUC9hYo7WOjsMVOH2oaWPu
+ wgbLg57oLfQBagoc6vd12ZCBrk1QIq4B94T2Lj/B1dqmZD+CXTEUlV83blb7DdCkQI87 6Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyqwq89gg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Oct 2023 12:18:52 +0000
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QCDA0B012393;
+        Thu, 26 Oct 2023 12:18:51 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyqwq89g5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Oct 2023 12:18:51 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+        by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39QAEYfi024372;
+        Thu, 26 Oct 2023 12:18:50 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+        by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvu6kdm8u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Oct 2023 12:18:50 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+        by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39QCIlBL29360612
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 26 Oct 2023 12:18:47 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A652920043;
+        Thu, 26 Oct 2023 12:18:47 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 61FF320040;
+        Thu, 26 Oct 2023 12:18:47 +0000 (GMT)
+Received: from [9.152.224.53] (unknown [9.152.224.53])
+        by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Thu, 26 Oct 2023 12:18:47 +0000 (GMT)
+Message-ID: <c6951c45-b091-11a6-5684-ba2ef0c94df3@linux.ibm.com>
+Date:   Thu, 26 Oct 2023 14:18:47 +0200
 MIME-Version: 1.0
-References: <20231009130126.697995596@linuxfoundation.org> <ZSRVgj5AqJbDXqZU@duo.ucw.cz>
- <ZSRe78MAQwbBdyFP@duo.ucw.cz> <ZSUy+zA0+Chm6dFb@duo.ucw.cz>
- <ZSU+GHl1q7T/TBp5@duo.ucw.cz> <ZSWg1fv3gOyV5t+h@shikoro> <2023101057-runny-pellet-8952@gregkh>
- <ZTgZa1ic1iFbdaTM@duo.ucw.cz> <CAMuHMdXQApuOPfU1zNKcHKN5=fCuLBSDiLtF06U7e4Tx0+noyA@mail.gmail.com>
- <CAMuHMdVrdmBgopnPnJK_ij52wz2WVBdYRHur2KfosFnT945ULw@mail.gmail.com>
- <CAMuHMdWZvTGrFgx_o3g3usOwkDvD2rw5QH9_ibo=OKdw17sAzg@mail.gmail.com>
- <CAMuHMdXvpiGQ7jqAG69Zo=10wV-E0bioC9AYUHwwhRGmLXygWA@mail.gmail.com>
- <7d7a5a15-3349-adce-02cd-82b6cb4bebde@roeck-us.net> <CAMuHMdXbPZ0uz0NnE1xhUD=QtaAq+TinSW-PrWPMpGe4h=7Spg@mail.gmail.com>
- <CAMuHMdXNjopzEFCFBxxuYNCFMmj4SvMQ2PmZ4hZDHLGZGUHf=w@mail.gmail.com>
-In-Reply-To: <CAMuHMdXNjopzEFCFBxxuYNCFMmj4SvMQ2PmZ4hZDHLGZGUHf=w@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 26 Oct 2023 14:08:20 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdU7-5R4NkwMdbLxovBY4=ePtPDs2SYXjWeGc_Yz3JcjPg@mail.gmail.com>
-Message-ID: <CAMuHMdU7-5R4NkwMdbLxovBY4=ePtPDs2SYXjWeGc_Yz3JcjPg@mail.gmail.com>
-Subject: Re: renesas_sdhi problems in 5.10-stable was Re: [PATCH 5.10 000/226]
- 5.10.198-rc1 review
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Pavel Machek <pavel@denx.de>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        niklas.soderlund+renesas@ragnatech.se,
-        yoshihiro.shimoda.uh@renesas.com, biju.das.jz@bp.renesas.com,
-        Chris.Paterson2@renesas.com, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 1/3] s390/vfio-ap: unpin pages on gisc registration
+ failure
+To:     Tony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc:     jjherne@linux.ibm.com, pasic@linux.ibm.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, david@redhat.com,
+        Matthew Rosato <mjrosato@linux.ibm.com>, stable@vger.kernel.org
+References: <20231018133829.147226-1-akrowiak@linux.ibm.com>
+ <20231018133829.147226-2-akrowiak@linux.ibm.com>
+Content-Language: en-US
+From:   Christian Borntraeger <borntraeger@linux.ibm.com>
+In-Reply-To: <20231018133829.147226-2-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PYlvQS9aqkfoHYchAqKIuaJqORo4nhBz
+X-Proofpoint-ORIG-GUID: CuSy8lGyjY-8wZ_FEoeZw-VkjthMKil3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-26_10,2023-10-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
+ suspectscore=0 spamscore=0 clxscore=1011 mlxscore=0 malwarescore=0
+ bulkscore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310170001 definitions=main-2310260105
+X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 25, 2023 at 11:26 PM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> On Wed, Oct 25, 2023 at 9:53 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > On Wed, Oct 25, 2023 at 8:39 PM Guenter Roeck <linux@roeck-us.net> wrote:
-> > > On 10/25/23 10:05, Geert Uytterhoeven wrote:
-> > > > On Wed, Oct 25, 2023 at 2:35 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> > > >> On Wed, Oct 25, 2023 at 12:53 PM Geert Uytterhoeven
-> > > >> <geert@linux-m68k.org> wrote:
-> > > >>> On Wed, Oct 25, 2023 at 12:47 PM Geert Uytterhoeven
-> > > >>> <geert@linux-m68k.org> wrote:
-> > > >>>> On Tue, Oct 24, 2023 at 9:22 PM Pavel Machek <pavel@denx.de> wrote:
-> > > >>>>> But we still have failures on Renesas with 5.10.199-rc2:
-> > > >>>>>
-> > > >>>>> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1047368849
-> > > >>>>>
-> > > >>>>> And they still happed during MMC init:
-> > > >>>>>
-> > > >>>>>      2.638013] renesas_sdhi_internal_dmac ee100000.mmc: Got CD GPIO
-> > > >>>>> [    2.638846] INFO: trying to register non-static key.
-> > > >>>>> [    2.644192] ledtrig-cpu: registered to indicate activity on CPUs
-> > > >>>>> [    2.649066] The code is fine but needs lockdep annotation, or maybe
-> > > >>>>> [    2.649069] you didn't initialize this object before use?
-> > > >>>>> [    2.649071] turning off the locking correctness validator.
-> > > >>>>> [    2.649080] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.199-rc2-arm64-renesas-ge31b6513c43d #1
-> > > >>>>> [    2.649082] Hardware name: HopeRun HiHope RZ/G2M with sub board (DT)
-> > > >>>>> [    2.649086] Call trace:
-> > > >>>>> [    2.655106] SMCCC: SOC_ID: ARCH_SOC_ID not implemented, skipping ....
-> > > >>>>> [    2.661354]  dump_backtrace+0x0/0x194
-> > > >>>>> [    2.661361]  show_stack+0x14/0x20
-> > > >>>>> [    2.667430] usbcore: registered new interface driver usbhid
-> > > >>>>> [    2.672230]  dump_stack+0xe8/0x130
-> > > >>>>> [    2.672238]  register_lock_class+0x480/0x514
-> > > >>>>> [    2.672244]  __lock_acquire+0x74/0x20ec
-> > > >>>>> [    2.681113] usbhid: USB HID core driver
-> > > >>>>> [    2.687450]  lock_acquire+0x218/0x350
-> > > >>>>> [    2.687456]  _raw_spin_lock+0x58/0x80
-> > > >>>>> [    2.687464]  tmio_mmc_irq+0x410/0x9ac
-> > > >>>>> [    2.688556] renesas_sdhi_internal_dmac ee160000.mmc: mmc0 base at 0x00000000ee160000, max clock rate 200 MHz
-> > > >>>>> [    2.744936]  __handle_irq_event_percpu+0xbc/0x340
-> > > >>>>> [    2.749635]  handle_irq_event+0x60/0x100
-> > > >>>>> [    2.753553]  handle_fasteoi_irq+0xa0/0x1ec
-> > > >>>>> [    2.757644]  __handle_domain_irq+0x7c/0xdc
-> > > >>>>> [    2.761736]  efi_header_end+0x4c/0xd0
-> > > >>>>> [    2.765393]  el1_irq+0xcc/0x180
-> > > >>>>> [    2.768530]  arch_cpu_idle+0x14/0x2c
-> > > >>>>> [    2.772100]  default_idle_call+0x58/0xe4
-> > > >>>>> [    2.776019]  do_idle+0x244/0x2c0
-> > > >>>>> [    2.779242]  cpu_startup_entry+0x20/0x6c
-> > > >>>>> [    2.783160]  rest_init+0x164/0x28c
-> > > >>>>> [    2.786561]  arch_call_rest_init+0xc/0x14
-> > > >>>>> [    2.790565]  start_kernel+0x4c4/0x4f8
-> > > >>>>> [    2.794233] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000014
-> > > >>>>> [    2.803011] Mem abort info:
-> > > >>>>>
-> > > >>>>> from https://lava.ciplatform.org/scheduler/job/1025535
-> > > >>>>> from
-> > > >>>>> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/5360973735 .
-> > > >>>>>
-> > > >>>>> Is there something else missing?
-> > > >>
-> > > >> It seems to be an intermittent issue. Investigating...
-> > > >
-> > > > After spending too much time on bisecting, the bad guy turns out to
-> > > > be commit 6d3745bbc3341d3b ("mmc: renesas_sdhi: register irqs before
-> > > > registering controller") in v5.10.198.
-> > > >
-> > > > Adding debug information shows the lock is mmc_host.lock.
-> > > >
-> > > > It is definitely initialized:
-> > > >
-> > > >      renesas_sdhi_probe()
-> > > >      {
-> > > >          ...
-> > > >          tmio_mmc_host_alloc()
-> > > >              mmc_alloc_host
-> > > >                  spin_lock_init(&host->lock);
->
-> Initializing mmc_host.lock.
->
-> > > >          ...
-> > > >          devm_request_irq()
-> > > >          -> tmio_mmc_irq
-> > > >              tmio_mmc_cmd_irq()
-> > > >                  spin_lock(&host->lock);
->
-> Locking tmio_mmc_host.lock, but ...
->
-> > > >          ...
-> > > >      }
-> > > >
-> > > > That leaves us with a missing lockdep annotation?
-> > >
-> > > Is it possible that the lock initialization is overwritten ?
-> > > I seem to recall a recent case where this happens.
-> > >
-> > > Also, there is
-> > >         spin_lock_init(&_host->lock);
-> > > in tmio_mmc_host_probe(), and tmio_mmc_host_probe() is called after
-> > > devm_request_irq().
-> >
-> > Unless I am missing something, that is initializing tmio_mmc_host.lock,
-> > which is a different lock than mmc_host.lock?
->
-> ... tmio_mmc_host.lock is initialized only here.
->
-> Now the question remains why this is not triggered in mainline.
-> More investigation to do tomorrow...
 
-| --- a/drivers/mmc/host/renesas_sdhi_core.c
-| +++ b/drivers/mmc/host/renesas_sdhi_core.c
-| @@ -1011,6 +1011,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
-|                         renesas_sdhi_start_signal_voltage_switch;
-|                 host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
-|                 host->reset = renesas_sdhi_reset;
 
-host->sdcard_irq_mask_all is not initialized in this branch
+Am 18.10.23 um 15:38 schrieb Tony Krowiak:
+> From: Anthony Krowiak <akrowiak@linux.ibm.com>
+> 
+> In the vfio_ap_irq_enable function, after the page containing the
+> notification indicator byte (NIB) is pinned, the function attempts
+> to register the guest ISC. If registration fails, the function sets the
+> status response code and returns without unpinning the page containing
+> the NIB. In order to avoid a memory leak, the NIB should be unpinned before
+> returning from the vfio_ap_irq_enable function.
+> 
+> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 
-| +       } else {
-| +               host->sdcard_irq_mask_all = TMIO_MASK_ALL;
-|         }
+Where is Janoschs signed off coming from here?
 
-|         /* Orginally registers were 16 bit apart, could be 32 or 64
-nowadays */
-| @@ -1098,9 +1100,7 @@ int renesas_sdhi_probe(struct platform_device *pdev,
-|                 host->ops.hs400_complete = renesas_sdhi_hs400_complete;
-|         }
-
-| -       ret = tmio_mmc_host_probe(host);
-| -       if (ret < 0)
-| -               goto edisclk;
-| +       sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK,
-host->sdcard_irq_mask_all);
-
-Fails to disable interrupts for real as host->sdcard_irq_mask_all is
-still zero.
-
-|         num_irqs = platform_irq_count(pdev);
-|         if (num_irqs < 0) {
-| @@ -1127,6 +1127,10 @@ int renesas_sdhi_probe(struct platform_device *pdev,
-|                         goto eirq;
-|         }
-
-| +       ret = tmio_mmc_host_probe(host);
-
-Initializes host->sdcard_irq_mask_all when needed and disables
-interrupts:
-
-        if (!_host->sdcard_irq_mask_all)
-                _host->sdcard_irq_mask_all = TMIO_MASK_ALL;
-        tmio_mmc_disable_mmc_irqs(_host, _host->sdcard_irq_mask_all);
-
-If the interrupt came in before, we have an issue.
-
-| +       if (ret < 0)
-| +               goto edisclk;
-| +
-|         dev_info(&pdev->dev, "%s base at %pa, max clock rate %u MHz\n",
-|                  mmc_hostname(host->mmc), &res->start,
-host->mmc->f_max / 1000000);
-
-The solution is to backport commit 9f12cac1bb88e329 ("mmc: renesas_sdhi:
-use custom mask for TMIO_MASK_ALL") in v5.13.
-As this doesn't backport cleanly, I'll submit a (tested) patch.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+> Fixes: 783f0a3ccd79 ("s390/vfio-ap: add s390dbf logging to the vfio_ap_irq_enable function")
+> Cc: <stable@vger.kernel.org>
+> ---
+>   drivers/s390/crypto/vfio_ap_ops.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+> index 4db538a55192..9cb28978c186 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> @@ -457,6 +457,7 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
+>   		VFIO_AP_DBF_WARN("%s: gisc registration failed: nisc=%d, isc=%d, apqn=%#04x\n",
+>   				 __func__, nisc, isc, q->apqn);
+>   
+> +		vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
+>   		status.response_code = AP_RESPONSE_INVALID_GISA;
+>   		return status;
+>   	}
