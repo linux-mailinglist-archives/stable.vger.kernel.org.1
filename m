@@ -2,149 +2,144 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 623917D81BD
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 13:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D46E77D81E4
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 13:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344803AbjJZLWR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 26 Oct 2023 07:22:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
+        id S1344811AbjJZLgy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 26 Oct 2023 07:36:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344799AbjJZLWQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 07:22:16 -0400
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E995C1B3;
-        Thu, 26 Oct 2023 04:22:13 -0700 (PDT)
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-57f137dffa5so125015eaf.1;
-        Thu, 26 Oct 2023 04:22:13 -0700 (PDT)
+        with ESMTP id S230143AbjJZLgx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 07:36:53 -0400
+Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABC1D1AC
+        for <stable@vger.kernel.org>; Thu, 26 Oct 2023 04:36:50 -0700 (PDT)
+Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-99bdeae1d0aso129896466b.1
+        for <stable@vger.kernel.org>; Thu, 26 Oct 2023 04:36:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1698320209; x=1698925009; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xWYalsuNl0GeQaeoBCkFUvRNJn+nLsde/vTacVego88=;
+        b=yTIgMX5bryGl0i1x9TUOkBQE9Gc2luBG5YqBBRiGfhFJk3JxwQ0NIRnJMMpA/MJbd/
+         IzEWyz9lS9kTjQmOYxziERNjb1plnPEwfAWfb4FptCkH+EDqtU+IXZefPA/rBVsztnq/
+         neseqPHXCpq1BRrfrkY+KPzCkKV5HVeBuG9X91I+Aluc4P/CKlfK4jfYqI7dp4/diiwM
+         C7/jAxiBWPAOqTGQqhO80fDiXQtR6xaGeZcPDWr1LPS4h4dvSjEb91MkNhO0mGyKO8gk
+         UcLBsQWtom4LchH3H7xP6wrorVEPg7DYy5Dmiu0VEC25u+7LEjXRI0upyp+9kYsVlN8b
+         GOJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698319333; x=1698924133;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LZnbvMK9HIuGTN1h7lEDqvF75KbGWgtR8jRiUFqocC8=;
-        b=ftu06cPjXWTHLrx2v5bmKtfZBSt/mWKlpQsAjZXtcyzo7xZqYi6tagdsEpxWr6AUdU
-         N0hB5fqoFlss89a4NJQHw3VnltH+i43tRaZ3ZYYycVd1MQqlEcJ7IENwxU5Y7uaymkKn
-         i0RFtLzR/pQn//g13RwrjzBGDTfQv7luToooQoqOikmGM6Sp0AcgpNoPPgju2sKrDgOT
-         jBJ9lq3hROK8gNoNrPJioJnSctiLUH4NW/+ncyS4LNkgea6L/dAVu7dv95wGfe9ytM8t
-         xNlygQWHXfJdAKYYc7qAi5nHHlrr69w+YtvPhpjlt1Qv+vdk28wp/TmYp8UX526dsmvH
-         ziwQ==
-X-Gm-Message-State: AOJu0YyIJn+cwhsaP4gvyphSoPDOa52Xtn4bWTP06TfSyDv7DVsLa+Fm
-        wpDMWNMzowHPVuVkFrN6bPBxTPuaJyGtr0uRzcw=
-X-Google-Smtp-Source: AGHT+IEhqrIW1khjvKdbr/1gJOkkek1GTqqAqzEnKkzfTeWzjted4PqUG+fexpsmyUrUVVf6napRvXPIOAX3QRKMzpI=
-X-Received: by 2002:a4a:ea91:0:b0:584:17d0:de3d with SMTP id
- r17-20020a4aea91000000b0058417d0de3dmr19034787ooh.1.1698319333161; Thu, 26
- Oct 2023 04:22:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698320209; x=1698925009;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xWYalsuNl0GeQaeoBCkFUvRNJn+nLsde/vTacVego88=;
+        b=IiO18I9gMl78cVdhLFyw/OXrFahMZo6A9V6gEFvRQmdL2LZdju7h1nDQD/vm2yIw4u
+         Y0zn8LYCxo5wAhVS8gvYtu64FZj3F5lFhJFYk9Jo0l7bB59GbMF8c6dykWwfyfeWQGNN
+         TMmWy7feDdXXJJAvmR4HCt+k2zdalluWuKsstBu8TF9/ZSdw3lxmVx8Hus0BVRccYVGN
+         E/XPeXPHBV99sUnqfLfxWro2knReAFX00IaRZG4aWeKH8RzDPRBNKjUc/sXdtRZv7wKv
+         IRDO5n1dwiEJzEJQvJizGiFVX9fxdM4mBcCfcSaOh2cICjANNpsyo9wNhyVc2jle43Rb
+         aNow==
+X-Gm-Message-State: AOJu0Ywyf8u+FzkcMc+Y+pC74uhQ6hn2qvYf4PzZHpvhOrv50pwU1f0A
+        6IJLdwCdanf4DMA1Uv8kQ7vCHQ==
+X-Google-Smtp-Source: AGHT+IHXwIFVuNxcH7UCbPkIezQHWYd4SBnppICs6qQor099TsfDj9s962Ec5yeaukOYXULEnOSmkA==
+X-Received: by 2002:a17:907:31ce:b0:9be:ef46:6b9c with SMTP id xf14-20020a17090731ce00b009beef466b9cmr15859738ejb.70.1698320208894;
+        Thu, 26 Oct 2023 04:36:48 -0700 (PDT)
+Received: from [192.168.69.115] (aif79-h01-176-172-114-150.dsl.sta.abo.bbox.fr. [176.172.114.150])
+        by smtp.gmail.com with ESMTPSA id s22-20020a170906221600b009ce03057c48sm2209258ejs.214.2023.10.26.04.36.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Oct 2023 04:36:48 -0700 (PDT)
+Message-ID: <b50e4d3a-5b9b-4f3e-5660-69ec96831790@linaro.org>
+Date:   Thu, 26 Oct 2023 13:36:46 +0200
 MIME-Version: 1.0
-References: <20231024183016.14648-1-ansuelsmth@gmail.com> <CAJZ5v0gzV+nX+dSEShAopkcvx1Zx2Rc2=pjcdH07U9nQhHRe4Q@mail.gmail.com>
- <653a4540.050a0220.1e832.01c8@mx.google.com>
-In-Reply-To: <653a4540.050a0220.1e832.01c8@mx.google.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 26 Oct 2023 13:22:01 +0200
-Message-ID: <CAJZ5v0jXAnZx=EtVSHQAUPChGUwgL0eGBrztXNJ99XzOXPH4TA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] cpufreq: fix broken buffer overflow detection in trans_stats
-To:     Christian Marangi <ansuelsmth@gmail.com>
-Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Jonghwa Lee <jonghwa3.lee@samsung.com>,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.1
+Subject: Re: [PATCH] MIPS: process: Remove lazy context flags for new kernel
+ thread
+Content-Language: en-US
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-mips@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, tsbogend@alpha.franken.de,
+        syq@debian.org, stable@vger.kernel.org,
+        Aurelien Jarno <aurel32@debian.org>
+References: <20231026111715.1281728-1-jiaxun.yang@flygoat.com>
+From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
+In-Reply-To: <20231026111715.1281728-1-jiaxun.yang@flygoat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LOTS_OF_MONEY,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 26, 2023 at 12:54 PM Christian Marangi <ansuelsmth@gmail.com> wrote:
->
-> On Tue, Oct 24, 2023 at 10:03:35PM +0200, Rafael J. Wysocki wrote:
-> > On Tue, Oct 24, 2023 at 8:30 PM Christian Marangi <ansuelsmth@gmail.com> wrote:
-> > >
-> > > Commit 3c0897c180c6 ("cpufreq: Use scnprintf() for avoiding potential
-> > > buffer overflow") switched from snprintf to the more secure scnprintf
-> > > but never updated the exit condition for PAGE_SIZE.
-> > >
-> > > As the commit say and as scnprintf document, what scnprintf returns what
-> > > is actually written not counting the '\0' end char. This results in the
-> > > case of len exceeding the size, len set to PAGE_SIZE - 1, as it can be
-> > > written at max PAGESIZE - 1 (as '\0' is not counted)
-> > >
-> > > Because of len is never set to PAGE_SIZE, the function never break early,
-> > > never print the warning and never return -EFBIG.
-> > >
-> > > Fix this by fixing the condition to PAGE_SIZE -1 to correctly trigger
-> > > the error condition.
-> > >
-> > > Cc: stable@vger.kernel.org
-> > > Fixes: 3c0897c180c6 ("cpufreq: Use scnprintf() for avoiding potential buffer overflow")
-> > > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> > > ---
-> > >  drivers/cpufreq/cpufreq_stats.c | 14 +++++++-------
-> > >  1 file changed, 7 insertions(+), 7 deletions(-)
-> > >
-> > > diff --git a/drivers/cpufreq/cpufreq_stats.c b/drivers/cpufreq/cpufreq_stats.c
-> > > index a33df3c66c88..40a9ff18da06 100644
-> > > --- a/drivers/cpufreq/cpufreq_stats.c
-> > > +++ b/drivers/cpufreq/cpufreq_stats.c
-> > > @@ -131,23 +131,23 @@ static ssize_t show_trans_table(struct cpufreq_policy *policy, char *buf)
-> > >         len += sysfs_emit_at(buf, len, "   From  :    To\n");
-> > >         len += sysfs_emit_at(buf, len, "         : ");
-> > >         for (i = 0; i < stats->state_num; i++) {
-> > > -               if (len >= PAGE_SIZE)
-> > > +               if (len >= PAGE_SIZE - 1)
-> > >                         break;
-> > >                 len += sysfs_emit_at(buf, len, "%9u ", stats->freq_table[i]);
-> > >         }
-> > > -       if (len >= PAGE_SIZE)
-> > > -               return PAGE_SIZE;
-> > > +       if (len >= PAGE_SIZE - 1)
-> > > +               return PAGE_SIZE - 1;
-> > >
-> > >         len += sysfs_emit_at(buf, len, "\n");
-> > >
-> > >         for (i = 0; i < stats->state_num; i++) {
-> > > -               if (len >= PAGE_SIZE)
-> > > +               if (len >= PAGE_SIZE - 1)
-> > >                         break;
-> > >
-> > >                 len += sysfs_emit_at(buf, len, "%9u: ", stats->freq_table[i]);
-> > >
-> > >                 for (j = 0; j < stats->state_num; j++) {
-> > > -                       if (len >= PAGE_SIZE)
-> > > +                       if (len >= PAGE_SIZE - 1)
-> > >                                 break;
-> > >
-> > >                         if (pending)
-> > > @@ -157,12 +157,12 @@ static ssize_t show_trans_table(struct cpufreq_policy *policy, char *buf)
-> > >
-> > >                         len += sysfs_emit_at(buf, len, "%9u ", count);
-> > >                 }
-> > > -               if (len >= PAGE_SIZE)
-> > > +               if (len >= PAGE_SIZE - 1)
-> > >                         break;
-> > >                 len += sysfs_emit_at(buf, len, "\n");
-> > >         }
-> > >
-> > > -       if (len >= PAGE_SIZE) {
-> > > +       if (len >= PAGE_SIZE - 1) {
-> > >                 pr_warn_once("cpufreq transition table exceeds PAGE_SIZE. Disabling\n");
-> > >                 return -EFBIG;
-> > >         }
-> > > --
-> >
-> > Applied (with some edits in the subject and changelog) as 6.7 material, thanks!
->
-> Hi, I just notice this landed in linux-next but I can't find the devfreq
-> change. Only the cpufreq patch has been taken and the devfreq ones are
-> still pending?
+On 26/10/23 13:17, Jiaxun Yang wrote:
+> We received a report from debian infra team, says their build machine
+> crashes regularly with:
+> 
+> [ 4066.698500] do_cpu invoked from kernel context![#1]:
+> [ 4066.703455] CPU: 1 PID: 76608 Comm: iou-sqp-76326 Not tainted 5.10.0-21-loongson-3 #1 Debian 5.10.162-1
+> [ 4066.712793] Hardware name: Loongson Lemote-3A4000-7A-1w-V1.00-A1901/Lemote-3A4000-7A-1w-V1.00-A1901, BIOS Loongson-PMON-V3.3-20201222 12/22/2020
+> [ 4066.725672] $ 0   : 0000000000000000 ffffffff80bf2e48 0000000000000001 9800000200804000
+> [ 4066.733642] $ 4   : 9800000105115280 ffffffff80db4728 0000000000000008 0000020080000200
+> [ 4066.741607] $ 8   : 0000000000000001 0000000000000001 0000000000000000 0000000002e85400
+> [ 4066.749571] $12   : 000000005400cce0 ffffffff80199c00 000000000000036f 000000000000036f
+> [ 4066.757536] $16   : 980000010025c080 ffffffff80ec4740 0000000000000000 980000000234b8c0
+> [ 4066.765501] $20   : ffffffff80ec5ce0 9800000105115280 98000001051158a0 0000000000000000
+> [ 4066.773466] $24   : 0000000000000028 9800000200807e58
+> [ 4066.781431] $28   : 9800000200804000 9800000200807d40 980000000234b8c0 ffffffff80bf3074
+> [ 4066.789395] Hi    : 00000000000002fb
+> [ 4066.792943] Lo    : 00000000428f6816
+> [ 4066.796500] epc   : ffffffff802177c0 _save_fp+0x10/0xa0
+> [ 4066.801695] ra    : ffffffff80bf3074 __schedule+0x804/0xe08
+> [ 4066.807230] Status: 5400cce2 KX SX UX KERNEL EXL
+> [ 4066.811917] Cause : 1000002c (ExcCode 0b)
+> [ 4066.815899] PrId  : 0014c004 (ICT Loongson-3)
+> [ 4066.820228] Modules linked in: asix usbnet mii sg ip6t_REJECT nf_reject_ipv6 ip6table_filter ip6_tables nfnetlink_log nfnetlink xt_hashlimit ipt_REJECT nf_reject_ipv4 xt_NFLOG xt_multiport xt_tcpudp xt_state xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c iptable_filter sch_fq tcp_bbr fuse drm drm_panel_orientation_quirks configfs ip_tables x_tables autofs4 ext4 crc16 mbcache jbd2 crc32c_generic ohci_pci dm_mod r8169 realtek mdio_devres ohci_hcd ehci_pci of_mdio xhci_pci fixed_phy xhci_hcd ehci_hcd libphy usbcore usb_common
+> [ 4066.868085] Process iou-sqp-76326 (pid: 76608, threadinfo=0000000056dd346c, task=000000001209ac62, tls=000000fff18298e0)
+> [ 4066.878897] Stack : ffffffff80ec0000 0000000000000000 ffffffff80ec0000 980000010db34100
+> [ 4066.886867]         9800000100000004 d253a55201683fdc 9800000105115280 0000000000000000
+> [ 4066.894832]         0000000000000000 0000000000000001 980000010db340e8 0000000000000001
+> [ 4066.902796]         0000000000000004 0000000000000000 980000010db33d28 ffffffff80bf36d0
+> [ 4066.910761]         980000010db340e8 980000010db34100 980000010db340c8 ffffffff8070d740
+> [ 4066.918726]         980000010946cc80 9800000104b56c80 980000010db340c0 0000000000000000
+> [ 4066.926690]         ffffffff80ec0000 980000010db340c8 980000010025c080 ffffffff80ec5ce0
+> [ 4066.934654]         0000000000000000 9800000105115280 ffffffff802c59b8 980000010db34108
+> [ 4066.942619]         980000010db34108 2d7071732d756f69 ffff003632333637 d253a55201683fdc
+> [ 4066.950585]         ffffffff8070d1c8 980000010db340c0 98000001092276c8 000000007400cce0
+> [ 4066.958552]         ...
+> [ 4066.960981] Call Trace:
+> [ 4066.963414] [<ffffffff802177c0>] _save_fp+0x10/0xa0
+> [ 4066.968270] [<ffffffff80bf3074>] __schedule+0x804/0xe08
+> [ 4066.973462] [<ffffffff80bf36d0>] schedule+0x58/0x150
+> [ 4066.978397] [<ffffffff8070d740>] io_sq_thread+0x578/0x5a0
+> [ 4066.983764] [<ffffffff8020518c>] ret_from_kernel_thread+0x14/0x1c
+> [ 4066.989823]
+> [ 4066.991297] Code: 000c6940  05a10011  00000000 <f4810af0> f4830b10  f4850b30  f4870b50  f4890b70  f48b0b90
+> 
+> It seems like kernel is trying to save a FP context for a kthread.
+> Since we don't use FPU in kernel for now, TIF_USEDFPU must be set
+> accidentally for that kthread.
+> 
+> Inspecting the code it seems like create_io_thread may be invoked
+> from threads that have FP context alive, causing TIF_USEDFPU to be
+> copied from that context to kthread unexpectedly.
+> 
+> Move around code blocks to ensure flags regarding lazy hardware
+> context get cleared for kernel threads as well.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Aurelien Jarno <aurel32@debian.org>
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+> ---
+> Folks, it might be helpful to check ST0_CU1 in is_fpu_owner
+> to catch this kind of problem in future, what's your opinion?
+> ---
+>   arch/mips/kernel/process.c | 35 +++++++++++++++++------------------
+>   1 file changed, 17 insertions(+), 18 deletions(-)
 
-That's correct AFAICS.  I've only picked up the cpufreq change.
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+
