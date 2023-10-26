@@ -2,134 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0978A7D826F
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 14:19:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51EB07D8277
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 14:19:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231287AbjJZMTB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 26 Oct 2023 08:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52710 "EHLO
+        id S231200AbjJZMTW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 26 Oct 2023 08:19:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235000AbjJZMS7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 08:18:59 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1BB510A;
-        Thu, 26 Oct 2023 05:18:52 -0700 (PDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39QCCL3G008403;
-        Thu, 26 Oct 2023 12:18:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=sdZdlAU9glRvACkHBKlOXwhT6KEbD7cXDC4qYhJBw/8=;
- b=TG6Uv//K+oXq55yNHuK6PUzgL9c53lEc6xH9C7VKv38UV8o/tM+nTijnE9HScm9sN2cH
- uGNaQoE2ag4aVS/FncujV209v8+fQ2fl9Y5YhgneKCVa43lBLvtPZGcrS03kQLiPMske
- EdsPGQ7Bq8lnxdlN/8gR66F4O5KzQtFvgURQs7TuT8vMOv4GPc6oDo0vaRVvmUCmYKLO
- FOkGJE+OLIOvqkidNKcHbStWNHmFtptmx8l9T7QwFptMNloUC9hYo7WOjsMVOH2oaWPu
- wgbLg57oLfQBagoc6vd12ZCBrk1QIq4B94T2Lj/B1dqmZD+CXTEUlV83blb7DdCkQI87 6Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyqwq89gg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 Oct 2023 12:18:52 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QCDA0B012393;
-        Thu, 26 Oct 2023 12:18:51 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyqwq89g5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 Oct 2023 12:18:51 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-        by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39QAEYfi024372;
-        Thu, 26 Oct 2023 12:18:50 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-        by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3tvu6kdm8u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 Oct 2023 12:18:50 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-        by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39QCIlBL29360612
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 26 Oct 2023 12:18:47 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A652920043;
-        Thu, 26 Oct 2023 12:18:47 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 61FF320040;
-        Thu, 26 Oct 2023 12:18:47 +0000 (GMT)
-Received: from [9.152.224.53] (unknown [9.152.224.53])
-        by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Thu, 26 Oct 2023 12:18:47 +0000 (GMT)
-Message-ID: <c6951c45-b091-11a6-5684-ba2ef0c94df3@linux.ibm.com>
-Date:   Thu, 26 Oct 2023 14:18:47 +0200
+        with ESMTP id S234866AbjJZMTW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 08:19:22 -0400
+Received: from xavier.telenet-ops.be (xavier.telenet-ops.be [IPv6:2a02:1800:120:4::f00:14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A058D40
+        for <stable@vger.kernel.org>; Thu, 26 Oct 2023 05:19:16 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:32d3:3cb9:edce:43ae])
+        by xavier.telenet-ops.be with bizsmtp
+        id 2cKD2B0082XL1Wb01cKDAl; Thu, 26 Oct 2023 14:19:13 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtp (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qvzKL-007YrZ-79;
+        Thu, 26 Oct 2023 14:19:13 +0200
+Received: from geert by rox.of.borg with local (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qvzKT-00H4Ky-36;
+        Thu, 26 Oct 2023 14:19:13 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Pavel Machek <pavel@denx.de>
+Cc:     stable@vger.kernel.org, linux-mmc@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v5.10.199] mmc: renesas_sdhi: use custom mask for TMIO_MASK_ALL
+Date:   Thu, 26 Oct 2023 14:18:56 +0200
+Message-Id: <1b9fda30f2d86fab50341a947d17b5206a2c7507.1698321354.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/3] s390/vfio-ap: unpin pages on gisc registration
- failure
-To:     Tony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc:     jjherne@linux.ibm.com, pasic@linux.ibm.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, david@redhat.com,
-        Matthew Rosato <mjrosato@linux.ibm.com>, stable@vger.kernel.org
-References: <20231018133829.147226-1-akrowiak@linux.ibm.com>
- <20231018133829.147226-2-akrowiak@linux.ibm.com>
-Content-Language: en-US
-From:   Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20231018133829.147226-2-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: PYlvQS9aqkfoHYchAqKIuaJqORo4nhBz
-X-Proofpoint-ORIG-GUID: CuSy8lGyjY-8wZ_FEoeZw-VkjthMKil3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-26_10,2023-10-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- suspectscore=0 spamscore=0 clxscore=1011 mlxscore=0 malwarescore=0
- bulkscore=0 lowpriorityscore=0 mlxlogscore=999 priorityscore=1501
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310260105
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
+[ Upstream commit 9f12cac1bb88e3296990e760d867a98308d6b0ac ]
 
-Am 18.10.23 um 15:38 schrieb Tony Krowiak:
-> From: Anthony Krowiak <akrowiak@linux.ibm.com>
-> 
-> In the vfio_ap_irq_enable function, after the page containing the
-> notification indicator byte (NIB) is pinned, the function attempts
-> to register the guest ISC. If registration fails, the function sets the
-> status response code and returns without unpinning the page containing
-> the NIB. In order to avoid a memory leak, the NIB should be unpinned before
-> returning from the vfio_ap_irq_enable function.
-> 
-> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Populate the new member for custom mask values to make sure this value
+is applied whenever needed. Also, rename the define holding the value
+because this is not only about initialization anymore.
 
-Where is Janoschs signed off coming from here?
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://lore.kernel.org/r/20210304092903.8534-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+[geert: Backport to v5.10.199]
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+Fixes: 6d3745bbc3341d3b ("mmc: renesas_sdhi: register irqs before registering controller")
 
-> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-> Fixes: 783f0a3ccd79 ("s390/vfio-ap: add s390dbf logging to the vfio_ap_irq_enable function")
-> Cc: <stable@vger.kernel.org>
-> ---
->   drivers/s390/crypto/vfio_ap_ops.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-> index 4db538a55192..9cb28978c186 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -457,6 +457,7 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
->   		VFIO_AP_DBF_WARN("%s: gisc registration failed: nisc=%d, isc=%d, apqn=%#04x\n",
->   				 __func__, nisc, isc, q->apqn);
->   
-> +		vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
->   		status.response_code = AP_RESPONSE_INVALID_GISA;
->   		return status;
->   	}
+ drivers/mmc/host/renesas_sdhi_core.c | 3 ++-
+ drivers/mmc/host/tmio_mmc.h          | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mmc/host/renesas_sdhi_core.c b/drivers/mmc/host/renesas_sdhi_core.c
+index be4c2a848b52051e..24e524a1b9274168 100644
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -571,7 +571,7 @@ static void renesas_sdhi_reset(struct tmio_mmc_host *host)
+ 
+ 	if (host->pdata->flags & TMIO_MMC_MIN_RCAR2)
+ 		sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK,
+-					     TMIO_MASK_INIT_RCAR2);
++					     TMIO_MASK_ALL_RCAR2);
+ }
+ 
+ #define SH_MOBILE_SDHI_MIN_TAP_ROW 3
+@@ -1012,6 +1012,7 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+ 		host->ops.start_signal_voltage_switch =
+ 			renesas_sdhi_start_signal_voltage_switch;
+ 		host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
++		host->sdcard_irq_mask_all = TMIO_MASK_ALL_RCAR2;
+ 		host->reset = renesas_sdhi_reset;
+ 	} else {
+ 		host->sdcard_irq_mask_all = TMIO_MASK_ALL;
+diff --git a/drivers/mmc/host/tmio_mmc.h b/drivers/mmc/host/tmio_mmc.h
+index d6ed5e1f8386e459..330a17267f7eddba 100644
+--- a/drivers/mmc/host/tmio_mmc.h
++++ b/drivers/mmc/host/tmio_mmc.h
+@@ -97,8 +97,8 @@
+ 
+ /* Define some IRQ masks */
+ /* This is the mask used at reset by the chip */
+-#define TMIO_MASK_INIT_RCAR2	0x8b7f031d /* Initial value for R-Car Gen2+ */
+ #define TMIO_MASK_ALL           0x837f031d
++#define TMIO_MASK_ALL_RCAR2	0x8b7f031d
+ #define TMIO_MASK_READOP  (TMIO_STAT_RXRDY | TMIO_STAT_DATAEND)
+ #define TMIO_MASK_WRITEOP (TMIO_STAT_TXRQ | TMIO_STAT_DATAEND)
+ #define TMIO_MASK_CMD     (TMIO_STAT_CMDRESPEND | TMIO_STAT_CMDTIMEOUT | \
+-- 
+2.34.1
+
