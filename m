@@ -2,104 +2,107 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 267FA7D7C35
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 07:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F6727D7C48
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 07:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232813AbjJZF2K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 26 Oct 2023 01:28:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47834 "EHLO
+        id S229772AbjJZFfY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 26 Oct 2023 01:35:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229772AbjJZF2J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 01:28:09 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0063DDE;
-        Wed, 25 Oct 2023 22:28:06 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qvsua-0002gs-HX; Thu, 26 Oct 2023 07:28:04 +0200
-Message-ID: <b681f3a7-cfa7-40fa-9cf8-8beff2b050e3@leemhuis.info>
-Date:   Thu, 26 Oct 2023 07:28:03 +0200
+        with ESMTP id S229705AbjJZFfX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 01:35:23 -0400
+Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BA0E12A
+        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 22:35:22 -0700 (PDT)
+Received: by mail-qt1-x831.google.com with SMTP id d75a77b69052e-41cd566d8dfso204851cf.0
+        for <stable@vger.kernel.org>; Wed, 25 Oct 2023 22:35:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1698298521; x=1698903321; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6SNwqL9uBNOocRtfcI4WCu7LgRyHeUqmggRpLJrTQbA=;
+        b=dF8AI/8C7nMB3AkMLawACREhIcKtWBw+P+wxNGFjM5H590d8YtuzPZaDCqSS/mWcF7
+         95/7MiJ5Re3frJGxinxjjmKKxKZtxbQcktfQpyFHhkbBbYOYwBXWDB/KP36R7LNoPHcZ
+         URlJnjeFfK+/+mIwrQcr2WT0puIk4XX1FxDhm3kNAJ/hOoePP0qyj0+SpWh3KpqF6HyA
+         olkcWINttSeEAHl4xV+sY36aYAP7slhrWL3EyADnCS7PjGuX26i0EiNJdU1Rf70ubIOk
+         aqjYOVUg0Cer7LS1VWqnNkcGwfp5FUrp+iaU7D1kPJwq27C6LJc33URbbmPc3XhpFRNg
+         PKtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698298521; x=1698903321;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6SNwqL9uBNOocRtfcI4WCu7LgRyHeUqmggRpLJrTQbA=;
+        b=iteEmQ7pmT9/mOLpeOFGVFVPCc5ug41t0B8MNUrIPJlJyo/ZBT/23ce8LLn/6Y17Sp
+         3ewuUAM7dRxOfjRYTnt/g+JR6Prz6bnEshCnsGC52AwrRWTMKMkvdtRp3RWF3pyAsTIu
+         xsoXHiQZtmcqEF00GcM1xRxOG3v0ALpdODvyhQx/wosBkAJ/HexXtYCX+wefUGyjSoAX
+         E8mNGx7TZ1Ouiyp7Mk2waz0WPBZ/VPvwRkQt0xXGbeHPTO7WP3okv3KMwhojp4y6YhH4
+         eh9+BAkGCHP20dF3E0i68qVOjdSgYIRqAnZFK0bpp3ZxLBzWtY6lykhY4M8LMs3LsSjq
+         xswA==
+X-Gm-Message-State: AOJu0YymDXDJYOUBAN94Frl5GGoR7PXmHEBj99STRZ2I+h+bPa3rv9DL
+        27G5cEzGXdrFtPFKKgvVN2Y20+Q/OqZ+T85iMJ7+fv/apoa9Dd0NZSLWtQ==
+X-Google-Smtp-Source: AGHT+IFjQWw9/rfKoFj/9Kj2dJrdIzzaC4vNi4Vi5GlKzW6tfRkrBDWGUlCY8d/IiEyXwhxSyfM16sU50tKw7OiUALw=
+X-Received: by 2002:ac8:7cbc:0:b0:410:9d31:68cd with SMTP id
+ z28-20020ac87cbc000000b004109d3168cdmr386865qtv.27.1698298520922; Wed, 25 Oct
+ 2023 22:35:20 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set the
- FUSE_INIT_EXT"
-Content-Language: en-US, de-DE
-To:     Miklos Szeredi <mszeredi@redhat.com>,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Paul Lawrence <paullawrence@google.com>,
-        Daniel Rosenberg <drosen@google.com>,
-        Alessio Balsini <balsini@android.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Bernd Schubert <bschubert@ddn.com>,
-        =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-References: <20230904133321.104584-1-git@andred.net>
- <20231018111508.3913860-1-git@andred.net>
- <717fd97a-6d14-4dc9-808c-d752d718fb80@ddn.com>
- <4b0b46f29955956916765d8d615f96849c8ce3f7.camel@linaro.org>
- <fa3510f3-d3cc-45d2-b38e-e8717e2a9f83@ddn.com>
- <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
- <9afc3152-5448-42eb-a7f4-4167fc8bc589@ddn.com>
- <5cd87a64-c506-46f2-9fed-ac8a74658631@ddn.com>
- <8ae8ce4d-6323-4160-848a-5e94895ae60e@leemhuis.info>
- <CAOssrKdvy9qTGSwwPVqYLAYYEk0jbqhGg4Lz=jEff7U58O4Yqw@mail.gmail.com>
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <CAOssrKdvy9qTGSwwPVqYLAYYEk0jbqhGg4Lz=jEff7U58O4Yqw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1698298087;1e2e08f2;
-X-HE-SMSGID: 1qvsua-0002gs-HX
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20231026015728.1601280-1-jsperbeck@google.com> <2023102618-tributary-knapsack-8d8a@gregkh>
+In-Reply-To: <2023102618-tributary-knapsack-8d8a@gregkh>
+From:   John Sperbeck <jsperbeck@google.com>
+Date:   Wed, 25 Oct 2023 22:35:08 -0700
+Message-ID: <CAFNjLiWtmsticUCB+_D_MMqXCtH=RGr4f1avNYhtk+_CVGgsDg@mail.gmail.com>
+Subject: Re: [PATCH] objtool/x86: add missing embedded_insn check
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     bp@alien8.de, jpoimboe@kernel.org, patches@lists.linux.dev,
+        peterz@infradead.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 25.10.23 15:17, Miklos Szeredi wrote:
-> On Wed, Oct 25, 2023 at 1:30 PM Linux regression tracking (Thorsten
-> Leemhuis) <regressions@leemhuis.info> wrote:
-> 
->> Miklos, I'm wondering what the status here is. The description in the
->> reverts André sent[1] are maybe a bit vague[2], but it sounds a lot like
->> he ran into a big regression that should be addressed somehow -- maybe
->> with a revert. But it seems we haven't got any closer to that in all
->> those ~7 weeks since the first revert was posted. But I might be missing
->> something, hence a quick evaluation from your side would help me a lot
->> here to understand the situation.
+On Wed, Oct 25, 2023 at 10:17=E2=80=AFPM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Thu, Oct 26, 2023 at 01:57:28AM +0000, John Sperbeck wrote:
+> > When dbf460087755 ("objtool/x86: Fixup frame-pointer vs rethunk")
+> > was backported to some stable branches, the check for dest->embedded_in=
+sn
+> > in is_special_call() was missed.  Add it back in.
+> >
+> > Signed-off-by: John Sperbeck <jsperbeck@google.com>
+> > ---
+> >
+> >
+> > I think 6.1.y, 5.15.y, and 5.10.y are the LTS branches missing the
+> > bit of code that this patch re-adds.
+>
+> Did you test this and find it solved anything for you?  Your changelog
+> is pretty sparse :(
+>
+> thanks,
+>
+> greg k-h
 
-First, many thx for the reply.
+I wasn't sure what to write for the comment.  The original backported
+commit said that it prevented this objtool warning:
 
-> I don't think the Android use case counts as a regression.
-> 
-> If they'd use an unmodified upstream kernel, it would be a different case.
-> 
-> But they modify the kernel heavily, and AFAICS this breakage is
-> related to such a modification (as pointed out by Bernd upthread).
+    vmlinux.o: warning: objtool: srso_untrain_ret+0xd: call without
+frame pointer save/setup
 
-Not sure who you mean with "they" here.
+But because of the missing piece, the warning still appears.  That is,
+the backport had no effect at all.
 
-Isn't the main question if André used a vanilla kernel beforehand on
-those Android devices and now is unable to do so? André, is that the
-case? Or did you only encounter this regression when switching from a
-patched kernel to a vanilla kernel?
+With this patch, the message really is gone in my builds.  Shall I
+resend my patch with an updated comment?
 
-Also: André, do you see this in some test env, or in some real use case
-where others might also run into the problem?
-
-> André might want to clarify, but I've not seen any concrete real world
-> examples of regressions caused by this change outside of Android.
-
-Yeah, some clarification from André really would be helpful.
-
-Thx again for the answer.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+I also wasn't sure whether a Fixes annotation was appropriate, and
+which commit to reference, if so.
