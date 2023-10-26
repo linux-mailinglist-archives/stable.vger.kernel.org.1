@@ -2,266 +2,262 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 702D97D8233
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 14:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFD3C7D8244
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 14:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbjJZMEM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 26 Oct 2023 08:04:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43906 "EHLO
+        id S230505AbjJZMIi convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 26 Oct 2023 08:08:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbjJZMEL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 08:04:11 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD10691;
-        Thu, 26 Oct 2023 05:04:07 -0700 (PDT)
-Date:   Thu, 26 Oct 2023 12:04:04 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1698321845;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=75yt6I5S+dx1l2t9baHrD6OIs12o/E6AueS2qpMjNzg=;
-        b=LZLFRE0jvmikXtrGCu4+odxHULvtRrbFXHaeP2izgV46D/0Zfv+8CXQ5492QZp6yB+TlaD
-        iyjZzxB4vf0JeLSQDABtvPA24vK32VFuE8+/+SirgdPKQmyFplzbDciDm4QcslKIMHPCod
-        +hdc+nFOy82/brtviupobKfkp312NfREtAk9Ae9+ML/5wAYoDHCPk2zTdkFGjHkbY2owmk
-        udchwBh/UCk21yeZ5MZsDwTuZcfltetn7+a2TczlsXkoqi4Ud7Cd8gqDJFCUJOHDVQrF+C
-        svaUuHRS1el0x7h8tZfxl1kmbXcrrh074e9SRhBV66JRCAgnLoLGSKBS9/QLtg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1698321845;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=75yt6I5S+dx1l2t9baHrD6OIs12o/E6AueS2qpMjNzg=;
-        b=zPTqvZBVZoW3b6MFyqXPk88B4wwSyL5PRgbO1pTIdAmYfTBOh7Q0cQQ16nKfrlaIPS1r60
-        FQoKwT0jLzmncHBg==
-From:   "tip-bot2 for Koichiro Den" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/apic] x86/apic/msi: Fix misconfigured non-maskable MSI quirk
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Koichiro Den <den@valinux.co.jp>, stable@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20231026032036.2462428-1-den@valinux.co.jp>
-References: <20231026032036.2462428-1-den@valinux.co.jp>
+        with ESMTP id S229642AbjJZMIh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 08:08:37 -0400
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E4A21A6;
+        Thu, 26 Oct 2023 05:08:35 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5a7a80a96dbso17192987b3.0;
+        Thu, 26 Oct 2023 05:08:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698322114; x=1698926914;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3KKbxpaRdKQQQLvpY2x+Hdf2Y5BAYNzBsK+Et59KcX8=;
+        b=ADxCBZjkuPmbALPFjGI0cRx5TBP6YQYRzuMWM8y3VNYdibuyVDxwu/dZruIXPN0JlL
+         MDqmSV+lzBsKEKJQgmcVqrBfRbgsi36IroW3865gzKvSl1mYnLfbwduO+e/XyI04mHxT
+         Lig7rPWmRU8nphSuyqGl//Zb/tL8+x5aIv8OdogZKYLODd1AvE3z1cfFM2Sp3BkIVeYF
+         C3j3EFhm2N9w/dt0znjgvv5ygj2drJNwapnUaGlR2Y9ziAmbcb3HZ1AQSrKtydoaV8/8
+         mDbRofo+V0wF2o94fxMYphPxMc0h9XT+oWixewvyRROzG7WAct2Gejw3VSd4fdetzDHA
+         BgXQ==
+X-Gm-Message-State: AOJu0Yx1q4SuiDSOBfV+4DdCpbTGFTeDsFjuxad9ILP1980lfTfzeKfT
+        zFJbbb1206JmxdTdf7+TDWV/bB/Srk6FbQ==
+X-Google-Smtp-Source: AGHT+IGKOtB5Vdi4SScA8sBNSp1erZ9WAmvPnQ2C3ohONPE3QNZ6GzYGBtj5vdT5/zgcz9CsqJT+kg==
+X-Received: by 2002:a0d:e682:0:b0:5a7:dac8:2fa with SMTP id p124-20020a0de682000000b005a7dac802famr4070833ywe.24.1698322114027;
+        Thu, 26 Oct 2023 05:08:34 -0700 (PDT)
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
+        by smtp.gmail.com with ESMTPSA id f5-20020a0ddc05000000b005a7bf2aff15sm5976139ywe.95.2023.10.26.05.08.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Oct 2023 05:08:33 -0700 (PDT)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-59e88a28b98so7109127b3.1;
+        Thu, 26 Oct 2023 05:08:33 -0700 (PDT)
+X-Received: by 2002:a81:eb04:0:b0:5a7:a896:3f54 with SMTP id
+ n4-20020a81eb04000000b005a7a8963f54mr3275652ywm.26.1698322113544; Thu, 26 Oct
+ 2023 05:08:33 -0700 (PDT)
 MIME-Version: 1.0
-Message-ID: <169832184467.3135.3758341198303844867.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+References: <20231009130126.697995596@linuxfoundation.org> <ZSRVgj5AqJbDXqZU@duo.ucw.cz>
+ <ZSRe78MAQwbBdyFP@duo.ucw.cz> <ZSUy+zA0+Chm6dFb@duo.ucw.cz>
+ <ZSU+GHl1q7T/TBp5@duo.ucw.cz> <ZSWg1fv3gOyV5t+h@shikoro> <2023101057-runny-pellet-8952@gregkh>
+ <ZTgZa1ic1iFbdaTM@duo.ucw.cz> <CAMuHMdXQApuOPfU1zNKcHKN5=fCuLBSDiLtF06U7e4Tx0+noyA@mail.gmail.com>
+ <CAMuHMdVrdmBgopnPnJK_ij52wz2WVBdYRHur2KfosFnT945ULw@mail.gmail.com>
+ <CAMuHMdWZvTGrFgx_o3g3usOwkDvD2rw5QH9_ibo=OKdw17sAzg@mail.gmail.com>
+ <CAMuHMdXvpiGQ7jqAG69Zo=10wV-E0bioC9AYUHwwhRGmLXygWA@mail.gmail.com>
+ <7d7a5a15-3349-adce-02cd-82b6cb4bebde@roeck-us.net> <CAMuHMdXbPZ0uz0NnE1xhUD=QtaAq+TinSW-PrWPMpGe4h=7Spg@mail.gmail.com>
+ <CAMuHMdXNjopzEFCFBxxuYNCFMmj4SvMQ2PmZ4hZDHLGZGUHf=w@mail.gmail.com>
+In-Reply-To: <CAMuHMdXNjopzEFCFBxxuYNCFMmj4SvMQ2PmZ4hZDHLGZGUHf=w@mail.gmail.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 26 Oct 2023 14:08:20 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdU7-5R4NkwMdbLxovBY4=ePtPDs2SYXjWeGc_Yz3JcjPg@mail.gmail.com>
+Message-ID: <CAMuHMdU7-5R4NkwMdbLxovBY4=ePtPDs2SYXjWeGc_Yz3JcjPg@mail.gmail.com>
+Subject: Re: renesas_sdhi problems in 5.10-stable was Re: [PATCH 5.10 000/226]
+ 5.10.198-rc1 review
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Pavel Machek <pavel@denx.de>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        niklas.soderlund+renesas@ragnatech.se,
+        yoshihiro.shimoda.uh@renesas.com, biju.das.jz@bp.renesas.com,
+        Chris.Paterson2@renesas.com, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Linux MMC List <linux-mmc@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the x86/apic branch of tip:
+On Wed, Oct 25, 2023 at 11:26 PM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> On Wed, Oct 25, 2023 at 9:53 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > On Wed, Oct 25, 2023 at 8:39 PM Guenter Roeck <linux@roeck-us.net> wrote:
+> > > On 10/25/23 10:05, Geert Uytterhoeven wrote:
+> > > > On Wed, Oct 25, 2023 at 2:35 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
+> > > >> On Wed, Oct 25, 2023 at 12:53 PM Geert Uytterhoeven
+> > > >> <geert@linux-m68k.org> wrote:
+> > > >>> On Wed, Oct 25, 2023 at 12:47 PM Geert Uytterhoeven
+> > > >>> <geert@linux-m68k.org> wrote:
+> > > >>>> On Tue, Oct 24, 2023 at 9:22 PM Pavel Machek <pavel@denx.de> wrote:
+> > > >>>>> But we still have failures on Renesas with 5.10.199-rc2:
+> > > >>>>>
+> > > >>>>> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1047368849
+> > > >>>>>
+> > > >>>>> And they still happed during MMC init:
+> > > >>>>>
+> > > >>>>>      2.638013] renesas_sdhi_internal_dmac ee100000.mmc: Got CD GPIO
+> > > >>>>> [    2.638846] INFO: trying to register non-static key.
+> > > >>>>> [    2.644192] ledtrig-cpu: registered to indicate activity on CPUs
+> > > >>>>> [    2.649066] The code is fine but needs lockdep annotation, or maybe
+> > > >>>>> [    2.649069] you didn't initialize this object before use?
+> > > >>>>> [    2.649071] turning off the locking correctness validator.
+> > > >>>>> [    2.649080] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 5.10.199-rc2-arm64-renesas-ge31b6513c43d #1
+> > > >>>>> [    2.649082] Hardware name: HopeRun HiHope RZ/G2M with sub board (DT)
+> > > >>>>> [    2.649086] Call trace:
+> > > >>>>> [    2.655106] SMCCC: SOC_ID: ARCH_SOC_ID not implemented, skipping ....
+> > > >>>>> [    2.661354]  dump_backtrace+0x0/0x194
+> > > >>>>> [    2.661361]  show_stack+0x14/0x20
+> > > >>>>> [    2.667430] usbcore: registered new interface driver usbhid
+> > > >>>>> [    2.672230]  dump_stack+0xe8/0x130
+> > > >>>>> [    2.672238]  register_lock_class+0x480/0x514
+> > > >>>>> [    2.672244]  __lock_acquire+0x74/0x20ec
+> > > >>>>> [    2.681113] usbhid: USB HID core driver
+> > > >>>>> [    2.687450]  lock_acquire+0x218/0x350
+> > > >>>>> [    2.687456]  _raw_spin_lock+0x58/0x80
+> > > >>>>> [    2.687464]  tmio_mmc_irq+0x410/0x9ac
+> > > >>>>> [    2.688556] renesas_sdhi_internal_dmac ee160000.mmc: mmc0 base at 0x00000000ee160000, max clock rate 200 MHz
+> > > >>>>> [    2.744936]  __handle_irq_event_percpu+0xbc/0x340
+> > > >>>>> [    2.749635]  handle_irq_event+0x60/0x100
+> > > >>>>> [    2.753553]  handle_fasteoi_irq+0xa0/0x1ec
+> > > >>>>> [    2.757644]  __handle_domain_irq+0x7c/0xdc
+> > > >>>>> [    2.761736]  efi_header_end+0x4c/0xd0
+> > > >>>>> [    2.765393]  el1_irq+0xcc/0x180
+> > > >>>>> [    2.768530]  arch_cpu_idle+0x14/0x2c
+> > > >>>>> [    2.772100]  default_idle_call+0x58/0xe4
+> > > >>>>> [    2.776019]  do_idle+0x244/0x2c0
+> > > >>>>> [    2.779242]  cpu_startup_entry+0x20/0x6c
+> > > >>>>> [    2.783160]  rest_init+0x164/0x28c
+> > > >>>>> [    2.786561]  arch_call_rest_init+0xc/0x14
+> > > >>>>> [    2.790565]  start_kernel+0x4c4/0x4f8
+> > > >>>>> [    2.794233] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000014
+> > > >>>>> [    2.803011] Mem abort info:
+> > > >>>>>
+> > > >>>>> from https://lava.ciplatform.org/scheduler/job/1025535
+> > > >>>>> from
+> > > >>>>> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/5360973735 .
+> > > >>>>>
+> > > >>>>> Is there something else missing?
+> > > >>
+> > > >> It seems to be an intermittent issue. Investigating...
+> > > >
+> > > > After spending too much time on bisecting, the bad guy turns out to
+> > > > be commit 6d3745bbc3341d3b ("mmc: renesas_sdhi: register irqs before
+> > > > registering controller") in v5.10.198.
+> > > >
+> > > > Adding debug information shows the lock is mmc_host.lock.
+> > > >
+> > > > It is definitely initialized:
+> > > >
+> > > >      renesas_sdhi_probe()
+> > > >      {
+> > > >          ...
+> > > >          tmio_mmc_host_alloc()
+> > > >              mmc_alloc_host
+> > > >                  spin_lock_init(&host->lock);
+>
+> Initializing mmc_host.lock.
+>
+> > > >          ...
+> > > >          devm_request_irq()
+> > > >          -> tmio_mmc_irq
+> > > >              tmio_mmc_cmd_irq()
+> > > >                  spin_lock(&host->lock);
+>
+> Locking tmio_mmc_host.lock, but ...
+>
+> > > >          ...
+> > > >      }
+> > > >
+> > > > That leaves us with a missing lockdep annotation?
+> > >
+> > > Is it possible that the lock initialization is overwritten ?
+> > > I seem to recall a recent case where this happens.
+> > >
+> > > Also, there is
+> > >         spin_lock_init(&_host->lock);
+> > > in tmio_mmc_host_probe(), and tmio_mmc_host_probe() is called after
+> > > devm_request_irq().
+> >
+> > Unless I am missing something, that is initializing tmio_mmc_host.lock,
+> > which is a different lock than mmc_host.lock?
+>
+> ... tmio_mmc_host.lock is initialized only here.
+>
+> Now the question remains why this is not triggered in mainline.
+> More investigation to do tomorrow...
 
-Commit-ID:     b56ebe7c896dc78b5865ec2c4b1dae3c93537517
-Gitweb:        https://git.kernel.org/tip/b56ebe7c896dc78b5865ec2c4b1dae3c93537517
-Author:        Koichiro Den <den@valinux.co.jp>
-AuthorDate:    Thu, 26 Oct 2023 12:20:36 +09:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Thu, 26 Oct 2023 13:53:06 +02:00
+| --- a/drivers/mmc/host/renesas_sdhi_core.c
+| +++ b/drivers/mmc/host/renesas_sdhi_core.c
+| @@ -1011,6 +1011,8 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+|                         renesas_sdhi_start_signal_voltage_switch;
+|                 host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
+|                 host->reset = renesas_sdhi_reset;
 
-x86/apic/msi: Fix misconfigured non-maskable MSI quirk
+host->sdcard_irq_mask_all is not initialized in this branch
 
-commit ef8dd01538ea ("genirq/msi: Make interrupt allocation less
-convoluted"), reworked the code so that the x86 specific quirk for affinity
-setting of non-maskable PCI/MSI interrupts is not longer activated if
-necessary.
+| +       } else {
+| +               host->sdcard_irq_mask_all = TMIO_MASK_ALL;
+|         }
 
-This could be solved by restoring the original logic in the core MSI code,
-but after a deeper analysis it turned out that the quirk flag is not
-required at all.
+|         /* Orginally registers were 16 bit apart, could be 32 or 64
+nowadays */
+| @@ -1098,9 +1100,7 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+|                 host->ops.hs400_complete = renesas_sdhi_hs400_complete;
+|         }
 
-The quirk is only required when the PCI/MSI device cannot mask the MSI
-interrupts, which in turn also prevents reservation mode from being enabled
-for the affected interrupt.
+| -       ret = tmio_mmc_host_probe(host);
+| -       if (ret < 0)
+| -               goto edisclk;
+| +       sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK,
+host->sdcard_irq_mask_all);
 
-This allows ot remove the NOMASK quirk bit completely as msi_set_affinity()
-can instead check whether reservation mode is enabled for the interrupt,
-which gives exactly the same answer.
+Fails to disable interrupts for real as host->sdcard_irq_mask_all is
+still zero.
 
-Even in the momentary non-existing case that the reservation mode would be
-not set for a maskable MSI interrupt this would not cause any harm as it
-just would cause msi_set_affinity() to go needlessly through the
-functionaly equivalent slow path, which works perfectly fine with maskable
-interrupts as well.
+|         num_irqs = platform_irq_count(pdev);
+|         if (num_irqs < 0) {
+| @@ -1127,6 +1127,10 @@ int renesas_sdhi_probe(struct platform_device *pdev,
+|                         goto eirq;
+|         }
 
-Rework msi_set_affinity() to query the reservation mode and remove all
-NOMASK quirk logic from the core code.
+| +       ret = tmio_mmc_host_probe(host);
 
-[ tglx: Massaged changelog ]
+Initializes host->sdcard_irq_mask_all when needed and disables
+interrupts:
 
-Fixes: ef8dd01538ea ("genirq/msi: Make interrupt allocation less convoluted")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231026032036.2462428-1-den@valinux.co.jp
----
- arch/x86/kernel/apic/msi.c |  8 +++-----
- include/linux/irq.h        | 26 ++++----------------------
- include/linux/msi.h        |  6 ------
- kernel/irq/debugfs.c       |  1 -
- kernel/irq/msi.c           | 12 +-----------
- 5 files changed, 8 insertions(+), 45 deletions(-)
+        if (!_host->sdcard_irq_mask_all)
+                _host->sdcard_irq_mask_all = TMIO_MASK_ALL;
+        tmio_mmc_disable_mmc_irqs(_host, _host->sdcard_irq_mask_all);
 
-diff --git a/arch/x86/kernel/apic/msi.c b/arch/x86/kernel/apic/msi.c
-index 6b6b711..d9651f1 100644
---- a/arch/x86/kernel/apic/msi.c
-+++ b/arch/x86/kernel/apic/msi.c
-@@ -55,14 +55,14 @@ msi_set_affinity(struct irq_data *irqd, const struct cpumask *mask, bool force)
- 	 * caused by the non-atomic update of the address/data pair.
- 	 *
- 	 * Direct update is possible when:
--	 * - The MSI is maskable (remapped MSI does not use this code path)).
--	 *   The quirk bit is not set in this case.
-+	 * - The MSI is maskable (remapped MSI does not use this code path).
-+	 *   The reservation mode bit is set in this case.
- 	 * - The new vector is the same as the old vector
- 	 * - The old vector is MANAGED_IRQ_SHUTDOWN_VECTOR (interrupt starts up)
- 	 * - The interrupt is not yet started up
- 	 * - The new destination CPU is the same as the old destination CPU
- 	 */
--	if (!irqd_msi_nomask_quirk(irqd) ||
-+	if (!irqd_can_reserve(irqd) ||
- 	    cfg->vector == old_cfg.vector ||
- 	    old_cfg.vector == MANAGED_IRQ_SHUTDOWN_VECTOR ||
- 	    !irqd_is_started(irqd) ||
-@@ -215,8 +215,6 @@ static bool x86_init_dev_msi_info(struct device *dev, struct irq_domain *domain,
- 		if (WARN_ON_ONCE(domain != real_parent))
- 			return false;
- 		info->chip->irq_set_affinity = msi_set_affinity;
--		/* See msi_set_affinity() for the gory details */
--		info->flags |= MSI_FLAG_NOMASK_QUIRK;
- 		break;
- 	case DOMAIN_BUS_DMAR:
- 	case DOMAIN_BUS_AMDVI:
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index d8a6fdc..90081af 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -215,8 +215,6 @@ struct irq_data {
-  * IRQD_SINGLE_TARGET		- IRQ allows only a single affinity target
-  * IRQD_DEFAULT_TRIGGER_SET	- Expected trigger already been set
-  * IRQD_CAN_RESERVE		- Can use reservation mode
-- * IRQD_MSI_NOMASK_QUIRK	- Non-maskable MSI quirk for affinity change
-- *				  required
-  * IRQD_HANDLE_ENFORCE_IRQCTX	- Enforce that handle_irq_*() is only invoked
-  *				  from actual interrupt context.
-  * IRQD_AFFINITY_ON_ACTIVATE	- Affinity is set on activation. Don't call
-@@ -247,11 +245,10 @@ enum {
- 	IRQD_SINGLE_TARGET		= BIT(24),
- 	IRQD_DEFAULT_TRIGGER_SET	= BIT(25),
- 	IRQD_CAN_RESERVE		= BIT(26),
--	IRQD_MSI_NOMASK_QUIRK		= BIT(27),
--	IRQD_HANDLE_ENFORCE_IRQCTX	= BIT(28),
--	IRQD_AFFINITY_ON_ACTIVATE	= BIT(29),
--	IRQD_IRQ_ENABLED_ON_SUSPEND	= BIT(30),
--	IRQD_RESEND_WHEN_IN_PROGRESS    = BIT(31),
-+	IRQD_HANDLE_ENFORCE_IRQCTX	= BIT(27),
-+	IRQD_AFFINITY_ON_ACTIVATE	= BIT(28),
-+	IRQD_IRQ_ENABLED_ON_SUSPEND	= BIT(29),
-+	IRQD_RESEND_WHEN_IN_PROGRESS    = BIT(30),
- };
- 
- #define __irqd_to_state(d) ACCESS_PRIVATE((d)->common, state_use_accessors)
-@@ -426,21 +423,6 @@ static inline bool irqd_can_reserve(struct irq_data *d)
- 	return __irqd_to_state(d) & IRQD_CAN_RESERVE;
- }
- 
--static inline void irqd_set_msi_nomask_quirk(struct irq_data *d)
--{
--	__irqd_to_state(d) |= IRQD_MSI_NOMASK_QUIRK;
--}
--
--static inline void irqd_clr_msi_nomask_quirk(struct irq_data *d)
--{
--	__irqd_to_state(d) &= ~IRQD_MSI_NOMASK_QUIRK;
--}
--
--static inline bool irqd_msi_nomask_quirk(struct irq_data *d)
--{
--	return __irqd_to_state(d) & IRQD_MSI_NOMASK_QUIRK;
--}
--
- static inline void irqd_set_affinity_on_activate(struct irq_data *d)
- {
- 	__irqd_to_state(d) |= IRQD_AFFINITY_ON_ACTIVATE;
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index a50ea79..ddace8c 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -547,12 +547,6 @@ enum {
- 	MSI_FLAG_ALLOC_SIMPLE_MSI_DESCS	= (1 << 5),
- 	/* Free MSI descriptors */
- 	MSI_FLAG_FREE_MSI_DESCS		= (1 << 6),
--	/*
--	 * Quirk to handle MSI implementations which do not provide
--	 * masking. Currently known to affect x86, but has to be partially
--	 * handled in the core MSI code.
--	 */
--	MSI_FLAG_NOMASK_QUIRK		= (1 << 7),
- 
- 	/* Mask for the generic functionality */
- 	MSI_GENERIC_FLAGS_MASK		= GENMASK(15, 0),
-diff --git a/kernel/irq/debugfs.c b/kernel/irq/debugfs.c
-index 5971a66..aae0402 100644
---- a/kernel/irq/debugfs.c
-+++ b/kernel/irq/debugfs.c
-@@ -121,7 +121,6 @@ static const struct irq_bit_descr irqdata_states[] = {
- 	BIT_MASK_DESCR(IRQD_AFFINITY_ON_ACTIVATE),
- 	BIT_MASK_DESCR(IRQD_MANAGED_SHUTDOWN),
- 	BIT_MASK_DESCR(IRQD_CAN_RESERVE),
--	BIT_MASK_DESCR(IRQD_MSI_NOMASK_QUIRK),
- 
- 	BIT_MASK_DESCR(IRQD_FORWARDED_TO_VCPU),
- 
-diff --git a/kernel/irq/msi.c b/kernel/irq/msi.c
-index b4c31a5..79b4a58 100644
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -1204,7 +1204,6 @@ static int msi_handle_pci_fail(struct irq_domain *domain, struct msi_desc *desc,
- 
- #define VIRQ_CAN_RESERVE	0x01
- #define VIRQ_ACTIVATE		0x02
--#define VIRQ_NOMASK_QUIRK	0x04
- 
- static int msi_init_virq(struct irq_domain *domain, int virq, unsigned int vflags)
- {
-@@ -1213,8 +1212,6 @@ static int msi_init_virq(struct irq_domain *domain, int virq, unsigned int vflag
- 
- 	if (!(vflags & VIRQ_CAN_RESERVE)) {
- 		irqd_clr_can_reserve(irqd);
--		if (vflags & VIRQ_NOMASK_QUIRK)
--			irqd_set_msi_nomask_quirk(irqd);
- 
- 		/*
- 		 * If the interrupt is managed but no CPU is available to
-@@ -1275,15 +1272,8 @@ static int __msi_domain_alloc_irqs(struct device *dev, struct irq_domain *domain
- 	 * Interrupt can use a reserved vector and will not occupy
- 	 * a real device vector until the interrupt is requested.
- 	 */
--	if (msi_check_reservation_mode(domain, info, dev)) {
-+	if (msi_check_reservation_mode(domain, info, dev))
- 		vflags |= VIRQ_CAN_RESERVE;
--		/*
--		 * MSI affinity setting requires a special quirk (X86) when
--		 * reservation mode is active.
--		 */
--		if (info->flags & MSI_FLAG_NOMASK_QUIRK)
--			vflags |= VIRQ_NOMASK_QUIRK;
--	}
- 
- 	xa_for_each_range(xa, idx, desc, ctrl->first, ctrl->last) {
- 		if (!msi_desc_match(desc, MSI_DESC_NOTASSOCIATED))
+If the interrupt came in before, we have an issue.
+
+| +       if (ret < 0)
+| +               goto edisclk;
+| +
+|         dev_info(&pdev->dev, "%s base at %pa, max clock rate %u MHz\n",
+|                  mmc_hostname(host->mmc), &res->start,
+host->mmc->f_max / 1000000);
+
+The solution is to backport commit 9f12cac1bb88e329 ("mmc: renesas_sdhi:
+use custom mask for TMIO_MASK_ALL") in v5.13.
+As this doesn't backport cleanly, I'll submit a (tested) patch.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
