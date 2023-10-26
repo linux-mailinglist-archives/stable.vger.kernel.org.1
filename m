@@ -2,97 +2,158 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 237D67D86CD
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 18:34:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F6707D86E0
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 18:41:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231547AbjJZQeY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 26 Oct 2023 12:34:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35394 "EHLO
+        id S231689AbjJZQlU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 26 Oct 2023 12:41:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231180AbjJZQeX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 12:34:23 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C8C118A;
-        Thu, 26 Oct 2023 09:34:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698338061; x=1729874061;
-  h=to:cc:subject:references:date:mime-version:
-   content-transfer-encoding:from:message-id:in-reply-to;
-  bh=jnQgMYyJfhLnAlaZW3gDaEF91wiW9ZrBuVYvIWcLdPU=;
-  b=EG4K0sIeYSIPZIfWclvGZ3x5xuZh9dMsM+bSqTQlNVxFpTUv9Ekj+xeV
-   jSdxCwvW31WbKYOXURDqsxNATYgL01wCEplzL87Jv37KvlJyvtJyHWtZx
-   YiFZsIsD5fJL/qz9WqHcI9OH/PbC0Ctbcw/QBv5CCIjOgiZrzPa/xvyH/
-   gn9ePK71Clj39TYMvV4bvNB9FCwGyEKAb/EEQSzW5vBE1LG2lxAeriIHU
-   b4wdB6CBvMhUdFwb5/XwDx+G2Xvs7WxRSa/izoUxwTQdYZouc2y+5Ys5X
-   hidaF/cjJK08JQhNoFqVYKKRVPFqE91y0y4fmG34gdfdLduNjXRUzn/vV
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="389778"
-X-IronPort-AV: E=Sophos;i="6.03,254,1694761200"; 
-   d="scan'208";a="389778"
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Oct 2023 09:34:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10875"; a="1090642943"
-X-IronPort-AV: E=Sophos;i="6.03,253,1694761200"; 
-   d="scan'208";a="1090642943"
-Received: from hhuan26-mobl.amr.corp.intel.com ([10.93.50.175])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-SHA; 26 Oct 2023 09:34:20 -0700
-Content-Type: text/plain; charset=iso-8859-15; format=flowed; delsp=yes
-To:     "Huang, Kai" <kai.huang@intel.com>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "Reinette Chatre" <reinette.chatre@intel.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "Ingo Molnar" <mingo@kernel.org>
-Subject: Re: [PATCH] x86/sgx: Return VM_FAULT_SIGBUS for EPC exhaustion
-References: <20231020025353.29691-1-haitao.huang@linux.intel.com>
- <b8ec3061-436f-41d3-8bff-635a90774dfb@intel.com>
- <b389986bac0e65ce128c9553603436efdda24a58.camel@intel.com>
- <b709d680-5754-45ab-ae73-c812420f10e5@intel.com>
-Date:   Thu, 26 Oct 2023 11:34:19 -0500
+        with ESMTP id S231673AbjJZQlT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 12:41:19 -0400
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77331194
+        for <stable@vger.kernel.org>; Thu, 26 Oct 2023 09:41:16 -0700 (PDT)
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-41cd97d7272so8061651cf.0
+        for <stable@vger.kernel.org>; Thu, 26 Oct 2023 09:41:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1698338475; x=1698943275; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B/p+SmSABAsiAM1HGs7MlXdI15ooHjpFZ3RrRIcsztY=;
+        b=UMQolasfAj6vnApYa7c8x4muGg29qTgZhhW1XMH5rohPN7q1qqH1YBQPbAU6ec6YTs
+         F0b3Y96N0Ys/lvRcTdUcRYe9sZ3fGYvFezcibD4h2k7Bnpqr63VsBJe8UeGNzVApk2Ff
+         ypVo3yuGgDqfNtnaNUHDb/S/HpW3lsMjJLJvvf1sonwU/YLw5DLlKjtGAGi6l7IIkV2O
+         I3DMK/UC9yOED58xuCKdAKZZnNh8ga1miz63PSVnEnhCRQNANY0vOUjopLUN6vz/Otfu
+         9jJrhuNCCDIqxrZkgpJIEQkauftdqArwOtHIcpWTkd72MrrCD5g7Rh7gt6NnwsqXW0+w
+         xG2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698338475; x=1698943275;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B/p+SmSABAsiAM1HGs7MlXdI15ooHjpFZ3RrRIcsztY=;
+        b=Wny1vA23iWjOItFPTCg4tqnRut4rk9Rzo0WMCFwidHQ32FawOi6jvaDl0SQWvOhJAe
+         SHXRTDotEyNgJKTdoXcl1uey92wxgnMGOg0OblhTof2MB3ibQg3w7kzP0ye8uJ2o2xT5
+         BIqjdW3HZ2Fkz44jgFCfdq32KwUF2jrIiB0uxdfB5ZqJ/aia+iOkY7guXFu2TS/k45ca
+         Izz2Db0neVM5/wEi2MkStAyCka8pfhq412ItmZtquo1nVwsGrLR2ecgcxLldIj3+o+0K
+         H7yoUwmNlyx4XWWFqA49+b4y7nyciu7LSBDQWSbJY+5MT79p2Gaf7xbS/OSuuC99hwW5
+         H2GA==
+X-Gm-Message-State: AOJu0YwluTnq0IGUeuZCpyMzmISmzJ73tCkHSYZI7LqBI6uWukgIdv5Y
+        cGN+w68f3vMI4nmHJsuIlxxdgg==
+X-Google-Smtp-Source: AGHT+IFcWjR27pVnVjEugb0ritH7C5+/+6wUabijlnw13id8uM99pLef8sfNC4GhyiaJPKOPWDmQVA==
+X-Received: by 2002:a05:622a:287:b0:41c:b94a:98ac with SMTP id z7-20020a05622a028700b0041cb94a98acmr72026qtw.57.1698338475606;
+        Thu, 26 Oct 2023 09:41:15 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:400::5:a294])
+        by smtp.gmail.com with ESMTPSA id m24-20020ac86898000000b004108ce94882sm5114224qtq.83.2023.10.26.09.41.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Oct 2023 09:41:15 -0700 (PDT)
+From:   Johannes Weiner <hannes@cmpxchg.org>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Suren Baghdasaryan <surenb@google.com>,
+        Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Luca Boccassi <bluca@debian.org>
+Subject: [PATCH] sched: psi: fix unprivileged polling against cgroups
+Date:   Thu, 26 Oct 2023 12:41:14 -0400
+Message-ID: <20231026164114.2488682-1-hannes@cmpxchg.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-From:   "Haitao Huang" <haitao.huang@linux.intel.com>
-Organization: Intel
-Message-ID: <op.2dfkbh2iwjvjmi@hhuan26-mobl.amr.corp.intel.com>
-In-Reply-To: <b709d680-5754-45ab-ae73-c812420f10e5@intel.com>
-User-Agent: Opera Mail/1.0 (Win32)
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 26 Oct 2023 11:01:57 -0500, Reinette Chatre  
-<reinette.chatre@intel.com> wrote:
+519fabc7aaba ("psi: remove 500ms min window size limitation for
+triggers") breaks unprivileged psi polling on cgroups.
 
->
->
-> On 10/25/2023 4:58 PM, Huang, Kai wrote:
->> On Wed, 2023-10-25 at 07:31 -0700, Hansen, Dave wrote:
->>> On 10/19/23 19:53, Haitao Huang wrote:
->>>> In the EAUG on page fault path, VM_FAULT_OOM is returned when the
->>>> Enclave Page Cache (EPC) runs out. This may trigger unneeded OOM kill
->>>> that will not free any EPCs. Return VM_FAULT_SIGBUS instead.
->
-> This commit message does not seem accurate to me. From what I can tell
-> VM_FAULT_SIGBUS is indeed returned when EPC runs out. What is addressed
-> with this patch is the error returned when kernel (not EPC) memory runs
-> out.
->
+Historically, we had a privilege check for polling in the open() of a
+pressure file in /proc, but were erroneously missing it for the open()
+of cgroup pressure files.
 
+When unprivileged polling was introduced in d82caa273565 ("sched/psi:
+Allow unprivileged polling of N*2s period"), it needed to filter
+privileges depending on the exact polling parameters, and as such
+moved the CAP_SYS_RESOURCE check from the proc open() callback to
+psi_trigger_create(). Both the proc files as well as cgroup files go
+through this during write(). This implicitly added the missing check
+for privileges required for HT polling for cgroups.
 
-Sorry I got it mixed up between sgx_alloc_epc_page and sgx_encl_page_alloc  
-returns.
-You are right. Please drop this patch.
+When 519fabc7aaba ("psi: remove 500ms min window size limitation for
+triggers") followed right after to remove further restrictions on the
+RT polling window, it incorrectly assumed the cgroup privilege check
+was still missing and added it to the cgroup open(), mirroring what we
+used to do for proc files in the past.
 
-Thanks
-Haitao
+As a result, unprivileged poll requests that would be supported now
+get rejected when opening the cgroup pressure file for writing.
+
+Remove the cgroup open() check. psi_trigger_create() handles it.
+
+Fixes: 519fabc7aaba ("psi: remove 500ms min window size limitation for triggers")
+Cc: stable@vger.kernel.org # 6.5+
+Reported-by: Luca Boccassi <bluca@debian.org>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+---
+ kernel/cgroup/cgroup.c | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index f11488b18ceb..2069ee98da60 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -3879,14 +3879,6 @@ static __poll_t cgroup_pressure_poll(struct kernfs_open_file *of,
+ 	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
+ }
+ 
+-static int cgroup_pressure_open(struct kernfs_open_file *of)
+-{
+-	if (of->file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
+-		return -EPERM;
+-
+-	return 0;
+-}
+-
+ static void cgroup_pressure_release(struct kernfs_open_file *of)
+ {
+ 	struct cgroup_file_ctx *ctx = of->priv;
+@@ -5287,7 +5279,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "io.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IO]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_io_pressure_show,
+ 		.write = cgroup_io_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5296,7 +5287,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "memory.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_MEM]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_memory_pressure_show,
+ 		.write = cgroup_memory_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5305,7 +5295,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "cpu.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_CPU]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_cpu_pressure_show,
+ 		.write = cgroup_cpu_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5315,7 +5304,6 @@ static struct cftype cgroup_psi_files[] = {
+ 	{
+ 		.name = "irq.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IRQ]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_irq_pressure_show,
+ 		.write = cgroup_irq_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+-- 
+2.42.0
+
