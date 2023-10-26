@@ -2,90 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 039837D877E
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 19:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BDAE7D8851
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 20:33:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230330AbjJZRX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 26 Oct 2023 13:23:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51932 "EHLO
+        id S231318AbjJZSdC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 26 Oct 2023 14:33:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231841AbjJZRX2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 13:23:28 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB9ABD59;
-        Thu, 26 Oct 2023 10:23:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911E5C433C8;
-        Thu, 26 Oct 2023 17:23:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698341003;
-        bh=KHEtv2BW5ufcLceTLdIMBqabDXWqTImDiZvqNq1ZFoo=;
-        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-        b=Y2nuw3nr5k9IH1ntILq8GvFLs0t2MvQiD2LoKcrMDcVykD60U9AojdjxDDmDzg2U5
-         XSP0AC4essXZBjMCAt/q5uQer4x5Qr+OYvtZYW1pnBgnr9O11paHnmLZBgVO9bC4iZ
-         WuhGbb72T+nKsCJFbn1dQRlS8dyjlYSVUEkQqwL2W3xEN900bUIoGw1TWMDO3YGEbu
-         obNEUHnKrdVgMZj0+L9TRCdi9QKhGoi9WlhAldcAuaMr43XqMW/bvEMKLpOW3Lo1ma
-         2A1N/L1b8igEVExKuzs9Q6ihYxcO0Y7sFOMx9mNGeI9loH6voS+g1geObl7hvwBHEq
-         OeSHNM0T6c+DA==
-From:   Mark Brown <broonie@kernel.org>
-To:     Hector Martin <marcan@marcan.st>, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>
-Cc:     stable@vger.kernel.org
-In-Reply-To: <20231026-regmap-fix-selector-sync-v1-1-633ded82770d@kernel.org>
-References: <20231026-regmap-fix-selector-sync-v1-1-633ded82770d@kernel.org>
-Subject: Re: [PATCH] regmap: Ensure range selector registers are updated
- after cache sync
-Message-Id: <169834100229.152944.3846879997258619017.b4-ty@kernel.org>
-Date:   Thu, 26 Oct 2023 18:23:22 +0100
+        with ESMTP id S231326AbjJZSdA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 14:33:00 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54B4CD43;
+        Thu, 26 Oct 2023 11:32:58 -0700 (PDT)
+Received: from pps.filterd (m0353728.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39QIHbEx026280;
+        Thu, 26 Oct 2023 18:32:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=nrvFh2fd1vzzeix+pUFKXs76rwQENYotxEwliyOjHjs=;
+ b=YK3VTpki9ANsmjP6giXZQAxLc5BY+4hv3arAR1PN0WeyawMcSk/jxDPsmIz538oDfvjE
+ AmF0SfhWa7ov3EZMeO+j4buwPm+APx56tBUsld6q67Ogcca2KbIvlkM//EZ9jX8PavSV
+ 1e7HTfXoaoZ5qsa6MZKQdypsUdivOTkHtiyTzv0yJDDnLlZhmbyNse0D9u7VVIBgAgWV
+ PdFNpKE/v1mie1ld4dIbif7m9ScArpX5/rXOo9SpoIt0q3cll1zTm91llrxABAhLRP2P
+ +B6hgrJrgHLxXFRn6xB1G9XohUzElIazOc1WRZoEnRd8f73hOgn/AWrGFtcdXxEdG5qM ow== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyw8t0gb1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Oct 2023 18:32:56 +0000
+Received: from m0353728.ppops.net (m0353728.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QIHTbU025880;
+        Thu, 26 Oct 2023 18:32:56 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyw8t0g9n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Oct 2023 18:32:56 +0000
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39QGji2w010250;
+        Thu, 26 Oct 2023 18:32:54 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+        by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvsc009v1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 26 Oct 2023 18:32:54 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+        by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39QIWrCK20054754
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 26 Oct 2023 18:32:54 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9A01358067;
+        Thu, 26 Oct 2023 18:32:53 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id AC9485805D;
+        Thu, 26 Oct 2023 18:32:52 +0000 (GMT)
+Received: from li-2c1e724c-2c76-11b2-a85c-ae42eaf3cb3d.ibm.com.com (unknown [9.61.161.121])
+        by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Thu, 26 Oct 2023 18:32:52 +0000 (GMT)
+From:   Tony Krowiak <akrowiak@linux.ibm.com>
+To:     linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc:     jjherne@linux.ibm.com, pasic@linux.ibm.com,
+        borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, david@redhat.com, mjrosato@linux.ibm.com,
+        Anthony Krowiak <akrowiak@linux.ibm.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v3 1/3] s390/vfio-ap: unpin pages on gisc registration failure
+Date:   Thu, 26 Oct 2023 14:32:43 -0400
+Message-ID: <20231026183250.254432-2-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231026183250.254432-1-akrowiak@linux.ibm.com>
+References: <20231026183250.254432-1-akrowiak@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-0438c
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: ZO-baTWAQ9ZVCyMps38H84NclRGND2B1
+X-Proofpoint-GUID: ZDZnBZsp1pfebqUmF319uO9llNTfH-SI
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-10-26_17,2023-10-26_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
+ bulkscore=0 mlxlogscore=999 lowpriorityscore=0 phishscore=0 spamscore=0
+ priorityscore=1501 mlxscore=0 clxscore=1015 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310170001
+ definitions=main-2310260161
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 26 Oct 2023 16:49:19 +0100, Mark Brown wrote:
-> When we sync the register cache we do so with the cache bypassed in order
-> to avoid overhead from writing the synced values back into the cache. If
-> the regmap has ranges and the selector register for those ranges is in a
-> register which is cached this has the unfortunate side effect of meaning
-> that the physical and cached copies of the selector register can be out of
-> sync after a cache sync. The cache will have whatever the selector was when
-> the sync started and the hardware will have the selector for the register
-> that was synced last.
-> 
-> [...]
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-Applied to
+In the vfio_ap_irq_enable function, after the page containing the
+notification indicator byte (NIB) is pinned, the function attempts
+to register the guest ISC. If registration fails, the function sets the
+status response code and returns without unpinning the page containing
+the NIB. In order to avoid a memory leak, the NIB should be unpinned before
+returning from the vfio_ap_irq_enable function.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regmap.git for-next
+Co-developed-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Fixes: 783f0a3ccd79 ("s390/vfio-ap: add s390dbf logging to the vfio_ap_irq_enable function")
+Cc: <stable@vger.kernel.org>
+---
+ drivers/s390/crypto/vfio_ap_ops.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks!
-
-[1/1] regmap: Ensure range selector registers are updated after cache sync
-      commit: 0ec7731655de196bc1e4af99e495b38778109d22
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index 4db538a55192..9cb28978c186 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -457,6 +457,7 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
+ 		VFIO_AP_DBF_WARN("%s: gisc registration failed: nisc=%d, isc=%d, apqn=%#04x\n",
+ 				 __func__, nisc, isc, q->apqn);
+ 
++		vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
+ 		status.response_code = AP_RESPONSE_INVALID_GISA;
+ 		return status;
+ 	}
+-- 
+2.41.0
 
