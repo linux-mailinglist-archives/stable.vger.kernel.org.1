@@ -2,213 +2,230 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D56C7D8A2F
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 23:23:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01B3F7D8AC2
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 23:44:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231977AbjJZVXc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 26 Oct 2023 17:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52024 "EHLO
+        id S1344882AbjJZVo1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 26 Oct 2023 17:44:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229501AbjJZVXb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 17:23:31 -0400
-Received: from BN6PR00CU002.outbound.protection.outlook.com (mail-eastus2azon11021007.outbound.protection.outlook.com [52.101.56.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419B31B1;
-        Thu, 26 Oct 2023 14:23:29 -0700 (PDT)
+        with ESMTP id S1344904AbjJZVoS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 17:44:18 -0400
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com (mail-db3eur04on2066.outbound.protection.outlook.com [40.107.6.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A34C1731;
+        Thu, 26 Oct 2023 14:44:06 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XFBsTZF4C64DUehKcCYEEq38dL43G0UUokeIJUJzJ0eM1CvP2AajKO61YFzANuNiCobNQPyKwoUGMeDQ58wEV955B2pv8Fw4royKyBF1VJ1O1ZqvZUaxMmQdNWN9CgzCZUl/BPZOxXiuurIdIIbA+GzSayEq+s0vR1JSyFDMwDuQk7Jqzv7k5K38Is2Nd+QF7gNQhrYvzusicAIPsB2qZTQraE88cYtKrwDsBQEu7/ZFCD0yqHK/JfrNmwik7EF4dBAIH7azV2d6aH3/Q0qJZsnDqh2qjy6XjKv8G3M+6kIhxKXpJThaW2EdNWJzhUm0zOinNL6Qurg7l3ixF0p1mw==
+ b=RKaNza+aT1iR2Vdf2dmdEOGAxeej+XtssfnATU+tRbLH/zB5AzN6QURTRNi4Bi1uSmjfVi/PO9XNfWzPMt8sqam5+Z+d5MYzZOTo4vvc0R/R7cEmz23DzFGyg8HCg1gR291Kg2kfe+ku2HAHP6JsE+fQFG5RfJhT1vQ8oeqGe/XHT37OXp1HefmiH3IwU0NPEN5xEqCuAzAI2aeCZ/i7GD5xJkUyrzM2DhY76DA7vcG7T6SXREEo2xX/zBYfxgxFLQfaJPMq45A3yaJglMtPhB32TyvOSuppNDjWlmDheGove8TqUz7O/aSgOPcIQdkLPbLkKrI+rx0tbU5u+KmIVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ScO9MHjqFx9KLg4rtvI3RJfJbEafGC9U9HwhniT/Uro=;
- b=oKJoqu+m6R+duPSZAEEfn3PoQyIvHZNdsggRw66/brXDrVwuHuWjDVgpC+v7z+a8HQJEsrtluDfE8+1L8b5GDUzl7MvwBzs5BEYqnSrfy/oieh/LA4XdoDLJXWOjdeIacM+orDhRunz4LzgpKBiXRv7gQ1jsPf7/lHKBegklbOEhNkMktQIcVW82VtjBqWHYu8xHbrAv/yRAD+m7kItn4wAcqHiM6v515vyVAR/fLW3nYClqnB2oqlfX/Gb0E1nSNUU/dkNwEufZv95+W0cE4mnUjwvmby2Roq57Z1kJbC790+rZwlI8z3urI5lb/TQ3wwovcv3OZlqEUANaZnWqnQ==
+ bh=gH0oZ3ieM7Z3h7H08hzcgcDMbDaTBHyKSlEYz68rB20=;
+ b=GFfwhTXQjVdRU9qGB9dqKfewtKmghAoXHmJ/2IySBz5L6B3o5Zt8qsIYcrIxyHMUglraqplYx8Y8ycpbb2T0g53K6l9jFDzq0QCsPYRbHVATfxtKsD7FOYedB5Nn74mxMNoA8BR0c9HgA+E0c80susksKlCaTrd35nNADUcmbuTh5il8tpHvVJ63kYt0yAHQQTR9QvqnwSmFRGWxeP1y39zPsrGkF9/irfvO9AEMqwMUjk+AUeXwMR2BgAQpGjqEp0dZhjnAYbs1NgWYrfhj4JI0LomxOUUrEzgeOLr5Z8wzlNKSnxNZwp+Xv4HMC7WyeXfIAeUmB9ixelIPGRW2mg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ScO9MHjqFx9KLg4rtvI3RJfJbEafGC9U9HwhniT/Uro=;
- b=R2l85sxx83pvGUOB+Mm8TqZgnNvfhUKxeBCcGlVHndlDYJdGv9i2TMgafmctnLf9tOc2qaizNwMTJFa6xVaOMXIcNY+NFar8RCctE8+tDHXsEUjySjOsSG27hIE0KzCZX90z1hkmCH+LtlthPaKaOMZ4ULsER6weZHreDAKMFrQ=
+ bh=gH0oZ3ieM7Z3h7H08hzcgcDMbDaTBHyKSlEYz68rB20=;
+ b=c8PYqJdDvQMYhc+Jx/m3XA7mduqeAsuAV14QNB7j0XuwPfKZKOIm2UwvmvHqMYTdpAJm9iyccOygUMMVbt/yEosrRp3F6TKNqjAmVCxQeC8bEynHp1aqHh30bnJmOKq+2drXOQwiU3nqrk7w/QDdf0P37N8sSoBpMFSURW5el8cbEDBDJdTaEQjK2JBICKHLUmlXM4Jxa1bDrvYBwPF+vMomoskqZpTFgvrRw0mT3uxXIgQeL8KyNrGH6es8mE9N7o0hLnbNuY18acC4y/R6scBLgotJAnmILBiJHkWZzNfh+fqGxoa5gUIUG0WC3irJhN1CRvMYe9X12doBi15Dhg==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com (2603:10b6:a03:21f::18)
- by CY5PR21MB3711.namprd21.prod.outlook.com (2603:10b6:930:2f::21) with
+ header.d=none;dmarc=none action=none header.from=suse.com;
+Received: from AS8PR04MB8465.eurprd04.prod.outlook.com (2603:10a6:20b:348::19)
+ by PAWPR04MB10054.eurprd04.prod.outlook.com (2603:10a6:102:38b::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.9; Thu, 26 Oct
- 2023 21:23:26 +0000
-Received: from BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::c099:1450:81d3:61dd]) by BY5PR21MB1443.namprd21.prod.outlook.com
- ([fe80::c099:1450:81d3:61dd%4]) with mapi id 15.20.6954.008; Thu, 26 Oct 2023
- 21:23:26 +0000
-From:   Haiyang Zhang <haiyangz@microsoft.com>
-To:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
-Cc:     haiyangz@microsoft.com, kys@microsoft.com, wei.liu@kernel.org,
-        decui@microsoft.com, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, davem@davemloft.net,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH net,v2] hv_netvsc: fix race of netvsc and VF register_netdevice
-Date:   Thu, 26 Oct 2023 14:22:34 -0700
-Message-Id: <1698355354-12869-1-git-send-email-haiyangz@microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-Content-Type: text/plain
-X-ClientProxiedBy: MW4PR03CA0161.namprd03.prod.outlook.com
- (2603:10b6:303:8d::16) To BY5PR21MB1443.namprd21.prod.outlook.com
- (2603:10b6:a03:21f::18)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.36; Thu, 26 Oct
+ 2023 21:44:03 +0000
+Received: from AS8PR04MB8465.eurprd04.prod.outlook.com
+ ([fe80::46d9:6544:503:c37e]) by AS8PR04MB8465.eurprd04.prod.outlook.com
+ ([fe80::46d9:6544:503:c37e%4]) with mapi id 15.20.6933.019; Thu, 26 Oct 2023
+ 21:44:02 +0000
+Message-ID: <04b4f1f8-ce65-4acb-8025-5bf01fb77aaa@suse.com>
+Date:   Fri, 27 Oct 2023 08:13:53 +1030
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.5 211/285] btrfs: scrub: fix grouping of read IO
+Content-Language: en-US
+To:     Sam James <sam@gentoo.org>
+Cc:     =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
+        gregkh@linuxfoundation.org, dsterba@suse.com,
+        patches@lists.linux.dev, stable@vger.kernel.org,
+        linux-btrfs@vger.kernel.org
+References: <87fs1x1p93.fsf@gentoo.org>
+ <02e8fca0-43bd-ad60-6aec-6bcc74d594ee@applied-asynchrony.com>
+ <740c38b1-60eb-41da-93e0-7d7671f0b3fc@suse.com> <878r7paxys.fsf@gentoo.org>
+From:   Qu Wenruo <wqu@suse.com>
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJjTSJVBQkNOgemAAoJEMI9kfOh
+ Jf6oapEH/3r/xcalNXMvyRODoprkDraOPbCnULLPNwwp4wLP0/nKXvAlhvRbDpyx1+Ht/3gW
+ p+Klw+S9zBQemxu+6v5nX8zny8l7Q6nAM5InkLaD7U5OLRgJ0O1MNr/UTODIEVx3uzD2X6MR
+ ECMigQxu9c3XKSELXVjTJYgRrEo8o2qb7xoInk4mlleji2rRrqBh1rS0pEexImWphJi+Xgp3
+ dxRGHsNGEbJ5+9yK9Nc5r67EYG4bwm+06yVT8aQS58ZI22C/UeJpPwcsYrdABcisd7dddj4Q
+ RhWiO4Iy5MTGUD7PdfIkQ40iRcQzVEL1BeidP8v8C4LVGmk4vD1wF6xTjQRKfXHOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJjTSJuBQkNOge/AAoJEMI9kfOhJf6o
+ rq8H/3LJmWxL6KO2y/BgOMYDZaFWE3TtdrlIEG8YIDJzIYbNIyQ4lw61RR+0P4APKstsu5VJ
+ 9E3WR7vfxSiOmHCRIWPi32xwbkD5TwaA5m2uVg6xjb5wbdHm+OhdSBcw/fsg19aHQpsmh1/Q
+ bjzGi56yfTxxt9R2WmFIxe6MIDzLlNw3JG42/ark2LOXywqFRnOHgFqxygoMKEG7OcGy5wJM
+ AavA+Abj+6XoedYTwOKkwq+RX2hvXElLZbhYlE+npB1WsFYn1wJ22lHoZsuJCLba5lehI+//
+ ShSsZT5Tlfgi92e9P7y+I/OzMvnBezAll+p/Ly2YczznKM5tV0gboCWeusM=
+In-Reply-To: <878r7paxys.fsf@gentoo.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MEWPR01CA0048.ausprd01.prod.outlook.com
+ (2603:10c6:220:1df::16) To AS8PR04MB8465.eurprd04.prod.outlook.com
+ (2603:10a6:20b:348::19)
 MIME-Version: 1.0
-Sender: LKML haiyangz <lkmlhyz@microsoft.com>
-X-MS-Exchange-MessageSentRepresentingType: 2
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR21MB1443:EE_|CY5PR21MB3711:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4b76fab6-bfb3-446f-f7d2-08dbd669ca72
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8465:EE_|PAWPR04MB10054:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3e319a70-8853-4092-bd04-08dbd66cab51
+X-LD-Processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtFwd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: uaAgxGsRluUNdB4dywq5SLON3jO4Dx8q9M68/zQXbMpHs53jBxMECMbkBX5Us0NWQR4/zhlyc35hDsWeGXTwUvt29hK7yzGiNloh7NOnZ7McvAkC8Kn/Okeh7D85cQXVBFHIMrOcFraDUQ0SiLHazj2UXgUub3aOBBO8S0A3Kf0fGniOwWI+d9Mzv7IEHzcYvBHHgRei6flYVecBEvZ6xUDshHcKSImLAWvgmmBjfpkEhgdWjciIy04dd7jhCvk6uNi9oyTK4e83K/BKV13Drmvq58X8pmlz/a3+lR1boPim9oOKPEFgSyk2ZV6XYf/zbSNZUKmJHFHYGtJw/xxKW/gi4/PRQWgxRwgWtK/lrykdmYS7n/HCYmXluy92LuXAmqTL2YWwxKZJjpv2IVHWja3jYnBqpc872yXsVAJfnRm0nMwX0NW3djCZUcG/NS1UKtPt0oADAorhsMMPYIn/yHfr2YvrRJDUL00+9WdWHMX/g4svpY+jSK0xeVCbjCXgeFPcIQjVgbz1iP6T+oBMe2k4+uuhBTaoFMheZ+3wfhZhgP+qM7yNQQq4ekYCJD+vCxlhZK5my+AE2eJNlAdTjg+w9DBfpr4tonXcdSkKZSqScPBiQllugEt3SCay0pM3ZPmCm7XBNqoPnvI0et9ciBMp+rrbl0fKQq+dSxxKEBA=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR21MB1443.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(366004)(396003)(39860400002)(346002)(230922051799003)(1800799009)(186009)(64100799003)(451199024)(478600001)(6666004)(7846003)(6506007)(6512007)(2906002)(316002)(6486002)(38100700002)(5660300002)(10290500003)(82950400001)(82960400001)(52116002)(41300700001)(26005)(66899024)(66476007)(66556008)(66946007)(36756003)(83380400001)(2616005)(8676002)(38350700005)(4326008)(8936002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: nUgWnPgYTxrOqQU2BVbKS/FTEa/+wsy2q7MZkMS9qdCsOzNVJa42AX7j39n48hrS50MvzjG+UZjcUWiV5HLXcA3ehfOUr6tM9Ii1bvQSYsnrlnXPf0m1K0gSDUIsyCUcd3XBv05YbuThVE5qme6TzN8FqBrY4ZGRYyueOtTL7K6NhJC4hLaYbMo3gbM+ZGCGa79bskvZZ0vHTjdP5mGWlVgChRqGt7YzCfTbgTxdr4EYSZe9DXGWRxv3iFK0mTw+JfQkoWvhf5jYHdWKXbs5vkf5+uB/CTGkhTvsk9l+7blDASSFjqxBI1CzlEjFUVQJk7i83vEZU0mkPft7j45vEExeSEj3z4MeWHxSpXx4zGY1qizSFTYrIzxEq+nAdNI408h+QvyU9ZGJIir9/p5oWpkc/We8zwbTj4Jid5Ljr4ilYLuj9WmtVRX3PXbUYNxsSklx4Nujvv74sw/XMwbTSiyyzI494HJomvYQrcgPwDhcupynDzbyMPgJECblk8cW591THT3sWmHcA5aeZ9H9kqtNzKFHR09rQPxeQyDv664wnr4ipHACFWerZ3/bPYSK4RBsKL9bWwPnJM5j6dGnloIgPfWxZHlT4sMOTJa2aUe0cDfQx035hhoj99qAmVpx2iDdE0Ax3exyCNnjFZnOYStpTQEKx+qQL42cyOm1ER8ntnGkX7PQ0u7upiTvX/7s
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8465.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(376002)(39860400002)(396003)(366004)(230173577357003)(230273577357003)(230922051799003)(186009)(451199024)(1800799009)(64100799003)(6486002)(41300700001)(6506007)(53546011)(31686004)(2616005)(478600001)(38100700002)(6512007)(6666004)(83380400001)(26005)(66574015)(5660300002)(4326008)(66946007)(8936002)(8676002)(316002)(4001150100001)(86362001)(2906002)(6916009)(66476007)(66556008)(31696002)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?Rsy03WKDh8FBUZDSoJg1MyyleRKf0A5rwL+u7QBPPzOV3Ad6SlBPTVKc1s6Q?=
- =?us-ascii?Q?7Ew27jDxs/6VaIEMyLiIm3nhgQ/5zpYvh1LZQuEfsuk38Hf0/UKf4wTvIMN7?=
- =?us-ascii?Q?50vCCxALrO7WnTsZnfllOhV6xlHjjFDRaSEcUtVvTllF4e+HbLPe82zbwVl3?=
- =?us-ascii?Q?Q/OsO/U+yTuAx3yGAcZpsXYvfEvHGyMjHG9/GwiRFomE/lAtGgST2VqhQmNJ?=
- =?us-ascii?Q?WNx2tkiMOzw+yhn+Hk2AtY3NnbcGfOdq/2md91peRRY6d2hUDG0aCEbFlpCF?=
- =?us-ascii?Q?HdAh+Jeoto6A0yPzRtNSK2ieyo8V1uCOspOLBGCapZtXYolavgGIbg0o0S5M?=
- =?us-ascii?Q?GHZNT4/HCW152gmJEttxdgCBYNTHu+Of1f4BfnflRPnmo8evgEDY4o+/MoAu?=
- =?us-ascii?Q?oaIE7+m4smsZu8JmfLrQoxHeAwarn3q4Hi1mt6zN50njuDdAZhn88hlwNXxY?=
- =?us-ascii?Q?U2o3fb2NcVDTjBf/6yUMCgtX23/A25TDE7BsfbQmdATbJz5mNA7ffXBWkC4/?=
- =?us-ascii?Q?hfpdE7kGKp/L2OGO6pc9/v88nYqX+aW+8cNtfXbCbU+2MSl3+Tr2YvF1cVPa?=
- =?us-ascii?Q?RO+wFi4sGIM7OnVJZWRmGosmxMESoDfvnpyCqatbsPx0CUQXDElofZyReIU6?=
- =?us-ascii?Q?Evv2rnPf+Qa17Qa+UtHb3pQJkLR9yccAsrahd2FY4fvtf0ffK+wM07KZQv00?=
- =?us-ascii?Q?4rxmPKgSwMJEO/Au22jtNzPlaIcPsRI1LdFHP7scOtuFCAwRT39sSZYE3Kwn?=
- =?us-ascii?Q?emRwSuHgbuA33hKjntw2jl2HZrtZ6Huwwtr2B7gZ3E5IMoQrt+ludp76ubuP?=
- =?us-ascii?Q?zKiZYPSv+WZb5SrpKI7gC/y2+jBdiZuoTaWv+X+1Yu/2c8ukOvTO85dz4Xg5?=
- =?us-ascii?Q?gvtfscTPgB0N2O9CqZmLYxlmL6U6YVUSLGXh65OFZLumslBw+cxFl8S/QxDE?=
- =?us-ascii?Q?hN73aZmxMjABI0gPs0jeVr/fO5jRIDb4b+ZU/UB+h5mkcnme3+WGKXq6Qykc?=
- =?us-ascii?Q?7KEgfGT0I7zFOVvlbFscefNQDDsHjtHiPXUfsdM6RX7jFeopZBekDPbrfb5j?=
- =?us-ascii?Q?CI8ynlxtSDEK8bhQBwdbPnT6/djz+2wsQbcjN7uuSfpNXNdlnljYmh2kYWLS?=
- =?us-ascii?Q?M5Pyw+ubfWlGpI5Qt/kHpd68INlnbtN2q5jnjTLKJpgG1Bklkfr58uDnNmAr?=
- =?us-ascii?Q?Tfwnj2A25nTR9BT5FkrbFvbgYGd+hChG7MpnlIWLSjK/N4mk1L0I/hY36tlx?=
- =?us-ascii?Q?U0x0ptlG6niJS1aRMzeDknK89sBgHvmcaYV1+9Kp4bqgCHUTCDzjxtHFhw5p?=
- =?us-ascii?Q?OmRVkKRc5cSAd0q0BdKWF1SOg91HB+xkuL1CuR4MC68Rf9LeC7aw6Eu0/5F+?=
- =?us-ascii?Q?u47STrrQ+xdiY7d7f5n5yq9PlaCfoRYPeRwGV+5oy3WvEJgO5e9AVgVRGMnS?=
- =?us-ascii?Q?poZRZTMEkh8ZXBRR2zOHS2nwGL72Wwkd5xtf0rK4/YYhpzdIyW27stvtb4CG?=
- =?us-ascii?Q?fJCy5r/mmFryFnjduOYEu86mdjwqIZxbQkDOeX1e3amJRfrUz9M6JRj9uy0Y?=
- =?us-ascii?Q?F5N8Agk+T7ujYb6k7XXiFN/EHwJwaCaQgtjPEfQb?=
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b76fab6-bfb3-446f-f7d2-08dbd669ca72
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR21MB1443.namprd21.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VHVxTHdWSGtWMXFVUVNJME9ZNUFRNWU2cTRRcFpRV3RmblNta1duTzBhcGtK?=
+ =?utf-8?B?TTlRMGFBZXhueHRhckE4d0ZYUHpha0NMWTlOQyszM3NNcThLeVp2bm5INzZn?=
+ =?utf-8?B?NVhiSzVmU2toR3lEa1h6WnhmdldPZW1Nb2J0YmdMOWxLRXQwUlpTaVpZYVFz?=
+ =?utf-8?B?MWNxTTRhTkNnU1kvUklKcFpQalcyeUQvaVJNQWxna2VNUVdCaURVbitJcXlo?=
+ =?utf-8?B?d1lQRFVRclBmVkRmRk1LZ0g4djNBQmtJdlh0MHNsazRGRlpRdFVUT3phd3lt?=
+ =?utf-8?B?TTlBR0tRc2R5MmZYWmdZZDRIenBCK1ROeXRnQUZYUEtQallBSE9KRlB6aFh5?=
+ =?utf-8?B?d2ppMkNjd1pkUXhFMFVmTXNyT2FEZEJOcUVCeTh3WVpWVjdGWDAwdkhQa1dT?=
+ =?utf-8?B?amdQYkYyVGY1anhFSTJPaDhHZVZ0dXNyMkVpNjVlWSt1MlRnblBLSmk3V3hj?=
+ =?utf-8?B?RjRaaTE2bnNWMnZjd0RLVU9hT2pQbDdtK01qaEREY3p2dS9IQ2d2SW8rWGZp?=
+ =?utf-8?B?VGFVajFwRlFvbEhqaVVyWW4vYk45OU5uRCtRaGNlcXRCWU9MV1BYbzlsUU5y?=
+ =?utf-8?B?MlUwdnZRUFd1RG81Q0N5ZE91d01KK0hlVFBNeE85ak1iZEROTU5Pd2JJT0lJ?=
+ =?utf-8?B?cWJFQWt1c3Q2eG9MRTlDOWpNOTdXbytqL25jQ1Q4SU1VVGtJc2k2Q3E4MXVq?=
+ =?utf-8?B?QmxOaVhBRzY0UGQ5SHlBWnJIbXNVMzFzSFNKeVovZmRWcmgxSHBrdlZGVTUr?=
+ =?utf-8?B?QnZTZTgxbkFjVWpKcWR2eWlvTUpKVnlPbDRqdVNRU0liM1AxQ0RUeGg2TmNH?=
+ =?utf-8?B?T1ZaYVJOUzJ6QzRuc3ZGWjdwTkplOURuTG1PZkFHL0xjZ3ZXdndjcERveXBB?=
+ =?utf-8?B?dGh1QklUNW5iWkhXNzhHWEZvbWttUzVQbS9JWERnSGlndFMwaExWRnpacUph?=
+ =?utf-8?B?VFh6UktiOS9qVFJVWGNlYTVSOU14SHAzN1ovNFl3Vk1jc0VXbmt4ZGM1YjRI?=
+ =?utf-8?B?b0M3S1dzdy82WWRESTZ0RUtyM09DeTJzTkZocVUzbVhBbG1sOE9hTkkxenU1?=
+ =?utf-8?B?NVM4SzFnc0Q2T09WekdhVjVBZTlHZ2dtQlNpdFJkanpXTDVoZjdwWjBLNFR1?=
+ =?utf-8?B?RWZBZGxCMzFMcm1ULzhhU3dFaFlUbFFwdUlxSWdaM1U4V1NQaXFibStlWmZV?=
+ =?utf-8?B?dlZJd3lhSG1tdkZMZDNqaStkMUd6OFJnbXpVeDg2cEhTS2RUbVZoYU5zbU51?=
+ =?utf-8?B?ejdZQUtNdjNKWkpKM01uUmczdjNWS2RnQVh1dURQUExEa3dyV1VQc2JveWdu?=
+ =?utf-8?B?Tkd3d3UrQ3p0VTRhdjlrbEc1YU5MUDBMR212M2RIT1JFNXdUYm9LbXF6YnZ3?=
+ =?utf-8?B?N2hXS01kbThyZzltMkF1L3pNOVZ3ZnVsSU5kakNhU1lodTZjWVdLbUJ6Risv?=
+ =?utf-8?B?M0JFdWkwTHhnTzEyU2N5RUFxVU1aRHFsWThOLzFueTB0elAwazJoS1FBcG1X?=
+ =?utf-8?B?eVYvQmdKbkxoZ2h0UW5INzBqbDNYY1MwY2dCNVoxT2FmQ2NJUUxVQVB6Ykcy?=
+ =?utf-8?B?MFcrWCtrNm5xVUNBeW40WDZKNTBzckQrTWd0eHBSK0NZNjVUd0tKU29YbytX?=
+ =?utf-8?B?QlF1WUxwRTEzRDExeVlnYk15Yit4NmNzVzNtQTVzMUhMbkZhNTVPOU1TUHln?=
+ =?utf-8?B?S0V3cWI5R04xRE9QalNPejBFemxTVGJJRmtxMnNsL3VMdUNzdjVnZnIxdzVF?=
+ =?utf-8?B?anJZUTc2M1F3cVIwUVRGeEM0ck80MXoySlg5bGFjS015WnJHZlR5SjVnWE41?=
+ =?utf-8?B?NFRzK2lOcHhscWVNNUNIUTdzWElIQm1wYTRPU2dmRkdoU0ZQZlB6UFpOa2tm?=
+ =?utf-8?B?QUJDdGZjQ2hOMnZXMW9yc3JOL2JPdGN0VzJPNm5mY3ROdS9IczZXSlV1NGFz?=
+ =?utf-8?B?YVJCRnErZ09ZWUo1cUZYdnlBUGxKUnc4QkgrRktjQ2V3TWFjaXZyd29XUjBr?=
+ =?utf-8?B?bnZ1MEM1MUFrN2JONWdQYnZjejRpSkllWkFEOU9ISzNPOXNFUGY1QmVOL212?=
+ =?utf-8?B?a3R0ZUxhT3A5Y04xNXdlT1c5L1pQZGFxZURaSDhBL2hwajhKdER6bFc4VlBE?=
+ =?utf-8?Q?DiUg=3D?=
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e319a70-8853-4092-bd04-08dbd66cab51
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8465.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2023 21:23:26.3377
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2023 21:44:02.7060
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wzKEIOiGlK6aa2sA2LWR3gAyXbiIFXMR8Wm+Mw6EMC69xh8TN9sQy1b9kG441P6YGID4mMcw5tWikFsJLboRPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR21MB3711
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-UserPrincipalName: xLzsMOisfaa0OKtyXJgo/gIckVV7L/7+kP79OHMfNnY7bqx68PcoDm+Y2Ymt+FCR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB10054
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,T_SPF_TEMPERROR,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The rtnl lock also needs to be held before rndis_filter_device_add()
-which advertises nvsp_2_vsc_capability / sriov bit, and triggers
-VF NIC offering and registering. If VF NIC finished register_netdev()
-earlier it may cause name based config failure.
 
-To fix this issue, move the call to rtnl_lock() before
-rndis_filter_device_add(), so VF will be registered later than netvsc
-/ synthetic NIC, and gets a name numbered (ethX) after netvsc.
 
-And, move register_netdevice_notifier() earlier, so the call back
-function is set before probing.
+On 2023/10/27 07:42, Sam James wrote:
+> 
+> Qu Wenruo <wqu@suse.com> writes:
+> 
+>> On 2023/10/27 00:30, Holger Hoffstätte wrote:
+>>> On 2023-10-26 15:31, Sam James wrote:
+>>>> 'btrfs: scrub: fix grouping of read IO' seems to intorduce a
+>>>> -Wmaybe-uninitialized warning (which becomes fatal with the kernel's
+>>>> passed -Werror=...) with 6.5.9:
+>>>>
+>>>> ```
+>>>> /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c: In function ‘scrub_simple_mirror.isra’:
+>>>> /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c:2075:29:
+>>>> error: ‘found_logical’ may be used uninitialized
+>>>> [-Werror=maybe-uninitialized[https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wmaybe-uninitialized]]
+>>>>    2075 |                 cur_logical = found_logical + BTRFS_STRIPE_LEN;
+>>>> /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c:2040:21: note: ‘found_logical’ was declared here
+>>>>    2040 |                 u64 found_logical;
+>>>>         |                     ^~~~~~~~~~~~~
+>>>> ```
+>>> Good find! found_logical is passed by reference to
+>>> queue_scrub_stripe(..) (inlined)
+>>> where it is used without ever being set:
+>>> ...
+>>>       /* Either >0 as no more extents or <0 for error. */
+>>>       if (ret)
+>>>           return ret;
+>>>       if (found_logical_ret)
+>>>           *found_logical_ret = stripe->logical;
+>>>       sctx->cur_stripe++;
+>>> ...
+>>> Something is missing here, and somehow I don't think it's just the
+>>> top-level
+>>> initialisation of found_logical.
+>>
+>> This looks like a false alert for me.
+>>
+>> @found_logical is intentionally uninitialized to catch any
+>> uninitialized usage by compiler.
+>>
+> 
+> I feel like this sort of thing is going to be inevitable with -Wmaybe-uninitialized.
 
-Cc: stable@vger.kernel.org
-Fixes: e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earlier in netvsc_probe()")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Indeed, it can be tricky for compilers to handle.
 
----
-v2:
-  Fix rtnl_unlock() in error handling as found by Wojciech Drewek.
----
- drivers/net/hyperv/netvsc_drv.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+But it's not that frequent, thus the btrfs community is mostly fine to 
+handle those reports manually.
 
-diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
-index 3ba3c8fb28a5..1d1491da303b 100644
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2531,15 +2531,6 @@ static int netvsc_probe(struct hv_device *dev,
- 		goto devinfo_failed;
- 	}
- 
--	nvdev = rndis_filter_device_add(dev, device_info);
--	if (IS_ERR(nvdev)) {
--		ret = PTR_ERR(nvdev);
--		netdev_err(net, "unable to add netvsc device (ret %d)\n", ret);
--		goto rndis_failed;
--	}
--
--	eth_hw_addr_set(net, device_info->mac_adr);
--
- 	/* We must get rtnl lock before scheduling nvdev->subchan_work,
- 	 * otherwise netvsc_subchan_work() can get rtnl lock first and wait
- 	 * all subchannels to show up, but that may not happen because
-@@ -2547,9 +2538,23 @@ static int netvsc_probe(struct hv_device *dev,
- 	 * -> ... -> device_add() -> ... -> __device_attach() can't get
- 	 * the device lock, so all the subchannels can't be processed --
- 	 * finally netvsc_subchan_work() hangs forever.
-+	 *
-+	 * The rtnl lock also needs to be held before rndis_filter_device_add()
-+	 * which advertises nvsp_2_vsc_capability / sriov bit, and triggers
-+	 * VF NIC offering and registering. If VF NIC finished register_netdev()
-+	 * earlier it may cause name based config failure.
- 	 */
- 	rtnl_lock();
- 
-+	nvdev = rndis_filter_device_add(dev, device_info);
-+	if (IS_ERR(nvdev)) {
-+		ret = PTR_ERR(nvdev);
-+		netdev_err(net, "unable to add netvsc device (ret %d)\n", ret);
-+		goto rndis_failed;
-+	}
-+
-+	eth_hw_addr_set(net, device_info->mac_adr);
-+
- 	if (nvdev->num_chn > 1)
- 		schedule_work(&nvdev->subchan_work);
- 
-@@ -2586,9 +2591,9 @@ static int netvsc_probe(struct hv_device *dev,
- 	return 0;
- 
- register_failed:
--	rtnl_unlock();
- 	rndis_filter_device_remove(dev, nvdev);
- rndis_failed:
-+	rtnl_unlock();
- 	netvsc_devinfo_put(device_info);
- devinfo_failed:
- 	free_percpu(net_device_ctx->vf_stats);
-@@ -2788,11 +2793,14 @@ static int __init netvsc_drv_init(void)
- 	}
- 	netvsc_ring_bytes = ring_size * PAGE_SIZE;
- 
-+	register_netdevice_notifier(&netvsc_netdev_notifier);
-+
- 	ret = vmbus_driver_register(&netvsc_drv);
--	if (ret)
-+	if (ret) {
-+		unregister_netdevice_notifier(&netvsc_netdev_notifier);
- 		return ret;
-+	}
- 
--	register_netdevice_notifier(&netvsc_netdev_notifier);
- 	return 0;
- }
- 
--- 
-2.25.1
+> 
+>> It would be set by queue_scrub_stripe() when there is any stripe found.
+>>
+>> If there is no stripe found, queue_scrub_stripe() would return >0,
+>> then we know there is no more extent and break the loop.
+>> If there is any error, we error out too, thus no problem with that.
+>>
+>> So to me this looks like a false alert.
+>>
+>> Mind to share the compiler and its version?
+>>
+> 
+> Sure, GCC 14.0.0 20231022 (experimental). Sorry, I'd meant to include
+> that in the original post..
 
+Wow, the first time I can not catch up on the toolchain version...
+
+And considering it's still experimental, I'd say if we got another 
+report on this particular call site, we may consider add a fix for it, 
+by simply initializing @found_logical to zero.
+
+Thanks,
+Qu
+> 
+>> Thanks,
+>> Qu
+>>> -h
+> 
