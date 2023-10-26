@@ -2,71 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AA497D8552
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 16:56:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1767F7D8599
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 17:08:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345305AbjJZO4l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 26 Oct 2023 10:56:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43758 "EHLO
+        id S231490AbjJZPIu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 26 Oct 2023 11:08:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235111AbjJZO4k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 10:56:40 -0400
-Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3EF193;
-        Thu, 26 Oct 2023 07:56:37 -0700 (PDT)
-Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-507bd644a96so1449228e87.3;
-        Thu, 26 Oct 2023 07:56:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698332196; x=1698936996; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7hkp1QT5NX+N94SwbArFtA3RQgc4/y8IylKBwUOt3EE=;
-        b=S494mLuJQHK+vwWrLdP96VWq+LDg4OXvisxTCpmxMQOkVqIGnD0KkNX4XSAgogJgQt
-         /yPtx58YWoRvw4tv4TYjAiIOXr/NewLEuiFLLS8KG5yuAoD0MRKfn8CqPtrxtOqQ2xIR
-         ZZGXmukR9YRqg2P3sePvvPV56IXlZJKxALzzFUnWveN7VAMRwg7EsV+1jUSDKJcUGIlr
-         30Yls+utOsUnL2Afcst4/jM2mFC1y0tBG2tMDCv7uletayP6nOoVauGoDmg9wP+62azK
-         gshsqqPUwbXus75rJu7xcIlXmt+4wAgypqOTgfIprr94sFwKv3U6m0Ioa1LydX0yIw/T
-         Jdbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698332196; x=1698936996;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7hkp1QT5NX+N94SwbArFtA3RQgc4/y8IylKBwUOt3EE=;
-        b=j8MiJ5WW7kO7Alo8sEYo0vLZv9sQHW0XKeflaaln/dUFELqMY3egMbuRK6or8p+fI9
-         DwJcjC4mp42/7UdCBK6RSEbNeCyjqvPnL10tZS0b/vzTWQkoWp8soIRPNYExtoX9dk4o
-         wTiDDuoBR8wGV2tTqipFgPxZoCyP29wWoiAfv/Fnrc6XLmA4aq+DGqTii7Jc6A8LUneG
-         RXcM2zy9x59AgYWD5XPab6gIa+mINYe87EiK+aukFzbRSWOkb0J6Ck7ZQIGQowKBB4ec
-         eA2XNdYk+nhOLHp6Z4QK5HcJAcJimb77klW5e+wvRkK6ja7hwOdYRwWCscrML6viSeFB
-         T8dw==
-X-Gm-Message-State: AOJu0YznPWukMgL5EsxJnWhJBfLtKvxCKVtyNuxo6PK+DTesqSgsqhqM
-        JdGzH+uL96eyHnFUuP1006I=
-X-Google-Smtp-Source: AGHT+IG46UyIlJ1LlNzSqNyk2RbMvltgx/G6c5JzD8K0QmtHvYBTh3FvQKtRHC1YiYgn40Jsvu8gyg==
-X-Received: by 2002:ac2:5def:0:b0:507:a12c:558c with SMTP id z15-20020ac25def000000b00507a12c558cmr12000314lfq.46.1698332195742;
-        Thu, 26 Oct 2023 07:56:35 -0700 (PDT)
-Received: from mobilestation ([178.176.56.174])
-        by smtp.gmail.com with ESMTPSA id c24-20020a056512075800b005079ff16d9fsm3024802lfs.138.2023.10.26.07.56.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Oct 2023 07:56:35 -0700 (PDT)
-Date:   Thu, 26 Oct 2023 17:56:32 +0300
-From:   Serge Semin <fancer.lancer@gmail.com>
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc:     jingoohan1@gmail.com, gustavo.pimentel@synopsys.com,
-        lpieralisi@kernel.org, robh@kernel.org, kw@linux.com,
-        bhelgaas@google.com, linux-pci@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_bjorande@quicinc.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] PCI: qcom-ep: Implement write_dbi2() callback for
- writing DBI2 registers properly
-Message-ID: <4sntfai34eg6h36dwaht65ktj53isr5nleikatjzxxxu2tb64o@rro6sef4s6bh>
-References: <20231025130029.74693-1-manivannan.sadhasivam@linaro.org>
- <20231025130029.74693-2-manivannan.sadhasivam@linaro.org>
+        with ESMTP id S231347AbjJZPIu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 11:08:50 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7AF5129
+        for <stable@vger.kernel.org>; Thu, 26 Oct 2023 08:08:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC82C433C7;
+        Thu, 26 Oct 2023 15:08:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698332926;
+        bh=9r0/t3eIMrZRQMzSDwyyyhTnAf1WbhVZ8oxn7HT2fco=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Jse7FHi+s//TJEwFbZgyg+OhkCQ7ou307Uq0i3da3qKSTYCduYnFtSJbGUNBcA8Za
+         GOGCeOSaJ0GQkGSjMd3HoJfAAE4CebEs9m8owlqqWoqcMmoYfRMHrVPvkbOtKkHa5f
+         w2H/eoX0Ju+HLucns/uN+8sSi+HlgkQvqP5zheUo/lnG6hao9BcERdkeJ/jTqGiYve
+         R+P/IQjBm3Aj9x/oinLp/U+FFMyoL1Xw/AqdXhtvDL3uB9Memu2tuH+DBa2C3URROL
+         gKZWdZuG6hQjH87Zc1rAfJmWR3RdZhETui34OjuqLbxzAu2BqQTzH3R1wcn8ty9ihS
+         YLlAU06wjF5eA==
+Date:   Thu, 26 Oct 2023 09:08:43 -0600
+From:   Keith Busch <kbusch@kernel.org>
+To:     Kanchan Joshi <joshiiitr@gmail.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Kanchan Joshi <joshi.k@samsung.com>, axboe@kernel.dk,
+        sagi@grimberg.me, linux-nvme@lists.infradead.org,
+        vincentfu@gmail.com, ankit.kumar@samsung.com,
+        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
+Subject: Re: [PATCH v4] nvme: fix corruption for passthrough meta/data
+Message-ID: <ZTqA--6dDYJ76Gyk@kbusch-mbp.dhcp.thefacebook.com>
+References: <CGME20231013052157epcas5p3dc0698c56f9846191d315fa8d33ccb5c@epcas5p3.samsung.com>
+ <20231013051458.39987-1-joshi.k@samsung.com>
+ <20231013052612.GA6423@lst.de>
+ <8c755915-2366-28ff-ffd4-be17d797557c@samsung.com>
+ <ZSlL-6Oa5J9duahR@kbusch-mbp>
+ <3438f3b8-f7d4-f0bd-44ef-7efb09ed6151@samsung.com>
+ <20231013154708.GA17455@lst.de>
+ <CA+1E3rKaUW0YN+bphe9n26ZRTX1rq6M0z7Hpc=zLOJE1AER9hw@mail.gmail.com>
+ <20231016054647.GA26170@lst.de>
+ <CA+1E3rKcN=bOw3613XWKm_NqPS=dGOz43g4zwwQG_pRQSWkH_w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231025130029.74693-2-manivannan.sadhasivam@linaro.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+1E3rKcN=bOw3613XWKm_NqPS=dGOz43g4zwwQG_pRQSWkH_w@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -75,79 +61,26 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Oct 25, 2023 at 06:30:29PM +0530, Manivannan Sadhasivam wrote:
-> DWC core driver exposes the write_dbi2() callback for writing to the DBI2
-> registers in a vendor specific way. On the Qcom EP plaforms, DBI_CS2 bit in
-> the ELBI region needs to be asserted before writing to any DBI2 registers
-> and deasserted once done. So let's implement the callback for the Qcom PCIe
-> EP driver so that the DBI2 writes are handled properly in the hardware.
+On Thu, Oct 26, 2023 at 08:03:30PM +0530, Kanchan Joshi wrote:
+> On Mon, Oct 16, 2023 at 11:16 AM Christoph Hellwig <hch@lst.de> wrote:
+> >
+> > On Mon, Oct 16, 2023 at 12:49:45AM +0530, Kanchan Joshi wrote:
+> > > OTOH, this patch implemented a software-only way out. There are some
+> > > checks, but someone (either SW or HW) has to do those to keep things
+> > > right.
+> >
+> > It only verifies it to the read/write family of commands by
+> > interpreting these commands.  It still leaves a wide hole for any
+> > other command.
 > 
-> Without this callback, DBI2 register writes like BAR size won't go through
-> and as a result, the default BAR size is set for all BARs.
+> Can you please explain for what command do you see the hole? I am
+> trying to see if it is really impossible to fix this hole for good.
 > 
-> Cc: stable@vger.kernel.org # 5.16+
-> Fixes: f55fee56a631 ("PCI: qcom-ep: Add Qualcomm PCIe Endpoint controller driver")
-> Suggested-by: Serge Semin <fancer.lancer@gmail.com>
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> We only need to check for specific io commands of the NVM/ZNS command
+> set that can do extra DMA.
 
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-
-+1 tiny note below
-
-> ---
->  drivers/pci/controller/dwc/pcie-qcom-ep.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> index 32c8d9e37876..7da0599f70e7 100644
-> --- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> +++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-> @@ -124,6 +124,7 @@
->  
->  /* ELBI registers */
->  #define ELBI_SYS_STTS				0x08
-> +#define ELBI_CS2_ENABLE				0xa4
->  
->  /* DBI registers */
->  #define DBI_CON_STATUS				0x44
-> @@ -262,6 +263,21 @@ static void qcom_pcie_dw_stop_link(struct dw_pcie *pci)
->  	disable_irq(pcie_ep->perst_irq);
->  }
->  
-
-> +static void qcom_pcie_write_dbi2(struct dw_pcie *pci, void __iomem *base,
-
-Just a general observation. I am not sure whether it's a local
-convention or not, but it looks like the rest of the Qcom dw_pcie_ops
-callbacks have the "qcom_pcie_dw_" prefix.
-
--Serge(y)
-
-> +				 u32 reg, size_t size, u32 val)
-> +{
-> +	struct qcom_pcie_ep *pcie_ep = to_pcie_ep(pci);
-> +	int ret;
-> +
-> +	writel(1, pcie_ep->elbi + ELBI_CS2_ENABLE);
-> +
-> +	ret = dw_pcie_write(pci->dbi_base2 + reg, size, val);
-> +	if (ret)
-> +		dev_err(pci->dev, "Failed to write DBI2 register (0x%x): %d\n", reg, ret);
-> +
-> +	writel(0, pcie_ep->elbi + ELBI_CS2_ENABLE);
-> +}
-> +
->  static void qcom_pcie_ep_icc_update(struct qcom_pcie_ep *pcie_ep)
->  {
->  	struct dw_pcie *pci = &pcie_ep->pci;
-> @@ -500,6 +516,7 @@ static const struct dw_pcie_ops pci_ops = {
->  	.link_up = qcom_pcie_dw_link_up,
->  	.start_link = qcom_pcie_dw_start_link,
->  	.stop_link = qcom_pcie_dw_stop_link,
-> +	.write_dbi2 = qcom_pcie_write_dbi2,
->  };
->  
->  static int qcom_pcie_ep_get_io_resources(struct platform_device *pdev,
-> -- 
-> 2.25.1
-> 
+The spec defines a few commands that may use MPTR, but most of the
+possible opcodes that could use it are not defined in spec. You'd have
+to break forward compatibility through this interface for non-root users
+by limiting its use to only the known opcodes and reject everything
+else.
