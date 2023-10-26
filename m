@@ -2,151 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 696F57D8374
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 15:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F8527D83A5
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 15:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231127AbjJZNZb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 26 Oct 2023 09:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60742 "EHLO
+        id S1345059AbjJZNeq convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 26 Oct 2023 09:34:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230479AbjJZNZa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 09:25:30 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494C4AB;
-        Thu, 26 Oct 2023 06:25:24 -0700 (PDT)
-Received: from pps.filterd (m0353722.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39QDNDde008548;
-        Thu, 26 Oct 2023 13:25:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : to : cc : references : from : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=NjrTRAfQTM5iisUaJmjdVLpMsjB19VmS9PCtPLo7muE=;
- b=nIkc3b55WSaabfRAK1Ci3K4hbyY7QT3yHZ1REgUZsxYx6TglyURdZiXi5ryyUnKKcmi1
- nxc8hTZIiL1UdpUADWV+y7qv9Qivma3Jf5+t8+dRIoc2hlDwipb3wsJ4mt8BcGdYESiG
- R7GaJPboV+ssAGu/0upBWA0EUWNhT4itgMGD0clueSpC0G19WeVCRCoJyc8sT3hxPhfZ
- bF9cfiFTRG3lOphnkXKXWiPsMAxggyWK8vahMiIb3yQ5d5GsKdX/VhsK9QZTvfAVRbVp
- gTxREG+hONr1Bi1m2fl70X38cCyIi9k1VwzRU+LgWkhgNOWVRuh/OfChIsznny87rT7b oQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyrwqr4my-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 Oct 2023 13:25:23 +0000
-Received: from m0353722.ppops.net (m0353722.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 39QDNCnT008471;
-        Thu, 26 Oct 2023 13:25:22 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3tyrwqr4mc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 Oct 2023 13:25:22 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 39QCoS7Z005011;
-        Thu, 26 Oct 2023 13:25:21 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3tvtfkx30d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 26 Oct 2023 13:25:21 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-        by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 39QDPI5M13042370
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 26 Oct 2023 13:25:18 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 6AC1B2004B;
-        Thu, 26 Oct 2023 13:25:18 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 25BB220040;
-        Thu, 26 Oct 2023 13:25:18 +0000 (GMT)
-Received: from [9.152.224.53] (unknown [9.152.224.53])
-        by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Thu, 26 Oct 2023 13:25:18 +0000 (GMT)
-Message-ID: <ad89deb2-0028-46e4-ccc2-259308f01660@linux.ibm.com>
-Date:   Thu, 26 Oct 2023 15:25:18 +0200
+        with ESMTP id S230177AbjJZNeq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 09:34:46 -0400
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021E518F;
+        Thu, 26 Oct 2023 06:34:43 -0700 (PDT)
+User-agent: mu4e 1.10.7; emacs 30.0.50
+From:   Sam James <sam@gentoo.org>
+To:     gregkh@linuxfoundation.org, Qu Wenruo <wqu@suse.com>
+Cc:     dsterba@suse.com, patches@lists.linux.dev, stable@vger.kernel.org,
+        linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH 6.5 211/285] btrfs: scrub: fix grouping of read IO
+In-Reply-To: <20230917191058.870881178@linuxfoundation.org>
+Date:   Thu, 26 Oct 2023 14:31:39 +0100
+Organization: Gentoo
+Message-ID: <87fs1x1p93.fsf@gentoo.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 1/3] s390/vfio-ap: unpin pages on gisc registration
- failure
-To:     Tony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc:     jjherne@linux.ibm.com, pasic@linux.ibm.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, david@redhat.com,
-        Matthew Rosato <mjrosato@linux.ibm.com>, stable@vger.kernel.org
-References: <20231018133829.147226-1-akrowiak@linux.ibm.com>
- <20231018133829.147226-2-akrowiak@linux.ibm.com>
- <c6951c45-b091-11a6-5684-ba2ef0c94df3@linux.ibm.com>
- <7ccf21c4-511c-4de6-bc02-4a936b020a10@linux.ibm.com>
-Content-Language: en-US
-From:   Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <7ccf21c4-511c-4de6-bc02-4a936b020a10@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: BtxKVvBEO5MH4KBQ4DdyWCsjMcoyjAa7
-X-Proofpoint-ORIG-GUID: 6kuv_W9NFVvROlVXwYkVcsaKOmeINUGM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-26_11,2023-10-26_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- spamscore=0 bulkscore=0 malwarescore=0 suspectscore=0 phishscore=0
- mlxscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310170001 definitions=main-2310260114
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_MSPIKE_H4,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+'btrfs: scrub: fix grouping of read IO' seems to intorduce a
+-Wmaybe-uninitialized warning (which becomes fatal with the kernel's
+passed -Werror=...) with 6.5.9:
 
-
-Am 26.10.23 um 15:16 schrieb Tony Krowiak:
-> 
-> 
-> On 10/26/23 08:18, Christian Borntraeger wrote:
->>
->>
->> Am 18.10.23 um 15:38 schrieb Tony Krowiak:
->>> From: Anthony Krowiak <akrowiak@linux.ibm.com>
->>>
->>> In the vfio_ap_irq_enable function, after the page containing the
->>> notification indicator byte (NIB) is pinned, the function attempts
->>> to register the guest ISC. If registration fails, the function sets the
->>> status response code and returns without unpinning the page containing
->>> the NIB. In order to avoid a memory leak, the NIB should be unpinned before
->>> returning from the vfio_ap_irq_enable function.
->>>
->>> Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
->>
->> Where is Janoschs signed off coming from here?
-> 
-> Janosch found this and composed the patch originally. I just tweaked the description and posted it.
-
-So we should add
-
-Co-developed-by: Janosch Frank <frankja@linux.ibm.com>
-
-in front of Janoschs signoff.
-
-> 
->>
->>> Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
->>> Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
->>> Fixes: 783f0a3ccd79 ("s390/vfio-ap: add s390dbf logging to the vfio_ap_irq_enable function")
->>> Cc: <stable@vger.kernel.org>
->>> ---
->>>   drivers/s390/crypto/vfio_ap_ops.c | 1 +
->>>   1 file changed, 1 insertion(+)
->>>
->>> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
->>> index 4db538a55192..9cb28978c186 100644
->>> --- a/drivers/s390/crypto/vfio_ap_ops.c
->>> +++ b/drivers/s390/crypto/vfio_ap_ops.c
->>> @@ -457,6 +457,7 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
->>>           VFIO_AP_DBF_WARN("%s: gisc registration failed: nisc=%d, isc=%d, apqn=%#04x\n",
->>>                    __func__, nisc, isc, q->apqn);
->>> +        vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
->>>           status.response_code = AP_RESPONSE_INVALID_GISA;
->>>           return status;
->>>       }
+```
+# CC      fs/btrfs/scrub.o
+  x86_64-pc-linux-gnu-gcc -Wp,-MMD,fs/btrfs/.scrub.o.d -nostdinc -I/var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/arch/x86/include -I./arch/x86/include/generated -I/var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/include -I./include -I/var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I/var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/include/uapi -I./include/generated/uapi -include /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/include/linux/compiler-version.h -include /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/include/linux/kconfig.h -include /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/include/linux/compiler_types.h -D__KERNEL__ -Werror -fmacro-prefix-map=/var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/= -std=gnu11 -fshort-wchar -funsigned-char -fno-common -fno-PIE -fno-strict-aliasing -Wall -Wundef -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Werror=strict-prototypes -Wno-format-security -Wno-trigraphs -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -fcf-protection=branch -fno-jump-tables -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -march=core2 -mno-red-zone -mcmodel=kernel -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -mindirect-branch-cs-prefix -mfunction-return=thunk-extern -fno-jump-tables -mharden-sls=all -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -O2 -fno-allow-store-data-races -Wframe-larger-than=2048 -fstack-protector-strong -Wno-main -Wno-unused-but-set-variable -Wno-unused-const-variable -Wno-dangling-pointer -fomit-frame-pointer -ftrivial-auto-var-init=zero -fno-stack-clash-protection -fzero-call-used-regs=used-gpr -falign-functions=16 -Wvla -Wno-pointer-sign -Wcast-function-type -fstrict-flex-arrays=3 -Wno-stringop-truncation -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -Wno-array-bounds -Wno-alloc-size-larger-than -Wimplicit-fallthrough=5 -fno-strict-overflow -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -Wno-packed-not-aligned -DRANDSTRUCT -fplugin=./scripts/gcc-plugins/randomize_layout_plugin.so -fplugin-arg-randomize_layout_plugin-performance-mode -fplugin=./scripts/gcc-plugins/latent_entropy_plugin.so -fplugin=./scripts/gcc-plugins/structleak_plugin.so -fplugin=./scripts/gcc-plugins/stackleak_plugin.so -DLATENT_ENTROPY_PLUGIN -DSTRUCTLEAK_PLUGIN -DSTACKLEAK_PLUGIN -fplugin-arg-stackleak_plugin-track-min-size=100 -fplugin-arg-stackleak_plugin-arch=x86 -Wextra -Wunused -Wno-unused-parameter -Wmissing-declarations -Wmissing-format-attribute -Wmissing-prototypes -Wold-style-definition -Wmissing-include-dirs -Wunused-but-set-variable -Wunused-const-variable -Wpacked-not-aligned -Wstringop-truncation -Wmaybe-uninitialized -Wno-missing-field-initializers -Wno-sign-compare -Wno-type-limits -Wno-shift-negative-value -I /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs -I ./fs/btrfs    -DKBUILD_MODFILE='"fs/btrfs/btrfs"' -DKBUILD_BASENAME='"scrub"' -DKBUILD_MODNAME='"btrfs"' -D__KBUILD_MODNAME=kmod_btrfs -c -o fs/btrfs/scrub.o /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c
+/var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c: In function ‘scrub_simple_mirror.isra’:
+/var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c:2075:29: error: ‘found_logical’ may be used uninitialized [-Werror=maybe-uninitialized[https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wmaybe-uninitialized]]
+ 2075 |                 cur_logical = found_logical + BTRFS_STRIPE_LEN;
+/var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c:2040:21: note: ‘found_logical’ was declared here
+ 2040 |                 u64 found_logical;
+      |                     ^~~~~~~~~~~~~
+```
