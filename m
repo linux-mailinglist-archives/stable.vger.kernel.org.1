@@ -2,105 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9E5F7D8280
-	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 14:20:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1148D7D834C
+	for <lists+stable@lfdr.de>; Thu, 26 Oct 2023 15:09:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235052AbjJZMUy convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 26 Oct 2023 08:20:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41816 "EHLO
+        id S231173AbjJZNJh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 26 Oct 2023 09:09:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231168AbjJZMUr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 08:20:47 -0400
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 486AB116;
-        Thu, 26 Oct 2023 05:20:45 -0700 (PDT)
-Received: by mail-ot1-f66.google.com with SMTP id 46e09a7af769-6ce322b62aeso474245a34.3;
-        Thu, 26 Oct 2023 05:20:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698322844; x=1698927644;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rwfH/fI/oq7RyoHmXtZ7J/iC1NW7ZB+6I+gOPXF7UYQ=;
-        b=SWpPbSesxpT4s8OQXSPZgnsVJ7i7uObJtGGpfCcZMuE4xdybDB3WT9AN5B1qZuW7Rr
-         Ke7nOT+Z1pBm6919l7IhDkyGayYAbovSCoMN2Sdlfs/1owSNDDOeLl0+mDEMfC2BFJBx
-         5PBeCmkpIason5ujTMiI001XtIntkF1zdy+JpvRBiiZqRY66jrniV9blpyNgDsIcla2q
-         TR51OU/y3rBTuMgvS044a4sdqt+p3nvZkoKIPCbj0SKJiz4wcqRhrXP8pU/DIa5PFrNo
-         xC+4cqvMFeoS+51MoseoQOUR3M9iyCo01M0TBHccPqabQ3FxWfT/0wU7HylCqMmrsEhV
-         8jJQ==
-X-Gm-Message-State: AOJu0YwqA7QMTwCHMvpIamOkbIhcsNLDxV8xPXgPqH5cBNFu+YBYGRw7
-        7DYdYwnFssRdou2nfL7M4YF7uGxQwm2Xq8wo
-X-Google-Smtp-Source: AGHT+IGptDwl41gUQ/bkDbV9wZgRJKx5mnDR8dxNnO8m3ssskGl5XISLS2YYdgdzYF/hjRPae4JjEw==
-X-Received: by 2002:a05:6870:1081:b0:1d6:5133:2f37 with SMTP id 1-20020a056870108100b001d651332f37mr16817789oaq.48.1698322844518;
-        Thu, 26 Oct 2023 05:20:44 -0700 (PDT)
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com. [209.85.128.178])
-        by smtp.gmail.com with ESMTPSA id w64-20020a0dd443000000b00577269ba9e9sm5955996ywd.86.2023.10.26.05.20.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 26 Oct 2023 05:20:44 -0700 (PDT)
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-5a7dd65052aso6709797b3.0;
-        Thu, 26 Oct 2023 05:20:44 -0700 (PDT)
-X-Received: by 2002:a5b:608:0:b0:d9a:e947:447b with SMTP id
- d8-20020a5b0608000000b00d9ae947447bmr18024321ybq.14.1698322843939; Thu, 26
- Oct 2023 05:20:43 -0700 (PDT)
+        with ESMTP id S231180AbjJZNJg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 09:09:36 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F38B31B2;
+        Thu, 26 Oct 2023 06:09:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68744C433C7;
+        Thu, 26 Oct 2023 13:09:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698325773;
+        bh=vLtTWv/ZXAwWN12pv3/dVO7bz32AKqwKVCQQHN3iznY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=OM528WhCh6iPSwzmv1DJU3ufjYkaUJzYCRb9aWQjrn+DmaMHFj7K1GfmfzlI8zNZj
+         ole1GaSiM0jekzEzL+Ag+5Trxex4iAJrXP6bx/6fX7h/h4fNqqWk1w2xz5WR7gWMWC
+         fgNBwdvpFmkFGOmUmNL9tqqDplWqlvpNChqX4UBdMajFm0P5/dymayeq8jW/4PLSXg
+         QlTTZEApOljM6o4fkGMjBL+sCayRlcBTLkMBoFOFmThx/NGNltYMnTHh0aIJ72muwf
+         Mxiyl2n0MtfnETdD150bGd7Xy7zlSTrwL7/VpvQ9aJF3mYr3UiFeUVpZVfdoISE/HE
+         4wsQnaRizbYow==
+Date:   Thu, 26 Oct 2023 09:09:31 -0400
+From:   Sasha Levin <sashal@kernel.org>
+To:     Steve French <smfrench@gmail.com>
+Cc:     Stable <stable@vger.kernel.org>,
+        Paulo Alcantara <pc@manguebit.com>,
+        ronnie sahlberg <ronniesahlberg@gmail.com>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        "Dr. Bernd Feige" <bernd.feige@uniklinik-freiburg.de>,
+        CIFS <linux-cifs@vger.kernel.org>
+Subject: Re: Some additional cifs patches for 6.5 stable to address issue
+ brought up by kernel regression tracker
+Message-ID: <ZTplC1_qJYL1wR2G@sashalap>
+References: <CAH2r5mvHUnxfOU1URs2s6O3As8WLyMEkK+KNdUy6Ct9u+=d5YA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20231009130126.697995596@linuxfoundation.org> <ZSRVgj5AqJbDXqZU@duo.ucw.cz>
- <ZSRe78MAQwbBdyFP@duo.ucw.cz> <ZSUy+zA0+Chm6dFb@duo.ucw.cz>
- <ZSU+GHl1q7T/TBp5@duo.ucw.cz> <ZSWg1fv3gOyV5t+h@shikoro> <2023101057-runny-pellet-8952@gregkh>
- <ZTgZa1ic1iFbdaTM@duo.ucw.cz> <CAMuHMdXQApuOPfU1zNKcHKN5=fCuLBSDiLtF06U7e4Tx0+noyA@mail.gmail.com>
- <CAMuHMdVrdmBgopnPnJK_ij52wz2WVBdYRHur2KfosFnT945ULw@mail.gmail.com>
- <CAMuHMdWZvTGrFgx_o3g3usOwkDvD2rw5QH9_ibo=OKdw17sAzg@mail.gmail.com>
- <CAMuHMdXvpiGQ7jqAG69Zo=10wV-E0bioC9AYUHwwhRGmLXygWA@mail.gmail.com>
- <7d7a5a15-3349-adce-02cd-82b6cb4bebde@roeck-us.net> <CAMuHMdXbPZ0uz0NnE1xhUD=QtaAq+TinSW-PrWPMpGe4h=7Spg@mail.gmail.com>
- <CAMuHMdXNjopzEFCFBxxuYNCFMmj4SvMQ2PmZ4hZDHLGZGUHf=w@mail.gmail.com> <CAMuHMdU7-5R4NkwMdbLxovBY4=ePtPDs2SYXjWeGc_Yz3JcjPg@mail.gmail.com>
-In-Reply-To: <CAMuHMdU7-5R4NkwMdbLxovBY4=ePtPDs2SYXjWeGc_Yz3JcjPg@mail.gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Thu, 26 Oct 2023 14:20:31 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdU=O=gYEA_qOh7Unr8ovtnKJi12qxWb447KxvkhqyRshw@mail.gmail.com>
-Message-ID: <CAMuHMdU=O=gYEA_qOh7Unr8ovtnKJi12qxWb447KxvkhqyRshw@mail.gmail.com>
-Subject: Re: renesas_sdhi problems in 5.10-stable was Re: [PATCH 5.10 000/226]
- 5.10.198-rc1 review
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Pavel Machek <pavel@denx.de>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        niklas.soderlund+renesas@ragnatech.se,
-        yoshihiro.shimoda.uh@renesas.com, biju.das.jz@bp.renesas.com,
-        Chris.Paterson2@renesas.com, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Linux MMC List <linux-mmc@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <CAH2r5mvHUnxfOU1URs2s6O3As8WLyMEkK+KNdUy6Ct9u+=d5YA@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Oct 26, 2023 at 2:08 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
-> The solution is to backport commit 9f12cac1bb88e329 ("mmc: renesas_sdhi:
-> use custom mask for TMIO_MASK_ALL") in v5.13.
-> As this doesn't backport cleanly, I'll submit a (tested) patch.
+On Mon, Oct 23, 2023 at 11:32:21PM -0500, Steve French wrote:
+>There were a set of issues brought up in 6.5 by the introduction of
+>the "laundromat" (which cleans up directory leases).  After discussion
+>and testing with Paulo, Bernd Feige and others, we request that the
+>following set also be included to address these problems.  They are
+>all in mainline (added in 6.6) and the patches (from mainline since
+>they apply cleanly) are also attached.
+>
+>        238b351d0935 ("smb3: allow controlling length of time
+>directory entries are cached with dir leases")
+>        6a50d71d0fff ("smb3: allow controlling maximum number of
+>cached directories")
+>        2da338ff752a ("smb3: do not start laundromat thread when dir
+>leases  disabled")
+>        3b8bb3171571 ("smb: client: do not start laundromat thread on
+>nohandlecache")
+>        e95f3f744650 ("smb: client: make laundromat a delayed worker")
+>        81ba10959970 ("smb: client: prevent new fids from being
+>removed by laundromat")
 
-https://lore.kernel.org/r/1b9fda30f2d86fab50341a947d17b5206a2c7507.1698321354.git.geert+renesas@glider.be
-
-Gr{oetje,eeting}s,
-
-                        Geert
+Queued up, thanks!
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks,
+Sasha
