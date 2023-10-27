@@ -2,52 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 159FD7D8C64
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 01:56:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17A0F7D8EFE
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 08:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230216AbjJZX4F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 26 Oct 2023 19:56:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49614 "EHLO
+        id S232306AbjJ0GzN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 02:55:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbjJZX4E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 26 Oct 2023 19:56:04 -0400
-Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E482990;
-        Thu, 26 Oct 2023 16:56:00 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: marcan@marcan.st)
-        by mail.marcansoft.com (Postfix) with ESMTPSA id 0968E447DB;
-        Thu, 26 Oct 2023 23:55:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=marcan.st; s=default;
-        t=1698364558; bh=pTmh+VYaqYyCEUP7RMHQNQzNBEJ1hMyK8YtMXGY9szs=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=neYso5Veb7U5FZDDordXOSe+pwCfrauFnvMJW/yBDkhH2UskdCRYMiF0Esx8GJKV6
-         10M+QzTSSd8dYLgb2d01XzAx9qiHmHuF4jmmH+AJpAQJqwOqe4gbUYNR0ZdPPHQryr
-         aAlq5umdRpu+nh3Os7rMR3IvISt0JCdR/oLQBNhW/exP244zkE3CZM5abJsHYNhYxd
-         x7RWBZ/dfxNpyt1iw15Gm+ysWU2CawROFq+0YzWGTGI/w2MzCBq2017dif8d65xBp/
-         0ATXccL2wz9hbxDtJBVxbpSN8FkjGUctfSMmRVkV5ehx2W6IEWSUSajgnJMpNR25ME
-         nu3/v63LPbj+g==
-Message-ID: <006e6dc4-1b5d-f46c-b03f-c60576dcf620@marcan.st>
-Date:   Fri, 27 Oct 2023 08:55:54 +0900
+        with ESMTP id S231504AbjJ0GzN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 02:55:13 -0400
+Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94068116;
+        Thu, 26 Oct 2023 23:55:07 -0700 (PDT)
+Received: from tux.applied-asynchrony.com (p5b2e826a.dip0.t-ipconnect.de [91.46.130.106])
+        by mail.itouring.de (Postfix) with ESMTPSA id 16F67CF194E;
+        Fri, 27 Oct 2023 08:55:06 +0200 (CEST)
+Received: from [192.168.100.223] (ragnarok.applied-asynchrony.com [192.168.100.223])
+        by tux.applied-asynchrony.com (Postfix) with ESMTP id 8B34EF01600;
+        Fri, 27 Oct 2023 08:55:05 +0200 (CEST)
+Subject: Re: [PATCH 6.5 211/285] btrfs: scrub: fix grouping of read IO
+To:     Qu Wenruo <wqu@suse.com>, Sam James <sam@gentoo.org>,
+        gregkh@linuxfoundation.org
+Cc:     dsterba@suse.com, patches@lists.linux.dev, stable@vger.kernel.org,
+        linux-btrfs@vger.kernel.org
+References: <87fs1x1p93.fsf@gentoo.org>
+ <02e8fca0-43bd-ad60-6aec-6bcc74d594ee@applied-asynchrony.com>
+ <740c38b1-60eb-41da-93e0-7d7671f0b3fc@suse.com>
+From:   =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
+Organization: Applied Asynchrony, Inc.
+Message-ID: <f5299d83-cff0-df11-9775-f3d0adc5d998@applied-asynchrony.com>
+Date:   Fri, 27 Oct 2023 08:55:05 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH] regmap: Ensure range selector registers are updated after
- cache sync
-To:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org
-Cc:     stable@vger.kernel.org
-References: <20231026-regmap-fix-selector-sync-v1-1-633ded82770d@kernel.org>
- <66c2f5d4-23de-4faf-a816-919516927f94@sirena.org.uk>
+In-Reply-To: <740c38b1-60eb-41da-93e0-7d7671f0b3fc@suse.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-From:   Hector Martin <marcan@marcan.st>
-In-Reply-To: <66c2f5d4-23de-4faf-a816-919516927f94@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,27 +46,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 27/10/2023 01.22, Mark Brown wrote:
-> On Thu, Oct 26, 2023 at 04:49:19PM +0100, Mark Brown wrote:
->> When we sync the register cache we do so with the cache bypassed in order
->> to avoid overhead from writing the synced values back into the cache. If
->> the regmap has ranges and the selector register for those ranges is in a
->> register which is cached this has the unfortunate side effect of meaning
->> that the physical and cached copies of the selector register can be out of
->> sync after a cache sync. The cache will have whatever the selector was when
->> the sync started and the hardware will have the selector for the register
->> that was synced last.
+On 2023-10-26 23:01, Qu Wenruo wrote:
 > 
-> Given the nearness to the release I've dropped this into my CI and am
-> intending to just apply it as soon as that's done in the hopes that it
-> hits tomorrow's -next and gets a bit more coverage, it would be great if
-> you could confirm if this fixes the systems where you saw the original
-> issue.
+> 
+> On 2023/10/27 00:30, Holger Hoffstätte wrote:
+>> On 2023-10-26 15:31, Sam James wrote:
+>>> 'btrfs: scrub: fix grouping of read IO' seems to intorduce a
+>>> -Wmaybe-uninitialized warning (which becomes fatal with the kernel's
+>>> passed -Werror=...) with 6.5.9:
+>>>
+>>> ```
+>>> /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c: In function ‘scrub_simple_mirror.isra’:
+>>> /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c:2075:29: error: ‘found_logical’ may be used uninitialized [-Werror=maybe-uninitialized[https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wmaybe-uninitialized]]
+>>>   2075 |                 cur_logical = found_logical + BTRFS_STRIPE_LEN;
+>>> /var/tmp/portage/sys-kernel/gentoo-kernel-6.5.9/work/linux-6.5/fs/btrfs/scrub.c:2040:21: note: ‘found_logical’ was declared here
+>>>   2040 |                 u64 found_logical;
+>>>        |                     ^~~~~~~~~~~~~
+>>> ```
+>>
+>> Good find! found_logical is passed by reference to queue_scrub_stripe(..) (inlined)
+>> where it is used without ever being set:
+>>
+>> ...
+>>      /* Either >0 as no more extents or <0 for error. */
+>>      if (ret)
+>>          return ret;
+>>      if (found_logical_ret)
+>>          *found_logical_ret = stripe->logical;
+>>      sctx->cur_stripe++;
+>> ...
+>>
+>> Something is missing here, and somehow I don't think it's just the top-level
+>> initialisation of found_logical.
+> 
+> This looks like a false alert for me.
+> 
+> @found_logical is intentionally uninitialized to catch any uninitialized usage by compiler.
+> 
+> It would be set by queue_scrub_stripe() when there is any stripe found.
 
-Can confirm, this fixes the sleep borking issue on my end after
-reverting my workaround.
+Can you show me where the reference is set before the quoted if block?
+The warning happens because according to the compiler this is exactly not what's
+happening, and I did not see any initializing write either.
 
-Tested-by: Hector Martin <marcan@marcan.st>
-
-- Hector
-
+thanks,
+Holger
