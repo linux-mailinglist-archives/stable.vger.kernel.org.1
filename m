@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C76B07D979C
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 235187D979D
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231585AbjJ0MRi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:17:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60896 "EHLO
+        id S230101AbjJ0MRq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:17:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231684AbjJ0MRe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:17:34 -0400
+        with ESMTP id S231561AbjJ0MRp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:17:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC9110FF
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:17:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CCFC433C8;
-        Fri, 27 Oct 2023 12:17:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDBF110D1
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:17:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DA9C433C8;
+        Fri, 27 Oct 2023 12:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698409044;
-        bh=olj1PBp+neIBQ7hcYJodTkRF5jmBQGFBp3nYdKRZSUg=;
+        s=korg; t=1698409054;
+        bh=2wcXlu7lh0uVr5YOM0yKREIC6Z7hiy6IrYNqpNEC3pY=;
         h=Subject:To:Cc:From:Date:From;
-        b=rSSeRDWot7nOixCQ6HpYYiHRVtKfTsyPYJ4JggQQ+NCbBlEFD9veD9xO2lF3TTW6f
-         q8xWSierOncX0dEJCW60oOQdJPlM7C8+cHAeR/6/9AVPIVzGeEMczaEqP4WY9LKkNU
-         gTmJWlapZ1peImfij9ADGvg0VKadseaX7ZhOhszo=
-Subject: FAILED: patch "[PATCH] hugetlbfs: close race between MADV_DONTNEED and page fault" failed to apply to 6.5-stable tree
+        b=qRtBPJeBRdZlWlAhyGR9aswTN+RjmOBA8FmHtYoUijgUPzbNCc9U6i7/Oazmlr+jx
+         aur+K6NKMMIWK+jOyQ2PynbghhsbhDcyNfDNASyzlIzTrxzPsK8AKaQ40hHnqZEEU/
+         czDFPmcuz0GUw/+fNLPlh6/6hh7SjMUb0LVnaSvM=
+Subject: FAILED: patch "[PATCH] hugetlbfs: close race between MADV_DONTNEED and page fault" failed to apply to 6.1-stable tree
 To:     riel@surriel.com, akpm@linux-foundation.org,
         mike.kravetz@oracle.com, muchun.song@linux.dev,
         stable@vger.kernel.org, willy@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:17:21 +0200
-Message-ID: <2023102721-populate-culpable-52a4@gregkh>
+Date:   Fri, 27 Oct 2023 14:17:23 +0200
+Message-ID: <2023102723-washroom-engine-fdc1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2820b0f09be99f6406784b03a22dfc83e858449d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102721-populate-culpable-52a4@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102723-washroom-engine-fdc1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
