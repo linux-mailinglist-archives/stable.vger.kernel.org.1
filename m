@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D484C7D974E
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D21147D974F
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:09:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345803AbjJ0MJp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:09:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52030 "EHLO
+        id S1345735AbjJ0MJy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:09:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345539AbjJ0MJo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:09:44 -0400
+        with ESMTP id S1345689AbjJ0MJx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:09:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE47121
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:09:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12BC9C433C7;
-        Fri, 27 Oct 2023 12:09:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7618C0
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:09:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC67C433C8;
+        Fri, 27 Oct 2023 12:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698408581;
-        bh=bMrs9NQJTQHp2lBZWTouPg/w05ppLxi17m1JCMMj920=;
+        s=korg; t=1698408590;
+        bh=RJLYf4dOx1vln4OR1BEEcq+W2FG93MlP3PE8SPNTNcI=;
         h=Subject:To:Cc:From:Date:From;
-        b=Dd9w6UabgnqW1sSPax1fH6rXqlW7iNHunUSdCiR8x1CFcsfhSW6pXWpSs01XXOGnw
-         PghQSxLEjcwxQ4Un4TewqynMEDdax70gda9SEM4glzgJko6LLcpQTr19CwW2ZmG5vF
-         BDjfF3xZ1GelSN3Wq0xpuV4bnW4eeZuxbMiuTuzQ=
-Subject: FAILED: patch "[PATCH] vsock/virtio: initialize the_virtio_vsock before using VQs" failed to apply to 5.10-stable tree
+        b=dX+jXkSQWY1HQTsmkILPXZO3wg0+OJ93U+BCdSxw2T8pDHvJvjGGm6FnZg9m6t6zb
+         ztAIhpxtAclbBypsy3jyEnptErbhm9NuOTA1MxGlgCZ6P9CQXZHjNp4tbIcDYmEGNX
+         jYJDsd5RjXDjhKmM6yfl+Xg2zW+fyr/OEM4JFeGs=
+Subject: FAILED: patch "[PATCH] vsock/virtio: initialize the_virtio_vsock before using VQs" failed to apply to 5.4-stable tree
 To:     alexandru.matei@uipath.com, kuba@kernel.org, sgarzare@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:09:38 +0200
-Message-ID: <2023102738-scoring-accurate-da6f@gregkh>
+Date:   Fri, 27 Oct 2023 14:09:39 +0200
+Message-ID: <2023102739-channel-upstream-7bca@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 53b08c4985158430fd6d035fb49443bada535210
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102738-scoring-accurate-da6f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102739-channel-upstream-7bca@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
