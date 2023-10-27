@@ -2,97 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F179A7D9DE0
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 18:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB0387D9ECE
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 19:21:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231622AbjJ0QUb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 12:20:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33104 "EHLO
+        id S232204AbjJ0RVt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 13:21:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231649AbjJ0QUa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 12:20:30 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD2D9E5
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 09:20:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 65B53C433C9;
-        Fri, 27 Oct 2023 16:20:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698423627;
-        bh=W24YusT5sVRpRnD4nJCM/tldYzUF7x3cNF8u7zFtOsM=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=gfFvt330C7a7zLLLQY71meGXR3q/b7zB7sPUOdvFVXLCh2uk5OQlWdviYuded+t7N
-         RP2SQDxrEt0sYAundrFHCSw9HVPdRtBmhFKupjSfdwhpfq7I6wrckuojpv7YkTp1/A
-         jduemiKADFDHNfFHxKL3K8k0JI2RkzFOvy/aCpH1R8RptCT9X4Lb4XQYxhXa6+T5eP
-         gSa9hvAbhP9OjQ+nhx1i5nNR9gc3w0p+ECwq//bnACcQSCSEwZuurxcL3RRYwvTX91
-         po11+g2eMBE4CAzHhmCb2Q00JAEej3G5rJLoV8weMCT55nX8ox/Oz34XaOQNdlGC4F
-         YozA0Av7KXGtA==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4B92BC41620;
-        Fri, 27 Oct 2023 16:20:27 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S232430AbjJ0RVs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 13:21:48 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 156D4E1;
+        Fri, 27 Oct 2023 10:21:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698427307; x=1729963307;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=H7xOLD2Hogt9S+FXMD5KTrQ35AjEboEp2zKDa0PtJFQ=;
+  b=ThhBZVpNCADSkXDA1Nx+jgFr17Rmb0W/J3J62EGodMvhHt/0/xJ17AEM
+   Q8GrKsnrLSBYeviGfnABmXlP0K9m7yRzMjrRGtIjwQa5XK/pny0pPvaXa
+   g+orOfOD8CLLQ5K3jV0y8dkXh00wxY4tLOiJwMP7eAJxbbbI4/Tm0drdR
+   3/FGmSetjGHPD6bLMMGofJwad2dLRpS/h7qPRP1x6HYLK1x8Ce3/XxGOi
+   o3dSaNWmoJdHS1DLrftJKttd4JLogPzfDogBtaTSHl7Bb1EMr95A53bgj
+   UBZ1RKbjrD2PEVn7+ZF7/blsZmMjZ3IRjCu2/yJ0B8QqHVh0/vvEY3OeE
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="386706934"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="386706934"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 10:21:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="709471287"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="709471287"
+Received: from hannahwo-mobl1.amr.corp.intel.com (HELO [10.209.35.60]) ([10.209.35.60])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 10:21:46 -0700
+Message-ID: <6c8716b2-39d3-4b4f-9d27-f34d2373f536@intel.com>
+Date:   Fri, 27 Oct 2023 10:21:46 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 00/10] mptcp: Fixes and cleanup for v6.7
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169842362730.5811.9219746703675864811.git-patchwork-notify@kernel.org>
-Date:   Fri, 27 Oct 2023 16:20:27 +0000
-References: <20231025-send-net-next-20231025-v1-0-db8f25f798eb@kernel.org>
-In-Reply-To: <20231025-send-net-next-20231025-v1-0-db8f25f798eb@kernel.org>
-To:     Mat Martineau <martineau@kernel.org>
-Cc:     matttbe@kernel.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, geliang.tang@suse.com,
-        kishen.maloor@intel.com, netdev@vger.kernel.org,
-        mptcp@lists.linux.dev, stable@vger.kernel.org
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "x86/sgx: Return VM_FAULT_SIGBUS instead of
+ VM_FAULT_OOM for EPC exhaustion"
+Content-Language: en-US
+To:     Haitao Huang <haitao.huang@linux.intel.com>, tip-bot2@linutronix.de
+Cc:     #@tip-bot2.tec.linutronix.de, linux-kernel@vger.kernel.org,
+        linux-tip-commits@vger.kernel.org, mingo@kernel.org,
+        stable@vger.kernel.org, v6.0+@tip-bot2.tec.linutronix.de,
+        x86@kernel.org
+References: <169778941056.3135.14169781154210769341.tip-bot2@tip-bot2>
+ <20231026225528.5738-1-haitao.huang@linux.intel.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20231026225528.5738-1-haitao.huang@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+On 10/26/23 15:55, Haitao Huang wrote:
+> This reverts commit 6b7b71a70af6d75e0a9eddf4b01e4383a78b8a5e. That patch
+> was a mistake. link:
+> https://lore.kernel.org/all/op.2dfkbh2iwjvjmi@hhuan26-mobl.amr.corp.intel.com/
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 25 Oct 2023 16:37:01 -0700 you wrote:
-> This series includes three initial patches that we had queued in our
-> mptcp-net branch, but given the likely timing of net/net-next syncs this
-> week, the need to avoid introducing branch conflicts, and another batch
-> of net-next patches pending in the mptcp tree, the most practical route
-> is to send everything for net-next.
-> 
-> Patches 1 & 2 fix some intermittent selftest failures by adjusting timing.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,01/10] selftests: mptcp: run userspace pm tests slower
-    https://git.kernel.org/netdev/net-next/c/f4a75e9d1100
-  - [net-next,02/10] selftests: mptcp: fix wait_rm_addr/sf parameters
-    https://git.kernel.org/netdev/net-next/c/9168ea02b898
-  - [net-next,03/10] mptcp: userspace pm send RM_ADDR for ID 0
-    https://git.kernel.org/netdev/net-next/c/84c531f54ad9
-  - [net-next,04/10] mptcp: drop useless ssk in pm_subflow_check_next
-    https://git.kernel.org/netdev/net-next/c/74cbb0c65b29
-  - [net-next,05/10] mptcp: use mptcp_check_fallback helper
-    https://git.kernel.org/netdev/net-next/c/83d580ddbe1b
-  - [net-next,06/10] mptcp: use mptcp_get_ext helper
-    https://git.kernel.org/netdev/net-next/c/a16c054b527b
-  - [net-next,07/10] mptcp: move sk assignment statement ahead
-    https://git.kernel.org/netdev/net-next/c/a6c85fc61c08
-  - [net-next,08/10] mptcp: define more local variables sk
-    https://git.kernel.org/netdev/net-next/c/14cb0e0bf39b
-  - [net-next,09/10] selftests: mptcp: sockopt: drop mptcp_connect var
-    https://git.kernel.org/netdev/net-next/c/e71aab6777a4
-  - [net-next,10/10] selftests: mptcp: display simult in extra_msg
-    https://git.kernel.org/netdev/net-next/c/629b35a225b0
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Thanks for the patch.  There was only one trivial commit on top, so I
+just dropped your commit and effectively rebased the other single one
+instead of applying a revert.
