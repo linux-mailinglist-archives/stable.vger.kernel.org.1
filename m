@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 415CF7D977F
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA83B7D9780
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:15:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230101AbjJ0MPB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:15:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36028 "EHLO
+        id S1345689AbjJ0MPE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:15:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229503AbjJ0MPA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:15:00 -0400
+        with ESMTP id S1345539AbjJ0MPD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:15:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8060FC0
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:14:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04FCC433C9;
-        Fri, 27 Oct 2023 12:14:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E1C1C0
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:15:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E9EC433C7;
+        Fri, 27 Oct 2023 12:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698408898;
-        bh=yweH11pjm2gkm3PNekDj8758KTjpD/xeO8IbWgaENvs=;
+        s=korg; t=1698408901;
+        bh=w3bu3EQG36CwrcGDPAvOvk2bFGVaUGbJ3PE2lC79R5Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=K1pzPH55xjC6gW/xPDstzE87zYi7oh7vHu70zEzbNiNVbnpMgseeqf4pzS56jaZcy
-         HiaDToEFYV0G1Gg8qglly2qN0Su6RvqnV23/3sUeCAyuAEfh4gLnXGPr6PleQAz/jS
-         nJ/OkggJyJ/Lp2w7SN/BhzD9WMYakRtjSeeEGIj4=
-Subject: FAILED: patch "[PATCH] mm: zswap: fix pool refcount bug around shrink_worker()" failed to apply to 6.5-stable tree
+        b=Otfx73gOUTs+gpnkGqMPY7qg6aY2TUdENdC/eCuk0Y4K29Lo2teR2jiBLReeCezF+
+         LxxklH5UYancQYhSiWjWaIHtUwZBfbG2Gz37e0yuzHiwYZ9B5Y5Q3ibdeYu5gPbdyH
+         CauhIHyN0Ou6SiokCw4I2BLMXF4r6uStB04ysULo=
+Subject: FAILED: patch "[PATCH] mm: zswap: fix pool refcount bug around shrink_worker()" failed to apply to 6.1-stable tree
 To:     hannes@cmpxchg.org, akpm@linux-foundation.org,
         cerasuolodomenico@gmail.com, clm@fb.com, nphamcs@gmail.com,
         stable@vger.kernel.org, vitaly.wool@konsulko.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:14:52 +0200
-Message-ID: <2023102752-rift-applicant-8761@gregkh>
+Date:   Fri, 27 Oct 2023 14:14:54 +0200
+Message-ID: <2023102753-progress-creatable-e21d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 969d63e1af3b3abe35a49b08218f3125131ac32f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102752-rift-applicant-8761@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102753-progress-creatable-e21d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
