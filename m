@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B5607D977E
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 415CF7D977F
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:15:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345650AbjJ0MO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:14:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36008 "EHLO
+        id S230101AbjJ0MPB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:15:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345802AbjJ0MO5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:14:57 -0400
+        with ESMTP id S229503AbjJ0MPA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:15:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BBC310A
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:14:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA99CC433C7;
-        Fri, 27 Oct 2023 12:14:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8060FC0
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:14:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04FCC433C9;
+        Fri, 27 Oct 2023 12:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698408894;
-        bh=w8JoF5daWmtdSnbCE/JgS2B4qz7z87kSCOAz9Alm9uw=;
+        s=korg; t=1698408898;
+        bh=yweH11pjm2gkm3PNekDj8758KTjpD/xeO8IbWgaENvs=;
         h=Subject:To:Cc:From:Date:From;
-        b=tQfLTJAeaeQ/e7NhbuC2AiWEX9pDDGpgps6F2ET+FCLn3TfsEi4zxFy1teZ/PM8kU
-         3I/sIsqx+dc5bnYYnEYe+Ejnvke2573atk7x+1o2tig/NvTwKgegtPWoreykxalqZX
-         nM1udEwzfYWE+pUd1bmBkMi24sdgH91CCEfrm0k8=
-Subject: FAILED: patch "[PATCH] mmap: fix error paths with dup_anon_vma()" failed to apply to 6.1-stable tree
-To:     Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-        jannh@google.com, lstoakes@gmail.com, stable@vger.kernel.org,
-        surenb@google.com, vbabka@suse.cz, willy@infradead.org
+        b=K1pzPH55xjC6gW/xPDstzE87zYi7oh7vHu70zEzbNiNVbnpMgseeqf4pzS56jaZcy
+         HiaDToEFYV0G1Gg8qglly2qN0Su6RvqnV23/3sUeCAyuAEfh4gLnXGPr6PleQAz/jS
+         nJ/OkggJyJ/Lp2w7SN/BhzD9WMYakRtjSeeEGIj4=
+Subject: FAILED: patch "[PATCH] mm: zswap: fix pool refcount bug around shrink_worker()" failed to apply to 6.5-stable tree
+To:     hannes@cmpxchg.org, akpm@linux-foundation.org,
+        cerasuolodomenico@gmail.com, clm@fb.com, nphamcs@gmail.com,
+        stable@vger.kernel.org, vitaly.wool@konsulko.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:14:43 +0200
-Message-ID: <2023102743-frantic-sash-c381@gregkh>
+Date:   Fri, 27 Oct 2023 14:14:52 +0200
+Message-ID: <2023102752-rift-applicant-8761@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x 824135c46b00df7fb369ec7f1f8607427bbebeb0
+git cherry-pick -x 969d63e1af3b3abe35a49b08218f3125131ac32f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102743-frantic-sash-c381@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102752-rift-applicant-8761@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
@@ -69,149 +69,43 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 824135c46b00df7fb369ec7f1f8607427bbebeb0 Mon Sep 17 00:00:00 2001
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Date: Fri, 29 Sep 2023 14:30:40 -0400
-Subject: [PATCH] mmap: fix error paths with dup_anon_vma()
+From 969d63e1af3b3abe35a49b08218f3125131ac32f Mon Sep 17 00:00:00 2001
+From: Johannes Weiner <hannes@cmpxchg.org>
+Date: Fri, 6 Oct 2023 12:00:24 -0400
+Subject: [PATCH] mm: zswap: fix pool refcount bug around shrink_worker()
 
-When the calling function fails after the dup_anon_vma(), the
-duplication of the anon_vma is not being undone.  Add the necessary
-unlink_anon_vma() call to the error paths that are missing them.
+When a zswap store fails due to the limit, it acquires a pool reference
+and queues the shrinker.  When the shrinker runs, it drops the reference.
+However, there can be multiple store attempts before the shrinker wakes up
+and runs once.  This results in reference leaks and eventual saturation
+warnings for the pool refcount.
 
-This issue showed up during inspection of the error path in vma_merge()
-for an unrelated vma iterator issue.
+Fix this by dropping the reference again when the shrinker is already
+queued.  This ensures one reference per shrinker run.
 
-Users may experience increased memory usage, which may be problematic as
-the failure would likely be caused by a low memory situation.
-
-Link: https://lkml.kernel.org/r/20230929183041.2835469-3-Liam.Howlett@oracle.com
-Fixes: d4af56c5c7c6 ("mm: start tracking VMAs with maple tree")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20231006160024.170748-1-hannes@cmpxchg.org
+Fixes: 45190f01dd40 ("mm/zswap.c: add allocation hysteresis if pool limit is hit")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Reported-by: Chris Mason <clm@fb.com>
+Acked-by: Nhat Pham <nphamcs@gmail.com>
+Cc: Vitaly Wool <vitaly.wool@konsulko.com>
+Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
+Cc: <stable@vger.kernel.org>	[5.6+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/mmap.c b/mm/mmap.c
-index a0917ed26057..9e018d8dd7d6 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -583,11 +583,12 @@ static inline void vma_complete(struct vma_prepare *vp,
-  * dup_anon_vma() - Helper function to duplicate anon_vma
-  * @dst: The destination VMA
-  * @src: The source VMA
-+ * @dup: Pointer to the destination VMA when successful.
-  *
-  * Returns: 0 on success.
-  */
- static inline int dup_anon_vma(struct vm_area_struct *dst,
--			       struct vm_area_struct *src)
-+		struct vm_area_struct *src, struct vm_area_struct **dup)
- {
- 	/*
- 	 * Easily overlooked: when mprotect shifts the boundary, make sure the
-@@ -595,9 +596,15 @@ static inline int dup_anon_vma(struct vm_area_struct *dst,
- 	 * anon pages imported.
- 	 */
- 	if (src->anon_vma && !dst->anon_vma) {
-+		int ret;
-+
- 		vma_assert_write_locked(dst);
- 		dst->anon_vma = src->anon_vma;
--		return anon_vma_clone(dst, src);
-+		ret = anon_vma_clone(dst, src);
-+		if (ret)
-+			return ret;
-+
-+		*dup = dst;
- 	}
+diff --git a/mm/zswap.c b/mm/zswap.c
+index 083c693602b8..37d2b1cb2ecb 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1383,8 +1383,8 @@ bool zswap_store(struct folio *folio)
  
- 	return 0;
-@@ -624,6 +631,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	       unsigned long start, unsigned long end, pgoff_t pgoff,
- 	       struct vm_area_struct *next)
- {
-+	struct vm_area_struct *anon_dup = NULL;
- 	bool remove_next = false;
- 	struct vma_prepare vp;
- 
-@@ -633,7 +641,7 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 
- 		remove_next = true;
- 		vma_start_write(next);
--		ret = dup_anon_vma(vma, next);
-+		ret = dup_anon_vma(vma, next, &anon_dup);
- 		if (ret)
- 			return ret;
- 	}
-@@ -661,6 +669,8 @@ int vma_expand(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 	return 0;
- 
- nomem:
-+	if (anon_dup)
-+		unlink_anon_vmas(anon_dup);
- 	return -ENOMEM;
+ shrink:
+ 	pool = zswap_pool_last_get();
+-	if (pool)
+-		queue_work(shrink_wq, &pool->shrink_work);
++	if (pool && !queue_work(shrink_wq, &pool->shrink_work))
++		zswap_pool_put(pool);
+ 	goto reject;
  }
  
-@@ -860,6 +870,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- {
- 	struct vm_area_struct *curr, *next, *res;
- 	struct vm_area_struct *vma, *adjust, *remove, *remove2;
-+	struct vm_area_struct *anon_dup = NULL;
- 	struct vma_prepare vp;
- 	pgoff_t vma_pgoff;
- 	int err = 0;
-@@ -927,18 +938,18 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 		vma_start_write(next);
- 		remove = next;				/* case 1 */
- 		vma_end = next->vm_end;
--		err = dup_anon_vma(prev, next);
-+		err = dup_anon_vma(prev, next, &anon_dup);
- 		if (curr) {				/* case 6 */
- 			vma_start_write(curr);
- 			remove = curr;
- 			remove2 = next;
- 			if (!next->anon_vma)
--				err = dup_anon_vma(prev, curr);
-+				err = dup_anon_vma(prev, curr, &anon_dup);
- 		}
- 	} else if (merge_prev) {			/* case 2 */
- 		if (curr) {
- 			vma_start_write(curr);
--			err = dup_anon_vma(prev, curr);
-+			err = dup_anon_vma(prev, curr, &anon_dup);
- 			if (end == curr->vm_end) {	/* case 7 */
- 				remove = curr;
- 			} else {			/* case 5 */
-@@ -954,7 +965,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 			vma_end = addr;
- 			adjust = next;
- 			adj_start = -(prev->vm_end - addr);
--			err = dup_anon_vma(next, prev);
-+			err = dup_anon_vma(next, prev, &anon_dup);
- 		} else {
- 			/*
- 			 * Note that cases 3 and 8 are the ONLY ones where prev
-@@ -968,7 +979,7 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 				vma_pgoff = curr->vm_pgoff;
- 				vma_start_write(curr);
- 				remove = curr;
--				err = dup_anon_vma(next, curr);
-+				err = dup_anon_vma(next, curr, &anon_dup);
- 			}
- 		}
- 	}
-@@ -1018,6 +1029,9 @@ struct vm_area_struct *vma_merge(struct vma_iterator *vmi, struct mm_struct *mm,
- 	return res;
- 
- prealloc_fail:
-+	if (anon_dup)
-+		unlink_anon_vmas(anon_dup);
-+
- anon_vma_fail:
- 	vma_iter_set(vmi, addr);
- 	vma_iter_load(vmi);
 
