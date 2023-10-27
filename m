@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 125227D97C7
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:21:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C79167D97C8
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:21:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231340AbjJ0MV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:21:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46558 "EHLO
+        id S1345689AbjJ0MVa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:21:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230101AbjJ0MVZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:21:25 -0400
+        with ESMTP id S1345539AbjJ0MV3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:21:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E97EDC0
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:21:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A835C433C7;
-        Fri, 27 Oct 2023 12:21:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E733BC0
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:21:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332DBC433C7;
+        Fri, 27 Oct 2023 12:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698409283;
-        bh=DoTNjJrKQc0NEHsjFmh3emgDm34I8UEiRDOlj6onPgY=;
+        s=korg; t=1698409286;
+        bh=g+GuXv2uwI2ADB9Xnn+QGwU1KvXQxdawrX5rECkUK2U=;
         h=Subject:To:Cc:From:Date:From;
-        b=tEl/oIxhiE8cMoTy0xJIDoWmC4aHRxJao5FbPTCLxvvil7m8EdfL1EROMPKVl6mV2
-         z5wahjyGLIrZ/zMLXrmIE01QdwBIDyFRAzPBQ1tCfyoVcA1zcr1rF87/G7HJH0w+5A
-         DlYJdkKQi2uzTCXh7rWg9PjWtHMxWKC3ICQH/Gl4=
-Subject: FAILED: patch "[PATCH] drm/dp_mst: Fix NULL deref in" failed to apply to 5.15-stable tree
+        b=ZNGXTrTRT5NpKIHrkFnNapCaeneP95LyOCs4a4ZTDIERO2kvDD9XxrisqvtaIA7md
+         8VulAr+/DPXElK77sgO7ax1ear9gR0v6TPXbOXhUPuhog3h3/Nuk09Ccfv0jxPw6wb
+         n/DTAxI4bNYj2uZHoiobofG/6WlLElSqqA7BCJtM=
+Subject: FAILED: patch "[PATCH] drm/dp_mst: Fix NULL deref in" failed to apply to 5.10-stable tree
 To:     lma@semihalf.com, navaremanasi@chromium.org, rad@chromium.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:21:20 +0200
-Message-ID: <2023102720-gatherer-voter-6a5b@gregkh>
+Date:   Fri, 27 Oct 2023 14:21:22 +0200
+Message-ID: <2023102722-foyer-jawed-7d2f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3d887d512494d678b17c57b835c32f4e48d34f26
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102720-gatherer-voter-6a5b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102722-foyer-jawed-7d2f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
