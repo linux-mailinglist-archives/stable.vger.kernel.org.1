@@ -2,150 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E65077D8F74
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 09:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF6037D8FB0
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 09:24:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345396AbjJ0HQK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 03:16:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59130 "EHLO
+        id S1345367AbjJ0HYF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 03:24:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234957AbjJ0HQJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 03:16:09 -0400
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DFEED4E
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 00:16:04 -0700 (PDT)
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20231027071602epoutp0359b9d2743c9c989cbf9ce28e1bad4cf3~R5ZUJ95dN1845718457epoutp03H
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 07:16:02 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20231027071602epoutp0359b9d2743c9c989cbf9ce28e1bad4cf3~R5ZUJ95dN1845718457epoutp03H
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1698390962;
-        bh=vqVTPW/OO5rrONOkrboS3rJTnWgAy8fH13741LE3I6E=;
-        h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-        b=SeVimsm1c9OwuISWeQtqXNyO/VM1AijhfZrfl5PXioi4NBcQ8qVgLCuURCEWxyibD
-         oC58A261vSUMe4XRrh/uvx1X+M4p8o4zfVEHHH8djPIhGwQe3kL0wzbom2YmMg8PBM
-         NstuNKDiN8zVG9j+Kk+CSHAS543Rbl6YQ1K/xqFI=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-        epcas5p1.samsung.com (KnoxPortal) with ESMTP id
-        20231027071602epcas5p1ea637752568ff6d28d6a30ca9e255eca~R5ZTs9bSn2831128311epcas5p1i;
-        Fri, 27 Oct 2023 07:16:02 +0000 (GMT)
-Received: from epsmges5p2new.samsung.com (unknown [182.195.38.183]) by
-        epsnrtp1.localdomain (Postfix) with ESMTP id 4SGv8c1rzdz4x9Pv; Fri, 27 Oct
-        2023 07:16:00 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-        epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        33.E0.10009.0B36B356; Fri, 27 Oct 2023 16:16:00 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
-        20231027071559epcas5p4cc7eb2a38e21776dcdf548406dfd617c~R5ZRgdz-81556915569epcas5p44;
-        Fri, 27 Oct 2023 07:15:59 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20231027071559epsmtrp16e50b5fd7611d52be0a6cd0d45dbb0ec~R5ZRfva2L2266822668epsmtrp1c;
-        Fri, 27 Oct 2023 07:15:59 +0000 (GMT)
-X-AuditID: b6c32a4a-261fd70000002719-12-653b63b080af
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-        epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        FB.61.08817.FA36B356; Fri, 27 Oct 2023 16:15:59 +0900 (KST)
-Received: from [107.122.11.51] (unknown [107.122.11.51]) by
-        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20231027071557epsmtip27d41aa15185a4e5bfe468830782755a9~R5ZPiE3bs2848128481epsmtip2d;
-        Fri, 27 Oct 2023 07:15:57 +0000 (GMT)
-Message-ID: <2dd010c2-32b2-05fd-2f8a-80e759e94d6e@samsung.com>
-Date:   Fri, 27 Oct 2023 12:45:57 +0530
+        with ESMTP id S231233AbjJ0HYE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 03:24:04 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A1A3192;
+        Fri, 27 Oct 2023 00:24:02 -0700 (PDT)
+Date:   Fri, 27 Oct 2023 07:24:00 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1698391441;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=W6Dghujogbztdmwt/jqBXHDqaTSSB292Ldx3Ap8/ojs=;
+        b=bxI4eeO0wIqXfcGStkvU4dBwkvt2xon/Ec3JWufxozWqkLiTOY0ucG9rlTSAwFi9OvXjwO
+        bOG7dGGkdeqDS97gVPZu+Zo1EmxzD62KK0kQao0YIRbM1w11MQSate2opRQdIW4+x5Qdzb
+        GjWJeu6KnPUQjcotdTbCdO6bfTSNhdkBnbUj2xW2zWvCRFKstcbIPDrlf3TS4aZcBXJeUM
+        bLqbJdaA43NVPSIN428SOuIGcxG7FUm5sdfFKGpjB068ULsHyX+Ebu8oUYmOGQUpUXokNC
+        uQZoF2ODvYFPafyV8bAkgdyKxTxKhRqOANSTsEyN45OTjvE1vXmixAHL90881Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1698391441;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=W6Dghujogbztdmwt/jqBXHDqaTSSB292Ldx3Ap8/ojs=;
+        b=rkc7B6nRgb7TpPIOcgHz4laIoXwc2FUpnqg6b+fFot6jhA4ryoL39PrCZ0Pf3P/28Zmv4p
+        4ux8QMnZ5WxqD1Cw==
+From:   "tip-bot2 for Herve Codina" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: irq/core] genirq/generic_chip: Make irq_remove_generic_chip()
+ irqdomain aware
+Cc:     Herve Codina <herve.codina@bootlin.com>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org, maz@kernel.org
+In-Reply-To: <20231024150335.322282-1-herve.codina@bootlin.com>
+References: <20231024150335.322282-1-herve.codina@bootlin.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0)
-        Gecko/20100101 Thunderbird/91.8.1
-Subject: Re: [PATCH v2] nvme: remove unprivileged passthrough support
-Content-Language: en-US
-To:     Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Cc:     "hch@lst.de" <hch@lst.de>, "kbusch@kernel.org" <kbusch@kernel.org>,
-        "axboe@kernel.dk" <axboe@kernel.dk>,
-        "sagi@grimberg.me" <sagi@grimberg.me>,
-        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
-        "gost.dev@samsung.com" <gost.dev@samsung.com>,
-        "vincentfu@gmail.com" <vincentfu@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-From:   Kanchan Joshi <joshi.k@samsung.com>
-In-Reply-To: <aesib7wh6jkm6tsvonsuk73pmsgi3h6aikpzf52vbjbak3jspd@kbi4cm2uhsak>
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrCJsWRmVeSWpSXmKPExsWy7bCmhu6GZOtUg4MnuCxW3+1ns7h5YCeT
-        xcrVR5ksJh26xmgxf9lTdot1r9+zWOyb5WmxYOMjRosNbYIOnB47Z91l9zh/byOLx+WzpR6b
-        VnWyeWxeUu+x+2YDm0ffllWMHp83yXm0H+hmCuCMyrbJSE1MSS1SSM1Lzk/JzEu3VfIOjneO
-        NzUzMNQ1tLQwV1LIS8xNtVVy8QnQdcvMATpQSaEsMacUKBSQWFyspG9nU5RfWpKqkJFfXGKr
-        lFqQklNgUqBXnJhbXJqXrpeXWmJlaGBgZApUmJCd8fPXb5aC81wVW1/9YW1gfM3RxcjBISFg
-        InH8kXcXIxeHkMBuRonX516ydzFyAjmfGCUWNihBJL4xSrzY858ZJAHS8KxlPjNEYi+jxKOG
-        5VDOW0aJnx+OsoJU8QrYScz+spgNxGYRUJXYuOwcO0RcUOLkzCcsILaoQJLEr6tzGEFsYQFX
-        iWezWsDizALiEreezGcCsUUETCWebNnCBLKAWeANk8SZf1NZQO5mE9CUuDC5FKSGU8BP4nnH
-        cTaIXnmJ7W/ngB0kIbCFQ2LXhx1QZ7tIfJu5AcoWlnh1fAs7hC0l8bK/DcpOlrg08xwThF0i
-        8XjPQSjbXqL1VD8zyF5moL3rd+lD7OKT6P39hAkSjLwSHW1CENWKEvcmPWWFsMUlHs5YAmV7
-        SLQ3gbwLCquLjBJXOzuYJzAqzEIKlllI3p+F5J1ZCJsXMLKsYpRMLSjOTU8tNi0wyksth8d3
-        cn7uJkZw8tXy2sH48MEHvUOMTByMhxglOJiVRHgjfSxShXhTEiurUovy44tKc1KLDzGaAuNn
-        IrOUaHI+MP3nlcQbmlgamJiZmZlYGpsZKonzvm6dmyIkkJ5YkpqdmlqQWgTTx8TBKdXANHtG
-        U3Yhl8UClhl7qib+nsLj29/9fO1LjbUVDt5vHz3bJXrxw5317A912+ydln/omb+yUmrSNnW1
-        kv9GPqHphm65E532vtszs0sy8pjnpw07Iz79apP80rFiev7WvvOeEWdW3jmxJXxZz3GRlMXl
-        2Yf/GK89evmole1ymdy1de0syi6/L4k/v1ox4/Qe4+LQ9vdRDu9uSjXrRAj0dS2I+usVv16Y
-        a1/MVWM+yaYXJwW/TmlX/jZlyq0ghdXHbwg4bP1wSu2av7Pev7epN9hv7s61/BK6Y2fr/76l
-        da/iZ4UeZPef+1b+md71tg3nStwjj6uwnkq23XcinvX/3RN3Ojcu3JdqkmD3rUXB7+yljnYl
-        luKMREMt5qLiRADG0VqFRwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprIIsWRmVeSWpSXmKPExsWy7bCSvO76ZOtUgwcNBhar7/azWdw8sJPJ
-        YuXqo0wWkw5dY7SYv+wpu8W61+9ZLPbN8rRYsPERo8WGNkEHTo+ds+6ye5y/t5HF4/LZUo9N
-        qzrZPDYvqffYfbOBzaNvyypGj8+b5DzaD3QzBXBGcdmkpOZklqUW6dslcGX8/PWbpeA8V8XW
-        V39YGxhfc3QxcnJICJhIPGuZzwxiCwnsZpTYNjkYIi4u0XztBzuELSyx8t9zIJsLqOY1o8Sl
-        l3/AGngF7CRmf1nMBmKzCKhKbFx2jh0iLihxcuYTFhBbVCBJYs/9RiYQW1jAVeLZrBawODPQ
-        gltP5oPFRQRMJZ5s2cIEsoBZ4B2TxK3tv1khtl1klLjQ+w0ow8HBJqApcWFyKUgDp4CfxPOO
-        42wQg8wkurZ2MULY8hLb385hnsAoNAvJHbOQ7JuFpGUWkpYFjCyrGCVTC4pz03OLDQuM8lLL
-        9YoTc4tL89L1kvNzNzGCY01LawfjnlUf9A4xMnEwHmKU4GBWEuGN9LFIFeJNSaysSi3Kjy8q
-        zUktPsQozcGiJM777XVvipBAemJJanZqakFqEUyWiYNTqoEpJclw64SEI1yeYtKPzzcKc8rP
-        OD5tT8IV9gzX9wXJbwxPXjrAJ/b/2T+BaQ/nsL/zuPLsXVXVw421Sz7Hdn/QZy+7J6R5mmmu
-        0f1DJu+1VsnblUks+pesP8Fmu4fiVZ2T5xiTK1XFF64urZabms0U/DDLvq6YR+ON/xJ1bkmX
-        eO03aRkb25fM8ZHj8l4zbVFr1tKZcww/T+eqffnimEN5b/Wtt5uL5sdF5zv4PPR4GJmwIuOB
-        iY/TLbvys41bW/cVNW4SOnamZ9LNVeXPT6exO9yMPbzUbMlNBrXb8T6KjxTfKkbPXZ+6549o
-        di9Lf/tUxRWCGWY5uzV5uWeEGDL5BudKrTVZd3WGo/CtZUVKLMUZiYZazEXFiQAsoaSjJAMA
-        AA==
-X-CMS-MailID: 20231027071559epcas5p4cc7eb2a38e21776dcdf548406dfd617c
-X-Msg-Generator: CA
+Message-ID: <169839144046.3135.18250117406954696469.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
 Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20231016061151epcas5p1a0e18162b362ffbea754157e99f88995
-References: <CGME20231016061151epcas5p1a0e18162b362ffbea754157e99f88995@epcas5p1.samsung.com>
-        <20231016060519.231880-1-joshi.k@samsung.com>
-        <aesib7wh6jkm6tsvonsuk73pmsgi3h6aikpzf52vbjbak3jspd@kbi4cm2uhsak>
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/27/2023 12:36 PM, Shinichiro Kawasaki wrote:
-> On Oct 16, 2023 / 11:35, Kanchan Joshi wrote:
->> Passthrough has got a hole that can be exploited to cause kernel memory
->> corruption. This is about making the device do larger DMA into
->> short meta/data buffer owned by kernel [1].
->>
->> As a stopgap measure, disable the support of unprivileged passthrough.
->>
->> This patch brings back coarse-granular CAP_SYS_ADMIN checks by reverting
->> following patches:
->>
->> - 7d9d7d59d44 ("nvme: replace the fmode_t argument to the nvme ioctl handlers with a simple bool")
->> - 313c08c72ee ("nvme: don't allow unprivileged passthrough on partitions")
->> - 6f99ac04c46 ("nvme: consult the CSE log page for unprivileged passthrough")
->> - ea43fceea41 ("nvme: allow unprivileged passthrough of Identify Controller")
->> - e4fbcf32c86 ("nvme: identify-namespace without CAP_SYS_ADMIN")
->> - 855b7717f44 ("nvme: fine-granular CAP_SYS_ADMIN for nvme io commands")
->>
->> [1] https://lore.kernel.org/linux-nvme/20231013051458.39987-1-joshi.k@samsung.com/
-> 
-> This change looks affecting the blktests test case nvme/046. Should we adjust
-> the test case for the coarse-granular CAP_SYS_ADMIN checks?
+The following commit has been merged into the irq/core branch of tip:
 
-Nothing to adjust in the test, as there is no change in the kernel (at 
-this point). I have made a note to revisit the test if anything changes.
+Commit-ID:     5e7afb2eb7b2a7c81e9f608cbdf74a07606fd1b5
+Gitweb:        https://git.kernel.org/tip/5e7afb2eb7b2a7c81e9f608cbdf74a07606fd1b5
+Author:        Herve Codina <herve.codina@bootlin.com>
+AuthorDate:    Tue, 24 Oct 2023 17:03:35 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 27 Oct 2023 09:15:44 +02:00
+
+genirq/generic_chip: Make irq_remove_generic_chip() irqdomain aware
+
+irq_remove_generic_chip() calculates the Linux interrupt number for removing the
+handler and interrupt chip based on gc::irq_base as a linear function of
+the bit positions of set bits in the @msk argument.
+
+When the generic chip is present in an irq domain, i.e. created with a call
+to irq_alloc_domain_generic_chips(), gc::irq_base contains not the base
+Linux interrupt number.  It contains the base hardware interrupt for this
+chip. It is set to 0 for the first chip in the domain, 0 + N for the next
+chip, where $N is the number of hardware interrupts per chip.
+
+That means the Linux interrupt number cannot be calculated based on
+gc::irq_base for irqdomain based chips without a domain map lookup, which
+is currently missing.
+
+Rework the code to take the irqdomain case into account and calculate the
+Linux interrupt number by a irqdomain lookup of the domain specific
+hardware interrupt number.
+
+[ tglx: Massage changelog. Reshuffle the logic and add a proper comment. ]
+
+Fixes: cfefd21e693d ("genirq: Add chip suspend and resume callbacks")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231024150335.322282-1-herve.codina@bootlin.com
+
+---
+ kernel/irq/generic-chip.c | 25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/kernel/irq/generic-chip.c b/kernel/irq/generic-chip.c
+index 81ecca0..d39a40b 100644
+--- a/kernel/irq/generic-chip.c
++++ b/kernel/irq/generic-chip.c
+@@ -548,21 +548,34 @@ EXPORT_SYMBOL_GPL(irq_setup_alt_chip);
+ void irq_remove_generic_chip(struct irq_chip_generic *gc, u32 msk,
+ 			     unsigned int clr, unsigned int set)
+ {
+-	unsigned int i = gc->irq_base;
++	unsigned int i, virq;
+ 
+ 	raw_spin_lock(&gc_lock);
+ 	list_del(&gc->list);
+ 	raw_spin_unlock(&gc_lock);
+ 
+-	for (; msk; msk >>= 1, i++) {
++	for (i = 0; msk; msk >>= 1, i++) {
+ 		if (!(msk & 0x01))
+ 			continue;
+ 
++		/*
++		 * Interrupt domain based chips store the base hardware
++		 * interrupt number in gc::irq_base. Otherwise gc::irq_base
++		 * contains the base Linux interrupt number.
++		 */
++		if (gc->domain) {
++			virq = irq_find_mapping(gc->domain, gc->irq_base + i);
++			if (!virq)
++				continue;
++		} else {
++			virq = gc->irq_base + i;
++		}
++
+ 		/* Remove handler first. That will mask the irq line */
+-		irq_set_handler(i, NULL);
+-		irq_set_chip(i, &no_irq_chip);
+-		irq_set_chip_data(i, NULL);
+-		irq_modify_status(i, clr, set);
++		irq_set_handler(virq, NULL);
++		irq_set_chip(virq, &no_irq_chip);
++		irq_set_chip_data(virq, NULL);
++		irq_modify_status(virq, clr, set);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(irq_remove_generic_chip);
