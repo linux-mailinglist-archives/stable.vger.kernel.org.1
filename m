@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D6FC7D97AE
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:19:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7818F7D97BC
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:19:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345763AbjJ0MTA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:19:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34184 "EHLO
+        id S1345796AbjJ0MTw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:19:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345809AbjJ0MS7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:18:59 -0400
+        with ESMTP id S1345539AbjJ0MTv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:19:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BA87C0
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:18:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F05C433C9;
-        Fri, 27 Oct 2023 12:18:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B02EC18A
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:19:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D13C433C7;
+        Fri, 27 Oct 2023 12:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698409137;
-        bh=yfzJeclPTpfZ/KXVptGT+tqH+An21eXuL3VGa6Lk8GE=;
+        s=korg; t=1698409189;
+        bh=yZodkgXkTQweCM0qCJLXsHmn+bsZyb1tzlxa4EQeACM=;
         h=Subject:To:Cc:From:Date:From;
-        b=aBoa3gvCPKChWCBX5qpQolSAmMzLl8H7x4PckCiUynGarofdhD8xz4YLHarD22NwH
-         LlQEBascLKT8FGBS3q2+Ox+l3pSHYH53m3l9kUP3zVwEoqvFDab2R622ghlOmSZH5T
-         sTGhUG0fIuhdbQl2Yi5hItBI9m1MzdJqrZ85k4aA=
-Subject: FAILED: patch "[PATCH] vdpa/mlx5: Fix firmware error on creation of 1k VQs" failed to apply to 5.10-stable tree
-To:     dtatulea@nvidia.com, jasowang@redhat.com, mst@redhat.com
+        b=lflwSkqFeIo/oIAwP3D4w0lrqlSVFgE/ThQd77rTc9qTrxNjoQfU2Q1SPCOtB+d35
+         Q8oFMLQgWnZfm0oW0t+ipUyf6P6682eJ9Jt0aE/I/1J+Ira6X5QbqH1Os5ivoX/v4Q
+         szg4aNbG7d+THdpfqmpjNGCKiY8sO9xgSwwWQiEY=
+Subject: FAILED: patch "[PATCH] accel/ivpu/37xx: Fix missing VPUIP interrupts" failed to apply to 6.5-stable tree
+To:     karol.wachowski@linux.intel.com, stanislaw.gruszka@linux.intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:18:51 +0200
-Message-ID: <2023102751-unsealed-faction-dcd6@gregkh>
+Date:   Fri, 27 Oct 2023 14:19:46 +0200
+Message-ID: <2023102746-unengaged-cosponsor-948a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x abb0dcf9938c93f765abf8cb45567cadef0af6b2
+git cherry-pick -x b132ac51d7a50c37683be56c96ff64f8c887930f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102751-unsealed-faction-dcd6@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102746-unengaged-cosponsor-948a@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,158 +67,64 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From abb0dcf9938c93f765abf8cb45567cadef0af6b2 Mon Sep 17 00:00:00 2001
-From: Dragos Tatulea <dtatulea@nvidia.com>
-Date: Thu, 31 Aug 2023 18:50:56 +0300
-Subject: [PATCH] vdpa/mlx5: Fix firmware error on creation of 1k VQs
+From b132ac51d7a50c37683be56c96ff64f8c887930f Mon Sep 17 00:00:00 2001
+From: Karol Wachowski <karol.wachowski@linux.intel.com>
+Date: Tue, 24 Oct 2023 18:19:52 +0200
+Subject: [PATCH] accel/ivpu/37xx: Fix missing VPUIP interrupts
 
-A firmware error is triggered when configuring a 9k MTU on the PF after
-switching to switchdev mode and then using a vdpa device with larger
-(1k) rings:
-mlx5_cmd_out_err: CREATE_GENERAL_OBJECT(0xa00) op_mod(0xd) failed, status bad resource(0x5), syndrome (0xf6db90), err(-22)
+Move sequence of masking and unmasking global interrupts from buttress
+interrupt handler to generic one that handles both VPUIP and BTRS
+interrupts. Unmasking global interrupts will re-trigger MSI for any
+pending interrupts.
 
-This is due to the fact that the hw VQ size parameters are computed
-based on the umem_1/2/3_buffer_param_a/b capabilities and all
-device capabilities are read only when the driver is moved to switchdev mode.
+Lack of this sequence will cause the driver to miss any
+VPUIP interrupt that comes after reading VPU_37XX_HOST_SS_ICB_STATUS_0
+and before clearing all active interrupt sources.
 
-The problematic configuration flow looks like this:
-1) Create VF
-2) Unbind VF
-3) Switch PF to switchdev mode.
-4) Bind VF
-5) Set PF MTU to 9k
-6) create vDPA device
-7) Start VM with vDPA device and 1K queue size
+Fixes: 35b137630f08 ("accel/ivpu: Introduce a new DRM driver for Intel VPU")
+Cc: stable@vger.kernel.org
+Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231024161952.759914-1-stanislaw.gruszka@linux.intel.com
 
-Note that setting the MTU before step 3) doesn't trigger this issue.
-
-This patch reads the forementioned umem parameters at the latest point
-possible before the VQs of the device are created.
-
-v2:
-- Allocate output with kmalloc to reduce stack frame size.
-- Removed stable from cc.
-
-Fixes: 1a86b377aa21 ("vdpa/mlx5: Add VDPA driver for supported mlx5 devices")
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Message-Id: <20230831155702.1080754-1-dtatulea@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index 2b7b9000f2d3..946488b8989f 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -625,30 +625,70 @@ static void cq_destroy(struct mlx5_vdpa_net *ndev, u16 idx)
- 	mlx5_db_free(ndev->mvdev.mdev, &vcq->db);
+diff --git a/drivers/accel/ivpu/ivpu_hw_37xx.c b/drivers/accel/ivpu/ivpu_hw_37xx.c
+index 976019429164..18be8b98e9a8 100644
+--- a/drivers/accel/ivpu/ivpu_hw_37xx.c
++++ b/drivers/accel/ivpu/ivpu_hw_37xx.c
+@@ -940,9 +940,6 @@ static u32 ivpu_hw_37xx_irqb_handler(struct ivpu_device *vdev, int irq)
+ 	if (status == 0)
+ 		return 0;
+ 
+-	/* Disable global interrupt before handling local buttress interrupts */
+-	REGB_WR32(VPU_37XX_BUTTRESS_GLOBAL_INT_MASK, 0x1);
+-
+ 	if (REG_TEST_FLD(VPU_37XX_BUTTRESS_INTERRUPT_STAT, FREQ_CHANGE, status))
+ 		ivpu_dbg(vdev, IRQ, "FREQ_CHANGE irq: %08x",
+ 			 REGB_RD32(VPU_37XX_BUTTRESS_CURRENT_PLL));
+@@ -974,9 +971,6 @@ static u32 ivpu_hw_37xx_irqb_handler(struct ivpu_device *vdev, int irq)
+ 	else
+ 		REGB_WR32(VPU_37XX_BUTTRESS_INTERRUPT_STAT, status);
+ 
+-	/* Re-enable global interrupt */
+-	REGB_WR32(VPU_37XX_BUTTRESS_GLOBAL_INT_MASK, 0x0);
+-
+ 	if (schedule_recovery)
+ 		ivpu_pm_schedule_recovery(vdev);
+ 
+@@ -988,9 +982,14 @@ static irqreturn_t ivpu_hw_37xx_irq_handler(int irq, void *ptr)
+ 	struct ivpu_device *vdev = ptr;
+ 	u32 ret_irqv, ret_irqb;
+ 
++	REGB_WR32(VPU_37XX_BUTTRESS_GLOBAL_INT_MASK, 0x1);
++
+ 	ret_irqv = ivpu_hw_37xx_irqv_handler(vdev, irq);
+ 	ret_irqb = ivpu_hw_37xx_irqb_handler(vdev, irq);
+ 
++	/* Re-enable global interrupts to re-trigger MSI for pending interrupts */
++	REGB_WR32(VPU_37XX_BUTTRESS_GLOBAL_INT_MASK, 0x0);
++
+ 	return IRQ_RETVAL(ret_irqb | ret_irqv);
  }
  
-+static int read_umem_params(struct mlx5_vdpa_net *ndev)
-+{
-+	u32 in[MLX5_ST_SZ_DW(query_hca_cap_in)] = {};
-+	u16 opmod = (MLX5_CAP_VDPA_EMULATION << 1) | (HCA_CAP_OPMOD_GET_CUR & 0x01);
-+	struct mlx5_core_dev *mdev = ndev->mvdev.mdev;
-+	int out_size;
-+	void *caps;
-+	void *out;
-+	int err;
-+
-+	out_size = MLX5_ST_SZ_BYTES(query_hca_cap_out);
-+	out = kzalloc(out_size, GFP_KERNEL);
-+	if (!out)
-+		return -ENOMEM;
-+
-+	MLX5_SET(query_hca_cap_in, in, opcode, MLX5_CMD_OP_QUERY_HCA_CAP);
-+	MLX5_SET(query_hca_cap_in, in, op_mod, opmod);
-+	err = mlx5_cmd_exec_inout(mdev, query_hca_cap, in, out);
-+	if (err) {
-+		mlx5_vdpa_warn(&ndev->mvdev,
-+			"Failed reading vdpa umem capabilities with err %d\n", err);
-+		goto out;
-+	}
-+
-+	caps =  MLX5_ADDR_OF(query_hca_cap_out, out, capability);
-+
-+	ndev->umem_1_buffer_param_a = MLX5_GET(virtio_emulation_cap, caps, umem_1_buffer_param_a);
-+	ndev->umem_1_buffer_param_b = MLX5_GET(virtio_emulation_cap, caps, umem_1_buffer_param_b);
-+
-+	ndev->umem_2_buffer_param_a = MLX5_GET(virtio_emulation_cap, caps, umem_2_buffer_param_a);
-+	ndev->umem_2_buffer_param_b = MLX5_GET(virtio_emulation_cap, caps, umem_2_buffer_param_b);
-+
-+	ndev->umem_3_buffer_param_a = MLX5_GET(virtio_emulation_cap, caps, umem_3_buffer_param_a);
-+	ndev->umem_3_buffer_param_b = MLX5_GET(virtio_emulation_cap, caps, umem_3_buffer_param_b);
-+
-+out:
-+	kfree(out);
-+	return 0;
-+}
-+
- static void set_umem_size(struct mlx5_vdpa_net *ndev, struct mlx5_vdpa_virtqueue *mvq, int num,
- 			  struct mlx5_vdpa_umem **umemp)
- {
--	struct mlx5_core_dev *mdev = ndev->mvdev.mdev;
--	int p_a;
--	int p_b;
-+	u32 p_a;
-+	u32 p_b;
- 
- 	switch (num) {
- 	case 1:
--		p_a = MLX5_CAP_DEV_VDPA_EMULATION(mdev, umem_1_buffer_param_a);
--		p_b = MLX5_CAP_DEV_VDPA_EMULATION(mdev, umem_1_buffer_param_b);
-+		p_a = ndev->umem_1_buffer_param_a;
-+		p_b = ndev->umem_1_buffer_param_b;
- 		*umemp = &mvq->umem1;
- 		break;
- 	case 2:
--		p_a = MLX5_CAP_DEV_VDPA_EMULATION(mdev, umem_2_buffer_param_a);
--		p_b = MLX5_CAP_DEV_VDPA_EMULATION(mdev, umem_2_buffer_param_b);
-+		p_a = ndev->umem_2_buffer_param_a;
-+		p_b = ndev->umem_2_buffer_param_b;
- 		*umemp = &mvq->umem2;
- 		break;
- 	case 3:
--		p_a = MLX5_CAP_DEV_VDPA_EMULATION(mdev, umem_3_buffer_param_a);
--		p_b = MLX5_CAP_DEV_VDPA_EMULATION(mdev, umem_3_buffer_param_b);
-+		p_a = ndev->umem_3_buffer_param_a;
-+		p_b = ndev->umem_3_buffer_param_b;
- 		*umemp = &mvq->umem3;
- 		break;
- 	}
-+
- 	(*umemp)->size = p_a * mvq->num_ent + p_b;
- }
- 
-@@ -2679,6 +2719,11 @@ static int setup_driver(struct mlx5_vdpa_dev *mvdev)
- 		goto out;
- 	}
- 	mlx5_vdpa_add_debugfs(ndev);
-+
-+	err = read_umem_params(ndev);
-+	if (err)
-+		goto err_setup;
-+
- 	err = setup_virtqueues(mvdev);
- 	if (err) {
- 		mlx5_vdpa_warn(mvdev, "setup_virtqueues\n");
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.h b/drivers/vdpa/mlx5/net/mlx5_vnet.h
-index 60cdbc903037..90b556a57971 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.h
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.h
-@@ -65,6 +65,15 @@ struct mlx5_vdpa_net {
- 	struct hlist_head macvlan_hash[MLX5V_MACVLAN_SIZE];
- 	struct mlx5_vdpa_irq_pool irqp;
- 	struct dentry *debugfs;
-+
-+	u32 umem_1_buffer_param_a;
-+	u32 umem_1_buffer_param_b;
-+
-+	u32 umem_2_buffer_param_a;
-+	u32 umem_2_buffer_param_b;
-+
-+	u32 umem_3_buffer_param_a;
-+	u32 umem_3_buffer_param_b;
- };
- 
- struct mlx5_vdpa_counter {
 
