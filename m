@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5C947D9766
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:12:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDA937D9779
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345787AbjJ0MMG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:12:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35372 "EHLO
+        id S1345810AbjJ0MOJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:14:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345825AbjJ0MMF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:12:05 -0400
+        with ESMTP id S1345739AbjJ0MOJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:14:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D389FA
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:12:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2898C433C7;
-        Fri, 27 Oct 2023 12:12:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53218C0
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:14:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9707EC433C7;
+        Fri, 27 Oct 2023 12:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698408723;
-        bh=mAgsO9GzAJ0JKyJdrYzOMk1qMxR99XvoD/Gx70rtBLc=;
+        s=korg; t=1698408847;
+        bh=T/1XZ7yFe3lRx4//S7bL+4gmQ9Sg9MH8rVCFHr38JHc=;
         h=Subject:To:Cc:From:Date:From;
-        b=LzeA2NsMrl4XbfIFnXyh0q0umdrwHQOareWcnIz8M950k72r9zbsEjBUCWtljb2mN
-         5mz4QMMv9Uz4NLp85OCgW3UQkDlwoFM7jm6bBdjuXXfMAIJKDFWLsnsCOn0vQPGtXH
-         ia/N3zeSOCbBqofIfKZFyadBI4yiwm36dNOOLRFA=
-Subject: FAILED: patch "[PATCH] net: stmmac: update MAC capabilities when tx queues are" failed to apply to 5.10-stable tree
-To:     michael.wei.hong.sit@intel.com, davem@davemloft.net,
-        stable@vger.kernel.org, yi.fang.gan@intel.com
+        b=d2roq0dv3DXx6LqoOdm5ZafB1DZSd0PlZguD1H5KdyNnoNx2jBWPzgCEkYVDCRnBI
+         ERz116hjShfgwjCD4RTDyo7vufrg1isuYOw94ang78ngPuLodqgOVZ3M+cZ73fm7ew
+         4+yR9O28WJMV6QB1byjrqxnZNZqE6fUDSw4fBbEs=
+Subject: FAILED: patch "[PATCH] mm/mempolicy: fix set_mempolicy_home_node() previous VMA" failed to apply to 6.1-stable tree
+To:     Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+        lstoakes@gmail.com, stable@vger.kernel.org, yikebaer61@gmail.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:11:54 +0200
-Message-ID: <2023102754-tracing-flavored-8157@gregkh>
+Date:   Fri, 27 Oct 2023 14:14:04 +0200
+Message-ID: <2023102704-surrogate-dole-2888@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 95201f36f395df34321fcddbce12103e8bbe4970
+git cherry-pick -x 51f625377561e5b167da2db5aafb7ee268f691c5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102754-tracing-flavored-8157@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102704-surrogate-dole-2888@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,67 +68,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 95201f36f395df34321fcddbce12103e8bbe4970 Mon Sep 17 00:00:00 2001
-From: Michael Sit Wei Hong <michael.wei.hong.sit@intel.com>
-Date: Fri, 20 Oct 2023 11:25:35 +0800
-Subject: [PATCH] net: stmmac: update MAC capabilities when tx queues are
- updated
+From 51f625377561e5b167da2db5aafb7ee268f691c5 Mon Sep 17 00:00:00 2001
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Date: Thu, 28 Sep 2023 13:24:32 -0400
+Subject: [PATCH] mm/mempolicy: fix set_mempolicy_home_node() previous VMA
+ pointer
 
-Upon boot up, the driver will configure the MAC capabilities based on
-the maximum number of tx and rx queues. When the user changes the
-tx queues to single queue, the MAC should be capable of supporting Half
-Duplex, but the driver does not update the MAC capabilities when it is
-configured so.
+The two users of mbind_range() are expecting that mbind_range() will
+update the pointer to the previous VMA, or return an error.  However,
+set_mempolicy_home_node() does not call mbind_range() if there is no VMA
+policy.  The fix is to update the pointer to the previous VMA prior to
+continuing iterating the VMAs when there is no policy.
 
-Using the stmmac_reinit_queues() to check the number of tx queues
-and set the MAC capabilities accordingly.
+Users may experience a WARN_ON() during VMA policy updates when updating
+a range of VMAs on the home node.
 
-Fixes: 0366f7e06a6b ("net: stmmac: add ethtool support for get/set channels")
-Cc: <stable@vger.kernel.org> # 5.17+
-Signed-off-by: Michael Sit Wei Hong <michael.wei.hong.sit@intel.com>
-Signed-off-by: Gan, Yi Fang <yi.fang.gan@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lkml.kernel.org/r/20230928172432.2246534-1-Liam.Howlett@oracle.com
+Link: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
+Fixes: f4e9e0e69468 ("mm/mempolicy: fix use-after-free of VMA iterator")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
+Closes: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index ed1a5a31a491..5801f4d50f95 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -1197,6 +1197,17 @@ static int stmmac_init_phy(struct net_device *dev)
- 	return ret;
- }
- 
-+static void stmmac_set_half_duplex(struct stmmac_priv *priv)
-+{
-+	/* Half-Duplex can only work with single tx queue */
-+	if (priv->plat->tx_queues_to_use > 1)
-+		priv->phylink_config.mac_capabilities &=
-+			~(MAC_10HD | MAC_100HD | MAC_1000HD);
-+	else
-+		priv->phylink_config.mac_capabilities |=
-+			(MAC_10HD | MAC_100HD | MAC_1000HD);
-+}
-+
- static int stmmac_phy_setup(struct stmmac_priv *priv)
- {
- 	struct stmmac_mdio_bus_data *mdio_bus_data;
-@@ -1228,10 +1239,7 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
- 						MAC_10FD | MAC_100FD |
- 						MAC_1000FD;
- 
--	/* Half-Duplex can only work with single queue */
--	if (priv->plat->tx_queues_to_use <= 1)
--		priv->phylink_config.mac_capabilities |= MAC_10HD | MAC_100HD |
--							 MAC_1000HD;
-+	stmmac_set_half_duplex(priv);
- 
- 	/* Get the MAC specific capabilities */
- 	stmmac_mac_phylink_get_caps(priv);
-@@ -7172,6 +7180,7 @@ int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
- 			priv->rss.table[i] = ethtool_rxfh_indir_default(i,
- 									rx_cnt);
- 
-+	stmmac_set_half_duplex(priv);
- 	stmmac_napi_add(dev);
- 
- 	if (netif_running(dev))
+diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+index f1b00d6ac7ee..29ebf1e7898c 100644
+--- a/mm/mempolicy.c
++++ b/mm/mempolicy.c
+@@ -1543,8 +1543,10 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
+ 		 * the home node for vmas we already updated before.
+ 		 */
+ 		old = vma_policy(vma);
+-		if (!old)
++		if (!old) {
++			prev = vma;
+ 			continue;
++		}
+ 		if (old->mode != MPOL_BIND && old->mode != MPOL_PREFERRED_MANY) {
+ 			err = -EOPNOTSUPP;
+ 			break;
 
