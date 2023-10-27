@@ -2,42 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB1C97D9DDB
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 18:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F179A7D9DE0
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 18:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231585AbjJ0QSn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 12:18:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36592 "EHLO
+        id S231622AbjJ0QUb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 12:20:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230451AbjJ0QSm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 12:18:42 -0400
+        with ESMTP id S231649AbjJ0QUa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 12:20:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9844CE
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 09:18:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D59DC433C7;
-        Fri, 27 Oct 2023 16:18:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD2D9E5
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 09:20:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 65B53C433C9;
+        Fri, 27 Oct 2023 16:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698423520;
-        bh=GmOLmfMVEMfHxuG1nwvlx/455wXjMBzYfqHttRwj4MU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ArxZUpnRQmflK7jVklMBaHZt7OEN76TbyfaBAOHp247s28FOfnOYn/TwwuLM07iXy
-         QqtxRtZe7oGs6w4hzlTAbky1NI1iE4lx2BOSEA8Xv2ea5aprkMs8kmlg3wF2z7TPIi
-         RKBBZ65S7ckULxEbc3fhPJ/3tLwLJtY2HPDQKbDYWduK8dpV/7jFPHWXYB+mlXRiN5
-         sVWb6hqM3ywECxmI5BUF7SlxKgL449uFYb+pIvl2H9sCOWlZPYFwBh6qRg5Ls2+NJj
-         E0d1BaBdAO9zpz5stCPrIB4YTn0m0a1YKYVwb17dDiMQz5yup17DhOMDQRIy8KcnWg
-         n0kQSylfbWEpQ==
-From:   SeongJae Park <sj@kernel.org>
-To:     stable@vger.kernel.org
-Cc:     SeongJae Park <sj@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5.y] mm/damon/sysfs: check DAMOS regions update progress from before_terminate()
-Date:   Fri, 27 Oct 2023 16:18:30 +0000
-Message-Id: <20231027161830.47595-1-sj@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2023102716-prudishly-reggae-1b29@gregkh>
-References: <2023102716-prudishly-reggae-1b29@gregkh>
+        s=k20201202; t=1698423627;
+        bh=W24YusT5sVRpRnD4nJCM/tldYzUF7x3cNF8u7zFtOsM=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=gfFvt330C7a7zLLLQY71meGXR3q/b7zB7sPUOdvFVXLCh2uk5OQlWdviYuded+t7N
+         RP2SQDxrEt0sYAundrFHCSw9HVPdRtBmhFKupjSfdwhpfq7I6wrckuojpv7YkTp1/A
+         jduemiKADFDHNfFHxKL3K8k0JI2RkzFOvy/aCpH1R8RptCT9X4Lb4XQYxhXa6+T5eP
+         gSa9hvAbhP9OjQ+nhx1i5nNR9gc3w0p+ECwq//bnACcQSCSEwZuurxcL3RRYwvTX91
+         po11+g2eMBE4CAzHhmCb2Q00JAEej3G5rJLoV8weMCT55nX8ox/Oz34XaOQNdlGC4F
+         YozA0Av7KXGtA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 4B92BC41620;
+        Fri, 27 Oct 2023 16:20:27 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 00/10] mptcp: Fixes and cleanup for v6.7
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169842362730.5811.9219746703675864811.git-patchwork-notify@kernel.org>
+Date:   Fri, 27 Oct 2023 16:20:27 +0000
+References: <20231025-send-net-next-20231025-v1-0-db8f25f798eb@kernel.org>
+In-Reply-To: <20231025-send-net-next-20231025-v1-0-db8f25f798eb@kernel.org>
+To:     Mat Martineau <martineau@kernel.org>
+Cc:     matttbe@kernel.org, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, geliang.tang@suse.com,
+        kishen.maloor@intel.com, netdev@vger.kernel.org,
+        mptcp@lists.linux.dev, stable@vger.kernel.org
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -47,61 +52,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-DAMON_SYSFS can receive DAMOS tried regions update request while kdamond
-is already out of the main loop and before_terminate callback
-(damon_sysfs_before_terminate() in this case) is not yet called.  And
-damon_sysfs_handle_cmd() can further be finished before the callback is
-invoked.  Then, damon_sysfs_before_terminate() unlocks damon_sysfs_lock,
-which is not locked by anyone.  This happens because the callback function
-assumes damon_sysfs_cmd_request_callback() should be called before it.
-Check if the assumption was true before doing the unlock, to avoid this
-problem.
+Hello:
 
-Link: https://lkml.kernel.org/r/20231007200432.3110-1-sj@kernel.org
-Fixes: f1d13cacabe1 ("mm/damon/sysfs: implement DAMOS tried regions update command")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.2.x]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 76b7069bcc89dec33f03eb08abee165d0306b754)
----
- mm/damon/sysfs.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 33e1d5c9cb54..df165820c605 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1202,6 +1202,8 @@ static int damon_sysfs_set_targets(struct damon_ctx *ctx,
- 	return 0;
- }
- 
-+static bool damon_sysfs_schemes_regions_updating;
-+
- static void damon_sysfs_before_terminate(struct damon_ctx *ctx)
- {
- 	struct damon_target *t, *next;
-@@ -1209,10 +1211,12 @@ static void damon_sysfs_before_terminate(struct damon_ctx *ctx)
- 
- 	/* damon_sysfs_schemes_update_regions_stop() might not yet called */
- 	kdamond = damon_sysfs_cmd_request.kdamond;
--	if (kdamond && damon_sysfs_cmd_request.cmd ==
-+	if (kdamond && (damon_sysfs_cmd_request.cmd ==
- 			DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS &&
-+			damon_sysfs_schemes_regions_updating) &&
- 			ctx == kdamond->damon_ctx) {
- 		damon_sysfs_schemes_update_regions_stop(ctx);
-+		damon_sysfs_schemes_regions_updating = false;
- 		mutex_unlock(&damon_sysfs_lock);
- 	}
- 
-@@ -1331,7 +1335,6 @@ static int damon_sysfs_commit_input(struct damon_sysfs_kdamond *kdamond)
- static int damon_sysfs_cmd_request_callback(struct damon_ctx *c)
- {
- 	struct damon_sysfs_kdamond *kdamond;
--	static bool damon_sysfs_schemes_regions_updating;
- 	int err = 0;
- 
- 	/* avoid deadlock due to concurrent state_store('off') */
+On Wed, 25 Oct 2023 16:37:01 -0700 you wrote:
+> This series includes three initial patches that we had queued in our
+> mptcp-net branch, but given the likely timing of net/net-next syncs this
+> week, the need to avoid introducing branch conflicts, and another batch
+> of net-next patches pending in the mptcp tree, the most practical route
+> is to send everything for net-next.
+> 
+> Patches 1 & 2 fix some intermittent selftest failures by adjusting timing.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,01/10] selftests: mptcp: run userspace pm tests slower
+    https://git.kernel.org/netdev/net-next/c/f4a75e9d1100
+  - [net-next,02/10] selftests: mptcp: fix wait_rm_addr/sf parameters
+    https://git.kernel.org/netdev/net-next/c/9168ea02b898
+  - [net-next,03/10] mptcp: userspace pm send RM_ADDR for ID 0
+    https://git.kernel.org/netdev/net-next/c/84c531f54ad9
+  - [net-next,04/10] mptcp: drop useless ssk in pm_subflow_check_next
+    https://git.kernel.org/netdev/net-next/c/74cbb0c65b29
+  - [net-next,05/10] mptcp: use mptcp_check_fallback helper
+    https://git.kernel.org/netdev/net-next/c/83d580ddbe1b
+  - [net-next,06/10] mptcp: use mptcp_get_ext helper
+    https://git.kernel.org/netdev/net-next/c/a16c054b527b
+  - [net-next,07/10] mptcp: move sk assignment statement ahead
+    https://git.kernel.org/netdev/net-next/c/a6c85fc61c08
+  - [net-next,08/10] mptcp: define more local variables sk
+    https://git.kernel.org/netdev/net-next/c/14cb0e0bf39b
+  - [net-next,09/10] selftests: mptcp: sockopt: drop mptcp_connect var
+    https://git.kernel.org/netdev/net-next/c/e71aab6777a4
+  - [net-next,10/10] selftests: mptcp: display simult in extra_msg
+    https://git.kernel.org/netdev/net-next/c/629b35a225b0
+
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
