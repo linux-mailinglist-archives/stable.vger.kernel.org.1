@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEF397D9763
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:11:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3C807D9764
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345814AbjJ0ML5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:11:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43588 "EHLO
+        id S1345815AbjJ0MMB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:12:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345787AbjJ0ML4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:11:56 -0400
+        with ESMTP id S1345763AbjJ0MMA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:12:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6530B10A
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:11:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A230FC433C8;
-        Fri, 27 Oct 2023 12:11:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF8321BB
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:11:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D479DC433C7;
+        Fri, 27 Oct 2023 12:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698408714;
-        bh=K/+fbe835SN/LJvpD2pRfSsE+Z82V71BNOwbl2vSKnY=;
+        s=korg; t=1698408717;
+        bh=lT4VW6a/19q5ShKRx1KhwB/IK/7DGT6a3G6Tcb+aEkc=;
         h=Subject:To:Cc:From:Date:From;
-        b=Wwu4XB63q3iqos/5FEI7zTXmpOCD8UwKqImIG7MkMgO2XSajbHXIzjuv2dHFM17J+
-         lFBQ8ZuM5I4rWDumkll67whQeYrJffLbCO93ZLBVASQCNH0OjPPJkDKnwHvZCZINRY
-         bZ04hhDZr9JsdEtrMXTgVDCc9ln3S+iTEirFblyc=
-Subject: FAILED: patch "[PATCH] net: stmmac: update MAC capabilities when tx queues are" failed to apply to 6.5-stable tree
+        b=bTE4gnCQOyqgucWyexzFRAaxjJNsH0u8qKoGs7WgehUMdigIFu/+wn72yO1HShdrX
+         TzwChCCmoqLINWhcRE15xJEUySsLe5kLwoXUXCoDlgyhL1BdW94l81OaSW5v1HoJ5x
+         t9PgeVEB184OqiKND2rvP+9vG2o6jXT1eIsIf+qY=
+Subject: FAILED: patch "[PATCH] net: stmmac: update MAC capabilities when tx queues are" failed to apply to 6.1-stable tree
 To:     michael.wei.hong.sit@intel.com, davem@davemloft.net,
         stable@vger.kernel.org, yi.fang.gan@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:11:51 +0200
-Message-ID: <2023102751-playful-marbled-4744@gregkh>
+Date:   Fri, 27 Oct 2023 14:11:52 +0200
+Message-ID: <2023102752-maturely-stardom-066f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 95201f36f395df34321fcddbce12103e8bbe4970
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102751-playful-marbled-4744@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102752-maturely-stardom-066f@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
