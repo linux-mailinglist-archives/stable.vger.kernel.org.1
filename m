@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 27B477D97A5
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:18:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D08EC7D97A7
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:18:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345740AbjJ0MSP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:18:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40780 "EHLO
+        id S1345815AbjJ0MSV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:18:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345599AbjJ0MSP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:18:15 -0400
+        with ESMTP id S1345689AbjJ0MSS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:18:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0480B10A
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:18:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42043C433C8;
-        Fri, 27 Oct 2023 12:18:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27F54FA
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:18:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD1BC433C9;
+        Fri, 27 Oct 2023 12:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698409092;
-        bh=umd2QG/cKeQM7ea6XTXIBdld7X7C7WNaIVGJVq8fl9E=;
+        s=korg; t=1698409095;
+        bh=jBF+IEn13pXQ/iK4uOSqAOM3TZCsnKxTwwwHwE3/jPQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=tS376RYE1tK6s1NPQqZdtw4NAV8OOMaRmVHBFAY21dIYBsS+bV7+Bdor81MHPx77E
-         9dZNOxbMF5FuBFyLFCBUGlHWkektcxIS+Oa8NegzR0F8JVUMVUJ1H8ZdICsRuKY+Ge
-         Q9IZv+vtLNwmFmPYvnek93BZuIPDlviQapon2iyA=
-Subject: FAILED: patch "[PATCH] nfsd: lock_rename() needs both directories to live on the" failed to apply to 5.4-stable tree
+        b=X4JtjuCjhwAhbJWvypUUCsPqAaCZrn5Wiq1lpeZvIc9gwDZqOjTbkrygkZmiLe36G
+         gmUieSj7+JPgh1MgypNVYi8khB9zQrSHOup7YvqW2tV1/JRTN7S3pwLirmoQqYOJZO
+         Wsi7tAcZxAWO3caci+8BI3kNOuEccTe3CbEnf61I=
+Subject: FAILED: patch "[PATCH] nfsd: lock_rename() needs both directories to live on the" failed to apply to 4.19-stable tree
 To:     viro@zeniv.linux.org.uk, chuck.lever@oracle.com, jlayton@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:18:01 +0200
-Message-ID: <2023102701-cadet-groovy-9672@gregkh>
+Date:   Fri, 27 Oct 2023 14:18:02 +0200
+Message-ID: <2023102702-equation-convene-7bce@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1aee9158bc978f91701c5992e395efbc6da2de3c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102701-cadet-groovy-9672@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102702-equation-convene-7bce@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
