@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6513B7D977D
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B5607D977E
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:14:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345833AbjJ0MOs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:14:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57044 "EHLO
+        id S1345650AbjJ0MO5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:14:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345830AbjJ0MOs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:14:48 -0400
+        with ESMTP id S1345802AbjJ0MO5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:14:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79FE5C0
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:14:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9AC5C433C8;
-        Fri, 27 Oct 2023 12:14:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BBC310A
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:14:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA99CC433C7;
+        Fri, 27 Oct 2023 12:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698408885;
-        bh=OJRBYkwiDT9X0cjq6wmrm/Ycv3wJLaqNyh+zSJUuukQ=;
+        s=korg; t=1698408894;
+        bh=w8JoF5daWmtdSnbCE/JgS2B4qz7z87kSCOAz9Alm9uw=;
         h=Subject:To:Cc:From:Date:From;
-        b=kqHazBkI/RYPYfL66Bz+rqAEPurujjIsOuDtlL3TAlxVInJJjrYMefv8+UmqPQWvx
-         6PPBY/K68gG5IFKk2W1AEobbLZAV1PZujp3GA98Bna+voitnGw6tefAs4iAPT1YZhe
-         O6XjE3EDcYlU8+VDJX2sqZn9edTOCFCxHXh4tzPk=
-Subject: FAILED: patch "[PATCH] mmap: fix error paths with dup_anon_vma()" failed to apply to 6.5-stable tree
+        b=tQfLTJAeaeQ/e7NhbuC2AiWEX9pDDGpgps6F2ET+FCLn3TfsEi4zxFy1teZ/PM8kU
+         3I/sIsqx+dc5bnYYnEYe+Ejnvke2573atk7x+1o2tig/NvTwKgegtPWoreykxalqZX
+         nM1udEwzfYWE+pUd1bmBkMi24sdgH91CCEfrm0k8=
+Subject: FAILED: patch "[PATCH] mmap: fix error paths with dup_anon_vma()" failed to apply to 6.1-stable tree
 To:     Liam.Howlett@oracle.com, akpm@linux-foundation.org,
         jannh@google.com, lstoakes@gmail.com, stable@vger.kernel.org,
         surenb@google.com, vbabka@suse.cz, willy@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:14:42 +0200
-Message-ID: <2023102742-carnation-spinach-79d8@gregkh>
+Date:   Fri, 27 Oct 2023 14:14:43 +0200
+Message-ID: <2023102743-frantic-sash-c381@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -45,19 +45,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 824135c46b00df7fb369ec7f1f8607427bbebeb0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102742-carnation-spinach-79d8@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102743-frantic-sash-c381@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
