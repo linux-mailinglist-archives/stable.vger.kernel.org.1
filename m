@@ -2,102 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF42E7DA05F
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 20:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32F5C7DA0E3
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 20:46:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232443AbjJ0S1D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 14:27:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36536 "EHLO
+        id S1346397AbjJ0Sqx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 14:46:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232781AbjJ0S0x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 14:26:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358B2D6C
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 11:23:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1698431029;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+        with ESMTP id S1346405AbjJ0Sqh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 14:46:37 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409AF1AC;
+        Fri, 27 Oct 2023 11:46:34 -0700 (PDT)
+Date:   Fri, 27 Oct 2023 18:46:31 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1698432391;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=f1GFRFSXrJZnqwU7bWQb2Id5cyqADGdT0GyV9+GmOAk=;
-        b=hmCpIiJmxOdLA6LPh8hkpLWRHEpLbQdEzACS93bAI/3TOOZCWiCJT+5fSU5W/SVcZyuubo
-        6/kM5lzTdseJDpkuIs81yxKpiphyYy4X9vwRzVNT2hVDZbt5HNxdu2c6Ep5JmvvOgqTG53
-        7OLWVTzXx2qD7l7s2aEg4tjrTHgg85Q=
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
- [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-TUpXmhVuPKqmZda5593znw-1; Fri, 27 Oct 2023 14:23:47 -0400
-X-MC-Unique: TUpXmhVuPKqmZda5593znw-1
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-27da957c9a3so2180747a91.2
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 11:23:47 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698431026; x=1699035826;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f1GFRFSXrJZnqwU7bWQb2Id5cyqADGdT0GyV9+GmOAk=;
-        b=eMiLuSXaCOLGpyZAsug9kriRGJqR9vLFlOFpM5y/f0gOv89M3tuDu0fX4bJ2VC2uvQ
-         3kVUTbboKNtLdsyimBlDHH14+nVEHm/3hoyyXCIB+gh4x8TUIDCAk+3ydmgpi7P/h1ey
-         XgkNF1iAFH4FrfoKtWxhMJ8QT/w+Xs6g2zd4wIMx5BTHP8MCzOLTfPgiRX9LvMeHA3xs
-         CTxp8CTsJtqGsUPtU3cL7vo5RROSv0bD9bQcQB8Moklo2Vsj7n2PMmdk0ui1Pgj5Ezj+
-         TainTjYFBKR5ENdmxHASH5ChWQlG0zLFPha9rnX8rk74qkj1P3Si0MoOgVY/YPScDzCQ
-         yyeA==
-X-Gm-Message-State: AOJu0Yxty8DogBUQAyAwuRES5V8OqyKgogeRdn6DnJrMN8Y4YigkLHp+
-        wgSvbFsVD8kCwrxXAdLKjxM8S2pj/xFWPQvb2iZts21uFnkYsZCg58zZMtT7VfRS/X9w8KMdb+6
-        Q8x1CXp19tiEWrOh9Bt0B5tIpFVe4CXn0
-X-Received: by 2002:a17:90b:3644:b0:280:1508:fbbb with SMTP id nh4-20020a17090b364400b002801508fbbbmr1868680pjb.23.1698431026287;
-        Fri, 27 Oct 2023 11:23:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG50FlCwAd54tu9bXNQ2lOanyMl7ApDN5fYTheNDi/qcr0Q8FcDhYQnCfYRD6hGz6A5X4B1bh6MAyLWI8uU85M=
-X-Received: by 2002:a17:90b:3644:b0:280:1508:fbbb with SMTP id
- nh4-20020a17090b364400b002801508fbbbmr1868659pjb.23.1698431026001; Fri, 27
- Oct 2023 11:23:46 -0700 (PDT)
+        bh=f6EBd7CQLyZiNig/spAOzxNR1L2frOSZ4YESWGhvmLI=;
+        b=jCFQYvkce+A6qqFPkuK+ohh8vzqjbpErin0g6q/Pj1+B6epLkqbDewNI2IvrZ3NeLLlUtm
+        nPmPhtw9Ik6ZkuKcAlKIXU4UHs/bPHLC0Q2X9e0UEBSwza7Gls1M42d8wxuErn3N3VRCpl
+        dz8+oczq8j4EXHT0gW91ZprqAgkhbWFvvmXFM/dx2+Lft414plNXMlRPF5ZN+vkp/9IlO5
+        ozlsHmcDPDDuNwDjshkRuyPxSfev1k895I0z2dT6bYPiqAnXN2b86Jyo/vOPecjmON2cWx
+        CORhlgQQpocALCG5drpoOzOziSa4deKhOld4X4TPNitfUgpuzRp36N/Y8C0qNg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1698432392;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=f6EBd7CQLyZiNig/spAOzxNR1L2frOSZ4YESWGhvmLI=;
+        b=KOYeO9YZgSMaiafzoXp+3jHsJHVJU9NxqThmxSTpRRHGANRsaGmpVLVjL/t0UpE4/xw5MX
+        SOtDp637ghfH4WDw==
+From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/tsc: Defer marking TSC unstable to a worker
+Cc:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <87zg064ceg.ffs@tglx>
+References: <87zg064ceg.ffs@tglx>
 MIME-Version: 1.0
-References: <fa3510f3-d3cc-45d2-b38e-e8717e2a9f83@ddn.com> <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
- <9afc3152-5448-42eb-a7f4-4167fc8bc589@ddn.com> <5cd87a64-c506-46f2-9fed-ac8a74658631@ddn.com>
- <8ae8ce4d-6323-4160-848a-5e94895ae60e@leemhuis.info> <CAOssrKdvy9qTGSwwPVqYLAYYEk0jbqhGg4Lz=jEff7U58O4Yqw@mail.gmail.com>
- <2023102731-wobbly-glimpse-97f5@gregkh> <CAOssrKfNkMmHB2oHHO8gWbzDX27vS--e9dZoh_Mjv-17mSUTBw@mail.gmail.com>
- <2023102740-think-hatless-ab87@gregkh> <CAOssrKd-O1JKEPzvnM1VkQ0-oTpDv0RfY6B5oF5p63AtQ4HoqA@mail.gmail.com>
- <2023102757-cornflake-pry-e788@gregkh>
-In-Reply-To: <2023102757-cornflake-pry-e788@gregkh>
-From:   Miklos Szeredi <mszeredi@redhat.com>
-Date:   Fri, 27 Oct 2023 20:23:34 +0200
-Message-ID: <CAOssrKc6zpsTox58CMvWHAU7EhM1REEk6J9SbV5DaBzurpmr5Q@mail.gmail.com>
-Subject: Re: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set the FUSE_INIT_EXT"
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Paul Lawrence <paullawrence@google.com>,
-        Daniel Rosenberg <drosen@google.com>,
-        Alessio Balsini <balsini@android.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Bernd Schubert <bschubert@ddn.com>,
-        =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <169843239104.3135.3490038788401849491.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Oct 27, 2023 at 3:12=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+The following commit has been merged into the x86/urgent branch of tip:
 
-> So because Android userspace is sending a flag value that is not in the
-> upstream table, this breakage is ok?  Or do you mean something else, I'm
-> getting confused.
+Commit-ID:     bd94d86f490b70c58b3fc5739328a53ad4b18d86
+Gitweb:        https://git.kernel.org/tip/bd94d86f490b70c58b3fc5739328a53ad4b18d86
+Author:        Thomas Gleixner <tglx@linutronix.de>
+AuthorDate:    Wed, 25 Oct 2023 23:31:35 +02:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Fri, 27 Oct 2023 20:36:57 +02:00
 
-From my POV the regression in the Android kernel was due to the
-Android patch that added those flags.
+x86/tsc: Defer marking TSC unstable to a worker
 
-Not all flags are equal, some applications use a specific set of flags
-and another set of applications use another set.  Non-Android apps
-won't use the flag that Android added, for obvious reasons.
+Tetsuo reported the following lockdep splat when the TSC synchronization
+fails during CPU hotplug:
 
-I still don't see why we'd need to revert this patch due to
-regressions in Android.  Maybe I'm really dumb, but I just don't get
-it.
+   tsc: Marking TSC unstable due to check_tsc_sync_source failed
+  
+   WARNING: inconsistent lock state
+   inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
+   ffffffff8cfa1c78 (watchdog_lock){?.-.}-{2:2}, at: clocksource_watchdog+0x23/0x5a0
+   {IN-HARDIRQ-W} state was registered at:
+     _raw_spin_lock_irqsave+0x3f/0x60
+     clocksource_mark_unstable+0x1b/0x90
+     mark_tsc_unstable+0x41/0x50
+     check_tsc_sync_source+0x14f/0x180
+     sysvec_call_function_single+0x69/0x90
 
-Thanks,
-Miklos
+   Possible unsafe locking scenario:
+     lock(watchdog_lock);
+     <Interrupt>
+       lock(watchdog_lock);
 
+   stack backtrace:
+    _raw_spin_lock+0x30/0x40
+    clocksource_watchdog+0x23/0x5a0
+    run_timer_softirq+0x2a/0x50
+    sysvec_apic_timer_interrupt+0x6e/0x90
+
+The reason is the recent conversion of the TSC synchronization function
+during CPU hotplug on the control CPU to a SMP function call. In case
+that the synchronization with the upcoming CPU fails, the TSC has to be
+marked unstable via clocksource_mark_unstable().
+
+clocksource_mark_unstable() acquires 'watchdog_lock', but that lock is
+taken with interrupts enabled in the watchdog timer callback to minimize
+interrupt disabled time. That's obviously a possible deadlock scenario,
+
+Before that change the synchronization function was invoked in thread
+context so this could not happen.
+
+As it is not crucical whether the unstable marking happens slightly
+delayed, defer the call to a worker thread which avoids the lock context
+problem.
+
+Fixes: 9d349d47f0e3 ("x86/smpboot: Make TSC synchronization function call based")
+Reported-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/87zg064ceg.ffs@tglx
+---
+ arch/x86/kernel/tsc_sync.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/tsc_sync.c b/arch/x86/kernel/tsc_sync.c
+index bbc440c..1123ef3 100644
+--- a/arch/x86/kernel/tsc_sync.c
++++ b/arch/x86/kernel/tsc_sync.c
+@@ -15,6 +15,7 @@
+  * ( The serial nature of the boot logic and the CPU hotplug lock
+  *   protects against more than 2 CPUs entering this code. )
+  */
++#include <linux/workqueue.h>
+ #include <linux/topology.h>
+ #include <linux/spinlock.h>
+ #include <linux/kernel.h>
+@@ -342,6 +343,13 @@ static inline unsigned int loop_timeout(int cpu)
+ 	return (cpumask_weight(topology_core_cpumask(cpu)) > 1) ? 2 : 20;
+ }
+ 
++static void tsc_sync_mark_tsc_unstable(struct work_struct *work)
++{
++	mark_tsc_unstable("check_tsc_sync_source failed");
++}
++
++static DECLARE_WORK(tsc_sync_work, tsc_sync_mark_tsc_unstable);
++
+ /*
+  * The freshly booted CPU initiates this via an async SMP function call.
+  */
+@@ -395,7 +403,7 @@ retry:
+ 			"turning off TSC clock.\n", max_warp);
+ 		if (random_warps)
+ 			pr_warn("TSC warped randomly between CPUs\n");
+-		mark_tsc_unstable("check_tsc_sync_source failed");
++		schedule_work(&tsc_sync_work);
+ 	}
+ 
+ 	/*
