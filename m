@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDA937D9779
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D40317D977A
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345810AbjJ0MOJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:14:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54024 "EHLO
+        id S1345799AbjJ0MOX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:14:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345739AbjJ0MOJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:14:09 -0400
+        with ESMTP id S1345739AbjJ0MOW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:14:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53218C0
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:14:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9707EC433C7;
-        Fri, 27 Oct 2023 12:14:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02CACFA
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:14:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216A7C433C7;
+        Fri, 27 Oct 2023 12:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698408847;
-        bh=T/1XZ7yFe3lRx4//S7bL+4gmQ9Sg9MH8rVCFHr38JHc=;
+        s=korg; t=1698408859;
+        bh=GVFWjVm2GdRjjpjb6vmgrAn9sWxqUA18pg1pPq45qQ0=;
         h=Subject:To:Cc:From:Date:From;
-        b=d2roq0dv3DXx6LqoOdm5ZafB1DZSd0PlZguD1H5KdyNnoNx2jBWPzgCEkYVDCRnBI
-         ERz116hjShfgwjCD4RTDyo7vufrg1isuYOw94ang78ngPuLodqgOVZ3M+cZ73fm7ew
-         4+yR9O28WJMV6QB1byjrqxnZNZqE6fUDSw4fBbEs=
-Subject: FAILED: patch "[PATCH] mm/mempolicy: fix set_mempolicy_home_node() previous VMA" failed to apply to 6.1-stable tree
-To:     Liam.Howlett@oracle.com, akpm@linux-foundation.org,
-        lstoakes@gmail.com, stable@vger.kernel.org, yikebaer61@gmail.com
+        b=cpN1tkPOQEEx9zVcNCjqH+mm79CDlLmM0izWTDS18sYcQ11t5dPIpASPL1Bi1tJ5O
+         PTZESDwHZThNtRWu1aFFVtdDIF3FkxIWvUSTYntYLLo7vnWEhEQCv3PwcjDSZEghAY
+         hrJDXpRCoH6kCw4f+tFpa25IlkJa1tiFGNffkxG4=
+Subject: FAILED: patch "[PATCH] mm/damon/sysfs: check DAMOS regions update progress from" failed to apply to 6.5-stable tree
+To:     sj@kernel.org, akpm@linux-foundation.org, stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:14:04 +0200
-Message-ID: <2023102704-surrogate-dole-2888@gregkh>
+Date:   Fri, 27 Oct 2023 14:14:16 +0200
+Message-ID: <2023102716-prudishly-reggae-1b29@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x 51f625377561e5b167da2db5aafb7ee268f691c5
+git cherry-pick -x 76b7069bcc89dec33f03eb08abee165d0306b754
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102704-surrogate-dole-2888@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102716-prudishly-reggae-1b29@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,45 +67,59 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 51f625377561e5b167da2db5aafb7ee268f691c5 Mon Sep 17 00:00:00 2001
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Date: Thu, 28 Sep 2023 13:24:32 -0400
-Subject: [PATCH] mm/mempolicy: fix set_mempolicy_home_node() previous VMA
- pointer
+From 76b7069bcc89dec33f03eb08abee165d0306b754 Mon Sep 17 00:00:00 2001
+From: SeongJae Park <sj@kernel.org>
+Date: Sat, 7 Oct 2023 20:04:32 +0000
+Subject: [PATCH] mm/damon/sysfs: check DAMOS regions update progress from
+ before_terminate()
 
-The two users of mbind_range() are expecting that mbind_range() will
-update the pointer to the previous VMA, or return an error.  However,
-set_mempolicy_home_node() does not call mbind_range() if there is no VMA
-policy.  The fix is to update the pointer to the previous VMA prior to
-continuing iterating the VMAs when there is no policy.
+DAMON_SYSFS can receive DAMOS tried regions update request while kdamond
+is already out of the main loop and before_terminate callback
+(damon_sysfs_before_terminate() in this case) is not yet called.  And
+damon_sysfs_handle_cmd() can further be finished before the callback is
+invoked.  Then, damon_sysfs_before_terminate() unlocks damon_sysfs_lock,
+which is not locked by anyone.  This happens because the callback function
+assumes damon_sysfs_cmd_request_callback() should be called before it.
+Check if the assumption was true before doing the unlock, to avoid this
+problem.
 
-Users may experience a WARN_ON() during VMA policy updates when updating
-a range of VMAs on the home node.
-
-Link: https://lkml.kernel.org/r/20230928172432.2246534-1-Liam.Howlett@oracle.com
-Link: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
-Fixes: f4e9e0e69468 ("mm/mempolicy: fix use-after-free of VMA iterator")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
-Closes: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
-Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20231007200432.3110-1-sj@kernel.org
+Fixes: f1d13cacabe1 ("mm/damon/sysfs: implement DAMOS tried regions update command")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[6.2.x]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-index f1b00d6ac7ee..29ebf1e7898c 100644
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1543,8 +1543,10 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
- 		 * the home node for vmas we already updated before.
- 		 */
- 		old = vma_policy(vma);
--		if (!old)
-+		if (!old) {
-+			prev = vma;
- 			continue;
-+		}
- 		if (old->mode != MPOL_BIND && old->mode != MPOL_PREFERRED_MANY) {
- 			err = -EOPNOTSUPP;
- 			break;
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index b86ba7b0a921..f60e56150feb 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1208,6 +1208,8 @@ static int damon_sysfs_set_targets(struct damon_ctx *ctx,
+ 	return 0;
+ }
+ 
++static bool damon_sysfs_schemes_regions_updating;
++
+ static void damon_sysfs_before_terminate(struct damon_ctx *ctx)
+ {
+ 	struct damon_target *t, *next;
+@@ -1219,8 +1221,10 @@ static void damon_sysfs_before_terminate(struct damon_ctx *ctx)
+ 	cmd = damon_sysfs_cmd_request.cmd;
+ 	if (kdamond && ctx == kdamond->damon_ctx &&
+ 			(cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_REGIONS ||
+-			 cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_BYTES)) {
++			 cmd == DAMON_SYSFS_CMD_UPDATE_SCHEMES_TRIED_BYTES) &&
++			damon_sysfs_schemes_regions_updating) {
+ 		damon_sysfs_schemes_update_regions_stop(ctx);
++		damon_sysfs_schemes_regions_updating = false;
+ 		mutex_unlock(&damon_sysfs_lock);
+ 	}
+ 
+@@ -1340,7 +1344,6 @@ static int damon_sysfs_commit_input(struct damon_sysfs_kdamond *kdamond)
+ static int damon_sysfs_cmd_request_callback(struct damon_ctx *c)
+ {
+ 	struct damon_sysfs_kdamond *kdamond;
+-	static bool damon_sysfs_schemes_regions_updating;
+ 	bool total_bytes_only = false;
+ 	int err = 0;
+ 
 
