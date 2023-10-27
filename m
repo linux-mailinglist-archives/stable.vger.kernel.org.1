@@ -2,91 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3E347D9F04
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 19:47:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF4D7D9F07
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 19:48:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345929AbjJ0RrS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 13:47:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50272 "EHLO
+        id S231594AbjJ0Rs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 13:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231464AbjJ0RrS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 13:47:18 -0400
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60E56E3;
-        Fri, 27 Oct 2023 10:47:14 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F29E920004;
-        Fri, 27 Oct 2023 17:47:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-        t=1698428832;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=AzMCYtHoI7SG+hrdCFiCqKFA4nKMelQAhb2DhwTgKRQ=;
-        b=ks2FCKwG+qUGKUKS+xSIydbNB4NGUY3mwlU/NgeDdlDTejLg2JambDcbwdSVHxjpDt6RUt
-        SOU6wkVUqDvDPuNYREmWTw4y4l19+SkYR/efASy76gR27gfeiCCE7jeH4Z3jQUyM1WHzHy
-        mPbVYC7t/7eCFUEPF2V1NPcbHqAafDEmZlQgUqUtr56luoeH2EYplww6oKLNY+/bJC3oBB
-        w9FLaRfw30aAVWcE/AAfxziwv5+k6QSmrJlZZQAXHmLcr8t2gOYXO7q+ZcEt9i6JB7lV+n
-        Y1868b/iAouRTioj4Z+j4Jr3mGg2R4itesLTyA8FLznzayFbfVBu98AV2TlnqQ==
-From:   Miquel Raynal <miquel.raynal@bootlin.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-Cc:     linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Nicolas Pitre <nico@fluxnic.net>
-Subject: Re: [PATCH v4] mtd: cfi_cmdset_0001: Byte swap OTP info
-Date:   Fri, 27 Oct 2023 19:47:11 +0200
-Message-Id: <20231027174711.369946-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231020-mtd-otp-byteswap-v4-1-0d132c06aa9d@linaro.org>
-References: 
+        with ESMTP id S231464AbjJ0Rsz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 13:48:55 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2085DE3
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 10:48:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698428934; x=1729964934;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=/7SjA1LpJ8qWzgG9ARbe5wAImR6tfU/v7q6M7oDJ9b0=;
+  b=cAyc8HEnIOl1aNe86mbxE5ssSFekixKr85S2+5WKprBDjv5jRCZa3WaW
+   Ayxe6l9NrAJHmGmhvayaf3e7EXW/FVKurSbbtJDJINOReF6G+MxhZPIbX
+   wOcM0/zxE0iBWbvldvy1WR3ZDh99xakKE13+U8x6s8DMgQBG+HMlrbPS5
+   Ds1iQrmZoRH38dh7FYdiL6EDL+3fxLyKSN5Nn7fJcTYevhauR1XO0Ejqt
+   3qhP2nPKspI8BZygso1pCykyyutCIR1lshB15FZYwceTEsGnFETd5lgzM
+   gZYjIM8kREysmmE/WevlA+MeCX1rmdvYqlDh56ip56DkP1uoslXhvREfa
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="372875998"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="372875998"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Oct 2023 10:48:53 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10876"; a="825417952"
+X-IronPort-AV: E=Sophos;i="6.03,256,1694761200"; 
+   d="scan'208";a="825417952"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 27 Oct 2023 10:48:52 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qwQx0-000B3n-0m;
+        Fri, 27 Oct 2023 17:48:50 +0000
+Date:   Sat, 28 Oct 2023 01:47:55 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: Apply a1e2c031ec39 and e32683c6f7d2 to 5.15 and earlier
+Message-ID: <ZTv3y8NB7A3KrFPF@dceb3e7df498>
 MIME-Version: 1.0
-X-linux-mtd-patch-notification: thanks
-X-linux-mtd-patch-commit: b'565fe150624ee77dc63a735cc1b3bff5101f38a3'
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231027160144.GA232578@dev-arch.thelio-3990X>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 2023-10-20 at 20:30:29 UTC, Linus Walleij wrote:
-> Currently the offset into the device when looking for OTP
-> bits can go outside of the address of the MTD NOR devices,
-> and if that memory isn't readable, bad things happen
-> on the IXP4xx (added prints that illustrate the problem before
-> the crash):
-> 
-> cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x00000100
-> ixp4xx_copy_from copy from 0x00000100 to 0xc880dd78
-> cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x12000000
-> ixp4xx_copy_from copy from 0x12000000 to 0xc880dd78
-> 8<--- cut here ---
-> Unable to handle kernel paging request at virtual address db000000
-> [db000000] *pgd=00000000
-> (...)
-> 
-> This happens in this case because the IXP4xx is big endian and
-> the 32- and 16-bit fields in the struct cfi_intelext_otpinfo are not
-> properly byteswapped. Compare to how the code in read_pri_intelext()
-> byteswaps the fields in struct cfi_pri_intelext.
-> 
-> Adding a small byte swapping loop for the OTP in read_pri_intelext()
-> and the crash goes away.
-> 
-> The problem went unnoticed for many years until I enabled
-> CONFIG_MTD_OTP on the IXP4xx as well, triggering the bug.
-> 
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Nicolas Pitre <nico@fluxnic.net>
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Hi,
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/next, thanks.
+Thanks for your patch.
 
-Miquel
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: Apply a1e2c031ec39 and e32683c6f7d2 to 5.15 and earlier
+Link: https://lore.kernel.org/stable/20231027160144.GA232578%40dev-arch.thelio-3990X
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
