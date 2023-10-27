@@ -2,102 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19CA47D9364
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 11:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E9A57D94C0
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 12:08:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235094AbjJ0JUD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 05:20:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38022 "EHLO
+        id S1345629AbjJ0KI1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 06:08:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345577AbjJ0JT7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 05:19:59 -0400
-Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.219])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CE9CA11F;
-        Fri, 27 Oct 2023 02:19:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=x7fiv
-        BQJq72nSMKux0IKJcpLOEh/ZK4DVTpIIvCRjkA=; b=OWIxMHlnmEetMmBrF5wNU
-        iet7mM3/6axuVHUu3jZFNsHOXrsp3S/VMOPP91EA/7OGOW1vfuOg4lGzPHZ8O033
-        /rHAIxiNMDBr4lwpT8LaVY3j2FeWV8laEfkO7c4V97x9T1h0WgNl0B3v2P0kty8b
-        vk6rDiF5DKyGBqGlQOlDYI=
-Received: from leanderwang-LC4.localdomain (unknown [111.206.145.21])
-        by zwqz-smtp-mta-g0-0 (Coremail) with SMTP id _____wBnD_ZrgDtlHuRqBg--.47942S2;
-        Fri, 27 Oct 2023 17:18:35 +0800 (CST)
-From:   Zheng Wang <zyytlz.wz@163.com>
-To:     dmitry.osipenko@collabora.com
-Cc:     Kyrie.Wu@mediatek.com, bin.liu@mediatek.com, mchehab@kernel.org,
-        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, Irui.Wang@mediatek.com,
-        security@kernel.org, hackerzheng666@gmail.com,
-        1395428693sheep@gmail.com, alex000young@gmail.com,
-        amergnat@baylibre.com, wenst@chromium.org,
-        Zheng Wang <zyytlz.wz@163.com>, stable@vger.kernel.org
-Subject: [PATCH 2/2] media: mtk-jpeg: Fix timeout schedule error in mtk_jpegdec_worker.
-Date:   Fri, 27 Oct 2023 17:18:32 +0800
-Message-Id: <20231027091832.39082-1-zyytlz.wz@163.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S1345675AbjJ0KI0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 06:08:26 -0400
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 208581B5
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 03:08:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1698401299;
+        bh=0tSupoaXw3PNm+1ssTFm6jQxgNKdnFhV/B2IybUSobA=;
+        h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+        b=jQzILde5pelxgGYr760bO3cfAdt+bZ7Ta907VVMaUe4oT5X9nX+HJlckc9Y0OzbzP
+         YnO2eH/U1i4M9q5jcX9ha4A6bY3JZdaLKhf5tBrNK1g1Yv8eCXDVT4iGkoURtoM/IC
+         KIFs/XBpb7HmmKEDYZtcA1oi4Jypgh2qiaFCjtZh5SkpEa1ABy2Ul+Nx8N8yNpq5iB
+         tpThaHfnLs7N9Jhh+R/Pc6lfYN+ek3YKlmuF8r2fWKYfNfeQV8s1QaDptFeKNhLtDf
+         8EKSSqN9VAMzsPiETBkpfbWXnQcC0P23vgLs8xDqZj/pgcBpmOIvA3W1hZTGFXDXhZ
+         tDBLeYbijpsJQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4SGyzR0XgGz4xWf;
+        Fri, 27 Oct 2023 21:08:19 +1100 (AEDT)
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Cc:     linuxppc-dev@lists.ozlabs.org, brking@linux.vnet.ibm.com,
+        gjoyce@linux.vnet.ibm.com, stable@vger.kernel.org
+In-Reply-To: <20231003030802.47914-1-gbatra@linux.vnet.ibm.com>
+References: <20231003030802.47914-1-gbatra@linux.vnet.ibm.com>
+Subject: Re: [PATCH v2] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
+Message-Id: <169840079678.2701453.14213017318168478377.b4-ty@ellerman.id.au>
+Date:   Fri, 27 Oct 2023 20:59:56 +1100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wBnD_ZrgDtlHuRqBg--.47942S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar15uF1rKrW5Gr4xtw4Dtwb_yoW8Cw1kpF
-        Z3K3yqkrW5Wrs8tF4UA3W7ZFy5G3s0gr47WF43Wws3J343XF47tryjya4xtFWIyFy2ka4F
-        vF4vg34xJFsFyFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziiIDxUUUUU=
-X-Originating-IP: [111.206.145.21]
-X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/1tbiXA4WU1Xl75dK2QAAsM
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In mtk_jpegdec_worker, if error occurs in mtk_jpeg_set_dec_dst, it
-will start the timeout worker and invoke v4l2_m2m_job_finish at
-the same time. This will break the logic of design for there should
-be only one function to call v4l2_m2m_job_finish. But now the timeout
-handler and mtk_jpegdec_worker will both invoke it.
+On Mon, 02 Oct 2023 22:08:02 -0500, Gaurav Batra wrote:
+> When a device is initialized, the driver invokes dma_supported() twice -
+> first for streaming mappings followed by coherent mappings. For an
+> SR-IOV device, default window is deleted and DDW created. With vPMEM
+> enabled, TCE mappings are dynamically created for both vPMEM and SR-IOV
+> device.  There are no direct mappings.
+> 
+> First time when dma_supported() is called with 64 bit mask, DDW is created
+> and marked as dynamic window. The second time dma_supported() is called,
+> enable_ddw() finds existing window for the device and incorrectly returns
+> it as "direct mapping".
+> 
+> [...]
 
-Fix it by start the worker only if mtk_jpeg_set_dec_dst successfully
-finished.
+Applied to powerpc/next.
 
-Fixes: da4ede4b7fd6 ("media: mtk-jpeg: move data/code inside CONFIG_OF blocks")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: stable@vger.kernel.org
----
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+[1/1] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
+      https://git.kernel.org/powerpc/c/3bf983e4e93ce8e6d69e9d63f52a66ec0856672e
 
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-index 7194f88edc0f..d099a9b67930 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1750,9 +1750,6 @@ static void mtk_jpegdec_worker(struct work_struct *work)
- 	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
- 	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
- 
--	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
--			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
--
- 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
- 	if (mtk_jpeg_set_dec_dst(ctx,
- 				 &jpeg_src_buf->dec_param,
-@@ -1762,6 +1759,9 @@ static void mtk_jpegdec_worker(struct work_struct *work)
- 		goto setdst_end;
- 	}
- 
-+	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
-+			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
-+
- 	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
- 	ctx->total_frame_num++;
- 	mtk_jpeg_dec_reset(comp_jpeg[hw_id]->reg_base);
--- 
-2.25.1
-
+cheers
