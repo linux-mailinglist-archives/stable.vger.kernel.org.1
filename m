@@ -2,131 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AB5D7D9C39
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 16:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 070AD7D9C90
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 17:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346090AbjJ0OzA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 10:55:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60416 "EHLO
+        id S231340AbjJ0PHm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 11:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345833AbjJ0Oy7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 10:54:59 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A753C4;
-        Fri, 27 Oct 2023 07:54:57 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-1c0fcbf7ae4so1461733fac.0;
-        Fri, 27 Oct 2023 07:54:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698418497; x=1699023297; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=FRGus6ktymyimDivswpJ27Ui0IhpUZQSXAOmlCFn8oc=;
-        b=J7NdXdqQVTor8CL+TVudIV2/GvGoZVmjR27T3zO606ncNlNqFSiOWdKWUKgSrZwIDy
-         3mc7B1mkqOjLJyMxccg2pZdAkZ9/xxzGgpbh6XYIpZUFPRQQFFZJy6GNU7ZtAx5hzXEf
-         o4UUwtK1tDlkETq9G040GTmvhwZXYqyk2jPrElo/mhyPFgDCbZhLwM9LzZRdsEYgam/B
-         6znzyT5s/8ky8H58vqh96zuKBzYq0CH6PS/FyWUz98WYfszz2t1FxMUpkKHxkhK2dTh/
-         M3ZRcKatiUTP/pTLAWTsap7bVx150ccgRtaHyAtfL3e4w9yYkKkgt6+o/kT3OEsn9hPD
-         yB2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698418497; x=1699023297;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FRGus6ktymyimDivswpJ27Ui0IhpUZQSXAOmlCFn8oc=;
-        b=RO8AMx2w/MFgBXOhewVl6s2ERZP0AfWLQljQrlK5rjNUzOB4r45M2SEOybn/x1RPLX
-         6hqwKKrTj7J4UWJHKmY78IRoZfIzHhKFVNd3g9yDbcHWRAk9KDawho87sykz+Q33Uwvk
-         MFMOhZFvjicFOKG63G8Ky0F1j27PZ8yj4FlKKff+qDiaH0zbcqCz4rNRjVKIvkj/dl/0
-         8aTG7fcnNbg+sxlGpxbgFjQXhvRBRfoVZGn43MjdXoLhW6HMbxx8JhwtAJpFEdjdARn1
-         fehBG3kn0lp+SGbKn1eoZT9rHqFOUtFLancqEp+BUTy8tVtcoccXJ4WMmaZvc+IR8s6N
-         SRPg==
-X-Gm-Message-State: AOJu0YxVmvNkOR8DgBOtotF9IBHbo40mNkQGTWjlOA4VE1H/U/xngTHl
-        NjpBe493jFvOSnWbeum1tzY=
-X-Google-Smtp-Source: AGHT+IHSGc3YoPxDtEzMBIIDVpjwJ36pSYYOeGGCT294/VUaa1hkpwh4XVkxyOqA2FN25iDzWFlFUg==
-X-Received: by 2002:a05:6871:7582:b0:1ea:15e6:9420 with SMTP id nz2-20020a056871758200b001ea15e69420mr3162839oac.52.1698418496787;
-        Fri, 27 Oct 2023 07:54:56 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id i184-20020a25d1c1000000b00d677aec54ffsm706978ybg.60.2023.10.27.07.54.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 27 Oct 2023 07:54:56 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <43b45922-118c-3f77-80f2-960fa398cf1f@roeck-us.net>
-Date:   Fri, 27 Oct 2023 07:54:54 -0700
+        with ESMTP id S230101AbjJ0PHm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 11:07:42 -0400
+X-Greylist: delayed 537 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 Oct 2023 08:07:39 PDT
+Received: from stravinsky.debian.org (stravinsky.debian.org [IPv6:2001:41b8:202:deb::311:108])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908BAC4;
+        Fri, 27 Oct 2023 08:07:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+        s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=w16Mf1s4zf0bO/tbDWcFsS5VZRR6bRS/T9qEXEJ+Ma0=; b=ED1taatay2hfvVWiRMrsMeii3o
+        1c2Zy5aLTSVM9hdBPO90QJF0Mj9554/MP0QtlV2aQFT/tGUJqDf8pwZu48zESuXL8Gfe6ejvp9hWT
+        rY5uhwmx5soLjVEtKLvzti1GAqJq4+FLdjAlQZfjY0HD4fZratW68uuOW/LTwbn+XDztjSsB+YenO
+        /xub3tTAcq2ZDPUqi61eQNlzSuUZbktD4xJGuY1pVegR0PLwZ7nitOUk5boSML+mqg1xGO6Vz4pYA
+        63UDXoctRMyXRPvDekLj52tWUxEZsDaStr4Bl8zxHveibcusZkO1NrAKLJuv2XGoaDTUDnSHPxdBY
+        +siILG4Q==;
+Received: from authenticated user
+        by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.94.2)
+        (envelope-from <aurel32@debian.org>)
+        id 1qwOII-000K4e-Hd; Fri, 27 Oct 2023 14:58:38 +0000
+Received: from [2a01:e34:ec5d:a741:1ee1:92ff:feb4:5ec0] (helo=ohm.rr44.fr)
+        by hall.aurel32.net with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <aurel32@debian.org>)
+        id 1qwOIE-001DW5-U1; Fri, 27 Oct 2023 16:58:34 +0200
+Received: from aurel32 by ohm.rr44.fr with local (Exim 4.97-RC0)
+        (envelope-from <aurel32@debian.org>)
+        id 1qwOIE-00000004Ism-19Z0;
+        Fri, 27 Oct 2023 16:58:34 +0200
+Date:   Fri, 27 Oct 2023 16:58:34 +0200
+From:   Aurelien Jarno <aurel32@debian.org>
+To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        tsbogend@alpha.franken.de, syq@debian.org, stable@vger.kernel.org
+Subject: Re: [PATCH] MIPS: process: Remove lazy context flags for new kernel
+ thread
+Message-ID: <ZTvQGs/lEpizUFLh@aurel32.net>
+Mail-Followup-To: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        tsbogend@alpha.franken.de, syq@debian.org, stable@vger.kernel.org
+References: <20231026111715.1281728-1-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 5.10 000/199] 5.10.199-rc2 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231024083326.219645073@linuxfoundation.org>
- <6413ac66-2608-cd76-1b3c-5a185fe6d88d@roeck-us.net>
- <2023102728-gigantic-favorable-71a6@gregkh>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <2023102728-gigantic-favorable-71a6@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231026111715.1281728-1-jiaxun.yang@flygoat.com>
+User-Agent: Mutt/2.2.9 (2022-11-12)
+X-Debian-User: aurel32
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,LOTS_OF_MONEY,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,UNPARSEABLE_RELAY,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/27/23 05:25, Greg Kroah-Hartman wrote:
-> On Wed, Oct 25, 2023 at 08:07:26AM -0700, Guenter Roeck wrote:
->> On 10/24/23 01:36, Greg Kroah-Hartman wrote:
->>> This is the start of the stable review cycle for the 5.10.199 release.
->>> There are 199 patches in this series, all will be posted as a response
->>> to this one.  If anyone has any issues with these being applied, please
->>> let me know.
->>>
->>> Responses should be made by Thu, 26 Oct 2023 08:32:45 +0000.
->>> Anything received after that time might be too late.
->>>
->>
->> Build reference: v5.10.198-200-ge31b6513c43d
->> Compiler version: x86_64-linux-gcc (GCC) 11.4.0
->> Assembler version: GNU assembler (GNU Binutils) 2.40
->>
->> Building x86_64:defconfig ... passed
->> Building x86_64:allyesconfig ... failed
->> --------------
->> Error log:
->> Unsupported relocation type: unknown type rel type name (-1940038754)
->> make[3]: *** [arch/x86/boot/compressed/Makefile:122: arch/x86/boot/compressed/vmlinux.relocs] Error 1
->> make[3]: *** Deleting file 'arch/x86/boot/compressed/vmlinux.relocs'
->> make[3]: *** Waiting for unfinished jobs....
->> x86_64-linux-objcopy: vmlinux: unsupported relocation type 0x9e
->> x86_64-linux-objcopy: vmlinux[.text]: relocation count is negative: bad value
->> make[3]: *** [arch/x86/boot/compressed/Makefile:114: arch/x86/boot/compressed/vmlinux.bin] Error 1
->> make[2]: *** [arch/x86/boot/Makefile:115: arch/x86/boot/compressed/vmlinux] Error 2
->> make[1]: *** [arch/x86/Makefile:274: bzImage] Error 2
->> make: *** [Makefile:192: __sub-make] Error 2
->>
->> No idea what is causing it, but it is persistent. Something odd between
->> compiler/binutils/objcopy.
->>
->> Guess it doesn't matter since the release is out already.
+On 2023-10-26 12:17, Jiaxun Yang wrote:
+> We received a report from debian infra team, says their build machine
+> crashes regularly with:
 > 
-> If the commit that causes this can be figured out, we can revert it.
+> [ 4066.698500] do_cpu invoked from kernel context![#1]:
+> [ 4066.703455] CPU: 1 PID: 76608 Comm: iou-sqp-76326 Not tainted 5.10.0-21-loongson-3 #1 Debian 5.10.162-1
+> [ 4066.712793] Hardware name: Loongson Lemote-3A4000-7A-1w-V1.00-A1901/Lemote-3A4000-7A-1w-V1.00-A1901, BIOS Loongson-PMON-V3.3-20201222 12/22/2020
+> [ 4066.725672] $ 0   : 0000000000000000 ffffffff80bf2e48 0000000000000001 9800000200804000
+> [ 4066.733642] $ 4   : 9800000105115280 ffffffff80db4728 0000000000000008 0000020080000200
+> [ 4066.741607] $ 8   : 0000000000000001 0000000000000001 0000000000000000 0000000002e85400
+> [ 4066.749571] $12   : 000000005400cce0 ffffffff80199c00 000000000000036f 000000000000036f
+> [ 4066.757536] $16   : 980000010025c080 ffffffff80ec4740 0000000000000000 980000000234b8c0
+> [ 4066.765501] $20   : ffffffff80ec5ce0 9800000105115280 98000001051158a0 0000000000000000
+> [ 4066.773466] $24   : 0000000000000028 9800000200807e58
+> [ 4066.781431] $28   : 9800000200804000 9800000200807d40 980000000234b8c0 ffffffff80bf3074
+> [ 4066.789395] Hi    : 00000000000002fb
+> [ 4066.792943] Lo    : 00000000428f6816
+> [ 4066.796500] epc   : ffffffff802177c0 _save_fp+0x10/0xa0
+> [ 4066.801695] ra    : ffffffff80bf3074 __schedule+0x804/0xe08
+> [ 4066.807230] Status: 5400cce2 KX SX UX KERNEL EXL
+> [ 4066.811917] Cause : 1000002c (ExcCode 0b)
+> [ 4066.815899] PrId  : 0014c004 (ICT Loongson-3)
+> [ 4066.820228] Modules linked in: asix usbnet mii sg ip6t_REJECT nf_reject_ipv6 ip6table_filter ip6_tables nfnetlink_log nfnetlink xt_hashlimit ipt_REJECT nf_reject_ipv4 xt_NFLOG xt_multiport xt_tcpudp xt_state xt_conntrack nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c iptable_filter sch_fq tcp_bbr fuse drm drm_panel_orientation_quirks configfs ip_tables x_tables autofs4 ext4 crc16 mbcache jbd2 crc32c_generic ohci_pci dm_mod r8169 realtek mdio_devres ohci_hcd ehci_pci of_mdio xhci_pci fixed_phy xhci_hcd ehci_hcd libphy usbcore usb_common
+> [ 4066.868085] Process iou-sqp-76326 (pid: 76608, threadinfo=0000000056dd346c, task=000000001209ac62, tls=000000fff18298e0)
+> [ 4066.878897] Stack : ffffffff80ec0000 0000000000000000 ffffffff80ec0000 980000010db34100
+> [ 4066.886867]         9800000100000004 d253a55201683fdc 9800000105115280 0000000000000000
+> [ 4066.894832]         0000000000000000 0000000000000001 980000010db340e8 0000000000000001
+> [ 4066.902796]         0000000000000004 0000000000000000 980000010db33d28 ffffffff80bf36d0
+> [ 4066.910761]         980000010db340e8 980000010db34100 980000010db340c8 ffffffff8070d740
+> [ 4066.918726]         980000010946cc80 9800000104b56c80 980000010db340c0 0000000000000000
+> [ 4066.926690]         ffffffff80ec0000 980000010db340c8 980000010025c080 ffffffff80ec5ce0
+> [ 4066.934654]         0000000000000000 9800000105115280 ffffffff802c59b8 980000010db34108
+> [ 4066.942619]         980000010db34108 2d7071732d756f69 ffff003632333637 d253a55201683fdc
+> [ 4066.950585]         ffffffff8070d1c8 980000010db340c0 98000001092276c8 000000007400cce0
+> [ 4066.958552]         ...
+> [ 4066.960981] Call Trace:
+> [ 4066.963414] [<ffffffff802177c0>] _save_fp+0x10/0xa0
+> [ 4066.968270] [<ffffffff80bf3074>] __schedule+0x804/0xe08
+> [ 4066.973462] [<ffffffff80bf36d0>] schedule+0x58/0x150
+> [ 4066.978397] [<ffffffff8070d740>] io_sq_thread+0x578/0x5a0
+> [ 4066.983764] [<ffffffff8020518c>] ret_from_kernel_thread+0x14/0x1c
+> [ 4066.989823]
+> [ 4066.991297] Code: 000c6940  05a10011  00000000 <f4810af0> f4830b10  f4850b30  f4870b50  f4890b70  f48b0b90
 > 
+> It seems like kernel is trying to save a FP context for a kthread.
+> Since we don't use FPU in kernel for now, TIF_USEDFPU must be set
+> accidentally for that kthread.
+> 
+> Inspecting the code it seems like create_io_thread may be invoked
+> from threads that have FP context alive, causing TIF_USEDFPU to be
+> copied from that context to kthread unexpectedly.
+> 
+> Move around code blocks to ensure flags regarding lazy hardware
+> context get cleared for kernel threads as well.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Aurelien Jarno <aurel32@debian.org>
+> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-The final release built fine. I see this happen once in a while but
-was never able to figure out what causes it to happen. So far it was
-always persistent on a given source but disappeared as soon as something
-changed in the code (making it all but impossible to bisect).
-Looks like that happened again.
+Thanks for the patch. In the meantime we have found that the problem is
+reproducible by building the kitinerary package. The crash happens when
+cmake starts the build. It's not impossible that other packages are able
+to also trigger the crash, but we haven't identified them yet.
 
-Guenter
+Anyway, I have been able to test a backport of the patch onto the 5.10
+kernel (with minor adjustments) and I confirm it fixes the reported
+issue.
 
+Tested-by: Aurelien Jarno <aurel32@debian.org>
+
+-- 
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                     http://aurel32.net
