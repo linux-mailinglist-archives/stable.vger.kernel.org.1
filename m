@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C455E7D97CB
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 786F87D97CC
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345740AbjJ0MVg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:21:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37252 "EHLO
+        id S1345539AbjJ0MVj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:21:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345420AbjJ0MVf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:21:35 -0400
+        with ESMTP id S1345420AbjJ0MVi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:21:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93557C0
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:21:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38B2C433C8;
-        Fri, 27 Oct 2023 12:21:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82E16FA
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:21:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C60C433C7;
+        Fri, 27 Oct 2023 12:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698409293;
-        bh=Xev3qctl8GFf9tLRsqROsjR5vx1RHmgPkIc+m5BlsyA=;
+        s=korg; t=1698409296;
+        bh=2SsHa900VkOu9waGrWvOWLgEp6PnjCDwLhDWXEHdmWs=;
         h=Subject:To:Cc:From:Date:From;
-        b=Xl2fQjxCi+hiqFQoV2zxJIiWTXGMAS+esCWVBDDuRWMseR1A6OvdA6pWy3AGU/nDi
-         Ngze7SDmt5xaT2+poj0eCDNoi3fEaHE6Q5wmwSZRPzKPSBBtTj2s2ZwqXc8WlIJyCc
-         Spg1x1D5LM6xWl4GUBqaAGOqyjGdM1xHfh6c4tlU=
-Subject: FAILED: patch "[PATCH] drm/dp_mst: Fix NULL deref in" failed to apply to 4.19-stable tree
+        b=laDHTWBeHL91U/KQ4RLrGYWrbRUwT4m898+Sk9hLgSY1pw+TA0nPzhyBrsKX7zyWl
+         l6VcGBaTmYAHJ3Ra97bb7h/APm0dRPOHABHwV6IVIGsUgofbxfl/nVgJMfzr3lhxrZ
+         BKshvUicq5j1A+oQUaHSmp7DvGisxxEaZAIooybY=
+Subject: FAILED: patch "[PATCH] drm/dp_mst: Fix NULL deref in" failed to apply to 4.14-stable tree
 To:     lma@semihalf.com, navaremanasi@chromium.org, rad@chromium.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:21:25 +0200
-Message-ID: <2023102725-spiral-unglue-4f7c@gregkh>
+Date:   Fri, 27 Oct 2023 14:21:26 +0200
+Message-ID: <2023102726-arousal-ransack-d969@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 3d887d512494d678b17c57b835c32f4e48d34f26
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102725-spiral-unglue-4f7c@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102726-arousal-ransack-d969@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
