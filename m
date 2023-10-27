@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8232C7D97AC
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DAC97D97AD
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:18:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345420AbjJ0MSz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:18:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53264 "EHLO
+        id S1345802AbjJ0MS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:18:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345821AbjJ0MSy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:18:54 -0400
+        with ESMTP id S1345809AbjJ0MS4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:18:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 424CE129
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:18:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 773BAC433C7;
-        Fri, 27 Oct 2023 12:18:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA61121
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:18:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D21C433C8;
+        Fri, 27 Oct 2023 12:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698409130;
-        bh=gI4VW+MmJWw0+VWl7o9FbwUyRmk7pKJhkTT0Anfyu8g=;
+        s=korg; t=1698409134;
+        bh=2EF6XLdSj2CGYDyoRX3o6DUi0QsV8cQLGTYL6WuupsU=;
         h=Subject:To:Cc:From:Date:From;
-        b=IXcT4zmn+DCv7F5F7B6evZvVFXQa9Q5ntOvJrE7fsO/ro7F/hYvlMAGAFbLZwcQol
-         gWg/AWwXAuDNPf0I6SbuKexy58joZR+WGO3HAYA3mOVP3FfEX5mZS01tH/9+5Uc4nX
-         gvnVOuSRvJLZ9gCotYByhClFjCQtTA5rVMdAKrDk=
-Subject: FAILED: patch "[PATCH] vdpa/mlx5: Fix firmware error on creation of 1k VQs" failed to apply to 6.1-stable tree
+        b=dspNW/AzbPhRyfokdzWqPMWNSaeCqVnda4AixUBomay4CzUt9gk5CuN8mBU9UdHpg
+         eK+RU43OPgPhYmNkK7erFRATyeePLjeTJvnto9isrJz48GToBW8bHRj60eVmaSOkem
+         gqFHvCINPnm6mVnf5QoxOaQylYFa9vvq6mmUe6ck=
+Subject: FAILED: patch "[PATCH] vdpa/mlx5: Fix firmware error on creation of 1k VQs" failed to apply to 5.15-stable tree
 To:     dtatulea@nvidia.com, jasowang@redhat.com, mst@redhat.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:18:48 +0200
-Message-ID: <2023102748-monetary-sworn-9a51@gregkh>
+Date:   Fri, 27 Oct 2023 14:18:49 +0200
+Message-ID: <2023102749-vitalize-debtless-eaf8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x abb0dcf9938c93f765abf8cb45567cadef0af6b2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102748-monetary-sworn-9a51@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102749-vitalize-debtless-eaf8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
