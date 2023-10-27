@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E8357D9753
-	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEF397D9763
+	for <lists+stable@lfdr.de>; Fri, 27 Oct 2023 14:11:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345689AbjJ0MKT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 27 Oct 2023 08:10:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42136 "EHLO
+        id S1345814AbjJ0ML5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 27 Oct 2023 08:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345539AbjJ0MKS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:10:18 -0400
+        with ESMTP id S1345787AbjJ0ML4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 27 Oct 2023 08:11:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5E4510A
-        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:10:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14DDC433C7;
-        Fri, 27 Oct 2023 12:10:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6530B10A
+        for <stable@vger.kernel.org>; Fri, 27 Oct 2023 05:11:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A230FC433C8;
+        Fri, 27 Oct 2023 12:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698408614;
-        bh=6cPMM9UsfVcgNKRd86jXeabzts7fzAnyL/ZuZKL1ifg=;
+        s=korg; t=1698408714;
+        bh=K/+fbe835SN/LJvpD2pRfSsE+Z82V71BNOwbl2vSKnY=;
         h=Subject:To:Cc:From:Date:From;
-        b=Tx+Y/3DWZ3BDmWIFUo5WzDXhFLgl0dDUeTLaR5YlK+UxfHluiqwfFMEZDTIz9teiF
-         +4UkPG8D2XEO8CBoF8LhjSHLRp2jx+ETp/6UdP+K1qv0V5Q2yoLuaU4Kn4VIQLJGoK
-         Bpm72QE+zNvis5yW+cqQCBt2zpgQXqEOk+tk2XXo=
-Subject: FAILED: patch "[PATCH] btrfs: fix unwritten extent buffer after snapshotting a new" failed to apply to 6.5-stable tree
-To:     fdmanana@suse.com, dsterba@suse.com, josef@toxicpanda.com
+        b=Wwu4XB63q3iqos/5FEI7zTXmpOCD8UwKqImIG7MkMgO2XSajbHXIzjuv2dHFM17J+
+         lFBQ8ZuM5I4rWDumkll67whQeYrJffLbCO93ZLBVASQCNH0OjPPJkDKnwHvZCZINRY
+         bZ04hhDZr9JsdEtrMXTgVDCc9ln3S+iTEirFblyc=
+Subject: FAILED: patch "[PATCH] net: stmmac: update MAC capabilities when tx queues are" failed to apply to 6.5-stable tree
+To:     michael.wei.hong.sit@intel.com, davem@davemloft.net,
+        stable@vger.kernel.org, yi.fang.gan@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Fri, 27 Oct 2023 14:10:11 +0200
-Message-ID: <2023102711-dizziness-ethanol-ecdd@gregkh>
+Date:   Fri, 27 Oct 2023 14:11:51 +0200
+Message-ID: <2023102751-playful-marbled-4744@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -52,10 +53,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x eb96e221937af3c7bb8a63208dbab813ca5d3d7e
+git cherry-pick -x 95201f36f395df34321fcddbce12103e8bbe4970
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102711-dizziness-ethanol-ecdd@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102751-playful-marbled-4744@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,411 +68,67 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From eb96e221937af3c7bb8a63208dbab813ca5d3d7e Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Thu, 19 Oct 2023 13:19:28 +0100
-Subject: [PATCH] btrfs: fix unwritten extent buffer after snapshotting a new
- subvolume
+From 95201f36f395df34321fcddbce12103e8bbe4970 Mon Sep 17 00:00:00 2001
+From: Michael Sit Wei Hong <michael.wei.hong.sit@intel.com>
+Date: Fri, 20 Oct 2023 11:25:35 +0800
+Subject: [PATCH] net: stmmac: update MAC capabilities when tx queues are
+ updated
 
-When creating a snapshot of a subvolume that was created in the current
-transaction, we can end up not persisting a dirty extent buffer that is
-referenced by the snapshot, resulting in IO errors due to checksum failures
-when trying to read the extent buffer later from disk. A sequence of steps
-that leads to this is the following:
+Upon boot up, the driver will configure the MAC capabilities based on
+the maximum number of tx and rx queues. When the user changes the
+tx queues to single queue, the MAC should be capable of supporting Half
+Duplex, but the driver does not update the MAC capabilities when it is
+configured so.
 
-1) At ioctl.c:create_subvol() we allocate an extent buffer, with logical
-   address 36007936, for the leaf/root of a new subvolume that has an ID
-   of 291. We mark the extent buffer as dirty, and at this point the
-   subvolume tree has a single node/leaf which is also its root (level 0);
+Using the stmmac_reinit_queues() to check the number of tx queues
+and set the MAC capabilities accordingly.
 
-2) We no longer commit the transaction used to create the subvolume at
-   create_subvol(). We used to, but that was recently removed in
-   commit 1b53e51a4a8f ("btrfs: don't commit transaction for every subvol
-   create");
+Fixes: 0366f7e06a6b ("net: stmmac: add ethtool support for get/set channels")
+Cc: <stable@vger.kernel.org> # 5.17+
+Signed-off-by: Michael Sit Wei Hong <michael.wei.hong.sit@intel.com>
+Signed-off-by: Gan, Yi Fang <yi.fang.gan@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 
-3) The transaction used to create the subvolume has an ID of 33, so the
-   extent buffer 36007936 has a generation of 33;
-
-4) Several updates happen to subvolume 291 during transaction 33, several
-   files created and its tree height changes from 0 to 1, so we end up with
-   a new root at level 1 and the extent buffer 36007936 is now a leaf of
-   that new root node, which is extent buffer 36048896.
-
-   The commit root remains as 36007936, since we are still at transaction
-   33;
-
-5) Creation of a snapshot of subvolume 291, with an ID of 292, starts at
-   ioctl.c:create_snapshot(). This triggers a commit of transaction 33 and
-   we end up at transaction.c:create_pending_snapshot(), in the critical
-   section of a transaction commit.
-
-   There we COW the root of subvolume 291, which is extent buffer 36048896.
-   The COW operation returns extent buffer 36048896, since there's no need
-   to COW because the extent buffer was created in this transaction and it
-   was not written yet.
-
-   The we call btrfs_copy_root() against the root node 36048896. During
-   this operation we allocate a new extent buffer to turn into the root
-   node of the snapshot, copy the contents of the root node 36048896 into
-   this snapshot root extent buffer, set the owner to 292 (the ID of the
-   snapshot), etc, and then we call btrfs_inc_ref(). This will create a
-   delayed reference for each leaf pointed by the root node with a
-   reference root of 292 - this includes a reference for the leaf
-   36007936.
-
-   After that we set the bit BTRFS_ROOT_FORCE_COW in the root's state.
-
-   Then we call btrfs_insert_dir_item(), to create the directory entry in
-   in the tree of subvolume 291 that points to the snapshot. This ends up
-   needing to modify leaf 36007936 to insert the respective directory
-   items. Because the bit BTRFS_ROOT_FORCE_COW is set for the root's state,
-   we need to COW the leaf. We end up at btrfs_force_cow_block() and then
-   at update_ref_for_cow().
-
-   At update_ref_for_cow() we call btrfs_block_can_be_shared() which
-   returns false, despite the fact the leaf 36007936 is shared - the
-   subvolume's root and the snapshot's root point to that leaf. The
-   reason that it incorrectly returns false is because the commit root
-   of the subvolume is extent buffer 36007936 - it was the initial root
-   of the subvolume when we created it. So btrfs_block_can_be_shared()
-   which has the following logic:
-
-   int btrfs_block_can_be_shared(struct btrfs_root *root,
-                                 struct extent_buffer *buf)
-   {
-       if (test_bit(BTRFS_ROOT_SHAREABLE, &root->state) &&
-           buf != root->node && buf != root->commit_root &&
-           (btrfs_header_generation(buf) <=
-            btrfs_root_last_snapshot(&root->root_item) ||
-            btrfs_header_flag(buf, BTRFS_HEADER_FLAG_RELOC)))
-               return 1;
-
-       return 0;
-   }
-
-   Returns false (0) since 'buf' (extent buffer 36007936) matches the
-   root's commit root.
-
-   As a result, at update_ref_for_cow(), we don't check for the number
-   of references for extent buffer 36007936, we just assume it's not
-   shared and therefore that it has only 1 reference, so we set the local
-   variable 'refs' to 1.
-
-   Later on, in the final if-else statement at update_ref_for_cow():
-
-   static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
-                                          struct btrfs_root *root,
-                                          struct extent_buffer *buf,
-                                          struct extent_buffer *cow,
-                                          int *last_ref)
-   {
-      (...)
-      if (refs > 1) {
-          (...)
-      } else {
-          (...)
-          btrfs_clear_buffer_dirty(trans, buf);
-          *last_ref = 1;
-      }
-   }
-
-   So we mark the extent buffer 36007936 as not dirty, and as a result
-   we don't write it to disk later in the transaction commit, despite the
-   fact that the snapshot's root points to it.
-
-   Attempting to access the leaf or dumping the tree for example shows
-   that the extent buffer was not written:
-
-   $ btrfs inspect-internal dump-tree -t 292 /dev/sdb
-   btrfs-progs v6.2.2
-   file tree key (292 ROOT_ITEM 33)
-   node 36110336 level 1 items 2 free space 119 generation 33 owner 292
-   node 36110336 flags 0x1(WRITTEN) backref revision 1
-   checksum stored a8103e3e
-   checksum calced a8103e3e
-   fs uuid 90c9a46f-ae9f-4626-9aff-0cbf3e2e3a79
-   chunk uuid e8c9c885-78f4-4d31-85fe-89e5f5fd4a07
-           key (256 INODE_ITEM 0) block 36007936 gen 33
-           key (257 EXTENT_DATA 0) block 36052992 gen 33
-   checksum verify failed on 36007936 wanted 0x00000000 found 0x86005f29
-   checksum verify failed on 36007936 wanted 0x00000000 found 0x86005f29
-   total bytes 107374182400
-   bytes used 38572032
-   uuid 90c9a46f-ae9f-4626-9aff-0cbf3e2e3a79
-
-   The respective on disk region is full of zeroes as the device was
-   trimmed at mkfs time.
-
-   Obviously 'btrfs check' also detects and complains about this:
-
-   $ btrfs check /dev/sdb
-   Opening filesystem to check...
-   Checking filesystem on /dev/sdb
-   UUID: 90c9a46f-ae9f-4626-9aff-0cbf3e2e3a79
-   generation: 33 (33)
-   [1/7] checking root items
-   [2/7] checking extents
-   checksum verify failed on 36007936 wanted 0x00000000 found 0x86005f29
-   checksum verify failed on 36007936 wanted 0x00000000 found 0x86005f29
-   checksum verify failed on 36007936 wanted 0x00000000 found 0x86005f29
-   bad tree block 36007936, bytenr mismatch, want=36007936, have=0
-   owner ref check failed [36007936 4096]
-   ERROR: errors found in extent allocation tree or chunk allocation
-   [3/7] checking free space tree
-   [4/7] checking fs roots
-   checksum verify failed on 36007936 wanted 0x00000000 found 0x86005f29
-   checksum verify failed on 36007936 wanted 0x00000000 found 0x86005f29
-   checksum verify failed on 36007936 wanted 0x00000000 found 0x86005f29
-   bad tree block 36007936, bytenr mismatch, want=36007936, have=0
-   The following tree block(s) is corrupted in tree 292:
-        tree block bytenr: 36110336, level: 1, node key: (256, 1, 0)
-   root 292 root dir 256 not found
-   ERROR: errors found in fs roots
-   found 38572032 bytes used, error(s) found
-   total csum bytes: 16048
-   total tree bytes: 1265664
-   total fs tree bytes: 1118208
-   total extent tree bytes: 65536
-   btree space waste bytes: 562598
-   file data blocks allocated: 65978368
-    referenced 36569088
-
-Fix this by updating btrfs_block_can_be_shared() to consider that an
-extent buffer may be shared if it matches the commit root and if its
-generation matches the current transaction's generation.
-
-This can be reproduced with the following script:
-
-   $ cat test.sh
-   #!/bin/bash
-
-   MNT=/mnt/sdi
-   DEV=/dev/sdi
-
-   # Use a filesystem with a 64K node size so that we have the same node
-   # size on every machine regardless of its page size (on x86_64 default
-   # node size is 16K due to the 4K page size, while on PPC it's 64K by
-   # default). This way we can make sure we are able to create a btree for
-   # the subvolume with a height of 2.
-   mkfs.btrfs -f -n 64K $DEV
-   mount $DEV $MNT
-
-   btrfs subvolume create $MNT/subvol
-
-   # Create a few empty files on the subvolume, this bumps its btree
-   # height to 2 (root node at level 1 and 2 leaves).
-   for ((i = 1; i <= 300; i++)); do
-       echo -n > $MNT/subvol/file_$i
-   done
-
-   btrfs subvolume snapshot -r $MNT/subvol $MNT/subvol/snap
-
-   umount $DEV
-
-   btrfs check $DEV
-
-Running it on a 6.5 kernel (or any 6.6-rc kernel at the moment):
-
-   $ ./test.sh
-   Create subvolume '/mnt/sdi/subvol'
-   Create a readonly snapshot of '/mnt/sdi/subvol' in '/mnt/sdi/subvol/snap'
-   Opening filesystem to check...
-   Checking filesystem on /dev/sdi
-   UUID: bbdde2ff-7d02-45ca-8a73-3c36f23755a1
-   [1/7] checking root items
-   [2/7] checking extents
-   parent transid verify failed on 30539776 wanted 7 found 5
-   parent transid verify failed on 30539776 wanted 7 found 5
-   parent transid verify failed on 30539776 wanted 7 found 5
-   Ignoring transid failure
-   owner ref check failed [30539776 65536]
-   ERROR: errors found in extent allocation tree or chunk allocation
-   [3/7] checking free space tree
-   [4/7] checking fs roots
-   parent transid verify failed on 30539776 wanted 7 found 5
-   Ignoring transid failure
-   Wrong key of child node/leaf, wanted: (256, 1, 0), have: (2, 132, 0)
-   Wrong generation of child node/leaf, wanted: 5, have: 7
-   root 257 root dir 256 not found
-   ERROR: errors found in fs roots
-   found 917504 bytes used, error(s) found
-   total csum bytes: 0
-   total tree bytes: 851968
-   total fs tree bytes: 393216
-   total extent tree bytes: 65536
-   btree space waste bytes: 736550
-   file data blocks allocated: 0
-    referenced 0
-
-A test case for fstests will follow soon.
-
-Fixes: 1b53e51a4a8f ("btrfs: don't commit transaction for every subvol create")
-CC: stable@vger.kernel.org # 6.5+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
-index b7d54efb4728..a4a809efc92f 100644
---- a/fs/btrfs/backref.c
-+++ b/fs/btrfs/backref.c
-@@ -3196,12 +3196,14 @@ static int handle_direct_tree_backref(struct btrfs_backref_cache *cache,
-  * We still need to do a tree search to find out the parents. This is for
-  * TREE_BLOCK_REF backref (keyed or inlined).
-  *
-+ * @trans:	Transaction handle.
-  * @ref_key:	The same as @ref_key in  handle_direct_tree_backref()
-  * @tree_key:	The first key of this tree block.
-  * @path:	A clean (released) path, to avoid allocating path every time
-  *		the function get called.
-  */
--static int handle_indirect_tree_backref(struct btrfs_backref_cache *cache,
-+static int handle_indirect_tree_backref(struct btrfs_trans_handle *trans,
-+					struct btrfs_backref_cache *cache,
- 					struct btrfs_path *path,
- 					struct btrfs_key *ref_key,
- 					struct btrfs_key *tree_key,
-@@ -3315,7 +3317,7 @@ static int handle_indirect_tree_backref(struct btrfs_backref_cache *cache,
- 			 * If we know the block isn't shared we can avoid
- 			 * checking its backrefs.
- 			 */
--			if (btrfs_block_can_be_shared(root, eb))
-+			if (btrfs_block_can_be_shared(trans, root, eb))
- 				upper->checked = 0;
- 			else
- 				upper->checked = 1;
-@@ -3363,11 +3365,13 @@ static int handle_indirect_tree_backref(struct btrfs_backref_cache *cache,
-  *	 links aren't yet bi-directional. Needs to finish such links.
-  *	 Use btrfs_backref_finish_upper_links() to finish such linkage.
-  *
-+ * @trans:	Transaction handle.
-  * @path:	Released path for indirect tree backref lookup
-  * @iter:	Released backref iter for extent tree search
-  * @node_key:	The first key of the tree block
-  */
--int btrfs_backref_add_tree_node(struct btrfs_backref_cache *cache,
-+int btrfs_backref_add_tree_node(struct btrfs_trans_handle *trans,
-+				struct btrfs_backref_cache *cache,
- 				struct btrfs_path *path,
- 				struct btrfs_backref_iter *iter,
- 				struct btrfs_key *node_key,
-@@ -3467,8 +3471,8 @@ int btrfs_backref_add_tree_node(struct btrfs_backref_cache *cache,
- 			 * offset means the root objectid. We need to search
- 			 * the tree to get its parent bytenr.
- 			 */
--			ret = handle_indirect_tree_backref(cache, path, &key, node_key,
--							   cur);
-+			ret = handle_indirect_tree_backref(trans, cache, path,
-+							   &key, node_key, cur);
- 			if (ret < 0)
- 				goto out;
- 		}
-diff --git a/fs/btrfs/backref.h b/fs/btrfs/backref.h
-index 1616e3e3f1e4..71d535e03dca 100644
---- a/fs/btrfs/backref.h
-+++ b/fs/btrfs/backref.h
-@@ -540,7 +540,8 @@ static inline void btrfs_backref_panic(struct btrfs_fs_info *fs_info,
- 		    bytenr);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index ed1a5a31a491..5801f4d50f95 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1197,6 +1197,17 @@ static int stmmac_init_phy(struct net_device *dev)
+ 	return ret;
  }
  
--int btrfs_backref_add_tree_node(struct btrfs_backref_cache *cache,
-+int btrfs_backref_add_tree_node(struct btrfs_trans_handle *trans,
-+				struct btrfs_backref_cache *cache,
- 				struct btrfs_path *path,
- 				struct btrfs_backref_iter *iter,
- 				struct btrfs_key *node_key,
-diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
-index da519c1b6ad0..617d4827eec2 100644
---- a/fs/btrfs/ctree.c
-+++ b/fs/btrfs/ctree.c
-@@ -367,7 +367,8 @@ int btrfs_copy_root(struct btrfs_trans_handle *trans,
- /*
-  * check if the tree block can be shared by multiple trees
-  */
--int btrfs_block_can_be_shared(struct btrfs_root *root,
-+int btrfs_block_can_be_shared(struct btrfs_trans_handle *trans,
-+			      struct btrfs_root *root,
- 			      struct extent_buffer *buf)
++static void stmmac_set_half_duplex(struct stmmac_priv *priv)
++{
++	/* Half-Duplex can only work with single tx queue */
++	if (priv->plat->tx_queues_to_use > 1)
++		priv->phylink_config.mac_capabilities &=
++			~(MAC_10HD | MAC_100HD | MAC_1000HD);
++	else
++		priv->phylink_config.mac_capabilities |=
++			(MAC_10HD | MAC_100HD | MAC_1000HD);
++}
++
+ static int stmmac_phy_setup(struct stmmac_priv *priv)
  {
- 	/*
-@@ -376,11 +377,21 @@ int btrfs_block_can_be_shared(struct btrfs_root *root,
- 	 * not allocated by tree relocation, we know the block is not shared.
- 	 */
- 	if (test_bit(BTRFS_ROOT_SHAREABLE, &root->state) &&
--	    buf != root->node && buf != root->commit_root &&
-+	    buf != root->node &&
- 	    (btrfs_header_generation(buf) <=
- 	     btrfs_root_last_snapshot(&root->root_item) ||
--	     btrfs_header_flag(buf, BTRFS_HEADER_FLAG_RELOC)))
--		return 1;
-+	     btrfs_header_flag(buf, BTRFS_HEADER_FLAG_RELOC))) {
-+		if (buf != root->commit_root)
-+			return 1;
-+		/*
-+		 * An extent buffer that used to be the commit root may still be
-+		 * shared because the tree height may have increased and it
-+		 * became a child of a higher level root. This can happen when
-+		 * snapshotting a subvolume created in the current transaction.
-+		 */
-+		if (btrfs_header_generation(buf) == trans->transid)
-+			return 1;
-+	}
+ 	struct stmmac_mdio_bus_data *mdio_bus_data;
+@@ -1228,10 +1239,7 @@ static int stmmac_phy_setup(struct stmmac_priv *priv)
+ 						MAC_10FD | MAC_100FD |
+ 						MAC_1000FD;
  
- 	return 0;
- }
-@@ -415,7 +426,7 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
- 	 * are only allowed for blocks use full backrefs.
- 	 */
+-	/* Half-Duplex can only work with single queue */
+-	if (priv->plat->tx_queues_to_use <= 1)
+-		priv->phylink_config.mac_capabilities |= MAC_10HD | MAC_100HD |
+-							 MAC_1000HD;
++	stmmac_set_half_duplex(priv);
  
--	if (btrfs_block_can_be_shared(root, buf)) {
-+	if (btrfs_block_can_be_shared(trans, root, buf)) {
- 		ret = btrfs_lookup_extent_info(trans, fs_info, buf->start,
- 					       btrfs_header_level(buf), 1,
- 					       &refs, &flags);
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index 9419f4e37a58..ff40acd63a37 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -540,7 +540,8 @@ int btrfs_copy_root(struct btrfs_trans_handle *trans,
- 		      struct btrfs_root *root,
- 		      struct extent_buffer *buf,
- 		      struct extent_buffer **cow_ret, u64 new_root_objectid);
--int btrfs_block_can_be_shared(struct btrfs_root *root,
-+int btrfs_block_can_be_shared(struct btrfs_trans_handle *trans,
-+			      struct btrfs_root *root,
- 			      struct extent_buffer *buf);
- int btrfs_del_ptr(struct btrfs_trans_handle *trans, struct btrfs_root *root,
- 		  struct btrfs_path *path, int level, int slot);
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index 9951a0caf5bb..c6d4bb8cbe29 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -466,6 +466,7 @@ static bool handle_useless_nodes(struct reloc_control *rc,
-  * cached.
-  */
- static noinline_for_stack struct btrfs_backref_node *build_backref_tree(
-+			struct btrfs_trans_handle *trans,
- 			struct reloc_control *rc, struct btrfs_key *node_key,
- 			int level, u64 bytenr)
- {
-@@ -499,8 +500,8 @@ static noinline_for_stack struct btrfs_backref_node *build_backref_tree(
+ 	/* Get the MAC specific capabilities */
+ 	stmmac_mac_phylink_get_caps(priv);
+@@ -7172,6 +7180,7 @@ int stmmac_reinit_queues(struct net_device *dev, u32 rx_cnt, u32 tx_cnt)
+ 			priv->rss.table[i] = ethtool_rxfh_indir_default(i,
+ 									rx_cnt);
  
- 	/* Breadth-first search to build backref cache */
- 	do {
--		ret = btrfs_backref_add_tree_node(cache, path, iter, node_key,
--						  cur);
-+		ret = btrfs_backref_add_tree_node(trans, cache, path, iter,
-+						  node_key, cur);
- 		if (ret < 0) {
- 			err = ret;
- 			goto out;
-@@ -2803,7 +2804,7 @@ int relocate_tree_blocks(struct btrfs_trans_handle *trans,
++	stmmac_set_half_duplex(priv);
+ 	stmmac_napi_add(dev);
  
- 	/* Do tree relocation */
- 	rbtree_postorder_for_each_entry_safe(block, next, blocks, rb_node) {
--		node = build_backref_tree(rc, &block->key,
-+		node = build_backref_tree(trans, rc, &block->key,
- 					  block->level, block->bytenr);
- 		if (IS_ERR(node)) {
- 			err = PTR_ERR(node);
+ 	if (netif_running(dev))
 
