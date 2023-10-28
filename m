@@ -2,78 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 022A77DA8E9
-	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 21:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AA2F7DA963
+	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 23:09:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229740AbjJ1TZy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 28 Oct 2023 15:25:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39354 "EHLO
+        id S229628AbjJ1VJf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 28 Oct 2023 17:09:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjJ1TZy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 15:25:54 -0400
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0441ED;
-        Sat, 28 Oct 2023 12:25:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
-        Cc:To:From:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-        Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-        Content-Disposition:In-Reply-To:References;
-        bh=fxQR1TUWvoZWbngBkATUV41caggaF0G6Kte0INS8KFQ=; b=Pb9LMytdftg9UFeg50if5uiTko
-        dfwbxvw1lG6cXa78k1b2Gurx4bEZt3FP1gB2KuWFdfWIASeMAxG+8HU2r467tWl6Tf3mP8tNgswDs
-        quF6CV/BKrs0hXQqEm4KSotUCSEhCh9wiD3pnMZk4h4peuBEK92/AnUwA8pO1TXCmAA4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1qwowL-000Q16-VW; Sat, 28 Oct 2023 21:25:45 +0200
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     netdev <netdev@vger.kernel.org>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Alexander Duyck <alexanderduyck@fb.com>,
-        Justin Stitt <justinstitt@google.com>, stable@vger.kernel.org
-Subject: [PATCH v1 net] net: ethtool: Fix documentation of ethtool_sprintf()
-Date:   Sat, 28 Oct 2023 21:25:11 +0200
-Message-Id: <20231028192511.100001-1-andrew@lunn.ch>
-X-Mailer: git-send-email 2.37.2
+        with ESMTP id S229446AbjJ1VJe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 17:09:34 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7470B8;
+        Sat, 28 Oct 2023 14:09:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB32C433C8;
+        Sat, 28 Oct 2023 21:09:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698527372;
+        bh=Wyr214KNSlnSWHwuMNRLzj8fmPHGsLCvoHa+yx4LD2k=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=HAkFHdXrEJ5NUZx0+7uR1BgK9gapGCmVtZlckCrNLoKRh322FrjpBp5EyQxesjxAI
+         uHpkCcfmi5pFr7LHoGu8/Q0RwEM6y622KXmLjFQ+8ZxjTFfMcz0U6NeZ6yvBOSaAOq
+         wzP7z4L/N9gjVH/FPAPz/YA4YM3PIkS4fNMkU2ORuT0pl4AhDKLrs1L7N7rd7imngt
+         smoA22ePDhKjc1CKDInPfCPMfxqoQCUBRyVM+3+HL3zs/tX27rfkS0Yjt+OhbT+nH1
+         9tevZoYzzbB8FGlY/W1Kry7tZVlbJSu/wRpJPvUpf4Ou511hW9rfPLs5iWzrkkSSN/
+         7639m0hyt65Aw==
+From:   SeongJae Park <sj@kernel.org>
+To:     SeongJae Park <sj@kernel.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>, damon@lists.linux.dev,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm/damon/sysfs: remove requested targets when online-commit inputs
+Date:   Sat, 28 Oct 2023 21:09:30 +0000
+Message-Id: <20231028210930.62947-1-sj@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231022210735.46409-2-sj@kernel.org>
+References: 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This function takes a pointer to a pointer, unlike sprintf() which is
-passed a plain pointer. Fix up the documentation to make this clear.
+On Sun, 22 Oct 2023 21:07:33 +0000 SeongJae Park <sj@kernel.org> wrote:
 
-Fixes: 7888fe53b706 ("ethtool: Add common function for filling out strings")
-Cc: Alexander Duyck <alexanderduyck@fb.com>
-Cc: Justin Stitt <justinstitt@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
----
- include/linux/ethtool.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> damon_sysfs_set_targets(), which updates the targets of the context for
+> online commitment, do not remove targets that removed from the
+> corresponding sysfs files.  As a result, more than intended targets of
+> the context can exist and hence consume memory and monitoring CPU
+> resource more than expected.
+> 
+> Fix it by removing all targets of the context and fill up again using
+> the user input.  This could cause unnecessary memory dealloc and realloc
+> operations, but this is not a hot code path.  Also, note that
+> damon_target is stateless, and hence no data is lost.
 
-diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
-index 62b61527bcc4..1b523fd48586 100644
---- a/include/linux/ethtool.h
-+++ b/include/linux/ethtool.h
-@@ -1045,10 +1045,10 @@ static inline int ethtool_mm_frag_size_min_to_add(u32 val_min, u32 *val_add,
- 
- /**
-  * ethtool_sprintf - Write formatted string to ethtool string data
-- * @data: Pointer to start of string to update
-+ * @data: Pointer to a pointer to the start of string to update
-  * @fmt: Format of string to write
-  *
-- * Write formatted string to data. Update data to point at start of
-+ * Write formatted string to *data. Update *data to point at start of
-  * next string.
-  */
- extern __printf(2, 3) void ethtool_sprintf(u8 **data, const char *fmt, ...);
--- 
-2.42.0
+This is not true.  'struct damon_target' contains monitoring results
+(regions_list).  Hence, this patch makes all monitoring results to be removed
+whenever doing online-commit.  I was confused with init_regions at the time of
+this writing, sorry.
 
+I will send a fix for this soon.
+
+
+Thanks,
+SJ
