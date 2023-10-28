@@ -2,81 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FDAC7DA8B0
-	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 20:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 022A77DA8E9
+	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 21:25:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229450AbjJ1Snj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 28 Oct 2023 14:43:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35470 "EHLO
+        id S229740AbjJ1TZy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 28 Oct 2023 15:25:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjJ1Snj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 14:43:39 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F1DD9
-        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 11:43:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698518616; x=1730054616;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=daerNB+pqMoZz3rIwMQHluf9yEHB6BqSCS9N12UV2aM=;
-  b=GtS8PLjN8vDAeZ5bI2N3zqRhNVvY2MKkWam0ZowYZDHdsov1Qg+nDMsS
-   Zw2lNWmCsA73YVkhsAFfIygy/LGVF5TxoPjeELPY29stGHUFqqZP1mFAi
-   H1CRAHs1D9AIuQ8jerGHWvdjcwED1OjZ6w9gR/emlg7xH98yj6HzBtNAv
-   lQExavPCVjbFyxZoJSrhvM8/l7clTBuIVEjrMZVdrQwMM3fBR8NTztiz7
-   Z+G32MOiURJIJTy4jk/4E6xfLQDXIKKCrfZFrtzTL2nLDY2D3GI5sDGHx
-   VmQSAFr1phJNns7yK2vOT8/IHK7ZLw3lyRti9ZiMtcQFQdjwE/sEWaPVp
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="390775262"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="390775262"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 11:43:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="753418159"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="753418159"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by orsmga007.jf.intel.com with ESMTP; 28 Oct 2023 11:43:34 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qwoHU-000Bzb-0Y;
-        Sat, 28 Oct 2023 18:43:32 +0000
-Date:   Sun, 29 Oct 2023 02:43:31 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     John Sperbeck <jsperbeck@google.com>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] objtool/x86: add missing embedded_insn check
-Message-ID: <ZT1WU783srTI75zt@dceb3e7df498>
+        with ESMTP id S229446AbjJ1TZy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 15:25:54 -0400
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0441ED;
+        Sat, 28 Oct 2023 12:25:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
+        Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
+        Content-Disposition:In-Reply-To:References;
+        bh=fxQR1TUWvoZWbngBkATUV41caggaF0G6Kte0INS8KFQ=; b=Pb9LMytdftg9UFeg50if5uiTko
+        dfwbxvw1lG6cXa78k1b2Gurx4bEZt3FP1gB2KuWFdfWIASeMAxG+8HU2r467tWl6Tf3mP8tNgswDs
+        quF6CV/BKrs0hXQqEm4KSotUCSEhCh9wiD3pnMZk4h4peuBEK92/AnUwA8pO1TXCmAA4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1qwowL-000Q16-VW; Sat, 28 Oct 2023 21:25:45 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     netdev <netdev@vger.kernel.org>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Alexander Duyck <alexanderduyck@fb.com>,
+        Justin Stitt <justinstitt@google.com>, stable@vger.kernel.org
+Subject: [PATCH v1 net] net: ethtool: Fix documentation of ethtool_sprintf()
+Date:   Sat, 28 Oct 2023 21:25:11 +0200
+Message-Id: <20231028192511.100001-1-andrew@lunn.ch>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231028184131.2103810-1-jsperbeck@google.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+This function takes a pointer to a pointer, unlike sprintf() which is
+passed a plain pointer. Fix up the documentation to make this clear.
 
-Thanks for your patch.
+Fixes: 7888fe53b706 ("ethtool: Add common function for filling out strings")
+Cc: Alexander Duyck <alexanderduyck@fb.com>
+Cc: Justin Stitt <justinstitt@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+---
+ include/linux/ethtool.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2] objtool/x86: add missing embedded_insn check
-Link: https://lore.kernel.org/stable/20231028184131.2103810-1-jsperbeck%40google.com
-
+diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+index 62b61527bcc4..1b523fd48586 100644
+--- a/include/linux/ethtool.h
++++ b/include/linux/ethtool.h
+@@ -1045,10 +1045,10 @@ static inline int ethtool_mm_frag_size_min_to_add(u32 val_min, u32 *val_add,
+ 
+ /**
+  * ethtool_sprintf - Write formatted string to ethtool string data
+- * @data: Pointer to start of string to update
++ * @data: Pointer to a pointer to the start of string to update
+  * @fmt: Format of string to write
+  *
+- * Write formatted string to data. Update data to point at start of
++ * Write formatted string to *data. Update *data to point at start of
+  * next string.
+  */
+ extern __printf(2, 3) void ethtool_sprintf(u8 **data, const char *fmt, ...);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.42.0
 
