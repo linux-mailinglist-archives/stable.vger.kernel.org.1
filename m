@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DBDD7DA57A
-	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 09:27:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7240F7DA57B
+	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 09:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229479AbjJ1H1m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 28 Oct 2023 03:27:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48418 "EHLO
+        id S229553AbjJ1H1v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 28 Oct 2023 03:27:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjJ1H1m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 03:27:42 -0400
+        with ESMTP id S229458AbjJ1H1u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 03:27:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED9DFAF
-        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 00:27:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ACB8C433C7;
-        Sat, 28 Oct 2023 07:27:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1396B4
+        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 00:27:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9496C433C7;
+        Sat, 28 Oct 2023 07:27:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698478059;
-        bh=9QhIMSStImYf9zTtzdbgeOGlsqe5CxuQ+TjuXi0vGzo=;
+        s=korg; t=1698478068;
+        bh=KqBemi3wTmUCto9rVdTm63hMzXU/09e5yoI5UHhPajc=;
         h=Subject:To:Cc:From:Date:From;
-        b=qctPcw54HN1u0/iLJFy8hkr1JasnbhJ76EoLwMTchnCaTIGHES2SRwWU267/J3mu6
-         L7EwzEa7ijfm+4aE7QfEhU3t5L/1VE6WuzUeBSlx0OBr3UTGkCf3Xj/4SrAvGAqWwF
-         Ur8HoP4ySyFavZnY2wgqwrpKlaSXkU21maKRLtvk=
-Subject: FAILED: patch "[PATCH] io_uring/fdinfo: lock SQ thread while retrieving thread" failed to apply to 6.1-stable tree
+        b=GF0MM2FFJD2xHwODHmjpJK722IvtyU0GQFWUNDD1aDxBDlCN3nouW51ktXl31KWaK
+         HDupI7gAoo696QDU+xomyLS5O1IfXCZY01cMH2t5zuyDX6TXGJkQFFJdEkBQzJdGsB
+         7h8UK139eNpTzreXPmeQigxkV66Y3y8f6xhmO2Mo=
+Subject: FAILED: patch "[PATCH] io_uring/fdinfo: lock SQ thread while retrieving thread" failed to apply to 6.5-stable tree
 To:     axboe@kernel.dk, krisman@suse.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 28 Oct 2023 09:27:35 +0200
-Message-ID: <2023102835-margarine-credibly-e8ca@gregkh>
+Date:   Sat, 28 Oct 2023 09:27:36 +0200
+Message-ID: <2023102836-rebel-rigor-f5e9@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7644b1a1c9a7ae8ab99175989bfc8676055edb46
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102835-margarine-credibly-e8ca@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102836-rebel-rigor-f5e9@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
