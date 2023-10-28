@@ -2,119 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B78337DA5CC
-	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 10:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8ACC97DA627
+	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 11:23:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229459AbjJ1IYK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 28 Oct 2023 04:24:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44144 "EHLO
+        id S229469AbjJ1JXe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 28 Oct 2023 05:23:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjJ1IYJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 04:24:09 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC059F4;
-        Sat, 28 Oct 2023 01:24:07 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99c3c8adb27so417937066b.1;
-        Sat, 28 Oct 2023 01:24:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698481446; x=1699086246; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NvHLJkc4vz+ewbng+qiWVXp1pmuOUJA9AviIjHtZepY=;
-        b=SC/JD3zQOVc8NjgLsE7mTszIDcyvRQ0rcQPNMD/3pZ5ePdeVAi/+MVa6GI3kJUj8cF
-         pXybp7Lpp3kVdjvD+gFU8MZre0xVxzLkWmeNl3LfQq+HXIKhE2AuYrulk51c+NImsZ4T
-         XDJNyrek2C5K+Fg1LgkRdHjCC36fIfwTV7Q3ZZURQE7COotFEOPznXwMN+2K+EbMxlVI
-         LXJztGBZYQ5rtR/7QirPuATbRLbTA3X13+N4zsLaNylPc94EDWU/VnofqudyLADnGavU
-         Q4K8q4i/Dpdu2wmfNbWHxSkSBIYd68bRWCzm/BpESYzbVXEerDQQ/zWM6F1hPniGj6u6
-         FsWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698481446; x=1699086246;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NvHLJkc4vz+ewbng+qiWVXp1pmuOUJA9AviIjHtZepY=;
-        b=iAlB9ukYdr8EO3jiX/x8qpjyoTYgWrw99t/nSZVrJ4NF/wROCqTr1ubbOWeAO1sO4V
-         xKXQXZKvMEWFUM5z+jCwfINxdEds1xMLM35Z0zdyxbkwPZ3oKSkL0OJgCs0M+0k4cuXn
-         VI8AxFbKTJucRLhmmSp8/tIHds31LKiRUz/4kfbbioT0XjZs8q3ecRqilFqlgqbB6X1/
-         TKvtM/L4IjpFMbR2tLowGPawIqlF/N4917UyPuDaVIrgeHNUJBXFsVw5Jh0YG1RhmMpK
-         xT/Qc74cgGrOIlv9I0C+dI0q4z1oVIIDyw+QauIKhR/r9wSXGSP/Fghrj1yZYZLH8S4B
-         4I+A==
-X-Gm-Message-State: AOJu0YweSxEIG7JaWOSP5P2c8ZJc8S5hdw8c1qYi7M0mRe4zaKNjEp+m
-        q5cLMQiiO3D9i1pALpzqZz7Lrwt5cYk=
-X-Google-Smtp-Source: AGHT+IFte2+bKZoisXNo7/RhMBMe7DleFnHsbzlCaopU7VmSYhuHgyVHQhwflI3HiiZr04n7OHlJvQ==
-X-Received: by 2002:a17:907:3f05:b0:9c2:2d0a:3211 with SMTP id hq5-20020a1709073f0500b009c22d0a3211mr3760303ejc.38.1698481445969;
-        Sat, 28 Oct 2023 01:24:05 -0700 (PDT)
-Received: from gmail.com (1F2EF1E7.nat.pool.telekom.hu. [31.46.241.231])
-        by smtp.gmail.com with ESMTPSA id 26-20020a508e1a000000b0053df23511b0sm2509055edw.29.2023.10.28.01.24.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Oct 2023 01:24:05 -0700 (PDT)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date:   Sat, 28 Oct 2023 10:24:03 +0200
-From:   Ingo Molnar <mingo@kernel.org>
-To:     "Huang, Kai" <kai.huang@intel.com>
-Cc:     "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        "Chatre, Reinette" <reinette.chatre@intel.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        "jarkko@kernel.org" <jarkko@kernel.org>,
-        "haitao.huang@linux.intel.com" <haitao.huang@linux.intel.com>,
-        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] x86/sgx: Return VM_FAULT_SIGBUS for EPC exhaustion
-Message-ID: <ZTzFI5+hniEQhU2+@gmail.com>
-References: <20231020025353.29691-1-haitao.huang@linux.intel.com>
- <b8ec3061-436f-41d3-8bff-635a90774dfb@intel.com>
- <b389986bac0e65ce128c9553603436efdda24a58.camel@intel.com>
- <b709d680-5754-45ab-ae73-c812420f10e5@intel.com>
- <op.2dfkbh2iwjvjmi@hhuan26-mobl.amr.corp.intel.com>
- <504d71debc56c89860942283ae638e5950deb79c.camel@intel.com>
+        with ESMTP id S229460AbjJ1JXd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 05:23:33 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09BBAC6
+        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 02:23:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+        Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+        Sender:Reply-To:Content-ID:Content-Description;
+        bh=W/g9f7l6jIflfVTO6azM776jOoL43h29jYipA4JfLSQ=; b=dO9JxZYpYH4BpOkhUAK66Nr8Ry
+        4JVEXtJAbmqTrioNKBRZIZgJYpfbgdrWm3K+Gnw7nnQyUcvQ3unkJYiLw5FY7HxXYHxkN4bN1IV21
+        Y/xqGBrSXx0EON+zFR2qTiIpZOwOqzF5Cfr3xCBHB0NIbkA2xv6/H5JTSjGifCTVGrsQvbTca5oet
+        gaMB7nDizXDxKncMTbzBsG0g+31Yc4Tw0swA5teDXHZvR39DEn2UxhX8i670tPhZ9/U0ttEQ8eJ5V
+        pjH8XpTxQ6l7mRIlLbbV7W4foiv+BdA0do3kqfswBAR7hqXQ2wiD3WpPWAWXe1O98meRLYnlWGvhK
+        NtJ5zSbQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1qwfXJ-008dUX-ME; Sat, 28 Oct 2023 09:23:17 +0000
+Date:   Sat, 28 Oct 2023 10:23:17 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Mikulas Patocka <mpatocka@redhat.com>
+Cc:     Mike Snitzer <snitzer@kernel.org>,
+        Marek =?iso-8859-1?Q?Marczykowski-G=F3recki?= 
+        <marmarek@invisiblethingslab.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        dm-devel@lists.linux.dev, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Message-ID: <ZTzTBUdaX1h8ivZZ@casper.infradead.org>
+References: <ZTNH0qtmint/zLJZ@mail-itl>
+ <e427823c-e869-86a2-3549-61b3fdf29537@redhat.com>
+ <ZTiHQDY54E7WAld+@mail-itl>
+ <ZTiJ3CO8w0jauOzW@mail-itl>
+ <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com>
+ <34f6678e-6460-f77-73f4-fc8d3652a8e5@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <504d71debc56c89860942283ae638e5950deb79c.camel@intel.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <34f6678e-6460-f77-73f4-fc8d3652a8e5@redhat.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Fri, Oct 27, 2023 at 07:32:54PM +0200, Mikulas Patocka wrote:
+> So, we got no reponse from the MM maintainers. Marek - please try this 
 
-* Huang, Kai <kai.huang@intel.com> wrote:
+yes, how dare i go on holiday.  i'll look at this when i'm back.
+probably.
 
-> On Thu, 2023-10-26 at 11:34 -0500, Haitao Huang wrote:
-> > On Thu, 26 Oct 2023 11:01:57 -0500, Reinette Chatre  
-> > <reinette.chatre@intel.com> wrote:
-> > 
-> > > 
-> > > 
-> > > On 10/25/2023 4:58 PM, Huang, Kai wrote:
-> > > > On Wed, 2023-10-25 at 07:31 -0700, Hansen, Dave wrote:
-> > > > > On 10/19/23 19:53, Haitao Huang wrote:
-> > > > > > In the EAUG on page fault path, VM_FAULT_OOM is returned when the
-> > > > > > Enclave Page Cache (EPC) runs out. This may trigger unneeded OOM kill
-> > > > > > that will not free any EPCs. Return VM_FAULT_SIGBUS instead.
-> > > 
-> > > This commit message does not seem accurate to me. From what I can tell
-> > > VM_FAULT_SIGBUS is indeed returned when EPC runs out. What is addressed
-> > > with this patch is the error returned when kernel (not EPC) memory runs
-> > > out.
-> > > 
-> > 
-> > 
-> > Sorry I got it mixed up between sgx_alloc_epc_page and sgx_encl_page_alloc  
-> > returns.
-> > You are right. Please drop this patch.
-> > 
+> patch on all the machines where you hit the bug and if you still hit the 
+> bug with this patch, report it.
 > 
-> It's already in tip/x86/urgent.  Please send a patch to revert?
+> Mikulas
+> 
+> 
+> 
+> From: Mikulas Patocka <mpatocka@redhat.com>
+> Subject: [PATCH] dm-crypt: don't allocate large compound pages
+> 
+> It was reported that the patch 5054e778fcd9cd29ddaa8109077cd235527e4f94
+> ("dm crypt: allocate compound pages if possible") causes intermittent
+> freezes [1].
+> 
+> So far, it is not clear what is the root cause. It was reported that with
+> the allocation order 3 or lower it works [1], so we restrict the order to
+> 3 (that is PAGE_ALLOC_COSTLY_ORDER).
+> 
+> [1] https://www.spinics.net/lists/dm-devel/msg56048.html
+> 
+> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+> Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+> Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+> Cc: stable@vger.kernel.org	# v6.5+
+> Fixes: 5054e778fcd9 ("dm crypt: allocate compound pages if possible")
+> 
+> ---
+>  drivers/md/dm-crypt.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Index: linux-2.6/drivers/md/dm-crypt.c
+> ===================================================================
+> --- linux-2.6.orig/drivers/md/dm-crypt.c
+> +++ linux-2.6/drivers/md/dm-crypt.c
+> @@ -1679,7 +1679,7 @@ static struct bio *crypt_alloc_buffer(st
+>  	unsigned int nr_iovecs = (size + PAGE_SIZE - 1) >> PAGE_SHIFT;
+>  	gfp_t gfp_mask = GFP_NOWAIT | __GFP_HIGHMEM;
+>  	unsigned int remaining_size;
+> -	unsigned int order = MAX_ORDER - 1;
+> +	unsigned int order = PAGE_ALLOC_COSTLY_ORDER;
+>  
+>  retry:
+>  	if (unlikely(gfp_mask & __GFP_DIRECT_RECLAIM))
 
-No, let's just zap it.
-
-Thanks,
-
-	Ingo
