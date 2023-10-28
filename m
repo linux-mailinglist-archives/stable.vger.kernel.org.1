@@ -2,108 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 75BA67DA8AB
-	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 20:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FDAC7DA8B0
+	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 20:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229448AbjJ1Slj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 28 Oct 2023 14:41:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37380 "EHLO
+        id S229450AbjJ1Snj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 28 Oct 2023 14:43:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjJ1Sli (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 14:41:38 -0400
-Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE267D9
-        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 11:41:35 -0700 (PDT)
-Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a7cc433782so26820477b3.3
-        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 11:41:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1698518495; x=1699123295; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=LT/obDBJABfb8QCqKTqEEdFn+fX3d4iF5BqppBNxXsU=;
-        b=piSo4TGc7gM2i2QFChqTVMouiYt19wmkHoG97MUyxLOAs2hOzJgANVvyaOY9yK14oN
-         3E3kAemYBbZWM+uhgz+FNonpZwV9by0OFmKADbVSSc1OpeMdzW0pz4N1+dpbgZ7G8ou4
-         dxuyvtRRel4J+hZdjVFC9zsKAY8vGoLW2RmRaR0k5xfzqrrZs4VxXlUjAYA/y1yijczw
-         HNsr4MUBUg3927FNdvMPzDQ1+/8JboDYipRfCYAd6EhN52Uq8aKAtRv3qbVbsJ3gm+h4
-         6Mr3DyV+iXrDv8GvP/EDCZ4U0RN1TGs/SEA3l0Afep4H6gFTvxiyZq9Mc7aOrJk1YTGJ
-         VkfQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698518495; x=1699123295;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LT/obDBJABfb8QCqKTqEEdFn+fX3d4iF5BqppBNxXsU=;
-        b=oqlWV3w1xoOPTw+Ztx9W3g13feHcwS5/b8yZcVMUygPy5GXddMJC2bxR/qFHZ+9JeS
-         xAXJvBUnqMzpEY/HH0gjVFpzcANnni0JeO97lcfaK7AL0y2uCs+6xdl9Xhsxf2dZTbf8
-         KNjgJLd3jZuEofLXjfTL4bZW/Fo9WMEwbUsvFhrSPCIA7kDZwgZQkHlF59mbfCZEYxkI
-         lWYEQjEmw7agBv0nRTCcz/jrwKDdzQa2EtXNJAkwnVrMiPAxJlqwsixT4/FfI9W+FEpW
-         Jl7TtDm29KHfAmW281W1hxqjMGyv3GP9nhxC1/0ktURRgDrg5d1lCGkNiAgJbNukVTq+
-         wblQ==
-X-Gm-Message-State: AOJu0YzTHVCpNb6GBOqC0zI/TiLY8m/sw8EiY2CKswhZGIhhz+SKeqZn
-        PbA7WDNFg5sz3pbXUoTr1vSU70jeyaOxLyQ=
-X-Google-Smtp-Source: AGHT+IEWcYRt5CfYLxiiSv7LopaNWnrosDwtfmpOMt7IrDJPoCJywxVs2ewKYzO/4eNde4EHQG+2mTTUCRrvH6U=
-X-Received: from jsperbeck7.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:26dc])
- (user=jsperbeck job=sendgmr) by 2002:a81:6c49:0:b0:5a7:ba09:44b6 with SMTP id
- h70-20020a816c49000000b005a7ba0944b6mr124674ywc.0.1698518494827; Sat, 28 Oct
- 2023 11:41:34 -0700 (PDT)
-Date:   Sat, 28 Oct 2023 18:41:31 +0000
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-Message-ID: <20231028184131.2103810-1-jsperbeck@google.com>
-Subject: [PATCH v2] objtool/x86: add missing embedded_insn check
-From:   John Sperbeck <jsperbeck@google.com>
-To:     gregkh@linuxfoundation.org
-Cc:     bp@alien8.de, jpoimboe@kernel.org, patches@lists.linux.dev,
-        peterz@infradead.org, stable@vger.kernel.org, jsperbeck@google.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        with ESMTP id S229446AbjJ1Snj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 14:43:39 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89F1DD9
+        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 11:43:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698518616; x=1730054616;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=daerNB+pqMoZz3rIwMQHluf9yEHB6BqSCS9N12UV2aM=;
+  b=GtS8PLjN8vDAeZ5bI2N3zqRhNVvY2MKkWam0ZowYZDHdsov1Qg+nDMsS
+   Zw2lNWmCsA73YVkhsAFfIygy/LGVF5TxoPjeELPY29stGHUFqqZP1mFAi
+   H1CRAHs1D9AIuQ8jerGHWvdjcwED1OjZ6w9gR/emlg7xH98yj6HzBtNAv
+   lQExavPCVjbFyxZoJSrhvM8/l7clTBuIVEjrMZVdrQwMM3fBR8NTztiz7
+   Z+G32MOiURJIJTy4jk/4E6xfLQDXIKKCrfZFrtzTL2nLDY2D3GI5sDGHx
+   VmQSAFr1phJNns7yK2vOT8/IHK7ZLw3lyRti9ZiMtcQFQdjwE/sEWaPVp
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="390775262"
+X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
+   d="scan'208";a="390775262"
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 11:43:35 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="753418159"
+X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
+   d="scan'208";a="753418159"
+Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
+  by orsmga007.jf.intel.com with ESMTP; 28 Oct 2023 11:43:34 -0700
+Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qwoHU-000Bzb-0Y;
+        Sat, 28 Oct 2023 18:43:32 +0000
+Date:   Sun, 29 Oct 2023 02:43:31 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     John Sperbeck <jsperbeck@google.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] objtool/x86: add missing embedded_insn check
+Message-ID: <ZT1WU783srTI75zt@dceb3e7df498>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231028184131.2103810-1-jsperbeck@google.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-When dbf460087755 ("objtool/x86: Fixup frame-pointer vs rethunk")
-was backported to some stable branches, the check for dest->embedded_insn
-in is_special_call() was missed.  The result is that the warning it
-was intended to suppress still appears.  For example on 6.1 (on kernels
-before 6.1, the '-s' argument would instead be 'check'):
+Hi,
 
-$ tools/objtool/objtool -s arch/x86/lib/retpoline.o
-arch/x86/lib/retpoline.o: warning: objtool: srso_untrain_ret+0xd:
-    call without frame pointer save/setup
+Thanks for your patch.
 
-With this patch, the warning is correctly suppressed, and the
-kernel still passes the normal Google kernel developer tests.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Signed-off-by: John Sperbeck <jsperbeck@google.com>
----
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-I think 6.1.y, 5.15.y, and 5.10.y are the LTS branches missing the
-bit of code that this patch re-adds.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] objtool/x86: add missing embedded_insn check
+Link: https://lore.kernel.org/stable/20231028184131.2103810-1-jsperbeck%40google.com
 
-Changes from v1 to v2:
-* include more context in the commit message.
-
-
- tools/objtool/check.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index f8008ab31eef..cb363b507a32 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2478,7 +2478,7 @@ static bool is_special_call(struct instruction *insn)
- 		if (!dest)
- 			return false;
- 
--		if (dest->fentry)
-+		if (dest->fentry || dest->embedded_insn)
- 			return true;
- 	}
- 
 -- 
-2.42.0.820.g83a721a137-goog
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
