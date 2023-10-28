@@ -2,124 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8C917DA850
-	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 19:53:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75BA67DA8AB
+	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 20:41:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229449AbjJ1Rx1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 28 Oct 2023 13:53:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59878 "EHLO
+        id S229448AbjJ1Slj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 28 Oct 2023 14:41:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229446AbjJ1Rx0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 13:53:26 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F9C1ED
-        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 10:53:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698515605; x=1730051605;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=nA82oiS6OwSAKblQ370dp2vW/UtelFuft3ISN5WeRoM=;
-  b=EFNZIunXDQ2dg0N6t7kHHMoceR6Yf3b3/YYPDyEeT0H+OhTn46EAXokY
-   oFZSRO0+mf1z32RWaliC7jQAeBjrSAYa8SVEXog0RvlJJVWZ15nRbgC+z
-   Ms+e6fi6755sd7dB/CpUlDcp/AV9RpkbLBFOadTwViXow7v9QNhBcizL3
-   R7SY3aNuTnjcII4q4IrYAnh2ZXKJ5tk4HOFGM87bXG4HbubVyirP3akhQ
-   N8qvjhSResbqzlHPPoikfA3P3Pv3Vffn5oLgjatnacCfXrVSi0qNzXPEB
-   hVLFlSob3eKjzTfjwH7BBWHc5QQOvHzclyJHRPwu5oFMCZlavBjE2JLqv
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="723695"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="723695"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 10:53:24 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10877"; a="876676910"
-X-IronPort-AV: E=Sophos;i="6.03,259,1694761200"; 
-   d="scan'208";a="876676910"
-Received: from sgruszka-mobl.ger.corp.intel.com (HELO localhost) ([10.252.50.235])
-  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2023 10:53:22 -0700
-From:   Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-To:     stable@vger.kernel.org
-Cc:     Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-        stanislaw.gruszka@linux.intel.com,
-        Karol Wachowski <karol.wachowski@linux.intel.com>
-Subject: [PATCH 6.5] accel/ivpu/37xx: Fix missing VPUIP interrupts
-Date:   Sat, 28 Oct 2023 19:53:20 +0200
-Message-Id: <20231028175320.6791-1-stanislaw.gruszka@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229446AbjJ1Sli (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 14:41:38 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE267D9
+        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 11:41:35 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5a7cc433782so26820477b3.3
+        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 11:41:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1698518495; x=1699123295; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LT/obDBJABfb8QCqKTqEEdFn+fX3d4iF5BqppBNxXsU=;
+        b=piSo4TGc7gM2i2QFChqTVMouiYt19wmkHoG97MUyxLOAs2hOzJgANVvyaOY9yK14oN
+         3E3kAemYBbZWM+uhgz+FNonpZwV9by0OFmKADbVSSc1OpeMdzW0pz4N1+dpbgZ7G8ou4
+         dxuyvtRRel4J+hZdjVFC9zsKAY8vGoLW2RmRaR0k5xfzqrrZs4VxXlUjAYA/y1yijczw
+         HNsr4MUBUg3927FNdvMPzDQ1+/8JboDYipRfCYAd6EhN52Uq8aKAtRv3qbVbsJ3gm+h4
+         6Mr3DyV+iXrDv8GvP/EDCZ4U0RN1TGs/SEA3l0Afep4H6gFTvxiyZq9Mc7aOrJk1YTGJ
+         VkfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698518495; x=1699123295;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LT/obDBJABfb8QCqKTqEEdFn+fX3d4iF5BqppBNxXsU=;
+        b=oqlWV3w1xoOPTw+Ztx9W3g13feHcwS5/b8yZcVMUygPy5GXddMJC2bxR/qFHZ+9JeS
+         xAXJvBUnqMzpEY/HH0gjVFpzcANnni0JeO97lcfaK7AL0y2uCs+6xdl9Xhsxf2dZTbf8
+         KNjgJLd3jZuEofLXjfTL4bZW/Fo9WMEwbUsvFhrSPCIA7kDZwgZQkHlF59mbfCZEYxkI
+         lWYEQjEmw7agBv0nRTCcz/jrwKDdzQa2EtXNJAkwnVrMiPAxJlqwsixT4/FfI9W+FEpW
+         Jl7TtDm29KHfAmW281W1hxqjMGyv3GP9nhxC1/0ktURRgDrg5d1lCGkNiAgJbNukVTq+
+         wblQ==
+X-Gm-Message-State: AOJu0YzTHVCpNb6GBOqC0zI/TiLY8m/sw8EiY2CKswhZGIhhz+SKeqZn
+        PbA7WDNFg5sz3pbXUoTr1vSU70jeyaOxLyQ=
+X-Google-Smtp-Source: AGHT+IEWcYRt5CfYLxiiSv7LopaNWnrosDwtfmpOMt7IrDJPoCJywxVs2ewKYzO/4eNde4EHQG+2mTTUCRrvH6U=
+X-Received: from jsperbeck7.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:26dc])
+ (user=jsperbeck job=sendgmr) by 2002:a81:6c49:0:b0:5a7:ba09:44b6 with SMTP id
+ h70-20020a816c49000000b005a7ba0944b6mr124674ywc.0.1698518494827; Sat, 28 Oct
+ 2023 11:41:34 -0700 (PDT)
+Date:   Sat, 28 Oct 2023 18:41:31 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
+Message-ID: <20231028184131.2103810-1-jsperbeck@google.com>
+Subject: [PATCH v2] objtool/x86: add missing embedded_insn check
+From:   John Sperbeck <jsperbeck@google.com>
+To:     gregkh@linuxfoundation.org
+Cc:     bp@alien8.de, jpoimboe@kernel.org, patches@lists.linux.dev,
+        peterz@infradead.org, stable@vger.kernel.org, jsperbeck@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
+When dbf460087755 ("objtool/x86: Fixup frame-pointer vs rethunk")
+was backported to some stable branches, the check for dest->embedded_insn
+in is_special_call() was missed.  The result is that the warning it
+was intended to suppress still appears.  For example on 6.1 (on kernels
+before 6.1, the '-s' argument would instead be 'check'):
 
-commit b132ac51d7a50c37683be56c96ff64f8c887930f upstream.
+$ tools/objtool/objtool -s arch/x86/lib/retpoline.o
+arch/x86/lib/retpoline.o: warning: objtool: srso_untrain_ret+0xd:
+    call without frame pointer save/setup
 
-Move sequence of masking and unmasking global interrupts from buttress
-interrupt handler to generic one that handles both VPUIP and BTRS
-interrupts. Unmasking global interrupts will re-trigger MSI for any
-pending interrupts.
+With this patch, the warning is correctly suppressed, and the
+kernel still passes the normal Google kernel developer tests.
 
-Lack of this sequence will cause the driver to miss any
-VPUIP interrupt that comes after reading VPU_37XX_HOST_SS_ICB_STATUS_0
-and before clearing all active interrupt sources.
-
-Fixes: 35b137630f08 ("accel/ivpu: Introduce a new DRM driver for Intel VPU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231024161952.759914-1-stanislaw.gruszka@linux.intel.com
+Signed-off-by: John Sperbeck <jsperbeck@google.com>
 ---
- drivers/accel/ivpu/ivpu_hw_mtl.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_hw_mtl.c b/drivers/accel/ivpu/ivpu_hw_mtl.c
-index 2a5dd3a5dc46..9a49255e60c8 100644
---- a/drivers/accel/ivpu/ivpu_hw_mtl.c
-+++ b/drivers/accel/ivpu/ivpu_hw_mtl.c
-@@ -953,9 +953,6 @@ static u32 ivpu_hw_mtl_irqb_handler(struct ivpu_device *vdev, int irq)
- 	if (status == 0)
- 		return 0;
+I think 6.1.y, 5.15.y, and 5.10.y are the LTS branches missing the
+bit of code that this patch re-adds.
+
+Changes from v1 to v2:
+* include more context in the commit message.
+
+
+ tools/objtool/check.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index f8008ab31eef..cb363b507a32 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2478,7 +2478,7 @@ static bool is_special_call(struct instruction *insn)
+ 		if (!dest)
+ 			return false;
  
--	/* Disable global interrupt before handling local buttress interrupts */
--	REGB_WR32(MTL_BUTTRESS_GLOBAL_INT_MASK, 0x1);
--
- 	if (REG_TEST_FLD(MTL_BUTTRESS_INTERRUPT_STAT, FREQ_CHANGE, status))
- 		ivpu_dbg(vdev, IRQ, "FREQ_CHANGE irq: %08x", REGB_RD32(MTL_BUTTRESS_CURRENT_PLL));
- 
-@@ -986,9 +983,6 @@ static u32 ivpu_hw_mtl_irqb_handler(struct ivpu_device *vdev, int irq)
- 	else
- 		REGB_WR32(MTL_BUTTRESS_INTERRUPT_STAT, status);
- 
--	/* Re-enable global interrupt */
--	REGB_WR32(MTL_BUTTRESS_GLOBAL_INT_MASK, 0x0);
--
- 	if (schedule_recovery)
- 		ivpu_pm_schedule_recovery(vdev);
- 
-@@ -1000,9 +994,14 @@ static irqreturn_t ivpu_hw_mtl_irq_handler(int irq, void *ptr)
- 	struct ivpu_device *vdev = ptr;
- 	u32 ret_irqv, ret_irqb;
- 
-+	REGB_WR32(MTL_BUTTRESS_GLOBAL_INT_MASK, 0x1);
-+
- 	ret_irqv = ivpu_hw_mtl_irqv_handler(vdev, irq);
- 	ret_irqb = ivpu_hw_mtl_irqb_handler(vdev, irq);
- 
-+	/* Re-enable global interrupts to re-trigger MSI for pending interrupts */
-+	REGB_WR32(MTL_BUTTRESS_GLOBAL_INT_MASK, 0x0);
-+
- 	return IRQ_RETVAL(ret_irqb | ret_irqv);
- }
+-		if (dest->fentry)
++		if (dest->fentry || dest->embedded_insn)
+ 			return true;
+ 	}
  
 -- 
-2.34.1
+2.42.0.820.g83a721a137-goog
 
