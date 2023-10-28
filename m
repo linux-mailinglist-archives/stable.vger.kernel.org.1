@@ -2,39 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7240F7DA57B
-	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 09:27:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B78337DA5CC
+	for <lists+stable@lfdr.de>; Sat, 28 Oct 2023 10:24:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229553AbjJ1H1v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 28 Oct 2023 03:27:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54700 "EHLO
+        id S229459AbjJ1IYK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 28 Oct 2023 04:24:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229458AbjJ1H1u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 03:27:50 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1396B4
-        for <stable@vger.kernel.org>; Sat, 28 Oct 2023 00:27:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9496C433C7;
-        Sat, 28 Oct 2023 07:27:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698478068;
-        bh=KqBemi3wTmUCto9rVdTm63hMzXU/09e5yoI5UHhPajc=;
-        h=Subject:To:Cc:From:Date:From;
-        b=GF0MM2FFJD2xHwODHmjpJK722IvtyU0GQFWUNDD1aDxBDlCN3nouW51ktXl31KWaK
-         HDupI7gAoo696QDU+xomyLS5O1IfXCZY01cMH2t5zuyDX6TXGJkQFFJdEkBQzJdGsB
-         7h8UK139eNpTzreXPmeQigxkV66Y3y8f6xhmO2Mo=
-Subject: FAILED: patch "[PATCH] io_uring/fdinfo: lock SQ thread while retrieving thread" failed to apply to 6.5-stable tree
-To:     axboe@kernel.dk, krisman@suse.de
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 28 Oct 2023 09:27:36 +0200
-Message-ID: <2023102836-rebel-rigor-f5e9@gregkh>
+        with ESMTP id S229458AbjJ1IYJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 28 Oct 2023 04:24:09 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC059F4;
+        Sat, 28 Oct 2023 01:24:07 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id a640c23a62f3a-99c3c8adb27so417937066b.1;
+        Sat, 28 Oct 2023 01:24:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698481446; x=1699086246; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NvHLJkc4vz+ewbng+qiWVXp1pmuOUJA9AviIjHtZepY=;
+        b=SC/JD3zQOVc8NjgLsE7mTszIDcyvRQ0rcQPNMD/3pZ5ePdeVAi/+MVa6GI3kJUj8cF
+         pXybp7Lpp3kVdjvD+gFU8MZre0xVxzLkWmeNl3LfQq+HXIKhE2AuYrulk51c+NImsZ4T
+         XDJNyrek2C5K+Fg1LgkRdHjCC36fIfwTV7Q3ZZURQE7COotFEOPznXwMN+2K+EbMxlVI
+         LXJztGBZYQ5rtR/7QirPuATbRLbTA3X13+N4zsLaNylPc94EDWU/VnofqudyLADnGavU
+         Q4K8q4i/Dpdu2wmfNbWHxSkSBIYd68bRWCzm/BpESYzbVXEerDQQ/zWM6F1hPniGj6u6
+         FsWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698481446; x=1699086246;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NvHLJkc4vz+ewbng+qiWVXp1pmuOUJA9AviIjHtZepY=;
+        b=iAlB9ukYdr8EO3jiX/x8qpjyoTYgWrw99t/nSZVrJ4NF/wROCqTr1ubbOWeAO1sO4V
+         xKXQXZKvMEWFUM5z+jCwfINxdEds1xMLM35Z0zdyxbkwPZ3oKSkL0OJgCs0M+0k4cuXn
+         VI8AxFbKTJucRLhmmSp8/tIHds31LKiRUz/4kfbbioT0XjZs8q3ecRqilFqlgqbB6X1/
+         TKvtM/L4IjpFMbR2tLowGPawIqlF/N4917UyPuDaVIrgeHNUJBXFsVw5Jh0YG1RhmMpK
+         xT/Qc74cgGrOIlv9I0C+dI0q4z1oVIIDyw+QauIKhR/r9wSXGSP/Fghrj1yZYZLH8S4B
+         4I+A==
+X-Gm-Message-State: AOJu0YweSxEIG7JaWOSP5P2c8ZJc8S5hdw8c1qYi7M0mRe4zaKNjEp+m
+        q5cLMQiiO3D9i1pALpzqZz7Lrwt5cYk=
+X-Google-Smtp-Source: AGHT+IFte2+bKZoisXNo7/RhMBMe7DleFnHsbzlCaopU7VmSYhuHgyVHQhwflI3HiiZr04n7OHlJvQ==
+X-Received: by 2002:a17:907:3f05:b0:9c2:2d0a:3211 with SMTP id hq5-20020a1709073f0500b009c22d0a3211mr3760303ejc.38.1698481445969;
+        Sat, 28 Oct 2023 01:24:05 -0700 (PDT)
+Received: from gmail.com (1F2EF1E7.nat.pool.telekom.hu. [31.46.241.231])
+        by smtp.gmail.com with ESMTPSA id 26-20020a508e1a000000b0053df23511b0sm2509055edw.29.2023.10.28.01.24.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 28 Oct 2023 01:24:05 -0700 (PDT)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date:   Sat, 28 Oct 2023 10:24:03 +0200
+From:   Ingo Molnar <mingo@kernel.org>
+To:     "Huang, Kai" <kai.huang@intel.com>
+Cc:     "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+        "Chatre, Reinette" <reinette.chatre@intel.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        "jarkko@kernel.org" <jarkko@kernel.org>,
+        "haitao.huang@linux.intel.com" <haitao.huang@linux.intel.com>,
+        "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] x86/sgx: Return VM_FAULT_SIGBUS for EPC exhaustion
+Message-ID: <ZTzFI5+hniEQhU2+@gmail.com>
+References: <20231020025353.29691-1-haitao.huang@linux.intel.com>
+ <b8ec3061-436f-41d3-8bff-635a90774dfb@intel.com>
+ <b389986bac0e65ce128c9553603436efdda24a58.camel@intel.com>
+ <b709d680-5754-45ab-ae73-c812420f10e5@intel.com>
+ <op.2dfkbh2iwjvjmi@hhuan26-mobl.amr.corp.intel.com>
+ <504d71debc56c89860942283ae638e5950deb79c.camel@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <504d71debc56c89860942283ae638e5950deb79c.camel@intel.com>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -42,89 +84,37 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+* Huang, Kai <kai.huang@intel.com> wrote:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+> On Thu, 2023-10-26 at 11:34 -0500, Haitao Huang wrote:
+> > On Thu, 26 Oct 2023 11:01:57 -0500, Reinette Chatre  
+> > <reinette.chatre@intel.com> wrote:
+> > 
+> > > 
+> > > 
+> > > On 10/25/2023 4:58 PM, Huang, Kai wrote:
+> > > > On Wed, 2023-10-25 at 07:31 -0700, Hansen, Dave wrote:
+> > > > > On 10/19/23 19:53, Haitao Huang wrote:
+> > > > > > In the EAUG on page fault path, VM_FAULT_OOM is returned when the
+> > > > > > Enclave Page Cache (EPC) runs out. This may trigger unneeded OOM kill
+> > > > > > that will not free any EPCs. Return VM_FAULT_SIGBUS instead.
+> > > 
+> > > This commit message does not seem accurate to me. From what I can tell
+> > > VM_FAULT_SIGBUS is indeed returned when EPC runs out. What is addressed
+> > > with this patch is the error returned when kernel (not EPC) memory runs
+> > > out.
+> > > 
+> > 
+> > 
+> > Sorry I got it mixed up between sgx_alloc_epc_page and sgx_encl_page_alloc  
+> > returns.
+> > You are right. Please drop this patch.
+> > 
+> 
+> It's already in tip/x86/urgent.  Please send a patch to revert?
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
-git checkout FETCH_HEAD
-git cherry-pick -x 7644b1a1c9a7ae8ab99175989bfc8676055edb46
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102836-rebel-rigor-f5e9@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+No, let's just zap it.
 
-Possible dependencies:
+Thanks,
 
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 7644b1a1c9a7ae8ab99175989bfc8676055edb46 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Sat, 21 Oct 2023 12:30:29 -0600
-Subject: [PATCH] io_uring/fdinfo: lock SQ thread while retrieving thread
- cpu/pid
-
-We could race with SQ thread exit, and if we do, we'll hit a NULL pointer
-dereference when the thread is cleared. Grab the SQPOLL data lock before
-attempting to get the task cpu and pid for fdinfo, this ensures we have a
-stable view of it.
-
-Cc: stable@vger.kernel.org
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218032
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/io_uring/fdinfo.c b/io_uring/fdinfo.c
-index c53678875416..f04a43044d91 100644
---- a/io_uring/fdinfo.c
-+++ b/io_uring/fdinfo.c
-@@ -53,7 +53,6 @@ static __cold int io_uring_show_cred(struct seq_file *m, unsigned int id,
- __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *f)
- {
- 	struct io_ring_ctx *ctx = f->private_data;
--	struct io_sq_data *sq = NULL;
- 	struct io_overflow_cqe *ocqe;
- 	struct io_rings *r = ctx->rings;
- 	unsigned int sq_mask = ctx->sq_entries - 1, cq_mask = ctx->cq_entries - 1;
-@@ -64,6 +63,7 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *f)
- 	unsigned int cq_shift = 0;
- 	unsigned int sq_shift = 0;
- 	unsigned int sq_entries, cq_entries;
-+	int sq_pid = -1, sq_cpu = -1;
- 	bool has_lock;
- 	unsigned int i;
- 
-@@ -143,13 +143,19 @@ __cold void io_uring_show_fdinfo(struct seq_file *m, struct file *f)
- 	has_lock = mutex_trylock(&ctx->uring_lock);
- 
- 	if (has_lock && (ctx->flags & IORING_SETUP_SQPOLL)) {
--		sq = ctx->sq_data;
--		if (!sq->thread)
--			sq = NULL;
-+		struct io_sq_data *sq = ctx->sq_data;
-+
-+		if (mutex_trylock(&sq->lock)) {
-+			if (sq->thread) {
-+				sq_pid = task_pid_nr(sq->thread);
-+				sq_cpu = task_cpu(sq->thread);
-+			}
-+			mutex_unlock(&sq->lock);
-+		}
- 	}
- 
--	seq_printf(m, "SqThread:\t%d\n", sq ? task_pid_nr(sq->thread) : -1);
--	seq_printf(m, "SqThreadCpu:\t%d\n", sq ? task_cpu(sq->thread) : -1);
-+	seq_printf(m, "SqThread:\t%d\n", sq_pid);
-+	seq_printf(m, "SqThreadCpu:\t%d\n", sq_cpu);
- 	seq_printf(m, "UserFiles:\t%u\n", ctx->nr_user_files);
- 	for (i = 0; has_lock && i < ctx->nr_user_files; i++) {
- 		struct file *f = io_file_from_index(&ctx->file_table, i);
-
+	Ingo
