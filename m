@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A47F87DAEBB
-	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 23:10:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73F177DAEBC
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 23:12:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229778AbjJ2WKX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 18:10:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59398 "EHLO
+        id S229795AbjJ2WMq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 18:12:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbjJ2WKX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 18:10:23 -0400
+        with ESMTP id S229533AbjJ2WMq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 18:12:46 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E613DAC
-        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 15:10:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86B4BD
+        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 15:12:42 -0700 (PDT)
 From:   Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1698617419;
+        s=2020; t=1698617561;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=dNnXeqR9sMT1nh7ankfbgbocOj+orVW8Lg+ybvOQThM=;
-        b=NKbcj3Cp1Td1PJG/keMJHC2tEj+j3w/OEJ9pBeUY2JF//B/Al8KFirx5aqsF2dAOjezsiv
-        4FFe71AAB7uJlpSOKT5TurA28S/yBmm26nm9tJiZjXeFlxHyWeyn3EoG5AxRQDeFwga0SY
-        PjNwWP6Tduiv8IWXrjCiMXxJjv0uuxZ+G1HABllem1FicFKD3Krjq0hVJiNtz3CxfZZivX
-        YdePsAdY8HoTCrmRnGlG6zV9v7ttXzlexaMBrZVsUkdJBdhuk+F1Gkq+E+lL7KNftLj9+t
-        1ku9Q6kCkAFF+PkSr6RILvw8BU8fXdzqqVtRiP6fT5ZisVFUhBY/fTjRo2nziw==
+        bh=QGaowSDdNzTdGtQesVUdrd4kcVkbuhoTLLogrX0D2oE=;
+        b=REdKVuwKkhFRw26uH1HXnVrAjBJoDUWmMEosf6XSmUy385mVO2CkH3G2PyUqvZ0eJ9Ae+y
+        0XN+NoeYcUdQeqW6cdWcXBlZDmoTKrxdNpcaYm/2V3jg0mOX8yZJXrZUF/KbDXzWC5cjk4
+        mheufj0ZYvsi99qTJlteVUXvtP6SUqhHrJ8/8QxdwtvO1HKUJ6JAbSOzk1NXshqytCyiuw
+        +29xISQ0HiX2VWjLHyKv4uV4VV/pb/hrarQyBHxXjnw4CLrbxzEOc6PdZ5AeuBNcltQSxm
+        ZNPgaOwfdPRa3sZGzNNkWg1gY0mrGxHvl0Gz2qb912qF7cJDPnVKsG+cZL/Z+A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1698617419;
+        s=2020e; t=1698617561;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=dNnXeqR9sMT1nh7ankfbgbocOj+orVW8Lg+ybvOQThM=;
-        b=WJsgQKWyGMGuNPdKdSRhwVl13KjlFRPwHzgCX2WOqGpQfYa+qO6mruMCNhiem+ppX624EY
-        6MCiTH7xWvd7G4DQ==
+        bh=QGaowSDdNzTdGtQesVUdrd4kcVkbuhoTLLogrX0D2oE=;
+        b=xK46HMU/BaFoPVfPRWMAGqDAJpFVL0ZcpiCBHnirWF0AvOUm4qf3tBW76xcTGInBv7t7XK
+        XkkcQY+88EDamJBw==
 To:     gregkh@linuxfoundation.org, dlazar@gmail.com, hdegoede@redhat.com,
         mario.limonciello@amd.com
 Cc:     stable@vger.kernel.org
-Subject: [PATCH 5.15.y] x86/i8259: Skip probing when ACPI/MADT advertises PCAT
-In-Reply-To: <2023102936-encounter-impatient-894d@gregkh>
-References: <2023102936-encounter-impatient-894d@gregkh>
-Date:   Sun, 29 Oct 2023 23:10:19 +0100
-Message-ID: <87il6pyt9w.ffs@tglx>
+Subject: [PATCH 4.14.y ... 5.10.y] x86/i8259: Skip probing when ACPI/MADT
+ advertises PCAT
+In-Reply-To: <2023102938-junior-reiterate-34ea@gregkh>
+References: <2023102938-junior-reiterate-34ea@gregkh>
+Date:   Sun, 29 Oct 2023 23:12:40 +0100
+Message-ID: <87fs1tyt5z.ffs@tglx>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -52,7 +53,6 @@ X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
-
 
 commit 128b0c9781c9f2651bea163cb85e52a6c7be0f9e upstream.
 
@@ -107,7 +107,7 @@ Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
 
 --- a/arch/x86/include/asm/i8259.h
 +++ b/arch/x86/include/asm/i8259.h
-@@ -69,6 +69,8 @@ struct legacy_pic {
+@@ -67,6 +67,8 @@ struct legacy_pic {
  	void (*make_irq)(unsigned int irq);
  };
  
@@ -118,8 +118,8 @@ Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
  
 --- a/arch/x86/kernel/acpi/boot.c
 +++ b/arch/x86/kernel/acpi/boot.c
-@@ -139,6 +139,9 @@ static int __init acpi_parse_madt(struct
- 		pr_debug("Local APIC address 0x%08x\n", madt->address);
+@@ -156,6 +156,9 @@ static int __init acpi_parse_madt(struct
+ 		       madt->address);
  	}
  
 +	if (madt->flags & ACPI_MADT_PCAT_COMPAT)
@@ -138,7 +138,7 @@ Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
  static int i8259A_auto_eoi;
  DEFINE_RAW_SPINLOCK(i8259A_lock);
  
-@@ -301,15 +302,32 @@ static void unmask_8259A(void)
+@@ -300,15 +301,32 @@ static void unmask_8259A(void)
  
  static int probe_8259A(void)
  {
@@ -178,7 +178,7 @@ Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
  	 */
  	raw_spin_lock_irqsave(&i8259A_lock, flags);
  
-@@ -431,5 +449,9 @@ static int __init i8259A_init_ops(void)
+@@ -430,5 +448,9 @@ static int __init i8259A_init_ops(void)
  
  	return 0;
  }
