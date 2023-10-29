@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA6757DAC63
-	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:17:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 463B97DAC65
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:20:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230131AbjJ2MRK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 08:17:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36986 "EHLO
+        id S229689AbjJ2MUr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 08:20:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230121AbjJ2MRK (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sun, 29 Oct 2023 08:17:10 -0400
+        with ESMTP id S229482AbjJ2MUr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 08:20:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56D4AE6
-        for <Stable@vger.kernel.org>; Sun, 29 Oct 2023 05:17:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7969AC433C8;
-        Sun, 29 Oct 2023 12:17:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF9891
+        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 05:20:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D01C433C8;
+        Sun, 29 Oct 2023 12:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698581826;
-        bh=3zRn9OktNWiH88jpa05XyyD8CU9kVWJxG265aTv4LIc=;
+        s=korg; t=1698582044;
+        bh=03nbzUKLL07L+9ycfj5c5hTlcidDLCNzeAkYCQyKfbc=;
         h=Subject:To:Cc:From:Date:From;
-        b=XbAMf/LSHOHhFZjvrmxNuNbYA+2i4GDxJn6RuN0H1uAnyu4vLKIlpw60lNF2U85s6
-         5xvIMPvX53NuDcvciWoh0jjQ3kXjwB+9ao2/65KiGB6lvnv5OF9Sc+XXg9nju1A1/F
-         HS7wvMPKoae5aFAzw/sIxKN+9jZ+NV4odPnJQO78=
-Subject: FAILED: patch "[PATCH] iio: adc: xilinx-xadc: Don't clobber preset" failed to apply to 4.14-stable tree
-To:     robert.hancock@calian.com, Jonathan.Cameron@huawei.com,
-        Stable@vger.kernel.org, conall.ogriofa@amd.com
+        b=pmjPS0BJbpgsjsLs8yGjs5Iweceri4VbLLOJM8uYliJvFMSUNDpZage6W8dm/Cu+9
+         9mNcyH/PrfLfRMigs66wB0lIkfaAFo2NE3YJofGz7qYJNzYkJQk/m+sY8AScGxAiFR
+         UBxs92YiKjpgiByxkuhh98TKO2Fbr7Ez8Ug7n9q4=
+Subject: FAILED: patch "[PATCH] misc: fastrpc: Clean buffers on remote invocation failures" failed to apply to 5.4-stable tree
+To:     quic_ekangupt@quicinc.com, gregkh@linuxfoundation.org,
+        srinivas.kandagatla@linaro.org, stable@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 29 Oct 2023 13:16:55 +0100
-Message-ID: <2023102955-showcase-tidy-89ca@gregkh>
+Date:   Sun, 29 Oct 2023 13:20:39 +0100
+Message-ID: <2023102939-grit-elitism-fb36@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8d6b3ea4d9eaca80982442b68a292ce50ce0a135
+git cherry-pick -x 1c8093591d1e372d700fe65423e7315a8ecf721b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102955-showcase-tidy-89ca@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102939-grit-elitism-fb36@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,67 +68,50 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8d6b3ea4d9eaca80982442b68a292ce50ce0a135 Mon Sep 17 00:00:00 2001
-From: Robert Hancock <robert.hancock@calian.com>
-Date: Thu, 14 Sep 2023 18:10:18 -0600
-Subject: [PATCH] iio: adc: xilinx-xadc: Don't clobber preset
- voltage/temperature thresholds
+From 1c8093591d1e372d700fe65423e7315a8ecf721b Mon Sep 17 00:00:00 2001
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Date: Fri, 13 Oct 2023 13:20:06 +0100
+Subject: [PATCH] misc: fastrpc: Clean buffers on remote invocation failures
 
-In the probe function, the driver was reading out the thresholds already
-set in the core, which can be configured by the user in the Vivado tools
-when the FPGA image is built. However, it later clobbered those values
-with zero or maximum values. In particular, the overtemperature shutdown
-threshold register was overwritten with the max value, which effectively
-prevents the FPGA from shutting down when the desired threshold was
-eached, potentially risking hardware damage in that case.
+With current design, buffers and dma handles are not freed in case
+of remote invocation failures returned from DSP. This could result
+in buffer leakings and dma handle pointing to wrong memory in the
+fastrpc kernel. Adding changes to clean buffers and dma handles
+even when remote invocation to DSP returns failures.
 
-Remove this code to leave the preconfigured default threshold values
-intact.
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20231013122007.174464-4-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-The code was also disabling all alarms regardless of what enable state
-they were left in by the FPGA image, including the overtemperature
-shutdown feature. Leave these bits in their original state so they are
-not unconditionally disabled.
-
-Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
-Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-Acked-by: O'Griofa, Conall <conall.ogriofa@amd.com>
-Tested-by: O'Griofa, Conall <conall.ogriofa@amd.com>
-Link: https://lore.kernel.org/r/20230915001019.2862964-2-robert.hancock@calian.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index dba73300f894..d4d0d184a172 100644
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1423,28 +1423,6 @@ static int xadc_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+index a52701c1b018..3cdc58488db1 100644
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1176,11 +1176,6 @@ static int fastrpc_internal_invoke(struct fastrpc_user *fl,  u32 kernel,
+ 		err = wait_for_completion_interruptible(&ctx->work);
+ 	}
  
--	/* Disable all alarms */
--	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_ALARM_MASK,
--				  XADC_CONF1_ALARM_MASK);
--	if (ret)
--		return ret;
+-	if (err)
+-		goto bail;
 -
--	/* Set thresholds to min/max */
--	for (i = 0; i < 16; i++) {
--		/*
--		 * Set max voltage threshold and both temperature thresholds to
--		 * 0xffff, min voltage threshold to 0.
--		 */
--		if (i % 8 < 4 || i == 7)
--			xadc->threshold[i] = 0xffff;
--		else
--			xadc->threshold[i] = 0;
--		ret = xadc_write_adc_reg(xadc, XADC_REG_THRESHOLD(i),
--			xadc->threshold[i]);
--		if (ret)
--			return ret;
--	}
--
- 	/* Go to non-buffered mode */
- 	xadc_postdisable(indio_dev);
+-	/* Check the response from remote dsp */
+-	err = ctx->retval;
+ 	if (err)
+ 		goto bail;
  
+@@ -1191,6 +1186,11 @@ static int fastrpc_internal_invoke(struct fastrpc_user *fl,  u32 kernel,
+ 	if (err)
+ 		goto bail;
+ 
++	/* Check the response from remote dsp */
++	err = ctx->retval;
++	if (err)
++		goto bail;
++
+ bail:
+ 	if (err != -ERESTARTSYS && err != -ETIMEDOUT) {
+ 		/* We are done with this compute context */
 
