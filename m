@@ -2,90 +2,190 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 139BD7E9B73
-	for <lists+stable@lfdr.de>; Mon, 13 Nov 2023 12:53:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A47F87DAEBB
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 23:10:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230200AbjKMLxD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 13 Nov 2023 06:53:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34474 "EHLO
+        id S229778AbjJ2WKX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 18:10:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59398 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbjKMLxA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 13 Nov 2023 06:53:00 -0500
-Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D29D7C
-        for <stable@vger.kernel.org>; Mon, 13 Nov 2023 03:52:54 -0800 (PST)
-Received: from hverkuil by www.linuxtv.org with local (Exim 4.92)
-        (envelope-from <hverkuil@linuxtv.org>)
-        id 1r2VUq-006EBD-Cd; Mon, 13 Nov 2023 11:52:52 +0000
-From:   Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date:   Wed, 11 Oct 2023 12:52:57 +0000
-Subject: [git:media_stage/master] media: subdev: Don't report V4L2_SUBDEV_CAP_STREAMS when the streams API is disabled
-To:     linuxtv-commits@linuxtv.org
-Cc:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        stable@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1r2VUq-006EBD-Cd@www.linuxtv.org>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=BAYES_00,DATE_IN_PAST_96_XX,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S229533AbjJ2WKX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 18:10:23 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E613DAC
+        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 15:10:20 -0700 (PDT)
+From:   Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1698617419;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=dNnXeqR9sMT1nh7ankfbgbocOj+orVW8Lg+ybvOQThM=;
+        b=NKbcj3Cp1Td1PJG/keMJHC2tEj+j3w/OEJ9pBeUY2JF//B/Al8KFirx5aqsF2dAOjezsiv
+        4FFe71AAB7uJlpSOKT5TurA28S/yBmm26nm9tJiZjXeFlxHyWeyn3EoG5AxRQDeFwga0SY
+        PjNwWP6Tduiv8IWXrjCiMXxJjv0uuxZ+G1HABllem1FicFKD3Krjq0hVJiNtz3CxfZZivX
+        YdePsAdY8HoTCrmRnGlG6zV9v7ttXzlexaMBrZVsUkdJBdhuk+F1Gkq+E+lL7KNftLj9+t
+        1ku9Q6kCkAFF+PkSr6RILvw8BU8fXdzqqVtRiP6fT5ZisVFUhBY/fTjRo2nziw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1698617419;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=dNnXeqR9sMT1nh7ankfbgbocOj+orVW8Lg+ybvOQThM=;
+        b=WJsgQKWyGMGuNPdKdSRhwVl13KjlFRPwHzgCX2WOqGpQfYa+qO6mruMCNhiem+ppX624EY
+        6MCiTH7xWvd7G4DQ==
+To:     gregkh@linuxfoundation.org, dlazar@gmail.com, hdegoede@redhat.com,
+        mario.limonciello@amd.com
+Cc:     stable@vger.kernel.org
+Subject: [PATCH 5.15.y] x86/i8259: Skip probing when ACPI/MADT advertises PCAT
+In-Reply-To: <2023102936-encounter-impatient-894d@gregkh>
+References: <2023102936-encounter-impatient-894d@gregkh>
+Date:   Sun, 29 Oct 2023 23:10:19 +0100
+Message-ID: <87il6pyt9w.ffs@tglx>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: subdev: Don't report V4L2_SUBDEV_CAP_STREAMS when the streams API is disabled
-Author:  Hans de Goede <hdegoede@redhat.com>
-Date:    Tue Oct 10 12:24:58 2023 +0200
+commit 128b0c9781c9f2651bea163cb85e52a6c7be0f9e upstream.
 
-Since the stream API is still experimental it is currently locked away
-behind the internal, default disabled, v4l2_subdev_enable_streams_api flag.
+David and a few others reported that on certain newer systems some legacy
+interrupts fail to work correctly.
 
-Advertising V4L2_SUBDEV_CAP_STREAMS when the streams API is disabled
-confuses userspace. E.g. it causes the following libcamera error:
+Debugging revealed that the BIOS of these systems leaves the legacy PIC in
+uninitialized state which makes the PIC detection fail and the kernel
+switches to a dummy implementation.
 
-ERROR SimplePipeline simple.cpp:1497 Failed to reset routes for
-  /dev/v4l-subdev1: Inappropriate ioctl for device
+Unfortunately this fallback causes quite some code to fail as it depends on
+checks for the number of legacy PIC interrupts or the availability of the
+real PIC.
 
-Don't report V4L2_SUBDEV_CAP_STREAMS when the streams API is disabled
-to avoid problems like this.
+In theory there is no reason to use the PIC on any modern system when
+IO/APIC is available, but the dependencies on the related checks cannot be
+resolved trivially and on short notice. This needs lots of analysis and
+rework.
 
-Reported-by: Dennis Bonke <admin@dennisbonke.com>
-Fixes: 9a6b5bf4c1bb ("media: add V4L2_SUBDEV_CAP_STREAMS")
-Cc: stable@vger.kernel.org # for >= 6.3
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The PIC detection has been added to avoid quirky checks and force selection
+of the dummy implementation all over the place, especially in VM guest
+scenarios. So it's not an option to revert the relevant commit as that
+would break a lot of other scenarios.
 
- drivers/media/v4l2-core/v4l2-subdev.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+One solution would be to try to initialize the PIC on detection fail and
+retry the detection, but that puts the burden on everything which does not
+have a PIC.
+
+Fortunately the ACPI/MADT table header has a flag field, which advertises
+in bit 0 that the system is PCAT compatible, which means it has a legacy
+8259 PIC.
+
+Evaluate that bit and if set avoid the detection routine and keep the real
+PIC installed, which then gets initialized (for nothing) and makes the rest
+of the code with all the dependencies work again.
+
+Fixes: e179f6914152 ("x86, irq, pic: Probe for legacy PIC and set legacy_pic appropriately")
+Reported-by: David Lazar <dlazar@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: David Lazar <dlazar@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218003
+Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
 
 ---
+ arch/x86/include/asm/i8259.h |    2 ++
+ arch/x86/kernel/acpi/boot.c  |    3 +++
+ arch/x86/kernel/i8259.c      |   38 ++++++++++++++++++++++++++++++--------
+ 3 files changed, 35 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index b92348ad61f6..31752c06d1f0 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -502,6 +502,13 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg,
- 				       V4L2_SUBDEV_CLIENT_CAP_STREAMS;
- 	int rval;
+--- a/arch/x86/include/asm/i8259.h
++++ b/arch/x86/include/asm/i8259.h
+@@ -69,6 +69,8 @@ struct legacy_pic {
+ 	void (*make_irq)(unsigned int irq);
+ };
  
-+	/*
-+	 * If the streams API is not enabled, remove V4L2_SUBDEV_CAP_STREAMS.
-+	 * Remove this when the API is no longer experimental.
-+	 */
-+	if (!v4l2_subdev_enable_streams_api)
-+		streams_subdev = false;
++void legacy_pic_pcat_compat(void);
 +
- 	switch (cmd) {
- 	case VIDIOC_SUBDEV_QUERYCAP: {
- 		struct v4l2_subdev_capability *cap = arg;
+ extern struct legacy_pic *legacy_pic;
+ extern struct legacy_pic null_legacy_pic;
+ 
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -139,6 +139,9 @@ static int __init acpi_parse_madt(struct
+ 		pr_debug("Local APIC address 0x%08x\n", madt->address);
+ 	}
+ 
++	if (madt->flags & ACPI_MADT_PCAT_COMPAT)
++		legacy_pic_pcat_compat();
++
+ 	default_acpi_madt_oem_check(madt->header.oem_id,
+ 				    madt->header.oem_table_id);
+ 
+--- a/arch/x86/kernel/i8259.c
++++ b/arch/x86/kernel/i8259.c
+@@ -32,6 +32,7 @@
+  */
+ static void init_8259A(int auto_eoi);
+ 
++static bool pcat_compat __ro_after_init;
+ static int i8259A_auto_eoi;
+ DEFINE_RAW_SPINLOCK(i8259A_lock);
+ 
+@@ -301,15 +302,32 @@ static void unmask_8259A(void)
+ 
+ static int probe_8259A(void)
+ {
++	unsigned char new_val, probe_val = ~(1 << PIC_CASCADE_IR);
+ 	unsigned long flags;
+-	unsigned char probe_val = ~(1 << PIC_CASCADE_IR);
+-	unsigned char new_val;
++
++	/*
++	 * If MADT has the PCAT_COMPAT flag set, then do not bother probing
++	 * for the PIC. Some BIOSes leave the PIC uninitialized and probing
++	 * fails.
++	 *
++	 * Right now this causes problems as quite some code depends on
++	 * nr_legacy_irqs() > 0 or has_legacy_pic() == true. This is silly
++	 * when the system has an IO/APIC because then PIC is not required
++	 * at all, except for really old machines where the timer interrupt
++	 * must be routed through the PIC. So just pretend that the PIC is
++	 * there and let legacy_pic->init() initialize it for nothing.
++	 *
++	 * Alternatively this could just try to initialize the PIC and
++	 * repeat the probe, but for cases where there is no PIC that's
++	 * just pointless.
++	 */
++	if (pcat_compat)
++		return nr_legacy_irqs();
++
+ 	/*
+-	 * Check to see if we have a PIC.
+-	 * Mask all except the cascade and read
+-	 * back the value we just wrote. If we don't
+-	 * have a PIC, we will read 0xff as opposed to the
+-	 * value we wrote.
++	 * Check to see if we have a PIC.  Mask all except the cascade and
++	 * read back the value we just wrote. If we don't have a PIC, we
++	 * will read 0xff as opposed to the value we wrote.
+ 	 */
+ 	raw_spin_lock_irqsave(&i8259A_lock, flags);
+ 
+@@ -431,5 +449,9 @@ static int __init i8259A_init_ops(void)
+ 
+ 	return 0;
+ }
+-
+ device_initcall(i8259A_init_ops);
++
++void __init legacy_pic_pcat_compat(void)
++{
++	pcat_compat = true;
++}
