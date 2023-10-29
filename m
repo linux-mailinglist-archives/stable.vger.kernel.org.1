@@ -2,190 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F177DAEBC
-	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 23:12:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AADE77DAEE2
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 23:54:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229795AbjJ2WMq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 18:12:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
+        id S230226AbjJ2Wyr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 18:54:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229533AbjJ2WMq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 18:12:46 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E86B4BD
-        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 15:12:42 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1698617561;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=QGaowSDdNzTdGtQesVUdrd4kcVkbuhoTLLogrX0D2oE=;
-        b=REdKVuwKkhFRw26uH1HXnVrAjBJoDUWmMEosf6XSmUy385mVO2CkH3G2PyUqvZ0eJ9Ae+y
-        0XN+NoeYcUdQeqW6cdWcXBlZDmoTKrxdNpcaYm/2V3jg0mOX8yZJXrZUF/KbDXzWC5cjk4
-        mheufj0ZYvsi99qTJlteVUXvtP6SUqhHrJ8/8QxdwtvO1HKUJ6JAbSOzk1NXshqytCyiuw
-        +29xISQ0HiX2VWjLHyKv4uV4VV/pb/hrarQyBHxXjnw4CLrbxzEOc6PdZ5AeuBNcltQSxm
-        ZNPgaOwfdPRa3sZGzNNkWg1gY0mrGxHvl0Gz2qb912qF7cJDPnVKsG+cZL/Z+A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1698617561;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=QGaowSDdNzTdGtQesVUdrd4kcVkbuhoTLLogrX0D2oE=;
-        b=xK46HMU/BaFoPVfPRWMAGqDAJpFVL0ZcpiCBHnirWF0AvOUm4qf3tBW76xcTGInBv7t7XK
-        XkkcQY+88EDamJBw==
-To:     gregkh@linuxfoundation.org, dlazar@gmail.com, hdegoede@redhat.com,
-        mario.limonciello@amd.com
-Cc:     stable@vger.kernel.org
-Subject: [PATCH 4.14.y ... 5.10.y] x86/i8259: Skip probing when ACPI/MADT
- advertises PCAT
-In-Reply-To: <2023102938-junior-reiterate-34ea@gregkh>
-References: <2023102938-junior-reiterate-34ea@gregkh>
-Date:   Sun, 29 Oct 2023 23:12:40 +0100
-Message-ID: <87fs1tyt5z.ffs@tglx>
+        with ESMTP id S229533AbjJ2Wyr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 18:54:47 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56877BC;
+        Sun, 29 Oct 2023 15:54:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B6DC433C8;
+        Sun, 29 Oct 2023 22:54:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698620084;
+        bh=1TQGvqTPML02EuJFmbb4WOcBkTgs/4pXNv1pyJS/8MU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Nwj9TYQQhvbAK9FlhXRfayCnzie8HdZbyhsQMcaEEGKtBFGMJfV+MuPixVxhBLnWy
+         eNXiWdZvN2sjTpwkwMhikT7wcNvlifwBO238ZWbFXRXzdjWWZIAaTOnBGlnESQN9TM
+         GaPTuRfQ9gYDF/nMo+wfQpPfj1hGBzENG7T2huahodgH3FOB4BBHQR7CZ0cDxRjGRt
+         zofJi+JaxUshDvNl/NfVWtc14uy4BiNRoqLYpxTpOofWbjlbc+4jhAFnFsEfEOMSMK
+         FS4AW6rql892cz1rczqiYK6h53uCakStB5bzHsNppuzZhMsPmzgIG5w9DpUj8nUhhl
+         vhz5rr8ihyfOQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>, Baoquan He <bhe@redhat.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sasha Levin <sashal@kernel.org>, sam@ravnborg.org,
+        javierm@redhat.com, xu.panda@zte.com.cn, schnelle@linux.ibm.com,
+        steve@sk2.org
+Subject: [PATCH AUTOSEL 6.5 01/52] fbdev: atyfb: only use ioremap_uc() on i386 and ia64
+Date:   Sun, 29 Oct 2023 18:52:48 -0400
+Message-ID: <20231029225441.789781-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.5.9
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 128b0c9781c9f2651bea163cb85e52a6c7be0f9e upstream.
+From: Arnd Bergmann <arnd@arndb.de>
 
-David and a few others reported that on certain newer systems some legacy
-interrupts fail to work correctly.
+[ Upstream commit c1a8d1d0edb71dec15c9649cb56866c71c1ecd9e ]
 
-Debugging revealed that the BIOS of these systems leaves the legacy PIC in
-uninitialized state which makes the PIC detection fail and the kernel
-switches to a dummy implementation.
+ioremap_uc() is only meaningful on old x86-32 systems with the PAT
+extension, and on ia64 with its slightly unconventional ioremap()
+behavior, everywhere else this is the same as ioremap() anyway.
 
-Unfortunately this fallback causes quite some code to fail as it depends on
-checks for the number of legacy PIC interrupts or the availability of the
-real PIC.
+Change the only driver that still references ioremap_uc() to only do so
+on x86-32/ia64 in order to allow removing that interface at some
+point in the future for the other architectures.
 
-In theory there is no reason to use the PIC on any modern system when
-IO/APIC is available, but the dependencies on the related checks cannot be
-resolved trivially and on short notice. This needs lots of analysis and
-rework.
+On some architectures, ioremap_uc() just returns NULL, changing
+the driver to call ioremap() means that they now have a chance
+of working correctly.
 
-The PIC detection has been added to avoid quirky checks and force selection
-of the dummy implementation all over the place, especially in VM guest
-scenarios. So it's not an option to revert the relevant commit as that
-would break a lot of other scenarios.
-
-One solution would be to try to initialize the PIC on detection fail and
-retry the detection, but that puts the burden on everything which does not
-have a PIC.
-
-Fortunately the ACPI/MADT table header has a flag field, which advertises
-in bit 0 that the system is PCAT compatible, which means it has a legacy
-8259 PIC.
-
-Evaluate that bit and if set avoid the detection routine and keep the real
-PIC installed, which then gets initialized (for nothing) and makes the rest
-of the code with all the dependencies work again.
-
-Fixes: e179f6914152 ("x86, irq, pic: Probe for legacy PIC and set legacy_pic appropriately")
-Reported-by: David Lazar <dlazar@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: David Lazar <dlazar@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218003
-Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
-
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/i8259.h |    2 ++
- arch/x86/kernel/acpi/boot.c  |    3 +++
- arch/x86/kernel/i8259.c      |   38 ++++++++++++++++++++++++++++++--------
- 3 files changed, 35 insertions(+), 8 deletions(-)
+ drivers/video/fbdev/aty/atyfb_base.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/x86/include/asm/i8259.h
-+++ b/arch/x86/include/asm/i8259.h
-@@ -67,6 +67,8 @@ struct legacy_pic {
- 	void (*make_irq)(unsigned int irq);
- };
- 
-+void legacy_pic_pcat_compat(void);
-+
- extern struct legacy_pic *legacy_pic;
- extern struct legacy_pic null_legacy_pic;
- 
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -156,6 +156,9 @@ static int __init acpi_parse_madt(struct
- 		       madt->address);
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index cba2b113b28b0..a73114c1c6918 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -3440,11 +3440,15 @@ static int atyfb_setup_generic(struct pci_dev *pdev, struct fb_info *info,
  	}
  
-+	if (madt->flags & ACPI_MADT_PCAT_COMPAT)
-+		legacy_pic_pcat_compat();
-+
- 	default_acpi_madt_oem_check(madt->header.oem_id,
- 				    madt->header.oem_table_id);
- 
---- a/arch/x86/kernel/i8259.c
-+++ b/arch/x86/kernel/i8259.c
-@@ -32,6 +32,7 @@
-  */
- static void init_8259A(int auto_eoi);
- 
-+static bool pcat_compat __ro_after_init;
- static int i8259A_auto_eoi;
- DEFINE_RAW_SPINLOCK(i8259A_lock);
- 
-@@ -300,15 +301,32 @@ static void unmask_8259A(void)
- 
- static int probe_8259A(void)
- {
-+	unsigned char new_val, probe_val = ~(1 << PIC_CASCADE_IR);
- 	unsigned long flags;
--	unsigned char probe_val = ~(1 << PIC_CASCADE_IR);
--	unsigned char new_val;
-+
-+	/*
-+	 * If MADT has the PCAT_COMPAT flag set, then do not bother probing
-+	 * for the PIC. Some BIOSes leave the PIC uninitialized and probing
-+	 * fails.
-+	 *
-+	 * Right now this causes problems as quite some code depends on
-+	 * nr_legacy_irqs() > 0 or has_legacy_pic() == true. This is silly
-+	 * when the system has an IO/APIC because then PIC is not required
-+	 * at all, except for really old machines where the timer interrupt
-+	 * must be routed through the PIC. So just pretend that the PIC is
-+	 * there and let legacy_pic->init() initialize it for nothing.
-+	 *
-+	 * Alternatively this could just try to initialize the PIC and
-+	 * repeat the probe, but for cases where there is no PIC that's
-+	 * just pointless.
-+	 */
-+	if (pcat_compat)
-+		return nr_legacy_irqs();
-+
+ 	info->fix.mmio_start = raddr;
++#if defined(__i386__) || defined(__ia64__)
  	/*
--	 * Check to see if we have a PIC.
--	 * Mask all except the cascade and read
--	 * back the value we just wrote. If we don't
--	 * have a PIC, we will read 0xff as opposed to the
--	 * value we wrote.
-+	 * Check to see if we have a PIC.  Mask all except the cascade and
-+	 * read back the value we just wrote. If we don't have a PIC, we
-+	 * will read 0xff as opposed to the value we wrote.
+ 	 * By using strong UC we force the MTRR to never have an
+ 	 * effect on the MMIO region on both non-PAT and PAT systems.
  	 */
- 	raw_spin_lock_irqsave(&i8259A_lock, flags);
+ 	par->ati_regbase = ioremap_uc(info->fix.mmio_start, 0x1000);
++#else
++	par->ati_regbase = ioremap(info->fix.mmio_start, 0x1000);
++#endif
+ 	if (par->ati_regbase == NULL)
+ 		return -ENOMEM;
  
-@@ -430,5 +448,9 @@ static int __init i8259A_init_ops(void)
- 
- 	return 0;
- }
--
- device_initcall(i8259A_init_ops);
-+
-+void __init legacy_pic_pcat_compat(void)
-+{
-+	pcat_compat = true;
-+}
+-- 
+2.42.0
+
