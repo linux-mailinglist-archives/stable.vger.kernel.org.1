@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2A337DAC5D
-	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:16:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA95F7DAC61
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:17:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229795AbjJ2MQ7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 08:16:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42946 "EHLO
+        id S230110AbjJ2MRF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 08:17:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229689AbjJ2MQ6 (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sun, 29 Oct 2023 08:16:58 -0400
+        with ESMTP id S229790AbjJ2MRD (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sun, 29 Oct 2023 08:17:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 999FFBE
-        for <Stable@vger.kernel.org>; Sun, 29 Oct 2023 05:16:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD153C433C9;
-        Sun, 29 Oct 2023 12:16:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8DB2BE
+        for <Stable@vger.kernel.org>; Sun, 29 Oct 2023 05:17:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17904C433C8;
+        Sun, 29 Oct 2023 12:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698581816;
-        bh=/3CZuriis0bySOut7oeX0Lk42XaX4C1fkLB22x+/uXI=;
+        s=korg; t=1698581820;
+        bh=q2boSdzN6el+98CqhhAHAekz5nJHiVuViba6nTwOmTE=;
         h=Subject:To:Cc:From:Date:From;
-        b=JLLfUX8Ru8pknmfsB4fvimXfer/lxUcyGLckHz4B2/seXyFcrkoH43VJHnXY48+ev
-         H0PalGmk94M/Q9WJQNF09sywbt7zmv3q9omOgv+JgKC7rb15echUwgk6NWnoPEGNRS
-         5rtIDqalj8jnhOqGNyQ7bhSeMofk8PQAfrG99ngw=
-Subject: FAILED: patch "[PATCH] iio: adc: xilinx-xadc: Don't clobber preset" failed to apply to 5.10-stable tree
+        b=lNYEAT03j0j3i+65BSSA4UiiiCetQy5eHsVtlx4ZDDafUQvG5r2lDKkPQNOht+Ow0
+         rKPUdbszc3jWORWL0uFOYYYfW8UxPEja6hgtYtFB1uoAioNkT7ihF1hUH8M9CWa6cY
+         pIc5et1EFRWgdY56s0XoCmj7I8QX79AWnTJSu90Y=
+Subject: FAILED: patch "[PATCH] iio: adc: xilinx-xadc: Don't clobber preset" failed to apply to 5.4-stable tree
 To:     robert.hancock@calian.com, Jonathan.Cameron@huawei.com,
         Stable@vger.kernel.org, conall.ogriofa@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 29 Oct 2023 13:16:51 +0100
-Message-ID: <2023102951-rubble-matriarch-f7e8@gregkh>
+Date:   Sun, 29 Oct 2023 13:16:52 +0100
+Message-ID: <2023102952-gave-matted-ec92@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8d6b3ea4d9eaca80982442b68a292ce50ce0a135
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102951-rubble-matriarch-f7e8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102952-gave-matted-ec92@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
