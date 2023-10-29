@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A17BB7DAEFF
+	by mail.lfdr.de (Postfix) with ESMTP id 71D627DAEFE
 	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 23:55:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231407AbjJ2Wza (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 18:55:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45262 "EHLO
+        id S231390AbjJ2Wz3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 18:55:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231290AbjJ2WzO (ORCPT
+        with ESMTP id S230519AbjJ2WzO (ORCPT
         <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 18:55:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D184B1BB;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C18921B6;
         Sun, 29 Oct 2023 15:55:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C39AC433C8;
-        Sun, 29 Oct 2023 22:55:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB43DC433CD;
+        Sun, 29 Oct 2023 22:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698620103;
-        bh=E7esBqLyr0+1UTE13D8ejR5e9vkrfaQoW0PQHcPr7CY=;
+        s=k20201202; t=1698620104;
+        bh=pyCdkn/dJ0qS0Zv0n21ByAtdrhLUzh1LXYsv29Xd2Rw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hro/1mUoXWTdkLjZarRvCSA3XkZoUQ+mGhgkQ22HUboKPiRTCRZ73W77rNscTA0vS
-         c51R1qWhAZVDrFp31hJYE9sQdivTpoX03hDMHWK4PHK8mVRcQwhFYFdaXrgqV33y+M
-         XNRt3AEgZoTY6izMowAlzGSyTcsWi0Sgs+CRXOUfIO3s4u5Tl+B10N2CmZAMFHfQQ4
-         yfGnpVfvudTzJnug52CaUQCCNqIN8HqddWMFtNl9YH23k7X5Mfw4q7GsQ14CFJfS5/
-         q+9LWowC+gFPwNjtd8hkkOEXTx2OnzgazwWL1cl6fR3Ya4RtRbW9lFy0VtW8iWNCD7
-         H1S2ecgnwSV6Q==
+        b=ojQmZhvxY5GoHEahZ34IXRvBTyD6kN/IEQ27ZXLp5ZO5xWfhXRm3uEWZQ6SfUTtMC
+         GapwPHnwRpUYbnXiRuDNldPFxct9PUssQdbMuAXwNia96bdoSBLm1RCgpFBG3/mAmM
+         SekL3t6Gm1H5VJNdqn8h8gQQVw/Zi/mwvcy0U5DaR6X0jZ9VQ+d1z4xc7DpyE4PTqG
+         d+ecExMyrJXfiU4JggS55mcU/yngYZJ8P0gMqwvkJPyrzmOAUo3KphUuV9Jukwg3Wq
+         8Xa8CHBufSd0DqJIVndJ1W+daG6CC8yVzqgW9yU5x6dLEhj/IZlNXx5mXUcCoVF4vT
+         16yeB9lrddYRA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Gabriel Marcano <gabemarcano@yahoo.com>,
+Cc:     Su Hui <suhui@nfschina.com>,
         Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>, ntfs3@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.5 14/52] fs/ntfs3: Fix directory element type detection
-Date:   Sun, 29 Oct 2023 18:53:01 -0400
-Message-ID: <20231029225441.789781-14-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.5 15/52] fs/ntfs3: Avoid possible memory leak
+Date:   Sun, 29 Oct 2023 18:53:02 -0400
+Message-ID: <20231029225441.789781-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231029225441.789781-1-sashal@kernel.org>
 References: <20231029225441.789781-1-sashal@kernel.org>
@@ -52,42 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Gabriel Marcano <gabemarcano@yahoo.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 85a4780dc96ed9dd643bbadf236552b3320fae26 ]
+[ Upstream commit e4494770a5cad3c9d1d2a65ed15d07656c0d9b82 ]
 
-Calling stat() from userspace correctly identified junctions in an NTFS
-partition as symlinks, but using readdir() and iterating through the
-directory containing the same junction did not identify the junction
-as a symlink.
+smatch warn:
+fs/ntfs3/fslog.c:2172 last_log_lsn() warn: possible memory leak of 'page_bufs'
+Jump to label 'out' to free 'page_bufs' and is more consistent with
+other code.
 
-When emitting directory contents, check FILE_ATTRIBUTE_REPARSE_POINT
-attribute to detect junctions and report them as links.
-
-Signed-off-by: Gabriel Marcano <gabemarcano@yahoo.com>
+Signed-off-by: Su Hui <suhui@nfschina.com>
 Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/dir.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ntfs3/fslog.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index 063a6654199bc..ec0566b322d5d 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -309,7 +309,11 @@ static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
- 		return 0;
- 	}
+diff --git a/fs/ntfs3/fslog.c b/fs/ntfs3/fslog.c
+index 12f28cdf5c838..98ccb66508583 100644
+--- a/fs/ntfs3/fslog.c
++++ b/fs/ntfs3/fslog.c
+@@ -2168,8 +2168,10 @@ static int last_log_lsn(struct ntfs_log *log)
  
--	dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
-+	/* NTFS: symlinks are "dir + reparse" or "file + reparse" */
-+	if (fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT)
-+		dt_type = DT_LNK;
-+	else
-+		dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
+ 			if (!page) {
+ 				page = kmalloc(log->page_size, GFP_NOFS);
+-				if (!page)
+-					return -ENOMEM;
++				if (!page) {
++					err = -ENOMEM;
++					goto out;
++				}
+ 			}
  
- 	return !dir_emit(ctx, (s8 *)name, name_len, ino, dt_type);
- }
+ 			/*
 -- 
 2.42.0
 
