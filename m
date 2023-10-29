@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 463B97DAC65
-	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:20:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 07C697DAC66
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:22:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjJ2MUr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 08:20:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35726 "EHLO
+        id S229790AbjJ2MWH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 08:22:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjJ2MUr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 08:20:47 -0400
+        with ESMTP id S229482AbjJ2MWG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 08:22:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAF9891
-        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 05:20:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D01C433C8;
-        Sun, 29 Oct 2023 12:20:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7212691
+        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 05:22:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC92BC433C7;
+        Sun, 29 Oct 2023 12:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698582044;
-        bh=03nbzUKLL07L+9ycfj5c5hTlcidDLCNzeAkYCQyKfbc=;
+        s=korg; t=1698582124;
+        bh=dY0OypJP1icgt3SikbmKw4UoKpzrR1+qabS2/QLfQ0Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=pmjPS0BJbpgsjsLs8yGjs5Iweceri4VbLLOJM8uYliJvFMSUNDpZage6W8dm/Cu+9
-         9mNcyH/PrfLfRMigs66wB0lIkfaAFo2NE3YJofGz7qYJNzYkJQk/m+sY8AScGxAiFR
-         UBxs92YiKjpgiByxkuhh98TKO2Fbr7Ez8Ug7n9q4=
-Subject: FAILED: patch "[PATCH] misc: fastrpc: Clean buffers on remote invocation failures" failed to apply to 5.4-stable tree
-To:     quic_ekangupt@quicinc.com, gregkh@linuxfoundation.org,
-        srinivas.kandagatla@linaro.org, stable@kernel.org
+        b=QUtgfvXnVLY+gPmpQYQlAZneqpkIt03NyQ/kvoN+mmP84FoGCaG0mdVf+9S889Zwb
+         i9oJDYQ5ua2A7amQpwwetImWmFoE8nNlXBnTVc1ddSeev0Lmy10hgKni6xBmB3WjRZ
+         //+HZZFDSwF9W0+Zo04CNBTbEy7BezaIOx1K0+hg=
+Subject: FAILED: patch "[PATCH] nvmem: imx: correct nregs for i.MX6UL" failed to apply to 4.14-stable tree
+To:     peng.fan@nxp.com, gregkh@linuxfoundation.org,
+        srinivas.kandagatla@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 29 Oct 2023 13:20:39 +0100
-Message-ID: <2023102939-grit-elitism-fb36@gregkh>
+Date:   Sun, 29 Oct 2023 13:21:59 +0100
+Message-ID: <2023102958-citizen-phosphate-154f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1c8093591d1e372d700fe65423e7315a8ecf721b
+git cherry-pick -x 7d6e10f5d254681983b53d979422c8de3fadbefb
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102939-grit-elitism-fb36@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102958-citizen-phosphate-154f@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,50 +68,31 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1c8093591d1e372d700fe65423e7315a8ecf721b Mon Sep 17 00:00:00 2001
-From: Ekansh Gupta <quic_ekangupt@quicinc.com>
-Date: Fri, 13 Oct 2023 13:20:06 +0100
-Subject: [PATCH] misc: fastrpc: Clean buffers on remote invocation failures
+From 7d6e10f5d254681983b53d979422c8de3fadbefb Mon Sep 17 00:00:00 2001
+From: Peng Fan <peng.fan@nxp.com>
+Date: Fri, 13 Oct 2023 13:49:03 +0100
+Subject: [PATCH] nvmem: imx: correct nregs for i.MX6UL
 
-With current design, buffers and dma handles are not freed in case
-of remote invocation failures returned from DSP. This could result
-in buffer leakings and dma handle pointing to wrong memory in the
-fastrpc kernel. Adding changes to clean buffers and dma handles
-even when remote invocation to DSP returns failures.
+The nregs for i.MX6UL should be 144 per fuse map, correct it.
 
-Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Fixes: 4aa2b4802046 ("nvmem: octop: Add support for imx6ul")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231013122007.174464-4-srinivas.kandagatla@linaro.org
+Link: https://lore.kernel.org/r/20231013124904.175782-3-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index a52701c1b018..3cdc58488db1 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -1176,11 +1176,6 @@ static int fastrpc_internal_invoke(struct fastrpc_user *fl,  u32 kernel,
- 		err = wait_for_completion_interruptible(&ctx->work);
- 	}
+diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
+index 7302f25b14a1..921afe114a2c 100644
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -512,7 +512,7 @@ static const struct ocotp_params imx6sx_params = {
+ };
  
--	if (err)
--		goto bail;
--
--	/* Check the response from remote dsp */
--	err = ctx->retval;
- 	if (err)
- 		goto bail;
- 
-@@ -1191,6 +1186,11 @@ static int fastrpc_internal_invoke(struct fastrpc_user *fl,  u32 kernel,
- 	if (err)
- 		goto bail;
- 
-+	/* Check the response from remote dsp */
-+	err = ctx->retval;
-+	if (err)
-+		goto bail;
-+
- bail:
- 	if (err != -ERESTARTSYS && err != -ETIMEDOUT) {
- 		/* We are done with this compute context */
+ static const struct ocotp_params imx6ul_params = {
+-	.nregs = 128,
++	.nregs = 144,
+ 	.bank_address_words = 0,
+ 	.set_timing = imx_ocotp_set_imx6_timing,
+ 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
 
