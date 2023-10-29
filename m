@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 127F97DAFDD
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 00:00:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BF247DB1A4
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 01:02:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231146AbjJ2XAj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 19:00:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50238 "EHLO
+        id S231434AbjJ3ACi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 20:02:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231562AbjJ2XAD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 19:00:03 -0400
+        with ESMTP id S231191AbjJ3ACg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 20:02:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B13D47;
-        Sun, 29 Oct 2023 15:57:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F5EC433B7;
-        Sun, 29 Oct 2023 22:57:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D56244A6;
+        Sun, 29 Oct 2023 15:58:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D29C433CD;
+        Sun, 29 Oct 2023 22:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698620228;
-        bh=jGXXUx8iaeHPMaEHKaAXeM6iKlz7xPyaHyWjHBeR5Wo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jTinBTSaeBq39SzJVz4D1gUKUZASfrPfeJY0Hfvm/dQ4pW1umBXpvcCtMxmgmfdrd
-         Xl8gkSj2iBgxdL22gITvARTU6+2abYgSTlFxHj8Ag3e+Y5giN7GoMBAadgPUkW7CDY
-         HbRnIwlDOMqX6QDXrsmaOpkzyYciWo5qAcO4cu0arAxD9O0IfjyCni8dMSyGCzlIV4
-         oElmHD9P8kmWRgDIBSS6Z2gXC/dKRqwZJNi+yJCmS4C6m0T9pAHzr3dW5D55hE5XuF
-         UzceJaHJXJgcFkzi8YOLtwOwzUPqhfrLWyN4MhacTHxZ24IrKYj8nZRKPqI5c1+5Hd
-         kuvuS4HhOjtMg==
+        s=k20201202; t=1698620263;
+        bh=JvXWdaPVGCXGPljCNPOAWNOooFCOP2wSIUJSdS6nMTU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=e+HOEm9Dph06Y1p06hYWg27v0mMzYcikpuM5V7+aIeolERgQQrcUaNOwfipIte41U
+         XxeF+3sMToFrYBC3PZQZy2suzmC1L3WVOB0aSQ8Pyy1vjfQWaVoYKxTRv8Z4nIy+q3
+         RfQSSiJig5wgOyseZRpJN/y6B7WiaUgwbx+kknp3CEnQsgBSwksjH/OHQIVuTjmF/y
+         6XVlGwYDTPSQqt/jUqfg+4xy4GXi48CLWHRtRi8UsirGO3Bunym5zrKVcNOZmGoX1y
+         vLqEkJBZtSpUghPxCDzoQHNLVpM3d3jMyzv9v8l+b3C32RddBSc6rspdP/+zAlMlHb
+         K1JHg3fqSLVvw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Felix Kuehling <Felix.Kuehling@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>, Xinhui.Pan@amd.com,
-        airlied@gmail.com, daniel@ffwll.ch, srinivasan.shanmugam@amd.com,
-        Arunpravin.PaneerSelvam@amd.com, Philip.Yang@amd.com,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.5 52/52] drm/amdgpu: Reserve fences for VM update
-Date:   Sun, 29 Oct 2023 18:53:39 -0400
-Message-ID: <20231029225441.789781-52-sashal@kernel.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Baoquan He <bhe@redhat.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sasha Levin <sashal@kernel.org>, javierm@redhat.com,
+        sam@ravnborg.org, xu.panda@zte.com.cn, schnelle@linux.ibm.com,
+        steve@sk2.org
+Subject: [PATCH AUTOSEL 6.1 01/39] fbdev: atyfb: only use ioremap_uc() on i386 and ia64
+Date:   Sun, 29 Oct 2023 18:56:33 -0400
+Message-ID: <20231029225740.790936-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231029225441.789781-1-sashal@kernel.org>
-References: <20231029225441.789781-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.5.9
+X-stable-base: Linux 6.1.60
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -57,37 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Felix Kuehling <Felix.Kuehling@amd.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 316baf09d355aec1179981b6dfe28eba50c5ee5b ]
+[ Upstream commit c1a8d1d0edb71dec15c9649cb56866c71c1ecd9e ]
 
-In amdgpu_dma_buf_move_notify reserve fences for the page table updates
-in amdgpu_vm_clear_freed and amdgpu_vm_handle_moved. This fixes a BUG_ON
-in dma_resv_add_fence when using SDMA for page table updates.
+ioremap_uc() is only meaningful on old x86-32 systems with the PAT
+extension, and on ia64 with its slightly unconventional ioremap()
+behavior, everywhere else this is the same as ioremap() anyway.
 
-Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Change the only driver that still references ioremap_uc() to only do so
+on x86-32/ia64 in order to allow removing that interface at some
+point in the future for the other architectures.
+
+On some architectures, ioremap_uc() just returns NULL, changing
+the driver to call ioremap() means that they now have a chance
+of working correctly.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/aty/atyfb_base.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-index 12210598e5b8e..ba3a87cb88ccc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
-@@ -403,7 +403,10 @@ amdgpu_dma_buf_move_notify(struct dma_buf_attachment *attach)
- 				continue;
- 		}
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index b3463d1371520..faaa64fa5dfe9 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -3447,11 +3447,15 @@ static int atyfb_setup_generic(struct pci_dev *pdev, struct fb_info *info,
+ 	}
  
--		r = amdgpu_vm_clear_freed(adev, vm, NULL);
-+		/* Reserve fences for two SDMA page table updates */
-+		r = dma_resv_reserve_fences(resv, 2);
-+		if (!r)
-+			r = amdgpu_vm_clear_freed(adev, vm, NULL);
- 		if (!r)
- 			r = amdgpu_vm_handle_moved(adev, vm);
+ 	info->fix.mmio_start = raddr;
++#if defined(__i386__) || defined(__ia64__)
+ 	/*
+ 	 * By using strong UC we force the MTRR to never have an
+ 	 * effect on the MMIO region on both non-PAT and PAT systems.
+ 	 */
+ 	par->ati_regbase = ioremap_uc(info->fix.mmio_start, 0x1000);
++#else
++	par->ati_regbase = ioremap(info->fix.mmio_start, 0x1000);
++#endif
+ 	if (par->ati_regbase == NULL)
+ 		return -ENOMEM;
  
 -- 
 2.42.0
