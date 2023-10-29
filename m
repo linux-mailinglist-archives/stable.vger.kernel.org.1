@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 609BD7DAC6B
-	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:23:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B25A7DAC8C
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:50:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjJ2MXH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 08:23:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59174 "EHLO
+        id S230119AbjJ2Mub (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 08:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjJ2MXH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 08:23:07 -0400
+        with ESMTP id S230050AbjJ2Mub (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 08:50:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F3991
-        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 05:23:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1875C433C7;
-        Sun, 29 Oct 2023 12:23:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F269BB0
+        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 05:50:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCB9C433C8;
+        Sun, 29 Oct 2023 12:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698582184;
-        bh=73G121rXig5ZeHnZs9ZL3mc/FcKB+LUdqkDw+TQ6OJ8=;
+        s=korg; t=1698583828;
+        bh=9W6FF+geU0pd20hOroPh+azaYXMsDkJkBQlOH2NuV1o=;
         h=Subject:To:Cc:From:Date:From;
-        b=cld4aQwTlUCsHne5XDi39mVHJEsNqn26H77WXdwXmPi1yxqr1EhGYYjhUL9skH6h7
-         /dwYxS8aXcB6guf+O7N1zB4C8RsrLshhVU7e3qrMViUob/S5Jr0lwK4x7WkUH04eqs
-         t1e7beOZAlWuf/o+7L2VjNvpGQgVh6k4f8AMb9CU=
-Subject: FAILED: patch "[PATCH] x86/i8259: Skip probing when ACPI/MADT advertises PCAT" failed to apply to 4.14-stable tree
-To:     tglx@linutronix.de, dlazar@gmail.com, hdegoede@redhat.com,
-        mario.limonciello@amd.com
+        b=2Zw4YTkBd44NAkzsfZWtEkzZtPTwKeWSTWo3w1BaqxKJzCILNMiEc1Ry72khKI933
+         VtgYns6F648AwKlFwcy9Zxt/M2TgeZFYe70wLQr7snfKM/7+2uyYF9vvYJ76lfkDQ+
+         YLicgItHMBge+jL2Fn3iApyP/3UqKHbwylZdazLg=
+Subject: FAILED: patch "[PATCH] tracing/kprobes: Fix symbol counting logic by looking at" failed to apply to 6.1-stable tree
+To:     andrii@kernel.org, flaniel@linux.microsoft.com,
+        mhiramat@kernel.org, rostedt@goodmis.org, song@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 29 Oct 2023 13:22:45 +0100
-Message-ID: <2023102945-playing-koala-c457@gregkh>
+Date:   Sun, 29 Oct 2023 13:50:23 +0100
+Message-ID: <2023102922-handwrite-unpopular-0e1d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -44,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 128b0c9781c9f2651bea163cb85e52a6c7be0f9e
+git cherry-pick -x 926fe783c8a64b33997fec405cf1af3e61aed441
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102945-playing-koala-c457@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102922-handwrite-unpopular-0e1d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,143 +67,67 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 128b0c9781c9f2651bea163cb85e52a6c7be0f9e Mon Sep 17 00:00:00 2001
-From: Thomas Gleixner <tglx@linutronix.de>
-Date: Wed, 25 Oct 2023 23:04:15 +0200
-Subject: [PATCH] x86/i8259: Skip probing when ACPI/MADT advertises PCAT
- compatibility
+From 926fe783c8a64b33997fec405cf1af3e61aed441 Mon Sep 17 00:00:00 2001
+From: Andrii Nakryiko <andrii@kernel.org>
+Date: Fri, 27 Oct 2023 16:31:26 -0700
+Subject: [PATCH] tracing/kprobes: Fix symbol counting logic by looking at
+ modules as well
 
-David and a few others reported that on certain newer systems some legacy
-interrupts fail to work correctly.
+Recent changes to count number of matching symbols when creating
+a kprobe event failed to take into account kernel modules. As such, it
+breaks kprobes on kernel module symbols, by assuming there is no match.
 
-Debugging revealed that the BIOS of these systems leaves the legacy PIC in
-uninitialized state which makes the PIC detection fail and the kernel
-switches to a dummy implementation.
+Fix this my calling module_kallsyms_on_each_symbol() in addition to
+kallsyms_on_each_match_symbol() to perform a proper counting.
 
-Unfortunately this fallback causes quite some code to fail as it depends on
-checks for the number of legacy PIC interrupts or the availability of the
-real PIC.
+Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
 
-In theory there is no reason to use the PIC on any modern system when
-IO/APIC is available, but the dependencies on the related checks cannot be
-resolved trivially and on short notice. This needs lots of analysis and
-rework.
-
-The PIC detection has been added to avoid quirky checks and force selection
-of the dummy implementation all over the place, especially in VM guest
-scenarios. So it's not an option to revert the relevant commit as that
-would break a lot of other scenarios.
-
-One solution would be to try to initialize the PIC on detection fail and
-retry the detection, but that puts the burden on everything which does not
-have a PIC.
-
-Fortunately the ACPI/MADT table header has a flag field, which advertises
-in bit 0 that the system is PCAT compatible, which means it has a legacy
-8259 PIC.
-
-Evaluate that bit and if set avoid the detection routine and keep the real
-PIC installed, which then gets initialized (for nothing) and makes the rest
-of the code with all the dependencies work again.
-
-Fixes: e179f6914152 ("x86, irq, pic: Probe for legacy PIC and set legacy_pic appropriately")
-Reported-by: David Lazar <dlazar@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: David Lazar <dlazar@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Francis Laniel <flaniel@linux.microsoft.com>
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218003
-Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-diff --git a/arch/x86/include/asm/i8259.h b/arch/x86/include/asm/i8259.h
-index 637fa1df3512..c715097e92fd 100644
---- a/arch/x86/include/asm/i8259.h
-+++ b/arch/x86/include/asm/i8259.h
-@@ -69,6 +69,8 @@ struct legacy_pic {
- 	void (*make_irq)(unsigned int irq);
- };
- 
-+void legacy_pic_pcat_compat(void);
-+
- extern struct legacy_pic *legacy_pic;
- extern struct legacy_pic null_legacy_pic;
- 
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 2a0ea38955df..c55c0ef47a18 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -148,6 +148,9 @@ static int __init acpi_parse_madt(struct acpi_table_header *table)
- 		pr_debug("Local APIC address 0x%08x\n", madt->address);
- 	}
- 
-+	if (madt->flags & ACPI_MADT_PCAT_COMPAT)
-+		legacy_pic_pcat_compat();
-+
- 	/* ACPI 6.3 and newer support the online capable bit. */
- 	if (acpi_gbl_FADT.header.revision > 6 ||
- 	    (acpi_gbl_FADT.header.revision == 6 &&
-diff --git a/arch/x86/kernel/i8259.c b/arch/x86/kernel/i8259.c
-index 30a55207c000..c20d1832c481 100644
---- a/arch/x86/kernel/i8259.c
-+++ b/arch/x86/kernel/i8259.c
-@@ -32,6 +32,7 @@
-  */
- static void init_8259A(int auto_eoi);
- 
-+static bool pcat_compat __ro_after_init;
- static int i8259A_auto_eoi;
- DEFINE_RAW_SPINLOCK(i8259A_lock);
- 
-@@ -299,15 +300,32 @@ static void unmask_8259A(void)
- 
- static int probe_8259A(void)
- {
-+	unsigned char new_val, probe_val = ~(1 << PIC_CASCADE_IR);
- 	unsigned long flags;
--	unsigned char probe_val = ~(1 << PIC_CASCADE_IR);
--	unsigned char new_val;
-+
-+	/*
-+	 * If MADT has the PCAT_COMPAT flag set, then do not bother probing
-+	 * for the PIC. Some BIOSes leave the PIC uninitialized and probing
-+	 * fails.
-+	 *
-+	 * Right now this causes problems as quite some code depends on
-+	 * nr_legacy_irqs() > 0 or has_legacy_pic() == true. This is silly
-+	 * when the system has an IO/APIC because then PIC is not required
-+	 * at all, except for really old machines where the timer interrupt
-+	 * must be routed through the PIC. So just pretend that the PIC is
-+	 * there and let legacy_pic->init() initialize it for nothing.
-+	 *
-+	 * Alternatively this could just try to initialize the PIC and
-+	 * repeat the probe, but for cases where there is no PIC that's
-+	 * just pointless.
-+	 */
-+	if (pcat_compat)
-+		return nr_legacy_irqs();
-+
- 	/*
--	 * Check to see if we have a PIC.
--	 * Mask all except the cascade and read
--	 * back the value we just wrote. If we don't
--	 * have a PIC, we will read 0xff as opposed to the
--	 * value we wrote.
-+	 * Check to see if we have a PIC.  Mask all except the cascade and
-+	 * read back the value we just wrote. If we don't have a PIC, we
-+	 * will read 0xff as opposed to the value we wrote.
- 	 */
- 	raw_spin_lock_irqsave(&i8259A_lock, flags);
- 
-@@ -429,5 +447,9 @@ static int __init i8259A_init_ops(void)
- 
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 95c5b0668cb7..e834f149695b 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -714,14 +714,30 @@ static int count_symbols(void *data, unsigned long unused)
  	return 0;
  }
--
- device_initcall(i8259A_init_ops);
+ 
++struct sym_count_ctx {
++	unsigned int count;
++	const char *name;
++};
 +
-+void __init legacy_pic_pcat_compat(void)
++static int count_mod_symbols(void *data, const char *name, unsigned long unused)
 +{
-+	pcat_compat = true;
++	struct sym_count_ctx *ctx = data;
++
++	if (strcmp(name, ctx->name) == 0)
++		ctx->count++;
++
++	return 0;
 +}
++
+ static unsigned int number_of_same_symbols(char *func_name)
+ {
+-	unsigned int count;
++	struct sym_count_ctx ctx = { .count = 0, .name = func_name };
++
++	kallsyms_on_each_match_symbol(count_symbols, func_name, &ctx.count);
+ 
+-	count = 0;
+-	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
++	module_kallsyms_on_each_symbol(NULL, count_mod_symbols, &ctx);
+ 
+-	return count;
++	return ctx.count;
+ }
+ 
+ static int __trace_kprobe_create(int argc, const char *argv[])
 
