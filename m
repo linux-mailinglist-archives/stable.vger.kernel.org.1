@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64ED17DAC5B
-	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C1BB7DAC5C
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:16:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229533AbjJ2MQk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 08:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45026 "EHLO
+        id S229529AbjJ2MQu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 08:16:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229529AbjJ2MQj (ORCPT
-        <rfc822;Stable@vger.kernel.org>); Sun, 29 Oct 2023 08:16:39 -0400
+        with ESMTP id S229689AbjJ2MQt (ORCPT
+        <rfc822;Stable@vger.kernel.org>); Sun, 29 Oct 2023 08:16:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 819B6BE
-        for <Stable@vger.kernel.org>; Sun, 29 Oct 2023 05:16:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF88C433C8;
-        Sun, 29 Oct 2023 12:16:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F31BE
+        for <Stable@vger.kernel.org>; Sun, 29 Oct 2023 05:16:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06D8C433C7;
+        Sun, 29 Oct 2023 12:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698581797;
-        bh=1SSYP92B6JkrBi6w4PBeEs48X7udptnQxGjYhwoXPDk=;
+        s=korg; t=1698581806;
+        bh=9pUPh0qFaGZDvA2+gpqOonSFmCXX9XaYj14BEZsVPeo=;
         h=Subject:To:Cc:From:Date:From;
-        b=o6TTHNRAs2oNOW8D78ThxQPmQcrxq/lIV4gO1ASA6JY9EawU91zVtU+XavVsuUEbt
-         mlwiz5AFiohMCpRsk2lgbbMLDq5/eW0cWmmF36hCfADwqVNnYobLe9f/RAtbuS5G0z
-         mcuzgBG8jWqTxaptZeftBe7Q51sraj6WKnLrIf0s=
-Subject: FAILED: patch "[PATCH] iio: exynos-adc: request second interupt only when" failed to apply to 4.19-stable tree
+        b=SrenpbRrhh/rOh1vP+y4bUF61GiSTXnx66N2M5cr/r1Gs4vSnUxB+5ib5vJ0sf2g/
+         v7a/hYAR/PANip4mjD1smEm75sdhwq6AvnV1YnR6ud3SjOjyxWrFdxvdOHSB+f2aNk
+         zdSHKzMhifhTpGXaEhkaWdbjN7nWsaMqfPMpFC2k=
+Subject: FAILED: patch "[PATCH] iio: exynos-adc: request second interupt only when" failed to apply to 4.14-stable tree
 To:     m.szyprowski@samsung.com, Jonathan.Cameron@huawei.com,
         Stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 29 Oct 2023 13:16:32 +0100
-Message-ID: <2023102932-catatonic-decline-3ee9@gregkh>
+Date:   Sun, 29 Oct 2023 13:16:33 +0100
+Message-ID: <2023102932-enigmatic-starlet-4b1a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 865b080e3229102f160889328ce2e8e97aa65ea0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102932-catatonic-decline-3ee9@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102932-enigmatic-starlet-4b1a@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
