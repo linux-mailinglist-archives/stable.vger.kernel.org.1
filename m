@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F9ED7DB03E
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 00:04:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 758A27DB03B
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 00:04:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231697AbjJ2XEc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 19:04:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43846 "EHLO
+        id S231659AbjJ2XEa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 19:04:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232178AbjJ2XEM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 19:04:12 -0400
+        with ESMTP id S232087AbjJ2XEJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 19:04:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F05C27EDF;
-        Sun, 29 Oct 2023 16:02:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4C6C433AB;
-        Sun, 29 Oct 2023 23:02:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 987157EE8;
+        Sun, 29 Oct 2023 16:02:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A78C116B5;
+        Sun, 29 Oct 2023 23:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698620543;
-        bh=4/C17ww5DjA3eWjC0vh6NWIdEDDn79fbftPuDSQdUzE=;
+        s=k20201202; t=1698620545;
+        bh=UorGZaRu3pXU86xiJG3a+pN7P41s7nCtF42DcKfujvo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YZosUkxcBAn2tN0i2E5bMxUtpukL+On8blUdvweylqhKxtg4gRWjsKFtJ7JQzkuQI
-         WWIZKfCPREAjAOCXjSc+4XEfRB0p5M8ndtR0ZcmoW1457+BY2jK/DctWpAAYs6Yf45
-         rLoHaODWcj1MAOklJGT0mURCygJn78k0FoWbjE/HylLyX6cQJ0dp4LxrE5NvvojeMy
-         YcqpgIdKisSRmft8hE1d5w/zNrJeABmsc6tOonb6qQO4vc/tPSNVd1oRTYPPwNMVW/
-         qA4uqfz15k8ehuR+UVW1hL3tMOw+/0eox6lyaCUa+yY494MTbxRXdGm5tWND3KElsp
-         cBs80Mb0pKzpA==
+        b=HN2LA5zL0qs0MCiMHtBWJG9F4O0mkVoy+vJC6ncnM5+61kVUXsqaZSjDhSXlEXY13
+         /7ppLPfNqR8L24UoHJyPOIHirNaDhTXitarc4u9HHjVWU5CqYfYOO6YjRhsdfiYXKJ
+         8bdCWcMbusal5ZyllPGBOaGpijsSVkr1Gdn75rUbqdzvWvUYO8LgYslROWqJIrp1fz
+         Wurdi2DiTMiB0ueIHfZ90UMt4PHIQ3lRVo552MMScQs4FgbwJdCzaMxMznq7cB3lYl
+         xjpk+coXzt7rniumH+KvgdGTGcFttqtGiTN+Cc1I2QI+eSYOB8TblelT+ZQqjhuqur
+         5d98rrFvzHUHA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Florian Westphal <fw@strlen.de>, kernel test robot <lkp@intel.com>,
-        Sasha Levin <sashal@kernel.org>, pablo@netfilter.org,
-        kadlec@netfilter.org, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 05/11] netfilter: nfnetlink_log: silence bogus compiler warning
-Date:   Sun, 29 Oct 2023 19:01:56 -0400
-Message-ID: <20231029230213.793581-5-sashal@kernel.org>
+Cc:     Shuming Fan <shumingf@realtek.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, oder_chiou@realtek.com,
+        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
+        alsa-devel@alsa-project.org
+Subject: [PATCH AUTOSEL 4.14 06/11] ASoC: rt5650: fix the wrong result of key button
+Date:   Sun, 29 Oct 2023 19:01:57 -0400
+Message-ID: <20231029230213.793581-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231029230213.793581-1-sashal@kernel.org>
 References: <20231029230213.793581-1-sashal@kernel.org>
@@ -55,37 +54,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Florian Westphal <fw@strlen.de>
+From: Shuming Fan <shumingf@realtek.com>
 
-[ Upstream commit 2e1d175410972285333193837a4250a74cd472e6 ]
+[ Upstream commit f88dfbf333b3661faff996bb03af2024d907b76a ]
 
-net/netfilter/nfnetlink_log.c:800:18: warning: variable 'ctinfo' is uninitialized
+The RT5650 should enable a power setting for button detection to avoid the wrong result.
 
-The warning is bogus, the variable is only used if ct is non-NULL and
-always initialised in that case.  Init to 0 too to silence this.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309100514.ndBFebXN-lkp@intel.com/
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://lore.kernel.org/r/20231013094525.715518-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_log.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/rt5645.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
-index 40ba9c8e3c078..7d7a94e3fc507 100644
---- a/net/netfilter/nfnetlink_log.c
-+++ b/net/netfilter/nfnetlink_log.c
-@@ -637,8 +637,8 @@ nfulnl_log_packet(struct net *net,
- 	unsigned int plen;
- 	struct nfnl_log_net *log = nfnl_log_pernet(net);
- 	const struct nfnl_ct_hook *nfnl_ct = NULL;
-+	enum ip_conntrack_info ctinfo = 0;
- 	struct nf_conn *ct = NULL;
--	enum ip_conntrack_info ctinfo;
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index 01de25813c72b..822c42101c3f0 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -3220,6 +3220,8 @@ int rt5645_set_jack_detect(struct snd_soc_codec *codec,
+ 				RT5645_GP1_PIN_IRQ, RT5645_GP1_PIN_IRQ);
+ 		regmap_update_bits(rt5645->regmap, RT5645_GEN_CTRL1,
+ 				RT5645_DIG_GATE_CTRL, RT5645_DIG_GATE_CTRL);
++		regmap_update_bits(rt5645->regmap, RT5645_DEPOP_M1,
++				RT5645_HP_CB_MASK, RT5645_HP_CB_PU);
+ 	}
+ 	rt5645_irq(0, rt5645);
  
- 	if (li_user && li_user->type == NF_LOG_TYPE_ULOG)
- 		li = li_user;
 -- 
 2.42.0
 
