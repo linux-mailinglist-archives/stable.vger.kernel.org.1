@@ -2,39 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B25A7DAC8C
-	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:50:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2025A7DAD29
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 17:05:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230119AbjJ2Mub (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 08:50:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56972 "EHLO
+        id S229487AbjJ2QFC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 12:05:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbjJ2Mub (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 08:50:31 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F269BB0
-        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 05:50:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCB9C433C8;
-        Sun, 29 Oct 2023 12:50:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698583828;
-        bh=9W6FF+geU0pd20hOroPh+azaYXMsDkJkBQlOH2NuV1o=;
-        h=Subject:To:Cc:From:Date:From;
-        b=2Zw4YTkBd44NAkzsfZWtEkzZtPTwKeWSTWo3w1BaqxKJzCILNMiEc1Ry72khKI933
-         VtgYns6F648AwKlFwcy9Zxt/M2TgeZFYe70wLQr7snfKM/7+2uyYF9vvYJ76lfkDQ+
-         YLicgItHMBge+jL2Fn3iApyP/3UqKHbwylZdazLg=
-Subject: FAILED: patch "[PATCH] tracing/kprobes: Fix symbol counting logic by looking at" failed to apply to 6.1-stable tree
-To:     andrii@kernel.org, flaniel@linux.microsoft.com,
-        mhiramat@kernel.org, rostedt@goodmis.org, song@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 29 Oct 2023 13:50:23 +0100
-Message-ID: <2023102922-handwrite-unpopular-0e1d@gregkh>
+        with ESMTP id S229482AbjJ2QFB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 12:05:01 -0400
+X-Greylist: delayed 325 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 29 Oct 2023 09:04:58 PDT
+Received: from www.linux-watchdog.org (www.linux-watchdog.org [185.87.125.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B6CD8AC;
+        Sun, 29 Oct 2023 09:04:58 -0700 (PDT)
+Received: by www.linux-watchdog.org (Postfix, from userid 500)
+        id ABF7240A00; Sun, 29 Oct 2023 16:53:06 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 www.linux-watchdog.org ABF7240A00
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-watchdog.org;
+        s=odk20180602; t=1698594786;
+        bh=vjgtNdp09F9UOhfV3Gr3oRE9ICiZm0+VKnTWsGj5CNg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NfHfnPJx9JODnaKZyjSqjaZqEAb+QUTye1x5oBuiQtUORKX7RM5+izy5mS45KnJOW
+         MzUCsKDaVAa893gJ1jMTi6y1VD52OwfK7kNcyrDMMVJor8AcaHaISMva12E1zRyKRB
+         Xi1mCSjl468uIluNw/xHcYcY547LT0cWmQE44fhU=
+Date:   Sun, 29 Oct 2023 16:53:06 +0100
+From:   Wim Van Sebroeck <wim@linux-watchdog.org>
+To:     Darren Hart <darren@os.amperecomputing.com>
+Cc:     Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org,
+        Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+        Wim Van Sebroeck <wim@linux-watchdog.org>,
+        linux-watchdog@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH] sbsa_gwdt: Calculate timeout with 64-bit math
+Message-ID: <20231029155306.GA5887@www.linux-watchdog.org>
+References: <7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com>
+ <bcc41311-075c-44fe-b0f7-30564d7ac58c@roeck-us.net>
+ <ZSpbfXzFeaoUJRZ3@Fedora>
+ <1fae4d2c-4bc7-f169-7b84-501674a82ee4@roeck-us.net>
+ <ZTqfQJiEMRD0Xc9S@Fedora>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZTqfQJiEMRD0Xc9S@Fedora>
+User-Agent: Mutt/1.5.20 (2009-12-10)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -42,92 +54,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Darren,
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+> On Sun, Oct 22, 2023 at 09:58:26AM -0700, Guenter Roeck wrote:
+> > On 10/14/23 02:12, Darren Hart wrote:
+> > > On Tue, Sep 26, 2023 at 05:45:13AM -0700, Guenter Roeck wrote:
+> > > > On Thu, Sep 21, 2023 at 02:02:36AM -0700, Darren Hart wrote:
+> > > > > Commit abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+> > > > > introduced new timer math for watchdog revision 1 with the 48 bit offset
+> > > > > register.
+> > > > > 
+> > > > > The gwdt->clk and timeout are u32, but the argument being calculated is
+> > > > > u64. Without a cast, the compiler performs u32 operations, truncating
+> > > > > intermediate steps, resulting in incorrect values.
+> > > > > 
+> > > > > A watchdog revision 1 implementation with a gwdt->clk of 1GHz and a
+> > > > > timeout of 600s writes 3647256576 to the one shot watchdog instead of
+> > > > > 300000000000, resulting in the watchdog firing in 3.6s instead of 600s.
+> > > > > 
+> > > > > Force u64 math by casting the first argument (gwdt->clk) as a u64. Make
+> > > > > the order of operations explicit with parenthesis.
+> > > > > 
+> > > > > Fixes: abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+> > > > > Reported-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+> > > > > Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
+> > > > > Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
+> > > > > Cc: Guenter Roeck <linux@roeck-us.net>
+> > > > > Cc: linux-watchdog@vger.kernel.org
+> > > > > Cc: linux-kernel@vger.kernel.org
+> > > > > Cc: linux-arm-kernel@lists.infradead.org
+> > > > > Cc: <stable@vger.kernel.org> # 5.14.x
+> > > > 
+> > > > Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+> > > 
+> > > Guenter or Wim, I haven't seen this land in the RCs or in next yet. Have
+> > > you already picked it up? Anything more needed from me?
+> > > 
+> > > Thanks,
+> > > 
+> > 
+> > Sorry, I am suffering from what I can only describe as a severe case of
+> > maintainer/reviewer PTSD, and I have yet to find a way of dealing with that.
+> > 
+> 
+> I'm sorry to hear it Guenter, it can be a thankless slog of a treadmill
+> sometimes. I found having a co-maintainer a huge help to even out the human
+> factors while maintaining the x86 platform drivers (in the before times).
+>
+> In the short term, should I ask if one of the Arm maintainers would be willing
+> to pick this patch up?
 
-To reproduce the conflict and resubmit, you may use the following commands:
+I'm picking this one up right now. So no need to ask it to the Arm maintainers.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 926fe783c8a64b33997fec405cf1af3e61aed441
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102922-handwrite-unpopular-0e1d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 926fe783c8a64b33997fec405cf1af3e61aed441 Mon Sep 17 00:00:00 2001
-From: Andrii Nakryiko <andrii@kernel.org>
-Date: Fri, 27 Oct 2023 16:31:26 -0700
-Subject: [PATCH] tracing/kprobes: Fix symbol counting logic by looking at
- modules as well
-
-Recent changes to count number of matching symbols when creating
-a kprobe event failed to take into account kernel modules. As such, it
-breaks kprobes on kernel module symbols, by assuming there is no match.
-
-Fix this my calling module_kallsyms_on_each_symbol() in addition to
-kallsyms_on_each_match_symbol() to perform a proper counting.
-
-Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
-
-Cc: Francis Laniel <flaniel@linux.microsoft.com>
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 95c5b0668cb7..e834f149695b 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -714,14 +714,30 @@ static int count_symbols(void *data, unsigned long unused)
- 	return 0;
- }
- 
-+struct sym_count_ctx {
-+	unsigned int count;
-+	const char *name;
-+};
-+
-+static int count_mod_symbols(void *data, const char *name, unsigned long unused)
-+{
-+	struct sym_count_ctx *ctx = data;
-+
-+	if (strcmp(name, ctx->name) == 0)
-+		ctx->count++;
-+
-+	return 0;
-+}
-+
- static unsigned int number_of_same_symbols(char *func_name)
- {
--	unsigned int count;
-+	struct sym_count_ctx ctx = { .count = 0, .name = func_name };
-+
-+	kallsyms_on_each_match_symbol(count_symbols, func_name, &ctx.count);
- 
--	count = 0;
--	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
-+	module_kallsyms_on_each_symbol(NULL, count_mod_symbols, &ctx);
- 
--	return count;
-+	return ctx.count;
- }
- 
- static int __trace_kprobe_create(int argc, const char *argv[])
+Kind regards,
+Wim.
 
