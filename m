@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 643347DAC69
-	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:22:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4039A7DAC6A
+	for <lists+stable@lfdr.de>; Sun, 29 Oct 2023 13:23:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbjJ2MWw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 29 Oct 2023 08:22:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41498 "EHLO
+        id S229487AbjJ2MXE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 29 Oct 2023 08:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229482AbjJ2MWv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 08:22:51 -0400
+        with ESMTP id S229482AbjJ2MXE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 29 Oct 2023 08:23:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8319F91
-        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 05:22:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C332AC433C7;
-        Sun, 29 Oct 2023 12:22:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B3C291
+        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 05:23:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF25AC433C8;
+        Sun, 29 Oct 2023 12:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698582169;
-        bh=bcAL986f2pl94rmCWKbPaTQ+nQZ7TsXVS4WLPhSaLL0=;
+        s=korg; t=1698582181;
+        bh=KGNwIsxEGI5V61m4EwcxvZD584n4MjkbPAnqpZAbabE=;
         h=Subject:To:Cc:From:Date:From;
-        b=e07gI0O2aaH2PHHv8OxxWBbFkn5+PDAB+s+FtCDkal/1inxGEvD+/cqoSgTDBtgrw
-         OK77XiswHghHC0I750+QUQEUS8DgDZN8YaKoRm19mIrU6TsfRTAnjm/NA7/zYKL8H1
-         qMxoEjujGn/WIB0KcjPLihAJjrZzqt8SP3R9of9s=
-Subject: FAILED: patch "[PATCH] x86/i8259: Skip probing when ACPI/MADT advertises PCAT" failed to apply to 5.4-stable tree
+        b=Y9+bMPOLe7DW9rTbIYVI89cMyaP0EBR9ZO3X1Nd7TshiTlxOKxQQw09gtOIRjg2y7
+         H/L8I5o3nw5gMkIeOL9BMeVth6Q6EdkQN1inyX3ke9f5q5N58PwrVMNlsBPgiBmCCr
+         m85YxI1NzY2sKx4HoK44Xa+wpGXXC3EckAEgssbs=
+Subject: FAILED: patch "[PATCH] x86/i8259: Skip probing when ACPI/MADT advertises PCAT" failed to apply to 4.19-stable tree
 To:     tglx@linutronix.de, dlazar@gmail.com, hdegoede@redhat.com,
         mario.limonciello@amd.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 29 Oct 2023 13:22:41 +0100
-Message-ID: <2023102941-gamma-manifesto-5fcc@gregkh>
+Date:   Sun, 29 Oct 2023 13:22:43 +0100
+Message-ID: <2023102943-tragedy-oil-1639@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 128b0c9781c9f2651bea163cb85e52a6c7be0f9e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102941-gamma-manifesto-5fcc@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102943-tragedy-oil-1639@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
