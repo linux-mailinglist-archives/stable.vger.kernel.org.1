@@ -2,113 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B57637DBB6A
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 15:09:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B09E67DBBC1
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 15:28:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231518AbjJ3OJu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 10:09:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59084 "EHLO
+        id S231919AbjJ3O21 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 10:28:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbjJ3OJu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 10:09:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 356C0E1
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 07:09:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1698674940;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=dOFRZkTKK9Z0bMd9xnhKPQO2WNoW7oCCTYa8Hwz84I8=;
-        b=bz4pKzwzQPWtZmXPQ8Zl/mFx4fngTAVN/Kinc4J52VkH4S702PPUDpwVZyPFuFD1mNJTwk
-        bB6tCTl2weKG3GUVaOXUXEaPmRLi1eW5iv+CqcT1AtOBLEunyJNQ5L5HEGDcLCQj8E/t/4
-        oLc/Amc7yvkTLaU3M+OG5D6yjSDqZ6U=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-j40fAQMlM6aMhm1JptNM3g-1; Mon, 30 Oct 2023 10:08:57 -0400
-X-MC-Unique: j40fAQMlM6aMhm1JptNM3g-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3AC63185A781;
-        Mon, 30 Oct 2023 14:08:56 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A2621C060AE;
-        Mon, 30 Oct 2023 14:08:56 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-        id 1763530C72AB; Mon, 30 Oct 2023 14:08:56 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 148423D99F;
-        Mon, 30 Oct 2023 15:08:56 +0100 (CET)
-Date:   Mon, 30 Oct 2023 15:08:56 +0100 (CET)
-From:   Mikulas Patocka <mpatocka@redhat.com>
-To:     =?ISO-8859-15?Q?Marek_Marczykowski-G=F3recki?= 
-        <marmarek@invisiblethingslab.com>
-cc:     Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-In-Reply-To: <ZT+wDLwCBRB1O+vB@mail-itl>
-Message-ID: <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
-References: <e427823c-e869-86a2-3549-61b3fdf29537@redhat.com> <ZTiHQDY54E7WAld+@mail-itl> <ZTiJ3CO8w0jauOzW@mail-itl> <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com> <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz> <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
- <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz> <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com> <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz> <20231030122513.6gds75hxd65gu747@quack3> <ZT+wDLwCBRB1O+vB@mail-itl>
+        with ESMTP id S233197AbjJ3O20 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 10:28:26 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50993E1;
+        Mon, 30 Oct 2023 07:28:23 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-9c41e95efcbso641463566b.3;
+        Mon, 30 Oct 2023 07:28:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698676102; x=1699280902; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=u0Ba+CU8RcT0wuH5/vn/ZGnDcbiiXPMOx61eDYzjvoA=;
+        b=IcEyUoSqMXAkH1hSTbTjA7m6yljNU4zBciDCZ+zZ/KATk8X8rp9fg3Sl71IPpR/l3W
+         k6RRJNlTGFog1v+iAlhWFP/JCMXEZDTlFsX6HVeW3gozF/gj4ynf4d3Ih6TctTLFRpsa
+         2mTimkzuyiTxX2kqrTnz2SUhV+26m5qGm1ScAsYDohcP/IID3aHMTyeg9eV0+zxQFLTw
+         iUXTbEYynl4gE9vSPfPA8ldHRN5Oqa607B7UcH59C9aGT25//SrIsnNBtbWFWS0QpWed
+         hSEo4At08tiEcomgN74OUTyb6MGQ5UyCxjMKnl55XDb2GWKI4LabKk35zKy5pbIJUuDq
+         a9LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698676102; x=1699280902;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=u0Ba+CU8RcT0wuH5/vn/ZGnDcbiiXPMOx61eDYzjvoA=;
+        b=OGEk1DP2L8A9Yq5894Yy0XfPo4dn7hTMYmAQ/7OHnnhE1t31A5Zh+j5LDhw6uA8juu
+         lVbziaAUPhOoI7pZbdcO3mnv4B9lsU+bTUmmsdGT7Gh1ecurl8vp763950P7m3WSrbsk
+         8PsOJBPBt4yHL0XdqiZCZVf0m807qKYeMQvP6Bn2jwibHZ3iH6eJU7j27ytiSyP4jFPO
+         cnkbKMa56zhprxCAHyhGva+/1Joo+k3UnKo/42dtJaw6O47vkHjuRxUE8/woR7JQVsmn
+         7LFKBFCKhBwcnKiCzsKMrgpg7Axn8ZwjP0ALOhybFv/oYkmq8Yq/qeXO8DWUcEbocinZ
+         jlMA==
+X-Gm-Message-State: AOJu0Yw+i/WD5ArqMIxibwv0QhFolgyLRl1T6KtoLF5qL/txT/ZHW+2S
+        ibApPwSu7N4zAiEcHpGBSh4=
+X-Google-Smtp-Source: AGHT+IE1AosW5mAoF5xqHP39ytt9ZiS0AAWnK83MbaNEXJL1yVUOSHmdhJBL6uK2A4jrxQJ0WYrUNw==
+X-Received: by 2002:a17:907:26c4:b0:9b2:aa2f:ab69 with SMTP id bp4-20020a17090726c400b009b2aa2fab69mr7966571ejc.30.1698676101528;
+        Mon, 30 Oct 2023 07:28:21 -0700 (PDT)
+Received: from [192.168.1.95] (host-176-36-0-241.b024.la.net.ua. [176.36.0.241])
+        by smtp.gmail.com with ESMTPSA id x15-20020a1709065acf00b0099bcf9c2ec6sm6059183ejs.75.2023.10.30.07.28.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Oct 2023 07:28:21 -0700 (PDT)
+Message-ID: <0ee068765d5992f4907a6d3320d4c7c5b9e6e4ba.camel@gmail.com>
+Subject: Re: [RFC bpf 1/2] bpf: Fix precision tracking for BPF_ALU |
+ BPF_TO_BE | BPF_END
+From:   Eduard Zingerman <eddyz87@gmail.com>
+To:     Shung-Hsi Yu <shung-hsi.yu@suse.com>, bpf@vger.kernel.org
+Cc:     Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andriin@fb.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Toke =?ISO-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Song Liu <song@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>,
+        KP Singh <kpsingh@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        stable@vger.kernel.org, Mohamed Mahmoud <mmahmoud@redhat.com>,
+        Tao Lyu <tao.lyu@epfl.ch>
+Date:   Mon, 30 Oct 2023 16:28:19 +0200
+In-Reply-To: <20231030132145.20867-2-shung-hsi.yu@suse.com>
+References: <20231030132145.20867-1-shung-hsi.yu@suse.com>
+         <20231030132145.20867-2-shung-hsi.yu@suse.com>
+Autocrypt: addr=eddyz87@gmail.com; prefer-encrypt=mutual; keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.0 
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="185210117-1250732461-1698674809=:1161929"
-Content-ID: <e31910e4-851f-f227-c7cd-1d99fb82696a@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, 2023-10-30 at 21:21 +0800, Shung-Hsi Yu wrote:
+> BPF_END and BPF_NEG has a different specification for the source bit in
+> the opcode compared to other ALU/ALU64 instructions, and is either
+> reserved or use to specify the byte swap endianness. In both cases the
+> source bit does not encode source operand location, and src_reg is a
+> reserved field.
+>=20
+> backtrack_insn() currently does not differentiate BPF_END and BPF_NEG
+> from other ALU/ALU64 instructions, which leads to r0 being incorrectly
+> marked as precise when processing BPF_ALU | BPF_TO_BE | BPF_END
+> instructions. This commit teaches backtrack_insn() to correctly mark
+> precision for such case.
+>=20
+> While precise tracking of BPF_NEG and other BPF_END instructions are
+> correct and does not need fixing because their source bit are unset and
+> thus treated as the BPF_K case, this commit opt to process all BPF_NEG
+> and BPF_END instructions within the same if-clause so it better aligns
+> with current convention used in the verifier (e.g. check_alu_op).
+>=20
+> Fixes: b5dc0163d8fd ("bpf: precise scalar_value tracking")
+> Cc: stable@vger.kernel.org
+> Reported-by: Mohamed Mahmoud <mmahmoud@redhat.com>
+> Tested-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+> Tested-by: Tao Lyu <tao.lyu@epfl.ch>
+> Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
---185210117-1250732461-1698674809=:1161929
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Content-ID: <2e223827-e6b-47b8-d026-66c8d92466bd@redhat.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
 
-
-
-On Mon, 30 Oct 2023, Marek Marczykowski-Górecki wrote:
-
-> > Well, it would be possible that larger pages in a bio would trip e.g. bio
-> > splitting due to maximum segment size the disk supports (which can be e.g.
-> > 0xffff) and that upsets something somewhere. But this is pure
-> > speculation. We definitely need more debug data to be able to tell more.
-> 
-> I can collect more info, but I need some guidance how :) Some patch
-> adding extra debug messages?
-> Note I collect those via serial console (writing to disk doesn't work
-> when it freezes), and that has some limits in the amount of data I can
-> extract especially when printed quickly. For example sysrq-t is too much.
-> Or maybe there is some trick to it, like increasing log_bug_len?
-
-If you can do more tests, I would suggest this:
-
-We already know that it works with order 3 and doesn't work with order 4.
-
-So, in the file include/linux/mmzone.h, change PAGE_ALLOC_COSTLY_ORDER 
-from 3 to 4 and in the file drivers/md/dm-crypt.c leave "unsigned int 
-order = PAGE_ALLOC_COSTLY_ORDER" there.
-
-Does it deadlock or not?
-
-So, that we can see whether the deadlock depends on 
-PAGE_ALLOC_COSTLY_ORDER or whether it is just a coincidence.
-
-Mikulas
---185210117-1250732461-1698674809=:1161929--
+> ---
+>  kernel/bpf/verifier.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> index 873ade146f3d..646dc49263fd 100644
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
+> @@ -3426,7 +3426,12 @@ static int backtrack_insn(struct bpf_verifier_env =
+*env, int idx, int subseq_idx,
+>  	if (class =3D=3D BPF_ALU || class =3D=3D BPF_ALU64) {
+>  		if (!bt_is_reg_set(bt, dreg))
+>  			return 0;
+> -		if (opcode =3D=3D BPF_MOV) {
+> +		if (opcode =3D=3D BPF_END || opcode =3D=3D BPF_NEG) {
+> +			/* sreg is reserved and unused
+> +			 * dreg still need precision before this insn
+> +			 */
+> +			return 0;
+> +		} else if (opcode =3D=3D BPF_MOV) {
+>  			if (BPF_SRC(insn->code) =3D=3D BPF_X) {
+>  				/* dreg =3D sreg or dreg =3D (s8, s16, s32)sreg
+>  				 * dreg needs precision after this insn
 
