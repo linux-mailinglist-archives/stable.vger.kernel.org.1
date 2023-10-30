@@ -2,246 +2,203 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A97BA7DC1E8
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 22:31:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AC2A7DC29A
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 23:48:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230261AbjJ3VbC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 17:31:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54578 "EHLO
+        id S229704AbjJ3Wsi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 18:48:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230049AbjJ3VbB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 17:31:01 -0400
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2054.outbound.protection.outlook.com [40.107.237.54])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98368E1
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 14:30:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Cf8VtfzBBGYQCWS/9KoQlnpTG4CvIcDYlQPNhB42JG/a/AVZ+EtpUOKPUFVU3sGqRcLUOcDAKnFzzWqO3jzKxxjayM+IRI4zRLCpRdggXbJylpXGpCeQ1RGGlHY5UF3AdUpbizydKsQEcHZJDufJK4BbdQoHhCTTxjcfxf3ajxc42U186SjLEhBGQn1wMJFitqQM1yONEY6WSGgqHlGO96afc/XkmwOvcuTyulZsJXKvwfWsaVJXzZLi+4dAktwGEmfnBke0rf4vjTElXkJm6kj4OfzyETBeZCIm5CxK+ssJ1Vds6hi2Da1NBhtIASY4K9QPsiwQa5c0K6+DDyYffg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P7XcH1lZUNwfw+WTSNR71V5huX/soKntFYiiCa7xau4=;
- b=lXAx/MY2GKj/NLdRORlMN/U1/boIJ8TnYZzRz1hZB04B4QRiI3fXRjrOxV7fhA1omIFksuzLnQdbfdo+bnn+BV7MXujk27ryORu1kFhP13eyppZuSmWY5NFPhUR1D3O0R1y3EODnMWCk4c5KzgNzW/JgRuJYlS2XvwSqUv90T1DaglfoXYpj5sbgbS3WLt7t3FFjvRxKWY454o21cRvYKKqBhWi8GeQzsS0nQ57FFK0n0VtLDnX/9eukxkvtVLPbsYQV0ozhlmMzx/4JACsaC8+b9P0C65Zg5Em4U6/oKQPLoXSN+CbOr0Bjje+DwNpvlF64FGT/NyPO7x6ucFwhjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P7XcH1lZUNwfw+WTSNR71V5huX/soKntFYiiCa7xau4=;
- b=2eNnyBu+87sOQjZer4nRSQLBVBKCRJE0iLWlqoXX9ZfAD9+/tCcQvbkkbKqb13d0O2L3w743uzFRLt58+kTmJsRuvczZ7oJm/ZMfLa2anwbY3pHKVRZnP31ka1Alkt020aPzxuOXIbLAVR0236AFqi7KgDH4J90LVoKA/Gj3Iek=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DM6PR12MB4372.namprd12.prod.outlook.com (2603:10b6:5:2af::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.28; Mon, 30 Oct
- 2023 21:30:56 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a%5]) with mapi id 15.20.6933.024; Mon, 30 Oct 2023
- 21:30:56 +0000
-Message-ID: <f10297db-3a65-4e61-8f59-3f029e69dbb0@amd.com>
-Date:   Mon, 30 Oct 2023 16:30:55 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.5.y] platform/x86: Add s2idle quirk for more Lenovo
- laptops
-Content-Language: en-US
-To:     David Lazar <dlazar@gmail.com>, stable@vger.kernel.org
-Cc:     Hans de Goede <hdegoede@redhat.com>,
-        Mark Pearson <mpearson-lenovo@squebb.ca>,
-        Greg KH <gregkh@linuxfoundation.org>
-References: <ZUAcTIClmzL2admd@localhost>
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <ZUAcTIClmzL2admd@localhost>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA9P221CA0020.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:806:25::25) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+        with ESMTP id S229646AbjJ3Wsh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 18:48:37 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12271E1;
+        Mon, 30 Oct 2023 15:48:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1698706105; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=kZBYoZChuCK8CR9lbKS4snbL9NzakTXIPj9YUQNH5yaZITrymmug6QfsUSZEBMYIj0
+    5cPfquV2vr1r5tEHqvu3tkrnG8gy8FGtGr/pGbI9Xg5X9WMA8zWm+veVtsh56bR4DjSb
+    gWAvU5lXiVSCD2XU+wAXf2jNXSYDTH5hV7N0I20As4C0ws2mFxDvE29LY4wrvUjGvmx1
+    4CcXew4tvZFfZ2asuYIgGBewAeSVaHs96BsIFWcdrY3PezLV2OELQhv/gtB1Iq04sxRq
+    y4SppF1j2gj4winiYsyIf5VkzeQqa5KRluwAwhsjOxjw/0Y/CHgdtGFEakQjfHKuJOFo
+    E6Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1698706105;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=NLfEces4BfsEWbaKYovgafBvpx5rnI42aFAQwYNElhE=;
+    b=eGG1Q0AfdtJq3wIxT4BXFgMRZNkWZUlRAXjLAVOxE/wrdXs1NwwJqK0ooqCqMemwey
+    IormpZ+FDUa3rzacchSp9cNgcX2U4sDRkagHueDcIRcy205m2sVShQXm1sCd1GyTHmBV
+    q+gEqzzUFMl5KV9sp/0vDeoc+we9qdcFyLtkjWe8RhBRDHf8LVhgnPyAYUsLy8vGO5iY
+    3+wB9M7RhZ/zXwHNNUpKnpA6Xw7ysmTZMZvJu2L907b1F7LAK4/MFMRHhWSDp+IW+Yeg
+    xwnnRufhnkLb6ktJi1sI245sD9ATy9egz1xXg8Xna5GqX/j3MWEmq9siTtidgkQwiKSC
+    RMCw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1698706105;
+    s=strato-dkim-0002; d=iokpp.de;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=NLfEces4BfsEWbaKYovgafBvpx5rnI42aFAQwYNElhE=;
+    b=kjrTCfJhmXXKVLSuHyRGqUXmqb+5pAnicDdC/pstc5pb4i2Gvp71/4ZShKlOxy+Uh4
+    PMaaQ9dyWRhR6jOlYHT0vm+QxKi2CQntks/42rvxpGDEpf+IgxT/Xe18BMBEqs4XuuI9
+    fn4tJ6YfK7jWHo8BLOAMQDCoklMZ7fHSQoXYz4LyXvF2tI3JfSKZlXaAoSFN4P1EfuoC
+    K6YQMJuzilIes51z/CcTDfbjIjbv6uHxGyf9oYsfekHMEo1KlEJJih5BYTkIUhvvPaRE
+    IdoIFgoNXJTo1gKoNCBOQQBBFg58JX9lbzcTiaqmEbMctPt8MSkUVJUEukQV4OAOOoFl
+    OjGw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1698706105;
+    s=strato-dkim-0003; d=iokpp.de;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=NLfEces4BfsEWbaKYovgafBvpx5rnI42aFAQwYNElhE=;
+    b=yR5hIyiBI8Y+O0JuNH52hbVnEBESOimD9DeB/evAmclgtkqE8jeQQFjN4/HLa6S3KM
+    l0N1h9AoVpZt5gOU4sAw==
+X-RZG-AUTH: ":LmkFe0i9dN8c2t4QQyGBB/NDXvjDB6pBSedrgBzPc9DUyubU4DD1XjJKt+IXM0qv4S/D"
+Received: from Munilab01-lab..
+    by smtp.strato.de (RZmta 49.9.1 AUTH)
+    with ESMTPSA id zd0181z9UMmPGWd
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 30 Oct 2023 23:48:25 +0100 (CET)
+From:   Bean Huo <beanhuo@iokpp.de>
+To:     ulf.hansson@linaro.org, cLoehle@hyperstone.com,
+        adrian.hunter@intel.com
+Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bean Huo <beanhuo@micron.com>,
+        Rafael Beims <rafael.beims@toradex.com>, stable@vger.kernel.org
+Subject: [v5] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron eMMC Q2J54A
+Date:   Mon, 30 Oct 2023 23:48:09 +0100
+Message-Id: <20231030224809.59245-1-beanhuo@iokpp.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DM6PR12MB4372:EE_
-X-MS-Office365-Filtering-Correlation-Id: c7e42362-c6b1-4325-6300-08dbd98f8047
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: vIvpPoROk1YgkVnGZadD9oA06A7+M7mH4SyF40mLAT8wJwlFx42MQWfQdhmbvjXHwifpTYZnp0V3gSq9GqUZtOQbvhSVMx8grZOgssJRL2FRmbgo8OLqM7YT4HKIMLybV3vBJcZ+3Fcwa/jfuzhlNyJ5I1jnO6UXik4vU0ssIbLtsUlncsszZoDn45/mIevEdfSHagKqyNClktiVZgzN8GVxXQlBKfOp+J5iLI7Le6+Vz0BYice2/Xn61hqagGNovzPZrJkIOOo8/hwvKYOEyOg6YgbTzlYH9GM+5kMIjfNYm0tnVJMBcIpMpPUCGoAl7pv25XNWGiQE2FSS1IkwbyDw0aFiPr8lVrrGvaPO9KulphjEP/1wnq13Hb1sFgqfiEuEy2f3SBYsv/3pIIozFbHFhvMTKIUXQ+PVDHZUDtscSEZHgpIF7/xYQfGMwlRHatK3VjBVS7BkxFaOay7ErYo/8YHwY0sSlzgzTOK+Zq49aSir+8iea4QRcadcgovABXC6FWHZQkbmREnoT08giyMmMxHuJtsVALCvDoLFAi6++qP9LLKFZepJ1z7OCBBe6x+vT68w3BWAf48iqr3Dx/4cBI2/949atckYm0PgJLIPJ+B68OSRjgX3Aq5wapZBdRnuO1qkqaYFo5bqKmcPK4j2kxPFNalbTbnCizzbxho=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(346002)(39860400002)(396003)(366004)(376002)(230922051799003)(186009)(1800799009)(64100799003)(451199024)(31686004)(2906002)(8676002)(44832011)(5660300002)(41300700001)(31696002)(86362001)(4326008)(8936002)(36756003)(316002)(38100700002)(66476007)(66556008)(54906003)(2616005)(66946007)(26005)(6506007)(83380400001)(6512007)(53546011)(6486002)(966005)(478600001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q3ZTZUhCcm44OFBoeUhYdlNYUENqUW0xUDlpOGRqVkJaQmFYVFRIaU9yWjI2?=
- =?utf-8?B?bm0yVGp0bW5xb2w5U3MyYnFUVVBhcnJiTDQzTEd2RHFXRyttcy90L2JZakNt?=
- =?utf-8?B?M2hqSmtuRUxvTUdWaXZFZ0lqci9XV0Q4bUIwUnB3QVUyK1hkV3UzalFmUXZW?=
- =?utf-8?B?V0ZNVUZHWHZCRGtEWXpmMGhsNE1vTzM4Tm9LMmlxYTI4M1FDY3lBYkVGbHhF?=
- =?utf-8?B?MDFoZERjTHdpT05ESGVCQW5DNkF6VEZUV2lNWWdicUxjY0lVWlA4RG1UREJn?=
- =?utf-8?B?elB0T09oem5maGN4TTFOcUh1Z1J3OElYREVVcHU3NVZ5czM2dmd4TlFab3pt?=
- =?utf-8?B?R0t2U2ZOQ1psREdIZktCWmZFbTFZNVZRcGZmUVhYUVdVTEpKU2tUVysrKzlj?=
- =?utf-8?B?aVZSSVdTb2NLSmVJeW9ZS3NEUGlNRHRMTktDQ3NuU1dydEZicVJxdys5MFBt?=
- =?utf-8?B?SkhxOUFJQmZpUllKQlc1UVRIT1VZaVhBT2dvVlhydTNNMWtuM0g2NUtlM1FI?=
- =?utf-8?B?KzBEeTNHNGJ0TC9JQUllVXRWVmtoLzFUcXgyOHBJN21ydnVHMVd3MmtyWEpT?=
- =?utf-8?B?dGZhYm4vZkJ6eE4wSDUyY2ZIQ1liTUJoUDRBS1Z5TW1sdTJ1WDFNTHdydWs5?=
- =?utf-8?B?eXpENngrNVhsMFZFWTdyajVGVldzREJsSjVjcDZiYlZsRGN4QmdCVk5ZTFBu?=
- =?utf-8?B?UzM3QXI0Lys5WU9MUXZzeHRiWUxDOFR3cXl2dGRpS0lBblovT3dIZitWNFd3?=
- =?utf-8?B?dFc0UHh1USswQWFzamJLT1RUcjMzUE5kR2dqd1FabnIrUUt3djhuUzMzanRG?=
- =?utf-8?B?azdiZ2pQMGZkcXVTNDZjVW83MzFtSnlVNzEwampLTjJ2dVR0N2t1TjlxZGp4?=
- =?utf-8?B?dkFwTjNzZDFrT00zbjk4QXNUUWgyWmZWNHhha1RYdTBCdFlRYm1XK2NpM2xu?=
- =?utf-8?B?aHNtWWsxU3RqREF1NStSL0duNmRsUHh2aTY3Ym8vc3NkRmhEQXlEbGZicnhN?=
- =?utf-8?B?bTJBRFNGTFM3Zmxtc1ZsL2dVcW1GVFpSRWRJOWpYNFhmL2Q2cHpnVXk5azJI?=
- =?utf-8?B?Y25mKy9sL0R4d3hCTDZNcnZzNURMN0sxelpuNWl6dU9rY20vQ0RwTDRmUEtJ?=
- =?utf-8?B?QWFuT2xKK0lFVk4xQXpaZzFzNEMxbFhCVlExaStZcmYvVEo3Y0F0MThMK1Bz?=
- =?utf-8?B?dVNvQy9iWmg5dnd0Y1VJczlreG4vK3R1ZjNJZU5IWGl1elJDREJTU0YrKzhT?=
- =?utf-8?B?RjRETm9ZSXdsTUFIL3VwcWpVdllNa0w2NzBIWVFBT1Y0MVJ3WTF5Y0VQVTFP?=
- =?utf-8?B?NDVKeXdHNVlISitTM2tTcUplcWxubFJiR1pSMXZGZVZnK2dUVlMzVlRCOGV0?=
- =?utf-8?B?eXZobkJBdEh6bUVhek9zNFRwbGhGaHRJcWRxRDRVWjU0YUl2YlRpSmxqMXZl?=
- =?utf-8?B?S1NXMGNBU01QL2RWNjFqNjdhdlRGWXQvN1ZtODdqZnZqZVBOUEc3dDM2MGpO?=
- =?utf-8?B?S2tsM2twSEoyTnRpUWNKL0JnTENNK3B5OWwxN1BIeUdvcUlmNVlXamJRTXVi?=
- =?utf-8?B?VnhmME1xU29Vb1FZcGhJRHdUMEZLSTY5SzlxY1lvWXpKTDJWNzNpSjVmNUxH?=
- =?utf-8?B?RnV1ek9sWTZtcktmbkovU3hRZmloUnlFUFQwYjBsTkVKYzdyRDFXc00reVJ2?=
- =?utf-8?B?bEd4dHdyQ3BHcjZMUXBBdCtJMFFwaGszRWJxZXBzbnJuWW9RdDdwTzlpTzRS?=
- =?utf-8?B?eUtjNXl3c1VWVGdWUWNEY2ZqdEoxWFYvYjJWUjlDSC81OSt6bjdwd0U2d0Za?=
- =?utf-8?B?cld2VjhBNmF2c0RTNktxWm9vV0dBTVBzZXJtb2JpM1c4OElqcXZZTzU2S0o1?=
- =?utf-8?B?d0RIcitSb2dsWDJFUFV1SXFoK3NFUzhVNVlKSUloZGxITTZwR2d3UTRnWDl6?=
- =?utf-8?B?eXZXTFVlbW1hK3dad0FyL1dsNzlheVowZFJhQWtHVUVsWk1LV0s2NjRIQ0hG?=
- =?utf-8?B?ZTdlVzlhaVU1QXpVdWQyc3NlK0RUYW5USmkyWG1Lb2JTREJhQUl5aCsrbWZE?=
- =?utf-8?B?OG9aNHdVWmNQZHcvbGdKWTVFMklHQWo3ZFQwNUJGcUU4Q3R5c3M2TUZzek5I?=
- =?utf-8?Q?6540aGaivCa63JYpEVVMfWPEJ?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c7e42362-c6b1-4325-6300-08dbd98f8047
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2023 21:30:56.0060
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: T2fF/2vfwkgAGZXTStjEFyjR44sIDYkSv4ZdYfNuTUZhX7bEsRO+kJdgYIJ51Kyv0h/dteB4j++eUfgTnrLH9Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4372
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/30/2023 16:12, David Lazar wrote:
-> commit 3bde7ec13c971445faade32172cb0b4370b841d9 upstream.
-> 
-> When suspending to idle and resuming on some Lenovo laptops using the
-> Mendocino APU, multiple NVME IOMMU page faults occur, showing up in
-> dmesg as repeated errors:
-> 
-> nvme 0000:01:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x000b
-> address=0xb6674000 flags=0x0000]
-> 
-> The system is unstable afterwards.
-> 
-> Applying the s2idle quirk introduced by commit 455cd867b85b ("platform/x86:
-> thinkpad_acpi: Add a s2idle resume quirk for a number of laptops")
-> allows these systems to work with the IOMMU enabled and s2idle
-> resume to work.
-> 
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218024
-> Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-> Suggested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Signed-off-by: David Lazar <dlazar@gmail.com>
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Link: https://lore.kernel.org/r/ZTlsyOaFucF2pWrL@localhost
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
+From: Bean Huo <beanhuo@micron.com>
 
-In this case are there modifications or is a clean cherry-pick?  If it's 
-not a clean cherry pick, why?
+Micron MTFC4GACAJCN eMMC supports cache but requires that flush cache
+operation be allowed only after a write has occurred. Otherwise, the
+cache flush command or subsequent commands will time out.
 
-If it's just missing another system in the quirk list it's cleaner to 
-backport that missing system and then have a clean pick.
+Signed-off-by: Bean Huo <beanhuo@micron.com>
+Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
+Cc: stable@vger.kernel.org
+---
 
->   drivers/platform/x86/amd/pmc-quirks.c | 73 +++++++++++++++++++++++++++
->   1 file changed, 73 insertions(+)
-> 
-> diff --git a/drivers/platform/x86/amd/pmc-quirks.c b/drivers/platform/x86/amd/pmc-quirks.c
-> index ad702463a65d..6bbffb081053 100644
-> --- a/drivers/platform/x86/amd/pmc-quirks.c
-> +++ b/drivers/platform/x86/amd/pmc-quirks.c
-> @@ -111,6 +111,79 @@ static const struct dmi_system_id fwbug_list[] = {
->   			DMI_MATCH(DMI_PRODUCT_NAME, "21A1"),
->   		}
->   	},
-> +	/* https://bugzilla.kernel.org/show_bug.cgi?id=218024 */
-> +	{
-> +		.ident = "V14 G4 AMN",
-> +		.driver_data = &quirk_s2idle_bug,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "82YT"),
-> +		}
-> +	},
-> +	{
-> +		.ident = "V14 G4 AMN",
-> +		.driver_data = &quirk_s2idle_bug,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "83GE"),
-> +		}
-> +	},
-> +	{
-> +		.ident = "V15 G4 AMN",
-> +		.driver_data = &quirk_s2idle_bug,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "82YU"),
-> +		}
-> +	},
-> +	{
-> +		.ident = "V15 G4 AMN",
-> +		.driver_data = &quirk_s2idle_bug,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "83CQ"),
-> +		}
-> +	},
-> +	{
-> +		.ident = "IdeaPad 1 14AMN7",
-> +		.driver_data = &quirk_s2idle_bug,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "82VF"),
-> +		}
-> +	},
-> +	{
-> +		.ident = "IdeaPad 1 15AMN7",
-> +		.driver_data = &quirk_s2idle_bug,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "82VG"),
-> +		}
-> +	},
-> +	{
-> +		.ident = "IdeaPad 1 15AMN7",
-> +		.driver_data = &quirk_s2idle_bug,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "82X5"),
-> +		}
-> +	},
-> +	{
-> +		.ident = "IdeaPad Slim 3 14AMN8",
-> +		.driver_data = &quirk_s2idle_bug,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "82XN"),
-> +		}
-> +	},
-> +	{
-> +		.ident = "IdeaPad Slim 3 15AMN8",
-> +		.driver_data = &quirk_s2idle_bug,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
-> +		}
-> +	},
->   	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
->   	{
->   		.ident = "HP Laptop 15s-eq2xxx",
+Changelog:
+v4--v5:
+    1. In the case of a successful flush, set writing_flag in _mmc_flush_cache()
+v3--v4:
+    1. Add helper function for this quirk in drivers/mmc/core/card.h.
+    2. Set card->written_flag only for REQ_OP_WRITE.
+v2--v3:
+    1. Set card->written_flag in mmc_blk_mq_issue_rq().
+v1--v2:
+    1. Add Rafael's test-tag, and Co-developed-by.
+    2. Check host->card whether NULL or not in __mmc_start_request() before asserting host->card->->quirks
+---
+ drivers/mmc/core/block.c  | 4 +++-
+ drivers/mmc/core/card.h   | 4 ++++
+ drivers/mmc/core/mmc.c    | 8 ++++++--
+ drivers/mmc/core/quirks.h | 7 ++++---
+ include/linux/mmc/card.h  | 2 ++
+ 5 files changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index 3a8f27c3e310..152dfe593c43 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -2381,8 +2381,10 @@ enum mmc_issued mmc_blk_mq_issue_rq(struct mmc_queue *mq, struct request *req)
+ 			}
+ 			ret = mmc_blk_cqe_issue_flush(mq, req);
+ 			break;
+-		case REQ_OP_READ:
+ 		case REQ_OP_WRITE:
++			card->written_flag = true;
++			fallthrough;
++		case REQ_OP_READ:
+ 			if (host->cqe_enabled)
+ 				ret = mmc_blk_cqe_issue_rw_rq(mq, req);
+ 			else
+diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
+index 4edf9057fa79..b7754a1b8d97 100644
+--- a/drivers/mmc/core/card.h
++++ b/drivers/mmc/core/card.h
+@@ -280,4 +280,8 @@ static inline int mmc_card_broken_sd_cache(const struct mmc_card *c)
+ 	return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
+ }
+ 
++static inline int mmc_card_broken_cache_flush(const struct mmc_card *c)
++{
++	return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
++}
+ #endif
+diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
+index 8180983bd402..11053f920ac4 100644
+--- a/drivers/mmc/core/mmc.c
++++ b/drivers/mmc/core/mmc.c
+@@ -2086,13 +2086,17 @@ static int _mmc_flush_cache(struct mmc_host *host)
+ {
+ 	int err = 0;
+ 
++	if (mmc_card_broken_cache_flush(host->card) && !host->card->written_flag)
++		return err;
++
+ 	if (_mmc_cache_enabled(host)) {
+ 		err = mmc_switch(host->card, EXT_CSD_CMD_SET_NORMAL,
+ 				 EXT_CSD_FLUSH_CACHE, 1,
+ 				 CACHE_FLUSH_TIMEOUT_MS);
+ 		if (err)
+-			pr_err("%s: cache flush error %d\n",
+-			       mmc_hostname(host), err);
++			pr_err("%s: cache flush error %d\n", mmc_hostname(host), err);
++		else
++			host->card->written_flag = false;
+ 	}
+ 
+ 	return err;
+diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
+index 32b64b564fb1..5e68c8b4cdca 100644
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -110,11 +110,12 @@ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+ 		  MMC_QUIRK_TRIM_BROKEN),
+ 
+ 	/*
+-	 * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
+-	 * support being used to offload WRITE_ZEROES.
++	 * Micron MTFC4GACAJCN-1M supports TRIM but does not appear to suppor
++	 * WRITE_ZEROES offloading. It also supports caching, but the cache can
++	 * only be flushed after a write has occurred.
+ 	 */
+ 	MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
+-		  MMC_QUIRK_TRIM_BROKEN),
++		  MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
+ 
+ 	/*
+ 	 * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
+diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
+index daa2f40d9ce6..7b12eebc5586 100644
+--- a/include/linux/mmc/card.h
++++ b/include/linux/mmc/card.h
+@@ -295,7 +295,9 @@ struct mmc_card {
+ #define MMC_QUIRK_BROKEN_HPI	(1<<13)		/* Disable broken HPI support */
+ #define MMC_QUIRK_BROKEN_SD_DISCARD	(1<<14)	/* Disable broken SD discard support */
+ #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
++#define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
+ 
++	bool			written_flag;	/* Indicates eMMC has been written since power on */
+ 	bool			reenable_cmdq;	/* Re-enable Command Queue */
+ 
+ 	unsigned int		erase_size;	/* erase size in sectors */
+-- 
+2.34.1
 
