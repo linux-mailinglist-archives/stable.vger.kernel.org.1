@@ -2,91 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D708C7DB90F
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:36:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94DD47DB919
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:38:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232427AbjJ3Lgh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 07:36:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36764 "EHLO
+        id S232427AbjJ3LiP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 07:38:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232555AbjJ3Lgf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:36:35 -0400
-X-Greylist: delayed 130 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 30 Oct 2023 04:36:33 PDT
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41BEEC5
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:36:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1698665789; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=b4fOF/V8BCG4ZHLsO3LVYfFqY33xA3/aEpQMAQTjUjc9URgwQ7ZOixfFqks5X9wc0j
-    igfRbec3kbfAJzASn53YONd62BD1mcoNOWeAx2Q0EGU/BMya/OEpQAyagLGzQHtCAuhM
-    2Wxt1FFTMyYFDuGpigBT1t6vD9vq7RpLWFgI3NtYF7AJ+BxCl0Rya7IlGztjjQyUOnLf
-    BHhbW+gE6hiuwW6SP/X8722ogu/o3UV9Pkl6dZ6pCImDsXjxKvVuiZ4ojzpuGavNvhRF
-    hrqCS74p+Top9OHmiln4ikjjJkixb+ei3EMsCdXhKAZO102dETxPw1WH7q3G11fw4cry
-    sn3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1698665789;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=dvAMxS1s9xzlzdndQjZ4tD7LC8vju2tU5Fs8EiEQpwo=;
-    b=LN4JFEbstgt/JUgYf2AgWlIWAU5cmSbVJmIh0ia1Kcfrae7bH3deMSq2cv58z6zccS
-    4vNBe8GUyLb29jzap6b+cAyOX87JDv/P8iThtMVpvg85F+zNInYATyfn99N9RhWJ34vP
-    QzZOdUedtkTDBgmfECXHCggJ9mNXzpfMZ1L2Ry2xO5nLrpFHhvwB347QNxC63NVnlU+E
-    7u7Vzja0xyZMReF38rlZL2qLgjQ6XKSnWF3lrSgdRUvw18xdeCwcZEC+1dcKPRGfHC0n
-    kdlQYB2Mw3JH9zP+jRE6f3CO5gltqR3tALBVMnaIkBJ+D35TnJg/WiJPnqMvu6pPzTtW
-    iPlA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1698665789;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=dvAMxS1s9xzlzdndQjZ4tD7LC8vju2tU5Fs8EiEQpwo=;
-    b=q4VbbNYsxjvUhr2a5Tb6FPuZp5nalwDKoXmQQvPtHH98BhZXCO/Z0MpmDMwpNcjir8
-    qYmMObHfjva0B/lMNSDIOmnfJzdnB3sbSLYlaSVCq2fSte+pSWjeiB7sDyPTNU57tOJO
-    GoQjJ30wRJE6EAIcbVikLzH+bTQHIHP3IlSVtVvqp/fd/a7A3cOi/Z3JWk+fm1jEbnbU
-    /PwDgGKq8J4BHiwxkgsqXMAxWlVi0+IbI4a+qcUOK6QeFJSPxHYf09cHsyxumPz+uX/I
-    VCUQvM+p/ydKvHdAdNRggjzdmogeGhOncjOdfcZZkyxZ84K8ppZ2Yxdkmurv9ReoXY0k
-    wjZA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1698665789;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=dvAMxS1s9xzlzdndQjZ4tD7LC8vju2tU5Fs8EiEQpwo=;
-    b=dSna4ZawCcU0ycQCl1w4dSj450k/MZbHM5jHT+4MZsaIWbn8F+xdFNR9fGazc0L/ka
-    SSxzskDU+IeyVBF57/CA==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjG14FZxedJy6qgO1o3TMaFqTGVJiOM9vpw=="
-Received: from [192.168.60.115]
-    by smtp.strato.de (RZmta 49.9.1 DYNA|AUTH)
-    with ESMTPSA id Kda39bz9UBaSDKw
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Mon, 30 Oct 2023 12:36:28 +0100 (CET)
-Message-ID: <a1ae9eee-9da6-4ceb-8873-dc5ddb1e8e88@hartkopp.net>
-Date:   Mon, 30 Oct 2023 12:36:22 +0100
+        with ESMTP id S229456AbjJ3LiP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:38:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99FA1A6
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:37:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1698665845;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=z5XvzHGoYibU00zP11b4K8Q9RWlvIImJ+SASs4zDQHE=;
+        b=AQG0GAhYBgUhKqaPGH/gZ25p+JqBrTUk0t/7X5POgZnhJoD6S5F5/erxTEfrWm5PYLKLnP
+        juM23/138/3tFmMxheyu7UYQy1hrWLYq/JrSoDcnVnS9hUIRXy//wLeRWtRo9rABLISOXI
+        XGBG22GM2zdGmIP+XZHWU9A4oYgS/o8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-357-QVylyo7IMXGgDQ4-NF2k5g-1; Mon, 30 Oct 2023 07:37:17 -0400
+X-MC-Unique: QVylyo7IMXGgDQ4-NF2k5g-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BAED58870A1;
+        Mon, 30 Oct 2023 11:37:16 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id ABF27492BE9;
+        Mon, 30 Oct 2023 11:37:16 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
+        id 97BFD30C72AB; Mon, 30 Oct 2023 11:37:16 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 949AA3D99F;
+        Mon, 30 Oct 2023 12:37:16 +0100 (CET)
+Date:   Mon, 30 Oct 2023 12:37:16 +0100 (CET)
+From:   Mikulas Patocka <mpatocka@redhat.com>
+To:     Vlastimil Babka <vbabka@suse.cz>
+cc:     =?ISO-8859-15?Q?Marek_Marczykowski-G=F3recki?= 
+        <marmarek@invisiblethingslab.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org, Jan Kara <jack@suse.cz>
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+In-Reply-To: <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz>
+Message-ID: <1efb1dfc-785a-bf5f-390-b1d372e81c18@redhat.com>
+References: <ZTNH0qtmint/zLJZ@mail-itl> <e427823c-e869-86a2-3549-61b3fdf29537@redhat.com> <ZTiHQDY54E7WAld+@mail-itl> <ZTiJ3CO8w0jauOzW@mail-itl> <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com> <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz>
+ <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com> <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz> <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com> <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 043/131] can: isotp: isotp_sendmsg(): fix TX state
- detection and wait behavior
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Lukas Magel <lukas.magel@posteo.net>, patches@lists.linux.dev,
-        Maxime Jayat <maxime.jayat@mobile-devices.fr>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        Michal Sojka <michal.sojka@cvut.cz>
-References: <20231016084000.050926073@linuxfoundation.org>
- <20231016084001.142952122@linuxfoundation.org>
- <b4a1bdc2-54f8-428a-a82a-0308a4bc7f92@hartkopp.net>
- <2023102721-voltage-thyself-e881@gregkh>
-Content-Language: en-US
-From:   Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <2023102721-voltage-thyself-e881@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,32 +71,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello Greg,
 
-On 27.10.23 14:16, Greg Kroah-Hartman wrote:
-> On Tue, Oct 24, 2023 at 08:34:30PM +0200, Oliver Hartkopp wrote:
 
->> @Greg: I double checked the changes and fixes from the latest 6.6 kernel
->> compared to the 5.10 when isotp.c was introduced in the mainline kernel.
->> Would it be ok, to "backport" the latest 6.6 code to the 5.x LTS trees?
->> It really is the same isotp code but only some kernel API functions and
->> names have been changed.
+On Mon, 30 Oct 2023, Vlastimil Babka wrote:
+
+> On 10/30/23 12:22, Mikulas Patocka wrote:
+> > 
+> > 
+> > On Mon, 30 Oct 2023, Vlastimil Babka wrote:
+> > 
+> >> Ah, missed that. And the traces don't show that we would be waiting for
+> >> that. I'm starting to think the allocation itself is really not the issue
+> >> here. Also I don't think it deprives something else of large order pages, as
+> >> per the sysrq listing they still existed.
+> >> 
+> >> What I rather suspect is what happens next to the allocated bio such that it
+> >> works well with order-0 or up to costly_order pages, but there's some
+> >> problem causing a deadlock if the bio contains larger pages than that?
+> > 
+> > Yes. There are many "if (order > PAGE_ALLOC_COSTLY_ORDER)" branches in the 
+> > memory allocation code and I suppose that one of them does something bad 
+> > and triggers this bug. But I don't know which one.
 > 
-> Sure, if you think it is ok, please send the backported and tested patch
-> series and we will be glad to review them.
+> It's not what I meant. All the interesting branches for costly order in page
+> allocator/compaction only apply with __GFP_DIRECT_RECLAIM, so we can't be
+> hitting those here.
+> The traces I've seen suggest the allocation of the bio suceeded, and
+> problems arised only after it was submitted.
+> 
+> I wouldn't even be surprised if the threshold for hitting the bug was not
+> exactly order > PAGE_ALLOC_COSTLY_ORDER but order > PAGE_ALLOC_COSTLY_ORDER
+> + 1 or + 2 (has that been tested?) or rather that there's no exact
+> threshold, but probability increases with order.
 
-I posted to patches to upgrade the 5.10.y and 5.15.y kernels to the 
-latest 6.6 mainline code base.
+It has been tested - Marek tested it with intial order == 4 and he hit the 
+bug. With 3 and less he didn't.
 
-https://lore.kernel.org/linux-can/20231030113027.3387-1-socketcan@hartkopp.net/T/#u
-
-https://lore.kernel.org/linux-can/20231030113110.3404-1-socketcan@hartkopp.net/T/#u
-
-The patch description contains the list of patches that have been 
-reverted to meet the older kernel APIs and a list of improvements.
-
-Thanks for the review and the consideration to upgrade the LTS code base.
-
-Best regards,
-Oliver
+Mikulas
 
