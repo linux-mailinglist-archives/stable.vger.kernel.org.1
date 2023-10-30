@@ -2,167 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D41247DB8EC
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:28:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 429BF7DB8F2
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:29:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232941AbjJ3L2v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 07:28:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39348 "EHLO
+        id S232991AbjJ3L3p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 07:29:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232958AbjJ3L2t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:28:49 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC1FCC1
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:28:46 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 2F4B31FEF0;
-        Mon, 30 Oct 2023 11:28:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1698665325; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=7+MAdxAuVinBXZcCJL4/EKLK4pRjoLXrIPh+TEUOPZE=;
-        b=XW8axk8UmIhsqHSxUQBcewcGOXoBAH7r5DaLZDdsYsO40AQIXr1e2csYN7ueAdM98cJqjY
-        QvwuJOH0ShR5RlQMLqeczeRT08BQ+fmpU8anq/BVCGjnnuSOIM8c8gLwEdN02J6kPc+G/C
-        YD9Y7DTL1iT18fOkDWUVq74tTvjcFYI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1698665325;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=7+MAdxAuVinBXZcCJL4/EKLK4pRjoLXrIPh+TEUOPZE=;
-        b=jq7LbyhL8aFf8kmwRFv8/QL9PD6AwV0DeKhn++1TmLbMFdAU+e4G2mxN4gqZ80nQCsvgbD
-        F/URD+2Qq9zbtWCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1C55E138F8;
-        Mon, 30 Oct 2023 11:28:45 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 4ZvkBm2TP2VeTgAAMHmgww
-        (envelope-from <jack@suse.cz>); Mon, 30 Oct 2023 11:28:45 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id 90A8BA05BC; Mon, 30 Oct 2023 12:28:44 +0100 (CET)
-Date:   Mon, 30 Oct 2023 12:28:44 +0100
-From:   Jan Kara <jack@suse.cz>
-To:     Vlastimil Babka <vbabka@suse.cz>
-Cc:     Mikulas Patocka <mpatocka@redhat.com>,
-        Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org, Jan Kara <jack@suse.cz>
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-Message-ID: <20231030112844.g7b76cm2xxpovt6e@quack3>
-References: <ZTNH0qtmint/zLJZ@mail-itl>
- <e427823c-e869-86a2-3549-61b3fdf29537@redhat.com>
- <ZTiHQDY54E7WAld+@mail-itl>
- <ZTiJ3CO8w0jauOzW@mail-itl>
- <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com>
- <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz>
- <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
- <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
+        with ESMTP id S232958AbjJ3L3o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:29:44 -0400
+Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0881FB3
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:29:42 -0700 (PDT)
+Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-5079f6efd64so6045023e87.2
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:29:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=semihalf.com; s=google; t=1698665380; x=1699270180; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SaQVDnTFq4Ql5c0acHpHy/AmWkkpS8a8E13/426/yFA=;
+        b=l/GCWbVWgGBpLzl1WcnYtBjhnAHu3TJU4dOyfMKj6cVPZ6JS1NNEcOK4Mozma+6TvJ
+         b9UQwPyflemEsg4RXLdicBu8zdFG04XPFaHsmxW80jh2NPfv+u02Zi7CkMFEmop41HG7
+         6K7d71X08geNKmt8uZO7yJYK2BF9TIgOI2UdffGhWZciriI6axrUFOn9RP4TBmtoeOQy
+         5pZidz2YhoOgp9IWq4hob2jZhd2kGCJfFb9mZaUdOmfWs+mEMyybZAE0Tn77bU3NZKc5
+         Q86bwILxra0JA1Zu9Aus+8idZz9p1c8dntIZv/L1JMoQy4YSCxczFRciPPjn9f2LaQJ9
+         PnYQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698665380; x=1699270180;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SaQVDnTFq4Ql5c0acHpHy/AmWkkpS8a8E13/426/yFA=;
+        b=qIViHPFEz1syzCeVNr7EBwsXGzbNxL24eQz2q2Fed9gWxRkBzhgHP9ZHuff2ycs7LU
+         tNnJqLq/SdM8PMncHNhBm0pbfie/Taa3U4qGGI+7j39VedtVyJ8IzzCSPpNojw5HjLNZ
+         cZGz5eCAgy+g50jT9AAz6lG3aBuUz4mOOsNhJL9cCIDJ6Y0kyYHU2k4jqv0Mwl8BBn6k
+         CMX3Jh9IuFbGn5BLa9LdFeE9VCNutuhsFfi99X/1BvI0f8J/XJleVDST6+3ELTnEGVAG
+         BnfU4cNp222QzsXcBfkugwmGhfY/mC9T2lFwmhq0MOjLXhiakVo/N5LLePvYXzusJLa6
+         m+YQ==
+X-Gm-Message-State: AOJu0Yzt4lEopTU3ODJUh+bJ509h9CJU+L9g7evJHMDAIWE3KuatBQYY
+        LLxAg6d+WySOuJj/VQxmPCM4F0KB2Ag8Antxg3c=
+X-Google-Smtp-Source: AGHT+IEzVDHjdArWSLPCsLpgfRc9erUDnLEsBGAB9YgyjWuMrj2yQDWL2udEooca0ucR253TtNF2dg==
+X-Received: by 2002:ac2:4ecb:0:b0:507:a6b2:c63e with SMTP id p11-20020ac24ecb000000b00507a6b2c63emr6147826lfr.53.1698665379885;
+        Mon, 30 Oct 2023 04:29:39 -0700 (PDT)
+Received: from lmajczak1-l.roam.corp.google.com ([83.142.187.84])
+        by smtp.gmail.com with ESMTPSA id l5-20020ac24305000000b005041b7735dbsm1379433lfh.53.2023.10.30.04.29.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Oct 2023 04:29:39 -0700 (PDT)
+From:   Lukasz Majczak <lma@semihalf.com>
+To:     stable@vger.kernel.org
+Cc:     Lukasz Majczak <lma@semihalf.com>,
+        Radoslaw Biernacki <rad@chromium.org>,
+        Manasi Navare <navaremanasi@chromium.org>
+Subject: [PATCH 5.4.y] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+Date:   Mon, 30 Oct 2023 12:29:04 +0100
+Message-ID: <20231030112904.142092-1-lma@semihalf.com>
+X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
+In-Reply-To: <2023102723-steerable-trench-2f00@gregkh>
+References: <2023102723-steerable-trench-2f00@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
-Authentication-Results: smtp-out2.suse.de;
-        none
-X-Spam-Level: 
-X-Spam-Score: -10.60
-X-Spamd-Result: default: False [-10.60 / 50.00];
-         ARC_NA(0.00)[];
-         RCVD_VIA_SMTP_AUTH(0.00)[];
-         BAYES_HAM(-3.00)[100.00%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         NEURAL_HAM_LONG(-3.00)[-1.000];
-         MIME_GOOD(-0.10)[text/plain];
-         REPLY(-4.00)[];
-         DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-         NEURAL_HAM_SHORT(-1.00)[-1.000];
-         RCPT_COUNT_TWELVE(0.00)[13];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         MID_RHS_NOT_FQDN(0.50)[];
-         RCVD_COUNT_TWO(0.00)[2];
-         RCVD_TLS_ALL(0.00)[];
-         SUBJECT_HAS_QUESTION(0.00)[]
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon 30-10-23 09:37:10, Vlastimil Babka wrote:
-> On 10/30/23 08:37, Mikulas Patocka wrote:
-> > On Sun, 29 Oct 2023, Vlastimil Babka wrote:
-> > 
-> >> Haven't found any. However I'd like to point out some things I noticed in
-> >> crypt_alloc_buffer(), although they are probably not related.
-> >> 
-> >> > static struct bio *crypt_alloc_buffer(struct dm_crypt_io *io, unsigned int size)
-> >> > {
-> >> > 	struct crypt_config *cc = io->cc;
-> >> > 	struct bio *clone;
-> >> > 	unsigned int nr_iovecs = (size + PAGE_SIZE - 1) >> PAGE_SHIFT;
-> >> > 	gfp_t gfp_mask = GFP_NOWAIT | __GFP_HIGHMEM;
-> >> > 	unsigned int remaining_size;
-> >> > 	unsigned int order = MAX_ORDER - 1;
-> >> > 
-> >> > retry:
-> >> > 	if (unlikely(gfp_mask & __GFP_DIRECT_RECLAIM))
-> >> > 		mutex_lock(&cc->bio_alloc_lock);
-> >> 
-> >> What if we end up in "goto retry" more than once? I don't see a matching
-> > 
-> > It is impossible. Before we jump to the retry label, we set 
-> > __GFP_DIRECT_RECLAIM. mempool_alloc can't ever fail if 
-> > __GFP_DIRECT_RECLAIM is present (it will just wait until some other task 
-> > frees some objects into the mempool).
-> 
-> Ah, missed that. And the traces don't show that we would be waiting for
-> that. I'm starting to think the allocation itself is really not the issue
-> here. Also I don't think it deprives something else of large order pages, as
-> per the sysrq listing they still existed.
-> 
-> What I rather suspect is what happens next to the allocated bio such that it
-> works well with order-0 or up to costly_order pages, but there's some
-> problem causing a deadlock if the bio contains larger pages than that?
+As drm_dp_get_mst_branch_device_by_guid() is called from
+drm_dp_get_mst_branch_device_by_guid(), mstb parameter has to be checked,
+otherwise NULL dereference may occur in the call to
+the memcpy() and cause following:
 
-Hum, so in all the backtraces presented we see that we are waiting for page
-writeback to complete but I don't see anything that would be preventing the
-bios from completing. Page writeback can submit quite large bios so it kind
-of makes sense that it trips up some odd behavior. Looking at the code
-I can see one possible problem in crypt_alloc_buffer() but it doesn't
-explain why reducing initial page order would help. Anyway: Are we
-guaranteed mempool has enough pages for arbitrarily large bio that can
-enter crypt_alloc_buffer()? I can see crypt_page_alloc() does limit the
-number of pages in the mempool to dm_crypt_pages_per_client plus I assume
-the percpu counter bias in cc->n_allocated_pages can limit the really
-available number of pages even further. So if a single bio is large enough
-to trip percpu_counter_read_positive(&cc->n_allocated_pages) >=
-dm_crypt_pages_per_client condition in crypt_page_alloc(), we can loop
-forever? But maybe this cannot happen for some reason...
+[12579.365869] BUG: kernel NULL pointer dereference, address: 0000000000000049
+[12579.365878] #PF: supervisor read access in kernel mode
+[12579.365880] #PF: error_code(0x0000) - not-present page
+[12579.365882] PGD 0 P4D 0
+[12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
+...
+[12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
+[12579.365899] RIP: 0010:memcmp+0xb/0x29
+[12579.365921] Call Trace:
+[12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
+[12579.365930] drm_dp_mst_up_req_work+0x137/0x416
+[12579.365933] process_one_work+0x1d0/0x419
+[12579.365935] worker_thread+0x11a/0x289
+[12579.365938] kthread+0x13e/0x14f
+[12579.365941] ? process_one_work+0x419/0x419
+[12579.365943] ? kthread_blkcg+0x31/0x31
+[12579.365946] ret_from_fork+0x1f/0x30
 
-If this is not it, I think we need to find out why the writeback bios are
-not completeting. Probably I'd start with checking what is kcryptd,
-presumably responsible for processing these bios, doing.
+As get_mst_branch_device_by_guid_helper() is recursive, moving condition
+to the first line allow to remove a similar one for step over of NULL elements
+inside a loop.
 
-								Honza
+Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to only mst branch")
+Cc: <stable@vger.kernel.org> # 4.14+
+Signed-off-by: Lukasz Majczak <lma@semihalf.com>
+Reviewed-by: Radoslaw Biernacki <rad@chromium.org>
+Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230922063410.23626-1-lma@semihalf.com
+(cherry picked from commit 3d887d512494d678b17c57b835c32f4e48d34f26)
+Signed-off-by: Lukasz Majczak <lma@semihalf.com>
+---
+ drivers/gpu/drm/drm_dp_mst_topology.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_dp_mst_topology.c b/drivers/gpu/drm/drm_dp_mst_topology.c
+index 1ff13af13324..7b396b7277ee 100644
+--- a/drivers/gpu/drm/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/drm_dp_mst_topology.c
+@@ -1806,14 +1806,14 @@ static struct drm_dp_mst_branch *get_mst_branch_device_by_guid_helper(
+ 	struct drm_dp_mst_branch *found_mstb;
+ 	struct drm_dp_mst_port *port;
+ 
++	if (!mstb)
++		return NULL;
++
+ 	if (memcmp(mstb->guid, guid, 16) == 0)
+ 		return mstb;
+ 
+ 
+ 	list_for_each_entry(port, &mstb->ports, next) {
+-		if (!port->mstb)
+-			continue;
+-
+ 		found_mstb = get_mst_branch_device_by_guid_helper(port->mstb, guid);
+ 
+ 		if (found_mstb)
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.42.0.820.g83a721a137-goog
+
