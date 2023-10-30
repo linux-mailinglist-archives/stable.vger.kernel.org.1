@@ -2,79 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C195F7DB5FC
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 10:19:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA5127DB60F
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 10:24:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232221AbjJ3JTI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 05:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51688 "EHLO
+        id S231542AbjJ3JYn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 05:24:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230477AbjJ3JTI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 05:19:08 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B10CC1;
-        Mon, 30 Oct 2023 02:19:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A00CC433C8;
-        Mon, 30 Oct 2023 09:19:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698657545;
-        bh=tCbSk7k6HoCG0YBYhnscoQAFkrgJgHVIso7mfMwQI/c=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mLncPk0Vsw9NxmRYetbkJRnukmJB0tdR/DHkRESi8vLMafJCDm/18Ey0fsLr6SNzI
-         Rphhc7peudNr+vnqlX1IzT69rv/tMthqyAigCKG98YPSlvrzfLaXyrniynDrcKGc0G
-         7Y+99sFziteDRdfPpdbb1JskLRsEegoumlJKK3c0=
-Date:   Mon, 30 Oct 2023 10:19:03 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     ChenXiaoSong <chenxiaosongemail@foxmail.com>
-Cc:     trond.myklebust@hammerspace.com, chenxiaosong@kylinos.cn,
-        Anna.Schumaker@netapp.com, sashal@kernel.org,
-        liuzhengyuan@kylinos.cn, huangjinhui@kylinos.cn,
-        liuyun01@kylinos.cn, huhai@kylinos.cn, linux-nfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: Question about LTS 4.19 patch "89047634f5ce NFS: Don't interrupt
- file writeout due to fatal errors"
-Message-ID: <2023103023-playmaker-jingle-9d15@gregkh>
-References: <tencent_BEDA418B8BD86995FBF3E92D4F9F5D342C0A@qq.com>
- <2023103055-anaerobic-childhood-c1f1@gregkh>
- <tencent_4CA081DD6E435CDA2EAB9C826F7899F78C05@qq.com>
- <2023103055-saddled-payer-bd26@gregkh>
- <tencent_21E20176E2E5AB7C33CB5E67F10D02763508@qq.com>
+        with ESMTP id S230477AbjJ3JYm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 05:24:42 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DA4AA7;
+        Mon, 30 Oct 2023 02:24:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698657880; x=1730193880;
+  h=date:from:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=PzE2WjM3liPGYO4o8GBic2JxQGQnXqgby3fh52nVXJs=;
+  b=ZyQF/E7jh92Gm5qSZWfhxFK5qzB6Cy3bAmEM/bh7kXNkXxnvrE/2qw5s
+   KaT1XuX+LXv3dRNJ4RwRK90h4rDrzQyXF6Se/lNWcuZAXtXUMIOgyPYGr
+   9eGk6hBoCk4orm1qzdLJNXgrG0yKGi0DCPtdTF1LtdrbVzBmRv6sH2ogX
+   STkVvhLDJLjq3gFpUJUel6wrBPE2QK34afRsc7xb0iKl4r7SUZ3syC5GC
+   xYBOyaiA9FNujfKxb1DxLEBvuHib5c2qbz0HcBDwDONByxahHKFpRAj0q
+   p+OSZ9rVniUytYcy3bqX4tphKjkZQIfGL6qgp89/2NgXr0XU4lfgQmM5q
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10878"; a="373090942"
+X-IronPort-AV: E=Sophos;i="6.03,263,1694761200"; 
+   d="scan'208";a="373090942"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2023 02:24:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10878"; a="710050263"
+X-IronPort-AV: E=Sophos;i="6.03,263,1694761200"; 
+   d="scan'208";a="710050263"
+Received: from sgruszka-mobl.ger.corp.intel.com ([10.252.50.181])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2023 02:24:36 -0700
+Date:   Mon, 30 Oct 2023 11:24:30 +0200 (EET)
+From:   =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Mark Hasemeyer <markhas@chromium.org>,
+        Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+cc:     LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Sanket Goswami <Sanket.Goswami@amd.com>,
+        platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH v1] platform/x86/amd/pmc: Get smu version before reading
+ dram size
+In-Reply-To: <20231027212916.1035991-1-markhas@chromium.org>
+Message-ID: <2b8335a7-4b9b-825-c1b8-84158aaf2c42@linux.intel.com>
+References: <20231027212916.1035991-1-markhas@chromium.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_21E20176E2E5AB7C33CB5E67F10D02763508@qq.com>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Oct 30, 2023 at 05:04:35PM +0800, ChenXiaoSong wrote:
-> 
-> On 2023/10/30 16:58, Greg KH wrote:
-> > If you just revert that one patch, is the issue resolved?  And what
-> > about other stable releases that have that change in it?
-> > 
-> > If this does need to be reverted, please submit a patch that does so and
-> > we can review it that way.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> 
-> In my opinion, this patch is not for fixing a bug, but is part of a
-> refactoring patchset. The 'Fixes:' tag should not be added.
+On Fri, 27 Oct 2023, Mark Hasemeyer wrote:
 
-Nothing we can do about that now, right?  And to try to ask developers
-about a change they made in 2019 is a bit rough, don't you think?  If
-you think the change is incorrect, please submit a patch to resolve it
-after you have tested that it works properly.
+> Calls to amd_pmc_get_dram_size can fail because the function assumes smu
 
-thanks,
+Always use () after function names, thank you.
 
-greg k-h
+> version information has already been read when it hasn't. The smu
+> version is lazily read as opposed to being read at probe because it is
+> slow and increases boot time.
+> 
+> Read the smu version information if it has not been read yet.
+> 
+> Link: https://lore.kernel.org/all/a3ee6577-d521-6d18-0a15-2f97d6f8ac3a@amd.com/
+> Fixes: be8325fb3d8c ("platform/x86/amd: pmc: Get STB DRAM size from PMFW")
+> Cc: stable@vger.kernel.org # 6.5.x
+> 
+> Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
+> ---
+> 
+>  drivers/platform/x86/amd/pmc/pmc.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
+> index cd6ac04c1468..f668eddbc5d5 100644
+> --- a/drivers/platform/x86/amd/pmc/pmc.c
+> +++ b/drivers/platform/x86/amd/pmc/pmc.c
+> @@ -970,6 +970,11 @@ static int amd_pmc_get_dram_size(struct amd_pmc_dev *dev)
+>  
+>  	switch (dev->cpu_id) {
+>  	case AMD_CPU_ID_YC:
+> +		if (!dev->major) {
+> +			ret = amd_pmc_get_smu_version(dev);
+> +			if (ret)
+> +				goto err_dram_size;
+> +		}
+>  		if (!(dev->major > 90 || (dev->major == 90 && dev->minor > 39))) {
+>  			ret = -EINVAL;
+>  			goto err_dram_size;
+> 
+
+Hi,
+
+Thank you for your patch. This has already come up but no acceptable patch 
+has emerged since. Please see this thread for what needs to be done if you 
+want to provide one (or maybe Shyam already has one which has just not 
+been sent out yet):
+
+https://lore.kernel.org/platform-driver-x86/3b224c62-a1d8-41bd-aced-5825f5f20e66@amd.com/
+
+(Since this dram size is on an init path that always needs SMU version, 
+the SMU version can just be called by the init unconditonally rather than 
+adding more of this lazy initialization everywhere).
+
+
+-- 
+ i.
+
