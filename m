@@ -2,81 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0B827DB909
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D708C7DB90F
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:36:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229456AbjJ3LgM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 07:36:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58680 "EHLO
+        id S232427AbjJ3Lgh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 07:36:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232294AbjJ3LgL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:36:11 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01002C2
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:36:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698665768; x=1730201768;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=niK4jLVseIMGFlEgNQKmfalRVewRDRR5eW9rIRJd8wM=;
-  b=KANzggZVEo5/KusI0pyB1PzUweBQu+mSGBchOQZfEj7c9prRTOSl2fPu
-   wsUp9vpxsR22FOfHGfBVRFJR553ptVD3gSREL8CTlaVmr0bLXsS0TQlLh
-   lhb/mQyW56p+VDstwkIDDNw1rxdcqbHxELDbsUW8aaTMto4K1RADXIpfr
-   ls9sVWxU+c8U1wyYPAahWCycz8Otw9vtt+7aoJji+jyZukkjZUE8dDDay
-   6U2mpuBdWUYH439IZTDpgDnQLM4EsVeGKQQuB9COXJg7VJo76dx3UUKp9
-   xkmXHQDuwPSMVV5m0PmXnu8/hDsNCarruBMnrh+r7p6j+wVBR4mlY7VKA
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10878"; a="454518970"
-X-IronPort-AV: E=Sophos;i="6.03,263,1694761200"; 
-   d="scan'208";a="454518970"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2023 04:36:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,263,1694761200"; 
-   d="scan'208";a="7930726"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 30 Oct 2023 04:36:08 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qxQYv-000DEx-0L;
-        Mon, 30 Oct 2023 11:36:05 +0000
-Date:   Mon, 30 Oct 2023 19:35:34 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Oliver Hartkopp <socketcan@hartkopp.net>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] can: isotp: upgrade 5.10 LTS to latest 6.6 mainline code
- base
-Message-ID: <ZT+VBj4RhTxjBbG1@dceb3e7df498>
+        with ESMTP id S232555AbjJ3Lgf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:36:35 -0400
+X-Greylist: delayed 130 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 30 Oct 2023 04:36:33 PDT
+Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.83])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41BEEC5
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:36:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1698665789; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=b4fOF/V8BCG4ZHLsO3LVYfFqY33xA3/aEpQMAQTjUjc9URgwQ7ZOixfFqks5X9wc0j
+    igfRbec3kbfAJzASn53YONd62BD1mcoNOWeAx2Q0EGU/BMya/OEpQAyagLGzQHtCAuhM
+    2Wxt1FFTMyYFDuGpigBT1t6vD9vq7RpLWFgI3NtYF7AJ+BxCl0Rya7IlGztjjQyUOnLf
+    BHhbW+gE6hiuwW6SP/X8722ogu/o3UV9Pkl6dZ6pCImDsXjxKvVuiZ4ojzpuGavNvhRF
+    hrqCS74p+Top9OHmiln4ikjjJkixb+ei3EMsCdXhKAZO102dETxPw1WH7q3G11fw4cry
+    sn3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1698665789;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=dvAMxS1s9xzlzdndQjZ4tD7LC8vju2tU5Fs8EiEQpwo=;
+    b=LN4JFEbstgt/JUgYf2AgWlIWAU5cmSbVJmIh0ia1Kcfrae7bH3deMSq2cv58z6zccS
+    4vNBe8GUyLb29jzap6b+cAyOX87JDv/P8iThtMVpvg85F+zNInYATyfn99N9RhWJ34vP
+    QzZOdUedtkTDBgmfECXHCggJ9mNXzpfMZ1L2Ry2xO5nLrpFHhvwB347QNxC63NVnlU+E
+    7u7Vzja0xyZMReF38rlZL2qLgjQ6XKSnWF3lrSgdRUvw18xdeCwcZEC+1dcKPRGfHC0n
+    kdlQYB2Mw3JH9zP+jRE6f3CO5gltqR3tALBVMnaIkBJ+D35TnJg/WiJPnqMvu6pPzTtW
+    iPlA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1698665789;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=dvAMxS1s9xzlzdndQjZ4tD7LC8vju2tU5Fs8EiEQpwo=;
+    b=q4VbbNYsxjvUhr2a5Tb6FPuZp5nalwDKoXmQQvPtHH98BhZXCO/Z0MpmDMwpNcjir8
+    qYmMObHfjva0B/lMNSDIOmnfJzdnB3sbSLYlaSVCq2fSte+pSWjeiB7sDyPTNU57tOJO
+    GoQjJ30wRJE6EAIcbVikLzH+bTQHIHP3IlSVtVvqp/fd/a7A3cOi/Z3JWk+fm1jEbnbU
+    /PwDgGKq8J4BHiwxkgsqXMAxWlVi0+IbI4a+qcUOK6QeFJSPxHYf09cHsyxumPz+uX/I
+    VCUQvM+p/ydKvHdAdNRggjzdmogeGhOncjOdfcZZkyxZ84K8ppZ2Yxdkmurv9ReoXY0k
+    wjZA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1698665789;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=dvAMxS1s9xzlzdndQjZ4tD7LC8vju2tU5Fs8EiEQpwo=;
+    b=dSna4ZawCcU0ycQCl1w4dSj450k/MZbHM5jHT+4MZsaIWbn8F+xdFNR9fGazc0L/ka
+    SSxzskDU+IeyVBF57/CA==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjG14FZxedJy6qgO1o3TMaFqTGVJiOM9vpw=="
+Received: from [192.168.60.115]
+    by smtp.strato.de (RZmta 49.9.1 DYNA|AUTH)
+    with ESMTPSA id Kda39bz9UBaSDKw
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 30 Oct 2023 12:36:28 +0100 (CET)
+Message-ID: <a1ae9eee-9da6-4ceb-8873-dc5ddb1e8e88@hartkopp.net>
+Date:   Mon, 30 Oct 2023 12:36:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231030113027.3387-1-socketcan@hartkopp.net>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 043/131] can: isotp: isotp_sendmsg(): fix TX state
+ detection and wait behavior
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Lukas Magel <lukas.magel@posteo.net>, patches@lists.linux.dev,
+        Maxime Jayat <maxime.jayat@mobile-devices.fr>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+        Michal Sojka <michal.sojka@cvut.cz>
+References: <20231016084000.050926073@linuxfoundation.org>
+ <20231016084001.142952122@linuxfoundation.org>
+ <b4a1bdc2-54f8-428a-a82a-0308a4bc7f92@hartkopp.net>
+ <2023102721-voltage-thyself-e881@gregkh>
+Content-Language: en-US
+From:   Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <2023102721-voltage-thyself-e881@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Hello Greg,
 
-Thanks for your patch.
+On 27.10.23 14:16, Greg Kroah-Hartman wrote:
+> On Tue, Oct 24, 2023 at 08:34:30PM +0200, Oliver Hartkopp wrote:
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+>> @Greg: I double checked the changes and fixes from the latest 6.6 kernel
+>> compared to the 5.10 when isotp.c was introduced in the mainline kernel.
+>> Would it be ok, to "backport" the latest 6.6 code to the 5.x LTS trees?
+>> It really is the same isotp code but only some kernel API functions and
+>> names have been changed.
+> 
+> Sure, if you think it is ok, please send the backported and tested patch
+> series and we will be glad to review them.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+I posted to patches to upgrade the 5.10.y and 5.15.y kernels to the 
+latest 6.6 mainline code base.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] can: isotp: upgrade 5.10 LTS to latest 6.6 mainline code base
-Link: https://lore.kernel.org/stable/20231030113027.3387-1-socketcan%40hartkopp.net
+https://lore.kernel.org/linux-can/20231030113027.3387-1-socketcan@hartkopp.net/T/#u
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+https://lore.kernel.org/linux-can/20231030113110.3404-1-socketcan@hartkopp.net/T/#u
 
+The patch description contains the list of patches that have been 
+reverted to meet the older kernel APIs and a list of improvements.
 
+Thanks for the review and the consideration to upgrade the LTS code base.
+
+Best regards,
+Oliver
 
