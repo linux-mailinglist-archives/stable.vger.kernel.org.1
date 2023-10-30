@@ -2,126 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4D7A7DBB08
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 14:41:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B57637DBB6A
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 15:09:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229568AbjJ3Nld (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 09:41:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54238 "EHLO
+        id S231518AbjJ3OJu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 10:09:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229510AbjJ3Nlc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 09:41:32 -0400
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05F6A97;
-        Mon, 30 Oct 2023 06:41:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1698673262; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=imh4HaiCmJaGb1y89GvoF6nV2rrqm+zrkI1kZ7iu1kAvoRjHfqA2+xR/L3j1S/4Er7
-    DfsnATDnMzw8BPT5bpmyvDMCSBp8PaOJRIyMBftQDQVMcDdKjlbB65nfeCNSQdX/LCzx
-    LOuAsNa1jtuV2KWU2/bjFqp2SNhVZ+2l7qdWs+dtEkun1o/wvYwRJQc2HeejtcCVmyxm
-    I0ciM1K8eI0C/CFCFGszkHLXItwFwuSHr1q+Z5bwWWPIy78r/FO0LDIHNF9X+r/hw3hm
-    3igVIJgWTkcOvjFIxpHUznlbfeauKIMGrmupVeddCuN6cXid/klxgRFF2mSuKC9n5ZXK
-    iAgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1698673262;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=0kUSB11fDKSCCQnsLAQkRqLL84Gbj9QLRVuk4vhIrKc=;
-    b=Apccs41+u6eHcmWRqTeFwu49vHkxrrhD3VIBJ+ML514R/N330Yx1+gPxs59X2nQA55
-    onF1k3xFgkbvArpgOfigUStiPSCYDsYUNONbeIw79G3jBEgKtDZfEtoD2zLQNzoqXL5s
-    02XR/AbVuwI3wn7jY5WrGni6rbKlOTPe5IEX8+f9lKFL3KsWg2IxOoGBusNsXlCDLBRW
-    e8TDq80hmgmyZolxlF2mu34Dl+HpQLL/s/TrF/HoD4qgrwOTuI3IZprpxZSwnmUUMmm3
-    St9HyfKdVT9nX4reEbTrfzimfm6U6suagmozUsty4leoS2DZfcVpkW9Wgl3qC28DLdWJ
-    cfNA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1698673262;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=0kUSB11fDKSCCQnsLAQkRqLL84Gbj9QLRVuk4vhIrKc=;
-    b=nDDXn14ea8gygMxS77u1h4vEIscFc/43fs52AEMLZvLBQfWIjWeLX7KBaS70fTtrvj
-    GY+q1GgKILctWZ3apKbM368GNon5IQ7lTJ75zxIggIMVbNUccJBL0Gd1TC1mLacHtMkM
-    p3ol68v8r3Yp+RgN00JgHBKq8UkEPtGCkzm1qb6ChyLShXDjaG2SL+1rAXFqx+Z4K7b8
-    ReGab9INaY7hPHKRUfx2dqsqAQrWDY/Xj+2qASyI7ylF7WcxUA7OtdU1i1ucO9NJlnr8
-    uLN0Mig639KaSzp83pUzIDSxNZd2iWMwmevHmhwbZH3qBVSJQxoVNGehEhSKuq943bFi
-    txPA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1698673262;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=0kUSB11fDKSCCQnsLAQkRqLL84Gbj9QLRVuk4vhIrKc=;
-    b=qzZs3y+49zgSiImhNmd5mnDxRbyVEuay/B4cBZrRum9fSsLifXyHwX9iWUk28jmlCY
-    F/c8SuHxs6eZAUL8ivDw==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjG14FZxedJy6qgO1o3TMaFqTGVJiOM9vpw=="
-Received: from [192.168.60.115]
-    by smtp.strato.de (RZmta 49.9.1 DYNA|AUTH)
-    with ESMTPSA id Kda39bz9UDf2DoO
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Mon, 30 Oct 2023 14:41:02 +0100 (CET)
-Message-ID: <042cd67b-090c-4705-9a80-b322e7d4e639@hartkopp.net>
-Date:   Mon, 30 Oct 2023 14:40:54 +0100
+        with ESMTP id S229514AbjJ3OJu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 10:09:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 356C0E1
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 07:09:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1698674940;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=dOFRZkTKK9Z0bMd9xnhKPQO2WNoW7oCCTYa8Hwz84I8=;
+        b=bz4pKzwzQPWtZmXPQ8Zl/mFx4fngTAVN/Kinc4J52VkH4S702PPUDpwVZyPFuFD1mNJTwk
+        bB6tCTl2weKG3GUVaOXUXEaPmRLi1eW5iv+CqcT1AtOBLEunyJNQ5L5HEGDcLCQj8E/t/4
+        oLc/Amc7yvkTLaU3M+OG5D6yjSDqZ6U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-j40fAQMlM6aMhm1JptNM3g-1; Mon, 30 Oct 2023 10:08:57 -0400
+X-MC-Unique: j40fAQMlM6aMhm1JptNM3g-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3AC63185A781;
+        Mon, 30 Oct 2023 14:08:56 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 2A2621C060AE;
+        Mon, 30 Oct 2023 14:08:56 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
+        id 1763530C72AB; Mon, 30 Oct 2023 14:08:56 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+        by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 148423D99F;
+        Mon, 30 Oct 2023 15:08:56 +0100 (CET)
+Date:   Mon, 30 Oct 2023 15:08:56 +0100 (CET)
+From:   Mikulas Patocka <mpatocka@redhat.com>
+To:     =?ISO-8859-15?Q?Marek_Marczykowski-G=F3recki?= 
+        <marmarek@invisiblethingslab.com>
+cc:     Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+In-Reply-To: <ZT+wDLwCBRB1O+vB@mail-itl>
+Message-ID: <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
+References: <e427823c-e869-86a2-3549-61b3fdf29537@redhat.com> <ZTiHQDY54E7WAld+@mail-itl> <ZTiJ3CO8w0jauOzW@mail-itl> <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com> <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz> <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
+ <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz> <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com> <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz> <20231030122513.6gds75hxd65gu747@quack3> <ZT+wDLwCBRB1O+vB@mail-itl>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] can: isotp: upgrade 5.15 LTS to latest 6.6 mainline code
- base
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, sashal@kernel.org,
-        linux-can@vger.kernel.org, lukas.magel@posteo.net,
-        patches@lists.linux.dev, maxime.jayat@mobile-devices.fr,
-        mkl@pengutronix.de, michal.sojka@cvut.cz
-References: <20231030113110.3404-1-socketcan@hartkopp.net>
- <2023103048-riverside-giving-e44d@gregkh>
- <9bf2b7c9-fe80-4509-b023-c406f2fff994@hartkopp.net>
- <2023103038-spinning-uncooked-b608@gregkh>
-Content-Language: en-US
-From:   Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <2023103038-spinning-uncooked-b608@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/mixed; BOUNDARY="185210117-1250732461-1698674809=:1161929"
+Content-ID: <e31910e4-851f-f227-c7cd-1d99fb82696a@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 30.10.23 13:42, Greg KH wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-> 20 patches is trivial for us to handle, please do it that way as it
-> ensures we keep the proper history, AND we know what to backport when in
-> the future.
+--185210117-1250732461-1698674809=:1161929
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+Content-ID: <2e223827-e6b-47b8-d026-66c8d92466bd@redhat.com>
 
-Ok, will do.
 
-> When you try to crunch patches together, or do non-upstream changes,
-> 90%+ of the time they end up being wrong or impossible to maintain over
-> time.
 
-Ok, then I will maintain the entire history of fixes of fixes without 
-crunching them together.
+On Mon, 30 Oct 2023, Marek Marczykowski-Górecki wrote:
 
->>> But why just 5.15?  What about 6.1.y and 6.5.y?
->>
->> I have posted 5.10 and 5.15 for now.
->> 6.1 would be only this patch
->> 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu size")
->> I can also provide.
+> > Well, it would be possible that larger pages in a bio would trip e.g. bio
+> > splitting due to maximum segment size the disk supports (which can be e.g.
+> > 0xffff) and that upsets something somewhere. But this is pure
+> > speculation. We definitely need more debug data to be able to tell more.
 > 
-> Why add new features to older kernels?  That's not going to be ok,
-> sorry.
+> I can collect more info, but I need some guidance how :) Some patch
+> adding extra debug messages?
+> Note I collect those via serial console (writing to disk doesn't work
+> when it freezes), and that has some limits in the amount of data I can
+> extract especially when printed quickly. For example sysrq-t is too much.
+> Or maybe there is some trick to it, like increasing log_bug_len?
 
-I will drop the module parameter stuff then, as it has no impact on the 
-communication state machine that is in the focus to be consistently 
-fixed and updated to the 6.6 code base. Then everything in 5.15 and 5.10 
-will be on the same level as 6.1. This will ease further fixes and 
-maintenance.
+If you can do more tests, I would suggest this:
 
-Best regards,
-Oliver
+We already know that it works with order 3 and doesn't work with order 4.
+
+So, in the file include/linux/mmzone.h, change PAGE_ALLOC_COSTLY_ORDER 
+from 3 to 4 and in the file drivers/md/dm-crypt.c leave "unsigned int 
+order = PAGE_ALLOC_COSTLY_ORDER" there.
+
+Does it deadlock or not?
+
+So, that we can see whether the deadlock depends on 
+PAGE_ALLOC_COSTLY_ORDER or whether it is just a coincidence.
+
+Mikulas
+--185210117-1250732461-1698674809=:1161929--
+
