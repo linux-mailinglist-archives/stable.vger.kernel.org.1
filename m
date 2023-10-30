@@ -2,64 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D31217DB8D5
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:13:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FF2E7DB8E5
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:22:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232686AbjJ3LNm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 07:13:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60194 "EHLO
+        id S232294AbjJ3LWS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 07:22:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232281AbjJ3LNl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:13:41 -0400
-Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDA1FB3
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:13:36 -0700 (PDT)
-Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2c6b30acacdso23580091fa.2
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:13:36 -0700 (PDT)
+        with ESMTP id S232938AbjJ3LWR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:22:17 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF144B7
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:22:14 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-507c1936fd5so6106442e87.1
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:22:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=semihalf.com; s=google; t=1698664414; x=1699269214; darn=vger.kernel.org;
+        d=semihalf.com; s=google; t=1698664933; x=1699269733; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Ii+ONr4jksPzt35CYOsqscxWBu8UX3dQUl5Kcpmf7ek=;
-        b=p/BCKU2V65W+AjAjOgjqA209fkfDRia44NLrL1JVCATZ4UgzQMXf26ktqcUkq2UxIs
-         OYJPgNlPZVR794UIKk/UKcelaxPzyhjtK7LkElKR0ZCwz6+AZ5hXZmeaRoMJBoyxKv48
-         RW0G/d08C0d0UX3BTWEiPB95XTSvJxlh6LuoBzaqUQo+ZdGoOI6YCyTQrWo2PsvUz7jA
-         aGYm8l1pnETkJhmmo/xEe86eM8/ztOZ9LSRL4XoxU2ERfskg7/ED01uSmOQlKWwZqE6m
-         XAGSGIDS9NODJXLmPkkYrOy289O2DCUJOVI3Yas/AJPpZHNZ5wySVfFoObFYLaoP4p7E
-         aTBw==
+        bh=FprxzbI6BVQNgDI0NYQAcKjG+fc5xore7a8+UBbKX4c=;
+        b=paVEpazkOFENpUS7tn27NMHDAAwG1Fp5RwgSC93HvcwGuCVk24mkXyv8rfW3tmveOB
+         dEUhkYPtw4EGowHlabwh5YZwleeak4XDjNn+YRgj5efqQ3xoRUC+24Skwa2YwIbnHspT
+         eQyQjAhuLvBlkXwVhlXXl3Aef81pzfBGqJpHcRj4z/GwTE2xfQ8C9yTgW32trB/bmUZR
+         dLRltwamggqQA08n450aFWNx9JwQ/aIk0s0oDS4+ggLq8if9HmNXqMfxAIcdeTejTtyh
+         pbFOxuxUo0U6wtbml/K5TmRAhXa5AmnRpfnIFi+3pJkN49m0QCiz1bM3amdkLUc6Twnh
+         4Zqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698664414; x=1699269214;
+        d=1e100.net; s=20230601; t=1698664933; x=1699269733;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Ii+ONr4jksPzt35CYOsqscxWBu8UX3dQUl5Kcpmf7ek=;
-        b=ZNox+4IG09rFXuBudpRvHM9IWRaUChtEyX6xQhsb0+tTTB436w9sE8XnL/ukl2+FTp
-         UtC6YjQ2QslvU7Q4NAKcq2CWuems3i6GKZkm/ABscs+RHru0EedLfqwqnN7RV2jj8VPu
-         wcqYX9A5vV7Tb8b821Bd7SzkrFw3/sJuU+HcbjK2mDDlowOkMi8p+ErwIFtUOHCgJw60
-         erp1TLk/K79LZdzhpl9K5fz0i0pNSfQGD73cydXV0pOErnk2A76kKGQWX8n5CVKrWXku
-         uYGHkosdH8ALxY9uQCJ2EAMTdK4PwB/c9bqRA8n7e0w6ggXv/SF8Z43xql+Oe4Sdt2wS
-         Elcg==
-X-Gm-Message-State: AOJu0Yyna9mLEDaPDqr4wAgg1bgrGPsCoWCKBEP5boyqyeRykC/um2Df
-        p2lxD1WCgBo9+PeSvuzyPSBhhK7XKl5IeY2n3l8=
-X-Google-Smtp-Source: AGHT+IEt0MfKopUOD89tfmxnUR+ucICNGc1pd7QGeErberuAjwTpzY9uY/iAH/VrO9uQGVw/YtpBIg==
-X-Received: by 2002:a2e:87d1:0:b0:2c5:d3c:8f4d with SMTP id v17-20020a2e87d1000000b002c50d3c8f4dmr6548000ljj.13.1698664413852;
-        Mon, 30 Oct 2023 04:13:33 -0700 (PDT)
+        bh=FprxzbI6BVQNgDI0NYQAcKjG+fc5xore7a8+UBbKX4c=;
+        b=hxbnMkaTRCidFBXNNhZ/ONKHjLL3XSSMhpkAmnU08cw0pOaDitotPCW2h6qqL+bW8t
+         thC29hLKcDknWOQYdVthUOpM5zP7tv03jTOS2c5J94S3ANUUJJgsvaKAvgybYpr1VEU2
+         guEGm414MLt9MamIdtjvacEo6H/pkGCl7ZB91HJDrl2kRgoulKx03BJF3Crzue1y7eh0
+         A8zw7x3fBX2rVFz7HMwFIyTc3TSkbZ+D0/RGOxxhRCXrTqG0uivjISbnSNzb8dB/FLUn
+         lD4ZP2CGMYEb/OzZ+xd/o06Bp+Ja2++ogfuak0w44D4xfzEih1vuBze0JLKFbQBLqarT
+         zqoA==
+X-Gm-Message-State: AOJu0YxCmiULMticY65RSIeamKwe+G1N9BmR2zHoTnsoHLuTgnmttW2B
+        8kFD9yHTNZzN5hzjaUca4x3QZw5kwUcUjcepSAE=
+X-Google-Smtp-Source: AGHT+IEz7reEqWFOUI5rj33H7xXhv/c1K1V8OKbIfrsL1y0CcBB/oJZdOqxtm8XZWnbNaYma0J5AIQ==
+X-Received: by 2002:a05:6512:2247:b0:504:33ff:156a with SMTP id i7-20020a056512224700b0050433ff156amr4292147lfu.11.1698664932369;
+        Mon, 30 Oct 2023 04:22:12 -0700 (PDT)
 Received: from lmajczak1-l.roam.corp.google.com ([83.142.187.84])
-        by smtp.gmail.com with ESMTPSA id e20-20020a2e8ed4000000b002bfe8537f37sm1201544ljl.33.2023.10.30.04.13.33
+        by smtp.gmail.com with ESMTPSA id l11-20020a19c20b000000b00507ae0a5ea8sm1420559lfc.16.2023.10.30.04.22.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Oct 2023 04:13:33 -0700 (PDT)
+        Mon, 30 Oct 2023 04:22:11 -0700 (PDT)
 From:   Lukasz Majczak <lma@semihalf.com>
 To:     stable@vger.kernel.org
 Cc:     Lukasz Majczak <lma@semihalf.com>,
         Radoslaw Biernacki <rad@chromium.org>,
         Manasi Navare <navaremanasi@chromium.org>
-Subject: [PATCH 4.19.y] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
-Date:   Mon, 30 Oct 2023 12:12:52 +0100
-Message-ID: <20231030111252.133311-1-lma@semihalf.com>
+Subject: [PATCH 4.14.y] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+Date:   Mon, 30 Oct 2023 12:21:29 +0100
+Message-ID: <20231030112129.137767-1-lma@semihalf.com>
 X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-In-Reply-To: <2023102725-spiral-unglue-4f7c@gregkh>
-References: <2023102725-spiral-unglue-4f7c@gregkh>
+In-Reply-To: <2023102726-arousal-ransack-d969@gregkh>
+References: <2023102726-arousal-ransack-d969@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -111,10 +111,10 @@ Signed-off-by: Lukasz Majczak <lma@semihalf.com>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpu/drm/drm_dp_mst_topology.c b/drivers/gpu/drm/drm_dp_mst_topology.c
-index 603ebaa6a7ed..8b994886e5b1 100644
+index 64faa70a9dd9..879638e6bea4 100644
 --- a/drivers/gpu/drm/drm_dp_mst_topology.c
 +++ b/drivers/gpu/drm/drm_dp_mst_topology.c
-@@ -1308,14 +1308,14 @@ static struct drm_dp_mst_branch *get_mst_branch_device_by_guid_helper(
+@@ -1268,14 +1268,14 @@ static struct drm_dp_mst_branch *get_mst_branch_device_by_guid_helper(
  	struct drm_dp_mst_branch *found_mstb;
  	struct drm_dp_mst_port *port;
  
