@@ -2,164 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 715CD7DBF20
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 18:39:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F107DBF2A
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 18:40:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231648AbjJ3RjX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 13:39:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57516 "EHLO
+        id S233937AbjJ3Rk1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 13:40:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229780AbjJ3RjW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 13:39:22 -0400
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2070.outbound.protection.outlook.com [40.107.100.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E789A9;
-        Mon, 30 Oct 2023 10:39:20 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dv9SOBbIOyhLXsEN5aMwoN7Uupw9y4Cp5GNYfXUZCZAZfYzMNrwSj0zEdizvaqGig50w1CGS65oXa2yaFF8CYMgmOEj7nWzfaEPbolRd99yC9EhESqXquTPm/teUgeVxDGFxkLrCHtD91RQIo/nvYa+4q4Gt3E/Pthf/l3FdSl2rEPbb8OOCKal4MU+6IngiJnhO19yWQNPs3MiLGirMhx4QhVf0XjI07HB4rIDeCnIWuNr3IWzOFQp8G6hyCXKth16/ZxSp3Q0JyP5+wZLixGU9WOeeGz8mLbeFNWGuo0//0ajA/19Tlq2+ke5lxJqs1WnaVt4AFEGLOTHuTEDkSw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W5EAt8PeKlQaEqmqYVtFlcxOQcpgbeMLP8rhx416CHs=;
- b=BUoactIDz+utPyvA+535MqKpPCRSiH/By9eg445Q2q3NI6MsM0VEIdDv/t3QrrbIOu/KHupONkxpL+IKG6g40XOGKbnI4Yx3MyiVAkNY5DZ/LYU8+5kmOgToMW9GzpBF1vWgN7h3imzSsNedK/r7wh7yo/KTiacZKknPBBdMwr9hEq7i09AQCHpG6wPqDqJH4cZ6cV4693kpnAA6lQdTTMwYL/Ug9CPVGQxSZtUo1kUz9rjVQFmKnzUY4LO7F3yvyJwvHO0kJt10Tg5eOBhr1jdFICi/c9swGxwUAp6dPRhoz45vSPObzwlqspduzXnKp9x2x/A+Tpy+QETmRUznsw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W5EAt8PeKlQaEqmqYVtFlcxOQcpgbeMLP8rhx416CHs=;
- b=fsbmZH/8IhSF+nYR9yfC0jcfwV+8k8MorTmEkVBb+jjPiF/bcWqJci7TRPqlIhWB5LMDE1kVTXbMG1jIXJqectEBywV3GqdlD+bRvmM2Hp/cE53KI4lgg9jtRUq3DuL6jQbHFITnzv34E7/gLbkjVAQPsbSqPeh62WmrZnn4piQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CH0PR12MB5284.namprd12.prod.outlook.com (2603:10b6:610:d7::13)
- by PH0PR12MB5608.namprd12.prod.outlook.com (2603:10b6:510:143::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.29; Mon, 30 Oct
- 2023 17:39:17 +0000
-Received: from CH0PR12MB5284.namprd12.prod.outlook.com
- ([fe80::33ed:3162:e4ed:3569]) by CH0PR12MB5284.namprd12.prod.outlook.com
- ([fe80::33ed:3162:e4ed:3569%6]) with mapi id 15.20.6933.028; Mon, 30 Oct 2023
- 17:39:17 +0000
-Message-ID: <9ca19ca8-d3c6-4789-a9d8-4f1637bfa71e@amd.com>
-Date:   Mon, 30 Oct 2023 13:39:15 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amd/display: remove redundant check
-Content-Language: en-US
-To:     =?UTF-8?Q?Jos=C3=A9_Pekkarinen?= <jose.pekkarinen@foxhound.fi>,
-        harry.wentland@amd.com, sunpeng.li@amd.com,
-        Rodrigo.Siqueira@amd.com, skhan@linuxfoundation.org
-Cc:     alexander.deucher@amd.com, christian.koenig@amd.com,
-        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
-        dillon.varone@amd.com, Jun.Lei@amd.com, george.shen@amd.com,
-        samson.tam@amd.com, SyedSaaem.Rizvi@amd.com,
-        stable@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org,
-        linux-kernel-mentees@lists.linuxfoundation.org
-References: <20231030171748.35482-1-jose.pekkarinen@foxhound.fi>
-From:   Aurabindo Pillai <aurabindo.pillai@amd.com>
-In-Reply-To: <20231030171748.35482-1-jose.pekkarinen@foxhound.fi>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YQZPR01CA0171.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:8b::29) To CH0PR12MB5284.namprd12.prod.outlook.com
- (2603:10b6:610:d7::13)
+        with ESMTP id S233925AbjJ3Rk1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 13:40:27 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 196CA9F
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 10:40:23 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-507a55302e0so6755167e87.0
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 10:40:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1698687621; x=1699292421; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A0ir2D4QCfLQnWbR8rXv+lrdC0LI67HN6g7rBTtSt0E=;
+        b=NXJV8sSsllAMLgEMWhKoi37VXaPI/zzX0I/gohKQjl8rwk/6NOPsk6rorWKvRpx1EY
+         0725YuMejBHp+XkhjbolRMvkXSCw3LIysfnDT6SsFZLgvxL1gugwZzoDUfQuo/vzt9wZ
+         YJG4QCRFcBkwrYzgC7H8vGqbNmP0dGIj3YzQ3xwUzFSElUIzgQI125hiG9tC7yihh/h3
+         14RO6mlMzcaoXiEsYeURMTTJCu2pRDZQJ849xFeq7tG6ZQidonKk+BusJii5KQggMzbK
+         tFY8SJGpY0CDYyIBu2RPvVdK8kFIFj1D2ctXoWgiFUheiGUznVdERJRFnImsInnvZC8Y
+         hlAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698687621; x=1699292421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A0ir2D4QCfLQnWbR8rXv+lrdC0LI67HN6g7rBTtSt0E=;
+        b=vPiTpKi8PU5eLkEvueteTk9NJ/Znc6w0TZRdDumOxn5QbysnZ3hMTwo4aPEnox5AiO
+         u7bl/1F4P4aX0wdrK7YjCRlCyDKmFWo72j6GmgiRXW+pv5Qv//Caa/68R5chQ1VXWFyf
+         m+m8q1GQzeTgNJQsSuXoub9TlvFAvL09Nkbdo0iuFflkYkQCTkWQhi2ezfFXSCwglvzW
+         AYCWeVenSRP77Y3IovnEuZTKb1beV8XMKBvEkZHvDZ2jjzvevk19VOcNG4HnAjCWON1b
+         yYT7TUWhcCDWgtmzV6mdQL3TUn/c5G3MksLph2c+/s7VxbqoU3BvTmyQrQXLGTPN1VVM
+         qZyA==
+X-Gm-Message-State: AOJu0Yx5rmE+ibxPgrmEsUoQ9DxYD+ittrYNFatrswsaUIkIb7wp3a9q
+        v5+VEdwPThWPaGpZ1Zz8ApCt2iB1bjKsR4XSWXpZhEFlxOoDxtVkVTf2BO8S
+X-Google-Smtp-Source: AGHT+IGVUD6diH5ENQ4J/fApQAHbs0bzqg4El0Q54SM7Jan2NxauyGPeedCJqSM3NOBGaw3YFoQFSWASkx8JzdIELYA=
+X-Received: by 2002:a05:6512:1081:b0:507:a5e7:724 with SMTP id
+ j1-20020a056512108100b00507a5e70724mr8955304lfg.38.1698687621042; Mon, 30 Oct
+ 2023 10:40:21 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR12MB5284:EE_|PH0PR12MB5608:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc5fd766-c755-403e-e62d-08dbd96f240e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Z2F2MJOJ4GcJXEkgGWzK3CPXPe5mdwEmFzHy/Q2Zgs+xhIWRmsY8dsjIre3wCxde8nvPzWCly1Y7qHsqRlKMVrbiJKkh91tU+epeSKI+gjf29p9S/cDU+Zc3zqQoJ7zlKxfvRG/xofXqY6Od0xOyXs3ZKEbNHBEWxOF1R9bS5UtfayFx3BQNekNXlYqiqu2+AEditbmLEAHe5SoKKmVsEgFC2xZKUGnWrFT4zHbSyLioe+aIdfPHV/olLqkrN7z75H3ztUp5jEMyN4gxNGqyo0Y4rHh2+2M1OUyeUdcmVE3inGRy4qkhUDTlxSjhgCbftfY8N0v9rmnfPQ2LRSJEAVv3HW71HeXz4qd4DAFAlruSr7azBKB0exa9OFIu6RNO2xRlqZ+6+HOcMNrzJGVJICPjgnipGkYqE5vKdDB4k4OYEg2oFetEJllE6qSuXy/AeZXZHJNelAIY+x6sozfj8r3trsSneN5HTOt1ohs7AJcI2UQV8FNpOeSenQIrLBMiD71cp6dOLRLaUpqjBMGEdE1F5fhS2FtnDSbngy7vPCXozgDakOIbmaz0YhTO5mGRbIbmD+erV6lcH8xjMXMQctY4mAMXty9rFgVIPQ56bBfcXITWhxLrBS7l/9HUhwNzUp66VBxBgAasvjx9XB9g60tnwNVcEe9fXf6zhTAR+OqN5U7L5O6iCPAmy43fPfd8
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR12MB5284.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(396003)(376002)(366004)(136003)(230922051799003)(230173577357003)(230273577357003)(186009)(64100799003)(1800799009)(451199024)(83380400001)(26005)(2616005)(38100700002)(66946007)(66476007)(66556008)(316002)(5660300002)(8676002)(8936002)(4326008)(53546011)(44832011)(6506007)(6512007)(2906002)(6486002)(41300700001)(4001150100001)(478600001)(31696002)(86362001)(36756003)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T3FIaGtJZm5xamEzaGRaUHNHdzhkMkZKdWNCOTdsVUF2dFNqNlRFY0NlM1hu?=
- =?utf-8?B?US9CYkZIUmpLZUJ5SXB5OVd1Vlg5U0NmUlhxQnlHWXZEWitLOFdnQTVTalVU?=
- =?utf-8?B?VHhIa0VzbjZLSHNCRllBVU1DaUhHY1hZdEgxRlVHRkZuQnZoOWU2bmVyTk1j?=
- =?utf-8?B?Vzd0WmhFZk5ENlg5UTV0eWlPTkVhdFI4ZjE2QzMvdmxxZG8wU0NuUUZ4T0pj?=
- =?utf-8?B?R1BqZitSVWNyL2Y0UUhYbERqUi9NdmhteVU5S3g4cVcvMEpHZ3pyek1DYTZQ?=
- =?utf-8?B?RzlxQ3VQQTlPbXk5bmkwREprbXc3SnlNK0hIQ1NRMU9TcVQySXU4SG9qcVpa?=
- =?utf-8?B?dDIzMHJkd3gzOUVVZHpINzZ1ZTRxaHlxajB6Vmc2dllHRmZQbmQ4MC9KYTdK?=
- =?utf-8?B?dXJCRTVQb3QrSnFSOEdkVG1WbjVqVW9ZcjlLeGRlUm41a0NrUkV6bU5OT3NO?=
- =?utf-8?B?THJ5Y1EvOTFCZWpKQUVjSkpxU2VXOXJuTWk5eXg0UzJ6L0lBVEhQSWQ0b3VD?=
- =?utf-8?B?d2NhTUcrYjIwMWI3WEwzenZObTBuQWN1MTl2ZGJmQXA4eFJWOWRvR2xaVlRZ?=
- =?utf-8?B?c2JrbGJISnNOdkhVSXU4SUh6VVIvMVp3TzNmbGxITURLU2NSRTQ3T2puTC9j?=
- =?utf-8?B?d25QQzV2SkF1Tm9FTUZ0UU9RaXB3UnZrdE9GVlB4QnBuZ1NsNEVzcGVTOFdE?=
- =?utf-8?B?S1VEVWdwVWRzaHphVlY2RER1NkpQVm1sbGFQVnJrUVdWREoxUVhTaVcvNXFS?=
- =?utf-8?B?T0JMeURnRGdPMkhYMWM3dHJJeEJ2T2R2T3hsVnNsZ1oxTmlLZ0YvM01ZOWNj?=
- =?utf-8?B?VEJFdDgvNDZXdXhqeXhSMVhnL0hWbWZ2Tm1CSmNLUkwxUjBSRDFjYzZObzIy?=
- =?utf-8?B?Y2krMGpxbXNHU3Mwc2M0UXk4TFVyaXF6UUVpRmpWZ09Gc0QrbjUzWEpENVND?=
- =?utf-8?B?NWN3SnBNTTBFV2Y4aTFGSVpubVBOZmZmTEFFcG5EWjkwR25Da2toR2dOT1RF?=
- =?utf-8?B?WXZiWEVsSVR2RUJ5cFA5cXlkV2VHN1ZYYXJUaXB3ajlDOFd1M0RweXlaalo3?=
- =?utf-8?B?a0FOVlUwOENFaUlJb0svcGpROHFUZHdsb3BFQVFpck10Y3ZnbVZyVnBzUkJ0?=
- =?utf-8?B?akMvckU1b2QxbW1Kc2dWUVA5ZkV5U0kraVRSL3hSV21tZFJFUVJkeUtxakEw?=
- =?utf-8?B?NnFrMWRtdm9CSkpYTitIUmkveFJ2S3FrVHFycVVFbS9LNk5IZWg0TndyMW80?=
- =?utf-8?B?dVNBTFhEcEFTQnBJSlorbGZUbkhFY2phMldaQ0pqYnNLTGQ0MHFidnJ2K1Vt?=
- =?utf-8?B?YlNXT1hvaDQ4L0lvUmpKdW1EZTJhVi9ROUdmNGZzT0FFSS9jbnpGK2MvY0xn?=
- =?utf-8?B?UjVpcFFYdWQwVFNWS0c3MUh1S3hXM3htMU5xTTU1SjU5bVpUTUozaXpmeDRC?=
- =?utf-8?B?SDVJdktZdi9FeVZhQ2tsYjFWQ2ZhTmdLaldhSVNWQjJFTThVaEdZNG5ZdkFG?=
- =?utf-8?B?UzVTMDJLckVtWHRnbEIrRXdLUXcwRGhZKzlFNnJGWjJGb1hiRVk2a1Z2TmVS?=
- =?utf-8?B?WHc5ZVBZWTlsMW02N29nVWE1Lzloa0NsSzJ6M2d2WUVKNmFpa3ZXSlVZQU9S?=
- =?utf-8?B?Q3JMTVB0b20rbXVycGtTR25FRG5IK1JvejczU09kdGpXZEtxbE9kbGpPYnZC?=
- =?utf-8?B?eXR4dFVHNldMN29NbE90OE1SblZRcXc3d3pxVi9MS2R1WmkvbTFaQzJ4bzBR?=
- =?utf-8?B?VnV3dmRNb29MbHM1K09HSzNpSjJnNk5RSE8xbEMvTW9YaHZWaFRrVithVFpm?=
- =?utf-8?B?OEFiUzVLZXpDWmx2K0Q0ckI5V0xLNU40REpILzg0UkxIei96MjJCbzV6Z2tU?=
- =?utf-8?B?UzlGejdiS2NXWTVKc2tZWEFSZjZsZmh3eVl4Rm1MM2ZjcnN1Tit4dGV0WjZK?=
- =?utf-8?B?MGI3REhWWG04Z2tNSThyVW5XZkFuVVJ2ZFdWM2RoOFZMbXBvR1JSdlE2WXhY?=
- =?utf-8?B?TkpDR2pDdUZUbFNmdEFvUURHdGZwTjNIaDR4dGl6L0FKS0RzcjVQaU53M2lN?=
- =?utf-8?B?ajVHR2xyanlQVlZMREY5Q1RkVTdNb0JGK05rQXQ2V3pvSllMV3lFMXRoZGhO?=
- =?utf-8?Q?Tc/IxRUXEpCcx9FrO+k9l9eGp?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc5fd766-c755-403e-e62d-08dbd96f240e
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR12MB5284.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2023 17:39:17.4307
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TkAkzrt9Qh5WMdA3bqsD9q+hUNS68Fx5gVZ1MDS/eD/Jq7pA4O5s7ejDgLJ8UnYjVEm+5TE7HPufT/sAuAUpcw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB5608
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+References: <20231028192511.100001-1-andrew@lunn.ch>
+In-Reply-To: <20231028192511.100001-1-andrew@lunn.ch>
+From:   Justin Stitt <justinstitt@google.com>
+Date:   Mon, 30 Oct 2023 10:40:09 -0700
+Message-ID: <CAFhGd8rdziUZXH4=CxnZZKuS3X2EpTajxBgat+fvr-5RRzAekg@mail.gmail.com>
+Subject: Re: [PATCH v1 net] net: ethtool: Fix documentation of ethtool_sprintf()
+To:     Andrew Lunn <andrew@lunn.ch>
+Cc:     netdev <netdev@vger.kernel.org>,
+        Alexander Duyck <alexanderduyck@fb.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-On 2023-10-30 13:17, José Pekkarinen wrote:
-> This patch addresses the following warning spotted by
-> using coccinelle where the case checked does the same
-> than the else case.
-> 
-> drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c:4664:8-10: WARNING: possible condition with no effect (if == else)
-> 
-> Fixes: 974ce181 ("drm/amd/display: Add check for PState change in DCN32")
-> 
+On Sat, Oct 28, 2023 at 12:25=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote=
+:
+>
+> This function takes a pointer to a pointer, unlike sprintf() which is
+> passed a plain pointer. Fix up the documentation to make this clear.
+>
+> Fixes: 7888fe53b706 ("ethtool: Add common function for filling out string=
+s")
+> Cc: Alexander Duyck <alexanderduyck@fb.com>
+> Cc: Justin Stitt <justinstitt@google.com>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+> Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 > ---
->   .../drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c   | 4 ----
->   1 file changed, 4 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
-> index ecea008f19d3..d940dfa5ae43 100644
-> --- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
-> +++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
-> @@ -4661,10 +4661,6 @@ void dml32_CalculateMinAndMaxPrefetchMode(
->   	} else if (AllowForPStateChangeOrStutterInVBlankFinal == dm_prefetch_support_uclk_fclk_and_stutter) {
->   		*MinPrefetchMode = 0;
->   		*MaxPrefetchMode = 0;
-> -	} else if (AllowForPStateChangeOrStutterInVBlankFinal ==
-> -			dm_prefetch_support_uclk_fclk_and_stutter_if_possible) {
-> -		*MinPrefetchMode = 0;
-> -		*MaxPrefetchMode = 3;
->   	} else {
->   		*MinPrefetchMode = 0;
->   		*MaxPrefetchMode = 3;
+>  include/linux/ethtool.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+> index 62b61527bcc4..1b523fd48586 100644
+> --- a/include/linux/ethtool.h
+> +++ b/include/linux/ethtool.h
+> @@ -1045,10 +1045,10 @@ static inline int ethtool_mm_frag_size_min_to_add=
+(u32 val_min, u32 *val_add,
+>
+>  /**
+>   * ethtool_sprintf - Write formatted string to ethtool string data
+> - * @data: Pointer to start of string to update
+> + * @data: Pointer to a pointer to the start of string to update
+>   * @fmt: Format of string to write
+>   *
+> - * Write formatted string to data. Update data to point at start of
+> + * Write formatted string to *data. Update *data to point at start of
+>   * next string.
+>   */
+>  extern __printf(2, 3) void ethtool_sprintf(u8 **data, const char *fmt, .=
+..);
+> --
+> 2.42.0
+>
 
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Great! Now the docs more appropriately describe the behavior. My patch [1]
+for ethtool_puts() will use this same wording you've introduced.
+
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+
+[1]: https://lore.kernel.org/all/20231027-ethtool_puts_impl-v3-0-3466ac6793=
+04@google.com/
+
+Thanks
+Justin
