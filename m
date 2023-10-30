@@ -2,80 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B9DB7DBE8F
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 18:12:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41DBB7DBF66
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 18:53:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233522AbjJ3RMj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 13:12:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33158 "EHLO
+        id S231609AbjJ3Rx1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 13:53:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233767AbjJ3RMj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 13:12:39 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6407F4
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 10:12:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698685956; x=1730221956;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=FTwAiGQLGBxOhr8IZVkOmFrokbq4fbBVG7aczvP9Pgw=;
-  b=RJrL9zcP8Jvwfp7ksTi7ZUta/mTyl2zJbHPZ8hnTLrhYXJ10kni3FXzx
-   Tp/ZITma756BDI/HnSY4pdsRdswYJRXOJ+0ALNm1DMzxjEEYpFUYIfMnt
-   jJj0CnkTzEzhAMuy10xdVTKSn9IHpgBOPzr+xP6dtDpVqR7GGSd4CWipI
-   qW0wv3pD4i87TjbrPJiqK3rxr+gFFU8uyofcQYAibby6/iK//s3vH5/yF
-   ACcH2Xk8T0m+6Sr+Umv80TyCl0Hmy1HY69Cx/1nTQJmjXD4CfMY0nRnT8
-   obsMsBsDec9lYG1UWQ5tix0qu2kJRLNfIlGKJxj6E38r+LfE52sk1vase
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10879"; a="452380512"
-X-IronPort-AV: E=Sophos;i="6.03,263,1694761200"; 
-   d="scan'208";a="452380512"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2023 10:12:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,263,1694761200"; 
-   d="scan'208";a="1541958"
-Received: from lkp-server01.sh.intel.com (HELO 8917679a5d3e) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 30 Oct 2023 10:12:35 -0700
-Received: from kbuild by 8917679a5d3e with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qxVoW-000DR5-0T;
-        Mon, 30 Oct 2023 17:12:32 +0000
-Date:   Tue, 31 Oct 2023 01:11:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     =?iso-8859-1?Q?Jos=E9?= Pekkarinen <jose.pekkarinen@foxhound.fi>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] drm/amd/display: remove redundant check
-Message-ID: <ZT/j3ROgcuuACOU0@dceb3e7df498>
+        with ESMTP id S231263AbjJ3Rx0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 13:53:26 -0400
+X-Greylist: delayed 1198 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 30 Oct 2023 10:53:24 PDT
+Received: from 9.mo575.mail-out.ovh.net (9.mo575.mail-out.ovh.net [46.105.78.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2192D9C
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 10:53:23 -0700 (PDT)
+Received: from director1.ghost.mail-out.ovh.net (unknown [10.108.1.112])
+        by mo575.mail-out.ovh.net (Postfix) with ESMTP id EC07D2778D
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 17:17:53 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-7pdj5 (unknown [10.110.115.40])
+        by director1.ghost.mail-out.ovh.net (Postfix) with ESMTPS id A3AD81FE93;
+        Mon, 30 Oct 2023 17:17:52 +0000 (UTC)
+Received: from foxhound.fi ([37.59.142.108])
+        by ghost-submission-6684bf9d7b-7pdj5 with ESMTPSA
+        id ciZaJEDlP2V+SAEAhpL/bw
+        (envelope-from <jose.pekkarinen@foxhound.fi>); Mon, 30 Oct 2023 17:17:52 +0000
+Authentication-Results: garm.ovh; auth=pass (GARM-108S002f7264df6-502a-4d3d-8901-f89f427d1744,
+                    1521F8BC68C4446D6F30831D87711B1BDC7B9471) smtp.auth=jose.pekkarinen@foxhound.fi
+X-OVh-ClientIp: 91.157.109.247
+From:   =?UTF-8?q?Jos=C3=A9=20Pekkarinen?= <jose.pekkarinen@foxhound.fi>
+To:     harry.wentland@amd.com, sunpeng.li@amd.com,
+        Rodrigo.Siqueira@amd.com, skhan@linuxfoundation.org
+Cc:     =?UTF-8?q?Jos=C3=A9=20Pekkarinen?= <jose.pekkarinen@foxhound.fi>,
+        alexander.deucher@amd.com, christian.koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+        dillon.varone@amd.com, Jun.Lei@amd.com, aurabindo.pillai@amd.com,
+        george.shen@amd.com, samson.tam@amd.com, SyedSaaem.Rizvi@amd.com,
+        stable@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org,
+        linux-kernel-mentees@lists.linuxfoundation.org
+Subject: [PATCH] drm/amd/display: remove redundant check
+Date:   Mon, 30 Oct 2023 19:17:48 +0200
+Message-Id: <20231030171748.35482-1-jose.pekkarinen@foxhound.fi>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231030170407.28408-1-jose.pekkarinen@foxhound.fi>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Ovh-Tracer-Id: 16519484912439764646
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedruddttddgleejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefhvfevufffkffogggtgfesthekredtredtjeenucfhrhhomheplfhoshorucfrvghkkhgrrhhinhgvnhcuoehjohhsvgdrphgvkhhkrghrihhnvghnsehfohighhhouhhnugdrfhhiqeenucggtffrrghtthgvrhhnpeeftdelueetieetvdettdetueeivedujeefffdvteefkeelhefhleelfeetteejjeenucfkphepuddvjedrtddrtddruddpledurdduheejrddutdelrddvgeejpdefjedrheelrddugedvrddutdeknecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepuddvjedrtddrtddruddpmhgrihhlfhhrohhmpeeojhhoshgvrdhpvghkkhgrrhhinhgvnhesfhhogihhohhunhgurdhfiheqpdhnsggprhgtphhtthhopedupdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdfovfetjfhoshhtpehmohehjeehpdhmohguvgepshhmthhpohhuth
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+This patch addresses the following warning spotted by
+using coccinelle where the case checked does the same
+than the else case.
 
-Thanks for your patch.
+drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c:4664:8-10: WARNING: possible condition with no effect (if == else)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Fixes: 974ce181 ("drm/amd/display: Add check for PState change in DCN32")
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Cc: stable@vger.kernel.org
+Signed-off-by: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+---
+ .../drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c   | 4 ----
+ 1 file changed, 4 deletions(-)
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] drm/amd/display: remove redundant check
-Link: https://lore.kernel.org/stable/20231030170407.28408-1-jose.pekkarinen%40foxhound.fi
-
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
+index ecea008f19d3..d940dfa5ae43 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
+@@ -4661,10 +4661,6 @@ void dml32_CalculateMinAndMaxPrefetchMode(
+ 	} else if (AllowForPStateChangeOrStutterInVBlankFinal == dm_prefetch_support_uclk_fclk_and_stutter) {
+ 		*MinPrefetchMode = 0;
+ 		*MaxPrefetchMode = 0;
+-	} else if (AllowForPStateChangeOrStutterInVBlankFinal ==
+-			dm_prefetch_support_uclk_fclk_and_stutter_if_possible) {
+-		*MinPrefetchMode = 0;
+-		*MaxPrefetchMode = 3;
+ 	} else {
+ 		*MinPrefetchMode = 0;
+ 		*MaxPrefetchMode = 3;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.39.2
 
