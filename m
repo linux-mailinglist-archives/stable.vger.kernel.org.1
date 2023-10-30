@@ -2,124 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A367DB552
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 09:40:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 023577DB559
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 09:43:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232174AbjJ3Ikt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 04:40:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42620 "EHLO
+        id S232197AbjJ3InS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 04:43:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231741AbjJ3Iks (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 04:40:48 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8436BB7;
-        Mon, 30 Oct 2023 01:40:45 -0700 (PDT)
-Received: from [192.168.1.103] (178.176.73.57) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Mon, 30 Oct
- 2023 11:40:38 +0300
-Subject: Re: [PATCH AUTOSEL 6.5 35/52] fbdev: core: syscopyarea: fix sloppy
- typing
-To:     Sasha Levin <sashal@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-CC:     Helge Deller <deller@gmx.de>, <daniel@ffwll.ch>,
-        <linux-fbdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>
-References: <20231029225441.789781-1-sashal@kernel.org>
- <20231029225441.789781-35-sashal@kernel.org>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <b2986ba9-0a66-09fe-4a9a-444c113b2bbd@omp.ru>
-Date:   Mon, 30 Oct 2023 11:40:37 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        with ESMTP id S232069AbjJ3InR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 04:43:17 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 661F1AB;
+        Mon, 30 Oct 2023 01:43:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4250FC433C7;
+        Mon, 30 Oct 2023 08:43:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1698655395;
+        bh=xUUBnEzx5bke2+28JgdYEHbvIfQzUUFXXsOQ+iz0rGc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=V4HGx57mG57AaY9MNBVEmLiSXnJYwd2H4v5e5uUXIlr4M80wlepa0PG8CsZJZaJ1P
+         dGDUEJ8YJBE9oCP0Ii+hToJrIghlNHFuj69sweWDVE1uHA1fFjnaLctMT7ZSw2lH1/
+         wpewVfkydBhu/NuEc12OvHh0MfFMStuoJbA7ACX0=
+Date:   Mon, 30 Oct 2023 09:43:11 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     ChenXiaoSong <chenxiaosongemail@foxmail.com>
+Cc:     trond.myklebust@hammerspace.com, chenxiaosong@kylinos.cn,
+        Anna.Schumaker@netapp.com, sashal@kernel.org,
+        liuzhengyuan@kylinos.cn, huangjinhui@kylinos.cn,
+        liuyun01@kylinos.cn, huhai@kylinos.cn, linux-nfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: Question about LTS 4.19 patch "89047634f5ce NFS: Don't interrupt
+ file writeout due to fatal errors"
+Message-ID: <2023103055-anaerobic-childhood-c1f1@gregkh>
+References: <tencent_BEDA418B8BD86995FBF3E92D4F9F5D342C0A@qq.com>
 MIME-Version: 1.0
-In-Reply-To: <20231029225441.789781-35-sashal@kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [178.176.73.57]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.0.0, Database issued on: 10/30/2023 08:31:24
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 180967 [Oct 30 2023]
-X-KSE-AntiSpam-Info: Version: 6.0.0.2
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 543 543 1e3516af5cdd92079dfeb0e292c8747a62cb1ee4
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.73.57 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.73.57 in (user)
- dbl.spamhaus.org}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;omp.ru:7.1.1
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.73.57
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/30/2023 08:36:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 10/30/2023 2:39:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <tencent_BEDA418B8BD86995FBF3E92D4F9F5D342C0A@qq.com>
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/30/23 1:53 AM, Sasha Levin wrote:
+On Mon, Oct 30, 2023 at 04:39:11PM +0800, ChenXiaoSong wrote:
+> Hi Trond and Greg:
+> 
+> LTS 4.19 reported null-ptr-deref BUG as follows:
+> 
+> BUG: unable to handle kernel NULL pointer dereference at 0000000000000080
+> Call Trace:
+>  nfs_inode_add_request+0x1cc/0x5b8
+>  nfs_setup_write_request+0x1fa/0x1fc
+>  nfs_writepage_setup+0x2d/0x7d
+>  nfs_updatepage+0x8b8/0x936
+>  nfs_write_end+0x61d/0xd45
+>  generic_perform_write+0x19a/0x3f0
+>  nfs_file_write+0x2cc/0x6e5
+>  new_sync_write+0x442/0x560
+>  __vfs_write+0xda/0xef
+>  vfs_write+0x176/0x48b
+>  ksys_write+0x10a/0x1e9
+>  __se_sys_write+0x24/0x29
+>  __x64_sys_write+0x79/0x93
+>  do_syscall_64+0x16d/0x4bb
+>  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+> 
+> The reason is: generic_error_remove_page set page->mapping to NULL when nfs
+> server have a fatal error:
+> 
+> nfs_updatepage
+>   nfs_writepage_setup
+>     nfs_setup_write_request
+>       nfs_try_to_update_request // return NULL
+>         nfs_wb_page // return 0
+>           nfs_writepage_locked // return 0
+>             nfs_do_writepage // return 0
+>               nfs_page_async_flush // return 0
+>                 nfs_error_is_fatal_on_server
+>                 generic_error_remove_page
+>                   truncate_inode_page
+>                     delete_from_page_cache
+>                       __delete_from_page_cache
+>                         page_cache_tree_delete
+>                           page->mapping = NULL // this is point
+>       nfs_create_request
+>         req->wb_page    = page // the page is freed
+>       nfs_inode_add_request
+>         mapping = page_file_mapping(req->wb_page)
+>           return page->mapping
+>         spin_lock(&mapping->private_lock) // mapping is NULL
+> 
+> It is reasonable by reverting the patch "89047634f5ce NFS: Don't interrupt
+> file writeout due to fatal errors" to fix this bug?
 
-> From: Sergey Shtylyov <s.shtylyov@omp.ru>
-> 
-> [ Upstream commit e8e4a470b677511f9d1ad4f3cef32adc1d9a60ca ]
-> 
-> In sys_copyarea(), the local variable bits_per_line is needlessly typed as
-> *unsigned long* -- which is a 32-bit type on the 32-bit arches and a 64-bit
-> type on the 64-bit arches; that variable's value is derived from the __u32
-> typed fb_fix_screeninfo::line_length field (multiplied by 8u) and a 32-bit
-> *unsigned int* type should still be enough to store the # of bits per line.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with the Svace static
-> analysis tool.
-> 
-> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-> Signed-off-by: Helge Deller <deller@gmx.de>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/video/fbdev/core/syscopyarea.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/video/fbdev/core/syscopyarea.c b/drivers/video/fbdev/core/syscopyarea.c
-> index c1eda31909682..7b8bd3a2bedc5 100644
-> --- a/drivers/video/fbdev/core/syscopyarea.c
-> +++ b/drivers/video/fbdev/core/syscopyarea.c
-> @@ -316,7 +316,7 @@ void sys_copyarea(struct fb_info *p, const struct fb_copyarea *area)
->  {
->  	u32 dx = area->dx, dy = area->dy, sx = area->sx, sy = area->sy;
->  	u32 height = area->height, width = area->width;
-> -	unsigned long const bits_per_line = p->fix.line_length*8u;
-> +	unsigned int const bits_per_line = p->fix.line_length * 8u;
->  	unsigned long *base = NULL;
->  	int bits = BITS_PER_LONG, bytes = bits >> 3;
->  	unsigned dst_idx = 0, src_idx = 0, rev_copy = 0;
+Try it and see, but note, that came from the 4.19.99 release which was
+released years ago, are you sure you are using the most recent 4.19.y
+release?
 
-   This one doesn't seem necessary in the stable kernels too...
+> This patch is one patch of patchset [Fix up soft mounts for NFSv4.x](https://lore.kernel.org/all/20190407175912.23528-1-trond.myklebust@hammerspace.com/),
+> the patchset replace custom error reporting mechanism. it seams that we
+> should merge all the patchset to LTS 4.19, or all patchs should not be
+> merged. And the "Fixes:" label is not correct, this patch is a refactoring
+> patch, not for fixing bugs.
 
-MBR, Sergey
+If we missed some patches, that should be added on top of the current
+tree, please let us know the git commit ids of them after you have
+tested them that they work properly, and we will gladly apply them.
+
+thanks,
+
+greg k-h
