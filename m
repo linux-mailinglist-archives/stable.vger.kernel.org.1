@@ -2,149 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F4BD7DB53C
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 09:37:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 423897DB548
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 09:39:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230147AbjJ3IhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 04:37:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45296 "EHLO
+        id S229517AbjJ3IjY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 04:39:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229517AbjJ3IhP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 04:37:15 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DC18A7
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 01:37:13 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 4F81621992;
-        Mon, 30 Oct 2023 08:37:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1698655031; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OT3gH6W3eVii6TzxQ2SSrakkNp82aIS3RiPQ/z/s9nk=;
-        b=24qfnBZ/ngwGoEVrHhkIOaZDKFpbYpOmf8t/yCcsFyZa+/v9gE/ClAV4rZvDOhxPaN8ros
-        gsam/yFyrhJAs5tSDCdBBvTo5TRBwXf+BkZhTDQfUx4fduhNYRvwuWYjX9ymkSHcx4xrmi
-        KRnScYNc+iWKHQPUKx7WktfpOAN6/XE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1698655031;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=OT3gH6W3eVii6TzxQ2SSrakkNp82aIS3RiPQ/z/s9nk=;
-        b=rLkfd/tXI4lLSxLJFuDtXWYfqb3NogmTxO2wxKiFYibHKn/nPUhId+nKEdOauiRL09Cm9C
-        hdz9hnWo4o93nqDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 2C2F6138EF;
-        Mon, 30 Oct 2023 08:37:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id g8kTCjdrP2XlbAAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Mon, 30 Oct 2023 08:37:11 +0000
-Message-ID: <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
-Date:   Mon, 30 Oct 2023 09:37:10 +0100
+        with ESMTP id S231741AbjJ3IjX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 04:39:23 -0400
+Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7018BAB;
+        Mon, 30 Oct 2023 01:39:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+        s=s201512; t=1698655155;
+        bh=W8G5j9YhA2I2eRk3M6nv4DdkaLiBeUrHLN00MhMD31Q=;
+        h=Date:To:Cc:From:Subject;
+        b=QG9UnVkFwwH1XC3Ovx446jHVERTLDF+B/GHWGtldwBLjcvjNaz0RzObeOdVTR8HPG
+         VitaOLti6YQs+oD/kDXI6pifsMe5dRnhxtt1fWCv+a29QDTJ9HYko63OJPgxI4ccPk
+         GHVBMxcMdwi8eZzSwWOkF/ZPRr9xMPV9f/9yQDr8=
+Received: from [192.168.31.137] ([116.128.244.171])
+        by newxmesmtplogicsvrszc2-0.qq.com (NewEsmtp) with SMTP
+        id 9CB92A0B; Mon, 30 Oct 2023 16:39:11 +0800
+X-QQ-mid: xmsmtpt1698655151t2dqeblop
+Message-ID: <tencent_BEDA418B8BD86995FBF3E92D4F9F5D342C0A@qq.com>
+X-QQ-XMAILINFO: N26DAMVpW7UE1TRfKdo6eHcsxFwLL98nLeAI/pEurbf74ZhutHLWVTVWaTsqjU
+         jrFgNtY2wtOX6BDGB7GXAPHbCK7hGBZSRFwMDSstJR+1Jf6i15Fad08SmCfmu5D4UEx24fWqmzkO
+         DWcSC5bXjk/ORj8IMylxT80bgV6fFhyHpkt7m/akpW96AE107jWpuQ/+X1Pl9bGiFsQ23ujC4uak
+         5NbHgy7MINE5WOSrcA/IxKQ/SNTMMUbVuO8hU0iBERf3VUuLreNR3IPIuwdhc5fuuxwdFRx0NASJ
+         SzBXAjL6RIIeeqxOet5YWm0B2a4nra0nkoTkbLwgtYy3TxLmCZxcMr9jvfS1M/OpX5iVsVxm/BKo
+         NdAiyovIMxBwAKdcVk2Fwj7YDTwB3PFuzgKx24ivg+xw2AWIVh+jEbT4z4Zcshjp1DmyPw+J0/Fz
+         ZGN39TTXr3dRTCV5zMfrzfq1aaw/fcGxec99GjKRbeXV/OpfXqE6g0CYLsBjDSGvDTc0LUXlggdk
+         sJdGvzYHbxvc5cNX26yX7iDEZ377oHxd1yn1+TKtG82zCBhGVzKXTw7igmviDaoSqoe6rajjI8U0
+         VWmdSGHT7+b8uF5J9LDZgBJ3pKc9UwpD7pP1IxuE/TaZ9rbDQGOUOq7MwuxnWzX4gn6M9R8Frf9M
+         2PihA480TEPPhW+b5rF38DooUOae9bmLEeoYAIg9T1CTngF1K3HjvE6mvuqSElg73SD4W8V8cbha
+         rhJO/OrygQRkNvsal5tqQ1gYDL60m7b6fr4Fjl2sewNzpWM5ZAdNbOzzOMtwRaBSR5qXEdZEm7ev
+         hJDygZKr7TgMocEJ9WKnVwWDiuNsMSUhoH7lzXuVBpm73WcbqBtS2etcGI3j/vrb7r9FHxHIBpft
+         EinB9bSkIxu84yHkomCL11Ile2jqR/kikZIXq5UmD5krckqDlUlhDSQxt4JRe+AV+66RkiEZdHIm
+         B3a9LpeoMe/ImUq5Cf8bYFIp6x7WIk2ovL7kfcO8UHh9yXZHF4yB8s76t7j/kNWIDgQ4elk8luDR
+         2ubmq6tnQqCSa28DCD/czzIKLGAGU=
+X-QQ-XMRINFO: Nq+8W0+stu50PRdwbJxPCL0=
+X-OQ-MSGID: <9b161a5b-201a-4f82-b9ef-5f9d7eba4529@foxmail.com>
+Date:   Mon, 30 Oct 2023 16:39:11 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-To:     Mikulas Patocka <mpatocka@redhat.com>
-Cc:     =?UTF-8?Q?Marek_Marczykowski-G=c3=b3recki?= 
-        <marmarek@invisiblethingslab.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org, Jan Kara <jack@suse.cz>
-References: <ZTNH0qtmint/zLJZ@mail-itl>
- <e427823c-e869-86a2-3549-61b3fdf29537@redhat.com> <ZTiHQDY54E7WAld+@mail-itl>
- <ZTiJ3CO8w0jauOzW@mail-itl> <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com>
- <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz>
- <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
+User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out1.suse.de;
-        none
-X-Spam-Level: 
-X-Spam-Score: -5.02
-X-Spamd-Result: default: False [-5.02 / 50.00];
-         ARC_NA(0.00)[];
-         RCVD_VIA_SMTP_AUTH(0.00)[];
-         BAYES_HAM(-0.92)[86.27%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         NEURAL_HAM_LONG(-3.00)[-1.000];
-         MIME_GOOD(-0.10)[text/plain];
-         DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-         NEURAL_HAM_SHORT(-1.00)[-1.000];
-         RCPT_COUNT_TWELVE(0.00)[12];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         RCVD_TLS_ALL(0.00)[];
-         MID_RHS_MATCH_FROM(0.00)[];
-         SUBJECT_HAS_QUESTION(0.00)[]
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=ham
-        autolearn_force=no version=3.4.6
+To:     gregkh@linuxfoundation.org, trond.myklebust@hammerspace.com,
+        chenxiaosong@kylinos.cn
+Cc:     Anna.Schumaker@Netapp.com, sashal@kernel.org,
+        liuzhengyuan@kylinos.cn, huangjinhui@kylinos.cn,
+        liuyun01@kylinos.cn, huhai@kylinos.cn, linux-nfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+From:   ChenXiaoSong <chenxiaosongemail@foxmail.com>
+Subject: Question about LTS 4.19 patch "89047634f5ce NFS: Don't interrupt file
+ writeout due to fatal errors"
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_MUA_MOZILLA,
+        FREEMAIL_FROM,HELO_DYNAMIC_IPADDR,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,RDNS_DYNAMIC,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/30/23 08:37, Mikulas Patocka wrote:
-> 
-> 
-> On Sun, 29 Oct 2023, Vlastimil Babka wrote:
-> 
->> Haven't found any. However I'd like to point out some things I noticed in
->> crypt_alloc_buffer(), although they are probably not related.
->> 
->> > static struct bio *crypt_alloc_buffer(struct dm_crypt_io *io, unsigned int size)
->> > {
->> > 	struct crypt_config *cc = io->cc;
->> > 	struct bio *clone;
->> > 	unsigned int nr_iovecs = (size + PAGE_SIZE - 1) >> PAGE_SHIFT;
->> > 	gfp_t gfp_mask = GFP_NOWAIT | __GFP_HIGHMEM;
->> > 	unsigned int remaining_size;
->> > 	unsigned int order = MAX_ORDER - 1;
->> > 
->> > retry:
->> > 	if (unlikely(gfp_mask & __GFP_DIRECT_RECLAIM))
->> > 		mutex_lock(&cc->bio_alloc_lock);
->> 
->> What if we end up in "goto retry" more than once? I don't see a matching
-> 
-> It is impossible. Before we jump to the retry label, we set 
-> __GFP_DIRECT_RECLAIM. mempool_alloc can't ever fail if 
-> __GFP_DIRECT_RECLAIM is present (it will just wait until some other task 
-> frees some objects into the mempool).
+Hi Trond and Greg:
 
-Ah, missed that. And the traces don't show that we would be waiting for
-that. I'm starting to think the allocation itself is really not the issue
-here. Also I don't think it deprives something else of large order pages, as
-per the sysrq listing they still existed.
+LTS 4.19 reported null-ptr-deref BUG as follows:
 
-What I rather suspect is what happens next to the allocated bio such that it
-works well with order-0 or up to costly_order pages, but there's some
-problem causing a deadlock if the bio contains larger pages than that?
+BUG: unable to handle kernel NULL pointer dereference at 0000000000000080
+Call Trace:
+  nfs_inode_add_request+0x1cc/0x5b8
+  nfs_setup_write_request+0x1fa/0x1fc
+  nfs_writepage_setup+0x2d/0x7d
+  nfs_updatepage+0x8b8/0x936
+  nfs_write_end+0x61d/0xd45
+  generic_perform_write+0x19a/0x3f0
+  nfs_file_write+0x2cc/0x6e5
+  new_sync_write+0x442/0x560
+  __vfs_write+0xda/0xef
+  vfs_write+0x176/0x48b
+  ksys_write+0x10a/0x1e9
+  __se_sys_write+0x24/0x29
+  __x64_sys_write+0x79/0x93
+  do_syscall_64+0x16d/0x4bb
+  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
 
-Cc Honza. The thread starts here:
-https://lore.kernel.org/all/ZTNH0qtmint%2FzLJZ@mail-itl/
+The reason is: generic_error_remove_page set page->mapping to NULL when 
+nfs server have a fatal error:
 
-The linked qubes reports has a number of blocked task listings that can be
-expanded:
-https://github.com/QubesOS/qubes-issues/issues/8575
+nfs_updatepage
+   nfs_writepage_setup
+     nfs_setup_write_request
+       nfs_try_to_update_request // return NULL
+         nfs_wb_page // return 0
+           nfs_writepage_locked // return 0
+             nfs_do_writepage // return 0
+               nfs_page_async_flush // return 0
+                 nfs_error_is_fatal_on_server
+                 generic_error_remove_page
+                   truncate_inode_page
+                     delete_from_page_cache
+                       __delete_from_page_cache
+                         page_cache_tree_delete
+                           page->mapping = NULL // this is point
+       nfs_create_request
+         req->wb_page    = page // the page is freed
+       nfs_inode_add_request
+         mapping = page_file_mapping(req->wb_page)
+           return page->mapping
+         spin_lock(&mapping->private_lock) // mapping is NULL
+
+It is reasonable by reverting the patch "89047634f5ce NFS: Don't 
+interrupt file writeout due to fatal errors" to fix this bug?
+
+
+This patch is one patch of patchset [Fix up soft mounts for 
+NFSv4.x](https://lore.kernel.org/all/20190407175912.23528-1-trond.myklebust@hammerspace.com/), 
+the patchset replace custom error reporting mechanism. it seams that we 
+should merge all the patchset to LTS 4.19, or all patchs should not be 
+merged. And the "Fixes:" label is not correct, this patch is a 
+refactoring patch, not for fixing bugs.
+
