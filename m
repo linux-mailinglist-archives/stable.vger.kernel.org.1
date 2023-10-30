@@ -2,191 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3475E7DBAC3
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 14:31:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4D7A7DBB08
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 14:41:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233465AbjJ3NbF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 09:31:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59328 "EHLO
+        id S229568AbjJ3Nld (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 09:41:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233464AbjJ3NbC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 09:31:02 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B5A0D3
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 06:30:58 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 92E9B5C0183;
-        Mon, 30 Oct 2023 09:30:57 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Mon, 30 Oct 2023 09:30:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1698672657; x=1698759057; bh=cxRdquET5IcWw6tJN9ZPpELfajRwqkrG2nY
-        Gfkr+4Hk=; b=AyrxhP58SgXnAJRviF2S7+Jd605s72LJBD7KEbs4C2EFnKrbMME
-        MZHVA5sPPVxerKbQZFiKX7/cR0FkiVIf0FCvu8SkOH9q5rP0YhcPNcYtKEYEKFO6
-        4cug8Y7gBi8gc9SXg2fdmx+0HO7+4uO5SbQ1g4gN3L/nxIXCe6tJNyBRqHFceEJD
-        v1GcRwrocn9CjtmirDbYi79iH3Pd4MoNjoEUgPbRPuKXtYGx7kL7QkV6vFM43vz1
-        VLm8QrwW7VA2vVM+CjrgUfg9+G6w1zmlEaQyAact1FDs7Jtw0OYnlhLa2evUvBuz
-        4Cy8zo3eYMw3OOOyuGRWAKAeI9EdnpmSn/g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1698672657; x=1698759057; bh=cxRdquET5IcWw
-        6tJN9ZPpELfajRwqkrG2nYGfkr+4Hk=; b=gLgLdkDVRsEsGX1QkLKfJjL7Q8+D1
-        NXEthBj9qSdAS1saceUm75sOOxgxoMsmGbE/hC1HD+pXP1ptT2KzcBbEqleZzuQB
-        edh2ZUDVpW4W/BkyhNerYamcvqfw3OldW47/MQSPVgqmb2jdN6ASNVdwfaE9Fl5+
-        arpM1o+6Bif5F2aj1A+uQ7NPRKJeem7rox9EOlSGYIDr4419WEatBXpID3TfroP0
-        mVSr56oXgImnHZgFyQiRbbOgcWee2BuAv+n/Frh7t1spCxW0RwO6MR9v2foX8e0k
-        BH2GxQttZ0d6Z21WKVfaYjG9D4LN6F8UDZkpQ1P7aDP9xvOAvL3lhlfdg==
-X-ME-Sender: <xms:EbA_Zaa-1PprS7Lt5tAfFNDqjdGSHW58QZOxP9uIWGy1jqRvbEcN-Q>
-    <xme:EbA_ZdZs3OwJmkC0epjwPUl4D8QZjC98WEvWwOY0kSVv-rr7xz8kX2FVU6NfD1FWz
-    rZMoPgVMw0vuA>
-X-ME-Received: <xmr:EbA_ZU_zSsQqgwBxS6ZDjwRnBVesttB-KAyimjTI6pkmIIDe30fDvSWJ6YWNWEoc_-ZXtEJBxJsiavYNBLF8kO9YOKjH76K8qbk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddttddghedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
-    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
-    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
-    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
-    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:EbA_Zcr-Of5eeZhFXtGKsXnPP-7wf8LQfK5ey4g73hxT8oj0WGt4AA>
-    <xmx:EbA_ZVq8FqR9H3BYTt1ndk5Hj22kCH7JCmE7TJx_TuZHOIHthlR5zg>
-    <xmx:EbA_ZaSqxXo5FBkDMIJE6jKX2dYM06XPrijA5xRnI-w3-JmIam68AQ>
-    <xmx:EbA_ZQ1mVFF2I9Gl5X03OcGItfH35YMYKH823_YGTSmZXSKviNGTOQ>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Oct 2023 09:30:55 -0400 (EDT)
-Date:   Mon, 30 Oct 2023 14:30:52 +0100
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-To:     Jan Kara <jack@suse.cz>
-Cc:     Vlastimil Babka <vbabka@suse.cz>,
-        Mikulas Patocka <mpatocka@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-Message-ID: <ZT+wDLwCBRB1O+vB@mail-itl>
-References: <e427823c-e869-86a2-3549-61b3fdf29537@redhat.com>
- <ZTiHQDY54E7WAld+@mail-itl>
- <ZTiJ3CO8w0jauOzW@mail-itl>
- <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com>
- <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz>
- <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
- <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
- <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com>
- <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz>
- <20231030122513.6gds75hxd65gu747@quack3>
+        with ESMTP id S229510AbjJ3Nlc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 09:41:32 -0400
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05F6A97;
+        Mon, 30 Oct 2023 06:41:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1698673262; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=imh4HaiCmJaGb1y89GvoF6nV2rrqm+zrkI1kZ7iu1kAvoRjHfqA2+xR/L3j1S/4Er7
+    DfsnATDnMzw8BPT5bpmyvDMCSBp8PaOJRIyMBftQDQVMcDdKjlbB65nfeCNSQdX/LCzx
+    LOuAsNa1jtuV2KWU2/bjFqp2SNhVZ+2l7qdWs+dtEkun1o/wvYwRJQc2HeejtcCVmyxm
+    I0ciM1K8eI0C/CFCFGszkHLXItwFwuSHr1q+Z5bwWWPIy78r/FO0LDIHNF9X+r/hw3hm
+    3igVIJgWTkcOvjFIxpHUznlbfeauKIMGrmupVeddCuN6cXid/klxgRFF2mSuKC9n5ZXK
+    iAgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1698673262;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=0kUSB11fDKSCCQnsLAQkRqLL84Gbj9QLRVuk4vhIrKc=;
+    b=Apccs41+u6eHcmWRqTeFwu49vHkxrrhD3VIBJ+ML514R/N330Yx1+gPxs59X2nQA55
+    onF1k3xFgkbvArpgOfigUStiPSCYDsYUNONbeIw79G3jBEgKtDZfEtoD2zLQNzoqXL5s
+    02XR/AbVuwI3wn7jY5WrGni6rbKlOTPe5IEX8+f9lKFL3KsWg2IxOoGBusNsXlCDLBRW
+    e8TDq80hmgmyZolxlF2mu34Dl+HpQLL/s/TrF/HoD4qgrwOTuI3IZprpxZSwnmUUMmm3
+    St9HyfKdVT9nX4reEbTrfzimfm6U6suagmozUsty4leoS2DZfcVpkW9Wgl3qC28DLdWJ
+    cfNA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1698673262;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=0kUSB11fDKSCCQnsLAQkRqLL84Gbj9QLRVuk4vhIrKc=;
+    b=nDDXn14ea8gygMxS77u1h4vEIscFc/43fs52AEMLZvLBQfWIjWeLX7KBaS70fTtrvj
+    GY+q1GgKILctWZ3apKbM368GNon5IQ7lTJ75zxIggIMVbNUccJBL0Gd1TC1mLacHtMkM
+    p3ol68v8r3Yp+RgN00JgHBKq8UkEPtGCkzm1qb6ChyLShXDjaG2SL+1rAXFqx+Z4K7b8
+    ReGab9INaY7hPHKRUfx2dqsqAQrWDY/Xj+2qASyI7ylF7WcxUA7OtdU1i1ucO9NJlnr8
+    uLN0Mig639KaSzp83pUzIDSxNZd2iWMwmevHmhwbZH3qBVSJQxoVNGehEhSKuq943bFi
+    txPA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1698673262;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
+    From:Subject:Sender;
+    bh=0kUSB11fDKSCCQnsLAQkRqLL84Gbj9QLRVuk4vhIrKc=;
+    b=qzZs3y+49zgSiImhNmd5mnDxRbyVEuay/B4cBZrRum9fSsLifXyHwX9iWUk28jmlCY
+    F/c8SuHxs6eZAUL8ivDw==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjG14FZxedJy6qgO1o3TMaFqTGVJiOM9vpw=="
+Received: from [192.168.60.115]
+    by smtp.strato.de (RZmta 49.9.1 DYNA|AUTH)
+    with ESMTPSA id Kda39bz9UDf2DoO
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Mon, 30 Oct 2023 14:41:02 +0100 (CET)
+Message-ID: <042cd67b-090c-4705-9a80-b322e7d4e639@hartkopp.net>
+Date:   Mon, 30 Oct 2023 14:40:54 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="gCkAclEDVL+x2a5T"
-Content-Disposition: inline
-In-Reply-To: <20231030122513.6gds75hxd65gu747@quack3>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] can: isotp: upgrade 5.15 LTS to latest 6.6 mainline code
+ base
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, sashal@kernel.org,
+        linux-can@vger.kernel.org, lukas.magel@posteo.net,
+        patches@lists.linux.dev, maxime.jayat@mobile-devices.fr,
+        mkl@pengutronix.de, michal.sojka@cvut.cz
+References: <20231030113110.3404-1-socketcan@hartkopp.net>
+ <2023103048-riverside-giving-e44d@gregkh>
+ <9bf2b7c9-fe80-4509-b023-c406f2fff994@hartkopp.net>
+ <2023103038-spinning-uncooked-b608@gregkh>
+Content-Language: en-US
+From:   Oliver Hartkopp <socketcan@hartkopp.net>
+In-Reply-To: <2023103038-spinning-uncooked-b608@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 30.10.23 13:42, Greg KH wrote:
 
---gCkAclEDVL+x2a5T
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 30 Oct 2023 14:30:52 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Jan Kara <jack@suse.cz>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+> 20 patches is trivial for us to handle, please do it that way as it
+> ensures we keep the proper history, AND we know what to backport when in
+> the future.
 
-On Mon, Oct 30, 2023 at 01:25:13PM +0100, Jan Kara wrote:
-> On Mon 30-10-23 12:30:23, Vlastimil Babka wrote:
-> > On 10/30/23 12:22, Mikulas Patocka wrote:
-> > > On Mon, 30 Oct 2023, Vlastimil Babka wrote:
-> > >=20
-> > >> Ah, missed that. And the traces don't show that we would be waiting =
-for
-> > >> that. I'm starting to think the allocation itself is really not the =
-issue
-> > >> here. Also I don't think it deprives something else of large order p=
-ages, as
-> > >> per the sysrq listing they still existed.
-> > >>=20
-> > >> What I rather suspect is what happens next to the allocated bio such=
- that it
-> > >> works well with order-0 or up to costly_order pages, but there's some
-> > >> problem causing a deadlock if the bio contains larger pages than tha=
-t?
-> > >=20
-> > > Yes. There are many "if (order > PAGE_ALLOC_COSTLY_ORDER)" branches i=
-n the=20
-> > > memory allocation code and I suppose that one of them does something =
-bad=20
-> > > and triggers this bug. But I don't know which one.
-> >=20
-> > It's not what I meant. All the interesting branches for costly order in=
- page
-> > allocator/compaction only apply with __GFP_DIRECT_RECLAIM, so we can't =
-be
-> > hitting those here.
-> > The traces I've seen suggest the allocation of the bio suceeded, and
-> > problems arised only after it was submitted.
-> >=20
-> > I wouldn't even be surprised if the threshold for hitting the bug was n=
-ot
-> > exactly order > PAGE_ALLOC_COSTLY_ORDER but order > PAGE_ALLOC_COSTLY_O=
-RDER
-> > + 1 or + 2 (has that been tested?) or rather that there's no exact
-> > threshold, but probability increases with order.
->=20
-> Well, it would be possible that larger pages in a bio would trip e.g. bio
-> splitting due to maximum segment size the disk supports (which can be e.g.
-> 0xffff) and that upsets something somewhere. But this is pure
-> speculation. We definitely need more debug data to be able to tell more.
+Ok, will do.
 
-I can collect more info, but I need some guidance how :) Some patch
-adding extra debug messages?
-Note I collect those via serial console (writing to disk doesn't work
-when it freezes), and that has some limits in the amount of data I can
-extract especially when printed quickly. For example sysrq-t is too much.
-Or maybe there is some trick to it, like increasing log_bug_len?
+> When you try to crunch patches together, or do non-upstream changes,
+> 90%+ of the time they end up being wrong or impossible to maintain over
+> time.
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+Ok, then I will maintain the entire history of fixes of fixes without 
+crunching them together.
 
---gCkAclEDVL+x2a5T
-Content-Type: application/pgp-signature; name="signature.asc"
+>>> But why just 5.15?  What about 6.1.y and 6.5.y?
+>>
+>> I have posted 5.10 and 5.15 for now.
+>> 6.1 would be only this patch
+>> 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu size")
+>> I can also provide.
+> 
+> Why add new features to older kernels?  That's not going to be ok,
+> sorry.
 
------BEGIN PGP SIGNATURE-----
+I will drop the module parameter stuff then, as it has no impact on the 
+communication state machine that is in the focus to be consistently 
+fixed and updated to the 6.6 code base. Then everything in 5.15 and 5.10 
+will be on the same level as 6.1. This will ease further fixes and 
+maintenance.
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmU/sAwACgkQ24/THMrX
-1yxwsQf/d2OZw7uGhOAxJWWKmU7V9KAdnggbSzQwtPgo0j2PibTD6nyiIUlSMHqG
-JXktV2ILonlsP+UnnzJHAVTUqjb8gM7g4+uvvYttZzEptfYojM8l73qOuB1uVYkM
-9KHx8i8312uOZqj+XfCVrGzB9zLXogEfcgS2JhS2jAerL9SHiBTIipQleevcaDCm
-PhFfV6eVTP9vvfaFqPcG/MtfwmJ99gws4FOj42mOyFkBqmQak4fCYdOZjk00LycW
-WXBWwpHofgFZAjpOgP0AawHbGIUUYYME5rjYhlxjod1zGogMYRMPF/e+UALTh9Jp
-/hJMOu9WMivsU9IA+oMklZT0rsV8bQ==
-=4/SH
------END PGP SIGNATURE-----
-
---gCkAclEDVL+x2a5T--
+Best regards,
+Oliver
