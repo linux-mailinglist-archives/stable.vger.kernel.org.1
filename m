@@ -2,126 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C6C7DBCFE
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 16:56:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FD947DBD7B
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 17:09:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233311AbjJ3P4I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 11:56:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35508 "EHLO
+        id S233791AbjJ3QJp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 12:09:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233501AbjJ3P4H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 11:56:07 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0301CE4
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 08:56:05 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id B1A051F7AB;
-        Mon, 30 Oct 2023 15:56:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1698681363; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=E3XSA6WYBW8wrapbDS0LhBDnP8RGWsuPkduvqjedEqs=;
-        b=kR38w7x3BQ7gPL3vFPD9UWK/Ssfj/pyDTaDMbLv2qaWIQteL3Hwcf4Vbkrc9on90TpC1F4
-        lr8Cbs1p4oNm14I8vNHRq7HSAU0ulEbAVm42YXxdQLgCb8cqyxqwxdry+JgM5ymFXtVjeq
-        xgoLjsKgHtKY/Y9oK+NdacDzYqsOeOA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1698681363;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=E3XSA6WYBW8wrapbDS0LhBDnP8RGWsuPkduvqjedEqs=;
-        b=YmGYY48HATodz9rPRuIhG053z/Hc+GzKDncp3XcDsaOpjoqlYV+AVRowhJZE1aLiHA9Zwa
-        gMionwcRsqOM67AA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 9F9E8138EF;
-        Mon, 30 Oct 2023 15:56:03 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id lVjgJhPSP2XqegAAMHmgww
-        (envelope-from <jack@suse.cz>); Mon, 30 Oct 2023 15:56:03 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id 293D2A05BC; Mon, 30 Oct 2023 16:56:03 +0100 (CET)
-Date:   Mon, 30 Oct 2023 16:56:03 +0100
-From:   Jan Kara <jack@suse.cz>
-To:     Mikulas Patocka <mpatocka@redhat.com>
-Cc:     Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>, Jan Kara <jack@suse.cz>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-Message-ID: <20231030155603.k3kejytq2e4vnp7z@quack3>
-References: <ZTiJ3CO8w0jauOzW@mail-itl>
- <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com>
- <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz>
- <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
- <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
- <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com>
- <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz>
- <20231030122513.6gds75hxd65gu747@quack3>
- <ZT+wDLwCBRB1O+vB@mail-itl>
- <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
+        with ESMTP id S233311AbjJ3QJo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 12:09:44 -0400
+Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 520EBE8
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 09:09:42 -0700 (PDT)
+Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-5af5b532d8fso38036687b3.2
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 09:09:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1698682181; x=1699286981; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wr/jxaJ7QqShhEcFIDq6cD/wBcEhf/ws8RdosBofh7o=;
+        b=I4+HEgGui6Mn7RytlAGqxxW3SG01q3esXmnYL5UssH+i9Z2V5fIYM3SgHX9wQbbHS8
+         Y0tVPdRd9IFhcKsZZE69RGge4KjXn2l+uosXUMiK4DmJnd+17oTaQIHKn+9HWHj8CioQ
+         WUCjkKi2BsTrryqu9a1EliGUBB1AOI/CHwGw4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698682181; x=1699286981;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Wr/jxaJ7QqShhEcFIDq6cD/wBcEhf/ws8RdosBofh7o=;
+        b=QHLqpxYqlZKHP64BGRYeWTavQDcdZGcnCFKp036WK+5qgTUPDRKHLO8ZsSAiBWo9ZQ
+         8ECA38uN1msfZtO5B9cIruhXjZO49t3AMIq0fdvjkH787Jw4w71+Og86MAEFS7q5Fx7X
+         Pb05HRdS5+LPNz8Cb5Gc/k6IFrkVo0aTdCYeJL/95AOwCDOWS9N6DO7kIOazsBTetArM
+         HsR3eOJD67brf3NQQcSVIpix1yCTJZJlkZgIfyCUL2hj42O0a2Dk0KV5RDnNnTMSDDfD
+         mCihA97pXnwDGGX25IcIuYGfZFOtihLps7a98kXMjmgboTm6JwkmChwC5wR1bskCtcmr
+         YbEw==
+X-Gm-Message-State: AOJu0YxvbikgRafIb7dC+6o5GU90NINUu+89wdfgdEj3PrsNUpZciPAK
+        KlP/DL1JuWDBbBqbANGC3WKQnpi7bnZUHFVnFuqx5g==
+X-Google-Smtp-Source: AGHT+IHcpaBDZRHAegPcq5YcTF3Yh4eChLz0DkEBpyDv6q/El4KSwrY79izU/nCquH/9dMRPlV3TJcRn+Q6wErU6MFE=
+X-Received: by 2002:a81:b603:0:b0:5a7:c777:2be1 with SMTP id
+ u3-20020a81b603000000b005a7c7772be1mr9989396ywh.11.1698682181460; Mon, 30 Oct
+ 2023 09:09:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
-        version=3.4.6
+References: <20231027212916.1035991-1-markhas@chromium.org> <2b8335a7-4b9b-825-c1b8-84158aaf2c42@linux.intel.com>
+In-Reply-To: <2b8335a7-4b9b-825-c1b8-84158aaf2c42@linux.intel.com>
+From:   Mark Hasemeyer <markhas@chromium.org>
+Date:   Mon, 30 Oct 2023 10:09:30 -0600
+Message-ID: <CANg-bXCcNPjmQC9vgd1JJcV4QoruhhbeEg8o=S9K-22kb746kQ@mail.gmail.com>
+Subject: Re: [PATCH v1] platform/x86/amd/pmc: Get smu version before reading
+ dram size
+To:     =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc:     Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+        LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mark Gross <markgross@kernel.org>,
+        Sanket Goswami <Sanket.Goswami@amd.com>,
+        platform-driver-x86@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon 30-10-23 15:08:56, Mikulas Patocka wrote:
-> On Mon, 30 Oct 2023, Marek Marczykowski-Górecki wrote:
-> 
-> > > Well, it would be possible that larger pages in a bio would trip e.g. bio
-> > > splitting due to maximum segment size the disk supports (which can be e.g.
-> > > 0xffff) and that upsets something somewhere. But this is pure
-> > > speculation. We definitely need more debug data to be able to tell more.
-> > 
-> > I can collect more info, but I need some guidance how :) Some patch
-> > adding extra debug messages?
-> > Note I collect those via serial console (writing to disk doesn't work
-> > when it freezes), and that has some limits in the amount of data I can
-> > extract especially when printed quickly. For example sysrq-t is too much.
-> > Or maybe there is some trick to it, like increasing log_bug_len?
-> 
-> If you can do more tests, I would suggest this:
-> 
-> We already know that it works with order 3 and doesn't work with order 4.
-> 
-> So, in the file include/linux/mmzone.h, change PAGE_ALLOC_COSTLY_ORDER 
-> from 3 to 4 and in the file drivers/md/dm-crypt.c leave "unsigned int 
-> order = PAGE_ALLOC_COSTLY_ORDER" there.
-> 
-> Does it deadlock or not?
-> 
-> So, that we can see whether the deadlock depends on 
-> PAGE_ALLOC_COSTLY_ORDER or whether it is just a coincidence.
+> Hi,
+>
+> Thank you for your patch. This has already come up but no acceptable patch
+> has emerged since. Please see this thread for what needs to be done if you
+> want to provide one (or maybe Shyam already has one which has just not
+> been sent out yet):
+>
+> https://lore.kernel.org/platform-driver-x86/3b224c62-a1d8-41bd-aced-5825f5f20e66@amd.com/
+>
+> (Since this dram size is on an init path that always needs SMU version,
+> the SMU version can just be called by the init unconditonally rather than
+> adding more of this lazy initialization everywhere).
 
-Good idea. Also if the kernel hangs, please find kcryptd processes. In what
-state are they? If they are sleeping, please send what's in
-/proc/<kcryptd-pid>/stack. Thanks!
+Thanks for pointing me to that thread. I think Shyam/AMD can come up
+with a better long term solution, but it may be worth pushing this
+patch through for a couple reasons:
+1. Probing of the driver currently fails on STB enabled systems with a
+Mendocino SoC. A slower boot time is better than the driver failing to
+load IMO.
+2. This patch only affects Mendocino SoCs, and was a suggested
+solution from Mario in the thread you mentioned.
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+That said, I can also just disable STB for now...
