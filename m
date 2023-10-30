@@ -2,80 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CD687DB323
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 07:16:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 407157DB44E
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 08:30:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231289AbjJ3GQk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 02:16:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36150 "EHLO
+        id S231615AbjJ3Ham (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 03:30:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231285AbjJ3GQj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 02:16:39 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09F76A9
-        for <stable@vger.kernel.org>; Sun, 29 Oct 2023 23:16:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF58C433C8;
-        Mon, 30 Oct 2023 06:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698646596;
-        bh=9N4Ow9AN16LvhAK4dg7DN4N94Imcak0ll712nhz3VTM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rrD0/rdQdT1K0WJFc2zkmFQrwb6goBDBsDEkwEhPr/YdC6eJhq5rCUz9HU4gELuT1
-         O3xcJSsAEoxLqD6HacAUegu3b4PXA/J+PDAlmts35HTo0XU/zxePvcrgMfGjNqVUXr
-         uZTcAVuumYhCSmTkdFGOCtNwhxmmO2PNK+EeEpws=
-Date:   Mon, 30 Oct 2023 07:16:34 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     David Lazar <dlazar@gmail.com>
-Cc:     stable@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Mark Pearson <mpearson-lenovo@squebb.ca>
-Subject: Re: [PATCH] platform/x86: Add s2idle quirk for more Lenovo laptops
-Message-ID: <2023103019-evict-brutishly-5c7e@gregkh>
-References: <ZT6idniuWk88GxOm@localhost>
+        with ESMTP id S230477AbjJ3Hal (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 03:30:41 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BEE2C0;
+        Mon, 30 Oct 2023 00:30:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1698651038; x=1730187038;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gXWZpt2Baaec3XxSr1059DajNSiecR9cDaFSnzG5vok=;
+  b=PQz0Z++h+BP1Pp3w2Bxw6+Qo1Y2ZSKqN73ddO+qj6NXCK/A+weiygUyd
+   bz40V9A4bvaZd5ikDMyW8IdpqiMTKi8asPWSTwKx5VuqCMLx3u7QrFiTK
+   toLrlTePKCeH+YgDM6K6SJF3pJ6oMNr3yLg1eipwjfMW5wbcz5hUr8rzQ
+   sXWRgZ99C/5D6IWseIAAEL6F71ZPrfqk2Ix4IASG87PYDilYSiaewppk4
+   VsL12DYGbf8TCX6z4x4x5C6BRIB866W/cUK79jpoxUwtwuoMSHyO0bSlJ
+   2AkfKEC3vbH85bRQmSg9Jf4CTZd5Z2IQUgQfdUrVvyIyD8/fTR8+z7aUb
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10878"; a="390884489"
+X-IronPort-AV: E=Sophos;i="6.03,262,1694761200"; 
+   d="scan'208";a="390884489"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2023 00:30:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10878"; a="736661418"
+X-IronPort-AV: E=Sophos;i="6.03,262,1694761200"; 
+   d="scan'208";a="736661418"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by orsmga006.jf.intel.com with SMTP; 30 Oct 2023 00:30:35 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 30 Oct 2023 09:30:34 +0200
+Date:   Mon, 30 Oct 2023 09:30:34 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     RD Babiera <rdbabiera@google.com>
+Cc:     gregkh@linuxfoundation.org, linux@roeck-us.net,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        badhri@google.com, stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: tcpm: only discover modes the port
+ supports svids for
+Message-ID: <ZT9bBnKPMTDqy6aW@kuha.fi.intel.com>
+References: <20231016232816.3355132-2-rdbabiera@google.com>
+ <ZTDkIGLmjmL9HwJP@kuha.fi.intel.com>
+ <CALzBnUF-EZjFEHCc4XRLdFr5yP8dCq7De4SaNif32LcL5=tMYA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZT6idniuWk88GxOm@localhost>
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <CALzBnUF-EZjFEHCc4XRLdFr5yP8dCq7De4SaNif32LcL5=tMYA@mail.gmail.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Oct 29, 2023 at 07:20:38PM +0100, David Lazar wrote:
-> commit 3bde7ec13c971445faade32172cb0b4370b841d9 upstream.
-> 
-> When suspending to idle and resuming on some Lenovo laptops using the
-> Mendocino APU, multiple NVME IOMMU page faults occur, showing up in
-> dmesg as repeated errors:
-> 
-> nvme 0000:01:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x000b
-> address=0xb6674000 flags=0x0000]
-> 
-> The system is unstable afterwards.
-> 
-> Applying the s2idle quirk introduced by commit 455cd867b85b ("platform/x86:
-> thinkpad_acpi: Add a s2idle resume quirk for a number of laptops")
-> allows these systems to work with the IOMMU enabled and s2idle
-> resume to work.
-> 
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218024
-> Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
-> Suggested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Signed-off-by: David Lazar <dlazar@gmail.com>
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-> Link: https://lore.kernel.org/r/ZTlsyOaFucF2pWrL@localhost
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/platform/x86/amd/pmc/pmc-quirks.c | 73 +++++++++++++++++++++++++++++++
->  1 file changed, 73 insertions(+)
+Hi,
 
-What stable kernel(s) are you wanting this applied to?
+I'm sorry to keep you waiting.
+
+<snip>
+
+> > If you need the modes to be discovered in some specific order, then we
+> > need the framework to allow you to do that. So perhaps the tcpci
+> > drivers should be able to supply the preferred order to the tcpm?
+> >
+> > But as such, unless I'm mistaken, this patch will change the logic so
+> > that only the partner alt modes that the port supports get registered,
+> > and that way are exposed to the user. You can't do that - right now
+> > it's the only way we can inform the user about them. All partner
+> > alternate modes (at least the SVIDs) must be exposed to the user one
+> > way or the other, regardless does the port support them or not.
+> 
+> The test this patch tries to fix could just be written without consideration
+> of this. My guess is that the test was designed such that the SVIDs before
+> the DisplayPort SVID are unknown to the port under test so the mentality
+> could have been "why should a port care about SVIDs it doesn't know
+> about?"
+> 
+> A defense I could make for it is that the USB PD CTS doesn't test
+> to see if a port under test sends Discover Modes for every SVID returned
+> in a Discover SVIDs ACK, so the interpretation isn't invalid. I've seen other
+> tcpm implementations handle Discover Modes this way as well.
+> 
+> Regardless, you're definitely right that the user should know about all
+> Alt Modes/SVIDs - the port would lose SVID information without
+> registering a partner altmode for it. Currently I think the approaches to pass
+> this test look like:
+>     1. Your suggestion - let the tcpci decide if there should be a
+> discovery order.
+> Alternatively, let the tcpci decide if it wants to opt into this
+> patch's behavior of
+> only discovering modes for known SVIDs - a strict discovery flag.
+>     2. Send a Discover Mode message to known SVIDs first in the order
+> they come in, and then to unknown SVIDs. The test passes and no information
+> is lost, but it's unnecessary refactoring just to pass one test for
+> one Alt Mode.
+>     3. Don't send a Discover Mode message to unknown SVIDs, but do register
+> an Alt Mode with blank info for that SVID. It passes the test without having to
+> do any reordering compared to the first option and it preserves supported
+> SVIDs. But, the port would lose information such as each SVID's Alt Modes
+> VDO plus each SVID can support more than one Alt Mode.
+> 
+> Let me know if any of these approaches sound worth pursuing; I do think
+> Option 1 does make more sense than the others.
+
+I would like to hear what Guenter thinks. Guenter, do you have time to
+take a look at this?
 
 thanks,
 
-greg k-h
+-- 
+heikki
