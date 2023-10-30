@@ -2,50 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1BB87DB8E8
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D41247DB8EC
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 12:28:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232941AbjJ3LXc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 07:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42264 "EHLO
+        id S232941AbjJ3L2v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 07:28:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232938AbjJ3LXb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:23:31 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D441EB4
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:22:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1698664963;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=WsoSqi0pr1x6sNVcc+kdDZ1hk5GZpJql/KSUpzO2HtQ=;
-        b=NviI9lm6wWOrOoQR1Vrb0eT72V811LbfPnZBY++raKqYHxdeP9wNf1KHo9WFfacZhrZl2u
-        pmBbDBqYtlUTJuPzHA+dYRFyN3mhpGEVYv1H4EygMPKTw8Av/LekzlA9BaAjBijO3MeYQu
-        Gqc7d5/bzI49VrN31aIOx3y2TeRQX/g=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-492-sUZWnPKSONSu9s7Br8Ss7A-1; Mon, 30 Oct 2023 07:22:39 -0400
-X-MC-Unique: sUZWnPKSONSu9s7Br8Ss7A-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
+        with ESMTP id S232958AbjJ3L2t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 07:28:49 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC1FCC1
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 04:28:46 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 18667802E65;
-        Mon, 30 Oct 2023 11:22:39 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id E4E102026D66;
-        Mon, 30 Oct 2023 11:22:38 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-        id D085130C72AB; Mon, 30 Oct 2023 11:22:38 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id CCAA53D99F;
-        Mon, 30 Oct 2023 12:22:38 +0100 (CET)
-Date:   Mon, 30 Oct 2023 12:22:38 +0100 (CET)
-From:   Mikulas Patocka <mpatocka@redhat.com>
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 2F4B31FEF0;
+        Mon, 30 Oct 2023 11:28:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1698665325; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=7+MAdxAuVinBXZcCJL4/EKLK4pRjoLXrIPh+TEUOPZE=;
+        b=XW8axk8UmIhsqHSxUQBcewcGOXoBAH7r5DaLZDdsYsO40AQIXr1e2csYN7ueAdM98cJqjY
+        QvwuJOH0ShR5RlQMLqeczeRT08BQ+fmpU8anq/BVCGjnnuSOIM8c8gLwEdN02J6kPc+G/C
+        YD9Y7DTL1iT18fOkDWUVq74tTvjcFYI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1698665325;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=7+MAdxAuVinBXZcCJL4/EKLK4pRjoLXrIPh+TEUOPZE=;
+        b=jq7LbyhL8aFf8kmwRFv8/QL9PD6AwV0DeKhn++1TmLbMFdAU+e4G2mxN4gqZ80nQCsvgbD
+        F/URD+2Qq9zbtWCA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1C55E138F8;
+        Mon, 30 Oct 2023 11:28:45 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 4ZvkBm2TP2VeTgAAMHmgww
+        (envelope-from <jack@suse.cz>); Mon, 30 Oct 2023 11:28:45 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+        id 90A8BA05BC; Mon, 30 Oct 2023 12:28:44 +0100 (CET)
+Date:   Mon, 30 Oct 2023 12:28:44 +0100
+From:   Jan Kara <jack@suse.cz>
 To:     Vlastimil Babka <vbabka@suse.cz>
-cc:     =?ISO-8859-15?Q?Marek_Marczykowski-G=F3recki?= 
+Cc:     Mikulas Patocka <mpatocka@redhat.com>,
+        Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
         <marmarek@invisiblethingslab.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Matthew Wilcox <willy@infradead.org>,
@@ -54,27 +61,79 @@ cc:     =?ISO-8859-15?Q?Marek_Marczykowski-G=F3recki?=
         Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
         linux-mm@kvack.org, Jan Kara <jack@suse.cz>
 Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-In-Reply-To: <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
-Message-ID: <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com>
-References: <ZTNH0qtmint/zLJZ@mail-itl> <e427823c-e869-86a2-3549-61b3fdf29537@redhat.com> <ZTiHQDY54E7WAld+@mail-itl> <ZTiJ3CO8w0jauOzW@mail-itl> <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com> <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz>
- <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com> <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
+Message-ID: <20231030112844.g7b76cm2xxpovt6e@quack3>
+References: <ZTNH0qtmint/zLJZ@mail-itl>
+ <e427823c-e869-86a2-3549-61b3fdf29537@redhat.com>
+ <ZTiHQDY54E7WAld+@mail-itl>
+ <ZTiJ3CO8w0jauOzW@mail-itl>
+ <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com>
+ <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz>
+ <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
+ <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
+Authentication-Results: smtp-out2.suse.de;
+        none
+X-Spam-Level: 
+X-Spam-Score: -10.60
+X-Spamd-Result: default: False [-10.60 / 50.00];
+         ARC_NA(0.00)[];
+         RCVD_VIA_SMTP_AUTH(0.00)[];
+         BAYES_HAM(-3.00)[100.00%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         NEURAL_HAM_LONG(-3.00)[-1.000];
+         MIME_GOOD(-0.10)[text/plain];
+         REPLY(-4.00)[];
+         DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+         NEURAL_HAM_SHORT(-1.00)[-1.000];
+         RCPT_COUNT_TWELVE(0.00)[13];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         MID_RHS_NOT_FQDN(0.50)[];
+         RCVD_COUNT_TWO(0.00)[2];
+         RCVD_TLS_ALL(0.00)[];
+         SUBJECT_HAS_QUESTION(0.00)[]
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-On Mon, 30 Oct 2023, Vlastimil Babka wrote:
-
+On Mon 30-10-23 09:37:10, Vlastimil Babka wrote:
+> On 10/30/23 08:37, Mikulas Patocka wrote:
+> > On Sun, 29 Oct 2023, Vlastimil Babka wrote:
+> > 
+> >> Haven't found any. However I'd like to point out some things I noticed in
+> >> crypt_alloc_buffer(), although they are probably not related.
+> >> 
+> >> > static struct bio *crypt_alloc_buffer(struct dm_crypt_io *io, unsigned int size)
+> >> > {
+> >> > 	struct crypt_config *cc = io->cc;
+> >> > 	struct bio *clone;
+> >> > 	unsigned int nr_iovecs = (size + PAGE_SIZE - 1) >> PAGE_SHIFT;
+> >> > 	gfp_t gfp_mask = GFP_NOWAIT | __GFP_HIGHMEM;
+> >> > 	unsigned int remaining_size;
+> >> > 	unsigned int order = MAX_ORDER - 1;
+> >> > 
+> >> > retry:
+> >> > 	if (unlikely(gfp_mask & __GFP_DIRECT_RECLAIM))
+> >> > 		mutex_lock(&cc->bio_alloc_lock);
+> >> 
+> >> What if we end up in "goto retry" more than once? I don't see a matching
+> > 
+> > It is impossible. Before we jump to the retry label, we set 
+> > __GFP_DIRECT_RECLAIM. mempool_alloc can't ever fail if 
+> > __GFP_DIRECT_RECLAIM is present (it will just wait until some other task 
+> > frees some objects into the mempool).
+> 
 > Ah, missed that. And the traces don't show that we would be waiting for
 > that. I'm starting to think the allocation itself is really not the issue
 > here. Also I don't think it deprives something else of large order pages, as
@@ -84,16 +143,26 @@ On Mon, 30 Oct 2023, Vlastimil Babka wrote:
 > works well with order-0 or up to costly_order pages, but there's some
 > problem causing a deadlock if the bio contains larger pages than that?
 
-Yes. There are many "if (order > PAGE_ALLOC_COSTLY_ORDER)" branches in the 
-memory allocation code and I suppose that one of them does something bad 
-and triggers this bug. But I don't know which one.
+Hum, so in all the backtraces presented we see that we are waiting for page
+writeback to complete but I don't see anything that would be preventing the
+bios from completing. Page writeback can submit quite large bios so it kind
+of makes sense that it trips up some odd behavior. Looking at the code
+I can see one possible problem in crypt_alloc_buffer() but it doesn't
+explain why reducing initial page order would help. Anyway: Are we
+guaranteed mempool has enough pages for arbitrarily large bio that can
+enter crypt_alloc_buffer()? I can see crypt_page_alloc() does limit the
+number of pages in the mempool to dm_crypt_pages_per_client plus I assume
+the percpu counter bias in cc->n_allocated_pages can limit the really
+available number of pages even further. So if a single bio is large enough
+to trip percpu_counter_read_positive(&cc->n_allocated_pages) >=
+dm_crypt_pages_per_client condition in crypt_page_alloc(), we can loop
+forever? But maybe this cannot happen for some reason...
 
-> Cc Honza. The thread starts here:
-> https://lore.kernel.org/all/ZTNH0qtmint%2FzLJZ@mail-itl/
-> 
-> The linked qubes reports has a number of blocked task listings that can be
-> expanded:
-> https://github.com/QubesOS/qubes-issues/issues/8575
+If this is not it, I think we need to find out why the writeback bios are
+not completeting. Probably I'd start with checking what is kcryptd,
+presumably responsible for processing these bios, doing.
 
-Mikulas
-
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
