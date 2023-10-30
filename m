@@ -2,181 +2,536 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 044AF7DBDA9
-	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 17:21:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAFED7DBE41
+	for <lists+stable@lfdr.de>; Mon, 30 Oct 2023 17:51:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233325AbjJ3QVU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 12:21:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60482 "EHLO
+        id S232072AbjJ3QvU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 12:51:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229514AbjJ3QVT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 12:21:19 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2100.outbound.protection.outlook.com [40.107.244.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2657C2;
-        Mon, 30 Oct 2023 09:21:15 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iNtg0Yl8Hz1G0dYGxunmlZWu3fFmqmcrw24zcAEs8qtN0x9MdFNNvPS8rgzz+ed7Ke0d4ewNk2URe4sM9szl5YVpEf9JVVXJM9gG47mTdPXV4PHzNZgQk9vrzSVGQW8gBtbrKiguTjFfGphvQKQH76IBhR+4bUvRR2wIIglh/RPWeLi1LFKDeti8XrnSaEORJuQ/OCcNnRzKk7BptyuL88gQBaRvL/gflyYMb/r6e1LoOG5SaaQhUmPRGXvlf5m3RpYek7JSBDtE3f9aZ1C/ON9mBXYxx3TPON8O2CiyP3lsYb9zfrmqVhLfb0xST6W6rEiqoY6eNVK8sDuk6rMCSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QHST0a99aEpiCs2qSrEQ8Her7o0qDNow3ACUNKwsJXY=;
- b=D8oYWGD9CYkAWTGqnQar3Rk8iWX7vMTXS5LCSoS2IFsoIWJ+Kxjx8nKqsxiEAgIzoPzieUaEUcVVvm7qaYZWHu2IK7/hwNY+LMOFHRy4mohAvtncwV+y7aDuZw1uxDh8t+JOnkSIwhtDv21zsK+io758tsqyTJ1kstUpdM3KWhipmtDZIKJus55s+7IkpVGMHwr3AydiuFQ1O3RU2OIX/fyzyaPO043bHozB5VvZ6s9erp8CAiu7ni1kxwqUHWJ1LtEfdZ3P71oymkZBmHVIr5+AxSrtc82x3xCSExKe2PJEsy4z1GzgX/ZUv3YXl4IM4CTI/HnM6GtP5sGLknuGLw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
- header.from=os.amperecomputing.com; dkim=pass
- header.d=os.amperecomputing.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=os.amperecomputing.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QHST0a99aEpiCs2qSrEQ8Her7o0qDNow3ACUNKwsJXY=;
- b=W5Zq/iSn/doHmzzegm5d389w9MM3fHEPns//XHguWtb6I9iJAutLeKHqtSxx8DRunePXNSjT1Ag7I8TB7OgqcZkK9oAoWqeMaPYY3x7meIMRXXGeKj8rwkvZvryZn4yfDo8LEfOc8Z/2eR04H2oEV2j6YgSlFmX1WydD4KpVUUQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=os.amperecomputing.com;
-Received: from PH0PR01MB6795.prod.exchangelabs.com (2603:10b6:510:91::18) by
- DM8PR01MB7109.prod.exchangelabs.com (2603:10b6:8:a::6) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6907.33; Mon, 30 Oct 2023 16:21:11 +0000
-Received: from PH0PR01MB6795.prod.exchangelabs.com
- ([fe80::9da1:e537:76d7:8a52]) by PH0PR01MB6795.prod.exchangelabs.com
- ([fe80::9da1:e537:76d7:8a52%5]) with mapi id 15.20.6907.032; Mon, 30 Oct 2023
- 16:21:11 +0000
-Date:   Mon, 30 Oct 2023 09:21:10 -0700
-From:   Darren Hart <darren@os.amperecomputing.com>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Wim Van Sebroeck <wim@linux-watchdog.org>,
-        linux-kernel@vger.kernel.org,
-        Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
-        linux-watchdog@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH] sbsa_gwdt: Calculate timeout with 64-bit math
-Message-ID: <ZT/X9viGhNc9NoCY@Fedora>
-References: <7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com>
- <bcc41311-075c-44fe-b0f7-30564d7ac58c@roeck-us.net>
- <ZSpbfXzFeaoUJRZ3@Fedora>
- <1fae4d2c-4bc7-f169-7b84-501674a82ee4@roeck-us.net>
- <20231029161056.GB5887@www.linux-watchdog.org>
- <750ec6f7-f075-4075-ba9d-eb67f69239ec@roeck-us.net>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <750ec6f7-f075-4075-ba9d-eb67f69239ec@roeck-us.net>
-X-ClientProxiedBy: MW4PR04CA0267.namprd04.prod.outlook.com
- (2603:10b6:303:88::32) To PH0PR01MB6795.prod.exchangelabs.com
- (2603:10b6:510:91::18)
+        with ESMTP id S231919AbjJ3QvT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 12:51:19 -0400
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CAC1DA
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 09:51:15 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.nyi.internal (Postfix) with ESMTP id 5A8EA5C00F8;
+        Mon, 30 Oct 2023 12:51:12 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Mon, 30 Oct 2023 12:51:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1698684672; x=1698771072; bh=vFT3biKe+R2SZSGOpiXEA/apBlYAwDLEu0q
+        /hncIIzA=; b=V6bAWfyLaPvvM/YLRo91+csURkXKz4WDZAFA3U8HKBNwmv8m0oN
+        39yN7RvWV/kFSWkWwz7NN4ENPfCJA9DFwODdKHokWetcBYP22qTvrhgMekWEnnC8
+        lnPe0IvUQecH8FoSzVa7K6dAMfFdYCfxvIVOE7Ums6yJpyhTvlIflZBG1/BARA9V
+        4efIkgcTxtWq+mpKAsliJixhnBtMIEcAAPNqTgHo+eHjyrG9fPRGO9ByPGVk6o0T
+        1zkfpREsDgU/JM39qqBYT+J5cJOPUGbp71DgHvYk5kFvpoX+OBr/11pjaU+so8YR
+        L9iQ344d+psyAqy/P1/Q2yQA7BpQbKu7Eow==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1698684672; x=1698771072; bh=vFT3biKe+R2SZ
+        SGOpiXEA/apBlYAwDLEu0q/hncIIzA=; b=ryS2LRe2uAoLeFn3tlWlYMBYQgYVw
+        2V4Kf5VC5Tfzc9CzZNASWDgA15e1Ycro1Bw2kF9kNxvwEZ7027NfmXn49e3+rN0c
+        RdEmpMuXcSCsmlt+wG/qBztY3Zue0JhGRPBfOJtYdbPpt8F1gdWYgqalCNozrgPd
+        WN3bIL62FhKxtLczRMlqF3kPKz36DfFyt0/oYY1CC6KPQDHPsebXT72qh0dwl2zt
+        li6uTQHRZH2Y/DEMQslvravHKPfCq6BuSZ+QWs0MTggo21UFOjn8zKuY6D4ENGm2
+        LwKnw5cpRK6ax1IngKg4Z4bSNPBOdtRtAJjjvnsUmCJevJnfPj/yI1aHA==
+X-ME-Sender: <xms:_94_ZTmhhOp5ltdvXAJtBlk8h2dhBEARvBR2etZTEu6DDj3ZIVPceg>
+    <xme:_94_ZW3301memA1nZ1BuLvlaE6mV0qTX8PpLuYXrUqF7uHBc-5p98xL_3BHz0bj3j
+    rLYY1qtIeZz6A>
+X-ME-Received: <xmr:_94_ZZqfaEUX3M-YD0r3VD7whbXmfGrUk82sdXjTbljVIIA-ZkEmRL0VMDFJn56TdElszXBuj9tbO77-VXQbNhUR2db7G7rgwXY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddttddgleduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
+    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
+    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
+    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
+    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+X-ME-Proxy: <xmx:_94_Zbm8y3-yfNxRUF6hzyk5jdftOYX2H3ILM7omgCQJHZlKefMEJg>
+    <xmx:_94_ZR1VHRpZHK_tkh3KCRwtgs6qPVNa4ByZ56-rdIy6FBodf-17zA>
+    <xmx:_94_Zavnl5bSPE8gG6Bvp6WAut61Wv9S1bfbD2C8sLhZMkd9eHPOWg>
+    <xmx:AN8_Zbx9HQtu9gH-9h3q4L8jFJ325v-jvo7GAY5LKeNuYKA7mKh-kw>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Oct 2023 12:51:09 -0400 (EDT)
+Date:   Mon, 30 Oct 2023 17:51:07 +0100
+From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+To:     Jan Kara <jack@suse.cz>
+Cc:     Mikulas Patocka <mpatocka@redhat.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Message-ID: <ZT/e/EaBIkJEgevQ@mail-itl>
+References: <a413efbf-7194-95ff-562b-f2eb766ca5c1@redhat.com>
+ <89320668-67a2-2a41-e577-a2f561e3dfdd@suse.cz>
+ <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
+ <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
+ <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com>
+ <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz>
+ <20231030122513.6gds75hxd65gu747@quack3>
+ <ZT+wDLwCBRB1O+vB@mail-itl>
+ <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
+ <20231030155603.k3kejytq2e4vnp7z@quack3>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR01MB6795:EE_|DM8PR01MB7109:EE_
-X-MS-Office365-Filtering-Correlation-Id: 60b732ea-7e08-4047-4fa2-08dbd9643b1c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: xMbqwOA5lxd4stY3fmogyJHnwiLbdE3W7SWmugbLGTSVOt1Dp0v48HbZL26TwY53VUFwsvJOFtHFP2dfIC+dpSqZUc3DD1Jliw6BKwSZWUQGbAIxckJmO/EMcYg6lRodXwd3Zw7fmfl+b9b4W1J2YW2sMz1TwXXixsbjMaDy3j/8PeLOJNT2TYMC30JvWx0jFTA3BHUy4ayMfx9nDDaBfzjlXOr6FSs7yeWFPD5R4uz78ohQe3eRIRimNYRE4hKTT9Dug+XshT52AqXk7IE+VPRa5MYIg/5ZuQBoi7Q/aJGdK55EeswwMiFtAjk2/IcHFUC2B8cSRY+bHr2oVS/13XveojQNiMxZYig7NzptjBFT6AU3ZpH7tx8LGqFOZft0PuNWAJnPbIn+j8SVCo1FGiJs4tVQDmfxv/+9h6Ir5Ym3KjsFv+fDn7QLpI4UOE+C8YkvuPRJNGOMTb/6ygtjK5OqyUCeLsSu53IIWCl2WUw9y5e0pOy3x+gCT9I0P9dj5b1o4eX+oMtAwvbzdVK3DFRUtL2M/X3AxuAl6AU3pfxXCISKV4A9SPfw5BKV0NMhHtT7JizWk/hipT3k83gEs8JpUOA77umBHGttrUthyEs7Z14WZanN1ZjbihnKht32
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR01MB6795.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(366004)(39850400004)(346002)(376002)(136003)(396003)(230922051799003)(451199024)(64100799003)(1800799009)(186009)(38350700005)(26005)(33716001)(66899024)(41300700001)(2906002)(86362001)(38100700002)(5660300002)(4326008)(8936002)(8676002)(66556008)(478600001)(6916009)(83380400001)(66476007)(6506007)(54906003)(66946007)(316002)(52116002)(9686003)(6486002)(6512007)(53546011);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?tdJ1mqxcYW5LN4DpttrLz6bLFAHGSF3hLTVJtk68t7gnT1cuU2bdk0nTFHQI?=
- =?us-ascii?Q?7KnKv3B74FUFL+pDGSn9C3dpWIMrzBcro9InHjMssetJ99JTfdHa1gLWNkTR?=
- =?us-ascii?Q?V45JfckY0Y8CBLIwOiv54jHYmm2YOoFKEwdWhreL7bEc4n1uCONXPeZXaoI8?=
- =?us-ascii?Q?V3DfWbnbafkoESxoFExgPeyeeDBwjjaH0gLlmlHx/kgSz0j4AFyeE6fKTqRR?=
- =?us-ascii?Q?hkePh1XoE2BBiOjZgez4aEBCe0rDYL6GqCNpmub4nAlwGJkXvK76fvDCPVKz?=
- =?us-ascii?Q?A97WNFkI+VO3u+tqCMnKLPUcHtWYuVcbCgHGxU8NJZPeskSIMJIJ67y6c8dS?=
- =?us-ascii?Q?oyIV6osRjdMZT+ngo+0TGFu3wTYCcuu7czdi6AndJQatA74LwWO3VT3nm2/W?=
- =?us-ascii?Q?5QMb9MqZb6Dho1eneUiMzF8VZR/1CJRqR8ybfDXfM8+NmHj7rWZ4qaBv4FxS?=
- =?us-ascii?Q?5kywZMvC3wIInzUtPzeYxs/V+w1hvvtn3NfTZZeR8IWJesqxkj7aqo+cVTAP?=
- =?us-ascii?Q?dSFMPOuWMXcgFUVxJAwocTtmrTIR9gRBb+3HFtYdv5079XKyvKLM7XK14Zl1?=
- =?us-ascii?Q?JIeKK/53xs/TjySFpUbQVvOsHRrNpdptUilVmzt/9KhqZio30+FzFGwtDdRK?=
- =?us-ascii?Q?8qLsspbaQ2pEM4vWd0l2sM3E3viPlM7ebk/CGwEFmvy9BNQX8OI6lvpCAKIk?=
- =?us-ascii?Q?/49K9D5aAcs18FS6UOtPrGnfFwLUbeCbuIuJ9DznR6Wq6YeoIbBy891L4Efz?=
- =?us-ascii?Q?6VpXQyD2VOP6pQTnk4cy+TzRIKW2sfvcpXfP06zfRsbKO0s3l7IaL+U7+Xcn?=
- =?us-ascii?Q?MKfSQGmKDeg8ovO88IqJebdzXyVJKA6PKv5woPNUsIAhfPc2c0X8a0GKlqJq?=
- =?us-ascii?Q?c16PCZbDnIs1TBDhHaz2UIgxq/x5Lq0iJd03H63e1UgcKYufCiacCsI1JEMK?=
- =?us-ascii?Q?ipi4Bmzs1HYellIOSeTY9Fez1cvzObCmrKFZ8plG68mr9EA/UV5qRcPSebUc?=
- =?us-ascii?Q?N0e22fnNeOSjSOvIFzJJ5dxuu9AzvHLxmFxOMyjTy0ntuZBTp7K1149QhA71?=
- =?us-ascii?Q?yskPiFhWYLYUyQI/F/DjY5/EdenRTsj/rIKI037tO6lkWoYxKIyWREDJBvHZ?=
- =?us-ascii?Q?WG48r54Cs74HR3kqMHricURhK45KZjbuu++9SA7Wy2Jn5n+Mj8bd9f9aDJMv?=
- =?us-ascii?Q?jTLK4rHqoUKiWwY2Zo0dSe9++q3G2UaREXdOcbFcrZGqHUesZRGdaVWTrGJJ?=
- =?us-ascii?Q?ir/ABt3sUN2KLoE6SShXlwILhehFWrlxEFv6nR17H6hd3mXUFPHImIhddlKD?=
- =?us-ascii?Q?s70ut2yeo1M2bwt+Tn0hm5T6g/KgG+xF6QpE6uX7NHh8DsHzRIo1f6RmpzjZ?=
- =?us-ascii?Q?7i0UVz6g5jg7y49Ds+PDmp/zmLLPFixE746VkjT7fEQMU4kUmCVcBtzVNNYY?=
- =?us-ascii?Q?3FByGg0fSb+qIdkURINI/QYiVUYYGYROJssFtmkWWyGkunzG6JL6VCnpOzRO?=
- =?us-ascii?Q?8WNU2h5audJn2Rkb+E+l7k16aOQWOffqHsMYuC3AknM72O5aRe6fPEN6yPW3?=
- =?us-ascii?Q?5crAsw+z9RnISGYVInvbZBfAtb3RHkOgY+p57Ov9vbrYvXpW95mONm6gv3Qg?=
- =?us-ascii?Q?+hWkBrOC7Gox7ebbl3iTZrY=3D?=
-X-OriginatorOrg: os.amperecomputing.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 60b732ea-7e08-4047-4fa2-08dbd9643b1c
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR01MB6795.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2023 16:21:11.6202
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dEgAjK+LOMEvgrCIvePaRzmHv/8RLystE+1GDoMxVdQqVgjUajLlMSRA/x3fQeaS//LpgE5rBiGBkn8OwSm4rp8yOLYXMziheAwaWjwS9DDOus4MfNo0NAoUAByLo0jh
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM8PR01MB7109
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="MgdTOJabKUs9zLjX"
+Content-Disposition: inline
+In-Reply-To: <20231030155603.k3kejytq2e4vnp7z@quack3>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Oct 29, 2023 at 10:00:54AM -0700, Guenter Roeck wrote:
-> On 10/29/23 09:10, Wim Van Sebroeck wrote:
-> > Hi Guenter,
-> > 
-> > > On 10/14/23 02:12, Darren Hart wrote:
-> > > > On Tue, Sep 26, 2023 at 05:45:13AM -0700, Guenter Roeck wrote:
-> > > > > On Thu, Sep 21, 2023 at 02:02:36AM -0700, Darren Hart wrote:
-> > > > > > Commit abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
-> > > > > > introduced new timer math for watchdog revision 1 with the 48 bit offset
-> > > > > > register.
-> > > > > > 
-> > > > > > The gwdt->clk and timeout are u32, but the argument being calculated is
-> > > > > > u64. Without a cast, the compiler performs u32 operations, truncating
-> > > > > > intermediate steps, resulting in incorrect values.
-> > > > > > 
-> > > > > > A watchdog revision 1 implementation with a gwdt->clk of 1GHz and a
-> > > > > > timeout of 600s writes 3647256576 to the one shot watchdog instead of
-> > > > > > 300000000000, resulting in the watchdog firing in 3.6s instead of 600s.
-> > > > > > 
-> > > > > > Force u64 math by casting the first argument (gwdt->clk) as a u64. Make
-> > > > > > the order of operations explicit with parenthesis.
-> > > > > > 
-> > > > > > Fixes: abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
-> > > > > > Reported-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
-> > > > > > Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
-> > > > > > Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
-> > > > > > Cc: Guenter Roeck <linux@roeck-us.net>
-> > > > > > Cc: linux-watchdog@vger.kernel.org
-> > > > > > Cc: linux-kernel@vger.kernel.org
-> > > > > > Cc: linux-arm-kernel@lists.infradead.org
-> > > > > > Cc: <stable@vger.kernel.org> # 5.14.x
-> > > > > 
-> > > > > Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-> > > > 
-> > > > Guenter or Wim, I haven't seen this land in the RCs or in next yet. Have
-> > > > you already picked it up? Anything more needed from me?
-> > > > 
-> > > > Thanks,
-> > > > 
-> > > 
-> > > Sorry, I am suffering from what I can only describe as a severe case of
-> > > maintainer/reviewer PTSD, and I have yet to find a way of dealing with that.
-> > 
-> > I can imagine what it is like. And I do know that if you wouldn't have been there,
-> > that I would have allready stopped being a maintainer. So I hope you can find the
-> > right cooping mechanisms. I also had to work non-stop the last 4 to 5 weeks and it was hell.
-> > So I wish you all the best.
-> > 
-> > PS: picking up all patches that have your review-by tag on it as we speack.
-> > 
-> 
-> Thanks,
-> Guenter
 
-Thanks for the support Wim and Guenter. Appreciate the work you do and the
-pressures of maintainership.
+--MgdTOJabKUs9zLjX
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 30 Oct 2023 17:51:07 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Jan Kara <jack@suse.cz>
+Cc: Mikulas Patocka <mpatocka@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
 
--- 
-Darren Hart
-Ampere Computing / Linux Enabling
+On Mon, Oct 30, 2023 at 04:56:03PM +0100, Jan Kara wrote:
+> On Mon 30-10-23 15:08:56, Mikulas Patocka wrote:
+> > On Mon, 30 Oct 2023, Marek Marczykowski-G=C3=B3recki wrote:
+> >=20
+> > > > Well, it would be possible that larger pages in a bio would trip e.=
+g. bio
+> > > > splitting due to maximum segment size the disk supports (which can =
+be e.g.
+> > > > 0xffff) and that upsets something somewhere. But this is pure
+> > > > speculation. We definitely need more debug data to be able to tell =
+more.
+> > >=20
+> > > I can collect more info, but I need some guidance how :) Some patch
+> > > adding extra debug messages?
+> > > Note I collect those via serial console (writing to disk doesn't work
+> > > when it freezes), and that has some limits in the amount of data I can
+> > > extract especially when printed quickly. For example sysrq-t is too m=
+uch.
+> > > Or maybe there is some trick to it, like increasing log_bug_len?
+> >=20
+> > If you can do more tests, I would suggest this:
+> >=20
+> > We already know that it works with order 3 and doesn't work with order =
+4.
+> >=20
+> > So, in the file include/linux/mmzone.h, change PAGE_ALLOC_COSTLY_ORDER=
+=20
+> > from 3 to 4 and in the file drivers/md/dm-crypt.c leave "unsigned int=
+=20
+> > order =3D PAGE_ALLOC_COSTLY_ORDER" there.
+> >=20
+> > Does it deadlock or not?
+> >=20
+> > So, that we can see whether the deadlock depends on=20
+> > PAGE_ALLOC_COSTLY_ORDER or whether it is just a coincidence.
+>=20
+> Good idea. Also if the kernel hangs, please find kcryptd processes. In wh=
+at
+> state are they? If they are sleeping, please send what's in
+> /proc/<kcryptd-pid>/stack. Thanks!
+
+Will do.
+
+In the meantime, while testing version with PAGE_ALLOC_COSTLY_ORDER=3D4,
+and order=3DPAGE_ALLOC_COSTLY_ORDER, I'm getting crash like this (see
+important note below both traces):
+
+    [   92.668486] BUG: unable to handle page fault for address: ffff8880c7=
+b64098
+    [   92.668558] #PF: supervisor read access in kernel mode
+    [   92.668574] #PF: error_code(0x0000) - not-present page
+    [   92.668590] PGD 2a32067 P4D 2a32067 PUD 12868a067 PMD 0=20
+    [   92.668617] Oops: 0000 [#1] PREEMPT SMP NOPTI
+    [   92.668637] CPU: 5 PID: 0 Comm: swapper/5 Tainted: G        W       =
+   6.5.6-dirty #354
+    [   92.668658] Hardware name: Star Labs StarBook/StarBook, BIOS 8.97 10=
+/03/2023
+    [   92.668675] RIP: e030:__free_one_page+0x301/0x3e0
+    [   92.668704] Code: 02 0f 85 c1 fe ff ff 49 c1 e6 04 49 8d 4c 24 08 4a=
+ 8d 94 36 c0 00 00 00 48 8d 34 80 48 8d 04 70 4c 01 fa 48 c1 e0 03 49 01 c6=
+ <4b> 8b b4 37 c0 00 00 00 48 89 4e 08 49 89 74 24 08 49 89 54 24 10
+    [   92.668738] RSP: e02b:ffffc90040154c60 EFLAGS: 00010006
+    [   92.668754] RAX: 0000000000000058 RBX: 0000000000000001 RCX: ffff888=
+075f66bc0
+    [   92.668773] RDX: ffff8880c7b64098 RSI: 0000000000000005 RDI: 0000000=
+000000000
+    [   92.668789] RBP: fffffe7a01d7d9ae R08: ffff888075f66b38 R09: fffffe7=
+a01d7d9ac
+    [   92.668805] R10: ffffea0004b35bc8 R11: 0000000000000001 R12: ffff888=
+075f66bb8
+    [   92.668821] R13: 0000000000000000 R14: 0000000051bfd4d8 R15: ffff888=
+075f66b00
+    [   92.668854] FS:  0000000000000000(0000) GS:ffff888189740000(0000) kn=
+lGS:0000000000000000
+    [   92.668874] CS:  10000e030 DS: 002b ES: 002b CR0: 0000000080050033
+    [   92.668889] CR2: ffff8880c7b64098 CR3: 0000000133cf8000 CR4: 0000000=
+000050660
+    [   92.668912] Call Trace:
+    [   92.668924]  <IRQ>
+    [   92.668934]  ? __die+0x1e/0x60
+    [   92.668955]  ? page_fault_oops+0x178/0x4a0
+    [   92.668975]  ? exc_page_fault+0x14e/0x160
+    [   92.668994]  ? asm_exc_page_fault+0x26/0x30
+    [   92.669014]  ? __free_one_page+0x301/0x3e0
+    [   92.669027]  free_pcppages_bulk+0x11c/0x2b0
+    [   92.669042]  free_unref_page+0x10d/0x170
+    [   92.669058]  crypt_free_buffer_pages+0x1f4/0x250
+    [   92.669079]  crypt_endio+0x48/0x70
+    [   92.669094]  blk_mq_end_request_batch+0xd0/0x400
+    [   92.669114]  nvme_irq+0x6d/0x80
+    [   92.669132]  ? __pfx_nvme_pci_complete_batch+0x10/0x10
+    [   92.669148]  __handle_irq_event_percpu+0x42/0x1a0
+    [   92.669166]  handle_irq_event+0x33/0x70
+    [   92.669179]  handle_edge_irq+0x9e/0x240
+    [   92.669197]  handle_irq_desc+0x36/0x50
+    [   92.669215]  __evtchn_fifo_handle_events+0x1af/0x1d0
+    [   92.669236]  __xen_evtchn_do_upcall+0x70/0xd0
+    [   92.669255]  __xen_pv_evtchn_do_upcall+0x3d/0x70
+    [   92.669275]  xen_pv_evtchn_do_upcall+0xd9/0x110
+    [   92.669294]  </IRQ>
+    [   92.669302]  <TASK>
+    [   92.669310]  exc_xen_hypervisor_callback+0x8/0x20
+    [   92.669330] RIP: e030:xen_hypercall_xen_version+0xa/0x20
+    [   92.669348] Code: 51 41 53 b8 10 00 00 00 0f 05 41 5b 59 c3 cc cc cc=
+ cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 51 41 53 b8 11 00 00 00 0f 05=
+ <41> 5b 59 c3 cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+    [   92.669380] RSP: e02b:ffffc900400c7e08 EFLAGS: 00000246
+    [   92.669394] RAX: 0000000000040011 RBX: 0000000000000000 RCX: fffffff=
+f81fc222a
+    [   92.669411] RDX: 0000000000000002 RSI: 0000000000000000 RDI: 0000000=
+000000000
+    [   92.669426] RBP: ffffc900400c7eb0 R08: 0000000000000000 R09: 0000000=
+0000001ba
+    [   92.669442] R10: 0000000000007ff0 R11: 0000000000000246 R12: ffff888=
+18976c540
+    [   92.669458] R13: ffff888101e10000 R14: 0000000000000000 R15: 0000000=
+000000402
+    [   92.669475]  ? xen_hypercall_xen_version+0xa/0x20
+    [   92.669493]  ? pmu_msr_read+0x3c/0xd0
+    [   92.669510]  ? xen_force_evtchn_callback+0xd/0x20
+    [   92.669526]  ? check_events+0x16/0x30
+    [   92.669540]  ? xen_irq_enable_direct+0x1d/0x30
+    [   92.669556]  ? finish_task_switch.isra.0+0x8e/0x270
+    [   92.669576]  ? __switch_to+0x165/0x3b0
+    [   92.669590]  ? __schedule+0x316/0x8b0
+    [   92.669609]  ? schedule_idle+0x25/0x40
+    [   92.669626]  ? cpu_startup_entry+0x25/0x30
+    [   92.669641]  ? cpu_bringup_and_idle+0x89/0xa0
+    [   92.669660]  ? asm_cpu_bringup_and_idle+0x9/0x10
+    [   92.669680]  </TASK>
+    [   92.669688] Modules linked in: snd_hda_codec_hdmi snd_hda_codec_gene=
+ric ledtrig_audio snd_sof_pci_intel_tgl snd_sof_intel_hda_common snd_soc_hd=
+ac_hda soundwire_intel soundwire_generic_allocation snd_sof_intel_hda_mlink=
+ soundwire_cadence snd_sof_intel_hda snd_sof_pci snd_sof snd_sof_utils snd_=
+sof_xtensa_dsp snd_soc_acpi_intel_match snd_soc_acpi snd_hda_ext_core sound=
+wire_bus snd_soc_core snd_compress snd_pcm_dmaengine ac97_bus snd_hda_intel=
+ snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hwdep hid_multitouch=
+ snd_hda_core snd_seq snd_seq_device idma64 snd_pcm i2c_designware_platform=
+ iwlwifi i2c_designware_core snd_timer snd soundcore i2c_i801 i2c_smbus efi=
+varfs i2c_hid_acpi i2c_hid pinctrl_tigerlake pinctrl_intel xen_acpi_process=
+or xen_pciback xen_blkback xen_gntalloc xen_gntdev xen_evtchn uinput
+    [   92.669901] CR2: ffff8880c7b64098
+    [   92.669915] ---[ end trace 0000000000000000 ]---
+    [   92.669930] RIP: e030:__free_one_page+0x301/0x3e0
+    [   92.669946] Code: 02 0f 85 c1 fe ff ff 49 c1 e6 04 49 8d 4c 24 08 4a=
+ 8d 94 36 c0 00 00 00 48 8d 34 80 48 8d 04 70 4c 01 fa 48 c1 e0 03 49 01 c6=
+ <4b> 8b b4 37 c0 00 00 00 48 89 4e 08 49 89 74 24 08 49 89 54 24 10
+    [   92.669977] RSP: e02b:ffffc90040154c60 EFLAGS: 00010006
+    [   92.669992] RAX: 0000000000000058 RBX: 0000000000000001 RCX: ffff888=
+075f66bc0
+    [   92.670008] RDX: ffff8880c7b64098 RSI: 0000000000000005 RDI: 0000000=
+000000000
+    [   92.670024] RBP: fffffe7a01d7d9ae R08: ffff888075f66b38 R09: fffffe7=
+a01d7d9ac
+    [   92.670040] R10: ffffea0004b35bc8 R11: 0000000000000001 R12: ffff888=
+075f66bb8
+    [   92.670055] R13: 0000000000000000 R14: 0000000051bfd4d8 R15: ffff888=
+075f66b00
+    [   92.670083] FS:  0000000000000000(0000) GS:ffff888189740000(0000) kn=
+lGS:0000000000000000
+    [   92.670101] CS:  10000e030 DS: 002b ES: 002b CR0: 0000000080050033
+    [   92.670116] CR2: ffff8880c7b64098 CR3: 0000000133cf8000 CR4: 0000000=
+000050660
+    [   92.670148] Kernel panic - not syncing: Fatal exception in interrupt
+    [   92.670177] ------------[ cut here ]------------
+    [   92.670188] WARNING: CPU: 5 PID: 0 at kernel/smp.c:766 smp_call_func=
+tion_many_cond+0x4db/0x560
+    [   92.670219] Modules linked in: snd_hda_codec_hdmi snd_hda_codec_gene=
+ric ledtrig_audio snd_sof_pci_intel_tgl snd_sof_intel_hda_common snd_soc_hd=
+ac_hda soundwire_intel soundwire_generic_allocation snd_sof_intel_hda_mlink=
+ soundwire_cadence snd_sof_intel_hda snd_sof_pci snd_sof snd_sof_utils snd_=
+sof_xtensa_dsp snd_soc_acpi_intel_match snd_soc_acpi snd_hda_ext_core sound=
+wire_bus snd_soc_core snd_compress snd_pcm_dmaengine ac97_bus snd_hda_intel=
+ snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hwdep hid_multitouch=
+ snd_hda_core snd_seq snd_seq_device idma64 snd_pcm i2c_designware_platform=
+ iwlwifi i2c_designware_core snd_timer snd soundcore i2c_i801 i2c_smbus efi=
+varfs i2c_hid_acpi i2c_hid pinctrl_tigerlake pinctrl_intel xen_acpi_process=
+or xen_pciback xen_blkback xen_gntalloc xen_gntdev xen_evtchn uinput
+    [   92.670400] CPU: 5 PID: 0 Comm: swapper/5 Tainted: G      D W       =
+   6.5.6-dirty #354
+    [   92.670419] Hardware name: Star Labs StarBook/StarBook, BIOS 8.97 10=
+/03/2023
+    [   92.670434] RIP: e030:smp_call_function_many_cond+0x4db/0x560
+    [   92.670455] Code: f0 52 1b 81 48 89 74 24 08 e8 d1 c8 f6 ff 48 8b 74=
+ 24 08 65 ff 0d 5d 70 e7 7e 0f 85 bb fd ff ff 0f 1f 44 00 00 e9 b1 fd ff ff=
+ <0f> 0b e9 69 fb ff ff 8b 7c 24 38 e8 d5 4f f7 ff 84 c0 0f 84 a8 fd
+    [   92.670486] RSP: e02b:ffffc900401549d0 EFLAGS: 00010006
+    [   92.670500] RAX: 0000000080010007 RBX: 0000000000000000 RCX: 0000000=
+000000000
+    [   92.670516] RDX: 0000000000000000 RSI: ffffffff826f3c61 RDI: fffffff=
+f82cbc1d0
+    [   92.670531] RBP: 0000000000000005 R08: 0000000000000000 R09: 0000000=
+000000001
+    [   92.670546] R10: 00000000ffffdfff R11: ffffffff82a5ddc0 R12: 0000000=
+000000005
+    [   92.670562] R13: 0000000000000000 R14: 0000000000000000 R15: 0000000=
+000000000
+    [   92.670588] FS:  0000000000000000(0000) GS:ffff888189740000(0000) kn=
+lGS:0000000000000000
+    [   92.670606] CS:  10000e030 DS: 002b ES: 002b CR0: 0000000080050033
+    [   92.670620] CR2: ffff8880c7b64098 CR3: 0000000133cf8000 CR4: 0000000=
+000050660
+    [   92.670642] Call Trace:
+    [   92.670650]  <IRQ>
+    [   92.670659]  ? smp_call_function_many_cond+0x4db/0x560
+    [   92.670677]  ? __warn+0x7c/0x130
+    [   92.670693]  ? smp_call_function_many_cond+0x4db/0x560
+    [   92.670711]  ? report_bug+0x191/0x1c0
+    [   92.670726]  ? handle_bug+0x3c/0x80
+    [   92.670742]  ? exc_invalid_op+0x17/0x70
+    [   92.670758]  ? asm_exc_invalid_op+0x1a/0x20
+    [   92.670775]  ? smp_call_function_many_cond+0x4db/0x560
+    [   92.670793]  ? __pfx_stop_self+0x10/0x10
+    [   92.670811]  ? _printk+0x5f/0x80
+    [   92.670823]  ? __pfx_stop_self+0x10/0x10
+    [   92.670840]  smp_call_function+0x38/0x70
+    [   92.670857]  panic+0x19c/0x320
+    [   92.670873]  oops_end+0xd8/0xe0
+    [   92.670887]  page_fault_oops+0x19c/0x4a0
+    [   92.670905]  exc_page_fault+0x14e/0x160
+    [   92.670921]  asm_exc_page_fault+0x26/0x30
+    [   92.670937] RIP: e030:__free_one_page+0x301/0x3e0
+    [   92.670952] Code: 02 0f 85 c1 fe ff ff 49 c1 e6 04 49 8d 4c 24 08 4a=
+ 8d 94 36 c0 00 00 00 48 8d 34 80 48 8d 04 70 4c 01 fa 48 c1 e0 03 49 01 c6=
+ <4b> 8b b4 37 c0 00 00 00 48 89 4e 08 49 89 74 24 08 49 89 54 24 10
+    [   92.670983] RSP: e02b:ffffc90040154c60 EFLAGS: 00010006
+    [   92.670997] RAX: 0000000000000058 RBX: 0000000000000001 RCX: ffff888=
+075f66bc0
+    [   92.671013] RDX: ffff8880c7b64098 RSI: 0000000000000005 RDI: 0000000=
+000000000
+    [   92.671028] RBP: fffffe7a01d7d9ae R08: ffff888075f66b38 R09: fffffe7=
+a01d7d9ac
+    [   92.671044] R10: ffffea0004b35bc8 R11: 0000000000000001 R12: ffff888=
+075f66bb8
+    [   92.671059] R13: 0000000000000000 R14: 0000000051bfd4d8 R15: ffff888=
+075f66b00
+    [   92.671077]  free_pcppages_bulk+0x11c/0x2b0
+    [   92.671091]  free_unref_page+0x10d/0x170
+    [   92.671106]  crypt_free_buffer_pages+0x1f4/0x250
+    [   92.671122]  crypt_endio+0x48/0x70
+    [   92.671136]  blk_mq_end_request_batch+0xd0/0x400
+    [   92.671152]  nvme_irq+0x6d/0x80
+    [   92.671166]  ? __pfx_nvme_pci_complete_batch+0x10/0x10
+    [   92.671181]  __handle_irq_event_percpu+0x42/0x1a0
+    [   92.671196]  handle_irq_event+0x33/0x70
+    [   92.671208]  handle_edge_irq+0x9e/0x240
+    [   92.671224]  handle_irq_desc+0x36/0x50
+    [   92.671241]  __evtchn_fifo_handle_events+0x1af/0x1d0
+    [   92.671258]  __xen_evtchn_do_upcall+0x70/0xd0
+    [   92.671275]  __xen_pv_evtchn_do_upcall+0x3d/0x70
+    [   92.671292]  xen_pv_evtchn_do_upcall+0xd9/0x110
+    [   92.671308]  </IRQ>
+    [   92.671316]  <TASK>
+    [   92.671324]  exc_xen_hypervisor_callback+0x8/0x20
+    [   92.671342] RIP: e030:xen_hypercall_xen_version+0xa/0x20
+    [   92.671360] Code: 51 41 53 b8 10 00 00 00 0f 05 41 5b 59 c3 cc cc cc=
+ cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc 51 41 53 b8 11 00 00 00 0f 05=
+ <41> 5b 59 c3 cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc cc
+    [   92.671390] RSP: e02b:ffffc900400c7e08 EFLAGS: 00000246
+    [   92.671403] RAX: 0000000000040011 RBX: 0000000000000000 RCX: fffffff=
+f81fc222a
+    [   92.671419] RDX: 0000000000000002 RSI: 0000000000000000 RDI: 0000000=
+000000000
+    [   92.671434] RBP: ffffc900400c7eb0 R08: 0000000000000000 R09: 0000000=
+0000001ba
+    [   92.671449] R10: 0000000000007ff0 R11: 0000000000000246 R12: ffff888=
+18976c540
+    [   92.671465] R13: ffff888101e10000 R14: 0000000000000000 R15: 0000000=
+000000402
+    [   92.671481]  ? xen_hypercall_xen_version+0xa/0x20
+    [   92.671499]  ? pmu_msr_read+0x3c/0xd0
+    [   92.671514]  ? xen_force_evtchn_callback+0xd/0x20
+    [   92.671529]  ? check_events+0x16/0x30
+    [   92.671543]  ? xen_irq_enable_direct+0x1d/0x30
+    [   92.671560]  ? finish_task_switch.isra.0+0x8e/0x270
+    [   92.671579]  ? __switch_to+0x165/0x3b0
+    [   92.671593]  ? __schedule+0x316/0x8b0
+    [   92.671611]  ? schedule_idle+0x25/0x40
+    [   92.671631]  ? cpu_startup_entry+0x25/0x30
+    [   92.671644]  ? cpu_bringup_and_idle+0x89/0xa0
+    [   92.671663]  ? asm_cpu_bringup_and_idle+0x9/0x10
+    [   92.671683]  </TASK>
+    [   92.671691] ---[ end trace 0000000000000000 ]---
+    [   92.671782] Kernel Offset: disabled
+    (XEN) Hardware Dom0 crashed: rebooting machine in 5 seconds.
+
+
+If I change order=3DPAGE_ALLOC_COSTLY_ORDER+1, then this:
+
+
+    [ 2205.112802] BUG: unable to handle page fault for address: ffffffff89=
+630301
+    [ 2205.112866] #PF: supervisor write access in kernel mode
+    [ 2205.112882] #PF: error_code(0x0002) - not-present page
+    [ 2205.112899] PGD 2a35067 P4D 2a35067 PUD 2a36067 PMD 0=20
+    [ 2205.112921] Oops: 0002 [#1] PREEMPT SMP NOPTI
+    [ 2205.112946] CPU: 0 PID: 12609 Comm: kworker/u12:9 Tainted: G        =
+W          6.5.6-dirty #355
+    [ 2205.112979] Hardware name: Star Labs StarBook/StarBook, BIOS 8.97 10=
+/03/2023
+    [ 2205.112997] Workqueue: kcryptd/252:0 kcryptd_crypt
+    [ 2205.113022] RIP: e030:get_page_from_freelist+0x281/0x10c0
+    [ 2205.113044] Code: 6c 05 18 49 89 df 8b 5c 24 34 49 8b 47 18 48 39 c5=
+ 0f 84 85 02 00 00 49 8b 47 18 48 8b 48 08 48 8b 30 48 8d 50 f8 48 89 4e 08=
+ <48> 89 31 48 b9 00 01 00 00 00 00 ad de 48 89 08 48 83 c1 22 48 89
+    [ 2205.113079] RSP: e02b:ffffc90041ea7c48 EFLAGS: 00010283
+    [ 2205.113096] RAX: ffffea00059b9248 RBX: 0000000000000001 RCX: fffffff=
+f89630301
+    [ 2205.113117] RDX: ffffea00059b9240 RSI: ffffea00059b9201 RDI: 0000000=
+000000001
+    [ 2205.113134] RBP: ffff888189631718 R08: 000000000000c000 R09: 0000000=
+00003cb07
+    [ 2205.113153] R10: 0000000000000001 R11: fefefefefefefeff R12: ffff888=
+075f66b00
+    [ 2205.113171] R13: ffff888189631700 R14: 0000000000000000 R15: ffff888=
+189631700
+    [ 2205.113208] FS:  0000000000000000(0000) GS:ffff888189600000(0000) kn=
+lGS:0000000000000000
+    [ 2205.113229] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [ 2205.113245] CR2: ffffffff89630301 CR3: 00000001049d0000 CR4: 0000000=
+000050660
+    [ 2205.113272] Call Trace:
+    [ 2205.113285]  <TASK>
+    [ 2205.113295]  ? __die+0x1e/0x60
+    [ 2205.113312]  ? page_fault_oops+0x178/0x4a0
+    [ 2205.113330]  ? exc_page_fault+0x14e/0x160
+    [ 2205.113346]  ? asm_exc_page_fault+0x26/0x30
+    [ 2205.113363]  ? get_page_from_freelist+0x281/0x10c0
+    [ 2205.113379]  ? get_page_from_freelist+0x227/0x10c0
+    [ 2205.113396]  __alloc_pages+0x1dd/0x300
+    [ 2205.113412]  crypt_page_alloc+0x29/0x60
+    [ 2205.113425]  mempool_alloc+0x81/0x1b0
+    [ 2205.113443]  kcryptd_crypt+0x293/0x4b0
+    [ 2205.113458]  process_one_work+0x1e0/0x3e0
+    [ 2205.113476]  worker_thread+0x49/0x3b0
+    [ 2205.113490]  ? _raw_spin_lock_irqsave+0x22/0x50
+    [ 2205.113510]  ? __pfx_worker_thread+0x10/0x10
+    [ 2205.113527]  kthread+0xef/0x120
+    [ 2205.113541]  ? __pfx_kthread+0x10/0x10
+    [ 2205.113554]  ret_from_fork+0x2c/0x50
+    [ 2205.113568]  ? __pfx_kthread+0x10/0x10
+    [ 2205.113581]  ret_from_fork_asm+0x1b/0x30
+    [ 2205.113598]  </TASK>
+    [ 2205.113606] Modules linked in: snd_hda_codec_hdmi snd_sof_pci_intel_=
+tgl snd_sof_intel_hda_common snd_soc_hdac_hda soundwire_intel soundwire_gen=
+eric_allocation snd_sof_intel_hda_mlink soundwire_cadence snd_sof_intel_hda=
+ snd_sof_pci snd_hda_codec_generic snd_sof ledtrig_audio snd_sof_utils snd_=
+sof_xtensa_dsp snd_soc_acpi_intel_match snd_soc_acpi snd_hda_ext_core sound=
+wire_bus snd_soc_core snd_compress snd_pcm_dmaengine ac97_bus snd_hda_intel=
+ snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hwdep snd_hda_core s=
+nd_seq snd_seq_device snd_pcm hid_multitouch snd_timer snd i2c_designware_p=
+latform i2c_designware_core i2c_i801 soundcore iwlwifi idma64 i2c_smbus i2c=
+_hid_acpi i2c_hid pinctrl_tigerlake pinctrl_intel xen_acpi_processor xen_pc=
+iback xen_blkback xen_gntalloc xen_gntdev xen_evtchn uinput efivarfs
+    [ 2205.113795] CR2: ffffffff89630301
+    [ 2205.113808] ---[ end trace 0000000000000000 ]---
+    [ 2205.113822] RIP: e030:get_page_from_freelist+0x281/0x10c0
+    [ 2205.113839] Code: 6c 05 18 49 89 df 8b 5c 24 34 49 8b 47 18 48 39 c5=
+ 0f 84 85 02 00 00 49 8b 47 18 48 8b 48 08 48 8b 30 48 8d 50 f8 48 89 4e 08=
+ <48> 89 31 48 b9 00 01 00 00 00 00 ad de 48 89 08 48 83 c1 22 48 89
+    [ 2205.113873] RSP: e02b:ffffc90041ea7c48 EFLAGS: 00010283
+    [ 2205.113887] RAX: ffffea00059b9248 RBX: 0000000000000001 RCX: fffffff=
+f89630301
+    [ 2205.113903] RDX: ffffea00059b9240 RSI: ffffea00059b9201 RDI: 0000000=
+000000001
+    [ 2205.113919] RBP: ffff888189631718 R08: 000000000000c000 R09: 0000000=
+00003cb07
+    [ 2205.113935] R10: 0000000000000001 R11: fefefefefefefeff R12: ffff888=
+075f66b00
+    [ 2205.113950] R13: ffff888189631700 R14: 0000000000000000 R15: ffff888=
+189631700
+    [ 2205.113980] FS:  0000000000000000(0000) GS:ffff888189600000(0000) kn=
+lGS:0000000000000000
+    [ 2205.113998] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+    [ 2205.114012] CR2: ffffffff89630301 CR3: 00000001049d0000 CR4: 0000000=
+000050660
+    [ 2205.114038] note: kworker/u12:9[12609] exited with irqs disabled
+    [ 2205.114100] note: kworker/u12:9[12609] exited with preempt_count 2
+
+Then retried with order=3DPAGE_ALLOC_COSTLY_ORDER and
+PAGE_ALLOC_COSTLY_ORDER back at 3, and also got similar crash.
+
+Both happened only after logging into X session (lightdm -> Xfce) and
+starting xfce4-terminal. If I use text console/ssh/serial and leave
+lightdm at login screen, then it does not crash (this is in fact how I
+did most previous tests). I have no idea if it's related to some other
+bug somewhere else (graphics driver?), or simply higher memory usage due
+to the whole Xfce session running.
+It could be also a coincidence, the sample size is rather small...
+But could be also some memory corruption that depending on memory layout
+sometimes results in a crash and sometimes in "just" storage freeze.
+
+Note this all is still on top of 6.5.6 with changes we discuss here. If
+you believe it's another issue that got fixed in the meantime, I can
+switch to another version, but otherwise I'd like to limit changes.
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--MgdTOJabKUs9zLjX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmU/3vwACgkQ24/THMrX
+1yyHkwf+O2jKAOIqbVO2p23qEqz9Qoo12Fue4NhNFar4N7DLZ5QsqtOkanh6IcIq
+HKOgaX7Dx3A51XWAZak8nIX5rKQtTvmN4WWq0qOZO/dfQ/SGWoIMeWskEzSaZtwN
+3Iim1aeBNPaWFYBWbiaxZGBvz+MF0uEbXxVRhA8tDGvkgxsrUm1DGi9iHTUz4CEe
+EsvnzI9sWR6iplrMEjOUEAFFwKyTTfjLIuRm5AC2Oz6/rWmpR835Ts0TJs7yhLaa
+iVpPMTD9qGgUfe7g2Ka+wTj6zL1pHc/8+wQgcecFqe/xMyPLNsiidwRwA0v/eViN
+qAsCZzH5IaL6REBO/lXdyzGRZHP8ig==
+=CXAo
+-----END PGP SIGNATURE-----
+
+--MgdTOJabKUs9zLjX--
