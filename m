@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9F367DD523
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F5497DD405
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376422AbjJaRrg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:47:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52442 "EHLO
+        id S234451AbjJaRGq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376437AbjJaRrf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:35 -0400
+        with ESMTP id S236346AbjJaRGX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C6FC122
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDEDC433CA;
-        Tue, 31 Oct 2023 17:47:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00D9DD7F
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:04:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4197FC433C7;
+        Tue, 31 Oct 2023 17:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774450;
-        bh=AuQaPTDWaQPr8qcm0wv1byEuz+gfHp4MSNNjVxGHKiI=;
+        s=korg; t=1698771860;
+        bh=fdKZ2wIxgDaBkCeHoFA9yMK63TB1E8P1G5+MFh/mtlc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z7dxyG597YJNNwH89PAfQ3ZRyXQopcg4AsSlZtjzRxWucFlWgkpH9bSqBeusN1Ygj
-         sZ8CIXWQ5/baUUQWfTFRBl5J31AQNdlMRwLZI+otTB8awYZ/bSUR2HYbWn34gABUfs
-         V9sJir7K76K4Q7vbq1YFF54W/LoVYmMsB4Vi8314=
+        b=Y48Q4EgLvlkm676b83DbR83ga4Dm+W6aLR5VW+Kh6EQfGyubB2cEBCN2n+tEJHAqN
+         GKnMi8+S4IhjUHZ4Rn72HE2O/qxG6C2iUGik5lx6VJE1jak7LIARoxmds5NX5Xyjhh
+         dXU50NoKuhip1WTRdtxZAFERtLO5W0Q8ch2z0eFU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        nic_swsd@realtek.com, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Marco Elver <elver@google.com>, netdev@vger.kernel.org,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 050/112] r8169: fix the KCSAN reported data-race in rtl_tx while reading TxDescArray[entry].opts1
-Date:   Tue, 31 Oct 2023 18:00:51 +0100
-Message-ID: <20231031165902.885743379@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.1 27/86] drm/i915/pmu: Check if pmu is closed before stopping event
+Date:   Tue, 31 Oct 2023 18:00:52 +0100
+Message-ID: <20231031165919.456886750@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,136 +52,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-[ Upstream commit dcf75a0f6bc136de94e88178ae5f51b7f879abc9 ]
+commit 4cbed7702eb775cca22fff6827a549092cb59f61 upstream.
 
-KCSAN reported the following data-race:
+When the driver unbinds, pmu is unregistered and i915->uabi_engines is
+set to RB_ROOT. Due to this, when i915 PMU tries to stop the engine
+events, it issues a warn_on because engine lookup fails.
 
-==================================================================
-BUG: KCSAN: data-race in rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
+All perf hooks are taking care of this using a pmu->closed flag that is
+set when PMU unregisters. The stop event seems to have been left out.
 
-race at unknown origin, with read to 0xffff888140d37570 of 4 bytes by interrupt on cpu 21:
-rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
-__napi_poll (net/core/dev.c:6527)
-net_rx_action (net/core/dev.c:6596 net/core/dev.c:6727)
-__do_softirq (kernel/softirq.c:553)
-__irq_exit_rcu (kernel/softirq.c:427 kernel/softirq.c:632)
-irq_exit_rcu (kernel/softirq.c:647)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1074 (discriminator 14))
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:645)
-cpuidle_enter_state (drivers/cpuidle/cpuidle.c:291)
-cpuidle_enter (drivers/cpuidle/cpuidle.c:390)
-call_cpuidle (kernel/sched/idle.c:135)
-do_idle (kernel/sched/idle.c:219 kernel/sched/idle.c:282)
-cpu_startup_entry (kernel/sched/idle.c:378 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:210 arch/x86/kernel/smpboot.c:294)
-secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
+Check for pmu->closed in pmu_event_stop as well.
 
-value changed: 0xb0000042 -> 0x00000000
+Based on discussion here -
+https://patchwork.freedesktop.org/patch/492079/?series=105790&rev=2
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 21 PID: 0 Comm: swapper/21 Tainted: G             L     6.6.0-rc2-kcsan-00143-gb5cbe7c00aa0 #41
-Hardware name: ASRock X670E PG Lightning/X670E PG Lightning, BIOS 1.21 04/26/2023
-==================================================================
+v2: s/is/if/ in commit title
+v3: Add fixes tag and cc stable
 
-The read side is in
-
-drivers/net/ethernet/realtek/r8169_main.c
-=========================================
-   4355 static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
-   4356                    int budget)
-   4357 {
-   4358         unsigned int dirty_tx, bytes_compl = 0, pkts_compl = 0;
-   4359         struct sk_buff *skb;
-   4360
-   4361         dirty_tx = tp->dirty_tx;
-   4362
-   4363         while (READ_ONCE(tp->cur_tx) != dirty_tx) {
-   4364                 unsigned int entry = dirty_tx % NUM_TX_DESC;
-   4365                 u32 status;
-   4366
- → 4367                 status = le32_to_cpu(tp->TxDescArray[entry].opts1);
-   4368                 if (status & DescOwn)
-   4369                         break;
-   4370
-   4371                 skb = tp->tx_skb[entry].skb;
-   4372                 rtl8169_unmap_tx_skb(tp, entry);
-   4373
-   4374                 if (skb) {
-   4375                         pkts_compl++;
-   4376                         bytes_compl += skb->len;
-   4377                         napi_consume_skb(skb, budget);
-   4378                 }
-   4379                 dirty_tx++;
-   4380         }
-   4381
-   4382         if (tp->dirty_tx != dirty_tx) {
-   4383                 dev_sw_netstats_tx_add(dev, pkts_compl, bytes_compl);
-   4384                 WRITE_ONCE(tp->dirty_tx, dirty_tx);
-   4385
-   4386                 netif_subqueue_completed_wake(dev, 0, pkts_compl, bytes_compl,
-   4387                                               rtl_tx_slots_avail(tp),
-   4388                                               R8169_TX_START_THRS);
-   4389                 /*
-   4390                  * 8168 hack: TxPoll requests are lost when the Tx packets are
-   4391                  * too close. Let's kick an extra TxPoll request when a burst
-   4392                  * of start_xmit activity is detected (if it is not detected,
-   4393                  * it is slow enough). -- FR
-   4394                  * If skb is NULL then we come here again once a tx irq is
-   4395                  * triggered after the last fragment is marked transmitted.
-   4396                  */
-   4397                 if (READ_ONCE(tp->cur_tx) != dirty_tx && skb)
-   4398                         rtl8169_doorbell(tp);
-   4399         }
-   4400 }
-
-tp->TxDescArray[entry].opts1 is reported to have a data-race and READ_ONCE() fixes
-this KCSAN warning.
-
-   4366
- → 4367                 status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
-   4368                 if (status & DescOwn)
-   4369                         break;
-   4370
-
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: nic_swsd@realtek.com
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Marco Elver <elver@google.com>
-Cc: netdev@vger.kernel.org
-Link: https://lore.kernel.org/lkml/dc7fc8fa-4ea4-e9a9-30a6-7c83e6b53188@alu.unizg.hr/
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Marco Elver <elver@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v5.11+
+Fixes: b00bccb3f0bb ("drm/i915/pmu: Handle PCI unbind")
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231020152441.3764850-1-umesh.nerlige.ramappa@intel.com
+(cherry picked from commit 31f6a06f0c543b43a38fab10f39e5fc45ad62aa2)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_pmu.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 281aaa8518472..7e14a1d958c8e 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4364,7 +4364,7 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
- 		unsigned int entry = dirty_tx % NUM_TX_DESC;
- 		u32 status;
+--- a/drivers/gpu/drm/i915/i915_pmu.c
++++ b/drivers/gpu/drm/i915/i915_pmu.c
+@@ -760,9 +760,18 @@ static void i915_pmu_event_start(struct
  
--		status = le32_to_cpu(tp->TxDescArray[entry].opts1);
-+		status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
- 		if (status & DescOwn)
- 			break;
+ static void i915_pmu_event_stop(struct perf_event *event, int flags)
+ {
++	struct drm_i915_private *i915 =
++		container_of(event->pmu, typeof(*i915), pmu.base);
++	struct i915_pmu *pmu = &i915->pmu;
++
++	if (pmu->closed)
++		goto out;
++
+ 	if (flags & PERF_EF_UPDATE)
+ 		i915_pmu_event_read(event);
+ 	i915_pmu_disable(event);
++
++out:
+ 	event->hw.state = PERF_HES_STOPPED;
+ }
  
--- 
-2.42.0
-
 
 
