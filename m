@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 549F07DD51F
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D18E27DD3E6
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376441AbjJaRr2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57628 "EHLO
+        id S236426AbjJaRGL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376427AbjJaRr1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:27 -0400
+        with ESMTP id S231744AbjJaRF5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:05:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EA6C1
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB342C433C7;
-        Tue, 31 Oct 2023 17:47:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5A9E1BC2
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF88C433C7;
+        Tue, 31 Oct 2023 17:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774442;
-        bh=DJ90cru+/nRTcOCF4LgMyLqkhn+XIlu81/zyIkY/GHY=;
+        s=korg; t=1698771800;
+        bh=SQvd8uJV6bEhLME/aPVVaUibD8UyQsMHCPL1ba469v4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=quwzOlxt1dS793YoOnkTXUmZlfGBFo5PdXEnt2Yi1kRmdrQCuqxBqbnvC6CJEUBbr
-         ZWFKv6UiBNeanCQguylXpheDokOGyvCH2z+czhjvMOMOk+l/WyjE41mOCHnb2LCncx
-         zkzJkLoTOUXeJAzs6Jugd4RKJHe9/7PdSWhlNLrg=
+        b=HoQ1CD86v4O8nulZRAgUbTgZBKKafTYX3OMYfR+NpoweleQXS3EctFNqakP4VbWrK
+         7Vs+T2z8bXmD5AB/fVMLMl/ZLNrGcgLXqLV/l9gt+W/s78TqHYtydep9ZDEkPjYNuL
+         QQ4BkIcl4xQQrSXL25wS0S8lJMcZa1///ugc3m6A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
-        =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 047/112] clk: ti: Fix missing omap4 mcbsp functional clock and aliases
-Date:   Tue, 31 Oct 2023 18:00:48 +0100
-Message-ID: <20231031165902.784755014@linuxfoundation.org>
+        patches@lists.linux.dev, Rik van Riel <riel@surriel.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 24/86] hugetlbfs: extend hugetlb_vma_lock to private VMAs
+Date:   Tue, 31 Oct 2023 18:00:49 +0100
+Message-ID: <20231031165919.364477734@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,104 +52,163 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit cc2d819dd7df94a72bde7b9b9331a6535084092d ]
+commit bf4916922c60f43efaa329744b3eef539aa6a2b2 upstream.
 
-We are using a wrong mcbsp functional clock. The interconnect target module
-driver provided clock for mcbsp is not same as the mcbsp functional clock
-known as the gfclk main_clk. The mcbsp functional clocks for mcbsp should
-have been added before we dropped the legacy platform data.
+Extend the locking scheme used to protect shared hugetlb mappings from
+truncate vs page fault races, in order to protect private hugetlb mappings
+(with resv_map) against MADV_DONTNEED.
 
-Additionally we are also missing the clock aliases for the clocks used by
-the audio driver if reparenting is needed. This causes audio driver errors
-like "CLKS: could not clk_get() prcm_fck" for mcbsp as reported by Andreas.
-The mcbsp clock aliases too should have been added before we dropped the
-legacy platform data.
+Add a read-write semaphore to the resv_map data structure, and use that
+from the hugetlb_vma_(un)lock_* functions, in preparation for closing the
+race between MADV_DONTNEED and page faults.
 
-Let's add the clocks and aliases with a single patch to fix the issue.
-
-Fixes: 349355ce3a05 ("ARM: OMAP2+: Drop legacy platform data for omap4 mcbsp")
-Reported-by: Andreas Kemnade <andreas@kemnade.info>
-Reported-by: Péter Ujfalusi <peter.ujfalusi@gmail.com>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231006040020.3677377-3-riel@surriel.com
+Fixes: 04ada095dcfc ("hugetlb: don't delete vma_lock in hugetlb MADV_DONTNEED processing")
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi | 6 ++++++
- arch/arm/boot/dts/ti/omap/omap4-l4.dtsi     | 2 ++
- drivers/clk/ti/clk-44xx.c                   | 5 +++++
- 3 files changed, 13 insertions(+)
+ include/linux/hugetlb.h |    6 ++++++
+ mm/hugetlb.c            |   41 +++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 43 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
-index 7ae8b620515c5..59f546a278f87 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
-@@ -109,6 +109,8 @@
- 				reg = <0x0 0xff>, /* MPU private access */
- 				      <0x49022000 0xff>; /* L3 Interconnect */
- 				reg-names = "mpu", "dma";
-+				clocks = <&abe_clkctrl OMAP4_MCBSP1_CLKCTRL 24>;
-+				clock-names = "fck";
- 				interrupts = <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "common";
- 				ti,buffer-size = <128>;
-@@ -142,6 +144,8 @@
- 				reg = <0x0 0xff>, /* MPU private access */
- 				      <0x49024000 0xff>; /* L3 Interconnect */
- 				reg-names = "mpu", "dma";
-+				clocks = <&abe_clkctrl OMAP4_MCBSP2_CLKCTRL 24>;
-+				clock-names = "fck";
- 				interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "common";
- 				ti,buffer-size = <128>;
-@@ -175,6 +179,8 @@
- 				reg = <0x0 0xff>, /* MPU private access */
- 				      <0x49026000 0xff>; /* L3 Interconnect */
- 				reg-names = "mpu", "dma";
-+				clocks = <&abe_clkctrl OMAP4_MCBSP3_CLKCTRL 24>;
-+				clock-names = "fck";
- 				interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "common";
- 				ti,buffer-size = <128>;
-diff --git a/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi b/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
-index 46b8f9efd4131..3fcef3080eaec 100644
---- a/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
-@@ -2043,6 +2043,8 @@
- 				compatible = "ti,omap4-mcbsp";
- 				reg = <0x0 0xff>; /* L4 Interconnect */
- 				reg-names = "mpu";
-+				clocks = <&l4_per_clkctrl OMAP4_MCBSP4_CLKCTRL 24>;
-+				clock-names = "fck";
- 				interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "common";
- 				ti,buffer-size = <128>;
-diff --git a/drivers/clk/ti/clk-44xx.c b/drivers/clk/ti/clk-44xx.c
-index 868bc7af21b0b..9b2824ed785b9 100644
---- a/drivers/clk/ti/clk-44xx.c
-+++ b/drivers/clk/ti/clk-44xx.c
-@@ -749,9 +749,14 @@ static struct ti_dt_clk omap44xx_clks[] = {
- 	DT_CLK(NULL, "mcbsp1_sync_mux_ck", "abe-clkctrl:0028:26"),
- 	DT_CLK(NULL, "mcbsp2_sync_mux_ck", "abe-clkctrl:0030:26"),
- 	DT_CLK(NULL, "mcbsp3_sync_mux_ck", "abe-clkctrl:0038:26"),
-+	DT_CLK("40122000.mcbsp", "prcm_fck", "abe-clkctrl:0028:26"),
-+	DT_CLK("40124000.mcbsp", "prcm_fck", "abe-clkctrl:0030:26"),
-+	DT_CLK("40126000.mcbsp", "prcm_fck", "abe-clkctrl:0038:26"),
- 	DT_CLK(NULL, "mcbsp4_sync_mux_ck", "l4-per-clkctrl:00c0:26"),
-+	DT_CLK("48096000.mcbsp", "prcm_fck", "l4-per-clkctrl:00c0:26"),
- 	DT_CLK(NULL, "ocp2scp_usb_phy_phy_48m", "l3-init-clkctrl:00c0:8"),
- 	DT_CLK(NULL, "otg_60m_gfclk", "l3-init-clkctrl:0040:24"),
-+	DT_CLK(NULL, "pad_fck", "pad_clks_ck"),
- 	DT_CLK(NULL, "per_mcbsp4_gfclk", "l4-per-clkctrl:00c0:24"),
- 	DT_CLK(NULL, "pmd_stm_clock_mux_ck", "emu-sys-clkctrl:0000:20"),
- 	DT_CLK(NULL, "pmd_trace_clk_mux_ck", "emu-sys-clkctrl:0000:22"),
--- 
-2.42.0
-
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -70,6 +70,7 @@ struct resv_map {
+ 	long adds_in_progress;
+ 	struct list_head region_cache;
+ 	long region_cache_count;
++	struct rw_semaphore rw_sema;
+ #ifdef CONFIG_CGROUP_HUGETLB
+ 	/*
+ 	 * On private mappings, the counter to uncharge reservations is stored
+@@ -879,6 +880,11 @@ static inline bool hugepage_migration_su
+ 	return arch_hugetlb_migration_supported(h);
+ }
+ 
++static inline bool __vma_private_lock(struct vm_area_struct *vma)
++{
++	return (!(vma->vm_flags & VM_MAYSHARE)) && vma->vm_private_data;
++}
++
+ /*
+  * Movability check is different as compared to migration check.
+  * It determines whether or not a huge page should be placed on
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -96,6 +96,7 @@ static void hugetlb_vma_lock_alloc(struc
+ static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
+ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end);
++static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+ 
+ static inline bool subpool_is_free(struct hugepage_subpool *spool)
+ {
+@@ -272,6 +273,10 @@ void hugetlb_vma_lock_read(struct vm_are
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		down_read(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		down_read(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -281,6 +286,10 @@ void hugetlb_vma_unlock_read(struct vm_a
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		up_read(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		up_read(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -290,6 +299,10 @@ void hugetlb_vma_lock_write(struct vm_ar
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		down_write(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		down_write(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -299,17 +312,27 @@ void hugetlb_vma_unlock_write(struct vm_
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		up_write(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		up_write(&resv_map->rw_sema);
+ 	}
+ }
+ 
+ int hugetlb_vma_trylock_write(struct vm_area_struct *vma)
+ {
+-	struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+-	if (!__vma_shareable_lock(vma))
+-		return 1;
++	if (__vma_shareable_lock(vma)) {
++		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+-	return down_write_trylock(&vma_lock->rw_sema);
++		return down_write_trylock(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		return down_write_trylock(&resv_map->rw_sema);
++	}
++
++	return 1;
+ }
+ 
+ void hugetlb_vma_assert_locked(struct vm_area_struct *vma)
+@@ -318,6 +341,10 @@ void hugetlb_vma_assert_locked(struct vm
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		lockdep_assert_held(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		lockdep_assert_held(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -350,6 +377,11 @@ static void __hugetlb_vma_unlock_write_f
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		__hugetlb_vma_unlock_write_put(vma_lock);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		/* no free for anon vmas, but still need to unlock */
++		up_write(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -1068,6 +1100,7 @@ struct resv_map *resv_map_alloc(void)
+ 	kref_init(&resv_map->refs);
+ 	spin_lock_init(&resv_map->lock);
+ 	INIT_LIST_HEAD(&resv_map->regions);
++	init_rwsem(&resv_map->rw_sema);
+ 
+ 	resv_map->adds_in_progress = 0;
+ 	/*
 
 
