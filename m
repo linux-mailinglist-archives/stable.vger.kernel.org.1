@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B9E37DD55A
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 617D97DD418
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376495AbjJaRtp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42120 "EHLO
+        id S233635AbjJaRHC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376544AbjJaRtn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:43 -0400
+        with ESMTP id S236181AbjJaRGr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA14BF5
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045C9C433C8;
-        Tue, 31 Oct 2023 17:49:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37DED1FD9
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510D7C433C7;
+        Tue, 31 Oct 2023 17:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774580;
-        bh=/TvA3OcSogIL/3XE8I/UqCjZ0AsHE1mF8FP/jLrkvuE=;
+        s=korg; t=1698771931;
+        bh=bjMaL6ESUJNqF0rNbzKTUL/83EjeqL0l6jXcwcH4/+8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ethpzAuNusjIbTpzgKrmW5AUODRhEhhlm6KmWRn+XExE1+5NrNdoKSwH0m9nPj7/b
-         au7WOU8LjdVYr2sEcuvNsK/OHuhh8v9mefqkLI9rcrrxFEifRjoYw+xADprQaExNxz
-         DJWk8MTJ4j1vJHww25WMQtb/U90VJ+bDw4xald9E=
+        b=Wp3jPDC1DNA8X72n8natAys9QZ/ON8my0/zX3Dh7YUlHFR7j1+YEuVhUbFfuejIc2
+         TWLnnX4P54Jyc50BL7Uyw/KYUtpZM+A89nBEdbk9G03LBnN+PYVaZsQGQk3rrsXZP6
+         VA3BNS81fummLJ2pvxWaIBlmwyAmN0JOnauXWd4k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Francis Laniel <flaniel@linux.microsoft.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Andrii Nakryiko <andrii@kernel.org>, Song Liu <song@kernel.org>
-Subject: [PATCH 6.5 093/112] tracing/kprobes: Fix symbol counting logic by looking at modules as well
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Yujie Liu <yujie.liu@intel.com>,
+        Mukesh Ojha <quic_mojha@quicinc.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.1 69/86] tracing/kprobes: Fix the description of variable length arguments
 Date:   Tue, 31 Oct 2023 18:01:34 +0100
-Message-ID: <20231031165904.233960529@linuxfoundation.org>
+Message-ID: <20231031165920.699906734@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,72 +51,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Yujie Liu <yujie.liu@intel.com>
 
-commit 926fe783c8a64b33997fec405cf1af3e61aed441 upstream.
+commit e0f831836cead677fb07d54bd6bf499df35640c2 upstream.
 
-Recent changes to count number of matching symbols when creating
-a kprobe event failed to take into account kernel modules. As such, it
-breaks kprobes on kernel module symbols, by assuming there is no match.
+Fix the following kernel-doc warnings:
 
-Fix this my calling module_kallsyms_on_each_symbol() in addition to
-kallsyms_on_each_match_symbol() to perform a proper counting.
+kernel/trace/trace_kprobe.c:1029: warning: Excess function parameter 'args' description in '__kprobe_event_gen_cmd_start'
+kernel/trace/trace_kprobe.c:1097: warning: Excess function parameter 'args' description in '__kprobe_event_add_fields'
 
-Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
+Refer to the usage of variable length arguments elsewhere in the kernel
+code, "@..." is the proper way to express it in the description.
 
-Cc: Francis Laniel <flaniel@linux.microsoft.com>
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/all/20231027041315.2613166-1-yujie.liu@intel.com/
+
+Fixes: 2a588dd1d5d6 ("tracing: Add kprobe event command generation functions")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310190437.paI6LYJF-lkp@intel.com/
+Signed-off-by: Yujie Liu <yujie.liu@intel.com>
+Reviewed-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_kprobe.c |   24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ kernel/trace/trace_kprobe.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 --- a/kernel/trace/trace_kprobe.c
 +++ b/kernel/trace/trace_kprobe.c
-@@ -714,14 +714,30 @@ static int count_symbols(void *data, uns
- 	return 0;
- }
- 
-+struct sym_count_ctx {
-+	unsigned int count;
-+	const char *name;
-+};
-+
-+static int count_mod_symbols(void *data, const char *name, unsigned long unused)
-+{
-+	struct sym_count_ctx *ctx = data;
-+
-+	if (strcmp(name, ctx->name) == 0)
-+		ctx->count++;
-+
-+	return 0;
-+}
-+
- static unsigned int number_of_same_symbols(char *func_name)
- {
--	unsigned int count;
-+	struct sym_count_ctx ctx = { .count = 0, .name = func_name };
-+
-+	kallsyms_on_each_match_symbol(count_symbols, func_name, &ctx.count);
- 
--	count = 0;
--	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
-+	module_kallsyms_on_each_symbol(NULL, count_mod_symbols, &ctx);
- 
--	return count;
-+	return ctx.count;
- }
- 
- static int __trace_kprobe_create(int argc, const char *argv[])
+@@ -989,7 +989,7 @@ EXPORT_SYMBOL_GPL(kprobe_event_cmd_init)
+  * @name: The name of the kprobe event
+  * @loc: The location of the kprobe event
+  * @kretprobe: Is this a return probe?
+- * @args: Variable number of arg (pairs), one pair for each field
++ * @...: Variable number of arg (pairs), one pair for each field
+  *
+  * NOTE: Users normally won't want to call this function directly, but
+  * rather use the kprobe_event_gen_cmd_start() wrapper, which automatically
+@@ -1062,7 +1062,7 @@ EXPORT_SYMBOL_GPL(__kprobe_event_gen_cmd
+ /**
+  * __kprobe_event_add_fields - Add probe fields to a kprobe command from arg list
+  * @cmd: A pointer to the dynevent_cmd struct representing the new event
+- * @args: Variable number of arg (pairs), one pair for each field
++ * @...: Variable number of arg (pairs), one pair for each field
+  *
+  * NOTE: Users normally won't want to call this function directly, but
+  * rather use the kprobe_event_add_fields() wrapper, which
 
 
