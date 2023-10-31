@@ -2,37 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6986D7DD44C
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:10:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1C397DD45C
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:11:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236477AbjJaRKI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:10:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40204 "EHLO
+        id S1343603AbjJaRLi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:11:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347015AbjJaRJx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:09:53 -0400
+        with ESMTP id S1344256AbjJaRLg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:11:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB969107;
-        Tue, 31 Oct 2023 10:09:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E314C433C8;
-        Tue, 31 Oct 2023 17:09:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1698772184;
-        bh=m86oyc3bRDX2IeOM23fQkXV6Q0RvIJ6t2FflEZWLCyU=;
-        h=Date:To:From:Subject:From;
-        b=0mH5iQbdUvH/2cfnKK5zkLZ/6fRNWwq65Jk/TsmcNyZyJgYjQGurWuvmOTnXmIj4Q
-         bLfWSeGBUdn1N6h/Icb6+ahZP8KoOSCueNqi4cGXygRxutKHeSSuTeTOIUBiOc9haS
-         whlCqHGn6RxC0uJ38KT87r470GOwdx6AcIffLBHc=
-Date:   Tue, 31 Oct 2023 10:09:43 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-update-monitoring-target-regions-for-online-input-commit.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231031170944.4E314C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9864C9
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:11:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4961FC433C8;
+        Tue, 31 Oct 2023 17:11:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698772293;
+        bh=WAbUlMghKoKGlwd5+6V7FdJ1+87/HQMMjKcjn5JCqEY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=qDLGMwJTHDvy4Dg9PIA2QHYvDAbZkQUQf5ut4qdOTRyUIctjRhkM/AwcPsKPQNVh1
+         VJFgEFrmEf1AZs1z6UfXmqSxTeZ232NXFojKj+N0ZkFsqQZaiCzRLJLAcSBWe6GvFq
+         /4nHKhzGHbbINJcsLk5y88LueFz5lu6NO0YxY+/5TPkEruc+/eRlDp05Vv1mwFb9CP
+         hmJYWOD0ZS8WZNDrnsRq5qZOv+WKhxOdDS7GIpLfD/+3lxBuY8qajD99hDoIWsuc2M
+         fOPypdRQ23BxZIo6ErdMvNqgWtF5AzGzmUVUOMnNfTdBbalIphIjcIJs24F4Vdfg36
+         PnWnQm4Co+mHQ==
+Date:   Tue, 31 Oct 2023 17:11:27 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Takashi Iwai <tiwai@suse.de>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 05/86] ASoC: codecs: wcd938x: Convert to platform
+ remove callback returning void
+Message-ID: <958957ff-bbaa-4fbc-a796-30e2fdf61453@sirena.org.uk>
+References: <20231031165918.608547597@linuxfoundation.org>
+ <20231031165918.777236098@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ol/i8CdclZvBsAfY"
+Content-Disposition: inline
+In-Reply-To: <20231031165918.777236098@linuxfoundation.org>
+X-Cookie: Is it clean in other dimensions?
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -40,133 +56,40 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch titled
-     Subject: mm/damon/sysfs: update monitoring target regions for online input commit
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-sysfs-update-monitoring-target-regions-for-online-input-commit.patch
+--ol/i8CdclZvBsAfY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-update-monitoring-target-regions-for-online-input-commit.patch
+On Tue, Oct 31, 2023 at 06:00:30PM +0100, Greg Kroah-Hartman wrote:
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> The .remove() callback for a platform driver returns an int which makes
+> many driver authors wrongly assume it's possible to do error handling by
+> returning an error code. However the value returned is (mostly) ignored
+> and this typically results in resource leaks. To improve here there is a
+> quest to make the remove callback return void. In the first step of this
+> quest all drivers are converted to .remove_new() which already returns
+> void.
+>=20
+> Trivially convert this driver from always returning zero in the remove
+> callback to the void returning variant.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+This doesn't seem like obvious stable material - it's not fixing any
+leaks or anything, just preparing for an API transition?
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+--ol/i8CdclZvBsAfY
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+-----BEGIN PGP SIGNATURE-----
 
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs: update monitoring target regions for online input commit
-Date: Tue, 31 Oct 2023 17:01:31 +0000
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVBNT4ACgkQJNaLcl1U
+h9C7Vwf+KLgzCd1r8pGTKJEpaOAwt9Pbf0FzBJNLYfMTHgnoa1pJITtiuIvaegQR
+jh6DdMCzxL9zFhw2hpSmJquL5JjEvJsAVMdgmQ/M7uhh0HXQNdMb47G+UJQoDum+
+eYm7oRqfku5cIMCesjVPLc8OWP9dnfbpgm7ZPuVpoOnLgvHMCwVJalX5WXv9AaED
+P9/7i/7ffN06Nw50uNohmop5Ls6MrDSLpYyWgJ1FIOGTxH6J1QNsHvzcW69WPVER
+zQJTFLstsIxfTjnP3u6gfNJcudBK3VsifonH4tF3EXvbO6FO8Htz0Pc8gyxtDmh8
+v9j6BQkJP+IJrvYnjgl1loN2VjDp2A==
+=3E9R
+-----END PGP SIGNATURE-----
 
-When user input is committed online, DAMON sysfs interface is ignoring the
-user input for the monitoring target regions.  Such request is valid and
-useful for fixed monitoring target regions-based monitoring ops like
-'paddr' or 'fvaddr'.
-
-Update the region boundaries as user specified, too.  Note that the
-monitoring results of the regions that overlap between the latest
-monitoring target regions and the new target regions are preserved.
-
-Treat empty monitoring target regions user request as a request to just
-make no change to the monitoring target regions.  Otherwise, users should
-set the monitoring target regions same to current one for every online
-input commit, and it could be challenging for dynamic monitoring target
-regions update DAMON ops like 'vaddr'.  If the user really need to remove
-all monitoring target regions, they can simply remove the target and then
-create the target again with empty target regions.
-
-Link: https://lkml.kernel.org/r/20231031170131.46972-1-sj@kernel.org
-Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[5.19+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/damon/sysfs.c |   47 ++++++++++++++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 17 deletions(-)
-
---- a/mm/damon/sysfs.c~mm-damon-sysfs-update-monitoring-target-regions-for-online-input-commit
-+++ a/mm/damon/sysfs.c
-@@ -1150,34 +1150,47 @@ destroy_targets_out:
- 	return err;
- }
- 
--static int damon_sysfs_update_target(struct damon_target *target,
--		struct damon_ctx *ctx,
--		struct damon_sysfs_target *sys_target)
-+static int damon_sysfs_update_target_pid(struct damon_target *target, int pid)
- {
--	struct pid *pid;
--	struct damon_region *r, *next;
--
--	if (!damon_target_has_pid(ctx))
--		return 0;
-+	struct pid *pid_new;
- 
--	pid = find_get_pid(sys_target->pid);
--	if (!pid)
-+	pid_new = find_get_pid(pid);
-+	if (!pid_new)
- 		return -EINVAL;
- 
--	/* no change to the target */
--	if (pid == target->pid) {
--		put_pid(pid);
-+	if (pid_new == target->pid) {
-+		put_pid(pid_new);
- 		return 0;
- 	}
- 
--	/* remove old monitoring results and update the target's pid */
--	damon_for_each_region_safe(r, next, target)
--		damon_destroy_region(r, target);
- 	put_pid(target->pid);
--	target->pid = pid;
-+	target->pid = pid_new;
- 	return 0;
- }
- 
-+static int damon_sysfs_update_target(struct damon_target *target,
-+		struct damon_ctx *ctx,
-+		struct damon_sysfs_target *sys_target)
-+{
-+	int err;
-+
-+	if (damon_target_has_pid(ctx)) {
-+		err = damon_sysfs_update_target_pid(target, sys_target->pid);
-+		if (err)
-+			return err;
-+	}
-+
-+	/*
-+	 * Do monitoring target region boundary update only if one or more
-+	 * regions are set by the user.  This is for keeping current monitoring
-+	 * target results and range easier, especially for dynamic monitoring
-+	 * target regions update ops like 'vaddr'.
-+	 */
-+	if (sys_target->regions->nr)
-+		err = damon_sysfs_set_regions(target, sys_target->regions);
-+	return err;
-+}
-+
- static int damon_sysfs_set_targets(struct damon_ctx *ctx,
- 		struct damon_sysfs_targets *sysfs_targets)
- {
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-sysfs-remove-requested-targets-when-online-commit-inputs.patch
-mm-damon-sysfs-remove-requested-targets-when-online-commit-inputs-fix.patch
-mm-damon-sysfs-update-monitoring-target-regions-for-online-input-commit.patch
-
+--ol/i8CdclZvBsAfY--
