@@ -2,136 +2,249 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9923F7DD124
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 17:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD0C37DD12F
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 17:07:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231490AbjJaQFV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 12:05:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44810 "EHLO
+        id S1344885AbjJaQHJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 12:07:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230105AbjJaQFU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 12:05:20 -0400
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2057.outbound.protection.outlook.com [40.107.93.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC5F5B4
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 09:05:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=AUpCeP4iga5aQL7xMWKL3D8o3HZzby410yn5/FWehh6q2T1/dpauWuqyTIAwqnZN5Nhc7LgoNmHY4HkWs8bkT44W+ELrAZV+gqsfJQcsEUZqZuNIuTb0VNWoiw/Kt8/RhJ5/KOBvwZ0YXx730Ra4k9w2sUlrHB7wWfYuPtF/cz9aRaVB5JkYboF9QLV0rkqdZSWSAhhrQlZ9PpM3KdYM7g74+9eVH+OPkJ+nFw2GfaD4mGKoA1EN8VR6aU4jujNrzwiUGppPIzlev4Rjw7dfCNFXHMz+s4QCYKSe5T3urCLvHg1L5May4tkvDBx9M4CYs/ZXryeSx65Pvz52tci7jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KQDNZA+F3Psw7E3xk+u+nIXcPveOGeP96VUCNB1RRiE=;
- b=GO5/RnI7y2hfHVeuXbX5JAS37DbKfR6V7tGoEPtDeXCIxmh7Ry+y39kCnSTp0K0agexC+e90yAYUSvLDU5BAILdoD+A6lzWKZhRGdWWaADcCtF6waZCXE4g7mrkFGAViVxwf/5nq3pPqcsc/N2z0LWLuRTR6i41zo/goLnIeXZxYcJoYwgpD4Z6oxFEKKl5f4b3Aa7dPAdTHgaKjHF6UXKR7N4hTsmqvyo4+928f4pt/xql+Eqmg5QvcY4zmSKFnr2CgpA/qfgkIaVFHoVBy8lgIZIrkeACiaIOPCXFTtNFw8QhizsOYIIa+hP0V4KtgX1O5kVkMYl+gYtBplzekTg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KQDNZA+F3Psw7E3xk+u+nIXcPveOGeP96VUCNB1RRiE=;
- b=Vlp8QdvcJSUY18yUh72NOFJdkoUyQ8Nicp94hlLDC2AceRdnmUrZ4IloEudvjCZuug0lvL84/s9KqPkLquRPUrDWl9FqZhvMFvmE8UBPBNMVnj/ug9HmcEUVxlHX6Fjeu90aw9403+m+0+BT8yaV0FxGMMT8Sf3mYngGpLOrrZA=
-Received: from MW4PR02CA0008.namprd02.prod.outlook.com (2603:10b6:303:16d::27)
- by SA3PR12MB8804.namprd12.prod.outlook.com (2603:10b6:806:31f::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6907.33; Tue, 31 Oct
- 2023 16:05:15 +0000
-Received: from CO1PEPF000044F2.namprd05.prod.outlook.com
- (2603:10b6:303:16d:cafe::7c) by MW4PR02CA0008.outlook.office365.com
- (2603:10b6:303:16d::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.29 via Frontend
- Transport; Tue, 31 Oct 2023 16:05:15 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000044F2.mail.protection.outlook.com (10.167.241.72) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6954.19 via Frontend Transport; Tue, 31 Oct 2023 16:05:15 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Tue, 31 Oct
- 2023 11:05:14 -0500
-From:   Mario Limonciello <mario.limonciello@amd.com>
-To:     <stable@vger.kernel.org>
-CC:     Mario Limonciello <mario.limonciello@amd.com>,
-        Paolo Gentili <paolo.gentili@canonical.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 v2 2/2] drm/amd: Disable ASPM for VI w/ all Intel systems
-Date:   Tue, 31 Oct 2023 11:04:51 -0500
-Message-ID: <20231031160451.5429-2-mario.limonciello@amd.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231031160451.5429-1-mario.limonciello@amd.com>
-References: <20231031160451.5429-1-mario.limonciello@amd.com>
+        with ESMTP id S1344881AbjJaQHJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 12:07:09 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17838DA;
+        Tue, 31 Oct 2023 09:07:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5210CC433C7;
+        Tue, 31 Oct 2023 16:07:04 +0000 (UTC)
+Date:   Tue, 31 Oct 2023 12:07:02 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Beau Belgrave <beaub@linux.microsoft.com>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-trace-kernel@vger.kernel.org, lkft-triage@lists.linaro.org,
+        Mark Brown <broonie@kernel.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        stable <stable@vger.kernel.org>
+Subject: Re: selftests: user_events: ftrace_test - RIP:
+ 0010:tracing_update_buffers (kernel/trace/trace.c:6470)
+Message-ID: <20231031120702.70dbb21b@gandalf.local.home>
+In-Reply-To: <20231031104551.6e0f3620@gandalf.local.home>
+References: <CA+G9fYuDP3hVQ3t7FfrBAjd_WFVSurMgCepTxunSJf=MTe=6aA@mail.gmail.com>
+        <20231027192011.GA436-beaub@linux.microsoft.com>
+        <20231027183640.2529ab68@gandalf.local.home>
+        <20231027223344.3854ac1f@rorschach.local.home>
+        <20231030163102.GA1853-beaub@linux.microsoft.com>
+        <20231030124223.4e4ddeb8@gandalf.local.home>
+        <20231030173151.0631169b@gandalf.local.home>
+        <20231031002707.GA107-beaub@linux.microsoft.com>
+        <20231031000031.1e705592@gandalf.local.home>
+        <20231031104551.6e0f3620@gandalf.local.home>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000044F2:EE_|SA3PR12MB8804:EE_
-X-MS-Office365-Filtering-Correlation-Id: 71e8d93e-5874-4f47-0573-08dbda2b2bc3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 72FvF4OzhZ/fhy+6RlmV+RZdGUzdxDSVHFRHF39QyKCj5sYxkrrCcdcZU+mPLXl6x1dtvmhzP3uEVL6cIcqB8EdWr6SSwnhy+OhM/0NVNI9lNTo49eOJtP8wh4xEsPUneJLTFBEpquKYdaLOUilWh5R5MmbTw2RIRDGpzf2PsCJt8M9qvv0BUmD1owWThxxySgSHdjoy9zUISTUY5k42RFaw8JkSaT8aBLMRdK/7on0afsuihZMh0B+oI030aOm0diCj8tVvUld2tHIbkTy0VZ4pzzmJDzKUDQMWscVnlaeYITTQ8kKDah5GCTG3i2QG0uMkIGbIoIfbfolKSbs4VHUYL8slQxBrv9xiv1HtqNUVVNGK24l1/lxWG7MbErZGUwJ70aeYNnOOgcBSwPZXpFigtsndFoEvHARAz5Anwcxr7iJjur3bSNgpmtWda3qnOkb9XjGdz8EOG8MOwLBL5pM5ec1LI/NQ6Mqh6ShVMm1+4eH0U5wanTGqPYZIWH1jfyHLZ5jaK9Ak9UWZ+7xwKLZXfqrShD21SrFXMYJbBG0VfIUbGm7ezoOOyQPF3qJv1JSXGWs7/5JAfnUTfRMhftmUuUw+pqkjDxdmzi9wXIsD3mioQmtw914dBanNYQj5eH71qO3ZYYN0k7o4DDez/pzr8Vp1b80nTCizOhYs4XU/QAgWbxJzKh0Qy1Xn4P64bafeJFio7A058gvUco+XDbMOiBC6ho25qHFnefVKmUOo0yoGUIEv98Rhxb7y+L2+BuZXtddtsfvjnPSvXGEH3w==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(396003)(39860400002)(376002)(346002)(230922051799003)(64100799003)(1800799009)(186009)(82310400011)(451199024)(46966006)(40470700004)(36840700001)(40460700003)(8676002)(2906002)(83380400001)(70586007)(36756003)(36860700001)(4326008)(426003)(26005)(16526019)(1076003)(82740400003)(47076005)(81166007)(8936002)(356005)(2616005)(336012)(44832011)(40480700001)(7696005)(478600001)(966005)(6916009)(5660300002)(316002)(70206006)(86362001)(54906003)(6666004)(41300700001)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2023 16:05:15.4300
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 71e8d93e-5874-4f47-0573-08dbda2b2bc3
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F2.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8804
-X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Originally we were quirking ASPM disabled specifically for VI when
-used with Alder Lake, but it appears to have problems with Rocket
-Lake as well.
+On Tue, 31 Oct 2023 10:45:51 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-Like we've done in the case of dpm for newer platforms, disable
-ASPM for all Intel systems.
+> @@ -1404,7 +1424,7 @@ event_enable_write(struct file *filp, const char __user *ubuf, size_t cnt,
+>  		ret = -ENODEV;
+>  		mutex_lock(&event_mutex);
+>  		file = event_file_data(filp);
+> -		if (likely(file)) {
+> +		if (likely(file && !(file->flags & EVENT_FILE_FL_FREED))) {
+>  			printk("update file = %px\n", file);
+>  			printk("update tr = %px\n", file->tr);
+>  			ret = tracing_update_buffers(file->tr);
 
-Cc: stable@vger.kernel.org # 5.15+
-Fixes: 0064b0ce85bb ("drm/amd/pm: enable ASPM by default")
-Reported-and-tested-by: Paolo Gentili <paolo.gentili@canonical.com>
-Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2036742
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry-picked from 64ffd2f1d00c6235dabe9704bbb0d9ce3e28147f)
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
----
- drivers/gpu/drm/amd/amdgpu/vi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Well, this won't apply because I still had debugging in it when I added
+these changes.
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vi.c b/drivers/gpu/drm/amd/amdgpu/vi.c
-index b9555ba6d32f..6d64d603a97a 100644
---- a/drivers/gpu/drm/amd/amdgpu/vi.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vi.c
-@@ -1147,7 +1147,7 @@ static void vi_program_aspm(struct amdgpu_device *adev)
- 	bool bL1SS = false;
- 	bool bClkReqSupport = true;
+Here's a better version:
+
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index 12207dc6722d..696f8dc4aa53 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -492,6 +492,7 @@ enum {
+ 	EVENT_FILE_FL_TRIGGER_COND_BIT,
+ 	EVENT_FILE_FL_PID_FILTER_BIT,
+ 	EVENT_FILE_FL_WAS_ENABLED_BIT,
++	EVENT_FILE_FL_FREED_BIT,
+ };
  
--	if (!amdgpu_device_should_use_aspm(adev) || !amdgpu_device_aspm_support_quirk())
-+	if (!amdgpu_device_should_use_aspm(adev) || !amdgpu_device_pcie_dynamic_switching_supported())
- 		return;
+ extern struct trace_event_file *trace_get_event_file(const char *instance,
+@@ -630,6 +631,7 @@ extern int __kprobe_event_add_fields(struct dynevent_cmd *cmd, ...);
+  *  TRIGGER_COND  - When set, one or more triggers has an associated filter
+  *  PID_FILTER    - When set, the event is filtered based on pid
+  *  WAS_ENABLED   - Set when enabled to know to clear trace on module removal
++ *  FREED         - File descriptor is freed, all fields should be considered invalid
+  */
+ enum {
+ 	EVENT_FILE_FL_ENABLED		= (1 << EVENT_FILE_FL_ENABLED_BIT),
+@@ -643,6 +645,7 @@ enum {
+ 	EVENT_FILE_FL_TRIGGER_COND	= (1 << EVENT_FILE_FL_TRIGGER_COND_BIT),
+ 	EVENT_FILE_FL_PID_FILTER	= (1 << EVENT_FILE_FL_PID_FILTER_BIT),
+ 	EVENT_FILE_FL_WAS_ENABLED	= (1 << EVENT_FILE_FL_WAS_ENABLED_BIT),
++	EVENT_FILE_FL_FREED		= (1 << EVENT_FILE_FL_FREED_BIT),
+ };
  
- 	if (adev->flags & AMD_IS_APU ||
--- 
-2.34.1
-
+ struct trace_event_file {
+@@ -671,6 +674,7 @@ struct trace_event_file {
+ 	 * caching and such. Which is mostly OK ;-)
+ 	 */
+ 	unsigned long		flags;
++	atomic_t		ref;	/* ref count for opened files */
+ 	atomic_t		sm_ref;	/* soft-mode reference counter */
+ 	atomic_t		tm_ref;	/* trigger-mode reference counter */
+ };
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 2539cfc20a97..9aebf904ff97 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4978,6 +4978,20 @@ int tracing_open_file_tr(struct inode *inode, struct file *filp)
+ 	if (ret)
+ 		return ret;
+ 
++	mutex_lock(&event_mutex);
++
++	/* Fail if the file is marked for removal */
++	if (file->flags & EVENT_FILE_FL_FREED) {
++		trace_array_put(file->tr);
++		ret = -ENODEV;
++	} else {
++		event_file_get(file);
++	}
++
++	mutex_unlock(&event_mutex);
++	if (ret)
++		return ret;
++
+ 	filp->private_data = inode->i_private;
+ 
+ 	return 0;
+@@ -4988,6 +5002,7 @@ int tracing_release_file_tr(struct inode *inode, struct file *filp)
+ 	struct trace_event_file *file = inode->i_private;
+ 
+ 	trace_array_put(file->tr);
++	event_file_put(file);
+ 
+ 	return 0;
+ }
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 0e1405abf4f7..b7f4ea25a194 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -1669,6 +1669,9 @@ extern void event_trigger_unregister(struct event_command *cmd_ops,
+ 				     char *glob,
+ 				     struct event_trigger_data *trigger_data);
+ 
++extern void event_file_get(struct trace_event_file *file);
++extern void event_file_put(struct trace_event_file *file);
++
+ /**
+  * struct event_trigger_ops - callbacks for trace event triggers
+  *
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index f9e3e24d8796..f29e815ca5b2 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -990,13 +990,35 @@ static void remove_subsystem(struct trace_subsystem_dir *dir)
+ 	}
+ }
+ 
++void event_file_get(struct trace_event_file *file)
++{
++	atomic_inc(&file->ref);
++}
++
++void event_file_put(struct trace_event_file *file)
++{
++	if (WARN_ON_ONCE(!atomic_read(&file->ref))) {
++		if (file->flags & EVENT_FILE_FL_FREED)
++			kmem_cache_free(file_cachep, file);
++		return;
++	}
++
++	if (atomic_dec_and_test(&file->ref)) {
++		/* Count should only go to zero when it is freed */
++		if (WARN_ON_ONCE(!(file->flags & EVENT_FILE_FL_FREED)))
++			return;
++		kmem_cache_free(file_cachep, file);
++	}
++}
++
+ static void remove_event_file_dir(struct trace_event_file *file)
+ {
+ 	eventfs_remove_dir(file->ei);
+ 	list_del(&file->list);
+ 	remove_subsystem(file->system);
+ 	free_event_filter(file->filter);
+-	kmem_cache_free(file_cachep, file);
++	file->flags |= EVENT_FILE_FL_FREED;
++	event_file_put(file);
+ }
+ 
+ /*
+@@ -1369,7 +1391,7 @@ event_enable_read(struct file *filp, char __user *ubuf, size_t cnt,
+ 		flags = file->flags;
+ 	mutex_unlock(&event_mutex);
+ 
+-	if (!file)
++	if (!file || flags & EVENT_FILE_FL_FREED)
+ 		return -ENODEV;
+ 
+ 	if (flags & EVENT_FILE_FL_ENABLED &&
+@@ -1403,7 +1425,7 @@ event_enable_write(struct file *filp, const char __user *ubuf, size_t cnt,
+ 		ret = -ENODEV;
+ 		mutex_lock(&event_mutex);
+ 		file = event_file_data(filp);
+-		if (likely(file)) {
++		if (likely(file && !(file->flags & EVENT_FILE_FL_FREED))) {
+ 			ret = tracing_update_buffers(file->tr);
+ 			if (ret < 0) {
+ 				mutex_unlock(&event_mutex);
+@@ -1683,7 +1705,7 @@ event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
+ 
+ 	mutex_lock(&event_mutex);
+ 	file = event_file_data(filp);
+-	if (file)
++	if (file && !(file->flags & EVENT_FILE_FL_FREED))
+ 		print_event_filter(file, s);
+ 	mutex_unlock(&event_mutex);
+ 
+@@ -2902,6 +2924,7 @@ trace_create_new_event(struct trace_event_call *call,
+ 	atomic_set(&file->tm_ref, 0);
+ 	INIT_LIST_HEAD(&file->triggers);
+ 	list_add(&file->list, &tr->events);
++	event_file_get(file);
+ 
+ 	return file;
+ }
+diff --git a/kernel/trace/trace_events_filter.c b/kernel/trace/trace_events_filter.c
+index 33264e510d16..0c611b281a5b 100644
+--- a/kernel/trace/trace_events_filter.c
++++ b/kernel/trace/trace_events_filter.c
+@@ -2349,6 +2349,9 @@ int apply_event_filter(struct trace_event_file *file, char *filter_string)
+ 	struct event_filter *filter = NULL;
+ 	int err;
+ 
++	if (file->flags & EVENT_FILE_FL_FREED)
++		return -ENODEV;
++
+ 	if (!strcmp(strstrip(filter_string), "0")) {
+ 		filter_disable(file);
+ 		filter = event_filter(file);
