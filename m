@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71DE57DD412
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2DB07DD52C
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235942AbjJaRG6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34224 "EHLO
+        id S1376431AbjJaRsA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:48:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235853AbjJaRGm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:42 -0400
+        with ESMTP id S1376444AbjJaRr7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D0AB19B7
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63DFC433C8;
-        Tue, 31 Oct 2023 17:05:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32483C1
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F9FC433C8;
+        Tue, 31 Oct 2023 17:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771914;
-        bh=sFG3QXaRGqJZbQ6uNurM8TAflbkYBksgo2P/2X2tPBw=;
+        s=korg; t=1698774468;
+        bh=b0Wy1OQeYNFlAH+zzDFM3hrrbEfvqFPHb/1RgCPqqP4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RNriDAfB5TWDQZ6316HCvokWK8E5lLqL4MrRgSq2N5uo5n17voKFyw88vUKcLMro+
-         43EA7o5nuQFU+0j2m1BWY4BaILUUxG7HHgIZ/Li/W7VhJQv7AqetyDtMbcsVaeHEMy
-         VEbCAQqPT6hlJbG/4aOhng/E+c/EAXIf4qQlDz1I=
+        b=z76So7TwesGsB20xcCNVV9avizolX/zgb1zI0brIQlYsFfymFJU8NHQalHzsVvCU3
+         IF/WkAGFINbJ/BT+UYFNSz36Ss2yNTaAoYzyn4fSRoZN5ME8U8+4qvG1iqsFgYCpZr
+         bRIlzdmGh0aBG5VS+8iI9xySNLry0vVx00wbLwfk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hao Ge <gehao@kylinos.cn>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 31/86] firmware/imx-dsp: Fix use_after_free in imx_dsp_setup_channels()
+        patches@lists.linux.dev,
+        Wojciech Drewek <wojciech.drewek@intel.com>,
+        Mateusz Palczewski <mateusz.palczewski@intel.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>,
+        Arpana Arland <arpanax.arland@intel.com>
+Subject: [PATCH 6.5 055/112] igb: Fix potential memory leak in igb_add_ethtool_nfc_entry
 Date:   Tue, 31 Oct 2023 18:00:56 +0100
-Message-ID: <20231031165919.590325902@linuxfoundation.org>
+Message-ID: <20231031165903.053323803@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Ge <gehao@kylinos.cn>
+From: Mateusz Palczewski <mateusz.palczewski@intel.com>
 
-[ Upstream commit 1558b1a8dd388f5fcc3abc1e24de854a295044c3 ]
+[ Upstream commit 8c0b48e01daba5ca58f939a8425855d3f4f2ed14 ]
 
-dsp_chan->name and chan_name points to same block of memory,
-because dev_err still needs to be used it,so we need free
-it's memory after use to avoid use_after_free.
+Add check for return of igb_update_ethtool_nfc_entry so that in case
+of any potential errors the memory alocated for input will be freed.
 
-Fixes: e527adfb9b7d ("firmware: imx-dsp: Fix an error handling path in imx_dsp_setup_channels()")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 0e71def25281 ("igb: add support of RX network flow classification")
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/imx/imx-dsp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igb/igb_ethtool.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/imx/imx-dsp.c b/drivers/firmware/imx/imx-dsp.c
-index 1f410809d3ee4..0f656e4191d5c 100644
---- a/drivers/firmware/imx/imx-dsp.c
-+++ b/drivers/firmware/imx/imx-dsp.c
-@@ -115,11 +115,11 @@ static int imx_dsp_setup_channels(struct imx_dsp_ipc *dsp_ipc)
- 		dsp_chan->idx = i % 2;
- 		dsp_chan->ch = mbox_request_channel_byname(cl, chan_name);
- 		if (IS_ERR(dsp_chan->ch)) {
--			kfree(dsp_chan->name);
- 			ret = PTR_ERR(dsp_chan->ch);
- 			if (ret != -EPROBE_DEFER)
- 				dev_err(dev, "Failed to request mbox chan %s ret %d\n",
- 					chan_name, ret);
-+			kfree(dsp_chan->name);
- 			goto out;
- 		}
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index 319ed601eaa1e..4ee849985e2b8 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -2978,11 +2978,15 @@ static int igb_add_ethtool_nfc_entry(struct igb_adapter *adapter,
+ 	if (err)
+ 		goto err_out_w_lock;
  
+-	igb_update_ethtool_nfc_entry(adapter, input, input->sw_idx);
++	err = igb_update_ethtool_nfc_entry(adapter, input, input->sw_idx);
++	if (err)
++		goto err_out_input_filter;
+ 
+ 	spin_unlock(&adapter->nfc_lock);
+ 	return 0;
+ 
++err_out_input_filter:
++	igb_erase_filter(adapter, input);
+ err_out_w_lock:
+ 	spin_unlock(&adapter->nfc_lock);
+ err_out:
 -- 
 2.42.0
 
