@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6545B7DD537
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F0B27DD3E9
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376486AbjJaRsY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:48:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47994 "EHLO
+        id S233608AbjJaRGM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376488AbjJaRsX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:23 -0400
+        with ESMTP id S236428AbjJaRGA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 561B6E4
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BE8C433CD;
-        Tue, 31 Oct 2023 17:48:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899E0E6
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFDAC433C8;
+        Tue, 31 Oct 2023 17:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774492;
-        bh=uvPkPoIWKcV8Ust+TQpUTrqUON16QMmfGqmcch06EZw=;
+        s=korg; t=1698771806;
+        bh=R3sdS7W0ZifFc3WbzqmXi/msWWGOoBXpkr71S7wPD2c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PmI828/+yPLSNiJnlrOqZgPSaBd1Mo0DmiHrlUZ9OdfpE/J3G3yV/PAWVE6ZQ/uxx
-         SXQlxzr3sNb/ksZoN4LjKEdiITfg5q8PRQNSM9ckmYc5kLmUR8xx1oy92Vq8QGOOcp
-         PNRcN6SMz9DuXtt7FuV+z5lfz1al7tsX4Pb4KZnE=
+        b=ud8h24XtLRZY0Sl/qyFldEazROixfhL1+Ho1SvDQxmHy0O6YCVQzMyzC7YElBrdbE
+         2tt+16yYv1AF8Ighf3pIJ0gz5axrbWWfkMNqdNg0+gMKAtQDrOTs0/4koy4VLeADba
+         tyZ/j0OaWMSKlegBy+IOPiDzn0GwAtnoInrrS0Gk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Peng Zhang <zhangpeng.00@bytedance.com>, jason.sim@samsung.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 030/112] maple_tree: add GFP_KERNEL to allocations in mas_expected_entries()
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 06/86] ASoC: codecs: wcd938x: Simplify with dev_err_probe
 Date:   Tue, 31 Oct 2023 18:00:31 +0100
-Message-ID: <20231031165902.274284483@linuxfoundation.org>
+Message-ID: <20231031165918.807473528@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,217 +51,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 099d7439ce03d0e7bc8f0c3d7878b562f3a48d3d upstream.
+[ Upstream commit 60ba2fda5280528e70fa26b44e36d1530f6d1d7e ]
 
-Users complained about OOM errors during fork without triggering
-compaction.  This can be fixed by modifying the flags used in
-mas_expected_entries() so that the compaction will be triggered in low
-memory situations.  Since mas_expected_entries() is only used during fork,
-the extra argument does not need to be passed through.
+Replace dev_err() in probe() path with dev_err_probe() to:
+1. Make code a bit simpler and easier to read,
+2. Do not print messages on deferred probe.
 
-Additionally, the two test_maple_tree test cases and one benchmark test
-were altered to use the correct locking type so that allocations would not
-trigger sleeping and thus fail.  Testing was completed with lockdep atomic
-sleep detection.
-
-The additional locking change requires rwsem support additions to the
-tools/ directory through the use of pthreads pthread_rwlock_t.  With this
-change test_maple_tree works in userspace, as a module, and in-kernel.
-
-Users may notice that the system gave up early on attempting to start new
-processes instead of attempting to reclaim memory.
-
-Link: https://lkml.kernel.org/r/20230915093243epcms1p46fa00bbac1ab7b7dca94acb66c44c456@epcms1p4
-Link: https://lkml.kernel.org/r/20231012155233.2272446-1-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: <jason.sim@samsung.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230418074630.8681-4-krzysztof.kozlowski@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 69a026a2357e ("ASoC: codecs: wcd938x: fix regulator leaks on probe errors")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c            |    2 +-
- lib/test_maple_tree.c       |   35 ++++++++++++++++++++++++-----------
- tools/include/linux/rwsem.h |   40 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 65 insertions(+), 12 deletions(-)
- create mode 100644 tools/include/linux/rwsem.h
+ sound/soc/codecs/wcd938x.c | 27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5729,7 +5729,7 @@ int mas_expected_entries(struct ma_state
- 	/* Internal nodes */
- 	nr_nodes += DIV_ROUND_UP(nr_nodes, nonleaf_cap);
- 	/* Add working room for split (2 nodes) + new parents */
--	mas_node_count(mas, nr_nodes + 3);
-+	mas_node_count_gfp(mas, nr_nodes + 3, GFP_KERNEL);
+diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
+index 73d7c92e87242..f0aa44198f4c5 100644
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -3302,18 +3302,15 @@ static int wcd938x_populate_dt_data(struct wcd938x_priv *wcd938x, struct device
+ 	int ret;
  
- 	/* Detect if allocations run out */
- 	mas->mas_flags |= MA_STATE_PREALLOC;
---- a/lib/test_maple_tree.c
-+++ b/lib/test_maple_tree.c
-@@ -9,6 +9,7 @@
+ 	wcd938x->reset_gpio = of_get_named_gpio(dev->of_node, "reset-gpios", 0);
+-	if (wcd938x->reset_gpio < 0) {
+-		dev_err(dev, "Failed to get reset gpio: err = %d\n",
+-			wcd938x->reset_gpio);
+-		return wcd938x->reset_gpio;
+-	}
++	if (wcd938x->reset_gpio < 0)
++		return dev_err_probe(dev, wcd938x->reset_gpio,
++				     "Failed to get reset gpio\n");
  
- #include <linux/maple_tree.h>
- #include <linux/module.h>
-+#include <linux/rwsem.h>
+ 	wcd938x->us_euro_gpio = devm_gpiod_get_optional(dev, "us-euro",
+ 						GPIOD_OUT_LOW);
+-	if (IS_ERR(wcd938x->us_euro_gpio)) {
+-		dev_err(dev, "us-euro swap Control GPIO not found\n");
+-		return PTR_ERR(wcd938x->us_euro_gpio);
+-	}
++	if (IS_ERR(wcd938x->us_euro_gpio))
++		return dev_err_probe(dev, PTR_ERR(wcd938x->us_euro_gpio),
++				     "us-euro swap Control GPIO not found\n");
  
- #define MTREE_ALLOC_MAX 0x2000000000000Ul
- #define CONFIG_MAPLE_SEARCH
-@@ -1714,17 +1715,21 @@ static noinline void __init check_forkin
- 	void *val;
- 	MA_STATE(mas, mt, 0, 0);
- 	MA_STATE(newmas, mt, 0, 0);
-+	struct rw_semaphore newmt_lock;
-+
-+	init_rwsem(&newmt_lock);
+ 	cfg->swap_gnd_mic = wcd938x_swap_gnd_mic;
  
- 	for (i = 0; i <= nr_entries; i++)
- 		mtree_store_range(mt, i*10, i*10 + 5,
- 				  xa_mk_value(i), GFP_KERNEL);
+@@ -3323,16 +3320,12 @@ static int wcd938x_populate_dt_data(struct wcd938x_priv *wcd938x, struct device
+ 	wcd938x->supplies[3].supply = "vdd-mic-bias";
  
- 	mt_set_non_kernel(99999);
--	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE);
-+	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN);
-+	mt_set_external_lock(&newmt, &newmt_lock);
- 	newmas.tree = &newmt;
- 	mas_reset(&newmas);
- 	mas_reset(&mas);
--	mas_lock(&newmas);
-+	down_write(&newmt_lock);
- 	mas.index = 0;
- 	mas.last = 0;
- 	if (mas_expected_entries(&newmas, nr_entries)) {
-@@ -1739,10 +1744,10 @@ static noinline void __init check_forkin
- 	}
- 	rcu_read_unlock();
- 	mas_destroy(&newmas);
--	mas_unlock(&newmas);
- 	mt_validate(&newmt);
- 	mt_set_non_kernel(0);
--	mtree_destroy(&newmt);
-+	__mt_destroy(&newmt);
-+	up_write(&newmt_lock);
- }
+ 	ret = regulator_bulk_get(dev, WCD938X_MAX_SUPPLY, wcd938x->supplies);
+-	if (ret) {
+-		dev_err(dev, "Failed to get supplies: err = %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to get supplies\n");
  
- static noinline void __init check_iteration(struct maple_tree *mt)
-@@ -1853,6 +1858,10 @@ static noinline void __init bench_forkin
- 	void *val;
- 	MA_STATE(mas, mt, 0, 0);
- 	MA_STATE(newmas, mt, 0, 0);
-+	struct rw_semaphore newmt_lock;
-+
-+	init_rwsem(&newmt_lock);
-+	mt_set_external_lock(&newmt, &newmt_lock);
+ 	ret = regulator_bulk_enable(WCD938X_MAX_SUPPLY, wcd938x->supplies);
+-	if (ret) {
+-		dev_err(dev, "Failed to enable supplies: err = %d\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to enable supplies\n");
  
- 	for (i = 0; i <= nr_entries; i++)
- 		mtree_store_range(mt, i*10, i*10 + 5,
-@@ -1867,7 +1876,7 @@ static noinline void __init bench_forkin
- 		mas.index = 0;
- 		mas.last = 0;
- 		rcu_read_lock();
--		mas_lock(&newmas);
-+		down_write(&newmt_lock);
- 		if (mas_expected_entries(&newmas, nr_entries)) {
- 			printk("OOM!");
- 			BUG_ON(1);
-@@ -1878,11 +1887,11 @@ static noinline void __init bench_forkin
- 			mas_store(&newmas, val);
- 		}
- 		mas_destroy(&newmas);
--		mas_unlock(&newmas);
- 		rcu_read_unlock();
- 		mt_validate(&newmt);
- 		mt_set_non_kernel(0);
--		mtree_destroy(&newmt);
-+		__mt_destroy(&newmt);
-+		up_write(&newmt_lock);
- 	}
- }
- #endif
-@@ -2489,6 +2498,10 @@ static noinline void __init check_dup_ga
- 	void *tmp;
- 	MA_STATE(mas, mt, 0, 0);
- 	MA_STATE(newmas, &newmt, 0, 0);
-+	struct rw_semaphore newmt_lock;
-+
-+	init_rwsem(&newmt_lock);
-+	mt_set_external_lock(&newmt, &newmt_lock);
+ 	wcd938x_dt_parse_micbias_info(dev, wcd938x);
  
- 	if (!zero_start)
- 		i = 1;
-@@ -2498,9 +2511,9 @@ static noinline void __init check_dup_ga
- 		mtree_store_range(mt, i*10, (i+1)*10 - gap,
- 				  xa_mk_value(i), GFP_KERNEL);
- 
--	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE);
-+	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN);
- 	mt_set_non_kernel(99999);
--	mas_lock(&newmas);
-+	down_write(&newmt_lock);
- 	ret = mas_expected_entries(&newmas, nr_entries);
- 	mt_set_non_kernel(0);
- 	MT_BUG_ON(mt, ret != 0);
-@@ -2513,9 +2526,9 @@ static noinline void __init check_dup_ga
- 	}
- 	rcu_read_unlock();
- 	mas_destroy(&newmas);
--	mas_unlock(&newmas);
- 
--	mtree_destroy(&newmt);
-+	__mt_destroy(&newmt);
-+	up_write(&newmt_lock);
- }
- 
- /* Duplicate many sizes of trees.  Mainly to test expected entry values */
---- /dev/null
-+++ b/tools/include/linux/rwsem.h
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+#ifndef _TOOLS__RWSEM_H
-+#define _TOOLS__RWSEM_H
-+
-+#include <pthread.h>
-+
-+struct rw_semaphore {
-+	pthread_rwlock_t lock;
-+};
-+
-+static inline int init_rwsem(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_init(&sem->lock, NULL);
-+}
-+
-+static inline int exit_rwsem(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_destroy(&sem->lock);
-+}
-+
-+static inline int down_read(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_rdlock(&sem->lock);
-+}
-+
-+static inline int up_read(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_unlock(&sem->lock);
-+}
-+
-+static inline int down_write(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_wrlock(&sem->lock);
-+}
-+
-+static inline int up_write(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_unlock(&sem->lock);
-+}
-+#endif /* _TOOLS_RWSEM_H */
+-- 
+2.42.0
+
 
 
