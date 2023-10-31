@@ -2,133 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B00A7DD89E
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 23:51:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CE8A7DD92C
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 00:16:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344868AbjJaWvt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 18:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49468 "EHLO
+        id S236116AbjJaXQP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 19:16:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344428AbjJaWvs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 18:51:48 -0400
-Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4EEC9
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 15:51:46 -0700 (PDT)
-Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
-        by cmsmtp with ESMTPS
-        id xtoFqoJzHjtZ3xxaMqo5tj; Tue, 31 Oct 2023 22:51:46 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id xxaKq18XBZs8WxxaKqvCKu; Tue, 31 Oct 2023 22:51:44 +0000
-X-Authority-Analysis: v=2.4 cv=YKGMdDKx c=1 sm=1 tr=0 ts=65418500
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=BZ6ONlOXkBpYPFFA8NQA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:In-Reply-To:From:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=3rpYGiaoo5zucxoVeBYC5Mx0GLDamigQVQRPlkiYVm4=; b=0OqWRKLdl6mnZF4UELRZD3jP9o
-        qOZdsc9eSG5Er/L5Wj6v5FGKIE+TC4k+83GVyPcpiq3ByHSWHRpkHgCY/HK22PpWWtuOvNkHrpER5
-        3xntmi68gK+29WFgBXouQSfQ7oSj7gvE7k5AhdB9FIJ7BE+pF292Vx66SLti5kF4Fu5I8WW6CcApG
-        vZggJ7HWL4/j38sXue1kMukGkwgKBjwInojgCk2bG3y5HMgWTIRm7kbw0UHIfFqEHebSxAvSLnP/y
-        Eopq6aHjQ/17mICTjQ4oimZ+VU3peJQ/jHUZsynl0op1l3fC0jBQDznWkvV8128ivmFno77KAwfE2
-        7zlPf5xg==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:53446 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96.2)
-        (envelope-from <re@w6rz.net>)
-        id 1qxxaH-0040s9-3A;
-        Tue, 31 Oct 2023 16:51:42 -0600
-Subject: Re: [PATCH 6.5 000/112] 6.5.10-rc1 review
+        with ESMTP id S236055AbjJaXQO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 19:16:14 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15510113;
+        Tue, 31 Oct 2023 16:16:12 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-77063481352so27122085a.1;
+        Tue, 31 Oct 2023 16:16:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698794171; x=1699398971; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=atmiYi00WMCyp7aFMPt4w9sGV6FatXJOBSSrDMaqG7s=;
+        b=Hq/JiYbwXFukMP1+7zUH1DcR4YOqqpgdK+FRlnf1xU42Q8tcGkwWxvi4fU9ytU1+3d
+         PgZGg2QMO6vyLAm7WtEGQqnEZW1sj1r5wUaIioq43K70KAqXIHsvyCXoYxGvyo23hhXy
+         KlRzks3YbOpOSS5muFQ+FP0hclCIj2fIO9BX0ruiasHENAmKikiV+jm2BUQCRtCygoSD
+         GJlVGEF6EUHnmHZilvBsQqHluBfhf648ovVxb/1PazO6oEnvVRNU87pwbzy0+GDnI2VE
+         i8ONSVcPO6FJSXSfwtN+xSRLbX1secNbUuM6KDkzKWbsiyVdbH1okIaU6OHcteR8S2xa
+         FY8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698794171; x=1699398971;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=atmiYi00WMCyp7aFMPt4w9sGV6FatXJOBSSrDMaqG7s=;
+        b=Vd75MJSwU7RD8QR3RMh+asoHfJdSWPW7K2Ny8fKaZOVbKHOkjM+hWfbaSHEVgd66UT
+         c44ygHore55mXKTsrhUx8lxHqeFEa3Af53jPGyX4HdWB/hnX8CiIHMSsg3tPZNHYuuOq
+         94HI+aZL88BiI+B2qZVXSD1ItiqyjmR1H3nahQimmjcnTUa5KOSHK11c8+kpzHJEJtY4
+         Yb0rX0+j7x6EGO6w6GUAIdpw1yTt0D67MThkRuqTQOyiT1WZYUtovbXNscrk+1rXBEUJ
+         xeK9tp8d9Xknb36wmHNFLRKD/hBvwXXuUoA7BWTiSstUjOeBaSrFvAvZ32F/W4jGjYFH
+         BQ0w==
+X-Gm-Message-State: AOJu0Yyofu2WSlx8EDemF+r6gGuM5N3D6KqcRHjeT1R/zadFNXrn5Jkf
+        6W70uUCKqtbJfkXv3jLtFrg=
+X-Google-Smtp-Source: AGHT+IHzClK0Yy/DDg5jbTwk9MzhOqMDsSgvTkzwRWZOi4OOOoM6R+CxLmO15DBkYC+qiQUZ27zW4w==
+X-Received: by 2002:a05:6214:321:b0:671:560f:3306 with SMTP id j1-20020a056214032100b00671560f3306mr5041211qvu.4.1698794171063;
+        Tue, 31 Oct 2023 16:16:11 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id dc6-20020a05620a520600b00767b0c35c15sm912709qkb.91.2023.10.31.16.16.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 31 Oct 2023 16:16:10 -0700 (PDT)
+Message-ID: <2cc5b202-f024-4fa1-a2d1-577fe463d633@gmail.com>
+Date:   Tue, 31 Oct 2023 16:16:07 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 00/86] 6.1.61-rc1 review
+Content-Language: en-US
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
 Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
         torvalds@linux-foundation.org, akpm@linux-foundation.org,
         linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231031165901.318222981@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-Message-ID: <38fbd463-1160-0212-b9d2-6efeaaa6548e@w6rz.net>
-Date:   Tue, 31 Oct 2023 15:51:39 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1qxxaH-0040s9-3A
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:53446
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfDVAFwp++3OnRobpRokbXOLMXS1PHo1RRQnWdq5JxLY3UBxiVS5myeCF/xiyDF944Xz9fLRuuc0aHLxgJGMbY3Ot9srLdGHnms3qf3w47SWjTkLTbz0b
- tfDbUd8r4TunTV5ojCPllFlIAZ8mRyCOzqJ88kHn8V9ve1wtFzIMghughlE4gZKMF8A4VvoxkwGTKg==
-X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20231031165918.608547597@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/31/23 10:00 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.10 release.
-> There are 112 patches in this series, all will be posted as a response
+On 10/31/23 10:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.61 release.
+> There are 86 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
-> Responses should be made by Thu, 02 Nov 2023 16:58:38 +0000.
+> 
+> Responses should be made by Thu, 02 Nov 2023 16:59:03 +0000.
 > Anything received after that time might be too late.
->
+> 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.10-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.61-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
 > and the diffstat can be found below.
->
+> 
 > thanks,
->
+> 
 > greg k-h
 
-The build fails on RISC-V.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-arch/riscv/mm/hugetlbpage.c: In function ‘set_huge_pte_at’:
-arch/riscv/mm/hugetlbpage.c:188:13: error: ‘sz’ undeclared (first use in 
-this function); did you mean ‘s8’?
-   188 |         if (sz >= PGDIR_SIZE)
-       |             ^~
-       |             s8
-arch/riscv/mm/hugetlbpage.c:188:13: note: each undeclared identifier is 
-reported only once for each function it appears in
-
-Caused by commit 16b6f77970f7a690c61de142511c9ac488d83e04
-
-riscv: fix set_huge_pte_at() for NAPOT mappings when a swap entry is set
-
-This patch requires mainline commit 62ba41d2761206664a1fdc998051324457da2dd6
-
-mm: riscv: fix an unsafe pte read in huge_pte_alloc()
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
