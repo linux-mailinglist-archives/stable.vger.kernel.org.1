@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF1737DD559
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABCFF7DD437
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:08:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376560AbjJaRtm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:49:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42084 "EHLO
+        id S235818AbjJaRHj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376534AbjJaRtk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:40 -0400
+        with ESMTP id S236600AbjJaRHX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB476102
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B10C433C7;
-        Tue, 31 Oct 2023 17:49:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82598DF
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C566FC433C9;
+        Tue, 31 Oct 2023 17:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774577;
-        bh=s+HVRB9wuVOaqa2s/NN6Ff7M1lBBxK7ZFOy+7mdB+Gs=;
+        s=korg; t=1698771996;
+        bh=DNMHHOvFHOWXJSBvYaweh8aRuLPnjNOivcGOM5LtpKE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Y66jIh90UkMEyb3vklh5sWGqLTP38MBPqG5/SIv9ZLtHbG8HwEitbI3fT5u2g2mHj
-         XZzqr6EnTp9eeV353V3MC3leK9/cLkU0bJeX3OWzyI/2/dwbE/5Brn6fwQoBl+Seyw
-         a+Tf5ielTHtqj/5Nk2le8gWqEKn8xkAUqiRyP8uo=
+        b=QhXoJ82rTsFewQWev2VbVUAjNkKSaxyazYmQRGem86VKBAyDbdJNFXcA86C4GGcvC
+         KwHG5ryTDHnWbLRGFLUpulWVKXa8j6WQZhQPZuVH/SHkocWUnzuQu9uEuVj36qOfBq
+         lUVptDaV5cCJQNO3wrhaE3gIOhgJwIH/JupGJxhw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,12 +30,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andi Shyti <andi.shyti@kernel.org>,
         Andrew Jeffery <andrew@codeconstruct.com.au>,
         Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.5 092/112] i2c: aspeed: Fix i2c bus hang in slave read
+Subject: [PATCH 6.1 68/86] i2c: aspeed: Fix i2c bus hang in slave read
 Date:   Tue, 31 Oct 2023 18:01:33 +0100
-Message-ID: <20231031165904.207694901@linuxfoundation.org>
+Message-ID: <20231031165920.671772535@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,7 +51,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
