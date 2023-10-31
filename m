@@ -2,45 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A605B7DD4E3
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:45:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77FD97DD5F1
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 19:17:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346874AbjJaRpD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:45:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54730 "EHLO
+        id S229715AbjJaSRW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 14:17:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346974AbjJaRpC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:45:02 -0400
+        with ESMTP id S230241AbjJaSRW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 14:17:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44A2FF5
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:45:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BD4C433B6;
-        Tue, 31 Oct 2023 17:44:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8C50EA;
+        Tue, 31 Oct 2023 11:17:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9DFC433C8;
+        Tue, 31 Oct 2023 18:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774299;
-        bh=6K+arDBEUtDJE504Zx5IFbZ7Y6ip4GqpK60djqYfepM=;
+        s=korg; t=1698776231;
+        bh=3jBqMDrmerEfrbEtffe4NTO+Buy4E+xaOdV/4wYeNwk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=W6cS5PTm0m/z9sWPOJ1DdXbG6RisSU+FwXac8qZY0fnOhRj2MyE0jJ7FLThPsbK5U
-         d83PibaqtsoopaKwaTCJWoe/Tbc/PVOh2GKCwcPg2jkpv2D2Uz7BVh5NPZ/nIeT6Kq
-         JCc83nc+DQYbNC7wy3FdpLlSKQNiFszL7HjjbZM8=
-Date:   Tue, 31 Oct 2023 18:44:52 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Mark Brown <broonie@kernel.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>, Takashi Iwai <tiwai@suse.de>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1 05/86] ASoC: codecs: wcd938x: Convert to platform
- remove callback returning void
-Message-ID: <2023103133-skating-last-e2f6@gregkh>
-References: <20231031165918.608547597@linuxfoundation.org>
- <20231031165918.777236098@linuxfoundation.org>
- <958957ff-bbaa-4fbc-a796-30e2fdf61453@sirena.org.uk>
+        b=R3nVvWZkB5UwbESsbove9WNCSh5tgc1jCzoPUBBBnPZSuNpuAjUYsA9w9spXZRuNE
+         F36ZCJZY5ZzSF9XppsMXqjuIqdwds2e8eLOeWYTYc6mz/UepbgsaX/NsWH4s51Gb0E
+         xRkpnJ/6vL7s82LXYmq+2P93XHTaQjXogyCYtgHI=
+Date:   Tue, 31 Oct 2023 18:48:03 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Paul Barker <paul.barker.ct@bp.renesas.com>
+Cc:     stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Luis Machado <luis.machado@arm.com>, linux-ide@vger.kernel.org,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH 4.14] ata: ahci: fix enum constants for gcc-13
+Message-ID: <2023103125-public-resilient-cc46@gregkh>
+References: <20231031173255.28666-1-paul.barker.ct@bp.renesas.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <958957ff-bbaa-4fbc-a796-30e2fdf61453@sirena.org.uk>
+In-Reply-To: <20231031173255.28666-1-paul.barker.ct@bp.renesas.com>
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -51,24 +47,17 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 31, 2023 at 05:11:27PM +0000, Mark Brown wrote:
-> On Tue, Oct 31, 2023 at 06:00:30PM +0100, Greg Kroah-Hartman wrote:
+On Tue, Oct 31, 2023 at 05:32:55PM +0000, Paul Barker wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> > The .remove() callback for a platform driver returns an int which makes
-> > many driver authors wrongly assume it's possible to do error handling by
-> > returning an error code. However the value returned is (mostly) ignored
-> > and this typically results in resource leaks. To improve here there is a
-> > quest to make the remove callback return void. In the first step of this
-> > quest all drivers are converted to .remove_new() which already returns
-> > void.
-> > 
-> > Trivially convert this driver from always returning zero in the remove
-> > callback to the void returning variant.
+> commit f07788079f515ca4a681c5f595bdad19cfbd7b1d upstream.
 > 
-> This doesn't seem like obvious stable material - it's not fixing any
-> leaks or anything, just preparing for an API transition?
+> gcc-13 slightly changes the type of constant expressions that are defined
+> in an enum, which triggers a compile time sanity check in libata:
 
-It was taken to make the patch after this one apply cleanly, that's all.
+Does gcc-13 actually work for these older stable kernels yet?  Last I
+tried there were a bunch of issues.  I'll gladly take these, just
+wondering what the status was and if there are many more to go.
 
 thanks,
 
