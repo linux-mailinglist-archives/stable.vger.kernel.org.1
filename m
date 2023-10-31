@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EAA17DD3E5
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 549F07DD51F
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236333AbjJaRGJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34470 "EHLO
+        id S1376441AbjJaRr2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:47:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231587AbjJaRF4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:05:56 -0400
+        with ESMTP id S1376427AbjJaRr1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE583D4A
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3C1C433C7;
-        Tue, 31 Oct 2023 17:03:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EA6C1
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB342C433C7;
+        Tue, 31 Oct 2023 17:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771797;
-        bh=hU76tPOwe4WJeVzf8y2IhacloJFkDIvS3u/tHueZtBo=;
+        s=korg; t=1698774442;
+        bh=DJ90cru+/nRTcOCF4LgMyLqkhn+XIlu81/zyIkY/GHY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HC4GJB5VQPkCJzoWbY3TxU5W7CKw1MJLfq7X9I5j582+0chUQ/9JK6aN4hVEfQO63
-         J0GmbqEBmfxGb2cia6XmGbeVUN9wY+/cwPpHOwjfbSvFy7/c2mv1ULFpJy3hWsHXTO
-         tbkLQFpnC6b1gOMxmspGK1kZ19hWG7TV5FxK1zsA=
+        b=quwzOlxt1dS793YoOnkTXUmZlfGBFo5PdXEnt2Yi1kRmdrQCuqxBqbnvC6CJEUBbr
+         ZWFKv6UiBNeanCQguylXpheDokOGyvCH2z+czhjvMOMOk+l/WyjE41mOCHnb2LCncx
+         zkzJkLoTOUXeJAzs6Jugd4RKJHe9/7PdSWhlNLrg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Gregory Price <gregory.price@memverge.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 23/86] mm/migrate: fix do_pages_move for compat pointers
+        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
+        =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 047/112] clk: ti: Fix missing omap4 mcbsp functional clock and aliases
 Date:   Tue, 31 Oct 2023 18:00:48 +0100
-Message-ID: <20231031165919.334748103@linuxfoundation.org>
+Message-ID: <20231031165902.784755014@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,78 +53,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Price <gourry.memverge@gmail.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit 229e2253766c7cdfe024f1fe280020cc4711087c upstream.
+[ Upstream commit cc2d819dd7df94a72bde7b9b9331a6535084092d ]
 
-do_pages_move does not handle compat pointers for the page list.
-correctly.  Add in_compat_syscall check and appropriate get_user fetch
-when iterating the page list.
+We are using a wrong mcbsp functional clock. The interconnect target module
+driver provided clock for mcbsp is not same as the mcbsp functional clock
+known as the gfclk main_clk. The mcbsp functional clocks for mcbsp should
+have been added before we dropped the legacy platform data.
 
-It makes the syscall in compat mode (32-bit userspace, 64-bit kernel)
-work the same way as the native 32-bit syscall again, restoring the
-behavior before my broken commit 5b1b561ba73c ("mm: simplify
-compat_sys_move_pages").
+Additionally we are also missing the clock aliases for the clocks used by
+the audio driver if reparenting is needed. This causes audio driver errors
+like "CLKS: could not clk_get() prcm_fck" for mcbsp as reported by Andreas.
+The mcbsp clock aliases too should have been added before we dropped the
+legacy platform data.
 
-More specifically, my patch moved the parsing of the 'pages' array from
-the main entry point into do_pages_stat(), which left the syscall
-working correctly for the 'stat' operation (nodes = NULL), while the
-'move' operation (nodes != NULL) is now missing the conversion and
-interprets 'pages' as an array of 64-bit pointers instead of the
-intended 32-bit userspace pointers.
+Let's add the clocks and aliases with a single patch to fix the issue.
 
-It is possible that nobody noticed this bug because the few
-applications that actually call move_pages are unlikely to run in
-compat mode because of their large memory requirements, but this
-clearly fixes a user-visible regression and should have been caught by
-ltp.
-
-Link: https://lkml.kernel.org/r/20231003144857.752952-1-gregory.price@memverge.com
-Fixes: 5b1b561ba73c ("mm: simplify compat_sys_move_pages")
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Co-developed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 349355ce3a05 ("ARM: OMAP2+: Drop legacy platform data for omap4 mcbsp")
+Reported-by: Andreas Kemnade <andreas@kemnade.info>
+Reported-by: Péter Ujfalusi <peter.ujfalusi@gmail.com>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi | 6 ++++++
+ arch/arm/boot/dts/ti/omap/omap4-l4.dtsi     | 2 ++
+ drivers/clk/ti/clk-44xx.c                   | 5 +++++
+ 3 files changed, 13 insertions(+)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1787,6 +1787,7 @@ static int do_pages_move(struct mm_struc
- 			 const int __user *nodes,
- 			 int __user *status, int flags)
- {
-+	compat_uptr_t __user *compat_pages = (void __user *)pages;
- 	int current_node = NUMA_NO_NODE;
- 	LIST_HEAD(pagelist);
- 	int start, i;
-@@ -1800,8 +1801,17 @@ static int do_pages_move(struct mm_struc
- 		int node;
- 
- 		err = -EFAULT;
--		if (get_user(p, pages + i))
--			goto out_flush;
-+		if (in_compat_syscall()) {
-+			compat_uptr_t cp;
-+
-+			if (get_user(cp, compat_pages + i))
-+				goto out_flush;
-+
-+			p = compat_ptr(cp);
-+		} else {
-+			if (get_user(p, pages + i))
-+				goto out_flush;
-+		}
- 		if (get_user(node, nodes + i))
- 			goto out_flush;
- 		addr = (unsigned long)untagged_addr(p);
+diff --git a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
+index 7ae8b620515c5..59f546a278f87 100644
+--- a/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap4-l4-abe.dtsi
+@@ -109,6 +109,8 @@
+ 				reg = <0x0 0xff>, /* MPU private access */
+ 				      <0x49022000 0xff>; /* L3 Interconnect */
+ 				reg-names = "mpu", "dma";
++				clocks = <&abe_clkctrl OMAP4_MCBSP1_CLKCTRL 24>;
++				clock-names = "fck";
+ 				interrupts = <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-names = "common";
+ 				ti,buffer-size = <128>;
+@@ -142,6 +144,8 @@
+ 				reg = <0x0 0xff>, /* MPU private access */
+ 				      <0x49024000 0xff>; /* L3 Interconnect */
+ 				reg-names = "mpu", "dma";
++				clocks = <&abe_clkctrl OMAP4_MCBSP2_CLKCTRL 24>;
++				clock-names = "fck";
+ 				interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-names = "common";
+ 				ti,buffer-size = <128>;
+@@ -175,6 +179,8 @@
+ 				reg = <0x0 0xff>, /* MPU private access */
+ 				      <0x49026000 0xff>; /* L3 Interconnect */
+ 				reg-names = "mpu", "dma";
++				clocks = <&abe_clkctrl OMAP4_MCBSP3_CLKCTRL 24>;
++				clock-names = "fck";
+ 				interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-names = "common";
+ 				ti,buffer-size = <128>;
+diff --git a/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi b/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
+index 46b8f9efd4131..3fcef3080eaec 100644
+--- a/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
++++ b/arch/arm/boot/dts/ti/omap/omap4-l4.dtsi
+@@ -2043,6 +2043,8 @@
+ 				compatible = "ti,omap4-mcbsp";
+ 				reg = <0x0 0xff>; /* L4 Interconnect */
+ 				reg-names = "mpu";
++				clocks = <&l4_per_clkctrl OMAP4_MCBSP4_CLKCTRL 24>;
++				clock-names = "fck";
+ 				interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
+ 				interrupt-names = "common";
+ 				ti,buffer-size = <128>;
+diff --git a/drivers/clk/ti/clk-44xx.c b/drivers/clk/ti/clk-44xx.c
+index 868bc7af21b0b..9b2824ed785b9 100644
+--- a/drivers/clk/ti/clk-44xx.c
++++ b/drivers/clk/ti/clk-44xx.c
+@@ -749,9 +749,14 @@ static struct ti_dt_clk omap44xx_clks[] = {
+ 	DT_CLK(NULL, "mcbsp1_sync_mux_ck", "abe-clkctrl:0028:26"),
+ 	DT_CLK(NULL, "mcbsp2_sync_mux_ck", "abe-clkctrl:0030:26"),
+ 	DT_CLK(NULL, "mcbsp3_sync_mux_ck", "abe-clkctrl:0038:26"),
++	DT_CLK("40122000.mcbsp", "prcm_fck", "abe-clkctrl:0028:26"),
++	DT_CLK("40124000.mcbsp", "prcm_fck", "abe-clkctrl:0030:26"),
++	DT_CLK("40126000.mcbsp", "prcm_fck", "abe-clkctrl:0038:26"),
+ 	DT_CLK(NULL, "mcbsp4_sync_mux_ck", "l4-per-clkctrl:00c0:26"),
++	DT_CLK("48096000.mcbsp", "prcm_fck", "l4-per-clkctrl:00c0:26"),
+ 	DT_CLK(NULL, "ocp2scp_usb_phy_phy_48m", "l3-init-clkctrl:00c0:8"),
+ 	DT_CLK(NULL, "otg_60m_gfclk", "l3-init-clkctrl:0040:24"),
++	DT_CLK(NULL, "pad_fck", "pad_clks_ck"),
+ 	DT_CLK(NULL, "per_mcbsp4_gfclk", "l4-per-clkctrl:00c0:24"),
+ 	DT_CLK(NULL, "pmd_stm_clock_mux_ck", "emu-sys-clkctrl:0000:20"),
+ 	DT_CLK(NULL, "pmd_trace_clk_mux_ck", "emu-sys-clkctrl:0000:22"),
+-- 
+2.42.0
+
 
 
