@@ -2,35 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B25B47DD4B9
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:33:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 667957DD4BF
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:35:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344891AbjJaRdH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36240 "EHLO
+        id S1345044AbjJaRfN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:35:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343574AbjJaRdG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:33:06 -0400
+        with ESMTP id S1345476AbjJaRfM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:35:12 -0400
 Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CC77F91;
-        Tue, 31 Oct 2023 10:33:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6CFB391;
+        Tue, 31 Oct 2023 10:35:08 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.03,265,1694703600"; 
-   d="scan'208";a="181313207"
+   d="scan'208";a="181313288"
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 01 Nov 2023 02:33:02 +0900
+  by relmlie5.idc.renesas.com with ESMTP; 01 Nov 2023 02:35:07 +0900
 Received: from GBR-5CG2373LKG.adwin.renesas.com (unknown [10.226.92.68])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id 4E7DA400C4F6;
-        Wed,  1 Nov 2023 02:32:59 +0900 (JST)
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id E935E400D4C1;
+        Wed,  1 Nov 2023 02:35:04 +0900 (JST)
 From:   Paul Barker <paul.barker.ct@bp.renesas.com>
-To:     stable@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@arndb.de>, Luis Machado <luis.machado@arm.com>,
         linux-ide@vger.kernel.org,
         Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
+        stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
         Paul Barker <paul.barker.ct@bp.renesas.com>
-Subject: [PATCH 4.14] ata: ahci: fix enum constants for gcc-13
-Date:   Tue, 31 Oct 2023 17:32:55 +0000
-Message-Id: <20231031173255.28666-1-paul.barker.ct@bp.renesas.com>
+Subject: [PATCH 4.19] ata: ahci: fix enum constants for gcc-13
+Date:   Tue, 31 Oct 2023 17:35:01 +0000
+Message-Id: <20231031173501.28992-1-paul.barker.ct@bp.renesas.com>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -40,6 +39,7 @@ X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
 X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
@@ -80,14 +80,14 @@ Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Tested-by: Luis Machado <luis.machado@arm.com>
 Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 
-[Backport to linux-4.14.y]
+[Backport to linux-4.19.y]
 Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
 ---
- drivers/ata/ahci.h | 230 +++++++++++++++++++++++----------------------
- 1 file changed, 116 insertions(+), 114 deletions(-)
+ drivers/ata/ahci.h | 232 +++++++++++++++++++++++----------------------
+ 1 file changed, 117 insertions(+), 115 deletions(-)
 
 diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index f41f98626354..a0ad1c30d206 100644
+index d5b9f9689877..8cc6cb14767b 100644
 --- a/drivers/ata/ahci.h
 +++ b/drivers/ata/ahci.h
 @@ -40,6 +40,7 @@
@@ -283,7 +283,7 @@ index f41f98626354..a0ad1c30d206 100644
  
  	/* PORT_DEVSLP bits */
  	PORT_DEVSLP_DM_OFFSET	= 25,             /* DITO multiplier offset */
-@@ -213,44 +215,44 @@ enum {
+@@ -213,45 +215,45 @@ enum {
  	PORT_DEVSLP_DITO_OFFSET	= 15,             /* DITO offset */
  	PORT_DEVSLP_MDAT_OFFSET	= 10,             /* Minimum assertion time */
  	PORT_DEVSLP_DETO_OFFSET	= 2,              /* DevSlp exit timeout */
@@ -348,14 +348,16 @@ index f41f98626354..a0ad1c30d206 100644
 -	AHCI_HFLAG_YES_ALPM		= (1 << 23), /* force ALPM cap on */
 -	AHCI_HFLAG_NO_WRITE_TO_RO	= (1 << 24), /* don't write to read
 -							only registers */
+-	AHCI_HFLAG_IS_MOBILE		= (1 << 25), /* mobile chipset, use
 +	AHCI_HFLAG_WAKE_BEFORE_STOP	= BIT(22), /* wake before DMA stop */
 +	AHCI_HFLAG_YES_ALPM		= BIT(23), /* force ALPM cap on */
 +	AHCI_HFLAG_NO_WRITE_TO_RO	= BIT(24), /* don't write to read
 +						      only registers */
++	AHCI_HFLAG_IS_MOBILE		= BIT(25), /* mobile chipset, use
+ 							SATA_MOBILE_LPM_POLICY
+ 							as default lpm_policy */
  
- 	/* ap->flags bits */
- 
-@@ -264,22 +266,22 @@ enum {
+@@ -269,22 +271,22 @@ enum {
  	EM_MAX_RETRY			= 5,
  
  	/* em_ctl bits */
