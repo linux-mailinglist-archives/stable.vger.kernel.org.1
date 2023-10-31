@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EBD67DD404
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E8537DD543
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234745AbjJaRGq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34288 "EHLO
+        id S1376472AbjJaRsp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:48:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235062AbjJaRGa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:30 -0400
+        with ESMTP id S1376496AbjJaRso (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07CEE1733
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:04:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE7CC433C9;
-        Tue, 31 Oct 2023 17:04:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FDD7E8
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E066C433CD;
+        Tue, 31 Oct 2023 17:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771878;
-        bh=Ga+PSvFYCxTrfeqod+IPhAC+PJaVHRrRK5G8t0vbjfY=;
+        s=korg; t=1698774521;
+        bh=0Kvtk395VoXhcyDFH7o9Vzvoe0VPE5M9qK5bMlLsgI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vpce1k6+PIKBZCIxTP/vsyou3HGBZOobYjyN53PNQc8+iyBVFDs9RJH4OkaI12K6d
-         MgfQWSZJaow0GqHnxerlR3HG7ZfCervpPe8X4R4niWmpN1KrYfiAO8s+OeDQMoE5QP
-         MtKtyWO29PRQjOy7GoC/QPFAFZR4GwU25xbmV6GI=
+        b=tONYQ2byoSPf9d5lD/V4ijKgYiD53YGRLbuo1YRWnX8mEYwXjmcuRDWewGrDO9i+2
+         ZlP98ikrAlJyI1DPkwBYgclFN0RjalwM1aBKk5EgEVecWNb32+wcPrfNT4hkLzVLNB
+         33oEifhYz+MbqWfbszWO/QjBWXVjquWtj4fmNOkI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fred Chen <fred.chenchen03@gmail.com>,
-        Neal Cardwell <ncardwell@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Vladimir Smelhaus <vl.sm@email.cz>,
+        Paul Blakey <paulb@nvidia.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 50/86] tcp: fix wrong RTO timeout when received SACK reneging
-Date:   Tue, 31 Oct 2023 18:01:15 +0100
-Message-ID: <20231031165920.149999282@linuxfoundation.org>
+Subject: [PATCH 6.5 075/112] netfilter: flowtable: GC pushes back packets to classic path
+Date:   Tue, 31 Oct 2023 18:01:16 +0100
+Message-ID: <20231031165903.688196388@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,98 +51,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fred Chen <fred.chenchen03@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit d2a0fc372aca561556e765d0a9ec365c7c12f0ad ]
+[ Upstream commit 735795f68b37e9bb49f642407a0d49b1631ea1c7 ]
 
-This commit fix wrong RTO timeout when received SACK reneging.
+Since 41f2c7c342d3 ("net/sched: act_ct: Fix promotion of offloaded
+unreplied tuple"), flowtable GC pushes back flows with IPS_SEEN_REPLY
+back to classic path in every run, ie. every second. This is because of
+a new check for NF_FLOW_HW_ESTABLISHED which is specific of sched/act_ct.
 
-When an ACK arrived pointing to a SACK reneging, tcp_check_sack_reneging()
-will rearm the RTO timer for min(1/2*srtt, 10ms) into to the future.
+In Netfilter's flowtable case, NF_FLOW_HW_ESTABLISHED never gets set on
+and IPS_SEEN_REPLY is unreliable since users decide when to offload the
+flow before, such bit might be set on at a later stage.
 
-But since the commit 62d9f1a6945b ("tcp: fix TLP timer not set when
-CA_STATE changes from DISORDER to OPEN") merged, the tcp_set_xmit_timer()
-is moved after tcp_fastretrans_alert()(which do the SACK reneging check),
-so the RTO timeout will be overwrited by tcp_set_xmit_timer() with
-icsk_rto instead of 1/2*srtt.
+Fix it by adding a custom .gc handler that sched/act_ct can use to
+deal with its NF_FLOW_HW_ESTABLISHED bit.
 
-Here is a packetdrill script to check this bug:
-0     socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+0    bind(3, ..., ...) = 0
-+0    listen(3, 1) = 0
-
-// simulate srtt to 100ms
-+0    < S 0:0(0) win 32792 <mss 1000, sackOK,nop,nop,nop,wscale 7>
-+0    > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 7>
-+.1    < . 1:1(0) ack 1 win 1024
-
-+0    accept(3, ..., ...) = 4
-
-+0    write(4, ..., 10000) = 10000
-+0    > P. 1:10001(10000) ack 1
-
-// inject sack
-+.1    < . 1:1(0) ack 1 win 257 <sack 1001:10001,nop,nop>
-+0    > . 1:1001(1000) ack 1
-
-// inject sack reneging
-+.1    < . 1:1(0) ack 1001 win 257 <sack 9001:10001,nop,nop>
-
-// we expect rto fired in 1/2*srtt (50ms)
-+.05    > . 1001:2001(1000) ack 1
-
-This fix remove the FLAG_SET_XMIT_TIMER from ack_flag when
-tcp_check_sack_reneging() set RTO timer with 1/2*srtt to avoid
-being overwrited later.
-
-Fixes: 62d9f1a6945b ("tcp: fix TLP timer not set when CA_STATE changes from DISORDER to OPEN")
-Signed-off-by: Fred Chen <fred.chenchen03@gmail.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Tested-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 41f2c7c342d3 ("net/sched: act_ct: Fix promotion of offloaded unreplied tuple")
+Reported-by: Vladimir Smelhaus <vl.sm@email.cz>
+Reviewed-by: Paul Blakey <paulb@nvidia.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ include/net/netfilter/nf_flow_table.h |  1 +
+ net/netfilter/nf_flow_table_core.c    | 14 +++++++-------
+ net/sched/act_ct.c                    |  7 +++++++
+ 3 files changed, 15 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 068221e742425..d63942202493d 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2202,16 +2202,17 @@ void tcp_enter_loss(struct sock *sk)
-  * restore sanity to the SACK scoreboard. If the apparent reneging
-  * persists until this RTO then we'll clear the SACK scoreboard.
-  */
--static bool tcp_check_sack_reneging(struct sock *sk, int flag)
-+static bool tcp_check_sack_reneging(struct sock *sk, int *ack_flag)
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index d466e1a3b0b19..fe1507c1db828 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -53,6 +53,7 @@ struct nf_flowtable_type {
+ 	struct list_head		list;
+ 	int				family;
+ 	int				(*init)(struct nf_flowtable *ft);
++	bool				(*gc)(const struct flow_offload *flow);
+ 	int				(*setup)(struct nf_flowtable *ft,
+ 						 struct net_device *dev,
+ 						 enum flow_block_command cmd);
+diff --git a/net/netfilter/nf_flow_table_core.c b/net/netfilter/nf_flow_table_core.c
+index 1d34d700bd09b..920a5a29ae1dc 100644
+--- a/net/netfilter/nf_flow_table_core.c
++++ b/net/netfilter/nf_flow_table_core.c
+@@ -316,12 +316,6 @@ void flow_offload_refresh(struct nf_flowtable *flow_table,
+ }
+ EXPORT_SYMBOL_GPL(flow_offload_refresh);
+ 
+-static bool nf_flow_is_outdated(const struct flow_offload *flow)
+-{
+-	return test_bit(IPS_SEEN_REPLY_BIT, &flow->ct->status) &&
+-		!test_bit(NF_FLOW_HW_ESTABLISHED, &flow->flags);
+-}
+-
+ static inline bool nf_flow_has_expired(const struct flow_offload *flow)
  {
--	if (flag & FLAG_SACK_RENEGING &&
--	    flag & FLAG_SND_UNA_ADVANCED) {
-+	if (*ack_flag & FLAG_SACK_RENEGING &&
-+	    *ack_flag & FLAG_SND_UNA_ADVANCED) {
- 		struct tcp_sock *tp = tcp_sk(sk);
- 		unsigned long delay = max(usecs_to_jiffies(tp->srtt_us >> 4),
- 					  msecs_to_jiffies(10));
+ 	return nf_flow_timeout_delta(flow->timeout) <= 0;
+@@ -407,12 +401,18 @@ nf_flow_table_iterate(struct nf_flowtable *flow_table,
+ 	return err;
+ }
  
- 		inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
- 					  delay, TCP_RTO_MAX);
-+		*ack_flag &= ~FLAG_SET_XMIT_TIMER;
- 		return true;
- 	}
- 	return false;
-@@ -2981,7 +2982,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
- 		tp->prior_ssthresh = 0;
++static bool nf_flow_custom_gc(struct nf_flowtable *flow_table,
++			      const struct flow_offload *flow)
++{
++	return flow_table->type->gc && flow_table->type->gc(flow);
++}
++
+ static void nf_flow_offload_gc_step(struct nf_flowtable *flow_table,
+ 				    struct flow_offload *flow, void *data)
+ {
+ 	if (nf_flow_has_expired(flow) ||
+ 	    nf_ct_is_dying(flow->ct) ||
+-	    nf_flow_is_outdated(flow))
++	    nf_flow_custom_gc(flow_table, flow))
+ 		flow_offload_teardown(flow);
  
- 	/* B. In all the states check for reneging SACKs. */
--	if (tcp_check_sack_reneging(sk, flag))
-+	if (tcp_check_sack_reneging(sk, ack_flag))
- 		return;
+ 	if (test_bit(NF_FLOW_TEARDOWN, &flow->flags)) {
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index abc71a06d634a..2b5ef83e44243 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -278,7 +278,14 @@ static int tcf_ct_flow_table_fill_actions(struct net *net,
+ 	return err;
+ }
  
- 	/* C. Check consistency of the current state. */
++static bool tcf_ct_flow_is_outdated(const struct flow_offload *flow)
++{
++	return test_bit(IPS_SEEN_REPLY_BIT, &flow->ct->status) &&
++	       !test_bit(NF_FLOW_HW_ESTABLISHED, &flow->flags);
++}
++
+ static struct nf_flowtable_type flowtable_ct = {
++	.gc		= tcf_ct_flow_is_outdated,
+ 	.action		= tcf_ct_flow_table_fill_actions,
+ 	.owner		= THIS_MODULE,
+ };
 -- 
 2.42.0
 
