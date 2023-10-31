@@ -2,38 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18DA57DD506
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:46:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66CDF7DD4F0
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:45:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376368AbjJaRqf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:46:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44454 "EHLO
+        id S1346973AbjJaRp3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:45:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376392AbjJaRqc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:46:32 -0400
+        with ESMTP id S1346977AbjJaRp1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:45:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 820F2103
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:46:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8119C433C8;
-        Tue, 31 Oct 2023 17:46:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8561C91
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:45:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5347C433C9;
+        Tue, 31 Oct 2023 17:45:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774389;
-        bh=y32jm0l3zJZGS9+GA7bvRV8RCI0oTp6f/dUcXTOx2y0=;
+        s=korg; t=1698774325;
+        bh=I6tCkKtCvq1zqbV1OHCfdr+B82hni//HdGnu3l/Q18o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KVNuoIMB1mlcTzG69d8gMXK6o7L7A+qQIlKydh6DozUS7Y7sSIGQgq/RPTQxpsADi
-         w7krISilcoB1z6uKlC7r4rPNTS+bVPXyVryn6qyypWz/VFiTMtMmQ8aWMLeBDuaJc5
-         zOmwacX5on0L4dmKmyie5lWU7sEx6ewvpvZ9oUZs=
+        b=O4V04bnEZmYyM0JC00S0yhyXB/Lj/7wr714cSTzJDz3VSCx4lC1HDSSr9qu01xeCR
+         EP72s7PEfAxJ10hWWN9qIzZUzoVUuDdYk8hwD1kxXwzJkNZZ7CxcCAOaNF6oBKn2Ej
+         AsNfM6H8LksTrV4vcOldCuLdWHxrIp0BGzAwgsGA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gonglei (Arei)" <arei.gonglei@huawei.com>,
-        Halil Pasic <pasic@linux.ibm.com>,
+        patches@lists.linux.dev, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
-        zhenwei pi <pizhenwei@bytedance.com>
-Subject: [PATCH 6.5 011/112] virtio-crypto: handle config changed by work queue
-Date:   Tue, 31 Oct 2023 18:00:12 +0100
-Message-ID: <20231031165901.647488493@linuxfoundation.org>
+        Jason Wang <jasowang@redhat.com>
+Subject: [PATCH 6.5 012/112] virtio_pci: fix the common cfg map size
+Date:   Tue, 31 Oct 2023 18:00:13 +0100
+Message-ID: <20231031165901.678045479@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
 References: <20231031165901.318222981@linuxfoundation.org>
@@ -56,90 +54,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: zhenwei pi <pizhenwei@bytedance.com>
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-commit fa2e6947aa8844f25f5bad0d8cd1a541d9bc83eb upstream.
+commit 061b39fdfe7fd98946e67637213bcbb10a318cca upstream.
 
-MST pointed out: config change callback is also handled incorrectly
-in this driver, it takes a mutex from interrupt context.
+The function vp_modern_map_capability() takes the size parameter,
+which corresponds to the size of virtio_pci_common_cfg. As a result,
+this indicates the size of memory area to map.
 
-Handle config changed by work queue instead.
+Now the size is the size of virtio_pci_common_cfg, but some feature(such
+as the _F_RING_RESET) needs the virtio_pci_modern_common_cfg, so this
+commit changes the size to the size of virtio_pci_modern_common_cfg.
 
 Cc: stable@vger.kernel.org
-Cc: Gonglei (Arei) <arei.gonglei@huawei.com>
-Cc: Halil Pasic <pasic@linux.ibm.com>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
-Message-Id: <20231007064309.844889-1-pizhenwei@bytedance.com>
+Fixes: 0b50cece0b78 ("virtio_pci: introduce helper to get/set queue reset")
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Message-Id: <20231010031120.81272-3-xuanzhuo@linux.alibaba.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/virtio/virtio_crypto_common.h |    3 +++
- drivers/crypto/virtio/virtio_crypto_core.c   |   14 +++++++++++++-
- 2 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/virtio/virtio_pci_modern_dev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/virtio/virtio_crypto_common.h
-+++ b/drivers/crypto/virtio/virtio_crypto_common.h
-@@ -35,6 +35,9 @@ struct virtio_crypto {
- 	struct virtqueue *ctrl_vq;
- 	struct data_queue *data_vq;
- 
-+	/* Work struct for config space updates */
-+	struct work_struct config_work;
-+
- 	/* To protect the vq operations for the controlq */
- 	spinlock_t ctrl_lock;
- 
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -335,6 +335,14 @@ static void virtcrypto_del_vqs(struct vi
- 	virtcrypto_free_queues(vcrypto);
- }
- 
-+static void vcrypto_config_changed_work(struct work_struct *work)
-+{
-+	struct virtio_crypto *vcrypto =
-+		container_of(work, struct virtio_crypto, config_work);
-+
-+	virtcrypto_update_status(vcrypto);
-+}
-+
- static int virtcrypto_probe(struct virtio_device *vdev)
- {
- 	int err = -EFAULT;
-@@ -454,6 +462,8 @@ static int virtcrypto_probe(struct virti
- 	if (err)
- 		goto free_engines;
- 
-+	INIT_WORK(&vcrypto->config_work, vcrypto_config_changed_work);
-+
- 	return 0;
- 
- free_engines:
-@@ -490,6 +500,7 @@ static void virtcrypto_remove(struct vir
- 
- 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
- 
-+	flush_work(&vcrypto->config_work);
- 	if (virtcrypto_dev_started(vcrypto))
- 		virtcrypto_dev_stop(vcrypto);
- 	virtio_reset_device(vdev);
-@@ -504,7 +515,7 @@ static void virtcrypto_config_changed(st
- {
- 	struct virtio_crypto *vcrypto = vdev->priv;
- 
--	virtcrypto_update_status(vcrypto);
-+	schedule_work(&vcrypto->config_work);
- }
- 
- #ifdef CONFIG_PM_SLEEP
-@@ -512,6 +523,7 @@ static int virtcrypto_freeze(struct virt
- {
- 	struct virtio_crypto *vcrypto = vdev->priv;
- 
-+	flush_work(&vcrypto->config_work);
- 	virtio_reset_device(vdev);
- 	virtcrypto_free_unused_reqs(vcrypto);
- 	if (virtcrypto_dev_started(vcrypto))
+--- a/drivers/virtio/virtio_pci_modern_dev.c
++++ b/drivers/virtio/virtio_pci_modern_dev.c
+@@ -291,7 +291,7 @@ int vp_modern_probe(struct virtio_pci_mo
+ 	err = -EINVAL;
+ 	mdev->common = vp_modern_map_capability(mdev, common,
+ 				      sizeof(struct virtio_pci_common_cfg), 4,
+-				      0, sizeof(struct virtio_pci_common_cfg),
++				      0, sizeof(struct virtio_pci_modern_common_cfg),
+ 				      NULL, NULL);
+ 	if (!mdev->common)
+ 		goto err_map_common;
 
 
