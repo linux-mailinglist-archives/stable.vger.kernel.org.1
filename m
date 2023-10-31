@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 967FE7DD3F1
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B15D37DD3BE
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:02:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236319AbjJaRGW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
+        id S231403AbjJaRCl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:02:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236367AbjJaRGK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:10 -0400
+        with ESMTP id S231347AbjJaRCl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:02:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA8582106
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F2BC433C7;
-        Tue, 31 Oct 2023 17:03:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09F8F182
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:02:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463F5C433C8;
+        Tue, 31 Oct 2023 17:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771824;
-        bh=emtbnUQzpJpLWRsOKrQ0iTJlAX21to0DxXF+3HZkCCY=;
+        s=korg; t=1698771758;
+        bh=lT9xX85WsZLKa+SWzr+yXApbNFUM3AT5jOO93U8sJmk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ObQQrmwIgN2fEqmpowzwDbhXk5QSD8WGZIBLo6nM0sLQQ9HWl1RJRg6B9I2ysLqph
-         zM+dQwx2VCY0DoQWQO3EQXVanuE0CPtw+COZmAJiR3OLQPqw9tGZBpGtP65i2CNOHi
-         q4c7N68IV/kyncn4k3UnC51fOZDgrm8HU+xu4gjA=
+        b=aX1OwtLx9EnYtG7MOgXmRoFvt9s2Wl+RzB+NqYzODFLkXBRqSda4fHSQKYuPEJk3a
+         BE2n1UveiGKz2yD2n7TmxzcD1xCO74UJRheV1tPn30OD0wbEYmzQZBELZV4x2HLlr6
+         qj62/uc6/J18ZOCZXv5xPZAXTQs2ZhwiwZOk0Ogg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 02/86] mmc: core: Align to common busy polling behaviour for mmc ioctls
-Date:   Tue, 31 Oct 2023 18:00:27 +0100
-Message-ID: <20231031165918.686567190@linuxfoundation.org>
+Subject: [PATCH 6.1 03/86] mmc: block: ioctl: do write error check for spi
+Date:   Tue, 31 Oct 2023 18:00:28 +0100
+Message-ID: <20231031165918.715359623@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
 References: <20231031165918.608547597@linuxfoundation.org>
@@ -54,93 +54,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Christian Loehle <CLoehle@hyperstone.com>
 
-[ Upstream commit 51f5b3056790bc0518e49587996f1e6f3058cca9 ]
+[ Upstream commit 568898cbc8b570311b3b94a3202b8233f4168144 ]
 
-Let's align to the common busy polling behaviour for mmc ioctls, by
-updating the below two corresponding parts, that comes into play when using
-an R1B response for a command.
+SPI doesn't have the usual PROG path we can check for error bits
+after moving back to TRAN. Instead it holds the line LOW until
+completion. We can then check if the card shows any errors or
+is in IDLE state, indicating the line is no longer LOW because
+the card was reset.
 
-*) A command with an R1B response should be prepared by calling
-mmc_prepare_busy_cmd(), which make us respects the host's busy timeout
-constraints.
-**) When an R1B response is being used and the host also supports HW busy
-detection, we should skip to poll for busy completion.
-
-Suggested-by: Christian Loehle <cloehle@hyperstone.com>
+Signed-off-by: Christian Loehle <cloehle@hyperstone.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/55920f880c9742f486f64aa44e25508e@hyperstone.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Christian Loehle <cloehle@hyperstone.com>
-Link: https://lore.kernel.org/r/20230213133707.27857-1-ulf.hansson@linaro.org
 Stable-dep-of: f19c5a73e6f7 ("mmc: core: Fix error propagation for some ioctl commands")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c   | 25 +++++++++++++++++--------
- drivers/mmc/core/mmc_ops.c |  1 +
- 2 files changed, 18 insertions(+), 8 deletions(-)
+ drivers/mmc/core/block.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index cdd7f126d4aea..baefe2886f0b2 100644
+index baefe2886f0b2..1aab4f47eab98 100644
 --- a/drivers/mmc/core/block.c
 +++ b/drivers/mmc/core/block.c
-@@ -471,6 +471,8 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
- 	struct mmc_data data = {};
- 	struct mmc_request mrq = {};
- 	struct scatterlist sg;
-+	bool r1b_resp, use_r1b_resp = false;
-+	unsigned int busy_timeout_ms;
- 	int err;
- 	unsigned int target_part;
+@@ -180,6 +180,7 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
+ 			       int recovery_mode,
+ 			       struct mmc_queue *mq);
+ static void mmc_blk_hsq_req_done(struct mmc_request *mrq);
++static int mmc_spi_err_check(struct mmc_card *card);
  
-@@ -559,6 +561,13 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
- 	    (cmd.opcode == MMC_SWITCH))
- 		return mmc_sanitize(card, idata->ic.cmd_timeout_ms);
+ static struct mmc_blk_data *mmc_blk_get(struct gendisk *disk)
+ {
+@@ -623,6 +624,11 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
+ 	if ((card->host->caps & MMC_CAP_WAIT_WHILE_BUSY) && use_r1b_resp)
+ 		return 0;
  
-+	/* If it's an R1B response we need some more preparations. */
-+	busy_timeout_ms = idata->ic.cmd_timeout_ms ? : MMC_BLK_TIMEOUT_MS;
-+	r1b_resp = (cmd.flags & MMC_RSP_R1B) == MMC_RSP_R1B;
-+	if (r1b_resp)
-+		use_r1b_resp = mmc_prepare_busy_cmd(card->host, &cmd,
-+						    busy_timeout_ms);
-+
- 	mmc_wait_for_req(card->host, &mrq);
- 	memcpy(&idata->ic.response, cmd.resp, sizeof(cmd.resp));
- 
-@@ -610,14 +619,14 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
- 	if (idata->ic.postsleep_min_us)
- 		usleep_range(idata->ic.postsleep_min_us, idata->ic.postsleep_max_us);
- 
--	if (idata->rpmb || (cmd.flags & MMC_RSP_R1B) == MMC_RSP_R1B) {
--		/*
--		 * Ensure RPMB/R1B command has completed by polling CMD13 "Send Status". Here we
--		 * allow to override the default timeout value if a custom timeout is specified.
--		 */
--		err = mmc_poll_for_busy(card, idata->ic.cmd_timeout_ms ? : MMC_BLK_TIMEOUT_MS,
--					false, MMC_BUSY_IO);
--	}
-+	/* No need to poll when using HW busy detection. */
-+	if ((card->host->caps & MMC_CAP_WAIT_WHILE_BUSY) && use_r1b_resp)
-+		return 0;
-+
-+	/* Ensure RPMB/R1B command has completed by polling with CMD13. */
-+	if (idata->rpmb || r1b_resp)
-+		err = mmc_poll_for_busy(card, busy_timeout_ms, false,
-+					MMC_BUSY_IO);
- 
- 	return err;
- }
-diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
-index 81c55bfd6e0c2..3b3adbddf6641 100644
---- a/drivers/mmc/core/mmc_ops.c
-+++ b/drivers/mmc/core/mmc_ops.c
-@@ -575,6 +575,7 @@ bool mmc_prepare_busy_cmd(struct mmc_host *host, struct mmc_command *cmd,
- 	cmd->busy_timeout = timeout_ms;
- 	return true;
- }
-+EXPORT_SYMBOL_GPL(mmc_prepare_busy_cmd);
- 
- /**
-  *	__mmc_switch - modify EXT_CSD register
++	if (mmc_host_is_spi(card->host)) {
++		if (idata->ic.write_flag || r1b_resp || cmd.flags & MMC_RSP_SPI_BUSY)
++			return mmc_spi_err_check(card);
++		return err;
++	}
+ 	/* Ensure RPMB/R1B command has completed by polling with CMD13. */
+ 	if (idata->rpmb || r1b_resp)
+ 		err = mmc_poll_for_busy(card, busy_timeout_ms, false,
 -- 
 2.42.0
 
