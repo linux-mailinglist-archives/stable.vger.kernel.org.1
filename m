@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF9B47DCF09
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 15:27:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6E907DCF19
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 15:27:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230319AbjJaOK5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 10:10:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57276 "EHLO
+        id S229889AbjJaOL3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 10:11:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233530AbjJaOKu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 10:10:50 -0400
+        with ESMTP id S230405AbjJaOL3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 10:11:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3B6F3
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 07:10:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBF5C433C9;
-        Tue, 31 Oct 2023 14:10:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4DFFF7
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 07:11:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A78EC433C7;
+        Tue, 31 Oct 2023 14:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698761447;
-        bh=ffigHGoqU2GYHDpANVGR/CjuI7UEJO1iQTJ3jBF2oaQ=;
+        s=korg; t=1698761486;
+        bh=QvCiKT4HO547FclbUnEEQTepKxvJEDElslDvcOTWQDw=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=yeXqwIZ35g/o9xifVARV7IYU5Wb1Zn+jzO+zpdPDViYTyRa2IZ9Igk6zrTymKazqf
-         uVrjNivNxSC6g7EmC7CUFHhxqPEjt49MCo2skn1ziQttkF+cDACvCtRviVKIzlRenA
-         EXvg0RiEezY5jPdg0nwvYJAFqA4BKRA/y2Qb30VI=
-Date:   Tue, 31 Oct 2023 15:10:44 +0100
+        b=LqJACRWYTkfdoEHFfgSYI478ndwXe/rA0ZiQ59Xw3TsbbwxZEhJfqCr482pucXT7Q
+         7qdkxFA46JVvUzCsTraeAiVFXwbuFAweczOjqGkWI6lgBaoR5KuFnWMJ84eAOshqtI
+         Jbl0L6bV2wa/DzAusaS7jJDQkMWBa6XGmGEoVJTI=
+Date:   Tue, 31 Oct 2023 15:11:23 +0100
 From:   Greg KH <gregkh@linuxfoundation.org>
 To:     Mario Limonciello <mario.limonciello@amd.com>
 Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH 5.15 1/2] drm/amd: Move helper for dynamic speed switch
- check out of smu13
-Message-ID: <2023103133-wanting-appraiser-7846@gregkh>
+Subject: Re: [PATCH 5.15 2/2] drm/amd: Disable ASPM for VI w/ all Intel
+ systems
+Message-ID: <2023103103-embellish-tilt-8e64@gregkh>
 References: <20231027083958.38445-1-mario.limonciello@amd.com>
- <2023103102-antihero-gumming-5788@gregkh>
- <571daf65-0f07-4b45-acbb-0613d724c742@amd.com>
+ <20231027083958.38445-2-mario.limonciello@amd.com>
+ <2023103136-shanty-fancy-f3fa@gregkh>
+ <d8bbb3b4-25a3-418f-9ebf-545d1d826265@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <571daf65-0f07-4b45-acbb-0613d724c742@amd.com>
+In-Reply-To: <d8bbb3b4-25a3-418f-9ebf-545d1d826265@amd.com>
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -47,47 +48,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 31, 2023 at 08:44:42AM -0500, Mario Limonciello wrote:
-> On 10/31/2023 06:50, Greg KH wrote:
-> > On Fri, Oct 27, 2023 at 03:39:57AM -0500, Mario Limonciello wrote:
-> > > This helper is used for checking if the connected host supports
-> > > the feature, it can be moved into generic code to be used by other
-> > > smu implementations as well.
+On Tue, Oct 31, 2023 at 08:42:37AM -0500, Mario Limonciello wrote:
+> On 10/31/2023 06:51, Greg KH wrote:
+> > On Fri, Oct 27, 2023 at 03:39:58AM -0500, Mario Limonciello wrote:
+> > > Originally we were quirking ASPM disabled specifically for VI when
+> > > used with Alder Lake, but it appears to have problems with Rocket
+> > > Lake as well.
 > > > 
+> > > Like we've done in the case of dpm for newer platforms, disable
+> > > ASPM for all Intel systems.
+> > > 
+> > > Cc: stable@vger.kernel.org # 5.15+
+> > > Fixes: 0064b0ce85bb ("drm/amd/pm: enable ASPM by default")
+> > > Reported-and-tested-by: Paolo Gentili <paolo.gentili@canonical.com>
+> > > Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2036742
 > > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > Reviewed-by: Evan Quan <evan.quan@amd.com>
+> > > Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 > > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > > (cherry picked from commit 5d1eb4c4c872b55664f5754cc16827beff8630a7)
-> > > 
-> > > The original problematic dGPU is not supported in 5.15.
-> > > 
-> > > Just introduce new function for 5.15 as a dependency for fixing
-> > > unrelated dGPU that uses this symbol as well.
-> > > 
+> > > (cherry-picked from 64ffd2f1d00c6235dabe9704bbb0d9ce3e28147f)
 > > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 > > > ---
-> > >   drivers/gpu/drm/amd/amdgpu/amdgpu.h        |  1 +
-> > >   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 19 +++++++++++++++++++
-> > >   2 files changed, 20 insertions(+)
+> > >   drivers/gpu/drm/amd/amdgpu/vi.c | 2 +-
+> > >   1 file changed, 1 insertion(+), 1 deletion(-)
 > > 
-> > What about 6.5 and 6.1 for this commit?  We can't have someone upgrade
-> > and have a regression, right?
+> > Again, what about 6.1.y?
+> 
+> 6.1 & 6.5 queue has it already:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.1/drm-amd-disable-aspm-for-vi-w-all-intel-systems.patch
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.5/drm-amd-disable-aspm-for-vi-w-all-intel-systems.patch
+> 
 > > 
-> > thanks
+> > And why aren't you cc:ing all of the original developers on this patch?
+> 
+> I was just looking to make less noise as they'll get it when it's added to
+> the queue.  If it should be part of the submission to @stable as well I'll
+> make a point to do that in the future.
+> 
 > > 
-> > greg k-h
+> > I'll drop this series and wait for ones for all relevant trees.
 > 
-> Kernel 6.5-rc2 introduced this commit.
-> 
-> Kernel 6.1.y already has this commit.  Here's the hash:
-> 
-> 32631ac27c91 ("drm/amd: Move helper for dynamic speed switch check out of
-> smu13")
+> Considering my above comment can you please restore?
 
-Then the commit listed above is wrong in the patch, please fix up and
-resend the series with the correct id.
+No, I need a new patch 1/2 please, please resend both of these, they are
+long gone from my queue.
 
-Yet-another-problem due to the drm layer having duplicate commits in
-their trees, sorry, you all did it to yourself...
+thanks,
 
 greg k-h
