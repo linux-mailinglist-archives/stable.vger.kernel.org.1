@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 736E67DD4F2
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:45:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5CAF7DD4F1
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:45:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376304AbjJaRp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:45:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50804 "EHLO
+        id S1376265AbjJaRpl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:45:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376317AbjJaRpz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:45:55 -0400
+        with ESMTP id S1376261AbjJaRpj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:45:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 966B9F1
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:45:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6EFC433C9;
-        Tue, 31 Oct 2023 17:45:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4766BE8
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:45:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BBF8C433C7;
+        Tue, 31 Oct 2023 17:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774350;
+        s=korg; t=1698774336;
         bh=2kzqAkCYblEV2oGF6wkXM62iy4h6CDncVwUQ2tbXReQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=czuINfu6QZ1SuLOJgn284t7eMxxIYm3o7hzUVJHcoyEBz4kIlGyyaox5SIwWt/P82
-         x0wGrnnM7sONr8wAYs20PKNtfgT4CrjbqLfmSD740FBreiBdgc0HN7d7BMiiQZGCmZ
-         1zZrAmi2gEilh5CCZ4XIJ8nZ7L6laGOnOV18c8a4=
+        b=omWFsUinstBuDpPCL1MBPvrt4wJo7tuUYTuW58Q5Jn6VJZ34QSVEzfPgHUivRIup8
+         K19h5bEFLdQKOxjo5IqGmjnChmcRefh2r06HWRA2xkWgvCROUaH+GvirfyQcWVFwTX
+         Q98y9Kop9p5l2GnEyZXmaMnnK5JcpWX/Zh7iGbIA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,7 +43,7 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
