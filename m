@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84E3F7DD572
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:50:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D268B7DD43A
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:08:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236461AbjJaRu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:50:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43496 "EHLO
+        id S233599AbjJaRHl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236472AbjJaRu4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:56 -0400
+        with ESMTP id S236610AbjJaRHZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCAE091
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131A9C433C8;
-        Tue, 31 Oct 2023 17:50:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BBAF1AD
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE22C433C9;
+        Tue, 31 Oct 2023 17:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774653;
-        bh=P6cDMcdo1o+HAQAReHR6aFq7oN5Q1IFm2fJALjITWKE=;
+        s=korg; t=1698772007;
+        bh=lILgLLQA+dPOTExf+7lGWDlfFTj6IPEwfFuMBxaBZjo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q49E9jz2J4+wjvG8AWcDEjClXZoeTyRns6U+a7v7ytkf8n+AT4VNvQWdsUQ8GXLvx
-         rGYEk/JKmQrz7mBHp5w/eMTjCJuyVxodOZCU469niSWS8Dt9HkZn4h+cjULTaT01Qo
-         fbLt/9IuAcEXiupKSBqzg6q3AjctQ/WIn8DeXEHY=
+        b=KftiqAn5EfxOvyrWfsn3OwHs4XxEKbWlZxEBx/b6cyoX6Yc5MX+C9U7NNjRPl5fg8
+         szcsmCqujt/28Z2UUMtUdHAqwFhdoaPe7bFkaZYYAcV1gjK42ASGl+wMz4laQGIwGI
+         fpN4WLlV01XmnDfBrcuuCxb59pczVJdkZw4k39DY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Philip Daly <pdaly@redhat.com>,
-        "Alessandro Carminati (Red Hat)" <alessandro.carminati@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.5 107/112] clk: Sanitize possible_parent_show to Handle Return Value of of_clk_get_parent_name
-Date:   Tue, 31 Oct 2023 18:01:48 +0100
-Message-ID: <20231031165904.642846297@linuxfoundation.org>
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>, stable@kernel.org
+Subject: [PATCH 6.1 84/86] ext4: fix BUG in ext4_mb_new_inode_pa() due to overflow
+Date:   Tue, 31 Oct 2023 18:01:49 +0100
+Message-ID: <20231031165921.150338164@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,77 +50,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessandro Carminati <alessandro.carminati@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit ceb87a361d0b079ecbc7d2831618c19087f304a9 upstream.
+commit bc056e7163ac7db945366de219745cf94f32a3e6 upstream.
 
-In the possible_parent_show function, ensure proper handling of the return
-value from of_clk_get_parent_name to prevent potential issues arising from
-a NULL return.
-The current implementation invokes seq_puts directly on the result of
-of_clk_get_parent_name without verifying the return value, which can lead
-to kernel panic if the function returns NULL.
+When we calculate the end position of ext4_free_extent, this position may
+be exactly where ext4_lblk_t (i.e. uint) overflows. For example, if
+ac_g_ex.fe_logical is 4294965248 and ac_orig_goal_len is 2048, then the
+computed end is 0x100000000, which is 0. If ac->ac_o_ex.fe_logical is not
+the first case of adjusting the best extent, that is, new_bex_end > 0, the
+following BUG_ON will be triggered:
 
-This patch addresses the concern by introducing a check on the return
-value of of_clk_get_parent_name. If the return value is not NULL, the
-function proceeds to call seq_puts, providing the returned value as
-argument.
-However, if of_clk_get_parent_name returns NULL, the function provides a
-static string as argument, avoiding the panic.
+=========================================================
+kernel BUG at fs/ext4/mballoc.c:5116!
+invalid opcode: 0000 [#1] PREEMPT SMP PTI
+CPU: 3 PID: 673 Comm: xfs_io Tainted: G E 6.5.0-rc1+ #279
+RIP: 0010:ext4_mb_new_inode_pa+0xc5/0x430
+Call Trace:
+ <TASK>
+ ext4_mb_use_best_found+0x203/0x2f0
+ ext4_mb_try_best_found+0x163/0x240
+ ext4_mb_regular_allocator+0x158/0x1550
+ ext4_mb_new_blocks+0x86a/0xe10
+ ext4_ext_map_blocks+0xb0c/0x13a0
+ ext4_map_blocks+0x2cd/0x8f0
+ ext4_iomap_begin+0x27b/0x400
+ iomap_iter+0x222/0x3d0
+ __iomap_dio_rw+0x243/0xcb0
+ iomap_dio_rw+0x16/0x80
+=========================================================
 
-Fixes: 1ccc0ddf046a ("clk: Use seq_puts() in possible_parent_show()")
-Reported-by: Philip Daly <pdaly@redhat.com>
-Signed-off-by: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
-Link: https://lore.kernel.org/r/20230921073217.572151-1-alessandro.carminati@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+A simple reproducer demonstrating the problem:
+
+	mkfs.ext4 -F /dev/sda -b 4096 100M
+	mount /dev/sda /tmp/test
+	fallocate -l1M /tmp/test/tmp
+	fallocate -l10M /tmp/test/file
+	fallocate -i -o 1M -l16777203M /tmp/test/file
+	fsstress -d /tmp/test -l 0 -n 100000 -p 8 &
+	sleep 10 && killall -9 fsstress
+	rm -f /tmp/test/tmp
+	xfs_io -c "open -ad /tmp/test/file" -c "pwrite -S 0xff 0 8192"
+
+We simply refactor the logic for adjusting the best extent by adding
+a temporary ext4_free_extent ex and use extent_logical_end() to avoid
+overflow, which also simplifies the code.
+
+Cc: stable@kernel.org # 6.4
+Fixes: 93cdf49f6eca ("ext4: Fix best extent lstart adjustment logic in ext4_mb_new_inode_pa()")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230724121059.11834-3-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk.c |   21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ fs/ext4/mballoc.c |   31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -3416,6 +3416,7 @@ static void possible_parent_show(struct
- 				 unsigned int i, char terminator)
- {
- 	struct clk_core *parent;
-+	const char *name = NULL;
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4652,8 +4652,11 @@ ext4_mb_new_inode_pa(struct ext4_allocat
+ 	pa = ac->ac_pa;
  
- 	/*
- 	 * Go through the following options to fetch a parent's name.
-@@ -3430,18 +3431,20 @@ static void possible_parent_show(struct
- 	 * registered (yet).
- 	 */
- 	parent = clk_core_get_parent_by_index(core, i);
--	if (parent)
-+	if (parent) {
- 		seq_puts(s, parent->name);
--	else if (core->parents[i].name)
-+	} else if (core->parents[i].name) {
- 		seq_puts(s, core->parents[i].name);
--	else if (core->parents[i].fw_name)
-+	} else if (core->parents[i].fw_name) {
- 		seq_printf(s, "<%s>(fw)", core->parents[i].fw_name);
--	else if (core->parents[i].index >= 0)
--		seq_puts(s,
--			 of_clk_get_parent_name(core->of_node,
--						core->parents[i].index));
--	else
--		seq_puts(s, "(missing)");
-+	} else {
-+		if (core->parents[i].index >= 0)
-+			name = of_clk_get_parent_name(core->of_node, core->parents[i].index);
-+		if (!name)
-+			name = "(missing)";
-+
-+		seq_puts(s, name);
-+	}
+ 	if (ac->ac_b_ex.fe_len < ac->ac_g_ex.fe_len) {
+-		int new_bex_start;
+-		int new_bex_end;
++		struct ext4_free_extent ex = {
++			.fe_logical = ac->ac_g_ex.fe_logical,
++			.fe_len = ac->ac_g_ex.fe_len,
++		};
++		loff_t orig_goal_end = extent_logical_end(sbi, &ex);
  
- 	seq_putc(s, terminator);
- }
+ 		/* we can't allocate as much as normalizer wants.
+ 		 * so, found space must get proper lstart
+@@ -4672,29 +4675,23 @@ ext4_mb_new_inode_pa(struct ext4_allocat
+ 		 *    still cover original start
+ 		 * 3. Else, keep the best ex at start of original request.
+ 		 */
+-		new_bex_end = ac->ac_g_ex.fe_logical +
+-			EXT4_C2B(sbi, ac->ac_g_ex.fe_len);
+-		new_bex_start = new_bex_end - EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+-		if (ac->ac_o_ex.fe_logical >= new_bex_start)
+-			goto adjust_bex;
++		ex.fe_len = ac->ac_b_ex.fe_len;
+ 
+-		new_bex_start = ac->ac_g_ex.fe_logical;
+-		new_bex_end =
+-			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
+-		if (ac->ac_o_ex.fe_logical < new_bex_end)
++		ex.fe_logical = orig_goal_end - EXT4_C2B(sbi, ex.fe_len);
++		if (ac->ac_o_ex.fe_logical >= ex.fe_logical)
+ 			goto adjust_bex;
+ 
+-		new_bex_start = ac->ac_o_ex.fe_logical;
+-		new_bex_end =
+-			new_bex_start + EXT4_C2B(sbi, ac->ac_b_ex.fe_len);
++		ex.fe_logical = ac->ac_g_ex.fe_logical;
++		if (ac->ac_o_ex.fe_logical < extent_logical_end(sbi, &ex))
++			goto adjust_bex;
+ 
++		ex.fe_logical = ac->ac_o_ex.fe_logical;
+ adjust_bex:
+-		ac->ac_b_ex.fe_logical = new_bex_start;
++		ac->ac_b_ex.fe_logical = ex.fe_logical;
+ 
+ 		BUG_ON(ac->ac_o_ex.fe_logical < ac->ac_b_ex.fe_logical);
+ 		BUG_ON(ac->ac_o_ex.fe_len > ac->ac_b_ex.fe_len);
+-		BUG_ON(new_bex_end > (ac->ac_g_ex.fe_logical +
+-				      EXT4_C2B(sbi, ac->ac_g_ex.fe_len)));
++		BUG_ON(extent_logical_end(sbi, &ex) > orig_goal_end);
+ 	}
+ 
+ 	/* preallocation can change ac_b_ex, thus we store actually
 
 
