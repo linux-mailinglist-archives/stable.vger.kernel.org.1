@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29BBB7DD3FA
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A40DB7DD5E8
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 19:16:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233601AbjJaRGg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39304 "EHLO
+        id S230458AbjJaSP4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 14:15:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235901AbjJaRGT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:19 -0400
+        with ESMTP id S236386AbjJaRuE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D4FB19B
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:04:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD545C433C8;
-        Tue, 31 Oct 2023 17:04:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D7FA6
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE81C433C8;
+        Tue, 31 Oct 2023 17:50:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771846;
-        bh=gNatnRRK28wsQlmEA9jKk0uExOfEc59YObfDI14A+V4=;
+        s=korg; t=1698774600;
+        bh=1OwTX5HdcVMrK33OWIj2M+vY4puXCkJk2Q3aXjQWD4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zmDQe7bZLTPniZu2r3zALZEocQxqtGIH02DApDEFNHWJ3BVGvRUV1IE5JpOdzYuNq
-         qX3tEDaptmiy7F0kJI3v+mkL3Be6wNAOxHxc9Uh8LtaerssmL1qoAYmdbXXAWnof94
-         N3BFx0frttu1JD7PUGT0ywdVRWkX6Fy6xb4HE8ts=
+        b=NNhlPX03qNvr1ghD/F5+Mmx+ueobmZpjDKidbW6YxaQO5d922so9iOhel7WU6+6/M
+         e7yailQLYGgeNczwSI9ks4xMOoodAxnqqbjoSL57fgq0lZ16tt7BGnHEKQjjYLziW9
+         y/sYNncAfOXBubNrrE+bpJd5myXhKVVVPKs5Dca4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Wojciech Drewek <wojciech.drewek@intel.com>,
-        Mateusz Palczewski <mateusz.palczewski@intel.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Grant Grundler <grundler@chromium.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        Arpana Arland <arpanax.arland@intel.com>
-Subject: [PATCH 6.1 40/86] igb: Fix potential memory leak in igb_add_ethtool_nfc_entry
-Date:   Tue, 31 Oct 2023 18:01:05 +0100
-Message-ID: <20231031165919.869903175@linuxfoundation.org>
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 065/112] r8152: Release firmware if we have an error in probe
+Date:   Tue, 31 Oct 2023 18:01:06 +0100
+Message-ID: <20231031165903.373351528@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Palczewski <mateusz.palczewski@intel.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 8c0b48e01daba5ca58f939a8425855d3f4f2ed14 ]
+[ Upstream commit b8d35024d4059ca550cba11ac9ab23a6c238d929 ]
 
-Add check for return of igb_update_ethtool_nfc_entry so that in case
-of any potential errors the memory alocated for input will be freed.
+The error handling in rtl8152_probe() is missing a call to release
+firmware. Add it in to match what's in the cleanup code in
+rtl8152_disconnect().
 
-Fixes: 0e71def25281 ("igb: add support of RX network flow classification")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Fixes: 9370f2d05a2a ("r8152: support request_firmware for RTL8153")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromium.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/usb/r8152.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index 96fa1c420f910..ceff537d9d22d 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -2978,11 +2978,15 @@ static int igb_add_ethtool_nfc_entry(struct igb_adapter *adapter,
- 	if (err)
- 		goto err_out_w_lock;
- 
--	igb_update_ethtool_nfc_entry(adapter, input, input->sw_idx);
-+	err = igb_update_ethtool_nfc_entry(adapter, input, input->sw_idx);
-+	if (err)
-+		goto err_out_input_filter;
- 
- 	spin_unlock(&adapter->nfc_lock);
- 	return 0;
- 
-+err_out_input_filter:
-+	igb_erase_filter(adapter, input);
- err_out_w_lock:
- 	spin_unlock(&adapter->nfc_lock);
- err_out:
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index a894f267d375d..14497e5558bf9 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9805,6 +9805,7 @@ static int rtl8152_probe(struct usb_interface *intf,
+ 	cancel_delayed_work_sync(&tp->hw_phy_work);
+ 	if (tp->rtl_ops.unload)
+ 		tp->rtl_ops.unload(tp);
++	rtl8152_release_firmware(tp);
+ 	usb_set_intfdata(intf, NULL);
+ out:
+ 	free_netdev(netdev);
 -- 
 2.42.0
 
