@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8A027DD50C
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FBAD7DD3F0
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376335AbjJaRqq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:46:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44400 "EHLO
+        id S231349AbjJaRGU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376365AbjJaRqp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:46:45 -0400
+        with ESMTP id S235518AbjJaRGI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44C0BF7
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:46:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7001BC433C9;
-        Tue, 31 Oct 2023 17:46:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFAF8D6E
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F07C433C7;
+        Tue, 31 Oct 2023 17:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774400;
-        bh=eSMDeVPrcbTxVfoXUIflVta2QCMbykh58nsYDTnep8E=;
+        s=korg; t=1698771821;
+        bh=Kq1Uvqamcul0iTyiYNZMl4eFlISLOpSZgg/7K2q6qS8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZJcTbbL/VAuESHRsVypeV4wtR3Vqx1PNsl0SmN8UBn9t/O6B/GNFhLrsn+8d5C5Va
-         vYOU39BqPeJVBXkEe6GtGqRHSoeyI8KJ85sd05WbdtnCxWNto68weYzB8IeBxZO6FJ
-         jrv5qPGjqlL/XEX7KuiPZfAbvl0Jo8Qw+UZN8vhQ=
+        b=lyUzxRCiTwL+zN4NDtKgaF1DRsE7tCqLzu6KdMWGqUwtjep7RjJWHZiltaQknLEgJ
+         PleRzKyLyOA1Q6zlWig+sVishtVfGSvI1jaxenk17c9pXgoJtKPKVUr6Zx8rH2OmJv
+         sYe+HK6wX5JDBcM5TqgWtvtLqibmMjzweXC6n6Hs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Janusz Krzysztofik <jmkrzyszt@gmail.com>,
-        Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 6.5 034/112] ARM: OMAP1: ams-delta: Fix MODEM initialization failure
-Date:   Tue, 31 Oct 2023 18:00:35 +0100
-Message-ID: <20231031165902.397914535@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+        Javier Rodriguez <josejavier.rodriguez@duagon.com>,
+        Johannes Thumshirn <jth@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 11/86] mcb-lpc: Reallocate memory region to avoid memory overlapping
+Date:   Tue, 31 Oct 2023 18:00:36 +0100
+Message-ID: <20231031165918.970355930@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -49,168 +53,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+From: Rodríguez Barbarin, José Javier <JoseJavier.Rodriguez@duagon.com>
 
-commit 5447da5d610b5701c1103cd4665b49da87fdf032 upstream.
+[ Upstream commit 2025b2ca8004c04861903d076c67a73a0ec6dfca ]
 
-Regulator drivers were modified to use asynchronous device probe.  Since
-then, the board .init_late hook fails to acquire a GPIO based fixed
-regulator needed by an on-board voice MODEM device, and unregisters the
-MODEM.  That in turn triggers a so far not discovered bug of device
-unregister function called for a device with no associated release() op.
+mcb-lpc requests a fixed-size memory region to parse the chameleon
+table, however, if the chameleon table is smaller that the allocated
+region, it could overlap with the IP Cores' memory regions.
 
-serial8250 serial8250.1: incomplete constraints, dummy supplies not allowed
-WARNING: CPU: 0 PID: 1 at drivers/base/core.c:2486 device_release+0x98/0xa8
-Device 'serial8250.1' does not have a release() function, it is broken and
- must be fixed. See Documentation/core-api/kobject.rst.
-...
-put_device from platform_device_put+0x1c/0x24
-platform_device_put from ams_delta_init_late+0x4c/0x68
-ams_delta_init_late from init_machine_late+0x1c/0x94
-init_machine_late from do_one_initcall+0x60/0x1d4
+After parsing the chameleon table, drop/reallocate the memory region
+with the actual chameleon table size.
 
-As a consequence, ASoC CODEC driver is no longer able to control its
-device over the voice MODEM's tty interface.
-
-cx20442-codec: ASoC: error at soc_component_write_no_lock
- on cx20442-codec for register: [0x00000000] -5
-cx20442-codec: ASoC: error at snd_soc_component_update_bits_legacy
- on cx20442-codec for register: [0x00000000] -5
-cx20442-codec: ASoC: error at snd_soc_component_update_bits
- on cx20442-codec for register: [0x00000000] -5
-
-The regulator hangs of a GPIO pin controlled by basic-mmio-gpio driver.
-Unlike most GPIO drivers, that driver doesn't probe for devices before
-device_initcall, then GPIO pins under its control are not availabele to
-majority of devices probed at that phase, including regulators.  On the
-other hand, serial8250 driver used by the MODEM device neither accepts via
-platform data nor handles regulators, then the board file is not able to
-teach that driver to return -EPROBE_DEFER when the regulator is not ready
-so the failed probe is retried after late_initcall.
-
-Resolve the issue by extending description of the MODEM device with a
-dedicated power management domain.  Acquire the regulator from the
-domain's .activate hook and return -EPROBE_DEFER if the regulator is not
-available.  Having that under control, add the regulator device
-description to the list of platform devices initialized from .init_machine
-and drop the no longer needed custom .init_late hook.
-
-v2: Trim down the warning for prettier git log output (Tony).
-
-Fixes: 259b93b21a9f ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for drivers that existed in 4.14")
-Signed-off-by: Janusz Krzysztofik <jmkrzyszt@gmail.com>
-Cc: stable@vger.kernel.org # v6.4+
-Message-ID: <20231011175038.1907629-1-jmkrzyszt@gmail.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Co-developed-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Javier Rodriguez <josejavier.rodriguez@duagon.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Link: https://lore.kernel.org/r/20230411083329.4506-4-jth@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap1/board-ams-delta.c | 60 +++++++--------------------
- 1 file changed, 16 insertions(+), 44 deletions(-)
+ drivers/mcb/mcb-lpc.c | 35 +++++++++++++++++++++++++++++++----
+ 1 file changed, 31 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-omap1/board-ams-delta.c b/arch/arm/mach-omap1/board-ams-delta.c
-index 9808cd27e2cf..67de96c7717d 100644
---- a/arch/arm/mach-omap1/board-ams-delta.c
-+++ b/arch/arm/mach-omap1/board-ams-delta.c
-@@ -550,6 +550,7 @@ static struct platform_device *ams_delta_devices[] __initdata = {
- 	&ams_delta_nand_device,
- 	&ams_delta_lcd_device,
- 	&cx20442_codec_device,
-+	&modem_nreset_device,
- };
- 
- static struct gpiod_lookup_table *ams_delta_gpio_tables[] __initdata = {
-@@ -782,26 +783,28 @@ static struct plat_serial8250_port ams_delta_modem_ports[] = {
- 	{ },
- };
- 
-+static int ams_delta_modem_pm_activate(struct device *dev)
-+{
-+	modem_priv.regulator = regulator_get(dev, "RESET#");
-+	if (IS_ERR(modem_priv.regulator))
-+		return -EPROBE_DEFER;
-+
-+	return 0;
-+}
-+
-+static struct dev_pm_domain ams_delta_modem_pm_domain = {
-+	.activate	= ams_delta_modem_pm_activate,
-+};
-+
- static struct platform_device ams_delta_modem_device = {
- 	.name	= "serial8250",
- 	.id	= PLAT8250_DEV_PLATFORM1,
- 	.dev		= {
- 		.platform_data = ams_delta_modem_ports,
-+		.pm_domain = &ams_delta_modem_pm_domain,
- 	},
- };
- 
--static int __init modem_nreset_init(void)
--{
--	int err;
--
--	err = platform_device_register(&modem_nreset_device);
--	if (err)
--		pr_err("Couldn't register the modem regulator device\n");
--
--	return err;
--}
--
--
- /*
-  * This function expects MODEM IRQ number already assigned to the port.
-  * The MODEM device requires its RESET# pin kept high during probe.
-@@ -833,37 +836,6 @@ static int __init ams_delta_modem_init(void)
- }
- arch_initcall_sync(ams_delta_modem_init);
- 
--static int __init late_init(void)
--{
--	int err;
--
--	err = modem_nreset_init();
--	if (err)
--		return err;
--
--	/*
--	 * Once the modem device is registered, the modem_nreset
--	 * regulator can be requested on behalf of that device.
--	 */
--	modem_priv.regulator = regulator_get(&ams_delta_modem_device.dev,
--			"RESET#");
--	if (IS_ERR(modem_priv.regulator)) {
--		err = PTR_ERR(modem_priv.regulator);
--		goto unregister;
--	}
--	return 0;
--
--unregister:
--	platform_device_unregister(&ams_delta_modem_device);
--	return err;
--}
--
--static void __init ams_delta_init_late(void)
--{
--	omap1_init_late();
--	late_init();
--}
--
- static void __init ams_delta_map_io(void)
+diff --git a/drivers/mcb/mcb-lpc.c b/drivers/mcb/mcb-lpc.c
+index 53decd89876ee..a851e02364642 100644
+--- a/drivers/mcb/mcb-lpc.c
++++ b/drivers/mcb/mcb-lpc.c
+@@ -23,7 +23,7 @@ static int mcb_lpc_probe(struct platform_device *pdev)
  {
- 	omap1_map_io();
-@@ -877,7 +849,7 @@ MACHINE_START(AMS_DELTA, "Amstrad E3 (Delta)")
- 	.init_early	= omap1_init_early,
- 	.init_irq	= omap1_init_irq,
- 	.init_machine	= ams_delta_init,
--	.init_late	= ams_delta_init_late,
-+	.init_late	= omap1_init_late,
- 	.init_time	= omap1_timer_init,
- 	.restart	= omap1_restart,
- MACHINE_END
+ 	struct resource *res;
+ 	struct priv *priv;
+-	int ret = 0;
++	int ret = 0, table_size;
+ 
+ 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+@@ -58,16 +58,43 @@ static int mcb_lpc_probe(struct platform_device *pdev)
+ 
+ 	ret = chameleon_parse_cells(priv->bus, priv->mem->start, priv->base);
+ 	if (ret < 0) {
+-		mcb_release_bus(priv->bus);
+-		return ret;
++		goto out_mcb_bus;
+ 	}
+ 
+-	dev_dbg(&pdev->dev, "Found %d cells\n", ret);
++	table_size = ret;
++
++	if (table_size < CHAM_HEADER_SIZE) {
++		/* Release the previous resources */
++		devm_iounmap(&pdev->dev, priv->base);
++		devm_release_mem_region(&pdev->dev, priv->mem->start, resource_size(priv->mem));
++
++		/* Then, allocate it again with the actual chameleon table size */
++		res = devm_request_mem_region(&pdev->dev, priv->mem->start,
++					      table_size,
++					      KBUILD_MODNAME);
++		if (!res) {
++			dev_err(&pdev->dev, "Failed to request PCI memory\n");
++			ret = -EBUSY;
++			goto out_mcb_bus;
++		}
++
++		priv->base = devm_ioremap(&pdev->dev, priv->mem->start, table_size);
++		if (!priv->base) {
++			dev_err(&pdev->dev, "Cannot ioremap\n");
++			ret = -ENOMEM;
++			goto out_mcb_bus;
++		}
++
++		platform_set_drvdata(pdev, priv);
++	}
+ 
+ 	mcb_bus_add_devices(priv->bus);
+ 
+ 	return 0;
+ 
++out_mcb_bus:
++	mcb_release_bus(priv->bus);
++	return ret;
+ }
+ 
+ static int mcb_lpc_remove(struct platform_device *pdev)
 -- 
 2.42.0
 
