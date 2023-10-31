@@ -2,43 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DA4A7DD557
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 732437DD3B0
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:02:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376514AbjJaRtf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:49:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42058 "EHLO
+        id S230035AbjJaRCB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:02:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376525AbjJaRte (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:34 -0400
+        with ESMTP id S232529AbjJaRBt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:01:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DEFC92
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 183ACC433C8;
-        Tue, 31 Oct 2023 17:49:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774571;
-        bh=FwOEorAwXZjg7UhKnd6bLZr3KUjkWX9kOkpurX6+ZC0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iWDh7GVAqHs0psMMJRvPfPHA58jqYHbJNw5BiAlZlGYUum32ypvYIq6xEjIfnZZUB
-         SOAG80syEenJM0s/25VPs6nEG1PM01E1VG1qASf6cLyxjiz1I3SxcBmdD1Xip0QeUT
-         pY18pUeSQ4yKajFDWfK/1voZQAlMfR2G5klfN/dE=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        Peter Rosin <peda@axentia.se>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.5 090/112] i2c: muxes: i2c-demux-pinctrl: Use of_get_i2c_adapter_by_node()
-Date:   Tue, 31 Oct 2023 18:01:31 +0100
-Message-ID: <20231031165904.150838718@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7544C3263;
+        Tue, 31 Oct 2023 10:01:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CAFCC433C9;
+        Tue, 31 Oct 2023 17:01:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698771696;
+        bh=wOrkJgpCxsbVKesxU40XQnRtmpfI/QSBorN3wky9v9k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=oA2bxILiwPXYgcaZ+u2F0ndZdS8Mj5u+NZ0vIcsMQCN8tM0Bgpvq4VACcB5ywH5pp
+         sRhdOLf8SYvj6MTNGPxbKT34E5omwfKBdp/E9yJ0L+gZ3PkNY4fe2LlMCWvPq0BDxn
+         1CBaw+/5MNi1txr9wB3QiMj89kgTO3Lk8nQHJBXDfr9zj4h5xvxYuzRFv816a+7HbO
+         hKjzCLq1NfmwjhOaSCLfwhhqoseYEAObM68kxZNCFK65dirP5Ovv8/LudtMhmMu2lX
+         mN8ng4O75AU6v+FqQWR1XpNCKHlbJZCtPGJ80Ptz3QlJaw2ccwYzPRJmT0jkVXdXQZ
+         vJTf2TELDTMJw==
+From:   SeongJae Park <sj@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     SeongJae Park <sj@kernel.org>, damon@lists.linux.dev,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH] mm/damon/sysfs: update monitoring target regions for online input commit
+Date:   Tue, 31 Oct 2023 17:01:31 +0000
+Message-Id: <20231031170131.46972-1-sj@kernel.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -51,46 +47,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+When user input is committed online, DAMON sysfs interface is ignoring
+the user input for the monitoring target regions.  Such request is valid
+and useful for fixed monitoring target regions-based monitoring ops like
+'paddr' or 'fvaddr'.
 
-------------------
+Update the region boundaries as user specified, too.  Note that the
+monitoring results of the regions that overlap between the latest
+monitoring target regions and the new target regions are preserved.
 
-From: Herve Codina <herve.codina@bootlin.com>
+Treat empty monitoring target regions user request as a request to just
+make no change to the monitoring target regions.  Otherwise, users
+should set the monitoring target regions same to current one for every
+online input commit, and it could be challenging for dynamic monitoring
+target regions update DAMON ops like 'vaddr'.  If the user really need
+to remove all monitoring target regions, they can simply remove the
+target and then create the target again with empty target regions.
 
-commit 0fb118de5003028ad092a4e66fc6d07b86c3bc94 upstream.
-
-i2c-demux-pinctrl uses the pair of_find_i2c_adapter_by_node() /
-i2c_put_adapter(). These pair alone is not correct to properly lock the
-I2C parent adapter.
-
-Indeed, i2c_put_adapter() decrements the module refcount while
-of_find_i2c_adapter_by_node() does not increment it. This leads to an
-underflow of the parent module refcount.
-
-Use the	dedicated function, of_get_i2c_adapter_by_node(), to handle
-correctly the module refcount.
-
-Fixes: 50a5ba876908 ("i2c: mux: demux-pinctrl: add driver")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Cc: stable@vger.kernel.org
-Acked-by: Peter Rosin <peda@axentia.se>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
+Cc: <stable@vger.kernel.org> # 5.19.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- drivers/i2c/muxes/i2c-demux-pinctrl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/sysfs.c | 47 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 17 deletions(-)
 
---- a/drivers/i2c/muxes/i2c-demux-pinctrl.c
-+++ b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-@@ -61,7 +61,7 @@ static int i2c_demux_activate_master(str
- 	if (ret)
- 		goto err;
+diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+index 1a231bde18f9..e27846708b5a 100644
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1150,34 +1150,47 @@ static int damon_sysfs_add_target(struct damon_sysfs_target *sys_target,
+ 	return err;
+ }
  
--	adap = of_find_i2c_adapter_by_node(priv->chan[new_chan].parent_np);
-+	adap = of_get_i2c_adapter_by_node(priv->chan[new_chan].parent_np);
- 	if (!adap) {
- 		ret = -ENODEV;
- 		goto err_with_revert;
-
+-static int damon_sysfs_update_target(struct damon_target *target,
+-		struct damon_ctx *ctx,
+-		struct damon_sysfs_target *sys_target)
++static int damon_sysfs_update_target_pid(struct damon_target *target, int pid)
+ {
+-	struct pid *pid;
+-	struct damon_region *r, *next;
+-
+-	if (!damon_target_has_pid(ctx))
+-		return 0;
++	struct pid *pid_new;
+ 
+-	pid = find_get_pid(sys_target->pid);
+-	if (!pid)
++	pid_new = find_get_pid(pid);
++	if (!pid_new)
+ 		return -EINVAL;
+ 
+-	/* no change to the target */
+-	if (pid == target->pid) {
+-		put_pid(pid);
++	if (pid_new == target->pid) {
++		put_pid(pid_new);
+ 		return 0;
+ 	}
+ 
+-	/* remove old monitoring results and update the target's pid */
+-	damon_for_each_region_safe(r, next, target)
+-		damon_destroy_region(r, target);
+ 	put_pid(target->pid);
+-	target->pid = pid;
++	target->pid = pid_new;
+ 	return 0;
+ }
+ 
++static int damon_sysfs_update_target(struct damon_target *target,
++		struct damon_ctx *ctx,
++		struct damon_sysfs_target *sys_target)
++{
++	int err;
++
++	if (damon_target_has_pid(ctx)) {
++		err = damon_sysfs_update_target_pid(target, sys_target->pid);
++		if (err)
++			return err;
++	}
++
++	/*
++	 * Do monitoring target region boundary update only if one or more
++	 * regions are set by the user.  This is for keeping current monitoring
++	 * target results and range easier, especially for dynamic monitoring
++	 * target regions update ops like 'vaddr'.
++	 */
++	if (sys_target->regions->nr)
++		err = damon_sysfs_set_regions(target, sys_target->regions);
++	return err;
++}
++
+ static int damon_sysfs_set_targets(struct damon_ctx *ctx,
+ 		struct damon_sysfs_targets *sysfs_targets)
+ {
+-- 
+2.34.1
 
