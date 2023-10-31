@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B5707DD531
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7809E7DD563
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:50:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376427AbjJaRsO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:48:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39652 "EHLO
+        id S236422AbjJaRuR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:50:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376466AbjJaRsN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:13 -0400
+        with ESMTP id S236456AbjJaRuP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58EA11C
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA9BC433CB;
-        Tue, 31 Oct 2023 17:47:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FB2C2
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481A1C433C8;
+        Tue, 31 Oct 2023 17:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774477;
-        bh=0yZtChg+EGd99Tmp3oIDXYEhxTOrGyQN+m92kIJ+GtQ=;
+        s=korg; t=1698774612;
+        bh=ee/xhwhDhAKEjQwBU6vlgXhwBZMOv6k4+7Vryl/BM8M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pAUBBPKm5aWISz6pt7nLviSxvAEnDlg9nONyFf+n0BMc61pTZJQxI60fi9tVLR36v
-         WS1FXVz9ml/kipyT66AAyyIRbzk35fcuHM6h4tL6tuXrrbUgX5FRSPf122GC+Kmohw
-         IN9oCygeRynaoJ/ir3cDZrBNZEmfbWb4TnKlnNik=
+        b=hDHN7CbskTntzkEHMryobYqeQ2ihERbmAlZqO1pzcVJr+n6riQGOwFS1jdXo8Rduc
+         BG8sU/VhAhy0yY4cR5aHWcgU1RwI6XqS11Dn9il2rY17VAn2WS+JFulo1mUL+MfwEJ
+         jB0lLH87pFehoMyLqgYL/BfkQ3/gYREFQFL0lqUE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dima Ruinskiy <dima.ruinskiy@intel.com>,
-        Vitaly Lifshits <vitaly.lifshits@intel.com>,
-        Sasha Neftin <sasha.neftin@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Dell Jin <dell.jin.code@outlook.com>,
+        Ciprian Regus <ciprian.regus@analog.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 058/112] igc: Fix ambiguity in the ethtool advertising
-Date:   Tue, 31 Oct 2023 18:00:59 +0100
-Message-ID: <20231031165903.151478513@linuxfoundation.org>
+Subject: [PATCH 6.5 059/112] net: ethernet: adi: adin1110: Fix uninitialized variable
+Date:   Tue, 31 Oct 2023 18:01:00 +0100
+Message-ID: <20231031165903.182164849@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
 References: <20231031165901.318222981@linuxfoundation.org>
@@ -58,84 +55,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Sasha Neftin <sasha.neftin@intel.com>
+From: Dell Jin <dell.jin.code@outlook.com>
 
-[ Upstream commit e7684d29efdf37304c62bb337ea55b3428ca118e ]
+[ Upstream commit 965f9b8c0c1b37fa2a0e3ef56e40d5666d4cbb5c ]
 
-The 'ethtool_convert_link_mode_to_legacy_u32' method does not allow us to
-advertise 2500M speed support and TP (twisted pair) properly. Convert to
-'ethtool_link_ksettings_test_link_mode' to advertise supported speed and
-eliminate ambiguity.
+The spi_transfer struct has to have all it's fields initialized to 0 in
+this case, since not all of them are set before starting the transfer.
+Otherwise, spi_sync_transfer() will sometimes return an error.
 
-Fixes: 8c5ad0dae93c ("igc: Add ethtool support")
-Suggested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Suggested-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20231019203641.3661960-1-jacob.e.keller@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a526a3cc9c8d ("net: ethernet: adi: adin1110: Fix SPI transfers")
+Signed-off-by: Dell Jin <dell.jin.code@outlook.com>
+Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ethtool.c | 35 ++++++++++++++------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/adi/adin1110.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-index 7ab6dd58e4001..dd8a9d27a1670 100644
---- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-@@ -1817,7 +1817,7 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
- 	struct igc_adapter *adapter = netdev_priv(netdev);
- 	struct net_device *dev = adapter->netdev;
- 	struct igc_hw *hw = &adapter->hw;
--	u32 advertising;
-+	u16 advertised = 0;
- 
- 	/* When adapter in resetting mode, autoneg/speed/duplex
- 	 * cannot be changed
-@@ -1842,18 +1842,33 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
- 	while (test_and_set_bit(__IGC_RESETTING, &adapter->state))
- 		usleep_range(1000, 2000);
- 
--	ethtool_convert_link_mode_to_legacy_u32(&advertising,
--						cmd->link_modes.advertising);
--	/* Converting to legacy u32 drops ETHTOOL_LINK_MODE_2500baseT_Full_BIT.
--	 * We have to check this and convert it to ADVERTISE_2500_FULL
--	 * (aka ETHTOOL_LINK_MODE_2500baseX_Full_BIT) explicitly.
--	 */
--	if (ethtool_link_ksettings_test_link_mode(cmd, advertising, 2500baseT_Full))
--		advertising |= ADVERTISE_2500_FULL;
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  2500baseT_Full))
-+		advertised |= ADVERTISE_2500_FULL;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  1000baseT_Full))
-+		advertised |= ADVERTISE_1000_FULL;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  100baseT_Full))
-+		advertised |= ADVERTISE_100_FULL;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  100baseT_Half))
-+		advertised |= ADVERTISE_100_HALF;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  10baseT_Full))
-+		advertised |= ADVERTISE_10_FULL;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  10baseT_Half))
-+		advertised |= ADVERTISE_10_HALF;
- 
- 	if (cmd->base.autoneg == AUTONEG_ENABLE) {
- 		hw->mac.autoneg = 1;
--		hw->phy.autoneg_advertised = advertising;
-+		hw->phy.autoneg_advertised = advertised;
- 		if (adapter->fc_autoneg)
- 			hw->fc.requested_mode = igc_fc_default;
- 	} else {
+diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
+index ca66b747b7c5d..d7c274af6d4da 100644
+--- a/drivers/net/ethernet/adi/adin1110.c
++++ b/drivers/net/ethernet/adi/adin1110.c
+@@ -294,7 +294,7 @@ static int adin1110_read_fifo(struct adin1110_port_priv *port_priv)
+ {
+ 	struct adin1110_priv *priv = port_priv->priv;
+ 	u32 header_len = ADIN1110_RD_HEADER_LEN;
+-	struct spi_transfer t;
++	struct spi_transfer t = {0};
+ 	u32 frame_size_no_fcs;
+ 	struct sk_buff *rxb;
+ 	u32 frame_size;
 -- 
 2.42.0
 
