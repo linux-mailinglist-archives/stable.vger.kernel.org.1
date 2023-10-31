@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36F547DD3C7
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:03:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12FB57DD513
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232606AbjJaRDA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:03:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52906 "EHLO
+        id S1376391AbjJaRrE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:47:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232519AbjJaRC7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:02:59 -0400
+        with ESMTP id S1376394AbjJaRrD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E0A110
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:02:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564D4C433C9;
-        Tue, 31 Oct 2023 17:02:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F07AA2
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51A6C433C9;
+        Tue, 31 Oct 2023 17:47:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771776;
-        bh=u/DVd2WC9piEJeBOWao07KYzQV/zX+1uDfBUvZHq3iY=;
+        s=korg; t=1698774421;
+        bh=v6oP9dCY9HsutAeT7qat7nt3BfXa81LB/kEyu+qbRBI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c6jUl+Um/1Vv0TTWl8phPr+QKP3EdHuZnl17Copw3dJgLx4vUe1DpvsRAiax/btye
-         PO+401doTTus0QYCnwTtaPm3LkKmszX3+yNCgizwa7wouwYY0rkTbdtHak616cIUJc
-         E51dzBF6vWP0Z91U92Xqq31DTW8wXd+dJwDUL4As=
+        b=VPOw/ahytBqNAPRlA4aIq0pF/FqlBG5MdPb656+Cp1hESDfA3yjPkISlAGDEt0oIa
+         04Xvly+mVuflyJ2MIg+FOfdGnM05RQoAEGo7vhhtfpTP61tnF1FwkkKtvRcBkH3czR
+         eqT7S8QnX0QrI2ALpSHcO9R9btyOSmS1i+QdXve0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Auger <eric.auger@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>
-Subject: [PATCH 6.1 17/86] vhost: Allow null msg.size on VHOST_IOTLB_INVALIDATE
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Paolo Gentili <paolo.gentili@canonical.com>
+Subject: [PATCH 6.5 041/112] drm/amd: Disable ASPM for VI w/ all Intel systems
 Date:   Tue, 31 Oct 2023 18:00:42 +0100
-Message-ID: <20231031165919.148117473@linuxfoundation.org>
+Message-ID: <20231031165902.605131587@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,53 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Auger <eric.auger@redhat.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit ca50ec377c2e94b0a9f8735de2856cd0f13beab4 upstream.
+commit 64ffd2f1d00c6235dabe9704bbb0d9ce3e28147f upstream.
 
-Commit e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb
-entries") Forbade vhost iotlb msg with null size to prevent entries
-with size = start = 0 and last = ULONG_MAX to end up in the iotlb.
+Originally we were quirking ASPM disabled specifically for VI when
+used with Alder Lake, but it appears to have problems with Rocket
+Lake as well.
 
-Then commit 95932ab2ea07 ("vhost: allow batching hint without size")
-only applied the check for VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE
-message types to fix a regression observed with batching hit.
+Like we've done in the case of dpm for newer platforms, disable
+ASPM for all Intel systems.
 
-Still, the introduction of that check introduced a regression for
-some users attempting to invalidate the whole ULONG_MAX range by
-setting the size to 0. This is the case with qemu/smmuv3/vhost
-integration which does not work anymore. It Looks safe to partially
-revert the original commit and allow VHOST_IOTLB_INVALIDATE messages
-with null size. vhost_iotlb_del_range() will compute a correct end
-iova. Same for vhost_vdpa_iotlb_unmap().
-
-Signed-off-by: Eric Auger <eric.auger@redhat.com>
-Fixes: e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb entries")
-Cc: stable@vger.kernel.org # v5.17+
-Acked-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20230927140544.205088-1-eric.auger@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Cc: stable@vger.kernel.org # 5.15+
+Fixes: 0064b0ce85bb ("drm/amd/pm: enable ASPM by default")
+Reported-and-tested-by: Paolo Gentili <paolo.gentili@canonical.com>
+Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2036742
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/vhost.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/vi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -1176,9 +1176,7 @@ ssize_t vhost_chr_write_iter(struct vhos
- 		goto done;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/vi.c
++++ b/drivers/gpu/drm/amd/amdgpu/vi.c
+@@ -1124,7 +1124,7 @@ static void vi_program_aspm(struct amdgp
+ 	bool bL1SS = false;
+ 	bool bClkReqSupport = true;
  
--	if ((msg.type == VHOST_IOTLB_UPDATE ||
--	     msg.type == VHOST_IOTLB_INVALIDATE) &&
--	     msg.size == 0) {
-+	if (msg.type == VHOST_IOTLB_UPDATE && msg.size == 0) {
- 		ret = -EINVAL;
- 		goto done;
- 	}
+-	if (!amdgpu_device_should_use_aspm(adev) || !amdgpu_device_aspm_support_quirk())
++	if (!amdgpu_device_should_use_aspm(adev) || !amdgpu_device_pcie_dynamic_switching_supported())
+ 		return;
+ 
+ 	if (adev->flags & AMD_IS_APU ||
 
 
