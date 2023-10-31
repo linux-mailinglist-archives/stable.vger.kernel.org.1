@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D0A27DD53B
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 801BA7DD3F3
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376568AbjJaRsc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:48:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48036 "EHLO
+        id S233442AbjJaRG3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376525AbjJaRs2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:28 -0400
+        with ESMTP id S236459AbjJaRGO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C1AB4
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE568C433C9;
-        Tue, 31 Oct 2023 17:48:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF1E171A
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D23C433C8;
+        Tue, 31 Oct 2023 17:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774501;
-        bh=4XvI3QtFfS+WTTSQmDaHxfdjqoCoGfm+4Y8v8GEExO8=;
+        s=korg; t=1698771833;
+        bh=MNHYYuTVg7AHC+87jLzyL50hOnflXzSCOihC1UFKyyg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xTsWlJLzqWsFyt29iGxDuRSVH88lqk787YoIT+aTBBt4AL/9AKy2jE0tQN77djx4P
-         vqJlCNwCdP0BPuXrjIJj17zj6TTqOQmmgp9oc/VMI1OzAv6mA97R42UtvDe6Bj25tk
-         1QL4z3SnactuuFMopmn9CHOYfZeICwv2u6DcMDNQ=
+        b=LBHmDYcRavUjnXC9KiXWDgZyOGOIu/pXy24BrCTmT9UdMSqYlZO05g8M325puKIxs
+         jYH0MkTPADd7lbr49ZYn9ui9qLI7cPAKUGEQYD7tYbrh1VMD9eGkbkUz9/E57O52jL
+         f0NCxpwkolmCPqU3Be6JNbCf2mFr14yreF0Ul+wA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        patches@lists.linux.dev, Marco Elver <elver@google.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
         "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 060/112] net: ieee802154: adf7242: Fix some potential buffer overflow in adf7242_stats_show()
+Subject: [PATCH 6.1 36/86] r8169: fix the KCSAN reported data race in rtl_rx while reading desc->opts1
 Date:   Tue, 31 Oct 2023 18:01:01 +0100
-Message-ID: <20231031165903.217312378@linuxfoundation.org>
+Message-ID: <20231031165919.757002724@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,47 +56,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit ca082f019d8fbb983f03080487946da714154bae ]
+[ Upstream commit f97eee484e71890131f9c563c5cc6d5a69e4308d ]
 
-strncat() usage in adf7242_debugfs_init() is wrong.
-The size given to strncat() is the maximum number of bytes that can be
-written, excluding the trailing NULL.
+KCSAN reported the following data-race bug:
 
-Here, the size that is passed, DNAME_INLINE_LEN, does not take into account
-the size of "adf7242-" that is already in the array.
+==================================================================
+BUG: KCSAN: data-race in rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4430 drivers/net/ethernet/realtek/r8169_main.c:4583) r8169
 
-In order to fix it, use snprintf() instead.
+race at unknown origin, with read to 0xffff888117e43510 of 4 bytes by interrupt on cpu 21:
+rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4430 drivers/net/ethernet/realtek/r8169_main.c:4583) r8169
+__napi_poll (net/core/dev.c:6527)
+net_rx_action (net/core/dev.c:6596 net/core/dev.c:6727)
+__do_softirq (kernel/softirq.c:553)
+__irq_exit_rcu (kernel/softirq.c:427 kernel/softirq.c:632)
+irq_exit_rcu (kernel/softirq.c:647)
+sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1074 (discriminator 14))
+asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:645)
+cpuidle_enter_state (drivers/cpuidle/cpuidle.c:291)
+cpuidle_enter (drivers/cpuidle/cpuidle.c:390)
+call_cpuidle (kernel/sched/idle.c:135)
+do_idle (kernel/sched/idle.c:219 kernel/sched/idle.c:282)
+cpu_startup_entry (kernel/sched/idle.c:378 (discriminator 1))
+start_secondary (arch/x86/kernel/smpboot.c:210 arch/x86/kernel/smpboot.c:294)
+secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
 
-Fixes: 7302b9d90117 ("ieee802154/adf7242: Driver for ADF7242 MAC IEEE802154")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+value changed: 0x80003fff -> 0x3402805f
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 21 PID: 0 Comm: swapper/21 Tainted: G             L     6.6.0-rc2-kcsan-00143-gb5cbe7c00aa0 #41
+Hardware name: ASRock X670E PG Lightning/X670E PG Lightning, BIOS 1.21 04/26/2023
+==================================================================
+
+drivers/net/ethernet/realtek/r8169_main.c:
+==========================================
+   4429
+ → 4430                 status = le32_to_cpu(desc->opts1);
+   4431                 if (status & DescOwn)
+   4432                         break;
+   4433
+   4434                 /* This barrier is needed to keep us from reading
+   4435                  * any other fields out of the Rx descriptor until
+   4436                  * we know the status of DescOwn
+   4437                  */
+   4438                 dma_rmb();
+   4439
+   4440                 if (unlikely(status & RxRES)) {
+   4441                         if (net_ratelimit())
+   4442                                 netdev_warn(dev, "Rx ERROR. status = %08x\n",
+
+Marco Elver explained that dma_rmb() doesn't prevent the compiler to tear up the access to
+desc->opts1 which can be written to concurrently. READ_ONCE() should prevent that from
+happening:
+
+   4429
+ → 4430                 status = le32_to_cpu(READ_ONCE(desc->opts1));
+   4431                 if (status & DescOwn)
+   4432                         break;
+   4433
+
+As the consequence of this fix, this KCSAN warning was eliminated.
+
+Fixes: 6202806e7c03a ("r8169: drop member opts1_mask from struct rtl8169_private")
+Suggested-by: Marco Elver <elver@google.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: nic_swsd@realtek.com
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Link: https://lore.kernel.org/lkml/dc7fc8fa-4ea4-e9a9-30a6-7c83e6b53188@alu.unizg.hr/
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Acked-by: Marco Elver <elver@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ieee802154/adf7242.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ieee802154/adf7242.c b/drivers/net/ieee802154/adf7242.c
-index a03490ba2e5b3..cc7ddc40020fd 100644
---- a/drivers/net/ieee802154/adf7242.c
-+++ b/drivers/net/ieee802154/adf7242.c
-@@ -1162,9 +1162,10 @@ static int adf7242_stats_show(struct seq_file *file, void *offset)
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index f677f625a4939..80b6079b8a8e3 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4413,7 +4413,7 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget
+ 		dma_addr_t addr;
+ 		u32 status;
  
- static void adf7242_debugfs_init(struct adf7242_local *lp)
- {
--	char debugfs_dir_name[DNAME_INLINE_LEN + 1] = "adf7242-";
-+	char debugfs_dir_name[DNAME_INLINE_LEN + 1];
- 
--	strncat(debugfs_dir_name, dev_name(&lp->spi->dev), DNAME_INLINE_LEN);
-+	snprintf(debugfs_dir_name, sizeof(debugfs_dir_name),
-+		 "adf7242-%s", dev_name(&lp->spi->dev));
- 
- 	lp->debugfs_root = debugfs_create_dir(debugfs_dir_name, NULL);
+-		status = le32_to_cpu(desc->opts1);
++		status = le32_to_cpu(READ_ONCE(desc->opts1));
+ 		if (status & DescOwn)
+ 			break;
  
 -- 
 2.42.0
