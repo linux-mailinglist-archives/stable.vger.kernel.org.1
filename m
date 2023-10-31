@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A5927DD50F
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51DB27DD3C6
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:02:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376377AbjJaRq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:46:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40498 "EHLO
+        id S232968AbjJaRCz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:02:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376413AbjJaRq4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:46:56 -0400
+        with ESMTP id S232366AbjJaRCx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:02:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6220FC
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:46:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14721C433C7;
-        Tue, 31 Oct 2023 17:46:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEC951BC9
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:02:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B99C433C7;
+        Tue, 31 Oct 2023 17:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774412;
-        bh=BIOKIGQCPMis/LiKKxIMQMAuehoBF8N8Q1s9mQK67Uw=;
+        s=korg; t=1698771770;
+        bh=DdDSAXuOvGFFvNvvCDfKAcys2iXO4oA/fE5sxyxWdEI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q2Bl1XsNDYi7tXt2hq0ifoPT89CQoR1wKLVnd13lensUwYtAS3VG1MChEegf4bQjl
-         jhx0VXqayehsy9wZ98zJlNMSPHO8s4a4lXT2pd1ihtMX/CTot00SrFVYYSzY4CAmgk
-         5ITgdGVJfE9PaHXvnsXPBllLmn/ckcrxOREw/V8M=
+        b=CTioll8Tblqusew7yhNmnNjQP3/J0pFbNL4slLyw6FeN6kzy/A7B1sz3DiglnYhXP
+         b8rzyhdbncZ41x/aHw4HLso4v5/Pa7Q99JlzQx8d7MR9cYK2ENj/zoIFsdtZrelPgv
+         AvicM3PUMeaw75CeTJtZQje/zBGCcfa82XdcaYY0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Bee <knaerzche@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.5 038/112] ARM: dts: rockchip: Fix timer clocks for RK3128
-Date:   Tue, 31 Oct 2023 18:00:39 +0100
-Message-ID: <20231031165902.516888138@linuxfoundation.org>
+        patches@lists.linux.dev, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>
+Subject: [PATCH 6.1 15/86] virtio_pci: fix the common cfg map size
+Date:   Tue, 31 Oct 2023 18:00:40 +0100
+Message-ID: <20231031165919.086294973@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,88 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Bee <knaerzche@gmail.com>
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-commit 2c68d26f072b449bd45427241612cb3f8f997f82 upstream.
+commit 061b39fdfe7fd98946e67637213bcbb10a318cca upstream.
 
-Currently the Rockchip timer source clocks are set to xin24 for no obvious
-reason and the actual timer clocks (SCLK_TIMER*) will get disabled during
-boot process as they have no user. That will make the SoC stuck as no timer
-source exists.
+The function vp_modern_map_capability() takes the size parameter,
+which corresponds to the size of virtio_pci_common_cfg. As a result,
+this indicates the size of memory area to map.
 
-Fixes: a0201bff6259 ("ARM: dts: rockchip: add rk3128 soc dtsi")
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
-Link: https://lore.kernel.org/r/20230829203721.281455-12-knaerzche@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Now the size is the size of virtio_pci_common_cfg, but some feature(such
+as the _F_RING_RESET) needs the virtio_pci_modern_common_cfg, so this
+commit changes the size to the size of virtio_pci_modern_common_cfg.
+
+Cc: stable@vger.kernel.org
+Fixes: 0b50cece0b78 ("virtio_pci: introduce helper to get/set queue reset")
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Message-Id: <20231010031120.81272-3-xuanzhuo@linux.alibaba.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/rockchip/rk3128.dtsi | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/virtio/virtio_pci_modern_dev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/rockchip/rk3128.dtsi b/arch/arm/boot/dts/rockchip/rk3128.dtsi
-index 9125bf22e971..88a4b0d6d928 100644
---- a/arch/arm/boot/dts/rockchip/rk3128.dtsi
-+++ b/arch/arm/boot/dts/rockchip/rk3128.dtsi
-@@ -234,7 +234,7 @@ timer0: timer@20044000 {
- 		compatible = "rockchip,rk3128-timer", "rockchip,rk3288-timer";
- 		reg = <0x20044000 0x20>;
- 		interrupts = <GIC_SPI 28 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&cru PCLK_TIMER>, <&xin24m>;
-+		clocks = <&cru PCLK_TIMER>, <&cru SCLK_TIMER0>;
- 		clock-names = "pclk", "timer";
- 	};
- 
-@@ -242,7 +242,7 @@ timer1: timer@20044020 {
- 		compatible = "rockchip,rk3128-timer", "rockchip,rk3288-timer";
- 		reg = <0x20044020 0x20>;
- 		interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&cru PCLK_TIMER>, <&xin24m>;
-+		clocks = <&cru PCLK_TIMER>, <&cru SCLK_TIMER1>;
- 		clock-names = "pclk", "timer";
- 	};
- 
-@@ -250,7 +250,7 @@ timer2: timer@20044040 {
- 		compatible = "rockchip,rk3128-timer", "rockchip,rk3288-timer";
- 		reg = <0x20044040 0x20>;
- 		interrupts = <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&cru PCLK_TIMER>, <&xin24m>;
-+		clocks = <&cru PCLK_TIMER>, <&cru SCLK_TIMER2>;
- 		clock-names = "pclk", "timer";
- 	};
- 
-@@ -258,7 +258,7 @@ timer3: timer@20044060 {
- 		compatible = "rockchip,rk3128-timer", "rockchip,rk3288-timer";
- 		reg = <0x20044060 0x20>;
- 		interrupts = <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&cru PCLK_TIMER>, <&xin24m>;
-+		clocks = <&cru PCLK_TIMER>, <&cru SCLK_TIMER3>;
- 		clock-names = "pclk", "timer";
- 	};
- 
-@@ -266,7 +266,7 @@ timer4: timer@20044080 {
- 		compatible = "rockchip,rk3128-timer", "rockchip,rk3288-timer";
- 		reg = <0x20044080 0x20>;
- 		interrupts = <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&cru PCLK_TIMER>, <&xin24m>;
-+		clocks = <&cru PCLK_TIMER>, <&cru SCLK_TIMER4>;
- 		clock-names = "pclk", "timer";
- 	};
- 
-@@ -274,7 +274,7 @@ timer5: timer@200440a0 {
- 		compatible = "rockchip,rk3128-timer", "rockchip,rk3288-timer";
- 		reg = <0x200440a0 0x20>;
- 		interrupts = <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>;
--		clocks = <&cru PCLK_TIMER>, <&xin24m>;
-+		clocks = <&cru PCLK_TIMER>, <&cru SCLK_TIMER5>;
- 		clock-names = "pclk", "timer";
- 	};
- 
--- 
-2.42.0
-
+--- a/drivers/virtio/virtio_pci_modern_dev.c
++++ b/drivers/virtio/virtio_pci_modern_dev.c
+@@ -282,7 +282,7 @@ int vp_modern_probe(struct virtio_pci_mo
+ 	err = -EINVAL;
+ 	mdev->common = vp_modern_map_capability(mdev, common,
+ 				      sizeof(struct virtio_pci_common_cfg), 4,
+-				      0, sizeof(struct virtio_pci_common_cfg),
++				      0, sizeof(struct virtio_pci_modern_common_cfg),
+ 				      NULL, NULL);
+ 	if (!mdev->common)
+ 		goto err_map_common;
 
 
