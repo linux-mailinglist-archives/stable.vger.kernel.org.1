@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABCFF7DD437
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:08:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B9E37DD55A
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235818AbjJaRHj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:07:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34470 "EHLO
+        id S1376495AbjJaRtp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:49:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236600AbjJaRHX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:23 -0400
+        with ESMTP id S1376544AbjJaRtn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82598DF
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C566FC433C9;
-        Tue, 31 Oct 2023 17:06:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA14BF5
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045C9C433C8;
+        Tue, 31 Oct 2023 17:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771996;
-        bh=DNMHHOvFHOWXJSBvYaweh8aRuLPnjNOivcGOM5LtpKE=;
+        s=korg; t=1698774580;
+        bh=/TvA3OcSogIL/3XE8I/UqCjZ0AsHE1mF8FP/jLrkvuE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QhXoJ82rTsFewQWev2VbVUAjNkKSaxyazYmQRGem86VKBAyDbdJNFXcA86C4GGcvC
-         KwHG5ryTDHnWbLRGFLUpulWVKXa8j6WQZhQPZuVH/SHkocWUnzuQu9uEuVj36qOfBq
-         lUVptDaV5cCJQNO3wrhaE3gIOhgJwIH/JupGJxhw=
+        b=ethpzAuNusjIbTpzgKrmW5AUODRhEhhlm6KmWRn+XExE1+5NrNdoKSwH0m9nPj7/b
+         au7WOU8LjdVYr2sEcuvNsK/OHuhh8v9mefqkLI9rcrrxFEifRjoYw+xADprQaExNxz
+         DJWk8MTJ4j1vJHww25WMQtb/U90VJ+bDw4xald9E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jian Zhang <zhangjian.3032@bytedance.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Andrew Jeffery <andrew@codeconstruct.com.au>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.1 68/86] i2c: aspeed: Fix i2c bus hang in slave read
-Date:   Tue, 31 Oct 2023 18:01:33 +0100
-Message-ID: <20231031165920.671772535@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Francis Laniel <flaniel@linux.microsoft.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Andrii Nakryiko <andrii@kernel.org>, Song Liu <song@kernel.org>
+Subject: [PATCH 6.5 093/112] tracing/kprobes: Fix symbol counting logic by looking at modules as well
+Date:   Tue, 31 Oct 2023 18:01:34 +0100
+Message-ID: <20231031165904.233960529@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +52,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 54f1840ddee9bbdc8dd89fbbfdfa632401244146 upstream.
+commit 926fe783c8a64b33997fec405cf1af3e61aed441 upstream.
 
-When the `CONFIG_I2C_SLAVE` option is enabled and the device operates
-as a slave, a situation arises where the master sends a START signal
-without the accompanying STOP signal. This action results in a
-persistent I2C bus timeout. The core issue stems from the fact that
-the i2c controller remains in a slave read state without a timeout
-mechanism. As a consequence, the bus perpetually experiences timeouts.
+Recent changes to count number of matching symbols when creating
+a kprobe event failed to take into account kernel modules. As such, it
+breaks kprobes on kernel module symbols, by assuming there is no match.
 
-In this case, the i2c bus will be reset, but the slave_state reset is
-missing.
+Fix this my calling module_kallsyms_on_each_symbol() in addition to
+kallsyms_on_each_match_symbol() to perform a proper counting.
 
-Fixes: fee465150b45 ("i2c: aspeed: Reset the i2c controller when timeout occurs")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Acked-by: Andi Shyti <andi.shyti@kernel.org>
-Tested-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
+
+Cc: Francis Laniel <flaniel@linux.microsoft.com>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Song Liu <song@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-aspeed.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/trace_kprobe.c |   24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
---- a/drivers/i2c/busses/i2c-aspeed.c
-+++ b/drivers/i2c/busses/i2c-aspeed.c
-@@ -749,6 +749,8 @@ static void __aspeed_i2c_reg_slave(struc
- 	func_ctrl_reg_val = readl(bus->base + ASPEED_I2C_FUN_CTRL_REG);
- 	func_ctrl_reg_val |= ASPEED_I2CD_SLAVE_EN;
- 	writel(func_ctrl_reg_val, bus->base + ASPEED_I2C_FUN_CTRL_REG);
-+
-+	bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -714,14 +714,30 @@ static int count_symbols(void *data, uns
+ 	return 0;
  }
  
- static int aspeed_i2c_reg_slave(struct i2c_client *client)
-@@ -765,7 +767,6 @@ static int aspeed_i2c_reg_slave(struct i
- 	__aspeed_i2c_reg_slave(bus, client->addr);
++struct sym_count_ctx {
++	unsigned int count;
++	const char *name;
++};
++
++static int count_mod_symbols(void *data, const char *name, unsigned long unused)
++{
++	struct sym_count_ctx *ctx = data;
++
++	if (strcmp(name, ctx->name) == 0)
++		ctx->count++;
++
++	return 0;
++}
++
+ static unsigned int number_of_same_symbols(char *func_name)
+ {
+-	unsigned int count;
++	struct sym_count_ctx ctx = { .count = 0, .name = func_name };
++
++	kallsyms_on_each_match_symbol(count_symbols, func_name, &ctx.count);
  
- 	bus->slave = client;
--	bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
- 	spin_unlock_irqrestore(&bus->lock, flags);
+-	count = 0;
+-	kallsyms_on_each_match_symbol(count_symbols, func_name, &count);
++	module_kallsyms_on_each_symbol(NULL, count_mod_symbols, &ctx);
  
- 	return 0;
+-	return count;
++	return ctx.count;
+ }
+ 
+ static int __trace_kprobe_create(int argc, const char *argv[])
 
 
