@@ -2,42 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28DFF7DC945
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:18:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D3937DC94C
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:20:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343740AbjJaJS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 05:18:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38002 "EHLO
+        id S1343827AbjJaJUe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 05:20:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343827AbjJaJS4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:18:56 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39A18B7
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:18:54 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qxktf-0002kf-K2; Tue, 31 Oct 2023 10:18:51 +0100
-Message-ID: <5ecf0eac-a089-4da9-b76e-b45272c98393@leemhuis.info>
-Date:   Tue, 31 Oct 2023 10:18:50 +0100
+        with ESMTP id S1343829AbjJaJUd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:20:33 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20049C1
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:20:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C498C433C7;
+        Tue, 31 Oct 2023 09:20:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698744030;
+        bh=Q32Np/6iFGHtqVSVy0gTnmZzfxnsUTtrIV4GPte/htU=;
+        h=Date:From:To:Subject:References:In-Reply-To:From;
+        b=Y9MsBek+pWbg8VLY8K1VsNSZiq2aZjS7zCLkH/UUaeEp7l6zSdj2a1fIYOOgjUqct
+         8dDkTPz0QcacXMUMWXJ9NCHwSwrOOmx/NxQ3+E/0NG0M7c4Nf8HU0hLEG74msdniPf
+         xflT/YofJcH4BLlfUhezwQVTpcN8PJklLNM2K1Phyc2eNepEumSL+34pdeUcyPtg4u
+         kfQEDYnTVjlfWVg+aJGLPANS+6suBt01752Hj3xvtyrjp5bQB3++eGDzQNUoarRklY
+         y4e2plK6IJ9AGhuL51ANPWo4rKiqVHM6iX4H7W8isSn9fiovgPp8YNchouz0xCvy3N
+         weIqoj23R5MaA==
+Date:   Tue, 31 Oct 2023 09:20:26 +0000
+From:   Lee Jones <lee@kernel.org>
+To:     stable@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH v5.15.y 1/6] driver: platform: Add helper for safer
+ setting of driver_override
+Message-ID: <20231031092026.GS8909@google.com>
+References: <20231031091521.2223075-1-lee@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION]: nouveau: Asynchronous wait on fence
-Content-Language: en-US, de-DE
-To:     "Owen T. Heisler" <writer@owenh.net>, stable@vger.kernel.org
-Cc:     regressions@lists.linux.dev, nouveau@lists.freedesktop.org,
-        Karol Herbst <kherbst@redhat.com>,
-        Lyude Paul <lyude@redhat.com>, Ben Skeggs <bskeggs@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-References: <6f027566-c841-4415-bc85-ce11a5832b14@owenh.net>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <6f027566-c841-4415-bc85-ce11a5832b14@owenh.net>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1698743934;16ef03af;
-X-HE-SMSGID: 1qxktf-0002kf-K2
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+In-Reply-To: <20231031091521.2223075-1-lee@kernel.org>
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -46,41 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 28.10.23 04:46, Owen T. Heisler wrote:
-> #regzbot introduced: d386a4b54607cf6f76e23815c2c9a3abc1d66882
-> #regzbot link: https://gitlab.freedesktop.org/drm/nouveau/-/issues/180
+[Intentional top-post for attention]
+
+This is for linux-5.15.y.  Apologies for missing the [PATCH 5.15.y]
+
+On Tue, 31 Oct 2023, Lee Jones wrote:
+
+> From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > 
-> ## Problem
+> commit 6c2f421174273de8f83cde4286d1c076d43a2d35 upstream.
 > 
-> 1. Connect external display to DVI port on dock and run X with both
->    displays in use.
-> 2. Wait hours or days.
-> 3. Suddenly the secondary Nvidia-connected display turns off and X stops
->    responding to keyboard/mouse input. In *some* cases it is possible to
->    switch to a virtual TTY with Ctrl+Alt+Fn and log in there. In any
->    case, shutdown/reboot after this happens is *usually* not successful
->    (forced power-off is required).
+> Several core drivers and buses expect that driver_override is a
+> dynamically allocated memory thus later they can kfree() it.
 > 
-> This started happening after the upgrade to Debian bullseye, and the
-> problem remains with Debian bookworm.
-> [...] 
+> However such assumption is not documented, there were in the past and
+> there are already users setting it to a string literal. This leads to
+> kfree() of static memory during device release (e.g. in error paths or
+> during unbind):
+> 
+>     kernel BUG at ../mm/slub.c:3960!
+>     Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM
+>     ...
+>     (kfree) from [<c058da50>] (platform_device_release+0x88/0xb4)
+>     (platform_device_release) from [<c0585be0>] (device_release+0x2c/0x90)
+>     (device_release) from [<c0a69050>] (kobject_put+0xec/0x20c)
+>     (kobject_put) from [<c0f2f120>] (exynos5_clk_probe+0x154/0x18c)
+>     (exynos5_clk_probe) from [<c058de70>] (platform_drv_probe+0x6c/0xa4)
+>     (platform_drv_probe) from [<c058b7ac>] (really_probe+0x280/0x414)
+>     (really_probe) from [<c058baf4>] (driver_probe_device+0x78/0x1c4)
+>     (driver_probe_device) from [<c0589854>] (bus_for_each_drv+0x74/0xb8)
+>     (bus_for_each_drv) from [<c058b48c>] (__device_attach+0xd4/0x16c)
+>     (__device_attach) from [<c058a638>] (bus_probe_device+0x88/0x90)
+>     (bus_probe_device) from [<c05871fc>] (device_add+0x3dc/0x62c)
+>     (device_add) from [<c075ff10>] (of_platform_device_create_pdata+0x94/0xbc)
+>     (of_platform_device_create_pdata) from [<c07600ec>] (of_platform_bus_create+0x1a8/0x4fc)
+>     (of_platform_bus_create) from [<c0760150>] (of_platform_bus_create+0x20c/0x4fc)
+>     (of_platform_bus_create) from [<c07605f0>] (of_platform_populate+0x84/0x118)
+>     (of_platform_populate) from [<c0f3c964>] (of_platform_default_populate_init+0xa0/0xb8)
+>     (of_platform_default_populate_init) from [<c01031f8>] (do_one_initcall+0x8c/0x404)
+> 
+> Provide a helper which clearly documents the usage of driver_override.
+> This will allow later to reuse the helper and reduce the amount of
+> duplicated code.
+> 
+> Convert the platform driver to use a new helper and make the
+> driver_override field const char (it is not modified by the core).
+> 
+> Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Link: https://lore.kernel.org/r/20220419113435.246203-2-krzysztof.kozlowski@linaro.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Lee Jones <lee@kernel.org>
+> Change-Id: I131f04170f2f76d468565b27929e0ee6fd0e7adf
+> ---
+>  drivers/base/driver.c           | 69 +++++++++++++++++++++++++++++++++
+>  drivers/base/platform.c         | 28 ++-----------
+>  include/linux/device/driver.h   |  2 +
+>  include/linux/platform_device.h |  6 ++-
+>  4 files changed, 80 insertions(+), 25 deletions(-)
 
-Thanks for your report. With a bit of luck someone will look into this,
-But I doubt it, as this report has some aspects why it might be ignored.
-Mainly: (a) the report was about a stable/longterm kernel and (b)it's
-afaics unclear if the problem even happens with the latest mainline
-kernel. For details about these aspects, see:
-https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-kernel-bug-reports-are-ignored/
+[...]
 
-You thus might want to check if the problem occurs with 6.6 -- and
-ideally also check if reverting the culprit there fixes things for you.
-
-That might help getting things rolling, but it's a pretty old
-regression, which complicates things.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
+-- 
+Lee Jones [李琼斯]
