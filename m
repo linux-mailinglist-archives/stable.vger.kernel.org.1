@@ -2,34 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 667957DD4BF
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:35:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27F207DD4C0
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:35:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345044AbjJaRfN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:35:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52214 "EHLO
+        id S1345489AbjJaRfh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345476AbjJaRfM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:35:12 -0400
-Received: from relmlie5.idc.renesas.com (relmlor1.renesas.com [210.160.252.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6CFB391;
-        Tue, 31 Oct 2023 10:35:08 -0700 (PDT)
+        with ESMTP id S1344406AbjJaRff (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:35:35 -0400
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 734B38F;
+        Tue, 31 Oct 2023 10:35:31 -0700 (PDT)
 X-IronPort-AV: E=Sophos;i="6.03,265,1694703600"; 
-   d="scan'208";a="181313288"
+   d="scan'208";a="185131270"
 Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie5.idc.renesas.com with ESMTP; 01 Nov 2023 02:35:07 +0900
+  by relmlie6.idc.renesas.com with ESMTP; 01 Nov 2023 02:35:30 +0900
 Received: from GBR-5CG2373LKG.adwin.renesas.com (unknown [10.226.92.68])
-        by relmlir5.idc.renesas.com (Postfix) with ESMTP id E935E400D4C1;
-        Wed,  1 Nov 2023 02:35:04 +0900 (JST)
+        by relmlir5.idc.renesas.com (Postfix) with ESMTP id AC6E3400D0D4;
+        Wed,  1 Nov 2023 02:35:27 +0900 (JST)
 From:   Paul Barker <paul.barker.ct@bp.renesas.com>
+To:     stable@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@arndb.de>, Luis Machado <luis.machado@arm.com>,
         linux-ide@vger.kernel.org,
         Damien Le Moal <damien.lemoal@opensource.wdc.com>,
-        stable@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
         Paul Barker <paul.barker.ct@bp.renesas.com>
-Subject: [PATCH 4.19] ata: ahci: fix enum constants for gcc-13
-Date:   Tue, 31 Oct 2023 17:35:01 +0000
-Message-Id: <20231031173501.28992-1-paul.barker.ct@bp.renesas.com>
+Subject: [PATCH 5.4] ata: ahci: fix enum constants for gcc-13
+Date:   Tue, 31 Oct 2023 17:35:24 +0000
+Message-Id: <20231031173524.29161-1-paul.barker.ct@bp.renesas.com>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -39,7 +40,6 @@ X-Spam-Status: No, score=1.1 required=5.0 tests=AC_FROM_MANY_DOTS,BAYES_00,
 X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
@@ -80,17 +80,17 @@ Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Tested-by: Luis Machado <luis.machado@arm.com>
 Signed-off-by: Damien Le Moal <damien.lemoal@opensource.wdc.com>
 
-[Backport to linux-4.19.y]
+[Backport to linux-5.4.y]
 Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
 ---
- drivers/ata/ahci.h | 232 +++++++++++++++++++++++----------------------
- 1 file changed, 117 insertions(+), 115 deletions(-)
+ drivers/ata/ahci.h | 245 +++++++++++++++++++++++----------------------
+ 1 file changed, 123 insertions(+), 122 deletions(-)
 
 diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index d5b9f9689877..8cc6cb14767b 100644
+index 0d7631580150..36dac58b5c41 100644
 --- a/drivers/ata/ahci.h
 +++ b/drivers/ata/ahci.h
-@@ -40,6 +40,7 @@
+@@ -24,6 +24,7 @@
  #include <linux/libata.h>
  #include <linux/phy/phy.h>
  #include <linux/regulator/consumer.h>
@@ -98,7 +98,7 @@ index d5b9f9689877..8cc6cb14767b 100644
  
  /* Enclosure Management Control */
  #define EM_CTRL_MSG_TYPE              0x000f0000
-@@ -70,12 +71,12 @@ enum {
+@@ -54,12 +55,12 @@ enum {
  	AHCI_PORT_PRIV_FBS_DMA_SZ	= AHCI_CMD_SLOT_SZ +
  					  AHCI_CMD_TBL_AR_SZ +
  					  (AHCI_RX_FIS_SZ * 16),
@@ -117,7 +117,7 @@ index d5b9f9689877..8cc6cb14767b 100644
  
  	RX_FIS_PIO_SETUP	= 0x20,	/* offset of PIO Setup FIS data */
  	RX_FIS_D2H_REG		= 0x40,	/* offset of D2H Register FIS data */
-@@ -93,37 +94,37 @@ enum {
+@@ -77,37 +78,37 @@ enum {
  	HOST_CAP2		= 0x24, /* host capabilities, extended */
  
  	/* HOST_CTL bits */
@@ -182,7 +182,7 @@ index d5b9f9689877..8cc6cb14767b 100644
  
  	/* registers for each SATA port */
  	PORT_LST_ADDR		= 0x00, /* command list DMA addr */
-@@ -145,24 +146,25 @@ enum {
+@@ -129,24 +130,24 @@ enum {
  	PORT_DEVSLP		= 0x44, /* device sleep */
  
  	/* PORT_IRQ_{STAT,MASK} bits */
@@ -215,7 +215,6 @@ index d5b9f9689877..8cc6cb14767b 100644
 +
 +	PORT_IRQ_PHYRDY		= BIT(22), /* PhyRdy changed */
 +	PORT_IRQ_DEV_ILCK	= BIT(7),  /* device interlock */
-+	PORT_IRQ_DMPS		= BIT(7),  /* mechanical presence status */
 +	PORT_IRQ_CONNECT	= BIT(6),  /* port connect change status */
 +	PORT_IRQ_SG_DONE	= BIT(5),  /* descriptor processed */
 +	PORT_IRQ_UNK_FIS	= BIT(4),  /* unknown FIS rx'd */
@@ -226,7 +225,7 @@ index d5b9f9689877..8cc6cb14767b 100644
  
  	PORT_IRQ_FREEZE		= PORT_IRQ_HBUS_ERR |
  				  PORT_IRQ_IF_ERR |
-@@ -178,34 +180,34 @@ enum {
+@@ -162,34 +163,34 @@ enum {
  				  PORT_IRQ_PIOS_FIS | PORT_IRQ_D2H_REG_FIS,
  
  	/* PORT_CMD bits */
@@ -283,7 +282,7 @@ index d5b9f9689877..8cc6cb14767b 100644
  
  	/* PORT_DEVSLP bits */
  	PORT_DEVSLP_DM_OFFSET	= 25,             /* DITO multiplier offset */
-@@ -213,45 +215,45 @@ enum {
+@@ -197,52 +198,52 @@ enum {
  	PORT_DEVSLP_DITO_OFFSET	= 15,             /* DITO offset */
  	PORT_DEVSLP_MDAT_OFFSET	= 10,             /* Minimum assertion time */
  	PORT_DEVSLP_DETO_OFFSET	= 2,              /* DevSlp exit timeout */
@@ -349,15 +348,29 @@ index d5b9f9689877..8cc6cb14767b 100644
 -	AHCI_HFLAG_NO_WRITE_TO_RO	= (1 << 24), /* don't write to read
 -							only registers */
 -	AHCI_HFLAG_IS_MOBILE		= (1 << 25), /* mobile chipset, use
+-							SATA_MOBILE_LPM_POLICY
+-							as default lpm_policy */
+-	AHCI_HFLAG_SUSPEND_PHYS		= (1 << 26), /* handle PHYs during
+-							suspend/resume */
+-	AHCI_HFLAG_IGN_NOTSUPP_POWER_ON	= (1 << 27), /* ignore -EOPNOTSUPP
+-							from phy_power_on() */
+-	AHCI_HFLAG_NO_SXS		= (1 << 28), /* SXS not supported */
 +	AHCI_HFLAG_WAKE_BEFORE_STOP	= BIT(22), /* wake before DMA stop */
 +	AHCI_HFLAG_YES_ALPM		= BIT(23), /* force ALPM cap on */
 +	AHCI_HFLAG_NO_WRITE_TO_RO	= BIT(24), /* don't write to read
 +						      only registers */
-+	AHCI_HFLAG_IS_MOBILE		= BIT(25), /* mobile chipset, use
- 							SATA_MOBILE_LPM_POLICY
- 							as default lpm_policy */
++	AHCI_HFLAG_IS_MOBILE            = BIT(25), /* mobile chipset, use
++						      SATA_MOBILE_LPM_POLICY
++						      as default lpm_policy */
++	AHCI_HFLAG_SUSPEND_PHYS		= BIT(26), /* handle PHYs during
++						      suspend/resume */
++	AHCI_HFLAG_IGN_NOTSUPP_POWER_ON	= BIT(27), /* ignore -EOPNOTSUPP
++						      from phy_power_on() */
++	AHCI_HFLAG_NO_SXS		= BIT(28), /* SXS not supported */
  
-@@ -269,22 +271,22 @@ enum {
+ 	/* ap->flags bits */
+ 
+@@ -258,22 +259,22 @@ enum {
  	EM_MAX_RETRY			= 5,
  
  	/* em_ctl bits */
