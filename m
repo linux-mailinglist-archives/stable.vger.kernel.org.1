@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AA037DD514
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F547DD3C7
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:03:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376371AbjJaRrC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:47:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59292 "EHLO
+        id S232606AbjJaRDA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:03:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376394AbjJaRrA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:00 -0400
+        with ESMTP id S232519AbjJaRC7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:02:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A02D192
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:46:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E562FC433C8;
-        Tue, 31 Oct 2023 17:46:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E0A110
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:02:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 564D4C433C9;
+        Tue, 31 Oct 2023 17:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774418;
-        bh=OY6dltYYOQWATzViVI5jzZHOYdxxFcY9PqyEtQmpX7Y=;
+        s=korg; t=1698771776;
+        bh=u/DVd2WC9piEJeBOWao07KYzQV/zX+1uDfBUvZHq3iY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XptvboDmELFQN7+nS2l1Q2Ppu/8qI8N1zCS9uRr2Z16MV5BkKfgODMErSZfVs3uuF
-         8l8/Y7jcPc4KWjPYYlKl5tE6lf9mCW9cdiIloOA4DOa7YV2ji3iRAwDk/XSu2ppFkM
-         kcnTX7NiL+Hc61ZEjUEeLmmVZB1ZzlAw5+yyxAZU=
+        b=c6jUl+Um/1Vv0TTWl8phPr+QKP3EdHuZnl17Copw3dJgLx4vUe1DpvsRAiax/btye
+         PO+401doTTus0QYCnwTtaPm3LkKmszX3+yNCgizwa7wouwYY0rkTbdtHak616cIUJc
+         E51dzBF6vWP0Z91U92Xqq31DTW8wXd+dJwDUL4As=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Andi Shyti <andi.shyti@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.5 040/112] drm/i915/pmu: Check if pmu is closed before stopping event
-Date:   Tue, 31 Oct 2023 18:00:41 +0100
-Message-ID: <20231031165902.571074261@linuxfoundation.org>
+        patches@lists.linux.dev, Eric Auger <eric.auger@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>
+Subject: [PATCH 6.1 17/86] vhost: Allow null msg.size on VHOST_IOTLB_INVALIDATE
+Date:   Tue, 31 Oct 2023 18:00:42 +0100
+Message-ID: <20231031165919.148117473@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,63 +50,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+From: Eric Auger <eric.auger@redhat.com>
 
-commit 4cbed7702eb775cca22fff6827a549092cb59f61 upstream.
+commit ca50ec377c2e94b0a9f8735de2856cd0f13beab4 upstream.
 
-When the driver unbinds, pmu is unregistered and i915->uabi_engines is
-set to RB_ROOT. Due to this, when i915 PMU tries to stop the engine
-events, it issues a warn_on because engine lookup fails.
+Commit e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb
+entries") Forbade vhost iotlb msg with null size to prevent entries
+with size = start = 0 and last = ULONG_MAX to end up in the iotlb.
 
-All perf hooks are taking care of this using a pmu->closed flag that is
-set when PMU unregisters. The stop event seems to have been left out.
+Then commit 95932ab2ea07 ("vhost: allow batching hint without size")
+only applied the check for VHOST_IOTLB_UPDATE and VHOST_IOTLB_INVALIDATE
+message types to fix a regression observed with batching hit.
 
-Check for pmu->closed in pmu_event_stop as well.
+Still, the introduction of that check introduced a regression for
+some users attempting to invalidate the whole ULONG_MAX range by
+setting the size to 0. This is the case with qemu/smmuv3/vhost
+integration which does not work anymore. It Looks safe to partially
+revert the original commit and allow VHOST_IOTLB_INVALIDATE messages
+with null size. vhost_iotlb_del_range() will compute a correct end
+iova. Same for vhost_vdpa_iotlb_unmap().
 
-Based on discussion here -
-https://patchwork.freedesktop.org/patch/492079/?series=105790&rev=2
-
-v2: s/is/if/ in commit title
-v3: Add fixes tag and cc stable
-
-Cc: <stable@vger.kernel.org> # v5.11+
-Fixes: b00bccb3f0bb ("drm/i915/pmu: Handle PCI unbind")
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231020152441.3764850-1-umesh.nerlige.ramappa@intel.com
-(cherry picked from commit 31f6a06f0c543b43a38fab10f39e5fc45ad62aa2)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Eric Auger <eric.auger@redhat.com>
+Fixes: e2ae38cf3d91 ("vhost: fix hung thread due to erroneous iotlb entries")
+Cc: stable@vger.kernel.org # v5.17+
+Acked-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20230927140544.205088-1-eric.auger@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/i915_pmu.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/vhost/vhost.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/i915_pmu.c
-+++ b/drivers/gpu/drm/i915/i915_pmu.c
-@@ -832,9 +832,18 @@ static void i915_pmu_event_start(struct
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -1176,9 +1176,7 @@ ssize_t vhost_chr_write_iter(struct vhos
+ 		goto done;
+ 	}
  
- static void i915_pmu_event_stop(struct perf_event *event, int flags)
- {
-+	struct drm_i915_private *i915 =
-+		container_of(event->pmu, typeof(*i915), pmu.base);
-+	struct i915_pmu *pmu = &i915->pmu;
-+
-+	if (pmu->closed)
-+		goto out;
-+
- 	if (flags & PERF_EF_UPDATE)
- 		i915_pmu_event_read(event);
- 	i915_pmu_disable(event);
-+
-+out:
- 	event->hw.state = PERF_HES_STOPPED;
- }
- 
+-	if ((msg.type == VHOST_IOTLB_UPDATE ||
+-	     msg.type == VHOST_IOTLB_INVALIDATE) &&
+-	     msg.size == 0) {
++	if (msg.type == VHOST_IOTLB_UPDATE && msg.size == 0) {
+ 		ret = -EINVAL;
+ 		goto done;
+ 	}
 
 
