@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E25E7DD529
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A7AD7DD411
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376439AbjJaRrt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:47:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46036 "EHLO
+        id S235832AbjJaRG4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39318 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376459AbjJaRrr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:47 -0400
+        with ESMTP id S236348AbjJaRGk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:40 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F08E121
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60DB5C433C9;
-        Tue, 31 Oct 2023 17:47:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6159C1BE1
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE8FC433C8;
+        Tue, 31 Oct 2023 17:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774459;
-        bh=NJFVWUEEvBZcX1pFuqJEPAANT6eOLbO4qBYCcONdSro=;
+        s=korg; t=1698771908;
+        bh=NVrVS5kJIrmlifMHU57Si9ThRtnK+/GVYf4FeI/n67Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q1xo5FXb6yLqtZBiuKFt4bdlg2ZQe9nJRT6yga4RAYtbNj0ixAH5OwmufQrGZuZJv
-         0I3/Dfw5nhA5doaGuSLpIvE1hGU6H6kTBtV8c2Pilq8VEubXmRmi/xzOSI4+KBUAg1
-         c9xEBdkfuG5852oBuJ4rMbAEXz2fxBwgWj9dwYUs=
+        b=rH6GXIutUkCZRuxvM6U4P/JstLzmlLmlPigVVjfVM3TOFyyQNJA9jFSWv645VIYa5
+         46pdaUK1b398gnF22xpNUoaBTlE44nU1eOrsinBCAp0QZlrOd+VlLJK3lhWxAVHsIf
+         Yo6bi66xlXNpqMyGUZnCyI0ItXPhNEVbdsz0jbmE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 052/112] iavf: initialize waitqueues before starting watchdog_task
-Date:   Tue, 31 Oct 2023 18:00:53 +0100
-Message-ID: <20231031165902.945231992@linuxfoundation.org>
+        patches@lists.linux.dev, Lukasz Majczak <lma@semihalf.com>,
+        Radoslaw Biernacki <rad@chromium.org>,
+        Manasi Navare <navaremanasi@chromium.org>
+Subject: [PATCH 6.1 29/86] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+Date:   Tue, 31 Oct 2023 18:00:54 +0100
+Message-ID: <20231031165919.516566914@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,59 +50,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Lukasz Majczak <lma@semihalf.com>
 
-[ Upstream commit 7db3111043885c146e795c199d39c3f9042d97c0 ]
+commit 3d887d512494d678b17c57b835c32f4e48d34f26 upstream.
 
-It is not safe to initialize the waitqueues after queueing the
-watchdog_task. It will be using them.
+As drm_dp_get_mst_branch_device_by_guid() is called from
+drm_dp_get_mst_branch_device_by_guid(), mstb parameter has to be checked,
+otherwise NULL dereference may occur in the call to
+the memcpy() and cause following:
 
-The chance of this causing a real problem is very small, because
-there will be some sleeping before any of the waitqueues get used.
-I got a crash only after inserting an artificial sleep in iavf_probe.
+[12579.365869] BUG: kernel NULL pointer dereference, address: 0000000000000049
+[12579.365878] #PF: supervisor read access in kernel mode
+[12579.365880] #PF: error_code(0x0000) - not-present page
+[12579.365882] PGD 0 P4D 0
+[12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
+...
+[12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
+[12579.365899] RIP: 0010:memcmp+0xb/0x29
+[12579.365921] Call Trace:
+[12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
+[12579.365930] drm_dp_mst_up_req_work+0x137/0x416
+[12579.365933] process_one_work+0x1d0/0x419
+[12579.365935] worker_thread+0x11a/0x289
+[12579.365938] kthread+0x13e/0x14f
+[12579.365941] ? process_one_work+0x419/0x419
+[12579.365943] ? kthread_blkcg+0x31/0x31
+[12579.365946] ret_from_fork+0x1f/0x30
 
-Queue the watchdog_task as the last step in iavf_probe. Add a comment to
-prevent repeating the mistake.
+As get_mst_branch_device_by_guid_helper() is recursive, moving condition
+to the first line allow to remove a similar one for step over of NULL elements
+inside a loop.
 
-Fixes: fe2647ab0c99 ("i40evf: prevent VF close returning before state transitions to DOWN")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to only mst branch")
+Cc: <stable@vger.kernel.org> # 4.14+
+Signed-off-by: Lukasz Majczak <lma@semihalf.com>
+Reviewed-by: Radoslaw Biernacki <rad@chromium.org>
+Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230922063410.23626-1-lma@semihalf.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/display/drm_dp_mst_topology.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 8ea5c0825c3c4..14875cd85a8e3 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -4982,8 +4982,6 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	INIT_WORK(&adapter->finish_config, iavf_finish_config);
- 	INIT_DELAYED_WORK(&adapter->watchdog_task, iavf_watchdog_task);
- 	INIT_DELAYED_WORK(&adapter->client_task, iavf_client_task);
--	queue_delayed_work(adapter->wq, &adapter->watchdog_task,
--			   msecs_to_jiffies(5 * (pdev->devfn & 0x07)));
+--- a/drivers/gpu/drm/display/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/display/drm_dp_mst_topology.c
+@@ -2574,14 +2574,14 @@ static struct drm_dp_mst_branch *get_mst
+ 	struct drm_dp_mst_branch *found_mstb;
+ 	struct drm_dp_mst_port *port;
  
- 	/* Setup the wait queue for indicating transition to down status */
- 	init_waitqueue_head(&adapter->down_waitqueue);
-@@ -4994,6 +4992,9 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	/* Setup the wait queue for indicating virtchannel events */
- 	init_waitqueue_head(&adapter->vc_waitqueue);
++	if (!mstb)
++		return NULL;
++
+ 	if (memcmp(mstb->guid, guid, 16) == 0)
+ 		return mstb;
  
-+	queue_delayed_work(adapter->wq, &adapter->watchdog_task,
-+			   msecs_to_jiffies(5 * (pdev->devfn & 0x07)));
-+	/* Initialization goes on in the work. Do not add more of it below. */
- 	return 0;
  
- err_ioremap:
--- 
-2.42.0
-
+ 	list_for_each_entry(port, &mstb->ports, next) {
+-		if (!port->mstb)
+-			continue;
+-
+ 		found_mstb = get_mst_branch_device_by_guid_helper(port->mstb, guid);
+ 
+ 		if (found_mstb)
 
 
