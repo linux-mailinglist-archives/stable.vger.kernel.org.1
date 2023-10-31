@@ -2,36 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01D077DD3C9
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:03:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 401A17DD3E1
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232221AbjJaRDG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:03:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52844 "EHLO
+        id S234895AbjJaRGE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232268AbjJaRDF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:03:05 -0400
+        with ESMTP id S235480AbjJaRFs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:05:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22C07135
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C644C433C7;
-        Tue, 31 Oct 2023 17:03:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48A99199D
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCE6C433C7;
+        Tue, 31 Oct 2023 17:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771782;
-        bh=OOmHEUdcIcmKB7tZAtldCOHDEt2k7iD9wnbU2WDcB94=;
+        s=korg; t=1698771785;
+        bh=uLaa1h3qaVwHW47fye1V818NdRA7WeZIN/Z5YQddxD0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qrt57CozRwbEhUVHx4zDYY2eF0N85eSxQJ9nfpVpFxC4KBstYjLf8pP1qrEBlS0ti
-         L0wgMUhSUrWtlzwgE2RGClaNKXNaczS0SsrndC24Uqa7b/s37Fue/Ehiu+sFRUIf0p
-         8G9hoJU3DSJBtIxwU7MDC2KAFOJdi5JctZbVQtVk=
+        b=PLRwd0fapItSSj4oZcaSjA18zWEo6vqxguCLiunJ02lDDHxq8fHav6nxPeDohD7M4
+         W2EhotulowoQ1MVHxU54pQjwdofdnftS2PA0W9tfQegQClpxaRbCx8/dgndaYZWSAy
+         dEcVyuegl078cgWfbdKxTX5Dk94G9JWmd/dfsY4Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christopher Obbard <chris.obbard@collabora.com>,
-        Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.1 19/86] arm64: dts: rockchip: Fix i2s0 pin conflict on ROCK Pi 4 boards
-Date:   Tue, 31 Oct 2023 18:00:44 +0100
-Message-ID: <20231031165919.212507437@linuxfoundation.org>
+        patches@lists.linux.dev, Sebastian Ott <sebott@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Yu Zhao <yuzhao@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 20/86] mm: fix vm_brk_flags() to not bail out while holding lock
+Date:   Tue, 31 Oct 2023 18:00:45 +0100
+Message-ID: <20231031165919.240148290@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
 References: <20231031165918.608547597@linuxfoundation.org>
@@ -54,55 +56,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christopher Obbard <chris.obbard@collabora.com>
+From: Sebastian Ott <sebott@redhat.com>
 
-commit 8cd79b729e746cb167f1563d015a93fc0a079899 upstream.
+commit e0f81ab1e4f42ffece6440dc78f583eb352b9a71 upstream.
 
-Commit 91419ae0420f ("arm64: dts: rockchip: use BCLK to GPIO switch on
-rk3399") modified i2s0 to switch the corresponding pins off when idle.
-For the ROCK Pi 4 boards, this means that i2s0 has the following pinctrl
-setting:
+Calling vm_brk_flags() with flags set other than VM_EXEC will exit the
+function without releasing the mmap_write_lock.
 
-    pinctrl-names = "bclk_on", "bclk_off";
-    pinctrl-0 = <&i2s0_2ch_bus>;
-    pinctrl-1 = <&i2s0_8ch_bus_bclk_off>;
+Just do the sanity check before the lock is acquired.  This doesn't fix an
+actual issue since no caller sets a flag other than VM_EXEC.
 
-Due to this change, i2s0 fails to probe on my Radxa ROCK 4SE and ROCK Pi
-4B boards:
-
-    rockchip-pinctrl pinctrl: pin gpio3-29 already requested by leds; cannot claim for ff880000.i2s
-    rockchip-pinctrl pinctrl: pin-125 (ff880000.i2s) status -22
-    rockchip-pinctrl pinctrl: could not request pin 125 (gpio3-29) from group i2s0-8ch-bus-bclk-off  on device rockchip-pinctrl
-    rockchip-i2s ff880000.i2s: Error applying setting, reverse things back
-    rockchip-i2s ff880000.i2s: bclk disable failed -22
-
-A pin requested for i2s0_8ch_bus_bclk_off has already been requested by
-user_led2, so whichever driver probes first will have the pin allocated.
-
-The hardware uses 2-channel i2s so fix this error by setting pinctl-1 to
-i2s0_2ch_bus_bclk_off which doesn't contain the pin allocated to user_led2.
-
-I checked the schematics for all Radxa boards based on ROCK Pi 4 and this
-change is compatible with all boards.
-
-Fixes: 91419ae0420f ("arm64: dts: rockchip: use BCLK to GPIO switch on rk3399")
-Signed-off-by: Christopher Obbard <chris.obbard@collabora.com>
-Link: https://lore.kernel.org/r/20231013114737.494410-3-chris.obbard@collabora.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lkml.kernel.org/r/20230929171937.work.697-kees@kernel.org
+Fixes: 2e7ce7d354f2 ("mm/mmap: change do_brk_flags() to expand existing VMA and add do_brk_munmap()")
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ mm/mmap.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-@@ -493,6 +493,7 @@
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -3147,13 +3147,13 @@ int vm_brk_flags(unsigned long addr, uns
+ 	if (!len)
+ 		return 0;
  
- &i2s0 {
- 	pinctrl-0 = <&i2s0_2ch_bus>;
-+	pinctrl-1 = <&i2s0_2ch_bus_bclk_off>;
- 	rockchip,capture-channels = <2>;
- 	rockchip,playback-channels = <2>;
- 	status = "okay";
+-	if (mmap_write_lock_killable(mm))
+-		return -EINTR;
+-
+ 	/* Until we need other flags, refuse anything except VM_EXEC. */
+ 	if ((flags & (~VM_EXEC)) != 0)
+ 		return -EINVAL;
+ 
++	if (mmap_write_lock_killable(mm))
++		return -EINTR;
++
+ 	ret = check_brk_limits(addr, len);
+ 	if (ret)
+ 		goto limits_failed;
 
 
