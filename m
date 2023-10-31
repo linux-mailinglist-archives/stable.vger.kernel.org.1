@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B6E907DCF19
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 15:27:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75B8C7DCF1B
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 15:27:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229889AbjJaOL3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 10:11:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60850 "EHLO
+        id S231779AbjJaOLo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 10:11:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230405AbjJaOL3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 10:11:29 -0400
+        with ESMTP id S231481AbjJaOLo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 10:11:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4DFFF7
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 07:11:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A78EC433C7;
-        Tue, 31 Oct 2023 14:11:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46593E6
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 07:11:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70021C433C8;
+        Tue, 31 Oct 2023 14:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698761486;
-        bh=QvCiKT4HO547FclbUnEEQTepKxvJEDElslDvcOTWQDw=;
+        s=korg; t=1698761501;
+        bh=qH88Mbb+SW0qvCKdGJJEXx1r2kzMD56r2Gn5h4h1Ftk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=LqJACRWYTkfdoEHFfgSYI478ndwXe/rA0ZiQ59Xw3TsbbwxZEhJfqCr482pucXT7Q
-         7qdkxFA46JVvUzCsTraeAiVFXwbuFAweczOjqGkWI6lgBaoR5KuFnWMJ84eAOshqtI
-         Jbl0L6bV2wa/DzAusaS7jJDQkMWBa6XGmGEoVJTI=
-Date:   Tue, 31 Oct 2023 15:11:23 +0100
+        b=nPKL6JDCvOC707jaBFWCGSrp6XdGFajCf7VpGfVHtmEw39eTN4XOKjvJIOpaHQXAa
+         qkM2Sq4cTUcyBXx6n/5XGwcyyxjpgYpVHgTteCO5tqlVDc6FGsXnEg6aMNXjt3kHfx
+         FqbiydJE8nAZFozU+qYRl64AmilnNA2QFVvkQoAA=
+Date:   Tue, 31 Oct 2023 15:11:38 +0100
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH 5.15 2/2] drm/amd: Disable ASPM for VI w/ all Intel
- systems
-Message-ID: <2023103103-embellish-tilt-8e64@gregkh>
-References: <20231027083958.38445-1-mario.limonciello@amd.com>
- <20231027083958.38445-2-mario.limonciello@amd.com>
- <2023103136-shanty-fancy-f3fa@gregkh>
- <d8bbb3b4-25a3-418f-9ebf-545d1d826265@amd.com>
+To:     Baokun Li <libaokun1@huawei.com>
+Cc:     stable@vger.kernel.org, sashal@kernel.org, tytso@mit.edu,
+        jack@suse.cz, ritesh.list@gmail.com, patches@lists.linux.dev,
+        yangerkun@huawei.com
+Subject: Re: [PATCH 5.15 1/3] ext4: add two helper functions
+ extent_logical_end() and pa_logical_end()
+Message-ID: <2023103129-variably-surfboard-d608@gregkh>
+References: <20231028064749.833278-1-libaokun1@huawei.com>
+ <2023103126-careless-frequency-07c1@gregkh>
+ <e8b4cdee-55ad-647f-e209-db0c8ed07c3f@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d8bbb3b4-25a3-418f-9ebf-545d1d826265@amd.com>
+In-Reply-To: <e8b4cdee-55ad-647f-e209-db0c8ed07c3f@huawei.com>
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -48,50 +49,17 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 31, 2023 at 08:42:37AM -0500, Mario Limonciello wrote:
-> On 10/31/2023 06:51, Greg KH wrote:
-> > On Fri, Oct 27, 2023 at 03:39:58AM -0500, Mario Limonciello wrote:
-> > > Originally we were quirking ASPM disabled specifically for VI when
-> > > used with Alder Lake, but it appears to have problems with Rocket
-> > > Lake as well.
-> > > 
-> > > Like we've done in the case of dpm for newer platforms, disable
-> > > ASPM for all Intel systems.
-> > > 
-> > > Cc: stable@vger.kernel.org # 5.15+
-> > > Fixes: 0064b0ce85bb ("drm/amd/pm: enable ASPM by default")
-> > > Reported-and-tested-by: Paolo Gentili <paolo.gentili@canonical.com>
-> > > Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2036742
-> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-> > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > > (cherry-picked from 64ffd2f1d00c6235dabe9704bbb0d9ce3e28147f)
-> > > Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> > > ---
-> > >   drivers/gpu/drm/amd/amdgpu/vi.c | 2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > Again, what about 6.1.y?
-> 
-> 6.1 & 6.5 queue has it already:
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.1/drm-amd-disable-aspm-for-vi-w-all-intel-systems.patch
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.5/drm-amd-disable-aspm-for-vi-w-all-intel-systems.patch
-> 
-> > 
-> > And why aren't you cc:ing all of the original developers on this patch?
-> 
-> I was just looking to make less noise as they'll get it when it's added to
-> the queue.  If it should be part of the submission to @stable as well I'll
-> make a point to do that in the future.
-> 
-> > 
-> > I'll drop this series and wait for ones for all relevant trees.
-> 
-> Considering my above comment can you please restore?
+On Tue, Oct 31, 2023 at 09:17:23PM +0800, Baokun Li wrote:
+> On 2023/10/31 20:51, Greg KH wrote:
+> > On Sat, Oct 28, 2023 at 02:47:47PM +0800, Baokun Li wrote:
+> > > commit 43bbddc067883d94de7a43d5756a295439fbe37d upstream.
+> > Why just 5.15 and older?  What about 6.1.y?  We can't take patches only
+> > for older stable kernels, otherwise you will have a regression when you
+> > upgrade.  Please send a series for 6.1.y if you wish to have us apply
+> > these for older kernels.
+> Since this series of patches for 5.15 also applies to 6.1.y, sorry for not
+> clarifying this.
 
-No, I need a new patch 1/2 please, please resend both of these, they are
-long gone from my queue.
-
-thanks,
+Ok, thanks, now queued up.
 
 greg k-h
