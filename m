@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0C87DD527
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B47A7DD533
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376437AbjJaRrp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:47:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57676 "EHLO
+        id S1376462AbjJaRsQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:48:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376431AbjJaRrp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:45 -0400
+        with ESMTP id S1376456AbjJaRsP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54822126
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8C2C433C7;
-        Tue, 31 Oct 2023 17:47:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C21EEC9
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D09C433C7;
+        Tue, 31 Oct 2023 17:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774456;
-        bh=DTjLQvotgE+3qPLo6Flb0QLwbyCkz1cXmtqF/dziDgQ=;
+        s=korg; t=1698774480;
+        bh=9znv38mbVSfWtGZLYGZsEbRu38RP1d8hctw0gIQJzVs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aai8Uo/L4fpUxAi66tXJEbeawEIbWaNkg1COcOZYaUVfZhh8/2wamB8/o0nnHa5eR
-         FDFqJW2nowLJgYEGSmVTiefVKyXAXlmrZIi2c7nChFGB7MzqHub8iDyvoTVlI7eqzj
-         XK5SkdAwmqeToDLCBbSOxLHcxMJyoXogRErFdQNg=
+        b=FDpimOBDPQreasgolJwzv1AaAOpL9xulEFhX7n36UtWJOZx90TMAEJq1JclBg8zXe
+         VY7TuQVbjxi612msecDDxlHQ1zWpatL9j+VT2grEKo2zUpgOI7tRA1e1G+mUGUQxmQ
+         U1nGkfDNFgSp4aRzPpkJGN6h96PZ2ijrYluE5ggU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
-        Naoya Horiguchi <naoya.horiguchi@nec.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Oscar Salvador <osalvador@suse.de>,
+        patches@lists.linux.dev,
+        Gregory Price <gregory.price@memverge.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 025/112] mm/page_alloc: correct start page when guard page debug is enabled
-Date:   Tue, 31 Oct 2023 18:00:26 +0100
-Message-ID: <20231031165902.103135069@linuxfoundation.org>
+Subject: [PATCH 6.5 026/112] mm/migrate: fix do_pages_move for compat pointers
+Date:   Tue, 31 Oct 2023 18:00:27 +0100
+Message-ID: <20231031165902.137470385@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
 References: <20231031165901.318222981@linuxfoundation.org>
@@ -56,63 +56,74 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Gregory Price <gourry.memverge@gmail.com>
 
-commit 61e21cf2d2c3cc5e60e8d0a62a77e250fccda62c upstream.
+commit 229e2253766c7cdfe024f1fe280020cc4711087c upstream.
 
-When guard page debug is enabled and set_page_guard returns success, we
-miss to forward page to point to start of next split range and we will do
-split unexpectedly in page range without target page.  Move start page
-update before set_page_guard to fix this.
+do_pages_move does not handle compat pointers for the page list.
+correctly.  Add in_compat_syscall check and appropriate get_user fetch
+when iterating the page list.
 
-As we split to wrong target page, then splited pages are not able to merge
-back to original order when target page is put back and splited pages
-except target page is not usable.  To be specific:
+It makes the syscall in compat mode (32-bit userspace, 64-bit kernel)
+work the same way as the native 32-bit syscall again, restoring the
+behavior before my broken commit 5b1b561ba73c ("mm: simplify
+compat_sys_move_pages").
 
-Consider target page is the third page in buddy page with order 2.
-| buddy-2 | Page | Target | Page |
+More specifically, my patch moved the parsing of the 'pages' array from
+the main entry point into do_pages_stat(), which left the syscall
+working correctly for the 'stat' operation (nodes = NULL), while the
+'move' operation (nodes != NULL) is now missing the conversion and
+interprets 'pages' as an array of 64-bit pointers instead of the
+intended 32-bit userspace pointers.
 
-After break down to target page, we will only set first page to Guard
-because of bug.
-| Guard   | Page | Target | Page |
+It is possible that nobody noticed this bug because the few
+applications that actually call move_pages are unlikely to run in
+compat mode because of their large memory requirements, but this
+clearly fixes a user-visible regression and should have been caught by
+ltp.
 
-When we try put_page_back_buddy with target page, the buddy page of target
-if neither guard nor buddy, Then it's not able to construct original page
-with order 2
-| Guard | Page | buddy-0 | Page |
-
-All pages except target page is not in free list and is not usable.
-
-Link: https://lkml.kernel.org/r/20230927094401.68205-1-shikemeng@huaweicloud.com
-Fixes: 06be6ff3d2ec ("mm,hwpoison: rework soft offline for free pages")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Oscar Salvador <osalvador@suse.de>
+Link: https://lkml.kernel.org/r/20231003144857.752952-1-gregory.price@memverge.com
+Fixes: 5b1b561ba73c ("mm: simplify compat_sys_move_pages")
+Signed-off-by: Gregory Price <gregory.price@memverge.com>
+Reported-by: Arnd Bergmann <arnd@arndb.de>
+Co-developed-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/migrate.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6528,6 +6528,7 @@ static void break_down_buddy_pages(struc
- 			next_page = page;
- 			current_buddy = page + size;
- 		}
-+		page = next_page;
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -2160,6 +2160,7 @@ static int do_pages_move(struct mm_struc
+ 			 const int __user *nodes,
+ 			 int __user *status, int flags)
+ {
++	compat_uptr_t __user *compat_pages = (void __user *)pages;
+ 	int current_node = NUMA_NO_NODE;
+ 	LIST_HEAD(pagelist);
+ 	int start, i;
+@@ -2172,8 +2173,17 @@ static int do_pages_move(struct mm_struc
+ 		int node;
  
- 		if (set_page_guard(zone, current_buddy, high, migratetype))
- 			continue;
-@@ -6535,7 +6536,6 @@ static void break_down_buddy_pages(struc
- 		if (current_buddy != target) {
- 			add_to_free_list(current_buddy, zone, high, migratetype);
- 			set_buddy_order(current_buddy, high);
--			page = next_page;
- 		}
- 	}
- }
+ 		err = -EFAULT;
+-		if (get_user(p, pages + i))
+-			goto out_flush;
++		if (in_compat_syscall()) {
++			compat_uptr_t cp;
++
++			if (get_user(cp, compat_pages + i))
++				goto out_flush;
++
++			p = compat_ptr(cp);
++		} else {
++			if (get_user(p, pages + i))
++				goto out_flush;
++		}
+ 		if (get_user(node, nodes + i))
+ 			goto out_flush;
+ 
 
 
