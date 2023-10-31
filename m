@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE9C67DD3C5
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:02:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA037DD514
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232366AbjJaRC4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:02:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52906 "EHLO
+        id S1376371AbjJaRrC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:47:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232140AbjJaRC4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:02:56 -0400
+        with ESMTP id S1376394AbjJaRrA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8D8D9F
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:02:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F5CC433C8;
-        Tue, 31 Oct 2023 17:02:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A02D192
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:46:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E562FC433C8;
+        Tue, 31 Oct 2023 17:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771773;
-        bh=QVYQYwKQesKT6dnjXI0kAdrZI3eyRiTKO6tYh9b9uCY=;
+        s=korg; t=1698774418;
+        bh=OY6dltYYOQWATzViVI5jzZHOYdxxFcY9PqyEtQmpX7Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FlW28h8CUN8P2VP31O1bTQ4HpC+XjNdKrMGsb7jYaxC2jfmL7TrLi8rJVHKv9pdhw
-         Rmhs4gjJWLMFKnkPyX9LcHM4t1rFHCGAtkrPx2W5V8yA25ur2AeOjXuwI0xVkA0XRT
-         czP3LGABDEAqR7KIlGsNxhjXHsO/Kw0zYFlxQ9k0=
+        b=XptvboDmELFQN7+nS2l1Q2Ppu/8qI8N1zCS9uRr2Z16MV5BkKfgODMErSZfVs3uuF
+         8l8/Y7jcPc4KWjPYYlKl5tE6lf9mCW9cdiIloOA4DOa7YV2ji3iRAwDk/XSu2ppFkM
+         kcnTX7NiL+Hc61ZEjUEeLmmVZB1ZzlAw5+yyxAZU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Alexandru Matei <alexandru.matei@uipath.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 16/86] vsock/virtio: initialize the_virtio_vsock before using VQs
+        Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.5 040/112] drm/i915/pmu: Check if pmu is closed before stopping event
 Date:   Tue, 31 Oct 2023 18:00:41 +0100
-Message-ID: <20231031165919.119889453@linuxfoundation.org>
+Message-ID: <20231031165902.571074261@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,80 +52,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Matei <alexandru.matei@uipath.com>
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 
-commit 53b08c4985158430fd6d035fb49443bada535210 upstream.
+commit 4cbed7702eb775cca22fff6827a549092cb59f61 upstream.
 
-Once VQs are filled with empty buffers and we kick the host, it can send
-connection requests. If the_virtio_vsock is not initialized before,
-replies are silently dropped and do not reach the host.
+When the driver unbinds, pmu is unregistered and i915->uabi_engines is
+set to RB_ROOT. Due to this, when i915 PMU tries to stop the engine
+events, it issues a warn_on because engine lookup fails.
 
-virtio_transport_send_pkt() can queue packets once the_virtio_vsock is
-set, but they won't be processed until vsock->tx_run is set to true. We
-queue vsock->send_pkt_work when initialization finishes to send those
-packets queued earlier.
+All perf hooks are taking care of this using a pmu->closed flag that is
+set when PMU unregisters. The stop event seems to have been left out.
 
-Fixes: 0deab087b16a ("vsock/virtio: use RCU to avoid use-after-free on the_virtio_vsock")
-Signed-off-by: Alexandru Matei <alexandru.matei@uipath.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://lore.kernel.org/r/20231024191742.14259-1-alexandru.matei@uipath.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Check for pmu->closed in pmu_event_stop as well.
+
+Based on discussion here -
+https://patchwork.freedesktop.org/patch/492079/?series=105790&rev=2
+
+v2: s/is/if/ in commit title
+v3: Add fixes tag and cc stable
+
+Cc: <stable@vger.kernel.org> # v5.11+
+Fixes: b00bccb3f0bb ("drm/i915/pmu: Handle PCI unbind")
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231020152441.3764850-1-umesh.nerlige.ramappa@intel.com
+(cherry picked from commit 31f6a06f0c543b43a38fab10f39e5fc45ad62aa2)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/vmw_vsock/virtio_transport.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_pmu.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/net/vmw_vsock/virtio_transport.c
-+++ b/net/vmw_vsock/virtio_transport.c
-@@ -590,6 +590,11 @@ static int virtio_vsock_vqs_init(struct
+--- a/drivers/gpu/drm/i915/i915_pmu.c
++++ b/drivers/gpu/drm/i915/i915_pmu.c
+@@ -832,9 +832,18 @@ static void i915_pmu_event_start(struct
  
- 	virtio_device_ready(vdev);
- 
-+	return 0;
-+}
+ static void i915_pmu_event_stop(struct perf_event *event, int flags)
+ {
++	struct drm_i915_private *i915 =
++		container_of(event->pmu, typeof(*i915), pmu.base);
++	struct i915_pmu *pmu = &i915->pmu;
 +
-+static void virtio_vsock_vqs_start(struct virtio_vsock *vsock)
-+{
- 	mutex_lock(&vsock->tx_lock);
- 	vsock->tx_run = true;
- 	mutex_unlock(&vsock->tx_lock);
-@@ -604,7 +609,16 @@ static int virtio_vsock_vqs_init(struct
- 	vsock->event_run = true;
- 	mutex_unlock(&vsock->event_lock);
- 
--	return 0;
-+	/* virtio_transport_send_pkt() can queue packets once
-+	 * the_virtio_vsock is set, but they won't be processed until
-+	 * vsock->tx_run is set to true. We queue vsock->send_pkt_work
-+	 * when initialization finishes to send those packets queued
-+	 * earlier.
-+	 * We don't need to queue the other workers (rx, event) because
-+	 * as long as we don't fill the queues with empty buffers, the
-+	 * host can't send us any notification.
-+	 */
-+	queue_work(virtio_vsock_workqueue, &vsock->send_pkt_work);
++	if (pmu->closed)
++		goto out;
++
+ 	if (flags & PERF_EF_UPDATE)
+ 		i915_pmu_event_read(event);
+ 	i915_pmu_disable(event);
++
++out:
+ 	event->hw.state = PERF_HES_STOPPED;
  }
  
- static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
-@@ -707,6 +721,7 @@ static int virtio_vsock_probe(struct vir
- 		goto out;
- 
- 	rcu_assign_pointer(the_virtio_vsock, vsock);
-+	virtio_vsock_vqs_start(vsock);
- 
- 	mutex_unlock(&the_virtio_vsock_mutex);
- 
-@@ -779,6 +794,7 @@ static int virtio_vsock_restore(struct v
- 		goto out;
- 
- 	rcu_assign_pointer(the_virtio_vsock, vsock);
-+	virtio_vsock_vqs_start(vsock);
- 
- out:
- 	mutex_unlock(&the_virtio_vsock_mutex);
 
 
