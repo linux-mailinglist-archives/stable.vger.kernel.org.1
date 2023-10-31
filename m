@@ -2,41 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B68C7DCCED
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 13:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 891097DCCEA
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 13:22:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344215AbjJaMTD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 08:19:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34176 "EHLO
+        id S1344191AbjJaMUb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 08:20:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344228AbjJaMTA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 08:19:00 -0400
+        with ESMTP id S1344219AbjJaMUa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 08:20:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F30DB
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 05:18:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6625AC433C8;
-        Tue, 31 Oct 2023 12:18:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6D0DA;
+        Tue, 31 Oct 2023 05:20:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B11C433C7;
+        Tue, 31 Oct 2023 12:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698754736;
-        bh=7OOS9qkcluavkTKnbWW/XeVuIPRwBkxj/gK/y1hH3Ss=;
+        s=korg; t=1698754828;
+        bh=yI9cIfjDH0p+ULOykOKr6PiIJjrMLZUkCkzDvV4S17A=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=x1gE+WGN2dYT17H9UJAxQt4droggylH86mfGSA1pfAXdWeUcVz8IfvJDEXEwFxn99
-         tKqQpqiO6z+tCfwNPcFBy1HIFz5PxVzGaDtjkxX2rkzZONu+5fddU7oubaFjfPspYl
-         uFIWBY13CvaGYqqkrL1cTkCrE7f0e6KckWJpb+6c=
-Date:   Tue, 31 Oct 2023 13:18:53 +0100
+        b=F/PbD1qChBUcGOzVjCdP50zTg+0CzyiNe7xs7hlIkMO8lEikHuPOO3vEdSXX5Kj8h
+         u1hUAEb5Ja5KG815zFuBi7QzNpoz/Uccm1sO74Qa9n65tz0ehnGHfGGXJysa7vXLYr
+         atPnpm9IqDu3+G0BD0q+48ya4E73jCDl8I36kOBc=
+Date:   Tue, 31 Oct 2023 13:20:24 +0100
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     dlazar@gmail.com, hdegoede@redhat.com, mario.limonciello@amd.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 5.15.y] x86/i8259: Skip probing when ACPI/MADT advertises
- PCAT
-Message-ID: <2023103145-abacus-shorten-3092@gregkh>
-References: <2023102936-encounter-impatient-894d@gregkh>
- <87il6pyt9w.ffs@tglx>
+To:     =?iso-8859-1?Q?Jos=E9?= Pekkarinen <jose.pekkarinen@foxhound.fi>
+Cc:     harry.wentland@amd.com, sunpeng.li@amd.com,
+        Rodrigo.Siqueira@amd.com, skhan@linuxfoundation.org,
+        dillon.varone@amd.com,
+        linux-kernel-mentees@lists.linuxfoundation.org,
+        dri-devel@lists.freedesktop.org, Xinhui.Pan@amd.com,
+        linux-kernel@vger.kernel.org, samson.tam@amd.com,
+        SyedSaaem.Rizvi@amd.com, aurabindo.pillai@amd.com,
+        stable@vger.kernel.org, daniel@ffwll.ch, george.shen@amd.com,
+        alexander.deucher@amd.com, Jun.Lei@amd.com, airlied@gmail.com,
+        christian.koenig@amd.com
+Subject: Re: [PATCH] drm/amd/display: remove redundant check
+Message-ID: <2023103141-clear-scale-897a@gregkh>
+References: <20231030171748.35482-1-jose.pekkarinen@foxhound.fi>
+ <2023103115-obstruct-smudgy-6cc6@gregkh>
+ <3ab58c1e48447798d7525e7d2f42f1a2@foxhound.fi>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <87il6pyt9w.ffs@tglx>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3ab58c1e48447798d7525e7d2f42f1a2@foxhound.fi>
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -47,13 +56,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Oct 29, 2023 at 11:10:19PM +0100, Thomas Gleixner wrote:
+On Tue, Oct 31, 2023 at 01:42:17PM +0200, José Pekkarinen wrote:
+> On 2023-10-31 07:48, Greg KH wrote:
+> > On Mon, Oct 30, 2023 at 07:17:48PM +0200, José Pekkarinen wrote:
+> > > This patch addresses the following warning spotted by
+> > > using coccinelle where the case checked does the same
+> > > than the else case.
+> > > 
+> > > drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c:4664:8-10:
+> > > WARNING: possible condition with no effect (if == else)
+> > > 
+> > > Fixes: 974ce181 ("drm/amd/display: Add check for PState change in
+> > > DCN32")
+> > > 
+> > > Cc: stable@vger.kernel.org
+> > 
+> > Why is this relevant for stable?
 > 
-> commit 128b0c9781c9f2651bea163cb85e52a6c7be0f9e upstream.
+>     Hi,
 > 
-> David and a few others reported that on certain newer systems some legacy
-> interrupts fail to work correctly.
+>     I was asked to send it for stable because this code
+> looks different in amd-staging-drm-next, see here.
+> 
+> https://gitlab.freedesktop.org/agd5f/linux/-/blob/amd-staging-drm-next/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c#L4661
 
-All now queued up, thanks.
+I don't know what I am looking at, sorry.
+
+>     Feel free to let me know if this is wrong, or if I
+> need to review some other guidelines I may have missed.
+
+Please see the list of rules for stable patches:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
+Does "remove code that does nothing" fit here?
+
+thanks,
 
 greg k-h
