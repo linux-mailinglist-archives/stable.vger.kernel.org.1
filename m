@@ -2,405 +2,186 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77BD27DC4F9
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 04:48:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B62067DC513
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 05:00:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230348AbjJaDs4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 23:48:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56130 "EHLO
+        id S229596AbjJaEAj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 00:00:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbjJaDsz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 23:48:55 -0400
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB123B3
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 20:48:51 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id D37475C029F;
-        Mon, 30 Oct 2023 23:48:48 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Mon, 30 Oct 2023 23:48:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1698724128; x=1698810528; bh=b1LXrGDZzg6rcDGwcVXq/nku1LV3SPu8vEc
-        6kzHIX78=; b=IAw1teNfOhAthN9/seJAqlelzv4CtLjIl6NfUnsH5lxTg/25Ik1
-        1+VBHSBXL69BO8UoxUkv3PwgN25+rk48edAr5qmxV2l7V+T8raiSZfTMVwXl0Mge
-        /zoAG80bn34vGbYc6LKR1e25L1gQr6MysYHCn3u1tghtnOKMyBhg9bRgdW5orvsA
-        UZnz+BT+/i8LN3uIQ26u4NC4Jw02nIu+tdEKSIlFTF/nbfocihmWErEn8Macjsrq
-        eRnSfLqPZoqoJidl/Mmz+5hvsTjmxqFB8cXGcVlo9e82A6V+W6Uab+ibNlK1rJ4p
-        Dprey9afCqLhfe2LP3mb0atYJHNHBh3uIIA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1698724128; x=1698810528; bh=b1LXrGDZzg6rc
-        DGwcVXq/nku1LV3SPu8vEc6kzHIX78=; b=dbpERuvwsOEEnq7050GVjwPCbz0aj
-        hxGleJjU3tTgUyYoXCg/UFVvYxGT0FK17qbVR6F3rf1mk+oYdsyaQVYKtnWcvI0/
-        TZ8uQdAUNiaIzTyFafsmpIQJ3h53bjDIRyXyNRYW7cEGjJtZZquxAk2jf4sVVjUr
-        IoekRK0EBnA2gsh6/r87DjFpVnVBgAaqKgWg8AwvkL02PfP8K31N1+zbVVceX5ix
-        +FK+kJngZtmXdVGv8UUrABLyDhai7e+IWS6cerb2JcXLkPmnnqu2bepX65XwO0SJ
-        vLNsUycRwD2feiiAok7jMvxCHTJrVQszJgI/fX+6cashAgMRJDzo7dJ5A==
-X-ME-Sender: <xms:IHlAZUlbGqdNjdonhhGN61zdQwKst24db4qBbUgd0x60TMvPCwq73Q>
-    <xme:IHlAZT2QfpF4NMaJ8Gy3clHgOMtAujo3ZBdlE4rQYORBySDhA8e77w8-O2fvcYF6C
-    OFmup1AxhtFcQ>
-X-ME-Received: <xmr:IHlAZSqQFn6TbecUlvTcuJgkdlSqVrhoPh24gK8o7QNPbvB-JSJEd2P4EP_c9EK6ncgEJRWLKJhNxszLnOiWK84egnDH7-lQOpU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtuddgieduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
-    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
-    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
-    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
-    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:IHlAZQmKvIwY0MgTTUMuhvP45crTPM_Ccbq-AvS23oK7a1TE8fqwsQ>
-    <xmx:IHlAZS2g2pqfIRboGSGZUVt7nCn9V1AOV6eU2YUKql0OqNQIfn1uZg>
-    <xmx:IHlAZXs9YYuHBflgWdn-azWp2HyCE37b6e8F7-_oAav4fKcx_hu3PQ>
-    <xmx:IHlAZQw_HD6mceDeK2-2suMkI3FPFYaOYBBGw5wDHdu5Qn5o1ZZLSQ>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 30 Oct 2023 23:48:46 -0400 (EDT)
-Date:   Tue, 31 Oct 2023 04:48:44 +0100
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-To:     Mikulas Patocka <mpatocka@redhat.com>
-Cc:     Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-Message-ID: <ZUB5HFeK3eHeI8UH@mail-itl>
-References: <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
- <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
- <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com>
- <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz>
- <20231030122513.6gds75hxd65gu747@quack3>
- <ZT+wDLwCBRB1O+vB@mail-itl>
- <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
- <20231030155603.k3kejytq2e4vnp7z@quack3>
- <ZT/e/EaBIkJEgevQ@mail-itl>
- <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
+        with ESMTP id S229436AbjJaEAi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 00:00:38 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0315DB4;
+        Mon, 30 Oct 2023 21:00:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BE65C433C8;
+        Tue, 31 Oct 2023 04:00:33 +0000 (UTC)
+Date:   Tue, 31 Oct 2023 00:00:31 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Beau Belgrave <beaub@linux.microsoft.com>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        linux-trace-kernel@vger.kernel.org, lkft-triage@lists.linaro.org,
+        Mark Brown <broonie@kernel.org>,
+        Zheng Yejian <zhengyejian1@huawei.com>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        stable <stable@vger.kernel.org>
+Subject: Re: selftests: user_events: ftrace_test - RIP:
+ 0010:tracing_update_buffers (kernel/trace/trace.c:6470)
+Message-ID: <20231031000031.1e705592@gandalf.local.home>
+In-Reply-To: <20231031002707.GA107-beaub@linux.microsoft.com>
+References: <CA+G9fYuDP3hVQ3t7FfrBAjd_WFVSurMgCepTxunSJf=MTe=6aA@mail.gmail.com>
+        <20231027192011.GA436-beaub@linux.microsoft.com>
+        <20231027183640.2529ab68@gandalf.local.home>
+        <20231027223344.3854ac1f@rorschach.local.home>
+        <20231030163102.GA1853-beaub@linux.microsoft.com>
+        <20231030124223.4e4ddeb8@gandalf.local.home>
+        <20231030173151.0631169b@gandalf.local.home>
+        <20231031002707.GA107-beaub@linux.microsoft.com>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="sCPM8eUZCWbTx7rm"
-Content-Disposition: inline
-In-Reply-To: <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+[ Adding Masami and stable ]
 
---sCPM8eUZCWbTx7rm
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 31 Oct 2023 04:48:44 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Mikulas Patocka <mpatocka@redhat.com>
-Cc: Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+On Tue, 31 Oct 2023 00:27:07 +0000
+Beau Belgrave <beaub@linux.microsoft.com> wrote:
 
-On Mon, Oct 30, 2023 at 06:50:35PM +0100, Mikulas Patocka wrote:
-> On Mon, 30 Oct 2023, Marek Marczykowski-G=C3=B3recki wrote:
-> > Then retried with order=3DPAGE_ALLOC_COSTLY_ORDER and
-> > PAGE_ALLOC_COSTLY_ORDER back at 3, and also got similar crash.
->=20
-> So, does it mean that even allocating with order=3DPAGE_ALLOC_COSTLY_ORDE=
-R=20
-> isn't safe?
+> On Mon, Oct 30, 2023 at 05:31:51PM -0400, Steven Rostedt wrote:
+> > On Mon, 30 Oct 2023 12:42:23 -0400
+> > Steven Rostedt <rostedt@goodmis.org> wrote:
+> >   
+> > > > I still get the splat about the trace_array_put when running
+> > > > user_event's ftrace selftest:
+> > > > 
+> > > > [   26.665931] ------------[ cut here ]------------
+> > > > [   26.666663] WARNING: CPU: 12 PID: 291 at kernel/trace/trace.c:516 tracing_release_file_tr+0x46/0x50
+> > > > [   26.667470] Modules linked in:
+> > > > [   26.667808] CPU: 12 PID: 291 Comm: ftrace_test Not tainted 6.6.0-rc7-next-20231026 #3
+> > > > [   26.668665] RIP: 0010:tracing_release_file_tr+0x46/0x50
+> > > > [   26.669093] Code: d1 03 01 8b 83 c0 1e 00 00 85 c0 74 1d 83 e8 01 48 c7 c7 80 5b ef bc 89 83 c0 1e 00 00 e8 f2 b5 03 01 31 c0 5b e9 75 ee 27 01 <0f> 0b eb df 66 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90
+> > > > [   26.670580] RSP: 0018:ffffb6ef858ffee8 EFLAGS: 00010246
+> > > > [   26.671128] RAX: 0000000000000000 RBX: ffff9d7ae2364058 RCX: 0000000000000000
+> > > > [   26.671793] RDX: 0000000000000000 RSI: ffffffffbcb6b38b RDI: 00000000ffffffff
+> > > > [   26.672444] RBP: ffff9d7ac3e72200 R08: 0000000000000000 R09: 0000000000000000
+> > > > [   26.673072] R10: ffffb6ef858ffee8 R11: ffffffffbb28526f R12: 00000000000f801f
+> > > > [   26.673705] R13: ffff9d7b661a2020 R14: ffff9d7ac6057728 R15: 0000000000000000
+> > > > [   26.674339] FS:  00007fa852fa6740(0000) GS:ffff9d81a6300000(0000) knlGS:0000000000000000
+> > > > [   26.674978] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > > > [   26.675506] CR2: 00007fa852c2a250 CR3: 0000000105d92001 CR4: 0000000000370eb0
+> > > > [   26.676142] Call Trace:
+> > > > [   26.676357]  <TASK>
+> > > > [   26.676572]  ? __warn+0x7f/0x160
+> > > > [   26.677092]  ? tracing_release_file_tr+0x46/0x50
+> > > > [   26.677540]  ? report_bug+0x1c3/0x1d0
+> > > > [   26.677871]  ? handle_bug+0x3c/0x70
+> > > > [   26.678196]  ? exc_invalid_op+0x14/0x70
+> > > > [   26.678520]  ? asm_exc_invalid_op+0x16/0x20
+> > > > [   26.678845]  ? tracing_release_file_tr+0x1f/0x50
+> > > > [   26.679268]  ? tracing_release_file_tr+0x46/0x50
+> > > > [   26.679691]  ? tracing_release_file_tr+0x1f/0x50
+> > > > [   26.680105]  __fput+0xab/0x300
+> > > > [   26.680437]  __x64_sys_close+0x38/0x80    
+> > > 
+> > > Hmm, this doesn't tell me much. Let me go play with the user_event self
+> > > tests.  
+> > 
+> > I added a bunch of printk()s and I'm thinking there's a race in user event
+> > (or dynamic event) code.
+> >   
+> 
+> I did as well, however, I don't see how user events would be involved
+> other than allowing a trace_remove_event_call() with open enable fds?
+> 
+> I believe the scenario is open the enable file and keep the fd open.
+> 
+> While the fd is open to the enable file, call trace_remove_event_call().
+> 
+> If trace_remove_event_call() is called for an event with a tr->ref > 0,
+> should it fail or work? (It currently works without issue.)
+> 
+> Should writes to the fd still work after the event it is related to has
+> been removed?
+> 
+> I don't see how user_events could prevent this, it seems
+> trace_remove_event_call() should fail if files for it are still open?
+> 
 
-That seems to be another bug, see below.
+This is a separate issue from eventfs (good, because I think I have solved
+all the known bugs for that one - phew!).
 
-> Try enabling CONFIG_DEBUG_VM (it also needs CONFIG_DEBUG_KERNEL) and try=
-=20
-> to provoke a similar crash. Let's see if it crashes on one of the=20
-> VM_BUG_ON statements.
+Anyway, I checkout the code just before adding the eventfs, and did the following:
 
-This was very interesting idea. With this, immediately after login I get
-the crash like below. Which makes sense, as this is when pulseaudio
-starts and opens /dev/snd/*. I then tried with the dm-crypt commit
-reverted and still got the crash! But, after blacklisting snd_pcm,
-there is no BUG splat, but the storage freeze still happens on vanilla 6.5.=
-6.
+ # echo 'p:sched schedule' > /sys/kernel/tracing/kprobe_events
+ # exec 5>>/sys/kernel/tracing/events/kprobes/sched/enable
+ # > /sys/kernel/tracing/kprobe_events
+ # exec 5>&-
 
-The snd_pcm BUG splat:
+And it worked fine. The above creates a kprobe event, opens the enable file
+of that event with the bash file descriptor #5, removes the kprobe event,
+and then closes the file descriptor #5.
 
-[   51.082877] page:00000000d8fdb7f1 refcount:0 mapcount:0 mapping:00000000=
-00000000 index:0x0 pfn:0x11b7d9
-[   51.082919] flags: 0x200000000000000(node=3D0|zone=3D2)
-[   51.082924] page_type: 0xffffffff()
-[   51.082929] raw: 0200000000000000 dead000000000100 dead000000000122 0000=
-000000000000
-[   51.082934] raw: 0000000000000000 0000000000000000 00000000ffffffff 0000=
-000000000000
-[   51.082938] page dumped because: VM_BUG_ON_FOLIO(((unsigned int) folio_r=
-ef_count(folio) + 127u <=3D 127u))
-[   51.082969] ------------[ cut here ]------------
-[   51.082972] kernel BUG at include/linux/mm.h:1406!
-[   51.082980] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[   51.082986] CPU: 5 PID: 3893 Comm: alsa-sink-Gener Tainted: G        W  =
-        6.5.6-dirty #359
-[   51.082992] Hardware name: Star Labs StarBook/StarBook, BIOS 8.97 10/03/=
-2023
-[   51.082997] RIP: e030:snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
-[   51.083015] Code: 48 2b 05 8e 7b 67 c2 48 01 f0 48 c1 e8 0c 48 c1 e0 06 =
-48 03 05 6c 7b 67 c2 e9 4c ff ff ff 48 c7 c6 d8 71 1c c0 e8 93 1e 0e c1 <0f=
-> 0b 48 83 ef 01 e9 4d ff ff ff 48 8b 05 51 47 89 c2 eb c9 66 66
-[   51.083023] RSP: e02b:ffffc90041be7e00 EFLAGS: 00010246
-[   51.083028] RAX: 000000000000005c RBX: ffffc90041be7e28 RCX: 00000000000=
-00000
-[   51.083033] RDX: 0000000000000000 RSI: 0000000000000027 RDI: 00000000fff=
-fffff
-[   51.083038] RBP: ffff888102e75f18 R08: 00000000ffffdfff R09: 00000000000=
-00001
-[   51.083042] R10: 00000000ffffdfff R11: ffffffff82a5ddc0 R12: ffff888102e=
-75f18
-[   51.083047] R13: 0000000000000255 R14: ffff888100955e80 R15: ffff888102e=
-75f18
-[   51.083056] FS:  00007f51d354f6c0(0000) GS:ffff888189740000(0000) knlGS:=
-0000000000000000
-[   51.083061] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   51.083065] CR2: 00007f51d36f6000 CR3: 000000011b53e000 CR4: 00000000000=
-50660
-[   51.083072] Call Trace:
-[   51.083076]  <TASK>
-[   51.083078]  ? die+0x31/0x80
-[   51.083085]  ? do_trap+0xd5/0x100
-[   51.083089]  ? snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
-[   51.083103]  ? do_error_trap+0x65/0x90
-[   51.083107]  ? snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
-[   51.083120]  ? exc_invalid_op+0x50/0x70
-[   51.083127]  ? snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
-[   51.083140]  ? asm_exc_invalid_op+0x1a/0x20
-[   51.083146]  ? snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
-[   51.083159]  __do_fault+0x29/0x110
-[   51.083165]  __handle_mm_fault+0x5fb/0xc40
-[   51.083170]  handle_mm_fault+0x91/0x1e0
-[   51.083173]  do_user_addr_fault+0x216/0x5d0
-[   51.083179]  ? check_preemption_disabled+0x31/0xf0
-[   51.083185]  exc_page_fault+0x71/0x160
-[   51.083189]  asm_exc_page_fault+0x26/0x30
-[   51.083195] RIP: 0033:0x7f51e56793ca
-[   51.083198] Code: c5 fe 7f 07 c5 fe 7f 47 20 c5 fe 7f 47 40 c5 fe 7f 47 =
-60 c5 f8 77 c3 66 0f 1f 84 00 00 00 00 00 40 0f b6 c6 48 89 d1 48 89 fa <f3=
-> aa 48 89 d0 c5 f8 77 c3 66 66 2e 0f 1f 84 00 00 00 00 00 66 90
-[   51.083207] RSP: 002b:00007f51d354c528 EFLAGS: 00010202
-[   51.083211] RAX: 0000000000000000 RBX: 00007f51d354ec80 RCX: 00000000000=
-034e0
-[   51.083216] RDX: 00007f51d36f5000 RSI: 0000000000000000 RDI: 00007f51d36=
-f6000
-[   51.083220] RBP: 000055fec98b2f60 R08: 00007f51cc0031c0 R09: 00000000000=
-00000
-[   51.083224] R10: 0000000000000000 R11: 0000000000000101 R12: 000055fec98=
-b2f60
-[   51.083228] R13: 00007f51d354c630 R14: 0000000000000000 R15: 000055fec78=
-ba680
-[   51.083233]  </TASK>
-[   51.083235] Modules linked in: snd_hda_codec_hdmi snd_sof_pci_intel_tgl =
-snd_sof_intel_hda_common snd_soc_hdac_hda soundwire_intel soundwire_generic=
-_allocation snd_sof_intel_hda_mlink soundwire_cadence snd_sof_intel_hda snd=
-_hda_codec_generic snd_sof_pci ledtrig_audio snd_sof snd_sof_utils snd_sof_=
-xtensa_dsp snd_soc_acpi_intel_match snd_soc_acpi snd_hda_ext_core soundwire=
-_bus snd_soc_core snd_compress snd_pcm_dmaengine ac97_bus snd_hda_intel snd=
-_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hwdep snd_hda_core snd_s=
-eq snd_seq_device hid_multitouch snd_pcm i2c_i801 idma64 iwlwifi i2c_smbus =
-i2c_designware_platform i2c_designware_core snd_timer snd soundcore efivarf=
-s i2c_hid_acpi i2c_hid pinctrl_tigerlake pinctrl_intel xen_acpi_processor x=
-en_pciback xen_blkback xen_gntalloc xen_gntdev xen_evtchn uinput
-[   51.083293] ---[ end trace 0000000000000000 ]---
-[   51.083296] RIP: e030:snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
-[   51.083310] Code: 48 2b 05 8e 7b 67 c2 48 01 f0 48 c1 e8 0c 48 c1 e0 06 =
-48 03 05 6c 7b 67 c2 e9 4c ff ff ff 48 c7 c6 d8 71 1c c0 e8 93 1e 0e c1 <0f=
-> 0b 48 83 ef 01 e9 4d ff ff ff 48 8b 05 51 47 89 c2 eb c9 66 66
-[   51.083318] RSP: e02b:ffffc90041be7e00 EFLAGS: 00010246
-[   51.083323] RAX: 000000000000005c RBX: ffffc90041be7e28 RCX: 00000000000=
-00000
-[   51.083327] RDX: 0000000000000000 RSI: 0000000000000027 RDI: 00000000fff=
-fffff
-[   51.083331] RBP: ffff888102e75f18 R08: 00000000ffffdfff R09: 00000000000=
-00001
-[   51.083335] R10: 00000000ffffdfff R11: ffffffff82a5ddc0 R12: ffff888102e=
-75f18
-[   51.083340] R13: 0000000000000255 R14: ffff888100955e80 R15: ffff888102e=
-75f18
-[   51.083347] FS:  00007f51d354f6c0(0000) GS:ffff888189740000(0000) knlGS:=
-0000000000000000
-[   51.083353] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   51.083356] CR2: 00007f51d36f6000 CR3: 000000011b53e000 CR4: 00000000000=
-50660
+But the I applied:
 
-Having discovered that, I'm redoing recent tests with snd_pcm
-blacklisted. I'll get back to debugging snd_pcm issue separately.
+  f5ca233e2e66d ("tracing: Increase trace array ref count on enable and filter files")
 
-Plain 6.5.6 (so order =3D MAX_ORDER - 1, and PAGE_ALLOC_COSTLY_ORDER=3D3), =
-in frozen state:
+And do the above commands again and BOOM! it crashes with:
 
-[  143.195348] sysrq: Show Blocked State
-[  143.195471] task:lvm             state:D stack:13312 pid:4882  ppid:2025=
-   flags:0x00004002
-[  143.195504] Call Trace:
-[  143.195514]  <TASK>
-[  143.195526]  __schedule+0x30e/0x8b0
-[  143.195550]  ? __pfx_dev_suspend+0x10/0x10
-[  143.195569]  schedule+0x59/0xb0
-[  143.195582]  io_schedule+0x41/0x70
-[  143.195595]  dm_wait_for_completion+0x19d/0x1b0
-[  143.195671]  ? __pfx_autoremove_wake_function+0x10/0x10
-[  143.195693]  __dm_suspend+0x79/0x190
-[  143.195707]  ? __pfx_dev_suspend+0x10/0x10
-[  143.195723]  dm_internal_suspend_noflush+0x57/0x80
-[  143.195740]  pool_presuspend+0xc7/0x130
-[  143.195759]  dm_table_presuspend_targets+0x38/0x60
-[  143.195774]  __dm_suspend+0x34/0x190
-[  143.195788]  ? preempt_count_add+0x69/0xa0
-[  143.195805]  ? __pfx_dev_suspend+0x10/0x10
-[  143.195819]  dm_suspend+0xbb/0xe0
-[  143.195835]  ? preempt_count_add+0x46/0xa0
-[  143.195851]  dev_suspend+0x18e/0x2d0
-[  143.195867]  ? __pfx_dev_suspend+0x10/0x10
-[  143.195882]  ctl_ioctl+0x329/0x640
-[  143.195901]  dm_ctl_ioctl+0x9/0x10
-[  143.195917]  __x64_sys_ioctl+0x8f/0xd0
-[  143.195938]  do_syscall_64+0x3c/0x90
-[  143.195954]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  143.195975] RIP: 0033:0x7f2e0ab1fe0f
-[  143.195989] RSP: 002b:00007ffd59a16e60 EFLAGS: 00000246 ORIG_RAX: 000000=
-0000000010
-[  143.196011] RAX: ffffffffffffffda RBX: 000056289d130840 RCX: 00007f2e0ab=
-1fe0f
-[  143.196029] RDX: 000056289d120b80 RSI: 00000000c138fd06 RDI: 00000000000=
-00003
-[  143.196046] RBP: 000056289d120b80 R08: 000056289a7eb190 R09: 00007ffd59a=
-16d20
-[  143.196063] R10: 0000000000000000 R11: 0000000000000246 R12: 00000000000=
-0000c
-[  143.196080] R13: 000056289a7e4cf0 R14: 000056289a77e14d R15: 000056289d1=
-20bb0
-[  143.196098]  </TASK>
-[  143.196106] task:blkdiscard      state:D stack:13672 pid:4884  ppid:2025=
-   flags:0x00000002
-[  143.196130] Call Trace:
-[  143.196139]  <TASK>
-[  143.196147]  __schedule+0x30e/0x8b0
-[  143.196162]  schedule+0x59/0xb0
-[  143.196175]  schedule_timeout+0x14c/0x160
-[  143.196193]  io_schedule_timeout+0x4b/0x70
-[  143.196207]  wait_for_completion_io+0x81/0x130
-[  143.196226]  submit_bio_wait+0x5c/0x90
-[  143.196241]  blkdev_issue_discard+0x94/0xe0
-[  143.196260]  blkdev_common_ioctl+0x79e/0x9c0
-[  143.196279]  blkdev_ioctl+0xc7/0x270
-[  143.196293]  __x64_sys_ioctl+0x8f/0xd0
-[  143.196310]  do_syscall_64+0x3c/0x90
-[  143.196324]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[  143.196343] RIP: 0033:0x7fa6cebcee0f
-[  143.196354] RSP: 002b:00007ffe6700fa80 EFLAGS: 00000246 ORIG_RAX: 000000=
-0000000010
-[  143.196374] RAX: ffffffffffffffda RBX: 0000000280000000 RCX: 00007fa6ceb=
-cee0f
-[  143.196391] RDX: 00007ffe6700fb50 RSI: 0000000000001277 RDI: 00000000000=
-00003
-[  143.196408] RBP: 0000000000000003 R08: 0000000000000071 R09: 00000000000=
-00004
-[  143.196424] R10: 00007ffe67064170 R11: 0000000000000246 R12: 00000000400=
-00000
-[  143.196441] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
-00000
-[  143.196460]  </TASK>
+[  217.879087] BUG: kernel NULL pointer dereference, address: 0000000000000028
+[  217.881121] #PF: supervisor read access in kernel mode
+[  217.882532] #PF: error_code(0x0000) - not-present page
+[  217.883932] PGD 0 P4D 0 
+[  217.884672] Oops: 0000 [#1] PREEMPT SMP PTI
+[  217.885821] CPU: 6 PID: 877 Comm: bash Not tainted 6.5.0-rc4-test-00008-g2c6b6b1029d4-dirty #186
+[  217.888178] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+[  217.890684] RIP: 0010:tracing_release_file_tr+0xc/0x50
+[  217.892097] Code: 5d 41 5c c3 cc cc cc cc 66 0f 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 53 48 8b 87 80 04 00 00 <48> 8b 58 28 48 85 db 74 2d 31 f6 48 c7 c7 c0 b3 1e 93 e8 2d 48 ca
+[  217.897102] RSP: 0018:ffffa5d400587eb0 EFLAGS: 00010282
+[  217.898531] RAX: 0000000000000000 RBX: ffff907d06aa6c00 RCX: 0000000000000000
+[  217.900471] RDX: 0000000000000000 RSI: ffff907d06aa6c00 RDI: ffff907d0bf21bd0
+[  217.902403] RBP: 00000000000d801e R08: 0000000000000001 R09: ffff907d0bf21bd0
+[  217.904350] R10: 0000000000000001 R11: 0000000000000001 R12: ffff907d0bf21bd0
+[  217.906282] R13: ffff907d103708e0 R14: ffff907d0a178c30 R15: 0000000000000000
+[  217.908215] FS:  00007ff49c150740(0000) GS:ffff907e77d00000(0000) knlGS:0000000000000000
+[  217.910405] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  217.911970] CR2: 0000000000000028 CR3: 00000001051ec005 CR4: 0000000000170ee0
+[  217.913924] Call Trace:
+[  217.914624]  <TASK>
+[  217.915232]  ? __die+0x23/0x70
+[  217.916105]  ? page_fault_oops+0x17d/0x4d0
+[  217.917262]  ? exc_page_fault+0x7f/0x200
+[  217.918350]  ? asm_exc_page_fault+0x26/0x30
+[  217.919513]  ? tracing_release_file_tr+0xc/0x50
+[  217.920780]  __fput+0xfb/0x2a0
+[  217.921651]  task_work_run+0x5d/0x90
+[  217.922652]  exit_to_user_mode_prepare+0x231/0x240
+[  217.923981]  syscall_exit_to_user_mode+0x1a/0x50
+[  217.925248]  do_syscall_64+0x4b/0xc0
+[  217.926176]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-for f in $(grep -l crypt /proc/*/comm); do head $f ${f/comm/stack}; done
-=3D=3D> /proc/3761/comm <=3D=3D
-kworker/u12:7-kcryptd/252:0
+Look familiar?
 
-=3D=3D> /proc/3761/stack <=3D=3D
-[<0>] worker_thread+0xab/0x3b0
-[<0>] kthread+0xef/0x120
-[<0>] ret_from_fork+0x2c/0x50
-[<0>] ret_from_fork_asm+0x1b/0x30
-=3D=3D> /proc/51/comm <=3D=3D
-cryptd
+It's now midnight and I've been at this all day. I'm going to look more at
+this tomorrow. It's not going to be easy :-( I'm not sure what exactly to
+do. We may need to prevent dynamic events from being deleted if there's any
+of its files opened (enable, format, etc).
 
-=3D=3D> /proc/51/stack <=3D=3D
-[<0>] rescuer_thread+0x2d5/0x390
-[<0>] kthread+0xef/0x120
-[<0>] ret_from_fork+0x2c/0x50
-[<0>] ret_from_fork_asm+0x1b/0x30
-=3D=3D> /proc/556/comm <=3D=3D
-kcryptd_io/252:
+That is, if you try to delete the event, it will give you an -EBUSY, just
+like having them enabled would.
 
-=3D=3D> /proc/556/stack <=3D=3D
-[<0>] rescuer_thread+0x2d5/0x390
-[<0>] kthread+0xef/0x120
-[<0>] ret_from_fork+0x2c/0x50
-[<0>] ret_from_fork_asm+0x1b/0x30
-=3D=3D> /proc/557/comm <=3D=3D
-kcryptd/252:0
+More good news, that commit is in 6.6 *and* marked for stable :-p
 
-=3D=3D> /proc/557/stack <=3D=3D
-[<0>] rescuer_thread+0x2d5/0x390
-[<0>] kthread+0xef/0x120
-[<0>] ret_from_fork+0x2c/0x50
-[<0>] ret_from_fork_asm+0x1b/0x30
-=3D=3D> /proc/558/comm <=3D=3D
-dmcrypt_write/252:0
-
-=3D=3D> /proc/558/stack <=3D=3D
-[<0>] dmcrypt_write+0x6a/0x140
-[<0>] kthread+0xef/0x120
-[<0>] ret_from_fork+0x2c/0x50
-[<0>] ret_from_fork_asm+0x1b/0x30
-=3D=3D> /proc/717/comm <=3D=3D
-kworker/u12:6-kcryptd/252:0
-
-=3D=3D> /proc/717/stack <=3D=3D
-[<0>] worker_thread+0xab/0x3b0
-[<0>] kthread+0xef/0x120
-[<0>] ret_from_fork+0x2c/0x50
-[<0>] ret_from_fork_asm+0x1b/0x30
-
-
-Then tried:
- - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D4 - cannot reproduce,
- - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D5 - cannot reproduce,
- - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D6 - freeze rather quickly
-
-I've retried the PAGE_ALLOC_COSTLY_ORDER=3D4,order=3D5 case several times
-and I can't reproduce the issue there. I'm confused...
-
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
-
---sCPM8eUZCWbTx7rm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmVAeRwACgkQ24/THMrX
-1yyAbAf8C1c0HlDZTaucuIDaz6Z6srvlesKu8+GU2TqjZ3sZCw5VPqt3pHxOR2c7
-+flv+Np3jGMARWja9aZ8cAi5ejL09Hilf0DPhDRhi+MlindRz5NNnc9mRULLlEQO
-D7M3sx9eIUqt9cC8FhKNMZ3injfKPMP7Qb8vAFaIY8SRMFDmLAB3zlE51XHPNCHj
-oiLUY+pjrBg/2mHYMgGL1Fa4tsi8V0tgmKuLhlReTttBgh05f0OCQDUdb1vcIfc8
-iehCon82bQpIEjmKSll36eFo/inhiBaD6Q/9dIiPmuRlKaSd8PV1iH7h/g2kzVR5
-c4Po91i0BeDROxOof5211MmCDkeV7Q==
-=b8da
------END PGP SIGNATURE-----
-
---sCPM8eUZCWbTx7rm--
+-- Steve
