@@ -2,41 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0686D7DD3E2
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E05A87DD51B
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236207AbjJaRGG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39296 "EHLO
+        id S1376436AbjJaRrT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:47:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236290AbjJaRFv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:05:51 -0400
+        with ESMTP id S1376395AbjJaRrT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AC8ED63
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACE6C433C7;
-        Tue, 31 Oct 2023 17:03:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 445D1B4;
+        Tue, 31 Oct 2023 10:47:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575D6C433C8;
+        Tue, 31 Oct 2023 17:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771788;
-        bh=0pRMOR92IAXhO+GLvy48JMxWF/wdl/em4jAeww6fMEQ=;
+        s=korg; t=1698774435;
+        bh=mzkYLKw++9kwZ4JCA90CK3PNLuy3nMbGy5UObs4nUXI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1sd+18Ds724S5uZ07g1oCSXhS0sqdgqLPDzlEB62jg1HaxWHLZyotUtSvYfBpqibY
-         gwLbVrtaBla90fu7BUlwM17UvQPlj14fpH/E7xhE+J1LumAbVbxU37L/YiTox0D7z9
-         zUz76Xm7VL387F1HHE8PK2xOaCNGLtLZf/xkAmW4=
+        b=fWGabrB6a0Awt9kmMGGDNeflYTFY2EK6VHh0P8i3dD8AXtxlAnl8uYkW4aShqDOkl
+         ANkyLW7e9uDQ49CKKLttQMZd4/qh2rKndUGs40Vdks5SNIhTGdZZUY7QRgmumtYcUQ
+         Web7+daEVeWudwGf+/bz4yzVpbeRNdzcEoXSmWDg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mike Kravetz <mike.kravetz@oracle.com>,
-        Rik van Riel <riel@surriel.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Muchun Song <muchun.song@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 21/86] hugetlbfs: clear resv_map pointer if mmap fails
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Vaibhav Hiremath <hvaibhav@ti.com>,
+        Felipe Balbi <balbi@ti.com>, Tony Lindgren <tony@atomide.com>,
+        Xunlei Pang <pang.xunlei@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Aaro Koskinen <aaro.koskinen@iki.fi>,
+        Janusz Krzysztofik <jmkrzyszt@gmail.com>,
+        linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 045/112] ARM: OMAP: timer32K: fix all kernel-doc warnings
 Date:   Tue, 31 Oct 2023 18:00:46 +0100
-Message-ID: <20231031165919.266100789@linuxfoundation.org>
+Message-ID: <20231031165902.728892368@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,91 +59,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 92fe9dcbe4e109a7ce6bab3e452210a35b0ab493 upstream.
+[ Upstream commit 7eeca8ccd1066c68d6002dbbe26433f8c17c53eb ]
 
-Patch series "hugetlbfs: close race between MADV_DONTNEED and page fault", v7.
+Fix kernel-doc warnings reported by the kernel test robot:
 
-Malloc libraries, like jemalloc and tcalloc, take decisions on when to
-call madvise independently from the code in the main application.
+timer32k.c:186: warning: cannot understand function prototype: 'struct timespec64 persistent_ts; '
+timer32k.c:191: warning: Function parameter or member 'ts' not described in 'omap_read_persistent_clock64'
+timer32k.c:216: warning: Function parameter or member 'vbase' not described in 'omap_init_clocksource_32k'
+timer32k.c:216: warning: Excess function parameter 'pbase' description in 'omap_init_clocksource_32k'
+timer32k.c:216: warning: Excess function parameter 'size' description in 'omap_init_clocksource_32k'
+timer32k.c:216: warning: No description found for return value of 'omap_init_clocksource_32k'
 
-This sometimes results in the application page faulting on an address,
-right after the malloc library has shot down the backing memory with
-MADV_DONTNEED.
-
-Usually this is harmless, because we always have some 4kB pages sitting
-around to satisfy a page fault.  However, with hugetlbfs systems often
-allocate only the exact number of huge pages that the application wants.
-
-Due to TLB batching, hugetlbfs MADV_DONTNEED will free pages outside of
-any lock taken on the page fault path, which can open up the following
-race condition:
-
-       CPU 1                            CPU 2
-
-       MADV_DONTNEED
-       unmap page
-       shoot down TLB entry
-                                       page fault
-                                       fail to allocate a huge page
-                                       killed with SIGBUS
-       free page
-
-Fix that race by extending the hugetlb_vma_lock locking scheme to also
-cover private hugetlb mappings (with resv_map), and pulling the locking
-from __unmap_hugepage_final_range into helper functions called from
-zap_page_range_single.  This ensures page faults stay locked out of the
-MADV_DONTNEED VMA until the huge pages have actually been freed.
-
-
-This patch (of 3):
-
-Hugetlbfs leaves a dangling pointer in the VMA if mmap fails.  This has
-not been a problem so far, but other code in this patch series tries to
-follow that pointer.
-
-Link: https://lkml.kernel.org/r/20231006040020.3677377-1-riel@surriel.com
-Link: https://lkml.kernel.org/r/20231006040020.3677377-2-riel@surriel.com
-Fixes: 04ada095dcfc ("hugetlb: don't delete vma_lock in hugetlb MADV_DONTNEED processing")
-Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a451570c008b ("ARM: OMAP: 32k counter: Provide y2038-safe omap_read_persistent_clock() replacement")
+Fixes: 1fe97c8f6a1d ("ARM: OMAP: Make OMAP clocksource source selection using kernel param")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202310070106.8QSyJOm3-lkp@intel.com/
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Vaibhav Hiremath <hvaibhav@ti.com>
+Cc: Felipe Balbi <balbi@ti.com>
+Cc: Tony Lindgren <tony@atomide.com>
+Cc: Xunlei Pang <pang.xunlei@linaro.org>
+Cc: John Stultz <john.stultz@linaro.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>
+Cc: Janusz Krzysztofik <jmkrzyszt@gmail.com>
+Cc: linux-omap@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Message-ID: <20231007001603.24972-1-rdunlap@infradead.org>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arm/mach-omap1/timer32k.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1138,8 +1138,7 @@ static void set_vma_resv_map(struct vm_a
- 	VM_BUG_ON_VMA(!is_vm_hugetlb_page(vma), vma);
- 	VM_BUG_ON_VMA(vma->vm_flags & VM_MAYSHARE, vma);
- 
--	set_vma_private_data(vma, (get_vma_private_data(vma) &
--				HPAGE_RESV_MASK) | (unsigned long)map);
-+	set_vma_private_data(vma, (unsigned long)map);
+diff --git a/arch/arm/mach-omap1/timer32k.c b/arch/arm/mach-omap1/timer32k.c
+index 410d17d1d4431..f618a6df29382 100644
+--- a/arch/arm/mach-omap1/timer32k.c
++++ b/arch/arm/mach-omap1/timer32k.c
+@@ -176,17 +176,18 @@ static u64 notrace omap_32k_read_sched_clock(void)
+ 	return sync32k_cnt_reg ? readl_relaxed(sync32k_cnt_reg) : 0;
  }
  
- static void set_vma_resv_flags(struct vm_area_struct *vma, unsigned long flags)
-@@ -6898,8 +6897,10 @@ out_err:
- 		 */
- 		if (chg >= 0 && add < 0)
- 			region_abort(resv_map, from, to, regions_needed);
--	if (vma && is_vma_resv_set(vma, HPAGE_RESV_OWNER))
-+	if (vma && is_vma_resv_set(vma, HPAGE_RESV_OWNER)) {
- 		kref_put(&resv_map->refs, resv_map_release);
-+		set_vma_resv_map(vma, NULL);
-+	}
- 	return false;
- }
- 
++static struct timespec64 persistent_ts;
++static cycles_t cycles;
++static unsigned int persistent_mult, persistent_shift;
++
+ /**
+  * omap_read_persistent_clock64 -  Return time from a persistent clock.
++ * @ts: &struct timespec64 for the returned time
+  *
+  * Reads the time from a source which isn't disabled during PM, the
+  * 32k sync timer.  Convert the cycles elapsed since last read into
+  * nsecs and adds to a monotonically increasing timespec64.
+  */
+-static struct timespec64 persistent_ts;
+-static cycles_t cycles;
+-static unsigned int persistent_mult, persistent_shift;
+-
+ static void omap_read_persistent_clock64(struct timespec64 *ts)
+ {
+ 	unsigned long long nsecs;
+@@ -206,10 +207,9 @@ static void omap_read_persistent_clock64(struct timespec64 *ts)
+ /**
+  * omap_init_clocksource_32k - setup and register counter 32k as a
+  * kernel clocksource
+- * @pbase: base addr of counter_32k module
+- * @size: size of counter_32k to map
++ * @vbase: base addr of counter_32k module
+  *
+- * Returns 0 upon success or negative error code upon failure.
++ * Returns: %0 upon success or negative error code upon failure.
+  *
+  */
+ static int __init omap_init_clocksource_32k(void __iomem *vbase)
+-- 
+2.42.0
+
 
 
