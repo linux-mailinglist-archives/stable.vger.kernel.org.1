@@ -2,41 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E2B1E7DD52A
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1750F7DD52B
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376447AbjJaRrx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:47:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57676 "EHLO
+        id S1376452AbjJaRr4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:47:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376427AbjJaRrw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:52 -0400
+        with ESMTP id S1376427AbjJaRr4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B328E11B
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8DFC43391;
-        Tue, 31 Oct 2023 17:47:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 818AB138
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7DAC433C7;
+        Tue, 31 Oct 2023 17:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774462;
-        bh=zHLghJDUNrjzGbZH5lN/FeW7jdrhhNpVFCQVb4GH3kw=;
+        s=korg; t=1698774465;
+        bh=0ji1KJqSDxJsyj49aC/zCZIJzYhGzMLqh1bBZaoQ9vo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TFmchTiEoOyVKNI6eZIhyK5u9nCPJLl77vOzqLIPubm7pryTelzfycU9XbGfmFDOe
-         2ME31wbSVnhctdBxf2S3vFNwWWQSaxa0hPjuIDt5nQbj4lfg1en2Y+xpMQkR+cM7no
-         5xwCESKUq8jLggJB+TEcKgHuxaN4yzFLFlxVMQUY=
+        b=zkfjoYCcn9ZCxmsZpfGs+PkubjNTwIKB4FLODFzH+V0yemQqASYVCR2J7ojzsaJu3
+         katxTiZw5nII/bnC0kULPHDLmw7s1HCrKcwreVDHwayhSu5fuwDG9SK9xdxV3LrZ9P
+         kWEFvPlrp40vSB3XxP5Ettg9h9eAo1arCfA+gE3s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mateusz Palczewski <mateusz.palczewski@intel.com>,
-        Simon Horman <horms@kernel.org>,
-        Ivan Vecera <ivecera@redhat.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
+        patches@lists.linux.dev, Kunwu Chan <chentao@kylinos.cn>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.5 053/112] i40e: Fix I40E_FLAG_VF_VLAN_PRUNING value
-Date:   Tue, 31 Oct 2023 18:00:54 +0100
-Message-ID: <20231031165902.983435664@linuxfoundation.org>
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 054/112] treewide: Spelling fix in comment
+Date:   Tue, 31 Oct 2023 18:00:55 +0100
+Message-ID: <20231031165903.023054719@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
 References: <20231031165901.318222981@linuxfoundation.org>
@@ -59,61 +55,34 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 665e7d83c5386f9abdc67b2e4b6e6d9579aadfcb ]
+[ Upstream commit fb71ba0ed8be9534493c80ba00142a64d9972a72 ]
 
-Commit c87c938f62d8f1 ("i40e: Add VF VLAN pruning") added new
-PF flag I40E_FLAG_VF_VLAN_PRUNING but its value collides with
-existing I40E_FLAG_TOTAL_PORT_SHUTDOWN_ENABLED flag.
+reques -> request
 
-Move the affected flag at the end of the flags and fix its value.
-
-Reproducer:
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 link-down-on-close on
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 vf-vlan-pruning on
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 link-down-on-close off
-[ 6323.142585] i40e 0000:02:00.0: Setting link-down-on-close not supported on this port (because total-port-shutdown is enabled)
-netlink error: Operation not supported
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 vf-vlan-pruning off
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 link-down-on-close off
-
-The link-down-on-close flag cannot be modified after setting vf-vlan-pruning
-because vf-vlan-pruning shares the same bit with total-port-shutdown flag
-that prevents any modification of link-down-on-close flag.
-
-Fixes: c87c938f62d8 ("i40e: Add VF VLAN pruning")
-Cc: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Cc: Simon Horman <horms@kernel.org>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Fixes: 09dde54c6a69 ("PS3: gelic: Add wireless support for PS3")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h | 2 +-
+ drivers/net/ethernet/toshiba/ps3_gelic_wireless.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index 6e310a5394678..55bb0b5310d5b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -580,7 +580,6 @@ struct i40e_pf {
- #define I40E_FLAG_DISABLE_FW_LLDP		BIT(24)
- #define I40E_FLAG_RS_FEC			BIT(25)
- #define I40E_FLAG_BASE_R_FEC			BIT(26)
--#define I40E_FLAG_VF_VLAN_PRUNING		BIT(27)
- /* TOTAL_PORT_SHUTDOWN
-  * Allows to physically disable the link on the NIC's port.
-  * If enabled, (after link down request from the OS)
-@@ -603,6 +602,7 @@ struct i40e_pf {
-  *   in abilities field of i40e_aq_set_phy_config structure
-  */
- #define I40E_FLAG_TOTAL_PORT_SHUTDOWN_ENABLED	BIT(27)
-+#define I40E_FLAG_VF_VLAN_PRUNING		BIT(28)
+diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
+index dc14a66583ff3..44488c153ea25 100644
+--- a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
++++ b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
+@@ -1217,7 +1217,7 @@ static int gelic_wl_set_encodeext(struct net_device *netdev,
+ 		key_index = wl->current_key;
  
- 	struct i40e_client_instance *cinst;
- 	bool stat_offsets_loaded;
+ 	if (!enc->length && (ext->ext_flags & IW_ENCODE_EXT_SET_TX_KEY)) {
+-		/* reques to change default key index */
++		/* request to change default key index */
+ 		pr_debug("%s: request to change default key to %d\n",
+ 			 __func__, key_index);
+ 		wl->current_key = key_index;
 -- 
 2.42.0
 
