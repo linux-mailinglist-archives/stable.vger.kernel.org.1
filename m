@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A71837DD56F
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:50:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49F687DD42C
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236468AbjJaRuv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:50:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
+        id S236410AbjJaRH2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236461AbjJaRuu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:50 -0400
+        with ESMTP id S236517AbjJaRHQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E78F3C2
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33257C433C7;
-        Tue, 31 Oct 2023 17:50:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBFDF123
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB7DC433C8;
+        Tue, 31 Oct 2023 17:06:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774647;
-        bh=wCaAbmycb7mxeLeJxKB08U0MsV1PTyCMeTIDW335I/0=;
+        s=korg; t=1698771969;
+        bh=ZUIv5omd/jYtdavqW6fq8oaXJjt9pbgveDIuAlh5z5A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xQ0/zyDUBivb7a5ra1uCtH5E5ZWBnQVbWTxwT/ppBhdrLgHfEw6nX00o9bttuD/fM
-         FZ0atGPLMQu6QUCBYH9C6LiEk4yQO1Nt6AhRaE4W8kD8/0aZGKOMnoeZyMZ612HKsp
-         1+4tF2ZKkS04Oah27AfMESkX6SirerC8c4U4XVeE=
+        b=R+hAHMUl5Qg9/tfWl9jgr0NMlpsSVQ+zOZuV8ySOB5Y5DCLRuOgYYovVPZK6mgFR7
+         yFr5qw+sqwdzgcb8t+wX6DMhG6A8Gvefz1JS4mnmMSUDtd8yv/XdBN+THG91pLzioY
+         73YoP4QWvhZkqWlIjWkwZfC1V0dtrGt456xxZINU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.5 105/112] perf/core: Fix potential NULL deref
+        patches@lists.linux.dev, Philip Daly <pdaly@redhat.com>,
+        "Alessandro Carminati (Red Hat)" <alessandro.carminati@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.1 81/86] clk: Sanitize possible_parent_show to Handle Return Value of of_clk_get_parent_name
 Date:   Tue, 31 Oct 2023 18:01:46 +0100
-Message-ID: <20231031165904.582339818@linuxfoundation.org>
+Message-ID: <20231031165921.057037509@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,36 +50,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Alessandro Carminati <alessandro.carminati@gmail.com>
 
-commit a71ef31485bb51b846e8db8b3a35e432cc15afb5 upstream.
+commit ceb87a361d0b079ecbc7d2831618c19087f304a9 upstream.
 
-Smatch is awesome.
+In the possible_parent_show function, ensure proper handling of the return
+value from of_clk_get_parent_name to prevent potential issues arising from
+a NULL return.
+The current implementation invokes seq_puts directly on the result of
+of_clk_get_parent_name without verifying the return value, which can lead
+to kernel panic if the function returns NULL.
 
-Fixes: 32671e3799ca ("perf: Disallow mis-matched inherited group reads")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+This patch addresses the concern by introducing a check on the return
+value of of_clk_get_parent_name. If the return value is not NULL, the
+function proceeds to call seq_puts, providing the returned value as
+argument.
+However, if of_clk_get_parent_name returns NULL, the function provides a
+static string as argument, avoiding the panic.
+
+Fixes: 1ccc0ddf046a ("clk: Use seq_puts() in possible_parent_show()")
+Reported-by: Philip Daly <pdaly@redhat.com>
+Signed-off-by: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
+Link: https://lore.kernel.org/r/20230921073217.572151-1-alessandro.carminati@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/clk.c |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -13383,7 +13383,8 @@ static int inherit_group(struct perf_eve
- 		    !perf_get_aux_event(child_ctr, leader))
- 			return -EINVAL;
- 	}
--	leader->group_generation = parent_event->group_generation;
-+	if (leader)
-+		leader->group_generation = parent_event->group_generation;
- 	return 0;
- }
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -3340,6 +3340,7 @@ static void possible_parent_show(struct
+ 				 unsigned int i, char terminator)
+ {
+ 	struct clk_core *parent;
++	const char *name = NULL;
  
+ 	/*
+ 	 * Go through the following options to fetch a parent's name.
+@@ -3354,18 +3355,20 @@ static void possible_parent_show(struct
+ 	 * registered (yet).
+ 	 */
+ 	parent = clk_core_get_parent_by_index(core, i);
+-	if (parent)
++	if (parent) {
+ 		seq_puts(s, parent->name);
+-	else if (core->parents[i].name)
++	} else if (core->parents[i].name) {
+ 		seq_puts(s, core->parents[i].name);
+-	else if (core->parents[i].fw_name)
++	} else if (core->parents[i].fw_name) {
+ 		seq_printf(s, "<%s>(fw)", core->parents[i].fw_name);
+-	else if (core->parents[i].index >= 0)
+-		seq_puts(s,
+-			 of_clk_get_parent_name(core->of_node,
+-						core->parents[i].index));
+-	else
+-		seq_puts(s, "(missing)");
++	} else {
++		if (core->parents[i].index >= 0)
++			name = of_clk_get_parent_name(core->of_node, core->parents[i].index);
++		if (!name)
++			name = "(missing)";
++
++		seq_puts(s, name);
++	}
+ 
+ 	seq_putc(s, terminator);
+ }
 
 
