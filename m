@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 333DD7DD3E3
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30B6D7DD539
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236307AbjJaRGH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34382 "EHLO
+        id S1376460AbjJaRsW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:48:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236358AbjJaRFx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:05:53 -0400
+        with ESMTP id S1376488AbjJaRsV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31D731705
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F96C433C7;
-        Tue, 31 Oct 2023 17:03:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C486109
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9570C433C9;
+        Tue, 31 Oct 2023 17:48:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771791;
-        bh=zZ7SLVEkHXOzlYrlj1vm0tGfY9JApPKQUpEzd3oIfW8=;
+        s=korg; t=1698774489;
+        bh=7gAJjd4LL31a/QkLmXLBKWjY5DSSTYo86bdXIQ/ZL+A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=T/EPDdo3+8IY4Mrp88f2WGbbmIPmicCJTzf3AyumWiKWS0NFHh2k3SjfRPamMzWPJ
-         Kvmf3EQD/jNajydr/lbkPGpaacgL3DYD+D0D2TCEluCjtCvV5Bwc+ZuAiektTfZebJ
-         9YSJBOTZelb0SGyeFKAq4q1vHVr11JeO61209zOw=
+        b=Ka2k7pQ08ga+J6vA7+vOKdrVFiutLIr1cuPULbNItArx8uviN3inOBbHQD4Zg/ygY
+         imabxWGcP8XBmOYSLEYqFpTNaTuJ7B/zcIPQlwNCVxsfR5Hi7NC15rYHFAJyQqXb3q
+         1P3m3ZiZQAib7Gx4iXEjI3mRx/uJ7wIc2SLg8IdM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Avri Altman <avri.altman@wdc.com>,
-        Christian Loehle <christian.loehle@arm.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 04/86] mmc: core: Fix error propagation for some ioctl commands
-Date:   Tue, 31 Oct 2023 18:00:29 +0100
-Message-ID: <20231031165918.749940500@linuxfoundation.org>
+        patches@lists.linux.dev, Rik van Riel <riel@surriel.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Muchun Song <muchun.song@linux.dev>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 029/112] hugetlbfs: extend hugetlb_vma_lock to private VMAs
+Date:   Tue, 31 Oct 2023 18:00:30 +0100
+Message-ID: <20231031165902.242299281@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,104 +52,163 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit f19c5a73e6f78d69efce66cfdce31148c76a61a6 ]
+commit bf4916922c60f43efaa329744b3eef539aa6a2b2 upstream.
 
-Userspace has currently no way of checking the internal R1 response error
-bits for some commands. This is a problem for some commands, like RPMB for
-example. Typically, we may detect that the busy completion has successfully
-ended, while in fact the card did not complete the requested operation.
+Extend the locking scheme used to protect shared hugetlb mappings from
+truncate vs page fault races, in order to protect private hugetlb mappings
+(with resv_map) against MADV_DONTNEED.
 
-To fix the problem, let's always poll with CMD13 for these commands and
-during the polling, let's also aggregate the R1 response bits. Before
-completing the ioctl request, let's propagate the R1 response bits too.
+Add a read-write semaphore to the resv_map data structure, and use that
+from the hugetlb_vma_(un)lock_* functions, in preparation for closing the
+race between MADV_DONTNEED and page faults.
 
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Co-developed-by: Christian Loehle <christian.loehle@arm.com>
-Signed-off-by: Christian Loehle <christian.loehle@arm.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230913112921.553019-1-ulf.hansson@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231006040020.3677377-3-riel@surriel.com
+Fixes: 04ada095dcfc ("hugetlb: don't delete vma_lock in hugetlb MADV_DONTNEED processing")
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ include/linux/hugetlb.h |    6 ++++++
+ mm/hugetlb.c            |   41 +++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 43 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
-index 1aab4f47eab98..1fc6767f18782 100644
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -181,6 +181,7 @@ static void mmc_blk_rw_rq_prep(struct mmc_queue_req *mqrq,
- 			       struct mmc_queue *mq);
- static void mmc_blk_hsq_req_done(struct mmc_request *mrq);
- static int mmc_spi_err_check(struct mmc_card *card);
-+static int mmc_blk_busy_cb(void *cb_data, bool *busy);
- 
- static struct mmc_blk_data *mmc_blk_get(struct gendisk *disk)
- {
-@@ -472,7 +473,7 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
- 	struct mmc_data data = {};
- 	struct mmc_request mrq = {};
- 	struct scatterlist sg;
--	bool r1b_resp, use_r1b_resp = false;
-+	bool r1b_resp;
- 	unsigned int busy_timeout_ms;
- 	int err;
- 	unsigned int target_part;
-@@ -566,8 +567,7 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
- 	busy_timeout_ms = idata->ic.cmd_timeout_ms ? : MMC_BLK_TIMEOUT_MS;
- 	r1b_resp = (cmd.flags & MMC_RSP_R1B) == MMC_RSP_R1B;
- 	if (r1b_resp)
--		use_r1b_resp = mmc_prepare_busy_cmd(card->host, &cmd,
--						    busy_timeout_ms);
-+		mmc_prepare_busy_cmd(card->host, &cmd, busy_timeout_ms);
- 
- 	mmc_wait_for_req(card->host, &mrq);
- 	memcpy(&idata->ic.response, cmd.resp, sizeof(cmd.resp));
-@@ -620,19 +620,28 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
- 	if (idata->ic.postsleep_min_us)
- 		usleep_range(idata->ic.postsleep_min_us, idata->ic.postsleep_max_us);
- 
--	/* No need to poll when using HW busy detection. */
--	if ((card->host->caps & MMC_CAP_WAIT_WHILE_BUSY) && use_r1b_resp)
--		return 0;
--
- 	if (mmc_host_is_spi(card->host)) {
- 		if (idata->ic.write_flag || r1b_resp || cmd.flags & MMC_RSP_SPI_BUSY)
- 			return mmc_spi_err_check(card);
- 		return err;
- 	}
--	/* Ensure RPMB/R1B command has completed by polling with CMD13. */
--	if (idata->rpmb || r1b_resp)
--		err = mmc_poll_for_busy(card, busy_timeout_ms, false,
--					MMC_BUSY_IO);
-+
-+	/*
-+	 * Ensure RPMB, writes and R1B responses are completed by polling with
-+	 * CMD13. Note that, usually we don't need to poll when using HW busy
-+	 * detection, but here it's needed since some commands may indicate the
-+	 * error through the R1 status bits.
-+	 */
-+	if (idata->rpmb || idata->ic.write_flag || r1b_resp) {
-+		struct mmc_blk_busy_data cb_data = {
-+			.card = card,
-+		};
-+
-+		err = __mmc_poll_for_busy(card->host, 0, busy_timeout_ms,
-+					  &mmc_blk_busy_cb, &cb_data);
-+
-+		idata->ic.response[0] = cb_data.status;
-+	}
- 
- 	return err;
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -58,6 +58,7 @@ struct resv_map {
+ 	long adds_in_progress;
+ 	struct list_head region_cache;
+ 	long region_cache_count;
++	struct rw_semaphore rw_sema;
+ #ifdef CONFIG_CGROUP_HUGETLB
+ 	/*
+ 	 * On private mappings, the counter to uncharge reservations is stored
+@@ -1245,6 +1246,11 @@ static inline bool __vma_shareable_lock(
+ 	return (vma->vm_flags & VM_MAYSHARE) && vma->vm_private_data;
  }
--- 
-2.42.0
-
+ 
++static inline bool __vma_private_lock(struct vm_area_struct *vma)
++{
++	return (!(vma->vm_flags & VM_MAYSHARE)) && vma->vm_private_data;
++}
++
+ /*
+  * Safe version of huge_pte_offset() to check the locks.  See comments
+  * above huge_pte_offset().
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -96,6 +96,7 @@ static void hugetlb_vma_lock_alloc(struc
+ static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
+ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 		unsigned long start, unsigned long end);
++static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+ 
+ static inline bool subpool_is_free(struct hugepage_subpool *spool)
+ {
+@@ -266,6 +267,10 @@ void hugetlb_vma_lock_read(struct vm_are
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		down_read(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		down_read(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -275,6 +280,10 @@ void hugetlb_vma_unlock_read(struct vm_a
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		up_read(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		up_read(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -284,6 +293,10 @@ void hugetlb_vma_lock_write(struct vm_ar
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		down_write(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		down_write(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -293,17 +306,27 @@ void hugetlb_vma_unlock_write(struct vm_
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		up_write(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		up_write(&resv_map->rw_sema);
+ 	}
+ }
+ 
+ int hugetlb_vma_trylock_write(struct vm_area_struct *vma)
+ {
+-	struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+-	if (!__vma_shareable_lock(vma))
+-		return 1;
++	if (__vma_shareable_lock(vma)) {
++		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+-	return down_write_trylock(&vma_lock->rw_sema);
++		return down_write_trylock(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		return down_write_trylock(&resv_map->rw_sema);
++	}
++
++	return 1;
+ }
+ 
+ void hugetlb_vma_assert_locked(struct vm_area_struct *vma)
+@@ -312,6 +335,10 @@ void hugetlb_vma_assert_locked(struct vm
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		lockdep_assert_held(&vma_lock->rw_sema);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		lockdep_assert_held(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -344,6 +371,11 @@ static void __hugetlb_vma_unlock_write_f
+ 		struct hugetlb_vma_lock *vma_lock = vma->vm_private_data;
+ 
+ 		__hugetlb_vma_unlock_write_put(vma_lock);
++	} else if (__vma_private_lock(vma)) {
++		struct resv_map *resv_map = vma_resv_map(vma);
++
++		/* no free for anon vmas, but still need to unlock */
++		up_write(&resv_map->rw_sema);
+ 	}
+ }
+ 
+@@ -1062,6 +1094,7 @@ struct resv_map *resv_map_alloc(void)
+ 	kref_init(&resv_map->refs);
+ 	spin_lock_init(&resv_map->lock);
+ 	INIT_LIST_HEAD(&resv_map->regions);
++	init_rwsem(&resv_map->rw_sema);
+ 
+ 	resv_map->adds_in_progress = 0;
+ 	/*
 
 
