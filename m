@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB0547DD3F7
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99E207DD555
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234961AbjJaRGd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34354 "EHLO
+        id S1376510AbjJaRt3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:49:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236206AbjJaRGR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:17 -0400
+        with ESMTP id S1376520AbjJaRt2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCB1171B
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5F0C433C7;
-        Tue, 31 Oct 2023 17:03:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D48B6B4
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 241F1C433C9;
+        Tue, 31 Oct 2023 17:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771839;
-        bh=IONTAcN3lQJ/owzFfnxSzRZqqgvcYVvVBzc0/X7wQxc=;
+        s=korg; t=1698774565;
+        bh=yqOVujloTdEjJRqNr4RXLLW5sobJAwOrxoA1ZRm37Dw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lxapy8xUdm1/JJmDIXQ+dnvs+WCEP0JkaB0YjhTepY905BlYj8jCM4cPVRJCUlBZI
-         bQ4w6bQQDg98IZ2hmq3zYrbnyUHnQ7smjuy+bbxsCKxdmIkUKgpydGTX4YVZNqy0rk
-         o6iYocoUdeL3YUrBkSU15m5Ps0U3Z+AqzjaqxV80=
+        b=ORCjnCa1WMe05xtXqDR6PlaS7c4zGY+gGbxSbh0Z6oKAbcsa5kFE+TylvZcPyKzKH
+         ghOTxmE3aUPra/vHQO2Ic917LdxyX/+/p6O1+E5s4yEQVbFMXPFWp3X+TADJHt30S7
+         EGfp3McXjuFKS8biUc6jofmGZieG8uQs0+8A9ZkM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mateusz Palczewski <mateusz.palczewski@intel.com>,
-        Simon Horman <horms@kernel.org>,
-        Ivan Vecera <ivecera@redhat.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
+        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
+        Douglas Anderson <dianders@chromium.org>,
+        Grant Grundler <grundler@chromium.org>,
         "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 38/86] i40e: Fix I40E_FLAG_VF_VLAN_PRUNING value
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 062/112] r8152: Increase USB control msg timeout to 5000ms as per spec
 Date:   Tue, 31 Oct 2023 18:01:03 +0100
-Message-ID: <20231031165919.819925098@linuxfoundation.org>
+Message-ID: <20231031165903.285079372@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,65 +52,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 665e7d83c5386f9abdc67b2e4b6e6d9579aadfcb ]
+[ Upstream commit a5feba71ec9c14a54c3babdc732c5b6866d8ee43 ]
 
-Commit c87c938f62d8f1 ("i40e: Add VF VLAN pruning") added new
-PF flag I40E_FLAG_VF_VLAN_PRUNING but its value collides with
-existing I40E_FLAG_TOTAL_PORT_SHUTDOWN_ENABLED flag.
+According to the comment next to USB_CTRL_GET_TIMEOUT and
+USB_CTRL_SET_TIMEOUT, although sending/receiving control messages is
+usually quite fast, the spec allows them to take up to 5 seconds.
+Let's increase the timeout in the Realtek driver from 500ms to 5000ms
+(using the #defines) to account for this.
 
-Move the affected flag at the end of the flags and fix its value.
+This is not just a theoretical change. The need for the longer timeout
+was seen in testing. Specifically, if you drop a sc7180-trogdor based
+Chromebook into the kdb debugger and then "go" again after sitting in
+the debugger for a while, the next USB control message takes a long
+time. Out of ~40 tests the slowest USB control message was 4.5
+seconds.
 
-Reproducer:
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 link-down-on-close on
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 vf-vlan-pruning on
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 link-down-on-close off
-[ 6323.142585] i40e 0000:02:00.0: Setting link-down-on-close not supported on this port (because total-port-shutdown is enabled)
-netlink error: Operation not supported
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 vf-vlan-pruning off
-[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 link-down-on-close off
+While dropping into kdb is not exactly an end-user scenario, the above
+is similar to what could happen due to an temporary interrupt storm,
+what could happen if there was a host controller (HW or SW) issue, or
+what could happen if the Realtek device got into a confused state and
+needed time to recover.
 
-The link-down-on-close flag cannot be modified after setting vf-vlan-pruning
-because vf-vlan-pruning shares the same bit with total-port-shutdown flag
-that prevents any modification of link-down-on-close flag.
+This change is fairly critical since the r8152 driver in Linux doesn't
+expect register reads/writes (which are backed by USB control
+messages) to fail.
 
-Fixes: c87c938f62d8 ("i40e: Add VF VLAN pruning")
-Cc: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Cc: Simon Horman <horms@kernel.org>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Fixes: ac718b69301c ("net/usb: new driver for RTL8152")
+Suggested-by: Hayes Wang <hayeswang@realtek.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromium.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/r8152.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index a81f918091ccf..7d4cc4eafd59e 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -580,7 +580,6 @@ struct i40e_pf {
- #define I40E_FLAG_DISABLE_FW_LLDP		BIT(24)
- #define I40E_FLAG_RS_FEC			BIT(25)
- #define I40E_FLAG_BASE_R_FEC			BIT(26)
--#define I40E_FLAG_VF_VLAN_PRUNING		BIT(27)
- /* TOTAL_PORT_SHUTDOWN
-  * Allows to physically disable the link on the NIC's port.
-  * If enabled, (after link down request from the OS)
-@@ -603,6 +602,7 @@ struct i40e_pf {
-  *   in abilities field of i40e_aq_set_phy_config structure
-  */
- #define I40E_FLAG_TOTAL_PORT_SHUTDOWN_ENABLED	BIT(27)
-+#define I40E_FLAG_VF_VLAN_PRUNING		BIT(28)
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index e88bedca8f32f..bf83ce5317cea 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -1212,7 +1212,7 @@ int get_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
  
- 	struct i40e_client_instance *cinst;
- 	bool stat_offsets_loaded;
+ 	ret = usb_control_msg(tp->udev, tp->pipe_ctrl_in,
+ 			      RTL8152_REQ_GET_REGS, RTL8152_REQT_READ,
+-			      value, index, tmp, size, 500);
++			      value, index, tmp, size, USB_CTRL_GET_TIMEOUT);
+ 	if (ret < 0)
+ 		memset(data, 0xff, size);
+ 	else
+@@ -1235,7 +1235,7 @@ int set_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
+ 
+ 	ret = usb_control_msg(tp->udev, tp->pipe_ctrl_out,
+ 			      RTL8152_REQ_SET_REGS, RTL8152_REQT_WRITE,
+-			      value, index, tmp, size, 500);
++			      value, index, tmp, size, USB_CTRL_SET_TIMEOUT);
+ 
+ 	kfree(tmp);
+ 
+@@ -9512,7 +9512,8 @@ static u8 __rtl_get_hw_ver(struct usb_device *udev)
+ 
+ 	ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
+ 			      RTL8152_REQ_GET_REGS, RTL8152_REQT_READ,
+-			      PLA_TCR0, MCU_TYPE_PLA, tmp, sizeof(*tmp), 500);
++			      PLA_TCR0, MCU_TYPE_PLA, tmp, sizeof(*tmp),
++			      USB_CTRL_GET_TIMEOUT);
+ 	if (ret > 0)
+ 		ocp_data = (__le32_to_cpu(*tmp) >> 16) & VERSION_MASK;
+ 
 -- 
 2.42.0
 
