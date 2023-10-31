@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6232C7DD403
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E6FA7DD542
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236125AbjJaRGp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34244 "EHLO
+        id S1376497AbjJaRsl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:48:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235859AbjJaRG3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:29 -0400
+        with ESMTP id S1376456AbjJaRsl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F4CB10D8
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:04:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60145C433C8;
-        Tue, 31 Oct 2023 17:04:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C85A3C2
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C3B8C433C8;
+        Tue, 31 Oct 2023 17:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771875;
-        bh=vf+CHaSLutWjyEvqjyNIRLZHJObK2okobru471hV5Uc=;
+        s=korg; t=1698774518;
+        bh=XM3K/JkW+rZ0e45kd/dtT9BqDzhnGn+Au0mUsmz8jyM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zYJMDVgISPnNBnz5ybdxRzNP86nlceycKsyfQTxSbqBqRAZ/zUKm0Cpvq2XQN/6Pb
-         /1JDcHq+FpF+9T4Y6PKUvxYgNm1QjrcecWBF6PZG3K6KNZ2CLMn45LwamdEshzKw1O
-         M5v5+XxiJJ1Cpzkvupcg/BNNL3fKJF4DLhEzl5YA=
+        b=0sXdl92CBbY3qXyAVkS5sRV2f8dFdA2po58UIVLtZjyPuvGHxNL7F9BF9tPssEm9B
+         Z7SD8t9Zxv+9CUaqNokndFmQHKfZK/zzTkOkGzsWFSTUeClEoAwJ2ZW4w1WOOwqxLf
+         DnRPe5coaVeBgDoNQ1x6AArKvifMSyM2WpY07vbQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Grant Grundler <grundler@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 49/86] r8152: Release firmware if we have an error in probe
-Date:   Tue, 31 Oct 2023 18:01:14 +0100
-Message-ID: <20231031165920.118022513@linuxfoundation.org>
+        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.5 074/112] i40e: Fix wrong check for I40E_TXR_FLAGS_WB_ON_ITR
+Date:   Tue, 31 Oct 2023 18:01:15 +0100
+Message-ID: <20231031165903.653717919@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +52,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit b8d35024d4059ca550cba11ac9ab23a6c238d929 ]
+[ Upstream commit 77a8c982ff0d4c3a14022c6fe9e3dbfb327552ec ]
 
-The error handling in rtl8152_probe() is missing a call to release
-firmware. Add it in to match what's in the cleanup code in
-rtl8152_disconnect().
+The I40E_TXR_FLAGS_WB_ON_ITR is i40e_ring flag and not i40e_pf one.
 
-Fixes: 9370f2d05a2a ("r8152: support request_firmware for RTL8153")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 8e0764b4d6be42 ("i40e/i40evf: Add support for writeback on ITR feature for X722")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20231023212714.178032-1-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index fb9c1f3f6e5a4..c34974f7dfd26 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9829,6 +9829,7 @@ static int rtl8152_probe(struct usb_interface *intf,
- 	cancel_delayed_work_sync(&tp->hw_phy_work);
- 	if (tp->rtl_ops.unload)
- 		tp->rtl_ops.unload(tp);
-+	rtl8152_release_firmware(tp);
- 	usb_set_intfdata(intf, NULL);
- out:
- 	free_netdev(netdev);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+index 93485a6824365..b59fef9d7c4ad 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -2854,7 +2854,7 @@ int i40e_napi_poll(struct napi_struct *napi, int budget)
+ 		return budget;
+ 	}
+ 
+-	if (vsi->back->flags & I40E_TXR_FLAGS_WB_ON_ITR)
++	if (q_vector->tx.ring[0].flags & I40E_TXR_FLAGS_WB_ON_ITR)
+ 		q_vector->arm_wb_state = false;
+ 
+ 	/* Exit the polling mode, but don't re-enable interrupts if stack might
 -- 
 2.42.0
 
