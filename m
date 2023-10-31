@@ -2,51 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 191637DD6E8
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 21:05:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7D177DD732
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 21:41:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230116AbjJaUFj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 16:05:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38618 "EHLO
+        id S233691AbjJaUla (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 16:41:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231253AbjJaUFi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 16:05:38 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75B57C9;
-        Tue, 31 Oct 2023 13:05:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=wN7hoCdZjW2Qi5EV2D6vN+0xz2qgaPB0lFfQQA1NDJc=; b=CCPQqz/OCjQy8Bu7hLe6nE3rKM
-        WyqY+s0CxwA4JgbLPJomToXKheGbdKMG3rznfeNS3Pyu4ZJ3dFezHFMrkEMXAHolsZ6ae2nUYO8N3
-        gT6bfkYCTC/m+vtJj0S7Q3KAW/k916z0LNu/fq8UR3bGs1g0h8Ao/lAwSB/cxQJc5C1T32zj0wTej
-        ZEEiXYsLbm1AdOxHRSyHXTW5bdsZPFvhSyY7x1/12Ew1C8zkdKqgjYiqC/aPblw6SltPUI42G92is
-        /c1ErYiK8sSAYLhuJoPbQ0b+K1eHUV98f/RQlpvHA5VbAsBBM+8tW+Gewg0Qkl37pkNwRVJhmqygx
-        qMuwoUPw==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1qxuzO-0053Q4-2l;
-        Tue, 31 Oct 2023 20:05:27 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 784E8300473; Tue, 31 Oct 2023 21:05:26 +0100 (CET)
-Date:   Tue, 31 Oct 2023 21:05:26 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Johannes Weiner <hannes@cmpxchg.org>, Tejun Heo <tj@kernel.org>
-Cc:     Suren Baghdasaryan <surenb@google.com>,
-        Domenico Cerasuolo <cerasuolodomenico@gmail.com>,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Luca Boccassi <bluca@debian.org>
-Subject: Re: [PATCH] sched: psi: fix unprivileged polling against cgroups
-Message-ID: <20231031200526.GH15024@noisy.programming.kicks-ass.net>
-References: <20231026164114.2488682-1-hannes@cmpxchg.org>
+        with ESMTP id S231546AbjJaUl3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 16:41:29 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDC09F5
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 13:41:26 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qxvYD-0000zK-1h; Tue, 31 Oct 2023 21:41:25 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qxvYC-005eEs-CK; Tue, 31 Oct 2023 21:41:24 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1qxvYC-00AAZU-33; Tue, 31 Oct 2023 21:41:24 +0100
+Date:   Tue, 31 Oct 2023 21:41:23 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, patches@lists.linux.dev,
+        Takashi Iwai <tiwai@suse.de>,
+        Nicolas Ferre <nicolas.ferre@microchip.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 05/86] ASoC: codecs: wcd938x: Convert to platform
+ remove callback returning void
+Message-ID: <20231031204123.thehtrqhmludytt6@pengutronix.de>
+References: <20231031165918.608547597@linuxfoundation.org>
+ <20231031165918.777236098@linuxfoundation.org>
+ <958957ff-bbaa-4fbc-a796-30e2fdf61453@sirena.org.uk>
+ <2023103133-skating-last-e2f6@gregkh>
+ <8744aeca-36cb-4d47-86f9-92fa70a234e1@sirena.org.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="c6fu7lmipstxgsjl"
 Content-Disposition: inline
-In-Reply-To: <20231026164114.2488682-1-hannes@cmpxchg.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+In-Reply-To: <8744aeca-36cb-4d47-86f9-92fa70a234e1@sirena.org.uk>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,98 +62,54 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-+cc tj because cgroup
+--c6fu7lmipstxgsjl
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Oct 26, 2023 at 12:41:14PM -0400, Johannes Weiner wrote:
-> 519fabc7aaba ("psi: remove 500ms min window size limitation for
-> triggers") breaks unprivileged psi polling on cgroups.
-> 
-> Historically, we had a privilege check for polling in the open() of a
-> pressure file in /proc, but were erroneously missing it for the open()
-> of cgroup pressure files.
-> 
-> When unprivileged polling was introduced in d82caa273565 ("sched/psi:
-> Allow unprivileged polling of N*2s period"), it needed to filter
-> privileges depending on the exact polling parameters, and as such
-> moved the CAP_SYS_RESOURCE check from the proc open() callback to
-> psi_trigger_create(). Both the proc files as well as cgroup files go
-> through this during write(). This implicitly added the missing check
-> for privileges required for HT polling for cgroups.
-> 
-> When 519fabc7aaba ("psi: remove 500ms min window size limitation for
-> triggers") followed right after to remove further restrictions on the
-> RT polling window, it incorrectly assumed the cgroup privilege check
-> was still missing and added it to the cgroup open(), mirroring what we
-> used to do for proc files in the past.
-> 
-> As a result, unprivileged poll requests that would be supported now
-> get rejected when opening the cgroup pressure file for writing.
-> 
-> Remove the cgroup open() check. psi_trigger_create() handles it.
-> 
-> Fixes: 519fabc7aaba ("psi: remove 500ms min window size limitation for triggers")
-> Cc: stable@vger.kernel.org # 6.5+
-> Reported-by: Luca Boccassi <bluca@debian.org>
-> Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+On Tue, Oct 31, 2023 at 05:49:03PM +0000, Mark Brown wrote:
+> On Tue, Oct 31, 2023 at 06:44:52PM +0100, Greg Kroah-Hartman wrote:
+> > On Tue, Oct 31, 2023 at 05:11:27PM +0000, Mark Brown wrote:
+>=20
+> > > This doesn't seem like obvious stable material - it's not fixing any
+> > > leaks or anything, just preparing for an API transition?
+>=20
+> > It was taken to make the patch after this one apply cleanly, that's all.
+>=20
+> Ah, I see.
 
-Since merge window is upon is, I've queued this with the intent to stick
-into sched/urgent after rc1.
+The patch has a footer:
 
-> ---
->  kernel/cgroup/cgroup.c | 12 ------------
->  1 file changed, 12 deletions(-)
-> 
-> diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-> index f11488b18ceb..2069ee98da60 100644
-> --- a/kernel/cgroup/cgroup.c
-> +++ b/kernel/cgroup/cgroup.c
-> @@ -3879,14 +3879,6 @@ static __poll_t cgroup_pressure_poll(struct kernfs_open_file *of,
->  	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
->  }
->  
-> -static int cgroup_pressure_open(struct kernfs_open_file *of)
-> -{
-> -	if (of->file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
-> -		return -EPERM;
-> -
-> -	return 0;
-> -}
-> -
->  static void cgroup_pressure_release(struct kernfs_open_file *of)
->  {
->  	struct cgroup_file_ctx *ctx = of->priv;
-> @@ -5287,7 +5279,6 @@ static struct cftype cgroup_psi_files[] = {
->  	{
->  		.name = "io.pressure",
->  		.file_offset = offsetof(struct cgroup, psi_files[PSI_IO]),
-> -		.open = cgroup_pressure_open,
->  		.seq_show = cgroup_io_pressure_show,
->  		.write = cgroup_io_pressure_write,
->  		.poll = cgroup_pressure_poll,
-> @@ -5296,7 +5287,6 @@ static struct cftype cgroup_psi_files[] = {
->  	{
->  		.name = "memory.pressure",
->  		.file_offset = offsetof(struct cgroup, psi_files[PSI_MEM]),
-> -		.open = cgroup_pressure_open,
->  		.seq_show = cgroup_memory_pressure_show,
->  		.write = cgroup_memory_pressure_write,
->  		.poll = cgroup_pressure_poll,
-> @@ -5305,7 +5295,6 @@ static struct cftype cgroup_psi_files[] = {
->  	{
->  		.name = "cpu.pressure",
->  		.file_offset = offsetof(struct cgroup, psi_files[PSI_CPU]),
-> -		.open = cgroup_pressure_open,
->  		.seq_show = cgroup_cpu_pressure_show,
->  		.write = cgroup_cpu_pressure_write,
->  		.poll = cgroup_pressure_poll,
-> @@ -5315,7 +5304,6 @@ static struct cftype cgroup_psi_files[] = {
->  	{
->  		.name = "irq.pressure",
->  		.file_offset = offsetof(struct cgroup, psi_files[PSI_IRQ]),
-> -		.open = cgroup_pressure_open,
->  		.seq_show = cgroup_irq_pressure_show,
->  		.write = cgroup_irq_pressure_write,
->  		.poll = cgroup_pressure_poll,
-> -- 
-> 2.42.0
-> 
+	Stable-dep-of: 69a026a2357e ("ASoC: codecs: wcd938x: fix regulator leaks o=
+n probe errors")
+
+to make this point explicit. I really like the addition of this
+information to the stable backports.
+
+Thanks to whoever had the idea and implemented that!
+
+Best regards
+Uwe
+
+
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--c6fu7lmipstxgsjl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVBZnMACgkQj4D7WH0S
+/k6MEwf/f7FJi+RTbZrGKzccG4CQzbujzIq7pVd59QBaB9WCL8rGCtP4cWcB0IP9
+djL68EiWkAEB8qFRQQOAW3N5Ah0eVa5ODSwvqZAZo4ajsxvLV+VhmLk2JCL5pFGP
+4FiKHEKxEF0bWS7iZuOLSyGbNAPBZNItCA9Qvxy0xXSPGQ1Va5nS9zRJpLmY2SMU
+UDTrhTOhwt5cX7yLjwmzmaq3gNxIy1Svj8511MP11nvReYzgCc4HgTUN+JcieRlM
+tP3TRRrinQoOadJHKrULJZsLAtB+MSdngbJqE+pAIF/Q/68W6QnyKI389x/rVHwq
+gKWc8MwSdfGAvzp2Mb0JsyLklQP+vg==
+=nAJH
+-----END PGP SIGNATURE-----
+
+--c6fu7lmipstxgsjl--
