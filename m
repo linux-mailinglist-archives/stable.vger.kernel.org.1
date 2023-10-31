@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3EB7DD3F6
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB0547DD3F7
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236127AbjJaRGc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33922 "EHLO
+        id S234961AbjJaRGd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34354 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234834AbjJaRGO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:14 -0400
+        with ESMTP id S236206AbjJaRGR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77DA2E4
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52EAC433C9;
-        Tue, 31 Oct 2023 17:03:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCB1171B
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5F0C433C7;
+        Tue, 31 Oct 2023 17:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771836;
-        bh=sybyvJX6f9RTDd4I66HTmH7b4oAKg2Y6v0GKwxDwycU=;
+        s=korg; t=1698771839;
+        bh=IONTAcN3lQJ/owzFfnxSzRZqqgvcYVvVBzc0/X7wQxc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EnFuUUBRDvESn+2/tUhH0T7nzVZymjUjR/DBd+IUM6GZjI8FtBlL3xRLNTMuHsf+9
-         5k6ZsceGGMLe89MFxFrHrxzFYvQ4rFVlJSdQoAGaViUns4WDuu/w5f6lnY/4VVgHWa
-         WIQ9Li1ipp45ND4+jU0rK8gQIk3hmrblVCCxKn8M=
+        b=Lxapy8xUdm1/JJmDIXQ+dnvs+WCEP0JkaB0YjhTepY905BlYj8jCM4cPVRJCUlBZI
+         bQ4w6bQQDg98IZ2hmq3zYrbnyUHnQ7smjuy+bbxsCKxdmIkUKgpydGTX4YVZNqy0rk
+         o6iYocoUdeL3YUrBkSU15m5Ps0U3Z+AqzjaqxV80=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        patches@lists.linux.dev,
+        Mateusz Palczewski <mateusz.palczewski@intel.com>,
+        Simon Horman <horms@kernel.org>,
+        Ivan Vecera <ivecera@redhat.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 37/86] iavf: initialize waitqueues before starting watchdog_task
-Date:   Tue, 31 Oct 2023 18:01:02 +0100
-Message-ID: <20231031165919.794321733@linuxfoundation.org>
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.1 38/86] i40e: Fix I40E_FLAG_VF_VLAN_PRUNING value
+Date:   Tue, 31 Oct 2023 18:01:03 +0100
+Message-ID: <20231031165919.819925098@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
 References: <20231031165918.608547597@linuxfoundation.org>
@@ -56,53 +59,61 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit 7db3111043885c146e795c199d39c3f9042d97c0 ]
+[ Upstream commit 665e7d83c5386f9abdc67b2e4b6e6d9579aadfcb ]
 
-It is not safe to initialize the waitqueues after queueing the
-watchdog_task. It will be using them.
+Commit c87c938f62d8f1 ("i40e: Add VF VLAN pruning") added new
+PF flag I40E_FLAG_VF_VLAN_PRUNING but its value collides with
+existing I40E_FLAG_TOTAL_PORT_SHUTDOWN_ENABLED flag.
 
-The chance of this causing a real problem is very small, because
-there will be some sleeping before any of the waitqueues get used.
-I got a crash only after inserting an artificial sleep in iavf_probe.
+Move the affected flag at the end of the flags and fix its value.
 
-Queue the watchdog_task as the last step in iavf_probe. Add a comment to
-prevent repeating the mistake.
+Reproducer:
+[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 link-down-on-close on
+[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 vf-vlan-pruning on
+[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 link-down-on-close off
+[ 6323.142585] i40e 0000:02:00.0: Setting link-down-on-close not supported on this port (because total-port-shutdown is enabled)
+netlink error: Operation not supported
+[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 vf-vlan-pruning off
+[root@cnb-03 ~]# ethtool --set-priv-flags enp2s0f0np0 link-down-on-close off
 
-Fixes: fe2647ab0c99 ("i40evf: prevent VF close returning before state transitions to DOWN")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+The link-down-on-close flag cannot be modified after setting vf-vlan-pruning
+because vf-vlan-pruning shares the same bit with total-port-shutdown flag
+that prevents any modification of link-down-on-close flag.
+
+Fixes: c87c938f62d8 ("i40e: Add VF VLAN pruning")
+Cc: Mateusz Palczewski <mateusz.palczewski@intel.com>
+Cc: Simon Horman <horms@kernel.org>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index a39f7f0d6ab0b..1ae90f8f9941f 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -5020,8 +5020,6 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	INIT_WORK(&adapter->finish_config, iavf_finish_config);
- 	INIT_DELAYED_WORK(&adapter->watchdog_task, iavf_watchdog_task);
- 	INIT_DELAYED_WORK(&adapter->client_task, iavf_client_task);
--	queue_delayed_work(adapter->wq, &adapter->watchdog_task,
--			   msecs_to_jiffies(5 * (pdev->devfn & 0x07)));
+diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
+index a81f918091ccf..7d4cc4eafd59e 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e.h
++++ b/drivers/net/ethernet/intel/i40e/i40e.h
+@@ -580,7 +580,6 @@ struct i40e_pf {
+ #define I40E_FLAG_DISABLE_FW_LLDP		BIT(24)
+ #define I40E_FLAG_RS_FEC			BIT(25)
+ #define I40E_FLAG_BASE_R_FEC			BIT(26)
+-#define I40E_FLAG_VF_VLAN_PRUNING		BIT(27)
+ /* TOTAL_PORT_SHUTDOWN
+  * Allows to physically disable the link on the NIC's port.
+  * If enabled, (after link down request from the OS)
+@@ -603,6 +602,7 @@ struct i40e_pf {
+  *   in abilities field of i40e_aq_set_phy_config structure
+  */
+ #define I40E_FLAG_TOTAL_PORT_SHUTDOWN_ENABLED	BIT(27)
++#define I40E_FLAG_VF_VLAN_PRUNING		BIT(28)
  
- 	/* Setup the wait queue for indicating transition to down status */
- 	init_waitqueue_head(&adapter->down_waitqueue);
-@@ -5032,6 +5030,9 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	/* Setup the wait queue for indicating virtchannel events */
- 	init_waitqueue_head(&adapter->vc_waitqueue);
- 
-+	queue_delayed_work(adapter->wq, &adapter->watchdog_task,
-+			   msecs_to_jiffies(5 * (pdev->devfn & 0x07)));
-+	/* Initialization goes on in the work. Do not add more of it below. */
- 	return 0;
- 
- err_ioremap:
+ 	struct i40e_client_instance *cinst;
+ 	bool stat_offsets_loaded;
 -- 
 2.42.0
 
