@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 98BDB7DD413
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6000E7DD532
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236588AbjJaRG6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34278 "EHLO
+        id S1376453AbjJaRsF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:48:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236418AbjJaRGm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:42 -0400
+        with ESMTP id S1376470AbjJaRsE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6133AD5D
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AC7C433C8;
-        Tue, 31 Oct 2023 17:05:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF3A8129
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA0FC433C9;
+        Tue, 31 Oct 2023 17:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771917;
-        bh=/p8tFqlkqXEpdklW2YDb7ZfN/9bTj5KDGqpfh/6AEBM=;
+        s=korg; t=1698774471;
+        bh=c4cUGdYCDqW3utYO/pZ4pKouJPUnuWbN5DTbdUVtmwc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f2ZvWSd/9668/m5BaEWmW2yYPyraJUPvMxy/wB08PWMvMxNY0eCnvvEZEoziXTAp2
-         5t9S+VHAYAIdq5U8EWHTJ/TMGrzkLHKRfjYa/H25SpgbJIPM9v+rmok0qnULEd0chu
-         gOFWcLf7s6qHI8mBWMwHppVWvNRq7zvwzCdN7+LY=
+        b=QmlMlwZRq04l8nBArmc5De1tbS8BL8g3J//sAaQE6RCeIXjVeXsuXiJjizCo4/HTA
+         x72yP0Gdcrd1PY94nhUS/HuQ9zZyTdKWvPWY+xMGEy/GASqusGtIq3gZnQIt49hKvN
+         SpA/TNoSZNHBzuIw6RybDyaslJNrgTfdo3K2eCpU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andreas Kemnade <andreas@kemnade.info>,
-        =?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 32/86] clk: ti: Fix missing omap4 mcbsp functional clock and aliases
+Subject: [PATCH 6.5 056/112] net: do not leave an empty skb in write queue
 Date:   Tue, 31 Oct 2023 18:00:57 +0100
-Message-ID: <20231031165919.621975722@linuxfoundation.org>
+Message-ID: <20231031165903.082981401@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,102 +51,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cc2d819dd7df94a72bde7b9b9331a6535084092d ]
+[ Upstream commit 72bf4f1767f0386970dc04726dc5bc2e3991dc19 ]
 
-We are using a wrong mcbsp functional clock. The interconnect target module
-driver provided clock for mcbsp is not same as the mcbsp functional clock
-known as the gfclk main_clk. The mcbsp functional clocks for mcbsp should
-have been added before we dropped the legacy platform data.
+Under memory stress conditions, tcp_sendmsg_locked()
+might call sk_stream_wait_memory(), thus releasing the socket lock.
 
-Additionally we are also missing the clock aliases for the clocks used by
-the audio driver if reparenting is needed. This causes audio driver errors
-like "CLKS: could not clk_get() prcm_fck" for mcbsp as reported by Andreas.
-The mcbsp clock aliases too should have been added before we dropped the
-legacy platform data.
+If a fresh skb has been allocated prior to this,
+we should not leave it in the write queue otherwise
+tcp_write_xmit() could panic.
 
-Let's add the clocks and aliases with a single patch to fix the issue.
+This apparently does not happen often, but a future change
+in __sk_mem_raise_allocated() that Shakeel and others are
+considering would increase chances of being hurt.
 
-Fixes: 349355ce3a05 ("ARM: OMAP2+: Drop legacy platform data for omap4 mcbsp")
-Reported-by: Andreas Kemnade <andreas@kemnade.info>
-Reported-by: Péter Ujfalusi <peter.ujfalusi@gmail.com>
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Under discussion is to remove this controversial part:
+
+    /* Fail only if socket is _under_ its sndbuf.
+     * In this case we cannot block, so that we have to fail.
+     */
+    if (sk->sk_wmem_queued + size >= sk->sk_sndbuf) {
+        /* Force charge with __GFP_NOFAIL */
+        if (memcg_charge && !charged) {
+            mem_cgroup_charge_skmem(sk->sk_memcg, amt,
+                gfp_memcg_charge() | __GFP_NOFAIL);
+        }
+        return 1;
+    }
+
+Fixes: fdfc5c8594c2 ("tcp: remove empty skb from write queue in error cases")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Shakeel Butt <shakeelb@google.com>
+Link: https://lore.kernel.org/r/20231019112457.1190114-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/omap4-l4-abe.dtsi | 6 ++++++
- arch/arm/boot/dts/omap4-l4.dtsi     | 2 ++
- drivers/clk/ti/clk-44xx.c           | 5 +++++
- 3 files changed, 13 insertions(+)
+ net/ipv4/tcp.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/omap4-l4-abe.dtsi b/arch/arm/boot/dts/omap4-l4-abe.dtsi
-index 7ae8b620515c5..59f546a278f87 100644
---- a/arch/arm/boot/dts/omap4-l4-abe.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4-abe.dtsi
-@@ -109,6 +109,8 @@
- 				reg = <0x0 0xff>, /* MPU private access */
- 				      <0x49022000 0xff>; /* L3 Interconnect */
- 				reg-names = "mpu", "dma";
-+				clocks = <&abe_clkctrl OMAP4_MCBSP1_CLKCTRL 24>;
-+				clock-names = "fck";
- 				interrupts = <GIC_SPI 17 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "common";
- 				ti,buffer-size = <128>;
-@@ -142,6 +144,8 @@
- 				reg = <0x0 0xff>, /* MPU private access */
- 				      <0x49024000 0xff>; /* L3 Interconnect */
- 				reg-names = "mpu", "dma";
-+				clocks = <&abe_clkctrl OMAP4_MCBSP2_CLKCTRL 24>;
-+				clock-names = "fck";
- 				interrupts = <GIC_SPI 22 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "common";
- 				ti,buffer-size = <128>;
-@@ -175,6 +179,8 @@
- 				reg = <0x0 0xff>, /* MPU private access */
- 				      <0x49026000 0xff>; /* L3 Interconnect */
- 				reg-names = "mpu", "dma";
-+				clocks = <&abe_clkctrl OMAP4_MCBSP3_CLKCTRL 24>;
-+				clock-names = "fck";
- 				interrupts = <GIC_SPI 23 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "common";
- 				ti,buffer-size = <128>;
-diff --git a/arch/arm/boot/dts/omap4-l4.dtsi b/arch/arm/boot/dts/omap4-l4.dtsi
-index 46b8f9efd4131..3fcef3080eaec 100644
---- a/arch/arm/boot/dts/omap4-l4.dtsi
-+++ b/arch/arm/boot/dts/omap4-l4.dtsi
-@@ -2043,6 +2043,8 @@
- 				compatible = "ti,omap4-mcbsp";
- 				reg = <0x0 0xff>; /* L4 Interconnect */
- 				reg-names = "mpu";
-+				clocks = <&l4_per_clkctrl OMAP4_MCBSP4_CLKCTRL 24>;
-+				clock-names = "fck";
- 				interrupts = <GIC_SPI 16 IRQ_TYPE_LEVEL_HIGH>;
- 				interrupt-names = "common";
- 				ti,buffer-size = <128>;
-diff --git a/drivers/clk/ti/clk-44xx.c b/drivers/clk/ti/clk-44xx.c
-index 868bc7af21b0b..9b2824ed785b9 100644
---- a/drivers/clk/ti/clk-44xx.c
-+++ b/drivers/clk/ti/clk-44xx.c
-@@ -749,9 +749,14 @@ static struct ti_dt_clk omap44xx_clks[] = {
- 	DT_CLK(NULL, "mcbsp1_sync_mux_ck", "abe-clkctrl:0028:26"),
- 	DT_CLK(NULL, "mcbsp2_sync_mux_ck", "abe-clkctrl:0030:26"),
- 	DT_CLK(NULL, "mcbsp3_sync_mux_ck", "abe-clkctrl:0038:26"),
-+	DT_CLK("40122000.mcbsp", "prcm_fck", "abe-clkctrl:0028:26"),
-+	DT_CLK("40124000.mcbsp", "prcm_fck", "abe-clkctrl:0030:26"),
-+	DT_CLK("40126000.mcbsp", "prcm_fck", "abe-clkctrl:0038:26"),
- 	DT_CLK(NULL, "mcbsp4_sync_mux_ck", "l4-per-clkctrl:00c0:26"),
-+	DT_CLK("48096000.mcbsp", "prcm_fck", "l4-per-clkctrl:00c0:26"),
- 	DT_CLK(NULL, "ocp2scp_usb_phy_phy_48m", "l3-init-clkctrl:00c0:8"),
- 	DT_CLK(NULL, "otg_60m_gfclk", "l3-init-clkctrl:0040:24"),
-+	DT_CLK(NULL, "pad_fck", "pad_clks_ck"),
- 	DT_CLK(NULL, "per_mcbsp4_gfclk", "l4-per-clkctrl:00c0:24"),
- 	DT_CLK(NULL, "pmd_stm_clock_mux_ck", "emu-sys-clkctrl:0000:20"),
- 	DT_CLK(NULL, "pmd_trace_clk_mux_ck", "emu-sys-clkctrl:0000:22"),
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 9bdc1b2eaf734..a0a87446f827c 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -925,10 +925,11 @@ int tcp_send_mss(struct sock *sk, int *size_goal, int flags)
+ 	return mss_now;
+ }
+ 
+-/* In some cases, both sendmsg() could have added an skb to the write queue,
+- * but failed adding payload on it.  We need to remove it to consume less
++/* In some cases, sendmsg() could have added an skb to the write queue,
++ * but failed adding payload on it. We need to remove it to consume less
+  * memory, but more importantly be able to generate EPOLLOUT for Edge Trigger
+- * epoll() users.
++ * epoll() users. Another reason is that tcp_write_xmit() does not like
++ * finding an empty skb in the write queue.
+  */
+ void tcp_remove_empty_skb(struct sock *sk)
+ {
+@@ -1286,6 +1287,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
+ 
+ wait_for_space:
+ 		set_bit(SOCK_NOSPACE, &sk->sk_socket->flags);
++		tcp_remove_empty_skb(sk);
+ 		if (copied)
+ 			tcp_push(sk, flags & ~MSG_MORE, mss_now,
+ 				 TCP_NAGLE_PUSH, size_goal);
 -- 
 2.42.0
 
