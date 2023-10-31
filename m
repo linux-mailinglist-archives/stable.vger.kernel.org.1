@@ -2,227 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3A4F7DCE3F
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 14:53:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6DBD7DCE8F
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 15:03:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344652AbjJaNvZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 09:51:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56654 "EHLO
+        id S1344703AbjJaOBl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 10:01:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344592AbjJaNvY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 09:51:24 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36EB2DE
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 06:51:21 -0700 (PDT)
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 39VCn8WT008625;
-        Tue, 31 Oct 2023 13:51:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type : in-reply-to :
- mime-version; s=corp-2023-03-30;
- bh=CaRaJgY+gxxPgi37ElImeiEHwOc1daYfWMOZH8pKHqc=;
- b=apfz+dm0bEMQCA2kvWsg1eDM1PpFXOT1uGJrc/JRwS2kLl5JLEVGtii7/ftcF8eyUqTu
- t2EFC3StjqQerAaRg3aC43Lcf2j8iZdTSron/FHtBg0/8t6Kj6t9KMBr4Nrzv8/xMii3
- D53PEmHoLF36AfxyjoCKdCqZAAvp7xJCW1ebM/wYUfufFBLlcjzxFrh0mF7ghv9r74Ef
- JViYif5nDge+SjGLelvNlKyO7ocVjhzTZlSy4H2GBvM/UqbqoXQW0e9pWuTcYE5RaHC1
- oQxiILR72pq1o96mcqvwd31zTNgrBatJ3io++YGtdEnD9bPHfmaLYULfoVWjciJOoeAu uw== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3u0tbdn2av-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 31 Oct 2023 13:51:17 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 39VDA1tX038030;
-        Tue, 31 Oct 2023 13:51:16 GMT
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2040.outbound.protection.outlook.com [104.47.66.40])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3u0rrbx1d0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 31 Oct 2023 13:51:16 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=InDNVQIW9hPJzNZKQ7ZnGHUkMVdHGue7R60n+ZfMjph/pJwsVg61VlqMrNPlAlalrkMnkMfvpARmW5OR59QcN+Y+jxEckwyo07X74nTKLCpj5b8affd51P79ySFsmJP0YZKPSz+MXgUyNXrXOkMnKA2BXiehvxGI2w9fsTjZt8RFadOESo263+L7EodE65mJ1YZwo0vRtqc5YctF5UWNWdJZ+fkFAn2WPlXDKgUyXz6CBUQeCseMhannZypg7jjINhKipqeyrIuJfiHovLQRzwIdUncmqCYhrHVROVsJnl1YI6oEm1cgoP6a3B4Y8z7FGcm0Nr6JnQbCIvuBpd9fog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CaRaJgY+gxxPgi37ElImeiEHwOc1daYfWMOZH8pKHqc=;
- b=JjdiO6xLrt1gP+5Wyj+oPkKYHi2kUJMX08FJ4LXa5DTxv67uac3a2ILDub5RHeksYEQl2k+BHwtWJbRDHCPGCLrhem2sId+HGU24/DHgsdIOmUmtt+1stYh1RwPd9BjwU5pozfNQGeWl1X8WqtxhNUhhC+m0NWZWdnOiV7M0caQobxK/zHg9vezP98vLsOZkCLoWiQQrcMxbzy+2K8ETKq/+YNbrl/AKtM5Q/8zr3FAohQOh9+OFRV8M2UXOY94Au1/Wf6ZAvDuX9fEJvsUij/76mRJL6gudFoqwVQno+gc9OEJgfOG+a6KXdu2zvvW0fRTXsjl4OdIbd26xIFMSug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CaRaJgY+gxxPgi37ElImeiEHwOc1daYfWMOZH8pKHqc=;
- b=G/iLewWqtaXjYAE9LgfrmW0YZj0+NO4GdTVtWJnS8By559sA/aIBo5zRtNeIqtqDpvSWVJJ8VIAdJ4de3bK71FfG5I8lZjnir3plj44xOiHRbvScgKGddp4y4jAg65ZOKejNts6E4IRY02D0QlmJIWMjVhDNI5flP5XDiaq5imA=
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
- by BN0PR10MB5351.namprd10.prod.outlook.com (2603:10b6:408:127::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.19; Tue, 31 Oct
- 2023 13:51:14 +0000
-Received: from SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::8979:3e3f:c3e0:8dfa]) by SN6PR10MB3022.namprd10.prod.outlook.com
- ([fe80::8979:3e3f:c3e0:8dfa%4]) with mapi id 15.20.6907.025; Tue, 31 Oct 2023
- 13:51:13 +0000
-Date:   Tue, 31 Oct 2023 09:51:11 -0400
-From:   "Liam R. Howlett" <Liam.Howlett@Oracle.com>
-To:     gregkh@linuxfoundation.org
-Cc:     akpm@linux-foundation.org, lstoakes@gmail.com,
-        stable@vger.kernel.org, yikebaer61@gmail.com,
-        Michal Hocko <mhocko@suse.com>
-Subject: Re: FAILED: patch "[PATCH] mm/mempolicy: fix
- set_mempolicy_home_node() previous VMA" failed to apply to 6.1-stable tree
-Message-ID: <20231031135111.y3awm4b3jvbybpca@revolver>
-References: <2023102704-surrogate-dole-2888@gregkh>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023102704-surrogate-dole-2888@gregkh>
-User-Agent: NeoMutt/20220429
-X-ClientProxiedBy: YT4PR01CA0253.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10f::6) To SN6PR10MB3022.namprd10.prod.outlook.com
- (2603:10b6:805:d8::25)
+        with ESMTP id S1344729AbjJaOBl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 10:01:41 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5737DF3
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 07:01:38 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 0F9DF1F38C;
+        Tue, 31 Oct 2023 14:01:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1698760897; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1LF7kbHX9N77tVn1FdmTn2yQglSxGX4kd1aiT/nhq30=;
+        b=Ftzu5FhvcqTcaOYiHY91lRJ/oN1s8Qz2uzrsxDg8ACQGCpWpL93PeQDVfINnK7CpjomSpE
+        NXAbrLkoe3mb8TfnGpUS70JM+8YxPaJzg7w3rNjI0SBpXmF5BIRurx7ZD6OV3D7ZVGiajY
+        oWTbXPPTJKemeoCQE8dwtnBjOOYXmvs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1698760897;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=1LF7kbHX9N77tVn1FdmTn2yQglSxGX4kd1aiT/nhq30=;
+        b=5AehXmbL1cgO0YhZ0g3JQJBoKhxnlVe5OHvpvwxfI0mcRDdnIpEDe+uHpt80iAs8NMxPIQ
+        HqrlJuHl1wvzhNDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 002D3138EF;
+        Tue, 31 Oct 2023 14:01:36 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 4EQNAMEIQWV8BAAAMHmgww
+        (envelope-from <jack@suse.cz>); Tue, 31 Oct 2023 14:01:36 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+        id 7B01AA06E5; Tue, 31 Oct 2023 15:01:36 +0100 (CET)
+Date:   Tue, 31 Oct 2023 15:01:36 +0100
+From:   Jan Kara <jack@suse.cz>
+To:     Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+Cc:     Mikulas Patocka <mpatocka@redhat.com>, Jan Kara <jack@suse.cz>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Message-ID: <20231031140136.25bio5wajc5pmdtl@quack3>
+References: <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
+ <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com>
+ <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz>
+ <20231030122513.6gds75hxd65gu747@quack3>
+ <ZT+wDLwCBRB1O+vB@mail-itl>
+ <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
+ <20231030155603.k3kejytq2e4vnp7z@quack3>
+ <ZT/e/EaBIkJEgevQ@mail-itl>
+ <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
+ <ZUB5HFeK3eHeI8UH@mail-itl>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|BN0PR10MB5351:EE_
-X-MS-Office365-Filtering-Correlation-Id: b600a300-f072-4817-e962-08dbda18726f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: xKANpq2ctcoB1okpq1u42140bhmEaMc66c7oqVPzZTeUH1W1hTTVdK1hTv28FsdLmw4XOF1EJZisVC4hjT6wSel9ZUNpro3M4QiwvA3PYxT39NhAnuqVGrxHU7pzUwRA5yKHeT71vxFYO4WGWOH0+KVjOx7jychZ/MsY0Knbhk2p4EAPIlEOdq6seyXy3CR/tUqD/U+9f2FfO0Dp3ia/Jy1SqR4tP/C0gU98BkVjmfuh5LH6hm/kRsE8IVTI9JL72CCXM2uqq+Q6xOp2wgEei1r+ljFCGW0brCEej+njUo+2E5oXrf4tJhBY5ftM+O+P2B9kWACTZSHVVrLvS94t79eBHH/qQTtlsy8A0BG+4GjIrqdi7swupCXOO1+0kyKDwWAUT7SzgiHOpUI3rDFmitQHz+lFq88UC56ciIst9DJb2T87h4q1DppX06q2Wup1qmghGlQZviYMt+mSlKxjlYA/KfpwcO3J6sT+GCOQgeZh57AhVOsv5/Yy8R2lXgMVpYqxdat2mIcRbUPgWVnWLVKEfn1qTCQpklr0CjRNz/gy46lxw7RiC7UgE0AymKTGTyh0uAKHXIsYcDU+HwxoWQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(39860400002)(376002)(136003)(346002)(366004)(396003)(230922051799003)(1800799009)(64100799003)(186009)(451199024)(316002)(86362001)(33716001)(1076003)(2906002)(66476007)(83380400001)(26005)(6916009)(66556008)(66946007)(478600001)(53546011)(6506007)(41300700001)(6512007)(9686003)(38100700002)(8936002)(8676002)(4326008)(6486002)(5660300002)(966005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?NzTUfI/QGkmxG13aPntZ8dRvO+DhRGp4FVDMpgf9y1pscQ4tlKOaO5EGcFGI?=
- =?us-ascii?Q?f4OZFSWDjegs076m/rbsmpQPy/n+jaW/eol4BeyUdC3xh1PVy8a6L4YeUG/I?=
- =?us-ascii?Q?Mmffx/zuaN3a0bHRdFwUlmmoPwzG12JwaQFVv0VHPvOQLPzlYidOoaCSJgLt?=
- =?us-ascii?Q?EKjLevylEFA1jNgxO2ioweFS9XWE7VBuNyAMxvAhifiqA5betpIi6MXJcj3+?=
- =?us-ascii?Q?NMAw1W1HQjiAgmk1RUC4zgAwcxJ6s+/mg+WChUeaCyXs4jXzrCvzg535GsBS?=
- =?us-ascii?Q?YIeIyO1fHBdt2gxDT5yxdB7J+XX0qmhYAykUkGLwZk5G/56xhhc5sZcmuE2P?=
- =?us-ascii?Q?g3lWcY6FQICbtoZOdXLjYbnie9iaJNxGTahrINUVw6w42Dlw7dL05tDB3SvJ?=
- =?us-ascii?Q?KL8AQCWkeTv0qfP3rpBG4NKfiDS8C76CO78zlcKFmPcF5WtqLw3dZU2FzrsZ?=
- =?us-ascii?Q?dv+FPBdMgG1ZxIFpSvvAzSwcpPD72rdayYrHnSZyxm52NTDDuLa6Tr+25RFu?=
- =?us-ascii?Q?FWr1sBdZplS2zpg1d79nKy7vnEK57YVSt8Ddwg/7VDSOJt6dpvLqgkhpzloi?=
- =?us-ascii?Q?lP/OxUEzV2GPpVMolE8gMStFk0T91sNryBofZv0Zwv16rLhXYtcnnMBSEoJF?=
- =?us-ascii?Q?zT73nNsMEMGCTdS6XObAEmCv4/0pzsFbNr68NZiZuGkxbJQ2cgpKl9p33ifR?=
- =?us-ascii?Q?sldiwl7RRlgh9yxq0rkDFvq6PcSUgQhrK9dtRict/ZuwfVU7DDIvKNMRAMA/?=
- =?us-ascii?Q?uKmKqPAUyF55e0Cc1gFo8LH3crC+PVmg2+kcJZtxV3qDw7vfJkqX02GzggBV?=
- =?us-ascii?Q?ClBJc6Eilmm/h2I/cTNPJ9x2HOUWxflFhGgqeYEeIR1LgIyVhkjxRzge209n?=
- =?us-ascii?Q?c7QHd0qeSVmcPNXb/kuX01lR6XicRDTBDTYtMw7tLn0D4YjXSr6Tz21QI32q?=
- =?us-ascii?Q?TPvGzsKJPAlBnX5kkr1XfPrBdvlhYD++Nfm7iXfHvM0mM8+u+YtB/gdN/jrh?=
- =?us-ascii?Q?Bc4n4cUYH4yIkjMPuak8qvGmktvcg6XAF+Xb2SFD8xLMdfRXnIda25BxFeKY?=
- =?us-ascii?Q?HeFHh3drNNcYiryij2T31G4Q72dD9ESoye1o5dNF1Yx4UMwNN2Vmc9V5xxJs?=
- =?us-ascii?Q?n4A6ghAbb6wV2ARFy5hIJhC6BH3dMM4ckpnq8j1A8sveOE7ZYP92VV5AJQdS?=
- =?us-ascii?Q?vvcbxQ0g3Pnf/ajDe8NSwGuvQxjJiJ8WCFKbJFjPPAwaC/Qs+kST6pY8RpPq?=
- =?us-ascii?Q?Li624xGbueKw1uGZG9RTqo4NFWU9Pv9y2k6I4hSFGlQ2keiLfhr3VZk8E4AC?=
- =?us-ascii?Q?A+G4v0i72s2EKeovQWew8Tx0p7P7FIKz7WUjOmT8suT8KtKny63fmH6fVUSl?=
- =?us-ascii?Q?NqM5X9IkCw2TEW5MR1NB+eEFzusy2OqEzuY9LsRVpY21wwPYxy4GCTTSEvYk?=
- =?us-ascii?Q?UbPfPGy7GMlNy6I9xdtUdYcryQbMapKIjmHGEYyl25lGsEJhKjYnmPFIjwcg?=
- =?us-ascii?Q?od1jssFJNCpsqpnQaYACrd56IVDWrCvweh8cwgup0eD5KKT2ZJq54LxqfcZH?=
- =?us-ascii?Q?ymFkjkEmz9T2bQHs/SLXKJj+JxrOAmZTmq9DoQSY?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: PciwJhScCr50QcYG+odulvi1j/FMtQfgCsZT7XUy0CU4yEfax0cVTNjPkqMnbp4mI8sobXEWJJMsycB4a/dXwE/t+J7bNX8ZHtL11U+8fJNKNRxgwyZRPdL+kDVXnS19wEst1uhEdR3PpiyYhOeCQHVClQGD1SsFqrTuIjKrSOL9eVZa7Z0jwG0ncitIJBKA3O8kBxy3+phUqCv3KE73YdPUMavMa9Xlcy2CJHHShKf3RssVzc8scRxuzxAxEh5U6g6eqJeNav/RLHuOXL3GjJPSngTvjDPVFiVsd7rDsHEezukuSO2EHiwNi3cziAeDMQiyljP3kpspBtbf/yOZK/S0+cH+8TW7ogbWWEV2sXGVyreVwy3DUGE2Xq4KjAClvpWnem+IcKomzhqcY3DD6301gVxiDDZqQS9s5FeX9qDQ+76199FVytn5oz6R/nxa2mH6KrZ729VLK3bKGr0MH0UiCi6av4AmFChD2Gb3+dfaDarBJmvPVuKJ2XGQJQS16tUj7ASB/uns0By345D8Grz1I1LOCUw4SeCPrGJ727rPjHvNuOMW7WHfKq+jehvYEvFFvrxcyRo/TC/Z8dQTQm5BSW+kIngSlxrCkkTNuiv41uWBsMTDyzIsgjbayCP8HGLeaFGHMxNODXFRTZ3qExxnJOxqcxp4oEOPDsfWtFTzrJf4wgUBOUdqXwRXE5WZwNObMgmvQSGkH706SvmJa6o/vWGFLQ6bq6i4qn8kOl5DDGuPCHnisfUwRPjalWRahtTCaCjWVKpEE7uGOlanIhTlDvHJeYJQzLVpuElJl95mhJ5piNfCys2xY5pQPATpJmwnLdXDa89PZg5V07G1NrxVZrk/dhjZjEpClQmK3nTOWiO1xZovCfFauQvlGspV2IS/axfssoVMbZDNP0wEigfvpw1BipBdx48V+UoICTs=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b600a300-f072-4817-e962-08dbda18726f
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2023 13:51:13.8952
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rzYcTnhWlRwALUAfL+I7k4gAd/0QAdOI2SvyLJO2F6d8/8gwYBsRX0ST6YPFQJ36oZitZ6QHnMScLGu4gu0Mvg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB5351
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-10-31_01,2023-10-31_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 malwarescore=0 bulkscore=0
- mlxscore=0 adultscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310240000
- definitions=main-2310310110
-X-Proofpoint-GUID: Z9m5LQcRX10bVnQn4GZ8tT52q6VbJ6m4
-X-Proofpoint-ORIG-GUID: Z9m5LQcRX10bVnQn4GZ8tT52q6VbJ6m4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZUB5HFeK3eHeI8UH@mail-itl>
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue 31-10-23 04:48:44, Marek Marczykowski-Górecki wrote:
+> On Mon, Oct 30, 2023 at 06:50:35PM +0100, Mikulas Patocka wrote:
+> > On Mon, 30 Oct 2023, Marek Marczykowski-Górecki wrote:
+> > > Then retried with order=PAGE_ALLOC_COSTLY_ORDER and
+> > > PAGE_ALLOC_COSTLY_ORDER back at 3, and also got similar crash.
+> > 
+> > So, does it mean that even allocating with order=PAGE_ALLOC_COSTLY_ORDER 
+> > isn't safe?
+> 
+> That seems to be another bug, see below.
+> 
+> > Try enabling CONFIG_DEBUG_VM (it also needs CONFIG_DEBUG_KERNEL) and try 
+> > to provoke a similar crash. Let's see if it crashes on one of the 
+> > VM_BUG_ON statements.
+> 
+> This was very interesting idea. With this, immediately after login I get
+> the crash like below. Which makes sense, as this is when pulseaudio
+> starts and opens /dev/snd/*. I then tried with the dm-crypt commit
+> reverted and still got the crash! But, after blacklisting snd_pcm,
+> there is no BUG splat, but the storage freeze still happens on vanilla
+> 6.5.6.
 
-Added Michal to the Cc as I'm referencing his patch below.
+OK, great. Thanks for testing.
 
-* gregkh@linuxfoundation.org <gregkh@linuxfoundation.org> [231027 08:14]:
-> 
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 51f625377561e5b167da2db5aafb7ee268f691c5
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023102704-surrogate-dole-2888@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-> 
-> Possible dependencies:
+<snip snd_pcm bug>
 
-Can we add this patch to the dependency list?  It will allow my patch to
-be applied cleanly, and looks like it is close to a valid backport
-itself.
+> Plain 6.5.6 (so order = MAX_ORDER - 1, and PAGE_ALLOC_COSTLY_ORDER=3), in frozen state:
+> [  143.196106] task:blkdiscard      state:D stack:13672 pid:4884  ppid:2025   flags:0x00000002
+> [  143.196130] Call Trace:
+> [  143.196139]  <TASK>
+> [  143.196147]  __schedule+0x30e/0x8b0
+> [  143.196162]  schedule+0x59/0xb0
+> [  143.196175]  schedule_timeout+0x14c/0x160
+> [  143.196193]  io_schedule_timeout+0x4b/0x70
+> [  143.196207]  wait_for_completion_io+0x81/0x130
+> [  143.196226]  submit_bio_wait+0x5c/0x90
+> [  143.196241]  blkdev_issue_discard+0x94/0xe0
+> [  143.196260]  blkdev_common_ioctl+0x79e/0x9c0
+> [  143.196279]  blkdev_ioctl+0xc7/0x270
+> [  143.196293]  __x64_sys_ioctl+0x8f/0xd0
+> [  143.196310]  do_syscall_64+0x3c/0x90
 
-e976936cfc66 ("mm/mempolicy: do not duplicate policy if it is not
-applicable for set_mempolicy_home_node")
+So this shows there was bio submitted and it never ran to completion.
+ 
+> for f in $(grep -l crypt /proc/*/comm); do head $f ${f/comm/stack}; done
+<snip some backtraces>
 
-If you don't agree, I can rework my patch to work without it.
+So this shows dm-crypt layer isn't stuck anywhere. So the allocation path
+itself doesn't seem to be locking up, looping or anything.
 
-Thanks,
-Liam
+> Then tried:
+>  - PAGE_ALLOC_COSTLY_ORDER=4, order=4 - cannot reproduce,
+>  - PAGE_ALLOC_COSTLY_ORDER=4, order=5 - cannot reproduce,
+>  - PAGE_ALLOC_COSTLY_ORDER=4, order=6 - freeze rather quickly
+> 
+> I've retried the PAGE_ALLOC_COSTLY_ORDER=4,order=5 case several times
+> and I can't reproduce the issue there. I'm confused...
 
-...
+And this kind of confirms that allocations > PAGE_ALLOC_COSTLY_ORDER
+causing hangs is most likely just a coincidence. Rather something either in
+the block layer or in the storage driver has problems with handling bios
+with sufficiently high order pages attached. This is going to be a bit
+painful to debug I'm afraid. How long does it take for you trigger the
+hang? I'm asking to get rough estimate how heavy tracing we can afford so
+that we don't overwhelm the system...
 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> From 51f625377561e5b167da2db5aafb7ee268f691c5 Mon Sep 17 00:00:00 2001
-> From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-> Date: Thu, 28 Sep 2023 13:24:32 -0400
-> Subject: [PATCH] mm/mempolicy: fix set_mempolicy_home_node() previous VMA
->  pointer
-> 
-> The two users of mbind_range() are expecting that mbind_range() will
-> update the pointer to the previous VMA, or return an error.  However,
-> set_mempolicy_home_node() does not call mbind_range() if there is no VMA
-> policy.  The fix is to update the pointer to the previous VMA prior to
-> continuing iterating the VMAs when there is no policy.
-> 
-> Users may experience a WARN_ON() during VMA policy updates when updating
-> a range of VMAs on the home node.
-> 
-> Link: https://lkml.kernel.org/r/20230928172432.2246534-1-Liam.Howlett@oracle.com
-> Link: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
-> Fixes: f4e9e0e69468 ("mm/mempolicy: fix use-after-free of VMA iterator")
-> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
-> Closes: https://lore.kernel.org/linux-mm/CALcu4rbT+fMVNaO_F2izaCT+e7jzcAciFkOvk21HGJsmLcUuwQ@mail.gmail.com/
-> Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> 
-> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
-> index f1b00d6ac7ee..29ebf1e7898c 100644
-> --- a/mm/mempolicy.c
-> +++ b/mm/mempolicy.c
-> @@ -1543,8 +1543,10 @@ SYSCALL_DEFINE4(set_mempolicy_home_node, unsigned long, start, unsigned long, le
->  		 * the home node for vmas we already updated before.
->  		 */
->  		old = vma_policy(vma);
-> -		if (!old)
-> +		if (!old) {
-> +			prev = vma;
->  			continue;
-> +		}
->  		if (old->mode != MPOL_BIND && old->mode != MPOL_PREFERRED_MANY) {
->  			err = -EOPNOTSUPP;
->  			break;
-> 
+								Honza
+
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
