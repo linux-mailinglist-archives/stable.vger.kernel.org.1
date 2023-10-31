@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9C17DD56B
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:50:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F26C7DD429
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236459AbjJaRuj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:50:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42214 "EHLO
+        id S235746AbjJaRHY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231869AbjJaRui (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:38 -0400
+        with ESMTP id S236513AbjJaRHF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39C0691
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFCCC433C8;
-        Tue, 31 Oct 2023 17:50:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55E8318E
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91DA7C433C7;
+        Tue, 31 Oct 2023 17:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774635;
-        bh=o546ogPfR6pnR5xcmbzb8OsWVWHnarZCGVLwM6WwGJY=;
+        s=korg; t=1698771958;
+        bh=sUGuSo7klqd16L9mn88twJiZc2y7MDcrIyIvuYrX/3s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M/PcWO7bHIzFQAIU+26alU66yyup4xQCZOmiBRAE1M6exucCmqPSOiPW2vOLovbK0
-         dD5wxPmNkTvu5rS3kHp6vu9Y3oqz0V8y5t07tmFZMr6n3mWBkmfCV5y2Iyb5IiLv23
-         d4G8WwqWrYikSCCLBEgFTgnTlm5NgrpzDGgIWDLw=
+        b=BiIxl2rHK6YBlkdT9AQCDwxZeZhDksOGYidCTJsSZp2cDKb5v0DXlaJ9qQPHIAmmb
+         rUA0ggIDpFoNLyEF0pvfcwRm8TajZwRlFmHXuk8zx2VGhoIcd1zElcFQNMizJ1hgqi
+         +Xahr9wM22EWDSIlTsAc3pC6DbCVbVkqh12P8kto=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stable@vger.kernel.org,
-        Peng Fan <peng.fan@nxp.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.5 101/112] nvmem: imx: correct nregs for i.MX6UL
-Date:   Tue, 31 Oct 2023 18:01:42 +0100
-Message-ID: <20231031165904.459367762@linuxfoundation.org>
+        patches@lists.linux.dev, Tony Luck <tony.luck@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.1 78/86] x86/cpu: Add model number for Intel Arrow Lake mobile processor
+Date:   Tue, 31 Oct 2023 18:01:43 +0100
+Message-ID: <20231031165920.965042564@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,36 +49,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Tony Luck <tony.luck@intel.com>
 
-commit 7d6e10f5d254681983b53d979422c8de3fadbefb upstream.
+commit b99d70c0d1380f1368fd4a82271280c4fd28558b upstream.
 
-The nregs for i.MX6UL should be 144 per fuse map, correct it.
+For "reasons" Intel has code-named this CPU with a "_H" suffix.
 
-Fixes: 4aa2b4802046 ("nvmem: octop: Add support for imx6ul")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231013124904.175782-3-srinivas.kandagatla@linaro.org
+[ dhansen: As usual, apply this and send it upstream quickly to
+	   make it easier for anyone who is doing work that
+	   consumes this. ]
+
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20231025202513.12358-1-tony.luck%40intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/imx-ocotp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/intel-family.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -513,7 +513,7 @@ static const struct ocotp_params imx6sx_
- };
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -27,6 +27,7 @@
+  *		_X	- regular server parts
+  *		_D	- micro server parts
+  *		_N,_P	- other mobile parts
++ *		_H	- premium mobile parts
+  *		_S	- other client parts
+  *
+  *		Historical OPTDIFFs:
+@@ -125,6 +126,7 @@
  
- static const struct ocotp_params imx6ul_params = {
--	.nregs = 128,
-+	.nregs = 144,
- 	.bank_address_words = 0,
- 	.set_timing = imx_ocotp_set_imx6_timing,
- 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
+ #define INTEL_FAM6_LUNARLAKE_M		0xBD
+ 
++#define INTEL_FAM6_ARROWLAKE_H		0xC5
+ #define INTEL_FAM6_ARROWLAKE		0xC6
+ 
+ /* "Small Core" Processors (Atom/E-Core) */
 
 
