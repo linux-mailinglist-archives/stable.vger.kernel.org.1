@@ -2,134 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37B547DD6C2
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 20:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFBBC7DD6D7
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 20:59:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235291AbjJaTsE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 15:48:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53062 "EHLO
+        id S235455AbjJaT7l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 15:59:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235217AbjJaTsE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 15:48:04 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6299C9
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 12:48:01 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1c434c33ec0so47409345ad.3
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 12:48:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698781681; x=1699386481; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ryX4MSmWeDO24PD4TS0ZS1//lGhC214FqJwUFUJ0HsA=;
-        b=iWmkJntwHQqQLt/Gr8aKgd0iyg6auXNXZR6GgICjRafuPDqXiEMcjsiDXmCWd7jX+q
-         wFgm6NPYxjcQV4MktdZEDAdSRoZL259CcTVT7XjD8qPAli5260kcvpeH35q0Jc0rxlkI
-         1PJI5ykPRc7e8MqsAmjiNNk+psdzHO/aNlbu9vswYtNmw1ynfpqOqX88GZfLCh9Yj1y4
-         Emvb5Xb7lIIo1oXACQumS5Zl/6Hw1unWicZjFYgZboG36dDWZM/6+AMR5FTsgZdQ/P9/
-         wHUC+3AESEMIxQFkt70vy72DW6pjdcDlIz4hCSJl2975CYCeBwh5GxrqEwXtzpR3kTxb
-         hsdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698781681; x=1699386481;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ryX4MSmWeDO24PD4TS0ZS1//lGhC214FqJwUFUJ0HsA=;
-        b=lZxaQhKM0AFPYT6EV0lGWspeYqTOk9UTw5QWAuVvPfrfwdDk0093qEP6NCCqicPTu2
-         rSWApstKWHcR8AlO7L0EXU8oF0Lx8oQtE1BHuWqSlvw0bXTVGnBKrzBfUD0XwGsfB0gh
-         b/tDNewrsVzV7js05d+HW0W1FfvNAoY6d43+6aL1B2EzbdrscLxAvmlfaONI0B3Yfelv
-         2Qi+5Q+sa+WKeVsGsy67jnI88ne2sSeMEUVWVuTZBsdVLkQnQmngW5au3XG3tNvhBXnH
-         Y1QhgYEcd4NjywBrn/wiG/A7TqECnAxOxOyDUMi0OohQ2LmWgBfXVH/IlwHQ5H6e4Yyx
-         cNLA==
-X-Gm-Message-State: AOJu0YyI0c8z8axB9RBAIt2xICxZ5YCX+kJlJ2RTknKRVowChYp5i4EY
-        P07nM48dIfV+5owcFKqP0R6cXDJGD4EOH1QXb7e88g==
-X-Google-Smtp-Source: AGHT+IEGoSpcMGL1NmWp5/K/YvmSd7SJNM8jQXJ4768WUHtYM/SupxTyODbrAT7ir3JJPKpkZePPcA==
-X-Received: by 2002:a17:902:d4c3:b0:1cc:6ab6:df26 with SMTP id o3-20020a170902d4c300b001cc6ab6df26mr2654816plg.49.1698781680772;
-        Tue, 31 Oct 2023 12:48:00 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id x15-20020a170902ec8f00b001c88f77a156sm1670629plg.153.2023.10.31.12.48.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Oct 2023 12:48:00 -0700 (PDT)
-Message-ID: <654159f0.170a0220.a9735.4a14@mx.google.com>
-Date:   Tue, 31 Oct 2023 12:48:00 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S231890AbjJaT7l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 15:59:41 -0400
+Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C4EE8F3;
+        Tue, 31 Oct 2023 12:59:36 -0700 (PDT)
+X-IronPort-AV: E=Sophos;i="6.03,266,1694703600"; 
+   d="asc'?scan'208";a="185137237"
+Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
+  by relmlie6.idc.renesas.com with ESMTP; 01 Nov 2023 04:59:35 +0900
+Received: from unknown (unknown [10.226.92.14])
+        by relmlir6.idc.renesas.com (Postfix) with SMTP id 2E51F40A0B34;
+        Wed,  1 Nov 2023 04:59:32 +0900 (JST)
+Date:   Tue, 31 Oct 2023 19:59:31 +0000
+From:   Paul Barker <paul.barker.ct@bp.renesas.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Luis Machado <luis.machado@arm.com>, linux-ide@vger.kernel.org,
+        Damien Le Moal <damien.lemoal@opensource.wdc.com>,
+        Randy Dunlap <rdunlap@infradead.org>
+Subject: Re: [PATCH 4.14] ata: ahci: fix enum constants for gcc-13
+Message-ID: <20231031195931.zzeugxsquaayov52@GBR-5CG2373LKG.adwin.renesas.com>
+References: <20231031173255.28666-1-paul.barker.ct@bp.renesas.com>
+ <2023103125-public-resilient-cc46@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v4.14.328-28-g951b0fedfe39
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-4.14.y
-X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-4.14.y baseline: 116 runs,
- 1 regressions (v4.14.328-28-g951b0fedfe39)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="fznka5kjuo4i6fa6"
+Content-Disposition: inline
+In-Reply-To: <2023103125-public-resilient-cc46@gregkh>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.14.y baseline: 116 runs, 1 regressions (v4.14.328-28-g951=
-b0fedfe39)
 
-Regressions Summary
--------------------
+--fznka5kjuo4i6fa6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-platform  | arch | lab          | compiler | defconfig           | regressi=
-ons
-----------+------+--------------+----------+---------------------+---------=
----
-beagle-xm | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1       =
-   =
+On Tue, Oct 31, 2023 at 06:48:03PM +0100, Greg KH wrote:
+> On Tue, Oct 31, 2023 at 05:32:55PM +0000, Paul Barker wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >=20
+> > commit f07788079f515ca4a681c5f595bdad19cfbd7b1d upstream.
+> >=20
+> > gcc-13 slightly changes the type of constant expressions that are defin=
+ed
+> > in an enum, which triggers a compile time sanity check in libata:
+>=20
+> Does gcc-13 actually work for these older stable kernels yet?  Last I
+> tried there were a bunch of issues.  I'll gladly take these, just
+> wondering what the status was and if there are many more to go.
 
+Well, it works for me!
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-4.14.y/ker=
-nel/v4.14.328-28-g951b0fedfe39/plan/baseline/
+The Yocto Project master branch has binutils 2.41 & gcc 13.2.0. I can
+build 4.14.328, 4.19.297 & 5.4.259 with these patches applied on top and
+boot them in qemu. For 4.14 & 4.19 I also need a backport of 790756c7e02
+("ARM: 8933/1: replace Sun/Solaris style flag on section directive")
+which is already in the stable queue. I've done no testing beyond
+checking that I can get to a shell.
 
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-4.14.y
-  Describe: v4.14.328-28-g951b0fedfe39
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      951b0fedfe3934a73709d5a01d3f57d23e879f11 =
+I've tested x86 (i386_defconfig), x86-64 (x86_64_defconfig), arm
+(multi_v7_defconfig) & arm64 (defconfig).
 
+Thanks,
+Paul
 
+--fznka5kjuo4i6fa6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Test Regressions
----------------- =
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQSiu8gv1Xr0fIw/aoLbaV4Vf/JGvQUCZUFclAAKCRDbaV4Vf/JG
+vUvaAP0X1CI2jftu24eBUi1/ITx4zPWvw8yuV+AM2AKbl0vfRQD/Ss/eqqAeu2zv
+/duA2bUJlhUSQzoWQKDmBTHw5cN3AQY=
+=kICp
+-----END PGP SIGNATURE-----
 
-
-platform  | arch | lab          | compiler | defconfig           | regressi=
-ons
-----------+------+--------------+----------+---------------------+---------=
----
-beagle-xm | arm  | lab-baylibre | gcc-10   | omap2plus_defconfig | 1       =
-   =
-
-
-  Details:     https://kernelci.org/test/plan/id/65412a2eac0ac2dc9aefcf23
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: omap2plus_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-4.14.y/v4.14.3=
-28-28-g951b0fedfe39/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-be=
-agle-xm.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-4.14.y/v4.14.3=
-28-28-g951b0fedfe39/arm/omap2plus_defconfig/gcc-10/lab-baylibre/baseline-be=
-agle-xm.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/65412a2eac0ac2dc9aefc=
-f24
-        new failure (last pass: v4.14.328) =
-
- =20
+--fznka5kjuo4i6fa6--
