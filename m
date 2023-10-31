@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8659B7DD515
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7DAC7DD3BA
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:02:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376399AbjJaRrH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:47:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40470 "EHLO
+        id S232642AbjJaRC1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:02:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376382AbjJaRrH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:07 -0400
+        with ESMTP id S233230AbjJaRCY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:02:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A07E92
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC61C433C7;
-        Tue, 31 Oct 2023 17:47:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB20F270E
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:02:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F06EC433C7;
+        Tue, 31 Oct 2023 17:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774424;
-        bh=RBYOLeoDJv2LJUEaj1Ba0lo0i4WokhoF9+Xs3jYCEZg=;
+        s=korg; t=1698771734;
+        bh=Pgf4K7ehYmiT18JLHPuYQOlMQBpbnuU/8mh6oog2cwA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mtMK1D9APMuMceYvIQLyOH1P51yWkbVLe5YbYnsSbAKJLh/6j4s6E/M31loX6NeGq
-         vUo5BrdRLFkUeA9Rh5aWMffoLVeESlLBQQn1JaJEANp+MOZ5aVpbpSa6pL/G9eW2E4
-         nS0Guk9fT61+DQS7rRVmCSFiIsWYQ5LZZi/Teji0=
+        b=f8B8KugDWkzjO95f6ARHovtL+dn3WJDSIQooR18zhvIh9e5X45aNuDNFPHVp4uqtL
+         4863M3GB44JvyNR1d/HrnzRyii0gCbZFkbr+DkxtWDoL2218t60s4gtWxu/oExa/6v
+         JsVErs2rYUWRiKifwD9olme7Tf72GA6ETIhFSjjM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mike Kravetz <mike.kravetz@oracle.com>,
-        Rik van Riel <riel@surriel.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Muchun Song <muchun.song@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 024/112] hugetlbfs: clear resv_map pointer if mmap fails
-Date:   Tue, 31 Oct 2023 18:00:25 +0100
-Message-ID: <20231031165902.077889936@linuxfoundation.org>
+        patches@lists.linux.dev, Roman Kagan <rkagan@amazon.de>,
+        Like Xu <likexu@tencent.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 01/86] KVM: x86/pmu: Truncate counter value to allowed width on write
+Date:   Tue, 31 Oct 2023 18:00:26 +0100
+Message-ID: <20231031165918.660085351@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,91 +51,105 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Roman Kagan <rkagan@amazon.de>
 
-commit 92fe9dcbe4e109a7ce6bab3e452210a35b0ab493 upstream.
+[ Upstream commit b29a2acd36dd7a33c63f260df738fb96baa3d4f8 ]
 
-Patch series "hugetlbfs: close race between MADV_DONTNEED and page fault", v7.
+Performance counters are defined to have width less than 64 bits.  The
+vPMU code maintains the counters in u64 variables but assumes the value
+to fit within the defined width.  However, for Intel non-full-width
+counters (MSR_IA32_PERFCTRx) the value receieved from the guest is
+truncated to 32 bits and then sign-extended to full 64 bits.  If a
+negative value is set, it's sign-extended to 64 bits, but then in
+kvm_pmu_incr_counter() it's incremented, truncated, and compared to the
+previous value for overflow detection.
 
-Malloc libraries, like jemalloc and tcalloc, take decisions on when to
-call madvise independently from the code in the main application.
+That previous value is not truncated, so it always evaluates bigger than
+the truncated new one, and a PMI is injected.  If the PMI handler writes
+a negative counter value itself, the vCPU never quits the PMI loop.
 
-This sometimes results in the application page faulting on an address,
-right after the malloc library has shot down the backing memory with
-MADV_DONTNEED.
+Turns out that Linux PMI handler actually does write the counter with
+the value just read with RDPMC, so when no full-width support is exposed
+via MSR_IA32_PERF_CAPABILITIES, and the guest initializes the counter to
+a negative value, it locks up.
 
-Usually this is harmless, because we always have some 4kB pages sitting
-around to satisfy a page fault.  However, with hugetlbfs systems often
-allocate only the exact number of huge pages that the application wants.
+This has been observed in the field, for example, when the guest configures
+atop to use perfevents and runs two instances of it simultaneously.
 
-Due to TLB batching, hugetlbfs MADV_DONTNEED will free pages outside of
-any lock taken on the page fault path, which can open up the following
-race condition:
+To address the problem, maintain the invariant that the counter value
+always fits in the defined bit width, by truncating the received value
+in the respective set_msr methods.  For better readability, factor the
+out into a helper function, pmc_write_counter(), shared by vmx and svm
+parts.
 
-       CPU 1                            CPU 2
-
-       MADV_DONTNEED
-       unmap page
-       shoot down TLB entry
-                                       page fault
-                                       fail to allocate a huge page
-                                       killed with SIGBUS
-       free page
-
-Fix that race by extending the hugetlb_vma_lock locking scheme to also
-cover private hugetlb mappings (with resv_map), and pulling the locking
-from __unmap_hugepage_final_range into helper functions called from
-zap_page_range_single.  This ensures page faults stay locked out of the
-MADV_DONTNEED VMA until the huge pages have actually been freed.
-
-
-This patch (of 3):
-
-Hugetlbfs leaves a dangling pointer in the VMA if mmap fails.  This has
-not been a problem so far, but other code in this patch series tries to
-follow that pointer.
-
-Link: https://lkml.kernel.org/r/20231006040020.3677377-1-riel@surriel.com
-Link: https://lkml.kernel.org/r/20231006040020.3677377-2-riel@surriel.com
-Fixes: 04ada095dcfc ("hugetlb: don't delete vma_lock in hugetlb MADV_DONTNEED processing")
-Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9cd803d496e7 ("KVM: x86: Update vPMCs when retiring instructions")
+Cc: stable@vger.kernel.org
+Signed-off-by: Roman Kagan <rkagan@amazon.de>
+Link: https://lore.kernel.org/all/20230504120042.785651-1-rkagan@amazon.de
+Tested-by: Like Xu <likexu@tencent.com>
+[sean: tweak changelog, s/set/write in the helper]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kvm/pmu.h           | 6 ++++++
+ arch/x86/kvm/svm/pmu.c       | 2 +-
+ arch/x86/kvm/vmx/pmu_intel.c | 4 ++--
+ 3 files changed, 9 insertions(+), 3 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1132,8 +1132,7 @@ static void set_vma_resv_map(struct vm_a
- 	VM_BUG_ON_VMA(!is_vm_hugetlb_page(vma), vma);
- 	VM_BUG_ON_VMA(vma->vm_flags & VM_MAYSHARE, vma);
- 
--	set_vma_private_data(vma, (get_vma_private_data(vma) &
--				HPAGE_RESV_MASK) | (unsigned long)map);
-+	set_vma_private_data(vma, (unsigned long)map);
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index c976490b75568..3666578b88a00 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -63,6 +63,12 @@ static inline u64 pmc_read_counter(struct kvm_pmc *pmc)
+ 	return counter & pmc_bitmask(pmc);
  }
  
- static void set_vma_resv_flags(struct vm_area_struct *vma, unsigned long flags)
-@@ -7015,8 +7014,10 @@ out_err:
- 		 */
- 		if (chg >= 0 && add < 0)
- 			region_abort(resv_map, from, to, regions_needed);
--	if (vma && is_vma_resv_set(vma, HPAGE_RESV_OWNER))
-+	if (vma && is_vma_resv_set(vma, HPAGE_RESV_OWNER)) {
- 		kref_put(&resv_map->refs, resv_map_release);
-+		set_vma_resv_map(vma, NULL);
-+	}
- 	return false;
- }
- 
++static inline void pmc_write_counter(struct kvm_pmc *pmc, u64 val)
++{
++	pmc->counter += val - pmc_read_counter(pmc);
++	pmc->counter &= pmc_bitmask(pmc);
++}
++
+ static inline void pmc_release_perf_event(struct kvm_pmc *pmc)
+ {
+ 	if (pmc->perf_event) {
+diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+index 9d65cd095691b..1cb2bf9808f57 100644
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -149,7 +149,7 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 	/* MSR_PERFCTRn */
+ 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
+ 	if (pmc) {
+-		pmc->counter += data - pmc_read_counter(pmc);
++		pmc_write_counter(pmc, data);
+ 		pmc_update_sample_period(pmc);
+ 		return 0;
+ 	}
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 9fabfe71fd879..9a75a0d5deae1 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -461,11 +461,11 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 			if (!msr_info->host_initiated &&
+ 			    !(msr & MSR_PMC_FULL_WIDTH_BIT))
+ 				data = (s64)(s32)data;
+-			pmc->counter += data - pmc_read_counter(pmc);
++			pmc_write_counter(pmc, data);
+ 			pmc_update_sample_period(pmc);
+ 			return 0;
+ 		} else if ((pmc = get_fixed_pmc(pmu, msr))) {
+-			pmc->counter += data - pmc_read_counter(pmc);
++			pmc_write_counter(pmc, data);
+ 			pmc_update_sample_period(pmc);
+ 			return 0;
+ 		} else if ((pmc = get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0))) {
+-- 
+2.42.0
+
 
 
