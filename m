@@ -2,37 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 369B97DD440
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AF207DD567
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:50:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235875AbjJaRHl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:07:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40010 "EHLO
+        id S231343AbjJaRu2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:50:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236601AbjJaRHX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:23 -0400
+        with ESMTP id S236456AbjJaRu1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD1818A
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3A1C433C9;
-        Tue, 31 Oct 2023 17:06:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C49FAE4
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A10C433C7;
+        Tue, 31 Oct 2023 17:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698772004;
-        bh=LSaU24fW/93mXA/Q0ZqMnaHy79KV+D5kMWHSvCoXEO8=;
+        s=korg; t=1698774624;
+        bh=hgUHb6fCVYKjKvJIT/vAEOT5DqDh0lLNdl4UJ8F7hao=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UtFDBtrjKcqPhN/6GfaCbY6VSRpcKi/VWdgKeNw3+xX4YGIXLg6vQ9QjKp1nJ1w1z
-         imWYrCrWmhXutFOOzTS/D7bUvDZvy23wbLTQA6NGf+u7L/jpK5lBuxQq/RkwKpfCPM
-         Zcd0aH5ETDvVA0V2uDkapgohnd/KD6D2HK145hCg=
+        b=gjMxE1C/+sVfALIed/Ra9+cYn1AurcHVMordK49SzPPwS+BuSjBsaHSj7+f8AQDM+
+         QPLuqSR7wbbAkCQmVwWSff55+HuLwHwvvpM3ny6ZmHTkPELwanUu01/MjLuKY0pmzd
+         QaiGhy7IgZTvbKTtdJYUx+DUlg1WDBaqdN5tauKQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Sperbeck <jsperbeck@google.com>
-Subject: [PATCH 6.1 86/86] objtool/x86: add missing embedded_insn check
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Mark Pearson <mpearson-lenovo@squebb.ca>,
+        David Lazar <dlazar@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 110/112] platform/x86: Add s2idle quirk for more Lenovo laptops
 Date:   Tue, 31 Oct 2023 18:01:51 +0100
-Message-ID: <20231031165921.208269029@linuxfoundation.org>
+Message-ID: <20231031165904.732444000@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,41 +53,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Sperbeck <jsperbeck@google.com>
+From: David Lazar <dlazar@gmail.com>
 
-When dbf460087755 ("objtool/x86: Fixup frame-pointer vs rethunk")
-was backported to some stable branches, the check for dest->embedded_insn
-in is_special_call() was missed.  The result is that the warning it
-was intended to suppress still appears.  For example on 6.1 (on kernels
-before 6.1, the '-s' argument would instead be 'check'):
+[ Upstream commit 3bde7ec13c971445faade32172cb0b4370b841d9 ]
 
-$ tools/objtool/objtool -s arch/x86/lib/retpoline.o
-arch/x86/lib/retpoline.o: warning: objtool: srso_untrain_ret+0xd:
-    call without frame pointer save/setup
+When suspending to idle and resuming on some Lenovo laptops using the
+Mendocino APU, multiple NVME IOMMU page faults occur, showing up in
+dmesg as repeated errors:
 
-With this patch, the warning is correctly suppressed, and the
-kernel still passes the normal Google kernel developer tests.
+nvme 0000:01:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x000b
+address=0xb6674000 flags=0x0000]
 
-Signed-off-by: John Sperbeck <jsperbeck@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The system is unstable afterwards.
+
+Applying the s2idle quirk introduced by commit 455cd867b85b ("platform/x86:
+thinkpad_acpi: Add a s2idle resume quirk for a number of laptops")
+allows these systems to work with the IOMMU enabled and s2idle
+resume to work.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218024
+Suggested-by: Mario Limonciello <mario.limonciello@amd.com>
+Suggested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: David Lazar <dlazar@gmail.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Link: https://lore.kernel.org/r/ZTlsyOaFucF2pWrL@localhost
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmc-quirks.c |   73 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 73 insertions(+)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2478,7 +2478,7 @@ static bool is_special_call(struct instr
- 		if (!dest)
- 			return false;
- 
--		if (dest->fentry)
-+		if (dest->fentry || dest->embedded_insn)
- 			return true;
- 	}
- 
+--- a/drivers/platform/x86/amd/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc-quirks.c
+@@ -111,6 +111,79 @@ static const struct dmi_system_id fwbug_
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "21A1"),
+ 		}
+ 	},
++	/* https://bugzilla.kernel.org/show_bug.cgi?id=218024 */
++	{
++		.ident = "V14 G4 AMN",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82YT"),
++		}
++	},
++	{
++		.ident = "V14 G4 AMN",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83GE"),
++		}
++	},
++	{
++		.ident = "V15 G4 AMN",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82YU"),
++		}
++	},
++	{
++		.ident = "V15 G4 AMN",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "83CQ"),
++		}
++	},
++	{
++		.ident = "IdeaPad 1 14AMN7",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82VF"),
++		}
++	},
++	{
++		.ident = "IdeaPad 1 15AMN7",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82VG"),
++		}
++	},
++	{
++		.ident = "IdeaPad 1 15AMN7",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82X5"),
++		}
++	},
++	{
++		.ident = "IdeaPad Slim 3 14AMN8",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82XN"),
++		}
++	},
++	{
++		.ident = "IdeaPad Slim 3 15AMN8",
++		.driver_data = &quirk_s2idle_bug,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82XQ"),
++		}
++	},
+ 	/* https://gitlab.freedesktop.org/drm/amd/-/issues/2684 */
+ 	{
+ 		.ident = "HP Laptop 15s-eq2xxx",
 
 
