@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EE8D7DD40B
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DF827DD54B
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236267AbjJaRGx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34508 "EHLO
+        id S1376554AbjJaRtK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:49:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233204AbjJaRGh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:37 -0400
+        with ESMTP id S1376526AbjJaRtF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 893CE125
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:04:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FECC433C8;
-        Tue, 31 Oct 2023 17:04:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2EBBA6
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBB3C433C7;
+        Tue, 31 Oct 2023 17:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771896;
-        bh=1Mwy/jmEEX/VZZNz6YEczlT409dZHhokDz0GX07PitA=;
+        s=korg; t=1698774539;
+        bh=i9fAX0ltx6uR6/jyBRRRif65PVmoQY0+AOGav0FClqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zzW5blxfFNeSFHTzDTdnxT+iuYAF/oGgaxq0XYvLjie+nOnR43mjY/QmDWSDAIHGb
-         o4vvFztVKnZcryymguY3u3AjvGD55WhQTOGpmOWnd8chn1lWrG/DFqEl3I1gLatxpJ
-         K7d5hiRnZG1MG9yq4BsqAPIEeX5LgoSHmwaKvgBo=
+        b=H3Bag1fK1/GgtTZLq1mVbG/UkTJS0bo98jpgupWY10b9RHQh6MLcFc/ZBUgdIGzYE
+         iUfTtrPzS8Ik48oYrJdSQdEG1BGcFJcW9G5PvMziQ4O/tDuZAjE+fBoIzU037bhtyb
+         d0ViM+wbAO/hjkSufcifWonTTQ6QrMN4r9cJm8LE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
-        Wojciech Drewek <wojciech.drewek@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 55/86] iavf: in iavf_down, disable queues when removing the driver
-Date:   Tue, 31 Oct 2023 18:01:20 +0100
-Message-ID: <20231031165920.291542868@linuxfoundation.org>
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Niklas Cassel <niklas.cassel@wdc.com>,
+        Hannes Reinecke <hare@suse.de>,
+        James Bottomley <James.Bottomley@HansenPartnership.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.5 080/112] scsi: sd: Introduce manage_shutdown device flag
+Date:   Tue, 31 Oct 2023 18:01:21 +0100
+Message-ID: <20231031165903.842177836@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +52,180 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 53798666648af3aa0dd512c2380576627237a800 ]
+commit 24eca2dce0f8d19db808c972b0281298d0bafe99 upstream.
 
-In iavf_down, we're skipping the scheduling of certain operations if
-the driver is being removed. However, the IAVF_FLAG_AQ_DISABLE_QUEUES
-request must not be skipped in this case, because iavf_close waits
-for the transition to the __IAVF_DOWN state, which happens in
-iavf_virtchnl_completion after the queues are released.
+Commit aa3998dbeb3a ("ata: libata-scsi: Disable scsi device
+manage_system_start_stop") change setting the manage_system_start_stop
+flag to false for libata managed disks to enable libata internal
+management of disk suspend/resume. However, a side effect of this change
+is that on system shutdown, disks are no longer being stopped (set to
+standby mode with the heads unloaded). While this is not a critical
+issue, this unclean shutdown is not recommended and shows up with
+increased smart counters (e.g. the unexpected power loss counter
+"Unexpect_Power_Loss_Ct").
 
-Without this fix, "rmmod iavf" takes half a second per interface that's
-up and prints the "Device resources not yet released" warning.
+Instead of defining a shutdown driver method for all ATA adapter
+drivers (not all of them define that operation), this patch resolves
+this issue by further refining the sd driver start/stop control of disks
+using the new flag manage_shutdown. If this new flag is set to true by
+a low level driver, the function sd_shutdown() will issue a
+START STOP UNIT command with the start argument set to 0 when a disk
+needs to be powered off (suspended) on system power off, that is, when
+system_state is equal to SYSTEM_POWER_OFF.
 
-Fixes: c8de44b577eb ("iavf: do not process adminq tasks when __IAVF_IN_REMOVE_TASK is set")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Tested-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20231025183213.874283-1-jacob.e.keller@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Similarly to the other manage_xxx flags, the new manage_shutdown flag is
+exposed through sysfs as a read-write device attribute.
+
+To avoid any confusion between manage_shutdown and
+manage_system_start_stop, the comments describing these flags in
+include/scsi/scsi.h are also improved.
+
+Fixes: aa3998dbeb3a ("ata: libata-scsi: Disable scsi device manage_system_start_stop")
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218038
+Link: https://lore.kernel.org/all/cd397c88-bf53-4768-9ab8-9d107df9e613@gmail.com/
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-scsi.c  |    5 +++--
+ drivers/firewire/sbp2.c    |    1 +
+ drivers/scsi/sd.c          |   39 ++++++++++++++++++++++++++++++++++++---
+ include/scsi/scsi_device.h |   20 ++++++++++++++++++--
+ 4 files changed, 58 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 1ae90f8f9941f..326bb5fdf5f90 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -1449,9 +1449,9 @@ void iavf_down(struct iavf_adapter *adapter)
- 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_FDIR_FILTER;
- 		if (!list_empty(&adapter->adv_rss_list_head))
- 			adapter->aq_required |= IAVF_FLAG_AQ_DEL_ADV_RSS_CFG;
--		adapter->aq_required |= IAVF_FLAG_AQ_DISABLE_QUEUES;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1103,10 +1103,11 @@ int ata_scsi_dev_config(struct scsi_devi
+ 
+ 		/*
+ 		 * Ask the sd driver to issue START STOP UNIT on runtime suspend
+-		 * and resume only. For system level suspend/resume, devices
+-		 * power state is handled directly by libata EH.
++		 * and resume and shutdown only. For system level suspend/resume,
++		 * devices power state is handled directly by libata EH.
+ 		 */
+ 		sdev->manage_runtime_start_stop = true;
++		sdev->manage_shutdown = true;
  	}
  
-+	adapter->aq_required |= IAVF_FLAG_AQ_DISABLE_QUEUES;
- 	mod_delayed_work(adapter->wq, &adapter->watchdog_task, 0);
- }
+ 	/*
+--- a/drivers/firewire/sbp2.c
++++ b/drivers/firewire/sbp2.c
+@@ -1521,6 +1521,7 @@ static int sbp2_scsi_slave_configure(str
+ 	if (sbp2_param_exclusive_login) {
+ 		sdev->manage_system_start_stop = true;
+ 		sdev->manage_runtime_start_stop = true;
++		sdev->manage_shutdown = true;
+ 	}
  
--- 
-2.42.0
-
+ 	if (sdev->type == TYPE_ROM)
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -221,7 +221,8 @@ manage_start_stop_show(struct device *de
+ 
+ 	return sysfs_emit(buf, "%u\n",
+ 			  sdp->manage_system_start_stop &&
+-			  sdp->manage_runtime_start_stop);
++			  sdp->manage_runtime_start_stop &&
++			  sdp->manage_shutdown);
+ }
+ static DEVICE_ATTR_RO(manage_start_stop);
+ 
+@@ -287,6 +288,35 @@ manage_runtime_start_stop_store(struct d
+ }
+ static DEVICE_ATTR_RW(manage_runtime_start_stop);
+ 
++static ssize_t manage_shutdown_show(struct device *dev,
++				    struct device_attribute *attr, char *buf)
++{
++	struct scsi_disk *sdkp = to_scsi_disk(dev);
++	struct scsi_device *sdp = sdkp->device;
++
++	return sysfs_emit(buf, "%u\n", sdp->manage_shutdown);
++}
++
++static ssize_t manage_shutdown_store(struct device *dev,
++				     struct device_attribute *attr,
++				     const char *buf, size_t count)
++{
++	struct scsi_disk *sdkp = to_scsi_disk(dev);
++	struct scsi_device *sdp = sdkp->device;
++	bool v;
++
++	if (!capable(CAP_SYS_ADMIN))
++		return -EACCES;
++
++	if (kstrtobool(buf, &v))
++		return -EINVAL;
++
++	sdp->manage_shutdown = v;
++
++	return count;
++}
++static DEVICE_ATTR_RW(manage_shutdown);
++
+ static ssize_t
+ allow_restart_show(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+@@ -619,6 +649,7 @@ static struct attribute *sd_disk_attrs[]
+ 	&dev_attr_manage_start_stop.attr,
+ 	&dev_attr_manage_system_start_stop.attr,
+ 	&dev_attr_manage_runtime_start_stop.attr,
++	&dev_attr_manage_shutdown.attr,
+ 	&dev_attr_protection_type.attr,
+ 	&dev_attr_protection_mode.attr,
+ 	&dev_attr_app_tag_own.attr,
+@@ -3858,8 +3889,10 @@ static void sd_shutdown(struct device *d
+ 		sd_sync_cache(sdkp, NULL);
+ 	}
+ 
+-	if (system_state != SYSTEM_RESTART &&
+-	    sdkp->device->manage_system_start_stop) {
++	if ((system_state != SYSTEM_RESTART &&
++	     sdkp->device->manage_system_start_stop) ||
++	    (system_state == SYSTEM_POWER_OFF &&
++	     sdkp->device->manage_shutdown)) {
+ 		sd_printk(KERN_NOTICE, sdkp, "Stopping disk\n");
+ 		sd_start_stop_device(sdkp, 0);
+ 	}
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -162,8 +162,24 @@ struct scsi_device {
+ 				 * core. */
+ 	unsigned int eh_timeout; /* Error handling timeout */
+ 
+-	bool manage_system_start_stop; /* Let HLD (sd) manage system start/stop */
+-	bool manage_runtime_start_stop; /* Let HLD (sd) manage runtime start/stop */
++	/*
++	 * If true, let the high-level device driver (sd) manage the device
++	 * power state for system suspend/resume (suspend to RAM and
++	 * hibernation) operations.
++	 */
++	bool manage_system_start_stop;
++
++	/*
++	 * If true, let the high-level device driver (sd) manage the device
++	 * power state for runtime device suspand and resume operations.
++	 */
++	bool manage_runtime_start_stop;
++
++	/*
++	 * If true, let the high-level device driver (sd) manage the device
++	 * power state for system shutdown (power off) operations.
++	 */
++	bool manage_shutdown;
+ 
+ 	unsigned removable:1;
+ 	unsigned changed:1;	/* Data invalid due to media change */
 
 
