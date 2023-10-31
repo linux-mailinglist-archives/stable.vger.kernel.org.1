@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04FD67DD551
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D7D97DD441
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:08:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376499AbjJaRtX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:49:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42986 "EHLO
+        id S235894AbjJaRHj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376534AbjJaRtT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:19 -0400
+        with ESMTP id S236366AbjJaRHS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A3B111A
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502ECC433C7;
-        Tue, 31 Oct 2023 17:49:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE3DAD46
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD8BC433C7;
+        Tue, 31 Oct 2023 17:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774556;
-        bh=WxiGTgOZgWNes9L2T+ramggoe/TdJjxhE4gPIMOFglk=;
+        s=korg; t=1698771978;
+        bh=v90eGBFjvL8EFaFaUHb9kt4LPakGXgByZAlmwksov9g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BFnBrEsTicwwL+EedXC9O2T70fqj07DFjFL5fq5DN9upC6iuulYXeCJxurNlZ68ei
-         kZA8p/gH/q4tw9ONZg1xyJ7int88pTRy64xYq3N0rFIcv5QEnojXOUild4YMbYA4hS
-         xUXvWkssVprW5oR0AxDjM4A8sqAB4/fQ7Ygx9ix4=
+        b=xVqpL4RjllSPSPZqwI0aKbYWFlnJ+6I94dpd2QcZ6LCyc4NpT4b0vLMuMzx4TGe8m
+         6s6yemWKnbmZqcPHRLP4eIP19FIePjEAj3v9MayxKjkbrLW5Kx/dYTlF7lHmG0yYfe
+         ciCRUpf5BzHC0jSlu4gVJafZ5ykljOEKLY3Y0l1k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -31,12 +31,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "OGriofa, Conall" <conall.ogriofa@amd.com>, Stable@vger.kernel.org,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         O'Griofa@vger.kernel.org
-Subject: [PATCH 6.5 086/112] iio: adc: xilinx-xadc: Dont clobber preset voltage/temperature thresholds
+Subject: [PATCH 6.1 62/86] iio: adc: xilinx-xadc: Dont clobber preset voltage/temperature thresholds
 Date:   Tue, 31 Oct 2023 18:01:27 +0100
-Message-ID: <20231031165904.021874719@linuxfoundation.org>
+Message-ID: <20231031165920.505341288@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,7 +52,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -90,7 +90,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/iio/adc/xilinx-xadc-core.c
 +++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1423,28 +1423,6 @@ static int xadc_probe(struct platform_de
+@@ -1426,28 +1426,6 @@ static int xadc_probe(struct platform_de
  	if (ret)
  		return ret;
  
