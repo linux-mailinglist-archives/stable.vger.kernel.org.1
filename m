@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B50C7DC9C2
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:37:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FED87DC9C3
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:38:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229641AbjJaJhg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 05:37:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40288 "EHLO
+        id S229861AbjJaJiA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 05:38:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52878 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229861AbjJaJhf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:37:35 -0400
+        with ESMTP id S229715AbjJaJh7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:37:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDEEBF4
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:37:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB89C433C8;
-        Tue, 31 Oct 2023 09:37:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3729EBB
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:37:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFF4C433C7;
+        Tue, 31 Oct 2023 09:37:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698745052;
-        bh=hV9XQ4OgHHek9uObDnGpMwTGF4BvT050vong/FbchE4=;
+        s=k20201202; t=1698745076;
+        bh=/kqgdwPcRLog5aV2/n8Ciql+xEQo+PR4MoBPHvAJkoU=;
         h=Date:From:To:Subject:References:In-Reply-To:From;
-        b=gKzhlgfWPzQ9LEEUSjir751kapauzp2SUmGpvQcBQEdx04VluN/aDr+h6KJF49Jeo
-         qr+nSTgpNGEM6sSchI9u3+ud6E29PfRr140Pz5n5aUDbATIo+qKaDaNfOhuFalp0Pi
-         AYEH/0ZSfjt4DiSh4ZfOYi2E5jeKmfnFuZybbDAj9WNuDSCLZgFSji1pkj7T+BaHqB
-         5OsPEfdfbtUKXAQ0moFllnZ8P933Yh8Mt1hSUJf3pyTRzh39nSzVT1SpldgSy9C07y
-         k0GrFpzHaSggzAtN5xtfz/ijvv/RaPAdK/W145xtuhw5JBOhiQVkJ9iyB9tmnk05N6
-         x+ImRZjCEjtcA==
-Date:   Tue, 31 Oct 2023 09:37:28 +0000
+        b=pcaFfrhnX59u3UPg/fwZ9ykyus5+gXcenIhFKX5iVmQNwqwq/WZxo7IO7RCdU461a
+         EHg4mhkPqidAc/Dj9oT71X6Yx3MNm9q1mY0ak80K//xa0E6HnybDF46sMQ3HnoCr5Z
+         0BvuZMUvOLt56JuCnK45nS+zmz0DZ/mFR7F4ikbMcpUXme6QvssD1qmk8/hKDYR6oa
+         LKQSoKLf5LbkEwGqY2Cn0dYfCUV96xRfu3hnxQkhoR+DOFs9uAxhL4V/WpQ+oeVsSw
+         HyJoKJjlxGLlpZNHfTYnba5YCeK2hdpCnbfe357Y66J4VJwpPJCQtb16BIKHMjYiwz
+         ZWj5U7+Bq1PTQ==
+Date:   Tue, 31 Oct 2023 09:37:53 +0000
 From:   Lee Jones <lee@kernel.org>
 To:     stable@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v5.10.y 1/6] driver: platform: Add helper for safer
- setting of driver_override
-Message-ID: <20231031093728.GV8909@google.com>
-References: <20231031092308.2227611-1-lee@kernel.org>
+Subject: Re: [PATCH 1/6] driver: platform: Add helper for safer setting of
+ driver_override
+Message-ID: <20231031093753.GW8909@google.com>
+References: <20231031091521.2223075-1-lee@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231031092308.2227611-1-lee@kernel.org>
+In-Reply-To: <20231031091521.2223075-1-lee@kernel.org>
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -99,7 +99,7 @@ On Tue, 31 Oct 2023, Lee Jones wrote:
 > Link: https://lore.kernel.org/r/20220419113435.246203-2-krzysztof.kozlowski@linaro.org
 > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Signed-off-by: Lee Jones <lee@kernel.org>
-> Change-Id: Ic3c1fefbb9bf1a27f7adcca5bf0405e02d2f7775
+> Change-Id: I131f04170f2f76d468565b27929e0ee6fd0e7adf
 
 Disregard this set please!
 
