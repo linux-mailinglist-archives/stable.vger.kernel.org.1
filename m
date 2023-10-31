@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20BE77DD431
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84E3F7DD572
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:50:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236316AbjJaRHa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:07:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34040 "EHLO
+        id S236461AbjJaRu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:50:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235927AbjJaRHS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:18 -0400
+        with ESMTP id S236472AbjJaRu4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5735119
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CFCC433CA;
-        Tue, 31 Oct 2023 17:06:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCAE091
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131A9C433C8;
+        Tue, 31 Oct 2023 17:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771975;
-        bh=EywPMT0oVkxPw2nap7rDpJcA5BvVi5gZsYFKxVFlaqI=;
+        s=korg; t=1698774653;
+        bh=P6cDMcdo1o+HAQAReHR6aFq7oN5Q1IFm2fJALjITWKE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pM/p8sNEuDs4radlS8ifTNJQY0it74Sywvkq3LrX72hQsmuL9HqAscsusCGHeGCKH
-         MqSpZFDlpkzVxhwFL3riOcv1mGSay3+dJrwFpIM0/czlOieMYRn0FTx5P+sh5aVa4F
-         j85Jin9mbUiaoYkQkKet+jysIM9CKM2zB1K/v1qw=
+        b=q49E9jz2J4+wjvG8AWcDEjClXZoeTyRns6U+a7v7ytkf8n+AT4VNvQWdsUQ8GXLvx
+         rGYEk/JKmQrz7mBHp5w/eMTjCJuyVxodOZCU469niSWS8Dt9HkZn4h+cjULTaT01Qo
+         fbLt/9IuAcEXiupKSBqzg6q3AjctQ/WIn8DeXEHY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 83/86] ext4: add two helper functions extent_logical_end() and pa_logical_end()
+        patches@lists.linux.dev, Philip Daly <pdaly@redhat.com>,
+        "Alessandro Carminati (Red Hat)" <alessandro.carminati@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.5 107/112] clk: Sanitize possible_parent_show to Handle Return Value of of_clk_get_parent_name
 Date:   Tue, 31 Oct 2023 18:01:48 +0100
-Message-ID: <20231031165921.113649127@linuxfoundation.org>
+Message-ID: <20231031165904.642846297@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,85 +50,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Alessandro Carminati <alessandro.carminati@gmail.com>
 
-commit 43bbddc067883d94de7a43d5756a295439fbe37d upstream.
+commit ceb87a361d0b079ecbc7d2831618c19087f304a9 upstream.
 
-When we use lstart + len to calculate the end of free extent or prealloc
-space, it may exceed the maximum value of 4294967295(0xffffffff) supported
-by ext4_lblk_t and cause overflow, which may lead to various problems.
+In the possible_parent_show function, ensure proper handling of the return
+value from of_clk_get_parent_name to prevent potential issues arising from
+a NULL return.
+The current implementation invokes seq_puts directly on the result of
+of_clk_get_parent_name without verifying the return value, which can lead
+to kernel panic if the function returns NULL.
 
-Therefore, we add two helper functions, extent_logical_end() and
-pa_logical_end(), to limit the type of end to loff_t, and also convert
-lstart to loff_t for calculation to avoid overflow.
+This patch addresses the concern by introducing a check on the return
+value of of_clk_get_parent_name. If the return value is not NULL, the
+function proceeds to call seq_puts, providing the returned value as
+argument.
+However, if of_clk_get_parent_name returns NULL, the function provides a
+static string as argument, avoiding the panic.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://lore.kernel.org/r/20230724121059.11834-2-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Fixes: 1ccc0ddf046a ("clk: Use seq_puts() in possible_parent_show()")
+Reported-by: Philip Daly <pdaly@redhat.com>
+Signed-off-by: Alessandro Carminati (Red Hat) <alessandro.carminati@gmail.com>
+Link: https://lore.kernel.org/r/20230921073217.572151-1-alessandro.carminati@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    7 +++----
- fs/ext4/mballoc.h |   14 ++++++++++++++
- 2 files changed, 17 insertions(+), 4 deletions(-)
+ drivers/clk/clk.c |   21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4052,7 +4052,7 @@ ext4_mb_normalize_request(struct ext4_al
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -3416,6 +3416,7 @@ static void possible_parent_show(struct
+ 				 unsigned int i, char terminator)
+ {
+ 	struct clk_core *parent;
++	const char *name = NULL;
  
- 	/* first, let's learn actual file size
- 	 * given current request is allocated */
--	size = ac->ac_o_ex.fe_logical + EXT4_C2B(sbi, ac->ac_o_ex.fe_len);
-+	size = extent_logical_end(sbi, &ac->ac_o_ex);
- 	size = size << bsbits;
- 	if (size < i_size_read(ac->ac_inode))
- 		size = i_size_read(ac->ac_inode);
-@@ -4407,8 +4407,7 @@ ext4_mb_use_preallocated(struct ext4_all
- 		/* all fields in this condition don't change,
- 		 * so we can skip locking for them */
- 		if (ac->ac_o_ex.fe_logical < pa->pa_lstart ||
--		    ac->ac_o_ex.fe_logical >= (pa->pa_lstart +
--					       EXT4_C2B(sbi, pa->pa_len)))
-+		    ac->ac_o_ex.fe_logical >= pa_logical_end(sbi, pa))
- 			continue;
+ 	/*
+ 	 * Go through the following options to fetch a parent's name.
+@@ -3430,18 +3431,20 @@ static void possible_parent_show(struct
+ 	 * registered (yet).
+ 	 */
+ 	parent = clk_core_get_parent_by_index(core, i);
+-	if (parent)
++	if (parent) {
+ 		seq_puts(s, parent->name);
+-	else if (core->parents[i].name)
++	} else if (core->parents[i].name) {
+ 		seq_puts(s, core->parents[i].name);
+-	else if (core->parents[i].fw_name)
++	} else if (core->parents[i].fw_name) {
+ 		seq_printf(s, "<%s>(fw)", core->parents[i].fw_name);
+-	else if (core->parents[i].index >= 0)
+-		seq_puts(s,
+-			 of_clk_get_parent_name(core->of_node,
+-						core->parents[i].index));
+-	else
+-		seq_puts(s, "(missing)");
++	} else {
++		if (core->parents[i].index >= 0)
++			name = of_clk_get_parent_name(core->of_node, core->parents[i].index);
++		if (!name)
++			name = "(missing)";
++
++		seq_puts(s, name);
++	}
  
- 		/* non-extent files can't have physical blocks past 2^32 */
-@@ -5229,7 +5228,7 @@ static void ext4_mb_group_or_file(struct
- 
- 	group_pa_eligible = sbi->s_mb_group_prealloc > 0;
- 	inode_pa_eligible = true;
--	size = ac->ac_o_ex.fe_logical + EXT4_C2B(sbi, ac->ac_o_ex.fe_len);
-+	size = extent_logical_end(sbi, &ac->ac_o_ex);
- 	isize = (i_size_read(ac->ac_inode) + ac->ac_sb->s_blocksize - 1)
- 		>> bsbits;
- 
---- a/fs/ext4/mballoc.h
-+++ b/fs/ext4/mballoc.h
-@@ -218,6 +218,20 @@ static inline ext4_fsblk_t ext4_grp_offs
- 		(fex->fe_start << EXT4_SB(sb)->s_cluster_bits);
+ 	seq_putc(s, terminator);
  }
- 
-+static inline loff_t extent_logical_end(struct ext4_sb_info *sbi,
-+					struct ext4_free_extent *fex)
-+{
-+	/* Use loff_t to avoid end exceeding ext4_lblk_t max. */
-+	return (loff_t)fex->fe_logical + EXT4_C2B(sbi, fex->fe_len);
-+}
-+
-+static inline loff_t pa_logical_end(struct ext4_sb_info *sbi,
-+				    struct ext4_prealloc_space *pa)
-+{
-+	/* Use loff_t to avoid end exceeding ext4_lblk_t max. */
-+	return (loff_t)pa->pa_lstart + EXT4_C2B(sbi, pa->pa_len);
-+}
-+
- typedef int (*ext4_mballoc_query_range_fn)(
- 	struct super_block		*sb,
- 	ext4_group_t			agno,
 
 
