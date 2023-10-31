@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8847DD416
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B5707DD531
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234419AbjJaRHA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:07:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34342 "EHLO
+        id S1376427AbjJaRsO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:48:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236465AbjJaRGo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:44 -0400
+        with ESMTP id S1376466AbjJaRsN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48DBED55
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF41C433C8;
-        Tue, 31 Oct 2023 17:05:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C58EA11C
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA9BC433CB;
+        Tue, 31 Oct 2023 17:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771923;
-        bh=hm1D7rvcVL1UD9JyXlp7WexD9tdMY4XFxDEXz6bIG14=;
+        s=korg; t=1698774477;
+        bh=0yZtChg+EGd99Tmp3oIDXYEhxTOrGyQN+m92kIJ+GtQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ForlYB7AkKrbCXWhQRHBYnUqDVrtT8FMfTEU5uHV+CjKpEHwJIKTfIEAos2P2ADch
-         sIwhgkIiWlqPN6lB29KWQo6obvi7R6NTFAjdNtqjIxlZLlSwciqz4Spz6XQ+jb+t8Y
-         pJp+PNxFFIv6k/UkYQTWFCBPNAexnry/2Pbar69k=
+        b=pAUBBPKm5aWISz6pt7nLviSxvAEnDlg9nONyFf+n0BMc61pTZJQxI60fi9tVLR36v
+         WS1FXVz9ml/kipyT66AAyyIRbzk35fcuHM6h4tL6tuXrrbUgX5FRSPf122GC+Kmohw
+         IN9oCygeRynaoJ/ir3cDZrBNZEmfbWb4TnKlnNik=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        nic_swsd@realtek.com, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
+        patches@lists.linux.dev, Dima Ruinskiy <dima.ruinskiy@intel.com>,
+        Vitaly Lifshits <vitaly.lifshits@intel.com>,
+        Sasha Neftin <sasha.neftin@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Marco Elver <elver@google.com>, netdev@vger.kernel.org,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 34/86] r8169: fix the KCSAN reported data-race in rtl_tx() while reading tp->cur_tx
+Subject: [PATCH 6.5 058/112] igc: Fix ambiguity in the ethtool advertising
 Date:   Tue, 31 Oct 2023 18:00:59 +0100
-Message-ID: <20231031165919.695003549@linuxfoundation.org>
+Message-ID: <20231031165903.151478513@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,173 +54,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Sasha Neftin <sasha.neftin@intel.com>
 
-[ Upstream commit c1c0ce31b2420d5c173228a2132a492ede03d81f ]
+[ Upstream commit e7684d29efdf37304c62bb337ea55b3428ca118e ]
 
-KCSAN reported the following data-race:
+The 'ethtool_convert_link_mode_to_legacy_u32' method does not allow us to
+advertise 2500M speed support and TP (twisted pair) properly. Convert to
+'ethtool_link_ksettings_test_link_mode' to advertise supported speed and
+eliminate ambiguity.
 
-==================================================================
-BUG: KCSAN: data-race in rtl8169_poll [r8169] / rtl8169_start_xmit [r8169]
-
-write (marked) to 0xffff888102474b74 of 4 bytes by task 5358 on cpu 29:
-rtl8169_start_xmit (drivers/net/ethernet/realtek/r8169_main.c:4254) r8169
-dev_hard_start_xmit (./include/linux/netdevice.h:4889 ./include/linux/netdevice.h:4903 net/core/dev.c:3544 net/core/dev.c:3560)
-sch_direct_xmit (net/sched/sch_generic.c:342)
-__dev_queue_xmit (net/core/dev.c:3817 net/core/dev.c:4306)
-ip_finish_output2 (./include/linux/netdevice.h:3082 ./include/net/neighbour.h:526 ./include/net/neighbour.h:540 net/ipv4/ip_output.c:233)
-__ip_finish_output (net/ipv4/ip_output.c:311 net/ipv4/ip_output.c:293)
-ip_finish_output (net/ipv4/ip_output.c:328)
-ip_output (net/ipv4/ip_output.c:435)
-ip_send_skb (./include/net/dst.h:458 net/ipv4/ip_output.c:127 net/ipv4/ip_output.c:1486)
-udp_send_skb (net/ipv4/udp.c:963)
-udp_sendmsg (net/ipv4/udp.c:1246)
-inet_sendmsg (net/ipv4/af_inet.c:840 (discriminator 4))
-sock_sendmsg (net/socket.c:730 net/socket.c:753)
-__sys_sendto (net/socket.c:2177)
-__x64_sys_sendto (net/socket.c:2185)
-do_syscall_64 (arch/x86/entry/common.c:50 arch/x86/entry/common.c:80)
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:120)
-
-read to 0xffff888102474b74 of 4 bytes by interrupt on cpu 21:
-rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4397 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
-__napi_poll (net/core/dev.c:6527)
-net_rx_action (net/core/dev.c:6596 net/core/dev.c:6727)
-__do_softirq (kernel/softirq.c:553)
-__irq_exit_rcu (kernel/softirq.c:427 kernel/softirq.c:632)
-irq_exit_rcu (kernel/softirq.c:647)
-common_interrupt (arch/x86/kernel/irq.c:247 (discriminator 14))
-asm_common_interrupt (./arch/x86/include/asm/idtentry.h:636)
-cpuidle_enter_state (drivers/cpuidle/cpuidle.c:291)
-cpuidle_enter (drivers/cpuidle/cpuidle.c:390)
-call_cpuidle (kernel/sched/idle.c:135)
-do_idle (kernel/sched/idle.c:219 kernel/sched/idle.c:282)
-cpu_startup_entry (kernel/sched/idle.c:378 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:210 arch/x86/kernel/smpboot.c:294)
-secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
-
-value changed: 0x002f4815 -> 0x002f4816
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 21 PID: 0 Comm: swapper/21 Tainted: G             L     6.6.0-rc2-kcsan-00143-gb5cbe7c00aa0 #41
-Hardware name: ASRock X670E PG Lightning/X670E PG Lightning, BIOS 1.21 04/26/2023
-==================================================================
-
-The write side of drivers/net/ethernet/realtek/r8169_main.c is:
-==================
-   4251         /* rtl_tx needs to see descriptor changes before updated tp->cur_tx */
-   4252         smp_wmb();
-   4253
- → 4254         WRITE_ONCE(tp->cur_tx, tp->cur_tx + frags + 1);
-   4255
-   4256         stop_queue = !netif_subqueue_maybe_stop(dev, 0, rtl_tx_slots_avail(tp),
-   4257                                                 R8169_TX_STOP_THRS,
-   4258                                                 R8169_TX_START_THRS);
-
-The read side is the function rtl_tx():
-
-   4355 static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
-   4356                    int budget)
-   4357 {
-   4358         unsigned int dirty_tx, bytes_compl = 0, pkts_compl = 0;
-   4359         struct sk_buff *skb;
-   4360
-   4361         dirty_tx = tp->dirty_tx;
-   4362
-   4363         while (READ_ONCE(tp->cur_tx) != dirty_tx) {
-   4364                 unsigned int entry = dirty_tx % NUM_TX_DESC;
-   4365                 u32 status;
-   4366
-   4367                 status = le32_to_cpu(tp->TxDescArray[entry].opts1);
-   4368                 if (status & DescOwn)
-   4369                         break;
-   4370
-   4371                 skb = tp->tx_skb[entry].skb;
-   4372                 rtl8169_unmap_tx_skb(tp, entry);
-   4373
-   4374                 if (skb) {
-   4375                         pkts_compl++;
-   4376                         bytes_compl += skb->len;
-   4377                         napi_consume_skb(skb, budget);
-   4378                 }
-   4379                 dirty_tx++;
-   4380         }
-   4381
-   4382         if (tp->dirty_tx != dirty_tx) {
-   4383                 dev_sw_netstats_tx_add(dev, pkts_compl, bytes_compl);
-   4384                 WRITE_ONCE(tp->dirty_tx, dirty_tx);
-   4385
-   4386                 netif_subqueue_completed_wake(dev, 0, pkts_compl, bytes_compl,
-   4387                                               rtl_tx_slots_avail(tp),
-   4388                                               R8169_TX_START_THRS);
-   4389                 /*
-   4390                  * 8168 hack: TxPoll requests are lost when the Tx packets are
-   4391                  * too close. Let's kick an extra TxPoll request when a burst
-   4392                  * of start_xmit activity is detected (if it is not detected,
-   4393                  * it is slow enough). -- FR
-   4394                  * If skb is NULL then we come here again once a tx irq is
-   4395                  * triggered after the last fragment is marked transmitted.
-   4396                  */
- → 4397                 if (tp->cur_tx != dirty_tx && skb)
-   4398                         rtl8169_doorbell(tp);
-   4399         }
-   4400 }
-
-Obviously from the code, an earlier detected data-race for tp->cur_tx was fixed in the
-line 4363:
-
-   4363         while (READ_ONCE(tp->cur_tx) != dirty_tx) {
-
-but the same solution is required for protecting the other access to tp->cur_tx:
-
- → 4397                 if (READ_ONCE(tp->cur_tx) != dirty_tx && skb)
-   4398                         rtl8169_doorbell(tp);
-
-The write in the line 4254 is protected with WRITE_ONCE(), but the read in the line 4397
-might have suffered read tearing under some compiler optimisations.
-
-The fix eliminated the KCSAN data-race report for this bug.
-
-It is yet to be evaluated what happens if tp->cur_tx changes between the test in line 4363
-and line 4397. This test should certainly not be cached by the compiler in some register
-for such a long time, while asynchronous writes to tp->cur_tx might have occurred in line
-4254 in the meantime.
-
-Fixes: 94d8a98e6235c ("r8169: reduce number of workaround doorbell rings")
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: nic_swsd@realtek.com
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Marco Elver <elver@google.com>
-Cc: netdev@vger.kernel.org
-Link: https://lore.kernel.org/lkml/dc7fc8fa-4ea4-e9a9-30a6-7c83e6b53188@alu.unizg.hr/
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Marco Elver <elver@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 8c5ad0dae93c ("igc: Add ethtool support")
+Suggested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Suggested-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20231019203641.3661960-1-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_ethtool.c | 35 ++++++++++++++------
+ 1 file changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index a9a0dca0c0305..5288daaf59b5b 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4380,7 +4380,7 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
- 		 * If skb is NULL then we come here again once a tx irq is
- 		 * triggered after the last fragment is marked transmitted.
- 		 */
--		if (tp->cur_tx != dirty_tx && skb)
-+		if (READ_ONCE(tp->cur_tx) != dirty_tx && skb)
- 			rtl8169_doorbell(tp);
- 	}
- }
+diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+index 7ab6dd58e4001..dd8a9d27a1670 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
++++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+@@ -1817,7 +1817,7 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
+ 	struct igc_adapter *adapter = netdev_priv(netdev);
+ 	struct net_device *dev = adapter->netdev;
+ 	struct igc_hw *hw = &adapter->hw;
+-	u32 advertising;
++	u16 advertised = 0;
+ 
+ 	/* When adapter in resetting mode, autoneg/speed/duplex
+ 	 * cannot be changed
+@@ -1842,18 +1842,33 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
+ 	while (test_and_set_bit(__IGC_RESETTING, &adapter->state))
+ 		usleep_range(1000, 2000);
+ 
+-	ethtool_convert_link_mode_to_legacy_u32(&advertising,
+-						cmd->link_modes.advertising);
+-	/* Converting to legacy u32 drops ETHTOOL_LINK_MODE_2500baseT_Full_BIT.
+-	 * We have to check this and convert it to ADVERTISE_2500_FULL
+-	 * (aka ETHTOOL_LINK_MODE_2500baseX_Full_BIT) explicitly.
+-	 */
+-	if (ethtool_link_ksettings_test_link_mode(cmd, advertising, 2500baseT_Full))
+-		advertising |= ADVERTISE_2500_FULL;
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  2500baseT_Full))
++		advertised |= ADVERTISE_2500_FULL;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  1000baseT_Full))
++		advertised |= ADVERTISE_1000_FULL;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  100baseT_Full))
++		advertised |= ADVERTISE_100_FULL;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  100baseT_Half))
++		advertised |= ADVERTISE_100_HALF;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  10baseT_Full))
++		advertised |= ADVERTISE_10_FULL;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  10baseT_Half))
++		advertised |= ADVERTISE_10_HALF;
+ 
+ 	if (cmd->base.autoneg == AUTONEG_ENABLE) {
+ 		hw->mac.autoneg = 1;
+-		hw->phy.autoneg_advertised = advertising;
++		hw->phy.autoneg_advertised = advertised;
+ 		if (adapter->fc_autoneg)
+ 			hw->fc.requested_mode = igc_fc_default;
+ 	} else {
 -- 
 2.42.0
 
