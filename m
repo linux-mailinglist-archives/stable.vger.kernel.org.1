@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B47A7DD533
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 967FE7DD3F1
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376462AbjJaRsQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:48:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39626 "EHLO
+        id S236319AbjJaRGW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376456AbjJaRsP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:15 -0400
+        with ESMTP id S236367AbjJaRGK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C21EEC9
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D09C433C7;
-        Tue, 31 Oct 2023 17:47:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA8582106
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F2BC433C7;
+        Tue, 31 Oct 2023 17:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774480;
-        bh=9znv38mbVSfWtGZLYGZsEbRu38RP1d8hctw0gIQJzVs=;
+        s=korg; t=1698771824;
+        bh=emtbnUQzpJpLWRsOKrQ0iTJlAX21to0DxXF+3HZkCCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FDpimOBDPQreasgolJwzv1AaAOpL9xulEFhX7n36UtWJOZx90TMAEJq1JclBg8zXe
-         VY7TuQVbjxi612msecDDxlHQ1zWpatL9j+VT2grEKo2zUpgOI7tRA1e1G+mUGUQxmQ
-         U1nGkfDNFgSp4aRzPpkJGN6h96PZ2ijrYluE5ggU=
+        b=ObQQrmwIgN2fEqmpowzwDbhXk5QSD8WGZIBLo6nM0sLQQ9HWl1RJRg6B9I2ysLqph
+         zM+dQwx2VCY0DoQWQO3EQXVanuE0CPtw+COZmAJiR3OLQPqw9tGZBpGtP65i2CNOHi
+         q4c7N68IV/kyncn4k3UnC51fOZDgrm8HU+xu4gjA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Gregory Price <gregory.price@memverge.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 026/112] mm/migrate: fix do_pages_move for compat pointers
+        patches@lists.linux.dev, Christian Loehle <cloehle@hyperstone.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 02/86] mmc: core: Align to common busy polling behaviour for mmc ioctls
 Date:   Tue, 31 Oct 2023 18:00:27 +0100
-Message-ID: <20231031165902.137470385@linuxfoundation.org>
+Message-ID: <20231031165918.686567190@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,78 +50,99 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Price <gourry.memverge@gmail.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-commit 229e2253766c7cdfe024f1fe280020cc4711087c upstream.
+[ Upstream commit 51f5b3056790bc0518e49587996f1e6f3058cca9 ]
 
-do_pages_move does not handle compat pointers for the page list.
-correctly.  Add in_compat_syscall check and appropriate get_user fetch
-when iterating the page list.
+Let's align to the common busy polling behaviour for mmc ioctls, by
+updating the below two corresponding parts, that comes into play when using
+an R1B response for a command.
 
-It makes the syscall in compat mode (32-bit userspace, 64-bit kernel)
-work the same way as the native 32-bit syscall again, restoring the
-behavior before my broken commit 5b1b561ba73c ("mm: simplify
-compat_sys_move_pages").
+*) A command with an R1B response should be prepared by calling
+mmc_prepare_busy_cmd(), which make us respects the host's busy timeout
+constraints.
+**) When an R1B response is being used and the host also supports HW busy
+detection, we should skip to poll for busy completion.
 
-More specifically, my patch moved the parsing of the 'pages' array from
-the main entry point into do_pages_stat(), which left the syscall
-working correctly for the 'stat' operation (nodes = NULL), while the
-'move' operation (nodes != NULL) is now missing the conversion and
-interprets 'pages' as an array of 64-bit pointers instead of the
-intended 32-bit userspace pointers.
-
-It is possible that nobody noticed this bug because the few
-applications that actually call move_pages are unlikely to run in
-compat mode because of their large memory requirements, but this
-clearly fixes a user-visible regression and should have been caught by
-ltp.
-
-Link: https://lkml.kernel.org/r/20231003144857.752952-1-gregory.price@memverge.com
-Fixes: 5b1b561ba73c ("mm: simplify compat_sys_move_pages")
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Co-developed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Christian Loehle <cloehle@hyperstone.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reviewed-by: Christian Loehle <cloehle@hyperstone.com>
+Link: https://lore.kernel.org/r/20230213133707.27857-1-ulf.hansson@linaro.org
+Stable-dep-of: f19c5a73e6f7 ("mmc: core: Fix error propagation for some ioctl commands")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/mmc/core/block.c   | 25 +++++++++++++++++--------
+ drivers/mmc/core/mmc_ops.c |  1 +
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -2160,6 +2160,7 @@ static int do_pages_move(struct mm_struc
- 			 const int __user *nodes,
- 			 int __user *status, int flags)
- {
-+	compat_uptr_t __user *compat_pages = (void __user *)pages;
- 	int current_node = NUMA_NO_NODE;
- 	LIST_HEAD(pagelist);
- 	int start, i;
-@@ -2172,8 +2173,17 @@ static int do_pages_move(struct mm_struc
- 		int node;
+diff --git a/drivers/mmc/core/block.c b/drivers/mmc/core/block.c
+index cdd7f126d4aea..baefe2886f0b2 100644
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -471,6 +471,8 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
+ 	struct mmc_data data = {};
+ 	struct mmc_request mrq = {};
+ 	struct scatterlist sg;
++	bool r1b_resp, use_r1b_resp = false;
++	unsigned int busy_timeout_ms;
+ 	int err;
+ 	unsigned int target_part;
  
- 		err = -EFAULT;
--		if (get_user(p, pages + i))
--			goto out_flush;
-+		if (in_compat_syscall()) {
-+			compat_uptr_t cp;
-+
-+			if (get_user(cp, compat_pages + i))
-+				goto out_flush;
-+
-+			p = compat_ptr(cp);
-+		} else {
-+			if (get_user(p, pages + i))
-+				goto out_flush;
-+		}
- 		if (get_user(node, nodes + i))
- 			goto out_flush;
+@@ -559,6 +561,13 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
+ 	    (cmd.opcode == MMC_SWITCH))
+ 		return mmc_sanitize(card, idata->ic.cmd_timeout_ms);
  
++	/* If it's an R1B response we need some more preparations. */
++	busy_timeout_ms = idata->ic.cmd_timeout_ms ? : MMC_BLK_TIMEOUT_MS;
++	r1b_resp = (cmd.flags & MMC_RSP_R1B) == MMC_RSP_R1B;
++	if (r1b_resp)
++		use_r1b_resp = mmc_prepare_busy_cmd(card->host, &cmd,
++						    busy_timeout_ms);
++
+ 	mmc_wait_for_req(card->host, &mrq);
+ 	memcpy(&idata->ic.response, cmd.resp, sizeof(cmd.resp));
+ 
+@@ -610,14 +619,14 @@ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
+ 	if (idata->ic.postsleep_min_us)
+ 		usleep_range(idata->ic.postsleep_min_us, idata->ic.postsleep_max_us);
+ 
+-	if (idata->rpmb || (cmd.flags & MMC_RSP_R1B) == MMC_RSP_R1B) {
+-		/*
+-		 * Ensure RPMB/R1B command has completed by polling CMD13 "Send Status". Here we
+-		 * allow to override the default timeout value if a custom timeout is specified.
+-		 */
+-		err = mmc_poll_for_busy(card, idata->ic.cmd_timeout_ms ? : MMC_BLK_TIMEOUT_MS,
+-					false, MMC_BUSY_IO);
+-	}
++	/* No need to poll when using HW busy detection. */
++	if ((card->host->caps & MMC_CAP_WAIT_WHILE_BUSY) && use_r1b_resp)
++		return 0;
++
++	/* Ensure RPMB/R1B command has completed by polling with CMD13. */
++	if (idata->rpmb || r1b_resp)
++		err = mmc_poll_for_busy(card, busy_timeout_ms, false,
++					MMC_BUSY_IO);
+ 
+ 	return err;
+ }
+diff --git a/drivers/mmc/core/mmc_ops.c b/drivers/mmc/core/mmc_ops.c
+index 81c55bfd6e0c2..3b3adbddf6641 100644
+--- a/drivers/mmc/core/mmc_ops.c
++++ b/drivers/mmc/core/mmc_ops.c
+@@ -575,6 +575,7 @@ bool mmc_prepare_busy_cmd(struct mmc_host *host, struct mmc_command *cmd,
+ 	cmd->busy_timeout = timeout_ms;
+ 	return true;
+ }
++EXPORT_SYMBOL_GPL(mmc_prepare_busy_cmd);
+ 
+ /**
+  *	__mmc_switch - modify EXT_CSD register
+-- 
+2.42.0
+
 
 
