@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 912E87DD435
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DF73A7DD558
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235480AbjJaRHe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:07:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34124 "EHLO
+        id S1376529AbjJaRtk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:49:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236593AbjJaRHW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:22 -0400
+        with ESMTP id S1376526AbjJaRth (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9772FD77
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60AAC433C7;
-        Tue, 31 Oct 2023 17:06:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D715CDF
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF31C433C7;
+        Tue, 31 Oct 2023 17:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771993;
-        bh=AFKpgB1Afwc4IFDQYBOdgFwbUGqy4TQQF+6+g/4GzBg=;
+        s=korg; t=1698774574;
+        bh=zEeUP4HGXCVItEvXY0XqTmHCCkY16zLfK/oZ+TY5mX8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gu9183Ig//WIuFiLUlHiQFTQI0ooWL95Ft/voM9KDb6qfMJ88O4HbjsZKxNrsR+XQ
-         kMF5a1jorDTXyZpjC7OBUQ3LRueqzy12kYmPjCcqqzfxaHquhpmrieDkB27oycbvS6
-         I70r7xHt8t8QjZttpPTxyTpNhFehg+ULbgqIQqAE=
+        b=KiQnVmVSiKpD4nD06Z7igsv+yQbYzaQewsjcQzpslNfl+i+dPsR0z9G1A4SGhD/ea
+         6p5wWGCvq0DFohcKVumEvAhr6SA/aCwedO5TpnWMrFn20eRrZ+JxEcpODIi6uA0pzz
+         16UozceLVCzI8kDp4J1QuR0Cjlj4rPUt6z5awdf0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,12 +30,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
         Andi Shyti <andi.shyti@kernel.org>,
         Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.1 67/86] i2c: stm32f7: Fix PEC handling in case of SMBUS transfers
+Subject: [PATCH 6.5 091/112] i2c: stm32f7: Fix PEC handling in case of SMBUS transfers
 Date:   Tue, 31 Oct 2023 18:01:32 +0100
-Message-ID: <20231031165920.646148538@linuxfoundation.org>
+Message-ID: <20231031165904.175807878@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,7 +51,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
