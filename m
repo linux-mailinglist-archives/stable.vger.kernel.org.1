@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32D487DD41A
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 871537DD3F5
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235859AbjJaRHB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:07:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34386 "EHLO
+        id S234681AbjJaRGa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236477AbjJaRGq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:46 -0400
+        with ESMTP id S236422AbjJaRGK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41ACC1711
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8475CC433C8;
-        Tue, 31 Oct 2023 17:05:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E5D8FC
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E28C433C8;
+        Tue, 31 Oct 2023 17:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771925;
-        bh=zXsQs2icC08+beyTjE2DT0gjg6zbXhqXylNOtT2Lr5E=;
+        s=korg; t=1698771827;
+        bh=tORmKgDjrWmZuIKUiyfVCrjdMK/z13d0C/KN14S66/M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SB1yHhf3AOBAAo8NzBwHMJzDczVDqwNSrNoeselQsmI9UzlxBLheScSgUD+BVD6I0
-         X5X/ncTHHyPHgDNdwC4m0cezfLCsci3K+tmLl90ndsU/C44jZg1O0U82PYkXAj+rtm
-         DDBPdw2CqBpzGwf2n9RldBj7UcT2+HG4d5kzWV1s=
+        b=TVGxcHbIGVlTI5dchEHKeY11VpMMwyeDwrzfMeuErqvedKShN5GHpMR/wR7AgUG97
+         r0IurfYDkRZBHb/8twsJ5/+NA3U6zcUIIvZ+DcacVf+43n9kIDSAaGuGGetAZatcat
+         PZZNxPki6lkaBEIf/r3dq7wIANOYGa0enqo5GBkY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Peng Zhang <zhangpeng.00@bytedance.com>, jason.sim@samsung.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 25/86] maple_tree: add GFP_KERNEL to allocations in mas_expected_entries()
-Date:   Tue, 31 Oct 2023 18:00:50 +0100
-Message-ID: <20231031165919.395404950@linuxfoundation.org>
+        patches@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.1 26/86] nfsd: lock_rename() needs both directories to live on the same fs
+Date:   Tue, 31 Oct 2023 18:00:51 +0100
+Message-ID: <20231031165919.426589510@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
 References: <20231031165918.608547597@linuxfoundation.org>
@@ -55,213 +54,51 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 099d7439ce03d0e7bc8f0c3d7878b562f3a48d3d upstream.
+commit 1aee9158bc978f91701c5992e395efbc6da2de3c upstream.
 
-Users complained about OOM errors during fork without triggering
-compaction.  This can be fixed by modifying the flags used in
-mas_expected_entries() so that the compaction will be triggered in low
-memory situations.  Since mas_expected_entries() is only used during fork,
-the extra argument does not need to be passed through.
+... checking that after lock_rename() is too late.  Incidentally,
+NFSv2 had no nfserr_xdev...
 
-Additionally, the two test_maple_tree test cases and one benchmark test
-were altered to use the correct locking type so that allocations would not
-trigger sleeping and thus fail.  Testing was completed with lockdep atomic
-sleep detection.
-
-The additional locking change requires rwsem support additions to the
-tools/ directory through the use of pthreads pthread_rwlock_t.  With this
-change test_maple_tree works in userspace, as a module, and in-kernel.
-
-Users may notice that the system gave up early on attempting to start new
-processes instead of attempting to reclaim memory.
-
-Link: https://lkml.kernel.org/r/20230915093243epcms1p46fa00bbac1ab7b7dca94acb66c44c456@epcms1p4
-Link: https://lkml.kernel.org/r/20231012155233.2272446-1-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Peng Zhang <zhangpeng.00@bytedance.com>
-Cc: <jason.sim@samsung.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: aa387d6ce153 "nfsd: fix EXDEV checking in rename"
+Cc: stable@vger.kernel.org # v3.9+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Tested-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/maple_tree.c            |    2 +-
- lib/test_maple_tree.c       |   35 ++++++++++++++++++++++++-----------
- tools/include/linux/rwsem.h |   40 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 65 insertions(+), 12 deletions(-)
- create mode 100644 tools/include/linux/rwsem.h
+ fs/nfsd/vfs.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -5913,7 +5913,7 @@ int mas_expected_entries(struct ma_state
- 	/* Internal nodes */
- 	nr_nodes += DIV_ROUND_UP(nr_nodes, nonleaf_cap);
- 	/* Add working room for split (2 nodes) + new parents */
--	mas_node_count(mas, nr_nodes + 3);
-+	mas_node_count_gfp(mas, nr_nodes + 3, GFP_KERNEL);
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1659,6 +1659,12 @@ nfsd_rename(struct svc_rqst *rqstp, stru
+ 	if (!flen || isdotent(fname, flen) || !tlen || isdotent(tname, tlen))
+ 		goto out;
  
- 	/* Detect if allocations run out */
- 	mas->mas_flags |= MA_STATE_PREALLOC;
---- a/lib/test_maple_tree.c
-+++ b/lib/test_maple_tree.c
-@@ -9,6 +9,7 @@
++	err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
++	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
++		goto out;
++	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
++		goto out;
++
+ retry:
+ 	host_err = fh_want_write(ffhp);
+ 	if (host_err) {
+@@ -1690,12 +1696,6 @@ retry:
+ 	if (ndentry == trap)
+ 		goto out_dput_new;
  
- #include <linux/maple_tree.h>
- #include <linux/module.h>
-+#include <linux/rwsem.h>
- 
- #define MTREE_ALLOC_MAX 0x2000000000000Ul
- #ifndef CONFIG_DEBUG_MAPLE_TREE
-@@ -1678,17 +1679,21 @@ static noinline void __init check_forkin
- 	void *val;
- 	MA_STATE(mas, mt, 0, 0);
- 	MA_STATE(newmas, mt, 0, 0);
-+	struct rw_semaphore newmt_lock;
-+
-+	init_rwsem(&newmt_lock);
- 
- 	for (i = 0; i <= nr_entries; i++)
- 		mtree_store_range(mt, i*10, i*10 + 5,
- 				  xa_mk_value(i), GFP_KERNEL);
- 
- 	mt_set_non_kernel(99999);
--	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE);
-+	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN);
-+	mt_set_external_lock(&newmt, &newmt_lock);
- 	newmas.tree = &newmt;
- 	mas_reset(&newmas);
- 	mas_reset(&mas);
--	mas_lock(&newmas);
-+	down_write(&newmt_lock);
- 	mas.index = 0;
- 	mas.last = 0;
- 	if (mas_expected_entries(&newmas, nr_entries)) {
-@@ -1703,10 +1708,10 @@ static noinline void __init check_forkin
- 	}
- 	rcu_read_unlock();
- 	mas_destroy(&newmas);
--	mas_unlock(&newmas);
- 	mt_validate(&newmt);
- 	mt_set_non_kernel(0);
--	mtree_destroy(&newmt);
-+	__mt_destroy(&newmt);
-+	up_write(&newmt_lock);
- }
- 
- static noinline void __init check_iteration(struct maple_tree *mt)
-@@ -1818,6 +1823,10 @@ static noinline void __init bench_forkin
- 	void *val;
- 	MA_STATE(mas, mt, 0, 0);
- 	MA_STATE(newmas, mt, 0, 0);
-+	struct rw_semaphore newmt_lock;
-+
-+	init_rwsem(&newmt_lock);
-+	mt_set_external_lock(&newmt, &newmt_lock);
- 
- 	for (i = 0; i <= nr_entries; i++)
- 		mtree_store_range(mt, i*10, i*10 + 5,
-@@ -1832,7 +1841,7 @@ static noinline void __init bench_forkin
- 		mas.index = 0;
- 		mas.last = 0;
- 		rcu_read_lock();
--		mas_lock(&newmas);
-+		down_write(&newmt_lock);
- 		if (mas_expected_entries(&newmas, nr_entries)) {
- 			printk("OOM!");
- 			BUG_ON(1);
-@@ -1843,11 +1852,11 @@ static noinline void __init bench_forkin
- 			mas_store(&newmas, val);
- 		}
- 		mas_destroy(&newmas);
--		mas_unlock(&newmas);
- 		rcu_read_unlock();
- 		mt_validate(&newmt);
- 		mt_set_non_kernel(0);
--		mtree_destroy(&newmt);
-+		__mt_destroy(&newmt);
-+		up_write(&newmt_lock);
- 	}
- }
- #endif
-@@ -2453,6 +2462,10 @@ static noinline void __init check_dup_ga
- 	void *tmp;
- 	MA_STATE(mas, mt, 0, 0);
- 	MA_STATE(newmas, &newmt, 0, 0);
-+	struct rw_semaphore newmt_lock;
-+
-+	init_rwsem(&newmt_lock);
-+	mt_set_external_lock(&newmt, &newmt_lock);
- 
- 	if (!zero_start)
- 		i = 1;
-@@ -2462,9 +2475,9 @@ static noinline void __init check_dup_ga
- 		mtree_store_range(mt, i*10, (i+1)*10 - gap,
- 				  xa_mk_value(i), GFP_KERNEL);
- 
--	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE);
-+	mt_init_flags(&newmt, MT_FLAGS_ALLOC_RANGE | MT_FLAGS_LOCK_EXTERN);
- 	mt_set_non_kernel(99999);
--	mas_lock(&newmas);
-+	down_write(&newmt_lock);
- 	ret = mas_expected_entries(&newmas, nr_entries);
- 	mt_set_non_kernel(0);
- 	MT_BUG_ON(mt, ret != 0);
-@@ -2477,9 +2490,9 @@ static noinline void __init check_dup_ga
- 	}
- 	rcu_read_unlock();
- 	mas_destroy(&newmas);
--	mas_unlock(&newmas);
- 
--	mtree_destroy(&newmt);
-+	__mt_destroy(&newmt);
-+	up_write(&newmt_lock);
- }
- 
- /* Duplicate many sizes of trees.  Mainly to test expected entry values */
---- /dev/null
-+++ b/tools/include/linux/rwsem.h
-@@ -0,0 +1,40 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+#ifndef _TOOLS__RWSEM_H
-+#define _TOOLS__RWSEM_H
-+
-+#include <pthread.h>
-+
-+struct rw_semaphore {
-+	pthread_rwlock_t lock;
-+};
-+
-+static inline int init_rwsem(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_init(&sem->lock, NULL);
-+}
-+
-+static inline int exit_rwsem(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_destroy(&sem->lock);
-+}
-+
-+static inline int down_read(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_rdlock(&sem->lock);
-+}
-+
-+static inline int up_read(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_unlock(&sem->lock);
-+}
-+
-+static inline int down_write(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_wrlock(&sem->lock);
-+}
-+
-+static inline int up_write(struct rw_semaphore *sem)
-+{
-+	return pthread_rwlock_unlock(&sem->lock);
-+}
-+#endif /* _TOOLS_RWSEM_H */
+-	host_err = -EXDEV;
+-	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
+-		goto out_dput_new;
+-	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
+-		goto out_dput_new;
+-
+ 	if ((ndentry->d_sb->s_export_op->flags & EXPORT_OP_CLOSE_BEFORE_UNLINK) &&
+ 	    nfsd_has_cached_files(ndentry)) {
+ 		close_cached = true;
 
 
