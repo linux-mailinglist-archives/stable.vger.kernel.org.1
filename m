@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F7147DD50B
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:46:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E4A7DD3C4
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:02:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376328AbjJaRqy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:46:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40420 "EHLO
+        id S231347AbjJaRCy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:02:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376391AbjJaRqw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:46:52 -0400
+        with ESMTP id S233094AbjJaRCx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:02:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5C6492
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:46:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB13C433C7;
-        Tue, 31 Oct 2023 17:46:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 195A2135
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:02:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 573D0C433C9;
+        Tue, 31 Oct 2023 17:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774409;
-        bh=Swgc5V5OdE3LsAcKkWryTw3hgCWCYEpS81tQRfR5k3U=;
+        s=korg; t=1698771767;
+        bh=/ISZtNM/NaNNvDx52S8Z4MAYlZbs+UL6bIutgyzL2UQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Eeynqqvk0zGQthkskfd6bM9C95DnhJa5XT+OD77CJzmZ6fzw6Dwb6hFzA2gCyziRN
-         ORwsGOMacGpSJpxN9SBeWmMtAZ89K78QbX19IIDdLJRU2gVqHEpJn4DpKy/lpq38bN
-         iqM0F8Eerd22cJWG5PDL2lOJBkvF54jQwAbmXkSQ=
+        b=Cnro6BUJlfWhXrads5pRjKfXjoQkntbjW/oUgktRmPyduycIodtrQnAaRhyZL3w1F
+         MRZgorMq2xOm3LStl+c0+PS3PEBMkqkbMIl19oGCXRv4LIQ3l2OegAFAVVuwHIU3bJ
+         09Y+ni6WZqvt3rfK/qJR5Uo4GP/ZNOiLBHi8EIpU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Bee <knaerzche@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.5 037/112] ARM: dts: rockchip: Add missing quirk for RK3128s dma engine
-Date:   Tue, 31 Oct 2023 18:00:38 +0100
-Message-ID: <20231031165902.487844790@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Gonglei (Arei)" <arei.gonglei@huawei.com>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        zhenwei pi <pizhenwei@bytedance.com>
+Subject: [PATCH 6.1 14/86] virtio-crypto: handle config changed by work queue
+Date:   Tue, 31 Oct 2023 18:00:39 +0100
+Message-ID: <20231031165919.056613126@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +52,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Bee <knaerzche@gmail.com>
+From: zhenwei pi <pizhenwei@bytedance.com>
 
-commit b0b4e978784943c4ed8412dbb475178f8c51ba8e upstream.
+commit fa2e6947aa8844f25f5bad0d8cd1a541d9bc83eb upstream.
 
-Like most other Rockchip ARM SoCs, the PL330 needs the
-arm,pl330-periph-burst quirk in order to work as expected.
-Add it.
+MST pointed out: config change callback is also handled incorrectly
+in this driver, it takes a mutex from interrupt context.
 
-Fixes: a0201bff6259 ("ARM: dts: rockchip: add rk3128 soc dtsi")
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
-Link: https://lore.kernel.org/r/20230829203721.281455-10-knaerzche@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Handle config changed by work queue instead.
+
+Cc: stable@vger.kernel.org
+Cc: Gonglei (Arei) <arei.gonglei@huawei.com>
+Cc: Halil Pasic <pasic@linux.ibm.com>
+Cc: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+Message-Id: <20231007064309.844889-1-pizhenwei@bytedance.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/rockchip/rk3128.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/crypto/virtio/virtio_crypto_common.h |    3 +++
+ drivers/crypto/virtio/virtio_crypto_core.c   |   14 +++++++++++++-
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/rockchip/rk3128.dtsi b/arch/arm/boot/dts/rockchip/rk3128.dtsi
-index bf55d4575311..9125bf22e971 100644
---- a/arch/arm/boot/dts/rockchip/rk3128.dtsi
-+++ b/arch/arm/boot/dts/rockchip/rk3128.dtsi
-@@ -459,6 +459,7 @@ pdma: dma-controller@20078000 {
- 		interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 1 IRQ_TYPE_LEVEL_HIGH>;
- 		arm,pl330-broken-no-flushp;
-+		arm,pl330-periph-burst;
- 		clocks = <&cru ACLK_DMAC>;
- 		clock-names = "apb_pclk";
- 		#dma-cells = <1>;
--- 
-2.42.0
-
+--- a/drivers/crypto/virtio/virtio_crypto_common.h
++++ b/drivers/crypto/virtio/virtio_crypto_common.h
+@@ -35,6 +35,9 @@ struct virtio_crypto {
+ 	struct virtqueue *ctrl_vq;
+ 	struct data_queue *data_vq;
+ 
++	/* Work struct for config space updates */
++	struct work_struct config_work;
++
+ 	/* To protect the vq operations for the controlq */
+ 	spinlock_t ctrl_lock;
+ 
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -335,6 +335,14 @@ static void virtcrypto_del_vqs(struct vi
+ 	virtcrypto_free_queues(vcrypto);
+ }
+ 
++static void vcrypto_config_changed_work(struct work_struct *work)
++{
++	struct virtio_crypto *vcrypto =
++		container_of(work, struct virtio_crypto, config_work);
++
++	virtcrypto_update_status(vcrypto);
++}
++
+ static int virtcrypto_probe(struct virtio_device *vdev)
+ {
+ 	int err = -EFAULT;
+@@ -454,6 +462,8 @@ static int virtcrypto_probe(struct virti
+ 	if (err)
+ 		goto free_engines;
+ 
++	INIT_WORK(&vcrypto->config_work, vcrypto_config_changed_work);
++
+ 	return 0;
+ 
+ free_engines:
+@@ -489,6 +499,7 @@ static void virtcrypto_remove(struct vir
+ 
+ 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
+ 
++	flush_work(&vcrypto->config_work);
+ 	if (virtcrypto_dev_started(vcrypto))
+ 		virtcrypto_dev_stop(vcrypto);
+ 	virtio_reset_device(vdev);
+@@ -503,7 +514,7 @@ static void virtcrypto_config_changed(st
+ {
+ 	struct virtio_crypto *vcrypto = vdev->priv;
+ 
+-	virtcrypto_update_status(vcrypto);
++	schedule_work(&vcrypto->config_work);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+@@ -511,6 +522,7 @@ static int virtcrypto_freeze(struct virt
+ {
+ 	struct virtio_crypto *vcrypto = vdev->priv;
+ 
++	flush_work(&vcrypto->config_work);
+ 	virtio_reset_device(vdev);
+ 	virtcrypto_free_unused_reqs(vcrypto);
+ 	if (virtcrypto_dev_started(vcrypto))
 
 
