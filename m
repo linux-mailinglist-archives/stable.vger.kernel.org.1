@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2736B7DD547
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F3EB7DD3F6
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376513AbjJaRs6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:48:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44996 "EHLO
+        id S236127AbjJaRGc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376510AbjJaRs5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:57 -0400
+        with ESMTP id S234834AbjJaRGO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4ED9FC
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD58C433C8;
-        Tue, 31 Oct 2023 17:48:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77DA2E4
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B52EAC433C9;
+        Tue, 31 Oct 2023 17:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774533;
-        bh=H3rLEKXEd/XipxH8GHIrIzKTfbDDqO5rXx6dJnd/Cpc=;
+        s=korg; t=1698771836;
+        bh=sybyvJX6f9RTDd4I66HTmH7b4oAKg2Y6v0GKwxDwycU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NTeqJCUtizuKsfo8SeTlkxpBtkRADFesONK1XeOAcmSZd2M5ZOHKlg4LhT8ZzKHX/
-         2kyAYNYGeQSIkWRF/Zoy7PSTbkN0FcZWb7b9z2mYOd/zOs41Rh/ihLPuOKlzLhOpue
-         p8WId9bVqxbyi5BZfOhTS26c7n5uSn54OLgXqRpM=
+        b=EnFuUUBRDvESn+2/tUhH0T7nzVZymjUjR/DBd+IUM6GZjI8FtBlL3xRLNTMuHsf+9
+         5k6ZsceGGMLe89MFxFrHrxzFYvQ4rFVlJSdQoAGaViUns4WDuu/w5f6lnY/4VVgHWa
+         WIQ9Li1ipp45ND4+jU0rK8gQIk3hmrblVCCxKn8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
+        patches@lists.linux.dev, Michal Schmidt <mschmidt@redhat.com>,
+        Paul Menzel <pmenzel@molgen.mpg.de>,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+c74c24b43c9ae534f0e0@syzkaller.appspotmail.com,
-        syzbot+2c97a98a5ba9ea9c23bd@syzkaller.appspotmail.com
-Subject: [PATCH 6.5 061/112] net: usb: smsc95xx: Fix uninit-value access in smsc95xx_read_reg
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 37/86] iavf: initialize waitqueues before starting watchdog_task
 Date:   Tue, 31 Oct 2023 18:01:02 +0100
-Message-ID: <20231031165903.249386686@linuxfoundation.org>
+Message-ID: <20231031165919.794321733@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,105 +52,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Michal Schmidt <mschmidt@redhat.com>
 
-[ Upstream commit 51a32e828109b4a209efde44505baa356b37a4ce ]
+[ Upstream commit 7db3111043885c146e795c199d39c3f9042d97c0 ]
 
-syzbot reported the following uninit-value access issue [1]:
+It is not safe to initialize the waitqueues after queueing the
+watchdog_task. It will be using them.
 
-smsc95xx 1-1:0.0 (unnamed net_device) (uninitialized): Failed to read reg index 0x00000030: -32
-smsc95xx 1-1:0.0 (unnamed net_device) (uninitialized): Error reading E2P_CMD
-=====================================================
-BUG: KMSAN: uninit-value in smsc95xx_reset+0x409/0x25f0 drivers/net/usb/smsc95xx.c:896
- smsc95xx_reset+0x409/0x25f0 drivers/net/usb/smsc95xx.c:896
- smsc95xx_bind+0x9bc/0x22e0 drivers/net/usb/smsc95xx.c:1131
- usbnet_probe+0x100b/0x4060 drivers/net/usb/usbnet.c:1750
- usb_probe_interface+0xc75/0x1210 drivers/usb/core/driver.c:396
- really_probe+0x506/0xf40 drivers/base/dd.c:658
- __driver_probe_device+0x2a7/0x5d0 drivers/base/dd.c:800
- driver_probe_device+0x72/0x7b0 drivers/base/dd.c:830
- __device_attach_driver+0x55a/0x8f0 drivers/base/dd.c:958
- bus_for_each_drv+0x3ff/0x620 drivers/base/bus.c:457
- __device_attach+0x3bd/0x640 drivers/base/dd.c:1030
- device_initial_probe+0x32/0x40 drivers/base/dd.c:1079
- bus_probe_device+0x3d8/0x5a0 drivers/base/bus.c:532
- device_add+0x16ae/0x1f20 drivers/base/core.c:3622
- usb_set_configuration+0x31c9/0x38c0 drivers/usb/core/message.c:2207
- usb_generic_driver_probe+0x109/0x2a0 drivers/usb/core/generic.c:238
- usb_probe_device+0x290/0x4a0 drivers/usb/core/driver.c:293
- really_probe+0x506/0xf40 drivers/base/dd.c:658
- __driver_probe_device+0x2a7/0x5d0 drivers/base/dd.c:800
- driver_probe_device+0x72/0x7b0 drivers/base/dd.c:830
- __device_attach_driver+0x55a/0x8f0 drivers/base/dd.c:958
- bus_for_each_drv+0x3ff/0x620 drivers/base/bus.c:457
- __device_attach+0x3bd/0x640 drivers/base/dd.c:1030
- device_initial_probe+0x32/0x40 drivers/base/dd.c:1079
- bus_probe_device+0x3d8/0x5a0 drivers/base/bus.c:532
- device_add+0x16ae/0x1f20 drivers/base/core.c:3622
- usb_new_device+0x15f6/0x22f0 drivers/usb/core/hub.c:2589
- hub_port_connect drivers/usb/core/hub.c:5440 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5580 [inline]
- port_event drivers/usb/core/hub.c:5740 [inline]
- hub_event+0x53bc/0x7290 drivers/usb/core/hub.c:5822
- process_one_work kernel/workqueue.c:2630 [inline]
- process_scheduled_works+0x104e/0x1e70 kernel/workqueue.c:2703
- worker_thread+0xf45/0x1490 kernel/workqueue.c:2784
- kthread+0x3e8/0x540 kernel/kthread.c:388
- ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+The chance of this causing a real problem is very small, because
+there will be some sleeping before any of the waitqueues get used.
+I got a crash only after inserting an artificial sleep in iavf_probe.
 
-Local variable buf.i225 created at:
- smsc95xx_read_reg drivers/net/usb/smsc95xx.c:90 [inline]
- smsc95xx_reset+0x203/0x25f0 drivers/net/usb/smsc95xx.c:892
- smsc95xx_bind+0x9bc/0x22e0 drivers/net/usb/smsc95xx.c:1131
+Queue the watchdog_task as the last step in iavf_probe. Add a comment to
+prevent repeating the mistake.
 
-CPU: 1 PID: 773 Comm: kworker/1:2 Not tainted 6.6.0-rc1-syzkaller-00125-ge42bebf6db29 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
-Workqueue: usb_hub_wq hub_event
-=====================================================
-
-Similar to e9c65989920f ("net: usb: smsc75xx: Fix uninit-value access in
-__smsc75xx_read_reg"), this issue is caused because usbnet_read_cmd() reads
-less bytes than requested (zero byte in the reproducer). In this case,
-'buf' is not properly filled.
-
-This patch fixes the issue by returning -ENODATA if usbnet_read_cmd() reads
-less bytes than requested.
-
-sysbot reported similar uninit-value access issue [2]. The root cause is
-the same as mentioned above, and this patch addresses it as well.
-
-Fixes: 2f7ca802bdae ("net: Add SMSC LAN9500 USB2.0 10/100 ethernet adapter driver")
-Reported-and-tested-by: syzbot+c74c24b43c9ae534f0e0@syzkaller.appspotmail.com
-Reported-and-tested-by: syzbot+2c97a98a5ba9ea9c23bd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c74c24b43c9ae534f0e0 [1]
-Closes: https://syzkaller.appspot.com/bug?extid=2c97a98a5ba9ea9c23bd [2]
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Fixes: fe2647ab0c99 ("i40evf: prevent VF close returning before state transitions to DOWN")
+Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/smsc95xx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 17da42fe605c3..a530f20ee2575 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -95,7 +95,9 @@ static int __must_check smsc95xx_read_reg(struct usbnet *dev, u32 index,
- 	ret = fn(dev, USB_VENDOR_REQUEST_READ_REGISTER, USB_DIR_IN
- 		 | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
- 		 0, index, &buf, 4);
--	if (ret < 0) {
-+	if (ret < 4) {
-+		ret = ret < 0 ? ret : -ENODATA;
-+
- 		if (ret != -ENODEV)
- 			netdev_warn(dev->net, "Failed to read reg index 0x%08x: %d\n",
- 				    index, ret);
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index a39f7f0d6ab0b..1ae90f8f9941f 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -5020,8 +5020,6 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	INIT_WORK(&adapter->finish_config, iavf_finish_config);
+ 	INIT_DELAYED_WORK(&adapter->watchdog_task, iavf_watchdog_task);
+ 	INIT_DELAYED_WORK(&adapter->client_task, iavf_client_task);
+-	queue_delayed_work(adapter->wq, &adapter->watchdog_task,
+-			   msecs_to_jiffies(5 * (pdev->devfn & 0x07)));
+ 
+ 	/* Setup the wait queue for indicating transition to down status */
+ 	init_waitqueue_head(&adapter->down_waitqueue);
+@@ -5032,6 +5030,9 @@ static int iavf_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	/* Setup the wait queue for indicating virtchannel events */
+ 	init_waitqueue_head(&adapter->vc_waitqueue);
+ 
++	queue_delayed_work(adapter->wq, &adapter->watchdog_task,
++			   msecs_to_jiffies(5 * (pdev->devfn & 0x07)));
++	/* Initialization goes on in the work. Do not add more of it below. */
+ 	return 0;
+ 
+ err_ioremap:
 -- 
 2.42.0
 
