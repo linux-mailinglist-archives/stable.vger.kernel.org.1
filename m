@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A58907DD56E
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:50:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78F327DD426
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236433AbjJaRur (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:50:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43360 "EHLO
+        id S231673AbjJaRH2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236471AbjJaRur (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:47 -0400
+        with ESMTP id S236283AbjJaRHP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB694B4
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B80BC433C9;
-        Tue, 31 Oct 2023 17:50:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F61CD51
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BDCC433C9;
+        Tue, 31 Oct 2023 17:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774644;
-        bh=Bs3XP0BsloPrT3sn9EmpV687UrJfOQXH2Gsg5KUyCsA=;
+        s=korg; t=1698771966;
+        bh=jsX/ObPlGrK2V2Ky/Csh5rxWI4UPZcCvmtkp/A5uoZA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IiA94Fpuh0sp5n1AOqph3Wg8TlfhWW3QAMdINMspAarn/pN7VPexNgkNwfEXoNDIl
-         g47R9g2RJe7vxctCJ9Kw8gPTL40ZTZJNidz5sUY8GFftQsm3oyLelRQxc/yVGRvaDf
-         WBAK8jKXlCvpNIIXRFpf9249+Re8DIuD5YuJJzxI=
+        b=Y0fL80hDqA2jfprATYvGD4SA6w2cyWtCQopJJbxQfQysJ2LBzFzNLt+EARWKBGlEW
+         DztrdDxHm5Msr+XJIb7y8EqZz5wDZwKLhbnw7EH2aOnkIXrDHqmAkKXffukL/D82NZ
+         Y4CaPL8M+jzV+HXpVHyOmKL9QCkthA/9a7b2+Ivw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Luck <tony.luck@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.5 104/112] x86/cpu: Add model number for Intel Arrow Lake mobile processor
+        patches@lists.linux.dev, Sam Ravnborg <sam@ravnborg.org>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.1 80/86] sparc32: fix a braino in fault handling in csum_and_copy_..._user()
 Date:   Tue, 31 Oct 2023 18:01:45 +0100
-Message-ID: <20231031165904.551353848@linuxfoundation.org>
+Message-ID: <20231031165921.025716451@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +49,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit b99d70c0d1380f1368fd4a82271280c4fd28558b upstream.
+commit 1f36cd05e0081f2c75769a551d584c4ffb2a5660 upstream.
 
-For "reasons" Intel has code-named this CPU with a "_H" suffix.
+Fault handler used to make non-trivial calls, so it needed
+to set a stack frame up.  Used to be
+	save ... - grab a stack frame, old %o... become %i...
+	....
+	ret	- go back to address originally in %o7, currently %i7
+	 restore - switch to previous stack frame, in delay slot
+Non-trivial calls had been gone since ab5e8b331244 and that code should
+have become
+	retl	- go back to address in %o7
+	 clr %o0 - have return value set to 0
+What it had become instead was
+	ret	- go back to address in %i7 - return address of *caller*
+	 clr %o0 - have return value set to 0
+which is not good, to put it mildly - we forcibly return 0 from
+csum_and_copy_{from,to}_iter() (which is what the call of that
+thing had been inlined into) and do that without dropping the
+stack frame of said csum_and_copy_..._iter().  Confuses the
+hell out of the caller of csum_and_copy_..._iter(), obviously...
 
-[ dhansen: As usual, apply this and send it upstream quickly to
-	   make it easier for anyone who is doing work that
-	   consumes this. ]
-
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20231025202513.12358-1-tony.luck%40intel.com
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: ab5e8b331244 "sparc32: propagate the calling conventions change down to __csum_partial_copy_sparc_generic()"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/intel-family.h |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/sparc/lib/checksum_32.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/intel-family.h
-+++ b/arch/x86/include/asm/intel-family.h
-@@ -27,6 +27,7 @@
-  *		_X	- regular server parts
-  *		_D	- micro server parts
-  *		_N,_P	- other mobile parts
-+ *		_H	- premium mobile parts
-  *		_S	- other client parts
-  *
-  *		Historical OPTDIFFs:
-@@ -125,6 +126,7 @@
+--- a/arch/sparc/lib/checksum_32.S
++++ b/arch/sparc/lib/checksum_32.S
+@@ -453,5 +453,5 @@ ccslow:	cmp	%g1, 0
+  * we only bother with faults on loads... */
  
- #define INTEL_FAM6_LUNARLAKE_M		0xBD
- 
-+#define INTEL_FAM6_ARROWLAKE_H		0xC5
- #define INTEL_FAM6_ARROWLAKE		0xC6
- 
- /* "Small Core" Processors (Atom/E-Core) */
+ cc_fault:
+-	ret
++	retl
+ 	 clr	%o0
 
 
