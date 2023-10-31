@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 551EA7DC93A
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:15:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28DFF7DC945
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:18:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343793AbjJaJPj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 05:15:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56266 "EHLO
+        id S1343740AbjJaJS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 05:18:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343792AbjJaJPi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:15:38 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57EAD9F
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:15:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96D6C433C8;
-        Tue, 31 Oct 2023 09:15:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698743736;
-        bh=XgEMfZjzjOILAcj+J2gV+gnx4P4zL9MOCQcLF1kp+J4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CPfM0oPZUydAhSWegrHQX8PONuU30Yve86HHE3s19f5LAK3bskERFlsVvM1Qiu/Kn
-         LD9EQ5zC2mv5YoQVOisFB6XGr4HHRRu8nzEXqlwdHM5369ZyUuZFIzwyB8NW0MUcz0
-         1EDzMHl2aVzC3a3jsq2aFgcxoF2QEseEWrBCKihkhXMTHyIsB64HvDS5FUFN79SqHm
-         1l9NosLf7FeKWF22ux2sneD7S18FuktXjBZ2l7L34RVsWriuaHF5q5arLuYOXc65H6
-         pj4kNBhTQ16iCJcrU/H0JaBqfCY2bWnVS94dkqQpTF0s9QB8usBWV5d3XPKCT02Xjn
-         syad95/emj3kw==
-From:   Lee Jones <lee@kernel.org>
-To:     lee@kernel.org
-Cc:     stable@vger.kernel.org, Hangyu Hua <hbh25y@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH 6/6] rpmsg: Fix possible refcount leak in rpmsg_register_device_override()
-Date:   Tue, 31 Oct 2023 09:15:17 +0000
-Message-ID: <20231031091521.2223075-6-lee@kernel.org>
-X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-In-Reply-To: <20231031091521.2223075-1-lee@kernel.org>
-References: <20231031091521.2223075-1-lee@kernel.org>
+        with ESMTP id S1343827AbjJaJS4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:18:56 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39A18B7
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:18:54 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qxktf-0002kf-K2; Tue, 31 Oct 2023 10:18:51 +0100
+Message-ID: <5ecf0eac-a089-4da9-b76e-b45272c98393@leemhuis.info>
+Date:   Tue, 31 Oct 2023 10:18:50 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION]: nouveau: Asynchronous wait on fence
+Content-Language: en-US, de-DE
+To:     "Owen T. Heisler" <writer@owenh.net>, stable@vger.kernel.org
+Cc:     regressions@lists.linux.dev, nouveau@lists.freedesktop.org,
+        Karol Herbst <kherbst@redhat.com>,
+        Lyude Paul <lyude@redhat.com>, Ben Skeggs <bskeggs@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+References: <6f027566-c841-4415-bc85-ce11a5832b14@owenh.net>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <6f027566-c841-4415-bc85-ce11a5832b14@owenh.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1698743934;16ef03af;
+X-HE-SMSGID: 1qxktf-0002kf-K2
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,38 +46,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangyu Hua <hbh25y@gmail.com>
+On 28.10.23 04:46, Owen T. Heisler wrote:
+> #regzbot introduced: d386a4b54607cf6f76e23815c2c9a3abc1d66882
+> #regzbot link: https://gitlab.freedesktop.org/drm/nouveau/-/issues/180
+> 
+> ## Problem
+> 
+> 1. Connect external display to DVI port on dock and run X with both
+>    displays in use.
+> 2. Wait hours or days.
+> 3. Suddenly the secondary Nvidia-connected display turns off and X stops
+>    responding to keyboard/mouse input. In *some* cases it is possible to
+>    switch to a virtual TTY with Ctrl+Alt+Fn and log in there. In any
+>    case, shutdown/reboot after this happens is *usually* not successful
+>    (forced power-off is required).
+> 
+> This started happening after the upgrade to Debian bullseye, and the
+> problem remains with Debian bookworm.
+> [...] 
 
-commit d7bd416d35121c95fe47330e09a5c04adbc5f928 upstream.
+Thanks for your report. With a bit of luck someone will look into this,
+But I doubt it, as this report has some aspects why it might be ignored.
+Mainly: (a) the report was about a stable/longterm kernel and (b)it's
+afaics unclear if the problem even happens with the latest mainline
+kernel. For details about these aspects, see:
+https://linux-regtracking.leemhuis.info/post/frequent-reasons-why-linux-kernel-bug-reports-are-ignored/
 
-rpmsg_register_device_override need to call put_device to free vch when
-driver_set_override fails.
+You thus might want to check if the problem occurs with 6.6 -- and
+ideally also check if reverting the culprit there fixes things for you.
 
-Fix this by adding a put_device() to the error path.
+That might help getting things rolling, but it's a pretty old
+regression, which complicates things.
 
-Fixes: bb17d110cbf2 ("rpmsg: Fix calling device_lock() on non-initialized device")
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Link: https://lore.kernel.org/r/20220624024120.11576-1-hbh25y@gmail.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Change-Id: Iab94af7e3bf02a6bd6fe9bcb5296c27d2b0da8dc
----
- drivers/rpmsg/rpmsg_core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-index 0ea8f8ec84efc..8bb78c747e30c 100644
---- a/drivers/rpmsg/rpmsg_core.c
-+++ b/drivers/rpmsg/rpmsg_core.c
-@@ -594,6 +594,7 @@ int rpmsg_register_device_override(struct rpmsg_device *rpdev,
- 					  strlen(driver_override));
- 		if (ret) {
- 			dev_err(dev, "device_set_override failed: %d\n", ret);
-+			put_device(dev);
- 			return ret;
- 		}
- 	}
--- 
-2.42.0.820.g83a721a137-goog
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
