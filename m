@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7DAC7DD3BA
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F0C87DD527
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:47:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232642AbjJaRC1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:02:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45488 "EHLO
+        id S1376437AbjJaRrp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:47:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233230AbjJaRCY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:02:24 -0400
+        with ESMTP id S1376431AbjJaRrp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:47:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB20F270E
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:02:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F06EC433C7;
-        Tue, 31 Oct 2023 17:02:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54822126
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:47:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8C2C433C7;
+        Tue, 31 Oct 2023 17:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771734;
-        bh=Pgf4K7ehYmiT18JLHPuYQOlMQBpbnuU/8mh6oog2cwA=;
+        s=korg; t=1698774456;
+        bh=DTjLQvotgE+3qPLo6Flb0QLwbyCkz1cXmtqF/dziDgQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f8B8KugDWkzjO95f6ARHovtL+dn3WJDSIQooR18zhvIh9e5X45aNuDNFPHVp4uqtL
-         4863M3GB44JvyNR1d/HrnzRyii0gCbZFkbr+DkxtWDoL2218t60s4gtWxu/oExa/6v
-         JsVErs2rYUWRiKifwD9olme7Tf72GA6ETIhFSjjM=
+        b=aai8Uo/L4fpUxAi66tXJEbeawEIbWaNkg1COcOZYaUVfZhh8/2wamB8/o0nnHa5eR
+         FDFqJW2nowLJgYEGSmVTiefVKyXAXlmrZIi2c7nChFGB7MzqHub8iDyvoTVlI7eqzj
+         XK5SkdAwmqeToDLCBbSOxLHcxMJyoXogRErFdQNg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Roman Kagan <rkagan@amazon.de>,
-        Like Xu <likexu@tencent.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 01/86] KVM: x86/pmu: Truncate counter value to allowed width on write
+        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
+        Naoya Horiguchi <naoya.horiguchi@nec.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Oscar Salvador <osalvador@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 025/112] mm/page_alloc: correct start page when guard page debug is enabled
 Date:   Tue, 31 Oct 2023 18:00:26 +0100
-Message-ID: <20231031165918.660085351@linuxfoundation.org>
+Message-ID: <20231031165902.103135069@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,105 +52,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Kagan <rkagan@amazon.de>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit b29a2acd36dd7a33c63f260df738fb96baa3d4f8 ]
+commit 61e21cf2d2c3cc5e60e8d0a62a77e250fccda62c upstream.
 
-Performance counters are defined to have width less than 64 bits.  The
-vPMU code maintains the counters in u64 variables but assumes the value
-to fit within the defined width.  However, for Intel non-full-width
-counters (MSR_IA32_PERFCTRx) the value receieved from the guest is
-truncated to 32 bits and then sign-extended to full 64 bits.  If a
-negative value is set, it's sign-extended to 64 bits, but then in
-kvm_pmu_incr_counter() it's incremented, truncated, and compared to the
-previous value for overflow detection.
+When guard page debug is enabled and set_page_guard returns success, we
+miss to forward page to point to start of next split range and we will do
+split unexpectedly in page range without target page.  Move start page
+update before set_page_guard to fix this.
 
-That previous value is not truncated, so it always evaluates bigger than
-the truncated new one, and a PMI is injected.  If the PMI handler writes
-a negative counter value itself, the vCPU never quits the PMI loop.
+As we split to wrong target page, then splited pages are not able to merge
+back to original order when target page is put back and splited pages
+except target page is not usable.  To be specific:
 
-Turns out that Linux PMI handler actually does write the counter with
-the value just read with RDPMC, so when no full-width support is exposed
-via MSR_IA32_PERF_CAPABILITIES, and the guest initializes the counter to
-a negative value, it locks up.
+Consider target page is the third page in buddy page with order 2.
+| buddy-2 | Page | Target | Page |
 
-This has been observed in the field, for example, when the guest configures
-atop to use perfevents and runs two instances of it simultaneously.
+After break down to target page, we will only set first page to Guard
+because of bug.
+| Guard   | Page | Target | Page |
 
-To address the problem, maintain the invariant that the counter value
-always fits in the defined bit width, by truncating the received value
-in the respective set_msr methods.  For better readability, factor the
-out into a helper function, pmc_write_counter(), shared by vmx and svm
-parts.
+When we try put_page_back_buddy with target page, the buddy page of target
+if neither guard nor buddy, Then it's not able to construct original page
+with order 2
+| Guard | Page | buddy-0 | Page |
 
-Fixes: 9cd803d496e7 ("KVM: x86: Update vPMCs when retiring instructions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roman Kagan <rkagan@amazon.de>
-Link: https://lore.kernel.org/all/20230504120042.785651-1-rkagan@amazon.de
-Tested-by: Like Xu <likexu@tencent.com>
-[sean: tweak changelog, s/set/write in the helper]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+All pages except target page is not in free list and is not usable.
+
+Link: https://lkml.kernel.org/r/20230927094401.68205-1-shikemeng@huaweicloud.com
+Fixes: 06be6ff3d2ec ("mm,hwpoison: rework soft offline for free pages")
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/pmu.h           | 6 ++++++
- arch/x86/kvm/svm/pmu.c       | 2 +-
- arch/x86/kvm/vmx/pmu_intel.c | 4 ++--
- 3 files changed, 9 insertions(+), 3 deletions(-)
+ mm/page_alloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index c976490b75568..3666578b88a00 100644
---- a/arch/x86/kvm/pmu.h
-+++ b/arch/x86/kvm/pmu.h
-@@ -63,6 +63,12 @@ static inline u64 pmc_read_counter(struct kvm_pmc *pmc)
- 	return counter & pmc_bitmask(pmc);
- }
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6528,6 +6528,7 @@ static void break_down_buddy_pages(struc
+ 			next_page = page;
+ 			current_buddy = page + size;
+ 		}
++		page = next_page;
  
-+static inline void pmc_write_counter(struct kvm_pmc *pmc, u64 val)
-+{
-+	pmc->counter += val - pmc_read_counter(pmc);
-+	pmc->counter &= pmc_bitmask(pmc);
-+}
-+
- static inline void pmc_release_perf_event(struct kvm_pmc *pmc)
- {
- 	if (pmc->perf_event) {
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index 9d65cd095691b..1cb2bf9808f57 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -149,7 +149,7 @@ static int amd_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 	/* MSR_PERFCTRn */
- 	pmc = get_gp_pmc_amd(pmu, msr, PMU_TYPE_COUNTER);
- 	if (pmc) {
--		pmc->counter += data - pmc_read_counter(pmc);
-+		pmc_write_counter(pmc, data);
- 		pmc_update_sample_period(pmc);
- 		return 0;
+ 		if (set_page_guard(zone, current_buddy, high, migratetype))
+ 			continue;
+@@ -6535,7 +6536,6 @@ static void break_down_buddy_pages(struc
+ 		if (current_buddy != target) {
+ 			add_to_free_list(current_buddy, zone, high, migratetype);
+ 			set_buddy_order(current_buddy, high);
+-			page = next_page;
+ 		}
  	}
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 9fabfe71fd879..9a75a0d5deae1 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -461,11 +461,11 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 			if (!msr_info->host_initiated &&
- 			    !(msr & MSR_PMC_FULL_WIDTH_BIT))
- 				data = (s64)(s32)data;
--			pmc->counter += data - pmc_read_counter(pmc);
-+			pmc_write_counter(pmc, data);
- 			pmc_update_sample_period(pmc);
- 			return 0;
- 		} else if ((pmc = get_fixed_pmc(pmu, msr))) {
--			pmc->counter += data - pmc_read_counter(pmc);
-+			pmc_write_counter(pmc, data);
- 			pmc_update_sample_period(pmc);
- 			return 0;
- 		} else if ((pmc = get_gp_pmc(pmu, msr, MSR_P6_EVNTSEL0))) {
--- 
-2.42.0
-
+ }
 
 
