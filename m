@@ -2,65 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EC097DCD05
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 13:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A90A7DCD14
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 13:38:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343995AbjJaMcQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 08:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36868 "EHLO
+        id S1344260AbjJaMfJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 08:35:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59742 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344044AbjJaMcP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 08:32:15 -0400
-X-Greylist: delayed 2987 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 31 Oct 2023 05:32:07 PDT
-Received: from 10.mo550.mail-out.ovh.net (10.mo550.mail-out.ovh.net [178.32.96.102])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4932B97
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 05:32:07 -0700 (PDT)
-Received: from director6.ghost.mail-out.ovh.net (unknown [10.108.1.232])
-        by mo550.mail-out.ovh.net (Postfix) with ESMTP id 5929C25143
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 12:32:05 +0000 (UTC)
-Received: from ghost-submission-6684bf9d7b-wdl7v (unknown [10.110.103.4])
-        by director6.ghost.mail-out.ovh.net (Postfix) with ESMTPS id C15581FE98;
-        Tue, 31 Oct 2023 12:32:04 +0000 (UTC)
-Received: from RCM-web9.webmail.mail.ovh.net ([151.80.29.21])
-        by ghost-submission-6684bf9d7b-wdl7v with ESMTPSA
-        id WQlLKsTzQGWB1AAAnh/Cbw
-        (envelope-from <jose.pekkarinen@foxhound.fi>); Tue, 31 Oct 2023 12:32:04 +0000
+        with ESMTP id S1344269AbjJaMfI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 08:35:08 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C8698;
+        Tue, 31 Oct 2023 05:35:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35809C433C7;
+        Tue, 31 Oct 2023 12:35:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698755706;
+        bh=CBUVROw+HLBHDa2ZlqHiNrVzZsfNM0kP05CgmKncJNU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AawslDTlAr3FVetIK2w1+5xf8zUrdTnBOlL5+1k/IGBS0bTro3bVAGBSSlELDglx1
+         MzW5gd1lJdVTCr2CFhMBnoLi+qlqpDMHjNH/Uw0MXNsbo2J4kaXoSFBf7O56G0AtpP
+         Z1A2poUGNtoXPPpP+hnExpbxDc4agt5tYzLk/ahJHhlBuzcKZBNzxQ/fggTLsbZ8if
+         pPVC/Ftf7XIwmrYroSoWXie3J7cF0Urzz9GOzQuvZYHlv0bSDSjbR/bpsghU0TczDx
+         EI7yuvYUiIZxyRo2u7HDFaxbyfNsuJmVE3PRQIMSSUG97cNVE+jDLQYcFlvOtNwvF8
+         frJLmHTbZetJw==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qxny2-00067y-1C;
+        Tue, 31 Oct 2023 13:35:34 +0100
+Date:   Tue, 31 Oct 2023 13:35:34 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Bjorn Andersson <quic_bjorande@quicinc.com>
+Cc:     Rob Clark <robdclark@gmail.com>,
+        Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Sean Paul <sean@poorly.run>,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Kuogee Hsieh <quic_khsieh@quicinc.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Doug Anderson <dianders@chromium.org>,
+        Rob Clark <robdclark@chromium.org>
+Subject: Re: [PATCH] drm/msm/dpu: Add missing safe_lut_tbl in sc8280xp catalog
+Message-ID: <ZUD0lhStirf8IN8-@hovoldconsulting.com>
+References: <20231030-sc8280xp-dpu-safe-lut-v1-1-6d485d7b428f@quicinc.com>
 MIME-Version: 1.0
-Date:   Tue, 31 Oct 2023 14:32:02 +0200
-From:   =?UTF-8?Q?Jos=C3=A9_Pekkarinen?= <jose.pekkarinen@foxhound.fi>
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     harry.wentland@amd.com, sunpeng.li@amd.com,
-        Rodrigo.Siqueira@amd.com, skhan@linuxfoundation.org,
-        dillon.varone@amd.com,
-        linux-kernel-mentees@lists.linuxfoundation.org,
-        dri-devel@lists.freedesktop.org, Xinhui.Pan@amd.com,
-        linux-kernel@vger.kernel.org, samson.tam@amd.com,
-        SyedSaaem.Rizvi@amd.com, aurabindo.pillai@amd.com,
-        stable@vger.kernel.org, daniel@ffwll.ch, george.shen@amd.com,
-        alexander.deucher@amd.com, Jun.Lei@amd.com, airlied@gmail.com,
-        christian.koenig@amd.com
-Subject: Re: [PATCH] drm/amd/display: remove redundant check
-In-Reply-To: <2023103141-clear-scale-897a@gregkh>
-References: <20231030171748.35482-1-jose.pekkarinen@foxhound.fi>
- <2023103115-obstruct-smudgy-6cc6@gregkh>
- <3ab58c1e48447798d7525e7d2f42f1a2@foxhound.fi>
- <2023103141-clear-scale-897a@gregkh>
-User-Agent: Roundcube Webmail/1.4.15
-Message-ID: <1175edcbdf0d0a55d39a87f220259528@foxhound.fi>
-X-Sender: jose.pekkarinen@foxhound.fi
-Organization: Foxhound Ltd.
-X-Originating-IP: 213.216.208.215
-X-Webmail-UserID: jose.pekkarinen@foxhound.fi
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 17565445922061264391
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvkedruddtvddggedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggffhffvvefujghffgfkgihoihgtgfesthekjhdttderjeenucfhrhhomheplfhoshorucfrvghkkhgrrhhinhgvnhcuoehjohhsvgdrphgvkhhkrghrihhnvghnsehfohighhhouhhnugdrfhhiqeenucggtffrrghtthgvrhhnpeeihfevgfduveejjefgffehkeduhfejteegieejheetgedvleetlefguddukeefleenucffohhmrghinhepfhhrvggvuggvshhkthhophdrohhrghdpkhgvrhhnvghlrdhorhhgnecukfhppeduvdejrddtrddtrddupddvudefrddvudeirddvtdekrddvudehpdduhedurdektddrvdelrddvudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepoehjohhsvgdrphgvkhhkrghrihhnvghnsehfohighhhouhhnugdrfhhiqedpnhgspghrtghpthhtohepuddprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdpoffvtefjohhsthepmhhoheehtddpmhhouggvpehsmhhtphhouhht
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_TEMPERROR autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231030-sc8280xp-dpu-safe-lut-v1-1-6d485d7b428f@quicinc.com>
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,43 +63,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-10-31 14:20, Greg KH wrote:
-> On Tue, Oct 31, 2023 at 01:42:17PM +0200, José Pekkarinen wrote:
->> On 2023-10-31 07:48, Greg KH wrote:
->> > On Mon, Oct 30, 2023 at 07:17:48PM +0200, José Pekkarinen wrote:
->> > > This patch addresses the following warning spotted by
->> > > using coccinelle where the case checked does the same
->> > > than the else case.
->> > >
->> > > drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c:4664:8-10:
->> > > WARNING: possible condition with no effect (if == else)
->> > >
->> > > Fixes: 974ce181 ("drm/amd/display: Add check for PState change in
->> > > DCN32")
->> > >
->> > > Cc: stable@vger.kernel.org
->> >
->> > Why is this relevant for stable?
->> 
->>     Hi,
->> 
->>     I was asked to send it for stable because this code
->> looks different in amd-staging-drm-next, see here.
->> 
->> https://gitlab.freedesktop.org/agd5f/linux/-/blob/amd-staging-drm-next/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c#L4661
+On Mon, Oct 30, 2023 at 04:23:20PM -0700, Bjorn Andersson wrote:
+> During USB transfers on the SC8280XP __arm_smmu_tlb_sync() is seen to
+> typically take 1-2ms to complete. As expected this results in poor
+> performance, something that has been mitigated by proposing running the
+> iommu in non-strict mode (boot with iommu.strict=0).
 > 
-> I don't know what I am looking at, sorry.
-> 
->>     Feel free to let me know if this is wrong, or if I
->> need to review some other guidelines I may have missed.
-> 
-> Please see the list of rules for stable patches:
->     
-> https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> 
-> Does "remove code that does nothing" fit here?
+> This turns out to be related to the SAFE logic, and programming the QOS
+> SAFE values in the DPU (per suggestion from Rob and Doug) reduces the
+> TLB sync time to below 10us, which means significant less time spent
+> with interrupts disabled and a significant boost in throughput.
 
-     Yep, it is a trivial fix which compilers should be able
-to optimize, so no real benefit to the user. Sorry Greg!
+I ran some tests with a gigabit ethernet adapter to get an idea of how
+this performs in comparison to using lazy iommu mode ("non-strict"):
 
-     José.
+		6.6	6.6-lazy	6.6-dpu		6.6-dpu-lazy
+iperf3 recv	114	941		941		941		MBit/s
+iperf3 send	124	891		703		940		MBit/s
+
+scp recv	14.6	110		110		111		MB/s
+scp send	12.5	98.9		91.5		110		MB/s
+
+This patch in itself indeed improves things quite a bit, but there is
+still some performance that can be gained by using lazy iommu mode.
+
+Notably, lazy mode with this patch applied appears to saturate the link
+in both directions.
+
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+
+Johan
