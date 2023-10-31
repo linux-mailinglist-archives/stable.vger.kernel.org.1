@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 172BD7DD53A
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:48:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64C787DD3EB
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376503AbjJaRs3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:48:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47994 "EHLO
+        id S234674AbjJaRGP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376518AbjJaRsY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:48:24 -0400
+        with ESMTP id S234841AbjJaRGC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 665F912B
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:48:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B481AC433C7;
-        Tue, 31 Oct 2023 17:48:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE6E019B3
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E780BC433C7;
+        Tue, 31 Oct 2023 17:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774495;
-        bh=Kc6KtWFbDRWvVjw5ddXN7F4+GuFmvRdRpynx/lYwCa8=;
+        s=korg; t=1698771812;
+        bh=+9jqxY4GqxrF1X/Z7x2klOGhHCE/rciHHNPmQTRgrVo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S7gNsDBWftsPdFSg5aryv4ltUwws6PO0WTN443MIx4PrFpNz5GpcI7rctHpxVtlSD
-         v3MgSAguXVFZUKrNbz6Zru26/DLHThXBeyQXUGDBkww/fOm/m/d+kP2xvS67sAZFZY
-         ZcUje7w0UAUAN/HB6dgo0NCPzzKc7q6rh/NhcXKY=
+        b=Pc2aBmRTaxjhxAwdF0936YrnsxvVnOcTgyHo1mpRUwaLl8QVbPJRMLgvVOGGNc+WD
+         jJkyZAr6011m7jGl0jRupMtcYgk3toIz4WSBKftSdRwKC8seEDjD60KYMc6AQlYC7O
+         K0mqYj69KMaJ+SMEc0bwtMjxUt0YJFJePJcXMyY4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 6.5 031/112] nfsd: lock_rename() needs both directories to live on the same fs
-Date:   Tue, 31 Oct 2023 18:00:32 +0100
-Message-ID: <20231031165902.308023777@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 08/86] ASoC: codecs: wcd938x: fix runtime PM imbalance on remove
+Date:   Tue, 31 Oct 2023 18:00:33 +0100
+Message-ID: <20231031165918.874882512@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +52,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 1aee9158bc978f91701c5992e395efbc6da2de3c upstream.
+[ Upstream commit 3ebebb2c1eca92a15107b2d7aeff34196fd9e217 ]
 
-... checking that after lock_rename() is too late.  Incidentally,
-NFSv2 had no nfserr_xdev...
+Make sure to balance the runtime PM operations, including the disable
+count, on driver unbind.
 
-Fixes: aa387d6ce153 "nfsd: fix EXDEV checking in rename"
-Cc: stable@vger.kernel.org # v3.9+
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 16572522aece ("ASoC: codecs: wcd938x-sdw: add SoundWire driver")
+Cc: stable@vger.kernel.org      # 5.14
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231003155558.27079-6-johan+linaro@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ sound/soc/codecs/wcd938x.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1781,6 +1781,12 @@ nfsd_rename(struct svc_rqst *rqstp, stru
- 	if (!flen || isdotent(fname, flen) || !tlen || isdotent(tname, tlen))
- 		goto out;
+diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
+index 7181176feb73c..a2abd1a111612 100644
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -3619,9 +3619,15 @@ static int wcd938x_probe(struct platform_device *pdev)
  
-+	err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
-+	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
-+		goto out;
-+	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
-+		goto out;
+ static void wcd938x_remove(struct platform_device *pdev)
+ {
+-	struct wcd938x_priv *wcd938x = dev_get_drvdata(&pdev->dev);
++	struct device *dev = &pdev->dev;
++	struct wcd938x_priv *wcd938x = dev_get_drvdata(dev);
 +
- retry:
- 	host_err = fh_want_write(ffhp);
- 	if (host_err) {
-@@ -1812,12 +1818,6 @@ retry:
- 	if (ndentry == trap)
- 		goto out_dput_new;
++	component_master_del(dev, &wcd938x_comp_ops);
++
++	pm_runtime_disable(dev);
++	pm_runtime_set_suspended(dev);
++	pm_runtime_dont_use_autosuspend(dev);
  
--	host_err = -EXDEV;
--	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
--		goto out_dput_new;
--	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
--		goto out_dput_new;
--
- 	if ((ndentry->d_sb->s_export_op->flags & EXPORT_OP_CLOSE_BEFORE_UNLINK) &&
- 	    nfsd_has_cached_files(ndentry)) {
- 		close_cached = true;
+-	component_master_del(&pdev->dev, &wcd938x_comp_ops);
+ 	regulator_bulk_disable(WCD938X_MAX_SUPPLY, wcd938x->supplies);
+ 	regulator_bulk_free(WCD938X_MAX_SUPPLY, wcd938x->supplies);
+ }
+-- 
+2.42.0
+
 
 
