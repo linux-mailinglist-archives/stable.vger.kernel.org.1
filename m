@@ -2,44 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7809E7DD563
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:50:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E5B7DD3F2
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236422AbjJaRuR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:50:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48876 "EHLO
+        id S231744AbjJaRG0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236456AbjJaRuP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:15 -0400
+        with ESMTP id S236490AbjJaRGL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14FB2C2
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 481A1C433C8;
-        Tue, 31 Oct 2023 17:50:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 865B22688
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:03:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0527C433C9;
+        Tue, 31 Oct 2023 17:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774612;
-        bh=ee/xhwhDhAKEjQwBU6vlgXhwBZMOv6k4+7Vryl/BM8M=;
+        s=korg; t=1698771830;
+        bh=qcj3Yx9a0nTtFO8wi7kJIFNCpmqK+XwqYUcHH9PepLw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hDHN7CbskTntzkEHMryobYqeQ2ihERbmAlZqO1pzcVJr+n6riQGOwFS1jdXo8Rduc
-         BG8sU/VhAhy0yY4cR5aHWcgU1RwI6XqS11Dn9il2rY17VAn2WS+JFulo1mUL+MfwEJ
-         jB0lLH87pFehoMyLqgYL/BfkQ3/gYREFQFL0lqUE=
+        b=DMtJcbWVQcRQXWU75TC7ppRQCboKO6d+Ecq3VYLiyCbGuKDuRjba/m7eRb9fB2ANX
+         4i2SNsqW4pJ0E9G+ckZ9DwWhX7iefqeuhHkKJNR03vIhB70FD1gjpK+TBxtzzUCjsG
+         ezZ4mkuqqA75dmFiJrojRnLFJPQmoRbgEs80Tmj4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dell Jin <dell.jin.code@outlook.com>,
-        Ciprian Regus <ciprian.regus@analog.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        nic_swsd@realtek.com, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Marco Elver <elver@google.com>, netdev@vger.kernel.org,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 059/112] net: ethernet: adi: adin1110: Fix uninitialized variable
+Subject: [PATCH 6.1 35/86] r8169: fix the KCSAN reported data-race in rtl_tx while reading TxDescArray[entry].opts1
 Date:   Tue, 31 Oct 2023 18:01:00 +0100
-Message-ID: <20231031165903.182164849@linuxfoundation.org>
+Message-ID: <20231031165919.727762293@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -51,40 +56,134 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dell Jin <dell.jin.code@outlook.com>
+From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit 965f9b8c0c1b37fa2a0e3ef56e40d5666d4cbb5c ]
+[ Upstream commit dcf75a0f6bc136de94e88178ae5f51b7f879abc9 ]
 
-The spi_transfer struct has to have all it's fields initialized to 0 in
-this case, since not all of them are set before starting the transfer.
-Otherwise, spi_sync_transfer() will sometimes return an error.
+KCSAN reported the following data-race:
 
-Fixes: a526a3cc9c8d ("net: ethernet: adi: adin1110: Fix SPI transfers")
-Signed-off-by: Dell Jin <dell.jin.code@outlook.com>
-Signed-off-by: Ciprian Regus <ciprian.regus@analog.com>
+==================================================================
+BUG: KCSAN: data-race in rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
+
+race at unknown origin, with read to 0xffff888140d37570 of 4 bytes by interrupt on cpu 21:
+rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
+__napi_poll (net/core/dev.c:6527)
+net_rx_action (net/core/dev.c:6596 net/core/dev.c:6727)
+__do_softirq (kernel/softirq.c:553)
+__irq_exit_rcu (kernel/softirq.c:427 kernel/softirq.c:632)
+irq_exit_rcu (kernel/softirq.c:647)
+sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1074 (discriminator 14))
+asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:645)
+cpuidle_enter_state (drivers/cpuidle/cpuidle.c:291)
+cpuidle_enter (drivers/cpuidle/cpuidle.c:390)
+call_cpuidle (kernel/sched/idle.c:135)
+do_idle (kernel/sched/idle.c:219 kernel/sched/idle.c:282)
+cpu_startup_entry (kernel/sched/idle.c:378 (discriminator 1))
+start_secondary (arch/x86/kernel/smpboot.c:210 arch/x86/kernel/smpboot.c:294)
+secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
+
+value changed: 0xb0000042 -> 0x00000000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 21 PID: 0 Comm: swapper/21 Tainted: G             L     6.6.0-rc2-kcsan-00143-gb5cbe7c00aa0 #41
+Hardware name: ASRock X670E PG Lightning/X670E PG Lightning, BIOS 1.21 04/26/2023
+==================================================================
+
+The read side is in
+
+drivers/net/ethernet/realtek/r8169_main.c
+=========================================
+   4355 static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
+   4356                    int budget)
+   4357 {
+   4358         unsigned int dirty_tx, bytes_compl = 0, pkts_compl = 0;
+   4359         struct sk_buff *skb;
+   4360
+   4361         dirty_tx = tp->dirty_tx;
+   4362
+   4363         while (READ_ONCE(tp->cur_tx) != dirty_tx) {
+   4364                 unsigned int entry = dirty_tx % NUM_TX_DESC;
+   4365                 u32 status;
+   4366
+ → 4367                 status = le32_to_cpu(tp->TxDescArray[entry].opts1);
+   4368                 if (status & DescOwn)
+   4369                         break;
+   4370
+   4371                 skb = tp->tx_skb[entry].skb;
+   4372                 rtl8169_unmap_tx_skb(tp, entry);
+   4373
+   4374                 if (skb) {
+   4375                         pkts_compl++;
+   4376                         bytes_compl += skb->len;
+   4377                         napi_consume_skb(skb, budget);
+   4378                 }
+   4379                 dirty_tx++;
+   4380         }
+   4381
+   4382         if (tp->dirty_tx != dirty_tx) {
+   4383                 dev_sw_netstats_tx_add(dev, pkts_compl, bytes_compl);
+   4384                 WRITE_ONCE(tp->dirty_tx, dirty_tx);
+   4385
+   4386                 netif_subqueue_completed_wake(dev, 0, pkts_compl, bytes_compl,
+   4387                                               rtl_tx_slots_avail(tp),
+   4388                                               R8169_TX_START_THRS);
+   4389                 /*
+   4390                  * 8168 hack: TxPoll requests are lost when the Tx packets are
+   4391                  * too close. Let's kick an extra TxPoll request when a burst
+   4392                  * of start_xmit activity is detected (if it is not detected,
+   4393                  * it is slow enough). -- FR
+   4394                  * If skb is NULL then we come here again once a tx irq is
+   4395                  * triggered after the last fragment is marked transmitted.
+   4396                  */
+   4397                 if (READ_ONCE(tp->cur_tx) != dirty_tx && skb)
+   4398                         rtl8169_doorbell(tp);
+   4399         }
+   4400 }
+
+tp->TxDescArray[entry].opts1 is reported to have a data-race and READ_ONCE() fixes
+this KCSAN warning.
+
+   4366
+ → 4367                 status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
+   4368                 if (status & DescOwn)
+   4369                         break;
+   4370
+
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: nic_swsd@realtek.com
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Marco Elver <elver@google.com>
+Cc: netdev@vger.kernel.org
+Link: https://lore.kernel.org/lkml/dc7fc8fa-4ea4-e9a9-30a6-7c83e6b53188@alu.unizg.hr/
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Acked-by: Marco Elver <elver@google.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/adi/adin1110.c | 2 +-
+ drivers/net/ethernet/realtek/r8169_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/adi/adin1110.c
-index ca66b747b7c5d..d7c274af6d4da 100644
---- a/drivers/net/ethernet/adi/adin1110.c
-+++ b/drivers/net/ethernet/adi/adin1110.c
-@@ -294,7 +294,7 @@ static int adin1110_read_fifo(struct adin1110_port_priv *port_priv)
- {
- 	struct adin1110_priv *priv = port_priv->priv;
- 	u32 header_len = ADIN1110_RD_HEADER_LEN;
--	struct spi_transfer t;
-+	struct spi_transfer t = {0};
- 	u32 frame_size_no_fcs;
- 	struct sk_buff *rxb;
- 	u32 frame_size;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 5288daaf59b5b..f677f625a4939 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4343,7 +4343,7 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
+ 		unsigned int entry = dirty_tx % NUM_TX_DESC;
+ 		u32 status;
+ 
+-		status = le32_to_cpu(tp->TxDescArray[entry].opts1);
++		status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
+ 		if (status & DescOwn)
+ 			break;
+ 
 -- 
 2.42.0
 
