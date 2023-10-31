@@ -2,85 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E989E7DC999
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:30:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 746687DC99B
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:30:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343891AbjJaJai (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 05:30:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37420 "EHLO
+        id S1343913AbjJaJav (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 05:30:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343913AbjJaJah (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:30:37 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A819B7
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:30:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E5FC433CA;
-        Tue, 31 Oct 2023 09:30:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698744634;
-        bh=IQVVkI+2JMiiYPzkwKLk7U8zCBDui1QmoGdLhDhbSHo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b8cCA7VRYMZGSKBaVmAnK3Ez0/mkvUTAnv0Z4DPqXnk8flcmXvtyMldO8/lUG9myg
-         +JaK21D7dw8PiHLoWAEUf3LlcSCrwehtiyPzZ8aoYdLi8hgmUkiOgOuYydRecVTkaU
-         LK85DFYDBUgjA/h/r+v6wtHp8vCI3OWkGxcw0qKB4iXlGrVkKo7VdSjYjdK1kv8vKv
-         fxSQFe/J1lY6LJwE6XKLwNe9OpUpGrWYdtnfhr9LyniGZidY0QbqY7jjWibS5nUWIo
-         EUXJYKpr/CMJlfrPozw/K3rWXNSmenMYJdIu9HvDuPE7kPv2AvWeIiy/LSJEvdSG5o
-         2FVlwiKkbo28w==
-From:   Lee Jones <lee@kernel.org>
-To:     lee@kernel.org
-Cc:     stable@vger.kernel.org, Hangyu Hua <hbh25y@gmail.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>
-Subject: [PATCH v4.19.y 6/6] rpmsg: Fix possible refcount leak in rpmsg_register_device_override()
-Date:   Tue, 31 Oct 2023 09:30:15 +0000
-Message-ID: <20231031093018.2233640-6-lee@kernel.org>
-X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
-In-Reply-To: <20231031093018.2233640-1-lee@kernel.org>
-References: <20231031093018.2233640-1-lee@kernel.org>
+        with ESMTP id S1343914AbjJaJau (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:30:50 -0400
+Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [85.215.255.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427D4C2;
+        Tue, 31 Oct 2023 02:30:47 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1698744631; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=J1hGgICqpAXwMnbk00gjE8sOvoG7oa2rTLRJp6PF1cfUPu2g3MYs19uzj3CLGAfOmE
+    upWNeMkR7WEIrjmZJutkAYovaJos2CZvcNaOH5g2IAxPaMB1OFLKhPrEcp9MHEzV0O25
+    d4z5FXSR9Qxi1Y7KqcygYSQIg5B6UlY1ucVn8MclrAhLSxiIs8XKeowThXw4H5L2fyyl
+    udyXxaoI4OIU1yePZpY5uwUhZlTnA7V/bdV52oC35CiowvDUdBzBo7NgblKmdE2GvqQY
+    o8WsrJMXPaBq2oTalhyzgEGxkN9TCi8z2+x+9Si5s0FjNsrG/VfLSFvOifDJDok7DJiU
+    vglQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1698744631;
+    s=strato-dkim-0002; d=strato.com;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=EIFKe/kiDjqM3gc1TwhgXhITCSOkVOKMmOGdgm3AizA=;
+    b=hg8Hk3LRm5GukTzabMrljridcoKd3psZTrhrux187PW/8Hkxv4c29JDyg8UDG6ffSU
+    n7l/lmp08ULWya2QSwyD/2j5wKedmtFa9hCO2YqgbaOBl3R2JWcLB6rmQWCNBPAC+8tM
+    ich3Yp5Q3InKHk57Ve48/dF3YKdp+VD88YEpVzvRKIxTcF9Bwz6YUziyriy9y/C6flgH
+    wjOPp9MLtpSy1I54WbtL1i71n4X1P8byxsJI4Z+pL7THtZnBWTzZi4NWwcBLsbSoJ9GZ
+    kH17kUDVMpL/L0V3owB8TwL9yxZPkHDMsZ+OSbrnlp5lkJWjlaSt1QzPJWG/pw9Lx08i
+    UsSA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo03
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1698744631;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=EIFKe/kiDjqM3gc1TwhgXhITCSOkVOKMmOGdgm3AizA=;
+    b=Nvb7JAYaHLXP4AeIRHm5+hQKHjUYHL74M+BggH1HaC9EnX0UqrjmVAh+uTb9EGvZoq
+    0JRmf/DFbGOVedHEw1VefCjQQ7QQnMxdoxSc5cfBzTQeVMSnaSA0yzuQtNoXdBtv9IZ8
+    WTkTOUguK7tAI3AUIcXEwbwTYHk0B3Cwr8KmSygrih8p4kUC1mV5+fKlN63uPXSFQt37
+    ZGEhYuC2fjSswqxO8pq4id5hEFU37RIgUh9+8nk2cgeGWMRMMwl/pJKN32Fsy6sQEU84
+    3PZ73NAV8GBRYH2+nZ3ZzgXOiFNukF2GRurYjZfAmW7c/Ss5Ky7Qdl6Xm89A7k7LG9oU
+    GEsg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1698744631;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
+    bh=EIFKe/kiDjqM3gc1TwhgXhITCSOkVOKMmOGdgm3AizA=;
+    b=flMJiKZtGSfoZ7t9OWDqZ/AvdRpN/IEw4zATpYYFEA/ap3YYiZgoJ0wbSBjFQ7fpse
+    VbtTV20uufaZPE5WQXDg==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjGrp7owjzFK3JbFk1mS0k+8CejuVITM8sik0"
+Received: from lenov17.lan
+    by smtp.strato.de (RZmta 49.9.1 DYNA|AUTH)
+    with ESMTPSA id Kda39bz9V9UVFhX
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+        (Client did not present a certificate);
+    Tue, 31 Oct 2023 10:30:31 +0100 (CET)
+From:   Oliver Hartkopp <socketcan@hartkopp.net>
+To:     gregkh@linuxfoundation.org, stable@vger.kernel.org,
+        sashal@kernel.org
+Cc:     linux-can@vger.kernel.org, lukas.magel@posteo.net,
+        patches@lists.linux.dev, maxime.jayat@mobile-devices.fr,
+        mkl@pengutronix.de, michal.sojka@cvut.cz,
+        Oliver Hartkopp <socketcan@hartkopp.net>
+Subject: [PATCH stable 5.15 0/7] can: isotp: upgrade to latest 6.1 LTS code base
+Date:   Tue, 31 Oct 2023 10:30:18 +0100
+Message-Id: <20231031093025.2699-1-socketcan@hartkopp.net>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hangyu Hua <hbh25y@gmail.com>
+The backport of commit 9c5df2f14ee3 ("can: isotp: isotp_ops: fix poll() to
+not report false EPOLLOUT events") introduced a new regression where the
+fix could potentially introduce new side effects.
 
-commit d7bd416d35121c95fe47330e09a5c04adbc5f928 upstream.
+To reduce the risk of other unmet dependencies and missing fixes and checks
+the latest 6.1 LTS code base is ported back to the 5.15 LTS tree.
 
-rpmsg_register_device_override need to call put_device to free vch when
-driver_set_override fails.
+Lukas Magel (1):
+  can: isotp: isotp_sendmsg(): fix TX state detection and wait behavior
 
-Fix this by adding a put_device() to the error path.
+Oliver Hartkopp (6):
+  can: isotp: set max PDU size to 64 kByte
+  can: isotp: isotp_bind(): return -EINVAL on incorrect CAN ID formatting
+  can: isotp: check CAN address family in isotp_bind()
+  can: isotp: handle wait_event_interruptible() return values
+  can: isotp: add local echo tx processing and tx without FC
+  can: isotp: isotp_bind(): do not validate unused address information
 
-Fixes: bb17d110cbf2 ("rpmsg: Fix calling device_lock() on non-initialized device")
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
-Link: https://lore.kernel.org/r/20220624024120.11576-1-hbh25y@gmail.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
-Change-Id: I38b3e338ed57bc27d8818be9c166f52762973db3
----
- drivers/rpmsg/rpmsg_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/uapi/linux/can/isotp.h |  25 +-
+ net/can/isotp.c                | 426 +++++++++++++++++++++------------
+ 2 files changed, 288 insertions(+), 163 deletions(-)
 
-diff --git a/drivers/rpmsg/rpmsg_core.c b/drivers/rpmsg/rpmsg_core.c
-index 3d6427b0edc41..880c7c4deec30 100644
---- a/drivers/rpmsg/rpmsg_core.c
-+++ b/drivers/rpmsg/rpmsg_core.c
-@@ -550,6 +550,7 @@ int rpmsg_register_device_override(struct rpmsg_device *rpdev,
- 					  strlen(driver_override));
- 		if (ret) {
- 			dev_err(dev, "device_set_override failed: %d\n", ret);
-+			put_device(dev);
- 			return ret;
- 		}
- 	}
 -- 
-2.42.0.820.g83a721a137-goog
+2.34.1
 
