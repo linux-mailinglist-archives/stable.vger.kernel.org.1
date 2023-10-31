@@ -2,146 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF0797DC3D5
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 02:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77BD27DC4F9
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 04:48:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230241AbjJaBWE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 30 Oct 2023 21:22:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51660 "EHLO
+        id S230348AbjJaDs4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 30 Oct 2023 23:48:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbjJaBWD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 21:22:03 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9834BD3
-        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 18:22:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698715321; x=1730251321;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=NjV3Seb7Ygml6pM+VeyDRSHd4h+Vht1Ioi0tgHnvKOI=;
-  b=hOa6eWZ0IXgbP9g8lFM2GIeHp6aleTtRIjYbfnPfRmFfGRs4CJ71lQ0T
-   YYKHBcoHCju7W9fzxSqdvg0TogQac0kAsEgZ3ZZ0cBmDTS4erJkO1N9Cp
-   gWwsdWWdzSs5ezI1CgduqqnOeT5o7paeZRNTxEawOISUc0KWagxIawD0I
-   UVJbUfJsbG/Vfx62m9aCZ06O2zgwoVPkEOEwcIcnPJvTHhaTsc2rKkI0o
-   jct40nAzc4XjM6EFnh964QrCaDTu9tYyrdjpWCsvCDiwn6in/3F/1LnO1
-   d9FTxwq1cOjfmu1U7RUgpp/qfJ4wd3uSN3nBvXY+u3sPD15Z7dQqHgG+u
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10879"; a="387072315"
-X-IronPort-AV: E=Sophos;i="6.03,264,1694761200"; 
-   d="scan'208";a="387072315"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Oct 2023 18:21:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10879"; a="933953337"
-X-IronPort-AV: E=Sophos;i="6.03,264,1694761200"; 
-   d="scan'208";a="933953337"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orsmga005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 30 Oct 2023 18:21:48 -0700
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Mon, 30 Oct 2023 18:21:48 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Mon, 30 Oct 2023 18:21:48 -0700
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (104.47.58.169)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Mon, 30 Oct 2023 18:21:47 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=F3WisWRY0Gbavdp3ScOwlXT8oxpIKNdRykvTwCFefdNGLj35rBCFxEO9B+RU97bOxJXDxFMbYT9ggMDkQakfK8QrKsTWvYuCBsa7/O03rBMcTbf/57JoVtr6FYTTyIUTrN5sRYr/PzKRbEnTX9+qLBHSFbGzvaCp1FexYloMFrMcTOSI7qNw/EZJqVKcjdd4shqhqDXxUv/o8hA3a2wvBitBQ/ufRr72GdFk8TFl3Eur+1LYDxrQL7zYhBumpCrWu0QQZGMfYRLCWDIStE5mtojEYn3mSdfE1ga0Igt2NJ8zJHHcLHnwvFe1fMwQTik1hTHONi8SW5/NwQJLyBkjPw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NjV3Seb7Ygml6pM+VeyDRSHd4h+Vht1Ioi0tgHnvKOI=;
- b=OrXLbvDVhxqvzGhf8jdOFpZ9M81E6hRDD9jwTGV4PGvemdy5TGLQUo/C7ebPrAT0eXmEyoS2oG+UsObYJXhDCWm8olBgdQxT3Bjlh+1M0s6QgGBP55qbYsAPpFNiam5gJPy03qpYuWy7n0A9+qirDZRqGemjFuMzaz+TY/rWmWsBGCVomkkXpYwbqqy00nsQMeHsZBpEZa2UgsI0xH8lysPfBi7vdQR0pywDx+rgr5Dok+4s22Sbago0RqowoCh3bCZvEQpfPHLGmmXleAIGjQPja4DhXhWVBmUK3yRDnYsbEq39bw1si0HVNgKBB9qRjT2n8vmLkLSk1RYyXr7XOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MWHPR11MB0029.namprd11.prod.outlook.com (2603:10b6:301:67::25)
- by IA1PR11MB6217.namprd11.prod.outlook.com (2603:10b6:208:3eb::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.28; Tue, 31 Oct
- 2023 01:21:45 +0000
-Received: from MWHPR11MB0029.namprd11.prod.outlook.com
- ([fe80::fa82:7379:fa25:83e5]) by MWHPR11MB0029.namprd11.prod.outlook.com
- ([fe80::fa82:7379:fa25:83e5%6]) with mapi id 15.20.6933.029; Tue, 31 Oct 2023
- 01:21:44 +0000
-From:   "Saleem, Shiraz" <shiraz.saleem@intel.com>
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "security@kernel.org" <security@kernel.org>,
-        "Ismail, Mustafa" <mustafa.ismail@intel.com>
-Subject: RE: Security Fix Backport: Intel RDMA driver
-Thread-Topic: Security Fix Backport: Intel RDMA driver
-Thread-Index: AdoLSiwwhqo3aGbnQQ+PQr4IGX5eAgAC+0UAABCdZ7A=
-Date:   Tue, 31 Oct 2023 01:21:44 +0000
-Message-ID: <MWHPR11MB00293F199FA1DF2D679B0FA0E9A0A@MWHPR11MB0029.namprd11.prod.outlook.com>
-References: <MWHPR11MB00293EBF6DD3DAA4C836E382E9A1A@MWHPR11MB0029.namprd11.prod.outlook.com>
- <2023103015-footpath-veggie-63fb@gregkh>
-In-Reply-To: <2023103015-footpath-veggie-63fb@gregkh>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MWHPR11MB0029:EE_|IA1PR11MB6217:EE_
-x-ms-office365-filtering-correlation-id: 12ba5259-fbbe-4f3d-f257-08dbd9afbec0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: eXRkiroLx+BlkHVG7/PW+xPlX3b6lSDE1x5yWQqNt1l87+ZZx+cqxHsoXNKSOTftxk71n+uqIFbqBXEqJbCu07q3nBXyhaTUveb7Er6x63luK30BQuHka9f37m3ufUF375RilrA/TfoXJko0Ts3iSIH3sSBVNx7Fnip2cUCwEE+1xcli00jhpQSYpAAmFycmWW6j5jQgk0TOoQrDTyN9YDKtpgjKvGay6Ws7lps0rhyZZrDimKgH3VCcsEfcpxG0sPl5NIRrCf5/ijd49+NtEzBzNOtNWrYXYWqfJYV3m4zp5Juj4jgrA9CZeGjBMyCTiPK7EDuVoUHHDYkjvChfjqjvgAzAijYGf77RS4QLLhuGG/QYvMuf/Yr5+0pdrV1UPR7naneXsCWZc1arXepCzeboAfEUjtoOzDZo1YQanAHY7LAT4NmorF61PY44DGWX7kPbrHZYUFlmQ6l4/+8ONzPx+6G5nphasTQHxfwj/1HuShmIQwxJF80n+kw0axKPQZ/lmTXww2HX7FtrbdNAG6YUPMoXgVWJJDjazGdiWqqLyIZuKzhEcYCFprD1CGFs6S2Eo2ho6XZFtTcBCXZ+FTY/oRZtNYrNDgfImG/Whac=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MWHPR11MB0029.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(136003)(366004)(376002)(396003)(230922051799003)(1800799009)(186009)(451199024)(64100799003)(55016003)(9686003)(26005)(107886003)(7696005)(478600001)(6506007)(71200400001)(83380400001)(15650500001)(5660300002)(2906002)(4744005)(41300700001)(966005)(66946007)(66476007)(66556008)(76116006)(64756008)(66446008)(8676002)(8936002)(4326008)(52536014)(6916009)(54906003)(316002)(82960400001)(38070700009)(38100700002)(122000001)(86362001)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?v2xU3KvNWwilGvNmmUnL5rkpdybllCBJFa2RzYCr6d58szlXkNdY4tWd3icm?=
- =?us-ascii?Q?p29TFsqJCOl8kaGi1ycjZ7Chda6TfolDFa3PRaKIT2ecF6y6vIC6Jnuiwjfq?=
- =?us-ascii?Q?heYeb+4dhSVUQdpO6yyzVIgd65GvLMK1vCJWrpOOFUgKpc2OleUUepSkIQTa?=
- =?us-ascii?Q?SsqBE20m0vvbJy96jMeh6CYnbR+0s+k2uDdg/bVwfFvC7uY00mULFNA4jHvP?=
- =?us-ascii?Q?hdW097I8er9WI9eGRij1u2fFxnm0mxaAkDbwO6PJop4FPIxm0xgSyGQOCNfZ?=
- =?us-ascii?Q?gEd4+zN/Fw2t1MYMuRLM2ZTOXgP5Z8SXz6secTZ3dxNMLGXwhx8slZyLBbjj?=
- =?us-ascii?Q?q9amd/34TKLXBt0ZrGw2d2LPRzyemfqz6OMLX+XNSXE/G9kf8rhs1ay5Kenf?=
- =?us-ascii?Q?M4vfjMFgVhdhGBcRzbCFqyerkbnBgu8NboC0yb8fV+XSfpHrC09xDCVX7rWf?=
- =?us-ascii?Q?EnIVyv+gexSPM/5jef4VFBFaS5RCsaerZAeSgQJkvyDae1VwgPx+n2ZhKnw4?=
- =?us-ascii?Q?MMIXKQRM01RC6TBLhfbb0sk4AGkOpFme56xNa9iLZ8EQX2Y61ybyxB0qxa0S?=
- =?us-ascii?Q?FKuOZvcbioTHzSz29VCky/N2Nt7q2Qu6LUOdRduj0dLMhdTKWuMd8RFnhEWt?=
- =?us-ascii?Q?tY0cRCyDknsWg7zopBGkTnO2LATjY0UFTMWPlicxmjnlDrsaznDKk9BabGOi?=
- =?us-ascii?Q?NnjBRN6sgEzUB7dNdhBC1TFjKKBNkmhtxYb2YLUmwKLR9C8JmqZuOAprhY9C?=
- =?us-ascii?Q?9xSmAEo74ezvnP5kuDbG4leFiJkPQethXqADVj2SlbKONo5B4d5rKP4zul/T?=
- =?us-ascii?Q?Ayrkn417NWEvOuANshdIQDJiUKSZRYSx/qtmvMd2CuNpv/jTNrHDeAtLsskv?=
- =?us-ascii?Q?g7Pm7LOiKdscfUJovU6mwX1uxjnEA+BVjhzVeIAaUDk9BQC+s/yv1BVzr2ty?=
- =?us-ascii?Q?xiAGbCUnSfe/eWtwbIdGG4dhXa42YXQOVprAyAjmJMLJN7cdy8eJEHHBI4Zy?=
- =?us-ascii?Q?foiOioLbdkyA40T9F9QqlP4WU+Z7b3dyjcWzMjZHJmk8ekLe3U156czHXo4W?=
- =?us-ascii?Q?orViRcIpk1rx1t3BCIVw8vApjxYjf/ZdUprgi/M9URf0QL7lDzDH6ClBZv3v?=
- =?us-ascii?Q?mduMbFSBpY2f2KwgahI0YvPwWG1BtgBMRSIBpWxsuJHl/hdeC+GHgWD7P/fv?=
- =?us-ascii?Q?8FzCg1aypiqPfEq8VQwUk7Cz8Zelkbb43sSzrf2ELBoOpSVTE2pRY8tfXpp1?=
- =?us-ascii?Q?bKv4aRIEmM5gWevJYXxBmnccxjYaw7w0TPnjx6fDqc9/l74aHC3u3rV32TpA?=
- =?us-ascii?Q?HUia3h8yniqSNPdRWuMQtszD5tGwKkZxPnaCTPWJS6gDSRF2eG2z7C0WrPT/?=
- =?us-ascii?Q?f2FIr1DXdfuDGCbHcDsgLgx27dUU7faL3redV9fbbr5GBdrgliprFw1pPjiL?=
- =?us-ascii?Q?Ki9xV9Q/vNkk0aoSWMZxIaBaAsUJhzZ/+bf4wjEs7RbvjZiEC42ZwBI+YtsN?=
- =?us-ascii?Q?lB9pM+i5iy7gJB2dmGfOuaoHAJAHlYnnnMzYWrI6/BpSMqMtBhSwTlnlEcYF?=
- =?us-ascii?Q?k8My4WfzATqs9NzgT+wEeqm5VbslcJraY01lA9gz?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S230084AbjJaDsz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 30 Oct 2023 23:48:55 -0400
+Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB123B3
+        for <stable@vger.kernel.org>; Mon, 30 Oct 2023 20:48:51 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id D37475C029F;
+        Mon, 30 Oct 2023 23:48:48 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Mon, 30 Oct 2023 23:48:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1698724128; x=1698810528; bh=b1LXrGDZzg6rcDGwcVXq/nku1LV3SPu8vEc
+        6kzHIX78=; b=IAw1teNfOhAthN9/seJAqlelzv4CtLjIl6NfUnsH5lxTg/25Ik1
+        1+VBHSBXL69BO8UoxUkv3PwgN25+rk48edAr5qmxV2l7V+T8raiSZfTMVwXl0Mge
+        /zoAG80bn34vGbYc6LKR1e25L1gQr6MysYHCn3u1tghtnOKMyBhg9bRgdW5orvsA
+        UZnz+BT+/i8LN3uIQ26u4NC4Jw02nIu+tdEKSIlFTF/nbfocihmWErEn8Macjsrq
+        eRnSfLqPZoqoJidl/Mmz+5hvsTjmxqFB8cXGcVlo9e82A6V+W6Uab+ibNlK1rJ4p
+        Dprey9afCqLhfe2LP3mb0atYJHNHBh3uIIA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1698724128; x=1698810528; bh=b1LXrGDZzg6rc
+        DGwcVXq/nku1LV3SPu8vEc6kzHIX78=; b=dbpERuvwsOEEnq7050GVjwPCbz0aj
+        hxGleJjU3tTgUyYoXCg/UFVvYxGT0FK17qbVR6F3rf1mk+oYdsyaQVYKtnWcvI0/
+        TZ8uQdAUNiaIzTyFafsmpIQJ3h53bjDIRyXyNRYW7cEGjJtZZquxAk2jf4sVVjUr
+        IoekRK0EBnA2gsh6/r87DjFpVnVBgAaqKgWg8AwvkL02PfP8K31N1+zbVVceX5ix
+        +FK+kJngZtmXdVGv8UUrABLyDhai7e+IWS6cerb2JcXLkPmnnqu2bepX65XwO0SJ
+        vLNsUycRwD2feiiAok7jMvxCHTJrVQszJgI/fX+6cashAgMRJDzo7dJ5A==
+X-ME-Sender: <xms:IHlAZUlbGqdNjdonhhGN61zdQwKst24db4qBbUgd0x60TMvPCwq73Q>
+    <xme:IHlAZT2QfpF4NMaJ8Gy3clHgOMtAujo3ZBdlE4rQYORBySDhA8e77w8-O2fvcYF6C
+    OFmup1AxhtFcQ>
+X-ME-Received: <xmr:IHlAZSqQFn6TbecUlvTcuJgkdlSqVrhoPh24gK8o7QNPbvB-JSJEd2P4EP_c9EK6ncgEJRWLKJhNxszLnOiWK84egnDH7-lQOpU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtuddgieduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
+    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
+    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
+    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
+    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+X-ME-Proxy: <xmx:IHlAZQmKvIwY0MgTTUMuhvP45crTPM_Ccbq-AvS23oK7a1TE8fqwsQ>
+    <xmx:IHlAZS2g2pqfIRboGSGZUVt7nCn9V1AOV6eU2YUKql0OqNQIfn1uZg>
+    <xmx:IHlAZXs9YYuHBflgWdn-azWp2HyCE37b6e8F7-_oAav4fKcx_hu3PQ>
+    <xmx:IHlAZQw_HD6mceDeK2-2suMkI3FPFYaOYBBGw5wDHdu5Qn5o1ZZLSQ>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 30 Oct 2023 23:48:46 -0400 (EDT)
+Date:   Tue, 31 Oct 2023 04:48:44 +0100
+From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+To:     Mikulas Patocka <mpatocka@redhat.com>
+Cc:     Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Message-ID: <ZUB5HFeK3eHeI8UH@mail-itl>
+References: <818a23f2-c242-1c51-232d-d479c3bcbb6@redhat.com>
+ <18a38935-3031-1f35-bc36-40406e2e6fd2@suse.cz>
+ <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com>
+ <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz>
+ <20231030122513.6gds75hxd65gu747@quack3>
+ <ZT+wDLwCBRB1O+vB@mail-itl>
+ <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
+ <20231030155603.k3kejytq2e4vnp7z@quack3>
+ <ZT/e/EaBIkJEgevQ@mail-itl>
+ <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MWHPR11MB0029.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12ba5259-fbbe-4f3d-f257-08dbd9afbec0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Oct 2023 01:21:44.5536
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Z7u/hYxdtc5ThIFsWLZasfo+dGuQD5aFDK/XU3mYJbIZSeaWD95WBFwc4X/baSdCZREsPenkDYDcMd9VAy/zRw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6217
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="sCPM8eUZCWbTx7rm"
+Content-Disposition: inline
+In-Reply-To: <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -149,34 +100,307 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-> Subject: Re: Security Fix Backport: Intel RDMA driver
->=20
-> On Mon, Oct 30, 2023 at 04:47:01PM +0000, Saleem, Shiraz wrote:
-> > Hi,
-> >
-> > There was a security bug fix recently made to the Intel RDMA driver (ir=
-dma) that
-> has made to mainline.
-> >
-> > https://github.com/torvalds/linux/commit/bb6d73d9add68ad270888db327514
-> > 384dfa44958
-> > subject: RDMA/irdma: Prevent zero-length STAG registration
-> > commit-id: bb6d73d9add68ad270888db327514384dfa44958
-> >
-> > This problem in theory is possible in i40iw as well. i40iw is replaced =
-with irdma
-> upstream since 5.14.
-> >
-> > However, i40iw is still part of LTS 4.14.x, 4.19.x, 5.4.x, and 5.10. Si=
-nce it is a
-> security fix, I am thinking its reasonable we backport it to i40iw too fo=
-r these
-> kernels. The patch would need some adjustments and I can do this if requi=
-red.
->=20
-> If you feel it is needed, yes, please do the needed backport and submit i=
-t here.
->=20
+--sCPM8eUZCWbTx7rm
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 31 Oct 2023 04:48:44 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
 
-OK. Thanks!
+On Mon, Oct 30, 2023 at 06:50:35PM +0100, Mikulas Patocka wrote:
+> On Mon, 30 Oct 2023, Marek Marczykowski-G=C3=B3recki wrote:
+> > Then retried with order=3DPAGE_ALLOC_COSTLY_ORDER and
+> > PAGE_ALLOC_COSTLY_ORDER back at 3, and also got similar crash.
+>=20
+> So, does it mean that even allocating with order=3DPAGE_ALLOC_COSTLY_ORDE=
+R=20
+> isn't safe?
 
+That seems to be another bug, see below.
+
+> Try enabling CONFIG_DEBUG_VM (it also needs CONFIG_DEBUG_KERNEL) and try=
+=20
+> to provoke a similar crash. Let's see if it crashes on one of the=20
+> VM_BUG_ON statements.
+
+This was very interesting idea. With this, immediately after login I get
+the crash like below. Which makes sense, as this is when pulseaudio
+starts and opens /dev/snd/*. I then tried with the dm-crypt commit
+reverted and still got the crash! But, after blacklisting snd_pcm,
+there is no BUG splat, but the storage freeze still happens on vanilla 6.5.=
+6.
+
+The snd_pcm BUG splat:
+
+[   51.082877] page:00000000d8fdb7f1 refcount:0 mapcount:0 mapping:00000000=
+00000000 index:0x0 pfn:0x11b7d9
+[   51.082919] flags: 0x200000000000000(node=3D0|zone=3D2)
+[   51.082924] page_type: 0xffffffff()
+[   51.082929] raw: 0200000000000000 dead000000000100 dead000000000122 0000=
+000000000000
+[   51.082934] raw: 0000000000000000 0000000000000000 00000000ffffffff 0000=
+000000000000
+[   51.082938] page dumped because: VM_BUG_ON_FOLIO(((unsigned int) folio_r=
+ef_count(folio) + 127u <=3D 127u))
+[   51.082969] ------------[ cut here ]------------
+[   51.082972] kernel BUG at include/linux/mm.h:1406!
+[   51.082980] invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+[   51.082986] CPU: 5 PID: 3893 Comm: alsa-sink-Gener Tainted: G        W  =
+        6.5.6-dirty #359
+[   51.082992] Hardware name: Star Labs StarBook/StarBook, BIOS 8.97 10/03/=
+2023
+[   51.082997] RIP: e030:snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
+[   51.083015] Code: 48 2b 05 8e 7b 67 c2 48 01 f0 48 c1 e8 0c 48 c1 e0 06 =
+48 03 05 6c 7b 67 c2 e9 4c ff ff ff 48 c7 c6 d8 71 1c c0 e8 93 1e 0e c1 <0f=
+> 0b 48 83 ef 01 e9 4d ff ff ff 48 8b 05 51 47 89 c2 eb c9 66 66
+[   51.083023] RSP: e02b:ffffc90041be7e00 EFLAGS: 00010246
+[   51.083028] RAX: 000000000000005c RBX: ffffc90041be7e28 RCX: 00000000000=
+00000
+[   51.083033] RDX: 0000000000000000 RSI: 0000000000000027 RDI: 00000000fff=
+fffff
+[   51.083038] RBP: ffff888102e75f18 R08: 00000000ffffdfff R09: 00000000000=
+00001
+[   51.083042] R10: 00000000ffffdfff R11: ffffffff82a5ddc0 R12: ffff888102e=
+75f18
+[   51.083047] R13: 0000000000000255 R14: ffff888100955e80 R15: ffff888102e=
+75f18
+[   51.083056] FS:  00007f51d354f6c0(0000) GS:ffff888189740000(0000) knlGS:=
+0000000000000000
+[   51.083061] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   51.083065] CR2: 00007f51d36f6000 CR3: 000000011b53e000 CR4: 00000000000=
+50660
+[   51.083072] Call Trace:
+[   51.083076]  <TASK>
+[   51.083078]  ? die+0x31/0x80
+[   51.083085]  ? do_trap+0xd5/0x100
+[   51.083089]  ? snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
+[   51.083103]  ? do_error_trap+0x65/0x90
+[   51.083107]  ? snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
+[   51.083120]  ? exc_invalid_op+0x50/0x70
+[   51.083127]  ? snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
+[   51.083140]  ? asm_exc_invalid_op+0x1a/0x20
+[   51.083146]  ? snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
+[   51.083159]  __do_fault+0x29/0x110
+[   51.083165]  __handle_mm_fault+0x5fb/0xc40
+[   51.083170]  handle_mm_fault+0x91/0x1e0
+[   51.083173]  do_user_addr_fault+0x216/0x5d0
+[   51.083179]  ? check_preemption_disabled+0x31/0xf0
+[   51.083185]  exc_page_fault+0x71/0x160
+[   51.083189]  asm_exc_page_fault+0x26/0x30
+[   51.083195] RIP: 0033:0x7f51e56793ca
+[   51.083198] Code: c5 fe 7f 07 c5 fe 7f 47 20 c5 fe 7f 47 40 c5 fe 7f 47 =
+60 c5 f8 77 c3 66 0f 1f 84 00 00 00 00 00 40 0f b6 c6 48 89 d1 48 89 fa <f3=
+> aa 48 89 d0 c5 f8 77 c3 66 66 2e 0f 1f 84 00 00 00 00 00 66 90
+[   51.083207] RSP: 002b:00007f51d354c528 EFLAGS: 00010202
+[   51.083211] RAX: 0000000000000000 RBX: 00007f51d354ec80 RCX: 00000000000=
+034e0
+[   51.083216] RDX: 00007f51d36f5000 RSI: 0000000000000000 RDI: 00007f51d36=
+f6000
+[   51.083220] RBP: 000055fec98b2f60 R08: 00007f51cc0031c0 R09: 00000000000=
+00000
+[   51.083224] R10: 0000000000000000 R11: 0000000000000101 R12: 000055fec98=
+b2f60
+[   51.083228] R13: 00007f51d354c630 R14: 0000000000000000 R15: 000055fec78=
+ba680
+[   51.083233]  </TASK>
+[   51.083235] Modules linked in: snd_hda_codec_hdmi snd_sof_pci_intel_tgl =
+snd_sof_intel_hda_common snd_soc_hdac_hda soundwire_intel soundwire_generic=
+_allocation snd_sof_intel_hda_mlink soundwire_cadence snd_sof_intel_hda snd=
+_hda_codec_generic snd_sof_pci ledtrig_audio snd_sof snd_sof_utils snd_sof_=
+xtensa_dsp snd_soc_acpi_intel_match snd_soc_acpi snd_hda_ext_core soundwire=
+_bus snd_soc_core snd_compress snd_pcm_dmaengine ac97_bus snd_hda_intel snd=
+_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hwdep snd_hda_core snd_s=
+eq snd_seq_device hid_multitouch snd_pcm i2c_i801 idma64 iwlwifi i2c_smbus =
+i2c_designware_platform i2c_designware_core snd_timer snd soundcore efivarf=
+s i2c_hid_acpi i2c_hid pinctrl_tigerlake pinctrl_intel xen_acpi_processor x=
+en_pciback xen_blkback xen_gntalloc xen_gntdev xen_evtchn uinput
+[   51.083293] ---[ end trace 0000000000000000 ]---
+[   51.083296] RIP: e030:snd_pcm_mmap_data_fault+0x11d/0x140 [snd_pcm]
+[   51.083310] Code: 48 2b 05 8e 7b 67 c2 48 01 f0 48 c1 e8 0c 48 c1 e0 06 =
+48 03 05 6c 7b 67 c2 e9 4c ff ff ff 48 c7 c6 d8 71 1c c0 e8 93 1e 0e c1 <0f=
+> 0b 48 83 ef 01 e9 4d ff ff ff 48 8b 05 51 47 89 c2 eb c9 66 66
+[   51.083318] RSP: e02b:ffffc90041be7e00 EFLAGS: 00010246
+[   51.083323] RAX: 000000000000005c RBX: ffffc90041be7e28 RCX: 00000000000=
+00000
+[   51.083327] RDX: 0000000000000000 RSI: 0000000000000027 RDI: 00000000fff=
+fffff
+[   51.083331] RBP: ffff888102e75f18 R08: 00000000ffffdfff R09: 00000000000=
+00001
+[   51.083335] R10: 00000000ffffdfff R11: ffffffff82a5ddc0 R12: ffff888102e=
+75f18
+[   51.083340] R13: 0000000000000255 R14: ffff888100955e80 R15: ffff888102e=
+75f18
+[   51.083347] FS:  00007f51d354f6c0(0000) GS:ffff888189740000(0000) knlGS:=
+0000000000000000
+[   51.083353] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   51.083356] CR2: 00007f51d36f6000 CR3: 000000011b53e000 CR4: 00000000000=
+50660
+
+Having discovered that, I'm redoing recent tests with snd_pcm
+blacklisted. I'll get back to debugging snd_pcm issue separately.
+
+Plain 6.5.6 (so order =3D MAX_ORDER - 1, and PAGE_ALLOC_COSTLY_ORDER=3D3), =
+in frozen state:
+
+[  143.195348] sysrq: Show Blocked State
+[  143.195471] task:lvm             state:D stack:13312 pid:4882  ppid:2025=
+   flags:0x00004002
+[  143.195504] Call Trace:
+[  143.195514]  <TASK>
+[  143.195526]  __schedule+0x30e/0x8b0
+[  143.195550]  ? __pfx_dev_suspend+0x10/0x10
+[  143.195569]  schedule+0x59/0xb0
+[  143.195582]  io_schedule+0x41/0x70
+[  143.195595]  dm_wait_for_completion+0x19d/0x1b0
+[  143.195671]  ? __pfx_autoremove_wake_function+0x10/0x10
+[  143.195693]  __dm_suspend+0x79/0x190
+[  143.195707]  ? __pfx_dev_suspend+0x10/0x10
+[  143.195723]  dm_internal_suspend_noflush+0x57/0x80
+[  143.195740]  pool_presuspend+0xc7/0x130
+[  143.195759]  dm_table_presuspend_targets+0x38/0x60
+[  143.195774]  __dm_suspend+0x34/0x190
+[  143.195788]  ? preempt_count_add+0x69/0xa0
+[  143.195805]  ? __pfx_dev_suspend+0x10/0x10
+[  143.195819]  dm_suspend+0xbb/0xe0
+[  143.195835]  ? preempt_count_add+0x46/0xa0
+[  143.195851]  dev_suspend+0x18e/0x2d0
+[  143.195867]  ? __pfx_dev_suspend+0x10/0x10
+[  143.195882]  ctl_ioctl+0x329/0x640
+[  143.195901]  dm_ctl_ioctl+0x9/0x10
+[  143.195917]  __x64_sys_ioctl+0x8f/0xd0
+[  143.195938]  do_syscall_64+0x3c/0x90
+[  143.195954]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  143.195975] RIP: 0033:0x7f2e0ab1fe0f
+[  143.195989] RSP: 002b:00007ffd59a16e60 EFLAGS: 00000246 ORIG_RAX: 000000=
+0000000010
+[  143.196011] RAX: ffffffffffffffda RBX: 000056289d130840 RCX: 00007f2e0ab=
+1fe0f
+[  143.196029] RDX: 000056289d120b80 RSI: 00000000c138fd06 RDI: 00000000000=
+00003
+[  143.196046] RBP: 000056289d120b80 R08: 000056289a7eb190 R09: 00007ffd59a=
+16d20
+[  143.196063] R10: 0000000000000000 R11: 0000000000000246 R12: 00000000000=
+0000c
+[  143.196080] R13: 000056289a7e4cf0 R14: 000056289a77e14d R15: 000056289d1=
+20bb0
+[  143.196098]  </TASK>
+[  143.196106] task:blkdiscard      state:D stack:13672 pid:4884  ppid:2025=
+   flags:0x00000002
+[  143.196130] Call Trace:
+[  143.196139]  <TASK>
+[  143.196147]  __schedule+0x30e/0x8b0
+[  143.196162]  schedule+0x59/0xb0
+[  143.196175]  schedule_timeout+0x14c/0x160
+[  143.196193]  io_schedule_timeout+0x4b/0x70
+[  143.196207]  wait_for_completion_io+0x81/0x130
+[  143.196226]  submit_bio_wait+0x5c/0x90
+[  143.196241]  blkdev_issue_discard+0x94/0xe0
+[  143.196260]  blkdev_common_ioctl+0x79e/0x9c0
+[  143.196279]  blkdev_ioctl+0xc7/0x270
+[  143.196293]  __x64_sys_ioctl+0x8f/0xd0
+[  143.196310]  do_syscall_64+0x3c/0x90
+[  143.196324]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  143.196343] RIP: 0033:0x7fa6cebcee0f
+[  143.196354] RSP: 002b:00007ffe6700fa80 EFLAGS: 00000246 ORIG_RAX: 000000=
+0000000010
+[  143.196374] RAX: ffffffffffffffda RBX: 0000000280000000 RCX: 00007fa6ceb=
+cee0f
+[  143.196391] RDX: 00007ffe6700fb50 RSI: 0000000000001277 RDI: 00000000000=
+00003
+[  143.196408] RBP: 0000000000000003 R08: 0000000000000071 R09: 00000000000=
+00004
+[  143.196424] R10: 00007ffe67064170 R11: 0000000000000246 R12: 00000000400=
+00000
+[  143.196441] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000000=
+00000
+[  143.196460]  </TASK>
+
+for f in $(grep -l crypt /proc/*/comm); do head $f ${f/comm/stack}; done
+=3D=3D> /proc/3761/comm <=3D=3D
+kworker/u12:7-kcryptd/252:0
+
+=3D=3D> /proc/3761/stack <=3D=3D
+[<0>] worker_thread+0xab/0x3b0
+[<0>] kthread+0xef/0x120
+[<0>] ret_from_fork+0x2c/0x50
+[<0>] ret_from_fork_asm+0x1b/0x30
+=3D=3D> /proc/51/comm <=3D=3D
+cryptd
+
+=3D=3D> /proc/51/stack <=3D=3D
+[<0>] rescuer_thread+0x2d5/0x390
+[<0>] kthread+0xef/0x120
+[<0>] ret_from_fork+0x2c/0x50
+[<0>] ret_from_fork_asm+0x1b/0x30
+=3D=3D> /proc/556/comm <=3D=3D
+kcryptd_io/252:
+
+=3D=3D> /proc/556/stack <=3D=3D
+[<0>] rescuer_thread+0x2d5/0x390
+[<0>] kthread+0xef/0x120
+[<0>] ret_from_fork+0x2c/0x50
+[<0>] ret_from_fork_asm+0x1b/0x30
+=3D=3D> /proc/557/comm <=3D=3D
+kcryptd/252:0
+
+=3D=3D> /proc/557/stack <=3D=3D
+[<0>] rescuer_thread+0x2d5/0x390
+[<0>] kthread+0xef/0x120
+[<0>] ret_from_fork+0x2c/0x50
+[<0>] ret_from_fork_asm+0x1b/0x30
+=3D=3D> /proc/558/comm <=3D=3D
+dmcrypt_write/252:0
+
+=3D=3D> /proc/558/stack <=3D=3D
+[<0>] dmcrypt_write+0x6a/0x140
+[<0>] kthread+0xef/0x120
+[<0>] ret_from_fork+0x2c/0x50
+[<0>] ret_from_fork_asm+0x1b/0x30
+=3D=3D> /proc/717/comm <=3D=3D
+kworker/u12:6-kcryptd/252:0
+
+=3D=3D> /proc/717/stack <=3D=3D
+[<0>] worker_thread+0xab/0x3b0
+[<0>] kthread+0xef/0x120
+[<0>] ret_from_fork+0x2c/0x50
+[<0>] ret_from_fork_asm+0x1b/0x30
+
+
+Then tried:
+ - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D4 - cannot reproduce,
+ - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D5 - cannot reproduce,
+ - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D6 - freeze rather quickly
+
+I've retried the PAGE_ALLOC_COSTLY_ORDER=3D4,order=3D5 case several times
+and I can't reproduce the issue there. I'm confused...
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--sCPM8eUZCWbTx7rm
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmVAeRwACgkQ24/THMrX
+1yyAbAf8C1c0HlDZTaucuIDaz6Z6srvlesKu8+GU2TqjZ3sZCw5VPqt3pHxOR2c7
++flv+Np3jGMARWja9aZ8cAi5ejL09Hilf0DPhDRhi+MlindRz5NNnc9mRULLlEQO
+D7M3sx9eIUqt9cC8FhKNMZ3injfKPMP7Qb8vAFaIY8SRMFDmLAB3zlE51XHPNCHj
+oiLUY+pjrBg/2mHYMgGL1Fa4tsi8V0tgmKuLhlReTttBgh05f0OCQDUdb1vcIfc8
+iehCon82bQpIEjmKSll36eFo/inhiBaD6Q/9dIiPmuRlKaSd8PV1iH7h/g2kzVR5
+c4Po91i0BeDROxOof5211MmCDkeV7Q==
+=b8da
+-----END PGP SIGNATURE-----
+
+--sCPM8eUZCWbTx7rm--
