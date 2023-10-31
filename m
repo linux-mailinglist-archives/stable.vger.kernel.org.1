@@ -2,98 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 659E57DD0C3
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 16:42:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 133FE7DD106
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 16:55:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345103AbjJaPm2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 11:42:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42334 "EHLO
+        id S1344837AbjJaPzw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 11:55:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345107AbjJaPm1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 11:42:27 -0400
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F19A8E4
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 08:42:24 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.west.internal (Postfix) with ESMTP id 5976A32009DC;
-        Tue, 31 Oct 2023 11:42:23 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Tue, 31 Oct 2023 11:42:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1698766942; x=1698853342; bh=mb0gYnV0H7yJxOK1w9f/YAAaMqkDuUMTlzo
-        Ud82abGI=; b=BeyyQ7BaR/RTfnF3twpmruJUylTd2KwhIKx23X70HU3YCqspbzF
-        X6EO2K57TKbc7Mn25vORN7XhERC2lI7nOmpJKMeEwz5n0wjbPBMLg3s4PnwuS4oE
-        GNX43jlbcIMsVCwylSZtStBr05IYD1KDNN/cBYAszZF+iu3wYfKg/MS56zhIo3Wr
-        Euf10bzZMJDP0WiPo3/pj8+EfLhb5WZV+5xwHz990+Fa3hqO/KHp/v+K1vPRIB3d
-        PUIdXssOculZP1Xy52e6gRm775dRaeVuY0ID9JkfePdqqEp4Cd7W80TXWX3J4/45
-        sY2g6fjxWQ0dgzqObJfz1KNUT7Ip0KBM/9w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1698766942; x=1698853342; bh=mb0gYnV0H7yJx
-        OK1w9f/YAAaMqkDuUMTlzoUd82abGI=; b=nYOyPpfjVRmq9pCxHWrqyTLGx9rpA
-        GnCHemUTpulOxIjaEqeBtLvLo2+PPa50Bc+14ETaISQyFnIvTHmtVb3J7Ac2kfnq
-        +y4WewQfvMPiob7Bg1j1UTc6fO/DyO1wdA8NFZ10J8omUVproUWww+gHZDgSjEFI
-        YnqRJ8NF8uIWG+r15Lmq4wBaTnIIn9QLpJbfJIG+J6s3QNPoSnbkR0SKWVXze0xG
-        57itohLuUUuo6/nadLbx5t8gn57YUf+ODQbzpCoKCgPiT8lzMcUNHAAS3hYISYxU
-        VrZC3ut/SmXRrwB+ZRTDBqtpVeULJ+nk2KrVjIOLi3Ts4gXuoSSpj/7YQ==
-X-ME-Sender: <xms:XiBBZdMJNFaSuy5Lwwo1xH09ezt6TWxLho3FYHFjTMLV8l6ddoZ24g>
-    <xme:XiBBZf_cdcVd2m25pH1A9aMneVUeX-Z-fy2Gte_aU_1oRAuoPQXeMUtXHF_z5iG8M
-    fa-1QuXLVzA9A>
-X-ME-Received: <xmr:XiBBZcSKMMylrp4MuGKAp7KoycjircffxkYn7OZlYnhBD5pjItLIEnS-BQKp>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtvddgjeekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
-    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
-    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
-    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
-    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:XiBBZZuZ6raSlIE2RbAev_Rd7bZerJYavYYIZwVC1fS6DP1uGgs25w>
-    <xmx:XiBBZVdtDOki9nEDoNl9sbkJsth3Ee99o383WXOFNwlVoSfx4AbvKw>
-    <xmx:XiBBZV1UoSO1HCwau2Bcj1beU1Li5PbYqwAYMsUT2KYpOFZn20RjvQ>
-    <xmx:XiBBZR5XFR6o0Cj40Z1Fpn0igWzSrYolxPyDCbjSo2ik6Wio1Q1Fxw>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Oct 2023 11:42:19 -0400 (EDT)
-Date:   Tue, 31 Oct 2023 16:42:15 +0100
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-To:     Jan Kara <jack@suse.cz>
-Cc:     Mikulas Patocka <mpatocka@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-Message-ID: <ZUEgWA5P8MFbyeBN@mail-itl>
-References: <3514c87f-c87f-f91f-ca90-1616428f6317@redhat.com>
- <1a47fa28-3968-51df-5b0b-a19c675cc289@suse.cz>
- <20231030122513.6gds75hxd65gu747@quack3>
- <ZT+wDLwCBRB1O+vB@mail-itl>
- <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
- <20231030155603.k3kejytq2e4vnp7z@quack3>
- <ZT/e/EaBIkJEgevQ@mail-itl>
- <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
- <ZUB5HFeK3eHeI8UH@mail-itl>
- <20231031140136.25bio5wajc5pmdtl@quack3>
+        with ESMTP id S1344827AbjJaPzv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 11:55:51 -0400
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7738EF4
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 08:55:48 -0700 (PDT)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-6bd73395bceso4315157b3a.0
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 08:55:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698767747; x=1699372547; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=0pAcwJ8FMJSJmkuqRrLK9vNI3rOavVslBKsYE0icsnM=;
+        b=X3WDX9zqtSEoSbnmeYKRruGm8PlpqJBZCPGsB4x+0jRkaBy1WqTufjHnlrN4yRawad
+         oz8S2rBU6qc4RPO2dpxqKX8f2K3uQNoo4rSvJN+W6eZjkZ/gu8Ln+lyad5s+1MCzJ8jE
+         QNU2KhDu7Fu/eji1wO8U/ScXtANSjAPtxkPXwQvYNKMzg8+UVBOe4nDVztOaRhxaEwY0
+         sv1omYhSw45fN1o6wD8dp7p0RkCgeHMFCUzCsJxThIiEhDlhahafSTLyZtjRiljvWqjW
+         XW1aK9xLUqMRM0F+h6B7NivEv0PJppiNcqqga7SRupb3RSpsOdWhCCP8T6cCj4YdJbu+
+         IKoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698767747; x=1699372547;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0pAcwJ8FMJSJmkuqRrLK9vNI3rOavVslBKsYE0icsnM=;
+        b=XKqokkHmAXBmc5EmuMzbt/3xiD0fXK13lesU9MpAJL5ndLfROqE1htLrxyxXlpqfFb
+         cqe44E0QpxQwkmkSzoC78ToIQ9lii7Jv2xd89YcHYYCF2stIEjqPo2jR4E3uEvlDPSqv
+         1aAd5Do+VbxLFKD8ZEbOm2QkNQvuUN5lph3a8TXH1kJIHcpGk31ZpD0eDi9pTdZikmXX
+         mR3aJ8gv2pRKEUj3Bbb7Mo6gi1Pq1jVDmdeS/Neb6B1k2LKM15ZWDSd+Eg3MpbEbbZME
+         7m0XxE7P6yMd64vUhhLXfvo8qmbOlO8uo5FmTpQ3uFCZQXmljlxVSFFTXSdwCI9SoH1b
+         FL8Q==
+X-Gm-Message-State: AOJu0YyTLU3P2B4XAxyH71nyghvaXYI4JwLV072d0FaRfVClaU6TKxtv
+        33CTHMK5KSo6xoOSLivAtpW9ce2xpAxwkuBnngkzDQ==
+X-Google-Smtp-Source: AGHT+IFoQME+Cn5MkUu8e25TrdDrcRZqE0GIfSOqaOZn6dGfl8moFXC/85Qt0zA9F5F8ahqem+HvSA==
+X-Received: by 2002:a05:6a00:1c85:b0:6c2:e10:42e3 with SMTP id y5-20020a056a001c8500b006c20e1042e3mr3725504pfw.8.1698767747391;
+        Tue, 31 Oct 2023 08:55:47 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id d21-20020aa78695000000b0066a4e561beesm1467900pfo.173.2023.10.31.08.55.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Oct 2023 08:55:46 -0700 (PDT)
+Message-ID: <65412382.a70a0220.438dd.38a4@mx.google.com>
+Date:   Tue, 31 Oct 2023 08:55:46 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="T+T3sop+0bQ1u8dt"
-Content-Disposition: inline
-In-Reply-To: <20231031140136.25bio5wajc5pmdtl@quack3>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v4.19.297-40-g79ba95be7c78
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-4.19.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-4.19.y build: 19 builds: 6 failed, 13 passed, 6 errors,
+ 14 warnings (v4.19.297-40-g79ba95be7c78)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -101,64 +71,225 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/linux-4.19.y build: 19 builds: 6 failed, 13 passed, 6 errors, 14 =
+warnings (v4.19.297-40-g79ba95be7c78)
 
---T+T3sop+0bQ1u8dt
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 31 Oct 2023 16:42:15 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Jan Kara <jack@suse.cz>
-Cc: Mikulas Patocka <mpatocka@redhat.com>, Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
+y/kernel/v4.19.297-40-g79ba95be7c78/
 
-On Tue, Oct 31, 2023 at 03:01:36PM +0100, Jan Kara wrote:
-> On Tue 31-10-23 04:48:44, Marek Marczykowski-G=C3=B3recki wrote:
-> > Then tried:
-> >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D4 - cannot reproduce,
-> >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D5 - cannot reproduce,
-> >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D6 - freeze rather quickly
-> >=20
-> > I've retried the PAGE_ALLOC_COSTLY_ORDER=3D4,order=3D5 case several tim=
-es
-> > and I can't reproduce the issue there. I'm confused...
->=20
-> And this kind of confirms that allocations > PAGE_ALLOC_COSTLY_ORDER
-> causing hangs is most likely just a coincidence. Rather something either =
-in
-> the block layer or in the storage driver has problems with handling bios
-> with sufficiently high order pages attached. This is going to be a bit
-> painful to debug I'm afraid. How long does it take for you trigger the
-> hang? I'm asking to get rough estimate how heavy tracing we can afford so
-> that we don't overwhelm the system...
+Tree: stable-rc
+Branch: linux-4.19.y
+Git Describe: v4.19.297-40-g79ba95be7c78
+Git Commit: 79ba95be7c783391caf279ac2c334da8f3139d39
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Sometimes it freezes just after logging in, but in worst case it takes
-me about 10min of more or less `tar xz` + `dd`.
+Build Failures Detected:
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+i386:
+    allnoconfig: (gcc-10) FAIL
+    i386_defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
 
---T+T3sop+0bQ1u8dt
-Content-Type: application/pgp-signature; name="signature.asc"
+riscv:
+    allnoconfig: (gcc-10) FAIL
+    defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
 
------BEGIN PGP SIGNATURE-----
+Errors and Warnings Detected:
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmVBIFgACgkQ24/THMrX
-1yxXiwf/STqQWBIoStONLIYTVENKHHERIECrbOJ3yP9Go8RfO3rJ23Ex6CAj0jvm
-eoItbb+4wfzvg6Cko+yvRa1jlK1Bau9YT17OhaJydq3WIbfUbxlMq8Rj8q43jKak
-PMzvgY2aHJ+P33UbnAweZTH9zVE2hOBi1WDs4tLpHXSqaiRxtRTLxkhEOR3+ESDz
-HJNb3lNtD6/8H6fIDdElrizvvpDmbbLoA2ulPJGzBHTz9gt55taD22b9GChRE9Bv
-pYSyINW8cN1jQzYG/eLtcJGrBpeI0F8LrlCfBnK3A9/QiV8NLBJmT2h+WEjv7Azp
-bUEnlyfGpodVuj6V5NGcWtAAkl6R2Q==
-=krBC
------END PGP SIGNATURE-----
+arc:
 
---T+T3sop+0bQ1u8dt--
+arm64:
+    defconfig (gcc-10): 3 warnings
+    defconfig+arm64-chromebook (gcc-10): 3 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 errors
+    i386_defconfig (gcc-10): 2 errors
+    tinyconfig (gcc-10): 2 errors
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 2 warnings
+    x86_64_defconfig+x86-board (gcc-10): 2 warnings
+
+Errors summary:
+
+    6    arch/x86/kernel/head_32.S:57: Error: invalid character '(' in mnem=
+onic
+
+Warnings summary:
+
+    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    4    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 section =
+mismatches
+
+Errors:
+    arch/x86/kernel/head_32.S:57: Error: invalid character '(' in mnemonic
+    arch/x86/kernel/head_32.S:57: Error: invalid character '(' in mnemonic
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
+ings, 0 section mismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 secti=
+on mismatches
+
+Errors:
+    arch/x86/kernel/head_32.S:57: Error: invalid character '(' in mnemonic
+    arch/x86/kernel/head_32.S:57: Error: invalid character '(' in mnemonic
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
+ mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 section m=
+ismatches
+
+Errors:
+    arch/x86/kernel/head_32.S:57: Error: invalid character '(' in mnemonic
+    arch/x86/kernel/head_32.S:57: Error: invalid character '(' in mnemonic
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
+nings, 0 section mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
