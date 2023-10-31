@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B47D7DC9BA
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:36:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA4BF7DC9BD
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:36:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343942AbjJaJgW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 05:36:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52020 "EHLO
+        id S1343945AbjJaJg7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 05:36:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343945AbjJaJgW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:36:22 -0400
+        with ESMTP id S1343953AbjJaJg6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:36:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC4ECDA
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:36:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DA5C433C8;
-        Tue, 31 Oct 2023 09:36:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76617BB
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:36:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233AFC433C8;
+        Tue, 31 Oct 2023 09:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698744978;
-        bh=gIUQPI84A5HML5wG0diw0E/tir2s/mnqT/gcDbIkBW8=;
+        s=k20201202; t=1698745016;
+        bh=ExEwPBFjttjkX3yVE95u1YJXg9bciAyc5NLPg4FQMNg=;
         h=Date:From:To:Subject:References:In-Reply-To:From;
-        b=OlpLu9gcVteNDYcTAJ0tTI2van3K1Oluo5kGFRMQzlBJeL8V3AIj2B5TZ26v2Gnnl
-         x3z74lnsahrswi7dQwyNny15m72NlSgUJkX6t/21Qqkyzorha+TQFEiuRz0JAUvOCs
-         xPGVP8zFSBLxC8eqv6QNU8dRy+O9AMdNSxiIQJ5b5mfNw//XXG/agFtAuCUv9w0bA3
-         j/Ksr2wi6/szznnjxSy9gynsL/7EthO/2ZmX2YA533o+TmitJDzbdLw14KoODClAfI
-         DemlHI5nLAPNc6Mr8QwnGHNqPn9vknHkNN4rPd1MTdMa08wctV4nQyJb6SrOU6uAMM
-         DHwXk+4Skpvbg==
-Date:   Tue, 31 Oct 2023 09:36:14 +0000
+        b=QxyFcQ2MLoYZw42cNPPUCOBJqOjFYavK494kePHIduCNBprg+DhoIZPB6fPHdXPLQ
+         mvPqPc8r5/7zBAP+hjAfmhPl4us1Nuvfav9aeOR4++gtiY3ITZz4e9FtmCSkyP6ZZi
+         IhHfJbdxyrCLUt7QuGQhX9PK+4qe8OTM3eyLGFmqyndkvFKSZiMaH0NKNn3Bkd5+1b
+         K/8c9Y+QrJu3EPTBtZrX9zjZqUmwH148DHumygduPDY+9GhrwH2zF4DoUXaL58uwev
+         SInqwTvNri/2kX/LyIGLa1h0UXclBjqAnJ4oT+TAddUUz4QUepKNBXM0iCe35TPBZX
+         Et0RfQYAtfi6Q==
+Date:   Tue, 31 Oct 2023 09:36:52 +0000
 From:   Lee Jones <lee@kernel.org>
 To:     stable@vger.kernel.org,
         Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH v4.19.y 1/6] driver: platform: Add helper for safer
+Subject: Re: [PATCH v5.4.y 1/6] driver: platform: Add helper for safer
  setting of driver_override
-Message-ID: <20231031093614.GT8909@google.com>
-References: <20231031093018.2233640-1-lee@kernel.org>
+Message-ID: <20231031093652.GU8909@google.com>
+References: <20231031092645.2230861-1-lee@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231031093018.2233640-1-lee@kernel.org>
+In-Reply-To: <20231031092645.2230861-1-lee@kernel.org>
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -99,19 +99,12 @@ On Tue, 31 Oct 2023, Lee Jones wrote:
 > Link: https://lore.kernel.org/r/20220419113435.246203-2-krzysztof.kozlowski@linaro.org
 > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 > Signed-off-by: Lee Jones <lee@kernel.org>
-> Change-Id: I2f59769cfb99d8359d14e2cb7345ce3428593afc
+> Change-Id: Ib0c76960fce44b52a71e53aa6e30f39e7e8e5175
 
 Disregard this set please!
 
 I'm pre-coffee and operated in the wrong kernel directory with
 the incorrect `commit-msg` enabled.
-
-> ---
->  drivers/base/driver.c           | 69 +++++++++++++++++++++++++++++++++
->  drivers/base/platform.c         | 28 ++-----------
->  include/linux/device.h          |  2 +
->  include/linux/platform_device.h |  6 ++-
->  4 files changed, 80 insertions(+), 25 deletions(-)
 
 -- 
 Lee Jones [李琼斯]
