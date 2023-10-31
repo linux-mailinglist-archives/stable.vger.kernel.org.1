@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 396087DD56D
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6BD97DD421
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231869AbjJaRuq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:50:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42336 "EHLO
+        id S236651AbjJaRH0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236461AbjJaRuo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:44 -0400
+        with ESMTP id S236663AbjJaRHN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13D2DA6
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50402C433C8;
-        Tue, 31 Oct 2023 17:50:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A82512A
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F9BC433C7;
+        Tue, 31 Oct 2023 17:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774641;
-        bh=m9001MpuYbP/HKkdgdScqGRYG6vsSow63oZ/1F5UPpk=;
+        s=korg; t=1698771963;
+        bh=XW49930dVcXcLybR4VelViqYpc5J/XH2bA+ePaNsbHo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RQ1k3JvZOCHKLiB0MrlAz1NCo9o4cZqSr6OV+b/SiQzaERYQv42ajufEeo89ID+2i
-         x8mEabrPBtpRECZvZsK2VbDfgKIfLsqcCy4h6reDJgRx2tH0l5xrezOZ58VMjbXN/f
-         J73czRiuIuuay0fn49MY856PmICw96s7BLGhWOuY=
+        b=Td5dP44MkpU4mMuYxVMvBld2krfjS/nzKshnNjE8MX2afczKyknDVe0CzeCMIE8q+
+         xHxtyhNq0vEvzbc3AXSuTOIr8mvKJK2jyv7vWzmo/PkJfVFAeV7RNhJubVJhJxZ0T0
+         TY17KSAG4Q4RUrTcjmesH0jXUKW61X3ILja8PGv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Lazar <dlazar@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.5 103/112] x86/i8259: Skip probing when ACPI/MADT advertises PCAT compatibility
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.1 79/86] perf/core: Fix potential NULL deref
 Date:   Tue, 31 Oct 2023 18:01:44 +0100
-Message-ID: <20231031165904.518002594@linuxfoundation.org>
+Message-ID: <20231031165920.991824339@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,146 +50,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 128b0c9781c9f2651bea163cb85e52a6c7be0f9e upstream.
+commit a71ef31485bb51b846e8db8b3a35e432cc15afb5 upstream.
 
-David and a few others reported that on certain newer systems some legacy
-interrupts fail to work correctly.
+Smatch is awesome.
 
-Debugging revealed that the BIOS of these systems leaves the legacy PIC in
-uninitialized state which makes the PIC detection fail and the kernel
-switches to a dummy implementation.
-
-Unfortunately this fallback causes quite some code to fail as it depends on
-checks for the number of legacy PIC interrupts or the availability of the
-real PIC.
-
-In theory there is no reason to use the PIC on any modern system when
-IO/APIC is available, but the dependencies on the related checks cannot be
-resolved trivially and on short notice. This needs lots of analysis and
-rework.
-
-The PIC detection has been added to avoid quirky checks and force selection
-of the dummy implementation all over the place, especially in VM guest
-scenarios. So it's not an option to revert the relevant commit as that
-would break a lot of other scenarios.
-
-One solution would be to try to initialize the PIC on detection fail and
-retry the detection, but that puts the burden on everything which does not
-have a PIC.
-
-Fortunately the ACPI/MADT table header has a flag field, which advertises
-in bit 0 that the system is PCAT compatible, which means it has a legacy
-8259 PIC.
-
-Evaluate that bit and if set avoid the detection routine and keep the real
-PIC installed, which then gets initialized (for nothing) and makes the rest
-of the code with all the dependencies work again.
-
-Fixes: e179f6914152 ("x86, irq, pic: Probe for legacy PIC and set legacy_pic appropriately")
-Reported-by: David Lazar <dlazar@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: David Lazar <dlazar@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218003
-Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
+Fixes: 32671e3799ca ("perf: Disallow mis-matched inherited group reads")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/i8259.h |    2 ++
- arch/x86/kernel/acpi/boot.c  |    3 +++
- arch/x86/kernel/i8259.c      |   38 ++++++++++++++++++++++++++++++--------
- 3 files changed, 35 insertions(+), 8 deletions(-)
+ kernel/events/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/i8259.h
-+++ b/arch/x86/include/asm/i8259.h
-@@ -69,6 +69,8 @@ struct legacy_pic {
- 	void (*make_irq)(unsigned int irq);
- };
- 
-+void legacy_pic_pcat_compat(void);
-+
- extern struct legacy_pic *legacy_pic;
- extern struct legacy_pic null_legacy_pic;
- 
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -148,6 +148,9 @@ static int __init acpi_parse_madt(struct
- 		pr_debug("Local APIC address 0x%08x\n", madt->address);
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -13293,7 +13293,8 @@ static int inherit_group(struct perf_eve
+ 		    !perf_get_aux_event(child_ctr, leader))
+ 			return -EINVAL;
  	}
- 
-+	if (madt->flags & ACPI_MADT_PCAT_COMPAT)
-+		legacy_pic_pcat_compat();
-+
- 	/* ACPI 6.3 and newer support the online capable bit. */
- 	if (acpi_gbl_FADT.header.revision > 6 ||
- 	    (acpi_gbl_FADT.header.revision == 6 &&
---- a/arch/x86/kernel/i8259.c
-+++ b/arch/x86/kernel/i8259.c
-@@ -32,6 +32,7 @@
-  */
- static void init_8259A(int auto_eoi);
- 
-+static bool pcat_compat __ro_after_init;
- static int i8259A_auto_eoi;
- DEFINE_RAW_SPINLOCK(i8259A_lock);
- 
-@@ -301,15 +302,32 @@ static void unmask_8259A(void)
- 
- static int probe_8259A(void)
- {
-+	unsigned char new_val, probe_val = ~(1 << PIC_CASCADE_IR);
- 	unsigned long flags;
--	unsigned char probe_val = ~(1 << PIC_CASCADE_IR);
--	unsigned char new_val;
-+
-+	/*
-+	 * If MADT has the PCAT_COMPAT flag set, then do not bother probing
-+	 * for the PIC. Some BIOSes leave the PIC uninitialized and probing
-+	 * fails.
-+	 *
-+	 * Right now this causes problems as quite some code depends on
-+	 * nr_legacy_irqs() > 0 or has_legacy_pic() == true. This is silly
-+	 * when the system has an IO/APIC because then PIC is not required
-+	 * at all, except for really old machines where the timer interrupt
-+	 * must be routed through the PIC. So just pretend that the PIC is
-+	 * there and let legacy_pic->init() initialize it for nothing.
-+	 *
-+	 * Alternatively this could just try to initialize the PIC and
-+	 * repeat the probe, but for cases where there is no PIC that's
-+	 * just pointless.
-+	 */
-+	if (pcat_compat)
-+		return nr_legacy_irqs();
-+
- 	/*
--	 * Check to see if we have a PIC.
--	 * Mask all except the cascade and read
--	 * back the value we just wrote. If we don't
--	 * have a PIC, we will read 0xff as opposed to the
--	 * value we wrote.
-+	 * Check to see if we have a PIC.  Mask all except the cascade and
-+	 * read back the value we just wrote. If we don't have a PIC, we
-+	 * will read 0xff as opposed to the value we wrote.
- 	 */
- 	raw_spin_lock_irqsave(&i8259A_lock, flags);
- 
-@@ -431,5 +449,9 @@ static int __init i8259A_init_ops(void)
- 
+-	leader->group_generation = parent_event->group_generation;
++	if (leader)
++		leader->group_generation = parent_event->group_generation;
  	return 0;
  }
--
- device_initcall(i8259A_init_ops);
-+
-+void __init legacy_pic_pcat_compat(void)
-+{
-+	pcat_compat = true;
-+}
+ 
 
 
