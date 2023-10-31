@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CC4A7DD55D
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B3F87DD422
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376520AbjJaRtx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:49:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50838 "EHLO
+        id S231716AbjJaRHO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376538AbjJaRtx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:53 -0400
+        with ESMTP id S236341AbjJaRGy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 747D092
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB231C433C8;
-        Tue, 31 Oct 2023 17:49:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDD6526BC
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E21AC433CC;
+        Tue, 31 Oct 2023 17:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774589;
-        bh=yiOoJ7ydYquGz6eaw+4nfl7uWufnIbCGB5OqtFmOrcI=;
+        s=korg; t=1698771940;
+        bh=q3WgEjV6Gdkyq5CbySaSO2cmhxAJmmxuXFFs1+0Mkqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hlRCwJ64VQMZ+ToJe9nRleZVnTu7IlMM/LnrGLCcB0Kx7uodmq9svT+qmWa+VC/qU
-         qM7uTNC9UCcnW59NDrrGdDdlX/DF6QpHTRd91yhPkl58iiM9yjlDNoK+K3uCC9oKaw
-         UMfEYUEFlrAixIiknzJq2N+Jm9bPuUJ5UfQlCsGI=
+        b=g12N3VDiMSdfMmQFnOjNavr7tRGOoUbbiKd6vXkDfqH8JBrADxvYdoGt+H82GyekL
+         qBm1Jq4SiA4fcHwuq0aRqQuqswZWW4Se2QRsFhHl1ik2KsYV+LHAUqWyIFQ1d+IXSD
+         gZINOciH94DVFeUTZoopALXDhA8nw7maOOqrsgwY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, stable <stable@kernel.org>,
         Ekansh Gupta <quic_ekangupt@quicinc.com>,
         Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 6.5 096/112] misc: fastrpc: Free DMA handles for RPC calls with no arguments
+Subject: [PATCH 6.1 72/86] misc: fastrpc: Clean buffers on remote invocation failures
 Date:   Tue, 31 Oct 2023 18:01:37 +0100
-Message-ID: <20231031165904.322289993@linuxfoundation.org>
+Message-ID: <20231031165920.794165385@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,76 +50,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit 206484303892a2a36c0c3414030ddfef658a4e70 upstream.
+commit 1c8093591d1e372d700fe65423e7315a8ecf721b upstream.
 
-The FDs for DMA handles to be freed is updated in fdlist by DSP over
-a remote call. This holds true even for remote calls with no
-arguments. To handle this, get_args and put_args are needed to
-be called for remote calls with no arguments also as fdlist
-is allocated in get_args and FDs updated in fdlist is freed
-in put_args.
+With current design, buffers and dma handles are not freed in case
+of remote invocation failures returned from DSP. This could result
+in buffer leakings and dma handle pointing to wrong memory in the
+fastrpc kernel. Adding changes to clean buffers and dma handles
+even when remote invocation to DSP returns failures.
 
-Fixes: 8f6c1d8c4f0c ("misc: fastrpc: Add fdlist implementation")
+Fixes: c68cfb718c8f ("misc: fastrpc: Add support for context Invoke method")
 Cc: stable <stable@kernel.org>
 Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
 Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231013122007.174464-3-srinivas.kandagatla@linaro.org
+Link: https://lore.kernel.org/r/20231013122007.174464-4-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/fastrpc.c |   23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/misc/fastrpc.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 --- a/drivers/misc/fastrpc.c
 +++ b/drivers/misc/fastrpc.c
-@@ -1090,6 +1090,7 @@ static int fastrpc_put_args(struct fastr
- 		}
- 	}
- 
-+	/* Clean up fdlist which is updated by DSP */
- 	for (i = 0; i < FASTRPC_MAX_FDLIST; i++) {
- 		if (!fdlist[i])
- 			break;
-@@ -1156,11 +1157,9 @@ static int fastrpc_internal_invoke(struc
- 	if (IS_ERR(ctx))
- 		return PTR_ERR(ctx);
- 
--	if (ctx->nscalars) {
--		err = fastrpc_get_args(kernel, ctx);
--		if (err)
--			goto bail;
--	}
-+	err = fastrpc_get_args(kernel, ctx);
-+	if (err)
-+		goto bail;
- 
- 	/* make sure that all CPU memory writes are seen by DSP */
- 	dma_wmb();
-@@ -1184,14 +1183,12 @@ static int fastrpc_internal_invoke(struc
+@@ -1122,11 +1122,6 @@ static int fastrpc_internal_invoke(struc
  	if (err)
  		goto bail;
  
--	if (ctx->nscalars) {
--		/* make sure that all memory writes by DSP are seen by CPU */
--		dma_rmb();
--		/* populate all the output buffers with results */
--		err = fastrpc_put_args(ctx, kernel);
--		if (err)
--			goto bail;
--	}
-+	/* make sure that all memory writes by DSP are seen by CPU */
-+	dma_rmb();
-+	/* populate all the output buffers with results */
-+	err = fastrpc_put_args(ctx, kernel);
+-	/* Check the response from remote dsp */
+-	err = ctx->retval;
+-	if (err)
+-		goto bail;
+-
+ 	/* make sure that all memory writes by DSP are seen by CPU */
+ 	dma_rmb();
+ 	/* populate all the output buffers with results */
+@@ -1134,6 +1129,11 @@ static int fastrpc_internal_invoke(struc
+ 	if (err)
+ 		goto bail;
+ 
++	/* Check the response from remote dsp */
++	err = ctx->retval;
 +	if (err)
 +		goto bail;
- 
++
  bail:
  	if (err != -ERESTARTSYS && err != -ETIMEDOUT) {
+ 		/* We are done with this compute context */
 
 
