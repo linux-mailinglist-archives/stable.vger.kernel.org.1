@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 617D97DD418
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 762627DD55B
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233635AbjJaRHC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:07:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34082 "EHLO
+        id S1376526AbjJaRtr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:49:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236181AbjJaRGr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:47 -0400
+        with ESMTP id S1376525AbjJaRtq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37DED1FD9
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510D7C433C7;
-        Tue, 31 Oct 2023 17:05:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC78DB4
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F2DC433C7;
+        Tue, 31 Oct 2023 17:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771931;
-        bh=bjMaL6ESUJNqF0rNbzKTUL/83EjeqL0l6jXcwcH4/+8=;
+        s=korg; t=1698774583;
+        bh=LkRzW+D1DOm3W/QYRskMD6EvFC+C/5qzzEKrciOkedo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Wp3jPDC1DNA8X72n8natAys9QZ/ON8my0/zX3Dh7YUlHFR7j1+YEuVhUbFfuejIc2
-         TWLnnX4P54Jyc50BL7Uyw/KYUtpZM+A89nBEdbk9G03LBnN+PYVaZsQGQk3rrsXZP6
-         VA3BNS81fummLJ2pvxWaIBlmwyAmN0JOnauXWd4k=
+        b=O4OFprfoStzqJLOQeIAczBi7JrHZ88y7oYlfW9zm/arivfzH7YkzWBsA3MgGGahj0
+         mliwXh8Kvq6ZK/7OF8fHLTFRd32vT/9uArxit9q1nEbqhNy+Fs1oshZ/N9cFC1LEdt
+         9ibd60uMaQdbkWiDDVeFA1oU1nl74Suyrjt/evdU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,12 +30,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Yujie Liu <yujie.liu@intel.com>,
         Mukesh Ojha <quic_mojha@quicinc.com>,
         "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.1 69/86] tracing/kprobes: Fix the description of variable length arguments
-Date:   Tue, 31 Oct 2023 18:01:34 +0100
-Message-ID: <20231031165920.699906734@linuxfoundation.org>
+Subject: [PATCH 6.5 094/112] tracing/kprobes: Fix the description of variable length arguments
+Date:   Tue, 31 Oct 2023 18:01:35 +0100
+Message-ID: <20231031165904.259028310@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,7 +51,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -83,7 +83,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/kernel/trace/trace_kprobe.c
 +++ b/kernel/trace/trace_kprobe.c
-@@ -989,7 +989,7 @@ EXPORT_SYMBOL_GPL(kprobe_event_cmd_init)
+@@ -1022,7 +1022,7 @@ EXPORT_SYMBOL_GPL(kprobe_event_cmd_init)
   * @name: The name of the kprobe event
   * @loc: The location of the kprobe event
   * @kretprobe: Is this a return probe?
@@ -92,7 +92,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
   *
   * NOTE: Users normally won't want to call this function directly, but
   * rather use the kprobe_event_gen_cmd_start() wrapper, which automatically
-@@ -1062,7 +1062,7 @@ EXPORT_SYMBOL_GPL(__kprobe_event_gen_cmd
+@@ -1095,7 +1095,7 @@ EXPORT_SYMBOL_GPL(__kprobe_event_gen_cmd
  /**
   * __kprobe_event_add_fields - Add probe fields to a kprobe command from arg list
   * @cmd: A pointer to the dynevent_cmd struct representing the new event
