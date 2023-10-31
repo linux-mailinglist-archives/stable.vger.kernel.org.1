@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 084197DD5E9
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 19:16:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13AD77DD3FC
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbjJaSP6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 14:15:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39716 "EHLO
+        id S236290AbjJaRGi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231727AbjJaRuG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:50:06 -0400
+        with ESMTP id S236318AbjJaRGW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D29A6
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:50:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83486C433C7;
-        Tue, 31 Oct 2023 17:50:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56F342684
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:04:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97AC4C433C7;
+        Tue, 31 Oct 2023 17:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774603;
-        bh=LVNkCHjscX8lKQzVu0vV+2YSArwT29hUqO3rnSUfHl8=;
+        s=korg; t=1698771852;
+        bh=SDR9WyHPaawjraB9kuwFC6cFUB5kvdw30/En1S4crRM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fkOr4OlbfrsK3Ysjl0GwcFwwm46NvUBfC7HMdfCKZw/VLu677ha+vatpilWlDst6x
-         riuL2e2e0uIWS7/BVrsAtylOih0fAO7qpOif5VySq2+aESkkfskJDHlFoAwti/5PbP
-         9PoGVCMVfPDQmP4Fwi7RnShSlF8+gCXuGQNUS0YE=
+        b=GQFaxNtBgOR2oxIfFEMD3q6S3vgwXWZxJAOMAiUYgsraCWmbVdu4/irX1Sv5OrhZX
+         1tWGnGl9DNiTkPJfD/9N31gItYiYY/dayyRvHpLlQ6aJMHuFsZqw60053Zn3opPzk8
+         fTQVAeeTAJi0em6XPLdxTP/N8EnVgLUHkm0takzM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fred Chen <fred.chenchen03@gmail.com>,
-        Neal Cardwell <ncardwell@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Dima Ruinskiy <dima.ruinskiy@intel.com>,
+        Vitaly Lifshits <vitaly.lifshits@intel.com>,
+        Sasha Neftin <sasha.neftin@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 066/112] tcp: fix wrong RTO timeout when received SACK reneging
+Subject: [PATCH 6.1 42/86] igc: Fix ambiguity in the ethtool advertising
 Date:   Tue, 31 Oct 2023 18:01:07 +0100
-Message-ID: <20231031165903.403516824@linuxfoundation.org>
+Message-ID: <20231031165919.929535055@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,98 +54,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fred Chen <fred.chenchen03@gmail.com>
+From: Sasha Neftin <sasha.neftin@intel.com>
 
-[ Upstream commit d2a0fc372aca561556e765d0a9ec365c7c12f0ad ]
+[ Upstream commit e7684d29efdf37304c62bb337ea55b3428ca118e ]
 
-This commit fix wrong RTO timeout when received SACK reneging.
+The 'ethtool_convert_link_mode_to_legacy_u32' method does not allow us to
+advertise 2500M speed support and TP (twisted pair) properly. Convert to
+'ethtool_link_ksettings_test_link_mode' to advertise supported speed and
+eliminate ambiguity.
 
-When an ACK arrived pointing to a SACK reneging, tcp_check_sack_reneging()
-will rearm the RTO timer for min(1/2*srtt, 10ms) into to the future.
-
-But since the commit 62d9f1a6945b ("tcp: fix TLP timer not set when
-CA_STATE changes from DISORDER to OPEN") merged, the tcp_set_xmit_timer()
-is moved after tcp_fastretrans_alert()(which do the SACK reneging check),
-so the RTO timeout will be overwrited by tcp_set_xmit_timer() with
-icsk_rto instead of 1/2*srtt.
-
-Here is a packetdrill script to check this bug:
-0     socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+0    bind(3, ..., ...) = 0
-+0    listen(3, 1) = 0
-
-// simulate srtt to 100ms
-+0    < S 0:0(0) win 32792 <mss 1000, sackOK,nop,nop,nop,wscale 7>
-+0    > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 7>
-+.1    < . 1:1(0) ack 1 win 1024
-
-+0    accept(3, ..., ...) = 4
-
-+0    write(4, ..., 10000) = 10000
-+0    > P. 1:10001(10000) ack 1
-
-// inject sack
-+.1    < . 1:1(0) ack 1 win 257 <sack 1001:10001,nop,nop>
-+0    > . 1:1001(1000) ack 1
-
-// inject sack reneging
-+.1    < . 1:1(0) ack 1001 win 257 <sack 9001:10001,nop,nop>
-
-// we expect rto fired in 1/2*srtt (50ms)
-+.05    > . 1001:2001(1000) ack 1
-
-This fix remove the FLAG_SET_XMIT_TIMER from ack_flag when
-tcp_check_sack_reneging() set RTO timer with 1/2*srtt to avoid
-being overwrited later.
-
-Fixes: 62d9f1a6945b ("tcp: fix TLP timer not set when CA_STATE changes from DISORDER to OPEN")
-Signed-off-by: Fred Chen <fred.chenchen03@gmail.com>
-Reviewed-by: Neal Cardwell <ncardwell@google.com>
-Tested-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 8c5ad0dae93c ("igc: Add ethtool support")
+Suggested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Suggested-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20231019203641.3661960-1-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_ethtool.c | 35 ++++++++++++++------
+ 1 file changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index a5781f86ac375..7d544f965b264 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2202,16 +2202,17 @@ void tcp_enter_loss(struct sock *sk)
-  * restore sanity to the SACK scoreboard. If the apparent reneging
-  * persists until this RTO then we'll clear the SACK scoreboard.
-  */
--static bool tcp_check_sack_reneging(struct sock *sk, int flag)
-+static bool tcp_check_sack_reneging(struct sock *sk, int *ack_flag)
- {
--	if (flag & FLAG_SACK_RENEGING &&
--	    flag & FLAG_SND_UNA_ADVANCED) {
-+	if (*ack_flag & FLAG_SACK_RENEGING &&
-+	    *ack_flag & FLAG_SND_UNA_ADVANCED) {
- 		struct tcp_sock *tp = tcp_sk(sk);
- 		unsigned long delay = max(usecs_to_jiffies(tp->srtt_us >> 4),
- 					  msecs_to_jiffies(10));
+diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+index e23b95edb05ef..81897f7a90a91 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
++++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+@@ -1817,7 +1817,7 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
+ 	struct igc_adapter *adapter = netdev_priv(netdev);
+ 	struct net_device *dev = adapter->netdev;
+ 	struct igc_hw *hw = &adapter->hw;
+-	u32 advertising;
++	u16 advertised = 0;
  
- 		inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
- 					  delay, TCP_RTO_MAX);
-+		*ack_flag &= ~FLAG_SET_XMIT_TIMER;
- 		return true;
- 	}
- 	return false;
-@@ -2981,7 +2982,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
- 		tp->prior_ssthresh = 0;
+ 	/* When adapter in resetting mode, autoneg/speed/duplex
+ 	 * cannot be changed
+@@ -1842,18 +1842,33 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
+ 	while (test_and_set_bit(__IGC_RESETTING, &adapter->state))
+ 		usleep_range(1000, 2000);
  
- 	/* B. In all the states check for reneging SACKs. */
--	if (tcp_check_sack_reneging(sk, flag))
-+	if (tcp_check_sack_reneging(sk, ack_flag))
- 		return;
+-	ethtool_convert_link_mode_to_legacy_u32(&advertising,
+-						cmd->link_modes.advertising);
+-	/* Converting to legacy u32 drops ETHTOOL_LINK_MODE_2500baseT_Full_BIT.
+-	 * We have to check this and convert it to ADVERTISE_2500_FULL
+-	 * (aka ETHTOOL_LINK_MODE_2500baseX_Full_BIT) explicitly.
+-	 */
+-	if (ethtool_link_ksettings_test_link_mode(cmd, advertising, 2500baseT_Full))
+-		advertising |= ADVERTISE_2500_FULL;
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  2500baseT_Full))
++		advertised |= ADVERTISE_2500_FULL;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  1000baseT_Full))
++		advertised |= ADVERTISE_1000_FULL;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  100baseT_Full))
++		advertised |= ADVERTISE_100_FULL;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  100baseT_Half))
++		advertised |= ADVERTISE_100_HALF;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  10baseT_Full))
++		advertised |= ADVERTISE_10_FULL;
++
++	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
++						  10baseT_Half))
++		advertised |= ADVERTISE_10_HALF;
  
- 	/* C. Check consistency of the current state. */
+ 	if (cmd->base.autoneg == AUTONEG_ENABLE) {
+ 		hw->mac.autoneg = 1;
+-		hw->phy.autoneg_advertised = advertising;
++		hw->phy.autoneg_advertised = advertised;
+ 		if (adapter->fc_autoneg)
+ 			hw->fc.requested_mode = igc_fc_default;
+ 	} else {
 -- 
 2.42.0
 
