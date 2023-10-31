@@ -2,86 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 959127DCD43
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 13:50:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F37DD7DCD5C
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 13:56:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344357AbjJaMt4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 08:49:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52304 "EHLO
+        id S1344362AbjJaMvm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 08:51:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344275AbjJaMtz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 08:49:55 -0400
-Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E0E198;
-        Tue, 31 Oct 2023 05:49:53 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id 5A6551866427;
-        Tue, 31 Oct 2023 15:49:51 +0300 (MSK)
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id CkVqd0bM08iK; Tue, 31 Oct 2023 15:49:51 +0300 (MSK)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id E0D711865CE5;
-        Tue, 31 Oct 2023 15:49:50 +0300 (MSK)
-X-Virus-Scanned: amavisd-new at astralinux.ru
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id b1zKP5TFxIGe; Tue, 31 Oct 2023 15:49:50 +0300 (MSK)
-Received: from rbta-msk-lt-106062.astralinux.ru (unknown [10.177.20.58])
-        by mail.astralinux.ru (Postfix) with ESMTPSA id A72141863FF6;
-        Tue, 31 Oct 2023 15:49:49 +0300 (MSK)
-From:   Anastasia Belova <abelova@astralinux.ru>
-To:     Chris Mason <clm@fb.com>
-Cc:     Anastasia Belova <abelova@astralinux.ru>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
-        Dennis Zhou <dennis@kernel.org>, linux-btrfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Subject: [PATCH 5.10 1/1] btrfs: fix region size in count_bitmap_extents
-Date:   Tue, 31 Oct 2023 15:49:00 +0300
-Message-Id: <20231031124900.19597-2-abelova@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20231031124900.19597-1-abelova@astralinux.ru>
-References: <20231031124900.19597-1-abelova@astralinux.ru>
+        with ESMTP id S1344275AbjJaMvm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 08:51:42 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D44BB7
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 05:51:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106B6C433C7;
+        Tue, 31 Oct 2023 12:51:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1698756699;
+        bh=PySEhp5C8YzBUnhvhTmJS2OYv1VPzdxYzHFpxj/AnEE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=D4khRRqSC+Y+kloJZx+inU3EixchclMzMZZF8j/6eE1eMwNhT0hkiIh6y9zSfRCvu
+         wCucDNmgdLI7oKb7WK09ehsaVvoYNwx5E6YVA1/mppKXlLoWrrsql6buFaueBUhatQ
+         GwdINQfNb+vkSG3iqdU6YukUkT6w9g8KQEc2EvOA=
+Date:   Tue, 31 Oct 2023 13:51:31 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Baokun Li <libaokun1@huawei.com>
+Cc:     stable@vger.kernel.org, sashal@kernel.org, tytso@mit.edu,
+        jack@suse.cz, ritesh.list@gmail.com, patches@lists.linux.dev,
+        yangerkun@huawei.com
+Subject: Re: [PATCH 5.15 1/3] ext4: add two helper functions
+ extent_logical_end() and pa_logical_end()
+Message-ID: <2023103126-careless-frequency-07c1@gregkh>
+References: <20231028064749.833278-1-libaokun1@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231028064749.833278-1-libaokun1@huawei.com>
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Region size should be calculated by subtracting
-the end from the beginning.
+On Sat, Oct 28, 2023 at 02:47:47PM +0800, Baokun Li wrote:
+> commit 43bbddc067883d94de7a43d5756a295439fbe37d upstream.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Why just 5.15 and older?  What about 6.1.y?  We can't take patches only
+for older stable kernels, otherwise you will have a regression when you
+upgrade.  Please send a series for 6.1.y if you wish to have us apply
+these for older kernels.
 
-Fixes: dfb79ddb130e ("btrfs: track discardable extents for async discard"=
-)
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
----
- fs/btrfs/free-space-cache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> When we use lstart + len to calculate the end of free extent or prealloc
+> space, it may exceed the maximum value of 4294967295(0xffffffff) supported
+> by ext4_lblk_t and cause overflow, which may lead to various problems.
+> 
+> Therefore, we add two helper functions, extent_logical_end() and
+> pa_logical_end(), to limit the type of end to loff_t, and also convert
+> lstart to loff_t for calculation to avoid overflow.
+> 
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+> Link: https://lore.kernel.org/r/20230724121059.11834-2-libaokun1@huawei.com
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> 
+> Conflicts:
+> 	fs/ext4/mballoc.c
+> 
 
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index 4989c60b1df9..a34e266a0969 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -1930,7 +1930,7 @@ static int count_bitmap_extents(struct btrfs_free_s=
-pace_ctl *ctl,
-=20
- 	bitmap_for_each_set_region(bitmap_info->bitmap, rs, re, 0,
- 				   BITS_PER_BITMAP) {
--		bytes -=3D (rs - re) * ctl->unit;
-+		bytes -=3D (re - rs) * ctl->unit;
- 		count++;
-=20
- 		if (!bytes)
---=20
-2.30.2
+Note, the "Conflicts:" stuff isn't needed.
 
+thanks,
+
+greg k-h
