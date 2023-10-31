@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2A717DD54C
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C874A7DD40C
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376567AbjJaRtM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:49:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45280 "EHLO
+        id S232519AbjJaRGy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:06:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376521AbjJaRtK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:10 -0400
+        with ESMTP id S236526AbjJaRGj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C7F3F4
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5965C433CA;
-        Tue, 31 Oct 2023 17:49:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75F4E10E3
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DD1C433C8;
+        Tue, 31 Oct 2023 17:05:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774542;
-        bh=eJC+CvqeTWkLLFVTr50LAmd8scizRWCW0WSbwxKRFxE=;
+        s=korg; t=1698771902;
+        bh=8n5xm8iNuIueYWIjab0fgGLfA5Vh/DT8EsYZnPMiePg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CQgmJJNIG2jlKOv8WwQuuYmspzDpdXEXwNu4JKs3ClUrf39F4/AOrj1L6Wt9T+UaS
-         isGALGqkBrv638BEo/j2AFMu2s5Bnf3T2Cf0UQoYeUKnCPL4tmVNWUz0ClkJVaIJWn
-         0QK0R0pt+jUj+iMw2CL+oB+7dq6eJaUH8C+Rbvb4=
+        b=vPUIvzqyalVSUDacFuLetgocNfL/wTlzBBaq6upm1Yu87XlV+pXw19He4J9K1f778
+         vTgWBjMyyL0qnKKiabkoUIzel8WkO0/umx2FVnImB2zj2/RLeiL0hPdtNEA2dKsazH
+         wn8Y2nJdPoPvMWm/0HaqMn65kgeve0De9rFIj2W0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Khazhismel Kumykov <khazhy@google.com>,
         Tejun Heo <tj@kernel.org>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.5 081/112] blk-throttle: check for overflow in calculate_bytes_allowed
+Subject: [PATCH 6.1 57/86] blk-throttle: check for overflow in calculate_bytes_allowed
 Date:   Tue, 31 Oct 2023 18:01:22 +0100
-Message-ID: <20231031165903.873194815@linuxfoundation.org>
+Message-ID: <20231031165920.350400001@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,7 +49,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
