@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 280057DD40E
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:06:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D479F7DD54D
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236532AbjJaRGz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:06:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40042 "EHLO
+        id S1376522AbjJaRtQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:49:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236386AbjJaRGj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:06:39 -0400
+        with ESMTP id S1376551AbjJaRtM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AF951987
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:05:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F36CC433C8;
-        Tue, 31 Oct 2023 17:05:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF8312B
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D77DC433CC;
+        Tue, 31 Oct 2023 17:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698771905;
-        bh=j+KUN64Y0m5x4ti5WTUK1LZ5kOjfBdk0AmMnz4Vs7WM=;
+        s=korg; t=1698774545;
+        bh=UHEuAGUW80J6MdAHw/cn4oKFQDzMy0Jvrb2mLqEgFlI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LSJsU9EI2zunpK5NW9rhQj4vKJLcQsv1d8PIVzO8zTaSOe2jU4U0zKPey1amGUtYo
-         2nVM7Rwm7Nka1vpTF7OiZ2p19oafeZfyipIApjmocLP307edJp5oIYzXXbLXnj7BaY
-         YXWEFMXxF116z1wxjMvpXbzuatZre0Rjg5bQVi7g=
+        b=gQKNhXrZjOjDYEj/qE+bXDNQLGCK82hMeM52aupjR5BwXilU9tKVdzbsJw0CwUn+o
+         DNkL4p7jIlVDbaR0bK3m1vDD/iU86iK0Kw3QeLj9uLjhQEYuiGuvKZcb23ZdrTUn7j
+         jneckWBNf0CEbNSF7kSWZNE06NwcbLc+lMsIb12Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -38,12 +38,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Kees Cook <keescook@chromium.org>,
         Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 58/86] kasan: print the original fault addr when access invalid shadow
+Subject: [PATCH 6.5 082/112] kasan: print the original fault addr when access invalid shadow
 Date:   Tue, 31 Oct 2023 18:01:23 +0100
-Message-ID: <20231031165920.379377721@linuxfoundation.org>
+Message-ID: <20231031165903.898222576@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+References: <20231031165901.318222981@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,7 +59,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -116,7 +116,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/include/linux/kasan.h
 +++ b/include/linux/kasan.h
-@@ -471,10 +471,10 @@ static inline void kasan_free_module_sha
+@@ -464,10 +464,10 @@ static inline void kasan_free_module_sha
  
  #endif /* (CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS) && !CONFIG_KASAN_VMALLOC */
  
@@ -132,7 +132,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  #endif /* LINUX_KASAN_H */
 --- a/mm/kasan/report.c
 +++ b/mm/kasan/report.c
-@@ -523,9 +523,8 @@ void kasan_report_async(void)
+@@ -621,9 +621,8 @@ void kasan_report_async(void)
  }
  #endif /* CONFIG_KASAN_HW_TAGS */
  
@@ -143,7 +143,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
   * canonical half of the address space) cause out-of-bounds shadow memory reads
   * before the actual access. For addresses in the low canonical half of the
   * address space, as well as most non-canonical addresses, that out-of-bounds
-@@ -561,4 +560,3 @@ void kasan_non_canonical_hook(unsigned l
+@@ -659,4 +658,3 @@ void kasan_non_canonical_hook(unsigned l
  	pr_alert("KASAN: %s in range [0x%016lx-0x%016lx]\n", bug_type,
  		 orig_addr, orig_addr + KASAN_GRANULE_SIZE - 1);
  }
