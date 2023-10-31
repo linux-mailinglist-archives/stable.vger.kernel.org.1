@@ -2,40 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10E017DD85C
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 23:34:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B00A7DD89E
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 23:51:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346816AbjJaWe0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 18:34:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37674 "EHLO
+        id S1344868AbjJaWvt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 18:51:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346807AbjJaWe0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 18:34:26 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A89102;
-        Tue, 31 Oct 2023 15:34:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E231AC433C9;
-        Tue, 31 Oct 2023 22:34:22 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.96)
-        (envelope-from <rostedt@goodmis.org>)
-        id 1qxxJV-00EPjd-0X;
-        Tue, 31 Oct 2023 18:34:21 -0400
-Message-ID: <20231031223420.988874091@goodmis.org>
-User-Agent: quilt/0.66
-Date:   Tue, 31 Oct 2023 18:33:32 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ajay Kaher <akaher@vmware.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        with ESMTP id S1344428AbjJaWvs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 18:51:48 -0400
+Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A4EEC9
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 15:51:46 -0700 (PDT)
+Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
+        by cmsmtp with ESMTPS
+        id xtoFqoJzHjtZ3xxaMqo5tj; Tue, 31 Oct 2023 22:51:46 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTPS
+        id xxaKq18XBZs8WxxaKqvCKu; Tue, 31 Oct 2023 22:51:44 +0000
+X-Authority-Analysis: v=2.4 cv=YKGMdDKx c=1 sm=1 tr=0 ts=65418500
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=bhdUkHdE2iEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=BZ6ONlOXkBpYPFFA8NQA:9 a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:In-Reply-To:From:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=3rpYGiaoo5zucxoVeBYC5Mx0GLDamigQVQRPlkiYVm4=; b=0OqWRKLdl6mnZF4UELRZD3jP9o
+        qOZdsc9eSG5Er/L5Wj6v5FGKIE+TC4k+83GVyPcpiq3ByHSWHRpkHgCY/HK22PpWWtuOvNkHrpER5
+        3xntmi68gK+29WFgBXouQSfQ7oSj7gvE7k5AhdB9FIJ7BE+pF292Vx66SLti5kF4Fu5I8WW6CcApG
+        vZggJ7HWL4/j38sXue1kMukGkwgKBjwInojgCk2bG3y5HMgWTIRm7kbw0UHIfFqEHebSxAvSLnP/y
+        Eopq6aHjQ/17mICTjQ4oimZ+VU3peJQ/jHUZsynl0op1l3fC0jBQDznWkvV8128ivmFno77KAwfE2
+        7zlPf5xg==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:53446 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.2)
+        (envelope-from <re@w6rz.net>)
+        id 1qxxaH-0040s9-3A;
+        Tue, 31 Oct 2023 16:51:42 -0600
+Subject: Re: [PATCH 6.5 000/112] 6.5.10-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
-Subject: [PATCH v5 6/7] eventfs: Delete eventfs_inode when the last dentry is freed
-References: <20231031223326.794680978@goodmis.org>
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20231031165901.318222981@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
+Message-ID: <38fbd463-1160-0212-b9d2-6efeaaa6548e@w6rz.net>
+Date:   Tue, 31 Oct 2023 15:51:39 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1qxxaH-0040s9-3A
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:53446
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org:  HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfDVAFwp++3OnRobpRokbXOLMXS1PHo1RRQnWdq5JxLY3UBxiVS5myeCF/xiyDF944Xz9fLRuuc0aHLxgJGMbY3Ot9srLdGHnms3qf3w47SWjTkLTbz0b
+ tfDbUd8r4TunTV5ojCPllFlIAZ8mRyCOzqJ88kHn8V9ve1wtFzIMghughlE4gZKMF8A4VvoxkwGTKg==
+X-Spam-Status: No, score=-5.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,311 +93,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+On 10/31/23 10:00 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.10 release.
+> There are 112 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 02 Nov 2023 16:58:38 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.10-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-There exists a race between holding a reference of an eventfs_inode dentry
-and the freeing of the eventfs_inode. If user space has a dentry held long
-enough, it may still be able to access the dentry's eventfs_inode after it
-has been freed.
+The build fails on RISC-V.
 
-To prevent this, have he eventfs_inode freed via the last dput() (or via
-RCU if the eventfs_inode does not have a dentry).
+arch/riscv/mm/hugetlbpage.c: In function ‘set_huge_pte_at’:
+arch/riscv/mm/hugetlbpage.c:188:13: error: ‘sz’ undeclared (first use in 
+this function); did you mean ‘s8’?
+   188 |         if (sz >= PGDIR_SIZE)
+       |             ^~
+       |             s8
+arch/riscv/mm/hugetlbpage.c:188:13: note: each undeclared identifier is 
+reported only once for each function it appears in
 
-This means reintroducing the eventfs_inode del_list field at a temporary
-place to put the eventfs_inode. It needs to mark it as freed (via the
-list) but also must invalidate the dentry immediately as the return from
-eventfs_remove_dir() expects that they are. But the dentry invalidation
-must not be called under the eventfs_mutex, so it must be done after the
-eventfs_inode is marked as free (put on a deletion list).
+Caused by commit 16b6f77970f7a690c61de142511c9ac488d83e04
 
-Cc: stable@vger.kernel.org
-Fixes: 5bdcd5f5331a2 ("eventfs: Implement removal of meta data from eventfs")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- fs/tracefs/event_inode.c | 184 +++++++++++++++++----------------------
- fs/tracefs/internal.h    |   2 +
- 2 files changed, 84 insertions(+), 102 deletions(-)
+riscv: fix set_huge_pte_at() for NAPOT mappings when a swap entry is set
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 87a8aaeda231..827ca152cfbe 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -85,8 +85,7 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
- 
- 	mutex_lock(&eventfs_mutex);
- 	ei = dentry->d_fsdata;
--	/* The LSB is set when the eventfs_inode is being freed */
--	if (((unsigned long)ei & 1UL) || ei->is_freed) {
-+	if (ei->is_freed) {
- 		/* Do not allow changes if the event is about to be removed. */
- 		mutex_unlock(&eventfs_mutex);
- 		return -ENODEV;
-@@ -276,35 +275,17 @@ static void free_ei(struct eventfs_inode *ei)
- void eventfs_set_ei_status_free(struct tracefs_inode *ti, struct dentry *dentry)
- {
- 	struct tracefs_inode *ti_parent;
--	struct eventfs_inode *ei_child, *tmp;
- 	struct eventfs_inode *ei;
- 	int i;
- 
- 	/* The top level events directory may be freed by this */
- 	if (unlikely(ti->flags & TRACEFS_EVENT_TOP_INODE)) {
--		LIST_HEAD(ef_del_list);
--
- 		mutex_lock(&eventfs_mutex);
--
- 		ei = ti->private;
--
--		/* Record all the top level files */
--		list_for_each_entry_srcu(ei_child, &ei->children, list,
--					 lockdep_is_held(&eventfs_mutex)) {
--			list_add_tail(&ei_child->del_list, &ef_del_list);
--		}
--
- 		/* Nothing should access this, but just in case! */
- 		ti->private = NULL;
--
- 		mutex_unlock(&eventfs_mutex);
- 
--		/* Now safely free the top level files and their children */
--		list_for_each_entry_safe(ei_child, tmp, &ef_del_list, del_list) {
--			list_del(&ei_child->del_list);
--			eventfs_remove_dir(ei_child);
--		}
--
- 		free_ei(ei);
- 		return;
- 	}
-@@ -319,14 +300,6 @@ void eventfs_set_ei_status_free(struct tracefs_inode *ti, struct dentry *dentry)
- 	if (!ei)
- 		goto out;
- 
--	/*
--	 * If ei was freed, then the LSB bit is set for d_fsdata.
--	 * But this should not happen, as it should still have a
--	 * ref count that prevents it. Warn in case it does.
--	 */
--	if (WARN_ON_ONCE((unsigned long)ei & 1))
--		goto out;
--
- 	/* This could belong to one of the files of the ei */
- 	if (ei->dentry != dentry) {
- 		for (i = 0; i < ei->nr_entries; i++) {
-@@ -336,6 +309,8 @@ void eventfs_set_ei_status_free(struct tracefs_inode *ti, struct dentry *dentry)
- 		if (WARN_ON_ONCE(i == ei->nr_entries))
- 			goto out;
- 		ei->d_children[i] = NULL;
-+	} else if (ei->is_freed) {
-+		free_ei(ei);
- 	} else {
- 		ei->dentry = NULL;
- 	}
-@@ -962,13 +937,79 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	return ERR_PTR(-ENOMEM);
- }
- 
-+static LLIST_HEAD(free_list);
-+
-+static void eventfs_workfn(struct work_struct *work)
-+{
-+        struct eventfs_inode *ei, *tmp;
-+        struct llist_node *llnode;
-+
-+	llnode = llist_del_all(&free_list);
-+        llist_for_each_entry_safe(ei, tmp, llnode, llist) {
-+		/* This dput() matches the dget() from unhook_dentry() */
-+		for (int i = 0; i < ei->nr_entries; i++) {
-+			if (ei->d_children[i])
-+				dput(ei->d_children[i]);
-+		}
-+		/* This should only get here if it had a dentry */
-+		if (!WARN_ON_ONCE(!ei->dentry))
-+			dput(ei->dentry);
-+        }
-+}
-+
-+static DECLARE_WORK(eventfs_work, eventfs_workfn);
-+
- static void free_rcu_ei(struct rcu_head *head)
- {
- 	struct eventfs_inode *ei = container_of(head, struct eventfs_inode, rcu);
- 
-+	if (ei->dentry) {
-+		/* Do not free the ei until all references of dentry are gone */
-+		if (llist_add(&ei->llist, &free_list))
-+			queue_work(system_unbound_wq, &eventfs_work);
-+		return;
-+	}
-+
-+	/* If the ei doesn't have a dentry, neither should its children */
-+	for (int i = 0; i < ei->nr_entries; i++) {
-+		WARN_ON_ONCE(ei->d_children[i]);
-+	}
-+
- 	free_ei(ei);
- }
- 
-+static void unhook_dentry(struct dentry *dentry)
-+{
-+	struct inode *inode;
-+
-+	if (!dentry)
-+		return;
-+
-+	/* Keep the dentry from being freed yet (see eventfs_workfn()) */
-+	dget(dentry);
-+
-+	inode = dentry->d_inode;
-+	inode_lock(inode);
-+	if (d_is_dir(dentry))
-+		inode->i_flags |= S_DEAD;
-+	clear_nlink(inode);
-+	inode_unlock(inode);
-+
-+	inode = dentry->d_parent->d_inode;
-+	inode_lock(inode);
-+
-+	/* Remove its visibility */
-+	d_invalidate(dentry);
-+	if (d_is_dir(dentry))
-+		fsnotify_rmdir(inode, dentry);
-+	else
-+		fsnotify_unlink(inode, dentry);
-+
-+	if (d_is_dir(dentry))
-+		drop_nlink(inode);
-+	inode_unlock(inode);
-+}
-+
- /**
-  * eventfs_remove_rec - remove eventfs dir or file from list
-  * @ei: eventfs_inode to be removed.
-@@ -1006,34 +1047,6 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
- 	list_add_tail(&ei->del_list, head);
- }
- 
--static void unhook_dentry(struct dentry **dentry, struct dentry **list)
--{
--	if (*dentry) {
--		unsigned long ptr = (unsigned long)*list;
--
--		/* Keep the dentry from being freed yet */
--		dget(*dentry);
--
--		/*
--		 * Paranoid: The dget() above should prevent the dentry
--		 * from being freed and calling eventfs_set_ei_status_free().
--		 * But just in case, set the link list LSB pointer to 1
--		 * and have eventfs_set_ei_status_free() check that to
--		 * make sure that if it does happen, it will not think
--		 * the d_fsdata is an eventfs_inode.
--		 *
--		 * For this to work, no eventfs_inode should be allocated
--		 * on a odd space, as the ef should always be allocated
--		 * to be at least word aligned. Check for that too.
--		 */
--		WARN_ON_ONCE(ptr & 1);
--
--		(*dentry)->d_fsdata = (void *)(ptr | 1);
--		*list = *dentry;
--		*dentry = NULL;
--	}
--}
--
- /**
-  * eventfs_remove_dir - remove eventfs dir or file from list
-  * @ei: eventfs_inode to be removed.
-@@ -1044,61 +1057,28 @@ void eventfs_remove_dir(struct eventfs_inode *ei)
- {
- 	struct eventfs_inode *tmp;
- 	LIST_HEAD(ei_del_list);
--	struct dentry *dentry_list = NULL;
--	struct dentry *dentry;
--	struct inode *inode;
--	int i;
- 
- 	if (!ei)
- 		return;
- 
-+	/*
-+	 * Move the deleted eventfs_inodes onto the ei_del_list
-+	 * which will also set the is_freed value. Note, this has to be
-+	 * done under the eventfs_mutex, but the deletions of
-+	 * the dentries must be done outside the eventfs_mutex.
-+	 * Hence moving them to this temporary list.
-+	 */
- 	mutex_lock(&eventfs_mutex);
- 	eventfs_remove_rec(ei, &ei_del_list, 0);
--
--	list_for_each_entry_safe(ei, tmp, &ei_del_list, del_list) {
--		for (i = 0; i < ei->nr_entries; i++)
--			unhook_dentry(&ei->d_children[i], &dentry_list);
--		unhook_dentry(&ei->dentry, &dentry_list);
--		call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
--	}
- 	mutex_unlock(&eventfs_mutex);
- 
--	while (dentry_list) {
--		unsigned long ptr;
--
--		dentry = dentry_list;
--		ptr = (unsigned long)dentry->d_fsdata & ~1UL;
--		dentry_list = (struct dentry *)ptr;
--		dentry->d_fsdata = NULL;
--
--		inode = dentry->d_inode;
--		inode_lock(inode);
--		if (d_is_dir(dentry))
--			inode->i_flags |= S_DEAD;
--		clear_nlink(inode);
--		inode_unlock(inode);
--
--		inode = dentry->d_parent->d_inode;
--		inode_lock(inode);
--
--		/* Remove its visibility */
--		d_invalidate(dentry);
--		if (d_is_dir(dentry))
--			fsnotify_rmdir(inode, dentry);
--		else
--			fsnotify_unlink(inode, dentry);
--
--		if (d_is_dir(dentry))
--			drop_nlink(inode);
--		inode_unlock(inode);
-+	list_for_each_entry_safe(ei, tmp, &ei_del_list, del_list) {
- 
--		mutex_lock(&eventfs_mutex);
--		/* dentry should now have at least a single reference */
--		WARN_ONCE((int)d_count(dentry) < 1,
--			  "dentry %px (%s) less than one reference (%d) after invalidate\n",
--			  dentry, dentry->d_name.name, d_count(dentry));
--		mutex_unlock(&eventfs_mutex);
--		dput(dentry);
-+		for (int i = 0; i < ei->nr_entries; i++)
-+			unhook_dentry(ei->d_children[i]);
-+		unhook_dentry(ei->dentry);
-+		list_del(&ei->del_list);
-+		call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
- 	}
- }
- 
-diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
-index 5f60bcd69289..06a1f220b901 100644
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -54,10 +54,12 @@ struct eventfs_inode {
- 	void				*data;
- 	/*
- 	 * Union - used for deletion
-+	 * @llist:	for calling dput() if needed after RCU
- 	 * @del_list:	list of eventfs_inode to delete
- 	 * @rcu:	eventfs_inode to delete in RCU
- 	 */
- 	union {
-+		struct llist_node	llist;
- 		struct list_head	del_list;
- 		struct rcu_head		rcu;
- 	};
--- 
-2.42.0
+This patch requires mainline commit 62ba41d2761206664a1fdc998051324457da2dd6
+
+mm: riscv: fix an unsafe pte read in huge_pte_alloc()
+
+
