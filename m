@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02E917DD553
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:49:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 293EE7DD43B
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 18:08:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376506AbjJaRtZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 13:49:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42998 "EHLO
+        id S233633AbjJaRHg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 13:07:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376510AbjJaRtZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:49:25 -0400
+        with ESMTP id S236433AbjJaRHU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 13:07:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 025F991
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:49:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442E4C433C9;
-        Tue, 31 Oct 2023 17:49:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAB8311C
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 10:06:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9388C433C9;
+        Tue, 31 Oct 2023 17:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698774562;
-        bh=YVymRnoGxj8I05OQnAXmGzb13ppcPIagEpzOr2+P7uM=;
+        s=korg; t=1698771984;
+        bh=jha6utU86/3NTnq3RuyxfByOdzFGJIfpmXPZojvrE+s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Yhz6a7kMQaCjX3JHu4ZhhzuLZMZez2Dme8v+UfyvfgCEDyEJ4Vr6NCobFZwD5KUa7
-         1o0EyDFJIcmOckjw50A4xYpj4hQmAgmHj7v81cnWhBJylHUOMhSrObEypZaOuD6IGv
-         PXKET5TusUPD0l+iKLOdALnVp2rR24tJIf6bi2Fo=
+        b=YvIBStZh3e/xoX1fasF1ocUh3PjpL4dr/0M2J1yQ3hl1jn79g2c5R2g2MAWY3te70
+         GGz0jAkUXa6yXPi2OBFK+iilz9dy8pdcVIoGq8vt5nnjgRrQ0U/sKA0mejBMpcKoiL
+         uWY46DuOo//1LiZHOGVOpqkydCP7PnzfdvpnEnl8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,12 +30,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Peter Rosin <peda@axentia.se>,
         Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 6.5 088/112] i2c: muxes: i2c-mux-pinctrl: Use of_get_i2c_adapter_by_node()
+Subject: [PATCH 6.1 64/86] i2c: muxes: i2c-mux-pinctrl: Use of_get_i2c_adapter_by_node()
 Date:   Tue, 31 Oct 2023 18:01:29 +0100
-Message-ID: <20231031165904.089492711@linuxfoundation.org>
+Message-ID: <20231031165920.556648713@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+References: <20231031165918.608547597@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,7 +51,7 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
