@@ -2,165 +2,256 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AF617DC987
-	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:30:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A37BD7DC994
+	for <lists+stable@lfdr.de>; Tue, 31 Oct 2023 10:30:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343885AbjJaJaY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 05:30:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52788 "EHLO
+        id S1343877AbjJaJaa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 05:30:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343891AbjJaJaW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:30:22 -0400
-Received: from mo4-p03-ob.smtp.rzone.de (mo4-p03-ob.smtp.rzone.de [85.215.255.101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B15DA;
-        Tue, 31 Oct 2023 02:30:19 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1698744598; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=FzRkYUirqGaO1C4NygaInluxg+F2JCnAl56XhScwb3BcG88g+/dmppMFX7z0gX5SJU
-    26SqPvcGvvKLlGVavBrD2R8FdCWDNoz9YkMyrrOmuAXtJ4BIRYIXpVMX9+Uf4Wf0P6uv
-    JhCDdZmBqjtqatc/jLYzUtE20j7muHCiiMyLJNGHvMsOG7/GrO2+oAsdJVY9l8ZiUzpr
-    okUesp3XCKPk6UmGSnyKJC2GAdF96i2ndPoDRyvkViMAWGQISpeiBs3BX+5ruWyYmEYO
-    5Cf2hcNEb/KM0IVNg6QsHAlZ2cwtuj4MyBhiCFYG1+XdbTXssjVmXFLhLCOF3OaSn9Y0
-    Nyxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1698744598;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=030TI2FTmhttZO7MOklzZoQHhWilFAJBJVHJcoTc1vs=;
-    b=mPFZkHx83PXWZIWYmsjzdkpP2etGezUfCOjK6/IGEEQawLaKR+I0C2INZ+IxGXvXI3
-    5gCvBXAGPeiBomtkxNJdwALzRDgWCEt3s4iELVW6B2PpDJBZKZgU1U6elnBLKuYY1DZO
-    5yhxtC1QIh2N7llv3Vlnm+Z8MHsN6GCJArtnnVGIvVe7SoFlOuGKXKkb2Kq7hXh+BqTZ
-    5FdAEytOFKElAlaGwIzNRWMq8PMMx2FiXt56thqxTqIW85O0T3bAqctIOZ5CGttwclYb
-    4U7j7vcHBjfVyTaKElHV6MA1oVVA1zlp1OuCONbnqfu4/gjkiiJAeQLU7eQ+ZRdYBqtz
-    wh/w==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo03
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1698744598;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=030TI2FTmhttZO7MOklzZoQHhWilFAJBJVHJcoTc1vs=;
-    b=EUXWZ+M7C9nKQJ8B6lST6aDpo6YSgqQmByEgyf3bfquZPYAKfTtAKsY1qbQzhvtDZP
-    KKFVG5YOnim+rvV4NUXC8coAao4uUk9KCljOSNbtBoPIrWGEKMTQ9+XaeKDin/xeTi1n
-    OPI1cYgXM/xsJ4FSjtZ1zz+2GCeNCOA82vSeYMAurusvGQMREhQ+5mSuvhklTNRL61l4
-    MQYsnBAX4V6MMRO8EU8kg+KYbm3IYYoXXQpdSGPomB+AUTxkNT9nXeKsZsxHiY3bPVBq
-    42PB+1eDHt1zPEMghkoCIO3EkecPWxg8d0VO/bwv/0lVMu4kLv6qlwaR4N654229vl7n
-    U65g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1698744598;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=030TI2FTmhttZO7MOklzZoQHhWilFAJBJVHJcoTc1vs=;
-    b=R+B+eBrPKfLyWLu2KXe4fVnyIFK4pTu8Hccftu7jx2px7WA2rFeo+2Wy1TYIB9KtrI
-    58HgfUtN5k0ZwjJvJWDg==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjGrp7owjzFK3JbFk1mS0k+8CejuVITM8sik0"
-Received: from lenov17.lan
-    by smtp.strato.de (RZmta 49.9.1 DYNA|AUTH)
-    with ESMTPSA id Kda39bz9V9TwFhN
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-        (Client did not present a certificate);
-    Tue, 31 Oct 2023 10:29:58 +0100 (CET)
-From:   Oliver Hartkopp <socketcan@hartkopp.net>
-To:     gregkh@linuxfoundation.org, stable@vger.kernel.org,
-        sashal@kernel.org
-Cc:     linux-can@vger.kernel.org, lukas.magel@posteo.net,
-        patches@lists.linux.dev, maxime.jayat@mobile-devices.fr,
-        mkl@pengutronix.de, michal.sojka@cvut.cz,
-        Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [PATCH stable 5.10 10/10] can: isotp: isotp_sendmsg(): fix TX state detection and wait behavior
-Date:   Tue, 31 Oct 2023 10:29:18 +0100
-Message-Id: <20231031092918.2668-11-socketcan@hartkopp.net>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231031092918.2668-1-socketcan@hartkopp.net>
-References: <20231031092918.2668-1-socketcan@hartkopp.net>
+        with ESMTP id S1343891AbjJaJaa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 05:30:30 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A155B7
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 02:30:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE7BC433C8;
+        Tue, 31 Oct 2023 09:30:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698744626;
+        bh=m4GNKMHYUI4XJuhpWq854F+zm5Xwpx40wEcx7aaUzM0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=VhVGe1q1aANCWdBlyjUjw2DWxmnlaN60JtE0+DdaOgWFbaYsNtYUb8eI+g/VrPGgp
+         LB1fjROLZ7PJUJylfrvpIv6Brp3tn3BdPecZTKhltlknOxFfpUeIMuOZ9lyMzTu92X
+         G/azyWAUELUmtnDdOQchJ9tyTibnz90gzflJeh6QyiGAZ201oMRN5q6YfngxZASTwr
+         90PFpUUaXhqQvpKFLurH0gCndmhIox8lWoP8n30j6AOiwZJc6x7T1a0iV3d4cxbqWu
+         DI9dca/REe5JVgk/79U07zFmclWvpHsMFTkqff8dR6UDU9SUvR7LuNdmeh72M5kqaY
+         UproGtFqk2EsA==
+From:   Lee Jones <lee@kernel.org>
+To:     lee@kernel.org
+Cc:     stable@vger.kernel.org,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v4.19.y 1/6] driver: platform: Add helper for safer setting of driver_override
+Date:   Tue, 31 Oct 2023 09:30:10 +0000
+Message-ID: <20231031093018.2233640-1-lee@kernel.org>
+X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lukas Magel <lukas.magel@posteo.net>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d9c2ba65e651467de739324d978b04ed8729f483 ]
+commit 6c2f421174273de8f83cde4286d1c076d43a2d35 upstream.
 
-With patch [1], isotp_poll was updated to also queue the poller in the
-so->wait queue, which is used for send state changes. Since the queue
-now also contains polling tasks that are not interested in sending, the
-queue fill state can no longer be used as an indication of send
-readiness. As a consequence, nonblocking writes can lead to a race and
-lock-up of the socket if there is a second task polling the socket in
-parallel.
+Several core drivers and buses expect that driver_override is a
+dynamically allocated memory thus later they can kfree() it.
 
-With this patch, isotp_sendmsg does not consult wq_has_sleepers but
-instead tries to atomically set so->tx.state and waits on so->wait if it
-is unable to do so. This behavior is in alignment with isotp_poll, which
-also checks so->tx.state to determine send readiness.
+However such assumption is not documented, there were in the past and
+there are already users setting it to a string literal. This leads to
+kfree() of static memory during device release (e.g. in error paths or
+during unbind):
 
-V2:
-- Revert direct exit to goto err_event_drop
+    kernel BUG at ../mm/slub.c:3960!
+    Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM
+    ...
+    (kfree) from [<c058da50>] (platform_device_release+0x88/0xb4)
+    (platform_device_release) from [<c0585be0>] (device_release+0x2c/0x90)
+    (device_release) from [<c0a69050>] (kobject_put+0xec/0x20c)
+    (kobject_put) from [<c0f2f120>] (exynos5_clk_probe+0x154/0x18c)
+    (exynos5_clk_probe) from [<c058de70>] (platform_drv_probe+0x6c/0xa4)
+    (platform_drv_probe) from [<c058b7ac>] (really_probe+0x280/0x414)
+    (really_probe) from [<c058baf4>] (driver_probe_device+0x78/0x1c4)
+    (driver_probe_device) from [<c0589854>] (bus_for_each_drv+0x74/0xb8)
+    (bus_for_each_drv) from [<c058b48c>] (__device_attach+0xd4/0x16c)
+    (__device_attach) from [<c058a638>] (bus_probe_device+0x88/0x90)
+    (bus_probe_device) from [<c05871fc>] (device_add+0x3dc/0x62c)
+    (device_add) from [<c075ff10>] (of_platform_device_create_pdata+0x94/0xbc)
+    (of_platform_device_create_pdata) from [<c07600ec>] (of_platform_bus_create+0x1a8/0x4fc)
+    (of_platform_bus_create) from [<c0760150>] (of_platform_bus_create+0x20c/0x4fc)
+    (of_platform_bus_create) from [<c07605f0>] (of_platform_populate+0x84/0x118)
+    (of_platform_populate) from [<c0f3c964>] (of_platform_default_populate_init+0xa0/0xb8)
+    (of_platform_default_populate_init) from [<c01031f8>] (do_one_initcall+0x8c/0x404)
 
-[1] https://lore.kernel.org/all/20230331125511.372783-1-michal.sojka@cvut.cz
+Provide a helper which clearly documents the usage of driver_override.
+This will allow later to reuse the helper and reduce the amount of
+duplicated code.
 
-Reported-by: Maxime Jayat <maxime.jayat@mobile-devices.fr>
-Closes: https://lore.kernel.org/linux-can/11328958-453f-447f-9af8-3b5824dfb041@munic.io/
-Signed-off-by: Lukas Magel <lukas.magel@posteo.net>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Fixes: 79e19fa79cb5 ("can: isotp: isotp_ops: fix poll() to not report false EPOLLOUT events")
-Link: https://github.com/pylessard/python-udsoncan/issues/178#issuecomment-1743786590
-Link: https://lore.kernel.org/all/20230827092205.7908-1-lukas.magel@posteo.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Convert the platform driver to use a new helper and make the
+driver_override field const char (it is not modified by the core).
+
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20220419113435.246203-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Change-Id: I2f59769cfb99d8359d14e2cb7345ce3428593afc
 ---
- net/can/isotp.c | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/base/driver.c           | 69 +++++++++++++++++++++++++++++++++
+ drivers/base/platform.c         | 28 ++-----------
+ include/linux/device.h          |  2 +
+ include/linux/platform_device.h |  6 ++-
+ 4 files changed, 80 insertions(+), 25 deletions(-)
 
-diff --git a/net/can/isotp.c b/net/can/isotp.c
-index 08dfa34d68d5..c646fef8f3ba 100644
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -923,25 +923,22 @@ static int isotp_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 	int err;
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 857c8f1b876e5..668c6c8c22f1f 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -29,6 +29,75 @@ static struct device *next_device(struct klist_iter *i)
+ 	return dev;
+ }
  
- 	if (!so->bound || so->tx.state == ISOTP_SHUTDOWN)
- 		return -EADDRNOTAVAIL;
- 
--wait_free_buffer:
--	/* we do not support multiple buffers - for now */
--	if (wq_has_sleeper(&so->wait) && (msg->msg_flags & MSG_DONTWAIT))
--		return -EAGAIN;
-+	while (cmpxchg(&so->tx.state, ISOTP_IDLE, ISOTP_SENDING) != ISOTP_IDLE) {
-+		/* we do not support multiple buffers - for now */
-+		if (msg->msg_flags & MSG_DONTWAIT)
-+			return -EAGAIN;
- 
--	/* wait for complete transmission of current pdu */
--	err = wait_event_interruptible(so->wait, so->tx.state == ISOTP_IDLE);
--	if (err)
--		goto err_event_drop;
++/**
++ * driver_set_override() - Helper to set or clear driver override.
++ * @dev: Device to change
++ * @override: Address of string to change (e.g. &device->driver_override);
++ *            The contents will be freed and hold newly allocated override.
++ * @s: NUL-terminated string, new driver name to force a match, pass empty
++ *     string to clear it ("" or "\n", where the latter is only for sysfs
++ *     interface).
++ * @len: length of @s
++ *
++ * Helper to set or clear driver override in a device, intended for the cases
++ * when the driver_override field is allocated by driver/bus code.
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len)
++{
++	const char *new, *old;
++	char *cp;
++
++	if (!override || !s)
++		return -EINVAL;
++
++	/*
++	 * The stored value will be used in sysfs show callback (sysfs_emit()),
++	 * which has a length limit of PAGE_SIZE and adds a trailing newline.
++	 * Thus we can store one character less to avoid truncation during sysfs
++	 * show.
++	 */
++	if (len >= (PAGE_SIZE - 1))
++		return -EINVAL;
++
++	if (!len) {
++		/* Empty string passed - clear override */
++		device_lock(dev);
++		old = *override;
++		*override = NULL;
++		device_unlock(dev);
++		kfree(old);
++
++		return 0;
++	}
++
++	cp = strnchr(s, len, '\n');
++	if (cp)
++		len = cp - s;
++
++	new = kstrndup(s, len, GFP_KERNEL);
++	if (!new)
++		return -ENOMEM;
++
++	device_lock(dev);
++	old = *override;
++	if (cp != s) {
++		*override = new;
++	} else {
++		/* "\n" passed - clear override */
++		kfree(new);
++		*override = NULL;
++	}
++	device_unlock(dev);
++
++	kfree(old);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(driver_set_override);
++
+ /**
+  * driver_for_each_device - Iterator for devices bound to a driver.
+  * @drv: Driver we're iterating.
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 2f89e618b142c..a09e7a681f7a7 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -891,31 +891,11 @@ static ssize_t driver_override_store(struct device *dev,
+ 				     const char *buf, size_t count)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+-	char *driver_override, *old, *cp;
 -
--	if (cmpxchg(&so->tx.state, ISOTP_IDLE, ISOTP_SENDING) != ISOTP_IDLE) {
- 		if (so->tx.state == ISOTP_SHUTDOWN)
- 			return -EADDRNOTAVAIL;
+-	/* We need to keep extra room for a newline */
+-	if (count >= (PAGE_SIZE - 1))
+-		return -EINVAL;
+-
+-	driver_override = kstrndup(buf, count, GFP_KERNEL);
+-	if (!driver_override)
+-		return -ENOMEM;
+-
+-	cp = strchr(driver_override, '\n');
+-	if (cp)
+-		*cp = '\0';
+-
+-	device_lock(dev);
+-	old = pdev->driver_override;
+-	if (strlen(driver_override)) {
+-		pdev->driver_override = driver_override;
+-	} else {
+-		kfree(driver_override);
+-		pdev->driver_override = NULL;
+-	}
+-	device_unlock(dev);
++	int ret;
  
--		goto wait_free_buffer;
-+		/* wait for complete transmission of current pdu */
-+		err = wait_event_interruptible(so->wait, so->tx.state == ISOTP_IDLE);
-+		if (err)
-+			goto err_event_drop;
- 	}
+-	kfree(old);
++	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
++	if (ret)
++		return ret;
  
- 	if (!size || size > MAX_MSG_LENGTH) {
- 		err = -EINVAL;
- 		goto err_out_drop;
+ 	return count;
+ }
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 37e359d81a86f..bccd367c11de5 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -330,6 +330,8 @@ extern int __must_check driver_create_file(struct device_driver *driver,
+ extern void driver_remove_file(struct device_driver *driver,
+ 			       const struct driver_attribute *attr);
+ 
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len);
+ extern int __must_check driver_for_each_device(struct device_driver *drv,
+ 					       struct device *start,
+ 					       void *data,
+diff --git a/include/linux/platform_device.h b/include/linux/platform_device.h
+index 9e5c98fcea8c6..8268439975b21 100644
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -29,7 +29,11 @@ struct platform_device {
+ 	struct resource	*resource;
+ 
+ 	const struct platform_device_id	*id_entry;
+-	char *driver_override; /* Driver name to force a match */
++	/*
++	 * Driver name to force a match.  Do not set directly, because core
++	 * frees it.  Use driver_set_override() to set or clear it.
++	 */
++	const char *driver_override;
+ 
+ 	/* MFD cell pointer */
+ 	struct mfd_cell *mfd_cell;
 -- 
-2.34.1
+2.42.0.820.g83a721a137-goog
 
