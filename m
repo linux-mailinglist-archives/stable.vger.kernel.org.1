@@ -2,36 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE5A47DE67E
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 20:46:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4132A7DE67F
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 20:46:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345948AbjKATjT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 15:39:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54658 "EHLO
+        id S1346435AbjKATn5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 15:43:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345945AbjKATjR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 15:39:17 -0400
+        with ESMTP id S1346432AbjKATn4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 15:43:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE4BE10F;
-        Wed,  1 Nov 2023 12:39:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C122C43391;
-        Wed,  1 Nov 2023 19:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1698867549;
-        bh=x5igLu//8esRL7CVAC+CciwwV3qsiVqX+yA/TNznEZg=;
-        h=Date:To:From:Subject:From;
-        b=NnCLgJNZRftlCoftJXV/695kWXye7E2cTQKnCvuMJEFXnAW2wFYl8tY6zH8xbvNSK
-         FeM3cXGbvyP2WAkcDzpyCMz0EHUBdunUx+WZ/DsgILejc0miwCh4I91INJZ8dYQtR/
-         3F8vasbv8iOR+Zdw9D8EcaDO4sk0rXa6TPVgqG7g=
-Date:   Wed, 01 Nov 2023 12:39:07 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-damon-sysfs-update-monitoring-target-regions-for-online-input-commit.patch removed from -mm tree
-Message-Id: <20231101193909.8C122C43391@smtp.kernel.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA6038E
+        for <stable@vger.kernel.org>; Wed,  1 Nov 2023 12:43:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8133C433C7;
+        Wed,  1 Nov 2023 19:43:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698867834;
+        bh=iWWsfVS+rpKy6OxoYr/8+r3ZrokHZiq9cZGVvMK8dcc=;
+        h=From:Date:Subject:To:Cc:From;
+        b=rna+fo/LNh/XVBYP5kckUPBwWVWrAimsosLF7qlmVIYjFi3ake97U+Jo9Oc1QC2Q6
+         nLVNAEMRRyqtV/rX/L5Er4F0YISxAYj1yvSQ6pjXau/eoQNL8v8pc0JxCPh0Dr5qr/
+         kLWEz2fxsWrzOdhQe+NCiREtXWFi60GWDmWJH3JwsPfm0HFU7vbeUEHh9aKJco0SG9
+         gZPoZxabk/81cbaXwHLZBOD3q0IphAVutG6rhE6YKmw81WMOMm44stD3B8VTsBhP+k
+         mV2YeoYTI5eb+ebxpTG4Sfco6ouUS9OyKajsHuDQczMuNu1A100bYmmMaJ3dtH1YzK
+         KejYfKEMx718g==
+From:   Nathan Chancellor <nathan@kernel.org>
+Date:   Wed, 01 Nov 2023 12:43:29 -0700
+Subject: [PATCH] LoongArch: Mark __percpu functions as always inline
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231101-loongarch-always-inline-percpu-ops-v1-1-b8f2e9a71729@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAGCqQmUC/x3NwQrCMAyA4VcZORtYJqziq4iHEtMtUNqSoE7G3
+ t2y43f5/x1cTMXhPuxg8lHXWjroMgCvsSyC+uqGaZyuRCNhrrUs0XjFmL/x56glaxFsYtzeWJs
+ jpxCYZroFStBDzSTpdk4ez+P4AxEhNfN0AAAA
+To:     chenhuacai@kernel.org, kernel@xen0n.name
+Cc:     ndesaulniers@google.com, trix@redhat.com, jiaxun.yang@flygoat.com,
+        loongarch@lists.linux.dev, llvm@lists.linux.dev,
+        patches@lists.linux.dev, stable@vger.kernel.org,
+        Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.13-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3635; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=iWWsfVS+rpKy6OxoYr/8+r3ZrokHZiq9cZGVvMK8dcc=;
+ b=owGbwMvMwCEmm602sfCA1DTG02pJDKlOqyoNpfgPu/hFLDxbyyC4P3Gvq1vzPdeko34OylULH
+ cwOx2d1lLIwiHEwyIopslQ/Vj1uaDjnLOONU5Ng5rAygQxh4OIUgImwaDAybBH4qWnmVuB55cik
+ z+9PWeh+WHJ/d5HWzdUlQgzhtfOe8DEy9G4RDTnAMXer8K/ZMio104Ubd+5lOxnBKHYqbuV0efk
+ NTAA=
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -39,116 +60,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+A recent change to the optimization pipeline in LLVM reveals some
+fragility around the inlining of LoongArch's __percpu functions, which
+manifests as a BUILD_BUG() failure:
 
-The quilt patch titled
-     Subject: mm/damon/sysfs: update monitoring target regions for online input commit
-has been removed from the -mm tree.  Its filename was
-     mm-damon-sysfs-update-monitoring-target-regions-for-online-input-commit.patch
+  In file included from kernel/sched/build_policy.c:17:
+  In file included from include/linux/sched/cputime.h:5:
+  In file included from include/linux/sched/signal.h:5:
+  In file included from include/linux/rculist.h:11:
+  In file included from include/linux/rcupdate.h:26:
+  In file included from include/linux/irqflags.h:18:
+  arch/loongarch/include/asm/percpu.h:97:3: error: call to '__compiletime_assert_51' declared with 'error' attribute: BUILD_BUG failed
+     97 |                 BUILD_BUG();
+        |                 ^
+  include/linux/build_bug.h:59:21: note: expanded from macro 'BUILD_BUG'
+     59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+        |                     ^
+  include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+        |                                     ^
+  include/linux/compiler_types.h:425:2: note: expanded from macro 'compiletime_assert'
+    425 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+        |         ^
+  include/linux/compiler_types.h:413:2: note: expanded from macro '_compiletime_assert'
+    413 |         __compiletime_assert(condition, msg, prefix, suffix)
+        |         ^
+  include/linux/compiler_types.h:406:4: note: expanded from macro '__compiletime_assert'
+    406 |                         prefix ## suffix();                             \
+        |                         ^
+  <scratch space>:86:1: note: expanded from here
+     86 | __compiletime_assert_51
+        | ^
+  1 error generated.
 
-This patch was dropped because it was merged into the mm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+If these functions are not inlined, the BUILD_BUG() in the default case
+cannot be eliminated since the compiler cannot prove it is never used,
+resulting in a build failure due to the error attribute.
 
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs: update monitoring target regions for online input commit
-Date: Tue, 31 Oct 2023 17:01:31 +0000
+Mark these functions as __always_inline so that the BUILD_BUG() only
+triggers when the default case genuinely cannot be eliminated due to an
+unexpected size.
 
-When user input is committed online, DAMON sysfs interface is ignoring the
-user input for the monitoring target regions.  Such request is valid and
-useful for fixed monitoring target regions-based monitoring ops like
-'paddr' or 'fvaddr'.
-
-Update the region boundaries as user specified, too.  Note that the
-monitoring results of the regions that overlap between the latest
-monitoring target regions and the new target regions are preserved.
-
-Treat empty monitoring target regions user request as a request to just
-make no change to the monitoring target regions.  Otherwise, users should
-set the monitoring target regions same to current one for every online
-input commit, and it could be challenging for dynamic monitoring target
-regions update DAMON ops like 'vaddr'.  If the user really need to remove
-all monitoring target regions, they can simply remove the target and then
-create the target again with empty target regions.
-
-Link: https://lkml.kernel.org/r/20231031170131.46972-1-sj@kernel.org
-Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[5.19+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc:  <stable@vger.kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1955
+Fixes: 46859ac8af52 ("LoongArch: Add multi-processor (SMP) support")
+Link: https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
+ arch/loongarch/include/asm/percpu.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- mm/damon/sysfs.c |   47 ++++++++++++++++++++++++++++-----------------
- 1 file changed, 30 insertions(+), 17 deletions(-)
-
---- a/mm/damon/sysfs.c~mm-damon-sysfs-update-monitoring-target-regions-for-online-input-commit
-+++ a/mm/damon/sysfs.c
-@@ -1150,34 +1150,47 @@ destroy_targets_out:
- 	return err;
- }
+diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include/asm/percpu.h
+index b9f567e66016..8fb857ae962b 100644
+--- a/arch/loongarch/include/asm/percpu.h
++++ b/arch/loongarch/include/asm/percpu.h
+@@ -32,7 +32,7 @@ static inline void set_my_cpu_offset(unsigned long off)
+ #define __my_cpu_offset __my_cpu_offset
  
--static int damon_sysfs_update_target(struct damon_target *target,
--		struct damon_ctx *ctx,
--		struct damon_sysfs_target *sys_target)
-+static int damon_sysfs_update_target_pid(struct damon_target *target, int pid)
+ #define PERCPU_OP(op, asm_op, c_op)					\
+-static inline unsigned long __percpu_##op(void *ptr,			\
++static __always_inline unsigned long __percpu_##op(void *ptr,			\
+ 			unsigned long val, int size)			\
+ {									\
+ 	unsigned long ret;						\
+@@ -63,7 +63,7 @@ PERCPU_OP(and, and, &)
+ PERCPU_OP(or, or, |)
+ #undef PERCPU_OP
+ 
+-static inline unsigned long __percpu_read(void *ptr, int size)
++static __always_inline unsigned long __percpu_read(void *ptr, int size)
  {
--	struct pid *pid;
--	struct damon_region *r, *next;
--
--	if (!damon_target_has_pid(ctx))
--		return 0;
-+	struct pid *pid_new;
+ 	unsigned long ret;
  
--	pid = find_get_pid(sys_target->pid);
--	if (!pid)
-+	pid_new = find_get_pid(pid);
-+	if (!pid_new)
- 		return -EINVAL;
- 
--	/* no change to the target */
--	if (pid == target->pid) {
--		put_pid(pid);
-+	if (pid_new == target->pid) {
-+		put_pid(pid_new);
- 		return 0;
- 	}
- 
--	/* remove old monitoring results and update the target's pid */
--	damon_for_each_region_safe(r, next, target)
--		damon_destroy_region(r, target);
- 	put_pid(target->pid);
--	target->pid = pid;
-+	target->pid = pid_new;
- 	return 0;
- }
- 
-+static int damon_sysfs_update_target(struct damon_target *target,
-+		struct damon_ctx *ctx,
-+		struct damon_sysfs_target *sys_target)
-+{
-+	int err;
-+
-+	if (damon_target_has_pid(ctx)) {
-+		err = damon_sysfs_update_target_pid(target, sys_target->pid);
-+		if (err)
-+			return err;
-+	}
-+
-+	/*
-+	 * Do monitoring target region boundary update only if one or more
-+	 * regions are set by the user.  This is for keeping current monitoring
-+	 * target results and range easier, especially for dynamic monitoring
-+	 * target regions update ops like 'vaddr'.
-+	 */
-+	if (sys_target->regions->nr)
-+		err = damon_sysfs_set_regions(target, sys_target->regions);
-+	return err;
-+}
-+
- static int damon_sysfs_set_targets(struct damon_ctx *ctx,
- 		struct damon_sysfs_targets *sysfs_targets)
- {
-_
 
-Patches currently in -mm which might be from sj@kernel.org are
+---
+base-commit: 278be83601dd1725d4732241f066d528e160a39d
+change-id: 20231101-loongarch-always-inline-percpu-ops-cf77c161871f
 
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
 
