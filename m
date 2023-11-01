@@ -2,155 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A27967DE493
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 17:27:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2597DE522
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 18:15:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231696AbjKAQ1Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 12:27:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33210 "EHLO
+        id S1344665AbjKARPA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 13:15:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231345AbjKAQ1X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 12:27:23 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2893DFD;
-        Wed,  1 Nov 2023 09:27:19 -0700 (PDT)
-Received: from [192.168.1.103] (178.176.72.206) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 1 Nov
- 2023 19:27:11 +0300
-Subject: Re: [PATCH fixes 2/3] MIPS: Loongson64: Enable DMA noncoherent
- support
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-CC:     Huacai Chen <chenhuacai@kernel.org>, <linux-mips@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20231101-loongson64_fixes-v1-0-2a2582a4bfa9@flygoat.com>
- <20231101-loongson64_fixes-v1-2-2a2582a4bfa9@flygoat.com>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <f1d9a544-bb08-f78a-2a27-437cb9261a16@omp.ru>
-Date:   Wed, 1 Nov 2023 19:27:11 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        with ESMTP id S1344562AbjKARO7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 13:14:59 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B87A6;
+        Wed,  1 Nov 2023 10:14:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1698858884; x=1699463684; i=rwahl@gmx.de;
+        bh=EriKGdVhkjZE/JW8h0Day4T4RmUpBJKLvzPhAYNXNLI=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=T6QKpQEh0+ITgaCW1YWnQiQak5N89ZYBJQnfNlOwVsmEG/2+NECZ6AVpinFbGtaL
+         owz8ZMeiYQYpjAqGwKM0ZIjR/GKuxgl9fWtdnQaxunAhNJOGT/Un31eojphAAfEP3
+         SSrjMUOwPg+4EXCPM6m3ntizj5kXT/liJ3K/7dN+8/nFU+G7H16b6SIcWIBn9TIgE
+         Jfu0A2O8jpQ03prOswovmX7xOavcQb23cdcIYfjA5fQtyGMX2hZZTf/UrSjuN+AI+
+         0WqBdmJhA/Lkkjxd/cyZlpxQS+M7uJ/whYkWhd5zywMCQ2PjViKCu9aci4o30bCLu
+         8TT6DVoPh0Jx/n1ZyQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from rohan.localdomain ([84.156.147.134]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MUGeB-1qpGPH2S4B-00RJT5; Wed, 01
+ Nov 2023 18:14:44 +0100
+From:   Ronald Wahl <rwahl@gmx.de>
+To:     linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Ronald Wahl <ronald.wahl@raritan.com>, stable@vger.kernel.org
+Subject: [PATCH v4] serial: 8250: 8250_omap: Do not start RX DMA on THRI interrupt
+Date:   Wed,  1 Nov 2023 18:14:31 +0100
+Message-ID: <20231101171431.16495-1-rwahl@gmx.de>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-In-Reply-To: <20231101-loongson64_fixes-v1-2-2a2582a4bfa9@flygoat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [178.176.72.206]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.0.0, Database issued on: 11/01/2023 16:16:54
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 181058 [Nov 01 2023]
-X-KSE-AntiSpam-Info: Version: 6.0.0.2
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 543 543 1e3516af5cdd92079dfeb0e292c8747a62cb1ee4
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;omp.ru:7.1.1
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.72.206
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 11/01/2023 16:21:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 11/1/2023 2:02:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:OU2kS9jqgy2fT3w5uBLnJbbnDx7Tjfr6MYf8PnuM07Qq6IGpNSX
+ /2D7bW0HTTX0RYxg/DoeuwfkkyrUX8LBM4jCVaMMcfFlx0lzfkAdkzlUzyLIUHiPsvCc1q6
+ OOOAice4sEsIUqqmEIKhbqatANdaPcZM5bO4EjGDFleJnfx+7VkiFc23QK+qFEepIgmjhhZ
+ jD7DcXK6lcx/vIFmdSkbg==
+UI-OutboundReport: notjunk:1;M01:P0:53AjFZVSRN4=;5723rBi+1Md/zfc/YkPrOSPr4iD
+ 930nbU4C6fvaWXJ1VOKaJLLD0KqLaYNaI1A93BIPSoqsIyu92H440hXkvnGz15siwq6rrqDDY
+ iXqf81ls9hgcaLZVJunD+B3mzlxy02KS5IihNpAxKay+NdSq2Cg0rFnK3SAkdhIIhz9CQkKlB
+ 55//g62HUPPis0UhiHehtXJXim3/rSkHmEaihyBjb9w3+gi+8vpGLPXVX/AgEyjSrxHDjiGKi
+ VNY2Cq+pIVg60Prb8/+fCGe6pVJp9DXttKSkLC/IxC53sp3OKmKqost13Jlix96pziAdeImff
+ pFOFOg0ym6BXoBeAB2k/RfuRBUJ8aurqgvA/24CghJ3E1bDZZs+1vN1dmYgzNLBGqEcqSpdrR
+ Hbr6pferUVBVWCvVJiORwc/w1+0gNfvezxBZTEE3gLD/ix6KE7ZPPweJ3Otbo3+YMv1kL/1fj
+ nGRx+SI8fXLualUzbXk3ilW1oJlnYxiN67Ttz6mLh3F26keInVNPjracBXZtqDeinUjBuAaY+
+ 5GegC59OGOzpcv3rnMaG9HLcyVbGqobXCCq5Qu4pnPn9Yj+sqYLBEFKroTd1XxoniDsydggE3
+ xy8WIPkbl1BHBPg7PYDELlAWTn7F6zMTyO4scxJ2SnhY3TByUtHfil2eVUQQhjPgxMSRVvl2Z
+ wRzIz11MmCIhuWUzkpGEl/07rM+E0P5ZzzinDMWCUM4tO+9pyl9Scc2wuPePpoQl51w0YsCbR
+ GBjG4ITVgoFKyzvRlAZ0ZQ18RrdnVRxjOhjlb4uj+OfrtCRwSrqAqEslbUchNr8TNtCxYFfE0
+ 9Gl7fC9R+xu7d+j4L09O6G34toosBZNwta87IU0LBWas1sP8T7Ti4xG65QVrbxTT9Dc7ItfYK
+ WO7tDyT+uosO39kUJqoh3lQbEaDcA1rcsGn0QVT66UdjMDLveGsZGsvFZg0U5i+JzVR1l8e2w
+ i2bqMw==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/1/23 2:39 PM, Jiaxun Yang wrote:
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-> There are some Loongson64 systems come with broken coherent DMA
-> support, firmware will set a bit in boot_param and pass nocoherentio
-> in cmdline.
-> 
-> However nonconherent support was missed out when spin off Loongson-2EF
-> form Loongson64, and that boot_param change never made itself into
-> upstream.
-> 
-> Support DMA noncoherent properly to get those systems work.
+Starting RX DMA on THRI interrupt is too early because TX may not have
+finished yet.
 
-   Working.
+This change is inspired by commit 90b8596ac460 ("serial: 8250: Prevent
+starting up DMA Rx on THRI interrupt") and fixes DMA issues I had with
+an AM62 SoC that is using the 8250 OMAP variant.
 
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 71e2f4dd5a65 ("MIPS: Fork loongson2ef from loongson64")
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-[...]
+Cc: stable@vger.kernel.org
+Fixes: c26389f998a8 ("serial: 8250: 8250_omap: Add DMA support for UARTs o=
+n K3 SoCs")
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+=2D--
+V4: - add missing braces to fix build warning
 
-> diff --git a/arch/mips/include/asm/mach-loongson64/boot_param.h b/arch/mips/include/asm/mach-loongson64/boot_param.h
-> index 035b1a69e2d0..c454ef734c45 100644
-> --- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-> +++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-> @@ -117,7 +117,8 @@ struct irq_source_routing_table {
->  	u64 pci_io_start_addr;
->  	u64 pci_io_end_addr;
->  	u64 pci_config_addr;
-> -	u32 dma_mask_bits;
-> +	u16 dma_mask_bits;
-> +	u16 dma_noncoherent;
->  } __packed;
->  
->  struct interface_info {
-> diff --git a/arch/mips/loongson64/env.c b/arch/mips/loongson64/env.c
-> index c961e2999f15..df0e92cd3920 100644
-> --- a/arch/mips/loongson64/env.c
-> +++ b/arch/mips/loongson64/env.c
-> @@ -13,6 +13,8 @@
->   * Copyright (C) 2009 Lemote Inc.
->   * Author: Wu Zhangjin, wuzhangjin@gmail.com
->   */
-> +
-> +#include <linux/dma-map-ops.h>
->  #include <linux/export.h>
->  #include <linux/pci_ids.h>
->  #include <asm/bootinfo.h>
-> @@ -147,8 +149,13 @@ void __init prom_lefi_init_env(void)
->  
->  	loongson_sysconf.dma_mask_bits = eirq_source->dma_mask_bits;
->  	if (loongson_sysconf.dma_mask_bits < 32 ||
-> -		loongson_sysconf.dma_mask_bits > 64)
-> +		loongson_sysconf.dma_mask_bits > 64) {
+V3: - add Cc: stable@vger.kernel.org
 
-   Please indent this line differently, so it doesn't blend
-with the following line (either start it in the same column
-as the *if* expression above, or add 1 more tab).
+V2: - add Fixes: tag
+    - fix author
 
->  		loongson_sysconf.dma_mask_bits = 32;
-> +		dma_default_coherent = true;
-> +	} else
+ drivers/tty/serial/8250/8250_omap.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-   The kernel style dictates that you need to add {} on the *else*
-branchh too.
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250=
+/8250_omap.c
+index c7ab2963040b..1122f37fe744 100644
+=2D-- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1282,10 +1282,12 @@ static int omap_8250_dma_handle_irq(struct uart_po=
+rt *port)
 
-> +		dma_default_coherent = !eirq_source->dma_noncoherent;
-> +
-> +	pr_info("DMA coherent: %s\n", dma_default_coherent ? "on" : "off");
+ 	status =3D serial_port_in(port, UART_LSR);
 
-   Maybe "Coherent DMA: %s\n"?
+-	if (priv->habit & UART_HAS_EFR2)
+-		am654_8250_handle_rx_dma(up, iir, status);
+-	else
+-		status =3D omap_8250_handle_rx_dma(up, iir, status);
++	if ((iir & 0x3f) !=3D UART_IIR_THRI) {
++		if (priv->habit & UART_HAS_EFR2)
++			am654_8250_handle_rx_dma(up, iir, status);
++		else
++			status =3D omap_8250_handle_rx_dma(up, iir, status);
++	}
 
-[...]
+ 	serial8250_modem_status(up);
+ 	if (status & UART_LSR_THRE && up->dma->tx_err) {
+=2D-
+2.41.0
 
-MBR, Sergey
