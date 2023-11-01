@@ -2,100 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A68C7DDB07
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 03:35:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47E157DDB11
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 03:40:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233986AbjKACfc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 22:35:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39064 "EHLO
+        id S1344977AbjKACkF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 22:40:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233285AbjKACfa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 22:35:30 -0400
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F34D7F3
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 19:35:24 -0700 (PDT)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-        by mailout.west.internal (Postfix) with ESMTP id 64F5B320091B;
-        Tue, 31 Oct 2023 22:35:23 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute7.internal (MEProxy); Tue, 31 Oct 2023 22:35:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1698806122; x=1698892522; bh=toWqzNW+iMWIeaM1eKZlhsB3zxFYDFs0dkO
-        c+aPifIU=; b=ld3shsB5i53LUbI8stbuQcrPojZ+KazagqOv0Np+VbzzYbskbyn
-        nOEdMpMxUnSipNFZWQYY+HZblHQC6+4uZCc6cbWPGy4K/yGqBvTcQ4Hwt3urFK9b
-        Tm8TiEdSsZEuO0XK5Ci7LaDS/1keSdwaCfqohaDymR6/WC8jRKtYDU1A8Nj91iP1
-        nhhKKOwYHLTEaBI7CjwwHnG2DACCYdwBeygA2HlZL/3CFFV2KWHb4dYhKxI4wMQs
-        L2amSD98EvEBHgN+6mgUTB3ctdVSQMRr0t0rdIO5oNhvqNYFBUEDZ4+sdufRjJjl
-        swcxMPE+wLzRf5B5K8KA0YoIzCSepCJ8Nsw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1698806122; x=1698892522; bh=toWqzNW+iMWIe
-        aM1eKZlhsB3zxFYDFs0dkOc+aPifIU=; b=tFQ9bzhS2/avGJKX0gaARz+7fU8Nw
-        KLi88v+sguvk13Yb6vtThVydHBHjRTP4voFUJLX5vr1AiH6/5eHo9Tn8NqABRcO6
-        HKii73SnkcKwYtWpV2czb3H/ZEVeYPlBSIuO5rqbWVp7RLEFrpUJehnzT0jMHHCm
-        AzQ/Y+ji2qnp7DWjYtxiflXf+lY3UTppVEQE0GKPm4LoeycA+whAF5TNDgSRzwN8
-        a9kL+eSZeU+CnG9DuhIH4Ef2qGzj4AMQ7nRgOi6SLdyitDQhcMRWCgN3tZhVZpfp
-        fnmsXqt3yBh+Yay8Ow16WpJb/KaubmA8v60kkj6Cs4WAFRuI//6JiJYlA==
-X-ME-Sender: <xms:ablBZRtHKUxKOIIadLbjX2wCzAkl1AZALRDCpYyrfmYRtn4JcC7S3A>
-    <xme:ablBZaekT8JpXTIlERpS13LCt5gY5-nASIBc0vu-cSM1ueEpo73VAYWH0Rc7K2IaT
-    KbLRFJMFC2aPw>
-X-ME-Received: <xmr:ablBZUx9K91s3oDUMcClUZiy__EnDUrVdcw1rV019bhmdIqTQcg0a_pDoWuZ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtfedggeejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
-    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
-    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
-    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
-    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:ablBZYMNCu2B1E0GR5yfu69YnR8DtVI1ndRDDLvZp2WZ0F6obWFwjw>
-    <xmx:ablBZR83c0AjK3QyOty1MRzv0bp3vxxNiD7Pkx-uzE2up-aNqOy0WQ>
-    <xmx:ablBZYXuDijSLc6iWnn2OvsXTqfHla4Xiuppu69JNiY2vrJZUsO_zQ>
-    <xmx:arlBZS3PIW4M9zP1D4-aCE40f191q-QhjAF5eFY_OXbpgVnp2JkIYA>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Oct 2023 22:35:18 -0400 (EDT)
-Date:   Wed, 1 Nov 2023 03:35:14 +0100
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-To:     Ming Lei <tom.leiming@gmail.com>
-Cc:     Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-Message-ID: <ZUG5ZCSS1/tMUgql@mail-itl>
-References: <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
- <20231030155603.k3kejytq2e4vnp7z@quack3>
- <ZT/e/EaBIkJEgevQ@mail-itl>
- <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
- <ZUB5HFeK3eHeI8UH@mail-itl>
- <20231031140136.25bio5wajc5pmdtl@quack3>
- <ZUEgWA5P8MFbyeBN@mail-itl>
- <CACVXFVOEWDyzasS7DWDvLOhC3Hr6qOn5ks3HLX+fbRYCxYv26w@mail.gmail.com>
- <ZUG0gcRhUlFm57qN@mail-itl>
- <ZUG016NyTms2073C@mail-itl>
+        with ESMTP id S1344638AbjKACkF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 22:40:05 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4504DBD;
+        Tue, 31 Oct 2023 19:40:02 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-5b9a7357553so1986711a12.0;
+        Tue, 31 Oct 2023 19:40:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698806402; x=1699411202; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=smBpOYfhk/pfjcNNkpsnE2kzTUguhXJpDUnYBF4ouWA=;
+        b=gVZNy98eMte01UeMX+tdRTTWSPZx2s6tjWDrG3h7qUuD7Zx+4gDNRb4Xw3v0vypQjm
+         rADPqCTQSJwSgsZm/8EHNNr/c8GGFURGpHYV+nP8PdfiqxdMQkICnDRDmHP5LloVuK+c
+         R3OkOM6AupcxNmC6sYwpEuQFmcQxSPFmilcGGCcHPSY19yIMOjg9/G3RxJuKfxA60NK0
+         c8t817tQBoK1oi/MzHb5SaoIWUVUovnItCOxgtAkID+Qs890qsJKxxTuuOhCWWFckzFn
+         CPUMiXj1ZFcINLiTr/DaSrBWAO6efvvNQD2ZF3lnmDZ8q4kmg3swBsF38wIASiDqC7cF
+         od/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698806402; x=1699411202;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=smBpOYfhk/pfjcNNkpsnE2kzTUguhXJpDUnYBF4ouWA=;
+        b=oQcZ6dUxB4W3kk4rOI5XIXrToqJmTTzZxYX97YphU2ssNN2pUUerIKJjEzViLzn5m3
+         r+IzJ2bV+Sc/D92TAe+BfRY0E8YkzbxEqrXrCuV/blYcngkpHyFoiZHzAs67jqP2JkEC
+         rTiD6+gafcBLvrqXHU5neODMxmyKv6fjxYtcFMxwAM1ueVV7l1nWqg89dRuCRVfE4kVg
+         3eNyB8gWMgYAV8QMgRCju9JjjhE03KTmo8J2VQhZyc136LMVTFm4DcveNPPdYLhv+YRd
+         Y4A/CZ16n6ew6VxFe8ONKHol5lBNpMFs+D4+kypv0HTSN8cipBaJZWbTs3bqLvT/RCcC
+         1Ztw==
+X-Gm-Message-State: AOJu0YzWUV0EkAHryRCJ882n9efEnlQzXg9pbTVAHeiimt5Hrl8jPG6S
+        pa0qjxtpsKEYrmemsOv9mec=
+X-Google-Smtp-Source: AGHT+IEU1DbHr8uTH1PfA/nWbS6KaF/gSC7AdcTayM0DEzrlfEMfGNN/X2pvFenfh7Zr12AsaZMV2w==
+X-Received: by 2002:a05:6a20:3c8d:b0:17b:2e82:d4ba with SMTP id b13-20020a056a203c8d00b0017b2e82d4bamr19606806pzj.3.1698806401623;
+        Tue, 31 Oct 2023 19:40:01 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id gq9-20020a17090b104900b002609cadc56esm1691076pjb.11.2023.10.31.19.40.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Oct 2023 19:40:01 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id E3F9B8ABD28E; Wed,  1 Nov 2023 09:39:56 +0700 (WIB)
+Date:   Wed, 1 Nov 2023 09:39:56 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 00/86] 6.1.61-rc1 review
+Message-ID: <ZUG6fHcNiIF_vAkX@debian.me>
+References: <20231031165918.608547597@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="34v3My9/eDDcajxk"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="sxvVJTZMXxphBC11"
 Content-Disposition: inline
-In-Reply-To: <ZUG016NyTms2073C@mail-itl>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -103,48 +79,35 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---34v3My9/eDDcajxk
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
+--sxvVJTZMXxphBC11
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 1 Nov 2023 03:35:14 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Ming Lei <tom.leiming@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
 
-On Wed, Nov 01, 2023 at 03:15:50AM +0100, Marek Marczykowski-G=C3=B3recki w=
-rote:
-> And BTW, an attempt to access another partition on the same disk (not
-> covered with dm-crypt) hangs too.
+On Tue, Oct 31, 2023 at 06:00:25PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.61 release.
+> There are 86 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-No, not sure about that part, it was rather reading /bin/ls hanging...
+Successfully compiled and installed bindeb-pkgs on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
 --=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+An old man doll... just what I always wanted! - Clara
 
---34v3My9/eDDcajxk
+--sxvVJTZMXxphBC11
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmVBuWQACgkQ24/THMrX
-1ywBCwf+NBJd0oU6k0s/Q1kRXigL0eXZ/7To0/Tv3r7ASDyuqxTtjU/Ncs9/QqZ2
-vguzFCGPHY03deZSBy0o6ScY5cVBK32IHYDcAq1klnTpUuwN6JAQ7NvOgyWRV/4k
-do7Nu4vUT/KG/BLy7qx6GqWDyxWsDDNEkm/mKEzwOBeyYvVLyKkPExkrxkkAXiGm
-R7OyiGyCJkhM2sPY4RCgkBaYk9H0OMwsF0vnrFO5zTCE/1Um7PfqrDawXiHOU2us
-Fv6mSGyrHvbnJ/avVhYpSfqjsqSazkjFI8sDAO0ym6ZVTR/78AkvWR3IWbMBO2Xw
-70vJPYpCwlA9DrmlSnxxh/VTqihCqg==
-=Lw5K
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZUG6dgAKCRD2uYlJVVFO
+o1ydAP9JXEBXa/ufoSY6E0MYe4XOtT56JzoWsdWn+qQ2D0Sx+AEAsZMqP7D7yBPL
++L5H8pMdGsO5VhGXyEjj2Otbu/R84wo=
+=Pbts
 -----END PGP SIGNATURE-----
 
---34v3My9/eDDcajxk--
+--sxvVJTZMXxphBC11--
