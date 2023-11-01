@@ -2,486 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7329E7DDAE1
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 03:16:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 084477DDAE5
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 03:19:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229603AbjKACQN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 22:16:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41490 "EHLO
+        id S230365AbjKACTR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 22:19:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230365AbjKACQM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 22:16:12 -0400
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 834EEF5
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 19:16:04 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id EC8093200917;
-        Tue, 31 Oct 2023 22:16:02 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Tue, 31 Oct 2023 22:16:04 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-        1698804962; x=1698891362; bh=0hw/kNdOvPl+FaYJ5iGkWY8ufVDteO0iqsb
-        t/Smv8Tw=; b=oY6rpI/f79bS0qf2QYvrxxiVyHcz/DLCarXJEw2kd5HUTo0+ZtV
-        J8h4kbC0JRLCf16Xqai58E1iTsS9DmF7uMm6J3Ke4ycqA3cY7SDwo6GWGuwCNcnA
-        VW1rj5kyI8Yq1E8z+h5vELxgC2FEfSbtAX2dezPsumjD7lnPpnQIIix+94g18xnm
-        gs9fKlQfK3ZA5gWN7c/iX8gsrfT9tGBI6XduIi4lDlmFgpZeCgnaGkoUKBBNAgbe
-        DyAUPNGMIbgrI18i+u1EZhJ/kT5OiNlSuiDte02t5MztWRyNnfxgPQko065QXLY3
-        Gicia25oJ3PM1ijf5UY5bZp+JPXoO3nIKmg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1698804962; x=1698891362; bh=0hw/kNdOvPl+F
-        aYJ5iGkWY8ufVDteO0iqsbt/Smv8Tw=; b=KB2J3QrSHUkC+JttdPUCP8z8X1B0L
-        aGbw4ARAO5AEKgSevPRLH14yl/Cuc8iaAITGPOanuxKty8pi1oiq/pio86bYs9/W
-        hj/7d2ornYPM8uPafdT9k5gsOJ+Mqxsm8nWDtPcryECyf3P5Oze39Y22L20dKikV
-        exA2YGKYBRneLaD0Ne65WWN4KjxZDqNwkaWQtfdaFZf0VFYNZUP2KXDdRWfpYEcp
-        I6jnZ5SXfQKJci1rzk2UZy9esDv/MUIyy0a9FPlt1oZH/E2JcEga1zuAWbQxQSQR
-        dA8NQHUUNZmkP2i7V74b3E/o7SJZ2+tW4KoQ/D8vGtb1DEmg4vn1uT5pg==
-X-ME-Sender: <xms:4bRBZdBefufYM4hY78cDlmi_ElS6GM-DWQj4q9QbLhVnptusLgufMQ>
-    <xme:4bRBZbhasynuheqKoA1XaxFicU5ByZKuJJ_iudpEFMYPbnVGGI2vjio31Qd0iNnBM
-    32rAtuTJL0kmA>
-X-ME-Received: <xmr:4bRBZYlI3w07hY7GoLcNP6DnxU1aojStjqRC7vWOEL_u3qAyfePzlerh_9YX>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtfedggeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
-    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
-    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
-    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
-    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-X-ME-Proxy: <xmx:4bRBZXxkbHRI-FrWcNqwiZcucJj_bliWQ1tLoY_h7VaGfpX8XFuIFw>
-    <xmx:4bRBZST1AVvlWGEH84cLp4tY9lMWunh6VLZGRcDBmkGCPCNz4khCxA>
-    <xmx:4bRBZaZUKjhWDFaC4E7vIQWbWejDI3yCNu8DlEZ1p52h15p-3UckBQ>
-    <xmx:4rRBZXIYIEQmhFP-KP4JqrTBr-BVG2HqgI-s-fw0DraPO0J8oUdMYQ>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 31 Oct 2023 22:15:54 -0400 (EDT)
-Date:   Wed, 1 Nov 2023 03:15:50 +0100
-From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
-        <marmarek@invisiblethingslab.com>
-To:     Ming Lei <tom.leiming@gmail.com>
-Cc:     Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-Message-ID: <ZUG016NyTms2073C@mail-itl>
-References: <ZT+wDLwCBRB1O+vB@mail-itl>
- <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
- <20231030155603.k3kejytq2e4vnp7z@quack3>
- <ZT/e/EaBIkJEgevQ@mail-itl>
- <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
- <ZUB5HFeK3eHeI8UH@mail-itl>
- <20231031140136.25bio5wajc5pmdtl@quack3>
- <ZUEgWA5P8MFbyeBN@mail-itl>
- <CACVXFVOEWDyzasS7DWDvLOhC3Hr6qOn5ks3HLX+fbRYCxYv26w@mail.gmail.com>
- <ZUG0gcRhUlFm57qN@mail-itl>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Rjmc5GZJD8n9uySH"
-Content-Disposition: inline
-In-Reply-To: <ZUG0gcRhUlFm57qN@mail-itl>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230037AbjKACTQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 22:19:16 -0400
+Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6096DED
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 19:19:14 -0700 (PDT)
+Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-5b87150242cso4723028a12.0
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 19:19:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1698805154; x=1699409954; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=YxMLCnvrWc25EU4H4xs2rJSBgkcEn2A7t+6WriOcpdA=;
+        b=QiAXIgx8BWbe7hw4awJHYl6/U2/l+ROHgBNVlkSD30Gb99uEQ2bdhkO7MLWQEXNa00
+         BJfdVKe0AtA7YwbxV0K2HbYcpv78wL3V/VcJ4je2dLWmactBdkwYkQBQLqtn6Lz7em9s
+         b1PH7UJ45SUSJ6Ye0qIVs7RMy3XFVrH+s7Kt7WTcQr6+ZL/W6ClFkvDc3CeEh7l6TkY3
+         L2uOQBbvqt/Hkm8QEtKc/uhoSpZK1L9EmezEJEU9Nb5PLJzURJ4v9nt2492zptkbYdwI
+         YNnplLVJQLIl5ifpfIqdEk5h4B88y4E9jyhfsPl8XJtcVKlb43lPaAbH+GNsuHou+dG7
+         THtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698805154; x=1699409954;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YxMLCnvrWc25EU4H4xs2rJSBgkcEn2A7t+6WriOcpdA=;
+        b=leVOQAbDbbWbgpRO9TdU+GPN+PnP6bwUfBfuc61XZo9zBK7E8QrGJExypW/ceD620m
+         ZG091iOEePe7RmSX0tLCf/Dsq2gPkwlgjZ9oYnkPmv8QURqz27CV48PHLyIThRh/Knxj
+         2ZwiIGb+4lm6XwCvOBHR+RowEfkER60s9szl3beNVIT9BiN5BPkrPIss94AdhpnfkJRK
+         b7qDZ7Ke030vTGAJ6mhzlgprWya5ARLWS4wzP3eRuU0wzsmebgM2UXTvFdIsg6w4m+ye
+         fiGuUR8P69VasvsEIU/0ouz/LOP0kQccN5GAzWqoMYRoVH9h5MZMmnWKABr10BuKIHZK
+         aTPQ==
+X-Gm-Message-State: AOJu0Yw/REOkq9+7jDp72A6L1disu1zpuwIaTbBpvy3f5B2BQQ+8bo+s
+        nasibhXMhb3h5xXi05Cc3Ym6NLGHBVM=
+X-Google-Smtp-Source: AGHT+IG12wBNMJ1P0/BdAkR/0ARm+Dw/pyRIRjaikGvugugX+UjkePUEUplt1JoJ//05fozTbly+stJq0Ow=
+X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
+ (user=badhri job=sendgmr) by 2002:a63:344b:0:b0:5a9:fb7b:7f1d with SMTP id
+ b72-20020a63344b000000b005a9fb7b7f1dmr255710pga.0.1698805153730; Tue, 31 Oct
+ 2023 19:19:13 -0700 (PDT)
+Date:   Wed,  1 Nov 2023 02:19:09 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.820.g83a721a137-goog
+Message-ID: <20231101021909.2962679-1-badhri@google.com>
+Subject: [PATCH v1] usb: typec: tcpm: Skip hard reset when in error recovery
+From:   Badhri Jagan Sridharan <badhri@google.com>
+To:     gregkh@linuxfoundation.org, linux@roeck-us.net,
+        heikki.krogerus@linux.intel.com
+Cc:     kyletso@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, rdbabiera@google.com,
+        amitsd@google.com, stable@vger.kernel.org,
+        Badhri Jagan Sridharan <badhri@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hard reset queued prior to error recovery (or) received during
+error recovery will make TCPM to prematurely exit error recovery
+sequence. Ignore hard resets received during error recovery (or)
+port reset sequence.
 
---Rjmc5GZJD8n9uySH
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 1 Nov 2023 03:15:50 +0100
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Ming Lei <tom.leiming@gmail.com>
-Cc: Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-	linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+```
+[46505.459688] state change SNK_READY -> ERROR_RECOVERY [rev3 NONE_AMS]
+[46505.459706] state change ERROR_RECOVERY -> PORT_RESET [rev3 NONE_AMS]
+[46505.460433] disable vbus discharge ret:0
+[46505.461226] Setting usb_comm capable false
+[46505.467244] Setting voltage/current limit 0 mV 0 mA
+[46505.467262] polarity 0
+[46505.470695] Requesting mux state 0, usb-role 0, orientation 0
+[46505.475621] cc:=0
+[46505.476012] pending state change PORT_RESET -> PORT_RESET_WAIT_OFF @ 100 ms [rev3 NONE_AMS]
+[46505.476020] Received hard reset
+[46505.476024] state change PORT_RESET -> HARD_RESET_START [rev3 HARD_RESET]
+```
 
-On Wed, Nov 01, 2023 at 03:14:22AM +0100, Marek Marczykowski-G=C3=B3recki w=
-rote:
-> On Wed, Nov 01, 2023 at 09:27:24AM +0800, Ming Lei wrote:
-> > On Tue, Oct 31, 2023 at 11:42=E2=80=AFPM Marek Marczykowski-G=C3=B3recki
-> > <marmarek@invisiblethingslab.com> wrote:
-> > >
-> > > On Tue, Oct 31, 2023 at 03:01:36PM +0100, Jan Kara wrote:
-> > > > On Tue 31-10-23 04:48:44, Marek Marczykowski-G=C3=B3recki wrote:
-> > > > > Then tried:
-> > > > >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D4 - cannot reproduce,
-> > > > >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D5 - cannot reproduce,
-> > > > >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D6 - freeze rather quickly
-> > > > >
-> > > > > I've retried the PAGE_ALLOC_COSTLY_ORDER=3D4,order=3D5 case sever=
-al times
-> > > > > and I can't reproduce the issue there. I'm confused...
-> > > >
-> > > > And this kind of confirms that allocations > PAGE_ALLOC_COSTLY_ORDER
-> > > > causing hangs is most likely just a coincidence. Rather something e=
-ither in
-> > > > the block layer or in the storage driver has problems with handling=
- bios
-> > > > with sufficiently high order pages attached. This is going to be a =
-bit
-> > > > painful to debug I'm afraid. How long does it take for you trigger =
-the
-> > > > hang? I'm asking to get rough estimate how heavy tracing we can aff=
-ord so
-> > > > that we don't overwhelm the system...
-> > >
-> > > Sometimes it freezes just after logging in, but in worst case it takes
-> > > me about 10min of more or less `tar xz` + `dd`.
-> >=20
-> > blk-mq debugfs is usually helpful for hang issue in block layer or
-> > underlying drivers:
-> >=20
-> > (cd /sys/kernel/debug/block && find . -type f -exec grep -aH . {} \;)
-> >=20
-> > BTW,  you can just collect logs of the exact disks if you know what
-> > are behind dm-crypt,
-> > which can be figured out by `lsblk`, and it has to be collected after
-> > the hang is triggered.
->=20
-> dm-crypt lives on the nvme disk, this is what I collected when it
-> hanged:
->=20
-> nvme0n1/hctx5/type:default
-> nvme0n1/hctx5/dispatch_busy:0
-> nvme0n1/hctx5/active:0
-> nvme0n1/hctx5/run:273
-> nvme0n1/hctx5/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx5/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx5/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx5/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx5/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx5/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx5/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx5/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx5/tags:nr_tags=3D1023
-> nvme0n1/hctx5/tags:nr_reserved_tags=3D0
-> nvme0n1/hctx5/tags:active_queues=3D0
-> nvme0n1/hctx5/tags:bitmap_tags:
-> nvme0n1/hctx5/tags:depth=3D1023
-> nvme0n1/hctx5/tags:busy=3D0
-> nvme0n1/hctx5/tags:cleared=3D7
-> nvme0n1/hctx5/tags:bits_per_word=3D64
-> nvme0n1/hctx5/tags:map_nr=3D16
-> nvme0n1/hctx5/tags:alloc_hint=3D{633, 450, 354, 913, 651, 645}
-> nvme0n1/hctx5/tags:wake_batch=3D8
-> nvme0n1/hctx5/tags:wake_index=3D0
-> nvme0n1/hctx5/tags:ws_active=3D0
-> nvme0n1/hctx5/tags:ws=3D{
-> nvme0n1/hctx5/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx5/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx5/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx5/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx5/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx5/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx5/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx5/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx5/tags:}
-> nvme0n1/hctx5/tags:round_robin=3D0
-> nvme0n1/hctx5/tags:min_shallow_depth=3D4294967295
-> nvme0n1/hctx5/ctx_map:00000000: 00
-> nvme0n1/hctx5/flags:alloc_policy=3DFIFO SHOULD_MERGE
-> nvme0n1/hctx4/cpu4/default_rq_list:000000000d41998f {.op=3DREAD, .cmd_fla=
-gs=3D, .rq_flags=3DIO_STAT, .state=3Didle, .tag=3D65, .internal_tag=3D-1}
-> nvme0n1/hctx4/cpu4/default_rq_list:00000000d0d04ed2 {.op=3DREAD, .cmd_fla=
-gs=3D, .rq_flags=3DIO_STAT, .state=3Didle, .tag=3D70, .internal_tag=3D-1}
-> nvme0n1/hctx4/type:default
-> nvme0n1/hctx4/dispatch_busy:9
-> nvme0n1/hctx4/active:0
-> nvme0n1/hctx4/run:20290468
-> nvme0n1/hctx4/tags_bitmap:00000000: 0000 0000 0000 0000 4240 0000 0000 00=
-00
-> nvme0n1/hctx4/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx4/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx4/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx4/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx4/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx4/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx4/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx4/tags:nr_tags=3D1023
-> nvme0n1/hctx4/tags:nr_reserved_tags=3D0
-> nvme0n1/hctx4/tags:active_queues=3D0
-> nvme0n1/hctx4/tags:bitmap_tags:
-> nvme0n1/hctx4/tags:depth=3D1023
-> nvme0n1/hctx4/tags:busy=3D3
-> nvme0n1/hctx4/tags:cleared=3D7
-> nvme0n1/hctx4/tags:bits_per_word=3D64
-> nvme0n1/hctx4/tags:map_nr=3D16
-> nvme0n1/hctx4/tags:alloc_hint=3D{899, 846, 390, 472, 73, 439}
-> nvme0n1/hctx4/tags:wake_batch=3D8
-> nvme0n1/hctx4/tags:wake_index=3D0
-> nvme0n1/hctx4/tags:ws_active=3D0
-> nvme0n1/hctx4/tags:ws=3D{
-> nvme0n1/hctx4/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx4/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx4/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx4/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx4/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx4/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx4/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx4/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx4/tags:}
-> nvme0n1/hctx4/tags:round_robin=3D0
-> nvme0n1/hctx4/tags:min_shallow_depth=3D4294967295
-> nvme0n1/hctx4/ctx_map:00000000: 01
-> nvme0n1/hctx4/dispatch:00000000b335fa89 {.op=3DWRITE, .cmd_flags=3DNOMERG=
-E, .rq_flags=3DDONTPREP|IO_STAT, .state=3Didle, .tag=3D78, .internal_tag=3D=
--1}
-> nvme0n1/hctx4/flags:alloc_policy=3DFIFO SHOULD_MERGE
-> nvme0n1/hctx4/state:SCHED_RESTART
-> nvme0n1/hctx3/type:default
-> nvme0n1/hctx3/dispatch_busy:0
-> nvme0n1/hctx3/active:0
-> nvme0n1/hctx3/run:296
-> nvme0n1/hctx3/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx3/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx3/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx3/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx3/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx3/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx3/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx3/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx3/tags:nr_tags=3D1023
-> nvme0n1/hctx3/tags:nr_reserved_tags=3D0
-> nvme0n1/hctx3/tags:active_queues=3D0
-> nvme0n1/hctx3/tags:bitmap_tags:
-> nvme0n1/hctx3/tags:depth=3D1023
-> nvme0n1/hctx3/tags:busy=3D0
-> nvme0n1/hctx3/tags:cleared=3D23
-> nvme0n1/hctx3/tags:bits_per_word=3D64
-> nvme0n1/hctx3/tags:map_nr=3D16
-> nvme0n1/hctx3/tags:alloc_hint=3D{862, 557, 480, 24, 841, 23}
-> nvme0n1/hctx3/tags:wake_batch=3D8
-> nvme0n1/hctx3/tags:wake_index=3D0
-> nvme0n1/hctx3/tags:ws_active=3D0
-> nvme0n1/hctx3/tags:ws=3D{
-> nvme0n1/hctx3/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx3/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx3/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx3/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx3/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx3/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx3/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx3/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx3/tags:}
-> nvme0n1/hctx3/tags:round_robin=3D0
-> nvme0n1/hctx3/tags:min_shallow_depth=3D4294967295
-> nvme0n1/hctx3/ctx_map:00000000: 00
-> nvme0n1/hctx3/flags:alloc_policy=3DFIFO SHOULD_MERGE
-> nvme0n1/hctx2/type:default
-> nvme0n1/hctx2/dispatch_busy:0
-> nvme0n1/hctx2/active:0
-> nvme0n1/hctx2/run:279
-> nvme0n1/hctx2/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx2/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx2/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx2/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx2/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx2/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx2/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx2/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx2/tags:nr_tags=3D1023
-> nvme0n1/hctx2/tags:nr_reserved_tags=3D0
-> nvme0n1/hctx2/tags:active_queues=3D0
-> nvme0n1/hctx2/tags:bitmap_tags:
-> nvme0n1/hctx2/tags:depth=3D1023
-> nvme0n1/hctx2/tags:busy=3D0
-> nvme0n1/hctx2/tags:cleared=3D16
-> nvme0n1/hctx2/tags:bits_per_word=3D64
-> nvme0n1/hctx2/tags:map_nr=3D16
-> nvme0n1/hctx2/tags:alloc_hint=3D{960, 528, 145, 730, 447, 1002}
-> nvme0n1/hctx2/tags:wake_batch=3D8
-> nvme0n1/hctx2/tags:wake_index=3D0
-> nvme0n1/hctx2/tags:ws_active=3D0
-> nvme0n1/hctx2/tags:ws=3D{
-> nvme0n1/hctx2/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx2/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx2/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx2/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx2/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx2/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx2/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx2/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx2/tags:}
-> nvme0n1/hctx2/tags:round_robin=3D0
-> nvme0n1/hctx2/tags:min_shallow_depth=3D4294967295
-> nvme0n1/hctx2/ctx_map:00000000: 00
-> nvme0n1/hctx2/flags:alloc_policy=3DFIFO SHOULD_MERGE
-> nvme0n1/hctx1/type:default
-> nvme0n1/hctx1/dispatch_busy:0
-> nvme0n1/hctx1/active:0
-> nvme0n1/hctx1/run:458
-> nvme0n1/hctx1/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx1/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx1/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx1/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx1/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx1/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx1/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx1/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx1/tags:nr_tags=3D1023
-> nvme0n1/hctx1/tags:nr_reserved_tags=3D0
-> nvme0n1/hctx1/tags:active_queues=3D0
-> nvme0n1/hctx1/tags:bitmap_tags:
-> nvme0n1/hctx1/tags:depth=3D1023
-> nvme0n1/hctx1/tags:busy=3D0
-> nvme0n1/hctx1/tags:cleared=3D31
-> nvme0n1/hctx1/tags:bits_per_word=3D64
-> nvme0n1/hctx1/tags:map_nr=3D16
-> nvme0n1/hctx1/tags:alloc_hint=3D{689, 284, 498, 188, 808, 610}
-> nvme0n1/hctx1/tags:wake_batch=3D8
-> nvme0n1/hctx1/tags:wake_index=3D0
-> nvme0n1/hctx1/tags:ws_active=3D0
-> nvme0n1/hctx1/tags:ws=3D{
-> nvme0n1/hctx1/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx1/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx1/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx1/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx1/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx1/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx1/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx1/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx1/tags:}
-> nvme0n1/hctx1/tags:round_robin=3D0
-> nvme0n1/hctx1/tags:min_shallow_depth=3D4294967295
-> nvme0n1/hctx1/ctx_map:00000000: 00
-> nvme0n1/hctx1/flags:alloc_policy=3DFIFO SHOULD_MERGE
-> nvme0n1/hctx0/type:default
-> nvme0n1/hctx0/dispatch_busy:0
-> nvme0n1/hctx0/active:0
-> nvme0n1/hctx0/run:375
-> nvme0n1/hctx0/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx0/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx0/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx0/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx0/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx0/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx0/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx0/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 00=
-00
-> nvme0n1/hctx0/tags:nr_tags=3D1023
-> nvme0n1/hctx0/tags:nr_reserved_tags=3D0
-> nvme0n1/hctx0/tags:active_queues=3D0
-> nvme0n1/hctx0/tags:bitmap_tags:
-> nvme0n1/hctx0/tags:depth=3D1023
-> nvme0n1/hctx0/tags:busy=3D0
-> nvme0n1/hctx0/tags:cleared=3D6
-> nvme0n1/hctx0/tags:bits_per_word=3D64
-> nvme0n1/hctx0/tags:map_nr=3D16
-> nvme0n1/hctx0/tags:alloc_hint=3D{5, 18, 320, 448, 728, 9}
-> nvme0n1/hctx0/tags:wake_batch=3D8
-> nvme0n1/hctx0/tags:wake_index=3D0
-> nvme0n1/hctx0/tags:ws_active=3D0
-> nvme0n1/hctx0/tags:ws=3D{
-> nvme0n1/hctx0/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx0/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx0/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx0/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx0/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx0/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx0/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx0/tags:	{.wait=3Dinactive},
-> nvme0n1/hctx0/tags:}
-> nvme0n1/hctx0/tags:round_robin=3D0
-> nvme0n1/hctx0/tags:min_shallow_depth=3D4294967295
-> nvme0n1/hctx0/ctx_map:00000000: 00
-> nvme0n1/hctx0/flags:alloc_policy=3DFIFO SHOULD_MERGE
-> nvme0n1/state:SAME_COMP|NONROT|IO_STAT|INIT_DONE|WC|FUA|REGISTERED|NOWAIT
-> nvme0n1/pm_only:0
->=20
-> This is without any of the patches Mikulas proposed.
+Cc: stable@vger.kernel.org
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+---
+ drivers/usb/typec/tcpm/tcpm.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-And BTW, an attempt to access another partition on the same disk (not
-covered with dm-crypt) hangs too.
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 058d5b853b57..b386102f7a3a 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5391,6 +5391,15 @@ static void _tcpm_pd_hard_reset(struct tcpm_port *port)
+ 	if (port->bist_request == BDO_MODE_TESTDATA && port->tcpc->set_bist_data)
+ 		port->tcpc->set_bist_data(port->tcpc, false);
+ 
++	switch (port->state) {
++	case ERROR_RECOVERY:
++	case PORT_RESET:
++	case PORT_RESET_WAIT_OFF:
++		return;
++	default:
++		break;
++	}
++
+ 	if (port->ams != NONE_AMS)
+ 		port->ams = NONE_AMS;
+ 	if (port->hard_reset_count < PD_N_HARD_RESET_COUNT)
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+base-commit: c70793fb7632a153862ee9060e6d48131469a29c
+-- 
+2.42.0.820.g83a721a137-goog
 
---Rjmc5GZJD8n9uySH
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmVBtNcACgkQ24/THMrX
-1yy5cAgAj8NrsDACOJnHYT9BUDoyqdyHtJpzjgehsiArQPARf002A9PlCdU1vmnN
-xePB8hT3ZIi0uHRn3OmwkaVwScKXPtQap4kuywe/73onMKglajVeifUXTpc92l16
-Jwrg0nb1Wp6xrJ55AispYsMu9CvBSVqCC1fzvOPfqvC4y2UekVJnsdk2UWHzKZmB
-IdHJbrdGSGrvqbzBgKY6AFIZ2ziUZU3Ev7MaJn5Mk8wg8okc82eOEj7UQvVXt8eC
-hYMZACAp5qqSHA67Nc9e0EnEA7MaaSjLweu12oBFItiXIMjcKjYI7YaDFZX+gOCa
-HaU48QunvN8DGW+A7Bf0gJy8+cSyXA==
-=ry4r
------END PGP SIGNATURE-----
-
---Rjmc5GZJD8n9uySH--
