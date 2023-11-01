@@ -2,112 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A43637DE10C
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 13:37:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3A4E7DE190
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 14:34:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344044AbjKAMhP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 08:37:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41170 "EHLO
+        id S1344193AbjKANX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 09:23:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344052AbjKAMhO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 08:37:14 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 356A1127;
-        Wed,  1 Nov 2023 05:37:00 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qyASw-0005Rj-Jd; Wed, 01 Nov 2023 13:36:58 +0100
-Message-ID: <7df24b0e-ea98-4dc7-9e1b-dfc29d0fa1b1@leemhuis.info>
-Date:   Wed, 1 Nov 2023 13:36:57 +0100
+        with ESMTP id S1344071AbjKANX2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 09:23:28 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6D06CFD;
+        Wed,  1 Nov 2023 06:23:25 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 649F12F4;
+        Wed,  1 Nov 2023 06:24:06 -0700 (PDT)
+Received: from [10.57.1.80] (unknown [10.57.1.80])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 079023F64C;
+        Wed,  1 Nov 2023 06:23:22 -0700 (PDT)
+Message-ID: <3d744ee6-a739-42b6-8a87-124746a9287c@arm.com>
+Date:   Wed, 1 Nov 2023 13:23:21 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set the
- FUSE_INIT_EXT"
-Content-Language: en-US, de-DE
-To:     Miklos Szeredi <mszeredi@redhat.com>,
-        =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Paul Lawrence <paullawrence@google.com>,
-        Daniel Rosenberg <drosen@google.com>,
-        Alessio Balsini <balsini@android.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Bernd Schubert <bschubert@ddn.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <717fd97a-6d14-4dc9-808c-d752d718fb80@ddn.com>
- <4b0b46f29955956916765d8d615f96849c8ce3f7.camel@linaro.org>
- <fa3510f3-d3cc-45d2-b38e-e8717e2a9f83@ddn.com>
- <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
- <9afc3152-5448-42eb-a7f4-4167fc8bc589@ddn.com>
- <5cd87a64-c506-46f2-9fed-ac8a74658631@ddn.com>
- <8ae8ce4d-6323-4160-848a-5e94895ae60e@leemhuis.info>
- <CAOssrKdvy9qTGSwwPVqYLAYYEk0jbqhGg4Lz=jEff7U58O4Yqw@mail.gmail.com>
- <2023102731-wobbly-glimpse-97f5@gregkh>
- <CAOssrKfNkMmHB2oHHO8gWbzDX27vS--e9dZoh_Mjv-17mSUTBw@mail.gmail.com>
- <2023102740-think-hatless-ab87@gregkh>
- <CAOssrKd-O1JKEPzvnM1VkQ0-oTpDv0RfY6B5oF5p63AtQ4HoqA@mail.gmail.com>
- <689f677b84b484636b673b362b17a6501a056968.camel@linaro.org>
- <CAOssrKfP+t-cy322ujizQofgZkPZsBu1H4+zfbWNEFCmTsXwug@mail.gmail.com>
- <afe378bf254f6c4ac73bb55be3fa7422f2da3f5f.camel@linaro.org>
- <CAOssrKeJB7BZ7fA6Uqo6rHohybmgovc6rVwDeHbegvweSyZeeA@mail.gmail.com>
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CAOssrKeJB7BZ7fA6Uqo6rHohybmgovc6rVwDeHbegvweSyZeeA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1698842220;920b6c96;
-X-HE-SMSGID: 1qyASw-0005Rj-Jd
+Subject: Re: [PATCH v2] coresight: etm4x: Fix width of CCITMIN field
+Content-Language: en-GB
+To:     James Clark <james.clark@arm.com>, coresight@lists.linaro.org,
+        anshuman.khandual@arm.com, mike.leach@linaro.org
+Cc:     stable@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Pratik Patel <pratikp@codeaurora.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kaixu Xia <xiakaixu@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20231101115206.70810-1-james.clark@arm.com>
+From:   Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <20231101115206.70810-1-james.clark@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 27.10.23 16:05, Miklos Szeredi wrote:
-> On Fri, Oct 27, 2023 at 3:39 PM André Draszik <andre.draszik@linaro.org> wrote:
->> On Fri, 2023-10-27 at 15:24 +0200, Miklos Szeredi wrote:
->>> On Fri, Oct 27, 2023 at 3:14 PM André Draszik
->>> <andre.draszik@linaro.org> wrote:
->>>
->>>> The patch in question has broken all users that use the higher
->>>> flags
->>>> and that don't use your version of libfuse, not just Android.
->>>> You're
->>>> filtering them out now when you didn't at the time that those
->>>> ('official) high flags were added. There are a couple more high
->>>> flags
->>>> than just the one that Android added.
->>>
->>> Okay.  Where are all those users?
->>
->> That's not the point. The point is the kernel<->user API has rendered
->> them too non-working.
+On 01/11/2023 11:52, James Clark wrote:
+> CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
+> This probably wasn't an issue previously because values higher than 255
+> never occurred.
 > 
-> It is a very important point.  A theoretical bug isn't a regression.
-> Nor is a broken test case BTW.
+> But since commit 0f55b43dedcd ("coresight: etm: Override TRCIDR3.CCITMIN
+> on errata affected cpus"), a comparison with 256 was done to enable the
+> errata, generating the following W=1 build error:
 > 
-> Please read section 'What is a "regression" and what is the "no
-> regressions rule"?' in
-> Documentation/admin-guide/reporting-regressions.rst.
+>    coresight-etm4x-core.c:1188:24: error: result of comparison of
+>    constant 256 with expression of type 'u8' (aka 'unsigned char') is
+>    always false [-Werror,-Wtautological-constant-out-of-range-compare]
+> 
+>     if (drvdata->ccitmin == 256)
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
+> Reviewed-by: Mike Leach <mike.leach@linaro.org>
+> Signed-off-by: James Clark <james.clark@arm.com>
 
-I'm taken a bit back and forth here and it seems we are stuck again. So
-let me try again to hopefully clear things up a bit:
+Thanks, applied to coresight next :
 
-André, could you please state
 
-* What practical use-case actually stopped working?
-
-* What Linux kernel version actually worked for your (because if thing
-broke when you upgraded from a vendor kernel to a vanilla kernel than
-this does not qualify as regression IMHO)
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+Suzuki
