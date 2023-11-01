@@ -2,121 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C2597DE522
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 18:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AFBF7DE54D
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 18:26:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344665AbjKARPA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 13:15:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43530 "EHLO
+        id S1344406AbjKAR0y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 13:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344562AbjKARO7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 13:14:59 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19B87A6;
-        Wed,  1 Nov 2023 10:14:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1698858884; x=1699463684; i=rwahl@gmx.de;
-        bh=EriKGdVhkjZE/JW8h0Day4T4RmUpBJKLvzPhAYNXNLI=;
-        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
-        b=T6QKpQEh0+ITgaCW1YWnQiQak5N89ZYBJQnfNlOwVsmEG/2+NECZ6AVpinFbGtaL
-         owz8ZMeiYQYpjAqGwKM0ZIjR/GKuxgl9fWtdnQaxunAhNJOGT/Un31eojphAAfEP3
-         SSrjMUOwPg+4EXCPM6m3ntizj5kXT/liJ3K/7dN+8/nFU+G7H16b6SIcWIBn9TIgE
-         Jfu0A2O8jpQ03prOswovmX7xOavcQb23cdcIYfjA5fQtyGMX2hZZTf/UrSjuN+AI+
-         0WqBdmJhA/Lkkjxd/cyZlpxQS+M7uJ/whYkWhd5zywMCQ2PjViKCu9aci4o30bCLu
-         8TT6DVoPh0Jx/n1ZyQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from rohan.localdomain ([84.156.147.134]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MUGeB-1qpGPH2S4B-00RJT5; Wed, 01
- Nov 2023 18:14:44 +0100
-From:   Ronald Wahl <rwahl@gmx.de>
-To:     linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Ronald Wahl <ronald.wahl@raritan.com>, stable@vger.kernel.org
-Subject: [PATCH v4] serial: 8250: 8250_omap: Do not start RX DMA on THRI interrupt
-Date:   Wed,  1 Nov 2023 18:14:31 +0100
-Message-ID: <20231101171431.16495-1-rwahl@gmx.de>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S231966AbjKAR0x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 13:26:53 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA5EEE4;
+        Wed,  1 Nov 2023 10:26:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BDEC433C8;
+        Wed,  1 Nov 2023 17:26:50 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.96)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1qyEzR-00EZs7-0m;
+        Wed, 01 Nov 2023 13:26:49 -0400
+Message-ID: <20231101172649.049758712@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Wed, 01 Nov 2023 13:25:42 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        stable@vger.kernel.org, Ajay Kaher <akaher@vmware.com>
+Subject: [PATCH v6 1/8] eventfs: Remove "is_freed" union with rcu head
+References: <20231101172541.971928390@goodmis.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OU2kS9jqgy2fT3w5uBLnJbbnDx7Tjfr6MYf8PnuM07Qq6IGpNSX
- /2D7bW0HTTX0RYxg/DoeuwfkkyrUX8LBM4jCVaMMcfFlx0lzfkAdkzlUzyLIUHiPsvCc1q6
- OOOAice4sEsIUqqmEIKhbqatANdaPcZM5bO4EjGDFleJnfx+7VkiFc23QK+qFEepIgmjhhZ
- jD7DcXK6lcx/vIFmdSkbg==
-UI-OutboundReport: notjunk:1;M01:P0:53AjFZVSRN4=;5723rBi+1Md/zfc/YkPrOSPr4iD
- 930nbU4C6fvaWXJ1VOKaJLLD0KqLaYNaI1A93BIPSoqsIyu92H440hXkvnGz15siwq6rrqDDY
- iXqf81ls9hgcaLZVJunD+B3mzlxy02KS5IihNpAxKay+NdSq2Cg0rFnK3SAkdhIIhz9CQkKlB
- 55//g62HUPPis0UhiHehtXJXim3/rSkHmEaihyBjb9w3+gi+8vpGLPXVX/AgEyjSrxHDjiGKi
- VNY2Cq+pIVg60Prb8/+fCGe6pVJp9DXttKSkLC/IxC53sp3OKmKqost13Jlix96pziAdeImff
- pFOFOg0ym6BXoBeAB2k/RfuRBUJ8aurqgvA/24CghJ3E1bDZZs+1vN1dmYgzNLBGqEcqSpdrR
- Hbr6pferUVBVWCvVJiORwc/w1+0gNfvezxBZTEE3gLD/ix6KE7ZPPweJ3Otbo3+YMv1kL/1fj
- nGRx+SI8fXLualUzbXk3ilW1oJlnYxiN67Ttz6mLh3F26keInVNPjracBXZtqDeinUjBuAaY+
- 5GegC59OGOzpcv3rnMaG9HLcyVbGqobXCCq5Qu4pnPn9Yj+sqYLBEFKroTd1XxoniDsydggE3
- xy8WIPkbl1BHBPg7PYDELlAWTn7F6zMTyO4scxJ2SnhY3TByUtHfil2eVUQQhjPgxMSRVvl2Z
- wRzIz11MmCIhuWUzkpGEl/07rM+E0P5ZzzinDMWCUM4tO+9pyl9Scc2wuPePpoQl51w0YsCbR
- GBjG4ITVgoFKyzvRlAZ0ZQ18RrdnVRxjOhjlb4uj+OfrtCRwSrqAqEslbUchNr8TNtCxYFfE0
- 9Gl7fC9R+xu7d+j4L09O6G34toosBZNwta87IU0LBWas1sP8T7Ti4xG65QVrbxTT9Dc7ItfYK
- WO7tDyT+uosO39kUJqoh3lQbEaDcA1rcsGn0QVT66UdjMDLveGsZGsvFZg0U5i+JzVR1l8e2w
- i2bqMw==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-Starting RX DMA on THRI interrupt is too early because TX may not have
-finished yet.
+The eventfs_inode->is_freed was a union with the rcu_head with the
+assumption that when it was on the srcu list the head would contain a
+pointer which would make "is_freed" true. But that was a wrong assumption
+as the rcu head is a single link list where the last element is NULL.
 
-This change is inspired by commit 90b8596ac460 ("serial: 8250: Prevent
-starting up DMA Rx on THRI interrupt") and fixes DMA issues I had with
-an AM62 SoC that is using the 8250 OMAP variant.
+Instead, split the nr_entries integer so that "is_freed" is one bit and
+the nr_entries is the next 31 bits. As there shouldn't be more than 10
+(currently there's at most 5 to 7 depending on the config), this should
+not be a problem.
 
 Cc: stable@vger.kernel.org
-Fixes: c26389f998a8 ("serial: 8250: 8250_omap: Add DMA support for UARTs o=
-n K3 SoCs")
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-=2D--
-V4: - add missing braces to fix build warning
+Cc: Ajay Kaher <akaher@vmware.com>
+Fixes: 63940449555e7 ("eventfs: Implement eventfs lookup, read, open functions")
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+Changes since v5: https://lkml.kernel.org/r/20231031223419.935276916@goodmis.org
 
-V3: - add Cc: stable@vger.kernel.org
+- Resynced for this patch series
 
-V2: - add Fixes: tag
-    - fix author
+ fs/tracefs/event_inode.c | 2 ++
+ fs/tracefs/internal.h    | 6 +++---
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
- drivers/tty/serial/8250/8250_omap.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250=
-/8250_omap.c
-index c7ab2963040b..1122f37fe744 100644
-=2D-- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1282,10 +1282,12 @@ static int omap_8250_dma_handle_irq(struct uart_po=
-rt *port)
-
- 	status =3D serial_port_in(port, UART_LSR);
-
--	if (priv->habit & UART_HAS_EFR2)
--		am654_8250_handle_rx_dma(up, iir, status);
--	else
--		status =3D omap_8250_handle_rx_dma(up, iir, status);
-+	if ((iir & 0x3f) !=3D UART_IIR_THRI) {
-+		if (priv->habit & UART_HAS_EFR2)
-+			am654_8250_handle_rx_dma(up, iir, status);
-+		else
-+			status =3D omap_8250_handle_rx_dma(up, iir, status);
-+	}
-
- 	serial8250_modem_status(up);
- 	if (status & UART_LSR_THRE && up->dma->tx_err) {
-=2D-
-2.41.0
-
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index 9f612a8f009d..1ce73acf3df0 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -824,6 +824,8 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
+ 		eventfs_remove_rec(ei_child, head, level + 1);
+ 	}
+ 
++	ei->is_freed = 1;
++
+ 	list_del_rcu(&ei->list);
+ 	list_add_tail(&ei->del_list, head);
+ }
+diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
+index 64fde9490f52..c7d88aaa949f 100644
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -23,6 +23,7 @@ struct tracefs_inode {
+  * @d_parent:   pointer to the parent's dentry
+  * @d_children: The array of dentries to represent the files when created
+  * @data:	The private data to pass to the callbacks
++ * @is_freed:	Flag set if the eventfs is on its way to be freed
+  * @nr_entries: The number of items in @entries
+  */
+ struct eventfs_inode {
+@@ -38,14 +39,13 @@ struct eventfs_inode {
+ 	 * Union - used for deletion
+ 	 * @del_list:	list of eventfs_inode to delete
+ 	 * @rcu:	eventfs_inode to delete in RCU
+-	 * @is_freed:	node is freed if one of the above is set
+ 	 */
+ 	union {
+ 		struct list_head	del_list;
+ 		struct rcu_head		rcu;
+-		unsigned long		is_freed;
+ 	};
+-	int				nr_entries;
++	unsigned int			is_freed:1;
++	unsigned int			nr_entries:31;
+ };
+ 
+ static inline struct tracefs_inode *get_tracefs(const struct inode *inode)
+-- 
+2.42.0
