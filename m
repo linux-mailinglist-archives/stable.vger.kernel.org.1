@@ -2,133 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 888EC7DE051
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 12:29:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0B757DE328
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 16:36:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235199AbjKAL2h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 07:28:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36042 "EHLO
+        id S233179AbjKAPRU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 11:17:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233979AbjKAL2g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 07:28:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01502109
-        for <stable@vger.kernel.org>; Wed,  1 Nov 2023 04:28:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 172C0C433C8;
-        Wed,  1 Nov 2023 11:28:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1698838110;
-        bh=OCd6wJrw5WsMjBIP7ypVHOmY7pQrYbw+2A8PZup3l9c=;
-        h=Subject:To:Cc:From:Date:From;
-        b=MnZLLjun7xwZfFQYhcVn2YKEblsT2HtOvabPNKX7ueTG5CZEFCWQT7LG4hwCmmQnG
-         QGpUgTAPPce0bZtgN9ItgzuD2OPXa5LQ83WbUFqRW6rShhu2u7PvcEg5R403QVtf9H
-         ZikTL9wu35a78RZkhbPLOl2xJJvFMooQlvnnk60U=
-Subject: FAILED: patch "[PATCH] riscv: fix set_huge_pte_at() for NAPOT mappings when a swap" failed to apply to 6.5-stable tree
-To:     alexghiti@rivosinc.com, ajones@ventanamicro.com,
-        akpm@linux-foundation.org, aou@eecs.berkeley.edu, conor@kernel.org,
-        palmer@dabbelt.com, panqinglin2020@iscas.ac.cn,
-        paul.walmsley@sifive.com, ryan.roberts@arm.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 01 Nov 2023 12:28:27 +0100
-Message-ID: <2023110127-chip-surfacing-4583@gregkh>
+        with ESMTP id S233224AbjKAPRS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 11:17:18 -0400
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 748DDA2;
+        Wed,  1 Nov 2023 08:16:45 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.nyi.internal (Postfix) with ESMTP id D90C05C0260;
+        Wed,  1 Nov 2023 11:16:44 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Wed, 01 Nov 2023 11:16:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+        cc:cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:message-id:mime-version:reply-to
+        :sender:subject:subject:to:to; s=fm1; t=1698851804; x=
+        1698938204; bh=rddZh9OfuBWNKiq+20BMvUIm9LU7zYcwtfDISZLYvWY=; b=Q
+        q9jCOfz+AgT+pACC4sODldqk/AvvzufVOUZtg1GaPBG0FbWpKG45EXpm/p+ZU319
+        z/9q2oYQvrWa19/dgYP501OT+ygaPBqeYTBOq+daI/3SlQe3gvhSkucI3CI2q5ZT
+        z+boVVmMA5gs7KQCDh131tYWFXxmY0DRMMkCHoUsM1h59NFw8r8N8QyeEkQfk2ho
+        4npqAWpryYgdYFlOULVUm+UxB4C0mfZneX8N1uD6vFxzqT3WiVpW4h03lA/79WUB
+        H1UeY2Ms/EaQteT63LlCnHiKxz78e0oWlk+xD+ozMe01qVIlpP6tJOlzuI+1EQlT
+        Vctkklk46wKw6XMaHp+dw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:message-id:mime-version:reply-to:sender
+        :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+        :x-me-sender:x-sasl-enc; s=fm3; t=1698851804; x=1698938204; bh=r
+        ddZh9OfuBWNKiq+20BMvUIm9LU7zYcwtfDISZLYvWY=; b=tZYMkhI0FPG6OgmWq
+        653YH6f53OJH5H3GzpKrhqIGw9wCv5YBP8OaFd1smtMLGgdz9sNLWw7M6OJ4jpx6
+        BUswXWDcLSAgSkhzLs/dxNJgf+b0ccjuQkDcFbaB0lL19BlK0mb+9oG5ZK+Enp1g
+        7YDLmM9t2zy0Sbe3BAFODwFy68gJqU2KmBWK8CM3DU73voZ1QyHhmXzZ7vNghxFl
+        t1g8aM1KMyaROgbGgtqyiseNX1g4cBLNKGh9iFHVKFVooAqaYslL138LBRy7dtzv
+        ddxxCjD9UFYi0BS+4xxnOUUEQsjdGaTO4WkknFU2nqbtahKa4RfaUMtSVhnZG6RJ
+        yPauQ==
+X-ME-Sender: <xms:22tCZQvDw7dPYLUtTxVNpGm_HeTaJpCp86PKd4hB8D_dQ6hrEKYO_Q>
+    <xme:22tCZdcJsL9lMNXhSjmeEE7TJOkXwwGw1rfhVbDjAdXmaxNaBCWyZwkQrzw__LCvD
+    PgU6Uo0_w6rVBPy9eo>
+X-ME-Received: <xmr:22tCZbyyX0LLU6bXIYmi_vx-Oqk5der04xCIBWhodrfXMLgA0yJEIKk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtgedgjeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeflihgrgihu
+    nhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecugg
+    ftrfgrthhtvghrnhepudffffffhfeuheevhffgleevkeeugeetfeegieeijeehfeekheek
+    veduveeigeeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:22tCZTNuh0-wdlkofhLcohc9rUCUn7qRec3Fp24XOUWmxlWBt1M7xA>
+    <xmx:22tCZQ-C85bwTg1UIj24pj3F0rVbAjiU3THO8zcPgJibmFzmFY5iSA>
+    <xmx:22tCZbV2QnXgo64iD6YLb8Pq-4Guo09qsae-b6sH2fPcWh_C3vPdFw>
+    <xmx:3GtCZUZlrIYHbN467g5xDt00C2fMbn6oC-B_qaNgG6Lt3HNurxJhGw>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Nov 2023 11:16:43 -0400 (EDT)
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH fixes 0/3] MIPS: Loongson64: Fix some long-term issues
+Date:   Wed, 01 Nov 2023 11:39:06 +0000
+Message-Id: <20231101-loongson64_fixes-v1-0-2a2582a4bfa9@flygoat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANo4QmUC/yWLQQqAIBAAvxJ7TnC1OvSViNDaaiE0XIhA+ntSt
+ xmGySCUmAT6KkOii4VjKIJ1BfPuwkaKl+JgtLGIGtURY9gkhq6ZVr5JlHarR99quyBB2c5EXyj
+ XAD+Nz/MCYDCo+mkAAAA=
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     Huacai Chen <chenhuacai@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+X-Mailer: b4 0.12.4
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi all,
 
-The patch below does not apply to the 6.5-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+This series fixes some long-term issues in kernel that preventing
+some machine from work properly.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Hopefully that will rescue some system in wild :-)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1de195dd0e05d9cba43dec16f83d4ee32af94dd2
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023110127-chip-surfacing-4583@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+Thanks
 
-Possible dependencies:
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+Jiaxun Yang (3):
+      MIPS: Loongson64: Reserve vgabios memory on boot
+      MIPS: Loongson64: Enable DMA noncoherent support
+      MIPS: Loongson64: Handle more memory types passed from firmware
 
-1de195dd0e05 ("riscv: fix set_huge_pte_at() for NAPOT mappings when a swap entry is set")
+ arch/mips/Kconfig                                  |  2 +
+ arch/mips/include/asm/mach-loongson64/boot_param.h |  9 ++++-
+ arch/mips/loongson64/env.c                         |  9 ++++-
+ arch/mips/loongson64/init.c                        | 47 ++++++++++++++--------
+ 4 files changed, 48 insertions(+), 19 deletions(-)
+---
+base-commit: 9c2d379d63450ae464eeab45462e0cb573cd97d0
+change-id: 20231101-loongson64_fixes-0afb1b503d1e
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1de195dd0e05d9cba43dec16f83d4ee32af94dd2 Mon Sep 17 00:00:00 2001
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-Date: Thu, 28 Sep 2023 17:18:46 +0200
-Subject: [PATCH] riscv: fix set_huge_pte_at() for NAPOT mappings when a swap
- entry is set
-
-We used to determine the number of page table entries to set for a NAPOT
-hugepage by using the pte value which actually fails when the pte to set
-is a swap entry.
-
-So take advantage of a recent fix for arm64 reported in [1] which
-introduces the size of the mapping as an argument of set_huge_pte_at(): we
-can then use this size to compute the number of page table entries to set
-for a NAPOT region.
-
-Link: https://lkml.kernel.org/r/20230928151846.8229-3-alexghiti@rivosinc.com
-Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-Closes: https://lore.kernel.org/linux-arm-kernel/20230922115804.2043771-1-ryan.roberts@arm.com/ [1]
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Qinglin Pan <panqinglin2020@iscas.ac.cn>
-Cc: Conor Dooley <conor@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
-index e4a2ace92dbe..b52f0210481f 100644
---- a/arch/riscv/mm/hugetlbpage.c
-+++ b/arch/riscv/mm/hugetlbpage.c
-@@ -183,15 +183,22 @@ void set_huge_pte_at(struct mm_struct *mm,
- 		     pte_t pte,
- 		     unsigned long sz)
- {
-+	unsigned long hugepage_shift;
- 	int i, pte_num;
- 
--	if (!pte_napot(pte)) {
--		set_pte_at(mm, addr, ptep, pte);
--		return;
--	}
-+	if (sz >= PGDIR_SIZE)
-+		hugepage_shift = PGDIR_SHIFT;
-+	else if (sz >= P4D_SIZE)
-+		hugepage_shift = P4D_SHIFT;
-+	else if (sz >= PUD_SIZE)
-+		hugepage_shift = PUD_SHIFT;
-+	else if (sz >= PMD_SIZE)
-+		hugepage_shift = PMD_SHIFT;
-+	else
-+		hugepage_shift = PAGE_SHIFT;
- 
--	pte_num = napot_pte_num(napot_cont_order(pte));
--	for (i = 0; i < pte_num; i++, ptep++, addr += PAGE_SIZE)
-+	pte_num = sz >> hugepage_shift;
-+	for (i = 0; i < pte_num; i++, ptep++, addr += (1 << hugepage_shift))
- 		set_pte_at(mm, addr, ptep, pte);
- }
- 
+Best regards,
+-- 
+Jiaxun Yang <jiaxun.yang@flygoat.com>
 
