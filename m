@@ -2,67 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 268DC7DDFD5
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 11:53:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D62767DDFDC
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 11:54:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232540AbjKAKxJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 06:53:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35030 "EHLO
+        id S229554AbjKAKyU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 06:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233155AbjKAKxJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 06:53:09 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58159121;
-        Wed,  1 Nov 2023 03:53:02 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qy8qL-00058V-3m; Wed, 01 Nov 2023 11:53:01 +0100
-Message-ID: <2b98b39a-5919-474d-a7e5-6640fc9ac704@leemhuis.info>
-Date:   Wed, 1 Nov 2023 11:53:00 +0100
+        with ESMTP id S232058AbjKAKyT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 06:54:19 -0400
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A6FCF7
+        for <stable@vger.kernel.org>; Wed,  1 Nov 2023 03:54:12 -0700 (PDT)
+Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
+        by cmsmtp with ESMTPS
+        id y751qLy9r6nOZy8rTqKe0o; Wed, 01 Nov 2023 10:54:11 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+        by cmsmtp with ESMTPS
+        id y8rSqiINl1wVhy8rSqoGo7; Wed, 01 Nov 2023 10:54:10 +0000
+X-Authority-Analysis: v=2.4 cv=ANu0s8gj c=1 sm=1 tr=0 ts=65422e52
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=mKW6mt4w6__XUkeHkSsA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=5yZ/WgTbpVghjHaEBuAgzZSuv+8HgFtgG2GuHPplmio=; b=GYsq/NZ5yYki89AmaRn7eWZTor
+        /JN0tlscRVms7efu93uuz4fD3Dx3u6yOCxiGlBFJ+jU+eY7nJNd0Dvl14KrTLTNfZQa/mtRBkSSkm
+        P3kbwQ4q206RkNxKK2Bcbk31PyfexjMEB4UtununAPHkldKYVe+fgcrCV6/RODnDWtBBOvVR9weeA
+        WZUlbzqKS1RdM/2emsSWoOR0EmQZ81gT3tPRKnJjtvPYSGuu3a6S1KqkgYbGwYm0RqHGWoZwplga4
+        DPy670BYYUldWe93VXGUe5ZMYFfmAyoekwxQAws00rl2ZSRINBwvZv/wRg5cyYQ+H9kbQ2XXdAPkR
+        j26nAXTQ==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:53520 helo=[10.0.1.47])
+        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.96.2)
+        (envelope-from <re@w6rz.net>)
+        id 1qy8rQ-004Ayz-12;
+        Wed, 01 Nov 2023 04:54:08 -0600
+Subject: Re: [PATCH 6.1 00/86] 6.1.61-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+From:   Ron Economos <re@w6rz.net>
+Message-ID: <bacc4c08-33c3-21a5-2c21-a0439d17e0ea@w6rz.net>
+Date:   Wed, 1 Nov 2023 03:54:06 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Fwd: WARNING: CPU: 13 PID: 3837105 at kernel/sched/sched.h:1561
- __cfsb_csd_unthrottle+0x149/0x160
-Content-Language: en-US, de-DE
-To:     Linux Regressions <regressions@lists.linux.dev>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Stable <stable@vger.kernel.org>
-References: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
-From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1698835983;8f1b7102;
-X-HE-SMSGID: 1qy8qL-00058V-3m
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1qy8rQ-004Ayz-12
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:53520
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org:  HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfKqn9PRvLOvhTaEpmc9Oi1H+afWBxFL2uejnQQqHG3+5DdRk1YB+p/D7FIlh1ToPApqAK6BU7Wgq05UStCgXnPrnJ1EQOmJyjBrgZGk/d3PeuEs3PepX
+ /DAgN1s3gpDUzeV0E7ekvb38LJaFm0YcVJ2VsazfckLXRFT2YS6R383jsRvSr2ridyGHUrX70BPDlw==
+X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[TLDR: This mail in primarily relevant for Linux regression tracking. A
-change or fix related to the regression discussed in this thread was
-posted or applied, but it did not use a Closes: tag to point to the
-report, as Linus and the documentation call for. Things happen, no
-worries -- but now the regression tracking bot needs to be told manually
-about the fix. See link in footer if these mails annoy you.]
+On 10/31/23 10:00 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.61 release.
+> There are 86 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 02 Nov 2023 16:59:03 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.61-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-On 30.08.23 02:37, Bagas Sanjaya wrote:
-> 
-> I notice a regression report on Bugzilla [1]. Quoting from it:
-> [...]
-> #regzbot introduced: ebb83d84e49b54 https://bugzilla.kernel.org/show_bug.cgi?id=217843
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-#regzbot fix: 5ebde09d91707a4a9bec
-#regzbot ignore-activity
+Tested-by: Ron Economos <re@w6rz.net>
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
