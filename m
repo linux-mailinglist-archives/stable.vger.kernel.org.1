@@ -2,235 +2,244 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB2167DE552
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 18:28:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2C07DE55F
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 18:30:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344524AbjKAR1D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 13:27:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36906 "EHLO
+        id S1344552AbjKAR34 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 13:29:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233960AbjKAR0z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 13:26:55 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8293A111;
-        Wed,  1 Nov 2023 10:26:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B449EC433B6;
-        Wed,  1 Nov 2023 17:26:51 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.96)
-        (envelope-from <rostedt@goodmis.org>)
-        id 1qyEzS-00EZw0-2O;
-        Wed, 01 Nov 2023 13:26:50 -0400
-Message-ID: <20231101172650.552471568@goodmis.org>
-User-Agent: quilt/0.66
-Date:   Wed, 01 Nov 2023 13:25:49 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH v6 8/8] eventfs: Use simple_recursive_removal() to clean up dentries
-References: <20231101172541.971928390@goodmis.org>
+        with ESMTP id S1344461AbjKAR34 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 13:29:56 -0400
+Received: from mail-ua1-x933.google.com (mail-ua1-x933.google.com [IPv6:2607:f8b0:4864:20::933])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EC7C110
+        for <stable@vger.kernel.org>; Wed,  1 Nov 2023 10:29:49 -0700 (PDT)
+Received: by mail-ua1-x933.google.com with SMTP id a1e0cc1a2514c-7aae07e7ba4so2588851241.1
+        for <stable@vger.kernel.org>; Wed, 01 Nov 2023 10:29:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1698859788; x=1699464588; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NA/+KeCJBlIlbmFDBHYVaUeDP2EPvqFv8wldZntE6AM=;
+        b=b6lW7Y1t4Q6IvpEEbGvyaIlzkKFb33Xv3IfHhBd3buABZsdcq2ZMwfWnT+XmNFPdhr
+         jHa3X41W0O7Q3Y04zQta5DwV6975rWPOS7YMBLCSWC8zdLCWGqghFOJL+zZCW7X6bsdd
+         9EGjosbo+NK417PSuEaxEOU3nl3bZm9wpCd43HqP0syg8VqheOYi0Kcb54xGZELYulbr
+         mjbzIfBmdoiUfHC1ZDZOCc9m0WLX8TJXmmkRdFHD2ObRB0lpI2cl7PGXiE2uo1HgyFEb
+         GRekwJZt/aTGUv2HBlHDZlEjB2tgyYdnpP/BDjr8tMPmUvEmjL/RrhPYTja4XXrh6iwn
+         aRhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698859788; x=1699464588;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NA/+KeCJBlIlbmFDBHYVaUeDP2EPvqFv8wldZntE6AM=;
+        b=EU5DB6oW0bfPMkBwpitKD9biY07fLDO900YV9bqqudYCaP6fgiH63inQLExkAmW+KT
+         BgSPNoNt+PchXDVTGyXFBPf57ynAxki7hPW3BZNyguQDYJj5yn4vjECOcsm1MBbYfuoY
+         LxCw7mMeuTX59uHwHsyNE7e8R0pWjfPPMhayM7P4y02XVG5qp8yJScU92t4omTjWcinf
+         j3mJ8T4N3S4nDdaOFhOpse1XDbYmdWJ/2Qc52DAS+nhZh/IY4iZ3fgEMhOq5rwgBvyc2
+         zAPxKphrymJuT1poOYQqyRpRrsxfBHtozvhGUSI71Xd3oS03zhBivAxeM213ergqD/05
+         9X2Q==
+X-Gm-Message-State: AOJu0Yz0nS5ZvAxmEzVaCh31750Sb0rHMgxyBXaaDbyJOUhEoq9s5eau
+        HA1C0Q1AKfOal6DWag6xCFl4m6Ih6AAzfFfCHL6xDA==
+X-Google-Smtp-Source: AGHT+IHPfCdUbOFuDUSF8U/w74yoOxpjhcLbjGN1thcCqeM3IP70B2YAavVsF5YXyM/F52jAkI2uWaET6xcikobleYo=
+X-Received: by 2002:a67:e11c:0:b0:452:d9d4:a056 with SMTP id
+ d28-20020a67e11c000000b00452d9d4a056mr14024960vsl.26.1698859787511; Wed, 01
+ Nov 2023 10:29:47 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20231101120147.190909952@linuxfoundation.org>
+In-Reply-To: <20231101120147.190909952@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 1 Nov 2023 22:59:36 +0530
+Message-ID: <CA+G9fYufhkTp=hzJDmMx-74sHVDeZn=ttW+d1tB1p8N9GA4YbQ@mail.gmail.com>
+Subject: Re: [PATCH 6.5 000/111] 6.5.10-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+On Wed, 1 Nov 2023 at 17:33, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.5.10 release.
+> There are 111 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Fri, 03 Nov 2023 12:01:18 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.5.10-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.5.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Looking at how dentry is removed via the tracefs system, I found that
-eventfs does not do everything that it did under tracefs. The tracefs
-removal of a dentry calls simple_recursive_removal() that does a lot more
-than a simple d_invalidate().
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-As it should be a requirement that any eventfs_inode that has a dentry, so
-does its parent. When removing a eventfs_inode, if it has a dentry, a call
-to simple_recursive_removal() on that dentry should clean up all the
-dentries underneath it.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Add WARN_ON_ONCE() to check for the parent having a dentry if any children
-do.
+## Build
+* kernel: 6.5.10-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.5.y
+* git commit: b4d7fa7ca27816b453e17742b523f5ab9246317e
+* git describe: v6.5.9-112-gb4d7fa7ca278
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.9=
+-112-gb4d7fa7ca278
 
-Link: https://lore.kernel.org/all/20231101022553.GE1957730@ZenIV/
+## Test Regressions (compared to v6.5.9)
 
-Cc: stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Fixes: 5bdcd5f5331a2 ("eventfs: Implement removal of meta data from eventfs")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
-Changes since the last patch: https://lore.kernel.org/linux-trace-kernel/20231031144703.71eef3a0@gandalf.local.home
+## Metric Regressions (compared to v6.5.9)
 
-- Was originally called: eventfs: Process deletion of dentry more thoroughly
+## Test Fixes (compared to v6.5.9)
 
-- Al Viro pointed out that I could use simple_recursive_removal() instead.
-  I had originally thought that I could not, but looking deeper into it,
-  and realizing that if a dentry exists on any eventfs_inode, then all
-  the parent eventfs_inode of that would als have a dentry. Hence, calling
-  simple_recursive_removal() on the top dentry would clean up all the
-  children dentries as well. Doing it his way cleans up the code quite
-  a bit!
+## Metric Fixes (compared to v6.5.9)
 
- fs/tracefs/event_inode.c | 77 +++++++++++++++++++++++-----------------
- fs/tracefs/internal.h    |  2 --
- 2 files changed, 44 insertions(+), 35 deletions(-)
+## Test result summary
+total: 137840, pass: 118133, fail: 2091, skip: 17499, xfail: 117
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 0087a3f455f1..f8a594a50ae6 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -967,30 +967,29 @@ static void unhook_dentry(struct dentry *dentry)
- {
- 	if (!dentry)
- 		return;
--
--	/* Keep the dentry from being freed yet (see eventfs_workfn()) */
-+	/*
-+	 * Need to add a reference to the dentry that is expected by
-+	 * simple_recursive_removal(), which will include a dput().
-+	 */
- 	dget(dentry);
- 
--	dentry->d_fsdata = NULL;
--	d_invalidate(dentry);
--	mutex_lock(&eventfs_mutex);
--	/* dentry should now have at least a single reference */
--	WARN_ONCE((int)d_count(dentry) < 1,
--		  "dentry %px (%s) less than one reference (%d) after invalidate\n",
--		  dentry, dentry->d_name.name, d_count(dentry));
--	mutex_unlock(&eventfs_mutex);
-+	/*
-+	 * Also add a reference for the dput() in eventfs_workfn().
-+	 * That is required as that dput() will free the ei after
-+	 * the SRCU grace period is over.
-+	 */
-+	dget(dentry);
- }
- 
- /**
-  * eventfs_remove_rec - remove eventfs dir or file from list
-  * @ei: eventfs_inode to be removed.
-- * @head: the list head to place the deleted @ei and children
-  * @level: prevent recursion from going more than 3 levels deep.
-  *
-  * This function recursively removes eventfs_inodes which
-  * contains info of files and/or directories.
-  */
--static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head, int level)
-+static void eventfs_remove_rec(struct eventfs_inode *ei, int level)
- {
- 	struct eventfs_inode *ei_child;
- 
-@@ -1009,13 +1008,26 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
- 	/* search for nested folders or files */
- 	list_for_each_entry_srcu(ei_child, &ei->children, list,
- 				 lockdep_is_held(&eventfs_mutex)) {
--		eventfs_remove_rec(ei_child, head, level + 1);
-+		/* Children only have dentry if parent does */
-+		WARN_ON_ONCE(ei_child->dentry && !ei->dentry);
-+		eventfs_remove_rec(ei_child, level + 1);
- 	}
- 
-+
- 	ei->is_freed = 1;
- 
-+	for (int i = 0; i < ei->nr_entries; i++) {
-+		if (ei->d_children[i]) {
-+			/* Children only have dentry if parent does */
-+			WARN_ON_ONCE(!ei->dentry);
-+			unhook_dentry(ei->d_children[i]);
-+		}
-+	}
-+
-+	unhook_dentry(ei->dentry);
-+
- 	list_del_rcu(&ei->list);
--	list_add_tail(&ei->del_list, head);
-+	call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
- }
- 
- /**
-@@ -1026,30 +1038,22 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
-  */
- void eventfs_remove_dir(struct eventfs_inode *ei)
- {
--	struct eventfs_inode *tmp;
--	LIST_HEAD(ei_del_list);
-+	struct dentry *dentry;
- 
- 	if (!ei)
- 		return;
- 
--	/*
--	 * Move the deleted eventfs_inodes onto the ei_del_list
--	 * which will also set the is_freed value. Note, this has to be
--	 * done under the eventfs_mutex, but the deletions of
--	 * the dentries must be done outside the eventfs_mutex.
--	 * Hence moving them to this temporary list.
--	 */
- 	mutex_lock(&eventfs_mutex);
--	eventfs_remove_rec(ei, &ei_del_list, 0);
-+	dentry = ei->dentry;
-+	eventfs_remove_rec(ei, 0);
- 	mutex_unlock(&eventfs_mutex);
- 
--	list_for_each_entry_safe(ei, tmp, &ei_del_list, del_list) {
--		for (int i = 0; i < ei->nr_entries; i++)
--			unhook_dentry(ei->d_children[i]);
--		unhook_dentry(ei->dentry);
--		list_del(&ei->del_list);
--		call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
--	}
-+	/*
-+	 * If any of the ei children has a dentry, then the ei itself
-+	 * must have a dentry.
-+	 */
-+	if (dentry)
-+		simple_recursive_removal(dentry, NULL);
- }
- 
- /**
-@@ -1060,10 +1064,17 @@ void eventfs_remove_dir(struct eventfs_inode *ei)
-  */
- void eventfs_remove_events_dir(struct eventfs_inode *ei)
- {
--	struct dentry *dentry = ei->dentry;
-+	struct dentry *dentry;
- 
-+	dentry = ei->dentry;
- 	eventfs_remove_dir(ei);
- 
--	/* Matches the dget() from eventfs_create_events_dir() */
-+	/*
-+	 * Matches the dget() done by tracefs_start_creating()
-+	 * in eventfs_create_events_dir() when it the dentry was
-+	 * created. In other words, it's a normal dentry that
-+	 * sticks around while the other ei->dentry are created
-+	 * and destroyed dynamically.
-+	 */
- 	dput(dentry);
- }
-diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
-index 06a1f220b901..ccee18ca66c7 100644
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -55,12 +55,10 @@ struct eventfs_inode {
- 	/*
- 	 * Union - used for deletion
- 	 * @llist:	for calling dput() if needed after RCU
--	 * @del_list:	list of eventfs_inode to delete
- 	 * @rcu:	eventfs_inode to delete in RCU
- 	 */
- 	union {
- 		struct llist_node	llist;
--		struct list_head	del_list;
- 		struct rcu_head		rcu;
- 	};
- 	unsigned int			is_freed:1;
--- 
-2.42.0
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 144 total, 144 passed, 0 failed
+* arm64: 53 total, 50 passed, 3 failed
+* i386: 41 total, 41 passed, 0 failed
+* mips: 28 total, 28 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 25 total, 25 passed, 0 failed
+* s390: 13 total, 13 passed, 0 failed
+* sh: 12 total, 12 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 45 total, 45 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
