@@ -2,74 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3A4E7DE190
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 14:34:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 706727DE184
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 14:34:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344193AbjKANX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 09:23:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42112 "EHLO
+        id S1344245AbjKANat (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 09:30:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344071AbjKANX2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 09:23:28 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6D06CFD;
-        Wed,  1 Nov 2023 06:23:25 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 649F12F4;
-        Wed,  1 Nov 2023 06:24:06 -0700 (PDT)
-Received: from [10.57.1.80] (unknown [10.57.1.80])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 079023F64C;
-        Wed,  1 Nov 2023 06:23:22 -0700 (PDT)
-Message-ID: <3d744ee6-a739-42b6-8a87-124746a9287c@arm.com>
-Date:   Wed, 1 Nov 2023 13:23:21 +0000
+        with ESMTP id S1344219AbjKANas (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 09:30:48 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE0B4F7
+        for <stable@vger.kernel.org>; Wed,  1 Nov 2023 06:30:45 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-9c2a0725825so1072451266b.2
+        for <stable@vger.kernel.org>; Wed, 01 Nov 2023 06:30:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1698845444; x=1699450244; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zqp+tKsbxuT0dP0kvbmRHXQPetcAFAg5Ll5YZH6o/4c=;
+        b=JTYwlKHLwTBMgX7BLi7RGY3k3PaCc/x4YiwSqQupeq017c7pU2qtEluozEbmlImE0x
+         Qs5qKDRn2kDzfLnkj2kXm042OBCxV2A8+TNm9JuK+r7Xo3M9u9q5H3Gv3igPB0Y4qv96
+         cph6c+SI1F1VmPU4UWrpk4fYLNtNakcdOhfEVG/bVQYj0kCwWO+1FCuCwPYJcV8gxhYP
+         pz7Ha2hyM+Ao3qAUTC+T+/RFMIES63qMxxGGT6MYYoHFco+batbrfFie0533geEDI2mv
+         RxO/nHnYdw0W2eeyI0vlIbNjIqEE0i02xN9/rhOcnLKKGfpWTqa5h/QEo1ehBga1QxIP
+         WgEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698845444; x=1699450244;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zqp+tKsbxuT0dP0kvbmRHXQPetcAFAg5Ll5YZH6o/4c=;
+        b=NVS1psrFyDNGGCcRVb7C6hdMAIidr9Bjsg5Wcn2pgRbdy6Od4T2zW8PnOaumFI2uEZ
+         BMxkw72sPl+PkOIHeH21OLGxph7WBOzPcMyoZaBdWMor25ocJG2g6XsR7cLki9ELPLri
+         MZClVQi7lQftenaqc3nkgPe2VWoXOgowjKa5iKhNaEbtBdmMtZpoe+v9K5VzIWhzBLjx
+         ytbKFPvLiKXblO8ESSiTPOP6S2Pa7uBrPeStymntX4ct5HGVhyT5TC1wT5Me5DCSSICK
+         nHsSV2v/mloeGzTZX5ShZl5SXpliR1VefiHUMY818/clcFsppFt7qc2ehPDGPtt7aOgg
+         VFxw==
+X-Gm-Message-State: AOJu0YwM5OyHLByirSRVrVXNX5oXRFYSuI87BLIZTy10NNM452GPRwUF
+        j/1MOpRzk14aF5/r2CHathIa5VPH3Ypv9LTxSgFj6A==
+X-Google-Smtp-Source: AGHT+IE0QhPJiUSklN+lm5WtW4Z7Yv9ImCivRKXFVydz+RY3qA5o2XFPaZaGYPiYDAveM7G5Fo98a74g0NEDILnIC70=
+X-Received: by 2002:a17:907:7f19:b0:9be:2b53:ac4d with SMTP id
+ qf25-20020a1709077f1900b009be2b53ac4dmr1969204ejc.74.1698845444122; Wed, 01
+ Nov 2023 06:30:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] coresight: etm4x: Fix width of CCITMIN field
-Content-Language: en-GB
-To:     James Clark <james.clark@arm.com>, coresight@lists.linaro.org,
-        anshuman.khandual@arm.com, mike.leach@linaro.org
-Cc:     stable@vger.kernel.org,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Pratik Patel <pratikp@codeaurora.org>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kaixu Xia <xiakaixu@huawei.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20231101115206.70810-1-james.clark@arm.com>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <20231101115206.70810-1-james.clark@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20231031165918.608547597@linuxfoundation.org>
+In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
+From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date:   Wed, 1 Nov 2023 22:30:33 +0900
+Message-ID: <CAKL4bV743XcEZTObZ2qY58Mz5TZ-GXbiuTMykTTemO06Py2O3Q@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/86] 6.1.61-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 01/11/2023 11:52, James Clark wrote:
-> CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
-> This probably wasn't an issue previously because values higher than 255
-> never occurred.
-> 
-> But since commit 0f55b43dedcd ("coresight: etm: Override TRCIDR3.CCITMIN
-> on errata affected cpus"), a comparison with 256 was done to enable the
-> errata, generating the following W=1 build error:
-> 
->    coresight-etm4x-core.c:1188:24: error: result of comparison of
->    constant 256 with expression of type 'u8' (aka 'unsigned char') is
->    always false [-Werror,-Wtautological-constant-out-of-range-compare]
-> 
->     if (drvdata->ccitmin == 256)
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
-> Reviewed-by: Mike Leach <mike.leach@linaro.org>
-> Signed-off-by: James Clark <james.clark@arm.com>
+Hi Greg
 
-Thanks, applied to coresight next :
+On Wed, Nov 1, 2023 at 2:02=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.61 release.
+> There are 86 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 02 Nov 2023 16:59:03 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.61-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
+6.1.61-rc1 tested.
 
-Suzuki
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
+
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
