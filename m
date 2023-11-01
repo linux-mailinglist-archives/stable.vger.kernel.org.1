@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5C4F7DE555
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 18:28:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB2167DE552
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 18:28:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234071AbjKAR04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 13:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36896 "EHLO
+        id S1344524AbjKAR1D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 13:27:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233817AbjKAR0z (ORCPT
+        with ESMTP id S233960AbjKAR0z (ORCPT
         <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 13:26:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F2AB110;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8293A111;
         Wed,  1 Nov 2023 10:26:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC7FC433CA;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B449EC433B6;
         Wed,  1 Nov 2023 17:26:51 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.96)
         (envelope-from <rostedt@goodmis.org>)
-        id 1qyEzS-00EZur-11;
+        id 1qyEzS-00EZw0-2O;
         Wed, 01 Nov 2023 13:26:50 -0400
-Message-ID: <20231101172650.123479767@goodmis.org>
+Message-ID: <20231101172650.552471568@goodmis.org>
 User-Agent: quilt/0.66
-Date:   Wed, 01 Nov 2023 13:25:47 -0400
+Date:   Wed, 01 Nov 2023 13:25:49 -0400
 From:   Steven Rostedt <rostedt@goodmis.org>
 To:     linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
 Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        stable@vger.kernel.org, Ajay Kaher <akaher@vmware.com>
-Subject: [PATCH v6 6/8] eventfs: Delete eventfs_inode when the last dentry is freed
+        stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH v6 8/8] eventfs: Use simple_recursive_removal() to clean up dentries
 References: <20231101172541.971928390@goodmis.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -44,277 +44,193 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-There exists a race between holding a reference of an eventfs_inode dentry
-and the freeing of the eventfs_inode. If user space has a dentry held long
-enough, it may still be able to access the dentry's eventfs_inode after it
-has been freed.
+Looking at how dentry is removed via the tracefs system, I found that
+eventfs does not do everything that it did under tracefs. The tracefs
+removal of a dentry calls simple_recursive_removal() that does a lot more
+than a simple d_invalidate().
 
-To prevent this, have he eventfs_inode freed via the last dput() (or via
-RCU if the eventfs_inode does not have a dentry).
+As it should be a requirement that any eventfs_inode that has a dentry, so
+does its parent. When removing a eventfs_inode, if it has a dentry, a call
+to simple_recursive_removal() on that dentry should clean up all the
+dentries underneath it.
 
-This means reintroducing the eventfs_inode del_list field at a temporary
-place to put the eventfs_inode. It needs to mark it as freed (via the
-list) but also must invalidate the dentry immediately as the return from
-eventfs_remove_dir() expects that they are. But the dentry invalidation
-must not be called under the eventfs_mutex, so it must be done after the
-eventfs_inode is marked as free (put on a deletion list).
+Add WARN_ON_ONCE() to check for the parent having a dentry if any children
+do.
+
+Link: https://lore.kernel.org/all/20231101022553.GE1957730@ZenIV/
 
 Cc: stable@vger.kernel.org
-Cc: Ajay Kaher <akaher@vmware.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
 Fixes: 5bdcd5f5331a2 ("eventfs: Implement removal of meta data from eventfs")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
-Changes since v5: https://lkml.kernel.org/r/20231031223420.988874091@goodmis.org
+Changes since the last patch: https://lore.kernel.org/linux-trace-kernel/20231031144703.71eef3a0@gandalf.local.home
 
-- Rebased for this patch series
+- Was originally called: eventfs: Process deletion of dentry more thoroughly
 
- fs/tracefs/event_inode.c | 146 ++++++++++++++++++---------------------
- fs/tracefs/internal.h    |   2 +
- 2 files changed, 69 insertions(+), 79 deletions(-)
+- Al Viro pointed out that I could use simple_recursive_removal() instead.
+  I had originally thought that I could not, but looking deeper into it,
+  and realizing that if a dentry exists on any eventfs_inode, then all
+  the parent eventfs_inode of that would als have a dentry. Hence, calling
+  simple_recursive_removal() on the top dentry would clean up all the
+  children dentries as well. Doing it his way cleans up the code quite
+  a bit!
+
+ fs/tracefs/event_inode.c | 77 +++++++++++++++++++++++-----------------
+ fs/tracefs/internal.h    |  2 --
+ 2 files changed, 44 insertions(+), 35 deletions(-)
 
 diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 8ac9abf7a3d5..0a04ae0ca8c8 100644
+index 0087a3f455f1..f8a594a50ae6 100644
 --- a/fs/tracefs/event_inode.c
 +++ b/fs/tracefs/event_inode.c
-@@ -85,8 +85,7 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
- 
- 	mutex_lock(&eventfs_mutex);
- 	ei = dentry->d_fsdata;
--	/* The LSB is set when the eventfs_inode is being freed */
--	if (((unsigned long)ei & 1UL) || ei->is_freed) {
-+	if (ei->is_freed) {
- 		/* Do not allow changes if the event is about to be removed. */
- 		mutex_unlock(&eventfs_mutex);
- 		return -ENODEV;
-@@ -276,35 +275,17 @@ static void free_ei(struct eventfs_inode *ei)
- void eventfs_set_ei_status_free(struct tracefs_inode *ti, struct dentry *dentry)
+@@ -967,30 +967,29 @@ static void unhook_dentry(struct dentry *dentry)
  {
- 	struct tracefs_inode *ti_parent;
--	struct eventfs_inode *ei_child, *tmp;
- 	struct eventfs_inode *ei;
- 	int i;
- 
- 	/* The top level events directory may be freed by this */
- 	if (unlikely(ti->flags & TRACEFS_EVENT_TOP_INODE)) {
--		LIST_HEAD(ef_del_list);
--
- 		mutex_lock(&eventfs_mutex);
--
- 		ei = ti->private;
--
--		/* Record all the top level files */
--		list_for_each_entry_srcu(ei_child, &ei->children, list,
--					 lockdep_is_held(&eventfs_mutex)) {
--			list_add_tail(&ei_child->del_list, &ef_del_list);
--		}
--
- 		/* Nothing should access this, but just in case! */
- 		ti->private = NULL;
--
- 		mutex_unlock(&eventfs_mutex);
- 
--		/* Now safely free the top level files and their children */
--		list_for_each_entry_safe(ei_child, tmp, &ef_del_list, del_list) {
--			list_del(&ei_child->del_list);
--			eventfs_remove_dir(ei_child);
--		}
--
- 		free_ei(ei);
+ 	if (!dentry)
  		return;
- 	}
-@@ -319,14 +300,6 @@ void eventfs_set_ei_status_free(struct tracefs_inode *ti, struct dentry *dentry)
- 	if (!ei)
- 		goto out;
- 
--	/*
--	 * If ei was freed, then the LSB bit is set for d_fsdata.
--	 * But this should not happen, as it should still have a
--	 * ref count that prevents it. Warn in case it does.
--	 */
--	if (WARN_ON_ONCE((unsigned long)ei & 1))
--		goto out;
 -
- 	/* This could belong to one of the files of the ei */
- 	if (ei->dentry != dentry) {
- 		for (i = 0; i < ei->nr_entries; i++) {
-@@ -336,6 +309,8 @@ void eventfs_set_ei_status_free(struct tracefs_inode *ti, struct dentry *dentry)
- 		if (WARN_ON_ONCE(i == ei->nr_entries))
- 			goto out;
- 		ei->d_children[i] = NULL;
-+	} else if (ei->is_freed) {
-+		free_ei(ei);
- 	} else {
- 		ei->dentry = NULL;
- 	}
-@@ -962,13 +937,65 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	return ERR_PTR(-ENOMEM);
- }
+-	/* Keep the dentry from being freed yet (see eventfs_workfn()) */
++	/*
++	 * Need to add a reference to the dentry that is expected by
++	 * simple_recursive_removal(), which will include a dput().
++	 */
+ 	dget(dentry);
  
-+static LLIST_HEAD(free_list);
-+
-+static void eventfs_workfn(struct work_struct *work)
-+{
-+        struct eventfs_inode *ei, *tmp;
-+        struct llist_node *llnode;
-+
-+	llnode = llist_del_all(&free_list);
-+        llist_for_each_entry_safe(ei, tmp, llnode, llist) {
-+		/* This dput() matches the dget() from unhook_dentry() */
-+		for (int i = 0; i < ei->nr_entries; i++) {
-+			if (ei->d_children[i])
-+				dput(ei->d_children[i]);
-+		}
-+		/* This should only get here if it had a dentry */
-+		if (!WARN_ON_ONCE(!ei->dentry))
-+			dput(ei->dentry);
-+        }
-+}
-+
-+static DECLARE_WORK(eventfs_work, eventfs_workfn);
-+
- static void free_rcu_ei(struct rcu_head *head)
- {
- 	struct eventfs_inode *ei = container_of(head, struct eventfs_inode, rcu);
- 
-+	if (ei->dentry) {
-+		/* Do not free the ei until all references of dentry are gone */
-+		if (llist_add(&ei->llist, &free_list))
-+			queue_work(system_unbound_wq, &eventfs_work);
-+		return;
-+	}
-+
-+	/* If the ei doesn't have a dentry, neither should its children */
-+	for (int i = 0; i < ei->nr_entries; i++) {
-+		WARN_ON_ONCE(ei->d_children[i]);
-+	}
-+
- 	free_ei(ei);
- }
- 
-+static void unhook_dentry(struct dentry *dentry)
-+{
-+	if (!dentry)
-+		return;
-+
-+	/* Keep the dentry from being freed yet (see eventfs_workfn()) */
+-	dentry->d_fsdata = NULL;
+-	d_invalidate(dentry);
+-	mutex_lock(&eventfs_mutex);
+-	/* dentry should now have at least a single reference */
+-	WARN_ONCE((int)d_count(dentry) < 1,
+-		  "dentry %px (%s) less than one reference (%d) after invalidate\n",
+-		  dentry, dentry->d_name.name, d_count(dentry));
+-	mutex_unlock(&eventfs_mutex);
++	/*
++	 * Also add a reference for the dput() in eventfs_workfn().
++	 * That is required as that dput() will free the ei after
++	 * the SRCU grace period is over.
++	 */
 +	dget(dentry);
-+
-+	dentry->d_fsdata = NULL;
-+	d_invalidate(dentry);
-+	mutex_lock(&eventfs_mutex);
-+	/* dentry should now have at least a single reference */
-+	WARN_ONCE((int)d_count(dentry) < 1,
-+		  "dentry %px (%s) less than one reference (%d) after invalidate\n",
-+		  dentry, dentry->d_name.name, d_count(dentry));
-+	mutex_unlock(&eventfs_mutex);
-+}
-+
+ }
+ 
  /**
   * eventfs_remove_rec - remove eventfs dir or file from list
   * @ei: eventfs_inode to be removed.
-@@ -1006,33 +1033,6 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
- 	list_add_tail(&ei->del_list, head);
+- * @head: the list head to place the deleted @ei and children
+  * @level: prevent recursion from going more than 3 levels deep.
+  *
+  * This function recursively removes eventfs_inodes which
+  * contains info of files and/or directories.
+  */
+-static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head, int level)
++static void eventfs_remove_rec(struct eventfs_inode *ei, int level)
+ {
+ 	struct eventfs_inode *ei_child;
+ 
+@@ -1009,13 +1008,26 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
+ 	/* search for nested folders or files */
+ 	list_for_each_entry_srcu(ei_child, &ei->children, list,
+ 				 lockdep_is_held(&eventfs_mutex)) {
+-		eventfs_remove_rec(ei_child, head, level + 1);
++		/* Children only have dentry if parent does */
++		WARN_ON_ONCE(ei_child->dentry && !ei->dentry);
++		eventfs_remove_rec(ei_child, level + 1);
+ 	}
+ 
++
+ 	ei->is_freed = 1;
+ 
++	for (int i = 0; i < ei->nr_entries; i++) {
++		if (ei->d_children[i]) {
++			/* Children only have dentry if parent does */
++			WARN_ON_ONCE(!ei->dentry);
++			unhook_dentry(ei->d_children[i]);
++		}
++	}
++
++	unhook_dentry(ei->dentry);
++
+ 	list_del_rcu(&ei->list);
+-	list_add_tail(&ei->del_list, head);
++	call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
  }
  
--static void unhook_dentry(struct dentry **dentry, struct dentry **list)
--{
--	if (*dentry) {
--		unsigned long ptr = (unsigned long)*list;
--
--		/* Keep the dentry from being freed yet */
--		dget(*dentry);
--
--		/*
--		 * Paranoid: The dget() above should prevent the dentry
--		 * from being freed and calling eventfs_set_ei_status_free().
--		 * But just in case, set the link list LSB pointer to 1
--		 * and have eventfs_set_ei_status_free() check that to
--		 * make sure that if it does happen, it will not think
--		 * the d_fsdata is an eventfs_inode.
--		 *
--		 * For this to work, no eventfs_inode should be allocated
--		 * on a odd space, as the ef should always be allocated
--		 * to be at least word aligned. Check for that too.
--		 */
--		WARN_ON_ONCE(ptr & 1);
--
--		(*dentry)->d_fsdata = (void *)(ptr | 1);
--		*list = *dentry;
--		*dentry = NULL;
--	}
--}
  /**
-  * eventfs_remove_dir - remove eventfs dir or file from list
-  * @ei: eventfs_inode to be removed.
-@@ -1043,40 +1043,28 @@ void eventfs_remove_dir(struct eventfs_inode *ei)
+@@ -1026,30 +1038,22 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
+  */
+ void eventfs_remove_dir(struct eventfs_inode *ei)
  {
- 	struct eventfs_inode *tmp;
- 	LIST_HEAD(ei_del_list);
--	struct dentry *dentry_list = NULL;
--	struct dentry *dentry;
--	int i;
+-	struct eventfs_inode *tmp;
+-	LIST_HEAD(ei_del_list);
++	struct dentry *dentry;
  
  	if (!ei)
  		return;
  
-+	/*
-+	 * Move the deleted eventfs_inodes onto the ei_del_list
-+	 * which will also set the is_freed value. Note, this has to be
-+	 * done under the eventfs_mutex, but the deletions of
-+	 * the dentries must be done outside the eventfs_mutex.
-+	 * Hence moving them to this temporary list.
-+	 */
+-	/*
+-	 * Move the deleted eventfs_inodes onto the ei_del_list
+-	 * which will also set the is_freed value. Note, this has to be
+-	 * done under the eventfs_mutex, but the deletions of
+-	 * the dentries must be done outside the eventfs_mutex.
+-	 * Hence moving them to this temporary list.
+-	 */
  	mutex_lock(&eventfs_mutex);
- 	eventfs_remove_rec(ei, &ei_del_list, 0);
-+	mutex_unlock(&eventfs_mutex);
+-	eventfs_remove_rec(ei, &ei_del_list, 0);
++	dentry = ei->dentry;
++	eventfs_remove_rec(ei, 0);
+ 	mutex_unlock(&eventfs_mutex);
  
- 	list_for_each_entry_safe(ei, tmp, &ei_del_list, del_list) {
--		for (i = 0; i < ei->nr_entries; i++)
--			unhook_dentry(&ei->d_children[i], &dentry_list);
--		unhook_dentry(&ei->dentry, &dentry_list);
-+		for (int i = 0; i < ei->nr_entries; i++)
-+			unhook_dentry(ei->d_children[i]);
-+		unhook_dentry(ei->dentry);
-+		list_del(&ei->del_list);
- 		call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
- 	}
--	mutex_unlock(&eventfs_mutex);
--
--	while (dentry_list) {
--		unsigned long ptr;
--
--		dentry = dentry_list;
--		ptr = (unsigned long)dentry->d_fsdata & ~1UL;
--		dentry_list = (struct dentry *)ptr;
--		dentry->d_fsdata = NULL;
--		d_invalidate(dentry);
--		mutex_lock(&eventfs_mutex);
--		/* dentry should now have at least a single reference */
--		WARN_ONCE((int)d_count(dentry) < 1,
--			  "dentry %px (%s) less than one reference (%d) after invalidate\n",
--			  dentry, dentry->d_name.name, d_count(dentry));
--		mutex_unlock(&eventfs_mutex);
--		dput(dentry);
+-	list_for_each_entry_safe(ei, tmp, &ei_del_list, del_list) {
+-		for (int i = 0; i < ei->nr_entries; i++)
+-			unhook_dentry(ei->d_children[i]);
+-		unhook_dentry(ei->dentry);
+-		list_del(&ei->del_list);
+-		call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
 -	}
++	/*
++	 * If any of the ei children has a dentry, then the ei itself
++	 * must have a dentry.
++	 */
++	if (dentry)
++		simple_recursive_removal(dentry, NULL);
  }
  
  /**
+@@ -1060,10 +1064,17 @@ void eventfs_remove_dir(struct eventfs_inode *ei)
+  */
+ void eventfs_remove_events_dir(struct eventfs_inode *ei)
+ {
+-	struct dentry *dentry = ei->dentry;
++	struct dentry *dentry;
+ 
++	dentry = ei->dentry;
+ 	eventfs_remove_dir(ei);
+ 
+-	/* Matches the dget() from eventfs_create_events_dir() */
++	/*
++	 * Matches the dget() done by tracefs_start_creating()
++	 * in eventfs_create_events_dir() when it the dentry was
++	 * created. In other words, it's a normal dentry that
++	 * sticks around while the other ei->dentry are created
++	 * and destroyed dynamically.
++	 */
+ 	dput(dentry);
+ }
 diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
-index 5f60bcd69289..06a1f220b901 100644
+index 06a1f220b901..ccee18ca66c7 100644
 --- a/fs/tracefs/internal.h
 +++ b/fs/tracefs/internal.h
-@@ -54,10 +54,12 @@ struct eventfs_inode {
- 	void				*data;
+@@ -55,12 +55,10 @@ struct eventfs_inode {
  	/*
  	 * Union - used for deletion
-+	 * @llist:	for calling dput() if needed after RCU
- 	 * @del_list:	list of eventfs_inode to delete
+ 	 * @llist:	for calling dput() if needed after RCU
+-	 * @del_list:	list of eventfs_inode to delete
  	 * @rcu:	eventfs_inode to delete in RCU
  	 */
  	union {
-+		struct llist_node	llist;
- 		struct list_head	del_list;
+ 		struct llist_node	llist;
+-		struct list_head	del_list;
  		struct rcu_head		rcu;
  	};
+ 	unsigned int			is_freed:1;
 -- 
 2.42.0
