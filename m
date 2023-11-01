@@ -2,181 +2,430 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30CC47DDABB
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 02:48:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14C717DDADE
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 03:14:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377053AbjKABse (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 21:48:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49982 "EHLO
+        id S230403AbjKACOr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 22:14:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377288AbjKABsd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 21:48:33 -0400
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 368F9F4;
-        Tue, 31 Oct 2023 18:48:29 -0700 (PDT)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6b1e46ca282so6365153b3a.2;
-        Tue, 31 Oct 2023 18:48:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698803308; x=1699408108; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=F2BaTa6G2HWw9DgMuR1O5iLUXYXlCPDt7//P1EX5GrM=;
-        b=jbAKFXMwl47tJA2EeQxqwzX9zgg4wmQCgd+ZsWR1eF327Tm7oZj9W1yVQoSMZWBxtu
-         jzkALMJggtC3ahoduXdZ6l0sEsns88vQWkter36ZNrI6Ez4q9WpVKUCAQGmbqJQ/6rpT
-         +sxahbL2zKb5dqO7RIkexwmtWphrYv7b9rNwZK+p5UbEm93F00p7CHiP15eQiabcnYEN
-         ejnbg00OtYg78oDOm8zsc63rl6hOWOK3BW28iClLsSQdlXVvdynD+KYnd0QLyB0Q0MLD
-         PxHFINQfdALI1ZPdSXm5vBpiEET+8mzWuTBvpbwcfufhOSci3Prcy8oLeOCZSDgmhnxS
-         CsLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698803308; x=1699408108;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=F2BaTa6G2HWw9DgMuR1O5iLUXYXlCPDt7//P1EX5GrM=;
-        b=EsRkyGAMNEPSrvnH0o5EKgzzYrekIlgwZPSxh1wpMiOxC7phJ68DgukWmFzRjvh1GA
-         C7UxOCdoDOM2GTZ/KO2HVI5EVpfEqm17AzviMQg4NmYFWEyq+IDSgytdxOVYJ+F/9UE1
-         SB8bulZo5E+NpctnqdRLBxNQiLqww+jYdfOQrvVfyxaYAcZXZeeyEX8HtiAsASgjlvzJ
-         d/8KAN+Ep24U6+eWPyNaslj7bytw3Az50MJLGi7NY4JIyE4SXnZcFBh7jm7h+VD9/zsE
-         z9xcrIJ7foQO9wUAdPBjwxsKJWmDDC/KEeEg6mOSruQ+vAAyb1OwmJYGXO+/3gdP9yqI
-         kP5g==
-X-Gm-Message-State: AOJu0YxuuPOJu//VnvHKllY6ypIg4XlyuHpkLB2YjOOnl1mfRGeXEBj4
-        RkGAoPdm82oHepPCpvI5q/5xU5bZxtc=
-X-Google-Smtp-Source: AGHT+IF79z/Pz4pTmLfsoJ3VxWrULK5C/eTSmgGYC6l5NroooZgsEqHrx4e6FT7YFA7d/6791SdA8A==
-X-Received: by 2002:a05:6a20:938c:b0:17b:40:ccd6 with SMTP id x12-20020a056a20938c00b0017b0040ccd6mr19669737pzh.2.1698803308466;
-        Tue, 31 Oct 2023 18:48:28 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id mj3-20020a17090b368300b002800b26dbc1sm1659875pjb.32.2023.10.31.18.48.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 31 Oct 2023 18:48:26 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <feb4297d-eaa4-40b0-824d-af2c6bdb97e3@roeck-us.net>
-Date:   Tue, 31 Oct 2023 18:48:25 -0700
+        with ESMTP id S229603AbjKACOq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 22:14:46 -0400
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 814C7B9
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 19:14:40 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id 2BDA93200917;
+        Tue, 31 Oct 2023 22:14:36 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Tue, 31 Oct 2023 22:14:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1698804875; x=1698891275; bh=A5pCeYd8MpCWnO0m0EUGUv3Qfvsrj+mL/5N
+        x7xBVp5g=; b=KINf4sO9WhA7o6h8Hk/Xq75BsB7qHFQ1ku42ydQ22Ehg2+scMTW
+        ee8gFvmQ1p0ufd7/5jYYGrwYYm01MTzKjPA7Z4NQelKBefHqRe5d0AC7W4veojwp
+        f2HIzecUbL4eGsJCaDi8a4iokuTwFVVvDjHt1Fm1QBPjrgKVb4Qm1WqSGXjtfHFb
+        9f4hBJ9FRf/8K7ryqJzrY0n5DZxxtDVa+bH91haTfmWaigfjjBGHQLC+NWKP0L+C
+        eisOpt7CUZ3WnXfc5fhRacY+lYj099l2LTS1tDTxnXHBEBfyC/4HunBuz/wtwszA
+        n7Kah5vxpBTFEnfmz2veXrp1Z+ds5zf+YsA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1698804875; x=1698891275; bh=A5pCeYd8MpCWn
+        O0m0EUGUv3Qfvsrj+mL/5Nx7xBVp5g=; b=LhRGwDbX/LHBM1vDHx9SQuNpnu3gw
+        v1lOaWlAcHw2K9zmx1pR+8yLw4vsuXqa4kgT0tGOfYMf/+eTANYc6e2t2Uirjr3H
+        05fDqS/IaHrgPniWyedsHhKDCtsBV90tUSPqMB4zAQpCG+HRGPnJtXl6pQYZ0i30
+        mxUzOKg7eOt9JeumGvfhrjqqm5zgPREbuNxSMla2p+41zbRP9iyH5us0fx5iOz+3
+        iDcV7qdk8t/DLr1uGt7t2zcoyqVS448N1eCXz045bCRmJygaBSPBnqYEd43wnwo0
+        Z2IFTQ7klnEPcbjKLZdySF43xWQpcRgK5i/ImqVtRUTSLOrtxEOIQg7Zg==
+X-ME-Sender: <xms:irRBZQtL85zb5aQBUnpGBMnrKHpW14jWPdLPW5iFDVh4VWTtFh7LLA>
+    <xme:irRBZdfxHGlKbM43_oqsNJLtbEQTYlJEvuH13bxSJhQ3m6PYLG70gPzjxTSap4Xx6
+    IdeFTuYKW8aOg>
+X-ME-Received: <xmr:irRBZbx6Lh4toPYwOItfAA29CcNba-zLtvULOnXBir0s_YVvjy2NybvqqtSt>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtfedggeegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
+    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
+    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
+    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
+    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+X-ME-Proxy: <xmx:irRBZTOWQg4NJWynqeZZh5ZL4c1-2utINrlrXocqI4oDbLCkRGAsOQ>
+    <xmx:irRBZQ-Kk9L-wAGfenTWMCD402yw88L4S6zjsBYMAOtwOXkoCnO7Fw>
+    <xmx:irRBZbXelf8IHKu8Dtzv5ra4buC0ATAW3tr2Yua9WyAW6NQNrRhm0g>
+    <xmx:i7RBZR2-vF2fZhoSWiOM5mkwHNJ1YD4gorBYpBGKx6iq4zWJ__D3aw>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 31 Oct 2023 22:14:31 -0400 (EDT)
+Date:   Wed, 1 Nov 2023 03:14:22 +0100
+From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+To:     Ming Lei <tom.leiming@gmail.com>
+Cc:     Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Message-ID: <ZUG0gcRhUlFm57qN@mail-itl>
+References: <20231030122513.6gds75hxd65gu747@quack3>
+ <ZT+wDLwCBRB1O+vB@mail-itl>
+ <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
+ <20231030155603.k3kejytq2e4vnp7z@quack3>
+ <ZT/e/EaBIkJEgevQ@mail-itl>
+ <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
+ <ZUB5HFeK3eHeI8UH@mail-itl>
+ <20231031140136.25bio5wajc5pmdtl@quack3>
+ <ZUEgWA5P8MFbyeBN@mail-itl>
+ <CACVXFVOEWDyzasS7DWDvLOhC3Hr6qOn5ks3HLX+fbRYCxYv26w@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] usb: typec: tcpm: Fix sink caps op current check
-Content-Language: en-US
-To:     Badhri Jagan Sridharan <badhri@google.com>,
-        gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com
-Cc:     kyletso@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20231101012845.2701348-1-badhri@google.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20231101012845.2701348-1-badhri@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="OOaoeErUea6n3Riw"
+Content-Disposition: inline
+In-Reply-To: <CACVXFVOEWDyzasS7DWDvLOhC3Hr6qOn5ks3HLX+fbRYCxYv26w@mail.gmail.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/31/23 18:28, Badhri Jagan Sridharan wrote:
-> TCPM checks for sink caps operational current even when PD is disabled.
-> This incorrectly sets tcpm_set_charge() when PD is disabled.
-> Check for sink caps only when PD is enabled.
-> 
-> [   97.572342] Start toggling
-> [   97.578949] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-> [   99.571648] CC1: 0 -> 0, CC2: 0 -> 4 [state TOGGLING, polarity 0, connected]
-> [   99.571658] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-> [   99.571673] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-> [   99.741778] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-> [   99.789283] CC1: 0 -> 0, CC2: 4 -> 5 [state SNK_DEBOUNCED, polarity 0, connected]
-> [   99.789306] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-> [   99.903584] VBUS on
-> [   99.903591] state change SNK_DEBOUNCED -> SNK_ATTACHED [rev3 NONE_AMS]
-> [   99.903600] polarity 1
-> [   99.910155] enable vbus discharge ret:0
-> [   99.910160] Requesting mux state 1, usb-role 2, orientation 2
-> [   99.946791] state change SNK_ATTACHED -> SNK_STARTUP [rev3 NONE_AMS]
-> [   99.946798] state change SNK_STARTUP -> SNK_DISCOVERY [rev3 NONE_AMS]
-> [   99.946800] Setting voltage/current limit 5000 mV 500 mA
-> [   99.946803] vbus=0 charge:=1
-> [  100.027139] state change SNK_DISCOVERY -> SNK_READY [rev3 NONE_AMS]
-> [  100.027145] Setting voltage/current limit 5000 mV 3000 mA
-> [  100.466830] VBUS on
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 803b1c8a0cea ("usb: typec: tcpm: not sink vbus if operational current is 0mA")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+--OOaoeErUea6n3Riw
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 1 Nov 2023 03:14:22 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Ming Lei <tom.leiming@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
 
-> ---
-> Changes since v2:
-> * Fix the "Fixes" tag
-> * Refactor code based on Guenter Roeck's suggestion.
-> 
-> Changes since v1:
-> * Fix commit title and description to address comments from Guenter Roeck
-> ---
->   drivers/usb/typec/tcpm/tcpm.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 058d5b853b57..afc791ab6d4f 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -4273,7 +4273,8 @@ static void run_state_machine(struct tcpm_port *port)
->   				current_lim = PD_P_SNK_STDBY_MW / 5;
->   			tcpm_set_current_limit(port, current_lim, 5000);
->   			/* Not sink vbus if operational current is 0mA */
-> -			tcpm_set_charge(port, !!pdo_max_current(port->snk_pdo[0]));
-> +			tcpm_set_charge(port, !port->pd_supported ||
-> +					pdo_max_current(port->snk_pdo[0]));
->   
->   			if (!port->pd_supported)
->   				tcpm_set_state(port, SNK_READY, 0);
-> 
-> base-commit: c70793fb7632a153862ee9060e6d48131469a29c
+On Wed, Nov 01, 2023 at 09:27:24AM +0800, Ming Lei wrote:
+> On Tue, Oct 31, 2023 at 11:42=E2=80=AFPM Marek Marczykowski-G=C3=B3recki
+> <marmarek@invisiblethingslab.com> wrote:
+> >
+> > On Tue, Oct 31, 2023 at 03:01:36PM +0100, Jan Kara wrote:
+> > > On Tue 31-10-23 04:48:44, Marek Marczykowski-G=C3=B3recki wrote:
+> > > > Then tried:
+> > > >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D4 - cannot reproduce,
+> > > >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D5 - cannot reproduce,
+> > > >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D6 - freeze rather quickly
+> > > >
+> > > > I've retried the PAGE_ALLOC_COSTLY_ORDER=3D4,order=3D5 case several=
+ times
+> > > > and I can't reproduce the issue there. I'm confused...
+> > >
+> > > And this kind of confirms that allocations > PAGE_ALLOC_COSTLY_ORDER
+> > > causing hangs is most likely just a coincidence. Rather something eit=
+her in
+> > > the block layer or in the storage driver has problems with handling b=
+ios
+> > > with sufficiently high order pages attached. This is going to be a bit
+> > > painful to debug I'm afraid. How long does it take for you trigger the
+> > > hang? I'm asking to get rough estimate how heavy tracing we can affor=
+d so
+> > > that we don't overwhelm the system...
+> >
+> > Sometimes it freezes just after logging in, but in worst case it takes
+> > me about 10min of more or less `tar xz` + `dd`.
+>=20
+> blk-mq debugfs is usually helpful for hang issue in block layer or
+> underlying drivers:
+>=20
+> (cd /sys/kernel/debug/block && find . -type f -exec grep -aH . {} \;)
+>=20
+> BTW,  you can just collect logs of the exact disks if you know what
+> are behind dm-crypt,
+> which can be figured out by `lsblk`, and it has to be collected after
+> the hang is triggered.
 
+dm-crypt lives on the nvme disk, this is what I collected when it
+hanged:
+
+nvme0n1/hctx5/type:default
+nvme0n1/hctx5/dispatch_busy:0
+nvme0n1/hctx5/active:0
+nvme0n1/hctx5/run:273
+nvme0n1/hctx5/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx5/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx5/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx5/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx5/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx5/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx5/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx5/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx5/tags:nr_tags=3D1023
+nvme0n1/hctx5/tags:nr_reserved_tags=3D0
+nvme0n1/hctx5/tags:active_queues=3D0
+nvme0n1/hctx5/tags:bitmap_tags:
+nvme0n1/hctx5/tags:depth=3D1023
+nvme0n1/hctx5/tags:busy=3D0
+nvme0n1/hctx5/tags:cleared=3D7
+nvme0n1/hctx5/tags:bits_per_word=3D64
+nvme0n1/hctx5/tags:map_nr=3D16
+nvme0n1/hctx5/tags:alloc_hint=3D{633, 450, 354, 913, 651, 645}
+nvme0n1/hctx5/tags:wake_batch=3D8
+nvme0n1/hctx5/tags:wake_index=3D0
+nvme0n1/hctx5/tags:ws_active=3D0
+nvme0n1/hctx5/tags:ws=3D{
+nvme0n1/hctx5/tags:	{.wait=3Dinactive},
+nvme0n1/hctx5/tags:	{.wait=3Dinactive},
+nvme0n1/hctx5/tags:	{.wait=3Dinactive},
+nvme0n1/hctx5/tags:	{.wait=3Dinactive},
+nvme0n1/hctx5/tags:	{.wait=3Dinactive},
+nvme0n1/hctx5/tags:	{.wait=3Dinactive},
+nvme0n1/hctx5/tags:	{.wait=3Dinactive},
+nvme0n1/hctx5/tags:	{.wait=3Dinactive},
+nvme0n1/hctx5/tags:}
+nvme0n1/hctx5/tags:round_robin=3D0
+nvme0n1/hctx5/tags:min_shallow_depth=3D4294967295
+nvme0n1/hctx5/ctx_map:00000000: 00
+nvme0n1/hctx5/flags:alloc_policy=3DFIFO SHOULD_MERGE
+nvme0n1/hctx4/cpu4/default_rq_list:000000000d41998f {.op=3DREAD, .cmd_flags=
+=3D, .rq_flags=3DIO_STAT, .state=3Didle, .tag=3D65, .internal_tag=3D-1}
+nvme0n1/hctx4/cpu4/default_rq_list:00000000d0d04ed2 {.op=3DREAD, .cmd_flags=
+=3D, .rq_flags=3DIO_STAT, .state=3Didle, .tag=3D70, .internal_tag=3D-1}
+nvme0n1/hctx4/type:default
+nvme0n1/hctx4/dispatch_busy:9
+nvme0n1/hctx4/active:0
+nvme0n1/hctx4/run:20290468
+nvme0n1/hctx4/tags_bitmap:00000000: 0000 0000 0000 0000 4240 0000 0000 0000
+nvme0n1/hctx4/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx4/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx4/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx4/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx4/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx4/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx4/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx4/tags:nr_tags=3D1023
+nvme0n1/hctx4/tags:nr_reserved_tags=3D0
+nvme0n1/hctx4/tags:active_queues=3D0
+nvme0n1/hctx4/tags:bitmap_tags:
+nvme0n1/hctx4/tags:depth=3D1023
+nvme0n1/hctx4/tags:busy=3D3
+nvme0n1/hctx4/tags:cleared=3D7
+nvme0n1/hctx4/tags:bits_per_word=3D64
+nvme0n1/hctx4/tags:map_nr=3D16
+nvme0n1/hctx4/tags:alloc_hint=3D{899, 846, 390, 472, 73, 439}
+nvme0n1/hctx4/tags:wake_batch=3D8
+nvme0n1/hctx4/tags:wake_index=3D0
+nvme0n1/hctx4/tags:ws_active=3D0
+nvme0n1/hctx4/tags:ws=3D{
+nvme0n1/hctx4/tags:	{.wait=3Dinactive},
+nvme0n1/hctx4/tags:	{.wait=3Dinactive},
+nvme0n1/hctx4/tags:	{.wait=3Dinactive},
+nvme0n1/hctx4/tags:	{.wait=3Dinactive},
+nvme0n1/hctx4/tags:	{.wait=3Dinactive},
+nvme0n1/hctx4/tags:	{.wait=3Dinactive},
+nvme0n1/hctx4/tags:	{.wait=3Dinactive},
+nvme0n1/hctx4/tags:	{.wait=3Dinactive},
+nvme0n1/hctx4/tags:}
+nvme0n1/hctx4/tags:round_robin=3D0
+nvme0n1/hctx4/tags:min_shallow_depth=3D4294967295
+nvme0n1/hctx4/ctx_map:00000000: 01
+nvme0n1/hctx4/dispatch:00000000b335fa89 {.op=3DWRITE, .cmd_flags=3DNOMERGE,=
+ .rq_flags=3DDONTPREP|IO_STAT, .state=3Didle, .tag=3D78, .internal_tag=3D-1}
+nvme0n1/hctx4/flags:alloc_policy=3DFIFO SHOULD_MERGE
+nvme0n1/hctx4/state:SCHED_RESTART
+nvme0n1/hctx3/type:default
+nvme0n1/hctx3/dispatch_busy:0
+nvme0n1/hctx3/active:0
+nvme0n1/hctx3/run:296
+nvme0n1/hctx3/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx3/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx3/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx3/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx3/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx3/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx3/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx3/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx3/tags:nr_tags=3D1023
+nvme0n1/hctx3/tags:nr_reserved_tags=3D0
+nvme0n1/hctx3/tags:active_queues=3D0
+nvme0n1/hctx3/tags:bitmap_tags:
+nvme0n1/hctx3/tags:depth=3D1023
+nvme0n1/hctx3/tags:busy=3D0
+nvme0n1/hctx3/tags:cleared=3D23
+nvme0n1/hctx3/tags:bits_per_word=3D64
+nvme0n1/hctx3/tags:map_nr=3D16
+nvme0n1/hctx3/tags:alloc_hint=3D{862, 557, 480, 24, 841, 23}
+nvme0n1/hctx3/tags:wake_batch=3D8
+nvme0n1/hctx3/tags:wake_index=3D0
+nvme0n1/hctx3/tags:ws_active=3D0
+nvme0n1/hctx3/tags:ws=3D{
+nvme0n1/hctx3/tags:	{.wait=3Dinactive},
+nvme0n1/hctx3/tags:	{.wait=3Dinactive},
+nvme0n1/hctx3/tags:	{.wait=3Dinactive},
+nvme0n1/hctx3/tags:	{.wait=3Dinactive},
+nvme0n1/hctx3/tags:	{.wait=3Dinactive},
+nvme0n1/hctx3/tags:	{.wait=3Dinactive},
+nvme0n1/hctx3/tags:	{.wait=3Dinactive},
+nvme0n1/hctx3/tags:	{.wait=3Dinactive},
+nvme0n1/hctx3/tags:}
+nvme0n1/hctx3/tags:round_robin=3D0
+nvme0n1/hctx3/tags:min_shallow_depth=3D4294967295
+nvme0n1/hctx3/ctx_map:00000000: 00
+nvme0n1/hctx3/flags:alloc_policy=3DFIFO SHOULD_MERGE
+nvme0n1/hctx2/type:default
+nvme0n1/hctx2/dispatch_busy:0
+nvme0n1/hctx2/active:0
+nvme0n1/hctx2/run:279
+nvme0n1/hctx2/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx2/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx2/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx2/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx2/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx2/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx2/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx2/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx2/tags:nr_tags=3D1023
+nvme0n1/hctx2/tags:nr_reserved_tags=3D0
+nvme0n1/hctx2/tags:active_queues=3D0
+nvme0n1/hctx2/tags:bitmap_tags:
+nvme0n1/hctx2/tags:depth=3D1023
+nvme0n1/hctx2/tags:busy=3D0
+nvme0n1/hctx2/tags:cleared=3D16
+nvme0n1/hctx2/tags:bits_per_word=3D64
+nvme0n1/hctx2/tags:map_nr=3D16
+nvme0n1/hctx2/tags:alloc_hint=3D{960, 528, 145, 730, 447, 1002}
+nvme0n1/hctx2/tags:wake_batch=3D8
+nvme0n1/hctx2/tags:wake_index=3D0
+nvme0n1/hctx2/tags:ws_active=3D0
+nvme0n1/hctx2/tags:ws=3D{
+nvme0n1/hctx2/tags:	{.wait=3Dinactive},
+nvme0n1/hctx2/tags:	{.wait=3Dinactive},
+nvme0n1/hctx2/tags:	{.wait=3Dinactive},
+nvme0n1/hctx2/tags:	{.wait=3Dinactive},
+nvme0n1/hctx2/tags:	{.wait=3Dinactive},
+nvme0n1/hctx2/tags:	{.wait=3Dinactive},
+nvme0n1/hctx2/tags:	{.wait=3Dinactive},
+nvme0n1/hctx2/tags:	{.wait=3Dinactive},
+nvme0n1/hctx2/tags:}
+nvme0n1/hctx2/tags:round_robin=3D0
+nvme0n1/hctx2/tags:min_shallow_depth=3D4294967295
+nvme0n1/hctx2/ctx_map:00000000: 00
+nvme0n1/hctx2/flags:alloc_policy=3DFIFO SHOULD_MERGE
+nvme0n1/hctx1/type:default
+nvme0n1/hctx1/dispatch_busy:0
+nvme0n1/hctx1/active:0
+nvme0n1/hctx1/run:458
+nvme0n1/hctx1/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx1/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx1/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx1/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx1/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx1/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx1/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx1/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx1/tags:nr_tags=3D1023
+nvme0n1/hctx1/tags:nr_reserved_tags=3D0
+nvme0n1/hctx1/tags:active_queues=3D0
+nvme0n1/hctx1/tags:bitmap_tags:
+nvme0n1/hctx1/tags:depth=3D1023
+nvme0n1/hctx1/tags:busy=3D0
+nvme0n1/hctx1/tags:cleared=3D31
+nvme0n1/hctx1/tags:bits_per_word=3D64
+nvme0n1/hctx1/tags:map_nr=3D16
+nvme0n1/hctx1/tags:alloc_hint=3D{689, 284, 498, 188, 808, 610}
+nvme0n1/hctx1/tags:wake_batch=3D8
+nvme0n1/hctx1/tags:wake_index=3D0
+nvme0n1/hctx1/tags:ws_active=3D0
+nvme0n1/hctx1/tags:ws=3D{
+nvme0n1/hctx1/tags:	{.wait=3Dinactive},
+nvme0n1/hctx1/tags:	{.wait=3Dinactive},
+nvme0n1/hctx1/tags:	{.wait=3Dinactive},
+nvme0n1/hctx1/tags:	{.wait=3Dinactive},
+nvme0n1/hctx1/tags:	{.wait=3Dinactive},
+nvme0n1/hctx1/tags:	{.wait=3Dinactive},
+nvme0n1/hctx1/tags:	{.wait=3Dinactive},
+nvme0n1/hctx1/tags:	{.wait=3Dinactive},
+nvme0n1/hctx1/tags:}
+nvme0n1/hctx1/tags:round_robin=3D0
+nvme0n1/hctx1/tags:min_shallow_depth=3D4294967295
+nvme0n1/hctx1/ctx_map:00000000: 00
+nvme0n1/hctx1/flags:alloc_policy=3DFIFO SHOULD_MERGE
+nvme0n1/hctx0/type:default
+nvme0n1/hctx0/dispatch_busy:0
+nvme0n1/hctx0/active:0
+nvme0n1/hctx0/run:375
+nvme0n1/hctx0/tags_bitmap:00000000: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx0/tags_bitmap:00000010: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx0/tags_bitmap:00000020: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx0/tags_bitmap:00000030: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx0/tags_bitmap:00000040: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx0/tags_bitmap:00000050: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx0/tags_bitmap:00000060: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx0/tags_bitmap:00000070: 0000 0000 0000 0000 0000 0000 0000 0000
+nvme0n1/hctx0/tags:nr_tags=3D1023
+nvme0n1/hctx0/tags:nr_reserved_tags=3D0
+nvme0n1/hctx0/tags:active_queues=3D0
+nvme0n1/hctx0/tags:bitmap_tags:
+nvme0n1/hctx0/tags:depth=3D1023
+nvme0n1/hctx0/tags:busy=3D0
+nvme0n1/hctx0/tags:cleared=3D6
+nvme0n1/hctx0/tags:bits_per_word=3D64
+nvme0n1/hctx0/tags:map_nr=3D16
+nvme0n1/hctx0/tags:alloc_hint=3D{5, 18, 320, 448, 728, 9}
+nvme0n1/hctx0/tags:wake_batch=3D8
+nvme0n1/hctx0/tags:wake_index=3D0
+nvme0n1/hctx0/tags:ws_active=3D0
+nvme0n1/hctx0/tags:ws=3D{
+nvme0n1/hctx0/tags:	{.wait=3Dinactive},
+nvme0n1/hctx0/tags:	{.wait=3Dinactive},
+nvme0n1/hctx0/tags:	{.wait=3Dinactive},
+nvme0n1/hctx0/tags:	{.wait=3Dinactive},
+nvme0n1/hctx0/tags:	{.wait=3Dinactive},
+nvme0n1/hctx0/tags:	{.wait=3Dinactive},
+nvme0n1/hctx0/tags:	{.wait=3Dinactive},
+nvme0n1/hctx0/tags:	{.wait=3Dinactive},
+nvme0n1/hctx0/tags:}
+nvme0n1/hctx0/tags:round_robin=3D0
+nvme0n1/hctx0/tags:min_shallow_depth=3D4294967295
+nvme0n1/hctx0/ctx_map:00000000: 00
+nvme0n1/hctx0/flags:alloc_policy=3DFIFO SHOULD_MERGE
+nvme0n1/state:SAME_COMP|NONROT|IO_STAT|INIT_DONE|WC|FUA|REGISTERED|NOWAIT
+nvme0n1/pm_only:0
+
+This is without any of the patches Mikulas proposed.
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--OOaoeErUea6n3Riw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmVBtIEACgkQ24/THMrX
+1yzGNAf9G86nx39Hl8FvKLLalWaMf6/VbHw9VzbCawSkGhBs6Srbq1PwC0YDsb+p
+j1h+FLUaj7IsIxYjCY2k6bUiPBkoA4a+0jvKd8yROj1DWbbo++wibJ2yvXnOUmbD
+x0qgjPkBdOKcFk49wEtc13JAj3Fx+JQJM6ykvx+J4hCA/ar8Psu0TfskjAN6tCfA
+PZOg5oQsZ8zI9nJG5aPrWtuXDHrNXATcpC7Obs4UKdTq+ASFWl1K5/qc8EAmWO5G
+B6OSOYPeQx4VTZKecEaP0WvkdSfpvKrEswCX3mIGbCA1mXtSJd5C0A2GriM/TlBO
+Se2t0LvilG/fPDkuS3aHeHmd3qaYWQ==
+=GAoT
+-----END PGP SIGNATURE-----
+
+--OOaoeErUea6n3Riw--
