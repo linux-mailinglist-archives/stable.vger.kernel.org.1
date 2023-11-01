@@ -2,163 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E586E7DE3C6
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 16:37:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58E587DE089
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 12:52:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233988AbjKAP1L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 11:27:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50066 "EHLO
+        id S231617AbjKALw3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 07:52:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234084AbjKAP1J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 11:27:09 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6806119;
-        Wed,  1 Nov 2023 08:27:02 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.nyi.internal (Postfix) with ESMTP id B25295C0415;
-        Wed,  1 Nov 2023 11:27:01 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Wed, 01 Nov 2023 11:27:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-        cc:cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to; s=fm1; t=1698852421; x=
-        1698938821; bh=xCnRAnA71025ehVLm6DUJDLfmLjVFEx/xgBZes9V/dA=; b=n
-        Vmew0Pl0rKX5yfy7egRF0hT44hcafrFsk0zg2FnH7xU/MYGzcdOqEj69v29jhVZ4
-        ZU9D+d2iNynRdwOLi68s5eHK/HagLsxL7xgkXLIb5hZ9acJeVzBcI1LkOz9CJXBf
-        Q7f9Yv0y3Dgdyqx2kj1qYoaZgu5YEothGmcpmiPo4TrKtadOINbUW1n7AvHE8CJT
-        wPekbFMPHn38xz8e15nGjsAN02YhCcxtuFP6IYFqT9dB7/1x0dMrGMlfqxYbGMpf
-        x1xh8e0iMvrsomqTNNG63XI9G1ZrGwRsczm/6zdWnDKw0F0NDKDSnfKLiy03HO3S
-        npNgf6QFxIRgpMOKGcJXA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
-        :x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1698852421; x=
-        1698938821; bh=xCnRAnA71025ehVLm6DUJDLfmLjVFEx/xgBZes9V/dA=; b=e
-        qMDTiss8SbmK/ooT81K7oc4vE2p3T/MC4YIgy6yoPQplO2w9/iqUA2AVP5Ka/TNV
-        jN6jv/Sj9OtYictwjvImnedGD3eYa6hcWjUMZzhdomoSLne06ljXHWfiNUYgDui4
-        SakSxT5k4Zw54dKcjau4uHMZNNJFBgfjbP+Yexs2Fm0B5km/FbBG62vyuJmTE1ss
-        anC+aeZNqZH7jhxThBjGf4f8EB8L0fmgzVH3bKwU+l6JaoyALflg+h1ct7tOZ71i
-        8P8zpjh/9EVvz9dZq1Ag9sXBC7+zyUcd77KiIPwFwy2QHqQgAQsMZ7Z2mJXiOjDY
-        NouzkjbV4Eqi5T70srFoQ==
-X-ME-Sender: <xms:RW5CZUJZ17ePgnSNKrzCGaIGRpAUZO_N5mvzhiUjwDMBEz9rlEoEOQ>
-    <xme:RW5CZUJpsI2sOZ_gHfM56s6f-MI9AmicPmE7fi4-NlgOX4HPg5GmLUoy5P0KSz4rT
-    V-mNl4-Nhqj8UnmCdg>
-X-ME-Received: <xmr:RW5CZUt15g7XRXMGNySlzmVMgp8l-jW4ArDZeE5Vzlb3ewESRHEwRblEzOWo2p8hPhT-7AptnmI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtgedgjeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtke
-    ertdertddtnecuhfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghn
-    ghesfhhlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepkeetuefhiefgleegie
-    duveefffefteeltddtffeikedtgfevgfduueehfffhgeffnecuffhomhgrihhnpehkvghr
-    nhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfh
-    hrohhmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:RW5CZRa_iNVSQfQPtZIzHGe8WIoDgDrUaHKddZ6Ieij5gWarsJjD7w>
-    <xmx:RW5CZbbkcj-u4nU4Ub3ujXkna-rCEC-JMRElOtrVmvRmwIgxPQNunw>
-    <xmx:RW5CZdCBFWpos3PEYPRanOy1_vvW7hC7dL82s8yhPYDk_HKxpPTNjQ>
-    <xmx:RW5CZQOTtTntZX6foFxN1rxu1g4Hk1ODoOjO5vYsC2FuwJf_Our7rQ>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 1 Nov 2023 11:27:00 -0400 (EDT)
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-To:     linux-pci@vger.kernel.org
-Cc:     lpieralisi@kernel.org, kw@linux.com, robh@kernel.org,
-        linux-kernel@vger.kernel.org, chenhuacai@kernel.org,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
-Subject: [PATCH fixes v4] pci: loongson: Workaround MIPS firmware MRRS settings
-Date:   Wed,  1 Nov 2023 11:49:57 +0000
-Message-Id: <20231101114957.309902-2-jiaxun.yang@flygoat.com>
+        with ESMTP id S231538AbjKALw3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 07:52:29 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CD18BDC;
+        Wed,  1 Nov 2023 04:52:26 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 47ADF2F4;
+        Wed,  1 Nov 2023 04:53:08 -0700 (PDT)
+Received: from e127643.broadband (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7E1783F67D;
+        Wed,  1 Nov 2023 04:52:23 -0700 (PDT)
+From:   James Clark <james.clark@arm.com>
+To:     coresight@lists.linaro.org, suzuki.poulose@arm.com,
+        anshuman.khandual@arm.com, mike.leach@linaro.org
+Cc:     James Clark <james.clark@arm.com>, stable@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Pratik Patel <pratikp@codeaurora.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kaixu Xia <xiakaixu@huawei.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] coresight: etm4x: Fix width of CCITMIN field
+Date:   Wed,  1 Nov 2023 11:52:06 +0000
+Message-Id: <20231101115206.70810-1-james.clark@arm.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231101114957.309902-1-jiaxun.yang@flygoat.com>
-References: <20231101114957.309902-1-jiaxun.yang@flygoat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is a partial revert of commit 8b3517f88ff2 ("PCI:
-loongson: Prevent LS7A MRRS increases") for MIPS based Loongson.
+CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
+This probably wasn't an issue previously because values higher than 255
+never occurred.
 
-There are many MIPS based Loongson systems in wild that
-shipped with firmware which does not set maximum MRRS properly.
+But since commit 0f55b43dedcd ("coresight: etm: Override TRCIDR3.CCITMIN
+on errata affected cpus"), a comparison with 256 was done to enable the
+errata, generating the following W=1 build error:
 
-Limiting MRRS to 256 for all as MIPS Loongson comes with higher
-MRRS support is considered rare.
+  coresight-etm4x-core.c:1188:24: error: result of comparison of
+  constant 256 with expression of type 'u8' (aka 'unsigned char') is
+  always false [-Werror,-Wtautological-constant-out-of-range-compare]
 
-It must be done at device enablement stage because hardware will
-reset MRRS to inavlid value if a device got disabled.
+   if (drvdata->ccitmin == 256)
 
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217680
-Fixes: 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases")
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: James Clark <james.clark@arm.com>
 ---
-v4: Improve commit message
 
-This is a partial revert of the origin quirk so there shouldn't
-be any drama.
----
- drivers/pci/controller/pci-loongson.c | 38 +++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+Changes since V1:
+  * Change the fixes commit to the original addition of ccitmin, rather
+    than the last refactor of the struct.
 
-diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/controller/pci-loongson.c
-index d45e7b8dc530..d184d7b97e54 100644
---- a/drivers/pci/controller/pci-loongson.c
-+++ b/drivers/pci/controller/pci-loongson.c
-@@ -108,6 +108,44 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
- 			DEV_LS7A_PCIE_PORT6, loongson_mrrs_quirk);
- 
-+#ifdef CONFIG_MIPS
-+static void loongson_old_mrrs_quirk(struct pci_dev *pdev)
-+{
-+	struct pci_bus *bus = pdev->bus;
-+	struct pci_dev *bridge;
-+	static const struct pci_device_id bridge_devids[] = {
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS2K_PCIE_PORT0) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT0) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT1) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT2) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT3) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT4) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT5) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT6) },
-+		{ 0, },
-+	};
-+
-+	/* look for the matching bridge */
-+	while (!pci_is_root_bus(bus)) {
-+		bridge = bus->self;
-+		bus = bus->parent;
-+		/*
-+		 * There are still some wild MIPS Loongson firmware won't
-+		 * set MRRS properly. Limiting MRRS to 256 as MIPS Loongson
-+		 * comes with higher MRRS support is considered rare.
-+		 */
-+		if (pci_match_id(bridge_devids, bridge)) {
-+			if (pcie_get_readrq(pdev) > 256) {
-+				pci_info(pdev, "limiting MRRS to 256\n");
-+				pcie_set_readrq(pdev, 256);
-+			}
-+			break;
-+		}
-+	}
-+}
-+DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_old_mrrs_quirk);
-+#endif
-+
- static void loongson_pci_pin_quirk(struct pci_dev *pdev)
- {
- 	pdev->pin = 1 + (PCI_FUNC(pdev->devfn) & 3);
+ drivers/hwtracing/coresight/coresight-etm4x.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
+index 20e2e4cb7614..da17b6c49b0f 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -1036,7 +1036,7 @@ struct etmv4_drvdata {
+ 	u8				ctxid_size;
+ 	u8				vmid_size;
+ 	u8				ccsize;
+-	u8				ccitmin;
++	u16				ccitmin;
+ 	u8				s_ex_level;
+ 	u8				ns_ex_level;
+ 	u8				q_support;
 -- 
 2.34.1
 
