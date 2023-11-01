@@ -2,96 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D847E7DE363
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 16:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5947A7DE3BB
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 16:37:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231550AbjKAO5k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 10:57:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60512 "EHLO
+        id S233310AbjKAPFU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 11:05:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231403AbjKAO5j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 10:57:39 -0400
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 929A5FC;
-        Wed,  1 Nov 2023 07:57:37 -0700 (PDT)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-1ef370c2e1aso4418191fac.2;
-        Wed, 01 Nov 2023 07:57:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698850655; x=1699455455; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q0SsjUbKqrLXwVrRZWhYjp20BgDkLo5Efc4GdwHjgsE=;
-        b=DczJItZqDX1AGfcq1buTlM05s7IIVPte0R0RGA1rSu7gdH7vnsvDsNEC67iRpHD0cX
-         mvGNWTE80foP++TlnXvcY+qv4GAm6MXix0KOrWA3EbJIz2mYF1yHOHMjFwkRpGGYjHrk
-         oBCscetNJBdaYfJArCYYnX+vRqr8sUnW6rtPPV19mQZuopYK0IWLhjLyH2IIi5lred5o
-         4Y6JjjcJr+T5Et2F0fx9or366zQZuBEwkkoXBboEDjD1QmKlxn3E4lha7qefFRgeICKj
-         cPqcPYatD2GHPWw0CYWjC9bWVYBoNurkYQ5diMPluNZk0kn2p0M6zi3aKpP34KXsvFyi
-         /Xew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698850655; x=1699455455;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q0SsjUbKqrLXwVrRZWhYjp20BgDkLo5Efc4GdwHjgsE=;
-        b=vRlLsnpl5eH4pb46m45qYE+fLBL759z5c0wJoRkUa7ndauErd0uWCpjv1IoRFv9b1W
-         z3WT9jZGwoVmgS02GYPzjMnDK/TIHdbXWta9kqGnOGX80H9pUL8dduIS2XDv2JmFlkW8
-         F74aRqVWbesDQ2WXfYnZ4H23lpVbV7lExsM9b7saaHYviWoHiNS3zaXiFQUpb/hzrZ6m
-         gE0kKtmsnTXdytT4VitVNgVmMJporjWxWrnsWi6KBiowRdgKJ+CWG1NQLk35wA3TCi8t
-         dXE68Vz9nB7X28dVkL2jVG4gLjZxQsmSeD31ozg+zQJbCf3YSfaJHpEuKXmdRGLXIC5P
-         +SjA==
-X-Gm-Message-State: AOJu0Yzrj01pEsjh4p8bSxSSJEvO3VmCYw4KxAtuj1S1WmSLi9VNS60m
-        GOnfn/kQPaAbLutJoIoGNPU=
-X-Google-Smtp-Source: AGHT+IExZAyNU+7ZyeX8jdCMON9WDnbnuyvAYzflVYrli9zHL9lKASscJ8JjLdkOqzBhBFxbo8vj/w==
-X-Received: by 2002:a05:6870:9d98:b0:1e9:c2b7:2c99 with SMTP id pv24-20020a0568709d9800b001e9c2b72c99mr21241281oab.33.1698850655241;
-        Wed, 01 Nov 2023 07:57:35 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id ji21-20020a0568707b5500b001efa91630f6sm262387oab.6.2023.11.01.07.57.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Nov 2023 07:57:34 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 1 Nov 2023 07:57:33 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 00/86] 6.1.61-rc1 review
-Message-ID: <fd7e4e09-bad9-496e-99f5-2bb029e1f304@roeck-us.net>
-References: <20231031165918.608547597@linuxfoundation.org>
+        with ESMTP id S233066AbjKAPFQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 11:05:16 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E886F182;
+        Wed,  1 Nov 2023 08:05:05 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qyCmF-0001LJ-J3; Wed, 01 Nov 2023 16:05:03 +0100
+Message-ID: <74466a74-0c42-40ce-8176-ba7ba56cb6d6@leemhuis.info>
+Date:   Wed, 1 Nov 2023 16:05:03 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Nouveau] Fwd: System (Xeon Nvidia) hangs at boot terminal after
+ kernel 6.4.7
+Content-Language: en-US, de-DE
+From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+To:     Linux Regressions <regressions@lists.linux.dev>
+Cc:     Linux Nouveau <nouveau@lists.freedesktop.org>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux DRI Development <dri-devel@lists.freedesktop.org>
+References: <4b0c06ba-b05c-071c-d494-67775bd7250f@gmail.com>
+ <94a31824-016a-7fe3-7477-e3ab500844c1@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <94a31824-016a-7fe3-7477-e3ab500844c1@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1698851106;56e0a1e2;
+X-HE-SMSGID: 1qyCmF-0001LJ-J3
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 31, 2023 at 06:00:25PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.61 release.
-> There are 86 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 02 Nov 2023 16:59:03 +0000.
-> Anything received after that time might be too late.
-> 
+[TLDR: This mail in primarily relevant for Linux kernel regression
+tracking. See link in footer if these mails annoy you.]
 
-Build results:
-	total: 157 pass: 157 fail: 0
-Qemu test results:
-	total: 529 pass: 529 fail: 0
+On 10.08.23 06:19, Thorsten Leemhuis wrote:
+> On 10.08.23 05:03, Bagas Sanjaya wrote:
+>>
+>> I notice a regression report on Bugzilla [1]. Quoting from it:
+>>
+>> [...]
+>> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217776
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+#regzbot link: https://gitlab.freedesktop.org/drm/nouveau/-/issues/255
+#regzbot fix: 6eb4a83e612af65bab8492957cba
+#regzbot ignore-activity
 
-Guenter
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
+
