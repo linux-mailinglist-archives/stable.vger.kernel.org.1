@@ -2,70 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88E8B7DE232
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 15:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 306CF7DE220
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 15:14:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235121AbjKAOAA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 10:00:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39246 "EHLO
+        id S235583AbjKAOL7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 10:11:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343582AbjKAN77 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 09:59:59 -0400
-Received: from mail-vk1-xa2f.google.com (mail-vk1-xa2f.google.com [IPv6:2607:f8b0:4864:20::a2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1FDB10C
-        for <stable@vger.kernel.org>; Wed,  1 Nov 2023 06:59:52 -0700 (PDT)
-Received: by mail-vk1-xa2f.google.com with SMTP id 71dfb90a1353d-495eb6e2b80so2239695e0c.1
-        for <stable@vger.kernel.org>; Wed, 01 Nov 2023 06:59:52 -0700 (PDT)
+        with ESMTP id S235523AbjKAOL6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 10:11:58 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 068CB10F;
+        Wed,  1 Nov 2023 07:11:54 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-53d9f001b35so11273611a12.2;
+        Wed, 01 Nov 2023 07:11:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1698847192; x=1699451992; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1698847912; x=1699452712; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XgR3nF6EZLqp/H8kxFE33E+SA9d5i66IyhQCWYiF368=;
-        b=EujWtprud9yMrJv4kqSj1vZmlpvwoYbY1djYnuPVjZtLWtTLjF8sxs78Xbn0KAJhas
-         r71XTVdg+i8lIoT4RHV95dujb3GRJ4oBUYnsXrWP9aRSJCnJ4WSUNX2tC92VDIAz4Jkr
-         BGKsUu0WlL46ZKpXAEbJqv09cYVPrxJOSgsllCwRtiCRDJSmjkvnDd6r0jJsESfuPMLz
-         M/5n/JtcgUCJ6J00wG9eWcpmxZly6Nphq6Svos5gn/M7Zlmwt/Y+dEg/3ypMbXbzl+O8
-         biCaPINUsT4RO2Xs7pWnoOmxu5rfobuP1eCDjyKYM/8EI9vEScxYk4mErxWl6whttRAi
-         9t5A==
+        bh=0QUmuCahrXz9QtT0sHWIYLvC83NtAQFvVCj6txbIwhU=;
+        b=TPold3FhKjOjJzbQDDsZlfk0agnA3e3TlYIWTPkXvkvJ1/3NOxWienkU1WiuSNE4+B
+         8fcqAzxh9cYwZItUFCXdxJpQ/0H+hN7Oi5ZyvCd52t3dbL72vLbGsE7QQlJZS8d+u2Bk
+         rlRK96HQ7xX3qMB0vfeMRb+wymNTIIMaC9VoMW0VfUPXQp1hc8K07Y1cq2oI6UyW5mzF
+         /MKe8J8zH/w2gUTtnm6cD3VevXqlzghXgS2b8e/WnHaIO8aOez/R7Lx3yOYuv6RH2KVU
+         Kojb+JWr2E8L7Sa14YdcnV9ONRd3tZqBv9Q+cRFznnf598ENEUlg6sM8dujBoepCSzY6
+         jvGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698847192; x=1699451992;
+        d=1e100.net; s=20230601; t=1698847912; x=1699452712;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XgR3nF6EZLqp/H8kxFE33E+SA9d5i66IyhQCWYiF368=;
-        b=ALZHPuK/BejfX9JPfB9f32LbnlH7T6pQVjQu/a6ubv1lHC2RiYjXyShsfeAWSqNk2Y
-         JAsFd63NRlqzjwvKpFt4Y2A2uAEY3BqJmdOCJVG1V/KmCN6cv+C/c/yrugnLXfrtxpZF
-         71T4Y6lTVgndXchVdHTxng6idec0uPtjwernKvfJKFUKbNj4JTjPeJc8T18D5VSok0d3
-         bGzgohwKPdNsNpYcf9R4NCBx7dAR+/qRt7Bb+nvIlYSVFYhaGQ8F1hzM3V8rc9AlTH0L
-         PGmZ3SNcDCL32cTG9qI6a+XIhvOWBxMJm18W+jC4jV3yAAcpcvWFHQxdqRpVL98jD0AG
-         0Sww==
-X-Gm-Message-State: AOJu0Yx8KQ9eIxnOL+lxN0H5Dn6xY1wU7URK8zkXJZKNY8AlO3Fp1lz6
-        YjWWQy68XGhQaJulAQoB315vmEtl3ebPMWdIbFM1dg==
-X-Google-Smtp-Source: AGHT+IHW8V1lpNIY3CAfyhi0XQek+S8lZMVyeE6Df+lCTa+Lo5LiXqssWb20eDJxfDl2hfODwffDXgN+IOHOhSHe2FM=
-X-Received: by 2002:a67:c083:0:b0:457:c17a:d34 with SMTP id
- x3-20020a67c083000000b00457c17a0d34mr10681087vsi.2.1698847191929; Wed, 01 Nov
- 2023 06:59:51 -0700 (PDT)
+        bh=0QUmuCahrXz9QtT0sHWIYLvC83NtAQFvVCj6txbIwhU=;
+        b=Chy/bKIJdrltqIRVOQcW0Lz1zzw9CczA893Fn4dQmXmY/1Gt5Ar3VQfjZdjTAYO9CG
+         D8gXruoLo8vbb65OXUWmcr0HKD8WPgmcriQKvdEUzuRpu0IvYe+RxrdAwrI99TLUXXHu
+         aa03ashmo+QQM+hfqIysSm6xfmH7vd/CC/k72W6pPuYDo67jjIpp5VJv4FChLmARN13t
+         BRL9jjz7FDnEN/aF4LKj5jk3mtvwAVtqxRE7R0+IP3eiBjND8BFU7AakUK3cLeFXTCe9
+         ZSQ0HADD7weeSnLBrzZapKCs2pB0degcOOV9YAPscLddyvTVGcHOjP984Ih5pS+MLw4r
+         yAyw==
+X-Gm-Message-State: AOJu0YxCF/WlN2YtjwFs1qpy6ComZ6JFiFcGhsWGbo3pYL14AEQpXEYF
+        f3RA4bAA4p6+FP+9FyQLYU8EuJkR4jc2C5GQGvvXu8DzRv0=
+X-Google-Smtp-Source: AGHT+IG9PRuUvcdRBBnWW3qxr8Ys0iAvPjdLcRlrUpbF+IxwgqCut0kbYS3npzf8/lQAVte32nN+3+Y8Wp9IzbMhb9w=
+X-Received: by 2002:a50:d094:0:b0:540:302c:71d7 with SMTP id
+ v20-20020a50d094000000b00540302c71d7mr14222544edd.26.1698847911707; Wed, 01
+ Nov 2023 07:11:51 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231031165918.608547597@linuxfoundation.org>
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 1 Nov 2023 19:29:40 +0530
-Message-ID: <CA+G9fYs7JCie4Vb2=A2oAVVDHyo6KMv1szqqPzSrE7NS4k3XQg@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/86] 6.1.61-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+References: <20231011193444.81254-1-jandryuk@gmail.com>
+In-Reply-To: <20231011193444.81254-1-jandryuk@gmail.com>
+From:   Jason Andryuk <jandryuk@gmail.com>
+Date:   Wed, 1 Nov 2023 10:11:39 -0400
+Message-ID: <CAKf6xpuJe6Cza6bow3QxDGf1viu0kish7Y8YRN8haXL1oEF3HA@mail.gmail.com>
+Subject: Re: [PATCH v3] Input: xen-kbdfront - drop keys to shrink modalias
+To:     linux-kernel@vger.kernel.org,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc:     Phillip Susi <phill@thesusis.net>, stable@vger.kernel.org,
+        Mattijs Korpershoek <mkorpershoek@baylibre.com>,
+        linux-input@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,172 +70,97 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 31 Oct 2023 at 22:32, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+Hi Dmitry,
+
+Do you have any feedback or can you pick this up?
+
+Thanks,
+Jason
+
+On Wed, Oct 11, 2023 at 3:34=E2=80=AFPM Jason Andryuk <jandryuk@gmail.com> =
+wrote:
 >
-> This is the start of the stable review cycle for the 6.1.61 release.
-> There are 86 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> xen kbdfront registers itself as being able to deliver *any* key since
+> it doesn't know what keys the backend may produce.
 >
-> Responses should be made by Thu, 02 Nov 2023 16:59:03 +0000.
-> Anything received after that time might be too late.
+> Unfortunately, the generated modalias gets too large and uevent creation
+> fails with -ENOMEM.
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.61-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
+> This can lead to gdm not using the keyboard since there is no seat
+> associated [1] and the debian installer crashing [2].
 >
-> thanks,
+> Trim the ranges of key capabilities by removing some BTN_* ranges.
+> While doing this, some neighboring undefined ranges are removed to trim
+> it further.
 >
-> greg k-h
-
-
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.1.61-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: d87fdfa71a8c82a481a41421b387544c7012b21e
-* git describe: v6.1.60-87-gd87fdfa71a8c
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.6=
-0-87-gd87fdfa71a8c
-
-## Test Regressions (compared to v6.1.60)
-
-## Metric Regressions (compared to v6.1.60)
-
-## Test Fixes (compared to v6.1.60)
-
-## Metric Fixes (compared to v6.1.60)
-
-## Test result summary
-total: 123155, pass: 104208, fail: 2398, skip: 16422, xfail: 127
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 147 total, 147 passed, 0 failed
-* arm64: 49 total, 49 passed, 0 failed
-* i386: 37 total, 37 passed, 0 failed
-* mips: 26 total, 26 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 34 total, 34 passed, 0 failed
-* riscv: 12 total, 12 passed, 0 failed
-* s390: 12 total, 12 passed, 0 failed
-* sh: 12 total, 12 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 42 total, 42 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-* v4l2-complianciance
-
---
-Linaro LKFT
-https://lkft.linaro.org
+> An upper limit of KEY_KBD_LCD_MENU5 is still too large.  Use an upper
+> limit of KEY_BRIGHTNESS_MENU.
+>
+> This removes:
+> BTN_DPAD_UP(0x220)..BTN_DPAD_RIGHT(0x223)
+> Empty space 0x224..0x229
+>
+> Empty space 0x28a..0x28f
+> KEY_MACRO1(0x290)..KEY_MACRO30(0x2ad)
+> KEY_MACRO_RECORD_START          0x2b0
+> KEY_MACRO_RECORD_STOP           0x2b1
+> KEY_MACRO_PRESET_CYCLE          0x2b2
+> KEY_MACRO_PRESET1(0x2b3)..KEY_MACRO_PRESET3(0xb5)
+> Empty space 0x2b6..0x2b7
+> KEY_KBD_LCD_MENU1(0x2b8)..KEY_KBD_LCD_MENU5(0x2bc)
+> Empty space 0x2bd..0x2bf
+> BTN_TRIGGER_HAPPY(0x2c0)..BTN_TRIGGER_HAPPY40(0x2e7)
+> Empty space 0x2e8..0x2ff
+>
+> The modalias shrinks from 2082 to 1550 bytes.
+>
+> A chunk of keys need to be removed to allow the keyboard to be used.
+> This may break some functionality, but the hope is these macro keys are
+> uncommon and don't affect any users.
+>
+> [1] https://github.com/systemd/systemd/issues/22944
+> [2] https://lore.kernel.org/xen-devel/87o8dw52jc.fsf@vps.thesusis.net/T/
+>
+> Cc: Phillip Susi <phill@thesusis.net>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
+> Reviewed-by: Mattijs Korpershoek <mkorpershoek@baylibre.com>
+> ---
+> v3:
+> Add Mattijs R-b
+> Put /* and */ on separate lines
+> ---
+>  drivers/input/misc/xen-kbdfront.c | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/input/misc/xen-kbdfront.c b/drivers/input/misc/xen-k=
+bdfront.c
+> index 67f1c7364c95..d59ba8f9852e 100644
+> --- a/drivers/input/misc/xen-kbdfront.c
+> +++ b/drivers/input/misc/xen-kbdfront.c
+> @@ -256,7 +256,16 @@ static int xenkbd_probe(struct xenbus_device *dev,
+>                 __set_bit(EV_KEY, kbd->evbit);
+>                 for (i =3D KEY_ESC; i < KEY_UNKNOWN; i++)
+>                         __set_bit(i, kbd->keybit);
+> -               for (i =3D KEY_OK; i < KEY_MAX; i++)
+> +               /*
+> +                * In theory we want to go KEY_OK..KEY_MAX, but that grow=
+s the
+> +                * modalias line too long.  There is a gap of buttons fro=
+m
+> +                * BTN_DPAD_UP..BTN_DPAD_RIGHT and KEY_ALS_TOGGLE is the =
+next
+> +                * defined. Then continue up to KEY_BRIGHTNESS_MENU as an=
+ upper
+> +                * limit.
+> +                */
+> +               for (i =3D KEY_OK; i < BTN_DPAD_UP; i++)
+> +                       __set_bit(i, kbd->keybit);
+> +               for (i =3D KEY_ALS_TOGGLE; i <=3D KEY_BRIGHTNESS_MENU; i+=
++)
+>                         __set_bit(i, kbd->keybit);
+>
+>                 ret =3D input_register_device(kbd);
+> --
+> 2.41.0
+>
