@@ -2,149 +2,188 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E1D07DDF10
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 11:09:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C85CD7DDF1F
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 11:15:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234502AbjKAKJt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 06:09:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46744 "EHLO
+        id S231388AbjKAKPO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 06:15:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231719AbjKAKJs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 06:09:48 -0400
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4043DA;
-        Wed,  1 Nov 2023 03:09:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SAWD9sMirlmwd7OoI1m2zk0z/SoiNEfxg/4Km/6fH9RgsuwERJzAr2+swj5Kb1R7aJ85d3xmhDV84oVDwJXk1jYroPi1IjZeQ9gGb1e31gLMUbKpyGqO0NiYw4TBbfYwqxE1SSKDsoLv7yoA1bjA41ICZqRaqj6zMibM4rbIbE4me38aBstze6+Ld4dM4KZqVvk8RGZv6yuByFiXP/EXM/EpvgSUWwGBS8nS6j8/w2mTLJMeDlH5vxoDsmoGHtppUV+PxdwLO/B8yc3WzE0Mz9G63LlxXuZLtDNkii/WcVQ24vzfTM89L06eq/J3X5zMg6zOmIMn3JKLvt5vVhtF+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2+L+j1WB3oPqRLtGjcIIBfuWONj/6O/8GnttOq5N1Cc=;
- b=cUz5AWhK0Cdi9aKuKIAmYgMWUaK/yGh6HSz4VjBwmlJ5yipswNBOVnAKCb0gOImbduif8Q8DGQmHtyQzT3LN3SQDKSmtx2himi8gyNNGAWZEkzo7FO/29UIVHBuwhBaz4plsM0EPxD3sPXTiEqVTRVjBlA+JCG/f/7tMagLesFWnbg3ff/+ddrc+qXgqYpkl5Jw/wxOmuf65iKEYdOvFVtRXJbSXrKX4vZZZhxbvJadCq+bF19WQEyeLe2WtqP61mFwiWBPHhj9FV8VSAcArM3wPA/fr1A6ii3fStkVmQxUK/zkAhTE9qW4n7dyqFcMWMMnV8/85k4k8j8TQP591AQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2+L+j1WB3oPqRLtGjcIIBfuWONj/6O/8GnttOq5N1Cc=;
- b=QJCwG1CUZtzQhlUQq8sHE18qfVw7UKIXB6e16gzrM/uJJb3AWTdPA9tss93gC/hEXUOpsye+swGL401rLkdlsjBDWOxgju5ZX3UNEwpNtX78rkZaLkLTLm/btjUzRD4bGk68CuRfOJ6NWIsd+RMk8KjfvVtjOTq/xvSoKggpVCNGtIio7QfoUnrHnSyWL81Vb2az4EidSbuxIWd7D57Sk3cdEbqMOxsSHyaKqx3C0qajNpeEayrGsn8inW/Lc3XAF7khq0MV92araj7VpQfGfkjzd7HNBmVdyqWF5rr3MpIIOAZcZ6Zy2usa7p2/2XMez6H6/vXuo7wtXbDYIf/YtQ==
-Received: from BL1PR13CA0350.namprd13.prod.outlook.com (2603:10b6:208:2c6::25)
- by DM4PR12MB7527.namprd12.prod.outlook.com (2603:10b6:8:111::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6933.29; Wed, 1 Nov
- 2023 10:09:07 +0000
-Received: from BL02EPF0001A108.namprd05.prod.outlook.com
- (2603:10b6:208:2c6:cafe::34) by BL1PR13CA0350.outlook.office365.com
- (2603:10b6:208:2c6::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.19 via Frontend
- Transport; Wed, 1 Nov 2023 10:09:07 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL02EPF0001A108.mail.protection.outlook.com (10.167.241.138) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6954.19 via Frontend Transport; Wed, 1 Nov 2023 10:09:07 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 1 Nov 2023
- 03:08:51 -0700
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 1 Nov 2023
- 03:08:50 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Wed, 1 Nov 2023 03:08:50 -0700
-From:   Jon Hunter <jonathanh@nvidia.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>,
-        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.1 00/86] 6.1.61-rc1 review
-In-Reply-To: <20231031165918.608547597@linuxfoundation.org>
-References: <20231031165918.608547597@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+        with ESMTP id S233631AbjKAKPN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 06:15:13 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D419CE8;
+        Wed,  1 Nov 2023 03:15:07 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id B28341F74D;
+        Wed,  1 Nov 2023 10:15:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1698833704; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9jjfndRN0o/qN0WgqtkcVkame02NBTvybODA5DUFQdM=;
+        b=JBrOF4N+H7Qu68rgXIVpiR4ij70g9zGB4RB2XwdJTf9uHOMn1LSON24WmYk6DmjD9/juzp
+        q5pHyWnCi8n4KVVn4jYMiJoaOe3x/rdleeCkZnIvzhtyf+onXKJoMs9E/VUeEB/jtWok5g
+        IYQ8IOVD9xWipD4chrwK72kEDtPtOuo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1698833704;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=9jjfndRN0o/qN0WgqtkcVkame02NBTvybODA5DUFQdM=;
+        b=b83TNYrCuySV4g9tpLH7UrvpqfJGJ9NVzmB5hA8RmFun7QJ+jVo/tD9DOF1USrlTG9hFqA
+        8U6fVqecOGuBhhDw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 41DD41348D;
+        Wed,  1 Nov 2023 10:15:03 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id 5ZCsDCclQmVCGwAAMHmgww
+        (envelope-from <hare@suse.de>); Wed, 01 Nov 2023 10:15:03 +0000
+Message-ID: <ab02413f-4bf2-4d92-baf7-62fbd106f5df@suse.de>
+Date:   Wed, 1 Nov 2023 11:15:02 +0100
 MIME-Version: 1.0
-Message-ID: <10a056d6-4b42-41cd-a1d5-67d3f2c7a73b@rnnvmail202.nvidia.com>
-Date:   Wed, 1 Nov 2023 03:08:50 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A108:EE_|DM4PR12MB7527:EE_
-X-MS-Office365-Filtering-Correlation-Id: b51df2c2-7ea3-4311-b51e-08dbdac295c9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: ehPfCFpi3kbCAyKcCUgOVUDztuyrkts7VduzmQDw3z2rVThcW7cxuuWB9sapn9OhL953XFya6gKyuhvzoUFV6JVPeajBzNVIMFnrH8WufIXA0AzsyvfO/vasfhkI3pHftslX2CEc6jq2gpSyt6MUHs/Xk0QLniCY5bdiRoRRxhn1171jKFCG2656jTkLGBeWkkXCOXB6C2uVegTwMb3ayPSgKQvSk6TcMIhJS1UxHDhac8sm+6tq8oPZFngpwHAMvDKjNfajBHCXa8fifcWnTnDWbSKd4Szx26OP/8cpuUv62O7L44aXehL5VkTfRI1u4mFoGxE+Jw4GpKSnb/MiN6e5ZIl8c5O0NLDh8DlJt9Ox0533v1TYrRj2gzwDEJwhX2h/R6AR7smjNHIBATFMD3F8mNiOYVcPBb3/z1E59x06IKAsSNl/o5+LZk31w5jDGAR++wWdiAuMXthmY6XLrBac7Kq2olhQZSxshV7+/hzvOq5DFQYEmq6v/I5MynWnqpQyVdiui+bFRIudYqrDMcW0qDFpiA1VmKirhuOzz20KdZWZXv1sO32VUWUySLgE9R5OCoI5Ivxj0VdFBSuY2jLfZq1df1pVoUf/6lMiv+YrmsDzlk6m5ms9AJvLQSl1sve48Y9TLP1rbJr3YY8mACPyHgJNNXlCY4sLBG+8GYp8AOKVenR/ZO4oXlitH3e9hscOa/DCss2OOA6AWoKvhM1QXW/PptUEczNnxg4bo6rwOjl52X4M8dydvK59xMDcBUagFHBOsA+X8Lmyc4IDwmW7NpOUF4iv5YmbuQw/NxM=
-X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(136003)(346002)(376002)(396003)(39860400002)(230922051799003)(451199024)(64100799003)(186009)(82310400011)(1800799009)(36840700001)(46966006)(40470700004)(7416002)(40460700003)(40480700001)(426003)(336012)(26005)(31696002)(86362001)(36860700001)(356005)(82740400003)(7636003)(966005)(47076005)(2906002)(478600001)(70586007)(31686004)(41300700001)(54906003)(316002)(70206006)(6916009)(8936002)(4326008)(8676002)(5660300002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Nov 2023 10:09:07.2560
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b51df2c2-7ea3-4311-b51e-08dbdac295c9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A108.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7527
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Content-Language: en-US
+To:     Ming Lei <tom.leiming@gmail.com>,
+        =?UTF-8?Q?Marek_Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+Cc:     Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org, linux-block@vger.kernel.org,
+        linux-nvme@lists.infradead.org, ming.lei@redhat.com
+References: <ZT+wDLwCBRB1O+vB@mail-itl>
+ <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
+ <20231030155603.k3kejytq2e4vnp7z@quack3> <ZT/e/EaBIkJEgevQ@mail-itl>
+ <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com> <ZUB5HFeK3eHeI8UH@mail-itl>
+ <20231031140136.25bio5wajc5pmdtl@quack3> <ZUEgWA5P8MFbyeBN@mail-itl>
+ <CACVXFVOEWDyzasS7DWDvLOhC3Hr6qOn5ks3HLX+fbRYCxYv26w@mail.gmail.com>
+ <ZUG0gcRhUlFm57qN@mail-itl> <ZUHE52SznRaZQxnG@fedora>
+From:   Hannes Reinecke <hare@suse.de>
+In-Reply-To: <ZUHE52SznRaZQxnG@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 31 Oct 2023 18:00:25 +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.61 release.
-> There are 86 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 11/1/23 04:24, Ming Lei wrote:
+> On Wed, Nov 01, 2023 at 03:14:22AM +0100, Marek Marczykowski-Górecki wrote:
+>> On Wed, Nov 01, 2023 at 09:27:24AM +0800, Ming Lei wrote:
+>>> On Tue, Oct 31, 2023 at 11:42 PM Marek Marczykowski-Górecki
+>>> <marmarek@invisiblethingslab.com> wrote:
+>>>>
+>>>> On Tue, Oct 31, 2023 at 03:01:36PM +0100, Jan Kara wrote:
+>>>>> On Tue 31-10-23 04:48:44, Marek Marczykowski-Górecki wrote:
+>>>>>> Then tried:
+>>>>>>   - PAGE_ALLOC_COSTLY_ORDER=4, order=4 - cannot reproduce,
+>>>>>>   - PAGE_ALLOC_COSTLY_ORDER=4, order=5 - cannot reproduce,
+>>>>>>   - PAGE_ALLOC_COSTLY_ORDER=4, order=6 - freeze rather quickly
+>>>>>>
+>>>>>> I've retried the PAGE_ALLOC_COSTLY_ORDER=4,order=5 case several times
+>>>>>> and I can't reproduce the issue there. I'm confused...
+>>>>>
+>>>>> And this kind of confirms that allocations > PAGE_ALLOC_COSTLY_ORDER
+>>>>> causing hangs is most likely just a coincidence. Rather something either in
+>>>>> the block layer or in the storage driver has problems with handling bios
+>>>>> with sufficiently high order pages attached. This is going to be a bit
+>>>>> painful to debug I'm afraid. How long does it take for you trigger the
+>>>>> hang? I'm asking to get rough estimate how heavy tracing we can afford so
+>>>>> that we don't overwhelm the system...
+>>>>
+>>>> Sometimes it freezes just after logging in, but in worst case it takes
+>>>> me about 10min of more or less `tar xz` + `dd`.
+>>>
+>>> blk-mq debugfs is usually helpful for hang issue in block layer or
+>>> underlying drivers:
+>>>
+>>> (cd /sys/kernel/debug/block && find . -type f -exec grep -aH . {} \;)
+>>>
+>>> BTW,  you can just collect logs of the exact disks if you know what
+>>> are behind dm-crypt,
+>>> which can be figured out by `lsblk`, and it has to be collected after
+>>> the hang is triggered.
+>>
+>> dm-crypt lives on the nvme disk, this is what I collected when it
+>> hanged:
+>>
+> ...
+>> nvme0n1/hctx4/cpu4/default_rq_list:000000000d41998f {.op=READ, .cmd_flags=, .rq_flags=IO_STAT, .state=idle, .tag=65, .internal_tag=-1}
+>> nvme0n1/hctx4/cpu4/default_rq_list:00000000d0d04ed2 {.op=READ, .cmd_flags=, .rq_flags=IO_STAT, .state=idle, .tag=70, .internal_tag=-1}
 > 
-> Responses should be made by Thu, 02 Nov 2023 16:59:03 +0000.
-> Anything received after that time might be too late.
+> Two requests stays in sw queue, but not related with this issue.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.61-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+>> nvme0n1/hctx4/type:default
+>> nvme0n1/hctx4/dispatch_busy:9
 > 
-> thanks,
+> non-zero dispatch_busy means BLK_STS_RESOURCE is returned from
+> nvme_queue_rq() recently and mostly.
 > 
-> greg k-h
+>> nvme0n1/hctx4/active:0
+>> nvme0n1/hctx4/run:20290468
+> 
+> ...
+> 
+>> nvme0n1/hctx4/tags:nr_tags=1023
+>> nvme0n1/hctx4/tags:nr_reserved_tags=0
+>> nvme0n1/hctx4/tags:active_queues=0
+>> nvme0n1/hctx4/tags:bitmap_tags:
+>> nvme0n1/hctx4/tags:depth=1023
+>> nvme0n1/hctx4/tags:busy=3
+> 
+> Just three requests in-flight, two are in sw queue, another is in hctx->dispatch.
+> 
+> ...
+> 
+>> nvme0n1/hctx4/dispatch:00000000b335fa89 {.op=WRITE, .cmd_flags=NOMERGE, .rq_flags=DONTPREP|IO_STAT, .state=idle, .tag=78, .internal_tag=-1}
+>> nvme0n1/hctx4/flags:alloc_policy=FIFO SHOULD_MERGE
+>> nvme0n1/hctx4/state:SCHED_RESTART
+> 
+> The request staying in hctx->dispatch can't move on, and nvme_queue_rq()
+> returns -BLK_STS_RESOURCE constantly, and you can verify with
+> the following bpftrace when the hang is triggered:
+> 
+> 	bpftrace -e 'kretfunc:nvme_queue_rq  { @[retval, kstack]=count() }'
+> 
+> It is very likely that memory allocation inside nvme_queue_rq()
+> can't be done successfully, then blk-mq just have to retry by calling
+> nvme_queue_rq() on the above request.
+> 
+And that is something I've been wondering (for quite some time now):
+What _is_ the appropriate error handling for -ENOMEM?
+At this time, we assume it to be a retryable error and re-run the queue
+in the hope that things will sort itself out.
+But if they don't we're stuck.
+Can we somehow figure out if we make progress during submission, and (at 
+least) issue a warning once we detect a stall?
 
-All tests passing for Tegra ...
+Cheers,
 
-Test results for stable-v6.1:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+Hannes
+-- 
+Dr. Hannes Reinecke                Kernel Storage Architect
+hare@suse.de                              +49 911 74053 688
+SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
+HRB 36809 (AG Nürnberg), Geschäftsführer: Ivo Totev, Andrew
+Myers, Andrew McDonald, Martje Boudien Moerman
 
-Linux version:	6.1.61-rc1-gd87fdfa71a8c
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
-
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-
-Jon
