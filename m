@@ -2,98 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 086BF7DDAF8
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 03:29:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A68C7DDB07
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 03:35:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233205AbjKAC25 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 22:28:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
+        id S233986AbjKACfc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 31 Oct 2023 22:35:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344725AbjKAC2z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 22:28:55 -0400
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C097DA
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 19:28:49 -0700 (PDT)
-Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3b2e22f1937so3408497b6e.1
-        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 19:28:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1698805728; x=1699410528; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3NOS13AWfl+zD92mnNkBlpojb9vC6m6JveBvE3ib1D0=;
-        b=i0HBoO8FKw46GPzErrcz85zwLKI8QuFdVbmp0SaYnxgwKKHQ2Lk9dwF8hcMIIPMbVU
-         CXBykjy60Hq9diMHtz7hiawfguk5XwcD+WZCdvKfOapTHyDtFxwmSJNgV23q5vaYNirJ
-         TvxS/+10Bs/q4q1yGsZPKg7echGfJGFVlIjWw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698805728; x=1699410528;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3NOS13AWfl+zD92mnNkBlpojb9vC6m6JveBvE3ib1D0=;
-        b=D79ilg5jiPizk/kUVOMlF2MY02OXY6aZg9PXbVzY6S3ycDaORhIiMhy9PSMP/vPS7E
-         iCVARtANfvqOBpOaRCI95TSKkEzTuYmd2GMSrdTT5IRTYHhSKHO4Gd4gMlfi5zOenpqC
-         TCf4CAYHW2XrfObl/XuBKCX+H6fz2rf4lmq9hMJOVSSVSyq2dRDySoG5lKlLr/Qso3fB
-         /EVdGEp+WHDIDNzDYpwWKua26OsYB0L2MqyXOCA8k0lGEqw6Qa/H3IdpJt5oRKJ++rxh
-         qw2w9GV0Ejau0hfCDRUmMqQQ3wEBFsrAVMS9ae9Dd6FL4uPnB3jK3icpNRa1JfCN6Ztj
-         /EHQ==
-X-Gm-Message-State: AOJu0YyaNVyd4u4vkcQNHoyM30c3Lvj75hZCrh6iGjjhAcZAWEookbe+
-        rdbJnSPgP0fchHCi1cE2F1+o6/a2yuv14soB/fy4JoQY
-X-Google-Smtp-Source: AGHT+IHOvyiAUD7ZHPdpP44HLsndQ+RdyPrWrmwj5thEHMOLwAMgNq37HfZjGr3nOGtKfd7GtWMEuA==
-X-Received: by 2002:a05:6808:3a85:b0:3a9:cfb5:4641 with SMTP id fb5-20020a0568083a8500b003a9cfb54641mr13949893oib.48.1698805728594;
-        Tue, 31 Oct 2023 19:28:48 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id t2-20020a0568080b2200b003af6eeed9b6sm101348oij.27.2023.10.31.19.28.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Oct 2023 19:28:48 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date:   Tue, 31 Oct 2023 21:28:44 -0500
-From:   Justin Forbes <jforbes@fedoraproject.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.5 000/112] 6.5.10-rc1 review
-Message-ID: <ZUG33Hft8a4XYnrD@fedora64.linuxtx.org>
-References: <20231031165901.318222981@linuxfoundation.org>
+        with ESMTP id S233285AbjKACfa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 22:35:30 -0400
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F34D7F3
+        for <stable@vger.kernel.org>; Tue, 31 Oct 2023 19:35:24 -0700 (PDT)
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+        by mailout.west.internal (Postfix) with ESMTP id 64F5B320091B;
+        Tue, 31 Oct 2023 22:35:23 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute7.internal (MEProxy); Tue, 31 Oct 2023 22:35:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1698806122; x=1698892522; bh=toWqzNW+iMWIeaM1eKZlhsB3zxFYDFs0dkO
+        c+aPifIU=; b=ld3shsB5i53LUbI8stbuQcrPojZ+KazagqOv0Np+VbzzYbskbyn
+        nOEdMpMxUnSipNFZWQYY+HZblHQC6+4uZCc6cbWPGy4K/yGqBvTcQ4Hwt3urFK9b
+        Tm8TiEdSsZEuO0XK5Ci7LaDS/1keSdwaCfqohaDymR6/WC8jRKtYDU1A8Nj91iP1
+        nhhKKOwYHLTEaBI7CjwwHnG2DACCYdwBeygA2HlZL/3CFFV2KWHb4dYhKxI4wMQs
+        L2amSD98EvEBHgN+6mgUTB3ctdVSQMRr0t0rdIO5oNhvqNYFBUEDZ4+sdufRjJjl
+        swcxMPE+wLzRf5B5K8KA0YoIzCSepCJ8Nsw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1698806122; x=1698892522; bh=toWqzNW+iMWIe
+        aM1eKZlhsB3zxFYDFs0dkOc+aPifIU=; b=tFQ9bzhS2/avGJKX0gaARz+7fU8Nw
+        KLi88v+sguvk13Yb6vtThVydHBHjRTP4voFUJLX5vr1AiH6/5eHo9Tn8NqABRcO6
+        HKii73SnkcKwYtWpV2czb3H/ZEVeYPlBSIuO5rqbWVp7RLEFrpUJehnzT0jMHHCm
+        AzQ/Y+ji2qnp7DWjYtxiflXf+lY3UTppVEQE0GKPm4LoeycA+whAF5TNDgSRzwN8
+        a9kL+eSZeU+CnG9DuhIH4Ef2qGzj4AMQ7nRgOi6SLdyitDQhcMRWCgN3tZhVZpfp
+        fnmsXqt3yBh+Yay8Ow16WpJb/KaubmA8v60kkj6Cs4WAFRuI//6JiJYlA==
+X-ME-Sender: <xms:ablBZRtHKUxKOIIadLbjX2wCzAkl1AZALRDCpYyrfmYRtn4JcC7S3A>
+    <xme:ablBZaekT8JpXTIlERpS13LCt5gY5-nASIBc0vu-cSM1ueEpo73VAYWH0Rc7K2IaT
+    KbLRFJMFC2aPw>
+X-ME-Received: <xmr:ablBZUx9K91s3oDUMcClUZiy__EnDUrVdcw1rV019bhmdIqTQcg0a_pDoWuZ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtfedggeejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
+    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
+    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
+    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
+    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+X-ME-Proxy: <xmx:ablBZYMNCu2B1E0GR5yfu69YnR8DtVI1ndRDDLvZp2WZ0F6obWFwjw>
+    <xmx:ablBZR83c0AjK3QyOty1MRzv0bp3vxxNiD7Pkx-uzE2up-aNqOy0WQ>
+    <xmx:ablBZYXuDijSLc6iWnn2OvsXTqfHla4Xiuppu69JNiY2vrJZUsO_zQ>
+    <xmx:arlBZS3PIW4M9zP1D4-aCE40f191q-QhjAF5eFY_OXbpgVnp2JkIYA>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 31 Oct 2023 22:35:18 -0400 (EDT)
+Date:   Wed, 1 Nov 2023 03:35:14 +0100
+From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+To:     Ming Lei <tom.leiming@gmail.com>
+Cc:     Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Message-ID: <ZUG5ZCSS1/tMUgql@mail-itl>
+References: <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
+ <20231030155603.k3kejytq2e4vnp7z@quack3>
+ <ZT/e/EaBIkJEgevQ@mail-itl>
+ <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
+ <ZUB5HFeK3eHeI8UH@mail-itl>
+ <20231031140136.25bio5wajc5pmdtl@quack3>
+ <ZUEgWA5P8MFbyeBN@mail-itl>
+ <CACVXFVOEWDyzasS7DWDvLOhC3Hr6qOn5ks3HLX+fbRYCxYv26w@mail.gmail.com>
+ <ZUG0gcRhUlFm57qN@mail-itl>
+ <ZUG016NyTms2073C@mail-itl>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="34v3My9/eDDcajxk"
 Content-Disposition: inline
-In-Reply-To: <20231031165901.318222981@linuxfoundation.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <ZUG016NyTms2073C@mail-itl>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 31, 2023 at 06:00:01PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.10 release.
-> There are 112 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 02 Nov 2023 16:58:38 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+--34v3My9/eDDcajxk
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 1 Nov 2023 03:35:14 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Ming Lei <tom.leiming@gmail.com>
+Cc: Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+On Wed, Nov 01, 2023 at 03:15:50AM +0100, Marek Marczykowski-G=C3=B3recki w=
+rote:
+> And BTW, an attempt to access another partition on the same disk (not
+> covered with dm-crypt) hangs too.
+
+No, not sure about that part, it was rather reading /bin/ls hanging...
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--34v3My9/eDDcajxk
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmVBuWQACgkQ24/THMrX
+1ywBCwf+NBJd0oU6k0s/Q1kRXigL0eXZ/7To0/Tv3r7ASDyuqxTtjU/Ncs9/QqZ2
+vguzFCGPHY03deZSBy0o6ScY5cVBK32IHYDcAq1klnTpUuwN6JAQ7NvOgyWRV/4k
+do7Nu4vUT/KG/BLy7qx6GqWDyxWsDDNEkm/mKEzwOBeyYvVLyKkPExkrxkkAXiGm
+R7OyiGyCJkhM2sPY4RCgkBaYk9H0OMwsF0vnrFO5zTCE/1Um7PfqrDawXiHOU2us
+Fv6mSGyrHvbnJ/avVhYpSfqjsqSazkjFI8sDAO0ym6ZVTR/78AkvWR3IWbMBO2Xw
+70vJPYpCwlA9DrmlSnxxh/VTqihCqg==
+=Lw5K
+-----END PGP SIGNATURE-----
+
+--34v3My9/eDDcajxk--
