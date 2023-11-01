@@ -2,174 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86B927DDB7A
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 04:24:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 51E587DDC27
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 06:14:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231344AbjKADYf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 31 Oct 2023 23:24:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41214 "EHLO
+        id S1346847AbjKAEiD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 00:38:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231252AbjKADYe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 31 Oct 2023 23:24:34 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16334A4;
-        Tue, 31 Oct 2023 20:24:32 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1cc3bc5df96so25718265ad.2;
-        Tue, 31 Oct 2023 20:24:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698809071; x=1699413871; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+2C1iXZcOTrTqGCV4PTQYVBg6Rkhk9UufGCighF5v2k=;
-        b=AImHUx8p0E623U3NyO12zbEksrkLgIApuepQzIzq5cCqTvVq6RmtAKEpGL4JWBGWj9
-         Jgo8cNgfbCI5ikqrlsWlopKex0liaHPB7AaE6QswAUmUZUGD8GoHtdqZ7RPbvevclrOS
-         36pRDF9xsy2e5TTExayYE/VWcMyTVMtD+tQXOfsKcjMu4uZi3j9SIYrLnPIWanAxPxtx
-         mGeBd6yMJSoFa9JfJ1BuRkSkJQLvaDVCDB96hNDq8OHnMS4fvk6cN0wKqIZjC/F5073t
-         JfXjV6/AfF+d43J/mtmPl5RHM4W7sD7ZrdJ8hYV6CV6HB4ajEE9oKsG3NqUa+kFFkur0
-         pn1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698809071; x=1699413871;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+2C1iXZcOTrTqGCV4PTQYVBg6Rkhk9UufGCighF5v2k=;
-        b=L5U4losfQbdeB5WGeFsf/xu+NWq8p+Z+FX+gJ8foqZArYlNJFNWrUCf3HfV/XOD3jO
-         bsqQOWydhSbrDiGAJuW5Yt7upro4LkhUreiv5GJjm7Sa17WoKsj/aXTGVp71HgGXeM6+
-         Q5ejeBqfJfmK8ylalEBtLiwLUAbvX8OtsVC0kShvfA3xkPh7ovxqOl2Ox7cCa1gnL+Vj
-         HR5O1SfGoF6kUM+/D1hSB7+RRWgFtMqAeYizZ/hAtK6i74gUwUqKI2Ouchbg47Gtnal/
-         9ZPc91PTuREXIpJSSngTDm9J+se3dsbmB6Jd7RizNLpHfkMyy5aMOz+ICETPXJyRrQNR
-         MkWw==
-X-Gm-Message-State: AOJu0YwRiwx0I2sj6DOCB5xBWxTDe0WFcq9NmCAY+UfgehhWrjPGaZOm
-        Aj7sNwEMihm/01f6catZygM=
-X-Google-Smtp-Source: AGHT+IEiqzbxuH1oyyz4CFB5xcpfQcMLCwLmTN0qfwugw7Xk6L/aWx4ZRSK3TgVkGOAedxuqcdqOIQ==
-X-Received: by 2002:a17:902:9688:b0:1c9:d90b:c3e4 with SMTP id n8-20020a170902968800b001c9d90bc3e4mr11705042plp.10.1698809071306;
-        Tue, 31 Oct 2023 20:24:31 -0700 (PDT)
-Received: from fedora ([43.228.180.230])
-        by smtp.gmail.com with ESMTPSA id j6-20020a170902da8600b001c60d0a6d84sm279375plx.127.2023.10.31.20.24.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 31 Oct 2023 20:24:30 -0700 (PDT)
-Date:   Wed, 1 Nov 2023 11:24:23 +0800
-From:   Ming Lei <tom.leiming@gmail.com>
-To:     Marek =?iso-8859-1?Q?Marczykowski-G=F3recki?= 
-        <marmarek@invisiblethingslab.com>
-Cc:     Jan Kara <jack@suse.cz>, Mikulas Patocka <mpatocka@redhat.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org, linux-block@vger.kernel.org,
-        linux-nvme@lists.infradead.org, ming.lei@redhat.com
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-Message-ID: <ZUHE52SznRaZQxnG@fedora>
-References: <ZT+wDLwCBRB1O+vB@mail-itl>
- <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
- <20231030155603.k3kejytq2e4vnp7z@quack3>
- <ZT/e/EaBIkJEgevQ@mail-itl>
- <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
- <ZUB5HFeK3eHeI8UH@mail-itl>
- <20231031140136.25bio5wajc5pmdtl@quack3>
- <ZUEgWA5P8MFbyeBN@mail-itl>
- <CACVXFVOEWDyzasS7DWDvLOhC3Hr6qOn5ks3HLX+fbRYCxYv26w@mail.gmail.com>
- <ZUG0gcRhUlFm57qN@mail-itl>
+        with ESMTP id S1346855AbjKAEiA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 00:38:00 -0400
+Received: from nautica.notk.org (ipv6.notk.org [IPv6:2001:41d0:1:7a93::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18783F3;
+        Tue, 31 Oct 2023 21:37:54 -0700 (PDT)
+Received: by nautica.notk.org (Postfix, from userid 108)
+        id EC2A3C01B; Wed,  1 Nov 2023 05:37:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+        t=1698813465; bh=j+mg0+uxBvTuBRWF4ptxdU82Fb+1k2fxHgCCXiVcZQA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=k4awi9G+mg0+EAiKXCXRJdb+1a8p9CfMbHvFn3a8oVq2cYQBKM4nvx0VzA178oTRK
+         SXk05BcSid5LR2bq/i9X9cd3Q8ZgF8EYBaR5urwNi0EYcJPGhvBta9zE13cQSHWbe6
+         cA8TeBCKOmLoaQUoaeHn5/aFcpebdLAu7EoswMS5xk2PgLQfYpKV+WkX8zPkEbExv1
+         mmJmqULWawJScFdD87a3dLdcCAF05KJ+8Yse8wzLnBVUgHtikf7fMtsp9zE/qEihHm
+         ZVieNDqTiq6BNdFg7k61V5k6kJlBVh1pTUqr+51bFeAxH2PCsCmHUyy3pic9xTTbQC
+         Q/DfyEnCEUaFQ==
+X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
+        lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
+Received: from gaia (localhost [127.0.0.1])
+        by nautica.notk.org (Postfix) with ESMTPS id AC94BC009;
+        Wed,  1 Nov 2023 05:37:33 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+        t=1698813455; bh=j+mg0+uxBvTuBRWF4ptxdU82Fb+1k2fxHgCCXiVcZQA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GrYPsiWrkRCUcn9s2MkFLg31xqxTmwQ1Tm4if+GBYb8fG34lFc7Iztqp6C1KKbclx
+         T6gcJFZrjEYqGzP2dK+HhKxVK/hvZUQFEP5xVQLBRQPli2Ekd23oC70xH0OsEMtIF+
+         yE/i3PX6sgdgnjTga6oZVr9k4AO1o5cFlevbYUcq03sVYSX6dyv6mP2q2uNmYsTz3g
+         dxejHEfnu/Gu60nGzWQjRg32VvKIP40RYvx/ad6UoeuD1lmTWXlKvHacFqt7XI6lcA
+         ihpRJqLOxHAaQ73XCwDcX0oI+gOvO0d01ZUSZyJ1OIF+SR5T+zMlcp5MVWNXoDoCem
+         2m4ptISHOVnNQ==
+Received: from localhost (gaia [local])
+        by gaia (OpenSMTPD) with ESMTPA id 532b5c2b;
+        Wed, 1 Nov 2023 04:37:30 +0000 (UTC)
+Date:   Wed, 1 Nov 2023 13:37:15 +0900
+From:   Dominique Martinet <asmadeus@codewreck.org>
+To:     Avri Altman <Avri.Altman@wdc.com>
+Cc:     Dominique Martinet <dominique.martinet@atmark-techno.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Alex Fetters <Alex.Fetters@garmin.com>
+Subject: Re: [PATCH] mmc: truncate quirks' oemid to 8 bits
+Message-ID: <ZUHV-wduEf12M86U@codewreck.org>
+References: <20231026075230.414685-1-dominique.martinet@atmark-techno.com>
+ <DM6PR04MB657596E19EF3D7976197660EFCDDA@DM6PR04MB6575.namprd04.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZUG0gcRhUlFm57qN@mail-itl>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+In-Reply-To: <DM6PR04MB657596E19EF3D7976197660EFCDDA@DM6PR04MB6575.namprd04.prod.outlook.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Nov 01, 2023 at 03:14:22AM +0100, Marek Marczykowski-Górecki wrote:
-> On Wed, Nov 01, 2023 at 09:27:24AM +0800, Ming Lei wrote:
-> > On Tue, Oct 31, 2023 at 11:42 PM Marek Marczykowski-Górecki
-> > <marmarek@invisiblethingslab.com> wrote:
-> > >
-> > > On Tue, Oct 31, 2023 at 03:01:36PM +0100, Jan Kara wrote:
-> > > > On Tue 31-10-23 04:48:44, Marek Marczykowski-Górecki wrote:
-> > > > > Then tried:
-> > > > >  - PAGE_ALLOC_COSTLY_ORDER=4, order=4 - cannot reproduce,
-> > > > >  - PAGE_ALLOC_COSTLY_ORDER=4, order=5 - cannot reproduce,
-> > > > >  - PAGE_ALLOC_COSTLY_ORDER=4, order=6 - freeze rather quickly
-> > > > >
-> > > > > I've retried the PAGE_ALLOC_COSTLY_ORDER=4,order=5 case several times
-> > > > > and I can't reproduce the issue there. I'm confused...
-> > > >
-> > > > And this kind of confirms that allocations > PAGE_ALLOC_COSTLY_ORDER
-> > > > causing hangs is most likely just a coincidence. Rather something either in
-> > > > the block layer or in the storage driver has problems with handling bios
-> > > > with sufficiently high order pages attached. This is going to be a bit
-> > > > painful to debug I'm afraid. How long does it take for you trigger the
-> > > > hang? I'm asking to get rough estimate how heavy tracing we can afford so
-> > > > that we don't overwhelm the system...
-> > >
-> > > Sometimes it freezes just after logging in, but in worst case it takes
-> > > me about 10min of more or less `tar xz` + `dd`.
-> > 
-> > blk-mq debugfs is usually helpful for hang issue in block layer or
-> > underlying drivers:
-> > 
-> > (cd /sys/kernel/debug/block && find . -type f -exec grep -aH . {} \;)
-> > 
-> > BTW,  you can just collect logs of the exact disks if you know what
-> > are behind dm-crypt,
-> > which can be figured out by `lsblk`, and it has to be collected after
-> > the hang is triggered.
-> 
-> dm-crypt lives on the nvme disk, this is what I collected when it
-> hanged:
-> 
-...
-> nvme0n1/hctx4/cpu4/default_rq_list:000000000d41998f {.op=READ, .cmd_flags=, .rq_flags=IO_STAT, .state=idle, .tag=65, .internal_tag=-1}
-> nvme0n1/hctx4/cpu4/default_rq_list:00000000d0d04ed2 {.op=READ, .cmd_flags=, .rq_flags=IO_STAT, .state=idle, .tag=70, .internal_tag=-1}
+Avri Altman wrote on Thu, Oct 26, 2023 at 10:16:53AM +0000:
+> Reviewed-by: Avri Altman <avri.altman@wdc.com>
 
-Two requests stays in sw queue, but not related with this issue.
+Thanks for the review!
 
-> nvme0n1/hctx4/type:default
-> nvme0n1/hctx4/dispatch_busy:9
+> > ---
+> > Notes:
+> >  - mmc_fixup_device() was rewritten in 5.17, so older stable kernels
+> >    will need a separate patch... I suppose I can send it to stable
+> >    after this is merged if we go this way
+> >  - struct mmc_cid's and mmc_fixup's oemid fields are unsigned shorts,
+> >    we probably just want to make them unsigned char instead in which
+> >    case we don't need that check anymore?
+> >    But it's kind of nice to have a wider type so CID_OEMID_ANY can never
+> >    be a match.... Which unfortunately my patch makes moot as
+> >    ((unsigned short)-1) & 0xff will be 0xff which can match anything...
+> >  - this could also be worked around in the _FIXUP_EXT macro that builds
+> >    the fixup structs, but we're getting ugly here... Or we can just go
+> >    for the big boom and try to fix all MMC_FIXUP() users in tree and
+> >    call it a day, but that'll also be fun to backport.
+> To me, your fix is clean, elegant and does the job.
+> I would let the quirk owners to fix that hard-coded bogus oemid - should they choose to.
+> I guess Sandisk would need to do that as well.
 
-non-zero dispatch_busy means BLK_STS_RESOURCE is returned from
-nvme_queue_rq() recently and mostly.
+Yes, this was exactly my intention - leave the workaround in place for a
+while while owners fix their quirks then eventually fix types and remove
+this when it is no longer needed.
 
-> nvme0n1/hctx4/active:0
-> nvme0n1/hctx4/run:20290468
+Meanwhile, all stable kernels including the newly released 6.6 have many
+broken quirks and at the very least the MMC I have here would
+periodically hang when issuing a flush, so as a selfish user I'd
+appreciate if this (or something equivalent) could be making its way
+towards Linus' tree.
+Ulf, would you have a bit of time to move this forward, or should I ask
+Greg to temporarily revert Avri's "mmc: core: Capture correct oemid-bits
+for eMMC cards" commit in stable trees until the way forward is decided?
 
-...
-
-> nvme0n1/hctx4/tags:nr_tags=1023
-> nvme0n1/hctx4/tags:nr_reserved_tags=0
-> nvme0n1/hctx4/tags:active_queues=0
-> nvme0n1/hctx4/tags:bitmap_tags:
-> nvme0n1/hctx4/tags:depth=1023
-> nvme0n1/hctx4/tags:busy=3
-
-Just three requests in-flight, two are in sw queue, another is in hctx->dispatch.
-
-...
-
-> nvme0n1/hctx4/dispatch:00000000b335fa89 {.op=WRITE, .cmd_flags=NOMERGE, .rq_flags=DONTPREP|IO_STAT, .state=idle, .tag=78, .internal_tag=-1}
-> nvme0n1/hctx4/flags:alloc_policy=FIFO SHOULD_MERGE
-> nvme0n1/hctx4/state:SCHED_RESTART
-
-The request staying in hctx->dispatch can't move on, and nvme_queue_rq()
-returns -BLK_STS_RESOURCE constantly, and you can verify with
-the following bpftrace when the hang is triggered:
-
-	bpftrace -e 'kretfunc:nvme_queue_rq  { @[retval, kstack]=count() }'
-
-It is very likely that memory allocation inside nvme_queue_rq()
-can't be done successfully, then blk-mq just have to retry by calling
-nvme_queue_rq() on the above request.
-
-
-Thanks,
-Ming
+Thanks!
+-- 
+Dominique Martinet | Asmadeus
