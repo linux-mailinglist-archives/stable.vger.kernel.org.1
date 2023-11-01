@@ -2,136 +2,202 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FB987DE0AF
-	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 13:21:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A89287DE103
+	for <lists+stable@lfdr.de>; Wed,  1 Nov 2023 13:37:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235068AbjKAMUI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 08:20:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52718 "EHLO
+        id S235144AbjKAMYK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 08:24:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33356 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231463AbjKAMUH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 08:20:07 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80901118;
-        Wed,  1 Nov 2023 05:20:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA84BC433C7;
-        Wed,  1 Nov 2023 12:20:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698841203;
-        bh=tAtOQmbzm5eMQzkZff08sjJNZWcEJ/iNxr2mqnxM42c=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=EAXtZY9k9QZO7JJMwQvB76hIRbmnuGB2V+dWbV73fAVvyG7jCNtDVp/kAeTCaSLxM
-         GEpBmKMe8/fQFWMTxY6Bonfzv+Vzq31bJTh4Lf+sEmT+PofY69RmhOf/Y2XYD/UaCZ
-         PA2jpZQL29t63+E5obyJybpE0Hmo9WIcEs6E9xT6glez1qrmHvZIsFmzRcoZbBdauV
-         ITBA3QdRERcSLV03DKr+/XYPAnFQetw8+45ekv5L09J1/PwhJ7A0Q+hpCo1wicRU76
-         eGyRIdskHKkM8N/3hkhOX/V0GM5lzbmcTDFtpOauqPXRzbj2CL0N7unC87oLB4611X
-         glRwAjI/yi1Sg==
-Date:   Wed, 1 Nov 2023 21:19:47 +0900
-From:   Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ajay Kaher <akaher@vmware.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/7] eventfs: Remove "is_freed" union with rcu head
-Message-Id: <20231101211947.cdff280e1ed9cd8c01746f7f@kernel.org>
-In-Reply-To: <20231031223419.935276916@goodmis.org>
-References: <20231031223326.794680978@goodmis.org>
-        <20231031223419.935276916@goodmis.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-8.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S235152AbjKAMYJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 08:24:09 -0400
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F484118;
+        Wed,  1 Nov 2023 05:24:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1698841443; x=1730377443;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=sVoB2nzVS4xYYI7xHmLVJKrUYX9Yfj+tSQTlepogGXM=;
+  b=RRjAWXdOha0cF81aAfqgZup0VTzplZMYKtcBo3+DoxcOYy6EH3IhoTGo
+   3SxRhrCXAxbBpG34Gxf0kjMu6t3jc+ZA6AJ6A7Wxy3nPhZb9M5mB8Y5q7
+   wAvnvM1976OezdJCapTi3JcupHOR3ig1R/jquTO8U/jiUVzJ6nObe5ovh
+   XjxOssYCEDSingU8ylLXnPSAQfGOIJnPGufjnDkscw76zUY/Cbgvq0JAW
+   Tziw4E+5QnebvMe1TbOrMuhTYJ0wYuhhMqHL3JSKteMsTwe0G4h1SvJI1
+   Tp1PXPCHNmMY3m1/vqiWH4ue7zQkUXuZZ1jDHmVTn/hFjeRLpFkJsQl41
+   Q==;
+X-IronPort-AV: E=Sophos;i="6.03,268,1694728800"; 
+   d="scan'208";a="33759524"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 01 Nov 2023 13:23:56 +0100
+Received: from steina-w.tq-net.de (steina-w.tq-net.de [10.123.53.18])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id A8C51280084;
+        Wed,  1 Nov 2023 13:23:56 +0100 (CET)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
+        linux-media@vger.kernel.org,
+        Alain Volmat <alain.volmat@foss.st.com>, stable@vger.kernel.org
+Subject: [PATCH v2 1/2] media: v4l2-cci: Add support for little-endian encoded registers
+Date:   Wed,  1 Nov 2023 13:23:53 +0100
+Message-Id: <20231101122354.270453-2-alexander.stein@ew.tq-group.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231101122354.270453-1-alexander.stein@ew.tq-group.com>
+References: <20231101122354.270453-1-alexander.stein@ew.tq-group.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 31 Oct 2023 18:33:27 -0400
-Steven Rostedt <rostedt@goodmis.org> wrote:
+Some sensors, e.g. Sony, are using little-endian registers. Add support for
+those by encoding the endianess into Bit 20 of the register address.
 
-> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-> 
-> The eventfs_inode->is_freed was a union with the rcu_head with the
-> assumption that when it was on the srcu list the head would contain a
-> pointer which would make "is_freed" true. But that was a wrong assumption
-> as the rcu head is a single link list where the last element is NULL.
-> 
-> Instead, split the nr_entries integer so that "is_freed" is one bit and
-> the nr_entries is the next 31 bits. As there shouldn't be more than 10
-> (currently there's at most 5 to 7 depending on the config), this should
-> not be a problem.
+Fixes: af73323b97702 ("media: imx290: Convert to new CCI register access helpers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+---
+ drivers/media/v4l2-core/v4l2-cci.c | 44 ++++++++++++++++++++++++------
+ include/media/v4l2-cci.h           |  5 ++++
+ 2 files changed, 41 insertions(+), 8 deletions(-)
 
-Yeah, even 16 bit nr_entries is enough.. (maybe the biggest user is
-syscall event group)
-
-Looks good to me.
-
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-
-Thank you,
-
-
-> Cc: stable@vger.kernel.org
-> Fixes: 63940449555e7 ("eventfs: Implement eventfs lookup, read, open functions")
-> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> ---
->  fs/tracefs/event_inode.c | 2 ++
->  fs/tracefs/internal.h    | 6 +++---
->  2 files changed, 5 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-> index 754885dfe71c..2c2c75b2ad73 100644
-> --- a/fs/tracefs/event_inode.c
-> +++ b/fs/tracefs/event_inode.c
-> @@ -824,6 +824,8 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
->  		eventfs_remove_rec(ei_child, head, level + 1);
->  	}
->  
-> +	ei->is_freed = 1;
-> +
->  	list_del_rcu(&ei->list);
->  	list_add_tail(&ei->del_list, head);
->  }
-> diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
-> index 64fde9490f52..c7d88aaa949f 100644
-> --- a/fs/tracefs/internal.h
-> +++ b/fs/tracefs/internal.h
-> @@ -23,6 +23,7 @@ struct tracefs_inode {
->   * @d_parent:   pointer to the parent's dentry
->   * @d_children: The array of dentries to represent the files when created
->   * @data:	The private data to pass to the callbacks
-> + * @is_freed:	Flag set if the eventfs is on its way to be freed
->   * @nr_entries: The number of items in @entries
->   */
->  struct eventfs_inode {
-> @@ -38,14 +39,13 @@ struct eventfs_inode {
->  	 * Union - used for deletion
->  	 * @del_list:	list of eventfs_inode to delete
->  	 * @rcu:	eventfs_inode to delete in RCU
-> -	 * @is_freed:	node is freed if one of the above is set
->  	 */
->  	union {
->  		struct list_head	del_list;
->  		struct rcu_head		rcu;
-> -		unsigned long		is_freed;
->  	};
-> -	int				nr_entries;
-> +	unsigned int			is_freed:1;
-> +	unsigned int			nr_entries:31;
->  };
->  
->  static inline struct tracefs_inode *get_tracefs(const struct inode *inode)
-> -- 
-> 2.42.0
-
-
+diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
+index bc2dbec019b04..673637b67bf67 100644
+--- a/drivers/media/v4l2-core/v4l2-cci.c
++++ b/drivers/media/v4l2-core/v4l2-cci.c
+@@ -18,6 +18,7 @@
+ 
+ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ {
++	bool little_endian;
+ 	unsigned int len;
+ 	u8 buf[8];
+ 	int ret;
+@@ -25,6 +26,7 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 	if (err && *err)
+ 		return *err;
+ 
++	little_endian = reg & CCI_REG_LE;
+ 	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
+ 	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
+ 
+@@ -40,16 +42,28 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 		*val = buf[0];
+ 		break;
+ 	case 2:
+-		*val = get_unaligned_be16(buf);
++		if (little_endian)
++			*val = get_unaligned_le16(buf);
++		else
++			*val = get_unaligned_be16(buf);
+ 		break;
+ 	case 3:
+-		*val = get_unaligned_be24(buf);
++		if (little_endian)
++			*val = get_unaligned_le24(buf);
++		else
++			*val = get_unaligned_be24(buf);
+ 		break;
+ 	case 4:
+-		*val = get_unaligned_be32(buf);
++		if (little_endian)
++			*val = get_unaligned_le32(buf);
++		else
++			*val = get_unaligned_be32(buf);
+ 		break;
+ 	case 8:
+-		*val = get_unaligned_be64(buf);
++		if (little_endian)
++			*val = get_unaligned_le64(buf);
++		else
++			*val = get_unaligned_be64(buf);
+ 		break;
+ 	default:
+ 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+@@ -68,6 +82,7 @@ EXPORT_SYMBOL_GPL(cci_read);
+ 
+ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ {
++	bool little_endian;
+ 	unsigned int len;
+ 	u8 buf[8];
+ 	int ret;
+@@ -75,6 +90,7 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ 	if (err && *err)
+ 		return *err;
+ 
++	little_endian = reg & CCI_REG_LE;
+ 	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
+ 	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
+ 
+@@ -83,16 +99,28 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ 		buf[0] = val;
+ 		break;
+ 	case 2:
+-		put_unaligned_be16(val, buf);
++		if (little_endian)
++			put_unaligned_le16(val, buf);
++		else
++			put_unaligned_be16(val, buf);
+ 		break;
+ 	case 3:
+-		put_unaligned_be24(val, buf);
++		if (little_endian)
++			put_unaligned_le24(val, buf);
++		else
++			put_unaligned_be24(val, buf);
+ 		break;
+ 	case 4:
+-		put_unaligned_be32(val, buf);
++		if (little_endian)
++			put_unaligned_le32(val, buf);
++		else
++			put_unaligned_be32(val, buf);
+ 		break;
+ 	case 8:
+-		put_unaligned_be64(val, buf);
++		if (little_endian)
++			put_unaligned_le64(val, buf);
++		else
++			put_unaligned_be64(val, buf);
+ 		break;
+ 	default:
+ 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
+index 0f6803e4b17e9..ef3faf0c9d44d 100644
+--- a/include/media/v4l2-cci.h
++++ b/include/media/v4l2-cci.h
+@@ -32,12 +32,17 @@ struct cci_reg_sequence {
+ #define CCI_REG_ADDR_MASK		GENMASK(15, 0)
+ #define CCI_REG_WIDTH_SHIFT		16
+ #define CCI_REG_WIDTH_MASK		GENMASK(19, 16)
++#define CCI_REG_LE			BIT(20)
+ 
+ #define CCI_REG8(x)			((1 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG16(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG24(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG32(x)			((4 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG64(x)			((8 << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG16_LE(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x) | CCI_REG_LE)
++#define CCI_REG24_LE(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x) | CCI_REG_LE)
++#define CCI_REG32_LE(x)			((4 << CCI_REG_WIDTH_SHIFT) | (x) | CCI_REG_LE)
++#define CCI_REG64_LE(x)			((8 << CCI_REG_WIDTH_SHIFT) | (x) | CCI_REG_LE)
+ 
+ /**
+  * cci_read() - Read a value from a single CCI register
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+2.34.1
+
