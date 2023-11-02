@@ -2,236 +2,288 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D1E37DFAAA
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 20:06:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 643337DFAD0
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 20:21:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377366AbjKBTGn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 15:06:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52478 "EHLO
+        id S229700AbjKBTVc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 15:21:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377403AbjKBTGk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 15:06:40 -0400
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DFD41B6;
-        Thu,  2 Nov 2023 12:06:27 -0700 (PDT)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-1eb7a8e9dd0so740548fac.3;
-        Thu, 02 Nov 2023 12:06:26 -0700 (PDT)
+        with ESMTP id S229686AbjKBTVb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 15:21:31 -0400
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0E2012D;
+        Thu,  2 Nov 2023 12:21:28 -0700 (PDT)
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A2JL2SC006106;
+        Thu, 2 Nov 2023 19:21:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=corp-2023-03-30;
+ bh=/F/wl6FY/AUS/Wmc3uS6IrGf3SKq+EI6CqMe4XjV9HM=;
+ b=eITxoTmY4830wPXphyUdiNth3+/sO/T/uKsf/mViPRcUchCuPs9kKCIpIV9mEHRtI8JG
+ +j1ZO8eLMFlivX1kCl0toBYlGzUOIIrz7rbio6nywFMGomweUpQkGylcsUDKm4H3dRFO
+ o2F3bD0IRfZgQk78yEUDxKKR3GgNfSnqnH4Xa7BEWBj1Xz5F9uXunZfcAr+ODt2O7RWl
+ +AZGFtSryKMnSMaFD4xI94oiLZ7v0IB58ZHkbn+ZfY+aYALPf/53/gUTw7hrzDm3zEo+
+ agvLGGNSY1qHS4i3rREr/P3H0ThhoRpQRZ0EMhDbXyHJFy8j8lwcIXgltpVmUlQixO0N ZA== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3u0swttndk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 02 Nov 2023 19:21:01 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3A2IeQ6c020419;
+        Thu, 2 Nov 2023 19:20:56 GMT
+Received: from nam11-bn8-obe.outbound.protection.outlook.com (mail-bn8nam11lp2168.outbound.protection.outlook.com [104.47.58.168])
+        by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3u0rrf9reg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 02 Nov 2023 19:20:56 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZZvORx3Kx/9lafUB+Nf7vxxZ6WSf2zatrs6fvZoneeh1vG/tpq3cg4cvEtxVWW+1jlt6gZtYhAluU96k6Ba3cF1mH/sWnrQO2UNv4yahdE4ioN8MHRaLv0kS2n39XlQTaaBIlZBq2U5kZKTFdpXvjhyMvJz+5uJtJnuA4ixUt/hYlaa4/vG+4MHCy3aNEsXMECV3MFF0pofpTdvXNHsH+C5+mIOh3pFuA/DgzyetabGPpbtxk5mB4XTZs8oAr7Q73RehdCXK07VeGsQJHIi9o/daVeBrrcUhjC3DtUj/1vCW2Jui6xwhnFctgHPJxJmQvOe+bezLOz0Of/dDKcJTEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/F/wl6FY/AUS/Wmc3uS6IrGf3SKq+EI6CqMe4XjV9HM=;
+ b=YyGVF3ei2ceBaSM7fGfku+sb0z46s84kIR5gm0+m0anVFR5OjA3yw1H/CC7SvtXmVIOB7u4ipbOSnC9TqyFNxnD0IGCa7JPEW1su9hbZZB7rrmGUnrw7Xee6RSeY8ZM90912gtV6dm0zQ5uWxnydE0TyY+m47Pn7qjBwWx94fQyFEQPKKmaqFoHaBLLBJorqv8U+Hf1SvxSsjo2ytPsumA9AjINxQLpLW4DFkSUf/0lVKB9V8i+WCB54ygRbz4jWSdghkbVx0hymAU6EUUmMvzTZ3kDpi9XJ62dVba2YWKVAbLtAuNH0KsYz04iRV6rvaG7qAQj/3s113fQRJBJ57g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698951986; x=1699556786; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i/xUgcpbnnTlXsVcZhoWq2pWvJ/EENYDU0v0UaFuVGU=;
-        b=Ke9kuFLmCxtZP3tR7oPEyiqHmvTspNlbI5pQ2YWQQqqlpeMS5A6HfaTwm7LeFyfLWt
-         BTZBXTvykWQIWiIOIPO9S1B+APKu3sbik0UmZmJFm2ElDAPMvI2UZ2PT8uRgTqufc40Q
-         sAiHrA31ld5Amk2KrTQuLBTf74EGi26yaAGwBaTfuCxwfJ93EAxd2LfUO57yOd0LeYcI
-         kZKkU34SA4Lhdj+9C1NamWPH7IBHkMZ4KSOWZp1q19qP/AAbgiReS2i7UgWcgoxxuY0f
-         sqjRe6OZQ7IQDbnOeiM3bVP7/fM1ynTqeIzGbTclYD3npwh5QYKTw95q4JS3XPY5tZ0d
-         Q9dw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698951986; x=1699556786;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i/xUgcpbnnTlXsVcZhoWq2pWvJ/EENYDU0v0UaFuVGU=;
-        b=hMrOqYdZJq6TByJncnr5tTjZ8vHzvQ6BjFo6nYLaDuDv/N0bggf0Aexz/7PdCUK0w6
-         himphlrf36iX5oGB3eJ6IqVV+dbWJfXd4Ti3+zSXNTyRhPJnZz0i4H1B2j/EKMSI+gkr
-         GPGGekt++PjNAm/35mWS3SbUkRTjzBSfNefDYlFP9PpjmkvsM82o8K00kJjIJoifT8u4
-         /1GLm1rQODwmW3PGljfGJFAwGh/jQo15klet1xodJX6QKT1w8O4ezUc8ibz6Y6KDXbtg
-         ugh9ev3YPnh90y18fCEL7w+LBynr5fmF1YxoiXGJ25gO1jEGCbjP2Nxtxp17pSXbAe8v
-         z4FQ==
-X-Gm-Message-State: AOJu0Yw1GtJSks6NqpdF9Q+4TWqxebZzMcHtxrRX2Ol6BKMwPhG80rwW
-        iEzRgBu4ruWSTX28+21P2SyCLY3I7RheYt8stqw=
-X-Google-Smtp-Source: AGHT+IE+V1VAlstb0TbKqgf3RZO31vQQTFTfQzdY2gUqTavTHX6nIqS+s+vxsEbElZ2mYPIfzTXXRqe/HPy+X4sL70o=
-X-Received: by 2002:a05:6871:c48e:b0:1e9:dae7:f58a with SMTP id
- ci14-20020a056871c48e00b001e9dae7f58amr17197041oac.22.1698951985938; Thu, 02
- Nov 2023 12:06:25 -0700 (PDT)
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/F/wl6FY/AUS/Wmc3uS6IrGf3SKq+EI6CqMe4XjV9HM=;
+ b=KK82aRVCypA3/Zn0wp4iwXnbj2f2rCm0Ml1KkAb7tRsibsqQiYnMTD9qH+WeYSYRpbV1k6kvmo1GOsplJNjzmhN98FGvEBF8sInzXSWbcljKGxWKxq+gO6mhJTv7utPMncJpxd5bym97lzi9BhlFjBruTYseIWrCfhM6O2rzbpY=
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com (2603:10b6:805:d8::25)
+ by DS7PR10MB4974.namprd10.prod.outlook.com (2603:10b6:5:3a0::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.21; Thu, 2 Nov
+ 2023 19:20:54 +0000
+Received: from SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::8979:3e3f:c3e0:8dfa]) by SN6PR10MB3022.namprd10.prod.outlook.com
+ ([fe80::8979:3e3f:c3e0:8dfa%4]) with mapi id 15.20.6907.025; Thu, 2 Nov 2023
+ 19:20:54 +0000
+Date:   Thu, 2 Nov 2023 15:20:51 -0400
+From:   "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+To:     Carlos Llamas <cmllamas@google.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>,
+        Todd Kjos <tkjos@android.com>,
+        Martijn Coenen <maco@android.com>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>, linux-kernel@vger.kernel.org,
+        kernel-team@android.com, stable@vger.kernel.org,
+        Minchan Kim <minchan@kernel.org>
+Subject: Re: [PATCH 02/21] binder: fix use-after-free in shinker's callback
+Message-ID: <20231102192051.innr2tbugspgmotw@revolver>
+References: <20231102185934.773885-1-cmllamas@google.com>
+ <20231102185934.773885-3-cmllamas@google.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231102185934.773885-3-cmllamas@google.com>
+User-Agent: NeoMutt/20220429
+X-ClientProxiedBy: BN9PR03CA0792.namprd03.prod.outlook.com
+ (2603:10b6:408:13f::17) To SN6PR10MB3022.namprd10.prod.outlook.com
+ (2603:10b6:805:d8::25)
 MIME-Version: 1.0
-References: <20231101210037.130494-1-hamza.mahfooz@amd.com>
- <CADnq5_Nv0MnG+pPvRQO37OP8iYwz8oGvFLs2g-+U=URHWcqJGw@mail.gmail.com> <1eed6bfa-3e98-45d1-9908-2c5a0f3173c3@amd.com>
-In-Reply-To: <1eed6bfa-3e98-45d1-9908-2c5a0f3173c3@amd.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 2 Nov 2023 15:06:14 -0400
-Message-ID: <CADnq5_OUjbrVOmSr7vuK8h8rmg+q14ra1jiE+B0TRfZos-jn5w@mail.gmail.com>
-Subject: Re: [PATCH] drm/edid: add a quirk for two 240Hz Samsung monitors
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Maxime Ripard <mripard@kernel.org>,
-        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Jerry Zuo <jerry.zuo@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Alex Deucher <alexander.deucher@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN6PR10MB3022:EE_|DS7PR10MB4974:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9efdcf9c-e7f0-4a54-a311-08dbdbd8d552
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 4pxdS/cV5Ec1alFtIUiLbQLc3DKHm67KdEI5eVlaSs36rIMoxYGQLLm+7ALa+SfabhUnctUM9gdg8iLNuJ7yJYpVtDd9Zk6F3oqj1ZMIb1TV01pKDW8yxjfYXrKORQbn86ihW9dV5LDXnIWZU6Z2cHGZedrBmgNx+7U1OjMx8VvEsltUKGYDVQL2Lcg1kcn7zZclCtTJmh9HE+/fa30pAgVdv8JbjWdZePVvDFMiMA8teSbz1zHrkrH0o3VbD2Dy/nwMwdHuUjXhhr/BpRCka2b1CKCK1BBwZYuEvl5US74u4VfaR6fp1LoAyyWXiATC2cISond9b92/rHxpxVwaU8x83fvQK+Fagt/wYHiKTZEfy5c7oO7Uo6UK9BazvMGXTDf6K3yApchRT+2zejI5XA8DpZ7zGUwez8vd8m2u1lbBCHfpE53RcZScBVT7Wvb6TZ5OEiwVI0qnP/rHUvV89uApNQv7ALvqvNHAV63fs0xNP27+6SyFZCqQD6PeVJzhu+GpjNiYnPcChLPfvfjEcnDDqz/zDvDxwahtQTTqIcJAUjhNsrvay0Mv+cXu2vod
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR10MB3022.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(136003)(39860400002)(376002)(396003)(366004)(230922051799003)(451199024)(64100799003)(186009)(1800799009)(26005)(9686003)(6512007)(1076003)(38100700002)(86362001)(2906002)(83380400001)(8676002)(7416002)(6506007)(478600001)(6666004)(6486002)(66476007)(316002)(66556008)(6916009)(8936002)(4326008)(54906003)(41300700001)(33716001)(5660300002)(66946007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?b9rFFrM+nkKZQYtfXbQhN+NOw9EOsm8SIl8P9GW1GcBq90AEbiAdgaIdeDGq?=
+ =?us-ascii?Q?Mlkz1XFHkhdfXb7Ch/eBZ/NMvXf2Qw4cM/JpVTJCxH9Iryhlp780fBUVn8pO?=
+ =?us-ascii?Q?Gxsbgv5i7SZfnz4r4gpK+YNPhs+/hF+oHx6Q6apo1KWIBZkVxwjfAgtnOnp8?=
+ =?us-ascii?Q?mEuXUnNSHc00UiaIUv/dGIeK4rc9AjCkT31dV5xDhNZNMbpWIFDFhx0t4scV?=
+ =?us-ascii?Q?rlR7WNd/oYxWt/hN1CVBVO3tUn6yp4GyMPGewHD6o52yLUE4w9uCfBwmgsM/?=
+ =?us-ascii?Q?2160PwJxgUBVapTaQV9EXh+oGGe/vkT38g76lWbCKZDK8UqPqMAKWqzhHz6v?=
+ =?us-ascii?Q?N1bMJ8BGMywdqCBiLi+Q8dsiqmgOMS9zYoGh3jGCHWcu/RIWKn4cnGQY8E/m?=
+ =?us-ascii?Q?0L1F01B7X+KxGLDdCWWlhxjgwp4mdZu8fuYKzX8DiZuoiA9xLby46+QJJgOi?=
+ =?us-ascii?Q?GLJ5N+3h6nqCIuYhlROvp/7JZc/w+7ENr75wphzTPagvsCosw6FpNCmR0L01?=
+ =?us-ascii?Q?xcZGMUTgPZxPiyhFUa64dswUf+ku/yK+9l80bQPbgVXxRqY/EmeDljofz/QD?=
+ =?us-ascii?Q?vZPjwnfvEiZfxqAoy6T8q0ZMOgz0A6qn3LZ5in38Oyj6b/fWfCZ6nQaFQTSK?=
+ =?us-ascii?Q?IaQV0Zo9APyWRUJECag8Pn+hXshuI2YWGeU9ZO0+j5Do7Wkfwy9Ncq/rGFNh?=
+ =?us-ascii?Q?IJNxAqtnKQUtq0QduZuwrHsS7L19EH22XZWneRyiP4oAuWMn4s0HZWJ0tJV2?=
+ =?us-ascii?Q?nEFdFPHXaIF5yP8STDSY3HTiNnLlxMukssOx8QMQ9fao/G9qFrImU+FK2Zwg?=
+ =?us-ascii?Q?YXIy4Pm/E2PQEZaLdnLPjx1C6DhIHoqeqXeXehzhkTDFM6LXhe5iWoeR1gzl?=
+ =?us-ascii?Q?nlTZ2tNXQ2r2O7QqdfFnruc3S3FS0ORKZywEKfhox7AVHJPI7ulA5e6SXnXA?=
+ =?us-ascii?Q?ZqWfHgMO9QDyK3degFlRhQzOn8zSOeSOXL5RGgNDbeGGHLWhqJh2qVXuvkmS?=
+ =?us-ascii?Q?AaVtFMkh9dzY5w5I//D/NtdFZr5S5wo68wLWquWJECVwc4PNQZ2EaI5YGWP4?=
+ =?us-ascii?Q?FkXwDRBw/NAdZ0UoBnLtrQFvme8hJWGajr+qPvlO2QUSr9jiRcIYKmdUJB4b?=
+ =?us-ascii?Q?W+w4D+1RvMyU//ifzzuzEQJXwp4CBoJOjzK98miZ7fh158JXrjWs4ON7Meow?=
+ =?us-ascii?Q?L7DRna0v9LOGhiJaA6uuFicYLl8qNdlPTu85tG6yGgB0zsRS+UY1wcyLwV4W?=
+ =?us-ascii?Q?3D77njX/aVdJeETFwgeaF5eyXKXRFmQjuvpgi48oaOx23GWdf4fsXS5jutEx?=
+ =?us-ascii?Q?+gdWRaI6wEsCpgAGwor9iaLRE2GRovD6Ge+jBOlcwSmcDeGo5j2z3DEH65az?=
+ =?us-ascii?Q?2xTd5Bb4bgIf4PrK+1qJ8U3aEFof4SCSmgQavErUCX/vdzlS6btD0mujMB3M?=
+ =?us-ascii?Q?eaYyDcPVFnEb/kcNjCrZeeSxMVDMUZxfgbzQwi4NacTWbYIPOUnphhpADvZJ?=
+ =?us-ascii?Q?rMg+SmSgeH939h+FXGJ16UbUUAmRxED5Z1Dvk1iadxLzj97+9q+tg6Sc4WrL?=
+ =?us-ascii?Q?8W/c267VG2iOvZuEUq0n1MsN1/t5B57DJPeDvLFX?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?CCo8L6b3hCGi18yUSkay2CyTFyCs2xRsS8LMNhzjOxAvVZq1ZyEezXjZ5RUS?=
+ =?us-ascii?Q?wJ83z7zGi/RrgtUj8Du8YLi8xYGu9MtTJoUie1xnHOz5HTQv1LYDqwemIAx1?=
+ =?us-ascii?Q?bVNsicnGOsci4ZMkcZObin9I5yhhjnsu/AbNB2HeOj+SqD1/Ca049eNmXNC+?=
+ =?us-ascii?Q?F07RjA4PB7GD3OfVtUOt54MnJuyGM++yn9LeLYRGavpnpfaqE2qZK1ZfEcWk?=
+ =?us-ascii?Q?gi2o3rkO/Kbkp9Z+UPZfBe0F9cCUgRG/LlFxI9iTefmHT+W1lzNlJvVuFB0V?=
+ =?us-ascii?Q?JvvmpGVks4Fq5wSkof9jeA1Cm/bNN26lhkiUSOxFPyD03hwnGL6tP4rLOPM1?=
+ =?us-ascii?Q?BiyKRkEyledOevsxtBChFRhZT0dpgsJfazbFVyJ71mLWX6So7elB9LOig+05?=
+ =?us-ascii?Q?E62M3ekACp2s9Gbu4m7ZXgUCFs4rqGgUSy4LFntP2MRSbcYtUWaXYo+uVSaz?=
+ =?us-ascii?Q?Mx9FkMzqmAFaQwH5gVbBVxuZUZi4XqkU7CLDpMIif0RN6wfHGI2LlPSCp6MQ?=
+ =?us-ascii?Q?ipiw5OyrOs9efD2AGtHuX2q/GLohq62DwjHqFvANtBndk2Ivfj+tX1KWqxkm?=
+ =?us-ascii?Q?6LPY4GGimhptzq+ICU8RXLc1As8lfK1NxK9yUX2T7vy+r18zsUhT+RqXvQBT?=
+ =?us-ascii?Q?a3d+zvKsHfrnPoSuB2YYzaGY/9m6e60r5PM+cINWmJK25V2H04k/ZYQmZc1S?=
+ =?us-ascii?Q?fvcUiLyLxMIZr8GpKmvL/ij7Zz7LNuBy3PDabED7qs0ug2s5Uj//7gPPwfZx?=
+ =?us-ascii?Q?VMblHbZF9Cn1yXOdY9Ypa179LVJmvRqQxi3My1efYM6WJUMWg3D1MXqe/VH/?=
+ =?us-ascii?Q?jsDRS6ePI6Zq1pvF5MEv7uWSyXzTBufiFQQIVPUWR3XDv27bHOk9HrzEA9WL?=
+ =?us-ascii?Q?SotVYpuMh/pHx422sPtRgIKqc+FKTp8AmIULAygsUat/24oxNkRwu53p1/n5?=
+ =?us-ascii?Q?AubcJSGCdAEF4ymXz85Tmzl94/LCGrkq+1x9EEXC353MDJE3M6TwGsYz4n8E?=
+ =?us-ascii?Q?J7SWNy4xtCaCaMLt2v+moOU+ZfQOBqOiRYuf2TMbQtehUAs+YMG8Dm8jAAt1?=
+ =?us-ascii?Q?D0YYqfGPCz0mL4bc8scSSadTx/wXVAqm0R8K73N3tcvzqdyFqa4=3D?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9efdcf9c-e7f0-4a54-a311-08dbdbd8d552
+X-MS-Exchange-CrossTenant-AuthSource: SN6PR10MB3022.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2023 19:20:54.2692
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pyjO6VuYlNLZ2uOQQWDTF5hT9zVShgutSWfeq+k2dCGT5zja2UHHvbATolOe3L2/XMrhWZQOORXb/KtPCfyFzA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB4974
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-02_10,2023-11-02_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 spamscore=0
+ phishscore=0 mlxlogscore=863 adultscore=0 mlxscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2310240000
+ definitions=main-2311020158
+X-Proofpoint-ORIG-GUID: BwWwpUx6kujQTz1robVxXb5ANmNAINdo
+X-Proofpoint-GUID: BwWwpUx6kujQTz1robVxXb5ANmNAINdo
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Nov 2, 2023 at 3:00=E2=80=AFPM Hamza Mahfooz <hamza.mahfooz@amd.com=
-> wrote:
->
-> On 11/1/23 17:36, Alex Deucher wrote:
-> > On Wed, Nov 1, 2023 at 5:01=E2=80=AFPM Hamza Mahfooz <hamza.mahfooz@amd=
-.com> wrote:
-> >>
-> >> Without this fix the 5120x1440@240 timing of these monitors
-> >> leads to screen flickering.
-> >>
-> >> Cc: stable@vger.kernel.org # 6.1+
-> >> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1442
-> >> Co-developed-by: Harry Wentland <harry.wentland@amd.com>
-> >> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-> >> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-> >> ---
-> >>   drivers/gpu/drm/drm_edid.c | 47 +++++++++++++++++++++++++++++++++++-=
---
-> >>   1 file changed, 44 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-> >> index bca2af4fe1fc..3fdb8907f66b 100644
-> >> --- a/drivers/gpu/drm/drm_edid.c
-> >> +++ b/drivers/gpu/drm/drm_edid.c
-> >> @@ -89,6 +89,8 @@ static int oui(u8 first, u8 second, u8 third)
-> >>   #define EDID_QUIRK_NON_DESKTOP                 (1 << 12)
-> >>   /* Cap the DSC target bitrate to 15bpp */
-> >>   #define EDID_QUIRK_CAP_DSC_15BPP               (1 << 13)
-> >> +/* Fix up a particular 5120x1440@240Hz timing */
-> >> +#define EDID_QUIRK_FIXUP_5120_1440_240         (1 << 14)
-> >
-> > What is wrong with the original timing that needs to be fixed?
->
-> Apparently, all of timing values for the 5120x1440@240 mode of these
-> monitors aren't set correctly (they are all lower than they should be)
-> in their EDIDs. For what it's worth, the windows driver has had a quirk
-> similar the one proposed in this patch for ~2 years.
+* Carlos Llamas <cmllamas@google.com> [231102 15:00]:
+> The mmap read lock is used during the shrinker's callback, which means
+> that using alloc->vma pointer isn't safe as it can race with munmap().
 
-It would be good to at least include the original mode timings from
-the EDID and the new ones added by the quirk in the commit message and
-a description of why they are problematic and why the new ones work.
+I think you know my feelings about the safety of that pointer from
+previous discussions.
 
-Alex
+> As of commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
+> munmap") the mmap lock is downgraded after the vma has been isolated.
+> 
+> I was able to reproduce this issue by manually adding some delays and
+> triggering page reclaiming through the shrinker's debug sysfs. The
+> following KASAN report confirms the UAF:
+> 
+>   ==================================================================
+>   BUG: KASAN: slab-use-after-free in zap_page_range_single+0x470/0x4b8
+>   Read of size 8 at addr ffff356ed50e50f0 by task bash/478
+> 
+>   CPU: 1 PID: 478 Comm: bash Not tainted 6.6.0-rc5-00055-g1c8b86a3799f-dirty #70
+>   Hardware name: linux,dummy-virt (DT)
+>   Call trace:
+>    zap_page_range_single+0x470/0x4b8
+>    binder_alloc_free_page+0x608/0xadc
+>    __list_lru_walk_one+0x130/0x3b0
+>    list_lru_walk_node+0xc4/0x22c
+>    binder_shrink_scan+0x108/0x1dc
+>    shrinker_debugfs_scan_write+0x2b4/0x500
+>    full_proxy_write+0xd4/0x140
+>    vfs_write+0x1ac/0x758
+>    ksys_write+0xf0/0x1dc
+>    __arm64_sys_write+0x6c/0x9c
+> 
+>   Allocated by task 492:
+>    kmem_cache_alloc+0x130/0x368
+>    vm_area_alloc+0x2c/0x190
+>    mmap_region+0x258/0x18bc
+>    do_mmap+0x694/0xa60
+>    vm_mmap_pgoff+0x170/0x29c
+>    ksys_mmap_pgoff+0x290/0x3a0
+>    __arm64_sys_mmap+0xcc/0x144
+> 
+>   Freed by task 491:
+>    kmem_cache_free+0x17c/0x3c8
+>    vm_area_free_rcu_cb+0x74/0x98
+>    rcu_core+0xa38/0x26d4
+>    rcu_core_si+0x10/0x1c
+>    __do_softirq+0x2fc/0xd24
+> 
+>   Last potentially related work creation:
+>    __call_rcu_common.constprop.0+0x6c/0xba0
+>    call_rcu+0x10/0x1c
+>    vm_area_free+0x18/0x24
+>    remove_vma+0xe4/0x118
+>    do_vmi_align_munmap.isra.0+0x718/0xb5c
+>    do_vmi_munmap+0xdc/0x1fc
+>    __vm_munmap+0x10c/0x278
+>    __arm64_sys_munmap+0x58/0x7c
+> 
+> Fix this issue by performing instead a vma_lookup() which will fail to
+> find the vma that was isolated before the mmap lock downgrade. Note that
+> this option has better performance than upgrading to a mmap write lock
+> which would increase contention. Plus, mmap_write_trylock() has been
+> recently removed anyway.
+> 
+> Fixes: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in munmap")
+> Cc: stable@vger.kernel.org
+> Cc: Liam Howlett <liam.howlett@oracle.com>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> ---
+>  drivers/android/binder_alloc.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+> index e3db8297095a..c4d60d81221b 100644
+> --- a/drivers/android/binder_alloc.c
+> +++ b/drivers/android/binder_alloc.c
+> @@ -1005,7 +1005,9 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  		goto err_mmget;
+>  	if (!mmap_read_trylock(mm))
+>  		goto err_mmap_read_lock_failed;
+> -	vma = binder_alloc_get_vma(alloc);
+> +	vma = vma_lookup(mm, page_addr);
+> +	if (vma && vma != binder_alloc_get_vma(alloc))
+> +		goto err_invalid_vma;
 
+Doesn't this need to be:
+if (!vma || vma != binder_alloc_get_vma(alloc))
 
->
-> >
-> > Alex
-> >
-> >
-> >>
-> >>   #define MICROSOFT_IEEE_OUI     0xca125c
-> >>
-> >> @@ -170,6 +172,12 @@ static const struct edid_quirk {
-> >>          EDID_QUIRK('S', 'A', 'M', 596, EDID_QUIRK_PREFER_LARGE_60),
-> >>          EDID_QUIRK('S', 'A', 'M', 638, EDID_QUIRK_PREFER_LARGE_60),
-> >>
-> >> +       /* Samsung C49G95T */
-> >> +       EDID_QUIRK('S', 'A', 'M', 0x7053, EDID_QUIRK_FIXUP_5120_1440_2=
-40),
-> >> +
-> >> +       /* Samsung S49AG95 */
-> >> +       EDID_QUIRK('S', 'A', 'M', 0x71ac, EDID_QUIRK_FIXUP_5120_1440_2=
-40),
-> >> +
-> >>          /* Sony PVM-2541A does up to 12 bpc, but only reports max 8 b=
-pc */
-> >>          EDID_QUIRK('S', 'N', 'Y', 0x2541, EDID_QUIRK_FORCE_12BPC),
-> >>
-> >> @@ -6586,7 +6594,37 @@ static void update_display_info(struct drm_conn=
-ector *connector,
-> >>          drm_edid_to_eld(connector, drm_edid);
-> >>   }
-> >>
-> >> -static struct drm_display_mode *drm_mode_displayid_detailed(struct dr=
-m_device *dev,
-> >> +static void drm_mode_displayid_detailed_edid_quirks(struct drm_connec=
-tor *connector,
-> >> +                                                   struct drm_display=
-_mode *mode)
-> >> +{
-> >> +       unsigned int hsync_width;
-> >> +       unsigned int vsync_width;
-> >> +
-> >> +       if (connector->display_info.quirks & EDID_QUIRK_FIXUP_5120_144=
-0_240) {
-> >> +               if (mode->hdisplay =3D=3D 5120 && mode->vdisplay =3D=
-=3D 1440 &&
-> >> +                   mode->clock =3D=3D 1939490) {
-> >> +                       hsync_width =3D mode->hsync_end - mode->hsync_=
-start;
-> >> +                       vsync_width =3D mode->vsync_end - mode->vsync_=
-start;
-> >> +
-> >> +                       mode->clock =3D 2018490;
-> >> +                       mode->hdisplay =3D 5120;
-> >> +                       mode->hsync_start =3D 5120 + 8;
-> >> +                       mode->hsync_end =3D 5120 + 8 + hsync_width;
-> >> +                       mode->htotal =3D 5200;
-> >> +
-> >> +                       mode->vdisplay =3D 1440;
-> >> +                       mode->vsync_start =3D 1440 + 165;
-> >> +                       mode->vsync_end =3D 1440 + 165 + vsync_width;
-> >> +                       mode->vtotal =3D 1619;
-> >> +
-> >> +                       drm_dbg_kms(connector->dev,
-> >> +                                   "[CONNECTOR:%d:%s] Samsung 240Hz m=
-ode quirk applied\n",
-> >> +                                   connector->base.id, connector->nam=
-e);
-> >> +               }
-> >> +       }
-> >> +}
-> >> +
-> >> +static struct drm_display_mode *drm_mode_displayid_detailed(struct dr=
-m_connector *connector,
-> >>                                                              struct di=
-splayid_detailed_timings_1 *timings,
-> >>                                                              bool type=
-_7)
-> >>   {
-> >> @@ -6605,7 +6643,7 @@ static struct drm_display_mode *drm_mode_display=
-id_detailed(struct drm_device *d
-> >>          bool hsync_positive =3D (timings->hsync[1] >> 7) & 0x1;
-> >>          bool vsync_positive =3D (timings->vsync[1] >> 7) & 0x1;
-> >>
-> >> -       mode =3D drm_mode_create(dev);
-> >> +       mode =3D drm_mode_create(connector->dev);
-> >>          if (!mode)
-> >>                  return NULL;
-> >>
-> >> @@ -6628,6 +6666,9 @@ static struct drm_display_mode *drm_mode_display=
-id_detailed(struct drm_device *d
-> >>
-> >>          if (timings->flags & 0x80)
-> >>                  mode->type |=3D DRM_MODE_TYPE_PREFERRED;
-> >> +
-> >> +       drm_mode_displayid_detailed_edid_quirks(connector, mode);
-> >> +
-> >>          drm_mode_set_name(mode);
-> >>
-> >>          return mode;
-> >> @@ -6650,7 +6691,7 @@ static int add_displayid_detailed_1_modes(struct=
- drm_connector *connector,
-> >>          for (i =3D 0; i < num_timings; i++) {
-> >>                  struct displayid_detailed_timings_1 *timings =3D &det=
-->timings[i];
-> >>
-> >> -               newmode =3D drm_mode_displayid_detailed(connector->dev=
-, timings, type_7);
-> >> +               newmode =3D drm_mode_displayid_detailed(connector, tim=
-ings, type_7);
-> >>                  if (!newmode)
-> >>                          continue;
-> >>
-> >> --
-> >> 2.42.0
-> >>
-> --
-> Hamza
->
+This way, we catch a different vma and a NULL vma.
+
+Or even, just:
+if (vma != binder_alloc_get_vma(alloc))
+
+if the alloc vma cannot be NULL?
+
+>  
+>  	list_lru_isolate(lru, item);
+>  	spin_unlock(lock);
+> @@ -1031,6 +1033,8 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+>  	mutex_unlock(&alloc->mutex);
+>  	return LRU_REMOVED_RETRY;
+>  
+> +err_invalid_vma:
+> +	mmap_read_unlock(mm);
+>  err_mmap_read_lock_failed:
+>  	mmput_async(mm);
+>  err_mmget:
+> -- 
+> 2.42.0.869.gea05f2083d-goog
+> 
