@@ -2,49 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 230D77DE9F7
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 02:24:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44ECB7DEA56
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 02:46:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235026AbjKBBYC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 21:24:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37622 "EHLO
+        id S232907AbjKBBqR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 21:46:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232889AbjKBBYB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 21:24:01 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9426183;
-        Wed,  1 Nov 2023 18:23:55 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id A26FB7E2;
-        Thu,  2 Nov 2023 02:23:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1698888216;
-        bh=s7c5V5ArwrMQDFMecbajkTFcUZmN8dEdlMoHru2wrow=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cVMGfvkW/v8sACJKDA75jbb1LO5kKwKKebYONS7b3FpHk1PABXvnDEJ+ejMWXjvo+
-         DdRn3jHM41qYPpT9x0bsuAL8DHJt8N+zdBE1O2nmgekm1MyvW04ttjPj/IUvNxmhfq
-         qz03kAhrZ8DC63utt1z4qfrDbpIgFjPWRlNAa4K4=
-Date:   Thu, 2 Nov 2023 03:23:59 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-media@vger.kernel.org,
-        Alain Volmat <alain.volmat@foss.st.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] media: i2c: imx290: Properly encode registers as
- little-endian
-Message-ID: <20231102012359.GD5933@pendragon.ideasonboard.com>
-References: <20231101122354.270453-1-alexander.stein@ew.tq-group.com>
- <20231101122354.270453-3-alexander.stein@ew.tq-group.com>
+        with ESMTP id S232035AbjKBBqR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 21:46:17 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC5B4110;
+        Wed,  1 Nov 2023 18:46:14 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6b89ab5ddb7so517719b3a.0;
+        Wed, 01 Nov 2023 18:46:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698889574; x=1699494374; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gy/GVknEDM3F376D/bWf0Z1BlGJZY3l5y/EY0cLFHSg=;
+        b=TWAyJLHtEzCrtE8BxLEihlp2juJcvdolRk8Vo+jvdlgkmW3kSAZkRjRPAAbp59Tywb
+         ODEOrWvO2p2i7ob13s0sRTlCoY+LN+WTVSExOBWG7pXqcTt12mClCM+ss8JRnJQhO+Yn
+         MzaqlAS1S0gBF8cWpUCau0g98g8xqJXCWC+Ln8q8wc9VR4i78XUYjFoh8URgQGl57rNN
+         mL5g5b/J+DapOX2Btjsxt0aIDvK1TwgVRT+BOpvXr37kYCqmSutbW8tJtOjjmWXr3ERE
+         yH1bbQfF9Y0L+4HEtvL48eSjB15yUQf9o4g2x7BT4o5aNnt6e0pqw/sbt/rixqscQuxy
+         TAJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698889574; x=1699494374;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gy/GVknEDM3F376D/bWf0Z1BlGJZY3l5y/EY0cLFHSg=;
+        b=FuFTk/0466vXLtd6j0Y/fVDJnzsj8CpcqHQn2QOGL5H6kWHbi91zEAEfv3+u3dKnOB
+         dnreWvir9iaARM2BKKmRdawMr94E0v/V+/oZzLZ47fsAWzK+HFh6/ILsfk71ErKpTEz1
+         oVdp4l1o7opeVU2lyYDBvTAu1707w0HYAeeIRq+EIE64KnfjjMCdDXcv0g/kNqBnyIrY
+         KRGUBLMPk+YoN5kpcqI2Sf9VFqgSkqxFOmflUqDLX4cYQNmf3Gz+x/+usfa8nUIC7t0L
+         mLC0DpbnTtyLWqZMEbz0y1h9AhEMH7+o7jlDCdgrRH8CubTfzzoCQUt20MSnO8/BpyCZ
+         l0bQ==
+X-Gm-Message-State: AOJu0YxMD0SzmIAUSO1KdQyigMeJaoLw7SAzKMhMxnGwvJ/OsX7c0HIc
+        eB997CQUJpxmVBt7vlOFB+1Mi+QMM3c=
+X-Google-Smtp-Source: AGHT+IE1CaL6tZHiXbUN1S+2Xw9nk5lTFyRUC9NtCsot0YT6JaNtGPJFTNVzNYU2iGIKcYNUusdGSQ==
+X-Received: by 2002:a05:6a00:16d5:b0:6bb:def8:b0a7 with SMTP id l21-20020a056a0016d500b006bbdef8b0a7mr21606945pfc.3.1698889574218;
+        Wed, 01 Nov 2023 18:46:14 -0700 (PDT)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id a17-20020a637051000000b005b3cc663c8csm436415pgn.21.2023.11.01.18.46.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Nov 2023 18:46:13 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 955DA80DFD3B; Thu,  2 Nov 2023 08:46:10 +0700 (WIB)
+Date:   Thu, 2 Nov 2023 08:46:10 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.5 000/111] 6.5.10-rc2 review
+Message-ID: <ZUL_YkVgFnWQ9k-7@debian.me>
+References: <20231101120147.190909952@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="7oM5a5ZDZL/pUZYV"
 Content-Disposition: inline
-In-Reply-To: <20231101122354.270453-3-alexander.stein@ew.tq-group.com>
+In-Reply-To: <20231101120147.190909952@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,100 +78,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Alexander,
 
-Thank you for the patch.
+--7oM5a5ZDZL/pUZYV
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Nov 01, 2023 at 01:23:54PM +0100, Alexander Stein wrote:
-> The conversion to CCI also converted the multi-byte register access to
-> big-endian. Correct the register definition by using the correct
-> little-endian ones.
-> 
-> Fixes: af73323b97702 ("media: imx290: Convert to new CCI register access helpers")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+On Wed, Nov 01, 2023 at 01:03:25PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.10 release.
+> There are 111 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Successfully compiled and installed bindeb-pkgs on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-> ---
->  drivers/media/i2c/imx290.c | 42 +++++++++++++++++++-------------------
->  1 file changed, 21 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/media/i2c/imx290.c b/drivers/media/i2c/imx290.c
-> index 29098612813cb..c6fea5837a19f 100644
-> --- a/drivers/media/i2c/imx290.c
-> +++ b/drivers/media/i2c/imx290.c
-> @@ -41,18 +41,18 @@
->  #define IMX290_WINMODE_720P				(1 << 4)
->  #define IMX290_WINMODE_CROP				(4 << 4)
->  #define IMX290_FR_FDG_SEL				CCI_REG8(0x3009)
-> -#define IMX290_BLKLEVEL					CCI_REG16(0x300a)
-> +#define IMX290_BLKLEVEL					CCI_REG16_LE(0x300a)
->  #define IMX290_GAIN					CCI_REG8(0x3014)
-> -#define IMX290_VMAX					CCI_REG24(0x3018)
-> +#define IMX290_VMAX					CCI_REG24_LE(0x3018)
->  #define IMX290_VMAX_MAX					0x3ffff
-> -#define IMX290_HMAX					CCI_REG16(0x301c)
-> +#define IMX290_HMAX					CCI_REG16_LE(0x301c)
->  #define IMX290_HMAX_MAX					0xffff
-> -#define IMX290_SHS1					CCI_REG24(0x3020)
-> +#define IMX290_SHS1					CCI_REG24_LE(0x3020)
->  #define IMX290_WINWV_OB					CCI_REG8(0x303a)
-> -#define IMX290_WINPV					CCI_REG16(0x303c)
-> -#define IMX290_WINWV					CCI_REG16(0x303e)
-> -#define IMX290_WINPH					CCI_REG16(0x3040)
-> -#define IMX290_WINWH					CCI_REG16(0x3042)
-> +#define IMX290_WINPV					CCI_REG16_LE(0x303c)
-> +#define IMX290_WINWV					CCI_REG16_LE(0x303e)
-> +#define IMX290_WINPH					CCI_REG16_LE(0x3040)
-> +#define IMX290_WINWH					CCI_REG16_LE(0x3042)
->  #define IMX290_OUT_CTRL					CCI_REG8(0x3046)
->  #define IMX290_ODBIT_10BIT				(0 << 0)
->  #define IMX290_ODBIT_12BIT				(1 << 0)
-> @@ -78,28 +78,28 @@
->  #define IMX290_ADBIT2					CCI_REG8(0x317c)
->  #define IMX290_ADBIT2_10BIT				0x12
->  #define IMX290_ADBIT2_12BIT				0x00
-> -#define IMX290_CHIP_ID					CCI_REG16(0x319a)
-> +#define IMX290_CHIP_ID					CCI_REG16_LE(0x319a)
->  #define IMX290_ADBIT3					CCI_REG8(0x31ec)
->  #define IMX290_ADBIT3_10BIT				0x37
->  #define IMX290_ADBIT3_12BIT				0x0e
->  #define IMX290_REPETITION				CCI_REG8(0x3405)
->  #define IMX290_PHY_LANE_NUM				CCI_REG8(0x3407)
->  #define IMX290_OPB_SIZE_V				CCI_REG8(0x3414)
-> -#define IMX290_Y_OUT_SIZE				CCI_REG16(0x3418)
-> -#define IMX290_CSI_DT_FMT				CCI_REG16(0x3441)
-> +#define IMX290_Y_OUT_SIZE				CCI_REG16_LE(0x3418)
-> +#define IMX290_CSI_DT_FMT				CCI_REG16_LE(0x3441)
->  #define IMX290_CSI_DT_FMT_RAW10				0x0a0a
->  #define IMX290_CSI_DT_FMT_RAW12				0x0c0c
->  #define IMX290_CSI_LANE_MODE				CCI_REG8(0x3443)
-> -#define IMX290_EXTCK_FREQ				CCI_REG16(0x3444)
-> -#define IMX290_TCLKPOST					CCI_REG16(0x3446)
-> -#define IMX290_THSZERO					CCI_REG16(0x3448)
-> -#define IMX290_THSPREPARE				CCI_REG16(0x344a)
-> -#define IMX290_TCLKTRAIL				CCI_REG16(0x344c)
-> -#define IMX290_THSTRAIL					CCI_REG16(0x344e)
-> -#define IMX290_TCLKZERO					CCI_REG16(0x3450)
-> -#define IMX290_TCLKPREPARE				CCI_REG16(0x3452)
-> -#define IMX290_TLPX					CCI_REG16(0x3454)
-> -#define IMX290_X_OUT_SIZE				CCI_REG16(0x3472)
-> +#define IMX290_EXTCK_FREQ				CCI_REG16_LE(0x3444)
-> +#define IMX290_TCLKPOST					CCI_REG16_LE(0x3446)
-> +#define IMX290_THSZERO					CCI_REG16_LE(0x3448)
-> +#define IMX290_THSPREPARE				CCI_REG16_LE(0x344a)
-> +#define IMX290_TCLKTRAIL				CCI_REG16_LE(0x344c)
-> +#define IMX290_THSTRAIL					CCI_REG16_LE(0x344e)
-> +#define IMX290_TCLKZERO					CCI_REG16_LE(0x3450)
-> +#define IMX290_TCLKPREPARE				CCI_REG16_LE(0x3452)
-> +#define IMX290_TLPX					CCI_REG16_LE(0x3454)
-> +#define IMX290_X_OUT_SIZE				CCI_REG16_LE(0x3472)
->  #define IMX290_INCKSEL7					CCI_REG8(0x3480)
->  
->  #define IMX290_PGCTRL_REGEN				BIT(0)
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
--- 
-Regards,
+--=20
+An old man doll... just what I always wanted! - Clara
 
-Laurent Pinchart
+--7oM5a5ZDZL/pUZYV
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZUL/XQAKCRD2uYlJVVFO
+o+/CAP43RALYZT77HFB6VE70PhFjGfg1TfgPxT6QuqLkqzEGYQD8CXvInaHtI5wq
+WaGUr7YyWPEzjjC5bkWLf993GkrrBg8=
+=f0/W
+-----END PGP SIGNATURE-----
+
+--7oM5a5ZDZL/pUZYV--
