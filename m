@@ -2,62 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F23547DF4F7
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 15:28:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E757DF549
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 15:49:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229527AbjKBO2K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 10:28:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43060 "EHLO
+        id S229520AbjKBOtq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 10:49:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235392AbjKBO2J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 10:28:09 -0400
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D58CB1BF
-        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 07:27:39 -0700 (PDT)
-Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-5b8c39a2dceso681355a12.2
-        for <stable@vger.kernel.org>; Thu, 02 Nov 2023 07:27:39 -0700 (PDT)
+        with ESMTP id S229480AbjKBOtq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 10:49:46 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0614B7
+        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 07:49:40 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-280109daaaaso908549a91.3
+        for <stable@vger.kernel.org>; Thu, 02 Nov 2023 07:49:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698935259; x=1699540059; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698936579; x=1699541379; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=vz+M3gvZ6SLKFdhAz+E2UBlSQaSlopd2Lv2Su/Fxchs=;
-        b=JM0nawqQ8GNzK7Xbt6WvhbFeeOF0xGWB3oQW++apiFcZ+dYKq1bRR9UFyUVxKpfxM/
-         Mi+3fJiTl2L0fkG1ipbe+vebmunrFTVsyqtlJaiA0RdZYxJmzpKyk/7iRHhOsKRxXK6V
-         cF91DToMtXV0lMpgQjMWchy34OSq3L3etYMV4nZTW57s/HFOxfGNzgpC3YDR2GJO6mbe
-         2MAEhut4vTfEJ/kwO2br2ftElrkq1+nGy+I0w5hHcKkY1gSKJetmm+PbAw1mIzNeWvcf
-         7tQS+ouhiRuk/1dQUHH25Q5Wcu06Zesxn+ebAcSAl/xyppYxQ4k0XmYERurhi/fw8Anf
-         TprQ==
+        bh=wILz5+OS2rT7uUC8K1ys1Dt0BuHucJ/vRSC48Wip5Zs=;
+        b=CH08wWxV1vZVF0G/AUDA6+QtznQji6twSXW0Mhgjo/onWH1+Px71tcOrWhGRlF1zVI
+         iP1X3ORStNXZ3oQ7GAASnvLeS5thoeTL3iIDfQhe+ldBMsC1itRTGFG1WpUSXxzrfmsB
+         XPaG9T/eSifBzGV6hfrPEk/TbSgZg9xbKkJApXCHPD+IQMgNX2UG69IayGGRGAecdlSI
+         Xr+a22FR1dp83apjU+bTfLGAdlAm6eRRGx/n0DwSnHW/J5TI9woKQWq2eb1W5q8jw3qq
+         mQX/RsCbZZ7pciNfOdv+H8d41TOXeM9bV2StRSRGHW2nHrr+flhGYVpmfRg4mJ1p68+E
+         aPRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698935259; x=1699540059;
+        d=1e100.net; s=20230601; t=1698936579; x=1699541379;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=vz+M3gvZ6SLKFdhAz+E2UBlSQaSlopd2Lv2Su/Fxchs=;
-        b=qqtbA96rvt19VNcCDlSrNgZ9WAn3YaS+jW3+FZJlvO8TC5YpB6Drw7eq3XpLpnZutI
-         c0gOTyGzm2dh3jU8K6awtWJu+/mjgR5jKb6kfC3WSgGoAvRMbEkEhaQacOAZo415noPN
-         OkatCvGECoarrfP+twwThUjs9hQWE++pkwBH6WC0SwatNuiPN9JhnQYLcmqbfCA9aS+C
-         i4TbceVuIZgKveJOeMV4AJKCz2j5Q571A/QHuTpEGQK1dCGtR1J+7pJ96b8ss4vNbgpf
-         8hUavrsJ9S5Hy1/a+HvAHcBSJxQiyu3nsc3vJlUVuHBym1OwD8keiV7BbA+5CI0Ugk99
-         chnA==
-X-Gm-Message-State: AOJu0YweZYPNDAJnR6JI/DSf5gMNZ/pto3rQudgvoGJFa3749JBzGMsm
-        JzrEoiM5P5DVC2Rpe+pRj1Wj1oYgsNsIkY94MSlKKw==
-X-Google-Smtp-Source: AGHT+IE1NxB3xuzg1fz4FJolDb3gxOTPnTUmuMlwc33UE9bUcx+HcMWbRHpoox50B83QxuMfKAEUzw==
-X-Received: by 2002:a17:90a:d388:b0:27d:515d:94f0 with SMTP id q8-20020a17090ad38800b0027d515d94f0mr14183505pju.24.1698935258920;
-        Thu, 02 Nov 2023 07:27:38 -0700 (PDT)
+        bh=wILz5+OS2rT7uUC8K1ys1Dt0BuHucJ/vRSC48Wip5Zs=;
+        b=gPyyCIrW4MYNHcpx2oiTO9jdn1rHc8357zGItgF+c7jn369kheCrxAtou5zkDS/KC9
+         iiYbLXsanzYAyWgyKF7zxTCypNy8svOHiFGWvT1iFUOUjml/5lmNtbWRbaUOruf0ivZg
+         oxxaUU3+JC74Q+rYbncf+c3yFulyTPApdN+m5Uhx9uBGjdzyHFl2fO/Wy653j5GY/TrI
+         AbeIXBPMK+MKhwMG9ZIbaMYviwcHj+Q7C0aJHa9ZQzvx2ng3HRsxvVXuGngA3jp/SFYk
+         98tZq0A7YbolrlhsOAsEpGLJ3W8RRav80ZlFNNizh4WWSJh1Zrb8JcSzZmYPSbS6Qqbn
+         okJQ==
+X-Gm-Message-State: AOJu0YxZDdUS61sdrS3XqQWzZAxw6FuncjsHZYwm21WU+RAeifE1Ic9t
+        CcHdfLbiN0VTqfLf9isT5YMLoSlBISUVtH6N5Ak3Jg==
+X-Google-Smtp-Source: AGHT+IG+vDkvwmX8CIOMGUPD99v4pWIJg6dBndzlNEW+yVOmPb80xi8Xr5LXqrleVH/aJcNzBLvLwQ==
+X-Received: by 2002:a17:90a:fd8e:b0:27f:f61c:327d with SMTP id cx14-20020a17090afd8e00b0027ff61c327dmr15414782pjb.0.1698936579640;
+        Thu, 02 Nov 2023 07:49:39 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id az23-20020a17090b029700b00271c5811019sm2526058pjb.38.2023.11.02.07.27.37
+        by smtp.gmail.com with ESMTPSA id 24-20020a17090a035800b0028009de5c65sm2765493pjf.39.2023.11.02.07.49.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Nov 2023 07:27:38 -0700 (PDT)
-Message-ID: <6543b1da.170a0220.d8be7.6848@mx.google.com>
-Date:   Thu, 02 Nov 2023 07:27:38 -0700 (PDT)
+        Thu, 02 Nov 2023 07:49:39 -0700 (PDT)
+Message-ID: <6543b703.170a0220.e3436.7657@mx.google.com>
+Date:   Thu, 02 Nov 2023 07:49:39 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.4.259
+X-Kernelci-Kernel: v5.15.137
 X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-5.4.y
+X-Kernelci-Branch: linux-5.15.y
 X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-5.4.y baseline: 160 runs, 2 regressions (v5.4.259)
+Subject: stable-rc/linux-5.15.y baseline: 168 runs, 1 regressions (v5.15.137)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -71,32 +71,26 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.4.y baseline: 160 runs, 2 regressions (v5.4.259)
+stable-rc/linux-5.15.y baseline: 168 runs, 1 regressions (v5.15.137)
 
 Regressions Summary
 -------------------
 
-platform        | arch  | lab          | compiler | defconfig          | re=
-gressions
-----------------+-------+--------------+----------+--------------------+---=
----------
-meson-gxbb-p200 | arm64 | lab-baylibre | gcc-10   | defconfig          | 1 =
-         =
-
-panda           | arm   | lab-baylibre | gcc-10   | multi_v7_defconfig | 1 =
-         =
+platform | arch | lab          | compiler | defconfig          | regressions
+---------+------+--------------+----------+--------------------+------------
+panda    | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig | 1          =
 
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.4.y/kern=
-el/v5.4.259/plan/baseline/
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.15.y/ker=
+nel/v5.15.137/plan/baseline/
 
   Test:     baseline
   Tree:     stable-rc
-  Branch:   linux-5.4.y
-  Describe: v5.4.259
+  Branch:   linux-5.15.y
+  Describe: v5.15.137
   URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
 able-rc.git
-  SHA:      86ea40e6ad22d9d7daa54b9e8167ad1e4a8a48ee =
+  SHA:      12952a23a5da6459aaaaa3ae4bc8ce8fef952ef5 =
 
 
 
@@ -105,80 +99,47 @@ Test Regressions
 
 
 
-platform        | arch  | lab          | compiler | defconfig          | re=
-gressions
-----------------+-------+--------------+----------+--------------------+---=
----------
-meson-gxbb-p200 | arm64 | lab-baylibre | gcc-10   | defconfig          | 1 =
-         =
+platform | arch | lab          | compiler | defconfig          | regressions
+---------+------+--------------+----------+--------------------+------------
+panda    | arm  | lab-baylibre | gcc-10   | multi_v7_defconfig | 1          =
 
 
-  Details:     https://kernelci.org/test/plan/id/6539637d595e489851efcef5
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.259=
-/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxbb-p200.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.259=
-/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxbb-p200.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/6539637d595e489851efc=
-ef6
-        new failure (last pass: v5.4.258-121-g18f5a3e6c35c) =
-
- =
-
-
-
-platform        | arch  | lab          | compiler | defconfig          | re=
-gressions
-----------------+-------+--------------+----------+--------------------+---=
----------
-panda           | arm   | lab-baylibre | gcc-10   | multi_v7_defconfig | 1 =
-         =
-
-
-  Details:     https://kernelci.org/test/plan/id/653962de22637550e2efcef6
+  Details:     https://kernelci.org/test/plan/id/6539425bc3c04fb105efcf0e
 
   Results:     5 PASS, 1 FAIL, 1 SKIP
   Full config: multi_v7_defconfig
   Compiler:    gcc-10
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.259=
-/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-panda.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.259=
-/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-panda.html
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+37/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-panda.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.15.y/v5.15.1=
+37/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-panda.html
   Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
 t-baseline/20230623.0/armel/rootfs.cpio.gz =
 
 
 
   * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/653962de22637550e2efceff
-        failing since 0 day (last pass: v5.4.218-5-g5a1de46f7e74, first fai=
-l: v5.4.258-121-g18f5a3e6c35c)
+/6539425bc3c04fb105efcf16
+        failing since 0 day (last pass: v5.15.74-2-g741b5047a5f58, first fa=
+il: v5.15.135-237-gbc0ffd9b5ee2)
 
-    2023-10-25T18:47:34.464333  <8>[   21.144439] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 3814585_1.5.2.4.1>
-    2023-10-25T18:47:34.572041  / # #
-    2023-10-25T18:47:34.673866  export SHELL=3D/bin/sh
-    2023-10-25T18:47:34.674354  #
-    2023-10-25T18:47:34.775250  / # export SHELL=3D/bin/sh. /lava-3814585/e=
+    2023-10-25T16:28:59.288638  + <8>[   11.654632] <LAVA_SIGNAL_ENDRUN 0_d=
+mesg 3814138_1.5.2.4.1>
+    2023-10-25T16:28:59.288855  set +x
+    2023-10-25T16:28:59.393322  / # #
+    2023-10-25T16:28:59.494657  export SHELL=3D/bin/sh
+    2023-10-25T16:28:59.495157  #
+    2023-10-25T16:28:59.595991  / # export SHELL=3D/bin/sh. /lava-3814138/e=
 nvironment
-    2023-10-25T18:47:34.775939  =
+    2023-10-25T16:28:59.596491  =
 
-    2023-10-25T18:47:34.877089  / # . /lava-3814585/environment/lava-381458=
-5/bin/lava-test-runner /lava-3814585/1
-    2023-10-25T18:47:34.878114  =
+    2023-10-25T16:28:59.697336  / # . /lava-3814138/environment/lava-381413=
+8/bin/lava-test-runner /lava-3814138/1
+    2023-10-25T16:28:59.698048  =
 
-    2023-10-25T18:47:34.883067  / # /lava-3814585/bin/lava-test-runner /lav=
-a-3814585/1
-    2023-10-25T18:47:34.937208  + export 'TESTRUN_ID=3D1_bootrr' =
+    2023-10-25T16:28:59.703091  / # /lava-3814138/bin/lava-test-runner /lav=
+a-3814138/1 =
 
-    ... (11 line(s) more)  =
+    ... (12 line(s) more)  =
 
  =20
