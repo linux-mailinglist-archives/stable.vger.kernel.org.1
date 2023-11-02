@@ -2,166 +2,206 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDE67DEF41
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 10:54:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55CA37DEF39
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 10:52:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345943AbjKBJx5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 05:53:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37844 "EHLO
+        id S1345912AbjKBJvE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 05:51:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345937AbjKBJx4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 05:53:56 -0400
-X-Greylist: delayed 951 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 02 Nov 2023 02:53:53 PDT
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31693F7
-        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 02:53:53 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.18.147.228])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4SLdkQ4QT7z9y19H;
-        Thu,  2 Nov 2023 17:24:46 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.48.131.78])
-        by APP2 (Coremail) with SMTP id GxC2BwDnibXJbUNl0QNYAw--.58857S3;
-        Thu, 02 Nov 2023 10:37:38 +0100 (CET)
-From:   Petr Tesarik <petrtesarik@huaweicloud.com>
-To:     Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Petr Tesarik <petr.tesarik1@huawei-partners.com>,
-        iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
-        linux-kernel@vger.kernel.org (open list), patchwork@huawei.com
-Cc:     Wangkefeng <wangkefeng.wang@huawei.com>,
-        Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        petr@tesarici.cz, Petr Tesarik <petrtesarik@huaweicloud.com>,
-        miaoxie@huawei.com, weiyongjun1@huawei.com, guohanjun@huawei.com,
-        huawei.libin@huawei.com, yuehaibing@huawei.com,
-        johnny.chenyi@huawei.com, leijitang@huawei.com, ming.fu@huawei.com,
-        zhujianwei7@huawei.com, linuxarm@huawei.com,
-        stable@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH v2 1/1] swiotlb: do not free decrypted pages if dynamic
-Date:   Thu,  2 Nov 2023 10:36:49 +0100
-Message-Id: <20231102071821.431-2-petrtesarik@huaweicloud.com>
+        with ESMTP id S1345771AbjKBJvD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 05:51:03 -0400
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B083B111;
+        Thu,  2 Nov 2023 02:50:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1698918657; x=1730454657;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=GY7yzYwuHP5bT6T/FPY7h8vziNZt48i1+BwHAWwbAIE=;
+  b=jWQld7BX4HxRWDnS7jyxdaPFED9BAtDFkqclPZn1mH89Sw0iBkcqtppS
+   rv1N5ntZikGb5eQvLrAv8Ju8oLbDAym/6GZhJdA9ahxi5Q5zXooNTY8jP
+   GmFPAsY0Pr/xXBSw2JKbkiwjd1+Rlb1glOKuWU3+C8LFmw60HwH6lrYLs
+   497uJGyiW8BrRDH+Af7nKwJt/Dklwh6u9ii8LXKX2yBhY6x/PYa/x5IU+
+   Yl8souvxv/MRBg8CwqsFqqCz0h6NGx1V5GJZ99lBqOej6rjeK7Ii7yaNk
+   klCifVGf8d+NYDlVsijFAx0iYVwNc0FzIp+k/q3akgYXVhwuBO1q7cKjk
+   w==;
+X-IronPort-AV: E=Sophos;i="6.03,271,1694728800"; 
+   d="scan'208";a="33774787"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 02 Nov 2023 10:50:50 +0100
+Received: from steina-w.tq-net.de (steina-w.tq-net.de [10.123.53.18])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPSA id 3FC4F280084;
+        Thu,  2 Nov 2023 10:50:50 +0100 (CET)
+From:   Alexander Stein <alexander.stein@ew.tq-group.com>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
+        linux-media@vger.kernel.org,
+        Alain Volmat <alain.volmat@foss.st.com>, stable@vger.kernel.org
+Subject: [PATCH v3 1/2] media: v4l2-cci: Add support for little-endian encoded registers
+Date:   Thu,  2 Nov 2023 10:50:47 +0100
+Message-Id: <20231102095048.3222110-2-alexander.stein@ew.tq-group.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231102071821.431-1-petrtesarik@huaweicloud.com>
-References: <20231102071821.431-1-petrtesarik@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231102095048.3222110-1-alexander.stein@ew.tq-group.com>
+References: <20231102095048.3222110-1-alexander.stein@ew.tq-group.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: GxC2BwDnibXJbUNl0QNYAw--.58857S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxCF1xAw1Uury3ur47tw15CFg_yoW5CF1xpF
-        4fCr1Sgr98tFy7CrWfAF4kCF9xGws5urWUCFW3Xw1rZwn8WryIkr9rCw18uayfJF4kua17
-        JrW0v3WayrsrZaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUm014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
-        x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-        Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l84
-        ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AI
-        xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
-        vE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xv
-        r2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04
-        v7MxkF7I0Ew4C26cxK6c8Ij28IcwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-        JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
-        kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
-        6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
-        vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVj
-        vjDU0xZFpf9x0JU7pnQUUUUU=
-X-CM-SenderInfo: hshw23xhvd2x3n6k3tpzhluzxrxghudrp/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Fix these two error paths:
+Some sensors, e.g. Sony IMX290, are using little-endian registers. Add
+support for those by encoding the endianess into Bit 20 of the register
+address.
 
-1. When set_memory_decrypted() fails, pages may be left fully or partially
-   decrypted.
-
-2. Decrypted pages may be freed if swiotlb_alloc_tlb() determines that the
-   physical address is too high.
-
-To fix the first issue, call set_memory_encrypted() on the allocated region
-after a failed decryption attempt. If that also fails, leak the pages.
-
-To fix the second issue, check that the TLB physical address is below the
-requested limit before decrypting.
-
-Let the caller differentiate between unsuitable physical address (=> retry
-from a lower zone) and allocation failures (=> no point in retrying).
-
+Fixes: af73323b97702 ("media: imx290: Convert to new CCI register access helpers")
 Cc: stable@vger.kernel.org
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Fixes: 79636caad361 ("swiotlb: if swiotlb is full, fall back to a transient memory pool")
-Signed-off-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 ---
- kernel/dma/swiotlb.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/media/v4l2-core/v4l2-cci.c | 44 ++++++++++++++++++++++++------
+ include/media/v4l2-cci.h           |  5 ++++
+ 2 files changed, 41 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index dff067bd56b1..0e1632f75421 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -558,29 +558,40 @@ void __init swiotlb_exit(void)
-  * alloc_dma_pages() - allocate pages to be used for DMA
-  * @gfp:	GFP flags for the allocation.
-  * @bytes:	Size of the buffer.
-+ * @phys_limit:	Maximum allowed physical address of the buffer.
-  *
-  * Allocate pages from the buddy allocator. If successful, make the allocated
-  * pages decrypted that they can be used for DMA.
-  *
-- * Return: Decrypted pages, or %NULL on failure.
-+ * Return: Decrypted pages, %NULL on allocation failure, or ERR_PTR(-EAGAIN)
-+ * if the allocated physical address was above @phys_limit.
-  */
--static struct page *alloc_dma_pages(gfp_t gfp, size_t bytes)
-+static struct page *alloc_dma_pages(gfp_t gfp, size_t bytes, u64 phys_limit)
+diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
+index bc2dbec019b04..673637b67bf67 100644
+--- a/drivers/media/v4l2-core/v4l2-cci.c
++++ b/drivers/media/v4l2-core/v4l2-cci.c
+@@ -18,6 +18,7 @@
+ 
+ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
  {
- 	unsigned int order = get_order(bytes);
- 	struct page *page;
-+	phys_addr_t paddr;
- 	void *vaddr;
++	bool little_endian;
+ 	unsigned int len;
+ 	u8 buf[8];
+ 	int ret;
+@@ -25,6 +26,7 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 	if (err && *err)
+ 		return *err;
  
- 	page = alloc_pages(gfp, order);
- 	if (!page)
- 		return NULL;
++	little_endian = reg & CCI_REG_LE;
+ 	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
+ 	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
  
--	vaddr = page_address(page);
-+	paddr = page_to_phys(page);
-+	if (paddr + bytes - 1 > phys_limit) {
-+		__free_pages(page, order);
-+		return ERR_PTR(-EAGAIN);
-+	}
-+
-+	vaddr = phys_to_virt(paddr);
- 	if (set_memory_decrypted((unsigned long)vaddr, PFN_UP(bytes)))
- 		goto error;
- 	return page;
+@@ -40,16 +42,28 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 		*val = buf[0];
+ 		break;
+ 	case 2:
+-		*val = get_unaligned_be16(buf);
++		if (little_endian)
++			*val = get_unaligned_le16(buf);
++		else
++			*val = get_unaligned_be16(buf);
+ 		break;
+ 	case 3:
+-		*val = get_unaligned_be24(buf);
++		if (little_endian)
++			*val = get_unaligned_le24(buf);
++		else
++			*val = get_unaligned_be24(buf);
+ 		break;
+ 	case 4:
+-		*val = get_unaligned_be32(buf);
++		if (little_endian)
++			*val = get_unaligned_le32(buf);
++		else
++			*val = get_unaligned_be32(buf);
+ 		break;
+ 	case 8:
+-		*val = get_unaligned_be64(buf);
++		if (little_endian)
++			*val = get_unaligned_le64(buf);
++		else
++			*val = get_unaligned_be64(buf);
+ 		break;
+ 	default:
+ 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+@@ -68,6 +82,7 @@ EXPORT_SYMBOL_GPL(cci_read);
  
- error:
--	__free_pages(page, order);
-+	/* Intentional leak if pages cannot be encrypted again. */
-+	if (!set_memory_encrypted((unsigned long)vaddr, PFN_UP(bytes)))
-+		__free_pages(page, order);
- 	return NULL;
- }
+ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ {
++	bool little_endian;
+ 	unsigned int len;
+ 	u8 buf[8];
+ 	int ret;
+@@ -75,6 +90,7 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ 	if (err && *err)
+ 		return *err;
  
-@@ -618,11 +629,7 @@ static struct page *swiotlb_alloc_tlb(struct device *dev, size_t bytes,
- 	else if (phys_limit <= DMA_BIT_MASK(32))
- 		gfp |= __GFP_DMA32;
++	little_endian = reg & CCI_REG_LE;
+ 	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
+ 	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
  
--	while ((page = alloc_dma_pages(gfp, bytes)) &&
--	       page_to_phys(page) + bytes - 1 > phys_limit) {
--		/* allocated, but too high */
--		__free_pages(page, get_order(bytes));
--
-+	while (IS_ERR(page = alloc_dma_pages(gfp, bytes, phys_limit))) {
- 		if (IS_ENABLED(CONFIG_ZONE_DMA32) &&
- 		    phys_limit < DMA_BIT_MASK(64) &&
- 		    !(gfp & (__GFP_DMA32 | __GFP_DMA)))
+@@ -83,16 +99,28 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ 		buf[0] = val;
+ 		break;
+ 	case 2:
+-		put_unaligned_be16(val, buf);
++		if (little_endian)
++			put_unaligned_le16(val, buf);
++		else
++			put_unaligned_be16(val, buf);
+ 		break;
+ 	case 3:
+-		put_unaligned_be24(val, buf);
++		if (little_endian)
++			put_unaligned_le24(val, buf);
++		else
++			put_unaligned_be24(val, buf);
+ 		break;
+ 	case 4:
+-		put_unaligned_be32(val, buf);
++		if (little_endian)
++			put_unaligned_le32(val, buf);
++		else
++			put_unaligned_be32(val, buf);
+ 		break;
+ 	case 8:
+-		put_unaligned_be64(val, buf);
++		if (little_endian)
++			put_unaligned_le64(val, buf);
++		else
++			put_unaligned_be64(val, buf);
+ 		break;
+ 	default:
+ 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
+index 0f6803e4b17e9..80cbb5cb70fa5 100644
+--- a/include/media/v4l2-cci.h
++++ b/include/media/v4l2-cci.h
+@@ -32,12 +32,17 @@ struct cci_reg_sequence {
+ #define CCI_REG_ADDR_MASK		GENMASK(15, 0)
+ #define CCI_REG_WIDTH_SHIFT		16
+ #define CCI_REG_WIDTH_MASK		GENMASK(19, 16)
++#define CCI_REG_LE			BIT(20)
+ 
+ #define CCI_REG8(x)			((1 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG16(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG24(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG32(x)			((4 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG64(x)			((8 << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG16_LE(x)			(CCI_REG_LE | (2U << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG24_LE(x)			(CCI_REG_LE | (3U << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG32_LE(x)			(CCI_REG_LE | (4U << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG64_LE(x)			(CCI_REG_LE | (8U << CCI_REG_WIDTH_SHIFT) | (x))
+ 
+ /**
+  * cci_read() - Read a value from a single CCI register
 -- 
 2.34.1
 
