@@ -2,125 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F8AB7DFA8F
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 20:01:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D427DFA93
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 20:01:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377438AbjKBTBG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 15:01:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56358 "EHLO
+        id S1377361AbjKBTBf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 15:01:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377374AbjKBTAz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 15:00:55 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2062.outbound.protection.outlook.com [40.107.94.62])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AFB0184;
-        Thu,  2 Nov 2023 12:00:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DPwLF0tGRg+qpRP6tlQaPTMfFsbWgOmM5HI30t7UJia8k7J2KWLuLXIDhNr4EVgcVnaycJM6CQoLpyR6ro+HnWpkySAppf7hXrDdl52zwMS25ngQR81yYttuJNkSlpnVB9Etkb9/at3AxnAbgENDnV5kp2O8/QceeFbP8jt6ZwiHTak1lwjWxeCW4WN84Jtd4xZN0EKUDd3zeNqcsoDRVQ+Mshw1GcHNCWU5ufLtPPlgIZMoUcgw1vDJ4btUOGHc9C6XEnZgLdo5nbO4Y6imjGzXbu/0nOFu2n6Wdd49dq4706d8wkYjGJIyMI8bxHWFoihQOtiP6uwGmwLEQZlXMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c5Y28Wm2wIfxhJiYkMWDWW/VzW7YYYLCesct4WDAwPA=;
- b=LsGK8yrr63gmwpLZDyRoIkcHUqn02Gm7juNsRHXsRzROwy5rCoTHeoB18g6Wy/mZlgTWxNnwgJexXl5Y69RFfBunr0hPXm4WX/cKuub/Rwi+8hDkoQLug8QU/AYtB6sfERQqbH2MYUCuWJm4fl8qhmxmPxPzPewNcBlNnmpklinNobEUqKhSO5FZNDihywi4RJsWoPU0F73Q5FZRgNTk/Ql/gY0iViOUN+Wia8Gx4OZUeKK1kjZLNzHwHBTMvWOIS7FxQPRU5FUQ7/C67eN7AGioXSDrVwIJ8KN2hFOq9vJiInWKgFYkAVBpHVkDo1dZQogpYkLO5b+hJ6ac84ZKwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c5Y28Wm2wIfxhJiYkMWDWW/VzW7YYYLCesct4WDAwPA=;
- b=5clJhTyxIKPEDY7JPI9WPfAkdUBeSnRtP9s0VghzvtYBthDDLKp3uPPVgRP/eW4n6gI96T7Ei4h7g5Af+BiVCqHYFbaTAYCkuO/F/g+GJbTkBwrvWYSmeCMqxkLCdghfo2utE5lXai/dGC59HiKQQjF1IbEtTXj9kUR0wUivlCo=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6280.namprd12.prod.outlook.com (2603:10b6:8:a2::11) by
- CH0PR12MB5090.namprd12.prod.outlook.com (2603:10b6:610:bd::8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6954.21; Thu, 2 Nov 2023 19:00:41 +0000
-Received: from DM4PR12MB6280.namprd12.prod.outlook.com
- ([fe80::5588:7117:d54e:9466]) by DM4PR12MB6280.namprd12.prod.outlook.com
- ([fe80::5588:7117:d54e:9466%7]) with mapi id 15.20.6954.019; Thu, 2 Nov 2023
- 19:00:41 +0000
-Message-ID: <1eed6bfa-3e98-45d1-9908-2c5a0f3173c3@amd.com>
-Date:   Thu, 2 Nov 2023 15:00:37 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/edid: add a quirk for two 240Hz Samsung monitors
-To:     Alex Deucher <alexdeucher@gmail.com>
-Cc:     dri-devel@lists.freedesktop.org,
-        Maxime Ripard <mripard@kernel.org>,
-        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Jerry Zuo <jerry.zuo@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Alex Deucher <alexander.deucher@amd.com>
-References: <20231101210037.130494-1-hamza.mahfooz@amd.com>
- <CADnq5_Nv0MnG+pPvRQO37OP8iYwz8oGvFLs2g-+U=URHWcqJGw@mail.gmail.com>
-Content-Language: en-US
-From:   Hamza Mahfooz <hamza.mahfooz@amd.com>
-In-Reply-To: <CADnq5_Nv0MnG+pPvRQO37OP8iYwz8oGvFLs2g-+U=URHWcqJGw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YQBPR0101CA0339.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:6b::29) To DM4PR12MB6280.namprd12.prod.outlook.com
- (2603:10b6:8:a2::11)
+        with ESMTP id S1377405AbjKBTBG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 15:01:06 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3ED2185
+        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 12:00:54 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1cc5b705769so11426185ad.0
+        for <stable@vger.kernel.org>; Thu, 02 Nov 2023 12:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698951653; x=1699556453; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=fG/3znzbxo1NXmfbFgk+exQmT8sCezFAgtj1u37Rrbc=;
+        b=SEfQyr6jpKUNhxExTpWa2ncuYd9j4E0MQGluwwWXuwOtjaofeuq5Yu2275USBt/m5v
+         sJFlQ2wynizOvG6Dy20q/4+D1oiIxKJNVUQ+PL5LlR9UcEjCdFG2AqG9t9hQ3JHjnDi4
+         QPfHDZvtqVr0uMohK3ZUvm36n/DE9fuMsnKdYZTagXBOAythjxCnaaN+NCEjCe8SxxtF
+         5oe373VWtPVffV3h6l7SNeGgYAaFES9OrO9hjL4MlapSQVYQYdQP3VA/IGitIAINiMFC
+         SoiFfoLOvWJ2d6RMHGKVyHh3X41Wb8vKZs0lNqKe4azIBiJgWeR0FU5wNwQtrPTubSCq
+         ByHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698951653; x=1699556453;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fG/3znzbxo1NXmfbFgk+exQmT8sCezFAgtj1u37Rrbc=;
+        b=rVf4eanwMadKAGFzLK/cxRfML/whJXwZvwloHrJbeLvA2MSkwO2K4wIPG4v5w/P+WB
+         l1dgJu3T5UanBNRO3cbjBpD9JhVnCKcFBJL3PDuQe42hrHtAgWIvOwmayj6NIJcVrtdb
+         vjO/ZQfwgc8o/e4lxwdHkULh+y2oi+hEH+xeaK3cJku2fikmkWTSg6wZ1ZPsV+q6Rf/g
+         MlgILoLjt2yTKF6P4yJd7FffdrSZWSCB4/6RyGw4Ip4AooNpjqX3aYcbLG/17StpRLei
+         zPJpqss71HEPSuMRNYjlbPFgSBbL20HmdJE81ffAMk97WInZIDtyiqpz4YwWtJmuirc6
+         WUVA==
+X-Gm-Message-State: AOJu0YzZF6LkUQAMnfnWuNv/SL67Hy+MJSZpRZhS9egMln0tjFWvp6UG
+        FHBhjHhIL7rBy4HRHOFlBYLermBO/Q7pXodf2oleJQ==
+X-Google-Smtp-Source: AGHT+IF3cqGCv4PX4bSoPZzonKbdnuvrXL4xLvORagBoI9Rhy7BrQaggkwz1tlHiURA+LxbYyUO7zQ==
+X-Received: by 2002:a17:902:778a:b0:1cc:2dae:a558 with SMTP id o10-20020a170902778a00b001cc2daea558mr16549104pll.61.1698951653572;
+        Thu, 02 Nov 2023 12:00:53 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id b12-20020a170903228c00b001c61acd5bd2sm78841plh.112.2023.11.02.12.00.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Nov 2023 12:00:53 -0700 (PDT)
+Message-ID: <6543f1e5.170a0220.25762.06ec@mx.google.com>
+Date:   Thu, 02 Nov 2023 12:00:53 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6280:EE_|CH0PR12MB5090:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0c100731-7b0d-4241-f5c5-08dbdbd6023b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: l36x+ebe/kKiGBQQNdYL5TUNMo7lHreDqJs51GtlnntZa75dSs9+YhJcTAsVXs1cPF+cIDH5enlvrHE0KfEmmj1WLKnnBXcRFdSZJKlRMYA0L1zjobIydMo1H+zcFWOoopPfpPSL5wMbizjH+DVDiVViN+fn2vTazfMzh8ntvgiAXwxj61SnVrCSQCry2jxc0ixLF/dIkXaECOODO/JRq5OduvAuZtHu3lv6J62ShZWDVV9QeL4sCbBjE+eQZdPipOdG1dzGPDYFGJI3bN1RGIehDA+DcMPP79o6ySevNXFHtK7gYLDHdexUTcvmet/USy8Uf/AvS3CuZA42JDtkp6AIeFk+pNt4tQmQZYrQA0KSg63/npJ41zARqYYh+m6uKzbvM7yN2dydg1vV8LCx6aanbpbqyaYqRQSjikMAvjg+i9Y5Iw9DPEvJnH0kiGwEHpAgCDyIH2f8zIWP4cy7FpHmpvqfrCjbnnNusLoDIylGxZden3cM44k5dxYFCVdKAAkPmqwxgbgOUynZB19kQbx8ljVXrUen66D7fuDyqAVxFfY8D7mTEEttynBCN5CNASp8Y4z+AnIMIqZKK/1kcMdZVrLzPAWTpcog/IOAJyjsppjDAHptMiutupU2KNkj
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6280.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(346002)(136003)(376002)(39860400002)(396003)(230922051799003)(451199024)(186009)(1800799009)(64100799003)(2906002)(45080400002)(6486002)(966005)(478600001)(2616005)(36756003)(26005)(41300700001)(38100700002)(86362001)(31696002)(53546011)(83380400001)(6506007)(6666004)(6512007)(316002)(6916009)(66946007)(54906003)(66476007)(66556008)(44832011)(5660300002)(4326008)(8676002)(8936002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UVl1NytNZFNmV1hSTWRKZUxSSXpUdEZoZGFlWTJUdzAzVXpGSW5MaE5YNDBn?=
- =?utf-8?B?WDdqMGJmYjJzNlRWeHc2c3dzWGxjdlU0VFBzc2k5K1F2S01sSmZva3FveXRE?=
- =?utf-8?B?Zy9rQVFKekNjcG10YklWUVBQdUFpS0hXRFZSN3dDVzFQQVRESEtjdG9URG4y?=
- =?utf-8?B?Skd3bTZTd0lieC82NTdTd1RPeE1pTHVpMWhZMGxSekR5MHkwdFFkQ1NUU2dK?=
- =?utf-8?B?VjFFNEg5ZWRwcXhiV2wycHh2NEU3eStJQVlCQVMvTDVCR3pyRjVJL3JGK0NH?=
- =?utf-8?B?YWhQQndUZEZnSkN4blE5b3RWWWNuNCtHY0tlRTJjdHJ6dm05dUFkUWdOcStY?=
- =?utf-8?B?a0p0RjcrWEpzQ1VWR0RQVmJaNHJ6RXFDTlVCeVQ2WHlFQmYvV1VuNGhSYW1S?=
- =?utf-8?B?OXRkRmhQbFFLZk54dDZnaDVGOVJHTk1kOWc4ZGdRL1Ivd2p2L2JRUklYMCtP?=
- =?utf-8?B?SkhYeHJlS005eE1xTVh0YzEwVEE2NnFYVzNIOW9VRXlUdVhHSTFBT3JlVi9p?=
- =?utf-8?B?ZTdzNkt3M2tzckIyYWJRbjl1c05qb0NLQ3U5L2xySEhCM0t3cDh0b0U0Q0NJ?=
- =?utf-8?B?Y0JESmdMU1g3WVVXM09mYzcrS3hid0JKSDJjUFZOa0ovWVFxL3pTaHcwWXoz?=
- =?utf-8?B?M3ZGc0JMaEhiN2liK1hFOUVYalZoNkxhNENOdThTaFRMRHh4b243dHRvSUhX?=
- =?utf-8?B?eVRZcEdTelJGYVZwc3FMakhsa3hVRHp2KzJCTXVlZkZJWFMyU1QyQUFlTHRh?=
- =?utf-8?B?NVk1bmcwS1dhaE8wcUl3c1NEZlVOcTZwY1g1WXZjOVlVZ3NqZit4KzZUZkZW?=
- =?utf-8?B?eGFrU2Y1Sm1Ec1docm9kckxkYUFERXBnb0NWV3dIVG81blNKeldnYnZQNnhI?=
- =?utf-8?B?c0tnZ2taSzJXNmZnSnltbUNJRGU3bmhCTnU4czNWMTNUaVhobkFURVJHdHdH?=
- =?utf-8?B?aFFENnM1V2Y0NS9lUHI3ZE82ZXZBN0Y0UndzRnlockZwS2JNeEJlcE1QYURv?=
- =?utf-8?B?QklmZzhlM3dRcXVKeXNlWmRGcG9BV2NmTS9VQkdPYUY1akUzR0NUSyt4dmFF?=
- =?utf-8?B?RzdJUjR6Szk1UmRiSVNZVC8zdUxTOGkzbDdYODMrR24vanZwekdGVzd0SU9q?=
- =?utf-8?B?ZXRubWVMVDhaajQ5NWpSMktEcnRIMk00em1KVktpTlh3M1E5RFdMNG9aeFVJ?=
- =?utf-8?B?U2FjSDgraEo5TVlTa0taaWwvL1JmdCs0b2xsYzFVeXpMMTVOUlJ2ZC9Damh4?=
- =?utf-8?B?cjUvcEM2bmJDYThKcUlYVHk3TjJWUWE3RENRdnRON0hiZGVIMnhnczNHazFn?=
- =?utf-8?B?K0o5b1VHRVJkbzNGNHo1d1czdDZoNjgranl0aTJLa2Q4cHZsY3YwMEFvanA2?=
- =?utf-8?B?RENLZU12VERpN29vSDRmQTFDQ1hxeXIxWTRUclFudGNROGthSklPZnd4ZzhZ?=
- =?utf-8?B?dG0vVnhVRXBBOURiT2UxVVZvL01BZjdxeEN0M0FHYkFLSUlFaUx5Ujd2SGJH?=
- =?utf-8?B?QzhCOU5wSU1jbHhDeDF4VnUzRWkrT2IzU2RaS0JVOW9QWGh0RkVobkhBTEpp?=
- =?utf-8?B?Ukx4ZEk0K3ZWUGo3enpXRjVYSmNkSTNlSG1wejRaR3BkYVphZTE3T2ZLbEdi?=
- =?utf-8?B?VEhFSGpVQlZjODdhVVpwQ3ZhOWFCemFmU0pUQU9odTBRbFR4bldqWEpDcHlH?=
- =?utf-8?B?YUxmbnlMdzRrVHpsVFk3WEF5bEZhNTFBdEh2T0lNOER2UC95L2t1NXMraVFR?=
- =?utf-8?B?RHNpc0ZDRHlxQXdhVzNQSE1SNi9GYUhlWGRHZ3ZsYkpjVnBtVVR6Z2UxMjZu?=
- =?utf-8?B?MDc3MVUxNGtMck1GdExYNTlXSVltK29DM0swOTJXVDVKd2I5ZmlBYXcyNjhv?=
- =?utf-8?B?TkpmR0cxQUpCM2Urdy96ZlVZQXdEM2xJUlNwbSthVjlycFl6NXUrK1JjWmRi?=
- =?utf-8?B?aVVWYjBDaWRjZXU3Y1FWWDUyVk9nbGhLcVhLdlgrQm9aNkF6WktVdllZWUNY?=
- =?utf-8?B?MGZTMXJVcGdpTTVJTUNnUk5ySERLWUYzT1AwWngyTUFYRkk5OHI2cDh0bGo2?=
- =?utf-8?B?SFNvZmtzY1RNeURNeGx3OUw0bEp4U2NiOEtJc3lTRU5Za1ViN2djRWRjTHp6?=
- =?utf-8?Q?2JhSDXu6oDNIj/2MczBnk9Hdh?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0c100731-7b0d-4241-f5c5-08dbdbd6023b
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6280.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2023 19:00:41.2081
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XWfVa5GYj3TfcSO344IaDn7TJ3FbhqJCp5tRyD0PmVTpK9M+M8c16zfjvsVEkOLqkEXoPt9TGqUtkyTVwxehJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB5090
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.10.199-61-g2c4e8ef8a1d9
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
+ 5 warnings (v5.10.199-61-g2c4e8ef8a1d9)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -128,129 +72,161 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/1/23 17:36, Alex Deucher wrote:
-> On Wed, Nov 1, 2023 at 5:01 PM Hamza Mahfooz <hamza.mahfooz@amd.com> wrote:
->>
->> Without this fix the 5120x1440@240 timing of these monitors
->> leads to screen flickering.
->>
->> Cc: stable@vger.kernel.org # 6.1+
->> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1442
->> Co-developed-by: Harry Wentland <harry.wentland@amd.com>
->> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
->> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
->> ---
->>   drivers/gpu/drm/drm_edid.c | 47 +++++++++++++++++++++++++++++++++++---
->>   1 file changed, 44 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
->> index bca2af4fe1fc..3fdb8907f66b 100644
->> --- a/drivers/gpu/drm/drm_edid.c
->> +++ b/drivers/gpu/drm/drm_edid.c
->> @@ -89,6 +89,8 @@ static int oui(u8 first, u8 second, u8 third)
->>   #define EDID_QUIRK_NON_DESKTOP                 (1 << 12)
->>   /* Cap the DSC target bitrate to 15bpp */
->>   #define EDID_QUIRK_CAP_DSC_15BPP               (1 << 13)
->> +/* Fix up a particular 5120x1440@240Hz timing */
->> +#define EDID_QUIRK_FIXUP_5120_1440_240         (1 << 14)
-> 
-> What is wrong with the original timing that needs to be fixed?
+stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 5 warnings (v=
+5.10.199-61-g2c4e8ef8a1d9)
 
-Apparently, all of timing values for the 5120x1440@240 mode of these
-monitors aren't set correctly (they are all lower than they should be)
-in their EDIDs. For what it's worth, the windows driver has had a quirk
-similar the one proposed in this patch for ~2 years.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.199-61-g2c4e8ef8a1d9/
 
-> 
-> Alex
-> 
-> 
->>
->>   #define MICROSOFT_IEEE_OUI     0xca125c
->>
->> @@ -170,6 +172,12 @@ static const struct edid_quirk {
->>          EDID_QUIRK('S', 'A', 'M', 596, EDID_QUIRK_PREFER_LARGE_60),
->>          EDID_QUIRK('S', 'A', 'M', 638, EDID_QUIRK_PREFER_LARGE_60),
->>
->> +       /* Samsung C49G95T */
->> +       EDID_QUIRK('S', 'A', 'M', 0x7053, EDID_QUIRK_FIXUP_5120_1440_240),
->> +
->> +       /* Samsung S49AG95 */
->> +       EDID_QUIRK('S', 'A', 'M', 0x71ac, EDID_QUIRK_FIXUP_5120_1440_240),
->> +
->>          /* Sony PVM-2541A does up to 12 bpc, but only reports max 8 bpc */
->>          EDID_QUIRK('S', 'N', 'Y', 0x2541, EDID_QUIRK_FORCE_12BPC),
->>
->> @@ -6586,7 +6594,37 @@ static void update_display_info(struct drm_connector *connector,
->>          drm_edid_to_eld(connector, drm_edid);
->>   }
->>
->> -static struct drm_display_mode *drm_mode_displayid_detailed(struct drm_device *dev,
->> +static void drm_mode_displayid_detailed_edid_quirks(struct drm_connector *connector,
->> +                                                   struct drm_display_mode *mode)
->> +{
->> +       unsigned int hsync_width;
->> +       unsigned int vsync_width;
->> +
->> +       if (connector->display_info.quirks & EDID_QUIRK_FIXUP_5120_1440_240) {
->> +               if (mode->hdisplay == 5120 && mode->vdisplay == 1440 &&
->> +                   mode->clock == 1939490) {
->> +                       hsync_width = mode->hsync_end - mode->hsync_start;
->> +                       vsync_width = mode->vsync_end - mode->vsync_start;
->> +
->> +                       mode->clock = 2018490;
->> +                       mode->hdisplay = 5120;
->> +                       mode->hsync_start = 5120 + 8;
->> +                       mode->hsync_end = 5120 + 8 + hsync_width;
->> +                       mode->htotal = 5200;
->> +
->> +                       mode->vdisplay = 1440;
->> +                       mode->vsync_start = 1440 + 165;
->> +                       mode->vsync_end = 1440 + 165 + vsync_width;
->> +                       mode->vtotal = 1619;
->> +
->> +                       drm_dbg_kms(connector->dev,
->> +                                   "[CONNECTOR:%d:%s] Samsung 240Hz mode quirk applied\n",
->> +                                   connector->base.id, connector->name);
->> +               }
->> +       }
->> +}
->> +
->> +static struct drm_display_mode *drm_mode_displayid_detailed(struct drm_connector *connector,
->>                                                              struct displayid_detailed_timings_1 *timings,
->>                                                              bool type_7)
->>   {
->> @@ -6605,7 +6643,7 @@ static struct drm_display_mode *drm_mode_displayid_detailed(struct drm_device *d
->>          bool hsync_positive = (timings->hsync[1] >> 7) & 0x1;
->>          bool vsync_positive = (timings->vsync[1] >> 7) & 0x1;
->>
->> -       mode = drm_mode_create(dev);
->> +       mode = drm_mode_create(connector->dev);
->>          if (!mode)
->>                  return NULL;
->>
->> @@ -6628,6 +6666,9 @@ static struct drm_display_mode *drm_mode_displayid_detailed(struct drm_device *d
->>
->>          if (timings->flags & 0x80)
->>                  mode->type |= DRM_MODE_TYPE_PREFERRED;
->> +
->> +       drm_mode_displayid_detailed_edid_quirks(connector, mode);
->> +
->>          drm_mode_set_name(mode);
->>
->>          return mode;
->> @@ -6650,7 +6691,7 @@ static int add_displayid_detailed_1_modes(struct drm_connector *connector,
->>          for (i = 0; i < num_timings; i++) {
->>                  struct displayid_detailed_timings_1 *timings = &det->timings[i];
->>
->> -               newmode = drm_mode_displayid_detailed(connector->dev, timings, type_7);
->> +               newmode = drm_mode_displayid_detailed(connector, timings, type_7);
->>                  if (!newmode)
->>                          continue;
->>
->> --
->> 2.42.0
->>
--- 
-Hamza
+Tree: stable-rc
+Branch: linux-5.10.y
+Git Describe: v5.10.199-61-g2c4e8ef8a1d9
+Git Commit: 2c4e8ef8a1d9a42120a88be22e51f2665497b473
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
