@@ -2,63 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 387977DEF6D
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 11:05:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DB0E7DEF8F
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 11:12:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345755AbjKBKDq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 06:03:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33826 "EHLO
+        id S1345606AbjKBKL2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 06:11:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345474AbjKBKDq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 06:03:46 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62601181
-        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 03:03:39 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-692c02adeefso750977b3a.3
-        for <stable@vger.kernel.org>; Thu, 02 Nov 2023 03:03:39 -0700 (PDT)
+        with ESMTP id S1346108AbjKBKL2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 06:11:28 -0400
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E6AB13A
+        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 03:11:21 -0700 (PDT)
+Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-28028f92709so640201a91.0
+        for <stable@vger.kernel.org>; Thu, 02 Nov 2023 03:11:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698919418; x=1699524218; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698919880; x=1699524680; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=XOLyTJgir7JU4f9/iwKOsgeEllAg044tentL5GTkOlc=;
-        b=cCbEtrXnE5b9szXpz2cbtei24d9P9C0xJ8gesUgnnxUjqDhQ3/m9O0tcyHnFXarcU4
-         o8YugC9tqpcxRToTB7X6XaNaC1XtjqFP2n7TwYQUEK44ZTcYxQhpALT8skOgrtiXe8EO
-         l6MGa8TOzyEMArvLbhCQ7p7pI3LG4+SHOQ2oXi9yABLtAqbIFqnVaJp8waN/cRv8aNv8
-         yZk5r9DPFEuNp1nnT4V91LksseF6DJ50VQulXQy4hJg/8o7+syQZCD0UYFtul/7mX+26
-         2wJ+rNgTNW0HPlTNEL3sSnt1C+XumqEWgSBFMIUr4W4UP3BX/iUHoroRwUTDqJJfJmYc
-         oU7g==
+        bh=H0oSKT2QmD63Pqe8RqboHiHWqZnYoiZRAc1yN/PAbwM=;
+        b=KCab351c/Q/BOv1REsLwz8992Zzhy4sAzV+DeaR6Fq/iBihoz6qHkXG6PMq2DQAULk
+         NQgpHYE5OK5ZqFgRGUN0Ji+Pq52G2xSj1ao1EMyrKUD/Mvzgf83GZb66htmOEjt1X/KL
+         LxG4Q0B2kWQx29PU2BtuJyDk2eU5lyAgOuBMrOMcUGecjPOcbHimyRoiziScZW6Aqkzn
+         yIbugMgFbyXZIb37eLlR4a5+9aQdomi4yLIGDPG64dNtEHYBlgdGZ+qcnZBrN5setF9E
+         gp1MKwLJK+UOc4NeEv+cwACjEIGAoq1diVIBKxd181rCnJrziYnf0vJpeID9HLyFHBFT
+         E4RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698919418; x=1699524218;
+        d=1e100.net; s=20230601; t=1698919880; x=1699524680;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XOLyTJgir7JU4f9/iwKOsgeEllAg044tentL5GTkOlc=;
-        b=U8f20DVtwzTgshIt1F1afYP5IQCeFKtxIY6QIHY8v7D1bQR84VPFeLbk20Sdl92GFm
-         /2YEHHZq9Img3GyXohQKHBC6SJcFXwvTGP2O7YxzYT4GH4FTSTuTYdrPDS5gFDGoAIKf
-         dKISIRseZAiCmfgVgOx3y7VFAurNgePeMOtt6qeCA601VzrRs0m4Tz9lf95U+5MBl04m
-         A5bS7V53NDPmquHQalrqEDfrKSgcNedHC0yYSXt272dbl70F5rAblsmJoaDM+f1plpPt
-         /g3gSBPQH+vsc9ZEztegXicXB24qdWeLtXHHHIcSJMrOIwNl+HANVPhFIi8BRPU1GP+L
-         LJgQ==
-X-Gm-Message-State: AOJu0Ywx5p5WvtTXXjK8fukNS/OD/CnLU9dCibz6bNhV2H2C+kpi/c6j
-        1Eb2ZpXGN88pvPmoglBXt2ig7g+uRBkfXa1eqA07/w==
-X-Google-Smtp-Source: AGHT+IFJjy1WLI4UTwMGviVzOncuFjCoOSCrBJGH0LFR7Oq9Xj+d9OHLSYWT5o66UuDIYhyQTayFDQ==
-X-Received: by 2002:a05:6a20:4421:b0:15b:2125:890f with SMTP id ce33-20020a056a20442100b0015b2125890fmr19941713pzb.37.1698919418404;
-        Thu, 02 Nov 2023 03:03:38 -0700 (PDT)
+        bh=H0oSKT2QmD63Pqe8RqboHiHWqZnYoiZRAc1yN/PAbwM=;
+        b=MgzDhPahoMPlgbvD3p0I5dPjXu5cG/tUv8C3VgmGAo8rnK9VLnF6uHnNMNpxTYBG4F
+         QwTjiWC4akkZtHKK0SYVXUsev1At03nXgsFZBjp5lK7DFMEK223AnVrglY/7EquKKFB1
+         jsL7qnwcLoTHPpc+J91Ar72yF7An26cgkNQ7bLp0KDWzlAGuEk3QDTYDZeBCUyalkAMP
+         Mz5mYcYsOzld0J2VDmjT8IXfnm8GGTAghoWgmhZ6pBnUlJZYtGqXSAok+J7g6k8zr1VX
+         fFUYb7QWUQ8xacSgqw4J+KY/Z5ToFeg2nnXhYP6ZyK9wcaCpueAABYfDzhgjBL+Wdw/y
+         7YRQ==
+X-Gm-Message-State: AOJu0YwLpmY/QUDcZoN7vEMxrbgdT62JmKUKggLV1bh4O2VAEvkVHEL3
+        x+xfTM4l8mF3lN4FWYyLxhm9wody4pg7GIaX7Ga+FQ==
+X-Google-Smtp-Source: AGHT+IH0M36sGhkknsW4z9Go4w3a6NS0PZMs743VBCGF477mp0CAXqcZnQLVH/utSvgvwGZ/QRaddA==
+X-Received: by 2002:a17:90b:1e04:b0:280:37a0:69d4 with SMTP id pg4-20020a17090b1e0400b0028037a069d4mr7275940pjb.19.1698919880112;
+        Thu, 02 Nov 2023 03:11:20 -0700 (PDT)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id g19-20020a056a00079300b006bd26bdc909sm2555639pfu.72.2023.11.02.03.03.37
+        by smtp.gmail.com with ESMTPSA id 29-20020a17090a199d00b00267d9f4d340sm2334799pji.44.2023.11.02.03.11.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Nov 2023 03:03:37 -0700 (PDT)
-Message-ID: <654373f9.050a0220.abae5.74cd@mx.google.com>
-Date:   Thu, 02 Nov 2023 03:03:37 -0700 (PDT)
+        Thu, 02 Nov 2023 03:11:19 -0700 (PDT)
+Message-ID: <654375c7.170a0220.fe62c.607d@mx.google.com>
+Date:   Thu, 02 Nov 2023 03:11:19 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v6.1.61
+X-Kernelci-Kernel: v5.10.199
 X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Branch: linux-5.10.y
 X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.61)
+Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
+ 5 warnings (v5.10.199)
 To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
         kernelci-results@groups.io
 From:   "kernelci.org bot" <bot@kernelci.org>
@@ -72,16 +72,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
-1.61)
+stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 5 warnings (v=
+5.10.199)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.61/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.199/
 
 Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.61
-Git Commit: 4a61839152cc3e9e00ac059d73a28d148d622b30
+Branch: linux-5.10.y
+Git Describe: v5.10.199
+Git Commit: cb49f0e441ce7db63ef67ccfa9d9562c22f5d6c3
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
@@ -100,15 +100,19 @@ mips:
     32r2el_defconfig (gcc-10): 1 warning
 
 riscv:
+    rv32_defconfig (gcc-10): 4 warnings
 
 x86_64:
 
 
 Warnings summary:
 
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -123,19 +127,18 @@ Detailed per-defconfig build reports:
 ion mismatches
 
 Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
 
 ---------------------------------------------------------------------------=
 -----
 allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
 mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -184,18 +187,21 @@ nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
 
 ---------------------------------------------------------------------------=
 -----
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
 omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
 ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
 ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
 
 ---------------------------------------------------------------------------=
 -----
