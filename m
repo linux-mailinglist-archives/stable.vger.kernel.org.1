@@ -2,52 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 821D17DE939
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 01:16:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FB217DE981
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 01:39:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234249AbjKBANJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 20:13:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54314 "EHLO
+        id S231616AbjKBAjI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 20:39:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229727AbjKBANJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 20:13:09 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3D9E101
-        for <stable@vger.kernel.org>; Wed,  1 Nov 2023 17:13:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA26FC433C7;
-        Thu,  2 Nov 2023 00:13:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698883984;
-        bh=s2zFXorocv1zuAi5+kYLC4454sqr4YBYADhktYWoFBA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gCkFYmXs1R3HoiIsUvMCNXbBWt9njpduA57m/uyadHKIj2yaX61HxcBzbFp/gJD4i
-         lv9ROdUMCjXsmckTwFq9rMgjAXnpI8QujSmCeqWiyYRVznyQ8+DOfMkvM8rawsdKgJ
-         P9+i16Lz5jnGgHJz1yAyS8BukU1K/45nuHA9e0WFL+hdlZftNeMLlrBcbLN4gGuBPj
-         7UgN59tnCM+j1OGmnsaGRwn0xZ+RqAcgHs9HpAOlsyRVqhlTWg38mN72TK88MUkdVm
-         u2j3yKftpMBJEgjWbYADuUS4b1EKHZbxwnmH6PSIwy2LArkhs7IC8T5DcEJegH7dwv
-         1CRFtcSFwyQhQ==
-Date:   Thu, 2 Nov 2023 00:13:00 +0000
-From:   Conor Dooley <conor@kernel.org>
-To:     "Saravanan.K.S" <saravanan.kadambathursubramaniyam@windriver.com>
-Cc:     kexin.hao@windriver.com, rajeshkumar.ramasamy@windriver.com,
-        Heiko Stuebner <heiko.stuebner@vrull.eu>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
-        Andrew Jones <ajones@ventanamicro.com>, stable@vger.kernel.org,
-        Conor Dooley <conor.dooley@microchip.com>
-Subject: Re: [PATCH 093/130] RISC-V: fix compile error from deduplicated
- __ALTERNATIVE_CFG_2
-Message-ID: <20231102-unpicked-baggage-1e57a30ba81b@spud>
-References: <20231101175702.3967251-1-saravanan.kadambathursubramaniyam@windriver.com>
- <20231101175702.3967251-94-saravanan.kadambathursubramaniyam@windriver.com>
+        with ESMTP id S231511AbjKBAjH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 20:39:07 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69E95E8
+        for <stable@vger.kernel.org>; Wed,  1 Nov 2023 17:39:00 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 8699A5C01BF;
+        Wed,  1 Nov 2023 20:38:55 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Wed, 01 Nov 2023 20:38:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1698885535; x=1698971935; bh=XfCwqkrmHX39PAF8DgFnwRKfMHvhyDtQ9mQ
+        nwUGuGdk=; b=PT0LNGhDj+vbfNHoMmL2qJ1AuJAWVHGJCctzbVQqfIEQuHvA5B7
+        lFevgrg85IyGyvH4TBivJ30VIxMHlpLICzqJyhi23cTG18/2zl1dWY3xh2zygZ7k
+        Lrjo+IGCRanEw1SiUYD9XOeccVO6bp2wmrnnPwu7KvHI4++/N4H3uZaGV0nOtwUU
+        j1aasyAgjZa9iNtcb9WTf76NKC8EPJY7txIfPO81ieZcHdQlysdr+bFN/Bok+gym
+        c9f1e9oh5OPLTVFVUiBpjT4Pr5yRdknVkplRrieIR2xkfiw5BAKnZX9SkEjxr9Mx
+        6EGs5lLxvjQzkpQYw/6q3rogweNkOPAKy7w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1698885535; x=1698971935; bh=XfCwqkrmHX39P
+        AF8DgFnwRKfMHvhyDtQ9mQnwUGuGdk=; b=mbZXg7UJ3EtBNWfqqbqJ8fKK2T4xf
+        XZCzpWLT/P0bAwS2bHZvyMUBJSqImup9XkzFdTrzCRr0UHr2FAihjCFobrnSwJmo
+        c4VLDXr3+lRFItdq+yVw2lZw4VWCYUosMGbD43VCwKSH9gMtleMOF0m4yMUfVk6A
+        a60qWGxadK3mPzto7LVL9UCvBjpDSi/OYHp2fTlrs8y58d0AYet4pcIwsG2/pc3J
+        BfIiTCBUl6q18ieV7tuvsbh+I9AcGLse2rR2YqVXRUJ2rY+fxtXZBOxCTSHvQ5+r
+        zpdPifR8jr8mXT4/A+JfJFiwLVu0JI9lg5setnL1Bi9ts6kPLTAoQXDcA==
+X-ME-Sender: <xms:nu9CZTQV5WSWgZxnPousH4Kk1EmLd5mrp-CEczCFo46eBMbNWDFKnA>
+    <xme:nu9CZUzbfLKv9gGhccszQW5t5csux4wZ5KyGyazxMrEhIhYdgzZuNTbgdNemtYe5d
+    C2duXCzwI-giw>
+X-ME-Received: <xmr:nu9CZY3_nzXx8Ugk86rYhCxg_zNTD4YA6ewsHPdCinsBWF7_BFZOIn86bisF>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddthedgvdegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesghdtreertddtjeenucfhrhhomhepofgrrhgv
+    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
+    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnhepgfdu
+    leetfeevhfefheeiteeliefhjefhleduveetteekveettddvgeeuteefjedunecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
+    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+X-ME-Proxy: <xmx:nu9CZTDpl7UTRqWsuQZiywimDWE2VCE0pS8lV7mgccpmhX9VmtA6lw>
+    <xmx:nu9CZcgts6El5L8QQukb5pWOyzZWEGezDUYuXi_G_goXyV8dHsNIAg>
+    <xmx:nu9CZXrKsvleiYQkAhB_jRc5d_wqxUsj5uuAh6m3yQnwPSIfm9_irA>
+    <xmx:n-9CZfO1ORKBOgI3zycI-KCXjj60uFnqSD_ERyN6iq_Iqb6eqC2n4A>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 1 Nov 2023 20:38:49 -0400 (EDT)
+Date:   Thu, 2 Nov 2023 01:38:40 +0100
+From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+To:     Mikulas Patocka <mpatocka@redhat.com>
+Cc:     Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Message-ID: <ZULvkPhcpgAVyI8w@mail-itl>
+References: <ZT+wDLwCBRB1O+vB@mail-itl>
+ <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com>
+ <20231030155603.k3kejytq2e4vnp7z@quack3>
+ <ZT/e/EaBIkJEgevQ@mail-itl>
+ <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
+ <ZUB5HFeK3eHeI8UH@mail-itl>
+ <20231031140136.25bio5wajc5pmdtl@quack3>
+ <ZUEgWA5P8MFbyeBN@mail-itl>
+ <8a35cdea-3a1a-e859-1f7c-55d1c864a48@redhat.com>
+ <ebbc7ca7-5169-dbdc-9ea8-c6d8c3ae31e2@redhat.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="5dRCX8WSNPYZP0Ch"
+        protocol="application/pgp-signature"; boundary="EW5Jd6ZInl+5b4q+"
 Content-Disposition: inline
-In-Reply-To: <20231101175702.3967251-94-saravanan.kadambathursubramaniyam@windriver.com>
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <ebbc7ca7-5169-dbdc-9ea8-c6d8c3ae31e2@redhat.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -55,108 +102,185 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---5dRCX8WSNPYZP0Ch
-Content-Type: text/plain; charset=us-ascii
+--EW5Jd6ZInl+5b4q+
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Date: Thu, 2 Nov 2023 01:38:40 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
 
-Top post yada yada, I don;t care.
+On Tue, Oct 31, 2023 at 06:24:19PM +0100, Mikulas Patocka wrote:
+>=20
+>=20
+> On Tue, 31 Oct 2023, Mikulas Patocka wrote:
+>=20
+> >=20
+> >=20
+> > On Tue, 31 Oct 2023, Marek Marczykowski-G=C3=B3recki wrote:
+> >=20
+> > > On Tue, Oct 31, 2023 at 03:01:36PM +0100, Jan Kara wrote:
+> > > > On Tue 31-10-23 04:48:44, Marek Marczykowski-G=C3=B3recki wrote:
+> > > > > Then tried:
+> > > > >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D4 - cannot reproduce,
+> > > > >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D5 - cannot reproduce,
+> > > > >  - PAGE_ALLOC_COSTLY_ORDER=3D4, order=3D6 - freeze rather quickly
+> > > > >=20
+> > > > > I've retried the PAGE_ALLOC_COSTLY_ORDER=3D4,order=3D5 case sever=
+al times
+> > > > > and I can't reproduce the issue there. I'm confused...
+> > > >=20
+> > > > And this kind of confirms that allocations > PAGE_ALLOC_COSTLY_ORDER
+> > > > causing hangs is most likely just a coincidence. Rather something e=
+ither in
+> > > > the block layer or in the storage driver has problems with handling=
+ bios
+> > > > with sufficiently high order pages attached. This is going to be a =
+bit
+> > > > painful to debug I'm afraid. How long does it take for you trigger =
+the
+> > > > hang? I'm asking to get rough estimate how heavy tracing we can aff=
+ord so
+> > > > that we don't overwhelm the system...
+> > >=20
+> > > Sometimes it freezes just after logging in, but in worst case it takes
+> > > me about 10min of more or less `tar xz` + `dd`.
+> >=20
+> > Hi
+> >=20
+> > I would like to ask you to try this patch. Revert the changes to "order=
+"=20
+> > and "PAGE_ALLOC_COSTLY_ORDER" back to normal and apply this patch on a=
+=20
+> > clean upstream kernel.
+> >=20
+> > Does it deadlock?
+> >=20
+> > There is a bug in dm-crypt that it doesn't account large pages in=20
+> > cc->n_allocated_pages, this patch fixes the bug.
 
-So, I got emailed on 190 patches from you that I don't think you
-intended to send publicly.
+This patch did not help.
 
-Greg, if you see this, this is probably already in stable and is not
-6.1-stable material anyway, I just had backported some stuff to my
-vendor tree that is the source of this.
+> If the previous patch didn't fix it, try this patch (on a clean upstream=
+=20
+> kernel).
+>
+> This patch allocates large pages, but it breaks them up into single-page=
+=20
+> entries when adding them to the bio.
 
-Cheers,
-Conor.
+But this does help.
 
-On Wed, Nov 01, 2023 at 05:56:25PM +0000, Saravanan.K.S wrote:
+> If this patch deadlocks, it is a sign that allocating large pages causes=
+=20
+> the problem.
 >=20
-> [You don't often get email from saravanan.kadambathursubramaniyam@windriv=
-er.com. Learn why this is important at https://aka.ms/LearnAboutSenderIdent=
-ification ]
+> If this patch doesn't deadlock, it is a sign that processing a bio with=
+=20
+> large pages is the problem.
 >=20
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
+> Mikulas
 >=20
-> From: Heiko Stuebner <heiko.stuebner@vrull.eu>
->=20
-> commit 7d27a3bb961dfb59ececd2f641b09fbe7198837e from
-> https://github.com/linux4microchip/linux.git linux-6.1-mchp
->=20
-> On the non-assembler-side wrapping alternative-macros inside other macros
-> to prevent duplication of code works, as the end result will just be a
-> string that gets fed to the asm instruction.
->=20
-> In real assembler code, wrapping .macro blocks inside other .macro blocks
-> brings more restrictions on usage it seems and the optimization done by
-> commit 2ba8c7dc71c0 ("riscv: Don't duplicate __ALTERNATIVE_CFG in __ALTER=
-NATIVE_CFG_2")
-> results in a compile error like:
->=20
-> ../arch/riscv/lib/strcmp.S: Assembler messages:
-> ../arch/riscv/lib/strcmp.S:15: Error: too many positional arguments
-> ../arch/riscv/lib/strcmp.S:15: Error: backward ref to unknown label "886:"
-> ../arch/riscv/lib/strcmp.S:15: Error: backward ref to unknown label "887:"
-> ../arch/riscv/lib/strcmp.S:15: Error: backward ref to unknown label "886:"
-> ../arch/riscv/lib/strcmp.S:15: Error: backward ref to unknown label "887:"
-> ../arch/riscv/lib/strcmp.S:15: Error: backward ref to unknown label "886:"
-> ../arch/riscv/lib/strcmp.S:15: Error: attempt to move .org backwards
->=20
-> Wrapping the variables containing assembler code in quotes solves this is=
-sue,
-> compilation and the code in question still works and objdump also shows s=
-ane
-> decompiled results of the affected code.
->=20
-> Fixes: 2ba8c7dc71c0 ("riscv: Don't duplicate __ALTERNATIVE_CFG in __ALTER=
-NATIVE_CFG_2")
-> Signed-off-by: Heiko Stuebner <heiko.stuebner@vrull.eu>
-> Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-> Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-> Link: https://lore.kernel.org/r/20230105192610.1940841-1-heiko@sntech.de
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Saravanan.K.S <saravanan.kadambathursubramaniyam@windriver=
-=2Ecom>
 > ---
->  arch/riscv/include/asm/alternative-macros.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/md/dm-crypt.c |   26 ++++++++++++++++++++++----
+>  1 file changed, 22 insertions(+), 4 deletions(-)
 >=20
-> diff --git a/arch/riscv/include/asm/alternative-macros.h b/arch/riscv/inc=
-lude/asm/alternative-macros.h
-> index 7226e2462584..2c0f4c887289 100644
-> --- a/arch/riscv/include/asm/alternative-macros.h
-> +++ b/arch/riscv/include/asm/alternative-macros.h
-> @@ -46,7 +46,7 @@
->=20
->  .macro ALTERNATIVE_CFG_2 old_c, new_c_1, vendor_id_1, errata_id_1, enabl=
-e_1,   \
->                                 new_c_2, vendor_id_2, errata_id_2, enable=
-_2
-> -       ALTERNATIVE_CFG \old_c, \new_c_1, \vendor_id_1, \errata_id_1, \en=
-able_1
-> +       ALTERNATIVE_CFG "\old_c", "\new_c_1", \vendor_id_1, \errata_id_1,=
- \enable_1
->         ALT_NEW_CONTENT \vendor_id_2, \errata_id_2, \enable_2, \new_c_2
->  .endm
->=20
-> --
-> 2.40.0
->=20
+> Index: linux-stable/drivers/md/dm-crypt.c
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- linux-stable.orig/drivers/md/dm-crypt.c	2023-10-31 17:16:03.000000000=
+ +0100
+> +++ linux-stable/drivers/md/dm-crypt.c	2023-10-31 17:21:14.000000000 +0100
+> @@ -1700,11 +1700,16 @@ retry:
+>  		order =3D min(order, remaining_order);
+> =20
+>  		while (order > 0) {
+> +			if (unlikely(percpu_counter_read_positive(&cc->n_allocated_pages) + (=
+1 << order) > dm_crypt_pages_per_client))
+> +				goto decrease_order;
+>  			pages =3D alloc_pages(gfp_mask
+>  				| __GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN | __GFP_COMP,
+>  				order);
+> -			if (likely(pages !=3D NULL))
+> +			if (likely(pages !=3D NULL)) {
+> +				percpu_counter_add(&cc->n_allocated_pages, 1 << order);
+>  				goto have_pages;
+> +			}
+> +decrease_order:
+>  			order--;
+>  		}
+> =20
+> @@ -1719,8 +1724,13 @@ retry:
+> =20
+>  have_pages:
+>  		size_to_add =3D min((unsigned)PAGE_SIZE << order, remaining_size);
+> -		__bio_add_page(clone, pages, size_to_add, 0);
+>  		remaining_size -=3D size_to_add;
+> +		while (size_to_add) {
+> +			unsigned this_step =3D min(size_to_add, (unsigned)PAGE_SIZE);
+> +			__bio_add_page(clone, pages, this_step, 0);
+> +			size_to_add -=3D this_step;
+> +			pages++;
+> +		}
+>  	}
+> =20
+>  	/* Allocate space for integrity tags */
+> @@ -1739,13 +1749,21 @@ have_pages:
+>  static void crypt_free_buffer_pages(struct crypt_config *cc, struct bio =
+*clone)
+>  {
+>  	struct folio_iter fi;
+> +	unsigned skip =3D 0;
+> =20
+>  	if (clone->bi_vcnt > 0) { /* bio_for_each_folio_all crashes with an emp=
+ty bio */
+>  		bio_for_each_folio_all(fi, clone) {
+> -			if (folio_test_large(fi.folio))
+> +			if (skip) {
+> +				skip--;
+> +				continue;
+> +			}
+> +			if (folio_test_large(fi.folio)) {
+> +				skip =3D (1 << folio_order(fi.folio)) - 1;
+> +				percpu_counter_sub(&cc->n_allocated_pages, 1 << folio_order(fi.folio=
+));
+>  				folio_put(fi.folio);
+> -			else
+> +			} else {
+>  				mempool_free(&fi.folio->page, &cc->page_pool);
+> +			}
+>  		}
+>  	}
+>  }
 
---5dRCX8WSNPYZP0Ch
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--EW5Jd6ZInl+5b4q+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZULpjAAKCRB4tDGHoIJi
-0j4YAQDFa1z0fkoz9KHTb88DJrJbRVGXen5iMtwFv4YP+K7uEgD+LRBW53l8cuSu
-RQdUw91w//ZIKhaZhL0DXPYR7SW3WwE=
-=lre1
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmVC75AACgkQ24/THMrX
+1yzj5gf/ToKBkxnC0lV27lc38Y5dkZb8PL1uH65jV1eoAUkXZxyaIBWniybQ8/Sk
+z2AnmGLZQ4B+3cPVGRVsRxdVyZKbj4/RLdZNJX9vYZgz6lLrM6/uFqqTeEetoDwP
+zMyiy/ZlA43O83rpnIqOCGxnuKxJAlLBPHPxcAUtHZNNFOT8nCs3Zc7sl8pSYcwp
+R5+u+lOVJVMTMkjOYLLHeighXpjROK62QHl36L/09op7yX+22A6QhNFgLJRlLxbm
+snQ4wRhJ3JlNDZMHm+7W5iXm/+TNzZJHCnAUY+ddSF57FGCHM8vnb8skkfHEKKUt
+VtkX13+bgQ6fJKTyDhGAGMxNFnWpmw==
+=DePr
 -----END PGP SIGNATURE-----
 
---5dRCX8WSNPYZP0Ch--
+--EW5Jd6ZInl+5b4q+--
