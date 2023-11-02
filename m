@@ -2,119 +2,213 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A3AE7DE9BA
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 01:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5F27DE9F2
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 02:22:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234806AbjKBAxt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 1 Nov 2023 20:53:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55058 "EHLO
+        id S232903AbjKBBWT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 1 Nov 2023 21:22:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234541AbjKBAxs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 20:53:48 -0400
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D337FC
-        for <stable@vger.kernel.org>; Wed,  1 Nov 2023 17:53:42 -0700 (PDT)
-Received: from eig-obgw-6003a.ext.cloudfilter.net ([10.0.30.151])
-        by cmsmtp with ESMTPS
-        id yJCpqgHBgKOkLyLxuqv6CV; Thu, 02 Nov 2023 00:53:42 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id yLxtqIO7JRqxCyLxtqkJHk; Thu, 02 Nov 2023 00:53:41 +0000
-X-Authority-Analysis: v=2.4 cv=IY2U5Ema c=1 sm=1 tr=0 ts=6542f315
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=y1/A9KzQdZErrHAMekzb9r7zRRUmKRUgzgMl4Pu2QwE=; b=l0tKnyoiaPJ7Hf4Sd2IyQZ9EsG
-        0k2+Y6rJwD2bEdu6iUfnxidADRDV9jmmRTNhKadZmNrVARJoBP6Wgy2bEpk7bF3ZJDwKBSO7OEeDL
-        6tfTx4ydVG8K4E0PA8jViHPqMLGYGClzEzQGsNSnE0bANWpQ65gLih06cTHVzFRdoFzIGkij2QcUd
-        e/mAGE6Cqmxtd/wGN/xuc5V6DPeSc2dPxKhmMXtGz6e/dNxOmYWcK31q9dYDHpMcpKKpgEwubdCJV
-        DMGmUUs0DSj6sUsopBJ76YY1TsDGiXX0gF1qIq42xlOoeIuj7lpN/3m/WhsA1IQ1ITgLHTUmJ16qF
-        Z7sohtTw==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:53614 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96.2)
-        (envelope-from <re@w6rz.net>)
-        id 1qyLxr-000Hj8-08;
-        Wed, 01 Nov 2023 18:53:39 -0600
-Subject: Re: [PATCH 6.5 000/111] 6.5.10-rc2 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20231101120147.190909952@linuxfoundation.org>
-In-Reply-To: <20231101120147.190909952@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <ed8a6a02-e9f7-0c03-2fa3-08f8f9956040@w6rz.net>
-Date:   Wed, 1 Nov 2023 17:53:36 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S232889AbjKBBWT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 1 Nov 2023 21:22:19 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 636C583;
+        Wed,  1 Nov 2023 18:22:13 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (213-243-189-158.bb.dnainternet.fi [213.243.189.158])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6FB5A7E2;
+        Thu,  2 Nov 2023 02:21:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1698888114;
+        bh=qdbMgBs52Q5FWNeH18btMEz6KCC7SW8GqNt9GXwQMIM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=sjIYaesTodnDaP3pQ9uCNPIvEgEt68vNCfQLv+f29q76R+evzH5Ef8v51pck67xHl
+         eg+ppAMMeVoAvs2cbc1B2uONfcSLyXjggEaEYYLfcvkyDBpDiJJUCtmEs365wpVf99
+         febwwygck9dxFf8rK8HpsSEm8hDTjAsoPpk+0D3U=
+Date:   Thu, 2 Nov 2023 03:22:17 +0200
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Manivannan Sadhasivam <mani@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-media@vger.kernel.org,
+        Alain Volmat <alain.volmat@foss.st.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] media: v4l2-cci: Add support for little-endian
+ encoded registers
+Message-ID: <20231102012217.GC5933@pendragon.ideasonboard.com>
+References: <20231101122354.270453-1-alexander.stein@ew.tq-group.com>
+ <20231101122354.270453-2-alexander.stein@ew.tq-group.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1qyLxr-000Hj8-08
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:53614
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfCiHjgi6xQeJC/DkDX/Hmmd+rB0CANVjVCOCenmtri+uuAQGFa0jFVOIzuY2dnywcZPrI+tRchxk5RmVD8yEgUjqFUfnYt56DhLLYkAjO3t3JKksm4W8
- Dm556VNvvEv2R4Xfbzf8Az9j5Ib/tn7ABUpAdrPC3DmJs/UEICZCQciOZlEvn4Vf80wj6e5xZdSQxg==
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231101122354.270453-2-alexander.stein@ew.tq-group.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/1/23 5:03 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.10 release.
-> There are 111 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 03 Nov 2023 12:01:18 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.10-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Alexander,
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Thank you for the patch.
 
-Tested-by: Ron Economos <re@w6rz.net>
+On Wed, Nov 01, 2023 at 01:23:53PM +0100, Alexander Stein wrote:
+> Some sensors, e.g. Sony, are using little-endian registers. Add support for
 
+I would write Sony IMX290 here, as there are Sony sensors that use big
+endian.
+
+> those by encoding the endianess into Bit 20 of the register address.
+> 
+> Fixes: af73323b97702 ("media: imx290: Convert to new CCI register access helpers")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+> ---
+>  drivers/media/v4l2-core/v4l2-cci.c | 44 ++++++++++++++++++++++++------
+>  include/media/v4l2-cci.h           |  5 ++++
+>  2 files changed, 41 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
+> index bc2dbec019b04..673637b67bf67 100644
+> --- a/drivers/media/v4l2-core/v4l2-cci.c
+> +++ b/drivers/media/v4l2-core/v4l2-cci.c
+> @@ -18,6 +18,7 @@
+>  
+>  int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+>  {
+> +	bool little_endian;
+>  	unsigned int len;
+>  	u8 buf[8];
+>  	int ret;
+> @@ -25,6 +26,7 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+>  	if (err && *err)
+>  		return *err;
+>  
+> +	little_endian = reg & CCI_REG_LE;
+
+You could initialize the variable when declaring it. Same below.
+
+>  	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
+>  	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
+>  
+> @@ -40,16 +42,28 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+>  		*val = buf[0];
+>  		break;
+>  	case 2:
+> -		*val = get_unaligned_be16(buf);
+> +		if (little_endian)
+> +			*val = get_unaligned_le16(buf);
+> +		else
+> +			*val = get_unaligned_be16(buf);
+
+Unrelated to this patch, isn't buf aligned to a 4 bytes boundary ?
+
+>  		break;
+>  	case 3:
+> -		*val = get_unaligned_be24(buf);
+> +		if (little_endian)
+> +			*val = get_unaligned_le24(buf);
+> +		else
+> +			*val = get_unaligned_be24(buf);
+>  		break;
+>  	case 4:
+> -		*val = get_unaligned_be32(buf);
+> +		if (little_endian)
+> +			*val = get_unaligned_le32(buf);
+> +		else
+> +			*val = get_unaligned_be32(buf);
+>  		break;
+>  	case 8:
+> -		*val = get_unaligned_be64(buf);
+> +		if (little_endian)
+> +			*val = get_unaligned_le64(buf);
+> +		else
+> +			*val = get_unaligned_be64(buf);
+>  		break;
+>  	default:
+>  		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+> @@ -68,6 +82,7 @@ EXPORT_SYMBOL_GPL(cci_read);
+>  
+>  int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+>  {
+> +	bool little_endian;
+>  	unsigned int len;
+>  	u8 buf[8];
+>  	int ret;
+> @@ -75,6 +90,7 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+>  	if (err && *err)
+>  		return *err;
+>  
+> +	little_endian = reg & CCI_REG_LE;
+>  	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
+>  	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
+>  
+> @@ -83,16 +99,28 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+>  		buf[0] = val;
+>  		break;
+>  	case 2:
+> -		put_unaligned_be16(val, buf);
+> +		if (little_endian)
+> +			put_unaligned_le16(val, buf);
+> +		else
+> +			put_unaligned_be16(val, buf);
+>  		break;
+>  	case 3:
+> -		put_unaligned_be24(val, buf);
+> +		if (little_endian)
+> +			put_unaligned_le24(val, buf);
+> +		else
+> +			put_unaligned_be24(val, buf);
+>  		break;
+>  	case 4:
+> -		put_unaligned_be32(val, buf);
+> +		if (little_endian)
+> +			put_unaligned_le32(val, buf);
+> +		else
+> +			put_unaligned_be32(val, buf);
+>  		break;
+>  	case 8:
+> -		put_unaligned_be64(val, buf);
+> +		if (little_endian)
+> +			put_unaligned_le64(val, buf);
+> +		else
+> +			put_unaligned_be64(val, buf);
+>  		break;
+>  	default:
+>  		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+> diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
+> index 0f6803e4b17e9..ef3faf0c9d44d 100644
+> --- a/include/media/v4l2-cci.h
+> +++ b/include/media/v4l2-cci.h
+> @@ -32,12 +32,17 @@ struct cci_reg_sequence {
+>  #define CCI_REG_ADDR_MASK		GENMASK(15, 0)
+>  #define CCI_REG_WIDTH_SHIFT		16
+>  #define CCI_REG_WIDTH_MASK		GENMASK(19, 16)
+> +#define CCI_REG_LE			BIT(20)
+>  
+>  #define CCI_REG8(x)			((1 << CCI_REG_WIDTH_SHIFT) | (x))
+>  #define CCI_REG16(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x))
+>  #define CCI_REG24(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x))
+>  #define CCI_REG32(x)			((4 << CCI_REG_WIDTH_SHIFT) | (x))
+>  #define CCI_REG64(x)			((8 << CCI_REG_WIDTH_SHIFT) | (x))
+> +#define CCI_REG16_LE(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x) | CCI_REG_LE)
+> +#define CCI_REG24_LE(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x) | CCI_REG_LE)
+> +#define CCI_REG32_LE(x)			((4 << CCI_REG_WIDTH_SHIFT) | (x) | CCI_REG_LE)
+> +#define CCI_REG64_LE(x)			((8 << CCI_REG_WIDTH_SHIFT) | (x) | CCI_REG_LE)
+
+I would put CCI_REG_LE first, to match the bits order.
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+>  
+>  /**
+>   * cci_read() - Read a value from a single CCI register
+
+-- 
+Regards,
+
+Laurent Pinchart
