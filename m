@@ -2,74 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1CAA7DF8AD
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 18:26:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C04B7DF8C3
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 18:33:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229572AbjKBR0b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 13:26:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55966 "EHLO
+        id S229496AbjKBRd1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 13:33:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231339AbjKBR0a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 13:26:30 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83E7F196;
-        Thu,  2 Nov 2023 10:26:27 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id 2adb3069b0e04-507a62d4788so1503386e87.0;
-        Thu, 02 Nov 2023 10:26:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698945986; x=1699550786; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=V81heOTLS2HyOq5jt+KISDCrtvnQ83UiMpmGosl+pi4=;
-        b=i7VbXqtLUdwaEhJwkomf+ZOmPKfdUA82IQP/abP6p3lZdgum7MHQjYeVjxE1gIR0F6
-         krxV54ROoCrMM5Nr+pbIF7K70ZVXhD2ZOM8c1wwTlyUQ/Vi2OYXnqGYUa3sqQAZxWxIr
-         /6JokZBNOLoTxjzR+6uEPIVQ2GV1zE9Wu460KiAUrzU39d0VHZGnLOWwggmrOOEmYEQp
-         6bmoTq8Ug81HTiaoAsYy9JKjFNeHmXm8Q0jR8gVkhNLwO2Fl0EB6CIUp8GT3h3WxzM8G
-         ElEaRPDWTaJxEk3sTp02++EXun/4UCjuNQl0VcyUBnvQDOlBS5Hmq5zvYQhSfI3uWPvR
-         nnSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698945986; x=1699550786;
-        h=in-reply-to:content-disposition:mime-version:references:subject:cc
-         :to:from:date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V81heOTLS2HyOq5jt+KISDCrtvnQ83UiMpmGosl+pi4=;
-        b=mAKr2I+niET+THtPqPGrokmDfZocjI81lDbd6ereLvZPTTJS5fiXR8RLBlTnzJqGI2
-         Lh8AaH6YY3e37gYG72lbZZaJUGmQviwnBdJTtkv/OoTs0UfFShVeKHc9cE5GxkuNyVgH
-         Q4W963ItiTa1Q757x9kv9926uft6VryM8fBgzcYFlUNk7kUxLOjSjlGbYzMOUYZBZeJ6
-         IJD3pLUbcOY94G0dgoSMRs2MHI3WYNXazrQJOPTZvRCi9+/pPIjAyuWOB5TVlQUeWxPm
-         yymfHK9xjz4SFdOLfZVeSJXBM+jA8uHS87OEpG0vltHJ2wjACoMWpmKnjY7e8DLhUFSk
-         Lrnw==
-X-Gm-Message-State: AOJu0Yx16rFlLew6dUTBeI2yw0c4Iv6IwzxsO1f1l9tTp18h8Ic0BvwO
-        CfZV0XUwzHt7I5VkyMdswjo=
-X-Google-Smtp-Source: AGHT+IH5G6xdJ9QfMm+C/seRUMl1TXnM1Z96Q3PmBOXwUmrPkxArbBY9UbLxdXKlSwyYGgIIhR2blQ==
-X-Received: by 2002:ac2:5928:0:b0:507:984e:9f16 with SMTP id v8-20020ac25928000000b00507984e9f16mr14357907lfi.36.1698945985351;
-        Thu, 02 Nov 2023 10:26:25 -0700 (PDT)
-Received: from Ansuel-xps. (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
-        by smtp.gmail.com with ESMTPSA id l13-20020adfe58d000000b0032dba85ea1bsm2964216wrm.75.2023.11.02.10.26.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Nov 2023 10:26:24 -0700 (PDT)
-Message-ID: <6543dbc0.df0a0220.21766.ef29@mx.google.com>
-X-Google-Original-Message-ID: <ZUPbvmgeDjHUSwC6@Ansuel-xps.>
-Date:   Thu, 2 Nov 2023 18:26:22 +0100
-From:   Christian Marangi <ansuelsmth@gmail.com>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        MyungJoo Ham <myungjoo.ham@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
-        Takashi Iwai <tiwai@suse.de>,
-        Jonghwa Lee <jonghwa3.lee@samsung.com>,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] PM / devfreq: Fix buffer overflow in trans_stat_show
-References: <20231024183016.14648-1-ansuelsmth@gmail.com>
- <20231024183016.14648-2-ansuelsmth@gmail.com>
+        with ESMTP id S229479AbjKBRd0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 13:33:26 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8545B10E
+        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 10:33:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F87EC433C8;
+        Thu,  2 Nov 2023 17:33:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698946404;
+        bh=ZKiwVmmxGFrqHIavcUu30zIezcxTXncRkz5aoq4SASI=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=dx2Arxn6jwP9irCASOLZSA+8b8al9jmAEZNhG1b4UsFyn6dy4k1bRq2IYKL1LMOAW
+         ZMtV06jlmOI5gNvfgLnZ4BYGc2Z/+vH3mWqOnZFPSs2D3zCklzrY5wMh9losCv8uWb
+         Oii6YnltpdpVAzzHxqY17PXziPpq1NOrpMRosupneWFRhEoanvI/YyXcElrV9mZJAH
+         NMaIIzmrL98f0f325zsfPQn57FSaahLRxW5uQAbX7UaaDjeydAA88jDwJdAq3DCNRn
+         uNWJQMFfVl9SL5fZAiZYblYDGbOSpqBEbyutXxe5iulGfb+4yr4TGaKmUx5VVU4Iff
+         tUzbA7gcEDOHw==
+From:   SeongJae Park <sj@kernel.org>
+To:     stable@vger.kernel.org
+Cc:     Maxim Levitsky <mlevitsk@redhat.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        SeongJae Park <sj@kernel.org>
+Subject: [PATCH 6.1.y] x86: KVM: SVM: always update the x2avic msr interception
+Date:   Thu,  2 Nov 2023 17:33:11 +0000
+Message-Id: <20231102173311.128654-1-sj@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2023102017-human-marine-7125@gregkh>
+References: <2023102017-human-marine-7125@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231024183016.14648-2-ansuelsmth@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -78,27 +51,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 24, 2023 at 08:30:15PM +0200, Christian Marangi wrote:
-> Fix buffer overflow in trans_stat_show().
-> 
-> Convert simple snprintf to the more secure scnprintf with size of
-> PAGE_SIZE.
-> 
-> Add condition checking if we are exceeding PAGE_SIZE and exit early from
-> loop. Also add at the end a warning that we exceeded PAGE_SIZE and that
-> stats is disabled.
-> 
-> Return -EFBIG in the case where we don't have enough space to write the
-> full transition table.
-> 
-> Also document in the ABI that this function can return -EFBIG error.
-> 
-> Cc: stable@vger.kernel.org
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218041
-> Fixes: e552bbaf5b98 ("PM / devfreq: Add sysfs node for representing frequency transition information.")
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+From: Maxim Levitsky <mlevitsk@redhat.com>
 
-Any news for this?
+The following problem exists since x2avic was enabled in the KVM:
 
+svm_set_x2apic_msr_interception is called to enable the interception of
+the x2apic msrs.
+
+In particular it is called at the moment the guest resets its apic.
+
+Assuming that the guest's apic was in x2apic mode, the reset will bring
+it back to the xapic mode.
+
+The svm_set_x2apic_msr_interception however has an erroneous check for
+'!apic_x2apic_mode()' which prevents it from doing anything in this case.
+
+As a result of this, all x2apic msrs are left unintercepted, and that
+exposes the bare metal x2apic (if enabled) to the guest.
+Oops.
+
+Remove the erroneous '!apic_x2apic_mode()' check to fix that.
+
+This fixes CVE-2023-5090
+
+Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Tested-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20230928173354.217464-2-mlevitsk@redhat.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+(cherry picked from commit b65235f6e102354ccafda601eaa1c5bef5284d21)
+Signed-off-by: SeongJae Park <sj@kernel.org>
+---
+ arch/x86/kvm/svm/svm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index c871a6d6364c..1139d4b91b80 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -822,8 +822,7 @@ void svm_set_x2apic_msr_interception(struct vcpu_svm *svm, bool intercept)
+ 	if (intercept == svm->x2avic_msrs_intercepted)
+ 		return;
+ 
+-	if (avic_mode != AVIC_MODE_X2 ||
+-	    !apic_x2apic_mode(svm->vcpu.arch.apic))
++	if (!x2avic_enabled)
+ 		return;
+ 
+ 	for (i = 0; i < MAX_DIRECT_ACCESS_MSRS; i++) {
 -- 
-	Ansuel
+2.34.1
+
