@@ -2,106 +2,302 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C82D47DF953
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 19:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FAE27DFA65
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 19:54:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345168AbjKBR7E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 13:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59276 "EHLO
+        id S229479AbjKBSyU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 14:54:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52208 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345120AbjKBR6g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 13:58:36 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33F2D42
-        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 10:58:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD88C43391;
-        Thu,  2 Nov 2023 17:58:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1698947899;
-        bh=cz0Z1pn56WSFj9pwpQO++zmVCwYKsXbTZsN+WmIQ+a4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bCUV3tD8HL+YSPS9OfSl9dezDVdTHz9qPe9lmgI/3+XhCfpNFfiSFKe1dZEE7Xj5j
-         sHDozpQ24OcT4cdmQIyG/oVKaQRjxKIQKt25fQAtTc0f6j25ztAh36t6vlOJ/Egnsm
-         map1Q0SkD9zhol+z+JVPvxxjbMvZjHJweV3SOPVF2gjFzGZMC6j5NUmPtJfVj8idzx
-         PdMtn5OfXDJjB1lucUEv42XWK8gqtEL36CHurypk40djGoJBLvULT5JZo6UXT55ApQ
-         PeIJpxbvK74aVSJdRekOAFYZTNnb53ZlIGd5B/9z+dpwn3HuHe4AxMG7WZMaRfiski
-         z+zlpsssXAyeA==
-From:   SeongJae Park <sj@kernel.org>
-To:     stable@vger.kernel.org
-Cc:     Maxim Levitsky <mlevitsk@redhat.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        SeongJae Park <sj@kernel.org>
-Subject: [PATCH 6.1.y] x86: KVM: SVM: always update the x2avic msr interception
-Date:   Thu,  2 Nov 2023 17:58:15 +0000
-Message-Id: <20231102175815.128993-1-sj@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2023102017-human-marine-7125@gregkh>
-References: <2023102017-human-marine-7125@gregkh>
+        with ESMTP id S229476AbjKBSyT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 14:54:19 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44CCA12D
+        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 11:54:14 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1cc4f777ab9so10807785ad.0
+        for <stable@vger.kernel.org>; Thu, 02 Nov 2023 11:54:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698951253; x=1699556053; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=fkQO1PK92bikSce4Xv36wZ5Mw/jTHG0Y1H0PwWzwJRU=;
+        b=tljlNmK/BMnlaZDbWiRWRBfJTpzLys+F7DO3JG2ereecbkXcCHuMxmqwfpLzYDZzZc
+         PYhp5b45K6RdyonGwiCCmt/xZAmFkLXk+omYAARROAAR05RDa0STq3n7oHb/T5MOAt0l
+         T6ZKnMQfzvzqoupwQh48JiDNVX/imqUEreUeAjt9JYoexsV0SZIlkELFKVg5Ea/6ICYx
+         VQNxPs7Y3ZkzNUJ8TQJcNd8lQpxseFM5aFSwclRCbE9C36FEyNP/sX3/3cEvnx/FXFLV
+         yWckK5O3EEz1XUcmHCZBKHcVsKmJ9PUjVwsZKHXQp8tww4GQzWBydHs+EooBIO1Z3BWt
+         oGkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698951253; x=1699556053;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fkQO1PK92bikSce4Xv36wZ5Mw/jTHG0Y1H0PwWzwJRU=;
+        b=DkCehRhUM73jiYFMSEX5aCiitdsfqGtBFCXILC5PqbJL41skeYvGsQO8nfk4b1rZAX
+         R/Ojmg/uFm9dB3rxsdk+hsQ/AFEzQaAbe9YYQ2uSue4X4zpfeU2kwUi4yWI/+SchmZww
+         w6gJ9130BhsAsa+6ICjSSBoV9PvGw5buNH8Ww1aMJpSHQqBtdDn5a2o+yetFHdZ9zK3E
+         7tmsaoboZa1SCcRi7gNpQGkmIQ9WB9GSQYBxYgk7O4gUH+tL5GGe44FNkcGU/mIWu94x
+         9Pn8DDiw6xBBaMGJd/eRZtvZ4E/Tebki5Sj5psKaiBwFLuW1Rp6A2nxU0t1df+KiVcsC
+         kuFw==
+X-Gm-Message-State: AOJu0YxZH6NxHLfi566WU2jt8r5SybhryWB5rsZVblwcw8eO7GCh9nlS
+        GLJ0vLri6TcXpyv/zwQd76JBLzv+eSj6oUawE3FERA==
+X-Google-Smtp-Source: AGHT+IFXam+7oCVw2TUZZX8gXo/9d7fo0x0tgeZ8RCgprInrspAU7JuXBPDbFGOvbFlNFJ0HwZdPpQ==
+X-Received: by 2002:a17:902:f548:b0:1cc:49e7:ee1b with SMTP id h8-20020a170902f54800b001cc49e7ee1bmr15767730plf.58.1698951253238;
+        Thu, 02 Nov 2023 11:54:13 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id e15-20020a17090301cf00b001b7f40a8959sm69191plh.76.2023.11.02.11.54.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Nov 2023 11:54:12 -0700 (PDT)
+Message-ID: <6543f054.170a0220.3114d.05f7@mx.google.com>
+Date:   Thu, 02 Nov 2023 11:54:12 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.4.259-51-g6766f6bcb9e2
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.4.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.259-51-g6766f6bcb9e2)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v=
+5.4.259-51-g6766f6bcb9e2)
 
-The following problem exists since x2avic was enabled in the KVM:
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
+/kernel/v5.4.259-51-g6766f6bcb9e2/
 
-svm_set_x2apic_msr_interception is called to enable the interception of
-the x2apic msrs.
+Tree: stable-rc
+Branch: linux-5.4.y
+Git Describe: v5.4.259-51-g6766f6bcb9e2
+Git Commit: 6766f6bcb9e2ede447877fe229f75515d3061c9c
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-In particular it is called at the moment the guest resets its apic.
+Warnings Detected:
 
-Assuming that the guest's apic was in x2apic mode, the reset will bring
-it back to the xapic mode.
+arc:
 
-The svm_set_x2apic_msr_interception however has an erroneous check for
-'!apic_x2apic_mode()' which prevents it from doing anything in this case.
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
 
-As a result of this, all x2apic msrs are left unintercepted, and that
-exposes the bare metal x2apic (if enabled) to the guest.
-Oops.
+arm:
 
-Remove the erroneous '!apic_x2apic_mode()' check to fix that.
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
 
-This fixes CVE-2023-5090
+mips:
 
-Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Tested-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20230928173354.217464-2-mlevitsk@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-(cherry picked from commit b65235f6e102354ccafda601eaa1c5bef5284d21)
-Signed-off-by: SeongJae Park <sj@kernel.org>
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
- arch/x86/kvm/svm/svm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index c871a6d6364c..4194aa4c5f0e 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -822,8 +822,7 @@ void svm_set_x2apic_msr_interception(struct vcpu_svm *svm, bool intercept)
- 	if (intercept == svm->x2avic_msrs_intercepted)
- 		return;
- 
--	if (avic_mode != AVIC_MODE_X2 ||
--	    !apic_x2apic_mode(svm->vcpu.arch.apic))
-+	if (avic_mode != AVIC_MODE_X2)
- 		return;
- 
- 	for (i = 0; i < MAX_DIRECT_ACCESS_MSRS; i++) {
--- 
-2.34.1
-
+For more info write to <info@kernelci.org>
