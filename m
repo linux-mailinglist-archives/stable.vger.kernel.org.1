@@ -2,69 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4CAD7DEE35
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 09:33:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C738E7DEE46
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 09:40:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229526AbjKBIdb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 04:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49620 "EHLO
+        id S230270AbjKBIkn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 04:40:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbjKBIdb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 04:33:31 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 705DD128;
-        Thu,  2 Nov 2023 01:33:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698914005; x=1730450005;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+MXnK5cwDYhvKA44iiKMDWpGOqCiNsZG9MxtAN4y3SA=;
-  b=Ju/8KgGchHfba5xjCn+TydXv3FW+qO2wK7piS1O3dJNxPxMWeWard3NY
-   UkN4GCH9qOr+gj3nX23C6/EWMSuOiMmWL2z6Rr+APIoosaNCxCT2ftc4z
-   e+T6hYfog58idYxnDip8ilQ5sp/ysJXqkkCFZuCDNrUi/Dy/DRMtuoSDk
-   kn/KPW0qZYqH+kNSPNvDDIOBQQU7qJgMyEsAdQqJZ60+mUkRB2G7fP49S
-   le61lx1OCDy1Ibz22DFOYweW1kKSD0EIpFerdU0jnVptpDUjRyV89tdCt
-   oZ3f3Tc9JfNb1N7d6uQO8wdJ8GMlbyEm+Cz5P4lFoz0EClyTMtAXFNFcO
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="1532712"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; 
-   d="scan'208";a="1532712"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2023 01:33:25 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; 
-   d="scan'208";a="8914936"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2023 01:33:22 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 0A73112035D;
-        Thu,  2 Nov 2023 10:33:19 +0200 (EET)
-Date:   Thu, 2 Nov 2023 08:33:19 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-media@vger.kernel.org,
-        Alain Volmat <alain.volmat@foss.st.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] media: v4l2-cci: Add support for little-endian
- encoded registers
-Message-ID: <ZUNezx3fs-Q8w0Bg@kekkonen.localdomain>
-References: <20231101122354.270453-1-alexander.stein@ew.tq-group.com>
- <20231101122354.270453-2-alexander.stein@ew.tq-group.com>
- <20231102012217.GC5933@pendragon.ideasonboard.com>
- <1977009.tdWV9SEqCh@steina-w>
- <20231102082430.GE5933@pendragon.ideasonboard.com>
- <ZUNecAPukbm3kOyv@kekkonen.localdomain>
+        with ESMTP id S229497AbjKBIkm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 04:40:42 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 863D712D
+        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 01:40:36 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qyTFj-0006qe-4a; Thu, 02 Nov 2023 09:40:35 +0100
+Message-ID: <f8d48009-cf9c-411d-9753-1b01b5aae168@leemhuis.info>
+Date:   Thu, 2 Nov 2023 09:40:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZUNecAPukbm3kOyv@kekkonen.localdomain>
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+User-Agent: Mozilla Thunderbird
+Subject: Re: Possibly broken Linux 5.10.198 backport spi: spi-zynqmp-gqspi:
+ Fix runtime PM imbalance in zynqmp_qspi_probe
+Content-Language: en-US, de-DE
+Cc:     Linux Stable <stable@vger.kernel.org>
+References: <9afe9285-6f46-46d9-bd21-2ea5c4dc43c0@denx.de>
+ <ZSjYC_ATX193mJOA@debian.me> <ZSrERw6ucvl1wLWX@sashalap>
+ <ZSt4wfx1EMeC0lnX@debian.me>
+From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+To:     Linux Regressions <regressions@lists.linux.dev>
+In-Reply-To: <ZSt4wfx1EMeC0lnX@debian.me>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1698914436;cfbc6cd8;
+X-HE-SMSGID: 1qyTFj-0006qe-4a
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,12 +46,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Nov 02, 2023 at 08:31:44AM +0000, Sakari Ailus wrote:
-> This is a pre-existing problem. Feel free to add a patch to address it. :-)
+[TLDR: This mail in primarily relevant for Linux kernel regression
+tracking. See link in footer if these mails annoy you.]
 
-I forgot to add that addressing may be part of the same set but come as
-last, to avoid unnecessarily backporting patches. There's no bug in the
-code related to this --- just a bug-prone pattern.
+On 15.10.23 07:29, Bagas Sanjaya wrote:
+> On Sat, Oct 14, 2023 at 12:39:35PM -0400, Sasha Levin wrote:
+>> On Fri, Oct 13, 2023 at 12:39:23PM +0700, Bagas Sanjaya wrote:
+>>> On Thu, Oct 12, 2023 at 06:39:10PM +0200, Marek Vasut wrote:
+>>>> Linux 5.10.198 commit
+>>>> 2cdec9c13f81 ("spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in
+>>>> zynqmp_qspi_probe")
+>>>>
+>>>> looks very different compared to matching upstream commit:
+>>>> a21fbc42807b ("spi: spi-zynqmp-gqspi: Fix runtime PM imbalance in
+>>>> zynqmp_qspi_probe")
+>>>>
+>>>> The Linux 5.10.198 change breaks a platform for me and it really looks like
+>>>> an incorrect backport.
+>>>>
+>>>> Dinghao, can you have a look ?
+>>>>
+>>>
+>>> Thanks for the regression report. I'm adding it to regzbot (as stable-specific
+>>> one):
+>>>
+>>> #regzbot ^introduced: 2cdec9c13f81
+>>
+>> I'm going to revert it from 5.10.
+>>
+> 
+> OK, thanks!
+> 
+> Don't forget to add Link: to this regression report and most importantly,
+> Fixes: to the culprit commit when reverting.
 
--- 
-Sakari Ailus
+That did not happen, but no big deal:
+
+#regzbot fix: 1ceaf0d3a883bd5f
+#regzbot ignore-activity
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
