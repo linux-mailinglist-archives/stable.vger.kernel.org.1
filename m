@@ -2,99 +2,166 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CD5E7DEEFF
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 10:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EDE67DEF41
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 10:54:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234512AbjKBJf1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 05:35:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
+        id S1345943AbjKBJx5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 05:53:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjKBJf0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 05:35:26 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2E943133;
-        Thu,  2 Nov 2023 02:35:21 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1D9E12F4;
-        Thu,  2 Nov 2023 02:36:03 -0700 (PDT)
-Received: from [10.57.70.106] (unknown [10.57.70.106])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 98A813F67D;
-        Thu,  2 Nov 2023 02:35:19 -0700 (PDT)
-Message-ID: <e519b424-0a4b-34b1-c9e8-069c058f031f@arm.com>
-Date:   Thu, 2 Nov 2023 09:35:18 +0000
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] coresight: etm4x: Fix width of CCITMIN field
-Content-Language: en-US
-To:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        coresight@lists.linaro.org, suzuki.poulose@arm.com
-Cc:     stable@vger.kernel.org, Mike Leach <mike.leach@linaro.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        with ESMTP id S1345937AbjKBJx4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 05:53:56 -0400
+X-Greylist: delayed 951 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 02 Nov 2023 02:53:53 PDT
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31693F7
+        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 02:53:53 -0700 (PDT)
+Received: from mail02.huawei.com (unknown [172.18.147.228])
+        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4SLdkQ4QT7z9y19H;
+        Thu,  2 Nov 2023 17:24:46 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.48.131.78])
+        by APP2 (Coremail) with SMTP id GxC2BwDnibXJbUNl0QNYAw--.58857S3;
+        Thu, 02 Nov 2023 10:37:38 +0100 (CET)
+From:   Petr Tesarik <petrtesarik@huaweicloud.com>
+To:     Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-References: <20231030102940.115078-1-james.clark@arm.com>
- <afc147f5-4bf5-4d8f-88de-df6067b8ab52@arm.com>
-From:   James Clark <james.clark@arm.com>
-In-Reply-To: <afc147f5-4bf5-4d8f-88de-df6067b8ab52@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.7 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        Petr Tesarik <petr.tesarik1@huawei-partners.com>,
+        iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
+        linux-kernel@vger.kernel.org (open list), patchwork@huawei.com
+Cc:     Wangkefeng <wangkefeng.wang@huawei.com>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        petr@tesarici.cz, Petr Tesarik <petrtesarik@huaweicloud.com>,
+        miaoxie@huawei.com, weiyongjun1@huawei.com, guohanjun@huawei.com,
+        huawei.libin@huawei.com, yuehaibing@huawei.com,
+        johnny.chenyi@huawei.com, leijitang@huawei.com, ming.fu@huawei.com,
+        zhujianwei7@huawei.com, linuxarm@huawei.com,
+        stable@vger.kernel.org, Rick Edgecombe <rick.p.edgecombe@intel.com>
+Subject: [PATCH v2 1/1] swiotlb: do not free decrypted pages if dynamic
+Date:   Thu,  2 Nov 2023 10:36:49 +0100
+Message-Id: <20231102071821.431-2-petrtesarik@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231102071821.431-1-petrtesarik@huaweicloud.com>
+References: <20231102071821.431-1-petrtesarik@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: GxC2BwDnibXJbUNl0QNYAw--.58857S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxCF1xAw1Uury3ur47tw15CFg_yoW5CF1xpF
+        4fCr1Sgr98tFy7CrWfAF4kCF9xGws5urWUCFW3Xw1rZwn8WryIkr9rCw18uayfJF4kua17
+        JrW0v3WayrsrZaUanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUm014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
+        x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+        Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1l84
+        ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UM2AI
+        xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
+        vE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xv
+        r2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04
+        v7MxkF7I0Ew4C26cxK6c8Ij28IcwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+        JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
+        kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
+        6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
+        vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVj
+        vjDU0xZFpf9x0JU7pnQUUUUU=
+X-CM-SenderInfo: hshw23xhvd2x3n6k3tpzhluzxrxghudrp/
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Fix these two error paths:
 
+1. When set_memory_decrypted() fails, pages may be left fully or partially
+   decrypted.
 
-On 02/11/2023 04:14, Anshuman Khandual wrote:
-> 
-> 
-> On 10/30/23 15:59, James Clark wrote:
->> CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
->> This probably wasn't an issue previously because values higher than 255
->> never occurred.
->>
->> But since commit 0f55b43dedcd ("coresight: etm: Override TRCIDR3.CCITMIN
->> on errata affected cpus"), a comparison with 256 was done to enable the
->> errata, generating the following W=1 build error:
->>
->>    coresight-etm4x-core.c:1188:24: error: result of comparison of
->>    constant 256 with expression of type 'u8' (aka 'unsigned char') is
->>    always false [-Werror,-Wtautological-constant-out-of-range-compare]
->>
->>     if (drvdata->ccitmin == 256)
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 54ff892b76c6 ("coresight: etm4x: splitting struct etmv4_drvdata")
->> Signed-off-by: James Clark <james.clark@arm.com>
->> ---
->>   drivers/hwtracing/coresight/coresight-etm4x.h | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
->> index 20e2e4cb7614..da17b6c49b0f 100644
->> --- a/drivers/hwtracing/coresight/coresight-etm4x.h
->> +++ b/drivers/hwtracing/coresight/coresight-etm4x.h
->> @@ -1036,7 +1036,7 @@ struct etmv4_drvdata {
->>   	u8				ctxid_size;
->>   	u8				vmid_size;
->>   	u8				ccsize;
->> -	u8				ccitmin;
->> +	u16				ccitmin;
->>   	u8				s_ex_level;
->>   	u8				ns_ex_level;
->>   	u8				q_support;
-> 
-> Thanks James, so this takes care of the Smatch static checker
-> warning as reported by Dan Carpenter earlier.
-> 
+2. Decrypted pages may be freed if swiotlb_alloc_tlb() determines that the
+   physical address is too high.
 
-I didn't see that report, but it was in "[linux-next:master]
-BUILD REGRESSION c503e3eec382ac708ee7adf874add37b77c5d312"
+To fix the first issue, call set_memory_encrypted() on the allocated region
+after a failed decryption attempt. If that also fails, leak the pages.
 
-> Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+To fix the second issue, check that the TLB physical address is below the
+requested limit before decrypting.
+
+Let the caller differentiate between unsuitable physical address (=> retry
+from a lower zone) and allocation failures (=> no point in retrying).
+
+Cc: stable@vger.kernel.org
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Fixes: 79636caad361 ("swiotlb: if swiotlb is full, fall back to a transient memory pool")
+Signed-off-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+---
+ kernel/dma/swiotlb.c | 25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
+
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index dff067bd56b1..0e1632f75421 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -558,29 +558,40 @@ void __init swiotlb_exit(void)
+  * alloc_dma_pages() - allocate pages to be used for DMA
+  * @gfp:	GFP flags for the allocation.
+  * @bytes:	Size of the buffer.
++ * @phys_limit:	Maximum allowed physical address of the buffer.
+  *
+  * Allocate pages from the buddy allocator. If successful, make the allocated
+  * pages decrypted that they can be used for DMA.
+  *
+- * Return: Decrypted pages, or %NULL on failure.
++ * Return: Decrypted pages, %NULL on allocation failure, or ERR_PTR(-EAGAIN)
++ * if the allocated physical address was above @phys_limit.
+  */
+-static struct page *alloc_dma_pages(gfp_t gfp, size_t bytes)
++static struct page *alloc_dma_pages(gfp_t gfp, size_t bytes, u64 phys_limit)
+ {
+ 	unsigned int order = get_order(bytes);
+ 	struct page *page;
++	phys_addr_t paddr;
+ 	void *vaddr;
+ 
+ 	page = alloc_pages(gfp, order);
+ 	if (!page)
+ 		return NULL;
+ 
+-	vaddr = page_address(page);
++	paddr = page_to_phys(page);
++	if (paddr + bytes - 1 > phys_limit) {
++		__free_pages(page, order);
++		return ERR_PTR(-EAGAIN);
++	}
++
++	vaddr = phys_to_virt(paddr);
+ 	if (set_memory_decrypted((unsigned long)vaddr, PFN_UP(bytes)))
+ 		goto error;
+ 	return page;
+ 
+ error:
+-	__free_pages(page, order);
++	/* Intentional leak if pages cannot be encrypted again. */
++	if (!set_memory_encrypted((unsigned long)vaddr, PFN_UP(bytes)))
++		__free_pages(page, order);
+ 	return NULL;
+ }
+ 
+@@ -618,11 +629,7 @@ static struct page *swiotlb_alloc_tlb(struct device *dev, size_t bytes,
+ 	else if (phys_limit <= DMA_BIT_MASK(32))
+ 		gfp |= __GFP_DMA32;
+ 
+-	while ((page = alloc_dma_pages(gfp, bytes)) &&
+-	       page_to_phys(page) + bytes - 1 > phys_limit) {
+-		/* allocated, but too high */
+-		__free_pages(page, get_order(bytes));
+-
++	while (IS_ERR(page = alloc_dma_pages(gfp, bytes, phys_limit))) {
+ 		if (IS_ENABLED(CONFIG_ZONE_DMA32) &&
+ 		    phys_limit < DMA_BIT_MASK(64) &&
+ 		    !(gfp & (__GFP_DMA32 | __GFP_DMA)))
+-- 
+2.34.1
+
