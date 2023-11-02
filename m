@@ -2,227 +2,125 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 167C27DEEB4
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 10:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F38DF7DEED0
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 10:27:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbjKBJQh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 05:16:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
+        id S1345608AbjKBJ1N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 05:27:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230097AbjKBJQh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 05:16:37 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08547132;
-        Thu,  2 Nov 2023 02:16:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698916591; x=1730452591;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=OCRR/l5SncfbNOGTx53r+eb+uVJU0CxzR6TuOOtqBCU=;
-  b=QS3xkmJ3frBpZSJba1kIeADgCbMT6wycCAHV4FHaeKeotYKloxxwEtiG
-   9UwR3w1CpFge2ECHtwVXvhdcPIR8S/0hBkN4zsIjDF8fHRm941cat8anz
-   ZfqCxYXL6WamuduSvHqIwScBT4qhSz8ANIcq4ThjMJW20Oer3X5yVw510
-   wqmxH74Pqxc6Y2LJx5hh0RgCTLDENeu7Wn9cU5bNnde3JsahaZKbfp0VG
-   ZQHa+ZuxvCBjnqxad2IdA3DK/c/7xI+BPYXNk/w1c/BGLIYUwnGuuk14N
-   HGOA+HGb39yPxoVNaR26p+H919/RIl03Yeefmll/T/02yTytiihKBleSB
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="455149087"
-X-IronPort-AV: E=Sophos;i="6.03,271,1694761200"; 
-   d="scan'208";a="455149087"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2023 02:16:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="934721720"
-X-IronPort-AV: E=Sophos;i="6.03,271,1694761200"; 
-   d="scan'208";a="934721720"
-Received: from nofferma-mobl.ger.corp.intel.com (HELO localhost) ([10.252.51.121])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Nov 2023 02:16:26 -0700
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Alex Deucher <alexdeucher@gmail.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>
-Cc:     Maxime Ripard <mripard@kernel.org>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Jerry Zuo <jerry.zuo@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        amd-gfx@lists.freedesktop.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
-Subject: Re: [PATCH] drm/edid: add a quirk for two 240Hz Samsung monitors
-In-Reply-To: <CADnq5_Nv0MnG+pPvRQO37OP8iYwz8oGvFLs2g-+U=URHWcqJGw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20231101210037.130494-1-hamza.mahfooz@amd.com>
- <CADnq5_Nv0MnG+pPvRQO37OP8iYwz8oGvFLs2g-+U=URHWcqJGw@mail.gmail.com>
-Date:   Thu, 02 Nov 2023 11:16:22 +0200
-Message-ID: <87edh84is9.fsf@intel.com>
+        with ESMTP id S1345474AbjKBJ1M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 05:27:12 -0400
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9E18182;
+        Thu,  2 Nov 2023 02:27:05 -0700 (PDT)
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 3A29Qw2s040645;
+        Thu, 2 Nov 2023 04:26:58 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1698917218;
+        bh=EdqLodOTtlgjyV9CO9EMSOpuI3JKeo6eegqllj6+txQ=;
+        h=Date:Subject:To:CC:References:From:In-Reply-To;
+        b=hhhmxvvL/rHOkqRaSB3M149il/k9OZMXuuo/M8GgV1WegTb2vgEWaZ1Q2b5LP3kop
+         Y3Lak7DKcHfgMEKvywMC2SMUx9984d6LptAWtn8efgaFRrHnYj7W9YCKq1PtFpZ8Ag
+         pJK/NSIjOMfZeBwhf1Ql3LhkSr/rcWi0NeXIKbNU=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 3A29Qw0O117654
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 2 Nov 2023 04:26:58 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 2
+ Nov 2023 04:26:57 -0500
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 2 Nov 2023 04:26:57 -0500
+Received: from [172.24.227.94] (ileaxei01-snat2.itg.ti.com [10.180.69.6])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 3A29QtML112967;
+        Thu, 2 Nov 2023 04:26:56 -0500
+Message-ID: <fbe705a6-dade-49ce-9ec8-6d7b87198d11@ti.com>
+Date:   Thu, 2 Nov 2023 14:56:54 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] serial: 8250: 8250_omap: Clear UART_HAS_RHR_IT_DIS bit
+Content-Language: en-US
+To:     Ronald Wahl <rwahl@gmx.de>, <linux-kernel@vger.kernel.org>,
+        <linux-serial@vger.kernel.org>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ronald Wahl <ronald.wahl@raritan.com>, <stable@vger.kernel.org>
+References: <20231031110909.11695-1-rwahl@gmx.de>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+In-Reply-To: <20231031110909.11695-1-rwahl@gmx.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 01 Nov 2023, Alex Deucher <alexdeucher@gmail.com> wrote:
-> On Wed, Nov 1, 2023 at 5:01=E2=80=AFPM Hamza Mahfooz <hamza.mahfooz@amd.c=
-om> wrote:
->>
->> Without this fix the 5120x1440@240 timing of these monitors
->> leads to screen flickering.
->>
->> Cc: stable@vger.kernel.org # 6.1+
->> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/1442
->> Co-developed-by: Harry Wentland <harry.wentland@amd.com>
->> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
->> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
->> ---
->>  drivers/gpu/drm/drm_edid.c | 47 +++++++++++++++++++++++++++++++++++---
->>  1 file changed, 44 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
->> index bca2af4fe1fc..3fdb8907f66b 100644
->> --- a/drivers/gpu/drm/drm_edid.c
->> +++ b/drivers/gpu/drm/drm_edid.c
->> @@ -89,6 +89,8 @@ static int oui(u8 first, u8 second, u8 third)
->>  #define EDID_QUIRK_NON_DESKTOP                 (1 << 12)
->>  /* Cap the DSC target bitrate to 15bpp */
->>  #define EDID_QUIRK_CAP_DSC_15BPP               (1 << 13)
->> +/* Fix up a particular 5120x1440@240Hz timing */
->> +#define EDID_QUIRK_FIXUP_5120_1440_240         (1 << 14)
->
-> What is wrong with the original timing that needs to be fixed?
-
-Indeed. I'd be wary of applying this quirk as-is, because it'll impact
-all drivers and all connectors.
-
-The bug report does not have a single EDID from the affected displays
-attached.
-
-The quirk sets mode members that apparently do not need to be modified.
-
-Cc: Ville
 
 
-BR,
-Jani.
+On 31/10/23 16:39, Ronald Wahl wrote:
+> From: Ronald Wahl <ronald.wahl@raritan.com>
+> 
+> This fixes commit 439c7183e5b9 ("serial: 8250: 8250_omap: Disable RX
+> interrupt after DMA enable") which unfortunately set the
+> UART_HAS_RHR_IT_DIS bit in the UART_OMAP_IER2 register and never
+> cleared it.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 439c7183e5b9 ("serial: 8250: 8250_omap: Disable RX interrupt after DMA enable")
+> Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+> ---
+> V3: - add Cc: stable@vger.kernel.org
+> 
+> V2: - add Fixes: tag
+>     - fix author
+> 
+>  drivers/tty/serial/8250/8250_omap.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+> index ca972fd37725..c7ab2963040b 100644
+> --- a/drivers/tty/serial/8250/8250_omap.c
+> +++ b/drivers/tty/serial/8250/8250_omap.c
+> @@ -914,7 +914,7 @@ static void __dma_rx_do_complete(struct uart_8250_port *p)
+>  	if (priv->habit & UART_HAS_RHR_IT_DIS) {
+>  		reg = serial_in(p, UART_OMAP_IER2);
+>  		reg &= ~UART_OMAP_IER2_RHR_IT_DIS;
+> -		serial_out(p, UART_OMAP_IER2, UART_OMAP_IER2_RHR_IT_DIS);
+> +		serial_out(p, UART_OMAP_IER2, reg);
+>  	}
+> 
+>  	dmaengine_tx_status(rxchan, cookie, &state);
+> @@ -1060,7 +1060,7 @@ static int omap_8250_rx_dma(struct uart_8250_port *p)
+>  	if (priv->habit & UART_HAS_RHR_IT_DIS) {
+>  		reg = serial_in(p, UART_OMAP_IER2);
+>  		reg |= UART_OMAP_IER2_RHR_IT_DIS;
+> -		serial_out(p, UART_OMAP_IER2, UART_OMAP_IER2_RHR_IT_DIS);
+> +		serial_out(p, UART_OMAP_IER2, reg);
+>  	}
+> 
+>  	dma_async_issue_pending(dma->rxchan);
 
 
->
-> Alex
->
->
->>
->>  #define MICROSOFT_IEEE_OUI     0xca125c
->>
->> @@ -170,6 +172,12 @@ static const struct edid_quirk {
->>         EDID_QUIRK('S', 'A', 'M', 596, EDID_QUIRK_PREFER_LARGE_60),
->>         EDID_QUIRK('S', 'A', 'M', 638, EDID_QUIRK_PREFER_LARGE_60),
->>
->> +       /* Samsung C49G95T */
->> +       EDID_QUIRK('S', 'A', 'M', 0x7053, EDID_QUIRK_FIXUP_5120_1440_240=
-),
->> +
->> +       /* Samsung S49AG95 */
->> +       EDID_QUIRK('S', 'A', 'M', 0x71ac, EDID_QUIRK_FIXUP_5120_1440_240=
-),
->> +
->>         /* Sony PVM-2541A does up to 12 bpc, but only reports max 8 bpc =
-*/
->>         EDID_QUIRK('S', 'N', 'Y', 0x2541, EDID_QUIRK_FORCE_12BPC),
->>
->> @@ -6586,7 +6594,37 @@ static void update_display_info(struct drm_connec=
-tor *connector,
->>         drm_edid_to_eld(connector, drm_edid);
->>  }
->>
->> -static struct drm_display_mode *drm_mode_displayid_detailed(struct drm_=
-device *dev,
->> +static void drm_mode_displayid_detailed_edid_quirks(struct drm_connecto=
-r *connector,
->> +                                                   struct drm_display_m=
-ode *mode)
->> +{
->> +       unsigned int hsync_width;
->> +       unsigned int vsync_width;
->> +
->> +       if (connector->display_info.quirks & EDID_QUIRK_FIXUP_5120_1440_=
-240) {
->> +               if (mode->hdisplay =3D=3D 5120 && mode->vdisplay =3D=3D =
-1440 &&
->> +                   mode->clock =3D=3D 1939490) {
->> +                       hsync_width =3D mode->hsync_end - mode->hsync_st=
-art;
->> +                       vsync_width =3D mode->vsync_end - mode->vsync_st=
-art;
->> +
->> +                       mode->clock =3D 2018490;
->> +                       mode->hdisplay =3D 5120;
->> +                       mode->hsync_start =3D 5120 + 8;
->> +                       mode->hsync_end =3D 5120 + 8 + hsync_width;
->> +                       mode->htotal =3D 5200;
->> +
->> +                       mode->vdisplay =3D 1440;
->> +                       mode->vsync_start =3D 1440 + 165;
->> +                       mode->vsync_end =3D 1440 + 165 + vsync_width;
->> +                       mode->vtotal =3D 1619;
->> +
->> +                       drm_dbg_kms(connector->dev,
->> +                                   "[CONNECTOR:%d:%s] Samsung 240Hz mod=
-e quirk applied\n",
->> +                                   connector->base.id, connector->name);
->> +               }
->> +       }
->> +}
->> +
->> +static struct drm_display_mode *drm_mode_displayid_detailed(struct drm_=
-connector *connector,
->>                                                             struct displ=
-ayid_detailed_timings_1 *timings,
->>                                                             bool type_7)
->>  {
->> @@ -6605,7 +6643,7 @@ static struct drm_display_mode *drm_mode_displayid=
-_detailed(struct drm_device *d
->>         bool hsync_positive =3D (timings->hsync[1] >> 7) & 0x1;
->>         bool vsync_positive =3D (timings->vsync[1] >> 7) & 0x1;
->>
->> -       mode =3D drm_mode_create(dev);
->> +       mode =3D drm_mode_create(connector->dev);
->>         if (!mode)
->>                 return NULL;
->>
->> @@ -6628,6 +6666,9 @@ static struct drm_display_mode *drm_mode_displayid=
-_detailed(struct drm_device *d
->>
->>         if (timings->flags & 0x80)
->>                 mode->type |=3D DRM_MODE_TYPE_PREFERRED;
->> +
->> +       drm_mode_displayid_detailed_edid_quirks(connector, mode);
->> +
->>         drm_mode_set_name(mode);
->>
->>         return mode;
->> @@ -6650,7 +6691,7 @@ static int add_displayid_detailed_1_modes(struct d=
-rm_connector *connector,
->>         for (i =3D 0; i < num_timings; i++) {
->>                 struct displayid_detailed_timings_1 *timings =3D &det->t=
-imings[i];
->>
->> -               newmode =3D drm_mode_displayid_detailed(connector->dev, =
-timings, type_7);
->> +               newmode =3D drm_mode_displayid_detailed(connector, timin=
-gs, type_7);
->>                 if (!newmode)
->>                         continue;
->>
->> --
->> 2.42.0
->>
+Thanks for the fix!
 
---=20
-Jani Nikula, Intel
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+
+
+
+> --
+> 2.41.0
+> 
+
+-- 
+Regards
+Vignesh
