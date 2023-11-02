@@ -2,139 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C6A17DEEE1
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 10:29:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A76B07DEEDD
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 10:29:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234811AbjKBJ3w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 05:29:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41648 "EHLO
+        id S1345581AbjKBJ3c (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 05:29:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230097AbjKBJ3v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 05:29:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C522134
-        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 02:29:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1698917341;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=X1JjT78ESQHu9+RVUysRtBfcjHinR8ppQOAAQBOcIyM=;
-        b=Ynm2KXsLX2MZM6AVhTI29iXWdy009+lYdSeFLVU5YGJPmQFJMpb5lQCIghsJItx9nh3ZSb
-        aT7BrtjTkWXTJDAlzbpbb0fmFrGy/heFSHoXVqzHhsXAl9iqa8tz7u+j/whhMzMnn4D6J8
-        jgsvMouZyJZAZp4dQuTXIO7JermjsRY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-156-UaLZFHJ7PIu_aYZZTZ7-Iw-1; Thu, 02 Nov 2023 05:28:58 -0400
-X-MC-Unique: UaLZFHJ7PIu_aYZZTZ7-Iw-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8F89E810FC0;
-        Thu,  2 Nov 2023 09:28:57 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 77264502B;
-        Thu,  2 Nov 2023 09:28:57 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-        id 6304D30C72B0; Thu,  2 Nov 2023 09:28:57 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 5E29F3FD16;
-        Thu,  2 Nov 2023 10:28:57 +0100 (CET)
-Date:   Thu, 2 Nov 2023 10:28:57 +0100 (CET)
-From:   Mikulas Patocka <mpatocka@redhat.com>
-To:     =?ISO-8859-15?Q?Marek_Marczykowski-G=F3recki?= 
-        <marmarek@invisiblethingslab.com>, Keith Busch <kbusch@kernel.org>,
-        Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>
-cc:     Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-In-Reply-To: <ZULvkPhcpgAVyI8w@mail-itl>
-Message-ID: <ac5b5ac0-9e8-c1b0-a26-62f832f845f0@redhat.com>
-References: <ZT+wDLwCBRB1O+vB@mail-itl> <a2a8dbf6-d22e-65d0-6fab-b9cdf9ec3320@redhat.com> <20231030155603.k3kejytq2e4vnp7z@quack3> <ZT/e/EaBIkJEgevQ@mail-itl> <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com> <ZUB5HFeK3eHeI8UH@mail-itl> <20231031140136.25bio5wajc5pmdtl@quack3>
- <ZUEgWA5P8MFbyeBN@mail-itl> <8a35cdea-3a1a-e859-1f7c-55d1c864a48@redhat.com> <ebbc7ca7-5169-dbdc-9ea8-c6d8c3ae31e2@redhat.com> <ZULvkPhcpgAVyI8w@mail-itl>
+        with ESMTP id S230097AbjKBJ3b (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 05:29:31 -0400
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2064.outbound.protection.outlook.com [40.107.101.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 888D9123;
+        Thu,  2 Nov 2023 02:29:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YetczJZ0sISt192FeDe3g9hX5rcXz7aSzfoVN7jG4BBW7CD4SnSsJghSmy4HEkAxF569udeHb5HnVIH14KELyO3BypivQtxmknf72o5XjIt9ynxs1TtPsywTtrSUCp3hsQHQx0AwNW9wrxDB3s9++wz85lLHzXebGs1+Wr3iM8qCcSnlSJTuD6/x4ieNLiG83FWRm6Y1IyWRIkwoRg+0N2wj7qp1o8LLJnrNe1wGEkwM73UIrL+SPWBeJYwDgw1L8w02gf/D8PBQZ7kTWIenGNQYENoKVxz478/FJUFgK24XquXoFvI6ysB7sZ5Of8csOevjlomqVxT6yytW4bIXNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MOUIrVhZjEwKTHZvHPMIoZXgF5DMs2fZ9izxhQA+1Oo=;
+ b=lSZ17gpYbOrBtq4IEabjGyennQhXhAE2Y6XcrSEvF/6UISqtyJzLtwGS18tg7FaRBDVwb1iMvv+FGmb5dVTBy0qRIRvl318MHY1jMuE9Hnn5+p5/tyqnqam9EDL+UbpTOWFA1dI4fZGNPyV3C44y35cl16k5yxxtIZJmXiAC64blDXZv+xfc9rQ070nCuUfs9yS93iqa12+5Sdxfy+YX7Zn+KuVQL6/EM7JpJnnQtPUlR1SaJrHrEPAdaWhxDLmvRM/fuKOvLkozCFx+uNMbd6VkHzGQbErV/b3RcxzkEn9D0bT31YnJGfY5F7ugEUNWkclHRVmK1Mb8xmYP/pS50Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MOUIrVhZjEwKTHZvHPMIoZXgF5DMs2fZ9izxhQA+1Oo=;
+ b=Jm1Y99jDubyNokgYdxaD2QnNqc/bBz95gA81dEWmAiWuVFt/P9gmzb5BEmo5TQsVtczpdCFamvsFXYDNPMIjh6ZQ605jhCOqCSks/l35Ueo5aNy4L0439172PJyhc36c3mvCEmALyvMhRuGCwZRqinanhXG4XJPC0xyolz0HnaUwX3EbxQ4k3RsgNI6esARgoS0e8CRNHjxYnLNgn1N51ENcVsLvcE0/rT8Fx5yAn24ALL3FAL1/T7NPEbPoya0+gb1ZJpP6Lkx219LCp5QS3nRlMe4OTvXNb6gKTnF7DmSqrQLaL8jbyT05ZHJX5PG26eQXTy7iudzHK+mt+XZ9uA==
+Received: from MN2PR16CA0044.namprd16.prod.outlook.com (2603:10b6:208:234::13)
+ by SA3PR12MB8762.namprd12.prod.outlook.com (2603:10b6:806:31f::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.21; Thu, 2 Nov
+ 2023 09:29:21 +0000
+Received: from BL02EPF0001A104.namprd05.prod.outlook.com
+ (2603:10b6:208:234:cafe::a7) by MN2PR16CA0044.outlook.office365.com
+ (2603:10b6:208:234::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.21 via Frontend
+ Transport; Thu, 2 Nov 2023 09:29:21 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BL02EPF0001A104.mail.protection.outlook.com (10.167.241.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6954.19 via Frontend Transport; Thu, 2 Nov 2023 09:29:20 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Thu, 2 Nov 2023
+ 02:29:06 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.41; Thu, 2 Nov 2023 02:29:06 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
+ Transport; Thu, 2 Nov 2023 02:29:06 -0700
+From:   Jon Hunter <jonathanh@nvidia.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>,
+        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.5 000/111] 6.5.10-rc2 review
+In-Reply-To: <20231101120147.190909952@linuxfoundation.org>
+References: <20231101120147.190909952@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="185210117-2130454234-1698916941=:474267"
-Content-ID: <c4e9bbcd-d17d-7d73-83e0-6bb6d8b0a6a2@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <0e14c74a-0d85-404a-b2df-689d8e877769@drhqmail201.nvidia.com>
+Date:   Thu, 2 Nov 2023 02:29:06 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A104:EE_|SA3PR12MB8762:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9c12ee80-a1c2-4245-e102-08dbdb8631c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: It3/ehIjxu5iJs93KT7SoTsyQHCId/iNnaMuLNusyrtLlwK3eEfRxwTFAHZ+uc7AGRpo0XqIaH3RBKPZvOcfS6KM26Vz7OAvS1BiY46MgXa0RF/IAxs0jaG2KzjjAsZ3Q28sAg8omdHtLGDNWLkni99IR7PEueN9fV4uu2flEo6+JJKFpVAZc1Y18GoCHwZ6S6YvXm/wh7/yk+DiUG+MCmtZ9sIQiQA3C1IRlz8H9OON8Bc8cGBjvwI5D2uvaafpxAGLOzyj/IWAu+4j3eYkOeMyGgxztlPT3V56uT5QClyN8JUcnm9EKDz39ao2GlPVgSftjsoZw/xmaVqDvuWTnZQZeHxqLnC0KRkGAja+d4/RwF4U4CiEjyNez0xP89sBUHmm8K4V24JubUIKOPUvE3vTNdPW0xTABBcjeqSPC8lJnZwEjaKXJDHTOmXjKBpDcUw9c00k2u/00LJ5eJw38SfmieqomsGHIWBJrNhALqO+LXr0jKnrrutcU1yvuJ2gEPk/kCvTPXHZUTRaBNYlDjgw31PJ/OxmEzraw9dGRvCc2JlkkYBaqQHDFxWhIq5T6Cv8LVOJ+w2WtNP5gk26Q54mF7pIDw/YYE75bYxfJ0qoOWhphShz7B3Qpx1x9ChTSB/8EopgNFx0MQpnr7IyFfyM+zNXx9CvqoqAQFqOzuIqDuEod2oo3feXlB63pS1m8A7p8ukL2APbA2u/BsG1hxzxh/TM9JyBDMwwZYTU/BNs3p3ZLGCieMBkk2B9rzN7D/pJSoqupJti6U//81xgnz/SIXN1bvp+gJO23xjNTTQ=
+X-Forefront-Antispam-Report: CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(396003)(376002)(346002)(136003)(230922051799003)(64100799003)(451199024)(1800799009)(82310400011)(186009)(46966006)(40470700004)(36840700001)(966005)(31686004)(54906003)(5660300002)(70206006)(8676002)(70586007)(8936002)(316002)(6916009)(4326008)(2906002)(7416002)(478600001)(40480700001)(40460700003)(41300700001)(26005)(36860700001)(426003)(336012)(82740400003)(31696002)(86362001)(47076005)(356005)(7636003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2023 09:29:20.8334
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c12ee80-a1c2-4245-e102-08dbdb8631c5
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL02EPF0001A104.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB8762
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---185210117-2130454234-1698916941=:474267
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Content-ID: <c020389a-683d-e881-89ae-58d817e7d3db@redhat.com>
-
-
-
-On Thu, 2 Nov 2023, Marek Marczykowski-Górecki wrote:
-
-> On Tue, Oct 31, 2023 at 06:24:19PM +0100, Mikulas Patocka wrote:
+On Wed, 01 Nov 2023 13:03:25 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.10 release.
+> There are 111 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> > > Hi
-> > > 
-> > > I would like to ask you to try this patch. Revert the changes to "order" 
-> > > and "PAGE_ALLOC_COSTLY_ORDER" back to normal and apply this patch on a 
-> > > clean upstream kernel.
-> > > 
-> > > Does it deadlock?
-> > > 
-> > > There is a bug in dm-crypt that it doesn't account large pages in 
-> > > cc->n_allocated_pages, this patch fixes the bug.
+> Responses should be made by Fri, 03 Nov 2023 12:01:18 +0000.
+> Anything received after that time might be too late.
 > 
-> This patch did not help.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.10-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
 > 
-> > If the previous patch didn't fix it, try this patch (on a clean upstream 
-> > kernel).
-> >
-> > This patch allocates large pages, but it breaks them up into single-page 
-> > entries when adding them to the bio.
+> thanks,
 > 
-> But this does help.
+> greg k-h
 
-Thanks. So we can stop blaming the memory allocator and start blaming the 
-NVMe subsystem.
+All tests passing for Tegra ...
 
+Test results for stable-v6.5:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    116 tests:	116 pass, 0 fail
 
-I added NVMe maintainers to this thread - the summary of the problem is: 
-In dm-crypt, we allocate a large compound page and add this compound page 
-to the bio as a single big vector entry. Marek reports that on his system 
-it causes deadlocks, the deadlocks look like a lost bio that was never 
-completed. When I chop the large compound page to individual pages in 
-dm-crypt and add bio vector for each of them, Marek reports that there are 
-no longer any deadlocks. So, we have a problem (either hardware or 
-software) that the NVMe subsystem doesn't like bio vectors with large 
-bv_len. This is the original bug report: 
-https://lore.kernel.org/stable/ZTNH0qtmint%2FzLJZ@mail-itl/
+Linux version:	6.5.10-rc2-gb4d7fa7ca278
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Marek, what NVMe devices do you use? Do you use the same device on all 3 
-machines where you hit this bug?
-
-In the directory /sys/block/nvme0n1/queue: what is the value of 
-dma_alignment, max_hw_sectors_kb, max_sectors_kb, max_segment_size, 
-max_segments, virt_boundary_mask?
-
-Try lowring /sys/block/nvme0n1/queue/max_sectors_kb to some small value 
-(for example 64) and test if it helps.
-
-Mikulas
---185210117-2130454234-1698916941=:474267--
-
+Jon
