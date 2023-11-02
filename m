@@ -2,67 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55C697DECDD
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 07:31:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 259377DECFF
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 07:57:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232785AbjKBGbW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 02:31:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60124 "EHLO
+        id S233372AbjKBG5k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 02:57:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229445AbjKBGbV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 02:31:21 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2292A111;
-        Wed,  1 Nov 2023 23:31:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1698906675; x=1730442675;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UbNClqiwgxv+4c/yht6vSvAnCGJooAq0eVKMUfkCEks=;
-  b=EHbwHQ+0kjPv+rkXnbAjyxrkomzFVdCvK9mf4NXevGgMFbi4qCptblye
-   EFV+NxeVNGEoCIHSbUrEtbj7gHG/xcElZMqgxk9yo9cRmbg60YFijVIyU
-   8tB4L7C3XiLaFGvQOrOZzPXj3PXG2KPZzH5HjWC7tsNDMXjAly6r+aLCh
-   7ZdBAeIC7caG35qQljgaHj/VaCEKi34eMdeBjvHC78/u2qBna8yQ56gDp
-   ROzmxdqV8dD8D/m3YdyyAJeMd/jYc/XqCjobycmYba5YGAx9TrCqKjk46
-   GL3Zp6oC0ib5ipAkAgnE0+JXJn5M+YKSu/Bzw6ZTZ79L6UP0M4xoT/lRQ
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="392532818"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; 
-   d="scan'208";a="392532818"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2023 23:30:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10881"; a="827006106"
-X-IronPort-AV: E=Sophos;i="6.03,270,1694761200"; 
-   d="scan'208";a="827006106"
-Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2023 23:30:46 -0700
-Received: from kekkonen.localdomain (localhost [127.0.0.1])
-        by kekkonen.fi.intel.com (Postfix) with SMTP id 2874111F9E8;
-        Thu,  2 Nov 2023 08:30:44 +0200 (EET)
-Date:   Thu, 2 Nov 2023 06:30:44 +0000
-From:   Sakari Ailus <sakari.ailus@linux.intel.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc:     Alexander Stein <alexander.stein@ew.tq-group.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Manivannan Sadhasivam <mani@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-media@vger.kernel.org,
-        Alain Volmat <alain.volmat@foss.st.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] media: v4l2-cci: Add support for little-endian
- encoded registers
-Message-ID: <ZUNCFESRnKMwkHl7@kekkonen.localdomain>
-References: <20231101122354.270453-1-alexander.stein@ew.tq-group.com>
- <20231101122354.270453-2-alexander.stein@ew.tq-group.com>
- <20231102012217.GC5933@pendragon.ideasonboard.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231102012217.GC5933@pendragon.ideasonboard.com>
-X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        with ESMTP id S229481AbjKBG5j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 02:57:39 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6EF9112;
+        Wed,  1 Nov 2023 23:57:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC3DC433C7;
+        Thu,  2 Nov 2023 06:57:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1698908256;
+        bh=fLUnEkpDInr33uX+TwVh/oE8g8P7jL3sdGjLk0PAf1o=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=udtGiIR5iMCHMcmwWp8oGZexRcHNJp9P2UWn9sEtk3YvaGAI4k/OQSVDdsGboFapr
+         n8SrgdaufYGa3eSJh5xAVULdhiKiSfyWpbFdXa7Zntfj94yo6nmbdaduK0/NYc16aZ
+         aPD+JWJQsZ32sz2jUbgduQyP3O9LAGAzTEwMySHoeaYiPzAK97fYLiABRAnV0AyTTv
+         POJAyhy1PJDU6+hXtV8F1OoGXjwpBSkSEF8250NyCIPijsapOYd8Au5KFtaAnkFIZw
+         a5JYwgbmXh1tofRjuZyOtemY4D3yZFVNDIzOnAe6dzgLLgz+W8EwAghvBo7jAfXxX7
+         g34Cm/VMAGo+Q==
+Date:   Thu, 2 Nov 2023 15:57:31 +0900
+From:   Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH v6 8/8] eventfs: Use simple_recursive_removal() to clean
+ up dentries
+Message-Id: <20231102155731.8d00498fa52617c02bdae74b@kernel.org>
+In-Reply-To: <20231101172650.552471568@goodmis.org>
+References: <20231101172541.971928390@goodmis.org>
+        <20231101172650.552471568@goodmis.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,109 +54,211 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Laurent,
+On Wed, 01 Nov 2023 13:25:49 -0400
+Steven Rostedt <rostedt@goodmis.org> wrote:
 
-On Thu, Nov 02, 2023 at 03:22:17AM +0200, Laurent Pinchart wrote:
-> Hi Alexander,
+> From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 > 
-> Thank you for the patch.
+> Looking at how dentry is removed via the tracefs system, I found that
+> eventfs does not do everything that it did under tracefs. The tracefs
+> removal of a dentry calls simple_recursive_removal() that does a lot more
+> than a simple d_invalidate().
 > 
-> On Wed, Nov 01, 2023 at 01:23:53PM +0100, Alexander Stein wrote:
-> > Some sensors, e.g. Sony, are using little-endian registers. Add support for
+> As it should be a requirement that any eventfs_inode that has a dentry, so
+> does its parent. When removing a eventfs_inode, if it has a dentry, a call
+> to simple_recursive_removal() on that dentry should clean up all the
+> dentries underneath it.
 > 
-> I would write Sony IMX290 here, as there are Sony sensors that use big
-> endian.
+> Add WARN_ON_ONCE() to check for the parent having a dentry if any children
+> do.
 
-Almost all of them. There are a few exceptions indeed. This seems to be a
-bug.
+This looks good to me.
 
-> 
-> > those by encoding the endianess into Bit 20 of the register address.
-> > 
-> > Fixes: af73323b97702 ("media: imx290: Convert to new CCI register access helpers")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-> > ---
-> >  drivers/media/v4l2-core/v4l2-cci.c | 44 ++++++++++++++++++++++++------
-> >  include/media/v4l2-cci.h           |  5 ++++
-> >  2 files changed, 41 insertions(+), 8 deletions(-)
-> > 
-> > diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
-> > index bc2dbec019b04..673637b67bf67 100644
-> > --- a/drivers/media/v4l2-core/v4l2-cci.c
-> > +++ b/drivers/media/v4l2-core/v4l2-cci.c
-> > @@ -18,6 +18,7 @@
-> >  
-> >  int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
-> >  {
-> > +	bool little_endian;
-> >  	unsigned int len;
-> >  	u8 buf[8];
-> >  	int ret;
-> > @@ -25,6 +26,7 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
-> >  	if (err && *err)
-> >  		return *err;
-> >  
-> > +	little_endian = reg & CCI_REG_LE;
-> 
-> You could initialize the variable when declaring it. Same below.
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-I was thinking of the same, but then it'd be logical to move initialisation
-of all related variables there. reg is modified here though. I'd keep
-setting little_endian here. If someone wants to move it, that could be done
-in a separate patch.
+Thanks,
+
+
 
 > 
-> >  	len = FIELD_GET(CCI_REG_WIDTH_MASK, reg);
-> >  	reg = FIELD_GET(CCI_REG_ADDR_MASK, reg);
-> >  
-> > @@ -40,16 +42,28 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
-> >  		*val = buf[0];
-> >  		break;
-> >  	case 2:
-> > -		*val = get_unaligned_be16(buf);
-> > +		if (little_endian)
-> > +			*val = get_unaligned_le16(buf);
-> > +		else
-> > +			*val = get_unaligned_be16(buf);
+> Link: https://lore.kernel.org/all/20231101022553.GE1957730@ZenIV/
 > 
-> Unrelated to this patch, isn't buf aligned to a 4 bytes boundary ?
-
-Very probably, as it's right after len that's an unsigned int. Adding
-__aligned(8) would ensure we don't need any of the unaligned variants, and
-most likely would keep the stack layout as-is.
-
-Or... how about putting it in an union with a u64? That would mean it's
-accessible as u64 alignment-wise while the alignment itself is up to the
-ABI. A comment would be good to have probably.
-
+> Cc: stable@vger.kernel.org
+> Cc: Al Viro <viro@zeniv.linux.org.uk>
+> Fixes: 5bdcd5f5331a2 ("eventfs: Implement removal of meta data from eventfs")
+> Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> ---
+> Changes since the last patch: https://lore.kernel.org/linux-trace-kernel/20231031144703.71eef3a0@gandalf.local.home
 > 
-> >  		break;
-> >  	case 3:
-> > -		*val = get_unaligned_be24(buf);
-> > +		if (little_endian)
-> > +			*val = get_unaligned_le24(buf);
-> > +		else
-> > +			*val = get_unaligned_be24(buf);
-> >  		break;
-> >  	case 4:
-> > -		*val = get_unaligned_be32(buf);
-> > +		if (little_endian)
-> > +			*val = get_unaligned_le32(buf);
-> > +		else
-> > +			*val = get_unaligned_be32(buf);
-> >  		break;
-> >  	case 8:
-> > -		*val = get_unaligned_be64(buf);
-> > +		if (little_endian)
-> > +			*val = get_unaligned_le64(buf);
-> > +		else
-> > +			*val = get_unaligned_be64(buf);
-> >  		break;
-> >  	default:
-> >  		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+> - Was originally called: eventfs: Process deletion of dentry more thoroughly
+> 
+> - Al Viro pointed out that I could use simple_recursive_removal() instead.
+>   I had originally thought that I could not, but looking deeper into it,
+>   and realizing that if a dentry exists on any eventfs_inode, then all
+>   the parent eventfs_inode of that would als have a dentry. Hence, calling
+>   simple_recursive_removal() on the top dentry would clean up all the
+>   children dentries as well. Doing it his way cleans up the code quite
+>   a bit!
+> 
+>  fs/tracefs/event_inode.c | 77 +++++++++++++++++++++++-----------------
+>  fs/tracefs/internal.h    |  2 --
+>  2 files changed, 44 insertions(+), 35 deletions(-)
+> 
+> diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+> index 0087a3f455f1..f8a594a50ae6 100644
+> --- a/fs/tracefs/event_inode.c
+> +++ b/fs/tracefs/event_inode.c
+> @@ -967,30 +967,29 @@ static void unhook_dentry(struct dentry *dentry)
+>  {
+>  	if (!dentry)
+>  		return;
+> -
+> -	/* Keep the dentry from being freed yet (see eventfs_workfn()) */
+> +	/*
+> +	 * Need to add a reference to the dentry that is expected by
+> +	 * simple_recursive_removal(), which will include a dput().
+> +	 */
+>  	dget(dentry);
+>  
+> -	dentry->d_fsdata = NULL;
+> -	d_invalidate(dentry);
+> -	mutex_lock(&eventfs_mutex);
+> -	/* dentry should now have at least a single reference */
+> -	WARN_ONCE((int)d_count(dentry) < 1,
+> -		  "dentry %px (%s) less than one reference (%d) after invalidate\n",
+> -		  dentry, dentry->d_name.name, d_count(dentry));
+> -	mutex_unlock(&eventfs_mutex);
+> +	/*
+> +	 * Also add a reference for the dput() in eventfs_workfn().
+> +	 * That is required as that dput() will free the ei after
+> +	 * the SRCU grace period is over.
+> +	 */
+> +	dget(dentry);
+>  }
+>  
+>  /**
+>   * eventfs_remove_rec - remove eventfs dir or file from list
+>   * @ei: eventfs_inode to be removed.
+> - * @head: the list head to place the deleted @ei and children
+>   * @level: prevent recursion from going more than 3 levels deep.
+>   *
+>   * This function recursively removes eventfs_inodes which
+>   * contains info of files and/or directories.
+>   */
+> -static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head, int level)
+> +static void eventfs_remove_rec(struct eventfs_inode *ei, int level)
+>  {
+>  	struct eventfs_inode *ei_child;
+>  
+> @@ -1009,13 +1008,26 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
+>  	/* search for nested folders or files */
+>  	list_for_each_entry_srcu(ei_child, &ei->children, list,
+>  				 lockdep_is_held(&eventfs_mutex)) {
+> -		eventfs_remove_rec(ei_child, head, level + 1);
+> +		/* Children only have dentry if parent does */
+> +		WARN_ON_ONCE(ei_child->dentry && !ei->dentry);
+> +		eventfs_remove_rec(ei_child, level + 1);
+>  	}
+>  
+> +
+>  	ei->is_freed = 1;
+>  
+> +	for (int i = 0; i < ei->nr_entries; i++) {
+> +		if (ei->d_children[i]) {
+> +			/* Children only have dentry if parent does */
+> +			WARN_ON_ONCE(!ei->dentry);
+> +			unhook_dentry(ei->d_children[i]);
+> +		}
+> +	}
+> +
+> +	unhook_dentry(ei->dentry);
+> +
+>  	list_del_rcu(&ei->list);
+> -	list_add_tail(&ei->del_list, head);
+> +	call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
+>  }
+>  
+>  /**
+> @@ -1026,30 +1038,22 @@ static void eventfs_remove_rec(struct eventfs_inode *ei, struct list_head *head,
+>   */
+>  void eventfs_remove_dir(struct eventfs_inode *ei)
+>  {
+> -	struct eventfs_inode *tmp;
+> -	LIST_HEAD(ei_del_list);
+> +	struct dentry *dentry;
+>  
+>  	if (!ei)
+>  		return;
+>  
+> -	/*
+> -	 * Move the deleted eventfs_inodes onto the ei_del_list
+> -	 * which will also set the is_freed value. Note, this has to be
+> -	 * done under the eventfs_mutex, but the deletions of
+> -	 * the dentries must be done outside the eventfs_mutex.
+> -	 * Hence moving them to this temporary list.
+> -	 */
+>  	mutex_lock(&eventfs_mutex);
+> -	eventfs_remove_rec(ei, &ei_del_list, 0);
+> +	dentry = ei->dentry;
+> +	eventfs_remove_rec(ei, 0);
+>  	mutex_unlock(&eventfs_mutex);
+>  
+> -	list_for_each_entry_safe(ei, tmp, &ei_del_list, del_list) {
+> -		for (int i = 0; i < ei->nr_entries; i++)
+> -			unhook_dentry(ei->d_children[i]);
+> -		unhook_dentry(ei->dentry);
+> -		list_del(&ei->del_list);
+> -		call_srcu(&eventfs_srcu, &ei->rcu, free_rcu_ei);
+> -	}
+> +	/*
+> +	 * If any of the ei children has a dentry, then the ei itself
+> +	 * must have a dentry.
+> +	 */
+> +	if (dentry)
+> +		simple_recursive_removal(dentry, NULL);
+>  }
+>  
+>  /**
+> @@ -1060,10 +1064,17 @@ void eventfs_remove_dir(struct eventfs_inode *ei)
+>   */
+>  void eventfs_remove_events_dir(struct eventfs_inode *ei)
+>  {
+> -	struct dentry *dentry = ei->dentry;
+> +	struct dentry *dentry;
+>  
+> +	dentry = ei->dentry;
+>  	eventfs_remove_dir(ei);
+>  
+> -	/* Matches the dget() from eventfs_create_events_dir() */
+> +	/*
+> +	 * Matches the dget() done by tracefs_start_creating()
+> +	 * in eventfs_create_events_dir() when it the dentry was
+> +	 * created. In other words, it's a normal dentry that
+> +	 * sticks around while the other ei->dentry are created
+> +	 * and destroyed dynamically.
+> +	 */
+>  	dput(dentry);
+>  }
+> diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
+> index 06a1f220b901..ccee18ca66c7 100644
+> --- a/fs/tracefs/internal.h
+> +++ b/fs/tracefs/internal.h
+> @@ -55,12 +55,10 @@ struct eventfs_inode {
+>  	/*
+>  	 * Union - used for deletion
+>  	 * @llist:	for calling dput() if needed after RCU
+> -	 * @del_list:	list of eventfs_inode to delete
+>  	 * @rcu:	eventfs_inode to delete in RCU
+>  	 */
+>  	union {
+>  		struct llist_node	llist;
+> -		struct list_head	del_list;
+>  		struct rcu_head		rcu;
+>  	};
+>  	unsigned int			is_freed:1;
+> -- 
+> 2.42.0
+
 
 -- 
-Regards,
-
-Sakari Ailus
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
