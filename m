@@ -2,166 +2,221 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C2177DFBEB
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 22:11:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7A467DFC6C
+	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 23:30:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234578AbjKBVL3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 17:11:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38954 "EHLO
+        id S233730AbjKBWaj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 18:30:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234426AbjKBVL2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 17:11:28 -0400
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02olkn2012.outbound.protection.outlook.com [40.92.50.12])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD14A18B;
-        Thu,  2 Nov 2023 14:11:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=TMLWWRTPxgnRLWma7zGP+ojfPN9Iq+rczOsZTwbZo53oVP399a92hE6YxkHvLVfIOyxm0gylEkm/BBAFTRowEmWxYfGZ3s27usgebXTRBrG/a9LUjIRyb8yaCwQMeLZiheOsL/haio0lw2svI7JzyIyo5KTmEaw9wTFpi4jJt4k5xvdT75xGHFqFFelj2UPfulk3mqTiszvHXDWww9wd8MtoyQs/YjU99XKTJpp7dv11EUbRGAIpN3jR9YZxbLLTZCiC5p48Lpbu/wm9gesvZrtKWrEvj2M39ncv/QiXyAHgJqPRjJhL9umH1tkF6xq1LdU95aOPU6FR+NUwUmsi4Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VfMl8OV1T+UQ9cwvjVcSSwYeOyEPjzIWy8qtc8zg4XY=;
- b=JAsPf0TsL/tUtCsGt5kQ7eb4wcRHzpVh0cDX0ALJqGLzJLGlpuDVVEsPc2bsrKt8QrVer4j2IsFx96Wd3GHSo4v5w4Efzicw9re8nku/tu/XXt1/xpYayS17PtMR6rXldsDCvP6CI6FatTKMB1cuog9WAzyJIpPRlssYpFB9mycE3VfGQFSCQtR7YY4A2btgNZMp9aea5aEjaWASRzpnLSyjPL2qZVHWNRujJaoyOmQMlN/v0I+nPd6GuBVWl/9ohwO4XkG0qCIDKVFZnjw81FQZZu03b7UkcCvywPP7Rw6D/AQmNfj0wWwb0+cI42+cBHgb31Y1dX1Xej+9S3g+QA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-Received: from AS4PR02MB7903.eurprd02.prod.outlook.com (2603:10a6:20b:4b3::5)
- by DB9PR02MB7891.eurprd02.prod.outlook.com (2603:10a6:10:33f::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.19; Thu, 2 Nov
- 2023 21:11:21 +0000
-Received: from AS4PR02MB7903.eurprd02.prod.outlook.com
- ([fe80::a2ef:c7a3:facd:dc98]) by AS4PR02MB7903.eurprd02.prod.outlook.com
- ([fe80::a2ef:c7a3:facd:dc98%6]) with mapi id 15.20.6933.028; Thu, 2 Nov 2023
- 21:11:21 +0000
-From:   Cameron Williams <cang1@live.co.uk>
-To:     sudip.mukherjee@codethink.co.uk, sudipm.mukherjee@gmail.com,
-        linux-kernel@vger.kernel.org
-Cc:     Cameron Williams <cang1@live.co.uk>, stable@vger.kernel.org
-Subject: [PATCH v2 RESEND] parport: Add support for Brainboxes IX/UC/PX parallel cards
-Date:   Thu,  2 Nov 2023 21:10:40 +0000
-Message-ID: <AS4PR02MB790389C130410BD864C8DCC9C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <BBParport>
-References: <BBParport>
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-TMN:  [rH2juAO+2rJZh1U1sVyH54ytqXONIpCG]
-X-ClientProxiedBy: LNXP265CA0009.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:5e::21) To AS4PR02MB7903.eurprd02.prod.outlook.com
- (2603:10a6:20b:4b3::5)
-X-Microsoft-Original-Message-ID: <20231102211105.1150-1-cang1@live.co.uk>
+        with ESMTP id S1377503AbjKBWaf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 18:30:35 -0400
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A9BB7
+        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 15:30:28 -0700 (PDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1cc0d0a0355so11881975ad.3
+        for <stable@vger.kernel.org>; Thu, 02 Nov 2023 15:30:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698964228; x=1699569028; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=/DCbLnDw+vzEWXtHatQcVAYEklcu4HMnlq1zW/b01Q8=;
+        b=qJ7rU2or0rm+4NYDOGA+nEPnMn3w+twyofBso26Md2JQ05LM8vwvGUmXWhJPb7Txvy
+         92h7JHXVKsYLJ5rWbBIW5W2flfXDXPXN4Guo5WdphhwDULgLOqHPPrLggmIop54hTbdK
+         qZhl4Uc4JV9ge+ZUXIta521ua299bV5Od++wzN9HfUyevIeSyx3GhbcZMuvj8auntHWT
+         kfR1+1niPCDxe9Xc3NU9LlnO5m1X7Qi3H7FcvRGxNlW330nA2pV1k67NVag1hfivrccG
+         PHVuu8c2Ds9/AW7Msh52OW6OYxlEDH1uwF9tKE2c914RTB6IMax0ZYDiluScRxX/liZZ
+         UC9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698964228; x=1699569028;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/DCbLnDw+vzEWXtHatQcVAYEklcu4HMnlq1zW/b01Q8=;
+        b=JH61/J+0t4s8sZh2JQzcfCs/0d02u75CPRkJMdGGHQqwVSNqqcHlKhyyhl9eh56EBp
+         C7E/XAkLakMrWJAtMZzjtZdm55sxJpq6N9wIPlUvWN3LbpudhT4BUhC1er/h2FcYW3U6
+         Zzq6xt/6a1VUgZ6dqxzxFJEn7t6CAZMZFSWhdWIRNdwK56p4PWjiddGm6XCKm8wux/I9
+         fHvqMjVjH3TSGO0b0ImJYOFiwz5c64YjO6oL09PEHHq3d0BhAL58ZMk0GtzrDYmgs/X4
+         JKjRMvjlxfw/t/37L+tRD5i36eNkw9kxJi0PCYXq2ceb7gStgInaRit2ckcvSd9AUSIA
+         i9IQ==
+X-Gm-Message-State: AOJu0YwoLQHzxhpzVxgmmtZsKVc2nn/XH3gKXYmkbWcHwSQoT4cr1m9o
+        IzdlW+kEQguLB6HkYme8FJbxXahWPp62zzpktlSCuA==
+X-Google-Smtp-Source: AGHT+IHOF0pg9J4lb2krBl7EcEIIFr/EEAEIEPP+oLNlHP0hBlN5QlQ+atrVuSlcwptBsIqSHAWKTQ==
+X-Received: by 2002:a17:903:11c4:b0:1cc:6e8f:c14d with SMTP id q4-20020a17090311c400b001cc6e8fc14dmr9310659plh.50.1698964227810;
+        Thu, 02 Nov 2023 15:30:27 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id iw21-20020a170903045500b001c8a0879805sm189264plb.206.2023.11.02.15.30.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Nov 2023 15:30:27 -0700 (PDT)
+Message-ID: <65442303.170a0220.b1ff5.0ce0@mx.google.com>
+Date:   Thu, 02 Nov 2023 15:30:27 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR02MB7903:EE_|DB9PR02MB7891:EE_
-X-MS-Office365-Filtering-Correlation-Id: a449dca7-0010-400b-d3a7-08dbdbe84350
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: EiM7Ewa5dptFlX+a4gTA+MdyAYCr/vM3A05ay22Lc7YBuArbmfDM2nDB/jO0nTUKhzVGvfzGvThxj1bN6djX02RBq6KsHqMcFLahhhWSYyFaTNgtSU5UHMxAel5dedbCAYf3cf8jdyxhZfBceaNtzCcgHnfeeG6ibOc64DBqPkUCjP8AXW5CJ8O4CF2cREbK34wqkuv8MOResdlHnfLXznqkdLZ9LtKQJOdLQbJp0wGiq42DHY8VZYgqkahXgPHfNckk2fQdsScacRRIqLrwMOCTjh3rMT6ppSF5913RB/xENdF6kg0COzUb64rCG8sjfAMYYa/3YpC3GfX+MX3Kc0T9/4Z149Obm8AsCsP8AzNfPZffBzhJAFJja8RXYboAetY1InkuZTemkRhR9aMg4P/WhWSa+in5irqXpYLVzz5xvrSu/kwqwqtbsCxN73f4wdq+4MSgfzqjw3dpalwflULGeV5FQgVjJ/M6fDxxNMKJ8J2cLtsQjUMmNlB4nuLAupIiMBCSdFLDVZhyshk1fMHqtB26B2Fiq5o20OdmBQyXffy7uIX1L8kpXHulG0DUCpdY0UWNq7f4m+S0egV3dI600OmA/vdEr0I+/dvGras=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OTdp/2jKw3ZJljDjKT40kPW6YmYnTZIvAXMddidIsXTVs1VYpmh8+gM/tjD/?=
- =?us-ascii?Q?6RjwsTphpYjj2iV6v+oN7UWfRDlEZUFlGU5XeUHcEBDb5HrIke3zgtRNQxsj?=
- =?us-ascii?Q?3nnxvZRl5TAj0cCWJG0rDo+8ps/RzI4DXbh+RfjeWdNP/6fZYoi51bYLABMZ?=
- =?us-ascii?Q?meuizw++a8uV4mi9Qre2WjXBpJq9SacEvWeMJbkYsSc2pEl3jBvYiXXs6VuL?=
- =?us-ascii?Q?C3Fic1jPdnO7YlUlncILItZ4HmqSyApY34RnLhXy9SMH2mlMGkcI/oBdJV16?=
- =?us-ascii?Q?DAklAcb6+PwpirNBAM07lGOOc9tS/IsIe1vfF9TDzGIYxsHZIGmmdnGFv+Xc?=
- =?us-ascii?Q?a6aBEhhaFSZXZw70nyLtfZCkBVZSYBhjsweP/w1Yj+I9V7XM7049qUptPDEp?=
- =?us-ascii?Q?pm8K/xS4j+zIZqXRtWMzalXf4hEiGwijpRGFoI67wmCC4ZNxreWA7Wp2fYJn?=
- =?us-ascii?Q?3bZiUAnZ7OUSw4cN7DWXS2gLe6DIsXxp8mfOgcaRDzx5b7rKykXcoNjSnTMu?=
- =?us-ascii?Q?BnTp9pQm44mJMizKIyES6oJRtTgWHsVj8ou4Y5Xq3II10J30So+Qlfck30Hb?=
- =?us-ascii?Q?3qW7NmR0htATkqf90G4rvrHJnpHchbK1pgc42qTb5OsEebBgFqtduL4NKJmg?=
- =?us-ascii?Q?pwuDwwO+UD5CnuSxbx7PPN4hOctHot40KL0nCiElXIn0KUQKD5mBdYwzTBsD?=
- =?us-ascii?Q?w0GM7ujKomeCrFWzoeRypgRWZBoVUnaE7V9QTHGsqquqweC7IdF8U3FxB4TW?=
- =?us-ascii?Q?cuGQhZgQq7jtlK7fkOh+d1cOyvsctQpsGzkUxboGA1aLFUM52LkOYtMS0rqi?=
- =?us-ascii?Q?RaFEcwNY4qTzTDtDbyILa4NrVDIgAqjejVhTOEEkQJL7Wv22WOw22awjI8BX?=
- =?us-ascii?Q?MzRVL7qZ6b14pdRu0qSF9nUe3MJ/68uBhzHrxSegZcHoJgGAHAbQLK6fXY9z?=
- =?us-ascii?Q?9IQ1nwgYvls1xUjf1H4wKra6AlACHElGD/N4B8yFGSLcd2YJKCuKTf3mqvYZ?=
- =?us-ascii?Q?boHER5sWSSDc5VRFcNAWocZf1aSg3SJow2LkD/GzPRqhFdSueddpY64tJ5O3?=
- =?us-ascii?Q?7cmkTJ9tqgKYgtCpyJvaCyc96zjZW5tFPUmqyAzwkH67+z2JgODW+5vAjBOB?=
- =?us-ascii?Q?dA0PGGeAex2jttyCiFPmMr0WxCndrUkM2/Xxkn6WYVR9mZHncKZaUdZWihwh?=
- =?us-ascii?Q?HwlrTjVud2ws1y1eLpvfV4oHXevRb7BTt0aGpg=3D=3D?=
-X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-ab7de.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: a449dca7-0010-400b-d3a7-08dbdbe84350
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR02MB7903.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Nov 2023 21:11:21.5342
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR02MB7891
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.10.199-61-g2c4e8ef8a1d9
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-5.10.y baseline: 157 runs,
+ 2 regressions (v5.10.199-61-g2c4e8ef8a1d9)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Adds support for Intashield IX-500/IX-550, UC-146/UC-157, PX-146/PX-157,
-PX-203 and PX-475 (LPT port)
+stable-rc/linux-5.10.y baseline: 157 runs, 2 regressions (v5.10.199-61-g2c4=
+e8ef8a1d9)
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
----
-I think this one fell through the grate. Copy in stable this time.
-v1 - v2:
+Regressions Summary
+-------------------
 
-This is a re-submission for [1], instead using raw hexadecimal
-IDs for the PCI device. This patch is also sent separetaly instead
-of part of a series as was done previously.
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
+    =
 
-[1] https://lore.kernel.org/all/DU0PR02MB7899DE53DFC900EFB50E53F2C4F8A@DU0PR02MB7899.eurprd02.prod.outlook.com/
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
 
 
- drivers/parport/parport_pc.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
+nel/v5.10.199-61-g2c4e8ef8a1d9/plan/baseline/
 
-diff --git a/drivers/parport/parport_pc.c b/drivers/parport/parport_pc.c
-index 1f236aaf7867..f33b5d1ddfc1 100644
---- a/drivers/parport/parport_pc.c
-+++ b/drivers/parport/parport_pc.c
-@@ -2658,6 +2658,8 @@ enum parport_pc_pci_cards {
- 	asix_ax99100,
- 	quatech_sppxp100,
- 	wch_ch382l,
-+	brainboxes_uc146,
-+	brainboxes_px203,
- };
- 
- 
-@@ -2737,6 +2739,8 @@ static struct parport_pc_pci {
- 	/* asix_ax99100 */		{ 1, { { 0, 1 }, } },
- 	/* quatech_sppxp100 */		{ 1, { { 0, 1 }, } },
- 	/* wch_ch382l */		{ 1, { { 2, -1 }, } },
-+	/* brainboxes_uc146 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_px203 */	{ 1, { { 0, -1 }, } },
- };
- 
- static const struct pci_device_id parport_pc_pci_tbl[] = {
-@@ -2833,6 +2837,23 @@ static const struct pci_device_id parport_pc_pci_tbl[] = {
- 	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, quatech_sppxp100 },
- 	/* WCH CH382L PCI-E single parallel port card */
- 	{ 0x1c00, 0x3050, 0x1c00, 0x3050, 0, 0, wch_ch382l },
-+	/* Brainboxes IX-500/550 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x402a,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
-+	/* Brainboxes UC-146/UC-157 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0be1,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc146 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0be2,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc146 },
-+	/* Brainboxes PX-146/PX-257 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x401c,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
-+	/* Brainboxes PX-203 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x4007,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px203 },
-+	/* Brainboxes PX-475 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x401f,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, oxsemi_pcie_pport },
- 	{ 0, } /* terminate list */
- };
- MODULE_DEVICE_TABLE(pci, parport_pc_pci_tbl);
--- 
-2.42.0
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.10.y
+  Describe: v5.10.199-61-g2c4e8ef8a1d9
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      2c4e8ef8a1d9a42120a88be22e51f2665497b473 =
 
+
+
+Test Regressions
+---------------- =
+
+
+
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
+    =
+
+
+  Details:     https://kernelci.org/test/plan/id/6543f155b77d6417fbefcf24
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+99-61-g2c4e8ef8a1d9/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pi=
+ne-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+99-61-g2c4e8ef8a1d9/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pi=
+ne-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6543f155b77d6417fbefcf2d
+        failing since 22 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
+t fail: v5.10.198)
+
+    2023-11-02T18:58:21.852103  <8>[   16.964203] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 442403_1.5.2.4.1>
+    2023-11-02T18:58:21.957204  / # #
+    2023-11-02T18:58:22.058850  export SHELL=3D/bin/sh
+    2023-11-02T18:58:22.059482  #
+    2023-11-02T18:58:22.160483  / # export SHELL=3D/bin/sh. /lava-442403/en=
+vironment
+    2023-11-02T18:58:22.161077  =
+
+    2023-11-02T18:58:22.262074  / # . /lava-442403/environment/lava-442403/=
+bin/lava-test-runner /lava-442403/1
+    2023-11-02T18:58:22.262907  =
+
+    2023-11-02T18:58:22.267411  / # /lava-442403/bin/lava-test-runner /lava=
+-442403/1
+    2023-11-02T18:58:22.334408  + export 'TESTRUN_ID=3D1_bootrr' =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
+
+
+  Details:     https://kernelci.org/test/plan/id/6543f166bdbd98d6dcefcef5
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+99-61-g2c4e8ef8a1d9/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6=
+-pine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.1=
+99-61-g2c4e8ef8a1d9/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6=
+-pine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6543f166bdbd98d6dcefcefe
+        failing since 22 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
+t fail: v5.10.198)
+
+    2023-11-02T19:02:55.212917  / # #
+
+    2023-11-02T19:02:55.315006  export SHELL=3D/bin/sh
+
+    2023-11-02T19:02:55.315753  #
+
+    2023-11-02T19:02:55.417191  / # export SHELL=3D/bin/sh. /lava-11932840/=
+environment
+
+    2023-11-02T19:02:55.417883  =
+
+
+    2023-11-02T19:02:55.519229  / # . /lava-11932840/environment/lava-11932=
+840/bin/lava-test-runner /lava-11932840/1
+
+    2023-11-02T19:02:55.520202  =
+
+
+    2023-11-02T19:02:55.537485  / # /lava-11932840/bin/lava-test-runner /la=
+va-11932840/1
+
+    2023-11-02T19:02:55.580333  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-11-02T19:02:55.596366  + cd /lava-1193284<8>[   18.197759] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 11932840_1.5.2.4.5>
+ =
+
+    ... (10 line(s) more)  =
+
+ =20
