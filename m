@@ -2,140 +2,285 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E3487E0630
-	for <lists+stable@lfdr.de>; Fri,  3 Nov 2023 17:09:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57AC47E0637
+	for <lists+stable@lfdr.de>; Fri,  3 Nov 2023 17:16:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230193AbjKCQJi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 3 Nov 2023 12:09:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54772 "EHLO
+        id S230328AbjKCQQH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 3 Nov 2023 12:16:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230138AbjKCQJh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 3 Nov 2023 12:09:37 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB35FCA
-        for <stable@vger.kernel.org>; Fri,  3 Nov 2023 09:09:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB34C433C7;
-        Fri,  3 Nov 2023 16:09:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699027774;
-        bh=rD/G6fU2OweHdy2JyZJRNcFkt8TnAy5FwhEaLHIXf4o=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nNx5vUUytrwsq2duh3LiCvXMGLK3v3jKc3OzSLjf0hUlUpteLyM7VHOV26GxsV5F3
-         2OB1DVOaUVDbMBgilGupmOeUJPuAMyvBEiXEMbpGbizEQQ77KW57hz4z4Yg1HaW+Z0
-         0JoR1TEoxnRYS89iu+OtgqgKyJnSkEUjpsahp61fzgzIBTaqXZz+PJfq3nRvixGr/g
-         OT2CV+S77quFfxMCRW7CSB1p1eVRtm8F3Ng2JknC/LlJ2i/mnrIv8RWd3thqbbriyz
-         VgJUnR5l+8tUAqvJMxJbaCdo+7LlyE1grvA59N/7q04cs33Q3GzL43KfTZoHj4uiRz
-         M4IOu2r9foViA==
-Date:   Fri, 3 Nov 2023 09:09:32 -0700
-From:   Nathan Chancellor <nathan@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        linux-stable <stable@vger.kernel.org>,
-        lkft-triage@lists.linaro.org, Sasha Levin <sashal@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: stable-rc: 4.14 and 4.19: arch/x86/kernel/head_32.S:126: Error:
- invalid character '(' in mnemonic
-Message-ID: <20231103160932.GA3773786@dev-arch.thelio-3990X>
-References: <CA+G9fYtS81+Tze6Zs0f908xXZ7zeMMEdpq65=betjDnyAkLn_g@mail.gmail.com>
- <2023110339-voyage-subtype-e34e@gregkh>
- <2023110344-endeared-wrongful-44b3@gregkh>
+        with ESMTP id S234339AbjKCQQH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 3 Nov 2023 12:16:07 -0400
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EFC6CA
+        for <stable@vger.kernel.org>; Fri,  3 Nov 2023 09:16:00 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id A2D313200935;
+        Fri,  3 Nov 2023 12:15:56 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Fri, 03 Nov 2023 12:15:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        invisiblethingslab.com; h=cc:cc:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm3; t=
+        1699028156; x=1699114556; bh=dHOdN0Q4arzDi1FH7Q2SMau1Y7NQ5Lx4NHg
+        9xz7kfwE=; b=r2rmGoKn0sF3EVywj9Gn+J350GUEURJq4B1HpQA0HdI5GDSL5WH
+        CbCvH8u/HzCP0rGfL1RaF7G/EpvTKYsvFEtQxSOkUvPJCv8VFgCm9ig8GkXuRY4g
+        u2bN4/T1+U+CUlO7bfytE87EVXvJb9I9rucQB/hHIiT3Yirdi5YjKHSaWpaOEUqW
+        x64hgecvajSI29oDfO5Yk4vpkWfML5rjVRV9vM2mllpBtLah/3ft/3Oqv5t8jubk
+        Tp0cyvOh/bSo2Aj3oC/RXuTX5WHtvnbLPiq8W6leJfMxRZf7LPwjOph9Lc5s8suj
+        5tG9AAQ+/vfleLv/0Opdq9t/rgryZPMDmoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1699028156; x=1699114556; bh=dHOdN0Q4arzDi
+        1FH7Q2SMau1Y7NQ5Lx4NHg9xz7kfwE=; b=r/MxdHIRgTd/0YVIADBIJWDu7kO+a
+        EUuJsLTVGQDrUK+KK8TqVOkjI1Z7esYwfMGGVYFwhWkqZjgrAHqXLYCxwuO1qgw6
+        KMFVlHlCKqCRSfIbJZ2ETnj7WP77O4Z/ZLhSrVCx/VvFpaLrQwC1WZA4WFNErQuJ
+        mSQzWmD+ftgKgo5kKF3mTaSx8xcrty727PsoiayzNwxcwM5Frb0dlcYlqycuMZCL
+        FJkpPipfvLYcGo+AQCXo/cDHDENJp3ruUq60aleG33UX9AueJQLQ6fIjpbQX+MLy
+        sOprqEFtrWSyvlLYHgaDeSg+ALukbSOnDl7CnSb7Utge1vImgGL08piyA==
+X-ME-Sender: <xms:uhxFZUrmhK51EFtUET7KK4LV_LvhQQ2xy26b_uc_i8OkQ_KuzodAxA>
+    <xme:uhxFZaqlqnWg31Nkdzwa8G8I3OHu35O96gFCwav5yJlUMx7YDaJWFyiiCrECN98yb
+    49dkYsgGVKALQ>
+X-ME-Received: <xmr:uhxFZZOdl4ZN4lH7Uh3caymtOzEpef9yxYNxNEgEipYAZDRkS904tw5W3wiojgxSbauSQS4ltOIpnTTvoftnK8T53rA5qEUY2Cc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedruddtkedgkeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesghdtroertddtjeenucfhrhhomhepofgrrhgv
+    khcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuceomhgrrhhmrghrvghksehinh
+    hvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecuggftrfgrthhtvghrnheptdet
+    vdfhkedutedvleffgeeutdektefhtefhfffhfeetgefhieegledvtddtkedtnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepmhgrrhhmrghrvghk
+    sehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
+X-ME-Proxy: <xmx:uhxFZb6Vh4iuXbJL0vWB7uJOxeJ3vhw62Qjx4SEy0kjebdu9zoeokQ>
+    <xmx:uhxFZT46r_2oNLXVsA6qWtAk2srYSpwMLTCqOxfZzl8tFO9UJYVFpA>
+    <xmx:uhxFZbgc_md_V4ka5vrYkBn_AFLKlhcIEXOK2gj_z-LGH5aqbBK7Fw>
+    <xmx:vBxFZaLWP4LBgqd1GOXkat4N6-Ngrh4XN2c8jsu888icO4mFmDaUPg>
+Feedback-ID: i1568416f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 3 Nov 2023 12:15:51 -0400 (EDT)
+Date:   Fri, 3 Nov 2023 17:15:49 +0100
+From:   Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= 
+        <marmarek@invisiblethingslab.com>
+To:     Mikulas Patocka <mpatocka@redhat.com>
+Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>, Jan Kara <jack@suse.cz>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Message-ID: <ZUUctamEFtAlSnSV@mail-itl>
+References: <98aefaa9-1ac-a0e4-fb9a-89ded456750@redhat.com>
+ <ZUB5HFeK3eHeI8UH@mail-itl>
+ <20231031140136.25bio5wajc5pmdtl@quack3>
+ <ZUEgWA5P8MFbyeBN@mail-itl>
+ <8a35cdea-3a1a-e859-1f7c-55d1c864a48@redhat.com>
+ <ebbc7ca7-5169-dbdc-9ea8-c6d8c3ae31e2@redhat.com>
+ <ZULvkPhcpgAVyI8w@mail-itl>
+ <ac5b5ac0-9e8-c1b0-a26-62f832f845f0@redhat.com>
+ <ZUOL8kXVTF1OngeN@mail-itl>
+ <3cb4133c-b6db-9187-a678-11ed8c9456e@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="FVS16JFHJ7btn9Q1"
 Content-Disposition: inline
-In-Reply-To: <2023110344-endeared-wrongful-44b3@gregkh>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <3cb4133c-b6db-9187-a678-11ed8c9456e@redhat.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Nov 03, 2023 at 04:59:59PM +0100, Greg Kroah-Hartman wrote:
-> On Fri, Nov 03, 2023 at 04:57:40PM +0100, Greg Kroah-Hartman wrote:
-> > On Fri, Nov 03, 2023 at 09:07:32PM +0530, Naresh Kamboju wrote:
-> > > Following warnings and errors have been noticed while building i386 build
-> > > on stable-rc linux.4.19.y and linux.4.14.y.
-> > > 
-> > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > > 
-> > > Build log:
-> > > ==========
-> > > kernel/profile.c: In function 'profile_dead_cpu':
-> > > kernel/profile.c:346:27: warning: the comparison will always evaluate
-> > > as 'true' for the address of 'prof_cpu_mask' will never be NULL
-> > > [-Waddress]
-> > >   346 |         if (prof_cpu_mask != NULL)
-> > >       |                           ^~
-> > > kernel/profile.c:49:22: note: 'prof_cpu_mask' declared here
-> > >    49 | static cpumask_var_t prof_cpu_mask;
-> > >       |                      ^~~~~~~~~~~~~
-> > > kernel/profile.c: In function 'profile_online_cpu':
-> > > kernel/profile.c:383:27: warning: the comparison will always evaluate
-> > > as 'true' for the address of 'prof_cpu_mask' will never be NULL
-> > > [-Waddress]
-> > >   383 |         if (prof_cpu_mask != NULL)
-> > >       |                           ^~
-> > > kernel/profile.c:49:22: note: 'prof_cpu_mask' declared here
-> > >    49 | static cpumask_var_t prof_cpu_mask;
-> > >       |                      ^~~~~~~~~~~~~
-> > > kernel/profile.c: In function 'profile_tick':
-> > > kernel/profile.c:413:47: warning: the comparison will always evaluate
-> > > as 'true' for the address of 'prof_cpu_mask' will never be NULL
-> > > [-Waddress]
-> > >   413 |         if (!user_mode(regs) && prof_cpu_mask != NULL &&
-> > >       |                                               ^~
-> > > kernel/profile.c:49:22: note: 'prof_cpu_mask' declared here
-> > >    49 | static cpumask_var_t prof_cpu_mask;
-> > >       |                      ^~~~~~~~~~~~~
-> > 
-> > Those are not due to this set of patches, right?
-> > 
-> > > arch/x86/kernel/head_32.S: Assembler messages:
-> > > arch/x86/kernel/head_32.S:126: Error: invalid character '(' in mnemonic
-> > > arch/x86/kernel/head_32.S:57:  Info: macro invoked from here
-> > > arch/x86/kernel/head_32.S:128: Error: invalid character '(' in mnemonic
-> > > arch/x86/kernel/head_32.S:57:  Info: macro invoked from here
-> > 
-> > This is odd, nothing touches this file either.
-> > 
-> > 7e09ac27f43b ("x86: Fix .brk attribute in linker script") is backported
-> > here, perhaps that is the issue?  If you revert that, does the error go
-> > away?
-> 
-> Nope, that's not the issue.
-> 
-> > Let me see if I can build a 32 bit kernel anymore...
-> 
-> I can do this now, let me figure it out...
 
-Sorry, I think this is my bad. 4.14 and 4.19 do not have
-SYM_DATA_START() or SYM_DATA_END() but I did not do a 32-bit x86 build
-to see the error. I think this should be the fix, it builds for me at
-least. Would you prefer a new set of patches for 4.14 and 4.19 or could
-this just be squashed in to my existing backport of a1e2c031ec39
-("x86/mm: Simplify RESERVE_BRK()")? Sorry for not catching 7e09ac27f43b
-as a fix for that either.
+--FVS16JFHJ7btn9Q1
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 3 Nov 2023 17:15:49 +0100
+From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
+To: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+	regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
 
-Cheers,
-Nathan
+On Thu, Nov 02, 2023 at 06:06:33PM +0100, Mikulas Patocka wrote:
+> Then, try this patch (without "iommu=3Dpanic"), reproduce the deadlock an=
+d=20
+> tell us which one of the "printk" statements is triggered during the=20
+> deadlock.
 
-diff --git a/arch/x86/include/asm/setup.h b/arch/x86/include/asm/setup.h
-index e0e6aad9cd51..c5ed79159975 100644
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -123,9 +123,9 @@ asmlinkage void __init x86_64_start_reservations(char *real_mode_data);
- 
- .macro __RESERVE_BRK name, size
- 	.pushsection .bss..brk, "aw"
--SYM_DATA_START(__brk_\name)
-+GLOBAL(__brk_\name)
- 	.skip \size
--SYM_DATA_END(__brk_\name)
-+END(__brk_\name)
- 	.popsection
- .endm
- 
+The "821" one - see below.
+
+> Mikulas
+>=20
+> ---
+>  drivers/nvme/host/core.c |    8 ++++++--
+>  drivers/nvme/host/pci.c  |   27 ++++++++++++++++++++++-----
+>  2 files changed, 28 insertions(+), 7 deletions(-)
+>=20
+> Index: linux-stable/drivers/nvme/host/pci.c
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- linux-stable.orig/drivers/nvme/host/pci.c	2023-10-31 15:35:38.0000000=
+00 +0100
+> +++ linux-stable/drivers/nvme/host/pci.c	2023-11-02 17:38:20.000000000 +0=
+100
+> @@ -622,6 +622,10 @@ static blk_status_t nvme_pci_setup_prps(
+>  	prp_list =3D dma_pool_alloc(pool, GFP_ATOMIC, &prp_dma);
+>  	if (!prp_list) {
+>  		iod->nr_allocations =3D -1;
+> +		if (nprps <=3D (256 / 8))
+> +			printk("allocation failure at %d\n", __LINE__);
+> +		else
+> +			printk("allocation failure at %d\n", __LINE__);
+>  		return BLK_STS_RESOURCE;
+>  	}
+>  	iod->list[0].prp_list =3D prp_list;
+> @@ -631,8 +635,10 @@ static blk_status_t nvme_pci_setup_prps(
+>  		if (i =3D=3D NVME_CTRL_PAGE_SIZE >> 3) {
+>  			__le64 *old_prp_list =3D prp_list;
+>  			prp_list =3D dma_pool_alloc(pool, GFP_ATOMIC, &prp_dma);
+> -			if (!prp_list)
+> +			if (!prp_list) {
+> +				printk("allocation failure at %d\n", __LINE__);
+>  				goto free_prps;
+> +			}
+>  			iod->list[iod->nr_allocations++].prp_list =3D prp_list;
+>  			prp_list[0] =3D old_prp_list[i - 1];
+>  			old_prp_list[i - 1] =3D cpu_to_le64(prp_dma);
+> @@ -712,6 +718,7 @@ static blk_status_t nvme_pci_setup_sgls(
+>  	sg_list =3D dma_pool_alloc(pool, GFP_ATOMIC, &sgl_dma);
+>  	if (!sg_list) {
+>  		iod->nr_allocations =3D -1;
+> +		printk("allocation failure at %d\n", __LINE__);
+>  		return BLK_STS_RESOURCE;
+>  	}
+> =20
+> @@ -736,8 +743,10 @@ static blk_status_t nvme_setup_prp_simpl
+>  	unsigned int first_prp_len =3D NVME_CTRL_PAGE_SIZE - offset;
+> =20
+>  	iod->first_dma =3D dma_map_bvec(dev->dev, bv, rq_dma_dir(req), 0);
+> -	if (dma_mapping_error(dev->dev, iod->first_dma))
+> +	if (dma_mapping_error(dev->dev, iod->first_dma)) {
+> +		printk("allocation failure at %d\n", __LINE__);
+>  		return BLK_STS_RESOURCE;
+> +	}
+>  	iod->dma_len =3D bv->bv_len;
+> =20
+>  	cmnd->dptr.prp1 =3D cpu_to_le64(iod->first_dma);
+> @@ -755,8 +764,10 @@ static blk_status_t nvme_setup_sgl_simpl
+>  	struct nvme_iod *iod =3D blk_mq_rq_to_pdu(req);
+> =20
+>  	iod->first_dma =3D dma_map_bvec(dev->dev, bv, rq_dma_dir(req), 0);
+> -	if (dma_mapping_error(dev->dev, iod->first_dma))
+> +	if (dma_mapping_error(dev->dev, iod->first_dma)) {
+> +		printk("allocation failure at %d\n", __LINE__);
+>  		return BLK_STS_RESOURCE;
+> +	}
+>  	iod->dma_len =3D bv->bv_len;
+> =20
+>  	cmnd->flags =3D NVME_CMD_SGL_METABUF;
+> @@ -791,8 +802,10 @@ static blk_status_t nvme_map_data(struct
+> =20
+>  	iod->dma_len =3D 0;
+>  	iod->sgt.sgl =3D mempool_alloc(dev->iod_mempool, GFP_ATOMIC);
+> -	if (!iod->sgt.sgl)
+> +	if (!iod->sgt.sgl) {
+> +		printk("allocation failure at %d\n", __LINE__);
+>  		return BLK_STS_RESOURCE;
+> +	}
+>  	sg_init_table(iod->sgt.sgl, blk_rq_nr_phys_segments(req));
+>  	iod->sgt.orig_nents =3D blk_rq_map_sg(req->q, req, iod->sgt.sgl);
+>  	if (!iod->sgt.orig_nents)
+> @@ -801,8 +814,12 @@ static blk_status_t nvme_map_data(struct
+>  	rc =3D dma_map_sgtable(dev->dev, &iod->sgt, rq_dma_dir(req),
+>  			     DMA_ATTR_NO_WARN);
+>  	if (rc) {
+> -		if (rc =3D=3D -EREMOTEIO)
+> +		if (rc =3D=3D -EREMOTEIO) {
+> +			printk("allocation failure at %d\n", __LINE__);
+>  			ret =3D BLK_STS_TARGET;
+> +		} else {
+> +			printk("allocation failure at %d\n", __LINE__);
+
+I get a lot of this one.
+
+> +		}
+>  		goto out_free_sg;
+>  	}
+> =20
+> Index: linux-stable/drivers/nvme/host/core.c
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> --- linux-stable.orig/drivers/nvme/host/core.c	2023-10-31 15:35:38.000000=
+000 +0100
+> +++ linux-stable/drivers/nvme/host/core.c	2023-11-02 17:12:39.000000000 +=
+0100
+> @@ -708,8 +708,10 @@ blk_status_t nvme_fail_nonready_command(
+>  	    ctrl->state !=3D NVME_CTRL_DELETING &&
+>  	    ctrl->state !=3D NVME_CTRL_DEAD &&
+>  	    !test_bit(NVME_CTRL_FAILFAST_EXPIRED, &ctrl->flags) &&
+> -	    !blk_noretry_request(rq) && !(rq->cmd_flags & REQ_NVME_MPATH))
+> +	    !blk_noretry_request(rq) && !(rq->cmd_flags & REQ_NVME_MPATH)) {
+> +		printk("allocation failure at %d\n", __LINE__);
+>  		return BLK_STS_RESOURCE;
+> +	}
+>  	return nvme_host_path_error(rq);
+>  }
+>  EXPORT_SYMBOL_GPL(nvme_fail_nonready_command);
+> @@ -784,8 +786,10 @@ static blk_status_t nvme_setup_discard(s
+>  		 * discard page. If that's also busy, it's safe to return
+>  		 * busy, as we know we can make progress once that's freed.
+>  		 */
+> -		if (test_and_set_bit_lock(0, &ns->ctrl->discard_page_busy))
+> +		if (test_and_set_bit_lock(0, &ns->ctrl->discard_page_busy)) {
+> +			printk("allocation failure at %d\n", __LINE__);
+>  			return BLK_STS_RESOURCE;
+> +		}
+> =20
+>  		range =3D page_address(ns->ctrl->discard_page);
+>  	}
+
+
+--=20
+Best Regards,
+Marek Marczykowski-G=C3=B3recki
+Invisible Things Lab
+
+--FVS16JFHJ7btn9Q1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmVFHLUACgkQ24/THMrX
+1yzUvAf8CIbTqn3u4kztOYavM8CP6Oyv22Wl/+svhHeItHvMBisOG0F6t0TvJgaW
+8LVB8g/fZgqxW99/X5D8V8V9I2qJXZlD7N0LDv9b625ay8PR/VvESTiOJbVd+d6s
+RQGCeF6fazD2efOeUb7HDzfiLW6vedQk9EkfhEyjf7Ey7TtlqvHpa9DiFIoBTPnq
+xBIxq8q2gorWBwUDkXpgnQt78Res60TlpKa/epDVW9ZY+cHEL/gas3rUi/r2zgvy
+w2AiTx4aTQr/769TvGdDPk+dK3V5+y3WbfWdB0nM6lj7Sb/LlN6n2Qn29CD2Drvh
+kVo6d9JNXGcfvc/yQmBuKASUp0UThg==
+=7MuL
+-----END PGP SIGNATURE-----
+
+--FVS16JFHJ7btn9Q1--
