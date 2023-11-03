@@ -2,156 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3237DFCB7
-	for <lists+stable@lfdr.de>; Thu,  2 Nov 2023 23:57:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BED27DFD98
+	for <lists+stable@lfdr.de>; Fri,  3 Nov 2023 01:38:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234815AbjKBW5f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 2 Nov 2023 18:57:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53252 "EHLO
+        id S232665AbjKCAdq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 2 Nov 2023 20:33:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229615AbjKBW5e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 18:57:34 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B21B133
-        for <stable@vger.kernel.org>; Thu,  2 Nov 2023 15:57:29 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6bd0e1b1890so1364230b3a.3
-        for <stable@vger.kernel.org>; Thu, 02 Nov 2023 15:57:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1698965848; x=1699570648; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=+rDf3A8MMKpvqEuhwMsQc6jKsjoaUJfPbxcyboObxV8=;
-        b=OctY27LU3zMg6xGg4StcsUhEnNCtu3noSBZ1a4hQ3HqPpl1uZwYOVCzpO5KnjmWwIu
-         TTLURZa3hZ4ZqUIW82ckkowggJhw8DtVdMOvq15gazl72Iw6M7vmpKBzRVmsZrMGzLCe
-         GCQvp9DYmq7wl6kmrQOKRZt4jtFr8sVwoqWIfRNH5QkhAsUOZK3jfXh/q7CepxGQ3Iwg
-         lTDzUuiEzps95vbj2Nend3rBKMGCxVuqT/zETKYP0KZGdcegM+uy8bsFf9KdPQtFComS
-         wcBKhD4lrO7xgbZtmdIizjHoAWeqWhsvbTeDXBdchZkLVV3khgd72L4heqUSYcwCUSvl
-         T2Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698965848; x=1699570648;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+rDf3A8MMKpvqEuhwMsQc6jKsjoaUJfPbxcyboObxV8=;
-        b=lDDouf0s4uW/Sa7Pizg8HsZh5yT0+oJ0qn+YO8DRdrazQfbcA42MygHeL04Sy55nDO
-         MHHnohGWYqn6NnXy0a+Gw6zT3YDXpdq+a/E+LIMR4k4sgrNck13nfSDRTIR+TlNdke7g
-         Prxxo0rPi1XBBA+RgTZGlRsqLn5uS0uWJTbmIBnNVwU7UFiz1BLIbABGtWY0EeX4qTZ7
-         ju6JtwX50Y9vjzz+URVKO+Eue0/ixNl0rhP/JHKQvRwzSPJp5C1xAjV1XrB33gG+ufjq
-         1bX8h67tUBPSLgQWYFvtZS46DXROksGxQUps0pZ/tTpH3aCCfBfBk3qH/kpXdf7lXiu2
-         soyw==
-X-Gm-Message-State: AOJu0Yyw6uT7jve5UyOjC0onXNg0V0Ns/PV2LSoPJpmMb6fBCRh32BMU
-        tDZOC59Pi3yxyRquuqj5Dy5dWGEUEQsVXsBxZ6iJRQ==
-X-Google-Smtp-Source: AGHT+IFJOORc2bEQzDm9DY34AXS2lGiP6vjACNhJYuCwatDHXIIn7L75i4holUT2sSp+9Nccgk6YDA==
-X-Received: by 2002:a05:6a00:138f:b0:6be:287d:46d6 with SMTP id t15-20020a056a00138f00b006be287d46d6mr21330628pfg.33.1698965847862;
-        Thu, 02 Nov 2023 15:57:27 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id du4-20020a056a002b4400b00694ebe2b0d4sm232679pfb.191.2023.11.02.15.57.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Nov 2023 15:57:27 -0700 (PDT)
-Message-ID: <65442957.050a0220.7b7d.1337@mx.google.com>
-Date:   Thu, 02 Nov 2023 15:57:27 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v4.19.297-41-g46e03d3c6192
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-4.19.y baseline: 127 runs,
- 1 regressions (v4.19.297-41-g46e03d3c6192)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S229741AbjKCAdp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 2 Nov 2023 20:33:45 -0400
+Received: from nautica.notk.org (ipv6.notk.org [IPv6:2001:41d0:1:7a93::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73F4D136;
+        Thu,  2 Nov 2023 17:33:39 -0700 (PDT)
+Received: by nautica.notk.org (Postfix, from userid 108)
+        id DAF07C01B; Fri,  3 Nov 2023 01:33:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+        t=1698971616; bh=/MJZ9C7RKPB/RlBz8fZGhhwSSkmv7eGeKoqSA++bXEo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Laxif8cFeFoIrghfcmNngzBUeK6QJUuQhgt2QM93ipCUQ9A/UbpcW4I9CmxvOdBYs
+         Gya7Ss24GZ5nkH++UWsO7YLxy6TH9WK2pXpecu1CaSRlL+GM+AS5V2x7V3bQNl9R0v
+         PJL8Lii3uYEGRv7EeFtl0Fy64no4juaU3Net7orCkYS2XdGQocUtBuX/f5lYauBy8b
+         sAFM/YXmjXki1sUZrKvjg5/UcO5YqKPEb6hjUVpN6jgCVZ4scz27ufWnLleulCtX2U
+         NKbtfIRRxgf8+J0SridlURcSLAdXlyNrjLg15J4SeD7ToGJGBgO4E4MmpIqpjN9YA2
+         HiHOSN+4lki5g==
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
+Received: from gaia (localhost [127.0.0.1])
+        by nautica.notk.org (Postfix) with ESMTPS id 931D5C009;
+        Fri,  3 Nov 2023 01:33:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+        t=1698971606; bh=/MJZ9C7RKPB/RlBz8fZGhhwSSkmv7eGeKoqSA++bXEo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ziSwTLqpvBCbkOG3YevGUd55nv9mPIke4sHuKV6L7JwohCulWYyuCw3ir3VfbJF58
+         v/ICuKfWpeP/voHtHU4BmyTjm2uFjbUwI+SVmRqDDni++8ETVjTWqgAp5LEZSGbRgF
+         1eurIDg2X7llo8YLtvYxY+KqW61CKiN/5SxHWEAFQ6+2NDVnVq18eI7EQv/Uk3KFdG
+         dUMDx33hAP5eG5V0mdb3aSDBwJxhzRRwj/Ghl/o8adK9emfbHGWc8e13LFZWy1WLID
+         qlYOf9i6I1QP2/Y76CNi0uiKeRD5i/Z82W5MDCOiRmsQPKu/XKbx4T7EYm6LAdWIG+
+         pq1SAyOxZyF3Q==
+Received: from localhost (gaia [local])
+        by gaia (OpenSMTPD) with ESMTPA id c8812187;
+        Fri, 3 Nov 2023 00:33:21 +0000 (UTC)
+Date:   Fri, 3 Nov 2023 09:33:06 +0900
+From:   Dominique Martinet <asmadeus@codewreck.org>
+To:     Ulf Hansson <ulf.hansson@linaro.org>
+Cc:     Avri Altman <avri.altman@wdc.com>,
+        Dominique Martinet <dominique.martinet@atmark-techno.com>,
+        linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Alex Fetters <Alex.Fetters@garmin.com>
+Subject: Re: [PATCH] mmc: truncate quirks' oemid to 8 bits
+Message-ID: <ZUQ_wm22gO7lLZ3N@codewreck.org>
+References: <20231026075230.414685-1-dominique.martinet@atmark-techno.com>
+ <CAPDyKFqkKibcXnwjnhc3+W1iJBHLeqQ9BpcZrSwhW2u9K2oUtg@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFqkKibcXnwjnhc3+W1iJBHLeqQ9BpcZrSwhW2u9K2oUtg@mail.gmail.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.19.y baseline: 127 runs, 1 regressions (v4.19.297-41-g46e=
-03d3c6192)
+Ulf Hansson wrote on Thu, Nov 02, 2023 at 02:25:09PM +0100:
+> > Fixes: 84ee19bffc93 ("mmc: core: Capture correct oemid-bits for eMMC cards")
+> 
+> [...]
+> 
+> It looks to me that the offending commit (84ee19bffc93) should be
+> reverted instead of trying to introduce some weird parsing of the card
+> quirks.
 
-Regressions Summary
--------------------
+I agree that's better -- that's what I did on our stable tree until the
+dust settles down, I probably should have sent that instead.
 
-platform       | arch  | lab          | compiler | defconfig | regressions
----------------+-------+--------------+----------+-----------+------------
-meson-gxm-q200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
+As Avri pointed out the offending commit was picked up to stable, but
+the revert should apply cleanly so if we send Greg a mail after Linus
+picked it up it can be reverted on all stable branches quickly.
 
+There's little value in me resending this as a revert, but process-wise
+I guess it's easier if someone sends it as a mail so I'll whip up a
+commit message and send that now.
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-4.19.y/ker=
-nel/v4.19.297-41-g46e03d3c6192/plan/baseline/
+> In fact, up until v5.1 it seems not to be a problem to use 16-bits for
+> the OID, as the CBX and the reserved bits are probably just given some
+> fixed values by the vendors, right?
 
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-4.19.y
-  Describe: v4.19.297-41-g46e03d3c6192
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      46e03d3c6192741f041d7d46136bc90245ed7220 =
+Right, it's possible that using 8 bits here would apply the quirks to
+more devices than what was intended if the other 8 bits made a
+difference... Unfortunately that's something only vendors would know.
 
+> Beyond v5.1A, we may have a problem as the BIN may actually be used
+> for something valuable. Maybe Avri knows more here?
+> 
+> That said, if the offending commit is really needed to fix a problem,
+> we need to figure out exactly what that problem is. The EXT_CSD_REV
+> doesn't provide us with the exact version that the card is supporting,
+> but at least we know if v5.1 and onwards is supported, so perhaps that
+> can be used to fixup/improve the OID/CBX/BIN parsing.
 
+Keep filling the full 16 bits unless rev is higher, in which case we
+read half?
+At this point (mmc_decode_cid) we can use card's ext_csd.rev so if v5.1A
+bumped it then it's a possibility; I don't have access to the jedec
+standard to check right now.
 
-Test Regressions
----------------- =
-
-
-
-platform       | arch  | lab          | compiler | defconfig | regressions
----------------+-------+--------------+----------+-----------+------------
-meson-gxm-q200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6543f7a6faa229eedcefcf00
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.2=
-97-41-g46e03d3c6192/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm-=
-q200.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.2=
-97-41-g46e03d3c6192/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm-=
-q200.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.dmesg.emerg: https://kernelci.org/test/case/id/6543f7a6faa229e=
-edcefcf03
-        failing since 17 days (last pass: v4.19.288, first fail: v4.19.296-=
-42-gb3c2ae79aa73)
-        1 lines
-
-    2023-11-02T19:25:05.543668  <4>[   50.695079] ------------[ cut here ]-=
------------
-    2023-11-02T19:25:05.544156  <4>[   50.695165] WARNING: CPU: 0 PID: 0 at=
- drivers/mmc/host/meson-gx-mmc.c:1040 meson_mmc_irq+0x1c8/0x1dc
-    2023-11-02T19:25:05.546893  <4>[   50.703639] Modules linked in: ipv6 r=
-ealtek meson_gxl dwmac_generic meson_dw_hdmi meson_drm crc32_ce dw_hdmi crc=
-t10dif_ce drm_kms_helper meson_ir meson_rng drm rng_core rc_core dwmac_meso=
-n8b meson_gxbb_wdt stmmac_platform pwm_meson stmmac drm_panel_orientation_q=
-uirks adc_keys nvmem_meson_efuse input_polldev
-    2023-11-02T19:25:05.586821  <4>[   50.730899] CPU: 0 PID: 0 Comm: swapp=
-er/0 Tainted: G        W         4.19.298-rc1 #1
-    2023-11-02T19:25:05.587063  <4>[   50.738915] Hardware name: Amlogic Me=
-son GXM (S912) Q200 Development Board (DT)
-    2023-11-02T19:25:05.587271  <4>[   50.746420] pstate: 60000085 (nZCv da=
-If -PAN -UAO)
-    2023-11-02T19:25:05.587467  <4>[   50.751422] pc : meson_mmc_irq+0x1c8/=
-0x1dc
-    2023-11-02T19:25:05.587656  <4>[   50.755734] lr : meson_mmc_irq+0x1c8/=
-0x1dc
-    2023-11-02T19:25:05.587908  <4>[   50.760045] sp : ffff000008003cc0
-    2023-11-02T19:25:05.588214  <4>[   50.763582] x29: ffff000008003cc0 x28=
-: 00000000000000a0  =
-
-    ... (37 line(s) more)  =
-
- =20
+-- 
+Dominique Martinet | Asmadeus
