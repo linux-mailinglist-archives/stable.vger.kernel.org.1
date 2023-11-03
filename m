@@ -2,147 +2,167 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B52A7E067D
-	for <lists+stable@lfdr.de>; Fri,  3 Nov 2023 17:26:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F02717E06A7
+	for <lists+stable@lfdr.de>; Fri,  3 Nov 2023 17:43:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345459AbjKCQ0r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 3 Nov 2023 12:26:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51410 "EHLO
+        id S1344472AbjKCQni (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 3 Nov 2023 12:43:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345443AbjKCQ0p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 3 Nov 2023 12:26:45 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56105D66
-        for <stable@vger.kernel.org>; Fri,  3 Nov 2023 09:26:25 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1c9c5a1b87bso17629595ad.3
-        for <stable@vger.kernel.org>; Fri, 03 Nov 2023 09:26:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699028784; x=1699633584; darn=vger.kernel.org;
-        h=content-transfer-encoding:autocrypt:subject:from:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PMKzwEYlRSGzbJAKbCHikdHtMWkHyMPm9xVaafwYnHA=;
-        b=CnBjQPLhthu8Wl0+RM8zb9v7Cr4ju4UydcCrr60xYT6YqfDe21jBCXmEd3NOHOZs0I
-         rurE76rJloQpGhGZdlJEfErPiVcEPlyXqkPPl6m8BVdvSK12SHhIEcbv8BZ1QnI7gfPE
-         IfdgPKPur5pFCRIq2zh3htYKHyfJ1naRjF3LP/v043F0ySVPwI2bb/I6A4RWG8Wonn0v
-         ZPj7eAQ/Eec1INio1hVycR45//JEI4fPOcV0gtnWePDh+9UPVo8IvqEoNJuLHlupmKPW
-         2jLR2vo4m+/7bC6xXjQFVwqcefu7OXy5OEV3upeIIdt/KswhQb9uTDd27UG95KSGpIwZ
-         BzYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699028784; x=1699633584;
-        h=content-transfer-encoding:autocrypt:subject:from:to
-         :content-language:user-agent:mime-version:date:message-id:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PMKzwEYlRSGzbJAKbCHikdHtMWkHyMPm9xVaafwYnHA=;
-        b=wgUY+nFRkfr+CIzbI89jWYGGuymTPvSDWWZZN+0LBNbiqoZc4tn/Z2njZtfLdzs0Hl
-         rH/WiX1G2W7SWWsbX+RjLwNbfJC0c0hvVL6lrpQ2xKudiVK6K01NPWnIIZKyGxj7E3dx
-         qAKwyj3EmF/u1Xn5hLfZf4EBhBv4zTHwqqllmY1u5YJ0Y9fuzTUwcGY+74c1zpliyN6V
-         tK2lv76BrNR1lkKY5CMkBv+Ao1aQs/Ph1/BcRVcgpMsh/mr9pGyYMLh8dvMzyF4HiCd5
-         yQc71k0y9VQnQlziZ9LX1fkJyLgD7pH0t4yhfUrkm9PfWd+VZ/X9lsLLWaYQlVGvUQPk
-         86oA==
-X-Gm-Message-State: AOJu0YwmcRYygBhYNkAFXHd9DtJNrAGqtP2oW+XSr/avCQNGeo4RJcE1
-        5mmOqhUDwbgWuk4tjWGK4JkFPLcPxA8=
-X-Google-Smtp-Source: AGHT+IHjdoJyXME44/LGZDvJrkZLhWUF96fRBuyreoS4KSmy/VW2zCdZljduahosbE/vJIJdtZGrMQ==
-X-Received: by 2002:a17:902:e886:b0:1cc:3dc6:8cfc with SMTP id w6-20020a170902e88600b001cc3dc68cfcmr17047808plg.22.1699028784395;
-        Fri, 03 Nov 2023 09:26:24 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id bd12-20020a170902830c00b001c322a41188sm1583145plb.117.2023.11.03.09.26.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Nov 2023 09:26:23 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <7e8bb270-871f-4324-9c73-d4abfd177b35@roeck-us.net>
-Date:   Fri, 3 Nov 2023 09:26:22 -0700
+        with ESMTP id S1345287AbjKCQnh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 3 Nov 2023 12:43:37 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B42D44;
+        Fri,  3 Nov 2023 09:43:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45509C433C8;
+        Fri,  3 Nov 2023 16:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699029814;
+        bh=AKJI6ud2/gqzwSf2vyoKUTsXLPjddX84FQGpHNeQVNE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=m3wVna0kVxQ6v441O/jKbp5N8irWGgjATWudGzxUK9bGqx/kDunXmxDDUwWpf5w/m
+         EkolboyL9WxzhbBo63r5HnTRMYoFGP7tcSO2kRxj4WD7N/tkmA1DgM6V/VU5mxVvOk
+         RS2OAqremX9mWjsQrThv4EBpVQGsdN+wAgXcuNPapmOFNzFs4aeelXlGU9aGxAqgpC
+         1rEZkl3Fen+LUVE9PtED1vw78RQldn0eHx68lL44l98PetaUubtEqQ+0CF1MUGguae
+         4Ncu9HFwshrKHf9CJwxZy2b47KCIjC2o/OT0f47rUyZkVkfnH4nS7r7FuxdITIOWC+
+         ZxjpcmDGUJluA==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1qyxHH-0003j7-05;
+        Fri, 03 Nov 2023 17:44:11 +0100
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Mathias Nyman <mathias.nyman@intel.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org,
+        Maxime Ripard <mripard@kernel.org>,
+        Stanley Chang <stanley_chang@realtek.com>
+Subject: [PATCH] USB: xhci-plat: fix legacy PHY double init
+Date:   Fri,  3 Nov 2023 17:43:23 +0100
+Message-ID: <20231103164323.14294-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To:     stable <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From:   Guenter Roeck <linux@roeck-us.net>
-Subject: Build failures in v4.{14,19}.y.queue
-Autocrypt: addr=linux@roeck-us.net; keydata=
- xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
- RYHA7RCEK2dh6dDccykQk3bC90xXMPg+O3R+C/SkwcnUak1UZaeK/SwQbq/t0tkMzYDRxfJ7
- nyFiKxUehbNF3r9qlJgPqONwX5vJy4/GvDHdddSCxV41P/ejsZ8PykxyJs98UWhF54tGRWFl
- 7i1xvaDB9lN5WTLRKSO7wICuLiSz5WZHXMkyF4d+/O5ll7yz/o/JxK5vO/sduYDIlFTvBZDh
- gzaEtNf5tQjsjG4io8E0Yq0ViobLkS2RTNZT8ICq/Jmvl0SpbHRvYwa2DhNsK0YjHFQBB0FX
- IdhdUEzNefcNcYvqigJpdICoP2e4yJSyflHFO4dr0OrdnGLe1Zi/8Xo/2+M1dSSEt196rXaC
- kwu2KgIgmkRBb3cp2vIBBIIowU8W3qC1+w+RdMUrZxKGWJ3juwcgveJlzMpMZNyM1jobSXZ0
- VHGMNJ3MwXlrEFPXaYJgibcg6brM6wGfX/LBvc/haWw4yO24lT5eitm4UBdIy9pKkKmHHh7s
- jfZJkB5fWKVdoCv/omy6UyH6ykLOPFugl+hVL2Prf8xrXuZe1CMS7ID9Lc8FaL1ROIN/W8Vk
- BIsJMaWOhks//7d92Uf3EArDlDShwR2+D+AMon8NULuLBHiEUQARAQABzTJHdWVudGVyIFJv
- ZWNrIChMaW51eCBhY2NvdW50KSA8bGludXhAcm9lY2stdXMubmV0PsLBgQQTAQIAKwIbAwYL
- CQgHAwIGFQgCCQoLBBYCAwECHgECF4ACGQEFAlVcphcFCRmg06EACgkQyx8mb86fmYFg0RAA
- nzXJzuPkLJaOmSIzPAqqnutACchT/meCOgMEpS5oLf6xn5ySZkl23OxuhpMZTVX+49c9pvBx
- hpvl5bCWFu5qC1jC2eWRYU+aZZE4sxMaAGeWenQJsiG9lP8wkfCJP3ockNu0ZXXAXwIbY1O1
- c+l11zQkZw89zNgWgKobKzrDMBFOYtAh0pAInZ9TSn7oA4Ctejouo5wUugmk8MrDtUVXmEA9
- 7f9fgKYSwl/H7dfKKsS1bDOpyJlqhEAH94BHJdK/b1tzwJCFAXFhMlmlbYEk8kWjcxQgDWMu
- GAthQzSuAyhqyZwFcOlMCNbAcTSQawSo3B9yM9mHJne5RrAbVz4TWLnEaX8gA5xK3uCNCeyI
- sqYuzA4OzcMwnnTASvzsGZoYHTFP3DQwf2nzxD6yBGCfwNGIYfS0i8YN8XcBgEcDFMWpOQhT
- Pu3HeztMnF3HXrc0t7e5rDW9zCh3k2PA6D2NV4fews9KDFhLlTfCVzf0PS1dRVVWM+4jVl6l
- HRIAgWp+2/f8dx5vPc4Ycp4IsZN0l1h9uT7qm1KTwz+sSl1zOqKD/BpfGNZfLRRxrXthvvY8
- BltcuZ4+PGFTcRkMytUbMDFMF9Cjd2W9dXD35PEtvj8wnEyzIos8bbgtLrGTv/SYhmPpahJA
- l8hPhYvmAvpOmusUUyB30StsHIU2LLccUPPOwU0ETofVZwEQALlLbQeBDTDbwQYrj0gbx3bq
- 7kpKABxN2MqeuqGr02DpS9883d/t7ontxasXoEz2GTioevvRmllJlPQERVxM8gQoNg22twF7
- pB/zsrIjxkE9heE4wYfN1AyzT+AxgYN6f8hVQ7Nrc9XgZZe+8IkuW/Nf64KzNJXnSH4u6nJM
- J2+Dt274YoFcXR1nG76Q259mKwzbCukKbd6piL+VsT/qBrLhZe9Ivbjq5WMdkQKnP7gYKCAi
- pNVJC4enWfivZsYupMd9qn7Uv/oCZDYoBTdMSBUblaLMwlcjnPpOYK5rfHvC4opxl+P/Vzyz
- 6WC2TLkPtKvYvXmdsI6rnEI4Uucg0Au/Ulg7aqqKhzGPIbVaL+U0Wk82nz6hz+WP2ggTrY1w
- ZlPlRt8WM9w6WfLf2j+PuGklj37m+KvaOEfLsF1v464dSpy1tQVHhhp8LFTxh/6RWkRIR2uF
- I4v3Xu/k5D0LhaZHpQ4C+xKsQxpTGuYh2tnRaRL14YMW1dlI3HfeB2gj7Yc8XdHh9vkpPyuT
- nY/ZsFbnvBtiw7GchKKri2gDhRb2QNNDyBnQn5mRFw7CyuFclAksOdV/sdpQnYlYcRQWOUGY
- HhQ5eqTRZjm9z+qQe/T0HQpmiPTqQcIaG/edgKVTUjITfA7AJMKLQHgp04Vylb+G6jocnQQX
- JqvvP09whbqrABEBAAHCwWUEGAECAA8CGwwFAlVcpi8FCRmg08MACgkQyx8mb86fmYHNRQ/+
- J0OZsBYP4leJvQF8lx9zif+v4ZY/6C9tTcUv/KNAE5leyrD4IKbnV4PnbrVhjq861it/zRQW
- cFpWQszZyWRwNPWUUz7ejmm9lAwPbr8xWT4qMSA43VKQ7ZCeTQJ4TC8kjqtcbw41SjkjrcTG
- wF52zFO4bOWyovVAPncvV9eGA/vtnd3xEZXQiSt91kBSqK28yjxAqK/c3G6i7IX2rg6pzgqh
- hiH3/1qM2M/LSuqAv0Rwrt/k+pZXE+B4Ud42hwmMr0TfhNxG+X7YKvjKC+SjPjqp0CaztQ0H
- nsDLSLElVROxCd9m8CAUuHplgmR3seYCOrT4jriMFBtKNPtj2EE4DNV4s7k0Zy+6iRQ8G8ng
- QjsSqYJx8iAR8JRB7Gm2rQOMv8lSRdjva++GT0VLXtHULdlzg8VjDnFZ3lfz5PWEOeIMk7Rj
- trjv82EZtrhLuLjHRCaG50OOm0hwPSk1J64R8O3HjSLdertmw7eyAYOo4RuWJguYMg5DRnBk
- WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
- HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-I see the following build failures in v4.14.y.queue and v4.19.y.queue.
+Commits 7b8ef22ea547 ("usb: xhci: plat: Add USB phy support") and
+9134c1fd0503 ("usb: xhci: plat: Add USB 3.0 phy support") added support
+for looking up legacy PHYs from the sysdev devicetree node and
+initialising them.
 
-Build reference: v4.19.297-41-g46e03d3
-Compiler version: x86_64-linux-gcc (GCC) 11.4.0
-Assembler version: GNU assembler (GNU Binutils) 2.40
+This broke drivers such as dwc3 which manages PHYs themself as the PHYs
+would now be initialised twice, something which specifically can lead to
+resources being left enabled during suspend (e.g. with the
+usb_phy_generic PHY driver).
 
-Building i386:defconfig ... failed
---------------
-Error log:
-arch/x86/kernel/head_32.S: Assembler messages:
-arch/x86/kernel/head_32.S:126: Error: invalid character '(' in mnemonic
-arch/x86/kernel/head_32.S:57:  Info: macro invoked from here
-arch/x86/kernel/head_32.S:128: Error: invalid character '(' in mnemonic
-arch/x86/kernel/head_32.S:57:  Info: macro invoked from here
-make[3]: *** [scripts/Makefile.build:403: arch/x86/kernel/head_32.o] Error 1
-make[3]: *** Waiting for unfinished jobs....
-make[2]: *** [scripts/Makefile.build:544: arch/x86/kernel] Error 2
-make[1]: *** [Makefile:1086: arch/x86] Error 2
-make[1]: *** Waiting for unfinished jobs....
-make: *** [Makefile:153: sub-make] Error 2
+As the dwc3 driver uses driver-name matching for the xhci platform
+device, fix this by only looking up and initialising PHYs for devices
+that have been matched using OF.
 
-This appears to be caused by an attempt to support older versions of binutils
-in those branches, specifically
+Note that checking that the platform device has a devicetree node would
+currently be sufficient, but that could lead to subtle breakages in case
+anyone ever tries to reuse an ancestor's node.
 
-30aa3427922d x86/mm: Fix RESERVE_BRK() for older binutils
-a70252b27451 x86/mm: Simplify RESERVE_BRK()
+Fixes: 7b8ef22ea547 ("usb: xhci: plat: Add USB phy support")
+Fixes: 9134c1fd0503 ("usb: xhci: plat: Add USB 3.0 phy support")
+Cc: stable@vger.kernel.org      # 4.1
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Stanley Chang <stanley_chang@realtek.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/usb/host/xhci-plat.c | 50 +++++++++++++++++++++---------------
+ 1 file changed, 30 insertions(+), 20 deletions(-)
 
-I also tried gcc 11.4.0 / binutils 2.38 as well as gcc 6.4.0 / binutils 2.32
-with the same result.
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 28218c8f1837..01d19d17153b 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -13,6 +13,7 @@
+ #include <linux/module.h>
+ #include <linux/pci.h>
+ #include <linux/of.h>
++#include <linux/of_device.h>
+ #include <linux/platform_device.h>
+ #include <linux/usb/phy.h>
+ #include <linux/slab.h>
+@@ -148,7 +149,7 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+ 	int			ret;
+ 	int			irq;
+ 	struct xhci_plat_priv	*priv = NULL;
+-
++	bool			of_match;
+ 
+ 	if (usb_disabled())
+ 		return -ENODEV;
+@@ -253,16 +254,23 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+ 					 &xhci->imod_interval);
+ 	}
+ 
+-	hcd->usb_phy = devm_usb_get_phy_by_phandle(sysdev, "usb-phy", 0);
+-	if (IS_ERR(hcd->usb_phy)) {
+-		ret = PTR_ERR(hcd->usb_phy);
+-		if (ret == -EPROBE_DEFER)
+-			goto disable_clk;
+-		hcd->usb_phy = NULL;
+-	} else {
+-		ret = usb_phy_init(hcd->usb_phy);
+-		if (ret)
+-			goto disable_clk;
++	/*
++	 * Drivers such as dwc3 manages PHYs themself (and rely on driver name
++	 * matching for the xhci platform device).
++	 */
++	of_match = of_match_device(pdev->dev.driver->of_match_table, &pdev->dev);
++	if (of_match) {
++		hcd->usb_phy = devm_usb_get_phy_by_phandle(sysdev, "usb-phy", 0);
++		if (IS_ERR(hcd->usb_phy)) {
++			ret = PTR_ERR(hcd->usb_phy);
++			if (ret == -EPROBE_DEFER)
++				goto disable_clk;
++			hcd->usb_phy = NULL;
++		} else {
++			ret = usb_phy_init(hcd->usb_phy);
++			if (ret)
++				goto disable_clk;
++		}
+ 	}
+ 
+ 	hcd->tpl_support = of_usb_host_tpl_support(sysdev->of_node);
+@@ -285,15 +293,17 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+ 			goto dealloc_usb2_hcd;
+ 		}
+ 
+-		xhci->shared_hcd->usb_phy = devm_usb_get_phy_by_phandle(sysdev,
+-			    "usb-phy", 1);
+-		if (IS_ERR(xhci->shared_hcd->usb_phy)) {
+-			xhci->shared_hcd->usb_phy = NULL;
+-		} else {
+-			ret = usb_phy_init(xhci->shared_hcd->usb_phy);
+-			if (ret)
+-				dev_err(sysdev, "%s init usb3phy fail (ret=%d)\n",
+-					    __func__, ret);
++		if (of_match) {
++			xhci->shared_hcd->usb_phy = devm_usb_get_phy_by_phandle(sysdev,
++										"usb-phy", 1);
++			if (IS_ERR(xhci->shared_hcd->usb_phy)) {
++				xhci->shared_hcd->usb_phy = NULL;
++			} else {
++				ret = usb_phy_init(xhci->shared_hcd->usb_phy);
++				if (ret)
++					dev_err(sysdev, "%s init usb3phy fail (ret=%d)\n",
++						__func__, ret);
++			}
+ 		}
+ 
+ 		xhci->shared_hcd->tpl_support = hcd->tpl_support;
+-- 
+2.41.0
 
-Guenter
