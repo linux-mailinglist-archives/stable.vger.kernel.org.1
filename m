@@ -2,122 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02C887E0215
-	for <lists+stable@lfdr.de>; Fri,  3 Nov 2023 12:20:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 406B57E02BC
+	for <lists+stable@lfdr.de>; Fri,  3 Nov 2023 13:22:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346839AbjKCLRT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 3 Nov 2023 07:17:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58198 "EHLO
+        id S233785AbjKCMWC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 3 Nov 2023 08:22:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346680AbjKCLRQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 3 Nov 2023 07:17:16 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B98C2D6A
-        for <stable@vger.kernel.org>; Fri,  3 Nov 2023 04:17:01 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-5a81ab75f21so23327137b3.2
-        for <stable@vger.kernel.org>; Fri, 03 Nov 2023 04:17:01 -0700 (PDT)
+        with ESMTP id S233045AbjKCMWB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 3 Nov 2023 08:22:01 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95915D54
+        for <stable@vger.kernel.org>; Fri,  3 Nov 2023 05:21:55 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-2809414efa9so1870841a91.1
+        for <stable@vger.kernel.org>; Fri, 03 Nov 2023 05:21:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699010220; x=1699615020; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=oWqvGHOpDjXeJF4gaG5FvSChunLowe+31JAI0Z5rk34=;
-        b=aTAeo++ufcpuOK6ygynGRX8GpEjrCX4iIsxGeSzbXaI/UKqI822QKIIZ7KYNfbZL6W
-         q7ZuC/BGDP7M7RxUi84roEW10U/GV3F1+ITWIErXRQD7d0j86xRq3eztwsU6C+B3NVki
-         SUgg4HVAQX2aBtJmbJosEktwRXGkmr4D/HuzOB5Sc7MOUXRz8HZRPnFfLfCbGlWsJysp
-         XZlmDIEfk4O228DHLlYe1dGixLQAYCmwmbvNEzQn+j6KRRaUUTEJwWxVJeR8agxVBhnS
-         dVbfe993pSvGL8axGrZTLwphROUuFWh/dULncYfyOZRy0xo/WE6tvlqIMpA0iG042yZ8
-         7K6A==
+        d=gmail.com; s=20230601; t=1699014115; x=1699618915; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tOW5o5Vz/UFvLvDgqa/XoJw/ZKIviQw6rnddoLVFPgA=;
+        b=VVc3B65OgxdNfVFFYeHkFEHKDz70ZemPtZ8joTkAb2h6TJhFdq2at6GMt21kKT9+4t
+         LuFpCRjX3VM8Deg9fVgKZmKHRUmaVemVkxB9s1JAs7iuhoyGO2EKikUJgeRuscwHm4CQ
+         O/+hW8nI/o1bj/RYYHHw81wVwIHvgU6i/welNgCEexNTXPHd+gXrB9XDWi3xesu09Eej
+         zeP8I+k6spbFJR670RCHojNi+ubKpHt/CKLSJ6OpMr20I7v3O3IlK5msYeO2+D2DDmr/
+         n+UFC1hUqFPmZVmLt8mR1tU7Pyop8TGeCBI1BN11K+yOPThtfpsyLAYHBX+uAvRG2BpT
+         oiMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699010220; x=1699615020;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oWqvGHOpDjXeJF4gaG5FvSChunLowe+31JAI0Z5rk34=;
-        b=ZhdeILg3ZBtLNGpeEih58XTxvHPLRyh3bm8erheIlt2ScuxR3NsxBvnxzetSWRh8/h
-         6qRc9whULZqtG/Lq3KBx6DdZJq4adbDSLTYd3MhxY9GSk3IIVrdm+aVSZzi5zCUc8bWv
-         qY6Bvx7OkCz51pn2+e4EAV7r7xxczy+PraOsT2lWX7FAWEhI4LmVWiCkaltiEtdRt2tr
-         TXRSz9pFBluiOYsmsT6Vo9DPsnX0/7xA6ri6VknRZVwccD2L8vfg81VA0aCnI2Wy03+v
-         en0RuZT3UBDh3XDtldNeXzBdz8MSBkSk7vjmofOvJyYlRIf26bemOT4dD14ffAykDzee
-         1icQ==
-X-Gm-Message-State: AOJu0YyWUjXLWcZe9uBJkT5cRLkfGqK5Bc012SBdqwMBWLdv+/cUmj29
-        tM6yUlqaLT1J8c+ZJr9ErH6u5HRc39G/kTHi+Yqlrh8Y3CcyS1oO
-X-Google-Smtp-Source: AGHT+IFLVZi6pW8xuPrCXex8Mha8wM8l8BM1AAWvvxpzrUbGuBa0q1spsqLLCOnrl8AxOXZ62UTRQpiJM5P5rka57OE=
-X-Received: by 2002:a81:4f04:0:b0:5a7:e5b8:997a with SMTP id
- d4-20020a814f04000000b005a7e5b8997amr2573913ywb.10.1699010220701; Fri, 03 Nov
- 2023 04:17:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1699014115; x=1699618915;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tOW5o5Vz/UFvLvDgqa/XoJw/ZKIviQw6rnddoLVFPgA=;
+        b=GfBV3AWiKT6eJj2q2QuUXGpVk5TLDMVrdN9Jm4QdxiCtErV8UJh5MRrbmMlIO1Zn7V
+         UEw0KSBHitMBVZbdJPEgLk3uycWRVL1V+iTniI3pfL/FfFqVB2fp279Skt7vEYMDk/8R
+         FpQKiRT2uncVV0ZIeGqBQUHxelWhmMq6Z+Ct1/djPpfEb8PPWBvDCbL6tn9d0FE2shWo
+         OJA5uu/OaEl3dFjDnUqEdmBtstMw9G90fx3SyQaKV7YYFU7hwRcXJZQcuehdYTqwOeEU
+         7VkhqmQx1jbZhR51aaed7UP1ZPI3Pn6DyvGrAw07Tvr6acnlnREGFdkfaFE/dfv9/Z2C
+         iO1Q==
+X-Gm-Message-State: AOJu0Yx7qD/uvw+hZjHt899JVcCk1vykpjovs5DVeDpGzPMw4eVnJAbh
+        th8C1jSVPVTPOW67x2lF12mYgM3T6tglVLV3Ghk=
+X-Google-Smtp-Source: AGHT+IE1J5usVRn/faWOlGGcCkWNgoow57TY1j2dD8H51u0G2G8Wntv3g/zFTXZk7GqYFrqrdGdA+C/eZh2PJyhePe0=
+X-Received: by 2002:a17:90a:1a51:b0:27d:4278:ba53 with SMTP id
+ 17-20020a17090a1a5100b0027d4278ba53mr18873123pjl.47.1699014114853; Fri, 03
+ Nov 2023 05:21:54 -0700 (PDT)
 MIME-Version: 1.0
-References: <20231103004220.1666641-1-asmadeus@codewreck.org>
-In-Reply-To: <20231103004220.1666641-1-asmadeus@codewreck.org>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Fri, 3 Nov 2023 12:16:25 +0100
-Message-ID: <CAPDyKFrPaScaQE340g8cD_xR+KoX=JuSc9xtCW=B+HZKYjf1aQ@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mmc: core: Capture correct oemid-bits for eMMC cards"
-To:     Dominique Martinet <asmadeus@codewreck.org>
-Cc:     linux-mmc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Dominique Martinet <dominique.martinet@atmark-techno.com>,
-        stable@vger.kernel.org, Avri Altman <avri.altman@wdc.com>,
-        Alex Fetters <Alex.Fetters@garmin.com>
+Received: by 2002:a05:7300:7c19:b0:f4:d4fd:6db1 with HTTP; Fri, 3 Nov 2023
+ 05:21:54 -0700 (PDT)
+Reply-To: fionahill00005@gmail.com
+From:   Fiona Hill <asouche209@gmail.com>
+Date:   Fri, 3 Nov 2023 12:21:54 +0000
+Message-ID: <CALmDccL4WnCcqoSEmpLtOw26stODYUXdy_SHCeLn+vRnDueKDQ@mail.gmail.com>
+Subject: How are you ?
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 3 Nov 2023 at 01:42, Dominique Martinet <asmadeus@codewreck.org> wrote:
->
-> From: Dominique Martinet <dominique.martinet@atmark-techno.com>
->
-> This reverts commit 84ee19bffc9306128cd0f1c650e89767079efeff.
->
-> The commit above made quirks with an OEMID fail to be applied, as they
-> were checking card->cid.oemid for the full 16 bits defined in MMC_FIXUP
-> macros but the field would only contain the bottom 8 bits.
->
-> eMMC v5.1A might have bogus values in OEMID's higher bits so another fix
-> will be made, but it has been decided to revert this until that is ready.
->
-> Fixes: 84ee19bffc93 ("mmc: core: Capture correct oemid-bits for eMMC cards")
-> Link: https://lkml.kernel.org/r/ZToJsSLHr8RnuTHz@codewreck.org
-> Link: https://lkml.kernel.org/r/CAPDyKFqkKibcXnwjnhc3+W1iJBHLeqQ9BpcZrSwhW2u9K2oUtg@mail.gmail.com
-> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
-> Cc: stable@vger.kernel.org
-> Cc: Avri Altman <avri.altman@wdc.com>
-> Cc: Ulf Hansson <ulf.hansson@linaro.org>
-> Cc: Alex Fetters <Alex.Fetters@garmin.com>
+ Did you receive my message ? fionahill00005@gmail.com
 
-Applied for fixes, thanks!
-
-Kind regards
-Uffe
-
-
-> ---
-> Here's the revert as discussed in "mmc: truncate quirks' oemid to 8
-> bits"' patch thread.
-> Feel free to ignore if you already have something, I just checked your
-> -next branch quickly and might have missed it.
->
->  drivers/mmc/core/mmc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/core/mmc.c b/drivers/mmc/core/mmc.c
-> index 4a4bab9aa726..89cd48fcec79 100644
-> --- a/drivers/mmc/core/mmc.c
-> +++ b/drivers/mmc/core/mmc.c
-> @@ -104,7 +104,7 @@ static int mmc_decode_cid(struct mmc_card *card)
->         case 3: /* MMC v3.1 - v3.3 */
->         case 4: /* MMC v4 */
->                 card->cid.manfid        = UNSTUFF_BITS(resp, 120, 8);
-> -               card->cid.oemid         = UNSTUFF_BITS(resp, 104, 8);
-> +               card->cid.oemid         = UNSTUFF_BITS(resp, 104, 16);
->                 card->cid.prod_name[0]  = UNSTUFF_BITS(resp, 96, 8);
->                 card->cid.prod_name[1]  = UNSTUFF_BITS(resp, 88, 8);
->                 card->cid.prod_name[2]  = UNSTUFF_BITS(resp, 80, 8);
-> --
-> 2.41.0
->
+Fiona
