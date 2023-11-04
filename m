@@ -2,147 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63CB27E0D63
-	for <lists+stable@lfdr.de>; Sat,  4 Nov 2023 04:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 379F37E0DFB
+	for <lists+stable@lfdr.de>; Sat,  4 Nov 2023 06:49:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234869AbjKDDMf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 3 Nov 2023 23:12:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51976 "EHLO
+        id S229560AbjKDFt1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 4 Nov 2023 01:49:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234725AbjKDDMe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 3 Nov 2023 23:12:34 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D07D42;
-        Fri,  3 Nov 2023 20:12:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FBCC433C9;
-        Sat,  4 Nov 2023 03:12:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699067552;
-        bh=oI0QedCsOnC8Jw7SXQdJ46me22RoBpkAwcj3jrvSNwE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=A3D92dsfYdiPd9aSrKm3J5sxnKBpbBkEsH8bXJVjXwIwQSGj42cdE1r92dHJgHdgx
-         bKzNhD17fmHLt+4Lqgc9qom4YMq5nBcK5IdJrxTFUBqA4KArdoMYBaBg1LdaErJEI3
-         DHB3JCS2XnRbCtDgKqGAYM4+0+aPjmZQ2mLEW81QjL7bqGO/BhsCMgAnQM/ODtwvu0
-         YVJm4DmVGNH23PQV7ou316W6YJjfVrE4mhAcCRa4soiD3eY789R4yihOLvMMJgLcS4
-         2tFcBqoIA6sqYZUbPn1ZyZRt2bB3CdgaSe2lly4760N32SwrlyCbPL68PQJUt5/N/r
-         VRjy6U1N0PYvg==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-9db6cf8309cso373658066b.0;
-        Fri, 03 Nov 2023 20:12:32 -0700 (PDT)
-X-Gm-Message-State: AOJu0YzknupsSJawLgttBS4C2abNAceytrgV8fDPePs+YWVXy/Aqy0gF
-        X0ES6XSTug5BWXV9LrcXtTvA8X1wt59uT1bi/nw=
-X-Google-Smtp-Source: AGHT+IFEzA0jYVYe46njXNrOwelVMkm00a0rVzjZ0X18HAMZq/Uj9IcMTrJQaZ092NhSYg7o+LTvhC2J6JJwsLLdvIA=
-X-Received: by 2002:a17:907:97cd:b0:9b8:7746:f176 with SMTP id
- js13-20020a17090797cd00b009b87746f176mr8142759ejc.34.1699067550501; Fri, 03
- Nov 2023 20:12:30 -0700 (PDT)
+        with ESMTP id S229509AbjKDFt0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 4 Nov 2023 01:49:26 -0400
+Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.219])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 396D7D45;
+        Fri,  3 Nov 2023 22:49:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=DFi6A
+        Y3VrieYh4gF0CjCQ0nYAz1QmkjAeciIYlFEwvU=; b=JUPmOAaeRt2VZcrFp6bK4
+        iJhZBR3WJDLZ6VqCZ5N4Po3qpte3t4Eyct2hXFHqNw/hRj8LfPJT96wbML0ttE8u
+        UzGo2fHkGhyefuxmQ4OohFSrlnyDPyGzy+cuQ3RrQNqAyf9sc4OKXGo1bDkqjtQY
+        RRxjDeMN0xTbKByoQDY4oQ=
+Received: from leanderwang-LC4.localdomain (unknown [111.206.145.21])
+        by zwqz-smtp-mta-g1-3 (Coremail) with SMTP id _____wCn937u2kVlbNpXAw--.9138S2;
+        Sat, 04 Nov 2023 13:47:27 +0800 (CST)
+From:   Zheng Wang <zyytlz.wz@163.com>
+To:     aspriel@gmail.com
+Cc:     franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        kvalo@kernel.org, johannes.berg@intel.com, marcan@marcan.st,
+        linus.walleij@linaro.org, jisoo.jang@yonsei.ac.kr,
+        linuxlovemin@yonsei.ac.kr, wataru.gohda@cypress.com,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        security@kernel.org, stable@vger.kernel.org,
+        Zheng Wang <zyytlz.wz@163.com>
+Subject: [PATCH] wifi: cfg80211: Fix use-after-free bug in brcmf_cfg80211_detach
+Date:   Sat,  4 Nov 2023 13:47:09 +0800
+Message-Id: <20231104054709.716585-1-zyytlz.wz@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20231101114957.309902-1-jiaxun.yang@flygoat.com>
-In-Reply-To: <20231101114957.309902-1-jiaxun.yang@flygoat.com>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Sat, 4 Nov 2023 11:12:18 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H41Jwz2AuGxFJfq1f6nOkSJVASOjN8R6dxDqtDhGTs-Ug@mail.gmail.com>
-Message-ID: <CAAhV-H41Jwz2AuGxFJfq1f6nOkSJVASOjN8R6dxDqtDhGTs-Ug@mail.gmail.com>
-Subject: Re: [PATCH fixes v4] pci: loongson: Workaround MIPS firmware MRRS settings
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     linux-pci@vger.kernel.org, lpieralisi@kernel.org, kw@linux.com,
-        robh@kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wCn937u2kVlbNpXAw--.9138S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJr45GryUGF4rGr4fXF4UCFg_yoW8AF47pF
+        WxXa4DAryUWrW3Kr4F9rnrXFyrta1DGwnYkr4UZF93uFn5ur1rJrWjgFya93WDGrs2y3y7
+        ZrsYqr17GrZ7Ga7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR1rWrUUUUU=
+X-Originating-IP: [111.206.145.21]
+X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/xtbBzg8eU2I0bMRTiQAAso
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Nov 1, 2023 at 11:27=E2=80=AFPM Jiaxun Yang <jiaxun.yang@flygoat.co=
-m> wrote:
->
-> This is a partial revert of commit 8b3517f88ff2 ("PCI:
-> loongson: Prevent LS7A MRRS increases") for MIPS based Loongson.
->
-> There are many MIPS based Loongson systems in wild that
-> shipped with firmware which does not set maximum MRRS properly.
->
-> Limiting MRRS to 256 for all as MIPS Loongson comes with higher
-> MRRS support is considered rare.
->
-> It must be done at device enablement stage because hardware will
-> reset MRRS to inavlid value if a device got disabled.
->
-> Cc: stable@vger.kernel.org
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217680
-> Fixes: 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases")
-> Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-> ---
-> v4: Improve commit message
->
-> This is a partial revert of the origin quirk so there shouldn't
-> be any drama.
-> ---
->  drivers/pci/controller/pci-loongson.c | 38 +++++++++++++++++++++++++++
->  1 file changed, 38 insertions(+)
->
-> diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/controll=
-er/pci-loongson.c
-> index d45e7b8dc530..d184d7b97e54 100644
-> --- a/drivers/pci/controller/pci-loongson.c
-> +++ b/drivers/pci/controller/pci-loongson.c
-> @@ -108,6 +108,44 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
->  DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
->                         DEV_LS7A_PCIE_PORT6, loongson_mrrs_quirk);
->
-> +#ifdef CONFIG_MIPS
-> +static void loongson_old_mrrs_quirk(struct pci_dev *pdev)
-> +{
-> +       struct pci_bus *bus =3D pdev->bus;
-> +       struct pci_dev *bridge;
-> +       static const struct pci_device_id bridge_devids[] =3D {
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS2K_PCIE_PORT0) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT0) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT1) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT2) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT3) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT4) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT5) },
-> +               { PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT6) },
-> +               { 0, },
-> +       };
-> +
-> +       /* look for the matching bridge */
-> +       while (!pci_is_root_bus(bus)) {
-> +               bridge =3D bus->self;
-> +               bus =3D bus->parent;
-> +               /*
-> +                * There are still some wild MIPS Loongson firmware won't
-> +                * set MRRS properly. Limiting MRRS to 256 as MIPS Loongs=
-on
-> +                * comes with higher MRRS support is considered rare.
-> +                */
-> +               if (pci_match_id(bridge_devids, bridge)) {
-> +                       if (pcie_get_readrq(pdev) > 256) {
-> +                               pci_info(pdev, "limiting MRRS to 256\n");
-> +                               pcie_set_readrq(pdev, 256);
-> +                       }
-> +                       break;
-> +               }
-> +       }
-> +}
-> +DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_old_mrrs_quirk=
-);
-> +#endif
-Rename it to loongson_set_min_mrrs() and move it before
-loongson_mrrs_quirk() may be better.
+In brcm80211 driver,it starts with the following invoking chain
+to start init a timeout worker:
 
-Huacai
+->brcmf_usb_probe
+  ->brcmf_usb_probe_cb
+    ->brcmf_attach
+      ->brcmf_bus_started
+        ->brcmf_cfg80211_attach
+          ->wl_init_priv
+            ->brcmf_init_escan
+              ->INIT_WORK(&cfg->escan_timeout_work,
+		  brcmf_cfg80211_escan_timeout_worker);
 
-> +
->  static void loongson_pci_pin_quirk(struct pci_dev *pdev)
->  {
->         pdev->pin =3D 1 + (PCI_FUNC(pdev->devfn) & 3);
-> --
-> 2.34.1
->
+If we disconnect the USB by hotplug, it will call
+brcmf_usb_disconnect to make cleanup. The invoking chain is :
+
+brcmf_usb_disconnect
+  ->brcmf_usb_disconnect_cb
+    ->brcmf_detach
+      ->brcmf_cfg80211_detach
+        ->kfree(cfg);
+
+While the timeout woker may still be running. This will cause
+a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
+
+Fix it by deleting the timer and canceling the worker in
+brcmf_cfg80211_detach.
+
+Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 667462369a32..0224e377eb6e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -8431,6 +8431,9 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
+ 	if (!cfg)
+ 		return;
+ 
++	if (timer_pending(&cfg->escan_timeout))
++		del_timer_sync(&cfg->escan_timeout);
++	cancel_delayed_work_sync(&cfg->escan_timeout_work);
+ 	brcmf_pno_detach(cfg);
+ 	brcmf_btcoex_detach(cfg);
+ 	wiphy_unregister(cfg->wiphy);
+-- 
+2.25.1
+
