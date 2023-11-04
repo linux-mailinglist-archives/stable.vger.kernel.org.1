@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1D0E7E1110
+	by mail.lfdr.de (Postfix) with ESMTP id D898E7E1111
 	for <lists+stable@lfdr.de>; Sat,  4 Nov 2023 22:02:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229698AbjKDVCf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 4 Nov 2023 17:02:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51914 "EHLO
+        id S229625AbjKDVCe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 4 Nov 2023 17:02:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229802AbjKDVBq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 4 Nov 2023 17:01:46 -0400
+        with ESMTP id S232224AbjKDVCE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 4 Nov 2023 17:02:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2787BD66;
-        Sat,  4 Nov 2023 14:01:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A247C433C7;
-        Sat,  4 Nov 2023 21:01:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F010EC4
+        for <stable@vger.kernel.org>; Sat,  4 Nov 2023 14:02:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61866C433C7;
+        Sat,  4 Nov 2023 21:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699131703;
-        bh=+7byfA4Ppk8N0k1bYP3EJZinN4mfeQq879uiQ9hGw84=;
+        s=k20201202; t=1699131721;
+        bh=x8XuhbC75O/yvjXyGVSZCOYtUyzjcnsgzJpfWu3lmEo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Yvbs/6PjuCp11yK49p0WYF++z2pGVaebkm3vOm2YVUF89Vjs8LcU5FDCX6TYHJxbL
-         UmyN9plXwI8cLdG+YqSuTZ42Evt+zG3M8RUPpBRwtf5g/xEQ+iB10zYjE1op4a2vsh
-         NJeZFUWLDtzuU3wuhjwEp48rgZRnKMgNPnNoGLY7ZfCm0Z6Y85M04MZJJzmlz/AdAo
-         AOOGONMhnMB8TyqDLmtz7qGBTlGeHMXMA0HIKSVyWHGxvejLaycwWs/K28C2doM0ag
-         xrBa0DaJsm0cHB1m6zyY7khisnc1nL8ox65kSEAyTzM6qMZ7x6hl9jDciPziZ24WxB
-         aEpCd4JJQnjPg==
-Date:   Sat, 4 Nov 2023 17:01:42 -0400
+        b=NkyJSCHoJiX81ILJEKUI2kyZBO3dk/yj33dCYgrwOA4xvRhvvT14olsOL5btyX/DB
+         7Z8u0Wfeb6g2Zn1zY+WBXxokB4+iaSnnt8pNNeCXHR6rjMmiXa67LEToWdP8IuRCA5
+         Yxo4lUxTln3RW/wHl/Gm3F8A+hy+xwBWxHvENyhBEQHKWMH/R4Ja2EEiHtvD+K1HG+
+         doXTTrg6aqjBai6mXU2F5+H1kuowpp/Wab7rOgHScRa7nZ7TiKOLm8+EuGCZmbThJC
+         rl9NfEVF/Ts1pHAGhHOnfRBYHs6Jkkx54OwHxDYiC36Ie6A7B2zbL/1DZRhxUJ8gHa
+         bo9/6oIEcL/EA==
+Date:   Sat, 4 Nov 2023 17:02:00 -0400
 From:   Sasha Levin <sashal@kernel.org>
-To:     Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas@t-8ch.de>
-Cc:     stable@vger.kernel.org,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>, sre@kernel.org,
-        Shyam-sundar.S-k@amd.com, mario.limonciello@amd.com,
-        hdegoede@redhat.com, markgross@kernel.org,
-        platform-driver-x86@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: Backport of commit "power: supply: core: Use
- blocking_notifier_call_chain to avoid RCU complaint")
-Message-ID: <ZUaxNuhxWabM6zx4@sashalap>
-References: <20230913033233.602986-1-kai.heng.feng@canonical.com>
- <ff242a4c-8c84-485f-a100-0317eaa1544b@t-8ch.de>
+To:     Benno Lossin <benno.lossin@proton.me>
+Cc:     stable@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+        Alex Gaynor <alex.gaynor@gmail.com>,
+        Wedson Almeida Filho <wedsonaf@gmail.com>,
+        Alice Ryhl <aliceryhl@google.com>, Gary Guo <gary@garyguo.net>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        rust-for-linux@vger.kernel.org
+Subject: Re: backport 0b4e3b6f6b79 and 35cad617df2e
+Message-ID: <ZUaxSDabYeRN7TPv@sashalap>
+References: <1760daa6-7245-4d01-bb89-388c472ec5ed@proton.me>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ff242a4c-8c84-485f-a100-0317eaa1544b@t-8ch.de>
+In-Reply-To: <1760daa6-7245-4d01-bb89-388c472ec5ed@proton.me>
 X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -55,14 +53,27 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Nov 03, 2023 at 08:33:45PM +0100, Thomas Weißschuh wrote:
->Dear stable team,
+On Fri, Nov 03, 2023 at 09:57:46PM +0000, Benno Lossin wrote:
+>Hi,
 >
->I would like to propose the commit
->bbaa6ffa5b6c ("power: supply: core: Use blocking_notifier_call_chain to avoid RCU complaint")
->from mainline for inclusion into the stable kernels.
+>I noticed that without commit 0b4e3b6f6b79 ("rust: types: make `Opaque`
+>be `!Unpin`") the `Opaque` type has an unsound API:
+>The `Opaque` type is designed to wrap C types, hence it is often used to
+>convert raw pointers to references in Rust. Normally `&mut` references
+>are unique, but for `&mut Opaque<T>` this is should not be the case,
+>since C also has pointers to the object. The way to disable the
+>uniqueness guarantee for `&mut` in Rust is to make the type `!Unpin`.
+>This is accomplished by the given commit above. At the time of creating
+>that patch however, we did not consider this unsoundness issue.
 >
->The commit fixes a RCU violation as indicated in its commit message.
+>For this reason I propose to backport the commit 0b4e3b6f6b79.
+>The only affected version is 6.5. No earlier version is affected, since
+>the `Opaque` type does not exist in 6.1. Newer versions are also
+>unaffected, since the patch is present in 6.6.
+>
+>Additionally I also propose to backport commit 35cad617df2e ("rust: make
+>`UnsafeCell` the outer type in `Opaque`") to 6.5, as this is a
+>prerequisite of 0b4e3b6f6b79.
 
 Queued up, thanks!
 
