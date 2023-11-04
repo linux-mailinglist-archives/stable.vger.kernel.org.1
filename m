@@ -2,108 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3C9B7E0FC2
-	for <lists+stable@lfdr.de>; Sat,  4 Nov 2023 14:59:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DBD57E0FEB
+	for <lists+stable@lfdr.de>; Sat,  4 Nov 2023 15:35:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230151AbjKDN7M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 4 Nov 2023 09:59:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34898 "EHLO
+        id S230338AbjKDOfG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 4 Nov 2023 10:35:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229783AbjKDN7M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 4 Nov 2023 09:59:12 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BA34184
-        for <stable@vger.kernel.org>; Sat,  4 Nov 2023 06:59:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1F88C433C7;
-        Sat,  4 Nov 2023 13:59:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699106349;
-        bh=ngBgbPjGe4VY0Szfr2ipMZungHmONQzt8eNm8Edd7KM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KG3xZ24g4Ms6FoAbNpBwwlbXSEpCSghDUU+fDRae+OdLWpsin4az0vCy6r8t0IynX
-         Ms26ILWTYmmM/OqNh7nFgxdyD2K4CHSQBztulYHjiVwoF8yM2KZPtugp9o3XN5yFRj
-         fNxuW7ALkEZ17/Ujy3nn+avLV3YOP0NQwLPLWuiT7ghkZY59qRXl6xmMPsogLhrTVP
-         Wvj+grpXl/EASsVcR+TiRNBcwRuTo/8C7YafC7qdESsEbYISlQDH1QLGdSoHPhCQhH
-         Ci67QLIMLP3AeN0hCKZo66ixY6JFtQwwRZ40Agr2GSrBJOe4P32sJzeGO/NJwwQwKd
-         6VRw2CIosBc4w==
-Date:   Sat, 4 Nov 2023 07:59:06 -0600
-From:   Keith Busch <kbusch@kernel.org>
-To:     Mikulas Patocka <mpatocka@redhat.com>
-Cc:     Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>,
-        Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>, Jan Kara <jack@suse.cz>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
-Message-ID: <ZUZOKitOAqqKiJ4n@kbusch-mbp.dhcp.thefacebook.com>
-References: <ebbc7ca7-5169-dbdc-9ea8-c6d8c3ae31e2@redhat.com>
- <ZULvkPhcpgAVyI8w@mail-itl>
- <ac5b5ac0-9e8-c1b0-a26-62f832f845f0@redhat.com>
- <ZUOL8kXVTF1OngeN@mail-itl>
- <3cb4133c-b6db-9187-a678-11ed8c9456e@redhat.com>
- <ZUUctamEFtAlSnSV@mail-itl>
- <ZUUlqJoS6_1IznzT@kbusch-mbp.dhcp.thefacebook.com>
- <ZUVYT1Xp4+hFT27W@mail-itl>
- <ZUV3TApYYoh_oiRR@kbusch-mbp.dhcp.thefacebook.com>
- <11a9886d-316c-edcd-d6da-24ad0b9a2b4@redhat.com>
+        with ESMTP id S229620AbjKDOfF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 4 Nov 2023 10:35:05 -0400
+Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.220])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 02847191;
+        Sat,  4 Nov 2023 07:34:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=3O/AC
+        UjY9iRPgXuqmvo563uZpZP1cuuJTllLXw0vPQQ=; b=cxKgrAKGisON755jtqDt0
+        gb6lWGxaNcnGRO9M/7iBrCYhZcegcjqcEf5hnE4/g5feglUiaYTYgHjRggpDqnAv
+        19flctvqUUl1WJnk/gDffzXiQ6iwCf/cY7O8Os7ftiofto1VApjqSnDJGy/Av/pN
+        H3bxbzN+cyAKr2+I0GTAvg=
+Received: from leanderwang-LC4.localdomain (unknown [111.206.145.21])
+        by zwqz-smtp-mta-g0-0 (Coremail) with SMTP id _____wCnL8r5VUZlfwsnCQ--.24372S2;
+        Sat, 04 Nov 2023 22:32:26 +0800 (CST)
+From:   Zheng Wang <zyytlz.wz@163.com>
+To:     aspriel@gmail.com
+Cc:     franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        kvalo@kernel.org, johannes.berg@intel.com, marcan@marcan.st,
+        linus.walleij@linaro.org, jisoo.jang@yonsei.ac.kr,
+        linuxlovemin@yonsei.ac.kr, wataru.gohda@cypress.com,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        security@kernel.org, stable@vger.kernel.org,
+        hackerzheng666@gmail.com, Zheng Wang <zyytlz.wz@163.com>
+Subject: [PATCH v2] wifi: cfg80211: Fix use-after-free bug in  brcmf_cfg80211_detach
+Date:   Sat,  4 Nov 2023 22:32:09 +0800
+Message-Id: <20231104143209.734871-1-zyytlz.wz@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <11a9886d-316c-edcd-d6da-24ad0b9a2b4@redhat.com>
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wCnL8r5VUZlfwsnCQ--.24372S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxJr45GryUGF4rGr4fXF4UCFg_yoW8Aw1fpF
+        WfWa4DAryUWrW3Kr4F9rnrXFyrtw4DGwnYkr4UZ3Z3uFn8ur1rJrWjgFya93WDGrs2y3y7
+        Ar4vqr17GrZ7Ga7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR1rWrUUUUU=
+X-Originating-IP: [111.206.145.21]
+X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/xtbBgxseU1d7gbdSHAAAsB
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Nov 04, 2023 at 10:27:32AM +0100, Mikulas Patocka wrote:
-> On Fri, 3 Nov 2023, Keith Busch wrote:
-> > On Fri, Nov 03, 2023 at 09:30:07PM +0100, Marek Marczykowski-G'orecki wrote:
-> > > On Fri, Nov 03, 2023 at 10:54:00AM -0600, Keith Busch wrote:
-> > > > On Fri, Nov 03, 2023 at 05:15:49PM +0100, Marek Marczykowski-G'orecki wrote:
-> > > > > On Thu, Nov 02, 2023 at 06:06:33PM +0100, Mikulas Patocka wrote:
-> > > > > > Then, try this patch (without "iommu=panic"), reproduce the deadlock and 
-> > > > > > tell us which one of the "printk" statements is triggered during the 
-> > > > > > deadlock.
-> > > > > 
-> > > > > The "821" one - see below.
-> > > > 
-> > > > Thanks for confirming!
-> > > > 
-> > > > Could you try this patch?
-> > > 
-> > > Besides min3() being unhappy about types, it works.
-> > 
-> > Oops, should have changed the constant to "ul" instead of just "u".
-> > 
-> > Anyway, the overall idea makes sense to me, but I don't know the swiotlb
-> > stuff well.
-> > 
-> > Christoph, does that patch make sense? For reference:
-> > 
-> >    https://lore.kernel.org/linux-mm/ZUOr-vp0yRkLyvyi@kbusch-mbp.dhcp.thefacebook.com/T/#m8d34245e0eef43f8e9fe6cba6038d77ed2a93ad6
-> 
-> dma_opt_mapping_size returns "min(dma_max_mapping_size(dev), size)". So 
-> you don't have to call dma_max_mapping_size explicitly, you can leave the 
-> file drivers/nvme/host/pci.c as it is.
+In brcm80211 driver,it starts with the following invoking chain
+to start init a timeout worker:
 
-Indeed.
+->brcmf_usb_probe
+  ->brcmf_usb_probe_cb
+    ->brcmf_attach
+      ->brcmf_bus_started
+        ->brcmf_cfg80211_attach
+          ->wl_init_priv
+            ->brcmf_init_escan
+              ->INIT_WORK(&cfg->escan_timeout_work,
+		  brcmf_cfg80211_escan_timeout_worker);
+
+If we disconnect the USB by hotplug, it will call
+brcmf_usb_disconnect to make cleanup. The invoking chain is :
+
+brcmf_usb_disconnect
+  ->brcmf_usb_disconnect_cb
+    ->brcmf_detach
+      ->brcmf_cfg80211_detach
+        ->kfree(cfg);
+
+While the timeout woker may still be running. This will cause
+a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
+
+Fix it by deleting the timer and canceling the worker in
+brcmf_cfg80211_detach.
+
+Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Cc: stable@vger.kernel.org
+---
+v2:
+- fix the error of kernel test bot reported
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 667462369a32..646ec8bdf512 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -8431,6 +8431,9 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
+ 	if (!cfg)
+ 		return;
  
-> What about the other block device drivers (AHCI, SCSI...)? Should there be 
-> some generic framework that restricts max_hw_sectors according to 
-> dma_opt_mapping_size?
++	if (timer_pending(&cfg->escan_timeout))
++		del_timer_sync(&cfg->escan_timeout);
++	cancel_work_sync(&cfg->escan_timeout_work);
+ 	brcmf_pno_detach(cfg);
+ 	brcmf_btcoex_detach(cfg);
+ 	wiphy_unregister(cfg->wiphy);
+-- 
+2.25.1
 
-I think it's just like any other request_queue limits and the individual
-drivers have to set up these.
-
-Thinking on this again, this feels more like a max_segment_size limit
-rather than a max_hw_sectors.
