@@ -2,237 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 886A77E1436
-	for <lists+stable@lfdr.de>; Sun,  5 Nov 2023 17:01:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D33347E1712
+	for <lists+stable@lfdr.de>; Sun,  5 Nov 2023 23:00:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229592AbjKEQBo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 5 Nov 2023 11:01:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46906 "EHLO
+        id S229689AbjKEWAE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 5 Nov 2023 17:00:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjKEQBn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 5 Nov 2023 11:01:43 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFF85FF;
-        Sun,  5 Nov 2023 08:01:38 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2DBC43391;
-        Sun,  5 Nov 2023 16:01:38 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97-RC3)
-        (envelope-from <rostedt@goodmis.org>)
-        id 1qzfZE-00000000Cig-0WIE;
-        Sun, 05 Nov 2023 11:01:40 -0500
-Message-ID: <20231105160139.983291500@goodmis.org>
-User-Agent: quilt/0.67
-Date:   Sun, 05 Nov 2023 10:56:35 -0500
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        <gregkh@linuxfoundation.org>
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Subject: [v6.6][PATCH 5/5] eventfs: Use simple_recursive_removal() to clean up dentries
-References: <20231105155630.925114107@goodmis.org>
+        with ESMTP id S229865AbjKEWAB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 5 Nov 2023 17:00:01 -0500
+X-Greylist: delayed 5151 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Nov 2023 13:59:57 PST
+Received: from SMTP-HCRC-200.brggroup.vn (mail.hcrc.vn [42.112.212.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1CD9BF;
+        Sun,  5 Nov 2023 13:59:57 -0800 (PST)
+Received: from SMTP-HCRC-200.brggroup.vn (localhost [127.0.0.1])
+        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTP id C2C801999F;
+        Mon,  6 Nov 2023 01:58:22 +0700 (+07)
+Received: from zimbra.hcrc.vn (unknown [192.168.200.66])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTPS id BC5EC1999E;
+        Mon,  6 Nov 2023 01:58:22 +0700 (+07)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.hcrc.vn (Postfix) with ESMTP id 588731B82534;
+        Mon,  6 Nov 2023 01:58:24 +0700 (+07)
+Received: from zimbra.hcrc.vn ([127.0.0.1])
+        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id BwZX5eEYVgkV; Mon,  6 Nov 2023 01:58:24 +0700 (+07)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.hcrc.vn (Postfix) with ESMTP id 26D3A1B8252B;
+        Mon,  6 Nov 2023 01:58:24 +0700 (+07)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.hcrc.vn 26D3A1B8252B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hcrc.vn;
+        s=64D43D38-C7D6-11ED-8EFE-0027945F1BFA; t=1699210704;
+        bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=Af6xqmg2suMtsb+SOkP+eks+uA3sUx/Xn4DNbjx/vG5eG0iQDRGKqc+r8Rj3YvCx9
+         WaFeEH1YiwJYZtvfwqr/vXCQa/DhNPtS15fifALDSrvFDD7SdJ7eyHjlwZKykHPvly
+         gCE1YjcX4OB3TLroiPvHXDK9HTiuho0wYDqxI+0D5CcoATYgmvNeSlfsknEUuF19U6
+         IxI+vZiUCIKHboOJKGDu+NKaBf5glSyjWU5NSWdNdhBvwy43zaApmoGqvcP64Bx61P
+         D/pvC8jboVfNnRGC2K/8L5od2NrT3gPadm/xZrEMXCfW12T6Vph074ch/PnLYr8A9o
+         /Qt48LmVsy13Q==
+X-Virus-Scanned: amavisd-new at hcrc.vn
+Received: from zimbra.hcrc.vn ([127.0.0.1])
+        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id QzOs__H2endx; Mon,  6 Nov 2023 01:58:24 +0700 (+07)
+Received: from [192.168.1.152] (unknown [51.179.100.52])
+        by zimbra.hcrc.vn (Postfix) with ESMTPSA id DD62B1B82538;
+        Mon,  6 Nov 2023 01:58:17 +0700 (+07)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
+To:     Recipients <ch.31hamnghi@hcrc.vn>
+From:   ch.31hamnghi@hcrc.vn
+Date:   Sun, 05 Nov 2023 19:58:07 +0100
+Reply-To: joliushk@gmail.com
+Message-Id: <20231105185817.DD62B1B82538@zimbra.hcrc.vn>
+X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Goededag,
+Ik ben mevrouw Joanna Liu en een medewerker van Citi Bank Hong Kong.
+Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
 
-commit 407c6726ca71b33330d2d6345d9ea7ebc02575e9 upstream
 
-Looking at how dentry is removed via the tracefs system, I found that
-eventfs does not do everything that it did under tracefs. The tracefs
-removal of a dentry calls simple_recursive_removal() that does a lot more
-than a simple d_invalidate().
-
-As it should be a requirement that any eventfs_inode that has a dentry, so
-does its parent. When removing a eventfs_inode, if it has a dentry, a call
-to simple_recursive_removal() on that dentry should clean up all the
-dentries underneath it.
-
-Add WARN_ON_ONCE() to check for the parent having a dentry if any children
-do.
-
-Link: https://lore.kernel.org/all/20231101022553.GE1957730@ZenIV/
-Link: https://lkml.kernel.org/r/20231101172650.552471568@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Fixes: 5bdcd5f5331a2 ("eventfs: Implement removal of meta data from eventfs")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- fs/tracefs/event_inode.c | 71 +++++++++++++++++++---------------------
- 1 file changed, 33 insertions(+), 38 deletions(-)
-
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 7aa92b8ebc51..5fcfb634fec2 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -54,12 +54,10 @@ struct eventfs_file {
- 	/*
- 	 * Union - used for deletion
- 	 * @llist:	for calling dput() if needed after RCU
--	 * @del_list:	list of eventfs_file to delete
- 	 * @rcu:	eventfs_file to delete in RCU
- 	 */
- 	union {
- 		struct llist_node	llist;
--		struct list_head	del_list;
- 		struct rcu_head		rcu;
- 	};
- 	void				*data;
-@@ -276,7 +274,6 @@ static void free_ef(struct eventfs_file *ef)
-  */
- void eventfs_set_ef_status_free(struct tracefs_inode *ti, struct dentry *dentry)
- {
--	struct tracefs_inode *ti_parent;
- 	struct eventfs_inode *ei;
- 	struct eventfs_file *ef;
- 
-@@ -297,10 +294,6 @@ void eventfs_set_ef_status_free(struct tracefs_inode *ti, struct dentry *dentry)
- 
- 	mutex_lock(&eventfs_mutex);
- 
--	ti_parent = get_tracefs(dentry->d_parent->d_inode);
--	if (!ti_parent || !(ti_parent->flags & TRACEFS_EVENT_INODE))
--		goto out;
--
- 	ef = dentry->d_fsdata;
- 	if (!ef)
- 		goto out;
-@@ -873,30 +866,29 @@ static void unhook_dentry(struct dentry *dentry)
- {
- 	if (!dentry)
- 		return;
--
--	/* Keep the dentry from being freed yet (see eventfs_workfn()) */
-+	/*
-+	 * Need to add a reference to the dentry that is expected by
-+	 * simple_recursive_removal(), which will include a dput().
-+	 */
- 	dget(dentry);
- 
--	dentry->d_fsdata = NULL;
--	d_invalidate(dentry);
--	mutex_lock(&eventfs_mutex);
--	/* dentry should now have at least a single reference */
--	WARN_ONCE((int)d_count(dentry) < 1,
--		  "dentry %px (%s) less than one reference (%d) after invalidate\n",
--		  dentry, dentry->d_name.name, d_count(dentry));
--	mutex_unlock(&eventfs_mutex);
-+	/*
-+	 * Also add a reference for the dput() in eventfs_workfn().
-+	 * That is required as that dput() will free the ei after
-+	 * the SRCU grace period is over.
-+	 */
-+	dget(dentry);
- }
- 
- /**
-  * eventfs_remove_rec - remove eventfs dir or file from list
-  * @ef: eventfs_file to be removed.
-- * @head: to create list of eventfs_file to be deleted
-  * @level: to check recursion depth
-  *
-  * The helper function eventfs_remove_rec() is used to clean up and free the
-  * associated data from eventfs for both of the added functions.
-  */
--static void eventfs_remove_rec(struct eventfs_file *ef, struct list_head *head, int level)
-+static void eventfs_remove_rec(struct eventfs_file *ef, int level)
- {
- 	struct eventfs_file *ef_child;
- 
-@@ -916,14 +908,16 @@ static void eventfs_remove_rec(struct eventfs_file *ef, struct list_head *head,
- 		/* search for nested folders or files */
- 		list_for_each_entry_srcu(ef_child, &ef->ei->e_top_files, list,
- 					 lockdep_is_held(&eventfs_mutex)) {
--			eventfs_remove_rec(ef_child, head, level + 1);
-+			eventfs_remove_rec(ef_child, level + 1);
- 		}
- 	}
- 
- 	ef->is_freed = 1;
- 
-+	unhook_dentry(ef->dentry);
-+
- 	list_del_rcu(&ef->list);
--	list_add_tail(&ef->del_list, head);
-+	call_srcu(&eventfs_srcu, &ef->rcu, free_rcu_ef);
- }
- 
- /**
-@@ -934,28 +928,22 @@ static void eventfs_remove_rec(struct eventfs_file *ef, struct list_head *head,
-  */
- void eventfs_remove(struct eventfs_file *ef)
- {
--	struct eventfs_file *tmp;
--	LIST_HEAD(ef_del_list);
-+	struct dentry *dentry;
- 
- 	if (!ef)
- 		return;
- 
--	/*
--	 * Move the deleted eventfs_inodes onto the ei_del_list
--	 * which will also set the is_freed value. Note, this has to be
--	 * done under the eventfs_mutex, but the deletions of
--	 * the dentries must be done outside the eventfs_mutex.
--	 * Hence moving them to this temporary list.
--	 */
- 	mutex_lock(&eventfs_mutex);
--	eventfs_remove_rec(ef, &ef_del_list, 0);
-+	dentry = ef->dentry;
-+	eventfs_remove_rec(ef, 0);
- 	mutex_unlock(&eventfs_mutex);
- 
--	list_for_each_entry_safe(ef, tmp, &ef_del_list, del_list) {
--		unhook_dentry(ef->dentry);
--		list_del(&ef->del_list);
--		call_srcu(&eventfs_srcu, &ef->rcu, free_rcu_ef);
--	}
-+	/*
-+	 * If any of the ei children has a dentry, then the ei itself
-+	 * must have a dentry.
-+	 */
-+	if (dentry)
-+		simple_recursive_removal(dentry, NULL);
- }
- 
- /**
-@@ -966,6 +954,8 @@ void eventfs_remove(struct eventfs_file *ef)
-  */
- void eventfs_remove_events_dir(struct dentry *dentry)
- {
-+	struct eventfs_file *ef_child;
-+	struct eventfs_inode *ei;
- 	struct tracefs_inode *ti;
- 
- 	if (!dentry || !dentry->d_inode)
-@@ -975,6 +965,11 @@ void eventfs_remove_events_dir(struct dentry *dentry)
- 	if (!ti || !(ti->flags & TRACEFS_EVENT_INODE))
- 		return;
- 
--	d_invalidate(dentry);
--	dput(dentry);
-+	mutex_lock(&eventfs_mutex);
-+	ei = ti->private;
-+	list_for_each_entry_srcu(ef_child, &ei->e_top_files, list,
-+				 lockdep_is_held(&eventfs_mutex)) {
-+		eventfs_remove_rec(ef_child, 0);
-+	}
-+	mutex_unlock(&eventfs_mutex);
- }
--- 
-2.42.0
-
+Ik wacht op jullie reacties
+Met vriendelijke groeten
+mevrouw Joanna Liu
 
