@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D837E2350
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BD647E2462
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232096AbjKFNLC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:11:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43222 "EHLO
+        id S232421AbjKFNVV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:21:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231865AbjKFNK6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:58 -0500
+        with ESMTP id S232428AbjKFNVT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB378D47
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E13C433C8;
-        Mon,  6 Nov 2023 13:10:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ECF710B
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4858C433CB;
+        Mon,  6 Nov 2023 13:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276255;
-        bh=LF2+fYP8pypIzZfyG1aocnHK7u8qVu2NWyzzvzIDLpk=;
+        s=korg; t=1699276876;
+        bh=707In8Gs8XIREYXmeqKd4Cu3hguwejan+8Iu01OFCU4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fAJ76Qd6HfDKHqlGE9pJtiaJSIvk4NvayuFZn8c8iX8NpmeLQczsiWiKln/09iuhq
-         X7a5eDRkiNQvgCmrt8sqXRqUZTDRdpVmEKVnRXbmKRw7c0+0dMvGj7Z7lb5S8W9w/a
-         nLYk09pdrjVH+x/O7mNj1vVq3f8ueJ5ZC+DDLjmk=
+        b=MWrFZyeeHJUlLcZInppK2g9g+TPXwS4zPZIvSdqmIThajtD37scf2H4qaZjn+HXem
+         osa9AfyAysSifx3B7bbrTA5ckdBfV2m3YDR6PtlbYO1kEG0oeGir7fTcHvrZhoGROt
+         bXcqu/VV1RBuRW9ky1BBVA7HR9jpTh7mPUDGg9MA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Szilard Fabian <szfabian@bluemarch.art>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 43/61] Input: i8042 - add Fujitsu Lifebook E5411 to i8042 quirk table
+Subject: [PATCH 5.4 19/74] gtp: fix fragmentation needed check with gso
 Date:   Mon,  6 Nov 2023 14:03:39 +0100
-Message-ID: <20231106130301.100137506@linuxfoundation.org>
+Message-ID: <20231106130302.371993817@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,54 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Szilard Fabian <szfabian@bluemarch.art>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 80f39e1c27ba9e5a1ea7e68e21c569c9d8e46062 ]
+[ Upstream commit 4530e5b8e2dad63dcad2206232dd86e4b1489b6c ]
 
-In the initial boot stage the integrated keyboard of Fujitsu Lifebook E5411
-refuses to work and it's not possible to type for example a dm-crypt
-passphrase without the help of an external keyboard.
+Call skb_gso_validate_network_len() to check if packet is over PMTU.
 
-i8042.nomux kernel parameter resolves this issue but using that a PS/2
-mouse is detected. This input device is unused even when the i2c-hid-acpi
-kernel module is blacklisted making the integrated ELAN touchpad
-(04F3:308A) not working at all.
-
-Since the integrated touchpad is managed by the i2c_designware input
-driver in the Linux kernel and you can't find a PS/2 mouse port on the
-computer I think it's safe to not use the PS/2 mouse port at all.
-
-Signed-off-by: Szilard Fabian <szfabian@bluemarch.art>
-Link: https://lore.kernel.org/r/20231004011749.101789-1-szfabian@bluemarch.art
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-x86ia64io.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/gtp.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/serio/i8042-x86ia64io.h b/drivers/input/serio/i8042-x86ia64io.h
-index 0cf9a37873261..2d4df82d65afe 100644
---- a/drivers/input/serio/i8042-x86ia64io.h
-+++ b/drivers/input/serio/i8042-x86ia64io.h
-@@ -613,6 +613,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
- 	},
-+	{
-+		/* Fujitsu Lifebook E5411 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU CLIENT COMPUTING LIMITED"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E5411"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
- 	{
- 		/* Gigabyte M912 */
- 		.matches = {
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 0409afe9a53d6..c2e649a4f1bf4 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -544,8 +544,9 @@ static int gtp_build_skb_ip4(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	rt->dst.ops->update_pmtu(&rt->dst, NULL, skb, mtu, false);
+ 
+-	if (!skb_is_gso(skb) && (iph->frag_off & htons(IP_DF)) &&
+-	    mtu < ntohs(iph->tot_len)) {
++	if (iph->frag_off & htons(IP_DF) &&
++	    ((!skb_is_gso(skb) && skb->len > mtu) ||
++	     (skb_is_gso(skb) && !skb_gso_validate_network_len(skb, mtu)))) {
+ 		netdev_dbg(dev, "packet too big, fragmentation needed\n");
+ 		icmp_ndo_send(skb, ICMP_DEST_UNREACH, ICMP_FRAG_NEEDED,
+ 			      htonl(mtu));
 -- 
 2.42.0
 
