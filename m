@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21FF27E2582
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B35727E2528
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:28:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232755AbjKFNc6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:32:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39432 "EHLO
+        id S232661AbjKFN2p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:28:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232764AbjKFNc5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:57 -0500
+        with ESMTP id S232663AbjKFN2o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:28:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FC7BA9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:32:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE23FC433C7;
-        Mon,  6 Nov 2023 13:32:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 434AC10A
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:28:42 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C5AC433C7;
+        Mon,  6 Nov 2023 13:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277574;
-        bh=aJl0xmZOv1wQZQmQI3B6nYh9VqIjtaC8XttS4VM66YA=;
+        s=korg; t=1699277321;
+        bh=URpMQznk22nhQM+KQh+c+BRLFzwplQjM9PZqB+qvriI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fCHL8kH5soGRorPPh36UQqxas3eDctuCGRt89kF9AYzQTB8HkJU4pleMMomtnWbf7
-         fCf7TLymkrZ7kQSFYZ7lsEuzwJZPZUXtGSA9zl/tDrk0RzylKH8Yk6rJp2AKmbmoL+
-         9N1SKIYfkA2VquKHm1rPSGv75U8/+XIjnGKG/HNI=
+        b=E01yzlGowK8Ks1uQdBvQNKjal6LOKsUImE3NjBu5BayDQACtmtoc5O4bz4UCLgVrb
+         4GryI57NEdzFLv/Toa0ZWZapHDBaVsJJFxjS/qJUPibBQnLy4rJRxvXoiEtowyy41E
+         GxO3ov/Xa/GbuvwbKsXMCFCCSUNePSatHFkes1/s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeffery Miller <jefferymiller@google.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 65/95] Input: synaptics-rmi4 - handle reset delay when using SMBus trsnsport
+        patches@lists.linux.dev, Vicki Pfau <vi@endrift.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.15 113/128] PCI: Prevent xHCI driver from claiming AMD VanGogh USB3 DRD device
 Date:   Mon,  6 Nov 2023 14:04:33 +0100
-Message-ID: <20231106130307.091435993@linuxfoundation.org>
+Message-ID: <20231106130314.307271341@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,139 +49,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit 5030b2fe6aab37fe42d14f31842ea38be7c55c57 ]
+commit 7e6f3b6d2c352b5fde37ce3fed83bdf6172eebd4 upstream.
 
-Touch controllers need some time after receiving reset command for the
-firmware to finish re-initializing and be ready to respond to commands
-from the host. The driver already had handling for the post-reset delay
-for I2C and SPI transports, this change adds the handling to
-SMBus-connected devices.
+The AMD VanGogh SoC contains a DesignWare USB3 Dual-Role Device that can be
+operated as either a USB Host or a USB Device, similar to on the AMD Nolan
+platform.
 
-SMBus devices are peculiar because they implement legacy PS/2
-compatibility mode, so reset is actually issued by psmouse driver on the
-associated serio port, after which the control is passed to the RMI4
-driver with SMBus companion device.
+be6646bfbaec ("PCI: Prevent xHCI driver from claiming AMD Nolan USB3 DRD
+device") added a quirk to let the dwc3 driver claim the Nolan device since
+it provides more specific support.
 
-Note that originally the delay was added to psmouse driver in
-92e24e0e57f7 ("Input: psmouse - add delay when deactivating for SMBus
-mode"), but that resulted in an unwanted delay in "fast" reconnect
-handler for the serio port, so it was decided to revert the patch and
-have the delay being handled in the RMI4 driver, similar to the other
-transports.
+Extend that quirk to include the VanGogh SoC USB3 device.
 
-Tested-by: Jeffery Miller <jefferymiller@google.com>
-Link: https://lore.kernel.org/r/ZR1yUFJ8a9Zt606N@penguin
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20230927202212.2388216-1-vi@endrift.com
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+[bhelgaas: include be6646bfbaec reference, add stable tag]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org	# v3.19+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/synaptics.c |  1 +
- drivers/input/rmi4/rmi_smbus.c  | 50 ++++++++++++++++++---------------
- 2 files changed, 29 insertions(+), 22 deletions(-)
+ drivers/pci/quirks.c    |    8 +++++---
+ include/linux/pci_ids.h |    1 +
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
-index afa5d2623c410..e2c130832c159 100644
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -1749,6 +1749,7 @@ static int synaptics_create_intertouch(struct psmouse *psmouse,
- 		psmouse_matches_pnp_id(psmouse, topbuttonpad_pnp_ids) &&
- 		!SYN_CAP_EXT_BUTTONS_STICK(info->ext_cap_10);
- 	const struct rmi_device_platform_data pdata = {
-+		.reset_delay_ms = 30,
- 		.sensor_pdata = {
- 			.sensor_type = rmi_sensor_touchpad,
- 			.axis_align.flip_y = true,
-diff --git a/drivers/input/rmi4/rmi_smbus.c b/drivers/input/rmi4/rmi_smbus.c
-index 2407ea43de59b..f38bf9a5f599d 100644
---- a/drivers/input/rmi4/rmi_smbus.c
-+++ b/drivers/input/rmi4/rmi_smbus.c
-@@ -235,12 +235,29 @@ static void rmi_smb_clear_state(struct rmi_smb_xport *rmi_smb)
- 
- static int rmi_smb_enable_smbus_mode(struct rmi_smb_xport *rmi_smb)
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -592,7 +592,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
+ /*
+  * In the AMD NL platform, this device ([1022:7912]) has a class code of
+  * PCI_CLASS_SERIAL_USB_XHCI (0x0c0330), which means the xhci driver will
+- * claim it.
++ * claim it. The same applies on the VanGogh platform device ([1022:163a]).
+  *
+  * But the dwc3 driver is a more specific driver for this device, and we'd
+  * prefer to use it instead of xhci. To prevent xhci from claiming the
+@@ -600,7 +600,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
+  * defines as "USB device (not host controller)". The dwc3 driver can then
+  * claim it based on its Vendor and Device ID.
+  */
+-static void quirk_amd_nl_class(struct pci_dev *pdev)
++static void quirk_amd_dwc_class(struct pci_dev *pdev)
  {
--	int retval;
-+	struct i2c_client *client = rmi_smb->client;
-+	int smbus_version;
-+
-+	/*
-+	 * psmouse driver resets the controller, we only need to wait
-+	 * to give the firmware chance to fully reinitialize.
-+	 */
-+	if (rmi_smb->xport.pdata.reset_delay_ms)
-+		msleep(rmi_smb->xport.pdata.reset_delay_ms);
+ 	u32 class = pdev->class;
  
- 	/* we need to get the smbus version to activate the touchpad */
--	retval = rmi_smb_get_version(rmi_smb);
--	if (retval < 0)
--		return retval;
-+	smbus_version = rmi_smb_get_version(rmi_smb);
-+	if (smbus_version < 0)
-+		return smbus_version;
-+
-+	rmi_dbg(RMI_DEBUG_XPORT, &client->dev, "Smbus version is %d",
-+		smbus_version);
-+
-+	if (smbus_version != 2 && smbus_version != 3) {
-+		dev_err(&client->dev, "Unrecognized SMB version %d\n",
-+				smbus_version);
-+		return -ENODEV;
-+	}
- 
- 	return 0;
+@@ -610,7 +610,9 @@ static void quirk_amd_nl_class(struct pc
+ 		 class, pdev->class);
  }
-@@ -253,11 +270,10 @@ static int rmi_smb_reset(struct rmi_transport_dev *xport, u16 reset_addr)
- 	rmi_smb_clear_state(rmi_smb);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
+-		quirk_amd_nl_class);
++		quirk_amd_dwc_class);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_VANGOGH_USB,
++		quirk_amd_dwc_class);
  
- 	/*
--	 * we do not call the actual reset command, it has to be handled in
--	 * PS/2 or there will be races between PS/2 and SMBus.
--	 * PS/2 should ensure that a psmouse_reset is called before
--	 * intializing the device and after it has been removed to be in a known
--	 * state.
-+	 * We do not call the actual reset command, it has to be handled in
-+	 * PS/2 or there will be races between PS/2 and SMBus. PS/2 should
-+	 * ensure that a psmouse_reset is called before initializing the
-+	 * device and after it has been removed to be in a known state.
- 	 */
- 	return rmi_smb_enable_smbus_mode(rmi_smb);
- }
-@@ -273,7 +289,6 @@ static int rmi_smb_probe(struct i2c_client *client,
- {
- 	struct rmi_device_platform_data *pdata = dev_get_platdata(&client->dev);
- 	struct rmi_smb_xport *rmi_smb;
--	int smbus_version;
- 	int error;
- 
- 	if (!pdata) {
-@@ -312,18 +327,9 @@ static int rmi_smb_probe(struct i2c_client *client,
- 	rmi_smb->xport.proto_name = "smb";
- 	rmi_smb->xport.ops = &rmi_smb_ops;
- 
--	smbus_version = rmi_smb_get_version(rmi_smb);
--	if (smbus_version < 0)
--		return smbus_version;
--
--	rmi_dbg(RMI_DEBUG_XPORT, &client->dev, "Smbus version is %d",
--		smbus_version);
--
--	if (smbus_version != 2 && smbus_version != 3) {
--		dev_err(&client->dev, "Unrecognized SMB version %d\n",
--				smbus_version);
--		return -ENODEV;
--	}
-+	error = rmi_smb_enable_smbus_mode(rmi_smb);
-+	if (error)
-+		return error;
- 
- 	i2c_set_clientdata(client, rmi_smb);
- 
--- 
-2.42.0
-
+ /*
+  * Synopsys USB 3.x host HAPS platform has a class code of
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -556,6 +556,7 @@
+ #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F3 0x1493
+ #define PCI_DEVICE_ID_AMD_17H_M60H_DF_F3 0x144b
+ #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F3 0x1443
++#define PCI_DEVICE_ID_AMD_VANGOGH_USB	0x163a
+ #define PCI_DEVICE_ID_AMD_19H_DF_F3	0x1653
+ #define PCI_DEVICE_ID_AMD_19H_M40H_DF_F3 0x167c
+ #define PCI_DEVICE_ID_AMD_19H_M50H_DF_F3 0x166d
 
 
