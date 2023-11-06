@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAB187E2308
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21C6F7E23FC
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:16:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231993AbjKFNIF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:08:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49840 "EHLO
+        id S232240AbjKFNQ5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:16:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231918AbjKFNIE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:04 -0500
+        with ESMTP id S231924AbjKFNQz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:16:55 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C961BD
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2D7C433C7;
-        Mon,  6 Nov 2023 13:08:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D62EE123
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:16:52 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE2EC433C7;
+        Mon,  6 Nov 2023 13:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276081;
-        bh=dpHIt+GcD0RzbifWThVrrP20NhTHI5uXOZXOUGbutZQ=;
+        s=korg; t=1699276612;
+        bh=pEN+eGy/tY768i9FK42u04Bmhvp+Jt2ONiji+zvKoEo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L5p64B3WWotS0uFL6Ug6kXWag7v2Gh51sv9NGlCvFvJqyqv8/i7ar5IYOaa037Uh7
-         jiTUsaks2i7tZ4AnpMaqZOmcan5xphj7KQyS3bUOi3JPMo4zg7UhScl/9WlivR65Dd
-         em0HxUNIr9SNiBSMCPNbY4p2IQVXNmaif98izV9M=
+        b=WDSx/+YE2PMOgnj8VhwGgf+XRaxd7oCpnMwjieAI5o+f0NWTzwpLNaimBPBXnr5kP
+         HIp22XZDq7Pv6u1eVyJtXwKy3NrxeLCaSXBz09R+iVl5d89cOYxXgVto507imTAo8G
+         JYtjkfOPacPmbJWC19C2iYt3Xu5LfKNLX981fXNM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Andrey Konovalov <andreyknvl@gmail.com>
-Subject: [PATCH 6.6 14/30] usb: raw-gadget: properly handle interrupted requests
+        patches@lists.linux.dev, Heiko Carstens <hca@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 38/88] s390/kasan: handle DCSS mapping in memory holes
 Date:   Mon,  6 Nov 2023 14:03:32 +0100
-Message-ID: <20231106130258.443613377@linuxfoundation.org>
+Message-ID: <20231106130307.220283424@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,112 +51,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Konovalov <andreyknvl@gmail.com>
+From: Vasily Gorbik <gor@linux.ibm.com>
 
-commit e8033bde451eddfb9b1bbd6e2d848c1b5c277222 upstream.
+[ Upstream commit 327899674eef18f96644be87aa5510b7523fe4f6 ]
 
-Currently, if a USB request that was queued by Raw Gadget is interrupted
-(via a signal), wait_for_completion_interruptible returns -ERESTARTSYS.
-Raw Gadget then attempts to propagate this value to userspace as a return
-value from its ioctls. However, when -ERESTARTSYS is returned by a syscall
-handler, the kernel internally restarts the syscall.
+When physical memory is defined under z/VM using DEF STOR CONFIG, there
+may be memory holes that are not hotpluggable memory. In such cases,
+DCSS mapping could be placed in one of these memory holes. Subsequently,
+attempting memory access to such DCSS mapping would result in a kasan
+failure because there is no shadow memory mapping for it.
 
-This doesn't allow userspace applications to interrupt requests queued by
-Raw Gadget (which is required when the emulated device is asked to switch
-altsettings). It also violates the implied interface of Raw Gadget that a
-single ioctl must only queue a single USB request.
+To maintain consistency with cases where DCSS mapping is positioned after
+the kernel identity mapping, which is then covered by kasan zero shadow
+mapping, handle the scenario above by populating zero shadow mapping
+for memory holes where DCSS mapping could potentially be placed.
 
-Instead, make Raw Gadget do what GadgetFS does: check whether the request
-was interrupted (dequeued with status == -ECONNRESET) and report -EINTR to
-userspace.
-
-Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://lore.kernel.org/r/0db45b1d7cc466e3d4d1ab353f61d63c977fbbc5.1698350424.git.andreyknvl@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/legacy/raw_gadget.c |   26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ arch/s390/boot/vmem.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/legacy/raw_gadget.c
-+++ b/drivers/usb/gadget/legacy/raw_gadget.c
-@@ -663,12 +663,12 @@ static int raw_process_ep0_io(struct raw
- 	if (WARN_ON(in && dev->ep0_out_pending)) {
- 		ret = -ENODEV;
- 		dev->state = STATE_DEV_FAILED;
--		goto out_done;
-+		goto out_unlock;
- 	}
- 	if (WARN_ON(!in && dev->ep0_in_pending)) {
- 		ret = -ENODEV;
- 		dev->state = STATE_DEV_FAILED;
--		goto out_done;
-+		goto out_unlock;
- 	}
+diff --git a/arch/s390/boot/vmem.c b/arch/s390/boot/vmem.c
+index c67f59db7a512..f66d642251fe8 100644
+--- a/arch/s390/boot/vmem.c
++++ b/arch/s390/boot/vmem.c
+@@ -57,6 +57,7 @@ static void kasan_populate_shadow(void)
+ 	pmd_t pmd_z = __pmd(__pa(kasan_early_shadow_pte) | _SEGMENT_ENTRY);
+ 	pud_t pud_z = __pud(__pa(kasan_early_shadow_pmd) | _REGION3_ENTRY);
+ 	p4d_t p4d_z = __p4d(__pa(kasan_early_shadow_pud) | _REGION2_ENTRY);
++	unsigned long memgap_start = 0;
+ 	unsigned long untracked_end;
+ 	unsigned long start, end;
+ 	int i;
+@@ -101,8 +102,12 @@ static void kasan_populate_shadow(void)
+ 	 * +- shadow end ----+---------+- shadow end ---+
+ 	 */
  
- 	dev->req->buf = data;
-@@ -683,7 +683,7 @@ static int raw_process_ep0_io(struct raw
- 				"fail, usb_ep_queue returned %d\n", ret);
- 		spin_lock_irqsave(&dev->lock, flags);
- 		dev->state = STATE_DEV_FAILED;
--		goto out_done;
-+		goto out_queue_failed;
- 	}
- 
- 	ret = wait_for_completion_interruptible(&dev->ep0_done);
-@@ -692,13 +692,16 @@ static int raw_process_ep0_io(struct raw
- 		usb_ep_dequeue(dev->gadget->ep0, dev->req);
- 		wait_for_completion(&dev->ep0_done);
- 		spin_lock_irqsave(&dev->lock, flags);
--		goto out_done;
-+		if (dev->ep0_status == -ECONNRESET)
-+			dev->ep0_status = -EINTR;
-+		goto out_interrupted;
- 	}
- 
- 	spin_lock_irqsave(&dev->lock, flags);
--	ret = dev->ep0_status;
- 
--out_done:
-+out_interrupted:
-+	ret = dev->ep0_status;
-+out_queue_failed:
- 	dev->ep0_urb_queued = false;
- out_unlock:
- 	spin_unlock_irqrestore(&dev->lock, flags);
-@@ -1067,7 +1070,7 @@ static int raw_process_ep_io(struct raw_
- 				"fail, usb_ep_queue returned %d\n", ret);
- 		spin_lock_irqsave(&dev->lock, flags);
- 		dev->state = STATE_DEV_FAILED;
--		goto out_done;
-+		goto out_queue_failed;
- 	}
- 
- 	ret = wait_for_completion_interruptible(&done);
-@@ -1076,13 +1079,16 @@ static int raw_process_ep_io(struct raw_
- 		usb_ep_dequeue(ep->ep, ep->req);
- 		wait_for_completion(&done);
- 		spin_lock_irqsave(&dev->lock, flags);
--		goto out_done;
-+		if (ep->status == -ECONNRESET)
-+			ep->status = -EINTR;
-+		goto out_interrupted;
- 	}
- 
- 	spin_lock_irqsave(&dev->lock, flags);
--	ret = ep->status;
- 
--out_done:
-+out_interrupted:
-+	ret = ep->status;
-+out_queue_failed:
- 	ep->urb_queued = false;
- out_unlock:
- 	spin_unlock_irqrestore(&dev->lock, flags);
+-	for_each_physmem_usable_range(i, &start, &end)
++	for_each_physmem_usable_range(i, &start, &end) {
+ 		kasan_populate(start, end, POPULATE_KASAN_MAP_SHADOW);
++		if (memgap_start && physmem_info.info_source == MEM_DETECT_DIAG260)
++			kasan_populate(memgap_start, start, POPULATE_KASAN_ZERO_SHADOW);
++		memgap_start = end;
++	}
+ 	if (IS_ENABLED(CONFIG_KASAN_VMALLOC)) {
+ 		untracked_end = VMALLOC_START;
+ 		/* shallowly populate kasan shadow for vmalloc and modules */
+-- 
+2.42.0
+
 
 
