@@ -2,95 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F13B97E26D2
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 15:30:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2347C7E2674
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 15:19:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231652AbjKFOaB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 09:30:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49286 "EHLO
+        id S229875AbjKFOTC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 09:19:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231781AbjKFOaA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 09:30:00 -0500
-X-Greylist: delayed 1059 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 06 Nov 2023 06:29:56 PST
-Received: from mxout70.expurgate.net (mxout70.expurgate.net [194.37.255.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2A88F4
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 06:29:56 -0800 (PST)
-Received: from [127.0.0.1] (helo=localhost)
-        by relay.expurgate.net with smtp (Exim 4.92)
-        (envelope-from <prvs=068806c1c2=fe@dev.tdt.de>)
-        id 1r00Kp-00EZJv-Cp; Mon, 06 Nov 2023 15:12:11 +0100
-Received: from [195.243.126.94] (helo=securemail.tdt.de)
-        by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <fe@dev.tdt.de>)
-        id 1r00Ko-000oci-J8; Mon, 06 Nov 2023 15:12:10 +0100
-Received: from securemail.tdt.de (localhost [127.0.0.1])
-        by securemail.tdt.de (Postfix) with ESMTP id 11E4F240049;
-        Mon,  6 Nov 2023 15:12:10 +0100 (CET)
-Received: from mail.dev.tdt.de (unknown [10.2.4.42])
-        by securemail.tdt.de (Postfix) with ESMTP id 72912240040;
-        Mon,  6 Nov 2023 15:12:09 +0100 (CET)
-Received: from localhost.localdomain (unknown [10.2.3.40])
-        by mail.dev.tdt.de (Postfix) with ESMTPSA id F412022029;
-        Mon,  6 Nov 2023 15:12:08 +0100 (CET)
-From:   Florian Eckert <fe@dev.tdt.de>
-To:     Eckert.Florian@googlemail.com, pavel@ucw.cz, lee@kernel.org,
-        kabel@kernel.org, gregkh@linuxfoundation.org,
-        u.kleine-koenig@pengutronix.de
-Cc:     linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [Patch v2] leds: ledtrig-tty: free allocated ttyname buffer on deactivate
-Date:   Mon,  6 Nov 2023 15:12:05 +0100
-Message-ID: <20231106141205.3376954-1-fe@dev.tdt.de>
-X-Mailer: git-send-email 2.30.2
+        with ESMTP id S229705AbjKFOTB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 09:19:01 -0500
+Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.198])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 88987DF;
+        Mon,  6 Nov 2023 06:18:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=GHKDY
+        oOVMXecpK9LSE+iNohkCdObnkzqAJ+O5AtWvHk=; b=Y7XpWMSFxGujh2q/yvDDI
+        5+YQvSOeWb9zLtnoTrKoG0u4ufiGme5GDs3dWob2lAfuYOT0PbI5s6y4uFtVyXNw
+        beXDxhuN/hrAogS4bp2VDB/i6+TAdjx7IsA+RA1c84jTF0eYambo7Bc/yZK0qqGs
+        2jS6Qp97s87fdR547iXQU4=
+Received: from leanderwang-LC4.localdomain (unknown [111.206.145.21])
+        by zwqz-smtp-mta-g5-3 (Coremail) with SMTP id _____wDXv09k9UhlfEHwCQ--.49806S2;
+        Mon, 06 Nov 2023 22:17:08 +0800 (CST)
+From:   Zheng Wang <zyytlz.wz@163.com>
+To:     aspriel@gmail.com
+Cc:     franky.lin@broadcom.com, hante.meuleman@broadcom.com,
+        kvalo@kernel.org, johannes.berg@intel.com, marcan@marcan.st,
+        linus.walleij@linaro.org, jisoo.jang@yonsei.ac.kr,
+        linuxlovemin@yonsei.ac.kr, wataru.gohda@cypress.com,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com, arend.vanspriel@broadcom.com,
+        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
+        security@kernel.org, stable@vger.kernel.org,
+        hackerzheng666@gmail.com, Zheng Wang <zyytlz.wz@163.com>
+Subject: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in  brcmf_cfg80211_detach
+Date:   Mon,  6 Nov 2023 22:17:04 +0800
+Message-Id: <20231106141704.866455-1-zyytlz.wz@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: _____wDXv09k9UhlfEHwCQ--.49806S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr13tw1fAw4UJw1rZFyxKrg_yoW8ur1kpF
+        WxWa4qyryUWrW3Kr4F9rnrJFy8ta1DKwnYkr4j93Z3uFn8Wr18JrW8KFya93WDGrs2yay7
+        Ar4vqrnrGrZ7GFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR1rWrUUUUU=
+X-Originating-IP: [111.206.145.21]
+X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/xtbBgwggU1d7gdDP3AAAsW
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L4,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-Content-Transfer-Encoding: quoted-printable
-X-purgate: clean
-X-purgate-ID: 151534::1699279931-5764D018-27B6FD65/0/0
-X-purgate-type: clean
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The ttyname buffer for the ledtrig_tty_data struct is allocated in the
-sysfs ttyname_store() function. This buffer must be released on trigger
-deactivation. This was missing and is thus a memory leak.
+This is the candidate patch of CVE-2023-47233 :
+https://nvd.nist.gov/vuln/detail/CVE-2023-47233
 
-While we are at it, the tty handler in the ledtrig_tty_data struct should
-also be returned in case of the trigger deactivation call.
+In brcm80211 driver,it starts with the following invoking chain
+to start init a timeout worker:
 
+->brcmf_usb_probe
+  ->brcmf_usb_probe_cb
+    ->brcmf_attach
+      ->brcmf_bus_started
+        ->brcmf_cfg80211_attach
+          ->wl_init_priv
+            ->brcmf_init_escan
+              ->INIT_WORK(&cfg->escan_timeout_work,
+		  brcmf_cfg80211_escan_timeout_worker);
+
+If we disconnect the USB by hotplug, it will call
+brcmf_usb_disconnect to make cleanup. The invoking chain is :
+
+brcmf_usb_disconnect
+  ->brcmf_usb_disconnect_cb
+    ->brcmf_detach
+      ->brcmf_cfg80211_detach
+        ->kfree(cfg);
+
+While the timeout woker may still be running. This will cause
+a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
+
+Fix it by deleting the timer and canceling the worker in
+brcmf_cfg80211_detach.
+
+Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
 Cc: stable@vger.kernel.org
-Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
-Signed-off-by: Florian Eckert <fe@dev.tdt.de>
 ---
-v1 -> v2:
-Add Cc: tag
+v5:
+- replace del_timer_sync with timer_shutdown_sync suggested by
+Arend and Takashi
+v4:
+- rename the subject and add CVE number as Ping-Ke Shih suggested
+v3:
+- rename the subject as Johannes suggested
+v2:
+- fix the error of kernel test bot reported
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- drivers/leds/trigger/ledtrig-tty.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/leds/trigger/ledtrig-tty.c b/drivers/leds/trigger/le=
-dtrig-tty.c
-index 8ae0d2d284af..3e69a7bde928 100644
---- a/drivers/leds/trigger/ledtrig-tty.c
-+++ b/drivers/leds/trigger/ledtrig-tty.c
-@@ -168,6 +168,10 @@ static void ledtrig_tty_deactivate(struct led_classd=
-ev *led_cdev)
-=20
- 	cancel_delayed_work_sync(&trigger_data->dwork);
-=20
-+	kfree(trigger_data->ttyname);
-+	tty_kref_put(trigger_data->tty);
-+	trigger_data->tty =3D NULL;
-+
- 	kfree(trigger_data);
- }
-=20
---=20
-2.30.2
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 667462369a32..a8723a61c9e4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -8431,6 +8431,8 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
+ 	if (!cfg)
+ 		return;
+ 
++	timer_shutdown_sync(&cfg->escan_timeout);
++	cancel_work_sync(&cfg->escan_timeout_work);
+ 	brcmf_pno_detach(cfg);
+ 	brcmf_btcoex_detach(cfg);
+ 	wiphy_unregister(cfg->wiphy);
+-- 
+2.25.1
 
