@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 494A97E22FE
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:07:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2E3D7E24C4
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232000AbjKFNHi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:07:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
+        id S232532AbjKFNZG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:25:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231978AbjKFNHi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:07:38 -0500
+        with ESMTP id S232541AbjKFNZE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7588891
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:07:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35DAC433C7;
-        Mon,  6 Nov 2023 13:07:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7DA1B2
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23E6C43391;
+        Mon,  6 Nov 2023 13:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276055;
-        bh=qh/FNtdf7VKu39F81kSTbL//xuC3GgWmGce69AYfVQA=;
+        s=korg; t=1699277098;
+        bh=H2RB3C9btykCLQO8q/UAzH9W9SohdbitCUHK5q+Tagk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GXgUcaiE0wpcz5uP5wQ+AY4pqVJaS8mg2EADEZrr+Hbzc2dWik7ZXNVsCE15stu1v
-         6peX0rTJyjUYRGZKdAFvwKAv5EwbXc79vPlr1YX4644vL/H46s7C0eNZUEXdyuiRXk
-         9Z0KeUOxZcNliJTA4GvRdQwcS2VDuqTT0HRqeSvU=
+        b=Luee7mvpbl7vGAJFa9eL8Tuj42w63irr8LpFcTnDze1uzrHkeIECHbH3RYhhBpcf1
+         5RDpTKqQNummtR+8SwCAhtPnkrkcDoB8gZIqVCmiT2oHRzv4GfZ8jgO5UIvJaUB+96
+         kWr2LccfAAL91482YUaAEjaj5h+TwVeI+H1HYAvY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, lee@kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Lew <quic_clew@quicinc.com>,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 4.14 26/48] rpmsg: glink: Release driver_override
-Date:   Mon,  6 Nov 2023 14:03:17 +0100
-Message-ID: <20231106130258.752604319@linuxfoundation.org>
+        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 038/128] i40e: Fix wrong check for I40E_TXR_FLAGS_WB_ON_ITR
+Date:   Mon,  6 Nov 2023 14:03:18 +0100
+Message-ID: <20231106130310.860492050@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-commit fb80ef67e8ff6a00d3faad4cb348dafdb8eccfd8 upstream.
+[ Upstream commit 77a8c982ff0d4c3a14022c6fe9e3dbfb327552ec ]
 
-Upon termination of the rpmsg_device, driver_override needs to be freed
-to avoid leaking the potentially assigned string.
+The I40E_TXR_FLAGS_WB_ON_ITR is i40e_ring flag and not i40e_pf one.
 
-Fixes: 42cd402b8fd4 ("rpmsg: Fix kfree() of static memory on setting driver_override")
-Fixes: 39e47767ec9b ("rpmsg: Add driver_override device attribute for rpmsg_device")
-Reviewed-by: Chris Lew <quic_clew@quicinc.com>
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230109223931.1706429-1-quic_bjorande@quicinc.com
-(cherry picked from commit fb80ef67e8ff6a00d3faad4cb348dafdb8eccfd8)
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8e0764b4d6be42 ("i40e/i40evf: Add support for writeback on ITR feature for X722")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20231023212714.178032-1-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1354,6 +1354,7 @@ static void qcom_glink_rpdev_release(str
- 	struct glink_channel *channel = to_glink_channel(rpdev->ept);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+index 9787e794eeda6..1d096141625eb 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -2759,7 +2759,7 @@ int i40e_napi_poll(struct napi_struct *napi, int budget)
+ 		return budget;
+ 	}
  
- 	channel->rpdev = NULL;
-+	kfree(rpdev->driver_override);
- 	kfree(rpdev);
- }
+-	if (vsi->back->flags & I40E_TXR_FLAGS_WB_ON_ITR)
++	if (q_vector->tx.ring[0].flags & I40E_TXR_FLAGS_WB_ON_ITR)
+ 		q_vector->arm_wb_state = false;
  
+ 	/* Exit the polling mode, but don't re-enable interrupts if stack might
+-- 
+2.42.0
+
 
 
