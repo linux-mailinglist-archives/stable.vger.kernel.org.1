@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E3D7E24C4
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 268687E22FF
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:07:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232532AbjKFNZG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:25:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41486 "EHLO
+        id S232018AbjKFNHm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:07:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232541AbjKFNZE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:04 -0500
+        with ESMTP id S232012AbjKFNHm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:07:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7DA1B2
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23E6C43391;
-        Mon,  6 Nov 2023 13:24:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C7B8BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:07:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F283C433C7;
+        Mon,  6 Nov 2023 13:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277098;
-        bh=H2RB3C9btykCLQO8q/UAzH9W9SohdbitCUHK5q+Tagk=;
+        s=korg; t=1699276058;
+        bh=naU3X0ITaSUJprCr+rapqMX0gZyk+jLcfVcnwzqa6tA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Luee7mvpbl7vGAJFa9eL8Tuj42w63irr8LpFcTnDze1uzrHkeIECHbH3RYhhBpcf1
-         5RDpTKqQNummtR+8SwCAhtPnkrkcDoB8gZIqVCmiT2oHRzv4GfZ8jgO5UIvJaUB+96
-         kWr2LccfAAL91482YUaAEjaj5h+TwVeI+H1HYAvY=
+        b=wmInH/gfHu7z2VfCpN8fqtHoyyKpno9M3ec75dEetSnXarHWwUcpqDK1y6FUtKKRF
+         V4mvq03B86p5ftNjVFLbvHXtpEkertXhaZIH5HMKl5mkMO+mgKrPJ0UzKNnjCLhgvO
+         VmVSStpcs3Cq9XmpHr667p+pQTaExLt+51TF2nJE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, lee@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.15 038/128] i40e: Fix wrong check for I40E_TXR_FLAGS_WB_ON_ITR
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Hangyu Hua <hbh25y@gmail.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 4.14 27/48] rpmsg: Fix possible refcount leak in rpmsg_register_device_override()
 Date:   Mon,  6 Nov 2023 14:03:18 +0100
-Message-ID: <20231106130310.860492050@linuxfoundation.org>
+Message-ID: <20231106130258.793865287@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-[ Upstream commit 77a8c982ff0d4c3a14022c6fe9e3dbfb327552ec ]
+commit d7bd416d35121c95fe47330e09a5c04adbc5f928 upstream.
 
-The I40E_TXR_FLAGS_WB_ON_ITR is i40e_ring flag and not i40e_pf one.
+rpmsg_register_device_override need to call put_device to free vch when
+driver_set_override fails.
 
-Fixes: 8e0764b4d6be42 ("i40e/i40evf: Add support for writeback on ITR feature for X722")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20231023212714.178032-1-jacob.e.keller@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by adding a put_device() to the error path.
+
+Fixes: bb17d110cbf2 ("rpmsg: Fix calling device_lock() on non-initialized device")
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Link: https://lore.kernel.org/r/20220624024120.11576-1-hbh25y@gmail.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+(cherry picked from commit d7bd416d35121c95fe47330e09a5c04adbc5f928)
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rpmsg/rpmsg_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index 9787e794eeda6..1d096141625eb 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -2759,7 +2759,7 @@ int i40e_napi_poll(struct napi_struct *napi, int budget)
- 		return budget;
+--- a/drivers/rpmsg/rpmsg_core.c
++++ b/drivers/rpmsg/rpmsg_core.c
+@@ -499,6 +499,7 @@ int rpmsg_register_device_override(struc
+ 					  strlen(driver_override));
+ 		if (ret) {
+ 			dev_err(dev, "device_set_override failed: %d\n", ret);
++			put_device(dev);
+ 			return ret;
+ 		}
  	}
- 
--	if (vsi->back->flags & I40E_TXR_FLAGS_WB_ON_ITR)
-+	if (q_vector->tx.ring[0].flags & I40E_TXR_FLAGS_WB_ON_ITR)
- 		q_vector->arm_wb_state = false;
- 
- 	/* Exit the polling mode, but don't re-enable interrupts if stack might
--- 
-2.42.0
-
 
 
