@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 298C07E233D
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 069DB7E233E
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230192AbjKFNKQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:10:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51646 "EHLO
+        id S231520AbjKFNKS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:10:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231923AbjKFNKO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:14 -0500
+        with ESMTP id S231472AbjKFNKR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55FD191
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:12 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B32DC433C7;
-        Mon,  6 Nov 2023 13:10:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46650BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB61C433C8;
+        Mon,  6 Nov 2023 13:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276212;
-        bh=6WOs0g7ygWEl2LLEx3IFqlOo0aKsr0GegUGR7NIAU2k=;
+        s=korg; t=1699276214;
+        bh=nPCHQW7eSUi4czXBlVKu2c3qWuvLSqFWi1nfhq3jVgA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NLSSDFNhboWnTzEGrmdj1VGVyPggvuv0U1hEp00XDuEtSiJZCAyjmr1Y+huFG2CPJ
-         SwcTg7WcvgLosUrTUuWe7WZec5NMIUg2pRTBIMCcllLPmhVL0AAxJ/aK5QJEjhA8XR
-         Bhye5Op6m3cWl8q31IijWjowldKlzhC4innumfTo=
+        b=Gf7zUqXni2WycBMmZDdw/fqDiF1YPAEWSCMitOvN/JXbUt20ro7Cc/lH2HL6DeROP
+         M7aIYwAS9/mofGJxYLQzAisamLmC2/xIBRHZx9FOOJWCYf/xQRJzx8umqm6lKJx3AC
+         Yqi7R3CekeUbxMPt8FuaNIomZ4iZQwbkqYl/7F8c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Francis Laniel <flaniel@linux.microsoft.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+        Javier Rodriguez <josejavier.rodriguez@duagon.com>,
+        Johannes Thumshirn <jth@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 03/61] selftests/ftrace: Add new test case which checks non unique symbol
-Date:   Mon,  6 Nov 2023 14:02:59 +0100
-Message-ID: <20231106130259.688411639@linuxfoundation.org>
+Subject: [PATCH 4.19 04/61] mcb: Return actual parsed size when reading chameleon table
+Date:   Mon,  6 Nov 2023 14:03:00 +0100
+Message-ID: <20231106130259.727146676@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
 References: <20231106130259.573843228@linuxfoundation.org>
@@ -40,6 +41,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -55,45 +57,76 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Francis Laniel <flaniel@linux.microsoft.com>
+From: Rodríguez Barbarin, José Javier <JoseJavier.Rodriguez@duagon.com>
 
-[ Upstream commit 03b80ff8023adae6780e491f66e932df8165e3a0 ]
+[ Upstream commit a889c276d33d333ae96697510f33533f6e9d9591 ]
 
-If name_show() is non unique, this test will try to install a kprobe on this
-function which should fail returning EADDRNOTAVAIL.
-On kernel where name_show() is not unique, this test is skipped.
+The function chameleon_parse_cells() returns the number of cells
+parsed which has an undetermined size. This return value is only
+used for error checking but the number of cells is never used.
 
-Link: https://lore.kernel.org/all/20231020104250.9537-3-flaniel@linux.microsoft.com/
+Change return value to be number of bytes parsed to allow for
+memory management improvements.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Co-developed-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Javier Rodriguez <josejavier.rodriguez@duagon.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Link: https://lore.kernel.org/r/20230411083329.4506-2-jth@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc  | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
- create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+ drivers/mcb/mcb-parse.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-new file mode 100644
-index 0000000000000..bc9514428dbaf
---- /dev/null
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-@@ -0,0 +1,13 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+# description: Test failure of registering kprobe on non unique symbol
-+# requires: kprobe_events
-+
-+SYMBOL='name_show'
-+
-+# We skip this test on kernel where SYMBOL is unique or does not exist.
-+if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
-+	exit_unsupported
-+fi
-+
-+! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
+diff --git a/drivers/mcb/mcb-parse.c b/drivers/mcb/mcb-parse.c
+index 08a85e43ef885..b7354232221e6 100644
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -127,7 +127,7 @@ static void chameleon_parse_bar(void __iomem *base,
+ 	}
+ }
+ 
+-static int chameleon_get_bar(char __iomem **base, phys_addr_t mapbase,
++static int chameleon_get_bar(void __iomem **base, phys_addr_t mapbase,
+ 			     struct chameleon_bar **cb)
+ {
+ 	struct chameleon_bar *c;
+@@ -176,12 +176,13 @@ int chameleon_parse_cells(struct mcb_bus *bus, phys_addr_t mapbase,
+ {
+ 	struct chameleon_fpga_header *header;
+ 	struct chameleon_bar *cb;
+-	char __iomem *p = base;
++	void __iomem *p = base;
+ 	int num_cells = 0;
+ 	uint32_t dtype;
+ 	int bar_count;
+ 	int ret;
+ 	u32 hsize;
++	u32 table_size;
+ 
+ 	hsize = sizeof(struct chameleon_fpga_header);
+ 
+@@ -236,12 +237,16 @@ int chameleon_parse_cells(struct mcb_bus *bus, phys_addr_t mapbase,
+ 		num_cells++;
+ 	}
+ 
+-	if (num_cells == 0)
+-		num_cells = -EINVAL;
++	if (num_cells == 0) {
++		ret = -EINVAL;
++		goto free_bar;
++	}
+ 
++	table_size = p - base;
++	pr_debug("%d cell(s) found. Chameleon table size: 0x%04x bytes\n", num_cells, table_size);
+ 	kfree(cb);
+ 	kfree(header);
+-	return num_cells;
++	return table_size;
+ 
+ free_bar:
+ 	kfree(cb);
 -- 
 2.42.0
 
