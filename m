@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC6857E2444
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF0467E22F1
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:07:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232323AbjKFNUI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:20:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36486 "EHLO
+        id S231961AbjKFNHI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:07:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231976AbjKFNUH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:20:07 -0500
+        with ESMTP id S231968AbjKFNHH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:07:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7ED5F1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 045ACC433C8;
-        Mon,  6 Nov 2023 13:20:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF0C1F3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:07:02 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFA5C433C8;
+        Mon,  6 Nov 2023 13:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276804;
-        bh=VMdli3YjnAcqP784FrblFfWoxQCELLopP6uHsnp8TjY=;
+        s=korg; t=1699276022;
+        bh=hXcx/OmnOM81Y0uHMjdFFwbONHGvILY2x3xgmb1sK14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eTgcDpMFWJvGjDeDHPUKdJjNgzIR4lGZhbw6cl7GlRMsCYPuk9sEkok8PgKJIrb5k
-         knFlCuO5RQer3PAYxkRenNaI5lTxYKNDSAxhFts3QvGJwlotWPr9oBkOSQnqRUHi1n
-         E3OF7xFEgJgrhRyg1FdPJgFfmyjtHDJzTYOVCLtk=
+        b=owgvNyoYReTJKXIZMMJQ8gGwVFzcHUTJbuAMr/ixQE4olGrdl/E24QwmUVsXwmB55
+         /h+okMqJZGd9zDPlklmL4JmZHYku5PBOZBb/5m3M6bRCU9LgGTMavcKZ1CSuWRkXTD
+         RQBxJ4l6ADUS9P6kDNzheaoCD3/3SAxbUNoW+wwg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 13/74] net: ieee802154: adf7242: Fix some potential buffer overflow in adf7242_stats_show()
+        patches@lists.linux.dev, syzkaller <syzkaller@googlegroups.com>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        George Kennedy <george.kennedy@oracle.com>,
+        Suraj Jitindar Singh <surajjs@amazon.com>
+Subject: [PATCH 4.14 42/48] vc_screen: move load of struct vc_data pointer in vcs_read() to avoid UAF
 Date:   Mon,  6 Nov 2023 14:03:33 +0100
-Message-ID: <20231106130302.162070618@linuxfoundation.org>
+Message-ID: <20231106130259.293714493@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +51,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: George Kennedy <george.kennedy@oracle.com>
 
-[ Upstream commit ca082f019d8fbb983f03080487946da714154bae ]
+commit 226fae124b2dac217ea5436060d623ff3385bc34 upstream.
 
-strncat() usage in adf7242_debugfs_init() is wrong.
-The size given to strncat() is the maximum number of bytes that can be
-written, excluding the trailing NULL.
+After a call to console_unlock() in vcs_read() the vc_data struct can be
+freed by vc_deallocate(). Because of that, the struct vc_data pointer
+load must be done at the top of while loop in vcs_read() to avoid a UAF
+when vcs_size() is called.
 
-Here, the size that is passed, DNAME_INLINE_LEN, does not take into account
-the size of "adf7242-" that is already in the array.
+Syzkaller reported a UAF in vcs_size().
 
-In order to fix it, use snprintf() instead.
+BUG: KASAN: use-after-free in vcs_size (drivers/tty/vt/vc_screen.c:215)
+Read of size 4 at addr ffff8881137479a8 by task 4a005ed81e27e65/1537
 
-Fixes: 7302b9d90117 ("ieee802154/adf7242: Driver for ADF7242 MAC IEEE802154")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU: 0 PID: 1537 Comm: 4a005ed81e27e65 Not tainted 6.2.0-rc5 #1
+Hardware name: Red Hat KVM, BIOS 1.15.0-2.module
+Call Trace:
+  <TASK>
+__asan_report_load4_noabort (mm/kasan/report_generic.c:350)
+vcs_size (drivers/tty/vt/vc_screen.c:215)
+vcs_read (drivers/tty/vt/vc_screen.c:415)
+vfs_read (fs/read_write.c:468 fs/read_write.c:450)
+...
+  </TASK>
+
+Allocated by task 1191:
+...
+kmalloc_trace (mm/slab_common.c:1069)
+vc_allocate (./include/linux/slab.h:580 ./include/linux/slab.h:720
+     drivers/tty/vt/vt.c:1128 drivers/tty/vt/vt.c:1108)
+con_install (drivers/tty/vt/vt.c:3383)
+tty_init_dev (drivers/tty/tty_io.c:1301 drivers/tty/tty_io.c:1413
+     drivers/tty/tty_io.c:1390)
+tty_open (drivers/tty/tty_io.c:2080 drivers/tty/tty_io.c:2126)
+chrdev_open (fs/char_dev.c:415)
+do_dentry_open (fs/open.c:883)
+vfs_open (fs/open.c:1014)
+...
+
+Freed by task 1548:
+...
+kfree (mm/slab_common.c:1021)
+vc_port_destruct (drivers/tty/vt/vt.c:1094)
+tty_port_destructor (drivers/tty/tty_port.c:296)
+tty_port_put (drivers/tty/tty_port.c:312)
+vt_disallocate_all (drivers/tty/vt/vt_ioctl.c:662 (discriminator 2))
+vt_ioctl (drivers/tty/vt/vt_ioctl.c:903)
+tty_ioctl (drivers/tty/tty_io.c:2776)
+...
+
+The buggy address belongs to the object at ffff888113747800
+  which belongs to the cache kmalloc-1k of size 1024
+The buggy address is located 424 bytes inside of
+  1024-byte region [ffff888113747800, ffff888113747c00)
+
+The buggy address belongs to the physical page:
+page:00000000b3fe6c7c refcount:1 mapcount:0 mapping:0000000000000000
+     index:0x0 pfn:0x113740
+head:00000000b3fe6c7c order:3 compound_mapcount:0 subpages_mapcount:0
+     compound_pincount:0
+anon flags: 0x17ffffc0010200(slab|head|node=0|zone=2|lastcpupid=0x1fffff)
+raw: 0017ffffc0010200 ffff888100042dc0 0000000000000000 dead000000000001
+raw: 0000000000000000 0000000000100010 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+  ffff888113747880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff888113747900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+> ffff888113747980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                   ^
+  ffff888113747a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff888113747a80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+==================================================================
+Disabling lock debugging due to kernel taint
+
+Fixes: ac751efa6a0d ("console: rename acquire/release_console_sem() to console_lock/unlock()")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Suggested-by: Jiri Slaby <jirislaby@kernel.org>
+Signed-off-by: George Kennedy <george.kennedy@oracle.com>
+Link: https://lore.kernel.org/r/1674577014-12374-1-git-send-email-george.kennedy@oracle.com
+[ 4.14: Adjust context ]
+Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ieee802154/adf7242.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/tty/vt/vc_screen.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ieee802154/adf7242.c b/drivers/net/ieee802154/adf7242.c
-index cb29da961e12b..179e3e42b5f03 100644
---- a/drivers/net/ieee802154/adf7242.c
-+++ b/drivers/net/ieee802154/adf7242.c
-@@ -1162,9 +1162,10 @@ static int adf7242_stats_show(struct seq_file *file, void *offset)
+--- a/drivers/tty/vt/vc_screen.c
++++ b/drivers/tty/vt/vc_screen.c
+@@ -219,10 +219,6 @@ vcs_read(struct file *file, char __user
+ 	console_lock();
  
- static void adf7242_debugfs_init(struct adf7242_local *lp)
- {
--	char debugfs_dir_name[DNAME_INLINE_LEN + 1] = "adf7242-";
-+	char debugfs_dir_name[DNAME_INLINE_LEN + 1];
+ 	attr = (currcons & 128);
+-	ret = -ENXIO;
+-	vc = vcs_vc(inode, &viewed);
+-	if (!vc)
+-		goto unlock_out;
  
--	strncat(debugfs_dir_name, dev_name(&lp->spi->dev), DNAME_INLINE_LEN);
-+	snprintf(debugfs_dir_name, sizeof(debugfs_dir_name),
-+		 "adf7242-%s", dev_name(&lp->spi->dev));
+ 	ret = -EINVAL;
+ 	if (pos < 0)
+@@ -238,6 +234,11 @@ vcs_read(struct file *file, char __user
+ 		ssize_t orig_count;
+ 		long p = pos;
  
- 	lp->debugfs_root = debugfs_create_dir(debugfs_dir_name, NULL);
- 
--- 
-2.42.0
-
++		ret = -ENXIO;
++		vc = vcs_vc(inode, &viewed);
++		if (!vc)
++			goto unlock_out;
++
+ 		/* Check whether we are above size each round,
+ 		 * as copy_to_user at the end of this loop
+ 		 * could sleep.
 
 
