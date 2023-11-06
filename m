@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 479DE7E230B
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AE6E7E234C
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231747AbjKFNIP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:08:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60716 "EHLO
+        id S232144AbjKFNK4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:10:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232035AbjKFNIN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:13 -0500
+        with ESMTP id S231493AbjKFNKw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4194ABF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82799C433C7;
-        Mon,  6 Nov 2023 13:08:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562BD112
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:44 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F143C433C8;
+        Mon,  6 Nov 2023 13:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276089;
-        bh=fGztuIam9CLrLT37UaKB7RBe5auEZnkxIH3k4teRUHw=;
+        s=korg; t=1699276244;
+        bh=70MjOEJzaS3Vsn9UVX2QDP21QlKeXxoAvxsDE8UbquQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bn+LGGNjlk1kWsan3CxTq4ZhoOPAfC2ciz/DBr0IyrApX520BFmLEJT1jABU9onGb
-         jhDGj5jbAXzlo/m53rxcblYk73HaYkUTz/KD99Q9M1lo3ulj1Pd1c7RiccEyAhZVw3
-         uX1OPlSfKzn5Toosqh7pAtFryVtRQj28WakXlTm4=
+        b=oIUjzdqs94i8pcoHCjMQ8dhMGy6QC3OdRZBzyN5z1U4DGcS8LADBPunltdjmfODdl
+         InVhmX0MNR3XFesscHBKQRqixUf9BFSxYMAc1JbZ2WfDhQodyqMhlHP8Z1N0w6CxH9
+         y7Y7wE3E86OczD0LgblBRZlXcErUKdnUbqDBMeKo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, lee@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 6.6 17/30] tty: 8250: Remove UC-257 and UC-431
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Hangyu Hua <hbh25y@gmail.com>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 4.19 39/61] rpmsg: Fix possible refcount leak in rpmsg_register_device_override()
 Date:   Mon,  6 Nov 2023 14:03:35 +0100
-Message-ID: <20231106130258.547330505@linuxfoundation.org>
+Message-ID: <20231106130300.964811140@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,54 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Hangyu Hua <hbh25y@gmail.com>
 
-commit 33092fb3af51deb80849e90a17bada44bbcde6b3 upstream.
+commit d7bd416d35121c95fe47330e09a5c04adbc5f928 upstream.
 
-The UC-257 is a serial + LPT card, so remove it from this driver.
-A patch has been submitted to add it to parport_serial instead.
+rpmsg_register_device_override need to call put_device to free vch when
+driver_set_override fails.
 
-Additionaly, the UC-431 does not use this card ID, only the UC-420
-does. The 431 is a 3-port card and there is no generic 3-port configuration
-available, so remove reference to it from this driver.
+Fix this by adding a put_device() to the error path.
 
-Fixes: 152d1afa834c ("tty: Add support for Brainboxes UC cards.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DU0PR02MB78995ADF7394C74AD4CF3357C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
+Fixes: bb17d110cbf2 ("rpmsg: Fix calling device_lock() on non-initialized device")
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Hangyu Hua <hbh25y@gmail.com>
+Link: https://lore.kernel.org/r/20220624024120.11576-1-hbh25y@gmail.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/rpmsg/rpmsg_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -4941,13 +4941,6 @@ static const struct pci_device_id serial
- 		0, 0,
- 		pbn_b2_1_115200 },
- 	/*
--	 * Brainboxes UC-257
--	 */
--	{	PCI_VENDOR_ID_INTASHIELD, 0x0861,
--		PCI_ANY_ID, PCI_ANY_ID,
--		0, 0,
--		pbn_b2_2_115200 },
--	/*
- 	 * Brainboxes UC-260/271/701/756
- 	 */
- 	{	PCI_VENDOR_ID_INTASHIELD, 0x0D21,
-@@ -5026,7 +5019,7 @@ static const struct pci_device_id serial
- 		0, 0,
- 		pbn_b2_4_115200 },
- 	/*
--	 * Brainboxes UC-420/431
-+	 * Brainboxes UC-420
- 	 */
- 	{       PCI_VENDOR_ID_INTASHIELD, 0x0921,
- 		PCI_ANY_ID, PCI_ANY_ID,
+--- a/drivers/rpmsg/rpmsg_core.c
++++ b/drivers/rpmsg/rpmsg_core.c
+@@ -550,6 +550,7 @@ int rpmsg_register_device_override(struc
+ 					  strlen(driver_override));
+ 		if (ret) {
+ 			dev_err(dev, "device_set_override failed: %d\n", ret);
++			put_device(dev);
+ 			return ret;
+ 		}
+ 	}
 
 
