@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B94077E2523
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:28:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 402427E2492
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232655AbjKFN2e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:28:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39178 "EHLO
+        id S232406AbjKFNXO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:23:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232628AbjKFN2d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:28:33 -0500
+        with ESMTP id S232467AbjKFNXN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B4792
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:28:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8BF1C433C7;
-        Mon,  6 Nov 2023 13:28:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDCA6D8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE38C433C7;
+        Mon,  6 Nov 2023 13:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277310;
-        bh=+dJEkgQsaU88C/NIuuXgKOXJUWyXbI5J1QISNdlm3U8=;
+        s=korg; t=1699276990;
+        bh=L5IHGY4ZtgwtPsZKHki5yYtlkzBiZUbTTDyCoWiAvx0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h4nYsy1pnTrvSAy7rfbA3sR+6M+ez4HekfVO9yYRLF18dM8E7ZGKwh45xD6lhIhM9
-         BxFU+9PUY09dFPgx7cv73sKLicW61DYLaGjUHj1lJMuRxjiHiOHOfFZoGktgTyGLl7
-         qk9PbskwG/01ZqAMAPk18oEd3ofzbAyU2gmcPGlg=
+        b=COptA7xi+3r78483y5hBb9Y6TWxAZLv3TX2USCjbPp8jrEMLe7TF8xjpRId1wua8v
+         gop7xW3AwZ21Zr0rUpY0Yskd00himKPMhFVTdLbIeBg6xo57lCqWyuGmecUvJElCS+
+         mTBRo7nmYfjY94kjT52uUNaX7zG9SQD5z+IoS44k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/128] ASoC: rt5650: fix the wrong result of key button
+        patches@lists.linux.dev,
+        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 52/74] irqchip/stm32-exti: add missing DT IRQ flag translation
 Date:   Mon,  6 Nov 2023 14:04:12 +0100
-Message-ID: <20231106130313.335479352@linuxfoundation.org>
+Message-ID: <20231106130303.527049553@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,37 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
 
-[ Upstream commit f88dfbf333b3661faff996bb03af2024d907b76a ]
+[ Upstream commit 8554cba1d6dbd3c74e0549e28ddbaccbb1d6b30a ]
 
-The RT5650 should enable a power setting for button detection to avoid the wrong result.
+The STM32F4/7 EXTI driver was missing the xlate callback, so IRQ trigger
+flags specified in the device tree were being ignored. This was
+preventing the RTC alarm interrupt from working, because it must be set
+to trigger on the rising edge to function correctly.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Link: https://lore.kernel.org/r/20231013094525.715518-1-shumingf@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20231003162003.1649967-1-ben.wolsieffer@hefring.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5645.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-stm32-exti.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index 8ea6d43335626..385f2cca939a0 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -3251,6 +3251,8 @@ int rt5645_set_jack_detect(struct snd_soc_component *component,
- 				RT5645_GP1_PIN_IRQ, RT5645_GP1_PIN_IRQ);
- 		regmap_update_bits(rt5645->regmap, RT5645_GEN_CTRL1,
- 				RT5645_DIG_GATE_CTRL, RT5645_DIG_GATE_CTRL);
-+		regmap_update_bits(rt5645->regmap, RT5645_DEPOP_M1,
-+				RT5645_HP_CB_MASK, RT5645_HP_CB_PU);
- 	}
- 	rt5645_irq(0, rt5645);
+diff --git a/drivers/irqchip/irq-stm32-exti.c b/drivers/irqchip/irq-stm32-exti.c
+index a8322a4e18d36..df18465a0985f 100644
+--- a/drivers/irqchip/irq-stm32-exti.c
++++ b/drivers/irqchip/irq-stm32-exti.c
+@@ -414,6 +414,7 @@ static const struct irq_domain_ops irq_exti_domain_ops = {
+ 	.map	= irq_map_generic_chip,
+ 	.alloc  = stm32_exti_alloc,
+ 	.free	= stm32_exti_free,
++	.xlate	= irq_domain_xlate_twocell,
+ };
  
+ static void stm32_irq_ack(struct irq_data *d)
 -- 
 2.42.0
 
