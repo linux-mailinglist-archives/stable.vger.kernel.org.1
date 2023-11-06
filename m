@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3ABE7E24FF
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D29577E2560
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232607AbjKFN1P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:27:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43622 "EHLO
+        id S232605AbjKFNbV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:31:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232605AbjKFN1O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:14 -0500
+        with ESMTP id S232744AbjKFNbU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B058C10B;
-        Mon,  6 Nov 2023 05:27:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3ECCC433C8;
-        Mon,  6 Nov 2023 13:27:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 375E7123
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:12 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D63C433CC;
+        Mon,  6 Nov 2023 13:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277231;
-        bh=tgbDnK4ghuOPjs63JXQXulNk6xQr3SPdrwYN41NPIRA=;
+        s=korg; t=1699277471;
+        bh=OKhodJnziSpfNwZr6QdUId+SmA83WO0emHtAEGaEVG8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e2E80zwfDj+P7wSb+eCw734Bz9pGEEmgNaPG/7G659q+DwG9OT05TP8BX0YoxFc/Q
-         jbFgwK6TVeH5L6hT9ohyvu7XyQwGtn8looEKfIfzl44StT1Nl8Zs2aaqOBr7TKtLPi
-         N/Y2eh08b2EIKbuqFghC27QPs0LLnFVBxwECmy6g=
+        b=VhcYOkZlGDUdQsxlhDsbKISwpTz6U/mRVZkdf6XDdqik+BULBF8wkJwZvZZtcP6Bj
+         9htqtEqMnbfjsEj1rV4+XJJAkXkLb5iZqCh8F41mE+3/85F+7G2SpZS7xXc/B796Qy
+         63hxCcIc0exqv1HumnE2n2chw0Os8YzealpWY71I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Baoquan He <bhe@redhat.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/128] fbdev: atyfb: only use ioremap_uc() on i386 and ia64
+        patches@lists.linux.dev, Stable@vger.kernel.org,
+        Peng Fan <peng.fan@nxp.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.10 34/95] nvmem: imx: correct nregs for i.MX6ULL
 Date:   Mon,  6 Nov 2023 14:04:02 +0100
-Message-ID: <20231106130312.878518033@linuxfoundation.org>
+Message-ID: <20231106130305.971423299@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +50,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit c1a8d1d0edb71dec15c9649cb56866c71c1ecd9e ]
+commit 2382c1b044231fd49eaf9aa82bc7113fc55487b8 upstream.
 
-ioremap_uc() is only meaningful on old x86-32 systems with the PAT
-extension, and on ia64 with its slightly unconventional ioremap()
-behavior, everywhere else this is the same as ioremap() anyway.
+The nregs for i.MX6ULL should be 80 per fuse map, correct it.
 
-Change the only driver that still references ioremap_uc() to only do so
-on x86-32/ia64 in order to allow removing that interface at some
-point in the future for the other architectures.
-
-On some architectures, ioremap_uc() just returns NULL, changing
-the driver to call ioremap() means that they now have a chance
-of working correctly.
-
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ffbc34bf0e9c ("nvmem: imx-ocotp: Implement i.MX6ULL/ULZ support")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20231013124904.175782-4-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/aty/atyfb_base.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/nvmem/imx-ocotp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
-index 1aef3d6ebd880..246bf67b32ea0 100644
---- a/drivers/video/fbdev/aty/atyfb_base.c
-+++ b/drivers/video/fbdev/aty/atyfb_base.c
-@@ -3447,11 +3447,15 @@ static int atyfb_setup_generic(struct pci_dev *pdev, struct fb_info *info,
- 	}
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -488,7 +488,7 @@ static const struct ocotp_params imx6ul_
+ };
  
- 	info->fix.mmio_start = raddr;
-+#if defined(__i386__) || defined(__ia64__)
- 	/*
- 	 * By using strong UC we force the MTRR to never have an
- 	 * effect on the MMIO region on both non-PAT and PAT systems.
- 	 */
- 	par->ati_regbase = ioremap_uc(info->fix.mmio_start, 0x1000);
-+#else
-+	par->ati_regbase = ioremap(info->fix.mmio_start, 0x1000);
-+#endif
- 	if (par->ati_regbase == NULL)
- 		return -ENOMEM;
- 
--- 
-2.42.0
-
+ static const struct ocotp_params imx6ull_params = {
+-	.nregs = 64,
++	.nregs = 80,
+ 	.bank_address_words = 0,
+ 	.set_timing = imx_ocotp_set_imx6_timing,
+ 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
 
 
