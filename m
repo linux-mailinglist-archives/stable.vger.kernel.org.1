@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B99D17E22E2
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 688FA7E25E9
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:44:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231920AbjKFNGc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:06:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33356 "EHLO
+        id S231669AbjKFNox (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:44:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231953AbjKFNGa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:30 -0500
+        with ESMTP id S230192AbjKFNow (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:44:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 644F0112
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D12C433C9;
-        Mon,  6 Nov 2023 13:06:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 915C3100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:44:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D21C433C8;
+        Mon,  6 Nov 2023 13:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699275987;
-        bh=cqHx6kIEs1zpvtuRl6wIjzx8qcqtwobZNhSKxHy/gbM=;
+        s=korg; t=1699278289;
+        bh=CL+ZUHlmu3+tefPiatLvmbyQ6rwnXsEKS9GWzrm7TiY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SRBHF77I31FMhXHWjwKF/qka/c+r5md9JbUI/LvfxX4pV9Kl5vl/A53h6sTctf0Qo
-         iDmniBsmFr+TE3RcOjoxS/7RhQ8lFSO7dyvCFn0ODlt3g7x2ysqOScgvCml30OFUU+
-         dzKg5eo/Vdgqql6NeFzbOvlxX1KEL+8xW630h+vY=
+        b=Hk1HX3ACyiljB1D2eV0BOKB7Ey8FbAypnE/2gS9qKY8JTG1Z2x2JUF2uJt/S0TK8J
+         YkP09Z4bWVpYmXEsZSKdl0K61SXXunrU7MjpdLhY0bXkRaI0KnDXjo7LJqbT4tdQ4m
+         H+CZK/k0UKBM+pwkAFnF1oto2Hlvq0LozGaFqiUY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 31/48] dmaengine: ste_dma40: Fix PM disable depth imbalance in d40_probe
-Date:   Mon,  6 Nov 2023 14:03:22 +0100
-Message-ID: <20231106130258.926013265@linuxfoundation.org>
+        patches@lists.linux.dev, ruanjinjie@huawei.com,
+        stable@vger.kernel.org, Mark Rutland <mark.rutland@arm.com>
+Subject: [PATCH 4.19 27/61] arm64: fix a concurrency issue in emulation_proc_handler()
+Date:   Mon,  6 Nov 2023 14:03:23 +0100
+Message-ID: <20231106130300.548984031@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +49,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 0618c077a8c20e8c81e367988f70f7e32bb5a717 ]
+In linux-6.1, the related code is refactored in commit 124c49b1b5d9
+("arm64: armv8_deprecated: rework deprected instruction handling") and this
+issue was incidentally fixed. I have adapted the patch set to linux stable
+5.10. However, 4.19 and 5.10 are too different and the patch set is
+hard to adapt to 4.19.
 
-The pm_runtime_enable will increase power disable depth. Thus
-a pairing decrement is needed on the error handling path to
-keep it balanced according to context.
-We fix it by calling pm_runtime_disable when error returns.
+This patch is to solve the problem of repeated addition of linked lists
+described below with few changes.
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/tencent_DD2D371DB5925B4B602B1E1D0A5FA88F1208@qq.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+How to reproduce:
+CONFIG_ARMV8_DEPRECATED=y, CONFIG_SWP_EMULATION=y, and CONFIG_DEBUG_LIST=y,
+then launch two shell executions:
+       #!/bin/bash
+       while [ 1 ];
+       do
+           echo 1 > /proc/sys/abi/swp
+       done
+
+or "echo 1 > /proc/sys/abi/swp" and then aunch two shell executions:
+       #!/bin/bash
+       while [ 1 ];
+       do
+           echo 0 > /proc/sys/abi/swp
+       done
+
+In emulation_proc_handler(), read and write operations are performed on
+insn->current_mode. In the concurrency scenario, mutex only protects
+writing insn->current_mode, and not protects the read. Suppose there are
+two concurrent tasks, task1 updates insn->current_mode to INSN_EMULATE
+in the critical section, the prev_mode of task2 is still the old data
+INSN_UNDEF of insn->current_mode. As a result, two tasks call
+update_insn_emulation_mode twice with prev_mode = INSN_UNDEF and
+current_mode = INSN_EMULATE, then call register_emulation_hooks twice,
+resulting in a list_add double problem.
+
+After applying this patch, the following list add or list del double
+warnings never occur.
+
+Call trace:
+ __list_add_valid+0xd8/0xe4
+ register_undef_hook+0x94/0x13c
+ update_insn_emulation_mode+0xd0/0x12c
+ emulation_proc_handler+0xd8/0xf4
+ proc_sys_call_handler+0x140/0x250
+ proc_sys_write+0x1c/0x2c
+ new_sync_write+0xec/0x18c
+ vfs_write+0x214/0x2ac
+ ksys_write+0x70/0xfc
+ __arm64_sys_write+0x24/0x30
+ el0_svc_common.constprop.0+0x7c/0x1bc
+ do_el0_svc+0x2c/0x94
+ el0_svc+0x20/0x30
+ el0_sync_handler+0xb0/0xb4
+ el0_sync+0x160/0x180
+
+Call trace:
+ __list_del_entry_valid+0xac/0x110
+ unregister_undef_hook+0x34/0x80
+ update_insn_emulation_mode+0xf0/0x180
+ emulation_proc_handler+0x8c/0xd8
+ proc_sys_call_handler+0x1d8/0x208
+ proc_sys_write+0x14/0x20
+ new_sync_write+0xf0/0x190
+ vfs_write+0x304/0x388
+ ksys_write+0x6c/0x100
+ __arm64_sys_write+0x1c/0x28
+ el0_svc_common.constprop.4+0x68/0x188
+ do_el0_svc+0x24/0xa0
+ el0_svc+0x14/0x20
+ el0_sync_handler+0x90/0xb8
+ el0_sync+0x160/0x180
+
+Fixes: af483947d472 ("arm64: fix oops in concurrently setting insn_emulation sysctls")
+Cc: stable@vger.kernel.org#4.19.x
+Cc: gregkh@linuxfoundation.org
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ste_dma40.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/kernel/armv8_deprecated.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
-index 498d9886ed9bc..bb39b04d67d71 100644
---- a/drivers/dma/ste_dma40.c
-+++ b/drivers/dma/ste_dma40.c
-@@ -3678,6 +3678,7 @@ static int __init d40_probe(struct platform_device *pdev)
- 		regulator_disable(base->lcpa_regulator);
- 		regulator_put(base->lcpa_regulator);
- 	}
-+	pm_runtime_disable(base->dev);
+--- a/arch/arm64/kernel/armv8_deprecated.c
++++ b/arch/arm64/kernel/armv8_deprecated.c
+@@ -211,10 +211,12 @@ static int emulation_proc_handler(struct
+ 				  loff_t *ppos)
+ {
+ 	int ret = 0;
+-	struct insn_emulation *insn = container_of(table->data, struct insn_emulation, current_mode);
+-	enum insn_emulation_mode prev_mode = insn->current_mode;
++	struct insn_emulation *insn;
++	enum insn_emulation_mode prev_mode;
  
- 	kfree(base->lcla_pool.alloc_map);
- 	kfree(base->lookup_log_chans);
--- 
-2.42.0
-
+ 	mutex_lock(&insn_emulation_mutex);
++	insn = container_of(table->data, struct insn_emulation, current_mode);
++	prev_mode = insn->current_mode;
+ 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 
+ 	if (ret || !write || prev_mode == insn->current_mode)
 
 
