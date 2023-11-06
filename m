@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 227CF7E22DB
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 298C07E233D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231919AbjKFNGN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:06:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49646 "EHLO
+        id S230192AbjKFNKQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:10:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231920AbjKFNGM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:12 -0500
+        with ESMTP id S231923AbjKFNKO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F18BF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D01C433C9;
-        Mon,  6 Nov 2023 13:06:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55FD191
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:12 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B32DC433C7;
+        Mon,  6 Nov 2023 13:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699275969;
-        bh=b7MhugfoR61VxlYwVzvcYzgFFRleDtaBRn1K32nW9k0=;
+        s=korg; t=1699276212;
+        bh=6WOs0g7ygWEl2LLEx3IFqlOo0aKsr0GegUGR7NIAU2k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TKeMG8gz1iJwujbjobrRSzC1U6na0172Yt6F1w3oBAz2dkkqr2bFBHKyTIMiTw6kD
-         CfjWPVfb+nqVp0gNqe6sq00nlPaI3MAcrHA//DM+DMjeXXnJAlSVVdmBfFW6JhCi8Q
-         mpFZ9NrIwOqs7aG2l2MMkItWY1ef8zADG+eohRvo=
+        b=NLSSDFNhboWnTzEGrmdj1VGVyPggvuv0U1hEp00XDuEtSiJZCAyjmr1Y+huFG2CPJ
+         SwcTg7WcvgLosUrTUuWe7WZec5NMIUg2pRTBIMCcllLPmhVL0AAxJ/aK5QJEjhA8XR
+         Bhye5Op6m3cWl8q31IijWjowldKlzhC4innumfTo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Francis Laniel <flaniel@linux.microsoft.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 08/48] gtp: uapi: fix GTPA_MAX
+Subject: [PATCH 4.19 03/61] selftests/ftrace: Add new test case which checks non unique symbol
 Date:   Mon,  6 Nov 2023 14:02:59 +0100
-Message-ID: <20231106130258.138955695@linuxfoundation.org>
+Message-ID: <20231106130259.688411639@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,36 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Francis Laniel <flaniel@linux.microsoft.com>
 
-[ Upstream commit adc8df12d91a2b8350b0cd4c7fec3e8546c9d1f8 ]
+[ Upstream commit 03b80ff8023adae6780e491f66e932df8165e3a0 ]
 
-Subtract one to __GTPA_MAX, otherwise GTPA_MAX is off by 2.
+If name_show() is non unique, this test will try to install a kprobe on this
+function which should fail returning EADDRNOTAVAIL.
+On kernel where name_show() is not unique, this test is skipped.
 
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/all/20231020104250.9537-3-flaniel@linux.microsoft.com/
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/gtp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc  | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+ create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
 
-diff --git a/include/uapi/linux/gtp.h b/include/uapi/linux/gtp.h
-index c7d66755d212b..78bd62014efd3 100644
---- a/include/uapi/linux/gtp.h
-+++ b/include/uapi/linux/gtp.h
-@@ -30,6 +30,6 @@ enum gtp_attrs {
- 	GTPA_PAD,
- 	__GTPA_MAX,
- };
--#define GTPA_MAX (__GTPA_MAX + 1)
-+#define GTPA_MAX (__GTPA_MAX - 1)
- 
- #endif /* _UAPI_LINUX_GTP_H_ */
+diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+new file mode 100644
+index 0000000000000..bc9514428dbaf
+--- /dev/null
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+@@ -0,0 +1,13 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0
++# description: Test failure of registering kprobe on non unique symbol
++# requires: kprobe_events
++
++SYMBOL='name_show'
++
++# We skip this test on kernel where SYMBOL is unique or does not exist.
++if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
++	exit_unsupported
++fi
++
++! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
 -- 
 2.42.0
 
