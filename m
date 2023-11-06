@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A0F27E254F
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDBD27E24EB
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:26:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232714AbjKFNan (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:30:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53386 "EHLO
+        id S232557AbjKFN0h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:26:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232054AbjKFNam (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:42 -0500
+        with ESMTP id S232569AbjKFN0g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CEA3A9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06D9C433C7;
-        Mon,  6 Nov 2023 13:30:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D258A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA91C433C8;
+        Mon,  6 Nov 2023 13:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277439;
-        bh=AwaC2RJ62V+u7I4wYhum2fCq/p4vYBsC0JZ3cRp6xLw=;
+        s=korg; t=1699277193;
+        bh=GC6B9NVNE987GfQcLHLRE/uK8fbtlV1JCDahHp9bnF0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gMvWt3gbq8zQxCgkX5RhTifOWOH46eBK+PfWPG0rAX/lD3so92+sDIQ4wXgC3Z3Ob
-         HsF07Kgl7aD0yTftlYV0xKA/eeyL+XP8SAjul6CLazy5Pe1mmnU7AUfJhYa4YTxzal
-         ruG68fzCfjgBtkU/lJaBl59JYyK/9i/HE+zfLF+8=
+        b=Vzo43DmE+1320/CWBGFbOWQBdQFBbxPkUSp40wXQ2Qkz1BLbKM7h1xQGoHn1I7Zo2
+         0zh4N/MV7jzAf7ZbZqalx9xgunFF1V9GVMjcruo0hg8JlUYrIDPNUCQ1i9ICB+MkSz
+         EB2ePkpCHc4kV9x4QrIS63jzg5Mew2aYN52N12ko=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, lee@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 22/95] gtp: uapi: fix GTPA_MAX
+        patches@lists.linux.dev,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5.15 070/128] rpmsg: Fix kfree() of static memory on setting driver_override
 Date:   Mon,  6 Nov 2023 14:03:50 +0100
-Message-ID: <20231106130305.531392891@linuxfoundation.org>
+Message-ID: <20231106130312.302773682@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit adc8df12d91a2b8350b0cd4c7fec3e8546c9d1f8 ]
+commit 42cd402b8fd4672b692400fe5f9eecd55d2794ac upstream.
 
-Subtract one to __GTPA_MAX, otherwise GTPA_MAX is off by 2.
+The driver_override field from platform driver should not be initialized
+from static memory (string literal) because the core later kfree() it,
+for example when driver_override is set via sysfs.
 
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use dedicated helper to set driver_override properly.
+
+Fixes: 950a7388f02b ("rpmsg: Turn name service into a stand alone driver")
+Fixes: c0cdc19f84a4 ("rpmsg: Driver for user space endpoint interface")
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20220419113435.246203-13-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/gtp.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rpmsg/rpmsg_internal.h |   13 +++++++++++--
+ include/linux/rpmsg.h          |    6 ++++--
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/include/uapi/linux/gtp.h b/include/uapi/linux/gtp.h
-index 79f9191bbb24c..82d0e58ec3ce2 100644
---- a/include/uapi/linux/gtp.h
-+++ b/include/uapi/linux/gtp.h
-@@ -32,6 +32,6 @@ enum gtp_attrs {
- 	GTPA_PAD,
- 	__GTPA_MAX,
- };
--#define GTPA_MAX (__GTPA_MAX + 1)
-+#define GTPA_MAX (__GTPA_MAX - 1)
+--- a/drivers/rpmsg/rpmsg_internal.h
++++ b/drivers/rpmsg/rpmsg_internal.h
+@@ -90,10 +90,19 @@ int rpmsg_release_channel(struct rpmsg_d
+  */
+ static inline int rpmsg_chrdev_register_device(struct rpmsg_device *rpdev)
+ {
++	int ret;
++
+ 	strcpy(rpdev->id.name, "rpmsg_chrdev");
+-	rpdev->driver_override = "rpmsg_chrdev";
++	ret = driver_set_override(&rpdev->dev, &rpdev->driver_override,
++				  rpdev->id.name, strlen(rpdev->id.name));
++	if (ret)
++		return ret;
++
++	ret = rpmsg_register_device(rpdev);
++	if (ret)
++		kfree(rpdev->driver_override);
  
- #endif /* _UAPI_LINUX_GTP_H_ */
--- 
-2.42.0
-
+-	return rpmsg_register_device(rpdev);
++	return ret;
+ }
+ 
+ #endif
+--- a/include/linux/rpmsg.h
++++ b/include/linux/rpmsg.h
+@@ -41,7 +41,9 @@ struct rpmsg_channel_info {
+  * rpmsg_device - device that belong to the rpmsg bus
+  * @dev: the device struct
+  * @id: device id (used to match between rpmsg drivers and devices)
+- * @driver_override: driver name to force a match
++ * @driver_override: driver name to force a match; do not set directly,
++ *                   because core frees it; use driver_set_override() to
++ *                   set or clear it.
+  * @src: local address
+  * @dst: destination address
+  * @ept: the rpmsg endpoint of this channel
+@@ -51,7 +53,7 @@ struct rpmsg_channel_info {
+ struct rpmsg_device {
+ 	struct device dev;
+ 	struct rpmsg_device_id id;
+-	char *driver_override;
++	const char *driver_override;
+ 	u32 src;
+ 	u32 dst;
+ 	struct rpmsg_endpoint *ept;
 
 
