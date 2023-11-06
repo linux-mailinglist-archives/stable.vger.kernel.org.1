@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC0B17E2529
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:28:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EF937E2491
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232663AbjKFN2s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:28:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56594 "EHLO
+        id S232462AbjKFNXL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:23:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232664AbjKFN2s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:28:48 -0500
+        with ESMTP id S232460AbjKFNXK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266E7134
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:28:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CC6C433C7;
-        Mon,  6 Nov 2023 13:28:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F01F0F1
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCDAC433C9;
+        Mon,  6 Nov 2023 13:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277324;
-        bh=Qh6WcUSmGodvxggjuCSPEUG7Yjb8nJGiC7iJ0aBWBck=;
+        s=korg; t=1699276987;
+        bh=1vJBYTZPHsyyma7OZaXf0mEeq8dtqYDjjF+LrTLP9rU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tHq1PuM2DDvvCf0PYtN2N56FZXKTMvOkimfmweS/J6xq/XF5xsivXuwOS0ue3lMyF
-         1HDvjJeK06/jmNE03PRS1LQVjVlccV/Cn10HUsRyjerXQ8Bm4ScWyjtbmAtUeMacD6
-         w+fbqHF8wiX0v2aAOAhTNdvAvX8UC4uvaj0NFcLQ=
+        b=lxtAVqaA8Y4NlENiqnX3+B0se9rP6g11zo9SpYpwHZhzwisnH6YeRqxJpKfKKoty/
+         2/ORTYVqCJbSlrNviRdXlib8k0pG7UFzYSs9aeCpY4N6Lu78rcMJcer5TWKDrj3AjP
+         Juol6Z9rm/5aBPoKp1FwGK66zxkGapU9404jbbNk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liha Sikanen <lihasika@gmail.com>
-Subject: [PATCH 5.15 114/128] usb: storage: set 1.50 as the lower bcdDevice for older "Super Top" compatibility
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 5.4 74/74] tty: 8250: Add support for Intashield IS-100
 Date:   Mon,  6 Nov 2023 14:04:34 +0100
-Message-ID: <20231106130314.356380015@linuxfoundation.org>
+Message-ID: <20231106130304.228159040@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,36 +48,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LihaSika <lihasika@gmail.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit 0e3139e6543b241b3e65956a55c712333bef48ac upstream.
+commit 4d994e3cf1b541ff32dfb03fbbc60eea68f9645b upstream.
 
-Change lower bcdDevice value for "Super Top USB 2.0  SATA BRIDGE" to match
-1.50. I have such an older device with bcdDevice=1.50 and it will not work
-otherwise.
+Add support for the Intashield IS-100 1 port serial card.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Liha Sikanen <lihasika@gmail.com>
-Link: https://lore.kernel.org/r/ccf7d12a-8362-4916-b3e0-f4150f54affd@gmail.com
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB7899A0E0CDAA505AF5A874CDC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_cypress.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_pci.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/storage/unusual_cypress.h
-+++ b/drivers/usb/storage/unusual_cypress.h
-@@ -19,7 +19,7 @@ UNUSUAL_DEV(  0x04b4, 0x6831, 0x0000, 0x
- 		"Cypress ISD-300LP",
- 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5105,6 +5105,12 @@ static const struct pci_device_id serial
+ 		pbn_b1_bt_1_115200 },
  
--UNUSUAL_DEV( 0x14cd, 0x6116, 0x0160, 0x0160,
-+UNUSUAL_DEV( 0x14cd, 0x6116, 0x0150, 0x0160,
- 		"Super Top",
- 		"USB 2.0  SATA BRIDGE",
- 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
+ 	/*
++	 * IntaShield IS-100
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0D60,
++		PCI_ANY_ID, PCI_ANY_ID, 0, 0,
++		pbn_b2_1_115200 },
++	/*
+ 	 * IntaShield IS-200
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, PCI_DEVICE_ID_INTASHIELD_IS200,
 
 
