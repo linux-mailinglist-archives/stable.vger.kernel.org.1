@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 069DB7E233E
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4A327E23E3
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:15:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231520AbjKFNKS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:10:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42424 "EHLO
+        id S232242AbjKFNPw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:15:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231472AbjKFNKR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:17 -0500
+        with ESMTP id S232187AbjKFNPv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:15:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46650BD
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB61C433C8;
-        Mon,  6 Nov 2023 13:10:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82132BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:15:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7352C433C8;
+        Mon,  6 Nov 2023 13:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276214;
-        bh=nPCHQW7eSUi4czXBlVKu2c3qWuvLSqFWi1nfhq3jVgA=;
+        s=korg; t=1699276548;
+        bh=47Hpf3k9N8rWxxd3MH47aiMiCAxl+SW2pCQ/vH/c3R0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gf7zUqXni2WycBMmZDdw/fqDiF1YPAEWSCMitOvN/JXbUt20ro7Cc/lH2HL6DeROP
-         M7aIYwAS9/mofGJxYLQzAisamLmC2/xIBRHZx9FOOJWCYf/xQRJzx8umqm6lKJx3AC
-         Yqi7R3CekeUbxMPt8FuaNIomZ4iZQwbkqYl/7F8c=
+        b=e2nKtvbzVQQybvh1xL5dhlvbYvkY4HAdNk3tfEPY6palJYK9EZMMuDwJhTas+10k2
+         UqtMqk35125ZQcTeZVQNUzXHW8SgP+Y7S2Hr/rSA0x9pxkrInMi7Ia6NYa2tZsA2Kf
+         ybk4eIBEIxr9m1rp72DEFteyejcWqpMDQaoVEev8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
-        Javier Rodriguez <josejavier.rodriguez@duagon.com>,
-        Johannes Thumshirn <jth@kernel.org>,
+        patches@lists.linux.dev, Antoine Gennart <gennartan@disroot.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 04/61] mcb: Return actual parsed size when reading chameleon table
+Subject: [PATCH 6.5 06/88] ASoC: tlv320adc3xxx: BUG: Correct micbias setting
 Date:   Mon,  6 Nov 2023 14:03:00 +0100
-Message-ID: <20231106130259.727146676@linuxfoundation.org>
+Message-ID: <20231106130306.002488950@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -53,80 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodríguez Barbarin, José Javier <JoseJavier.Rodriguez@duagon.com>
+From: Antoine Gennart <gennartan@disroot.org>
 
-[ Upstream commit a889c276d33d333ae96697510f33533f6e9d9591 ]
+[ Upstream commit e930bea4124b8a4a47ba4092d99da30099b9242d ]
 
-The function chameleon_parse_cells() returns the number of cells
-parsed which has an undetermined size. This return value is only
-used for error checking but the number of cells is never used.
+The micbias setting for tlv320adc can also have the value '3' which
+means that the micbias ouput pin is connected to the input pin AVDD.
 
-Change return value to be number of bytes parsed to allow for
-memory management improvements.
-
-Co-developed-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Signed-off-by: Javier Rodriguez <josejavier.rodriguez@duagon.com>
-Signed-off-by: Johannes Thumshirn <jth@kernel.org>
-Link: https://lore.kernel.org/r/20230411083329.4506-2-jth@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Antoine Gennart <gennartan@disroot.org>
+Link: https://lore.kernel.org/r/20230929130117.77661-1-gennartan@disroot.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mcb/mcb-parse.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ sound/soc/codecs/tlv320adc3xxx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mcb/mcb-parse.c b/drivers/mcb/mcb-parse.c
-index 08a85e43ef885..b7354232221e6 100644
---- a/drivers/mcb/mcb-parse.c
-+++ b/drivers/mcb/mcb-parse.c
-@@ -127,7 +127,7 @@ static void chameleon_parse_bar(void __iomem *base,
- 	}
- }
+diff --git a/sound/soc/codecs/tlv320adc3xxx.c b/sound/soc/codecs/tlv320adc3xxx.c
+index b976c1946286a..420bbf588efea 100644
+--- a/sound/soc/codecs/tlv320adc3xxx.c
++++ b/sound/soc/codecs/tlv320adc3xxx.c
+@@ -293,7 +293,7 @@
+ #define ADC3XXX_BYPASS_RPGA		0x80
  
--static int chameleon_get_bar(char __iomem **base, phys_addr_t mapbase,
-+static int chameleon_get_bar(void __iomem **base, phys_addr_t mapbase,
- 			     struct chameleon_bar **cb)
- {
- 	struct chameleon_bar *c;
-@@ -176,12 +176,13 @@ int chameleon_parse_cells(struct mcb_bus *bus, phys_addr_t mapbase,
- {
- 	struct chameleon_fpga_header *header;
- 	struct chameleon_bar *cb;
--	char __iomem *p = base;
-+	void __iomem *p = base;
- 	int num_cells = 0;
- 	uint32_t dtype;
- 	int bar_count;
- 	int ret;
- 	u32 hsize;
-+	u32 table_size;
+ /* MICBIAS control bits */
+-#define ADC3XXX_MICBIAS_MASK		0x2
++#define ADC3XXX_MICBIAS_MASK		0x3
+ #define ADC3XXX_MICBIAS1_SHIFT		5
+ #define ADC3XXX_MICBIAS2_SHIFT		3
  
- 	hsize = sizeof(struct chameleon_fpga_header);
+@@ -1099,7 +1099,7 @@ static int adc3xxx_parse_dt_micbias(struct adc3xxx *adc3xxx,
+ 	unsigned int val;
  
-@@ -236,12 +237,16 @@ int chameleon_parse_cells(struct mcb_bus *bus, phys_addr_t mapbase,
- 		num_cells++;
- 	}
- 
--	if (num_cells == 0)
--		num_cells = -EINVAL;
-+	if (num_cells == 0) {
-+		ret = -EINVAL;
-+		goto free_bar;
-+	}
- 
-+	table_size = p - base;
-+	pr_debug("%d cell(s) found. Chameleon table size: 0x%04x bytes\n", num_cells, table_size);
- 	kfree(cb);
- 	kfree(header);
--	return num_cells;
-+	return table_size;
- 
- free_bar:
- 	kfree(cb);
+ 	if (!of_property_read_u32(np, propname, &val)) {
+-		if (val >= ADC3XXX_MICBIAS_AVDD) {
++		if (val > ADC3XXX_MICBIAS_AVDD) {
+ 			dev_err(dev, "Invalid property value for '%s'\n", propname);
+ 			return -EINVAL;
+ 		}
 -- 
 2.42.0
 
