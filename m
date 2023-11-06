@@ -2,105 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89F737E2BA8
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 19:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 497357E2BBC
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 19:14:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231860AbjKFSJt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 13:09:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
+        id S232126AbjKFSOg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 13:14:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231567AbjKFSJt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 13:09:49 -0500
-Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D444C6;
-        Mon,  6 Nov 2023 10:09:46 -0800 (PST)
-Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-692c02adeefso4064382b3a.3;
-        Mon, 06 Nov 2023 10:09:46 -0800 (PST)
+        with ESMTP id S231915AbjKFSOg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 13:14:36 -0500
+Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 867ADDF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 10:14:33 -0800 (PST)
+Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-5b999980689so3642300a12.1
+        for <stable@vger.kernel.org>; Mon, 06 Nov 2023 10:14:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699294186; x=1699898986; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=neBbBkCbikRraB0nQmFPavVUC9R8TAdKlPMHdSdzNw0=;
-        b=Eqcxm1wPSyzDTWB2zBUhMjlOSFyOfC9EQaBSnc1XAMSiHcKRh2oDi/XUOy+xqcAx/y
-         AD8HZJlgGiX6RB+5fcoLnYqFIwzsADRSlRGfucVbn63F7nxiwzFzg6LU5RPVDpDEglFQ
-         8FaEgDa3uhKvkUDmS7pWVF2RuEYig4J+MQyEDHrvnNY4jR+kdb4mU85CAs3E3eeN7PQK
-         TNXDDbfvlia41U2n+ePioFahDbqsk7CwqRGiXxB8Rc6A2iaSSBHrKvvtybmyEnFej0yX
-         aJHlFJkP48E1XqsNTWCc6DN2Ve3Jb3OfwhwRksTYtRH63b4AI20fYLXvtwfgwz5cwlDf
-         myDQ==
+        d=linaro.org; s=google; t=1699294473; x=1699899273; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9eApiH5er5Q+LmkTrIbz1RtOUAFBAp0J1EDavJZLMnI=;
+        b=krBaCoSckOyvAbipWNHdVS3zSH4SyrmNET8GcmTvmgATO1k6/p1enb7pNcmnnxp+6y
+         Rv32fo426D5zvLoY80WQDIw0JADBcDZ+kNYN5HLCZNxKrp0C0RPWySwgsNkZsaYemLlV
+         PDAD893zQ52HJZGmFSDxCMTawcBp/2+TuH712758R4blSXfp6xeHF7EPCA51jXXiAgD8
+         /iKHz4oYRSOoeoXjwcn/w8IkZOdBVUXo0wrrWZXgZLR7K661U2hGb37kAhLl9cuPWwMW
+         WuRNX006NUs3AEFGHgAsPVua3FlJZHc2hXL2M+n8K8ystmBJnAj38IPPJQr++TA6u2WJ
+         36xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699294186; x=1699898986;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=neBbBkCbikRraB0nQmFPavVUC9R8TAdKlPMHdSdzNw0=;
-        b=VLkYdWXTYImvbnruh8W83n7gH3y19E45648/ajJw0woV/q02IJy7FGlx64NKV/1wOt
-         JRlKyE2LFQCn4SCJKzU1BSCVcbffTliXnciYbRLgufzgywuLeJUYPSy77rkgGkHJgOu+
-         Dnw4AkBvcZHeJlwpWS29MzIrUhEaiL9GC05Irvs9MeTsLdD0PiJYegfTQf6gHZa+cduc
-         QHcBxggzm++ks+nY10OcrDf6P6Xm8LDNKrplTPmopXNGagJxYHl4S2XIEG9EQEnUlHyi
-         WgqS5PVap7YJ3C6/ncALTqTVm5M9SLyX1o9b49e6n9VNG1sspeEhbKCbjKxTm+PkdMIp
-         +I1g==
-X-Gm-Message-State: AOJu0Ywse4Y7PiWck+xgKj34ACX4fol7YbdzexeDcHJkplRzU424IBnZ
-        ZfVvZRvzOuGqIIz+M3WEvcE=
-X-Google-Smtp-Source: AGHT+IH3ttiaL+UUmdWm09Np2ElUm26SZPhFEDb3REd7EVTtMMkwUQYDp2QiWdEBTKh1EUnnDWq4rA==
-X-Received: by 2002:a05:6a21:a58d:b0:16e:ab42:9837 with SMTP id gd13-20020a056a21a58d00b0016eab429837mr32603706pzc.29.1699294185720;
-        Mon, 06 Nov 2023 10:09:45 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id f5-20020a056a00238500b006926e3dc2besm5868722pfc.108.2023.11.06.10.09.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Nov 2023 10:09:44 -0800 (PST)
-Message-ID: <eee1e8a6-ed8d-4667-a2a9-18fb2a636a90@gmail.com>
-Date:   Mon, 6 Nov 2023 10:09:42 -0800
+        d=1e100.net; s=20230601; t=1699294473; x=1699899273;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9eApiH5er5Q+LmkTrIbz1RtOUAFBAp0J1EDavJZLMnI=;
+        b=pak737gTA3Pb33hm/zoIy1jKwELT2dx4J+s+liAY+TfFqw+ISQE3FWgswFMqV8f561
+         am8K8QsL50x3rrHF5Y2cz+82JIduIOP9fLPQGrkoFrgM38WIAymrgAl4e2yxGL8ooKad
+         ho/OtsQbj+LKwV0VpxL1rekWIlVTvxo+G6FlGWx3vBjAPAN5KB+ZuVDilX45FaW/ttnH
+         onvE0L19sItjk+kXXQLo3xOwTTRADvsmxdenrxmEsrwo6efCuOR5b61Bo+zJGm+kK4fZ
+         DPBNp5KnXjw88/Vd9bYqVZmbkLbwfjKxXAcTtJLI12gl6YG+CUKTmDVGXKu/WBg+JXje
+         xclg==
+X-Gm-Message-State: AOJu0YzpnOnW4bvsnJL3RrvkmzDEHNJUkmifYN5X9zXAwc4F2HSx8Xre
+        Tm2fVvsaKV40C0CcX3uB3qbFx0dRJq+UNqoaoZHjLw==
+X-Google-Smtp-Source: AGHT+IFxo6QPh+LlR1UORVHDkuRmzt/uzetk8veCXwUog6IYZKml7Dzr0uG/OJNPi7jnuYHy2QaQxVRk5w1zTym/o8o=
+X-Received: by 2002:a05:6a20:9188:b0:15e:a8:6bb4 with SMTP id
+ v8-20020a056a20918800b0015e00a86bb4mr27161506pzd.8.1699294472848; Mon, 06 Nov
+ 2023 10:14:32 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.5 00/88] 6.5.11-rc1 review
-Content-Language: en-US
+References: <20231106130304.678610325@linuxfoundation.org> <8aec1bd5-befc-486c-9e47-7571b937b8c7@linaro.org>
+In-Reply-To: <8aec1bd5-befc-486c-9e47-7571b937b8c7@linaro.org>
+From:   =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date:   Mon, 6 Nov 2023 12:14:21 -0600
+Message-ID: <CAEUSe7_g2LbOkb6BqqdPha4SX4669O33H0a04sJ7AfbR1wfA_w@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/95] 5.10.200-rc1 review
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
 Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
         torvalds@linux-foundation.org, akpm@linux-foundation.org,
         linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20231106130305.772449722@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        apatel@ventanamicro.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/6/23 05:02, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.11 release.
-> There are 88 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.11-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hello!
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+On Mon, 6 Nov 2023 at 11:53, Daniel D=C3=ADaz <daniel.diaz@linaro.org> wrot=
+e:
+> On 06/11/23 7:03 a. m., Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.10.200 release.
+> > There are 95 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >       https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.10.200-rc1.gz
+> > or in the git tree and branch at:
+> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.10.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> There seems to be a problem building for RISC-V with GCC 8, 12, and Clang=
+ 17. This is with defconfig, allnoconfig, tinyconfig:
+>
+> -----8<-----
+> /builds/linux/drivers/irqchip/irq-riscv-intc.c: In function 'riscv_intc_i=
+nit':
+> /builds/linux/drivers/irqchip/irq-riscv-intc.c:119:17: error: implicit de=
+claration of function 'fwnode_dev_initialized'; did you mean 'zone_is_initi=
+alized'? [-Werror=3Dimplicit-function-declaration]
+>    119 |                 fwnode_dev_initialized(of_fwnode_handle(node), t=
+rue);
+>        |                 ^~~~~~~~~~~~~~~~~~~~~~
+>        |                 zone_is_initialized
+> cc1: some warnings being treated as errors
+> make[3]: *** [/builds/linux/scripts/Makefile.build:286: drivers/irqchip/i=
+rq-riscv-intc.o] Error 1
+> make[3]: Target '__build' not remade because of errors.
+> make[2]: *** [/builds/linux/scripts/Makefile.build:503: drivers/irqchip] =
+Error 2
+> make[2]: Target '__build' not remade because of errors.
+> make[1]: *** [/builds/linux/Makefile:1832: drivers] Error 2
+> make[1]: Target '__all' not remade because of errors.
+> make: *** [Makefile:192: __sub-make] Error 2
+> make: Target '__all' not remade because of errors.
+> ----->8-----
+>
+> Currently bisecting.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+-----8<-----
+Bisection done!
+First commit presenting NEW behaviour: 6751b1fbf98ba2c40bbdda22e2e6714a9c27=
+b91b
 
+commit 6751b1fbf98ba2c40bbdda22e2e6714a9c27b91b
+Author: Anup Patel <apatel@ventanamicro.com>
+Date:   Tue Oct 3 10:13:51 2023 +0530
+
+    irqchip/riscv-intc: Mark all INTC nodes as initialized
+
+    [ Upstream commit e13cd66bd821be417c498a34928652db4ac6b436 ]
+----->8-----
+
+Reverting that commit makes the build happy again.
+
+Greetings!
+
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
