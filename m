@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF70D7E244F
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:20:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 593577E2321
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229583AbjKFNUf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:20:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53470 "EHLO
+        id S231862AbjKFNJH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:09:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232394AbjKFNUb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:20:31 -0500
+        with ESMTP id S232066AbjKFNJF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B8DBF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:28 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1C3C433C9;
-        Mon,  6 Nov 2023 13:20:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4CFE100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:02 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177CCC433C9;
+        Mon,  6 Nov 2023 13:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276827;
-        bh=MLFczeqOZOKtZK0CftOqaETjFy3ZxCluxtKaYaZt+uI=;
+        s=korg; t=1699276142;
+        bh=fpKJIAemHMnVurcYwhsyAB6B0QlhESpQIRZiJ8bNs9A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NxAMNA6oYdppfTePdPMJHH7z1kYYl5Oltm5Usmpqtw2iOU46D4jBaoQO2kmh1vCNX
-         HbUnoLNlWSDr2AcO6xkxuJRTkgmD3n6/d7834spDtidv3u8AZFQ0MBzuq9vPSIcU0M
-         4k5p4XiTlI5Uh/RixLPINagtPPT0YmRPywhIQlsU=
+        b=us/M8d4sVOGnbJ8gQppdjLKNcyvBymuVYL6RhmnJZmpbUbpG2Q8yFsDF6TI7HmH+v
+         wZR0LbiuDld3ZCjJMed3pqD/vtEbjewb/LvqIOOUt0ROvw8tMeUmNO+UhhF5K4gqLY
+         IjvrqvsZHgiGLQSydwFJceHqi0SF6qFSnaCVtdnA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maximilian Heyne <mheyne@amazon.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 5.4 06/74] virtio-mmio: fix memory leak of vm_dev
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 08/30] eventfs: Use simple_recursive_removal() to clean up dentries
 Date:   Mon,  6 Nov 2023 14:03:26 +0100
-Message-ID: <20231106130301.912550787@linuxfoundation.org>
+Message-ID: <20231106130258.225254857@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,90 +52,197 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Heyne <mheyne@amazon.de>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-commit fab7f259227b8f70aa6d54e1de1a1f5f4729041c upstream.
+commit 407c6726ca71b33330d2d6345d9ea7ebc02575e9 upstream
 
-With the recent removal of vm_dev from devres its memory is only freed
-via the callback virtio_mmio_release_dev. However, this only takes
-effect after device_add is called by register_virtio_device. Until then
-it's an unmanaged resource and must be explicitly freed on error exit.
+Looking at how dentry is removed via the tracefs system, I found that
+eventfs does not do everything that it did under tracefs. The tracefs
+removal of a dentry calls simple_recursive_removal() that does a lot more
+than a simple d_invalidate().
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+As it should be a requirement that any eventfs_inode that has a dentry, so
+does its parent. When removing a eventfs_inode, if it has a dentry, a call
+to simple_recursive_removal() on that dentry should clean up all the
+dentries underneath it.
+
+Add WARN_ON_ONCE() to check for the parent having a dentry if any children
+do.
+
+Link: https://lore.kernel.org/all/20231101022553.GE1957730@ZenIV/
+Link: https://lkml.kernel.org/r/20231101172650.552471568@goodmis.org
 
 Cc: stable@vger.kernel.org
-Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Tested-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: 5bdcd5f5331a2 ("eventfs: Implement removal of meta data from eventfs")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-Message-Id: <20230911090328.40538-1-mheyne@amazon.de>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/virtio/virtio_mmio.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ fs/tracefs/event_inode.c |   71 +++++++++++++++++++++--------------------------
+ 1 file changed, 33 insertions(+), 38 deletions(-)
 
---- a/drivers/virtio/virtio_mmio.c
-+++ b/drivers/virtio/virtio_mmio.c
-@@ -567,14 +567,17 @@ static int virtio_mmio_probe(struct plat
- 	spin_lock_init(&vm_dev->lock);
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -54,12 +54,10 @@ struct eventfs_file {
+ 	/*
+ 	 * Union - used for deletion
+ 	 * @llist:	for calling dput() if needed after RCU
+-	 * @del_list:	list of eventfs_file to delete
+ 	 * @rcu:	eventfs_file to delete in RCU
+ 	 */
+ 	union {
+ 		struct llist_node	llist;
+-		struct list_head	del_list;
+ 		struct rcu_head		rcu;
+ 	};
+ 	void				*data;
+@@ -276,7 +274,6 @@ static void free_ef(struct eventfs_file
+  */
+ void eventfs_set_ef_status_free(struct tracefs_inode *ti, struct dentry *dentry)
+ {
+-	struct tracefs_inode *ti_parent;
+ 	struct eventfs_inode *ei;
+ 	struct eventfs_file *ef;
  
- 	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(vm_dev->base))
--		return PTR_ERR(vm_dev->base);
-+	if (IS_ERR(vm_dev->base)) {
-+		rc = PTR_ERR(vm_dev->base);
-+		goto free_vm_dev;
-+	}
+@@ -297,10 +294,6 @@ void eventfs_set_ef_status_free(struct t
  
- 	/* Check magic value */
- 	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
- 	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
- 		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
--		return -ENODEV;
-+		rc = -ENODEV;
-+		goto free_vm_dev;
- 	}
+ 	mutex_lock(&eventfs_mutex);
  
- 	/* Check device version */
-@@ -582,7 +585,8 @@ static int virtio_mmio_probe(struct plat
- 	if (vm_dev->version < 1 || vm_dev->version > 2) {
- 		dev_err(&pdev->dev, "Version %ld not supported!\n",
- 				vm_dev->version);
--		return -ENXIO;
-+		rc = -ENXIO;
-+		goto free_vm_dev;
- 	}
+-	ti_parent = get_tracefs(dentry->d_parent->d_inode);
+-	if (!ti_parent || !(ti_parent->flags & TRACEFS_EVENT_INODE))
+-		goto out;
+-
+ 	ef = dentry->d_fsdata;
+ 	if (!ef)
+ 		goto out;
+@@ -873,30 +866,29 @@ static void unhook_dentry(struct dentry
+ {
+ 	if (!dentry)
+ 		return;
+-
+-	/* Keep the dentry from being freed yet (see eventfs_workfn()) */
++	/*
++	 * Need to add a reference to the dentry that is expected by
++	 * simple_recursive_removal(), which will include a dput().
++	 */
+ 	dget(dentry);
  
- 	vm_dev->vdev.id.device = readl(vm_dev->base + VIRTIO_MMIO_DEVICE_ID);
-@@ -591,7 +595,8 @@ static int virtio_mmio_probe(struct plat
- 		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
- 		 * with no function. End probing now with no error reported.
- 		 */
--		return -ENODEV;
-+		rc = -ENODEV;
-+		goto free_vm_dev;
- 	}
- 	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
- 
-@@ -621,6 +626,10 @@ static int virtio_mmio_probe(struct plat
- 		put_device(&vm_dev->vdev.dev);
- 
- 	return rc;
-+
-+free_vm_dev:
-+	kfree(vm_dev);
-+	return rc;
+-	dentry->d_fsdata = NULL;
+-	d_invalidate(dentry);
+-	mutex_lock(&eventfs_mutex);
+-	/* dentry should now have at least a single reference */
+-	WARN_ONCE((int)d_count(dentry) < 1,
+-		  "dentry %px (%s) less than one reference (%d) after invalidate\n",
+-		  dentry, dentry->d_name.name, d_count(dentry));
+-	mutex_unlock(&eventfs_mutex);
++	/*
++	 * Also add a reference for the dput() in eventfs_workfn().
++	 * That is required as that dput() will free the ei after
++	 * the SRCU grace period is over.
++	 */
++	dget(dentry);
  }
  
- static int virtio_mmio_remove(struct platform_device *pdev)
+ /**
+  * eventfs_remove_rec - remove eventfs dir or file from list
+  * @ef: eventfs_file to be removed.
+- * @head: to create list of eventfs_file to be deleted
+  * @level: to check recursion depth
+  *
+  * The helper function eventfs_remove_rec() is used to clean up and free the
+  * associated data from eventfs for both of the added functions.
+  */
+-static void eventfs_remove_rec(struct eventfs_file *ef, struct list_head *head, int level)
++static void eventfs_remove_rec(struct eventfs_file *ef, int level)
+ {
+ 	struct eventfs_file *ef_child;
+ 
+@@ -916,14 +908,16 @@ static void eventfs_remove_rec(struct ev
+ 		/* search for nested folders or files */
+ 		list_for_each_entry_srcu(ef_child, &ef->ei->e_top_files, list,
+ 					 lockdep_is_held(&eventfs_mutex)) {
+-			eventfs_remove_rec(ef_child, head, level + 1);
++			eventfs_remove_rec(ef_child, level + 1);
+ 		}
+ 	}
+ 
+ 	ef->is_freed = 1;
+ 
++	unhook_dentry(ef->dentry);
++
+ 	list_del_rcu(&ef->list);
+-	list_add_tail(&ef->del_list, head);
++	call_srcu(&eventfs_srcu, &ef->rcu, free_rcu_ef);
+ }
+ 
+ /**
+@@ -934,28 +928,22 @@ static void eventfs_remove_rec(struct ev
+  */
+ void eventfs_remove(struct eventfs_file *ef)
+ {
+-	struct eventfs_file *tmp;
+-	LIST_HEAD(ef_del_list);
++	struct dentry *dentry;
+ 
+ 	if (!ef)
+ 		return;
+ 
+-	/*
+-	 * Move the deleted eventfs_inodes onto the ei_del_list
+-	 * which will also set the is_freed value. Note, this has to be
+-	 * done under the eventfs_mutex, but the deletions of
+-	 * the dentries must be done outside the eventfs_mutex.
+-	 * Hence moving them to this temporary list.
+-	 */
+ 	mutex_lock(&eventfs_mutex);
+-	eventfs_remove_rec(ef, &ef_del_list, 0);
++	dentry = ef->dentry;
++	eventfs_remove_rec(ef, 0);
+ 	mutex_unlock(&eventfs_mutex);
+ 
+-	list_for_each_entry_safe(ef, tmp, &ef_del_list, del_list) {
+-		unhook_dentry(ef->dentry);
+-		list_del(&ef->del_list);
+-		call_srcu(&eventfs_srcu, &ef->rcu, free_rcu_ef);
+-	}
++	/*
++	 * If any of the ei children has a dentry, then the ei itself
++	 * must have a dentry.
++	 */
++	if (dentry)
++		simple_recursive_removal(dentry, NULL);
+ }
+ 
+ /**
+@@ -966,6 +954,8 @@ void eventfs_remove(struct eventfs_file
+  */
+ void eventfs_remove_events_dir(struct dentry *dentry)
+ {
++	struct eventfs_file *ef_child;
++	struct eventfs_inode *ei;
+ 	struct tracefs_inode *ti;
+ 
+ 	if (!dentry || !dentry->d_inode)
+@@ -975,6 +965,11 @@ void eventfs_remove_events_dir(struct de
+ 	if (!ti || !(ti->flags & TRACEFS_EVENT_INODE))
+ 		return;
+ 
+-	d_invalidate(dentry);
+-	dput(dentry);
++	mutex_lock(&eventfs_mutex);
++	ei = ti->private;
++	list_for_each_entry_srcu(ef_child, &ei->e_top_files, list,
++				 lockdep_is_held(&eventfs_mutex)) {
++		eventfs_remove_rec(ef_child, 0);
++	}
++	mutex_unlock(&eventfs_mutex);
+ }
 
 
