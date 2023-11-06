@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B6F27E24CB
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 413EF7E238F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232539AbjKFNZX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:25:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55944 "EHLO
+        id S232084AbjKFNMw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:12:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232544AbjKFNZW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:22 -0500
+        with ESMTP id S232125AbjKFNMw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EC92EA
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:25:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B6DC433C7;
-        Mon,  6 Nov 2023 13:25:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3211134
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D49C433C9;
+        Mon,  6 Nov 2023 13:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277118;
-        bh=IUFyHFjtfi4Botzv0C3g4Rfb5Z4wa3w1n/37+w7Sy1s=;
+        s=korg; t=1699276368;
+        bh=eX/QOd8o+z5qHcOAnIhsy0vZMD6G1UNKrYvYAY9SMmc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BZPEZfZ25No5kofmLbj8GjEnHGkPdLCaK798n/QE0DxhvN/Iwc28hjyoWcz5nSQw8
-         L4PicWXKj0PHV9j9xURUOcuBx2VrjgiOK+iaU3aq57BO+13t00orYeIE768SrKkLEi
-         a249aEWAjFeNKHLfr+8hwnS4N1Hi5xL9pcTtWF/4=
+        b=V1y0A3KCzaUZ/cFAKWERy1tuQ0tGMckO4H8jSr+rDknHcjDy0resEUpMc1RePB7wR
+         uZsIxqLMK+Sc6wzyZWhvLMUvzmwVTXGnYJfTiVc5PYadhdjyVMcbF8PS3BZmY5YtNv
+         qJoODbdWmgWsALZ52ioy8faVoR1jjSDDW3rADmoo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        Peter Rosin <peda@axentia.se>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.15 045/128] i2c: muxes: i2c-demux-pinctrl: Use of_get_i2c_adapter_by_node()
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 19/62] netfilter: nfnetlink_log: silence bogus compiler warning
 Date:   Mon,  6 Nov 2023 14:03:25 +0100
-Message-ID: <20231106130311.185609348@linuxfoundation.org>
+Message-ID: <20231106130302.509115261@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 0fb118de5003028ad092a4e66fc6d07b86c3bc94 upstream.
+[ Upstream commit 2e1d175410972285333193837a4250a74cd472e6 ]
 
-i2c-demux-pinctrl uses the pair of_find_i2c_adapter_by_node() /
-i2c_put_adapter(). These pair alone is not correct to properly lock the
-I2C parent adapter.
+net/netfilter/nfnetlink_log.c:800:18: warning: variable 'ctinfo' is uninitialized
 
-Indeed, i2c_put_adapter() decrements the module refcount while
-of_find_i2c_adapter_by_node() does not increment it. This leads to an
-underflow of the parent module refcount.
+The warning is bogus, the variable is only used if ct is non-NULL and
+always initialised in that case.  Init to 0 too to silence this.
 
-Use the	dedicated function, of_get_i2c_adapter_by_node(), to handle
-correctly the module refcount.
-
-Fixes: 50a5ba876908 ("i2c: mux: demux-pinctrl: add driver")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Cc: stable@vger.kernel.org
-Acked-by: Peter Rosin <peda@axentia.se>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309100514.ndBFebXN-lkp@intel.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/muxes/i2c-demux-pinctrl.c |    2 +-
+ net/netfilter/nfnetlink_log.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/i2c/muxes/i2c-demux-pinctrl.c
-+++ b/drivers/i2c/muxes/i2c-demux-pinctrl.c
-@@ -61,7 +61,7 @@ static int i2c_demux_activate_master(str
- 	if (ret)
- 		goto err;
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index d97eb280cb2e8..c5ff699e30469 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -690,8 +690,8 @@ nfulnl_log_packet(struct net *net,
+ 	unsigned int plen = 0;
+ 	struct nfnl_log_net *log = nfnl_log_pernet(net);
+ 	const struct nfnl_ct_hook *nfnl_ct = NULL;
++	enum ip_conntrack_info ctinfo = 0;
+ 	struct nf_conn *ct = NULL;
+-	enum ip_conntrack_info ctinfo;
  
--	adap = of_find_i2c_adapter_by_node(priv->chan[new_chan].parent_np);
-+	adap = of_get_i2c_adapter_by_node(priv->chan[new_chan].parent_np);
- 	if (!adap) {
- 		ret = -ENODEV;
- 		goto err_with_revert;
+ 	if (li_user && li_user->type == NF_LOG_TYPE_ULOG)
+ 		li = li_user;
+-- 
+2.42.0
+
 
 
