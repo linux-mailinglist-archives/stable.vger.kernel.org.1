@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E25E7E23A7
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA2C97E234D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232130AbjKFNNa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:13:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53020 "EHLO
+        id S231169AbjKFNK6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:10:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232186AbjKFNN2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:28 -0500
+        with ESMTP id S232084AbjKFNKy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E97134
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14764C433C8;
-        Mon,  6 Nov 2023 13:13:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B7BBD69
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968CEC433C7;
+        Mon,  6 Nov 2023 13:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276403;
-        bh=Lz1TphCFq0ne5e1SCSw2NzMyI0OrlK7zYhd+Ubv5tM4=;
+        s=korg; t=1699276247;
+        bh=alg/Dw/VafJw3yHQIG1l14tcHLZKIAXTyVZKi95rug0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=loiiAfF15qG7qM2w0iZ4L2WisMDNzSnxHiSi0ekcveB6rcU20QdSQRr4XWCLK9M6u
-         p6Y2n4l4nWU3ntprdUWwySWCVm+btXOdXqyxWwj7FkYC17g3ICkLYjvFNZXysPdCVj
-         Sffm1VMaO/Axjts+9Zwvuq2lCKJyspCT5qdVDzos=
+        b=d/9HYEgOmVOsXr7fpv7R43cgTDladQbPQKpkXYzsHmWl6lEFn/uKh0P8MNgB48zWw
+         TlGBr5GMXIZeHByccIBmOS4Q/Th9tXHFco8dSglnByrZU8PeXirlganAAacrKi+IKP
+         794vZ21eTkY8J/j5yficdCV9UZQlJPhpqv1Y2CUE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Deepak R Varma <drv@mailo.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/62] LoongArch: Replace kmap_atomic() with kmap_local_page() in copy_user_highpage()
+        patches@lists.linux.dev, Juergen Gross <jgross@suse.com>,
+        Borislav Petkov <bp@suse.de>,
+        Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 4.19 40/61] x86: Fix .brk attribute in linker script
 Date:   Mon,  6 Nov 2023 14:03:36 +0100
-Message-ID: <20231106130302.911110696@linuxfoundation.org>
+Message-ID: <20231106130300.995790331@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 477a0ebec101359f49d92796e3b609857d564b52 ]
+commit 7e09ac27f43b382f5fe9bb7c7f4c465ece1f8a23 upstream.
 
-Replace kmap_atomic()/kunmap_atomic() calls with kmap_local_page()/
-kunmap_local() in copy_user_highpage() which can be invoked from both
-preemptible and atomic context [1].
+Commit in Fixes added the "NOLOAD" attribute to the .brk section as a
+"failsafe" measure.
 
-[1] https://lore.kernel.org/all/20201029222652.302358281@linutronix.de/
+Unfortunately, this leads to the linker no longer covering the .brk
+section in a program header, resulting in the kernel loader not knowing
+that the memory for the .brk section must be reserved.
 
-Suggested-by: Deepak R Varma <drv@mailo.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This has led to crashes when loading the kernel as PV dom0 under Xen,
+but other scenarios could be hit by the same problem (e.g. in case an
+uncompressed kernel is used and the initrd is placed directly behind
+it).
+
+So drop the "NOLOAD" attribute. This has been verified to correctly
+cover the .brk section by a program header of the resulting ELF file.
+
+Fixes: e32683c6f7d2 ("x86/mm: Fix RESERVE_BRK() for older binutils")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20220630071441.28576-4-jgross@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/init.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-index c74da7770e39e..f42a3be5f28d7 100644
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -68,11 +68,11 @@ void copy_user_highpage(struct page *to, struct page *from,
- {
- 	void *vfrom, *vto;
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -380,7 +380,7 @@ SECTIONS
+ 	}
  
--	vto = kmap_atomic(to);
--	vfrom = kmap_atomic(from);
-+	vfrom = kmap_local_page(from);
-+	vto = kmap_local_page(to);
- 	copy_page(vto, vfrom);
--	kunmap_atomic(vfrom);
--	kunmap_atomic(vto);
-+	kunmap_local(vfrom);
-+	kunmap_local(vto);
- 	/* Make sure this page is cleared on other CPU's too before using it */
- 	smp_wmb();
- }
--- 
-2.42.0
-
+ 	. = ALIGN(PAGE_SIZE);
+-	.brk (NOLOAD) : AT(ADDR(.brk) - LOAD_OFFSET) {
++	.brk : AT(ADDR(.brk) - LOAD_OFFSET) {
+ 		__brk_base = .;
+ 		. += 64 * 1024;		/* 64k alignment slop space */
+ 		*(.bss..brk)		/* areas brk users have reserved */
 
 
