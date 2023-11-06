@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8E2E7E2571
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54A887E249C
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232735AbjKFNcD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:32:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54442 "EHLO
+        id S232475AbjKFNXd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:23:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232747AbjKFNcC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:02 -0500
+        with ESMTP id S232498AbjKFNXc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32C32A9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4A7C433C8;
-        Mon,  6 Nov 2023 13:31:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72CE0BF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED7CC433CD;
+        Mon,  6 Nov 2023 13:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277518;
-        bh=8Zc5rTzJ0F7IY2kwrGSLhDotCdcBKSc5QP3psN3LN6I=;
+        s=korg; t=1699277005;
+        bh=ogjMFsz2zgrFMrFEygeQViGPenBQEjtbdw0NWCXo2gU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oUQQ2PoK4dZNz6MWu16vI2JU591mouEpGXFiMxXB/xn52YGn31/h+yXZg0O9tSPwB
-         iY4bzL6D/ePlAPGiFtZ8kwqfxxxg/02Tx0myBg83DWbXB8LXyQjGY4KdINQRB/DK2k
-         LOfNbEosdXIm1XhoFVhxo0+WvtxllmqbME91QmGM=
+        b=GEhKMXAuOU5EfdM5frjL8TOu5vcun0c4gwifOHH1LR6wBruuiTSS0kAuJH9il0Jzw
+         5hPHm021C1zAVauzxjGd1E31VNN9IMzeu1v/JTfup9vvqphIq4656Q/Boi1Z0eowFL
+         oktpPmvWk2QOgvHDUav9INMdlWbM3AmbkZ9vT98I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
-        Byungchul Park <byungchul.park@lge.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.10 49/95] x86/mm: Fix RESERVE_BRK() for older binutils
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 57/74] netfilter: nfnetlink_log: silence bogus compiler warning
 Date:   Mon,  6 Nov 2023 14:04:17 +0100
-Message-ID: <20231106130306.486328399@linuxfoundation.org>
+Message-ID: <20231106130303.688143798@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,149 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit e32683c6f7d22ba624e0bfc58b02cf3348bdca63 upstream.
+[ Upstream commit 2e1d175410972285333193837a4250a74cd472e6 ]
 
-With binutils 2.26, RESERVE_BRK() causes a build failure:
+net/netfilter/nfnetlink_log.c:800:18: warning: variable 'ctinfo' is uninitialized
 
-  /tmp/ccnGOKZ5.s: Assembler messages:
-  /tmp/ccnGOKZ5.s:98: Error: missing ')'
-  /tmp/ccnGOKZ5.s:98: Error: missing ')'
-  /tmp/ccnGOKZ5.s:98: Error: missing ')'
-  /tmp/ccnGOKZ5.s:98: Error: junk at end of line, first unrecognized
-  character is `U'
+The warning is bogus, the variable is only used if ct is non-NULL and
+always initialised in that case.  Init to 0 too to silence this.
 
-The problem is this line:
-
-  RESERVE_BRK(early_pgt_alloc, INIT_PGT_BUF_SIZE)
-
-Specifically, the INIT_PGT_BUF_SIZE macro which (via PAGE_SIZE's use
-_AC()) has a "1UL", which makes older versions of the assembler unhappy.
-Unfortunately the _AC() macro doesn't work for inline asm.
-
-Inline asm was only needed here to convince the toolchain to add the
-STT_NOBITS flag.  However, if a C variable is placed in a section whose
-name is prefixed with ".bss", GCC and Clang automatically set
-STT_NOBITS.  In fact, ".bss..page_aligned" already relies on this trick.
-
-So fix the build failure (and simplify the macro) by allocating the
-variable in C.
-
-Also, add NOLOAD to the ".brk" output section clause in the linker
-script.  This is a failsafe in case the ".bss" prefix magic trick ever
-stops working somehow.  If there's a section type mismatch, the GNU
-linker will force the ".brk" output section to be STT_NOBITS.  The LLVM
-linker will fail with a "section type mismatch" error.
-
-Note this also changes the name of the variable from .brk.##name to
-__brk_##name.  The variable names aren't actually used anywhere, so it's
-harmless.
-
-Fixes: a1e2c031ec39 ("x86/mm: Simplify RESERVE_BRK()")
-Reported-by: Joe Damato <jdamato@fastly.com>
-Reported-by: Byungchul Park <byungchul.park@lge.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Joe Damato <jdamato@fastly.com>
-Link: https://lore.kernel.org/r/22d07a44c80d8e8e1e82b9a806ddc8c6bbb2606e.1654759036.git.jpoimboe@kernel.org
-[nathan: Fix trivial conflict due to lack of 81519f778830]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309100514.ndBFebXN-lkp@intel.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/setup.h  |   38 +++++++++++++++++++++-----------------
- arch/x86/kernel/setup.c       |    5 -----
- arch/x86/kernel/vmlinux.lds.S |    4 ++--
- 3 files changed, 23 insertions(+), 24 deletions(-)
+ net/netfilter/nfnetlink_log.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -108,19 +108,16 @@ extern unsigned long _brk_end;
- void *extend_brk(size_t size, size_t align);
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index f087baa95b07b..80c09070ea9fa 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -683,8 +683,8 @@ nfulnl_log_packet(struct net *net,
+ 	unsigned int plen = 0;
+ 	struct nfnl_log_net *log = nfnl_log_pernet(net);
+ 	const struct nfnl_ct_hook *nfnl_ct = NULL;
++	enum ip_conntrack_info ctinfo = 0;
+ 	struct nf_conn *ct = NULL;
+-	enum ip_conntrack_info ctinfo;
  
- /*
-- * Reserve space in the brk section.  The name must be unique within the file,
-- * and somewhat descriptive.  The size is in bytes.
-+ * Reserve space in the .brk section, which is a block of memory from which the
-+ * caller is allowed to allocate very early (before even memblock is available)
-+ * by calling extend_brk().  All allocated memory will be eventually converted
-+ * to memblock.  Any leftover unallocated memory will be freed.
-  *
-- * The allocation is done using inline asm (rather than using a section
-- * attribute on a normal variable) in order to allow the use of @nobits, so
-- * that it doesn't take up any space in the vmlinux file.
-+ * The size is in bytes.
-  */
--#define RESERVE_BRK(name, size)						\
--	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
--	    ".brk." #name ":\n\t"					\
--	    ".skip " __stringify(size) "\n\t"				\
--	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
--	    ".popsection\n\t")
-+#define RESERVE_BRK(name, size)					\
-+	__section(".bss..brk") __aligned(1) __used	\
-+	static char __brk_##name[size]
- 
- /* Helper for reserving space for arrays of things */
- #define RESERVE_BRK_ARRAY(type, name, entries)		\
-@@ -138,12 +135,19 @@ asmlinkage void __init x86_64_start_rese
- 
- #endif /* __i386__ */
- #endif /* _SETUP */
--#else
--#define RESERVE_BRK(name,sz)				\
--	.pushsection .brk_reservation,"aw",@nobits;	\
--.brk.name:						\
--1:	.skip sz;					\
--	.size .brk.name,.-1b;				\
-+
-+#else  /* __ASSEMBLY */
-+
-+.macro __RESERVE_BRK name, size
-+	.pushsection .bss..brk, "aw"
-+SYM_DATA_START(__brk_\name)
-+	.skip \size
-+SYM_DATA_END(__brk_\name)
- 	.popsection
-+.endm
-+
-+#define RESERVE_BRK(name, size) __RESERVE_BRK name, size
-+
- #endif /* __ASSEMBLY__ */
-+
- #endif /* _ASM_X86_SETUP_H */
---- a/arch/x86/kernel/setup.c
-+++ b/arch/x86/kernel/setup.c
-@@ -64,11 +64,6 @@ RESERVE_BRK(dmi_alloc, 65536);
- #endif
- 
- 
--/*
-- * Range of the BSS area. The size of the BSS area is determined
-- * at link time, with RESERVE_BRK*() facility reserving additional
-- * chunks.
-- */
- unsigned long _brk_start = (unsigned long)__brk_base;
- unsigned long _brk_end   = (unsigned long)__brk_base;
- 
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -411,10 +411,10 @@ SECTIONS
- 	__end_of_kernel_reserve = .;
- 
- 	. = ALIGN(PAGE_SIZE);
--	.brk : AT(ADDR(.brk) - LOAD_OFFSET) {
-+	.brk (NOLOAD) : AT(ADDR(.brk) - LOAD_OFFSET) {
- 		__brk_base = .;
- 		. += 64 * 1024;		/* 64k alignment slop space */
--		*(.brk_reservation)	/* areas brk users have reserved */
-+		*(.bss..brk)		/* areas brk users have reserved */
- 		__brk_limit = .;
- 	}
- 
+ 	if (li_user && li_user->type == NF_LOG_TYPE_ULOG)
+ 		li = li_user;
+-- 
+2.42.0
+
 
 
