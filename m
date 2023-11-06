@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E18EA7E236B
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BA6B7E22EA
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232045AbjKFNLw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:11:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58282 "EHLO
+        id S231953AbjKFNGp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:06:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232073AbjKFNLv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:51 -0500
+        with ESMTP id S231951AbjKFNGo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:44 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8F15100
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0758DC433C8;
-        Mon,  6 Nov 2023 13:11:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC10B125
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3DDC433C8;
+        Mon,  6 Nov 2023 13:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276308;
-        bh=JUFq5yO/YBGreBq6EuOpw6bcPRKYu3FYXEtq3pqyBTU=;
+        s=korg; t=1699276001;
+        bh=8H7xu6cZeYDQl+KYaF8vjs73VhUjxJ8wse8oKv11SAY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CL9WD7YbYyEDtgwuWXYDEgOs6xqSpj0KhwHYssOJLPfR30DuW1volNluml8GdOudD
-         5Xw8xK5asi9AqR3tw5u4pVVhsYqCzirx+uZkMfygPz5WYpNPVSsbLvk6HwAsO4bdiI
-         sBq6TbZdvVma+dUF193o88fZNTrDeAWSGT8rzd9I=
+        b=ViMGIgSIjnK3ab/lKQYwghk3kvleK9YKjBH2z3MROUBygR71jShiY3KjcGMcJ5KgN
+         QxjNosDjPTVaNxuOLzpkh8o3by3lIvlJwpZ4uOVIM8liHWLC8gI7B+E56G3LxzVOxl
+         Y4v07Q8IXBfZcUiUtkJ+pJawD4YVouPIcONHJAFQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 4.19 31/61] nfsd: lock_rename() needs both directories to live on the same fs
+        patches@lists.linux.dev, Jorge Maidana <jorgem.linux@gmail.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 36/48] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
 Date:   Mon,  6 Nov 2023 14:03:27 +0100
-Message-ID: <20231106130300.683892260@linuxfoundation.org>
+Message-ID: <20231106130259.090620885@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +49,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Jorge Maidana <jorgem.linux@gmail.com>
 
-commit 1aee9158bc978f91701c5992e395efbc6da2de3c upstream.
+[ Upstream commit 1022e7e2f40574c74ed32c3811b03d26b0b81daf ]
 
-... checking that after lock_rename() is too late.  Incidentally,
-NFSv2 had no nfserr_xdev...
+Delete the v86d netlink only after all the VBE tasks have been
+completed.
 
-Fixes: aa387d6ce153 "nfsd: fix EXDEV checking in rename"
-Cc: stable@vger.kernel.org # v3.9+
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes initial state restore on module unload:
+uvesafb: VBE state restore call failed (eax=0x4f04, err=-19)
+
+Signed-off-by: Jorge Maidana <jorgem.linux@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/video/fbdev/uvesafb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1691,6 +1691,12 @@ nfsd_rename(struct svc_rqst *rqstp, stru
- 	if (!flen || isdotent(fname, flen) || !tlen || isdotent(tname, tlen))
- 		goto out;
+diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
+index ee86c62e36728..72255715bbee0 100644
+--- a/drivers/video/fbdev/uvesafb.c
++++ b/drivers/video/fbdev/uvesafb.c
+@@ -1931,10 +1931,10 @@ static void uvesafb_exit(void)
+ 		}
+ 	}
  
-+	err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
-+	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
-+		goto out;
-+	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
-+		goto out;
-+
- 	host_err = fh_want_write(ffhp);
- 	if (host_err) {
- 		err = nfserrno(host_err);
-@@ -1724,12 +1730,6 @@ nfsd_rename(struct svc_rqst *rqstp, stru
- 	if (ndentry == trap)
- 		goto out_dput_new;
+-	cn_del_callback(&uvesafb_cn_id);
+ 	driver_remove_file(&uvesafb_driver.driver, &driver_attr_v86d);
+ 	platform_device_unregister(uvesafb_device);
+ 	platform_driver_unregister(&uvesafb_driver);
++	cn_del_callback(&uvesafb_cn_id);
+ }
  
--	host_err = -EXDEV;
--	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
--		goto out_dput_new;
--	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
--		goto out_dput_new;
--
- 	host_err = vfs_rename(fdir, odentry, tdir, ndentry, NULL, 0);
- 	if (!host_err) {
- 		host_err = commit_metadata(tfhp);
+ module_exit(uvesafb_exit);
+-- 
+2.42.0
+
 
 
