@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8DC7E2331
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EF817E24E2
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:26:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231871AbjKFNJk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:09:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
+        id S232553AbjKFN0T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:26:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231669AbjKFNJk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:40 -0500
+        with ESMTP id S232588AbjKFN0Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DC3EA
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42A7C433C7;
-        Mon,  6 Nov 2023 13:09:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C71E4D75
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:11 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BE2C433C8;
+        Mon,  6 Nov 2023 13:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276177;
-        bh=y45diDur1vdDqvE+ZKomK/s3Cpn9hKTihbesGTmch1U=;
+        s=korg; t=1699277171;
+        bh=yvjVTrPLkNpQMbAou42sj8SGRW2akxQkYN6B8zWocyI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qW+cK49ggZOM/oeaFyuEIz7WMce2hBueSyNGcOZ84wNvxZ0ytLYnlBH5TSqGgVUXz
-         kOkHYoyzbfOyxP5ktGPtdRkfNnRAv3gF15IBqEI5z6TxznEPNdKLU7XgxEw0qpejDW
-         Ow8PFlcelFBbPtizZzXxKKqQt0obRieK0kQLSC7A=
+        b=DmtswjUFRnPGLUZJWJW23pKju1tf9paTCI0rc9kuDlAC5dckrrekHaHRI/FlO0OF4
+         K22YAElQ3D1z327EWZysEHHSF7yq3qc3tzk+3/pIvYkgahOZvPRy5dt6rUiza7/nd/
+         y7W7iX4tKjwgjtCoUbs7pOu70JFJxyfSZxANkYDg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        Peter Rosin <peda@axentia.se>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 4.19 16/61] i2c: muxes: i2c-mux-gpmux: Use of_get_i2c_adapter_by_node()
-Date:   Mon,  6 Nov 2023 14:03:12 +0100
-Message-ID: <20231106130300.145646225@linuxfoundation.org>
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Grant Grundler <grundler@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 033/128] r8152: Cancel hw_phy_work if we have an error in probe
+Date:   Mon,  6 Nov 2023 14:03:13 +0100
+Message-ID: <20231106130310.622219610@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 3dc0ec46f6e7511fc4fdf6b6cda439382bc957f1 upstream.
+[ Upstream commit bb8adff9123e492598162ac1baad01a53891aef6 ]
 
-i2c-mux-gpmux uses the pair of_find_i2c_adapter_by_node() /
-i2c_put_adapter(). These pair alone is not correct to properly lock the
-I2C parent adapter.
+The error handling in rtl8152_probe() is missing a call to cancel the
+hw_phy_work. Add it in to match what's in the cleanup code in
+rtl8152_disconnect().
 
-Indeed, i2c_put_adapter() decrements the module refcount while
-of_find_i2c_adapter_by_node() does not increment it. This leads to an
-underflow of the parent module refcount.
-
-Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
-correctly the module refcount.
-
-Fixes: ac8498f0ce53 ("i2c: i2c-mux-gpmux: new driver")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Cc: stable@vger.kernel.org
-Acked-by: Peter Rosin <peda@axentia.se>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a028a9e003f2 ("r8152: move the settings of PHY to a work queue")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromium.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/muxes/i2c-mux-gpmux.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/r8152.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/i2c/muxes/i2c-mux-gpmux.c
-+++ b/drivers/i2c/muxes/i2c-mux-gpmux.c
-@@ -55,7 +55,7 @@ static struct i2c_adapter *mux_parent_ad
- 		dev_err(dev, "Cannot parse i2c-parent\n");
- 		return ERR_PTR(-ENODEV);
- 	}
--	parent = of_find_i2c_adapter_by_node(parent_np);
-+	parent = of_get_i2c_adapter_by_node(parent_np);
- 	of_node_put(parent_np);
- 	if (!parent)
- 		return ERR_PTR(-EPROBE_DEFER);
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 52056b296b9f7..baa3c57d16427 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9799,6 +9799,7 @@ static int rtl8152_probe(struct usb_interface *intf,
+ 
+ out1:
+ 	tasklet_kill(&tp->tx_tl);
++	cancel_delayed_work_sync(&tp->hw_phy_work);
+ 	if (tp->rtl_ops.unload)
+ 		tp->rtl_ops.unload(tp);
+ 	usb_set_intfdata(intf, NULL);
+-- 
+2.42.0
+
 
 
