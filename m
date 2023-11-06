@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BA7C7E25B0
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:34:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D07527E248A
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:22:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232778AbjKFNeN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:34:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54686 "EHLO
+        id S232459AbjKFNW4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:22:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232840AbjKFNeM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:34:12 -0500
+        with ESMTP id S231676AbjKFNWz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:22:55 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CF31D51
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:34:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D285C433C9;
-        Mon,  6 Nov 2023 13:34:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B087EA
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:22:53 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7EBC433C9;
+        Mon,  6 Nov 2023 13:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277647;
-        bh=CT+2PVuEKkdbwdwI9XP1v4JnJnx//EGTKtyt5sCpFVg=;
+        s=korg; t=1699276972;
+        bh=/cicBqW85OV5n8yZ9RzTZEiVp2C6IZoWSzJGDc/1u7o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1vsmH//o+95s0NvCitr8BJa/1eu3ur/vHAmaO09/vnmqjbAaycdmuOZDVOivn8iX1
-         Mz8p/a88xukI4Xp7rBWduEM5EPdimCX9kwUZiBYNbDb3MP0niQpM4Cmzwfa9aF/w9q
-         PifOrtNvP73vf1lrfat7mXEGwg0/10kCRjAsrAWE=
+        b=Rj2jy6zwtYC1vFGHFIvAdHxtpwFlBVDMTH/CMQVtNTwe+JuU6XazKprvfIcSuhpOw
+         r2oRqs9jXK/9ehOnDG8eXjBxDbziGFwIT/yjEPc3+qTgaSIFruZ9Y9kmEqXIXJdQbp
+         5f/7DDsPjKATlALr0NQwBPdeo5sYbsne91LWsd/I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alejandro Colomar <alx@kernel.org>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 61/95] net: sched: cls_u32: Fix allocation size in u32_init()
+        patches@lists.linux.dev, Vicki Pfau <vi@endrift.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.4 69/74] PCI: Prevent xHCI driver from claiming AMD VanGogh USB3 DRD device
 Date:   Mon,  6 Nov 2023 14:04:29 +0100
-Message-ID: <20231106130306.933706115@linuxfoundation.org>
+Message-ID: <20231106130304.068796013@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,109 +49,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit c4d49196ceec80e30e8d981410d73331b49b7850 ]
+commit 7e6f3b6d2c352b5fde37ce3fed83bdf6172eebd4 upstream.
 
-commit d61491a51f7e ("net/sched: cls_u32: Replace one-element array
-with flexible-array member") incorrecly replaced an instance of
-`sizeof(*tp_c)` with `struct_size(tp_c, hlist->ht, 1)`. This results
-in a an over-allocation of 8 bytes.
+The AMD VanGogh SoC contains a DesignWare USB3 Dual-Role Device that can be
+operated as either a USB Host or a USB Device, similar to on the AMD Nolan
+platform.
 
-This change is wrong because `hlist` in `struct tc_u_common` is a
-pointer:
+be6646bfbaec ("PCI: Prevent xHCI driver from claiming AMD Nolan USB3 DRD
+device") added a quirk to let the dwc3 driver claim the Nolan device since
+it provides more specific support.
 
-net/sched/cls_u32.c:
-struct tc_u_common {
-        struct tc_u_hnode __rcu *hlist;
-        void                    *ptr;
-        int                     refcnt;
-        struct idr              handle_idr;
-        struct hlist_node       hnode;
-        long                    knodes;
-};
+Extend that quirk to include the VanGogh SoC USB3 device.
 
-So, the use of `struct_size()` makes no sense: we don't need to allocate
-any extra space for a flexible-array member. `sizeof(*tp_c)` is just fine.
-
-So, `struct_size(tp_c, hlist->ht, 1)` translates to:
-
-sizeof(*tp_c) + sizeof(tp_c->hlist->ht) ==
-sizeof(struct tc_u_common) + sizeof(struct tc_u_knode *) ==
-						144 + 8  == 0x98 (byes)
-						     ^^^
-						      |
-						unnecessary extra
-						allocation size
-
-$ pahole -C tc_u_common net/sched/cls_u32.o
-struct tc_u_common {
-	struct tc_u_hnode *        hlist;                /*     0     8 */
-	void *                     ptr;                  /*     8     8 */
-	int                        refcnt;               /*    16     4 */
-
-	/* XXX 4 bytes hole, try to pack */
-
-	struct idr                 handle_idr;           /*    24    96 */
-	/* --- cacheline 1 boundary (64 bytes) was 56 bytes ago --- */
-	struct hlist_node          hnode;                /*   120    16 */
-	/* --- cacheline 2 boundary (128 bytes) was 8 bytes ago --- */
-	long int                   knodes;               /*   136     8 */
-
-	/* size: 144, cachelines: 3, members: 6 */
-	/* sum members: 140, holes: 1, sum holes: 4 */
-	/* last cacheline: 16 bytes */
-};
-
-And with `sizeof(*tp_c)`, we have:
-
-	sizeof(*tp_c) == sizeof(struct tc_u_common) == 144 == 0x90 (bytes)
-
-which is the correct and original allocation size.
-
-Fix this issue by replacing `struct_size(tp_c, hlist->ht, 1)` with
-`sizeof(*tp_c)`, and avoid allocating 8 too many bytes.
-
-The following difference in binary output is expected and reflects the
-desired change:
-
-| net/sched/cls_u32.o
-| @@ -6148,7 +6148,7 @@
-| include/linux/slab.h:599
-|     2cf5:      mov    0x0(%rip),%rdi        # 2cfc <u32_init+0xfc>
-|                        2cf8: R_X86_64_PC32     kmalloc_caches+0xc
-|-    2cfc:      mov    $0x98,%edx
-|+    2cfc:      mov    $0x90,%edx
-
-Reported-by: Alejandro Colomar <alx@kernel.org>
-Closes: https://lore.kernel.org/lkml/09b4a2ce-da74-3a19-6961-67883f634d98@kernel.org/
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20230927202212.2388216-1-vi@endrift.com
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+[bhelgaas: include be6646bfbaec reference, add stable tag]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org	# v3.19+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/cls_u32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/quirks.c    |    8 +++++---
+ include/linux/pci_ids.h |    1 +
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index b2d2ba561eba1..f2a0c10682fc8 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -364,7 +364,7 @@ static int u32_init(struct tcf_proto *tp)
- 	idr_init(&root_ht->handle_idr);
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -597,7 +597,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
+ /*
+  * In the AMD NL platform, this device ([1022:7912]) has a class code of
+  * PCI_CLASS_SERIAL_USB_XHCI (0x0c0330), which means the xhci driver will
+- * claim it.
++ * claim it. The same applies on the VanGogh platform device ([1022:163a]).
+  *
+  * But the dwc3 driver is a more specific driver for this device, and we'd
+  * prefer to use it instead of xhci. To prevent xhci from claiming the
+@@ -605,7 +605,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
+  * defines as "USB device (not host controller)". The dwc3 driver can then
+  * claim it based on its Vendor and Device ID.
+  */
+-static void quirk_amd_nl_class(struct pci_dev *pdev)
++static void quirk_amd_dwc_class(struct pci_dev *pdev)
+ {
+ 	u32 class = pdev->class;
  
- 	if (tp_c == NULL) {
--		tp_c = kzalloc(struct_size(tp_c, hlist->ht, 1), GFP_KERNEL);
-+		tp_c = kzalloc(sizeof(*tp_c), GFP_KERNEL);
- 		if (tp_c == NULL) {
- 			kfree(root_ht);
- 			return -ENOBUFS;
--- 
-2.42.0
-
+@@ -615,7 +615,9 @@ static void quirk_amd_nl_class(struct pc
+ 		 class, pdev->class);
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
+-		quirk_amd_nl_class);
++		quirk_amd_dwc_class);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_VANGOGH_USB,
++		quirk_amd_dwc_class);
+ 
+ /*
+  * Synopsys USB 3.x host HAPS platform has a class code of
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -554,6 +554,7 @@
+ #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F3 0x1493
+ #define PCI_DEVICE_ID_AMD_17H_M60H_DF_F3 0x144b
+ #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F3 0x1443
++#define PCI_DEVICE_ID_AMD_VANGOGH_USB	0x163a
+ #define PCI_DEVICE_ID_AMD_19H_DF_F3	0x1653
+ #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
+ #define PCI_DEVICE_ID_AMD_LANCE		0x2000
 
 
