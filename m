@@ -2,103 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A4627E1A82
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 07:53:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E3D57E1ABB
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 08:08:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230421AbjKFGxn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 01:53:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52488 "EHLO
+        id S230216AbjKFHI5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 02:08:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230483AbjKFGxl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 01:53:41 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB69810B;
-        Sun,  5 Nov 2023 22:53:37 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3A66rNxN53324606, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3A66rNxN53324606
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 6 Nov 2023 14:53:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Mon, 6 Nov 2023 14:53:23 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Mon, 6 Nov 2023 14:53:23 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Mon, 6 Nov 2023 14:53:23 +0800
-From:   =?big5?B?U3RhbmxleSBDaGFuZ1up96h8vHdd?= <stanley_chang@realtek.com>
-To:     Stefan Eichenberger <eichest@gmail.com>,
-        Johan Hovold <johan+linaro@kernel.org>
-CC:     Mathias Nyman <mathias.nyman@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Maxime Ripard <mripard@kernel.org>
-Subject: RE: [PATCH] USB: xhci-plat: fix legacy PHY double inity
-Thread-Topic: [PATCH] USB: xhci-plat: fix legacy PHY double inity
-Thread-Index: AQHaDxyJZpnjRAISQ06Vkn+OQSkmobBsqcjggAAuZtA=
-Date:   Mon, 6 Nov 2023 06:53:23 +0000
-Message-ID: <5a493e6fedb449bc93f83f31a682e5b9@realtek.com>
-References: <20231103164323.14294-1-johan+linaro@kernel.org>
- <ZUY8cGrofUtPOMV8@eichest-laptop> 
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-x-originating-ip: [172.21.190.159]
-x-kse-serverinfo: RTEXMBS04.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="big5"
-Content-Transfer-Encoding: base64
+        with ESMTP id S230516AbjKFHIx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 02:08:53 -0500
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0163123
+        for <stable@vger.kernel.org>; Sun,  5 Nov 2023 23:08:49 -0800 (PST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 3581C6732D; Mon,  6 Nov 2023 08:08:45 +0100 (CET)
+Date:   Mon, 6 Nov 2023 08:08:44 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Keith Busch <kbusch@kernel.org>
+Cc:     Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        Jens Axboe <axboe@fb.com>, Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>, Jan Kara <jack@suse.cz>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
+        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
+        linux-mm@kvack.org
+Subject: Re: Intermittent storage (dm-crypt?) freeze - regression 6.4->6.5
+Message-ID: <20231106070844.GA17022@lst.de>
+References: <20231031140136.25bio5wajc5pmdtl@quack3> <ZUEgWA5P8MFbyeBN@mail-itl> <8a35cdea-3a1a-e859-1f7c-55d1c864a48@redhat.com> <ebbc7ca7-5169-dbdc-9ea8-c6d8c3ae31e2@redhat.com> <ZULvkPhcpgAVyI8w@mail-itl> <ac5b5ac0-9e8-c1b0-a26-62f832f845f0@redhat.com> <ZUOL8kXVTF1OngeN@mail-itl> <3cb4133c-b6db-9187-a678-11ed8c9456e@redhat.com> <ZUUctamEFtAlSnSV@mail-itl> <ZUUlqJoS6_1IznzT@kbusch-mbp.dhcp.thefacebook.com>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZUUlqJoS6_1IznzT@kbusch-mbp.dhcp.thefacebook.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-SGkgSm9oYW4sDQoNCj4gPiBPbiBGcmksIE5vdiAwMywgMjAyMyBhdCAwNTo0MzoyM1BNICswMTAw
-LCBKb2hhbiBIb3ZvbGQgd3JvdGU6DQo+ID4gPiBDb21taXRzIDdiOGVmMjJlYTU0NyAoInVzYjog
-eGhjaTogcGxhdDogQWRkIFVTQiBwaHkgc3VwcG9ydCIpIGFuZA0KPiA+ID4gOTEzNGMxZmQwNTAz
-ICgidXNiOiB4aGNpOiBwbGF0OiBBZGQgVVNCIDMuMCBwaHkgc3VwcG9ydCIpIGFkZGVkDQo+ID4g
-PiBzdXBwb3J0IGZvciBsb29raW5nIHVwIGxlZ2FjeSBQSFlzIGZyb20gdGhlIHN5c2RldiBkZXZp
-Y2V0cmVlIG5vZGUNCj4gPiA+IGFuZCBpbml0aWFsaXNpbmcgdGhlbS4NCj4gPiA+DQo+ID4gPiBU
-aGlzIGJyb2tlIGRyaXZlcnMgc3VjaCBhcyBkd2MzIHdoaWNoIG1hbmFnZXMgUEhZcyB0aGVtc2Vs
-ZiBhcyB0aGUNCj4gPiA+IFBIWXMgd291bGQgbm93IGJlIGluaXRpYWxpc2VkIHR3aWNlLCBzb21l
-dGhpbmcgd2hpY2ggc3BlY2lmaWNhbGx5DQo+ID4gPiBjYW4gbGVhZCB0byByZXNvdXJjZXMgYmVp
-bmcgbGVmdCBlbmFibGVkIGR1cmluZyBzdXNwZW5kIChlLmcuIHdpdGgNCj4gPiA+IHRoZSB1c2Jf
-cGh5X2dlbmVyaWMgUEhZIGRyaXZlcikuDQo+ID4gPg0KPiA+ID4gQXMgdGhlIGR3YzMgZHJpdmVy
-IHVzZXMgZHJpdmVyLW5hbWUgbWF0Y2hpbmcgZm9yIHRoZSB4aGNpIHBsYXRmb3JtDQo+ID4gPiBk
-ZXZpY2UsIGZpeCB0aGlzIGJ5IG9ubHkgbG9va2luZyB1cCBhbmQgaW5pdGlhbGlzaW5nIFBIWXMg
-Zm9yDQo+ID4gPiBkZXZpY2VzIHRoYXQgaGF2ZSBiZWVuIG1hdGNoZWQgdXNpbmcgT0YuDQo+ID4g
-Pg0KPiA+ID4gTm90ZSB0aGF0IGNoZWNraW5nIHRoYXQgdGhlIHBsYXRmb3JtIGRldmljZSBoYXMg
-YSBkZXZpY2V0cmVlIG5vZGUNCj4gPiA+IHdvdWxkIGN1cnJlbnRseSBiZSBzdWZmaWNpZW50LCBi
-dXQgdGhhdCBjb3VsZCBsZWFkIHRvIHN1YnRsZQ0KPiA+ID4gYnJlYWthZ2VzIGluIGNhc2UgYW55
-b25lIGV2ZXIgdHJpZXMgdG8gcmV1c2UgYW4gYW5jZXN0b3IncyBub2RlLg0KPiA+ID4NCj4gPiA+
-IEZpeGVzOiA3YjhlZjIyZWE1NDcgKCJ1c2I6IHhoY2k6IHBsYXQ6IEFkZCBVU0IgcGh5IHN1cHBv
-cnQiKQ0KPiA+ID4gRml4ZXM6IDkxMzRjMWZkMDUwMyAoInVzYjogeGhjaTogcGxhdDogQWRkIFVT
-QiAzLjAgcGh5IHN1cHBvcnQiKQ0KPiA+ID4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcgICAg
-ICAjIDQuMQ0KPiA+ID4gQ2M6IE1heGltZSBSaXBhcmQgPG1yaXBhcmRAa2VybmVsLm9yZz4NCj4g
-PiA+IENjOiBTdGFubGV5IENoYW5nIDxzdGFubGV5X2NoYW5nQHJlYWx0ZWsuY29tPg0KPiA+ID4g
-U2lnbmVkLW9mZi1ieTogSm9oYW4gSG92b2xkIDxqb2hhbitsaW5hcm9Aa2VybmVsLm9yZz4NCj4g
-Pg0KPiA+IFRlc3RlZC1ieTogU3RlZmFuIEVpY2hlbmJlcmdlciA8c3RlZmFuLmVpY2hlbmJlcmdl
-ckB0b3JhZGV4LmNvbT4NCj4gDQo+IFRlc3RlZC1ieTogU3RhbmxleSBDaGFuZyA8c3RhbmxleV9j
-aGFuZ0ByZWFsdGVrLmNvbT4NCj4gDQoNCkkgYW0gc29ycnkgdG8gbm90aWZ5IHlvdSB0aGlzIHBh
-dGNoIGlzIHRlc3RlZCBmYWlsLg0KSSB0ZXN0IHRoZSBSZWFsdGVrIHBoeSBkcml2ZXIgYXQgZHJp
-dmVycy9waHkvUmVhbHRlay9waHktcnRrLXVzYjIuYyBhZ2Fpbi4NCkJ1dCBJIGNhbid0IGdldCB0
-aGUgcGh5IGluIHhoY2kuDQpJdCBpcyBhIGR3YzMgZ2VuZXJpYyBwaHkgZHJpdmVyLCBhbmQgaXQg
-aXMgYWxzbyBhIHVzYiBwaHkgZHJpdmVyLiANCg0KQmFzZSBvbiB5b3UgbW9kaWZpZWQsIEkgY2Fu
-J3QgcnVuIG9uIGNhbGxiYWNrIA0KcnRrX3BoeS0+cGh5Lm5vdGlmeV9wb3J0X3N0YXR1cyA9IHJ0
-a19waHlfbm90aWZ5X3BvcnRfc3RhdHVzOw0KVGhhbmtzLA0KU3RhbmxleS4NCg0K
+> -	dev->ctrl.max_hw_sectors = min_t(u32,
+> -		NVME_MAX_KB_SZ << 1, dma_opt_mapping_size(&pdev->dev) >> 9);
+> +	dev->ctrl.max_hw_sectors = min3(NVME_MAX_KB_SZ << 1,
+> +					dma_opt_mapping_size(&pdev->dev) >> 9,
+> +					dma_max_mapping_size(&pdev->dev) >> 9);
+
+dma_opt_mapping_size is already capped by dma_max_mapping_size, so no
+need for this hunk.
+
+>  	dev->ctrl.max_segments = NVME_MAX_SEGS;
+>  
+>  	/*
+> diff --git a/drivers/xen/swiotlb-xen.c b/drivers/xen/swiotlb-xen.c
+> index 946bd56f0ac53..0e6c6c25d154f 100644
+> --- a/drivers/xen/swiotlb-xen.c
+> +++ b/drivers/xen/swiotlb-xen.c
+> @@ -405,4 +405,5 @@ const struct dma_map_ops xen_swiotlb_dma_ops = {
+>  	.get_sgtable = dma_common_get_sgtable,
+>  	.alloc_pages = dma_common_alloc_pages,
+>  	.free_pages = dma_common_free_pages,
+> +	.max_mapping_size = swiotlb_max_mapping_size,
+>  };
+> --
+
+And this is the right thing to do.  I'm pretty sure I wrote this
+myself a while ago, but I must not have sent it out in the end.
