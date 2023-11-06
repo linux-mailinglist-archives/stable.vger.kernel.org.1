@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D17EA7E257D
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F9437E24F8
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232752AbjKFNcr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:32:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56922 "EHLO
+        id S232572AbjKFN1J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:27:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232763AbjKFNcq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:46 -0500
+        with ESMTP id S232588AbjKFN1F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A72A692
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:32:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA858C433C7;
-        Mon,  6 Nov 2023 13:32:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1098AD8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53113C433C7;
+        Mon,  6 Nov 2023 13:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277562;
-        bh=GiQQXkeOeb6HU9QQuEwgW5vyA3ZI0xVhepfeQIVHCes=;
+        s=korg; t=1699277222;
+        bh=p9UJQ5dmmBBJWwdiL/A1mTsSXXQ3mIeDVU8EP35ObvE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A0V6JYt9c9GLGUf9V80qpxg7qShbAVWyIEiFcL3ykhgbbOBQNCh+KZOXrF6MWx0dh
-         tAxeiB3l0r5buKhNCrnNckAwhAzfwCgOaBq2AQjcci6uA3RXdkNz2BSg1mlEKVQsCC
-         DQiEOn71npF2uyk55LnDMJuzuWOLhknWIhlSZWoc=
+        b=jKc1heuYeeuoL23FPRVCDFi+62D+QdQ2Y/yH4K1PYdJ2tPjVhKKdgJXJ4mp1rqyLK
+         vldmHSaGi9ll81QTIpZUaT3MpQ1n2dkoVIinMza/r/FTw5ZNyJZ7Os75iAMx9kTrgq
+         e/g2VXbqDrXtz71n0Yy356rV/tHVNEoNylINPuCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jian Zhang <zhangjian.3032@bytedance.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Andrew Jeffery <andrew@codeconstruct.com.au>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.10 31/95] i2c: aspeed: Fix i2c bus hang in slave read
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 079/128] dmaengine: ste_dma40: Fix PM disable depth imbalance in d40_probe
 Date:   Mon,  6 Nov 2023 14:03:59 +0100
-Message-ID: <20231106130305.849023052@linuxfoundation.org>
+Message-ID: <20231106130312.729208416@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit 54f1840ddee9bbdc8dd89fbbfdfa632401244146 upstream.
+[ Upstream commit 0618c077a8c20e8c81e367988f70f7e32bb5a717 ]
 
-When the `CONFIG_I2C_SLAVE` option is enabled and the device operates
-as a slave, a situation arises where the master sends a START signal
-without the accompanying STOP signal. This action results in a
-persistent I2C bus timeout. The core issue stems from the fact that
-the i2c controller remains in a slave read state without a timeout
-mechanism. As a consequence, the bus perpetually experiences timeouts.
+The pm_runtime_enable will increase power disable depth. Thus
+a pairing decrement is needed on the error handling path to
+keep it balanced according to context.
+We fix it by calling pm_runtime_disable when error returns.
 
-In this case, the i2c bus will be reset, but the slave_state reset is
-missing.
-
-Fixes: fee465150b45 ("i2c: aspeed: Reset the i2c controller when timeout occurs")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Acked-by: Andi Shyti <andi.shyti@kernel.org>
-Tested-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/tencent_DD2D371DB5925B4B602B1E1D0A5FA88F1208@qq.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-aspeed.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/dma/ste_dma40.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/i2c/busses/i2c-aspeed.c
-+++ b/drivers/i2c/busses/i2c-aspeed.c
-@@ -740,6 +740,8 @@ static void __aspeed_i2c_reg_slave(struc
- 	func_ctrl_reg_val = readl(bus->base + ASPEED_I2C_FUN_CTRL_REG);
- 	func_ctrl_reg_val |= ASPEED_I2CD_SLAVE_EN;
- 	writel(func_ctrl_reg_val, bus->base + ASPEED_I2C_FUN_CTRL_REG);
-+
-+	bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
- }
+diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
+index cb6b0e9ed5adc..0e9cb01682647 100644
+--- a/drivers/dma/ste_dma40.c
++++ b/drivers/dma/ste_dma40.c
+@@ -3697,6 +3697,7 @@ static int __init d40_probe(struct platform_device *pdev)
+ 		regulator_disable(base->lcpa_regulator);
+ 		regulator_put(base->lcpa_regulator);
+ 	}
++	pm_runtime_disable(base->dev);
  
- static int aspeed_i2c_reg_slave(struct i2c_client *client)
-@@ -756,7 +758,6 @@ static int aspeed_i2c_reg_slave(struct i
- 	__aspeed_i2c_reg_slave(bus, client->addr);
- 
- 	bus->slave = client;
--	bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
- 	spin_unlock_irqrestore(&bus->lock, flags);
- 
- 	return 0;
+ 	kfree(base->lcla_pool.alloc_map);
+ 	kfree(base->lookup_log_chans);
+-- 
+2.42.0
+
 
 
