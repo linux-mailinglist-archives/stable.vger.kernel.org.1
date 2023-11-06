@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 760527E24F5
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEDC17E237F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232670AbjKFN1D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:27:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37138 "EHLO
+        id S232131AbjKFNMS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:12:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232642AbjKFN07 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:59 -0500
+        with ESMTP id S231919AbjKFNMQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 516A2D70
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87128C433C8;
-        Mon,  6 Nov 2023 13:26:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD72DBF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E633C433C7;
+        Mon,  6 Nov 2023 13:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277213;
-        bh=QfWX561j79Ovl56sGuSc5v+8fcylk3bnJPFD7J3BBBo=;
+        s=korg; t=1699276333;
+        bh=MmgJofFQy2Y/0WARvuU5Iruza+EqlZ7pGXzR3X/ApXU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zBLtL5mWWqT7nX9jegQQ5P0pHqmoAunNtxKmyynw5ZTAekd+1S77eDn9uVzoCmnAR
-         rzjftakQXCts3AkaKv5+/WpFNu1nC0hKm4qbumOjFea13EyQj30NRNdJLCijP6n8P+
-         SrtcXm7KzPwQvKzZlLw6hKzZz1J1K23oZDbNX0ZE=
+        b=LF+ZwOqIN40fbldM3aGmWiVC9D+CzuFL5blMOfSCZVEZ16nvmVL5PhnS5gvDWq4Kz
+         gu+lIjs2XYTqAdJppnrOa40GNpBYte0B7pdhk0Tl/GbliKJsiI56bGxWsOwUuXiaZN
+         0DprApkj4lt2c3ExmWGZxXvfFeLFhiLeVvrsC1T8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Dunaev <dunaev@tecon.ru>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/128] irqchip/riscv-intc: Mark all INTC nodes as initialized
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 4.19 61/61] tty: 8250: Add support for Intashield IS-100
 Date:   Mon,  6 Nov 2023 14:03:57 +0100
-Message-ID: <20231106130312.630664821@linuxfoundation.org>
+Message-ID: <20231106130301.671583685@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,58 +48,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit e13cd66bd821be417c498a34928652db4ac6b436 ]
+commit 4d994e3cf1b541ff32dfb03fbbc60eea68f9645b upstream.
 
-The RISC-V INTC local interrupts are per-HART (or per-CPU) so we
-create INTC IRQ domain only for the INTC node belonging to the boot
-HART. This means only the boot HART INTC node will be marked as
-initialized and other INTC nodes won't be marked which results
-downstream interrupt controllers (such as PLIC, IMSIC and APLIC
-direct-mode) not being probed due to missing device suppliers.
+Add support for the Intashield IS-100 1 port serial card.
 
-To address this issue, we mark all INTC node for which we don't
-create IRQ domain as initialized.
-
-Reported-by: Dmitry Dunaev <dunaev@tecon.ru>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230926102801.1591126-1-dunaev@tecon.ru
-Link: https://lore.kernel.org/r/20231003044403.1974628-4-apatel@ventanamicro.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB7899A0E0CDAA505AF5A874CDC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-riscv-intc.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_pci.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-index 8017f6d32d52b..54c99441c1b54 100644
---- a/drivers/irqchip/irq-riscv-intc.c
-+++ b/drivers/irqchip/irq-riscv-intc.c
-@@ -109,8 +109,16 @@ static int __init riscv_intc_init(struct device_node *node,
- 	 * for each INTC DT node. We only need to do INTC initialization
- 	 * for the INTC DT node belonging to boot CPU (or boot HART).
- 	 */
--	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id())
-+	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id()) {
-+		/*
-+		 * The INTC nodes of each CPU are suppliers for downstream
-+		 * interrupt controllers (such as PLIC, IMSIC and APLIC
-+		 * direct-mode) so we should mark an INTC node as initialized
-+		 * if we are not creating IRQ domain for it.
-+		 */
-+		fwnode_dev_initialized(of_fwnode_handle(node), true);
- 		return 0;
-+	}
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -4772,6 +4772,12 @@ static const struct pci_device_id serial
+ 		pbn_b1_bt_1_115200 },
  
- 	intc_domain = irq_domain_add_linear(node, BITS_PER_LONG,
- 					    &riscv_intc_domain_ops, NULL);
--- 
-2.42.0
-
+ 	/*
++	 * IntaShield IS-100
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0D60,
++		PCI_ANY_ID, PCI_ANY_ID, 0, 0,
++		pbn_b2_1_115200 },
++	/*
+ 	 * IntaShield IS-200
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, PCI_DEVICE_ID_INTASHIELD_IS200,
 
 
