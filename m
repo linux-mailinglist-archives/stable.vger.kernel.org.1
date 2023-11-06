@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED7DC7E244D
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 007A77E22E7
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231977AbjKFNU3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:20:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53418 "EHLO
+        id S231947AbjKFNGj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:06:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjKFNU1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:20:27 -0500
+        with ESMTP id S231952AbjKFNGi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 333AE94
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7830DC433C7;
-        Mon,  6 Nov 2023 13:20:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D181100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D31C433C8;
+        Mon,  6 Nov 2023 13:06:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276824;
-        bh=5/fubEUYfYSsXw5vlIEEjLDk+ieQKfnS/+AE1cBKPGc=;
+        s=korg; t=1699275995;
+        bh=Zskbcbbnsx3xGCgfqqQKPeR8C6k83Yr13Ri7ZKYz07U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PRm8dVEa1R3GuiyrWDy8ETFmsQnQWrTiT8TTphkGLuZ8Mso6lTtjv73GGl1SLF98n
-         i19pUDexW7vdLbuy/pc+8iEvipvBIMEiMXGNIouHWXk5+g1vJdgCeWQQcwA/ef0Mcb
-         jlAxGk/Sz+5IOK1O2duSw6sDE2AZKBO2DmSjvG7A=
+        b=LBjA17ZE4213RFbtcwdXYk8I0IXp1Iy//eSAJGGWX3w+ZF/mpV+LHHmcWAuHok5kX
+         4yVy6izVy+bfi5xnoGvH8yb+JfJQ/f+hXPNOEXCHcwGeTJv4VyxOjqP2ORRfNZgiD9
+         16hTCJsm9CijkL94w6wnBE/hJe6eHuNzP9M82uJ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gavin Shan <gshan@redhat.com>,
-        Zhenyu Zhang <zhenyzha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH 5.4 05/74] virtio_balloon: Fix endless deflation and inflation on arm64
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 34/48] netfilter: nfnetlink_log: silence bogus compiler warning
 Date:   Mon,  6 Nov 2023 14:03:25 +0100
-Message-ID: <20231106130301.866216554@linuxfoundation.org>
+Message-ID: <20231106130259.021369143@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,101 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Shan <gshan@redhat.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 07622bd415639e9709579f400afd19e7e9866e5e upstream.
+[ Upstream commit 2e1d175410972285333193837a4250a74cd472e6 ]
 
-The deflation request to the target, which isn't unaligned to the
-guest page size causes endless deflation and inflation actions. For
-example, we receive the flooding QMP events for the changes on memory
-balloon's size after a deflation request to the unaligned target is
-sent for the ARM64 guest, where we have 64KB base page size.
+net/netfilter/nfnetlink_log.c:800:18: warning: variable 'ctinfo' is uninitialized
 
-  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
-  -accel kvm -machine virt,gic-version=host -cpu host          \
-  -smp maxcpus=8,cpus=8,sockets=2,clusters=2,cores=2,threads=1 \
-  -m 1024M,slots=16,maxmem=64G                                 \
-  -object memory-backend-ram,id=mem0,size=512M                 \
-  -object memory-backend-ram,id=mem1,size=512M                 \
-  -numa node,nodeid=0,memdev=mem0,cpus=0-3                     \
-  -numa node,nodeid=1,memdev=mem1,cpus=4-7                     \
-    :                                                          \
-  -device virtio-balloon-pci,id=balloon0,bus=pcie.10
+The warning is bogus, the variable is only used if ct is non-NULL and
+always initialised in that case.  Init to 0 too to silence this.
 
-  { "execute" : "balloon", "arguments": { "value" : 1073672192 } }
-  {"return": {}}
-  {"timestamp": {"seconds": 1693272173, "microseconds": 88667},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272174, "microseconds": 89704},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272175, "microseconds": 90819},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272176, "microseconds": 91961},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272177, "microseconds": 93040},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272178, "microseconds": 94117},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272179, "microseconds": 95337},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272180, "microseconds": 96615},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272181, "microseconds": 97626},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272182, "microseconds": 98693},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272183, "microseconds": 99698},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272184, "microseconds": 100727},  \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272185, "microseconds": 90430},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272186, "microseconds": 102999},  \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-     :
-  <The similar QMP events repeat>
-
-Fix it by aligning the target up to the guest page size, 64KB in this
-specific case. With this applied, no flooding QMP events are observed
-and the memory balloon's size can be stablizied to 0x3ffe0000 soon
-after the deflation request is sent.
-
-  { "execute" : "balloon", "arguments": { "value" : 1073672192 } }
-  {"return": {}}
-  {"timestamp": {"seconds": 1693273328, "microseconds": 793075},  \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  { "execute" : "query-balloon" }
-  {"return": {"actual": 1073610752}}
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
-Message-Id: <20230831011007.1032822-1-gshan@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309100514.ndBFebXN-lkp@intel.com/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_balloon.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/netfilter/nfnetlink_log.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -365,7 +365,11 @@ static inline s64 towards_target(struct
- 	if (!virtio_has_feature(vb->vdev, VIRTIO_F_VERSION_1))
- 		num_pages = le32_to_cpu((__force __le32)num_pages);
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index 40ba9c8e3c078..7d7a94e3fc507 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -637,8 +637,8 @@ nfulnl_log_packet(struct net *net,
+ 	unsigned int plen;
+ 	struct nfnl_log_net *log = nfnl_log_pernet(net);
+ 	const struct nfnl_ct_hook *nfnl_ct = NULL;
++	enum ip_conntrack_info ctinfo = 0;
+ 	struct nf_conn *ct = NULL;
+-	enum ip_conntrack_info ctinfo;
  
--	target = num_pages;
-+	/*
-+	 * Aligned up to guest page size to avoid inflating and deflating
-+	 * balloon endlessly.
-+	 */
-+	target = ALIGN(num_pages, VIRTIO_BALLOON_PAGES_PER_PAGE);
- 	return target - vb->num_pages;
- }
- 
+ 	if (li_user && li_user->type == NF_LOG_TYPE_ULOG)
+ 		li = li_user;
+-- 
+2.42.0
+
 
 
