@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4E0E7E2480
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:22:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F03D7E2578
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232441AbjKFNWe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:22:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49512 "EHLO
+        id S232750AbjKFNcb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:32:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232440AbjKFNWc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:22:32 -0500
+        with ESMTP id S232756AbjKFNca (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B71D494
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:22:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F2CC433C8;
-        Mon,  6 Nov 2023 13:22:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39D92100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:32:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73739C433C7;
+        Mon,  6 Nov 2023 13:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276949;
-        bh=4PH7BC4joNtQ9gBHsoRJZrUfh8fvP+pgXnTGsyGWz5k=;
+        s=korg; t=1699277546;
+        bh=MPS3XC1X2zJ2RkRZKPYMrr71GM60zotUrs3jWXAV/1k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QTrC6KgOeWP2LnaFpfcr2lVLRgfiENgt2L/Nnrdqo34LiJxezvW3zoLUQ1NPF3G3N
-         nTFs5fSVPpge/zKFR/pELgt1/Hg4imdhvmVi2NxPl8/d+Xo7WwDD4+6TAerI7Gb7QL
-         5Wfr50xPjOlZW0wVgNJnrf6bCs7dvANYdvKiIkT8=
+        b=Q6WJOlISePRT8JCs8HJm2dxDHfYf6I2VDja9ituQqUG9j1avN74YlQoiUPKEus8Gz
+         3kLvTaj0P0OA9XW2+xC6e5C67OnKumdctDGKknLHGgHiDLhQuFP153SRTsxWMf2Dx4
+         6Uzm3ceEVaTXwzgCjMNWQ39wqmmY3TlmnZbkxF+w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, lee@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liming Sun <limings@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 62/74] platform/mellanox: mlxbf-tmfifo: Fix a warning message
+        patches@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5.10 54/95] driver: platform: Add helper for safer setting of driver_override
 Date:   Mon,  6 Nov 2023 14:04:22 +0100
-Message-ID: <20231106130303.836951428@linuxfoundation.org>
+Message-ID: <20231106130306.670131513@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,69 +50,205 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liming Sun <limings@nvidia.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 99c09c985e5973c8f0ad976ebae069548dd86f12 ]
+commit 6c2f421174273de8f83cde4286d1c076d43a2d35 upstream.
 
-This commit fixes the smatch static checker warning in function
-mlxbf_tmfifo_rxtx_word() which complains data not initialized at
-line 634 when IS_VRING_DROP() is TRUE.
+Several core drivers and buses expect that driver_override is a
+dynamically allocated memory thus later they can kfree() it.
 
-Signed-off-by: Liming Sun <limings@nvidia.com>
-Link: https://lore.kernel.org/r/20231012230235.219861-1-limings@nvidia.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However such assumption is not documented, there were in the past and
+there are already users setting it to a string literal. This leads to
+kfree() of static memory during device release (e.g. in error paths or
+during unbind):
+
+    kernel BUG at ../mm/slub.c:3960!
+    Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM
+    ...
+    (kfree) from [<c058da50>] (platform_device_release+0x88/0xb4)
+    (platform_device_release) from [<c0585be0>] (device_release+0x2c/0x90)
+    (device_release) from [<c0a69050>] (kobject_put+0xec/0x20c)
+    (kobject_put) from [<c0f2f120>] (exynos5_clk_probe+0x154/0x18c)
+    (exynos5_clk_probe) from [<c058de70>] (platform_drv_probe+0x6c/0xa4)
+    (platform_drv_probe) from [<c058b7ac>] (really_probe+0x280/0x414)
+    (really_probe) from [<c058baf4>] (driver_probe_device+0x78/0x1c4)
+    (driver_probe_device) from [<c0589854>] (bus_for_each_drv+0x74/0xb8)
+    (bus_for_each_drv) from [<c058b48c>] (__device_attach+0xd4/0x16c)
+    (__device_attach) from [<c058a638>] (bus_probe_device+0x88/0x90)
+    (bus_probe_device) from [<c05871fc>] (device_add+0x3dc/0x62c)
+    (device_add) from [<c075ff10>] (of_platform_device_create_pdata+0x94/0xbc)
+    (of_platform_device_create_pdata) from [<c07600ec>] (of_platform_bus_create+0x1a8/0x4fc)
+    (of_platform_bus_create) from [<c0760150>] (of_platform_bus_create+0x20c/0x4fc)
+    (of_platform_bus_create) from [<c07605f0>] (of_platform_populate+0x84/0x118)
+    (of_platform_populate) from [<c0f3c964>] (of_platform_default_populate_init+0xa0/0xb8)
+    (of_platform_default_populate_init) from [<c01031f8>] (do_one_initcall+0x8c/0x404)
+
+Provide a helper which clearly documents the usage of driver_override.
+This will allow later to reuse the helper and reduce the amount of
+duplicated code.
+
+Convert the platform driver to use a new helper and make the
+driver_override field const char (it is not modified by the core).
+
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20220419113435.246203-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/mellanox/mlxbf-tmfifo.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/base/driver.c           |   69 ++++++++++++++++++++++++++++++++++++++++
+ drivers/base/platform.c         |   28 ++--------------
+ include/linux/device/driver.h   |    2 +
+ include/linux/platform_device.h |    6 ++-
+ 4 files changed, 80 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
-index 194f3205e5597..767f4406e55f1 100644
---- a/drivers/platform/mellanox/mlxbf-tmfifo.c
-+++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
-@@ -588,24 +588,25 @@ static void mlxbf_tmfifo_rxtx_word(struct mlxbf_tmfifo_vring *vring,
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -31,6 +31,75 @@ static struct device *next_device(struct
+ }
  
- 	if (vring->cur_len + sizeof(u64) <= len) {
- 		/* The whole word. */
--		if (!IS_VRING_DROP(vring)) {
--			if (is_rx)
-+		if (is_rx) {
-+			if (!IS_VRING_DROP(vring))
- 				memcpy(addr + vring->cur_len, &data,
- 				       sizeof(u64));
--			else
--				memcpy(&data, addr + vring->cur_len,
--				       sizeof(u64));
-+		} else {
-+			memcpy(&data, addr + vring->cur_len,
-+			       sizeof(u64));
- 		}
- 		vring->cur_len += sizeof(u64);
- 	} else {
- 		/* Leftover bytes. */
--		if (!IS_VRING_DROP(vring)) {
--			if (is_rx)
-+		if (is_rx) {
-+			if (!IS_VRING_DROP(vring))
- 				memcpy(addr + vring->cur_len, &data,
- 				       len - vring->cur_len);
--			else
--				memcpy(&data, addr + vring->cur_len,
--				       len - vring->cur_len);
-+		} else {
-+			data = 0;
-+			memcpy(&data, addr + vring->cur_len,
-+			       len - vring->cur_len);
- 		}
- 		vring->cur_len = len;
- 	}
--- 
-2.42.0
-
+ /**
++ * driver_set_override() - Helper to set or clear driver override.
++ * @dev: Device to change
++ * @override: Address of string to change (e.g. &device->driver_override);
++ *            The contents will be freed and hold newly allocated override.
++ * @s: NUL-terminated string, new driver name to force a match, pass empty
++ *     string to clear it ("" or "\n", where the latter is only for sysfs
++ *     interface).
++ * @len: length of @s
++ *
++ * Helper to set or clear driver override in a device, intended for the cases
++ * when the driver_override field is allocated by driver/bus code.
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len)
++{
++	const char *new, *old;
++	char *cp;
++
++	if (!override || !s)
++		return -EINVAL;
++
++	/*
++	 * The stored value will be used in sysfs show callback (sysfs_emit()),
++	 * which has a length limit of PAGE_SIZE and adds a trailing newline.
++	 * Thus we can store one character less to avoid truncation during sysfs
++	 * show.
++	 */
++	if (len >= (PAGE_SIZE - 1))
++		return -EINVAL;
++
++	if (!len) {
++		/* Empty string passed - clear override */
++		device_lock(dev);
++		old = *override;
++		*override = NULL;
++		device_unlock(dev);
++		kfree(old);
++
++		return 0;
++	}
++
++	cp = strnchr(s, len, '\n');
++	if (cp)
++		len = cp - s;
++
++	new = kstrndup(s, len, GFP_KERNEL);
++	if (!new)
++		return -ENOMEM;
++
++	device_lock(dev);
++	old = *override;
++	if (cp != s) {
++		*override = new;
++	} else {
++		/* "\n" passed - clear override */
++		kfree(new);
++		*override = NULL;
++	}
++	device_unlock(dev);
++
++	kfree(old);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(driver_set_override);
++
++/**
+  * driver_for_each_device - Iterator for devices bound to a driver.
+  * @drv: Driver we're iterating.
+  * @start: Device to begin with
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -1046,31 +1046,11 @@ static ssize_t driver_override_store(str
+ 				     const char *buf, size_t count)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+-	char *driver_override, *old, *cp;
++	int ret;
+ 
+-	/* We need to keep extra room for a newline */
+-	if (count >= (PAGE_SIZE - 1))
+-		return -EINVAL;
+-
+-	driver_override = kstrndup(buf, count, GFP_KERNEL);
+-	if (!driver_override)
+-		return -ENOMEM;
+-
+-	cp = strchr(driver_override, '\n');
+-	if (cp)
+-		*cp = '\0';
+-
+-	device_lock(dev);
+-	old = pdev->driver_override;
+-	if (strlen(driver_override)) {
+-		pdev->driver_override = driver_override;
+-	} else {
+-		kfree(driver_override);
+-		pdev->driver_override = NULL;
+-	}
+-	device_unlock(dev);
+-
+-	kfree(old);
++	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
++	if (ret)
++		return ret;
+ 
+ 	return count;
+ }
+--- a/include/linux/device/driver.h
++++ b/include/linux/device/driver.h
+@@ -150,6 +150,8 @@ extern int __must_check driver_create_fi
+ extern void driver_remove_file(struct device_driver *driver,
+ 			       const struct driver_attribute *attr);
+ 
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len);
+ extern int __must_check driver_for_each_device(struct device_driver *drv,
+ 					       struct device *start,
+ 					       void *data,
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -30,7 +30,11 @@ struct platform_device {
+ 	struct resource	*resource;
+ 
+ 	const struct platform_device_id	*id_entry;
+-	char *driver_override; /* Driver name to force a match */
++	/*
++	 * Driver name to force a match.  Do not set directly, because core
++	 * frees it.  Use driver_set_override() to set or clear it.
++	 */
++	const char *driver_override;
+ 
+ 	/* MFD cell pointer */
+ 	struct mfd_cell *mfd_cell;
 
 
