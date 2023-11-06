@@ -2,73 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 523D07E2605
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:49:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E4D57E262A
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:58:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232700AbjKFNtC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:49:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45892 "EHLO
+        id S231549AbjKFN6J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:58:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55978 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232856AbjKFNtB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:49:01 -0500
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 068FDDB;
-        Mon,  6 Nov 2023 05:48:57 -0800 (PST)
-Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3A6C4JCu000561;
-        Mon, 6 Nov 2023 14:48:35 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-        from:to:cc:subject:date:message-id:mime-version
-        :content-transfer-encoding:content-type; s=selector1; bh=Vexw1pM
-        NsxV4L+zqMyWZmWeII8r5bD8hhKoly+cx7vg=; b=Zl0xJ/1qDPheRcpJFz2E5Fh
-        Ap7nez2oMUGyn2tQI9ehrgGUmIdE3OUSVmH+Mmk+PkYTEsGaPfzZH4vz36iZ+7nd
-        aPS/tE0i53cfR19ptmB0hq626zuQKbJlsTIv0Y89zS9aOwQ1rwEeuOSXW2RHXwZ7
-        lQLD54brzL9Hq3ZaUje3Z8Fda6GT7NgKy9kOtS/YMq70ZpDWlhabA/YyIAkaiQtV
-        VdfwjhQpfrPKMDTSsqOwEARwKjWBFuIxAFfNPtuM4b3sKoLAdLQCiIFkK7ObTKId
-        CCOPGUaliYtco1laBSXkpkeo7zMinru45+ZWCx2rHyUIbOQ3RT+DAIUlA4OvQlA=
-        =
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3u5ej0q7kg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Nov 2023 14:48:35 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id ABAEF100059;
-        Mon,  6 Nov 2023 14:48:33 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 822AD24B890;
-        Mon,  6 Nov 2023 14:48:33 +0100 (CET)
-Received: from localhost (10.201.20.208) by SHFDAG1NODE3.st.com (10.75.129.71)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 6 Nov
- 2023 14:48:33 +0100
-From:   Amelie Delaunay <amelie.delaunay@foss.st.com>
-To:     Vinod Koul <vkoul@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Amelie Delaunay <amelie.delaunay@foss.st.com>,
-        Pierre Yves MORDRET <pierre-yves.mordret@st.com>,
-        M'boumba Cedric Madianga <cedric.madianga@gmail.com>
-CC:     Arnd Bergmann <arnd@arndb.de>, <stable@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>,
-        <dmaengine@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH v2] dmaengine: stm32-dma: avoid bitfield overflow assertion
-Date:   Mon, 6 Nov 2023 14:48:32 +0100
-Message-ID: <20231106134832.1470305-1-amelie.delaunay@foss.st.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S230405AbjKFN6I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:58:08 -0500
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F010CBF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:58:05 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6b1d1099a84so4536398b3a.1
+        for <stable@vger.kernel.org>; Mon, 06 Nov 2023 05:58:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699279085; x=1699883885; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=PHa3mvFpmSU2hW5B0/yLPyRvx3B2bz+mGptr1XS0zHo=;
+        b=dbO+YnzHZtlUtmHufHtt862j+VIWMqoaUmOa4/QskFE1LbbKZXo3ZmUwjON8CaChvU
+         ShsYidy3hDXvKDUfRrgUYCioO8hXbcovG3RDne5fmAxFvCKYbsCKnb+sbIVz4ICqx2cx
+         C36q3g+mdfx6iLocLgrn/Mu5xLnmIw3xsak2feeTfnijHBYppeDgBQo3lFcyW4S1d067
+         gFLCXNojtzgUmVq1vSKcLzHIPdtZHKygcUkUxXVlGy1CyAFYZL6Ujnn4Td61HXkIYD+b
+         1p6hLw5b8CBMjEd5QOzRvjbDQN0ct2CZWQrLP8c+2RkcO+lA7fMl0K5qfSoDCCdiBetS
+         cbLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699279085; x=1699883885;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PHa3mvFpmSU2hW5B0/yLPyRvx3B2bz+mGptr1XS0zHo=;
+        b=Hs1ii9IIoc1WKhhMrcZ8X2SJ02Pwtjt6SgBWwxmF+IVnAL1d+6jy1ZUeJPAjDtB5oW
+         J74VK3DE62iMA3dr1ejJStNDMenUOwTAkj3xnMzO/K6G4Ewknt1cwss9du9jv/FXdmy9
+         JQ7Bpj6ZrIPkJXOWDdeK9TcVnmveo3BOrbU7qOr7nEoSNocVgUPRCKVtx33OKxptJYtI
+         i4UDVJdS98MJn46oREQupYvZQuZW3Vg0iUe8ROcElHbej1PBKbMMwBpul0P/4A4+PLML
+         Gp/7nV8SpGgVN+gRfKnvqD8455Efg/kPs2ZHJDTYlhErZgmyb3Oe/C1MT3XzKgOOMHr2
+         0Lcg==
+X-Gm-Message-State: AOJu0YxzUs0a95+j6lq/R3wfFsCHzA1/RpjaGiRCVGjNIJQfO9OCo4Db
+        LrsBKqlNYuQnm+N2p0GS0lFJHW+tPIDVrxhKMcn4zA==
+X-Google-Smtp-Source: AGHT+IHEFOx7mbgPeP2dXNqMxWOxaCK4wJ5Hqjw0irYZY6hnKqICeHTwSr3oztE3tYEckD2eqemwfA==
+X-Received: by 2002:a05:6a20:a120:b0:17e:4454:edc3 with SMTP id q32-20020a056a20a12000b0017e4454edc3mr36410896pzk.47.1699279084852;
+        Mon, 06 Nov 2023 05:58:04 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id ju19-20020a170903429300b001c5d09e9437sm5936928plb.25.2023.11.06.05.58.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Nov 2023 05:58:04 -0800 (PST)
+Message-ID: <6548f0ec.170a0220.cead3.c9bf@mx.google.com>
+Date:   Mon, 06 Nov 2023 05:58:04 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.201.20.208]
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE3.st.com
- (10.75.129.71)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-06_12,2023-11-02_03,2023-05-22_02
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v4.14.328-49-g081def1ede2f5
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.328-49-g081def1ede2f5)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,79 +71,202 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stm32_dma_get_burst() returns a negative error for invalid input, which
-gets turned into a large u32 value in stm32_dma_prep_dma_memcpy() that
-in turn triggers an assertion because it does not fit into a two-bit field:
-drivers/dma/stm32-dma.c: In function 'stm32_dma_prep_dma_memcpy':
-include/linux/compiler_types.h:354:38: error: call to '__compiletime_assert_282' declared with attribute error: FIELD_PREP: value too large for the field
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-                                         ^
-   include/linux/compiler_types.h:335:4: note: in definition of macro '__compiletime_assert'
-       prefix ## suffix();    \
-       ^~~~~~
-   include/linux/compiler_types.h:354:2: note: in expansion of macro '_compiletime_assert'
-     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-     ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-                                        ^~~~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:68:3: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?  \
-      ^~~~~~~~~~~~~~~~
-   include/linux/bitfield.h:114:3: note: in expansion of macro '__BF_FIELD_CHECK'
-      __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: "); \
-      ^~~~~~~~~~~~~~~~
-   drivers/dma/stm32-dma.c:1237:4: note: in expansion of macro 'FIELD_PREP'
-       FIELD_PREP(STM32_DMA_SCR_PBURST_MASK, dma_burst) |
-       ^~~~~~~~~~
+stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
+v4.14.328-49-g081def1ede2f5)
 
-As an easy workaround, assume the error can happen, so try to handle this
-by failing stm32_dma_prep_dma_memcpy() before the assertion. It replicates
-what is done in stm32_dma_set_xfer_param() where stm32_dma_get_burst() is
-also used.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.328-49-g081def1ede2f5/
 
-Fixes: 1c32d6c37cc2 ("dmaengine: stm32-dma: use bitfield helpers")
-Fixes: a2b6103b7a8a ("dmaengine: stm32-dma: Improve memory burst management")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311060135.Q9eMnpCL-lkp@intel.com/
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.328-49-g081def1ede2f5
+Git Commit: 081def1ede2f5d00fdf79793a6a9996bf9344737
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
-Updated from v1: https://lore.kernel.org/lkml/20230214103222.1193307-1-arnd@kernel.org/T/
-- change dma_burst from u32 to int, and check for negative value, as done
-in stm32_dma_set_xfer_param()
-- Add 'Cc:', 'Reported-by:' and 'Closes:' tags
----
- drivers/dma/stm32-dma.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/dma/stm32-dma.c b/drivers/dma/stm32-dma.c
-index 0b30151fb45c..9840594a6aaa 100644
---- a/drivers/dma/stm32-dma.c
-+++ b/drivers/dma/stm32-dma.c
-@@ -1249,8 +1249,8 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_dma_memcpy(
- 	enum dma_slave_buswidth max_width;
- 	struct stm32_dma_desc *desc;
- 	size_t xfer_count, offset;
--	u32 num_sgs, best_burst, dma_burst, threshold;
--	int i;
-+	u32 num_sgs, best_burst, threshold;
-+	int dma_burst, i;
- 
- 	num_sgs = DIV_ROUND_UP(len, STM32_DMA_ALIGNED_MAX_DATA_ITEMS);
- 	desc = kzalloc(struct_size(desc, sg_req, num_sgs), GFP_NOWAIT);
-@@ -1268,6 +1268,10 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_dma_memcpy(
- 		best_burst = stm32_dma_get_best_burst(len, STM32_DMA_MAX_BURST,
- 						      threshold, max_width);
- 		dma_burst = stm32_dma_get_burst(chan, best_burst);
-+		if (dma_burst < 0) {
-+			kfree(desc);
-+			return NULL;
-+		}
- 
- 		stm32_dma_clear_reg(&desc->sg_req[i].chan_reg);
- 		desc->sg_req[i].chan_reg.dma_scr =
--- 
-2.25.1
-
+For more info write to <info@kernelci.org>
