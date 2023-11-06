@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AC977E2439
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40D7B7E2570
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232362AbjKFNTi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:19:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59122 "EHLO
+        id S232746AbjKFNcA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:32:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232298AbjKFNTi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:19:38 -0500
+        with ESMTP id S232735AbjKFNb7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 422E5100
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:19:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888A0C433C9;
-        Mon,  6 Nov 2023 13:19:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 416AF13E
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BFDC433C8;
+        Mon,  6 Nov 2023 13:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276774;
-        bh=n2ErxJJAmkLSLdIDd5+itLCT+sq2egtv1kPHl9kgVtw=;
+        s=korg; t=1699277515;
+        bh=vV/ufL7lxMElLQBDQco0GFc97xW1oFO5clhybDbDdrE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mdNwF4DXIjX0mfwM8/FkYWnQwbnm+vz1OZKmBuqjMLMj57v8L6uPpTeFg2Wwefpvh
-         3LTuPLdXK+maFFH4ObNLtTgkBMUUAVBBNMopL+cFEJqL+mIS/1YJfWfknse2XGb8Pr
-         ZlHoXTZxe7u2LGBOIwb11ZuzqABVpHb0Zcq+IfWg=
+        b=0lVRPU4X5HojNHhP90NpCCAf9a6aDj2uahp8PpFPAYw1wHcv2p+m1Vwmtq0qrQ+eK
+         cdgTXepoc5NSFA39vXlW70VGvmdg/vHfr2ErkoSQOPyhHfzVZtVQB1CEe+ClDqvh7Z
+         BFlDkRnSavTfck+4gNWeVCm/eTUuANXN1f3fp5AE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 6.5 81/88] tty: 8250: Add support for additional Brainboxes PX cards
-Date:   Mon,  6 Nov 2023 14:04:15 +0100
-Message-ID: <20231106130308.745412381@linuxfoundation.org>
+        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@suse.de>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.10 48/95] x86/mm: Simplify RESERVE_BRK()
+Date:   Mon,  6 Nov 2023 14:04:16 +0100
+Message-ID: <20231106130306.452604647@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,82 +51,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Josh Poimboeuf <jpoimboe@redhat.com>
 
-commit 9604884e592cd04ead024c9737c67a77f175cab9 upstream.
+commit a1e2c031ec3949b8c039b739c0b5bf9c30007b00 upstream.
 
-Add support for some more of the Brainboxes PX (PCIe) range
-of serial cards, namely
-PX-275/PX-279, PX-475 (serial port, not LPT), PX-820,
-PX-803/PX-857 (additional ID).
+RESERVE_BRK() reserves data in the .brk_reservation section.  The data
+is initialized to zero, like BSS, so the macro specifies 'nobits' to
+prevent the data from taking up space in the vmlinux binary.  The only
+way to get the compiler to do that (without putting the variable in .bss
+proper) is to use inline asm.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DU0PR02MB78996BEC353FB346FC35444BC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
+The macro also has a hack which encloses the inline asm in a discarded
+function, which allows the size to be passed (global inline asm doesn't
+allow inputs).
+
+Remove the need for the discarded function hack by just stringifying the
+size rather than supplying it as an input to the inline asm.
+
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220506121631.133110232@infradead.org
+[nathan: Resolve conflict due to lack of 2b6ff7dea670]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ arch/x86/include/asm/setup.h |   30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -5187,6 +5187,13 @@ static const struct pci_device_id serial
- 		0, 0,
- 		pbn_oxsemi_4_15625000 },
- 	/*
-+	 * Brainboxes PX-275/279
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0E41,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_8_115200 },
-+	/*
- 	 * Brainboxes PX-310
- 	 */
- 	{	PCI_VENDOR_ID_INTASHIELD, 0x400E,
-@@ -5233,17 +5240,39 @@ static const struct pci_device_id serial
- 		0, 0,
- 		pbn_oxsemi_4_15625000 },
- 	/*
-+	 * Brainboxes PX-475
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x401D,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_oxsemi_1_15625000 },
-+	/*
- 	 * Brainboxes PX-803/PX-857
- 	 */
- 	{	PCI_VENDOR_ID_INTASHIELD, 0x4009,
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_b0_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x4018,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_oxsemi_2_15625000 },
- 	{	PCI_VENDOR_ID_INTASHIELD, 0x401E,
- 		PCI_ANY_ID, PCI_ANY_ID,
- 		0, 0,
- 		pbn_oxsemi_2_15625000 },
- 	/*
-+	 * Brainboxes PX-820
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x4002,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b0_4_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x4013,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_oxsemi_4_15625000 },
-+	/*
- 	 * Brainboxes PX-846
- 	 */
- 	{	PCI_VENDOR_ID_INTASHIELD, 0x4008,
+--- a/arch/x86/include/asm/setup.h
++++ b/arch/x86/include/asm/setup.h
+@@ -108,27 +108,19 @@ extern unsigned long _brk_end;
+ void *extend_brk(size_t size, size_t align);
+ 
+ /*
+- * Reserve space in the brk section.  The name must be unique within
+- * the file, and somewhat descriptive.  The size is in bytes.  Must be
+- * used at file scope.
++ * Reserve space in the brk section.  The name must be unique within the file,
++ * and somewhat descriptive.  The size is in bytes.
+  *
+- * (This uses a temp function to wrap the asm so we can pass it the
+- * size parameter; otherwise we wouldn't be able to.  We can't use a
+- * "section" attribute on a normal variable because it always ends up
+- * being @progbits, which ends up allocating space in the vmlinux
+- * executable.)
++ * The allocation is done using inline asm (rather than using a section
++ * attribute on a normal variable) in order to allow the use of @nobits, so
++ * that it doesn't take up any space in the vmlinux file.
+  */
+-#define RESERVE_BRK(name,sz)						\
+-	static void __section(".discard.text") __used notrace		\
+-	__brk_reservation_fn_##name##__(void) {				\
+-		asm volatile (						\
+-			".pushsection .brk_reservation,\"aw\",@nobits;" \
+-			".brk." #name ":"				\
+-			" 1:.skip %c0;"					\
+-			" .size .brk." #name ", . - 1b;"		\
+-			" .popsection"					\
+-			: : "i" (sz));					\
+-	}
++#define RESERVE_BRK(name, size)						\
++	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
++	    ".brk." #name ":\n\t"					\
++	    ".skip " __stringify(size) "\n\t"				\
++	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
++	    ".popsection\n\t")
+ 
+ /* Helper for reserving space for arrays of things */
+ #define RESERVE_BRK_ARRAY(type, name, entries)		\
 
 
