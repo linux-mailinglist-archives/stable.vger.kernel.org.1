@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 669077E22E8
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7F57E2367
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231937AbjKFNGm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:06:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33048 "EHLO
+        id S231618AbjKFNLn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:11:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231951AbjKFNGl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:41 -0500
+        with ESMTP id S232059AbjKFNLn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F146BD
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50922C433C7;
-        Mon,  6 Nov 2023 13:06:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04BF2BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C841C433C8;
+        Mon,  6 Nov 2023 13:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699275998;
-        bh=ISzQWBVPlGws7miFRtVtCNpDES8o1hhax5UaIEj6OBc=;
+        s=korg; t=1699276299;
+        bh=5isV+wN3MjE/m2Z9cSFpolaSIZwO8Seeigsd2SwBX78=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EsYOBqBIgFgSoDo274/uvxwRjMdUWMZl2ZRfTpzmPla2ViUmr6DtA/WMRERoJDCAN
-         gMsIqvzoz1/4wiM9PQnijLZmMtUiXcvmIZSsuGlxrA9AARlhcdtjc/fKZshmTAUvTN
-         yhbM6++xJDRvKob6DYlBi1o1iHbcbZfp+oO1aswM=
+        b=LPGPId/dju3nzTKZQr6SLjRd1eMx25jEKECx7FYRSGSK9xdjD4dnvoyMjjig8Tgmv
+         cbbG6FSydp1j8LB3RF4Vx/40HFMmKBLDve0w10dN8eYRsv0WVpVIpkojnH3BC2IE4O
+         w942tpbgcnf++xoiECdjLI5/3c9f5pq4+Wq8+r9I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 35/48] ASoC: rt5650: fix the wrong result of key button
+        patches@lists.linux.dev, Wenqing Liu <wenqingliu0120@gmail.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Subject: [PATCH 4.19 30/61] f2fs: fix to do sanity check on inode type during garbage collection
 Date:   Mon,  6 Nov 2023 14:03:26 +0100
-Message-ID: <20231106130259.060680865@linuxfoundation.org>
+Message-ID: <20231106130300.652595991@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +50,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit f88dfbf333b3661faff996bb03af2024d907b76a ]
+commit 9056d6489f5a41cfbb67f719d2c0ce61ead72d9f upstream.
 
-The RT5650 should enable a power setting for button detection to avoid the wrong result.
+As report by Wenqing Liu in bugzilla:
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Link: https://lore.kernel.org/r/20231013094525.715518-1-shumingf@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+https://bugzilla.kernel.org/show_bug.cgi?id=215231
+
+- Overview
+kernel NULL pointer dereference triggered  in folio_mark_dirty() when mount and operate on a crafted f2fs image
+
+- Reproduce
+tested on kernel 5.16-rc3, 5.15.X under root
+
+1. mkdir mnt
+2. mount -t f2fs tmp1.img mnt
+3. touch tmp
+4. cp tmp mnt
+
+F2FS-fs (loop0): sanity_check_inode: inode (ino=49) extent info [5942, 4294180864, 4] is incorrect, run fsck to fix
+F2FS-fs (loop0): f2fs_check_nid_range: out-of-range nid=31340049, run fsck to fix.
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+ folio_mark_dirty+0x33/0x50
+ move_data_page+0x2dd/0x460 [f2fs]
+ do_garbage_collect+0xc18/0x16a0 [f2fs]
+ f2fs_gc+0x1d3/0xd90 [f2fs]
+ f2fs_balance_fs+0x13a/0x570 [f2fs]
+ f2fs_create+0x285/0x840 [f2fs]
+ path_openat+0xe6d/0x1040
+ do_filp_open+0xc5/0x140
+ do_sys_openat2+0x23a/0x310
+ do_sys_open+0x57/0x80
+
+The root cause is for special file: e.g. character, block, fifo or socket file,
+f2fs doesn't assign address space operations pointer array for mapping->a_ops field,
+so, in a fuzzed image, SSA table indicates a data block belong to special file, when
+f2fs tries to migrate that block, it causes NULL pointer access once move_data_page()
+calls a_ops->set_dirty_page().
+
+Cc: stable@vger.kernel.org
+Reported-by: Wenqing Liu <wenqingliu0120@gmail.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt5645.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/gc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index 01de25813c72b..822c42101c3f0 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -3220,6 +3220,8 @@ int rt5645_set_jack_detect(struct snd_soc_codec *codec,
- 				RT5645_GP1_PIN_IRQ, RT5645_GP1_PIN_IRQ);
- 		regmap_update_bits(rt5645->regmap, RT5645_GEN_CTRL1,
- 				RT5645_DIG_GATE_CTRL, RT5645_DIG_GATE_CTRL);
-+		regmap_update_bits(rt5645->regmap, RT5645_DEPOP_M1,
-+				RT5645_HP_CB_MASK, RT5645_HP_CB_PU);
- 	}
- 	rt5645_irq(0, rt5645);
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -958,7 +958,8 @@ next_step:
  
--- 
-2.42.0
-
+ 		if (phase == 3) {
+ 			inode = f2fs_iget(sb, dni.ino);
+-			if (IS_ERR(inode) || is_bad_inode(inode))
++			if (IS_ERR(inode) || is_bad_inode(inode) ||
++					special_file(inode->i_mode))
+ 				continue;
+ 
+ 			if (!down_write_trylock(
 
 
