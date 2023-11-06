@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 584267E246F
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8610B7E241B
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232420AbjKFNVw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:21:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49416 "EHLO
+        id S231965AbjKFNSQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:18:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232424AbjKFNVw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:52 -0500
+        with ESMTP id S232287AbjKFNSP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:15 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 696FBF1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4021C433C7;
-        Mon,  6 Nov 2023 13:21:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D650BF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 813E1C433C8;
+        Mon,  6 Nov 2023 13:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276908;
-        bh=Z7jrXmUWmdqCTj1kSdAu1q436XqX2UWS1nF4+7IJBbw=;
+        s=korg; t=1699276692;
+        bh=TaZgZ/Qed+Hf4eboVDeu+0uRXdE90jDQyWSn56dWfmg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CfQRcG4WbgJemJpvgMoVpiWppZYNfgSFsIh3kRDgNyo3EESA6pVmQo9B0TxwmaWc1
-         B5jwXTuhwybQ0HwAS/jzZVZ4hMYAYSE8olJagrl5jsnyOJeJvpHgRGo+oDCvLGmlRs
-         hAvbA2b3/nuq6udHmT58sFYzZzg4D7BqzUB7FypI=
+        b=eqzfPZEnEunJxKHQ4OlLgWLwLeMWSKBjfMfPFFz0t9E4A0tmkdWVYfsYZ0jpf2hCe
+         O3DJnMrfp3wVEilozC5+A1X6Rd8PTBudgDZgBNoOgr3VJsq7+O6/1WRCHLC8+KejFL
+         FiAB8FOnOA47fExyXFmTGxyNR5s72zzVs9MH9QfY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 20/74] iio: exynos-adc: request second interupt only when touchscreen mode is used
-Date:   Mon,  6 Nov 2023 14:03:40 +0100
-Message-ID: <20231106130302.403883973@linuxfoundation.org>
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Tianrui Zhao <zhaotianrui@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 47/88] LoongArch: Export symbol invalid_pud_table for modules building
+Date:   Mon,  6 Nov 2023 14:03:41 +0100
+Message-ID: <20231106130307.582941237@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,76 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 865b080e3229102f160889328ce2e8e97aa65ea0 upstream.
+[ Upstream commit 449c2756c2323c9e32b2a2fa9c8b59ce91b5819d ]
 
-Second interrupt is needed only when touchscreen mode is used, so don't
-request it unconditionally. This removes the following annoying warning
-during boot:
+Export symbol invalid_pud_table for modules building (such as the KVM
+module) if 4-level page tables enabled. Otherwise we get:
 
-exynos-adc 14d10000.adc: error -ENXIO: IRQ index 1 not found
+ERROR: modpost: "invalid_pud_table" [arch/loongarch/kvm/kvm.ko] undefined!
 
-Fixes: 2bb8ad9b44c5 ("iio: exynos-adc: add experimental touchscreen support")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20231009101412.916922-1-m.szyprowski@samsung.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/exynos_adc.c |   26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ arch/loongarch/mm/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -804,16 +804,26 @@ static int exynos_adc_probe(struct platf
- 		}
- 	}
- 
-+	/* leave out any TS related code if unreachable */
-+	if (IS_REACHABLE(CONFIG_INPUT)) {
-+		has_ts = of_property_read_bool(pdev->dev.of_node,
-+					       "has-touchscreen") || pdata;
-+	}
-+
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		return irq;
- 	info->irq = irq;
- 
--	irq = platform_get_irq(pdev, 1);
--	if (irq == -EPROBE_DEFER)
--		return irq;
--
--	info->tsirq = irq;
-+	if (has_ts) {
-+		irq = platform_get_irq(pdev, 1);
-+		if (irq == -EPROBE_DEFER)
-+			return irq;
-+
-+		info->tsirq = irq;
-+	} else {
-+		info->tsirq = -1;
-+	}
- 
- 	info->dev = &pdev->dev;
- 
-@@ -880,12 +890,6 @@ static int exynos_adc_probe(struct platf
- 	if (info->data->init_hw)
- 		info->data->init_hw(info);
- 
--	/* leave out any TS related code if unreachable */
--	if (IS_REACHABLE(CONFIG_INPUT)) {
--		has_ts = of_property_read_bool(pdev->dev.of_node,
--					       "has-touchscreen") || pdata;
--	}
--
- 	if (pdata)
- 		info->delay = pdata->delay;
- 	else
+diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
+index 3b7d8129570b8..51c9a6c90a169 100644
+--- a/arch/loongarch/mm/init.c
++++ b/arch/loongarch/mm/init.c
+@@ -267,6 +267,7 @@ pgd_t swapper_pg_dir[_PTRS_PER_PGD] __section(".bss..swapper_pg_dir");
+ pgd_t invalid_pg_dir[_PTRS_PER_PGD] __page_aligned_bss;
+ #ifndef __PAGETABLE_PUD_FOLDED
+ pud_t invalid_pud_table[PTRS_PER_PUD] __page_aligned_bss;
++EXPORT_SYMBOL(invalid_pud_table);
+ #endif
+ #ifndef __PAGETABLE_PMD_FOLDED
+ pmd_t invalid_pmd_table[PTRS_PER_PMD] __page_aligned_bss;
+-- 
+2.42.0
+
 
 
