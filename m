@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B430F7E2513
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD26A7E23AC
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232590AbjKFN2A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:28:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33110 "EHLO
+        id S232191AbjKFNNf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:13:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232640AbjKFN17 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:59 -0500
+        with ESMTP id S232174AbjKFNNe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:34 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A707C1B2
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DECCDC433C8;
-        Mon,  6 Nov 2023 13:27:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8753DD8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9889C433CB;
+        Mon,  6 Nov 2023 13:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277275;
-        bh=6mlUZUq5TC+DweT9VA1Y9Y6zhug0O04a1/DT1apE7OM=;
+        s=korg; t=1699276412;
+        bh=1vC+aW6xSzcdMkYixblVgb4JBUPnOmvExTMtgTHoQic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v4gmf1nc4UCIfNymxskmUipDm0Y2kRwBnWJGT2yF4toNw8uszdzGabfQot5SkfWjB
-         /ATFF/B1GRbchlV6dbT1OBLuy2PKreNdolpxYyTrOiXAiw6ZCokdksrMCLlM2DbXCz
-         n9C6sBGRbQOrB1/TMh6ouKENlHZznZh4XBEJ9Dsc=
+        b=nI76Sp8jwHh4VKozBJ0EbM8CIEW0E+DOoEmN+BBuHmLjvbFSeX0pG2uzLDL9JPRJC
+         IOcdW0YwEQvFdDLaDoptreCIZhfAqZUIEZqPwYCQaz1HMEFzCYKwNKGE5PlAJ88wqK
+         dkexI0r3KHkcCeexFK9KtxNl2tlhdmUKKZ0MVkkY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liam Beguin <liambeguin@gmail.com>,
-        Peter Rosin <peda@axentia.se>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Felix Kuehling <Felix.Kuehling@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/128] iio: afe: rescale: add offset support
-Date:   Mon,  6 Nov 2023 14:03:38 +0100
-Message-ID: <20231106130311.729197636@linuxfoundation.org>
+Subject: [PATCH 6.1 33/62] drm/amdgpu: Reserve fences for VM update
+Date:   Mon,  6 Nov 2023 14:03:39 +0100
+Message-ID: <20231106130303.039000614@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,171 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam Beguin <liambeguin@gmail.com>
+From: Felix Kuehling <Felix.Kuehling@amd.com>
 
-[ Upstream commit a29c3283653b80b916c5ca5292c5d36415e38e92 ]
+[ Upstream commit 316baf09d355aec1179981b6dfe28eba50c5ee5b ]
 
-This is a preparatory change required for the addition of temperature
-sensing front ends.
+In amdgpu_dma_buf_move_notify reserve fences for the page table updates
+in amdgpu_vm_clear_freed and amdgpu_vm_handle_moved. This fixes a BUG_ON
+in dma_resv_add_fence when using SDMA for page table updates.
 
-Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-Reviewed-by: Peter Rosin <peda@axentia.se>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20220213025739.2561834-4-liambeguin@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: bee448390e51 ("iio: afe: rescale: Accept only offset channels")
+Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/afe/iio-rescale.c   | 81 +++++++++++++++++++++++++++++++++
- include/linux/iio/afe/rescale.h |  4 ++
- 2 files changed, 85 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-index 6cc453ab9c685..84f21dc94a2f7 100644
---- a/drivers/iio/afe/iio-rescale.c
-+++ b/drivers/iio/afe/iio-rescale.c
-@@ -3,6 +3,7 @@
-  * IIO rescale driver
-  *
-  * Copyright (C) 2018 Axentia Technologies AB
-+ * Copyright (C) 2022 Liam Beguin <liambeguin@gmail.com>
-  *
-  * Author: Peter Rosin <peda@axentia.se>
-  */
-@@ -47,11 +48,46 @@ int rescale_process_scale(struct rescale *rescale, int scale_type,
- 	}
- }
- 
-+int rescale_process_offset(struct rescale *rescale, int scale_type,
-+			   int scale, int scale2, int schan_off,
-+			   int *val, int *val2)
-+{
-+	s64 tmp, tmp2;
-+
-+	switch (scale_type) {
-+	case IIO_VAL_FRACTIONAL:
-+		tmp = (s64)rescale->offset * scale2;
-+		*val = div_s64(tmp, scale) + schan_off;
-+		return IIO_VAL_INT;
-+	case IIO_VAL_INT:
-+		*val = div_s64(rescale->offset, scale) + schan_off;
-+		return IIO_VAL_INT;
-+	case IIO_VAL_FRACTIONAL_LOG2:
-+		tmp = (s64)rescale->offset * (1 << scale2);
-+		*val = div_s64(tmp, scale) + schan_off;
-+		return IIO_VAL_INT;
-+	case IIO_VAL_INT_PLUS_NANO:
-+		tmp = (s64)rescale->offset * 1000000000LL;
-+		tmp2 = ((s64)scale * 1000000000LL) + scale2;
-+		*val = div64_s64(tmp, tmp2) + schan_off;
-+		return IIO_VAL_INT;
-+	case IIO_VAL_INT_PLUS_MICRO:
-+		tmp = (s64)rescale->offset * 1000000LL;
-+		tmp2 = ((s64)scale * 1000000LL) + scale2;
-+		*val = div64_s64(tmp, tmp2) + schan_off;
-+		return IIO_VAL_INT;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static int rescale_read_raw(struct iio_dev *indio_dev,
- 			    struct iio_chan_spec const *chan,
- 			    int *val, int *val2, long mask)
- {
- 	struct rescale *rescale = iio_priv(indio_dev);
-+	int scale, scale2;
-+	int schan_off = 0;
- 	int ret;
- 
- 	switch (mask) {
-@@ -78,6 +114,47 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
- 			ret = iio_read_channel_scale(rescale->source, val, val2);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+index 7bd8e33b14be5..e8b3e9520cf6e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c
+@@ -400,7 +400,10 @@ amdgpu_dma_buf_move_notify(struct dma_buf_attachment *attach)
+ 				continue;
  		}
- 		return rescale_process_scale(rescale, ret, val, val2);
-+	case IIO_CHAN_INFO_OFFSET:
-+		/*
-+		 * Processed channels are scaled 1-to-1 and source offset is
-+		 * already taken into account.
-+		 *
-+		 * In other cases, real world measurement are expressed as:
-+		 *
-+		 *	schan_scale * (raw + schan_offset)
-+		 *
-+		 * Given that the rescaler parameters are applied recursively:
-+		 *
-+		 *	rescaler_scale * (schan_scale * (raw + schan_offset) +
-+		 *		rescaler_offset)
-+		 *
-+		 * Or,
-+		 *
-+		 *	(rescaler_scale * schan_scale) * (raw +
-+		 *		(schan_offset +	rescaler_offset / schan_scale)
-+		 *
-+		 * Thus, reusing the original expression the parameters exposed
-+		 * to userspace are:
-+		 *
-+		 *	scale = schan_scale * rescaler_scale
-+		 *	offset = schan_offset + rescaler_offset / schan_scale
-+		 */
-+		if (rescale->chan_processed) {
-+			*val = rescale->offset;
-+			return IIO_VAL_INT;
-+		}
-+
-+		if (iio_channel_has_info(rescale->source->channel,
-+					 IIO_CHAN_INFO_OFFSET)) {
-+			ret = iio_read_channel_offset(rescale->source,
-+						      &schan_off, NULL);
-+			if (ret != IIO_VAL_INT)
-+				return ret < 0 ? ret : -EOPNOTSUPP;
-+		}
-+
-+		ret = iio_read_channel_scale(rescale->source, &scale, &scale2);
-+		return rescale_process_offset(rescale, ret, scale, scale2,
-+					      schan_off, val, val2);
- 	default:
- 		return -EINVAL;
- 	}
-@@ -154,6 +231,9 @@ static int rescale_configure_channel(struct device *dev,
- 	chan->info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 		BIT(IIO_CHAN_INFO_SCALE);
  
-+	if (rescale->offset)
-+		chan->info_mask_separate |= BIT(IIO_CHAN_INFO_OFFSET);
-+
- 	/*
- 	 * Using .read_avail() is fringe to begin with and makes no sense
- 	 * whatsoever for processed channels, so we make sure that this cannot
-@@ -318,6 +398,7 @@ static int rescale_probe(struct platform_device *pdev)
- 	rescale->cfg = of_device_get_match_data(dev);
- 	rescale->numerator = 1;
- 	rescale->denominator = 1;
-+	rescale->offset = 0;
+-		r = amdgpu_vm_clear_freed(adev, vm, NULL);
++		/* Reserve fences for two SDMA page table updates */
++		r = dma_resv_reserve_fences(resv, 2);
++		if (!r)
++			r = amdgpu_vm_clear_freed(adev, vm, NULL);
+ 		if (!r)
+ 			r = amdgpu_vm_handle_moved(adev, vm);
  
- 	ret = rescale->cfg->props(dev, rescale);
- 	if (ret)
-diff --git a/include/linux/iio/afe/rescale.h b/include/linux/iio/afe/rescale.h
-index 8a2eb34af3271..6eecb435488f1 100644
---- a/include/linux/iio/afe/rescale.h
-+++ b/include/linux/iio/afe/rescale.h
-@@ -25,8 +25,12 @@ struct rescale {
- 	bool chan_processed;
- 	s32 numerator;
- 	s32 denominator;
-+	s32 offset;
- };
- 
- int rescale_process_scale(struct rescale *rescale, int scale_type,
- 			  int *val, int *val2);
-+int rescale_process_offset(struct rescale *rescale, int scale_type,
-+			   int scale, int scale2, int schan_off,
-+			   int *val, int *val2);
- #endif /* __IIO_RESCALE_H__ */
 -- 
 2.42.0
 
