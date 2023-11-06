@@ -2,21 +2,21 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 954747E2F29
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 22:50:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62AAF7E2F51
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 22:56:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233187AbjKFVuX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 16:50:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37652 "EHLO
+        id S233129AbjKFV4T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 16:56:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233169AbjKFVuX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 16:50:23 -0500
+        with ESMTP id S232686AbjKFV4S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 16:56:18 -0500
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82244134;
-        Mon,  6 Nov 2023 13:50:20 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A00E10C0;
+        Mon,  6 Nov 2023 13:56:13 -0800 (PST)
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 0D58C1C0070; Mon,  6 Nov 2023 22:50:19 +0100 (CET)
-Date:   Mon, 6 Nov 2023 22:50:18 +0100
+        id 300571C0070; Mon,  6 Nov 2023 22:56:12 +0100 (CET)
+Date:   Mon, 6 Nov 2023 22:56:11 +0100
 From:   Pavel Machek <pavel@denx.de>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -26,14 +26,14 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
         conor@kernel.org
-Subject: Re: [PATCH 5.10 00/95] 5.10.200-rc1 review
-Message-ID: <ZUlfmlaNzofvgt2w@duo.ucw.cz>
-References: <20231106130304.678610325@linuxfoundation.org>
+Subject: Re: [PATCH 4.19 00/61] 4.19.298-rc1 review
+Message-ID: <ZUlg+zd26I6F1oWD@duo.ucw.cz>
+References: <20231106130259.573843228@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="xsTTNgUvDDlph+GV"
+        protocol="application/pgp-signature"; boundary="qq+6ykEKXxcqiiOA"
 Content-Disposition: inline
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE
         autolearn=no autolearn_force=no version=3.4.6
@@ -44,24 +44,27 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---xsTTNgUvDDlph+GV
+--qq+6ykEKXxcqiiOA
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> This is the start of the stable review cycle for the 5.10.200 release.
-> There are 95 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 4.19.298 release.
+> There are 61 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
 There's something wrong here.
 
-251e8b0a0 1aee91 o: 4.14| nfsd: lock_rename() needs both directories to liv=
-e on the same fs
+|d17debc75 a5feba o: 4.14| r8152: Increase USB control msg timeout to 5000m=
+s as per spec
+|78fca56b7 d2a0fc o: 4.14| tcp: fix wrong RTO timeout when received SACK re=
+neging
+|8152892c6 adc8df .: 4.14| gtp: uapi: fix GTPA_MAX
 
-Is present in 4.14-stable but not 5.10-stable.
+These three patches are in 4.14-stable, but not in 4.19-stable.
 
 Best regards,
 								Pavel
@@ -69,14 +72,14 @@ Best regards,
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---xsTTNgUvDDlph+GV
+--qq+6ykEKXxcqiiOA
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZUlfmgAKCRAw5/Bqldv6
-8ofgAJ4/8S/51jkPiP5B2GY9fsyoo2w/ywCfW9t//JgUxU8uvIXD/kN010on2NE=
-=OtZ3
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZUlg+wAKCRAw5/Bqldv6
+8lcjAJ9LpOT4RCd0AbLeFyEnFcw7Py5dtgCfQjqVvmOobfn/u86XhOiM5g5Dx0Y=
+=zm+s
 -----END PGP SIGNATURE-----
 
---xsTTNgUvDDlph+GV--
+--qq+6ykEKXxcqiiOA--
