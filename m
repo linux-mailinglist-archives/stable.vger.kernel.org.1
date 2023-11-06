@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D29577E2560
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE2357E23CC
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:14:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232605AbjKFNbV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:31:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47604 "EHLO
+        id S231645AbjKFNOq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:14:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232744AbjKFNbU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:20 -0500
+        with ESMTP id S232107AbjKFNOp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:14:45 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 375E7123
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:12 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D63C433CC;
-        Mon,  6 Nov 2023 13:31:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DD7D91
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:14:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D28B0C433C9;
+        Mon,  6 Nov 2023 13:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277471;
-        bh=OKhodJnziSpfNwZr6QdUId+SmA83WO0emHtAEGaEVG8=;
+        s=korg; t=1699276483;
+        bh=xC4Ms2kA10+MuvjO3Ve3qQyflF6NzVUyNAGOjelnCzk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VhcYOkZlGDUdQsxlhDsbKISwpTz6U/mRVZkdf6XDdqik+BULBF8wkJwZvZZtcP6Bj
-         9htqtEqMnbfjsEj1rV4+XJJAkXkLb5iZqCh8F41mE+3/85F+7G2SpZS7xXc/B796Qy
-         63hxCcIc0exqv1HumnE2n2chw0Os8YzealpWY71I=
+        b=OwU+OKty8idQE7TyiJToa7nG5XqKH6/pBW58lER2lD9fR7akd3uBWJzCJ4KagZ9SF
+         A0jPjkfm7zMdr9bBbYeQKzazA3qmjO2wxyfLRtRDuVP6KigkZaUYAJyhECwOPcqpPU
+         qoqibHg+JG+cMEF9Td/JlRDIFxusJD8qm1bo0/10=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stable@vger.kernel.org,
-        Peng Fan <peng.fan@nxp.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Subject: [PATCH 5.10 34/95] nvmem: imx: correct nregs for i.MX6ULL
-Date:   Mon,  6 Nov 2023 14:04:02 +0100
-Message-ID: <20231106130305.971423299@linuxfoundation.org>
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 6.1 57/62] tty: 8250: Add support for additional Brainboxes PX cards
+Date:   Mon,  6 Nov 2023 14:04:03 +0100
+Message-ID: <20231106130303.798164852@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,36 +48,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit 2382c1b044231fd49eaf9aa82bc7113fc55487b8 upstream.
+commit 9604884e592cd04ead024c9737c67a77f175cab9 upstream.
 
-The nregs for i.MX6ULL should be 80 per fuse map, correct it.
+Add support for some more of the Brainboxes PX (PCIe) range
+of serial cards, namely
+PX-275/PX-279, PX-475 (serial port, not LPT), PX-820,
+PX-803/PX-857 (additional ID).
 
-Fixes: ffbc34bf0e9c ("nvmem: imx-ocotp: Implement i.MX6ULL/ULZ support")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231013124904.175782-4-srinivas.kandagatla@linaro.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB78996BEC353FB346FC35444BC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvmem/imx-ocotp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_pci.c |   29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -488,7 +488,7 @@ static const struct ocotp_params imx6ul_
- };
- 
- static const struct ocotp_params imx6ull_params = {
--	.nregs = 64,
-+	.nregs = 80,
- 	.bank_address_words = 0,
- 	.set_timing = imx_ocotp_set_imx6_timing,
- 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5207,6 +5207,13 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_oxsemi_4_15625000 },
+ 	/*
++	 * Brainboxes PX-275/279
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0E41,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_8_115200 },
++	/*
+ 	 * Brainboxes PX-310
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x400E,
+@@ -5253,17 +5260,39 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_oxsemi_4_15625000 },
+ 	/*
++	 * Brainboxes PX-475
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x401D,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
++	/*
+ 	 * Brainboxes PX-803/PX-857
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x4009,
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b0_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4018,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_2_15625000 },
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x401E,
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_oxsemi_2_15625000 },
+ 	/*
++	 * Brainboxes PX-820
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4002,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b0_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4013,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_4_15625000 },
++	/*
+ 	 * Brainboxes PX-846
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x4008,
 
 
