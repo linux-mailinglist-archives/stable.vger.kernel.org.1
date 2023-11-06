@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69F337E255A
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A0767E2478
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:22:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232728AbjKFNbI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:31:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36346 "EHLO
+        id S232438AbjKFNWS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:22:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232726AbjKFNbD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:03 -0500
+        with ESMTP id S232431AbjKFNWR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:22:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E7FD8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0D8C433CA;
-        Mon,  6 Nov 2023 13:30:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17B35A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:22:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555BDC433C7;
+        Mon,  6 Nov 2023 13:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277459;
-        bh=CiUcfjAe5ELa2nPtt3P/C5uWPuSKhYODGIUCgmCLO9w=;
+        s=korg; t=1699276934;
+        bh=c5xDF9uDEd+IYBrffuSZT1wMjf14r/4fPEjQXguxRgc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FHAo4JYkHmmOa4viRuhm/MEp8Bz4++LgnDiXSevzdyT8/6xMYyW8Qdx9Bz/XzN8mR
-         sUimoGhQbVJMxJ8Ld+NS5+BEeSM8ooedTfh2KmS9pe2hRNvxE1iBl2apdA+ncsUOW0
-         9Or9t23sazWXmhtiYZliByMtgVK1IeFMhhwomoa8=
+        b=mGXYtqzwAjH92hpAerFGeNG+Pi6LJ6qRzfiqwItoGtnrO4UKAprG5dD9Kvyy5aPrw
+         ymhwaYhhTP47QBme513y1MCq8Xal/8eTgAGWgVWkU/kMlACBrEHhpMDWGGMOC5hObY
+         qr+DXkn6r6m4c1Bx1y/JjJkdXdMcIqtzd6hjT9Gs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        nic_swsd@realtek.com, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Marco Elver <elver@google.com>, netdev@vger.kernel.org,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        patches@lists.linux.dev, Fred Chen <fred.chenchen03@gmail.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 09/95] r8169: fix the KCSAN reported data-race in rtl_tx while reading TxDescArray[entry].opts1
+Subject: [PATCH 5.4 17/74] tcp: fix wrong RTO timeout when received SACK reneging
 Date:   Mon,  6 Nov 2023 14:03:37 +0100
-Message-ID: <20231106130305.047794271@linuxfoundation.org>
+Message-ID: <20231106130302.302397789@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,134 +51,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Fred Chen <fred.chenchen03@gmail.com>
 
-[ Upstream commit dcf75a0f6bc136de94e88178ae5f51b7f879abc9 ]
+[ Upstream commit d2a0fc372aca561556e765d0a9ec365c7c12f0ad ]
 
-KCSAN reported the following data-race:
+This commit fix wrong RTO timeout when received SACK reneging.
 
-==================================================================
-BUG: KCSAN: data-race in rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
+When an ACK arrived pointing to a SACK reneging, tcp_check_sack_reneging()
+will rearm the RTO timer for min(1/2*srtt, 10ms) into to the future.
 
-race at unknown origin, with read to 0xffff888140d37570 of 4 bytes by interrupt on cpu 21:
-rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
-__napi_poll (net/core/dev.c:6527)
-net_rx_action (net/core/dev.c:6596 net/core/dev.c:6727)
-__do_softirq (kernel/softirq.c:553)
-__irq_exit_rcu (kernel/softirq.c:427 kernel/softirq.c:632)
-irq_exit_rcu (kernel/softirq.c:647)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1074 (discriminator 14))
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:645)
-cpuidle_enter_state (drivers/cpuidle/cpuidle.c:291)
-cpuidle_enter (drivers/cpuidle/cpuidle.c:390)
-call_cpuidle (kernel/sched/idle.c:135)
-do_idle (kernel/sched/idle.c:219 kernel/sched/idle.c:282)
-cpu_startup_entry (kernel/sched/idle.c:378 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:210 arch/x86/kernel/smpboot.c:294)
-secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
+But since the commit 62d9f1a6945b ("tcp: fix TLP timer not set when
+CA_STATE changes from DISORDER to OPEN") merged, the tcp_set_xmit_timer()
+is moved after tcp_fastretrans_alert()(which do the SACK reneging check),
+so the RTO timeout will be overwrited by tcp_set_xmit_timer() with
+icsk_rto instead of 1/2*srtt.
 
-value changed: 0xb0000042 -> 0x00000000
+Here is a packetdrill script to check this bug:
+0     socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++0    bind(3, ..., ...) = 0
++0    listen(3, 1) = 0
 
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 21 PID: 0 Comm: swapper/21 Tainted: G             L     6.6.0-rc2-kcsan-00143-gb5cbe7c00aa0 #41
-Hardware name: ASRock X670E PG Lightning/X670E PG Lightning, BIOS 1.21 04/26/2023
-==================================================================
+// simulate srtt to 100ms
++0    < S 0:0(0) win 32792 <mss 1000, sackOK,nop,nop,nop,wscale 7>
++0    > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 7>
++.1    < . 1:1(0) ack 1 win 1024
 
-The read side is in
++0    accept(3, ..., ...) = 4
 
-drivers/net/ethernet/realtek/r8169_main.c
-=========================================
-   4355 static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
-   4356                    int budget)
-   4357 {
-   4358         unsigned int dirty_tx, bytes_compl = 0, pkts_compl = 0;
-   4359         struct sk_buff *skb;
-   4360
-   4361         dirty_tx = tp->dirty_tx;
-   4362
-   4363         while (READ_ONCE(tp->cur_tx) != dirty_tx) {
-   4364                 unsigned int entry = dirty_tx % NUM_TX_DESC;
-   4365                 u32 status;
-   4366
- → 4367                 status = le32_to_cpu(tp->TxDescArray[entry].opts1);
-   4368                 if (status & DescOwn)
-   4369                         break;
-   4370
-   4371                 skb = tp->tx_skb[entry].skb;
-   4372                 rtl8169_unmap_tx_skb(tp, entry);
-   4373
-   4374                 if (skb) {
-   4375                         pkts_compl++;
-   4376                         bytes_compl += skb->len;
-   4377                         napi_consume_skb(skb, budget);
-   4378                 }
-   4379                 dirty_tx++;
-   4380         }
-   4381
-   4382         if (tp->dirty_tx != dirty_tx) {
-   4383                 dev_sw_netstats_tx_add(dev, pkts_compl, bytes_compl);
-   4384                 WRITE_ONCE(tp->dirty_tx, dirty_tx);
-   4385
-   4386                 netif_subqueue_completed_wake(dev, 0, pkts_compl, bytes_compl,
-   4387                                               rtl_tx_slots_avail(tp),
-   4388                                               R8169_TX_START_THRS);
-   4389                 /*
-   4390                  * 8168 hack: TxPoll requests are lost when the Tx packets are
-   4391                  * too close. Let's kick an extra TxPoll request when a burst
-   4392                  * of start_xmit activity is detected (if it is not detected,
-   4393                  * it is slow enough). -- FR
-   4394                  * If skb is NULL then we come here again once a tx irq is
-   4395                  * triggered after the last fragment is marked transmitted.
-   4396                  */
-   4397                 if (READ_ONCE(tp->cur_tx) != dirty_tx && skb)
-   4398                         rtl8169_doorbell(tp);
-   4399         }
-   4400 }
++0    write(4, ..., 10000) = 10000
++0    > P. 1:10001(10000) ack 1
 
-tp->TxDescArray[entry].opts1 is reported to have a data-race and READ_ONCE() fixes
-this KCSAN warning.
+// inject sack
++.1    < . 1:1(0) ack 1 win 257 <sack 1001:10001,nop,nop>
++0    > . 1:1001(1000) ack 1
 
-   4366
- → 4367                 status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
-   4368                 if (status & DescOwn)
-   4369                         break;
-   4370
+// inject sack reneging
++.1    < . 1:1(0) ack 1001 win 257 <sack 9001:10001,nop,nop>
 
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: nic_swsd@realtek.com
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Marco Elver <elver@google.com>
-Cc: netdev@vger.kernel.org
-Link: https://lore.kernel.org/lkml/dc7fc8fa-4ea4-e9a9-30a6-7c83e6b53188@alu.unizg.hr/
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Marco Elver <elver@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+// we expect rto fired in 1/2*srtt (50ms)
++.05    > . 1001:2001(1000) ack 1
+
+This fix remove the FLAG_SET_XMIT_TIMER from ack_flag when
+tcp_check_sack_reneging() set RTO timer with 1/2*srtt to avoid
+being overwrited later.
+
+Fixes: 62d9f1a6945b ("tcp: fix TLP timer not set when CA_STATE changes from DISORDER to OPEN")
+Signed-off-by: Fred Chen <fred.chenchen03@gmail.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Tested-by: Neal Cardwell <ncardwell@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_input.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index c025dadcce289..d47adc7725ad5 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4470,7 +4470,7 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
- 		struct sk_buff *skb = tp->tx_skb[entry].skb;
- 		u32 status;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index ec3c23adbab44..c3f227c4c3567 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2057,16 +2057,17 @@ void tcp_enter_loss(struct sock *sk)
+  * restore sanity to the SACK scoreboard. If the apparent reneging
+  * persists until this RTO then we'll clear the SACK scoreboard.
+  */
+-static bool tcp_check_sack_reneging(struct sock *sk, int flag)
++static bool tcp_check_sack_reneging(struct sock *sk, int *ack_flag)
+ {
+-	if (flag & FLAG_SACK_RENEGING &&
+-	    flag & FLAG_SND_UNA_ADVANCED) {
++	if (*ack_flag & FLAG_SACK_RENEGING &&
++	    *ack_flag & FLAG_SND_UNA_ADVANCED) {
+ 		struct tcp_sock *tp = tcp_sk(sk);
+ 		unsigned long delay = max(usecs_to_jiffies(tp->srtt_us >> 4),
+ 					  msecs_to_jiffies(10));
  
--		status = le32_to_cpu(tp->TxDescArray[entry].opts1);
-+		status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
- 		if (status & DescOwn)
- 			break;
+ 		inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
+ 					  delay, TCP_RTO_MAX);
++		*ack_flag &= ~FLAG_SET_XMIT_TIMER;
+ 		return true;
+ 	}
+ 	return false;
+@@ -2840,7 +2841,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+ 		tp->prior_ssthresh = 0;
  
+ 	/* B. In all the states check for reneging SACKs. */
+-	if (tcp_check_sack_reneging(sk, flag))
++	if (tcp_check_sack_reneging(sk, ack_flag))
+ 		return;
+ 
+ 	/* C. Check consistency of the current state. */
 -- 
 2.42.0
 
