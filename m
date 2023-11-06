@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F3667E2355
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 669077E22E8
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231705AbjKFNLL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:11:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56582 "EHLO
+        id S231937AbjKFNGm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:06:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231898AbjKFNLK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:10 -0500
+        with ESMTP id S231951AbjKFNGl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECB5991
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA86CC433CB;
-        Mon,  6 Nov 2023 13:11:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F146BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50922C433C7;
+        Mon,  6 Nov 2023 13:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276267;
-        bh=tY7lU17o8LM8E5R9a7cpy3wQnJjogzp/yGAii/VzZ60=;
+        s=korg; t=1699275998;
+        bh=ISzQWBVPlGws7miFRtVtCNpDES8o1hhax5UaIEj6OBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ja4LOGJo81blqcda9anUMXK7EzacHZlk6SDqm4xDjPsDzi1krWmwnhFESOEblqKUe
-         Wi+L8RueOBGSG23vPLYnrd/9BjJjzcmYAhTVCvpbh9kZ1PU6DCotfioM8ySN5FbhXy
-         cAo8eTXx9YkAmOu6esm8S3YUjCGKb/FOBN2Vczr4=
+        b=EsYOBqBIgFgSoDo274/uvxwRjMdUWMZl2ZRfTpzmPla2ViUmr6DtA/WMRERoJDCAN
+         gMsIqvzoz1/4wiM9PQnijLZmMtUiXcvmIZSsuGlxrA9AARlhcdtjc/fKZshmTAUvTN
+         yhbM6++xJDRvKob6DYlBi1o1iHbcbZfp+oO1aswM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Talpey <tom@talpey.com>,
-        Long Li <longli@microsoft.com>,
-        Steve French <stfrench@microsoft.com>,
-        Anastasia Belova <abelova@astralinux.ru>
-Subject: [PATCH 4.19 29/61] smbdirect: missing rc checks while waiting for rdma events
-Date:   Mon,  6 Nov 2023 14:03:25 +0100
-Message-ID: <20231106130300.616378237@linuxfoundation.org>
+        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 35/48] ASoC: rt5650: fix the wrong result of key button
+Date:   Mon,  6 Nov 2023 14:03:26 +0100
+Message-ID: <20231106130259.060680865@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Shuming Fan <shumingf@realtek.com>
 
-commit 0555b221528e9cb11f5766dcdee19c809187e42e upstream.
+[ Upstream commit f88dfbf333b3661faff996bb03af2024d907b76a ]
 
-There were two places where we weren't checking for error
-(e.g. ERESTARTSYS) while waiting for rdma resolution.
+The RT5650 should enable a power setting for button detection to avoid the wrong result.
 
-Addresses-Coverity: 1462165 ("Unchecked return value")
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://lore.kernel.org/r/20231013094525.715518-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smbdirect.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt5645.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/cifs/smbdirect.c
-+++ b/fs/cifs/smbdirect.c
-@@ -706,8 +706,13 @@ static struct rdma_cm_id *smbd_create_id
- 		log_rdma_event(ERR, "rdma_resolve_addr() failed %i\n", rc);
- 		goto out;
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index 01de25813c72b..822c42101c3f0 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -3220,6 +3220,8 @@ int rt5645_set_jack_detect(struct snd_soc_codec *codec,
+ 				RT5645_GP1_PIN_IRQ, RT5645_GP1_PIN_IRQ);
+ 		regmap_update_bits(rt5645->regmap, RT5645_GEN_CTRL1,
+ 				RT5645_DIG_GATE_CTRL, RT5645_DIG_GATE_CTRL);
++		regmap_update_bits(rt5645->regmap, RT5645_DEPOP_M1,
++				RT5645_HP_CB_MASK, RT5645_HP_CB_PU);
  	}
--	wait_for_completion_interruptible_timeout(
-+	rc = wait_for_completion_interruptible_timeout(
- 		&info->ri_done, msecs_to_jiffies(RDMA_RESOLVE_TIMEOUT));
-+	/* e.g. if interrupted returns -ERESTARTSYS */
-+	if (rc < 0) {
-+		log_rdma_event(ERR, "rdma_resolve_addr timeout rc: %i\n", rc);
-+		goto out;
-+	}
- 	rc = info->ri_rc;
- 	if (rc) {
- 		log_rdma_event(ERR, "rdma_resolve_addr() completed %i\n", rc);
-@@ -720,8 +725,13 @@ static struct rdma_cm_id *smbd_create_id
- 		log_rdma_event(ERR, "rdma_resolve_route() failed %i\n", rc);
- 		goto out;
- 	}
--	wait_for_completion_interruptible_timeout(
-+	rc = wait_for_completion_interruptible_timeout(
- 		&info->ri_done, msecs_to_jiffies(RDMA_RESOLVE_TIMEOUT));
-+	/* e.g. if interrupted returns -ERESTARTSYS */
-+	if (rc < 0)  {
-+		log_rdma_event(ERR, "rdma_resolve_addr timeout rc: %i\n", rc);
-+		goto out;
-+	}
- 	rc = info->ri_rc;
- 	if (rc) {
- 		log_rdma_event(ERR, "rdma_resolve_route() completed %i\n", rc);
+ 	rt5645_irq(0, rt5645);
+ 
+-- 
+2.42.0
+
 
 
