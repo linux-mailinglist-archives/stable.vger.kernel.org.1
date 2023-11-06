@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A23B07E2614
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:51:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 616AE7E2369
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231485AbjKFNvx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:51:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37036 "EHLO
+        id S229921AbjKFNLu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:11:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232611AbjKFN0t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:49 -0500
+        with ESMTP id S232050AbjKFNLs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4DB4D69
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B2AC433C8;
-        Mon,  6 Nov 2023 13:26:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7C5B100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:45 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2144DC433D9;
+        Mon,  6 Nov 2023 13:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277205;
-        bh=GhAnEdNI0nO9sWqCsj5RqjDcte+/tajXuJJoSsEJRiQ=;
+        s=korg; t=1699276305;
+        bh=/O6S/f8B7Wk4qXJPP1WoD2kZXrgJm90Almoc9tqyLcQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fYNu7LstoYaQh4tjKxmJvS4AXGYCHhbxy81iwzuClZAKg+DJcdlbD5l5u6zTExcVX
-         dEqihe4/DhJ4gld+m+aKbE4Fd13rzLrLXkz5i0krqCAJwaRkBIhKkij22jaRe8+KvR
-         Anss/X106EVlXu/I33423E6YVLOk3UWsZOpf2hXc=
+        b=wZyR7CWfrkEDgfhs7odvZNB5pwWcA7vNEV+ho52ryuQbR/OeHFzp5VOTBzEeqcQEO
+         aob/W+4q83e63eh2KSpWVoiEzNoJh8RQaaXeoxiBM0ioHdE51SzQl3mztJTNYkRVG6
+         FgOtzMjxitbGmTXRAOjv6jTA+1Zz3ZWJb52l2S2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Juergen Gross <jgross@suse.com>,
-        Borislav Petkov <bp@suse.de>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.15 074/128] x86: Fix .brk attribute in linker script
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 4.19 58/61] tty: 8250: Remove UC-257 and UC-431
 Date:   Mon,  6 Nov 2023 14:03:54 +0100
-Message-ID: <20231106130312.494938158@linuxfoundation.org>
+Message-ID: <20231106130301.577976516@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +48,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit 7e09ac27f43b382f5fe9bb7c7f4c465ece1f8a23 upstream.
+commit 33092fb3af51deb80849e90a17bada44bbcde6b3 upstream.
 
-Commit in Fixes added the "NOLOAD" attribute to the .brk section as a
-"failsafe" measure.
+The UC-257 is a serial + LPT card, so remove it from this driver.
+A patch has been submitted to add it to parport_serial instead.
 
-Unfortunately, this leads to the linker no longer covering the .brk
-section in a program header, resulting in the kernel loader not knowing
-that the memory for the .brk section must be reserved.
+Additionaly, the UC-431 does not use this card ID, only the UC-420
+does. The 431 is a 3-port card and there is no generic 3-port configuration
+available, so remove reference to it from this driver.
 
-This has led to crashes when loading the kernel as PV dom0 under Xen,
-but other scenarios could be hit by the same problem (e.g. in case an
-uncompressed kernel is used and the initrd is placed directly behind
-it).
-
-So drop the "NOLOAD" attribute. This has been verified to correctly
-cover the .brk section by a program header of the resulting ELF file.
-
-Fixes: e32683c6f7d2 ("x86/mm: Fix RESERVE_BRK() for older binutils")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lore.kernel.org/r/20220630071441.28576-4-jgross@suse.com
+Fixes: 152d1afa834c ("tty: Add support for Brainboxes UC cards.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB78995ADF7394C74AD4CF3357C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/vmlinux.lds.S |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_pci.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -411,7 +411,7 @@ SECTIONS
- 	__end_of_kernel_reserve = .;
- 
- 	. = ALIGN(PAGE_SIZE);
--	.brk (NOLOAD) : AT(ADDR(.brk) - LOAD_OFFSET) {
-+	.brk : AT(ADDR(.brk) - LOAD_OFFSET) {
- 		__brk_base = .;
- 		. += 64 * 1024;		/* 64k alignment slop space */
- 		*(.bss..brk)		/* areas brk users have reserved */
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -4799,13 +4799,6 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_b2_1_115200 },
+ 	/*
+-	 * Brainboxes UC-257
+-	 */
+-	{	PCI_VENDOR_ID_INTASHIELD, 0x0861,
+-		PCI_ANY_ID, PCI_ANY_ID,
+-		0, 0,
+-		pbn_b2_2_115200 },
+-	/*
+ 	 * Brainboxes UC-260/271/701/756
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x0D21,
+@@ -4884,7 +4877,7 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_b2_4_115200 },
+ 	/*
+-	 * Brainboxes UC-420/431
++	 * Brainboxes UC-420
+ 	 */
+ 	{       PCI_VENDOR_ID_INTASHIELD, 0x0921,
+ 		PCI_ANY_ID, PCI_ANY_ID,
 
 
