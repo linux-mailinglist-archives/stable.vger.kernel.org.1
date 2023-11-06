@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5020C7E23A1
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CAB187E2308
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232011AbjKFNNQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:13:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38436 "EHLO
+        id S231993AbjKFNIF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:08:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232130AbjKFNNP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:15 -0500
+        with ESMTP id S231918AbjKFNIE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:04 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E449CF1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3527DC433C9;
-        Mon,  6 Nov 2023 13:13:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C961BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2D7C433C7;
+        Mon,  6 Nov 2023 13:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276391;
-        bh=v5QKdQykd9ykTMaKBaGoUfsKpqQhfFbG/J2d4DmPRug=;
+        s=korg; t=1699276081;
+        bh=dpHIt+GcD0RzbifWThVrrP20NhTHI5uXOZXOUGbutZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=spK3NHB94VmAavj+MWCH0560rtG0x3vYnTLqF/M/wsP3u/wcsVEq9IS6G9EA8KIMa
-         t9AMYoswQ4EpAAuv1OoilID9vQNYhbl+uitKIYqFlDg0YDXtVUxOxPYu0SZ37hEnD/
-         pPTvEhVYVuhJTtra6DVTCqI2EDinrhY38x76jL74=
+        b=L5p64B3WWotS0uFL6Ug6kXWag7v2Gh51sv9NGlCvFvJqyqv8/i7ar5IYOaa037Uh7
+         jiTUsaks2i7tZ4AnpMaqZOmcan5xphj7KQyS3bUOi3JPMo4zg7UhScl/9WlivR65Dd
+         em0HxUNIr9SNiBSMCPNbY4p2IQVXNmaif98izV9M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tomas Henzl <thenzl@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 26/62] scsi: mpt3sas: Fix in error path
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Andrey Konovalov <andreyknvl@gmail.com>
+Subject: [PATCH 6.6 14/30] usb: raw-gadget: properly handle interrupted requests
 Date:   Mon,  6 Nov 2023 14:03:32 +0100
-Message-ID: <20231106130302.752103567@linuxfoundation.org>
+Message-ID: <20231106130258.443613377@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +49,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomas Henzl <thenzl@redhat.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-[ Upstream commit e40c04ade0e2f3916b78211d747317843b11ce10 ]
+commit e8033bde451eddfb9b1bbd6e2d848c1b5c277222 upstream.
 
-The driver should be deregistered as misc driver after PCI registration
-failure.
+Currently, if a USB request that was queued by Raw Gadget is interrupted
+(via a signal), wait_for_completion_interruptible returns -ERESTARTSYS.
+Raw Gadget then attempts to propagate this value to userspace as a return
+value from its ioctls. However, when -ERESTARTSYS is returned by a syscall
+handler, the kernel internally restarts the syscall.
 
-Signed-off-by: Tomas Henzl <thenzl@redhat.com>
-Link: https://lore.kernel.org/r/20231015114529.10725-1-thenzl@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This doesn't allow userspace applications to interrupt requests queued by
+Raw Gadget (which is required when the emulated device is asked to switch
+altsettings). It also violates the implied interface of Raw Gadget that a
+single ioctl must only queue a single USB request.
+
+Instead, make Raw Gadget do what GadgetFS does: check whether the request
+was interrupted (dequeued with status == -ECONNRESET) and report -EINTR to
+userspace.
+
+Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://lore.kernel.org/r/0db45b1d7cc466e3d4d1ab353f61d63c977fbbc5.1698350424.git.andreyknvl@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/mpt3sas/mpt3sas_scsih.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/legacy/raw_gadget.c |   26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_scsih.c b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-index 8e24ebcebfe52..2ea3bdc638177 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_scsih.c
-@@ -12914,8 +12914,10 @@ _mpt3sas_init(void)
- 	mpt3sas_ctl_init(hbas_to_enumerate);
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -663,12 +663,12 @@ static int raw_process_ep0_io(struct raw
+ 	if (WARN_ON(in && dev->ep0_out_pending)) {
+ 		ret = -ENODEV;
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_unlock;
+ 	}
+ 	if (WARN_ON(!in && dev->ep0_in_pending)) {
+ 		ret = -ENODEV;
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_unlock;
+ 	}
  
- 	error = pci_register_driver(&mpt3sas_driver);
--	if (error)
-+	if (error) {
-+		mpt3sas_ctl_exit(hbas_to_enumerate);
- 		scsih_exit();
-+	}
+ 	dev->req->buf = data;
+@@ -683,7 +683,7 @@ static int raw_process_ep0_io(struct raw
+ 				"fail, usb_ep_queue returned %d\n", ret);
+ 		spin_lock_irqsave(&dev->lock, flags);
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_queue_failed;
+ 	}
  
- 	return error;
- }
--- 
-2.42.0
-
+ 	ret = wait_for_completion_interruptible(&dev->ep0_done);
+@@ -692,13 +692,16 @@ static int raw_process_ep0_io(struct raw
+ 		usb_ep_dequeue(dev->gadget->ep0, dev->req);
+ 		wait_for_completion(&dev->ep0_done);
+ 		spin_lock_irqsave(&dev->lock, flags);
+-		goto out_done;
++		if (dev->ep0_status == -ECONNRESET)
++			dev->ep0_status = -EINTR;
++		goto out_interrupted;
+ 	}
+ 
+ 	spin_lock_irqsave(&dev->lock, flags);
+-	ret = dev->ep0_status;
+ 
+-out_done:
++out_interrupted:
++	ret = dev->ep0_status;
++out_queue_failed:
+ 	dev->ep0_urb_queued = false;
+ out_unlock:
+ 	spin_unlock_irqrestore(&dev->lock, flags);
+@@ -1067,7 +1070,7 @@ static int raw_process_ep_io(struct raw_
+ 				"fail, usb_ep_queue returned %d\n", ret);
+ 		spin_lock_irqsave(&dev->lock, flags);
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_queue_failed;
+ 	}
+ 
+ 	ret = wait_for_completion_interruptible(&done);
+@@ -1076,13 +1079,16 @@ static int raw_process_ep_io(struct raw_
+ 		usb_ep_dequeue(ep->ep, ep->req);
+ 		wait_for_completion(&done);
+ 		spin_lock_irqsave(&dev->lock, flags);
+-		goto out_done;
++		if (ep->status == -ECONNRESET)
++			ep->status = -EINTR;
++		goto out_interrupted;
+ 	}
+ 
+ 	spin_lock_irqsave(&dev->lock, flags);
+-	ret = ep->status;
+ 
+-out_done:
++out_interrupted:
++	ret = ep->status;
++out_queue_failed:
+ 	ep->urb_queued = false;
+ out_unlock:
+ 	spin_unlock_irqrestore(&dev->lock, flags);
 
 
