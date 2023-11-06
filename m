@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC5D67E233C
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C2257E24C8
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231966AbjKFNKM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:10:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51598 "EHLO
+        id S232537AbjKFNZO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:25:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231472AbjKFNKM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:12 -0500
+        with ESMTP id S232528AbjKFNZN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CED6A9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFBDC433C7;
-        Mon,  6 Nov 2023 13:10:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CEC5EA
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:25:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E782C433C8;
+        Mon,  6 Nov 2023 13:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276209;
-        bh=Ds3c6NND1Ao/RsVoVjlKse0X/kO+QAiOZ0zj21nLpr0=;
+        s=korg; t=1699277109;
+        bh=hoEEMUlamZowNtpIW/86PMix/ig7aHIiUJ370qQwccI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XJu5lGMRK0ZhFsa3bV3eST0XdPbZgRx7CfJNdf85C7kEOov+c+oE77JoupgWsjED4
-         8W4qyM+2rWmWb2CgR8awSK7DtgHbXjF4TUkTB1QIIoV5CIRH+MODb2gob3fp6IdeC2
-         CbZmAZwPSmMW3G/YXoA5S1kS49xeuIlfxKRkQns8=
+        b=KfQW0DrNoI32/xqjviKP4ZxSh/BNOkApScqy4bH9N1dlyyEUngVBJGy5jvbve2g1e
+         wzT6XTfSHT13hFcCZOkNkRGWh3NYsyCgnDry0zZdNdxZKKhu4lfgWggIOh6xEzUq7J
+         L8fIsZlRa0BgkpTYdvLMeDjTjlhfX5FeF3db+H2E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukasz Majczak <lma@semihalf.com>,
-        Radoslaw Biernacki <rad@chromium.org>,
-        Manasi Navare <navaremanasi@chromium.org>
-Subject: [PATCH 4.19 26/61] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+        patches@lists.linux.dev,
+        Robert Hancock <robert.hancock@calian.com>,
+        "OGriofa, Conall" <conall.ogriofa@amd.com>, Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        O'Griofa@vger.kernel.org
+Subject: [PATCH 5.15 042/128] iio: adc: xilinx-xadc: Correct temperature offset/scale for UltraScale
 Date:   Mon,  6 Nov 2023 14:03:22 +0100
-Message-ID: <20231106130300.517495744@linuxfoundation.org>
+Message-ID: <20231106130311.051433313@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,71 +52,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Majczak <lma@semihalf.com>
+From: Robert Hancock <robert.hancock@calian.com>
 
-commit 3d887d512494d678b17c57b835c32f4e48d34f26 upstream.
+commit e2bd8c28b9bd835077eb65715d416d667694a80d upstream.
 
-As drm_dp_get_mst_branch_device_by_guid() is called from
-drm_dp_get_mst_branch_device_by_guid(), mstb parameter has to be checked,
-otherwise NULL dereference may occur in the call to
-the memcpy() and cause following:
+The driver was previously using offset and scale values for the
+temperature sensor readings which were only valid for 7-series devices.
+Add per-device-type values for offset and scale and set them appropriately
+for each device type.
 
-[12579.365869] BUG: kernel NULL pointer dereference, address: 0000000000000049
-[12579.365878] #PF: supervisor read access in kernel mode
-[12579.365880] #PF: error_code(0x0000) - not-present page
-[12579.365882] PGD 0 P4D 0
-[12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
-...
-[12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
-[12579.365899] RIP: 0010:memcmp+0xb/0x29
-[12579.365921] Call Trace:
-[12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
-[12579.365930] drm_dp_mst_up_req_work+0x137/0x416
-[12579.365933] process_one_work+0x1d0/0x419
-[12579.365935] worker_thread+0x11a/0x289
-[12579.365938] kthread+0x13e/0x14f
-[12579.365941] ? process_one_work+0x419/0x419
-[12579.365943] ? kthread_blkcg+0x31/0x31
-[12579.365946] ret_from_fork+0x1f/0x30
+Note that the values used for the UltraScale family are for UltraScale+
+(i.e. the SYSMONE4 primitive) using the internal reference, as that seems
+to be the most common configuration and the device tree values Xilinx's
+device tree generator produces don't seem to give us anything to tell us
+which configuration is used. However, the differences within the UltraScale
+family seem fairly minor and it's closer than using the 7-series values
+instead in any case.
 
-As get_mst_branch_device_by_guid_helper() is recursive, moving condition
-to the first line allow to remove a similar one for step over of NULL elements
-inside a loop.
-
-Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to only mst branch")
-Cc: <stable@vger.kernel.org> # 4.14+
-Signed-off-by: Lukasz Majczak <lma@semihalf.com>
-Reviewed-by: Radoslaw Biernacki <rad@chromium.org>
-Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230922063410.23626-1-lma@semihalf.com
+Fixes: c2b7720a7905 ("iio: xilinx-xadc: Add basic support for Ultrascale System Monitor")
+Signed-off-by: Robert Hancock <robert.hancock@calian.com>
+Acked-by: O'Griofa, Conall <conall.ogriofa@amd.com>
+Tested-by: O'Griofa, Conall <conall.ogriofa@amd.com>
+Link: https://lore.kernel.org/r/20230915001019.2862964-3-robert.hancock@calian.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_dp_mst_topology.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/adc/xilinx-xadc-core.c |   17 ++++++++++++++---
+ drivers/iio/adc/xilinx-xadc.h      |    2 ++
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/drm_dp_mst_topology.c
-@@ -1308,14 +1308,14 @@ static struct drm_dp_mst_branch *get_mst
- 	struct drm_dp_mst_branch *found_mstb;
- 	struct drm_dp_mst_port *port;
+--- a/drivers/iio/adc/xilinx-xadc-core.c
++++ b/drivers/iio/adc/xilinx-xadc-core.c
+@@ -454,6 +454,9 @@ static const struct xadc_ops xadc_zynq_o
+ 	.interrupt_handler = xadc_zynq_interrupt_handler,
+ 	.update_alarm = xadc_zynq_update_alarm,
+ 	.type = XADC_TYPE_S7,
++	/* Temp in C = (val * 503.975) / 2**bits - 273.15 */
++	.temp_scale = 503975,
++	.temp_offset = 273150,
+ };
  
-+	if (!mstb)
-+		return NULL;
-+
- 	if (memcmp(mstb->guid, guid, 16) == 0)
- 		return mstb;
+ static const unsigned int xadc_axi_reg_offsets[] = {
+@@ -564,6 +567,9 @@ static const struct xadc_ops xadc_7s_axi
+ 	.interrupt_handler = xadc_axi_interrupt_handler,
+ 	.flags = XADC_FLAGS_BUFFERED,
+ 	.type = XADC_TYPE_S7,
++	/* Temp in C = (val * 503.975) / 2**bits - 273.15 */
++	.temp_scale = 503975,
++	.temp_offset = 273150,
+ };
  
+ static const struct xadc_ops xadc_us_axi_ops = {
+@@ -575,6 +581,12 @@ static const struct xadc_ops xadc_us_axi
+ 	.interrupt_handler = xadc_axi_interrupt_handler,
+ 	.flags = XADC_FLAGS_BUFFERED,
+ 	.type = XADC_TYPE_US,
++	/**
++	 * Values below are for UltraScale+ (SYSMONE4) using internal reference.
++	 * See https://docs.xilinx.com/v/u/en-US/ug580-ultrascale-sysmon
++	 */
++	.temp_scale = 509314,
++	.temp_offset = 280231,
+ };
  
- 	list_for_each_entry(port, &mstb->ports, next) {
--		if (!port->mstb)
--			continue;
--
- 		found_mstb = get_mst_branch_device_by_guid_helper(port->mstb, guid);
+ static int _xadc_update_adc_reg(struct xadc *xadc, unsigned int reg,
+@@ -946,8 +958,7 @@ static int xadc_read_raw(struct iio_dev
+ 			*val2 = chan->scan_type.realbits;
+ 			return IIO_VAL_FRACTIONAL_LOG2;
+ 		case IIO_TEMP:
+-			/* Temp in C = (val * 503.975) / 2**bits - 273.15 */
+-			*val = 503975;
++			*val = xadc->ops->temp_scale;
+ 			*val2 = bits;
+ 			return IIO_VAL_FRACTIONAL_LOG2;
+ 		default:
+@@ -955,7 +966,7 @@ static int xadc_read_raw(struct iio_dev
+ 		}
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		/* Only the temperature channel has an offset */
+-		*val = -((273150 << bits) / 503975);
++		*val = -((xadc->ops->temp_offset << bits) / xadc->ops->temp_scale);
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		ret = xadc_read_samplerate(xadc);
+--- a/drivers/iio/adc/xilinx-xadc.h
++++ b/drivers/iio/adc/xilinx-xadc.h
+@@ -86,6 +86,8 @@ struct xadc_ops {
  
- 		if (found_mstb)
+ 	unsigned int flags;
+ 	enum xadc_type type;
++	int temp_scale;
++	int temp_offset;
+ };
+ 
+ static inline int _xadc_read_adc_reg(struct xadc *xadc, unsigned int reg,
 
 
