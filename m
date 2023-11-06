@@ -2,309 +2,304 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2A677E2C92
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 20:02:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF5E57E2C9F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 20:07:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232020AbjKFTCl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 14:02:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
+        id S232025AbjKFTHq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 14:07:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232005AbjKFTCk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 14:02:40 -0500
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81982A2
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 11:02:37 -0800 (PST)
-Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-280cc5f3fdcso4558835a91.1
-        for <stable@vger.kernel.org>; Mon, 06 Nov 2023 11:02:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699297356; x=1699902156; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=E5uCwD7Jm22T45YfRZiUiJRWsygbnKGB3tdLNCqhMnI=;
-        b=gvIqs8jX1HJ6NTuZLvs9Opr9L4paI4JH15E1oRMvQK8/ol9JCvXMdyD8oYxnheuYA2
-         4ilAU31xY8Mgrex+Tfpo4r+O/5KAr/lncCE5oJ8dtJUgw+ZAKZ+ZF64+hMKEcqDuNRhQ
-         OD711ItElxw5Thqj5aIpw/j01O39542gUDByK0z9OQyfAEegIyul9GkHdyH4OCNCECRX
-         IUvmHagiEhAUCXFWR6T5bGSenLsQZpjvSFj3OrtT1IEejEXVB4F76+yr0C/zOZ7VKrBd
-         9CXFRKsHE4VFfSsmOgNbmcwQQVOLR2v8ZI2YaYSC7vsFIIBefWH2Zr1Qo9lSYipa+q13
-         qCSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699297356; x=1699902156;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E5uCwD7Jm22T45YfRZiUiJRWsygbnKGB3tdLNCqhMnI=;
-        b=imtgj0TYNv9XR/SqxrgdV212chEAy68r2hBHy6Oroj//5A04HSkS0rPRIOmA+uEYsl
-         aUPtBmN6spTOcg3F7IHaE/rbsMYX4XrHkOT8Qia22AGiQnTLEpz4uSoT4bwSzfx5hjhl
-         +hWkhyJ0lfNGz16OeY0m99Mp44QxT1kkHlRuzCg4uQiIBh/7UsDiqppt2oMAaMGuj5Ru
-         bD3SSoJ/0+21qSf4hi5BoNBXLaqtYS5gREXSoosow1n1A2jhm5+xfWTOxF9ELJkL1eqX
-         VWahdoDb4BjZvZWg2bUs7hIrmHcDyDyIYPv44GJC1iLADj/lcHFgFmNhqNNB9gHlSjpx
-         se7A==
-X-Gm-Message-State: AOJu0YydOlPdIBn5Wp/Wy4A64UVcWXD/XFfw8zIcRmeN4RKlz6WKoHze
-        M9Zn//c2JTLzfKNpGSC+EnrCBDC2op9BFfX6+gzYdA==
-X-Google-Smtp-Source: AGHT+IEmDU2g6WgGd6Cv5R+ehDn+WcswUExVwSGpalffP12EehE5RZzAMFITbrWwZopPPDlaR5/Haw==
-X-Received: by 2002:a17:90a:fd8a:b0:27d:ba33:6990 with SMTP id cx10-20020a17090afd8a00b0027dba336990mr22914157pjb.10.1699297356467;
-        Mon, 06 Nov 2023 11:02:36 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id c34-20020a17090a492500b0027768cd88d7sm8870842pjh.1.2023.11.06.11.02.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Nov 2023 11:02:35 -0800 (PST)
-Message-ID: <6549384b.170a0220.9cccc.81ed@mx.google.com>
-Date:   Mon, 06 Nov 2023 11:02:35 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S231801AbjKFTHp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 14:07:45 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 595841BC
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 11:07:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A53EC433C8;
+        Mon,  6 Nov 2023 19:07:40 +0000 (UTC)
+Date:   Mon, 6 Nov 2023 14:07:42 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     <gregkh@linuxfoundation.org>
+Cc:     beaub@linux.microsoft.com, mark.rutland@arm.com,
+        mhiramat@kernel.org, <stable@vger.kernel.org>
+Subject: Re: FAILED: patch "[PATCH] tracing: Have trace_event_file have ref
+ counters" failed to apply to 6.5-stable tree
+Message-ID: <20231106140742.45947081@gandalf.local.home>
+In-Reply-To: <2023110605-thirty-account-3d1a@gregkh>
+References: <2023110605-thirty-account-3d1a@gregkh>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.10.199-96-gfed6441dbe524
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-5.10.y build: 22 builds: 6 failed, 16 passed, 6 errors,
- 9 warnings (v5.10.199-96-gfed6441dbe524)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 22 builds: 6 failed, 16 passed, 6 errors, 9 w=
-arnings (v5.10.199-96-gfed6441dbe524)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.199-96-gfed6441dbe524/
+[ This should work for both 6.5 and 6.1 ]
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.199-96-gfed6441dbe524
-Git Commit: fed6441dbe524de2cf3a6a40d5d65c369bf583a0
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH] tracing: Have trace_event_file have ref counters
 
-Build Failures Detected:
+commit bb32500fb9b78215e4ef6ee8b4345c5f5d7eafb4 upstream
 
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    nommu_k210_defconfig: (gcc-10) FAIL
-    nommu_virt_defconfig: (gcc-10) FAIL
-    rv32_defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
+The following can crash the kernel:
 
-Errors and Warnings Detected:
+ # cd /sys/kernel/tracing
+ # echo 'p:sched schedule' > kprobe_events
+ # exec 5>>events/kprobes/sched/enable
+ # > kprobe_events
+ # exec 5>&-
 
-arc:
+The above commands:
 
-arm64:
+ 1. Change directory to the tracefs directory
+ 2. Create a kprobe event (doesn't matter what one)
+ 3. Open bash file descriptor 5 on the enable file of the kprobe event
+ 4. Delete the kprobe event (removes the files too)
+ 5. Close the bash file descriptor 5
 
-arm:
+The above causes a crash!
 
-i386:
+ BUG: kernel NULL pointer dereference, address: 0000000000000028
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 0 P4D 0
+ Oops: 0000 [#1] PREEMPT SMP PTI
+ CPU: 6 PID: 877 Comm: bash Not tainted 6.5.0-rc4-test-00008-g2c6b6b1029d4-dirty #186
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+ RIP: 0010:tracing_release_file_tr+0xc/0x50
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
+What happens here is that the kprobe event creates a trace_event_file
+"file" descriptor that represents the file in tracefs to the event. It
+maintains state of the event (is it enabled for the given instance?).
+Opening the "enable" file gets a reference to the event "file" descriptor
+via the open file descriptor. When the kprobe event is deleted, the file is
+also deleted from the tracefs system which also frees the event "file"
+descriptor.
 
-riscv:
-    allnoconfig (gcc-10): 1 error, 1 warning
-    defconfig (gcc-10): 1 error, 1 warning
-    nommu_k210_defconfig (gcc-10): 1 error, 1 warning
-    nommu_virt_defconfig (gcc-10): 1 error, 1 warning
-    rv32_defconfig (gcc-10): 1 error, 3 warnings
-    tinyconfig (gcc-10): 1 error, 1 warning
+But as the tracefs file is still opened by user space, it will not be
+totally removed until the final dput() is called on it. But this is not
+true with the event "file" descriptor that is already freed. If the user
+does a write to or simply closes the file descriptor it will reference the
+event "file" descriptor that was just freed, causing a use-after-free bug.
 
-x86_64:
+To solve this, add a ref count to the event "file" descriptor as well as a
+new flag called "FREED". The "file" will not be freed until the last
+reference is released. But the FREE flag will be set when the event is
+removed to prevent any more modifications to that event from happening,
+even if there's still a reference to the event "file" descriptor.
 
-Errors summary:
+Link: https://lore.kernel.org/linux-trace-kernel/20231031000031.1e705592@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20231031122453.7a48b923@gandalf.local.home
 
-    6    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaratio=
-n of function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=
-=98zone_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings summary:
-
-    6    cc1: some warnings being treated as errors
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-    1    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    1    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section m=
-ismatches
-
-Errors:
-    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
-function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
-ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mis=
-matches
-
-Errors:
-    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
-function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
-ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 =
-section mismatches
-
-Errors:
-    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
-function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
-ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-nommu_virt_defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 =
-section mismatches
-
-Errors:
-    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
-function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
-ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 3 warnings, 0 secti=
-on mismatches
-
-Errors:
-    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
-function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
-ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mi=
-smatches
-
-Errors:
-    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
-function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
-ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
+Cc: stable@vger.kernel.org
+Cc: Mark Rutland <mark.rutland@arm.com>
+Fixes: f5ca233e2e66d ("tracing: Increase trace array ref count on enable and filter files")
+Reported-by: Beau Belgrave <beaub@linux.microsoft.com>
+Tested-by: Beau Belgrave <beaub@linux.microsoft.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
-For more info write to <info@kernelci.org>
+ include/linux/trace_events.h       |  4 +++
+ kernel/trace/trace.c               | 15 +++++++++++
+ kernel/trace/trace.h               |  3 +++
+ kernel/trace/trace_events.c        | 42 ++++++++++++++++++++----------
+ kernel/trace/trace_events_filter.c |  3 +++
+ 5 files changed, 53 insertions(+), 14 deletions(-)
+
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index faa579209a72..40436b7ddfd2 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -492,6 +492,7 @@ enum {
+ 	EVENT_FILE_FL_TRIGGER_COND_BIT,
+ 	EVENT_FILE_FL_PID_FILTER_BIT,
+ 	EVENT_FILE_FL_WAS_ENABLED_BIT,
++	EVENT_FILE_FL_FREED_BIT,
+ };
+ 
+ extern struct trace_event_file *trace_get_event_file(const char *instance,
+@@ -630,6 +631,7 @@ extern int __kprobe_event_add_fields(struct dynevent_cmd *cmd, ...);
+  *  TRIGGER_COND  - When set, one or more triggers has an associated filter
+  *  PID_FILTER    - When set, the event is filtered based on pid
+  *  WAS_ENABLED   - Set when enabled to know to clear trace on module removal
++ *  FREED         - File descriptor is freed, all fields should be considered invalid
+  */
+ enum {
+ 	EVENT_FILE_FL_ENABLED		= (1 << EVENT_FILE_FL_ENABLED_BIT),
+@@ -643,6 +645,7 @@ enum {
+ 	EVENT_FILE_FL_TRIGGER_COND	= (1 << EVENT_FILE_FL_TRIGGER_COND_BIT),
+ 	EVENT_FILE_FL_PID_FILTER	= (1 << EVENT_FILE_FL_PID_FILTER_BIT),
+ 	EVENT_FILE_FL_WAS_ENABLED	= (1 << EVENT_FILE_FL_WAS_ENABLED_BIT),
++	EVENT_FILE_FL_FREED		= (1 << EVENT_FILE_FL_FREED_BIT),
+ };
+ 
+ struct trace_event_file {
+@@ -671,6 +674,7 @@ struct trace_event_file {
+ 	 * caching and such. Which is mostly OK ;-)
+ 	 */
+ 	unsigned long		flags;
++	atomic_t		ref;	/* ref count for opened files */
+ 	atomic_t		sm_ref;	/* soft-mode reference counter */
+ 	atomic_t		tm_ref;	/* trigger-mode reference counter */
+ };
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 81c4dade3763..fa8bdedc7a06 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -5000,6 +5000,20 @@ int tracing_open_file_tr(struct inode *inode, struct file *filp)
+ 	if (ret)
+ 		return ret;
+ 
++	mutex_lock(&event_mutex);
++
++	/* Fail if the file is marked for removal */
++	if (file->flags & EVENT_FILE_FL_FREED) {
++		trace_array_put(file->tr);
++		ret = -ENODEV;
++	} else {
++		event_file_get(file);
++	}
++
++	mutex_unlock(&event_mutex);
++	if (ret)
++		return ret;
++
+ 	filp->private_data = inode->i_private;
+ 
+ 	return 0;
+@@ -5010,6 +5024,7 @@ int tracing_release_file_tr(struct inode *inode, struct file *filp)
+ 	struct trace_event_file *file = inode->i_private;
+ 
+ 	trace_array_put(file->tr);
++	event_file_put(file);
+ 
+ 	return 0;
+ }
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index c98c3f42c386..2e4717a74185 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -1656,6 +1656,9 @@ extern void event_trigger_unregister(struct event_command *cmd_ops,
+ 				     char *glob,
+ 				     struct event_trigger_data *trigger_data);
+ 
++extern void event_file_get(struct trace_event_file *file);
++extern void event_file_put(struct trace_event_file *file);
++
+ /**
+  * struct event_trigger_ops - callbacks for trace event triggers
+  *
+diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
+index 9841589b4af7..b4ff0fa251cb 100644
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -990,26 +990,39 @@ static void remove_subsystem(struct trace_subsystem_dir *dir)
+ 	}
+ }
+ 
++void event_file_get(struct trace_event_file *file)
++{
++	atomic_inc(&file->ref);
++}
++
++void event_file_put(struct trace_event_file *file)
++{
++	if (WARN_ON_ONCE(!atomic_read(&file->ref))) {
++		if (file->flags & EVENT_FILE_FL_FREED)
++			kmem_cache_free(file_cachep, file);
++		return;
++	}
++
++	if (atomic_dec_and_test(&file->ref)) {
++		/* Count should only go to zero when it is freed */
++		if (WARN_ON_ONCE(!(file->flags & EVENT_FILE_FL_FREED)))
++			return;
++		kmem_cache_free(file_cachep, file);
++	}
++}
++
+ static void remove_event_file_dir(struct trace_event_file *file)
+ {
+ 	struct dentry *dir = file->dir;
+ 	struct dentry *child;
+ 
+-	if (dir) {
+-		spin_lock(&dir->d_lock);	/* probably unneeded */
+-		list_for_each_entry(child, &dir->d_subdirs, d_child) {
+-			if (d_really_is_positive(child))	/* probably unneeded */
+-				d_inode(child)->i_private = NULL;
+-		}
+-		spin_unlock(&dir->d_lock);
+-
+-		tracefs_remove(dir);
+-	}
++	tracefs_remove(dir);
+ 
+ 	list_del(&file->list);
+ 	remove_subsystem(file->system);
+ 	free_event_filter(file->filter);
+-	kmem_cache_free(file_cachep, file);
++	file->flags |= EVENT_FILE_FL_FREED;
++	event_file_put(file);
+ }
+ 
+ /*
+@@ -1382,7 +1395,7 @@ event_enable_read(struct file *filp, char __user *ubuf, size_t cnt,
+ 		flags = file->flags;
+ 	mutex_unlock(&event_mutex);
+ 
+-	if (!file)
++	if (!file || flags & EVENT_FILE_FL_FREED)
+ 		return -ENODEV;
+ 
+ 	if (flags & EVENT_FILE_FL_ENABLED &&
+@@ -1420,7 +1433,7 @@ event_enable_write(struct file *filp, const char __user *ubuf, size_t cnt,
+ 		ret = -ENODEV;
+ 		mutex_lock(&event_mutex);
+ 		file = event_file_data(filp);
+-		if (likely(file))
++		if (likely(file && !(file->flags & EVENT_FILE_FL_FREED)))
+ 			ret = ftrace_event_enable_disable(file, val);
+ 		mutex_unlock(&event_mutex);
+ 		break;
+@@ -1694,7 +1707,7 @@ event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
+ 
+ 	mutex_lock(&event_mutex);
+ 	file = event_file_data(filp);
+-	if (file)
++	if (file && !(file->flags & EVENT_FILE_FL_FREED))
+ 		print_event_filter(file, s);
+ 	mutex_unlock(&event_mutex);
+ 
+@@ -2810,6 +2823,7 @@ trace_create_new_event(struct trace_event_call *call,
+ 	atomic_set(&file->tm_ref, 0);
+ 	INIT_LIST_HEAD(&file->triggers);
+ 	list_add(&file->list, &tr->events);
++	event_file_get(file);
+ 
+ 	return file;
+ }
+diff --git a/kernel/trace/trace_events_filter.c b/kernel/trace/trace_events_filter.c
+index 1dad64267878..5e2a422a5830 100644
+--- a/kernel/trace/trace_events_filter.c
++++ b/kernel/trace/trace_events_filter.c
+@@ -2088,6 +2088,9 @@ int apply_event_filter(struct trace_event_file *file, char *filter_string)
+ 	struct event_filter *filter = NULL;
+ 	int err;
+ 
++	if (file->flags & EVENT_FILE_FL_FREED)
++		return -ENODEV;
++
+ 	if (!strcmp(strstrip(filter_string), "0")) {
+ 		filter_disable(file);
+ 		filter = event_filter(file);
+-- 
+2.42.0
+
