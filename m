@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3483C7E2343
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7347E23DC
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:15:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231916AbjKFNKa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:10:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57994 "EHLO
+        id S232134AbjKFNPc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:15:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231867AbjKFNK3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:29 -0500
+        with ESMTP id S232136AbjKFNPa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:15:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB98391
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F824C433C8;
-        Mon,  6 Nov 2023 13:10:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 354CE94
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:15:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762B6C433C7;
+        Mon,  6 Nov 2023 13:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276226;
-        bh=UC/Gih80UfWqJMubRGpC4KHqd5CsCTQLiTTUwEgI7J8=;
+        s=korg; t=1699276527;
+        bh=mw2VDX2FCAOKR0lv7DS1P0dtwviEywHikYBRePLvurE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gPdGSHfJy921oXBfVBskgLEr4Vc1IrvM3zA7K4PX41kB/IYA8u93gCGOdFv6Dkvs1
-         vwKmTJIEUTvnlNrGy+9SoTKqxZueuHKfxSX0ftlYFDOeNCYdQlNZbsMjKx5cGJZ06B
-         yVnquhse4TwY0+EGWhGdn1xdufKj7Nt1TFmYPDkY=
+        b=pWvTMXpj0aN6MHRLH6Ek4LAPMgDyJsoZLt2SyGXdc6JQ2Sc0qbDAttfM7EgcSWEb9
+         4TcfUg1hmt/7FAMnBs7WOTvLALp4t9GoJGXAKQaoqJGPU9P1UQ0bnodrCVSKjGtgpX
+         tHj+B3wqgh7KdbiKEfR8ip1Ib5LpyK36jpv4JP0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 08/61] r8169: rename r8169.c to r8169_main.c
+        patches@lists.linux.dev, Dmitry Dunaev <dunaev@tecon.ru>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 10/88] irqchip/riscv-intc: Mark all INTC nodes as initialized
 Date:   Mon,  6 Nov 2023 14:03:04 +0100
-Message-ID: <20231106130259.846441245@linuxfoundation.org>
+Message-ID: <20231106130306.170660045@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit 25e992a4603cd5284127e2a6fda6b05bd58d12ed ]
+[ Upstream commit e13cd66bd821be417c498a34928652db4ac6b436 ]
 
-In preparation of factoring out firmware handling rename r8169.c to
-r8169_main.c.
+The RISC-V INTC local interrupts are per-HART (or per-CPU) so we
+create INTC IRQ domain only for the INTC node belonging to the boot
+HART. This means only the boot HART INTC node will be marked as
+initialized and other INTC nodes won't be marked which results
+downstream interrupt controllers (such as PLIC, IMSIC and APLIC
+direct-mode) not being probed due to missing device suppliers.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: dcf75a0f6bc1 ("r8169: fix the KCSAN reported data-race in rtl_tx while reading TxDescArray[entry].opts1")
+To address this issue, we mark all INTC node for which we don't
+create IRQ domain as initialized.
+
+Reported-by: Dmitry Dunaev <dunaev@tecon.ru>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230926102801.1591126-1-dunaev@tecon.ru
+Link: https://lore.kernel.org/r/20231003044403.1974628-4-apatel@ventanamicro.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/Makefile                  | 1 +
- drivers/net/ethernet/realtek/{r8169.c => r8169_main.c} | 0
- 2 files changed, 1 insertion(+)
- rename drivers/net/ethernet/realtek/{r8169.c => r8169_main.c} (100%)
+ drivers/irqchip/irq-riscv-intc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/Makefile b/drivers/net/ethernet/realtek/Makefile
-index 71b1da30ecb5b..7f68be4b9f51f 100644
---- a/drivers/net/ethernet/realtek/Makefile
-+++ b/drivers/net/ethernet/realtek/Makefile
-@@ -5,4 +5,5 @@
- obj-$(CONFIG_8139CP) += 8139cp.o
- obj-$(CONFIG_8139TOO) += 8139too.o
- obj-$(CONFIG_ATP) += atp.o
-+r8169-objs += r8169_main.o
- obj-$(CONFIG_R8169) += r8169.o
-diff --git a/drivers/net/ethernet/realtek/r8169.c b/drivers/net/ethernet/realtek/r8169_main.c
-similarity index 100%
-rename from drivers/net/ethernet/realtek/r8169.c
-rename to drivers/net/ethernet/realtek/r8169_main.c
+diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+index 4adeee1bc391f..e8d01b14ccdde 100644
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -155,8 +155,16 @@ static int __init riscv_intc_init(struct device_node *node,
+ 	 * for each INTC DT node. We only need to do INTC initialization
+ 	 * for the INTC DT node belonging to boot CPU (or boot HART).
+ 	 */
+-	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id())
++	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id()) {
++		/*
++		 * The INTC nodes of each CPU are suppliers for downstream
++		 * interrupt controllers (such as PLIC, IMSIC and APLIC
++		 * direct-mode) so we should mark an INTC node as initialized
++		 * if we are not creating IRQ domain for it.
++		 */
++		fwnode_dev_initialized(of_fwnode_handle(node), true);
+ 		return 0;
++	}
+ 
+ 	return riscv_intc_init_common(of_node_to_fwnode(node));
+ }
 -- 
 2.42.0
 
