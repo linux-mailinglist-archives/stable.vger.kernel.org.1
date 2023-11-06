@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 457327E2588
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:33:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 792DB7E252D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232772AbjKFNdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:33:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46664 "EHLO
+        id S232672AbjKFN3C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:29:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232764AbjKFNdI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:33:08 -0500
+        with ESMTP id S232676AbjKFN3A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 240AFBF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:33:06 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674A1C433CA;
-        Mon,  6 Nov 2023 13:33:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFEE9A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:28:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF512C433C7;
+        Mon,  6 Nov 2023 13:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277585;
-        bh=hiX7DxmH6peIDwLQKXr+WIJENPwHfEbuNJ0mB35mkH0=;
+        s=korg; t=1699277337;
+        bh=hy41+aMFPBKdiWZhopFkOLR2oLCrU1UnLAAQqUPyiwo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fmX2KN0iNo2pTpEcG3snKaIAmYQAqz4U23e9OnNcQmYnYqMrQm+FD5Nud82rZdcvL
-         O9+xjR8Ix2hpddKvl4qfrdtvV0xTtfAVBuDQz/Ew/83+gpVisxoV1aWrcOPKBMhuKI
-         fF21jLV0rcRfxGkm109p+tjJHiUnm/ozD0fhVAkk=
+        b=oLWUm83G2Ft/V1vA+0Fv0SWCXegZKD6KEClk0gNqE2pRdwNv4P9alk7clBGMDS5/i
+         GrXhTmNitcBIAqC6fLsh63sfFun4VaPAAabuvodYH9XIzEbV+N1ozFCB86ltYhnlGt
+         qeffFRZ/T/vSZTAYUw3YWXhep/AG5yE5oZRtHNXA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 69/95] ASoC: rt5650: fix the wrong result of key button
-Date:   Mon,  6 Nov 2023 14:04:37 +0100
-Message-ID: <20231106130307.243364191@linuxfoundation.org>
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 5.15 118/128] tty: 8250: Remove UC-257 and UC-431
+Date:   Mon,  6 Nov 2023 14:04:38 +0100
+Message-ID: <20231106130314.537119211@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +48,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit f88dfbf333b3661faff996bb03af2024d907b76a ]
+commit 33092fb3af51deb80849e90a17bada44bbcde6b3 upstream.
 
-The RT5650 should enable a power setting for button detection to avoid the wrong result.
+The UC-257 is a serial + LPT card, so remove it from this driver.
+A patch has been submitted to add it to parport_serial instead.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Link: https://lore.kernel.org/r/20231013094525.715518-1-shumingf@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Additionaly, the UC-431 does not use this card ID, only the UC-420
+does. The 431 is a 3-port card and there is no generic 3-port configuration
+available, so remove reference to it from this driver.
+
+Fixes: 152d1afa834c ("tty: Add support for Brainboxes UC cards.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB78995ADF7394C74AD4CF3357C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt5645.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/8250/8250_pci.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index d1533e95a74f6..99d91bfb88122 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -3241,6 +3241,8 @@ int rt5645_set_jack_detect(struct snd_soc_component *component,
- 				RT5645_GP1_PIN_IRQ, RT5645_GP1_PIN_IRQ);
- 		regmap_update_bits(rt5645->regmap, RT5645_GEN_CTRL1,
- 				RT5645_DIG_GATE_CTRL, RT5645_DIG_GATE_CTRL);
-+		regmap_update_bits(rt5645->regmap, RT5645_DEPOP_M1,
-+				RT5645_HP_CB_MASK, RT5645_HP_CB_PU);
- 	}
- 	rt5645_irq(0, rt5645);
- 
--- 
-2.42.0
-
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5368,13 +5368,6 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_b2_1_115200 },
+ 	/*
+-	 * Brainboxes UC-257
+-	 */
+-	{	PCI_VENDOR_ID_INTASHIELD, 0x0861,
+-		PCI_ANY_ID, PCI_ANY_ID,
+-		0, 0,
+-		pbn_b2_2_115200 },
+-	/*
+ 	 * Brainboxes UC-260/271/701/756
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x0D21,
+@@ -5453,7 +5446,7 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_b2_4_115200 },
+ 	/*
+-	 * Brainboxes UC-420/431
++	 * Brainboxes UC-420
+ 	 */
+ 	{       PCI_VENDOR_ID_INTASHIELD, 0x0921,
+ 		PCI_ANY_ID, PCI_ANY_ID,
 
 
