@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 794A47E257A
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E3F387E23C5
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:14:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232756AbjKFNch (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:32:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44370 "EHLO
+        id S232163AbjKFNOY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:14:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232762AbjKFNcg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:36 -0500
+        with ESMTP id S232204AbjKFNOY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:14:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01BC6F1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:32:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FCFC433CA;
-        Mon,  6 Nov 2023 13:32:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E93FCA9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:14:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D29C433C7;
+        Mon,  6 Nov 2023 13:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277552;
-        bh=P+63wnZR81xrhZgVlQyUbH6jvukmSNBEUYRdQEYPaac=;
+        s=korg; t=1699276461;
+        bh=Mz8JbSiwk3nSQvmcv0GPasru48OQs2VTNvwu0ZQNGpU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KeWSGaETlh2JWRXQtyNFKJMkqodlW31Rhfu5D/+pEsNULlPEH0uMZYXOqI4iu/ACC
-         IuIDNfAJKXWnnx1xDbN86kots85CwFjMWiG14DmOKOymhiiROJNBwMzuXuT4PqNBY2
-         C8zwNHUQeyefVp8SmBREqG8PXr4yvV2d8NS9OR3k=
+        b=FnpsQNLY5CITSsdwMF8MG6IBsqE0FNRndtW2LPUG7Jg4znWyy6uzR97AM1/uA3um2
+         WRDtCF4lP4B2+VCUSFn/QQp+pD6DhOeqMCPLhJmMBCjqF85QA2ol6E5tvOEYcxwOO3
+         NWpLWGjSTGApbYFeXYZ1OsVkU3HmEIe0o3AhmSEo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        Peter Rosin <peda@axentia.se>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.10 28/95] i2c: muxes: i2c-mux-gpmux: Use of_get_i2c_adapter_by_node()
-Date:   Mon,  6 Nov 2023 14:03:56 +0100
-Message-ID: <20231106130305.752402514@linuxfoundation.org>
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 6.1 51/62] tty: 8250: Remove UC-257 and UC-431
+Date:   Mon,  6 Nov 2023 14:03:57 +0100
+Message-ID: <20231106130303.597666116@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +48,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit 3dc0ec46f6e7511fc4fdf6b6cda439382bc957f1 upstream.
+commit 33092fb3af51deb80849e90a17bada44bbcde6b3 upstream.
 
-i2c-mux-gpmux uses the pair of_find_i2c_adapter_by_node() /
-i2c_put_adapter(). These pair alone is not correct to properly lock the
-I2C parent adapter.
+The UC-257 is a serial + LPT card, so remove it from this driver.
+A patch has been submitted to add it to parport_serial instead.
 
-Indeed, i2c_put_adapter() decrements the module refcount while
-of_find_i2c_adapter_by_node() does not increment it. This leads to an
-underflow of the parent module refcount.
+Additionaly, the UC-431 does not use this card ID, only the UC-420
+does. The 431 is a 3-port card and there is no generic 3-port configuration
+available, so remove reference to it from this driver.
 
-Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
-correctly the module refcount.
-
-Fixes: ac8498f0ce53 ("i2c: i2c-mux-gpmux: new driver")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Fixes: 152d1afa834c ("tty: Add support for Brainboxes UC cards.")
 Cc: stable@vger.kernel.org
-Acked-by: Peter Rosin <peda@axentia.se>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB78995ADF7394C74AD4CF3357C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/muxes/i2c-mux-gpmux.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_pci.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
---- a/drivers/i2c/muxes/i2c-mux-gpmux.c
-+++ b/drivers/i2c/muxes/i2c-mux-gpmux.c
-@@ -52,7 +52,7 @@ static struct i2c_adapter *mux_parent_ad
- 		dev_err(dev, "Cannot parse i2c-parent\n");
- 		return ERR_PTR(-ENODEV);
- 	}
--	parent = of_find_i2c_adapter_by_node(parent_np);
-+	parent = of_get_i2c_adapter_by_node(parent_np);
- 	of_node_put(parent_np);
- 	if (!parent)
- 		return ERR_PTR(-EPROBE_DEFER);
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -4959,13 +4959,6 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_b2_1_115200 },
+ 	/*
+-	 * Brainboxes UC-257
+-	 */
+-	{	PCI_VENDOR_ID_INTASHIELD, 0x0861,
+-		PCI_ANY_ID, PCI_ANY_ID,
+-		0, 0,
+-		pbn_b2_2_115200 },
+-	/*
+ 	 * Brainboxes UC-260/271/701/756
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x0D21,
+@@ -5044,7 +5037,7 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_b2_4_115200 },
+ 	/*
+-	 * Brainboxes UC-420/431
++	 * Brainboxes UC-420
+ 	 */
+ 	{       PCI_VENDOR_ID_INTASHIELD, 0x0921,
+ 		PCI_ANY_ID, PCI_ANY_ID,
 
 
