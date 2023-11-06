@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B50127E24FA
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47B5E7E241E
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232576AbjKFN1J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:27:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37168 "EHLO
+        id S232246AbjKFNSW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:18:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232616AbjKFN1I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:08 -0500
+        with ESMTP id S232304AbjKFNSV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3A110A
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:05 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDDAC433C7;
-        Mon,  6 Nov 2023 13:27:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10609D8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:19 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0BEC433C9;
+        Mon,  6 Nov 2023 13:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277225;
-        bh=2zvjuGeN22uxZ9GTdGkGCPPjhopNa0vYw779415ev+8=;
+        s=korg; t=1699276698;
+        bh=UHxqPPiBvrxHmcPF2x7+IwnZz8ESQphsX7JxQ3awo0A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jReRfMW5UT87Wlvt4+XEldbMYBHSVPNNNI63zagcEW7Mf8laCoFMD8pXLU0bW4C7I
-         oEv4zqJSWKFJjv9YkGjOlSsqLJGpvkND05HQohSHLlYGY1qhPvdBOJJM8POemiC9PZ
-         wozGI8dne4PaKElEbjIotRCL69iRQR1GJp4fK/C8=
+        b=CI8Bmm5xZdmGl11GqndefQEOZTpjxXknahZtjMApqvtZg/mPC56x417Qcpl2YlUBs
+         rlnOzQH+dvDRZskIOf0iv4C0CICIJn4i3nKhn88PI/e+3YqCFaEg7GJPCJ7oxAbFnz
+         IdWnEiJXJMrAzvmGYyNNOuNVw5pfW9lfjoAUW83I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 080/128] powerpc/85xx: Fix math emulation exception
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 66/88] mmap: fix error paths with dup_anon_vma()
 Date:   Mon,  6 Nov 2023 14:04:00 +0100
-Message-ID: <20231106130312.778574118@linuxfoundation.org>
+Message-ID: <20231106130308.189613370@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +54,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-[ Upstream commit 8e8a12ecbc86700b5e1a3596ce2b3c43dafad336 ]
+commit 824135c46b00df7fb369ec7f1f8607427bbebeb0 upstream.
 
-Booting mpc85xx_defconfig kernel on QEMU leads to:
+When the calling function fails after the dup_anon_vma(), the
+duplication of the anon_vma is not being undone.  Add the necessary
+unlink_anon_vma() call to the error paths that are missing them.
 
-Bad trap at PC: fe9bab0, SR: 2d000, vector=800
-awk[82]: unhandled trap (5) at 0 nip fe9bab0 lr fe9e01c code 5 in libc-2.27.so[fe5a000+17a000]
-awk[82]: code: 3aa00000 3a800010 4bffe03c 9421fff0 7ca62b78 38a00000 93c10008 83c10008
-awk[82]: code: 38210010 4bffdec8 9421ffc0 7c0802a6 <fc00048e> d8010008 4815190d 93810030
-Trace/breakpoint trap
-WARNING: no useful console
+This issue showed up during inspection of the error path in vma_merge()
+for an unrelated vma iterator issue.
 
-This is because allthough CONFIG_MATH_EMULATION is selected,
-Exception 800 calls unknown_exception().
+Users may experience increased memory usage, which may be problematic as
+the failure would likely be caused by a low memory situation.
 
-Call emulation_assist_interrupt() instead.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/066caa6d9480365da9b8ed83692d7101e10ac5f8.1695657339.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230929183041.2835469-3-Liam.Howlett@oracle.com
+Fixes: d4af56c5c7c6 ("mm: start tracking VMAs with maple tree")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Jann Horn <jannh@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/head_fsl_booke.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/mmap.c |   30 ++++++++++++++++++++++--------
+ 1 file changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_fsl_booke.S b/arch/powerpc/kernel/head_fsl_booke.S
-index 0a9a0f301474d..40687e271c106 100644
---- a/arch/powerpc/kernel/head_fsl_booke.S
-+++ b/arch/powerpc/kernel/head_fsl_booke.S
-@@ -394,7 +394,7 @@ interrupt_base:
- #ifdef CONFIG_PPC_FPU
- 	FP_UNAVAILABLE_EXCEPTION
- #else
--	EXCEPTION(0x0800, FP_UNAVAIL, FloatingPointUnavailable, unknown_exception)
-+	EXCEPTION(0x0800, FP_UNAVAIL, FloatingPointUnavailable, emulation_assist_interrupt)
- #endif
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -603,11 +603,12 @@ again:
+  * dup_anon_vma() - Helper function to duplicate anon_vma
+  * @dst: The destination VMA
+  * @src: The source VMA
++ * @dup: Pointer to the destination VMA when successful.
+  *
+  * Returns: 0 on success.
+  */
+ static inline int dup_anon_vma(struct vm_area_struct *dst,
+-			       struct vm_area_struct *src)
++		struct vm_area_struct *src, struct vm_area_struct **dup)
+ {
+ 	/*
+ 	 * Easily overlooked: when mprotect shifts the boundary, make sure the
+@@ -615,9 +616,15 @@ static inline int dup_anon_vma(struct vm
+ 	 * anon pages imported.
+ 	 */
+ 	if (src->anon_vma && !dst->anon_vma) {
++		int ret;
++
+ 		vma_start_write(dst);
+ 		dst->anon_vma = src->anon_vma;
+-		return anon_vma_clone(dst, src);
++		ret = anon_vma_clone(dst, src);
++		if (ret)
++			return ret;
++
++		*dup = dst;
+ 	}
  
- 	/* System Call Interrupt */
--- 
-2.42.0
-
+ 	return 0;
+@@ -644,6 +651,7 @@ int vma_expand(struct vma_iterator *vmi,
+ 	       unsigned long start, unsigned long end, pgoff_t pgoff,
+ 	       struct vm_area_struct *next)
+ {
++	struct vm_area_struct *anon_dup = NULL;
+ 	bool remove_next = false;
+ 	struct vma_prepare vp;
+ 
+@@ -651,7 +659,7 @@ int vma_expand(struct vma_iterator *vmi,
+ 		int ret;
+ 
+ 		remove_next = true;
+-		ret = dup_anon_vma(vma, next);
++		ret = dup_anon_vma(vma, next, &anon_dup);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -683,6 +691,8 @@ int vma_expand(struct vma_iterator *vmi,
+ 	return 0;
+ 
+ nomem:
++	if (anon_dup)
++		unlink_anon_vmas(anon_dup);
+ 	return -ENOMEM;
+ }
+ 
+@@ -881,6 +891,7 @@ struct vm_area_struct *vma_merge(struct
+ {
+ 	struct vm_area_struct *curr, *next, *res;
+ 	struct vm_area_struct *vma, *adjust, *remove, *remove2;
++	struct vm_area_struct *anon_dup = NULL;
+ 	struct vma_prepare vp;
+ 	pgoff_t vma_pgoff;
+ 	int err = 0;
+@@ -945,16 +956,16 @@ struct vm_area_struct *vma_merge(struct
+ 	    is_mergeable_anon_vma(prev->anon_vma, next->anon_vma, NULL)) {
+ 		remove = next;				/* case 1 */
+ 		vma_end = next->vm_end;
+-		err = dup_anon_vma(prev, next);
++		err = dup_anon_vma(prev, next, &anon_dup);
+ 		if (curr) {				/* case 6 */
+ 			remove = curr;
+ 			remove2 = next;
+ 			if (!next->anon_vma)
+-				err = dup_anon_vma(prev, curr);
++				err = dup_anon_vma(prev, curr, &anon_dup);
+ 		}
+ 	} else if (merge_prev) {			/* case 2 */
+ 		if (curr) {
+-			err = dup_anon_vma(prev, curr);
++			err = dup_anon_vma(prev, curr, &anon_dup);
+ 			if (end == curr->vm_end) {	/* case 7 */
+ 				remove = curr;
+ 			} else {			/* case 5 */
+@@ -968,7 +979,7 @@ struct vm_area_struct *vma_merge(struct
+ 			vma_end = addr;
+ 			adjust = next;
+ 			adj_start = -(prev->vm_end - addr);
+-			err = dup_anon_vma(next, prev);
++			err = dup_anon_vma(next, prev, &anon_dup);
+ 		} else {
+ 			/*
+ 			 * Note that cases 3 and 8 are the ONLY ones where prev
+@@ -981,7 +992,7 @@ struct vm_area_struct *vma_merge(struct
+ 			if (curr) {			/* case 8 */
+ 				vma_pgoff = curr->vm_pgoff;
+ 				remove = curr;
+-				err = dup_anon_vma(next, curr);
++				err = dup_anon_vma(next, curr, &anon_dup);
+ 			}
+ 		}
+ 	}
+@@ -1026,6 +1037,9 @@ struct vm_area_struct *vma_merge(struct
+ 	return res;
+ 
+ prealloc_fail:
++	if (anon_dup)
++		unlink_anon_vmas(anon_dup);
++
+ anon_vma_fail:
+ 	vma_iter_set(vmi, addr);
+ 	vma_iter_load(vmi);
 
 
