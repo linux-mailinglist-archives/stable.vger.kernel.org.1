@@ -2,41 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 792E37E2568
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAA367E2427
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232716AbjKFNbg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:31:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37248 "EHLO
+        id S232288AbjKFNS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:18:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232746AbjKFNbf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:35 -0500
+        with ESMTP id S232165AbjKFNSw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE93510B
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C6DC433CA;
-        Mon,  6 Nov 2023 13:31:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9FBBF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1921C433C7;
+        Mon,  6 Nov 2023 13:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277492;
-        bh=hjT3yPZCEfvVQLOpcF5v5gMcteKQvbOcxqrZ8roIveY=;
+        s=korg; t=1699276729;
+        bh=r4ghu6Ry2uOnc/eT3UTD3egmnneaogNlTRT7hB6od4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yfrWDttLfGAaJES/D8BmWjiHciNg7xa8ZbXVKPkSImXJJqzM3ilfk+YeQ2hXuP4DS
-         AeGLhw2VOSFJrS+FQ7eVggWSBu5RaCdbPADG811noxEar1ZRS5mnXM34S9Fd7rkC98
-         iXhOfuC4E9C12sOWsTwft/MypPiWtfFchOVwP0/E=
+        b=WZcSar+HuBAu4djwVI+D+b3rmA4lQ0vWtuTbI500YEbp5QInbOLZdZ55zEKanezQI
+         Z53CE5BYHZ8QqfSEQhbQMbIsx/Ep1e6j5SWRTM6ht8tj69FQsDYvoiJwLvSLZZ98JC
+         tE+LlBx62cYX5JXYyLj+ZGjHe7b6770BkLU0DQj0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Anand Ashok Dumbre <anandash@xilinx.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 41/95] iio: adc: xilinx: use devm_krealloc() instead of kfree() + kcalloc()
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 6.5 75/88] tty: 8250: Remove UC-257 and UC-431
 Date:   Mon,  6 Nov 2023 14:04:09 +0100
-Message-ID: <20231106130306.215378369@linuxfoundation.org>
+Message-ID: <20231106130308.502729822@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,77 +48,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit eab64715709ed440d54cac42f239e2d49df26c1f ]
+commit 33092fb3af51deb80849e90a17bada44bbcde6b3 upstream.
 
-We now have devm_krealloc() in the kernel Use it indstead of calling
-kfree() and kcalloc() separately.
+The UC-257 is a serial + LPT card, so remove it from this driver.
+A patch has been submitted to add it to parport_serial instead.
 
-Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Tested-by: Anand Ashok Dumbre <anandash@xilinx.com>
-Reviewed-by: Anand Ashok Dumbre <anandash@xilinx.com>
-Link: https://lore.kernel.org/r/20201130142759.28216-3-brgl@bgdev.pl
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 8d6b3ea4d9ea ("iio: adc: xilinx-xadc: Don't clobber preset voltage/temperature thresholds")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Additionaly, the UC-431 does not use this card ID, only the UC-420
+does. The 431 is a 3-port card and there is no generic 3-port configuration
+available, so remove reference to it from this driver.
+
+Fixes: 152d1afa834c ("tty: Add support for Brainboxes UC cards.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB78995ADF7394C74AD4CF3357C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/xilinx-xadc-core.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c |    9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index 8494eb424b331..6f89a97bb127b 100644
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -19,6 +19,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/of.h>
-+#include <linux/overflow.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/sysfs.h>
-@@ -585,15 +586,22 @@ static int xadc_update_scan_mode(struct iio_dev *indio_dev,
- 	const unsigned long *mask)
- {
- 	struct xadc *xadc = iio_priv(indio_dev);
--	unsigned int n;
-+	size_t new_size, n;
-+	void *data;
- 
- 	n = bitmap_weight(mask, indio_dev->masklength);
- 
--	kfree(xadc->data);
--	xadc->data = kcalloc(n, sizeof(*xadc->data), GFP_KERNEL);
--	if (!xadc->data)
-+	if (check_mul_overflow(n, sizeof(*xadc->data), &new_size))
-+		return -ENOMEM;
-+
-+	data = devm_krealloc(indio_dev->dev.parent, xadc->data,
-+			     new_size, GFP_KERNEL);
-+	if (!data)
- 		return -ENOMEM;
- 
-+	memset(data, 0, new_size);
-+	xadc->data = data;
-+
- 	return 0;
- }
- 
-@@ -1372,7 +1380,6 @@ static int xadc_remove(struct platform_device *pdev)
- 	free_irq(xadc->irq, indio_dev);
- 	cancel_delayed_work_sync(&xadc->zynq_unmask_work);
- 	clk_disable_unprepare(xadc->clk);
--	kfree(xadc->data);
- 
- 	return 0;
- }
--- 
-2.42.0
-
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -4939,13 +4939,6 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_b2_1_115200 },
+ 	/*
+-	 * Brainboxes UC-257
+-	 */
+-	{	PCI_VENDOR_ID_INTASHIELD, 0x0861,
+-		PCI_ANY_ID, PCI_ANY_ID,
+-		0, 0,
+-		pbn_b2_2_115200 },
+-	/*
+ 	 * Brainboxes UC-260/271/701/756
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x0D21,
+@@ -5024,7 +5017,7 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_b2_4_115200 },
+ 	/*
+-	 * Brainboxes UC-420/431
++	 * Brainboxes UC-420
+ 	 */
+ 	{       PCI_VENDOR_ID_INTASHIELD, 0x0921,
+ 		PCI_ANY_ID, PCI_ANY_ID,
 
 
