@@ -2,37 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10A957E2576
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75B0C7E2516
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:28:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232723AbjKFNcR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:32:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33532 "EHLO
+        id S232561AbjKFN2I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:28:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232754AbjKFNcQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:16 -0500
+        with ESMTP id S232630AbjKFN2G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:28:06 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DEAADF1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:32:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A047C433C9;
-        Mon,  6 Nov 2023 13:32:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 497EEA9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:28:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E06AC433C8;
+        Mon,  6 Nov 2023 13:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277533;
-        bh=Q6quCzg0GUrGe+CUYVlCe4XqJUYcYsKc8fU7iD3Hf6c=;
+        s=korg; t=1699277284;
+        bh=afgH8ug/BvbIXVPoC/dddxzwpcgIFT7bsJpk92+Xw/M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xXGxm5GOOAaY/tbFMGEI4G+awjwTT6AsW0Jvm6ja9vYYh9dCfdyLcDqWaFp8ARON7
-         ugbnQXPiMp30NHxDEi8WgjlXqSYh7TjBYOJnU/rQViCiRK+DaH3d6FahTO807cliOz
-         9RFkz6dzBsfELegZ15u/yCmWtGYcgf2KakzeAjNk=
+        b=XD7pgJ03Wte5B/sS6rEqDS/JXNtuC8o5SCDEaSOlx9kVC7fQfe43OKRGijdCGLKqF
+         kvh3c9IYuEohAAEeWvUcAUqJPQO7TslxeKYI6a1qAK1z5uEXcqejPRxs6NGKjWJIFw
+         pIFJUe9Y9XdVxymdpfJffjz2XinOI3HxHDr5NFHM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, John Sperbeck <jsperbeck@google.com>
-Subject: [PATCH 5.10 53/95] objtool/x86: add missing embedded_insn check
+        patches@lists.linux.dev, Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Alexey Bayduraev <alexey.v.bayduraev@linux.intel.com>,
+        Jiri Olsa <jolsa@kernel.org>, Leo Yan <leo.yan@linaro.org>,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 101/128] perf evlist: Add evlist__add_dummy_on_all_cpus()
 Date:   Mon,  6 Nov 2023 14:04:21 +0100
-Message-ID: <20231106130306.637911460@linuxfoundation.org>
+Message-ID: <20231106130313.750783324@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,41 +54,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Sperbeck <jsperbeck@google.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-When dbf460087755 ("objtool/x86: Fixup frame-pointer vs rethunk")
-was backported to some stable branches, the check for dest->embedded_insn
-in is_special_call() was missed.  The result is that the warning it
-was intended to suppress still appears.  For example on 6.1 (on kernels
-before 6.1, the '-s' argument would instead be 'check'):
+[ Upstream commit 126d68fdcabed8c2ca5ffaba785add93ef722da8 ]
 
-$ tools/objtool/objtool -s arch/x86/lib/retpoline.o
-arch/x86/lib/retpoline.o: warning: objtool: srso_untrain_ret+0xd:
-    call without frame pointer save/setup
+Add evlist__add_dummy_on_all_cpus() to enable creating a system-wide dummy
+event that sets up the system-wide maps before map propagation.
 
-With this patch, the warning is correctly suppressed, and the
-kernel still passes the normal Google kernel developer tests.
+For convenience, add evlist__add_aux_dummy() so that the logic can be used
+whether or not the event needs to be system-wide.
 
-Signed-off-by: John Sperbeck <jsperbeck@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Alexey Bayduraev <alexey.v.bayduraev@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Link: https://lore.kernel.org/r/20220524075436.29144-6-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: f9cdeb58a9cf ("perf evlist: Avoid frequency mode for the dummy event")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/evlist.c | 45 ++++++++++++++++++++++++++++++++++++++++
+ tools/perf/util/evlist.h |  5 +++++
+ 2 files changed, 50 insertions(+)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -2107,7 +2107,7 @@ static bool is_special_call(struct instr
- 		if (!dest)
- 			return false;
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index 39d294f6c3218..a75cdcf381308 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -258,6 +258,51 @@ int evlist__add_dummy(struct evlist *evlist)
+ 	return 0;
+ }
  
--		if (dest->fentry)
-+		if (dest->fentry || dest->embedded_insn)
- 			return true;
- 	}
++static void evlist__add_on_all_cpus(struct evlist *evlist, struct evsel *evsel)
++{
++	evsel->core.system_wide = true;
++
++	/*
++	 * All CPUs.
++	 *
++	 * Note perf_event_open() does not accept CPUs that are not online, so
++	 * in fact this CPU list will include only all online CPUs.
++	 */
++	perf_cpu_map__put(evsel->core.own_cpus);
++	evsel->core.own_cpus = perf_cpu_map__new(NULL);
++	perf_cpu_map__put(evsel->core.cpus);
++	evsel->core.cpus = perf_cpu_map__get(evsel->core.own_cpus);
++
++	/* No threads */
++	perf_thread_map__put(evsel->core.threads);
++	evsel->core.threads = perf_thread_map__new_dummy();
++
++	evlist__add(evlist, evsel);
++}
++
++struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide)
++{
++	struct evsel *evsel = evlist__dummy_event(evlist);
++
++	if (!evsel)
++		return NULL;
++
++	evsel->core.attr.exclude_kernel = 1;
++	evsel->core.attr.exclude_guest = 1;
++	evsel->core.attr.exclude_hv = 1;
++	evsel->core.attr.freq = 0;
++	evsel->core.attr.sample_period = 1;
++	evsel->no_aux_samples = true;
++	evsel->name = strdup("dummy:u");
++
++	if (system_wide)
++		evlist__add_on_all_cpus(evlist, evsel);
++	else
++		evlist__add(evlist, evsel);
++
++	return evsel;
++}
++
+ static int evlist__add_attrs(struct evlist *evlist, struct perf_event_attr *attrs, size_t nr_attrs)
+ {
+ 	struct evsel *evsel, *n;
+diff --git a/tools/perf/util/evlist.h b/tools/perf/util/evlist.h
+index ec177f783ee67..decf5c944adba 100644
+--- a/tools/perf/util/evlist.h
++++ b/tools/perf/util/evlist.h
+@@ -112,6 +112,11 @@ int __evlist__add_default_attrs(struct evlist *evlist,
+ int arch_evlist__add_default_attrs(struct evlist *evlist);
  
+ int evlist__add_dummy(struct evlist *evlist);
++struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide);
++static inline struct evsel *evlist__add_dummy_on_all_cpus(struct evlist *evlist)
++{
++	return evlist__add_aux_dummy(evlist, true);
++}
+ 
+ int evlist__add_sb_event(struct evlist *evlist, struct perf_event_attr *attr,
+ 			 evsel__sb_cb_t cb, void *data);
+-- 
+2.42.0
+
 
 
