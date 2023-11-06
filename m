@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40D7B7E2570
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 362977E2533
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232746AbjKFNcA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:32:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54314 "EHLO
+        id S232029AbjKFN3S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:29:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43348 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232735AbjKFNb7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:59 -0500
+        with ESMTP id S231946AbjKFN3R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 416AF13E
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85BFDC433C8;
-        Mon,  6 Nov 2023 13:31:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358EAA9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785FEC433C7;
+        Mon,  6 Nov 2023 13:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277515;
-        bh=vV/ufL7lxMElLQBDQco0GFc97xW1oFO5clhybDbDdrE=;
+        s=korg; t=1699277354;
+        bh=x1p3x4DYjMThK0X1jQu5vc6ZogdJiSAugci61pV96rA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0lVRPU4X5HojNHhP90NpCCAf9a6aDj2uahp8PpFPAYw1wHcv2p+m1Vwmtq0qrQ+eK
-         cdgTXepoc5NSFA39vXlW70VGvmdg/vHfr2ErkoSQOPyhHfzVZtVQB1CEe+ClDqvh7Z
-         BFlDkRnSavTfck+4gNWeVCm/eTUuANXN1f3fp5AE=
+        b=MKxo9fhDGpq7AQvX+IfsMPvY1/ePM5/9l49GnRDgwmBx1FV1HShnABDf0BDVQtHEO
+         ipDqT7ZEEjGPlTamY5+oCyXFurl1YbDnz3O9boJb/O5PPdYjKvrPODZdkXAxC00Oy9
+         8xbXZ63JAq9ypd7mI5PY0Ezz2yMZhu8SvOwJFq60=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.10 48/95] x86/mm: Simplify RESERVE_BRK()
+        patches@lists.linux.dev, Liming Sun <limings@nvidia.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 096/128] platform/mellanox: mlxbf-tmfifo: Fix a warning message
 Date:   Mon,  6 Nov 2023 14:04:16 +0100
-Message-ID: <20231106130306.452604647@linuxfoundation.org>
+Message-ID: <20231106130313.523127719@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +50,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@redhat.com>
+From: Liming Sun <limings@nvidia.com>
 
-commit a1e2c031ec3949b8c039b739c0b5bf9c30007b00 upstream.
+[ Upstream commit 99c09c985e5973c8f0ad976ebae069548dd86f12 ]
 
-RESERVE_BRK() reserves data in the .brk_reservation section.  The data
-is initialized to zero, like BSS, so the macro specifies 'nobits' to
-prevent the data from taking up space in the vmlinux binary.  The only
-way to get the compiler to do that (without putting the variable in .bss
-proper) is to use inline asm.
+This commit fixes the smatch static checker warning in function
+mlxbf_tmfifo_rxtx_word() which complains data not initialized at
+line 634 when IS_VRING_DROP() is TRUE.
 
-The macro also has a hack which encloses the inline asm in a discarded
-function, which allows the size to be passed (global inline asm doesn't
-allow inputs).
-
-Remove the need for the discarded function hack by just stringifying the
-size rather than supplying it as an input to the inline asm.
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220506121631.133110232@infradead.org
-[nathan: Resolve conflict due to lack of 2b6ff7dea670]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Liming Sun <limings@nvidia.com>
+Link: https://lore.kernel.org/r/20231012230235.219861-1-limings@nvidia.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/setup.h |   30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
+ drivers/platform/mellanox/mlxbf-tmfifo.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -108,27 +108,19 @@ extern unsigned long _brk_end;
- void *extend_brk(size_t size, size_t align);
+diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
+index 194f3205e5597..767f4406e55f1 100644
+--- a/drivers/platform/mellanox/mlxbf-tmfifo.c
++++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
+@@ -588,24 +588,25 @@ static void mlxbf_tmfifo_rxtx_word(struct mlxbf_tmfifo_vring *vring,
  
- /*
-- * Reserve space in the brk section.  The name must be unique within
-- * the file, and somewhat descriptive.  The size is in bytes.  Must be
-- * used at file scope.
-+ * Reserve space in the brk section.  The name must be unique within the file,
-+ * and somewhat descriptive.  The size is in bytes.
-  *
-- * (This uses a temp function to wrap the asm so we can pass it the
-- * size parameter; otherwise we wouldn't be able to.  We can't use a
-- * "section" attribute on a normal variable because it always ends up
-- * being @progbits, which ends up allocating space in the vmlinux
-- * executable.)
-+ * The allocation is done using inline asm (rather than using a section
-+ * attribute on a normal variable) in order to allow the use of @nobits, so
-+ * that it doesn't take up any space in the vmlinux file.
-  */
--#define RESERVE_BRK(name,sz)						\
--	static void __section(".discard.text") __used notrace		\
--	__brk_reservation_fn_##name##__(void) {				\
--		asm volatile (						\
--			".pushsection .brk_reservation,\"aw\",@nobits;" \
--			".brk." #name ":"				\
--			" 1:.skip %c0;"					\
--			" .size .brk." #name ", . - 1b;"		\
--			" .popsection"					\
--			: : "i" (sz));					\
--	}
-+#define RESERVE_BRK(name, size)						\
-+	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
-+	    ".brk." #name ":\n\t"					\
-+	    ".skip " __stringify(size) "\n\t"				\
-+	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
-+	    ".popsection\n\t")
- 
- /* Helper for reserving space for arrays of things */
- #define RESERVE_BRK_ARRAY(type, name, entries)		\
+ 	if (vring->cur_len + sizeof(u64) <= len) {
+ 		/* The whole word. */
+-		if (!IS_VRING_DROP(vring)) {
+-			if (is_rx)
++		if (is_rx) {
++			if (!IS_VRING_DROP(vring))
+ 				memcpy(addr + vring->cur_len, &data,
+ 				       sizeof(u64));
+-			else
+-				memcpy(&data, addr + vring->cur_len,
+-				       sizeof(u64));
++		} else {
++			memcpy(&data, addr + vring->cur_len,
++			       sizeof(u64));
+ 		}
+ 		vring->cur_len += sizeof(u64);
+ 	} else {
+ 		/* Leftover bytes. */
+-		if (!IS_VRING_DROP(vring)) {
+-			if (is_rx)
++		if (is_rx) {
++			if (!IS_VRING_DROP(vring))
+ 				memcpy(addr + vring->cur_len, &data,
+ 				       len - vring->cur_len);
+-			else
+-				memcpy(&data, addr + vring->cur_len,
+-				       len - vring->cur_len);
++		} else {
++			data = 0;
++			memcpy(&data, addr + vring->cur_len,
++			       len - vring->cur_len);
+ 		}
+ 		vring->cur_len = len;
+ 	}
+-- 
+2.42.0
+
 
 
