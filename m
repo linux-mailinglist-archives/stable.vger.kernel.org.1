@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E277E23A0
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 487797E2551
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232151AbjKFNNP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:13:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38340 "EHLO
+        id S232658AbjKFNat (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:30:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232180AbjKFNNL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:11 -0500
+        with ESMTP id S232713AbjKFNas (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:48 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 170281B2
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54EABC433C9;
-        Mon,  6 Nov 2023 13:13:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E0B310B
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:45 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA751C433C7;
+        Mon,  6 Nov 2023 13:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276388;
-        bh=KSjglmY99RuNZcssYG1AvoDlwrzM+fEdmCwzBuzxf1o=;
+        s=korg; t=1699277445;
+        bh=DsVYBDJot6QqOgGSq1PDEApQ4Ny2EFr+8JKVO1SCtYk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1bpPpz1DrS7ANkLidd001b1dUjStcgMVs3Jheo5bftQtKxIpYfiLqIOV9glykMFnA
-         KumflDbkWn3BfzoePh55DphM6PlDzj6sQKINrQV3CjhlhEME2KJnyVaVdQNObgxIyk
-         DVjoFDsbUyxWrxHQp3GQ4U++0X6PnC8NMIwVROao=
+        b=I/EL0qhBS+3g9dxD6wjJicmx5hXrrwDR62uCPJ492+8oo63PlGNSwVYLKkHyBcHPR
+         OtOWyY9i1s8GIHnrfFFQgSqfGkKWBDA2vK5K+TlMxT2YTfWrQIK2PQPrLFOi6RW72x
+         Npvg1eNCXQyv7rtGoC6amD2AvElZg1cq7VXb61ko=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jorge Maidana <jorgem.linux@gmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 25/62] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
-Date:   Mon,  6 Nov 2023 14:03:31 +0100
-Message-ID: <20231106130302.712446378@linuxfoundation.org>
+        patches@lists.linux.dev, Gavin Shan <gshan@redhat.com>,
+        Zhenyu Zhang <zhenyzha@redhat.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        David Hildenbrand <david@redhat.com>
+Subject: [PATCH 5.10 04/95] virtio_balloon: Fix endless deflation and inflation on arm64
+Date:   Mon,  6 Nov 2023 14:03:32 +0100
+Message-ID: <20231106130304.837434044@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +51,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Maidana <jorgem.linux@gmail.com>
+From: Gavin Shan <gshan@redhat.com>
 
-[ Upstream commit 1022e7e2f40574c74ed32c3811b03d26b0b81daf ]
+commit 07622bd415639e9709579f400afd19e7e9866e5e upstream.
 
-Delete the v86d netlink only after all the VBE tasks have been
-completed.
+The deflation request to the target, which isn't unaligned to the
+guest page size causes endless deflation and inflation actions. For
+example, we receive the flooding QMP events for the changes on memory
+balloon's size after a deflation request to the unaligned target is
+sent for the ARM64 guest, where we have 64KB base page size.
 
-Fixes initial state restore on module unload:
-uvesafb: VBE state restore call failed (eax=0x4f04, err=-19)
+  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
+  -accel kvm -machine virt,gic-version=host -cpu host          \
+  -smp maxcpus=8,cpus=8,sockets=2,clusters=2,cores=2,threads=1 \
+  -m 1024M,slots=16,maxmem=64G                                 \
+  -object memory-backend-ram,id=mem0,size=512M                 \
+  -object memory-backend-ram,id=mem1,size=512M                 \
+  -numa node,nodeid=0,memdev=mem0,cpus=0-3                     \
+  -numa node,nodeid=1,memdev=mem1,cpus=4-7                     \
+    :                                                          \
+  -device virtio-balloon-pci,id=balloon0,bus=pcie.10
 
-Signed-off-by: Jorge Maidana <jorgem.linux@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  { "execute" : "balloon", "arguments": { "value" : 1073672192 } }
+  {"return": {}}
+  {"timestamp": {"seconds": 1693272173, "microseconds": 88667},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  {"timestamp": {"seconds": 1693272174, "microseconds": 89704},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  {"timestamp": {"seconds": 1693272175, "microseconds": 90819},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  {"timestamp": {"seconds": 1693272176, "microseconds": 91961},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  {"timestamp": {"seconds": 1693272177, "microseconds": 93040},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
+  {"timestamp": {"seconds": 1693272178, "microseconds": 94117},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
+  {"timestamp": {"seconds": 1693272179, "microseconds": 95337},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  {"timestamp": {"seconds": 1693272180, "microseconds": 96615},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
+  {"timestamp": {"seconds": 1693272181, "microseconds": 97626},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  {"timestamp": {"seconds": 1693272182, "microseconds": 98693},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
+  {"timestamp": {"seconds": 1693272183, "microseconds": 99698},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  {"timestamp": {"seconds": 1693272184, "microseconds": 100727},  \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  {"timestamp": {"seconds": 1693272185, "microseconds": 90430},   \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  {"timestamp": {"seconds": 1693272186, "microseconds": 102999},  \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
+     :
+  <The similar QMP events repeat>
+
+Fix it by aligning the target up to the guest page size, 64KB in this
+specific case. With this applied, no flooding QMP events are observed
+and the memory balloon's size can be stablizied to 0x3ffe0000 soon
+after the deflation request is sent.
+
+  { "execute" : "balloon", "arguments": { "value" : 1073672192 } }
+  {"return": {}}
+  {"timestamp": {"seconds": 1693273328, "microseconds": 793075},  \
+   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
+  { "execute" : "query-balloon" }
+  {"return": {"actual": 1073610752}}
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Gavin Shan <gshan@redhat.com>
+Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
+Message-Id: <20230831011007.1032822-1-gshan@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/uvesafb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/virtio/virtio_balloon.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
-index 0e3cabbec4b40..a85463db9f986 100644
---- a/drivers/video/fbdev/uvesafb.c
-+++ b/drivers/video/fbdev/uvesafb.c
-@@ -1935,10 +1935,10 @@ static void uvesafb_exit(void)
- 		}
- 	}
+--- a/drivers/virtio/virtio_balloon.c
++++ b/drivers/virtio/virtio_balloon.c
+@@ -402,7 +402,11 @@ static inline s64 towards_target(struct
+ 	virtio_cread_le(vb->vdev, struct virtio_balloon_config, num_pages,
+ 			&num_pages);
  
--	cn_del_callback(&uvesafb_cn_id);
- 	driver_remove_file(&uvesafb_driver.driver, &driver_attr_v86d);
- 	platform_device_unregister(uvesafb_device);
- 	platform_driver_unregister(&uvesafb_driver);
-+	cn_del_callback(&uvesafb_cn_id);
+-	target = num_pages;
++	/*
++	 * Aligned up to guest page size to avoid inflating and deflating
++	 * balloon endlessly.
++	 */
++	target = ALIGN(num_pages, VIRTIO_BALLOON_PAGES_PER_PAGE);
+ 	return target - vb->num_pages;
  }
  
- module_exit(uvesafb_exit);
--- 
-2.42.0
-
 
 
