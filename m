@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E3C7E243C
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 263C97E2535
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231981AbjKFNTr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:19:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59336 "EHLO
+        id S232609AbjKFN3Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:29:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232323AbjKFNTq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:19:46 -0500
+        with ESMTP id S231946AbjKFN3X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0198DD8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:19:44 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40417C433C9;
-        Mon,  6 Nov 2023 13:19:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32DFB92
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:21 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78416C433C8;
+        Mon,  6 Nov 2023 13:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276783;
-        bh=g7pfaC8N1A0QXRc8SM467+Rv3DX9v744LJwIUHLzco4=;
+        s=korg; t=1699277360;
+        bh=28p+mE82HZ1V02TO4S4bHWkrORoA5UYm963oBr7UFoM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Z982YYd9WQyy/5GjJUQWMU56ppWi3icClwt1LJRHWUNUuUfecpKnxGNFKdR+3qzDJ
-         8pgrBZ6vrXTEyqQKCV4G7FXSAiFHkTzl3aBgez8EEDz1mbbPOflt8YUU+TuplKiZom
-         SzmAx0o/0eyupfLOw3cGVUjYk1pVf4HgW8EJIxWI=
+        b=ufo2mhX4A39rpFbuWO1AsG0iDs/iEQkrDuCOtIFb9k4wkkbKhCnXqIMPgnL7oTKrN
+         e4H9ayd1bdAd5a1L9OhaotGtNBJVvGaLklWndRFDqSmWqbeiMiLYznLFzaAytTS1jb
+         iQJxdVESVl8L3T5psDpZ67Sk9cvFmNArvJs9kfjA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>,
-        stable <stable@kernel.org>,
-        Francesco Dolcini <francesco.dolcini@toradex.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 6.5 84/88] dt-bindings: serial: rs485: Add rs485-rts-active-high
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Grant Grundler <grundler@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 098/128] r8152: Check for unplug in rtl_phy_patch_request()
 Date:   Mon,  6 Nov 2023 14:04:18 +0100
-Message-ID: <20231106130308.886485417@linuxfoundation.org>
+Message-ID: <20231106130313.625583367@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit 0c01b20fb50ba63c03841aa83070dc59c3b1b02f upstream.
+[ Upstream commit dc90ba37a8c37042407fa6970b9830890cfe6047 ]
 
-Add rs485-rts-active-high property, this is a legacy property
-used by 8250_omap.
+If the adapter is unplugged while we're looping in
+rtl_phy_patch_request() we could end up looping for 10 seconds (2 ms *
+5000 loops). Add code similar to what's done in other places in the
+driver to check for unplug and bail.
 
-This fixes the following make dt_binding_check warning:
-
-Documentation/devicetree/bindings/serial/8250_omap.yaml:
-rs485-rts-active-high: missing type definition
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/all/CAMuHMdUkPiA=o_QLyuwsTYW7y1ksCjHAqyNSHFx2QZ-dP-HGsQ@mail.gmail.com/
-Fixes: 403e97d6ab2c ("dt-bindings: serial: 8250_omap: add rs485-rts-active-high")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231019154834.41721-1-francesco@dolcini.it
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromium.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/rs485.yaml | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/usb/r8152.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/serial/rs485.yaml b/Documentation/devicetree/bindings/serial/rs485.yaml
-index 303a443d9e29..9418fd66a8e9 100644
---- a/Documentation/devicetree/bindings/serial/rs485.yaml
-+++ b/Documentation/devicetree/bindings/serial/rs485.yaml
-@@ -29,6 +29,10 @@ properties:
-           default: 0
-           maximum: 100
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index f6d5fbb9dee07..15610d7d677ce 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -4051,6 +4051,9 @@ static int rtl_phy_patch_request(struct r8152 *tp, bool request, bool wait)
+ 	for (i = 0; wait && i < 5000; i++) {
+ 		u32 ocp_data;
  
-+  rs485-rts-active-high:
-+    description: drive RTS high when sending (this is the default).
-+    $ref: /schemas/types.yaml#/definitions/flag
++		if (test_bit(RTL8152_UNPLUG, &tp->flags))
++			break;
 +
-   rs485-rts-active-low:
-     description: drive RTS low when sending (default is high).
-     $ref: /schemas/types.yaml#/definitions/flag
+ 		usleep_range(1000, 2000);
+ 		ocp_data = ocp_reg_read(tp, OCP_PHY_PATCH_STAT);
+ 		if ((ocp_data & PATCH_READY) ^ check)
 -- 
 2.42.0
 
