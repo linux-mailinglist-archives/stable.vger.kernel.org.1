@@ -2,43 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73B3B7E23D5
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:15:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3A747E2511
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232224AbjKFNPK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:15:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57710 "EHLO
+        id S232616AbjKFN15 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:27:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232050AbjKFNPJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:15:09 -0500
+        with ESMTP id S232586AbjKFN14 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:56 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D21A9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:15:06 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01374C433C7;
-        Mon,  6 Nov 2023 13:15:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEE53F3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:52 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04BFDC433C9;
+        Mon,  6 Nov 2023 13:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276506;
-        bh=AG6wSL99LncfQM4JWiLnJ+Zdd5kYkGSmmqq4wuvybII=;
+        s=korg; t=1699277272;
+        bh=smHaHhu46AnZJLQ/igQDKc/CZwYO0DGMPlIFNYr62s8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ivYbZ+Az/fkXXsx6RC3j9BW10/elkuTt8b8+NJLAuU/vQHlATukr2mlx624vz0Gm/
-         AjQkmvMEM5z5mmasMVg3iXkvAYe3TUP4VOeNDemg2TMYPL/f7zpFCwtclO+J+krN4N
-         7nxHVM63NVzyKlvNrgnf3wU8Bqp6+HlGqkvnvdGU=
+        b=BQ2cSH810XpyrY9am0Nvp7/w1FbcsHyWngHa8QA5kjhONatb2lHMl3c88X5kTFIXX
+         5LUlHU98bjqbwYUDuLXt4H/jnueFLo6a0U64dfjbtvH/2ix3//OCjh6xAEKFA16Lvg
+         CeMkJ9h+/Um+Hho4ovE+YzopZNHL3bFVWAhSnH9I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephane Eranian <eranian@google.com>,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/62] perf evlist: Avoid frequency mode for the dummy event
+        patches@lists.linux.dev, John Sperbeck <jsperbeck@google.com>
+Subject: [PATCH 5.15 067/128] objtool/x86: add missing embedded_insn check
 Date:   Mon,  6 Nov 2023 14:03:47 +0100
-Message-ID: <20231106130303.289386319@linuxfoundation.org>
+Message-ID: <20231106130312.152968628@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,85 +48,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: John Sperbeck <jsperbeck@google.com>
 
-[ Upstream commit f9cdeb58a9cf46c09b56f5f661ea8da24b6458c3 ]
+When dbf460087755 ("objtool/x86: Fixup frame-pointer vs rethunk")
+was backported to some stable branches, the check for dest->embedded_insn
+in is_special_call() was missed.  The result is that the warning it
+was intended to suppress still appears.  For example on 6.1 (on kernels
+before 6.1, the '-s' argument would instead be 'check'):
 
-Dummy events are created with an attribute where the period and freq
-are zero. evsel__config will then see the uninitialized values and
-initialize them in evsel__default_freq_period. As fequency mode is
-used by default the dummy event would be set to use frequency
-mode. However, this has no effect on the dummy event but does cause
-unnecessary timers/interrupts. Avoid this overhead by setting the
-period to 1 for dummy events.
+$ tools/objtool/objtool -s arch/x86/lib/retpoline.o
+arch/x86/lib/retpoline.o: warning: objtool: srso_untrain_ret+0xd:
+    call without frame pointer save/setup
 
-evlist__add_aux_dummy calls evlist__add_dummy then sets freq=0 and
-period=1. This isn't necessary after this change and so the setting is
-removed.
+With this patch, the warning is correctly suppressed, and the
+kernel still passes the normal Google kernel developer tests.
 
->From Stephane:
-
-The dummy event is not counting anything. It is used to collect mmap
-records and avoid a race condition during the synthesize mmap phase of
-perf record. As such, it should not cause any overhead during active
-profiling. Yet, it did. Because of a bug the dummy event was
-programmed as a sampling event in frequency mode. Events in that mode
-incur more kernel overheads because on timer tick, the kernel has to
-look at the number of samples for each event and potentially adjust
-the sampling period to achieve the desired frequency. The dummy event
-was therefore adding a frequency event to task and ctx contexts we may
-otherwise not have any, e.g.,
-
-  perf record -a -e cpu/event=0x3c,period=10000000/.
-
-On each timer tick the perf_adjust_freq_unthr_context() is invoked and
-if ctx->nr_freq is non-zero, then the kernel will loop over ALL the
-events of the context looking for frequency mode ones. In doing, so it
-locks the context, and enable/disable the PMU of each hw event. If all
-the events of the context are in period mode, the kernel will have to
-traverse the list for nothing incurring overhead. The overhead is
-multiplied by a very large factor when this happens in a guest kernel.
-There is no need for the dummy event to be in frequency mode, it does
-not count anything and therefore should not cause extra overhead for
-no reason.
-
-Fixes: 5bae0250237f ("perf evlist: Introduce perf_evlist__new_dummy constructor")
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20230916035640.1074422-1-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: John Sperbeck <jsperbeck@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/evlist.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/objtool/check.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -252,6 +252,9 @@ static struct evsel *evlist__dummy_event
- 		.type	= PERF_TYPE_SOFTWARE,
- 		.config = PERF_COUNT_SW_DUMMY,
- 		.size	= sizeof(attr), /* to capture ABI version */
-+		/* Avoid frequency mode for dummy events to avoid associated timers. */
-+		.freq = 0,
-+		.sample_period = 1,
- 	};
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -2202,7 +2202,7 @@ static bool is_special_call(struct instr
+ 		if (!dest)
+ 			return false;
  
- 	return evsel__new_idx(&attr, evlist->core.nr_entries);
-@@ -278,8 +281,6 @@ struct evsel *evlist__add_aux_dummy(stru
- 	evsel->core.attr.exclude_kernel = 1;
- 	evsel->core.attr.exclude_guest = 1;
- 	evsel->core.attr.exclude_hv = 1;
--	evsel->core.attr.freq = 0;
--	evsel->core.attr.sample_period = 1;
- 	evsel->core.system_wide = system_wide;
- 	evsel->no_aux_samples = true;
- 	evsel->name = strdup("dummy:u");
+-		if (dest->fentry)
++		if (dest->fentry || dest->embedded_insn)
+ 			return true;
+ 	}
+ 
 
 
