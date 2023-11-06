@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA0FD7E24E0
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:26:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68BC97E2389
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232455AbjKFN0P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:26:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36502 "EHLO
+        id S232132AbjKFNMh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:12:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232572AbjKFN0O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:14 -0500
+        with ESMTP id S231759AbjKFNMg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA326D6B
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:08 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC97C433CA;
-        Mon,  6 Nov 2023 13:26:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A29691
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:34 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD0CC433C7;
+        Mon,  6 Nov 2023 13:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277168;
-        bh=C13GYRHHs69YR9LAV1pANN1Yh95owT7RiVYs7vpjB2E=;
+        s=korg; t=1699276353;
+        bh=eJ0T2/nIZKrNVRfuTb++GVgLRNKFRYCIexibKYKeUEk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l6GoeD4BCwOQ8FD3Sr3/FHh1+AueT21EdcBiWF1+8MOLaU9jsJuzikDpzdZeWMa2Q
-         o6dnR1a7qWD612WmBHWcdjt+PKZ2pawkRFwEM9nlgnW199h1P09aid7DWgwGUF5Qly
-         73fmCG9LkLa4DEYr3v/BX4xz9XRHixPhHYqa/6mU=
+        b=d8BwAq2IOYth/LaeIrlYHwo/HdiSR9NpfQg0x0Csm0WpbcN7xZ4IIEYIhWTyek2wB
+         hsIpSHxCUSpAr8ZhyG/tUgVgETWNXHGNKiXuU/4s0iH5ZfJunTESQog2PfzxiaUttI
+         bCc1WN0FdUBrhPgDtYJCPZ74/Jh3Hplj/XD7KW58=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Grant Grundler <grundler@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 032/128] r8152: Run the unload routine if we have errors during probe
+        patches@lists.linux.dev,
+        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 06/62] irqchip/stm32-exti: add missing DT IRQ flag translation
 Date:   Mon,  6 Nov 2023 14:03:12 +0100
-Message-ID: <20231106130310.573560913@linuxfoundation.org>
+Message-ID: <20231106130302.043915670@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
 
-[ Upstream commit 5dd17689526971c5ae12bc8398f34bd68cd0499e ]
+[ Upstream commit 8554cba1d6dbd3c74e0549e28ddbaccbb1d6b30a ]
 
-The rtl8152_probe() function lacks a call to the chip-specific
-unload() routine when it sees an error in probe. Add it in to match
-the cleanup code in rtl8152_disconnect().
+The STM32F4/7 EXTI driver was missing the xlate callback, so IRQ trigger
+flags specified in the device tree were being ignored. This was
+preventing the RTC alarm interrupt from working, because it must be set
+to trigger on the rising edge to function correctly.
 
-Fixes: ac718b69301c ("net/usb: new driver for RTL8152")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20231003162003.1649967-1-ben.wolsieffer@hefring.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/irqchip/irq-stm32-exti.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 89a1e40ff7005..52056b296b9f7 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9799,6 +9799,8 @@ static int rtl8152_probe(struct usb_interface *intf,
+diff --git a/drivers/irqchip/irq-stm32-exti.c b/drivers/irqchip/irq-stm32-exti.c
+index 8bbb2b114636c..dc6f67decb022 100644
+--- a/drivers/irqchip/irq-stm32-exti.c
++++ b/drivers/irqchip/irq-stm32-exti.c
+@@ -458,6 +458,7 @@ static const struct irq_domain_ops irq_exti_domain_ops = {
+ 	.map	= irq_map_generic_chip,
+ 	.alloc  = stm32_exti_alloc,
+ 	.free	= stm32_exti_free,
++	.xlate	= irq_domain_xlate_twocell,
+ };
  
- out1:
- 	tasklet_kill(&tp->tx_tl);
-+	if (tp->rtl_ops.unload)
-+		tp->rtl_ops.unload(tp);
- 	usb_set_intfdata(intf, NULL);
- out:
- 	free_netdev(netdev);
+ static void stm32_irq_ack(struct irq_data *d)
 -- 
 2.42.0
 
