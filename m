@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58A187E247A
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81B947E243D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:19:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232433AbjKFNWY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:22:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38946 "EHLO
+        id S232372AbjKFNTt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:19:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232431AbjKFNWX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:22:23 -0500
+        with ESMTP id S232369AbjKFNTt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:19:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D17F1D8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:22:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF2AC433C7;
-        Mon,  6 Nov 2023 13:22:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDBBC94
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:19:46 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C2F3C433C7;
+        Mon,  6 Nov 2023 13:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276940;
-        bh=ZvL0pADfQ9NK0M1ODdY3NMo8fxXG1I3cqki7R5z8M8s=;
+        s=korg; t=1699276786;
+        bh=iNVc0nJ8rTyTt7G2K+rGVOpTOfIDY65R0rK5n1l+onQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UfLVPPS5N+xsiHlaEqHYOJYs5z4fdm+bZksP+UjU1GAIGIZaz04kz32BEYDfbeBf/
-         TDZCPHdYwgXK5lNNmqf8XCsNEyS2n7q3fOaZF5HTnMnQngHcdMNUN0otMPFQXchr34
-         wET0D5aArKt3vvbs77Pdn3opg2Z2nmulfzSWLJwQ=
+        b=b9mg0YqcJh/66ID+u8Indk+934BhrVxEC0hjXsvwrda9OAz9WbzyKOME5q4WuKHQN
+         reNK4FVG8sUc4+s2P7ef9X9Yn2pwayl60LpwJH3nhZ1QtcPz/Ct1jNOay+xHHAWca4
+         zU6MVffKjVylRzMV4BMTzfd7d3j/0HSAlsqtFKNo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jorge Maidana <jorgem.linux@gmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 59/74] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
+        patches@lists.linux.dev, Siddharth Vadapalli <s-vadapalli@ti.com>,
+        stable <stable@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.5 85/88] misc: pci_endpoint_test: Add deviceID for J721S2 PCIe EP device support
 Date:   Mon,  6 Nov 2023 14:04:19 +0100
-Message-ID: <20231106130303.747019822@linuxfoundation.org>
+Message-ID: <20231106130308.925618801@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Maidana <jorgem.linux@gmail.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 1022e7e2f40574c74ed32c3811b03d26b0b81daf ]
+commit 8293703a492ae97c86af27c75b76e6239ec86483 upstream.
 
-Delete the v86d netlink only after all the VBE tasks have been
-completed.
+Add DEVICE_ID for J721S2 and enable support for endpoints configured
+with this DEVICE_ID in the pci_endpoint_test driver.
 
-Fixes initial state restore on module unload:
-uvesafb: VBE state restore call failed (eax=0x4f04, err=-19)
-
-Signed-off-by: Jorge Maidana <jorgem.linux@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231020120248.3168406-1-s-vadapalli@ti.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/uvesafb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/pci_endpoint_test.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
-index 7d3af1d19ad3f..115653ba761c0 100644
---- a/drivers/video/fbdev/uvesafb.c
-+++ b/drivers/video/fbdev/uvesafb.c
-@@ -1933,10 +1933,10 @@ static void uvesafb_exit(void)
- 		}
- 	}
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -71,6 +71,7 @@
+ #define PCI_DEVICE_ID_TI_AM654			0xb00c
+ #define PCI_DEVICE_ID_TI_J7200			0xb00f
+ #define PCI_DEVICE_ID_TI_AM64			0xb010
++#define PCI_DEVICE_ID_TI_J721S2		0xb013
+ #define PCI_DEVICE_ID_LS1088A			0x80c0
+ #define PCI_DEVICE_ID_IMX8			0x0808
  
--	cn_del_callback(&uvesafb_cn_id);
- 	driver_remove_file(&uvesafb_driver.driver, &driver_attr_v86d);
- 	platform_device_unregister(uvesafb_device);
- 	platform_driver_unregister(&uvesafb_driver);
-+	cn_del_callback(&uvesafb_cn_id);
- }
- 
- module_exit(uvesafb_exit);
--- 
-2.42.0
-
+@@ -999,6 +1000,9 @@ static const struct pci_device_id pci_en
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM64),
+ 	  .driver_data = (kernel_ulong_t)&j721e_data,
+ 	},
++	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721S2),
++	  .driver_data = (kernel_ulong_t)&j721e_data,
++	},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(pci, pci_endpoint_test_tbl);
 
 
