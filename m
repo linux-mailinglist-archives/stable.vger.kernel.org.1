@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11BFC7E25B1
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:34:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D63FF7E248B
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:22:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232833AbjKFNeQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:34:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54796 "EHLO
+        id S232458AbjKFNXB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:23:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232842AbjKFNeO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:34:14 -0500
+        with ESMTP id S232455AbjKFNXA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4727EF1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:34:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F5AC433CC;
-        Mon,  6 Nov 2023 13:34:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD6810A
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:22:56 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B459C433C7;
+        Mon,  6 Nov 2023 13:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277650;
-        bh=ERIPijGz1RziISdf9VfMeKTqN2r5ZwoLR8m8m55NtRs=;
+        s=korg; t=1699276975;
+        bh=0wPUnHElCTvNwu1An/ieGJkWFCQuJAcStWd1PVOTUtI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tBWC6F+rPGWFDDrvdhZoAe4HnX6LMKK0dshlCyth0M88PJypyrRBHi2IJq1VmtLFD
-         EJyqA3EZELKfy3MX06O2jDeobjBw2Ix8HBuuFZtyVBD/jhv7IWMhi8IdibDFI6fUYZ
-         WAcywlOeuFCsAvtkVMGGRudh1yLUR33FLkR3SrjY=
+        b=Bm5/awQIrHxrpWPTSCs4Yun84RQLhediNJ/ys+DWsqkWGvg+4+js+iWW9nLwlA6gY
+         AiQazGRaYoENKYZquX07rjZeUNGmkrhgt29pW71jVDVllKDlKB7YK/S6iSgnjFHtQ1
+         Wsa/qP7161ixqGkDbY2rHvAXPcAzD2uVrAiu7v1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Dunaev <dunaev@tecon.ru>,
-        Anup Patel <apatel@ventanamicro.com>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 62/95] irqchip/riscv-intc: Mark all INTC nodes as initialized
+        patches@lists.linux.dev, Liha Sikanen <lihasika@gmail.com>
+Subject: [PATCH 5.4 70/74] usb: storage: set 1.50 as the lower bcdDevice for older "Super Top" compatibility
 Date:   Mon,  6 Nov 2023 14:04:30 +0100
-Message-ID: <20231106130306.972422092@linuxfoundation.org>
+Message-ID: <20231106130304.100429871@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,58 +48,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: LihaSika <lihasika@gmail.com>
 
-[ Upstream commit e13cd66bd821be417c498a34928652db4ac6b436 ]
+commit 0e3139e6543b241b3e65956a55c712333bef48ac upstream.
 
-The RISC-V INTC local interrupts are per-HART (or per-CPU) so we
-create INTC IRQ domain only for the INTC node belonging to the boot
-HART. This means only the boot HART INTC node will be marked as
-initialized and other INTC nodes won't be marked which results
-downstream interrupt controllers (such as PLIC, IMSIC and APLIC
-direct-mode) not being probed due to missing device suppliers.
+Change lower bcdDevice value for "Super Top USB 2.0  SATA BRIDGE" to match
+1.50. I have such an older device with bcdDevice=1.50 and it will not work
+otherwise.
 
-To address this issue, we mark all INTC node for which we don't
-create IRQ domain as initialized.
-
-Reported-by: Dmitry Dunaev <dunaev@tecon.ru>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230926102801.1591126-1-dunaev@tecon.ru
-Link: https://lore.kernel.org/r/20231003044403.1974628-4-apatel@ventanamicro.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Liha Sikanen <lihasika@gmail.com>
+Link: https://lore.kernel.org/r/ccf7d12a-8362-4916-b3e0-f4150f54affd@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-riscv-intc.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/storage/unusual_cypress.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
-index 8017f6d32d52b..54c99441c1b54 100644
---- a/drivers/irqchip/irq-riscv-intc.c
-+++ b/drivers/irqchip/irq-riscv-intc.c
-@@ -109,8 +109,16 @@ static int __init riscv_intc_init(struct device_node *node,
- 	 * for each INTC DT node. We only need to do INTC initialization
- 	 * for the INTC DT node belonging to boot CPU (or boot HART).
- 	 */
--	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id())
-+	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id()) {
-+		/*
-+		 * The INTC nodes of each CPU are suppliers for downstream
-+		 * interrupt controllers (such as PLIC, IMSIC and APLIC
-+		 * direct-mode) so we should mark an INTC node as initialized
-+		 * if we are not creating IRQ domain for it.
-+		 */
-+		fwnode_dev_initialized(of_fwnode_handle(node), true);
- 		return 0;
-+	}
+--- a/drivers/usb/storage/unusual_cypress.h
++++ b/drivers/usb/storage/unusual_cypress.h
+@@ -19,7 +19,7 @@ UNUSUAL_DEV(  0x04b4, 0x6831, 0x0000, 0x
+ 		"Cypress ISD-300LP",
+ 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
  
- 	intc_domain = irq_domain_add_linear(node, BITS_PER_LONG,
- 					    &riscv_intc_domain_ops, NULL);
--- 
-2.42.0
-
+-UNUSUAL_DEV( 0x14cd, 0x6116, 0x0160, 0x0160,
++UNUSUAL_DEV( 0x14cd, 0x6116, 0x0150, 0x0160,
+ 		"Super Top",
+ 		"USB 2.0  SATA BRIDGE",
+ 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
 
 
