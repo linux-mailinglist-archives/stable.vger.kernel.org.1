@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 59D6B7E2510
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59C747E231B
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232629AbjKFN1x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:27:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48222 "EHLO
+        id S232029AbjKFNIt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:08:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232628AbjKFN1w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:52 -0500
+        with ESMTP id S232035AbjKFNIr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:47 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3692F3
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10510C433C8;
-        Mon,  6 Nov 2023 13:27:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3965F100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:45 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72391C433C8;
+        Mon,  6 Nov 2023 13:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277269;
-        bh=JZWWk2dGqjbr6v9bIUZ0HT4tJAbO00zIThuaUyedKDI=;
+        s=korg; t=1699276124;
+        bh=MPnVdRzib4V4RE8zNh8lkexdQvc0nORv3WZ95lft1u4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jm59DjY3tiRSa2Ac46cMQzt0akAGJi6iPM3wmYlb5CVK+AZkvtlGJvTlm3bDMheeD
-         sJJove04Uug9swwAC35DLvNs537CANsv5u0hSLd0AlTV0T2pUkLc36dcarQwD6hzpc
-         FpkB+XiByghtEo4ptKej4cR6u7mrO1Oca+TsbVNk=
+        b=B1c18SrioY/luWwv2JUyU0OJzWQxjRAvtXiSBP/K6c8LiDwVMLMHOpRPvFMzyJ09v
+         +yEqEybvBP3ObZdd0fFGRC8KDajbSR8qDHLVZjpFQdI6zKeDLBhbkbQoSj9iRTJsHL
+         RI7UwG75nKhVbEBSDLUwQh5oJfX4Mphx1T6BAkPE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 066/128] ext4: avoid overlapping preallocations due to overflow
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Richard Purdie <richard.purdie@linuxfoundation.org>,
+        Bruce Ashfield <bruce.ashfield@gmail.com>,
+        Mikko Rapeli <mikko.rapeli@linaro.org>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Randy MacLeod <randy.macleod@windriver.com>,
+        Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 6.6 28/30] serial: core: Fix runtime PM handling for pending tx
 Date:   Mon,  6 Nov 2023 14:03:46 +0100
-Message-ID: <20231106130312.100886875@linuxfoundation.org>
+Message-ID: <20231106130258.877067000@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,79 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Tony Lindgren <tony@atomide.com>
 
-commit bedc5d34632c21b5adb8ca7143d4c1f794507e4c upstream.
+commit 6f699743aebf07538e506a46c5965eb8bdd2c716 upstream.
 
-Let's say we want to allocate 2 blocks starting from 4294966386, after
-predicting the file size, start is aligned to 4294965248, len is changed
-to 2048, then end = start + size = 0x100000000. Since end is of
-type ext4_lblk_t, i.e. uint, end is truncated to 0.
+Richard reported that a serial port may end up sometimes with tx data
+pending in the buffer for long periods of time.
 
-This causes (pa->pa_lstart >= end) to always hold when checking if the
-current extent to be allocated crosses already preallocated blocks, so the
-resulting ac_g_ex may cross already preallocated blocks. Hence we convert
-the end type to loff_t and use pa_logical_end() to avoid overflow.
+Turns out we bail out early on any errors from pm_runtime_get(),
+including -EINPROGRESS. To fix the issue, we need to ignore -EINPROGRESS
+as we only care about the runtime PM usage count at this point. We check
+for an active runtime PM state later on for tx.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://lore.kernel.org/r/20230724121059.11834-4-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Fixes: 84a9582fd203 ("serial: core: Start managing serial controllers to enable runtime PM")
+Cc: stable <stable@kernel.org>
+Reported-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+Cc: Bruce Ashfield <bruce.ashfield@gmail.com>
+Cc: Mikko Rapeli <mikko.rapeli@linaro.org>
+Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc: Randy MacLeod <randy.macleod@windriver.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Tested-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20231023074856.61896-1-tony@atomide.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |   13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/tty/serial/serial_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -4049,8 +4049,7 @@ ext4_mb_normalize_request(struct ext4_al
- 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
- 	struct ext4_super_block *es = sbi->s_es;
- 	int bsbits, max;
--	ext4_lblk_t end;
--	loff_t size, start_off;
-+	loff_t size, start_off, end;
- 	loff_t orig_size __maybe_unused;
- 	ext4_lblk_t start;
- 	struct ext4_inode_info *ei = EXT4_I(ac->ac_inode);
-@@ -4158,7 +4157,7 @@ ext4_mb_normalize_request(struct ext4_al
- 	/* check we don't cross already preallocated blocks */
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(pa, &ei->i_prealloc_list, pa_inode_list) {
--		ext4_lblk_t pa_end;
-+		loff_t pa_end;
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -146,7 +146,7 @@ static void __uart_start(struct uart_sta
  
- 		if (pa->pa_deleted)
- 			continue;
-@@ -4168,8 +4167,7 @@ ext4_mb_normalize_request(struct ext4_al
- 			continue;
- 		}
- 
--		pa_end = pa->pa_lstart + EXT4_C2B(EXT4_SB(ac->ac_sb),
--						  pa->pa_len);
-+		pa_end = pa_logical_end(EXT4_SB(ac->ac_sb), pa);
- 
- 		/* PA must not overlap original request */
- 		BUG_ON(!(ac->ac_o_ex.fe_logical >= pa_end ||
-@@ -4198,12 +4196,11 @@ ext4_mb_normalize_request(struct ext4_al
- 	/* XXX: extra loop to check we really don't overlap preallocations */
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(pa, &ei->i_prealloc_list, pa_inode_list) {
--		ext4_lblk_t pa_end;
-+		loff_t pa_end;
- 
- 		spin_lock(&pa->pa_lock);
- 		if (pa->pa_deleted == 0) {
--			pa_end = pa->pa_lstart + EXT4_C2B(EXT4_SB(ac->ac_sb),
--							  pa->pa_len);
-+			pa_end = pa_logical_end(EXT4_SB(ac->ac_sb), pa);
- 			BUG_ON(!(start >= pa_end || end <= pa->pa_lstart));
- 		}
- 		spin_unlock(&pa->pa_lock);
+ 	/* Increment the runtime PM usage count for the active check below */
+ 	err = pm_runtime_get(&port_dev->dev);
+-	if (err < 0) {
++	if (err < 0 && err != -EINPROGRESS) {
+ 		pm_runtime_put_noidle(&port_dev->dev);
+ 		return;
+ 	}
 
 
