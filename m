@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A00D7E22F9
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:07:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42EF77E239E
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231981AbjKFNH1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:07:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38022 "EHLO
+        id S232139AbjKFNNN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:13:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231977AbjKFNH0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:07:26 -0500
+        with ESMTP id S232182AbjKFNNI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:08 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5F3A9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:07:23 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C248C433C8;
-        Mon,  6 Nov 2023 13:07:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3260CF3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73936C433C8;
+        Mon,  6 Nov 2023 13:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276043;
-        bh=dKjWPrNa677s9+92TLFYw8evr+LUbgmQLK7cTOljkII=;
+        s=korg; t=1699276385;
+        bh=hLcVDxqnggjD6qzDvZ9Th9mNxESH05Ym//2hUZSa3Xs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dBZ6p5UCy2S3Ilz1Y/T3pYnx3HtXnJsElYsBACIUyehWHn6g1/Xr/ravDXQ7iVj3t
-         JDNQtgn7I+v8Un3MgYzGCY4lgMp0hO2trW3nW4jtgmer91Yqxvz3uVE7KRV0cdgizW
-         /gtreY0ta7rVy7jg3iZiaDlGU2Z7nReIGrFfYpqs=
+        b=pG0HRW30XjJxyezJjP/i89MAHvHFe3d5QZCCzG/3yCY0UHtd95g91F0Hut7mBrSYg
+         1PUf65yMObhbFEhxuAlnehgs8DU0d/tzVcgtWOcsn2MRc4qAZZ28UE5EOSFnhemtZ3
+         c+SSOs2WigElyK2ERWnPfIYghuqFWQ1/DB68acR0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
-        Byungchul Park <byungchul.park@lge.com>,
-        Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 4.14 22/48] x86/mm: Fix RESERVE_BRK() for older binutils
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 07/62] dmaengine: ste_dma40: Fix PM disable depth imbalance in d40_probe
 Date:   Mon,  6 Nov 2023 14:03:13 +0100
-Message-ID: <20231106130258.631970448@linuxfoundation.org>
+Message-ID: <20231106130302.073058335@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,135 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit e32683c6f7d22ba624e0bfc58b02cf3348bdca63 upstream.
+[ Upstream commit 0618c077a8c20e8c81e367988f70f7e32bb5a717 ]
 
-With binutils 2.26, RESERVE_BRK() causes a build failure:
+The pm_runtime_enable will increase power disable depth. Thus
+a pairing decrement is needed on the error handling path to
+keep it balanced according to context.
+We fix it by calling pm_runtime_disable when error returns.
 
-  /tmp/ccnGOKZ5.s: Assembler messages:
-  /tmp/ccnGOKZ5.s:98: Error: missing ')'
-  /tmp/ccnGOKZ5.s:98: Error: missing ')'
-  /tmp/ccnGOKZ5.s:98: Error: missing ')'
-  /tmp/ccnGOKZ5.s:98: Error: junk at end of line, first unrecognized
-  character is `U'
-
-The problem is this line:
-
-  RESERVE_BRK(early_pgt_alloc, INIT_PGT_BUF_SIZE)
-
-Specifically, the INIT_PGT_BUF_SIZE macro which (via PAGE_SIZE's use
-_AC()) has a "1UL", which makes older versions of the assembler unhappy.
-Unfortunately the _AC() macro doesn't work for inline asm.
-
-Inline asm was only needed here to convince the toolchain to add the
-STT_NOBITS flag.  However, if a C variable is placed in a section whose
-name is prefixed with ".bss", GCC and Clang automatically set
-STT_NOBITS.  In fact, ".bss..page_aligned" already relies on this trick.
-
-So fix the build failure (and simplify the macro) by allocating the
-variable in C.
-
-Also, add NOLOAD to the ".brk" output section clause in the linker
-script.  This is a failsafe in case the ".bss" prefix magic trick ever
-stops working somehow.  If there's a section type mismatch, the GNU
-linker will force the ".brk" output section to be STT_NOBITS.  The LLVM
-linker will fail with a "section type mismatch" error.
-
-Note this also changes the name of the variable from .brk.##name to
-__brk_##name.  The variable names aren't actually used anywhere, so it's
-harmless.
-
-Fixes: a1e2c031ec39 ("x86/mm: Simplify RESERVE_BRK()")
-Reported-by: Joe Damato <jdamato@fastly.com>
-Reported-by: Byungchul Park <byungchul.park@lge.com>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Joe Damato <jdamato@fastly.com>
-Link: https://lore.kernel.org/r/22d07a44c80d8e8e1e82b9a806ddc8c6bbb2606e.1654759036.git.jpoimboe@kernel.org
-[nathan: Fix conflict due to lack of 360db4ace311 and resolve silent
-         conflict with 360db4ace3117]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/tencent_DD2D371DB5925B4B602B1E1D0A5FA88F1208@qq.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/setup.h  |   38 +++++++++++++++++++++-----------------
- arch/x86/kernel/vmlinux.lds.S |    4 ++--
- 2 files changed, 23 insertions(+), 19 deletions(-)
+ drivers/dma/ste_dma40.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -91,19 +91,16 @@ extern unsigned long _brk_end;
- void *extend_brk(size_t size, size_t align);
- 
- /*
-- * Reserve space in the brk section.  The name must be unique within the file,
-- * and somewhat descriptive.  The size is in bytes.
-+ * Reserve space in the .brk section, which is a block of memory from which the
-+ * caller is allowed to allocate very early (before even memblock is available)
-+ * by calling extend_brk().  All allocated memory will be eventually converted
-+ * to memblock.  Any leftover unallocated memory will be freed.
-  *
-- * The allocation is done using inline asm (rather than using a section
-- * attribute on a normal variable) in order to allow the use of @nobits, so
-- * that it doesn't take up any space in the vmlinux file.
-+ * The size is in bytes.
-  */
--#define RESERVE_BRK(name, size)						\
--	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
--	    ".brk." #name ":\n\t"					\
--	    ".skip " __stringify(size) "\n\t"				\
--	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
--	    ".popsection\n\t")
-+#define RESERVE_BRK(name, size)					\
-+	__section(.bss..brk) __aligned(1) __used	\
-+	static char __brk_##name[size]
- 
- /* Helper for reserving space for arrays of things */
- #define RESERVE_BRK_ARRAY(type, name, entries)		\
-@@ -121,12 +118,19 @@ asmlinkage void __init x86_64_start_rese
- 
- #endif /* __i386__ */
- #endif /* _SETUP */
--#else
--#define RESERVE_BRK(name,sz)				\
--	.pushsection .brk_reservation,"aw",@nobits;	\
--.brk.name:						\
--1:	.skip sz;					\
--	.size .brk.name,.-1b;				\
-+
-+#else  /* __ASSEMBLY */
-+
-+.macro __RESERVE_BRK name, size
-+	.pushsection .bss..brk, "aw"
-+GLOBAL(__brk_\name)
-+	.skip \size
-+END(__brk_\name)
- 	.popsection
-+.endm
-+
-+#define RESERVE_BRK(name, size) __RESERVE_BRK name, size
-+
- #endif /* __ASSEMBLY__ */
-+
- #endif /* _ASM_X86_SETUP_H */
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -359,10 +359,10 @@ SECTIONS
+diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
+index 3b09fdc507e04..594b016e76efc 100644
+--- a/drivers/dma/ste_dma40.c
++++ b/drivers/dma/ste_dma40.c
+@@ -3697,6 +3697,7 @@ static int __init d40_probe(struct platform_device *pdev)
+ 		regulator_disable(base->lcpa_regulator);
+ 		regulator_put(base->lcpa_regulator);
  	}
++	pm_runtime_disable(base->dev);
  
- 	. = ALIGN(PAGE_SIZE);
--	.brk : AT(ADDR(.brk) - LOAD_OFFSET) {
-+	.brk (NOLOAD) : AT(ADDR(.brk) - LOAD_OFFSET) {
- 		__brk_base = .;
- 		. += 64 * 1024;		/* 64k alignment slop space */
--		*(.brk_reservation)	/* areas brk users have reserved */
-+		*(.bss..brk)		/* areas brk users have reserved */
- 		__brk_limit = .;
- 	}
- 
+ 	kfree(base->lcla_pool.alloc_map);
+ 	kfree(base->lookup_log_chans);
+-- 
+2.42.0
+
 
 
