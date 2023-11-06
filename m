@@ -2,120 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D6377E1B40
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 08:32:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C672F7E1B82
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 08:51:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230369AbjKFHcj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 02:32:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46664 "EHLO
+        id S230514AbjKFHvb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 02:51:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229881AbjKFHci (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 02:32:38 -0500
-Received: from m12.mail.163.com (m12.mail.163.com [220.181.12.199])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C4253FA;
-        Sun,  5 Nov 2023 23:32:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=cIM8A
-        NhkDk4cNFFBOnL4o+hCAPV9B/A22slZhVaSAww=; b=NXQYt0ramU2gEdY2jd3LJ
-        cwdXRElPwhs7LExeTJrCOb++t1VYgpSYTRRZOVmjAXxuSQ+rKqogC3UugcwpmBqb
-        64IpNI1YgSoVsHdcpY7tht5RF3DkH8r2jYocqZHhQZEufvfyKjdb9Yqv1B9X4u2r
-        YdfxF4CnM3o8WIV4K91h9w=
-Received: from leanderwang-LC4.localdomain (unknown [111.206.145.21])
-        by zwqz-smtp-mta-g5-2 (Coremail) with SMTP id _____wD338YelkhlaFLCCQ--.58624S2;
-        Mon, 06 Nov 2023 15:30:38 +0800 (CST)
-From:   Zheng Wang <zyytlz.wz@163.com>
-To:     aspriel@gmail.com
-Cc:     franky.lin@broadcom.com, hante.meuleman@broadcom.com,
-        kvalo@kernel.org, johannes.berg@intel.com, marcan@marcan.st,
-        linus.walleij@linaro.org, jisoo.jang@yonsei.ac.kr,
-        linuxlovemin@yonsei.ac.kr, wataru.gohda@cypress.com,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        security@kernel.org, stable@vger.kernel.org,
-        hackerzheng666@gmail.com, Zheng Wang <zyytlz.wz@163.com>
-Subject: [PATCH v4] wifi: brcmfmac: Fix use-after-free bug in  brcmf_cfg80211_detach
-Date:   Mon,  6 Nov 2023 15:30:22 +0800
-Message-Id: <20231106073022.820661-1-zyytlz.wz@163.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S229803AbjKFHva (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 02:51:30 -0500
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE4A393;
+        Sun,  5 Nov 2023 23:51:26 -0800 (PST)
+X-UUID: 45dc8f687c7911ee8051498923ad61e6-20231106
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=CagbjiyHuObTfB2ebUdZvhvKU/p7R4uaVW0eJiXNBeQ=;
+        b=hbWumjcQkpH1hm3QlKTre/PhvCbLGwZkdFHqq4ccuHgaIeDwKiXb1JNv6JQkh2CIKFfGIOnKfJIRqh+FzLCw6Gr0J88C9YFwkREvu7/0ww5sgFdiKNzKMMeDCPU31FWQEK4iRZUpqaSjQrQ+nsHqH/qg803HusddD691xvcshvg=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.33,REQID:623d9bb9-2037-48ba-86c7-e6d76a315473,IP:0,U
+        RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+        N:release,TS:-25
+X-CID-META: VersionHash:364b77b,CLOUDID:0b25ba5f-c89d-4129-91cb-8ebfae4653fc,B
+        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+        NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 45dc8f687c7911ee8051498923ad61e6-20231106
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
+        (envelope-from <peter.wang@mediatek.com>)
+        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+        with ESMTP id 1995684287; Mon, 06 Nov 2023 15:51:20 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 6 Nov 2023 15:51:19 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 6 Nov 2023 15:51:19 +0800
+From:   <peter.wang@mediatek.com>
+To:     <stanley.chu@mediatek.com>, <linux-scsi@vger.kernel.org>,
+        <martin.petersen@oracle.com>, <avri.altman@wdc.com>,
+        <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
+CC:     <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
+        <peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
+        <alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
+        <chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
+        <powen.kao@mediatek.com>, <qilin.tan@mediatek.com>,
+        <lin.gui@mediatek.com>, <tun-yu.yu@mediatek.com>,
+        <eddie.huang@mediatek.com>, <naomi.chu@mediatek.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v2] ufs: core: fix racing issue between ufshcd_mcq_abort and ISR
+Date:   Mon, 6 Nov 2023 15:51:17 +0800
+Message-ID: <20231106075117.8995-1-peter.wang@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wD338YelkhlaFLCCQ--.58624S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Zr13tw1fAw4UJw1rZFyxKrg_yoW8ZFWUpF
-        WfWa4qyryUWrW3Kr4F9rnrJFyrtw4DKwnYkr4qvas3uFn8ur18JrW8KFya93WDGrs2yay7
-        Ar4vqrnrGrZ7GFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zR1rWrUUUUU=
-X-Originating-IP: [111.206.145.21]
-X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/xtbBdgEgU2DkpywCtgAAs-
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--7.853700-8.000000
+X-TMASE-MatchedRID: lR9wedxBitsMQLXc2MGSbBuZoNKc6pl+WPJn4UmMuVJ0cpXNtrVD/RFG
+        4EGBR4d4nFnqwstPnWZOTRDyBol0uXAvdl/gU+kWydRN/Yyg4pid2Wz0X3OaLd9RlPzeVuQQ8rM
+        P48ANS13i8zVgXoAltsIJ+4gwXrEtIAcCikR3vq8qDZkmyvidBcJ/Nl2qTLefGKqfq7OIc/OSiu
+        JY0MlQAWn31fAH18h0
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--7.853700-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: F0D8E375B0487D897EC3F5022A612D7ED0F588FD4CEC84055C5E5F7CC37AF0CF2000:8
+X-MTK:  N
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,RDNS_NONE,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the candidate patch of CVE-2023-47233 :
-https://nvd.nist.gov/vuln/detail/CVE-2023-47233
+From: Peter Wang <peter.wang@mediatek.com>
 
-In brcm80211 driver,it starts with the following invoking chain
-to start init a timeout worker:
+If command timeout happen and cq complete irq raise at the same time,
+ufshcd_mcq_abort null the lprb->cmd and NULL poiner KE in ISR.
+Below is error log.
 
-->brcmf_usb_probe
-  ->brcmf_usb_probe_cb
-    ->brcmf_attach
-      ->brcmf_bus_started
-        ->brcmf_cfg80211_attach
-          ->wl_init_priv
-            ->brcmf_init_escan
-              ->INIT_WORK(&cfg->escan_timeout_work,
-		  brcmf_cfg80211_escan_timeout_worker);
+ufshcd_abort: Device abort task at tag 18
+Unable to handle kernel NULL pointer dereference at virtual address
+0000000000000108
+pc : [0xffffffe27ef867ac] scsi_dma_unmap+0xc/0x44
+lr : [0xffffffe27f1b898c] ufshcd_release_scsi_cmd+0x24/0x114
 
-If we disconnect the USB by hotplug, it will call
-brcmf_usb_disconnect to make cleanup. The invoking chain is :
-
-brcmf_usb_disconnect
-  ->brcmf_usb_disconnect_cb
-    ->brcmf_detach
-      ->brcmf_cfg80211_detach
-        ->kfree(cfg);
-
-While the timeout woker may still be running. This will cause
-a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
-
-Fix it by deleting the timer and canceling the worker in
-brcmf_cfg80211_detach.
-
-Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Fixes: f1304d442077 ("scsi: ufs: mcq: Added ufshcd_mcq_abort()")
 Cc: stable@vger.kernel.org
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
 ---
-v4:
-- rename the subject and add CVE number as Ping-Ke Shih suggested
-v3:
-- rename the subject as Johannes suggested
-v2:
-- fix the error of kernel test bot reported
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 3 +++
+ drivers/ufs/core/ufs-mcq.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 667462369a32..646ec8bdf512 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -8431,6 +8431,9 @@ void brcmf_cfg80211_detach(struct brcmf_cfg80211_info *cfg)
- 	if (!cfg)
- 		return;
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 2ba8ec254dce..6ea96406f2bf 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -630,6 +630,7 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
+ 	int tag = scsi_cmd_to_rq(cmd)->tag;
+ 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
+ 	struct ufs_hw_queue *hwq;
++	unsigned long flags;
+ 	int err = FAILED;
  
-+	if (timer_pending(&cfg->escan_timeout))
-+		del_timer_sync(&cfg->escan_timeout);
-+	cancel_work_sync(&cfg->escan_timeout_work);
- 	brcmf_pno_detach(cfg);
- 	brcmf_btcoex_detach(cfg);
- 	wiphy_unregister(cfg->wiphy);
+ 	if (!ufshcd_cmd_inflight(lrbp->cmd)) {
+@@ -670,8 +671,10 @@ int ufshcd_mcq_abort(struct scsi_cmnd *cmd)
+ 	}
+ 
+ 	err = SUCCESS;
++	spin_lock_irqsave(&hwq->cq_lock, flags);
+ 	if (ufshcd_cmd_inflight(lrbp->cmd))
+ 		ufshcd_release_scsi_cmd(hba, lrbp);
++	spin_unlock_irqrestore(&hwq->cq_lock, flags);
+ 
+ out:
+ 	return err;
 -- 
-2.25.1
+2.18.0
 
