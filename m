@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EE667E2586
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:33:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA6C37E252A
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:28:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231911AbjKFNdD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:33:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39542 "EHLO
+        id S232665AbjKFN2v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:28:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232773AbjKFNdD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:33:03 -0500
+        with ESMTP id S232521AbjKFN2v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:28:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64D62100
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:33:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2A4C433C8;
-        Mon,  6 Nov 2023 13:32:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4889D13E
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:28:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B810C433C8;
+        Mon,  6 Nov 2023 13:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277580;
-        bh=V6AJsHr/VhzNfLev/OPDax0ZxHF0YQJQ/KFfiVKbulk=;
+        s=korg; t=1699277327;
+        bh=V1JKPkASdebCuPPLDcfVa+j+ndleNQjd0STBBGMphxI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=piY6EgyMGnYw/mflRzukPISPfnkLZ9w7LC690qrHEaJ2qGGtI+gUWALr2rtEmUS6B
-         hPPWiRG0txO+FOxkrInFjUDCJvTEG0ame0bnKOF4DKXJvI3eRLhwf4I/kZU3y7Ni+c
-         JjSkiyCFVAicb+0yoxkAzwqyA/OKm9vwOmctw2wg=
+        b=TxikIQt3JCgsEffHdUWOVYpGO/VZ95K75oCN9Jc7psaJzsxx9eBn1SGdsv6qxBTfL
+         NuE0VPlai3R7oUIINTPccYd1J5yMcw2Fhi/olGW2h1ycqw3SmGQytn7YeDSkRafyRJ
+         Czj6BIq5QNn5zimtcdgMp1VHYRCQGnjzSmKv6lMI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "William A. Kennington III" <william@wkennington.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 67/95] spi: npcm-fiu: Fix UMA reads when dummy.nbytes == 0
+        patches@lists.linux.dev, Jimmy Hu <hhhuuu@google.com>
+Subject: [PATCH 5.15 115/128] usb: typec: tcpm: Fix NULL pointer dereference in tcpm_pd_svdm()
 Date:   Mon,  6 Nov 2023 14:04:35 +0100
-Message-ID: <20231106130307.167518286@linuxfoundation.org>
+Message-ID: <20231106130314.394661705@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +48,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William A. Kennington III <william@wkennington.com>
+From: Jimmy Hu <hhhuuu@google.com>
 
-[ Upstream commit 2ec8b010979036c2fe79a64adb6ecc0bd11e91d1 ]
+commit 4987daf86c152ff882d51572d154ad12e4ff3a4b upstream.
 
-We don't want to use the value of ilog2(0) as dummy.buswidth is 0 when
-dummy.nbytes is 0. Since we have no dummy bytes, we don't need to
-configure the dummy byte bits per clock register value anyway.
+It is possible that typec_register_partner() returns ERR_PTR on failure.
+When port->partner is an error, a NULL pointer dereference may occur as
+shown below.
 
-Signed-off-by: "William A. Kennington III" <william@wkennington.com>
-Link: https://lore.kernel.org/r/20230922182812.2728066-1-william@wkennington.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[91222.095236][  T319] typec port0: failed to register partner (-17)
+...
+[91225.061491][  T319] Unable to handle kernel NULL pointer dereference
+at virtual address 000000000000039f
+[91225.274642][  T319] pc : tcpm_pd_data_request+0x310/0x13fc
+[91225.274646][  T319] lr : tcpm_pd_data_request+0x298/0x13fc
+[91225.308067][  T319] Call trace:
+[91225.308070][  T319]  tcpm_pd_data_request+0x310/0x13fc
+[91225.308073][  T319]  tcpm_pd_rx_handler+0x100/0x9e8
+[91225.355900][  T319]  kthread_worker_fn+0x178/0x58c
+[91225.355902][  T319]  kthread+0x150/0x200
+[91225.355905][  T319]  ret_from_fork+0x10/0x30
+
+Add a check for port->partner to avoid dereferencing a NULL pointer.
+
+Fixes: 5e1d4c49fbc8 ("usb: typec: tcpm: Determine common SVDM Version")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+Link: https://lore.kernel.org/r/20231020012132.100960-1-hhhuuu@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-npcm-fiu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
-index b62471ab6d7f2..1edaf22e265bf 100644
---- a/drivers/spi/spi-npcm-fiu.c
-+++ b/drivers/spi/spi-npcm-fiu.c
-@@ -334,8 +334,9 @@ static int npcm_fiu_uma_read(struct spi_mem *mem,
- 		uma_cfg |= ilog2(op->cmd.buswidth);
- 		uma_cfg |= ilog2(op->addr.buswidth)
- 			<< NPCM_FIU_UMA_CFG_ADBPCK_SHIFT;
--		uma_cfg |= ilog2(op->dummy.buswidth)
--			<< NPCM_FIU_UMA_CFG_DBPCK_SHIFT;
-+		if (op->dummy.nbytes)
-+			uma_cfg |= ilog2(op->dummy.buswidth)
-+				<< NPCM_FIU_UMA_CFG_DBPCK_SHIFT;
- 		uma_cfg |= ilog2(op->data.buswidth)
- 			<< NPCM_FIU_UMA_CFG_RDBPCK_SHIFT;
- 		uma_cfg |= op->dummy.nbytes << NPCM_FIU_UMA_CFG_DBSIZ_SHIFT;
--- 
-2.42.0
-
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -1608,6 +1608,9 @@ static int tcpm_pd_svdm(struct tcpm_port
+ 			if (PD_VDO_VID(p[0]) != USB_SID_PD)
+ 				break;
+ 
++			if (IS_ERR_OR_NULL(port->partner))
++				break;
++
+ 			if (PD_VDO_SVDM_VER(p[0]) < svdm_version) {
+ 				typec_partner_set_svdm_version(port->partner,
+ 							       PD_VDO_SVDM_VER(p[0]));
 
 
