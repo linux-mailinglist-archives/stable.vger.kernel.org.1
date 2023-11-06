@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E05E57E23D6
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4264B7E254E
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232233AbjKFNPN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:15:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57754 "EHLO
+        id S232711AbjKFNal (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:30:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232124AbjKFNPM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:15:12 -0500
+        with ESMTP id S232718AbjKFNak (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:40 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96FBBA9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:15:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D882AC433C8;
-        Mon,  6 Nov 2023 13:15:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B661D100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053CCC433CA;
+        Mon,  6 Nov 2023 13:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276509;
-        bh=pxT2UfW5zkgutyXYZ/THOyqobAfyZEMjZZJVmDOOAKA=;
+        s=korg; t=1699277436;
+        bh=ttfxndA2+Pr14r0+eo6nBTy6p4JpaYaAAmn/xc13xRQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HWPKrqyIO5+/E8+qdd3gOvpsvShWt1utYjTEWKRJUQiu2zdp7IYcmr4LXiZ2dV6Iz
-         JgO1xjnWDnCTKfZ80LZF6ZqPnSZ3opSHWanwHEjIAMRbQ0brjmGUCCquvrmB5GBfKi
-         Q1E3Z7DA35m3u/Z3aepqlee3UZRLvcHQrWHF/N8w=
+        b=y1EMR7qkxAJxj2XaqOYUe4akJxbvLrdU2kRjmzEapkyNbQrPj0thIniuhEUX1ecW+
+         r+xEy2GwsqemjJ//iI6BW/taZbL2nf//Bo2bYeHlj2mwUm+flee+9nXJhHyD3ihOdn
+         qYSZHtvXP9IldaFYAE0TUJiA3xodaKjn+pAbf3Qc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxim Levitsky <mlevitsk@redhat.com>,
-        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        SeongJae Park <sj@kernel.org>
-Subject: [PATCH 6.1 42/62] x86: KVM: SVM: always update the x2avic msr interception
-Date:   Mon,  6 Nov 2023 14:03:48 +0100
-Message-ID: <20231106130303.319739065@linuxfoundation.org>
+        patches@lists.linux.dev, Fred Chen <fred.chenchen03@gmail.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 21/95] tcp: fix wrong RTO timeout when received SACK reneging
+Date:   Mon,  6 Nov 2023 14:03:49 +0100
+Message-ID: <20231106130305.499842064@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,60 +51,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maxim Levitsky <mlevitsk@redhat.com>
+From: Fred Chen <fred.chenchen03@gmail.com>
 
-commit b65235f6e102354ccafda601eaa1c5bef5284d21 upstream.
+[ Upstream commit d2a0fc372aca561556e765d0a9ec365c7c12f0ad ]
 
-The following problem exists since x2avic was enabled in the KVM:
+This commit fix wrong RTO timeout when received SACK reneging.
 
-svm_set_x2apic_msr_interception is called to enable the interception of
-the x2apic msrs.
+When an ACK arrived pointing to a SACK reneging, tcp_check_sack_reneging()
+will rearm the RTO timer for min(1/2*srtt, 10ms) into to the future.
 
-In particular it is called at the moment the guest resets its apic.
+But since the commit 62d9f1a6945b ("tcp: fix TLP timer not set when
+CA_STATE changes from DISORDER to OPEN") merged, the tcp_set_xmit_timer()
+is moved after tcp_fastretrans_alert()(which do the SACK reneging check),
+so the RTO timeout will be overwrited by tcp_set_xmit_timer() with
+icsk_rto instead of 1/2*srtt.
 
-Assuming that the guest's apic was in x2apic mode, the reset will bring
-it back to the xapic mode.
+Here is a packetdrill script to check this bug:
+0     socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++0    bind(3, ..., ...) = 0
++0    listen(3, 1) = 0
 
-The svm_set_x2apic_msr_interception however has an erroneous check for
-'!apic_x2apic_mode()' which prevents it from doing anything in this case.
+// simulate srtt to 100ms
++0    < S 0:0(0) win 32792 <mss 1000, sackOK,nop,nop,nop,wscale 7>
++0    > S. 0:0(0) ack 1 <mss 1460,nop,nop,sackOK,nop,wscale 7>
++.1    < . 1:1(0) ack 1 win 1024
 
-As a result of this, all x2apic msrs are left unintercepted, and that
-exposes the bare metal x2apic (if enabled) to the guest.
-Oops.
++0    accept(3, ..., ...) = 4
 
-Remove the erroneous '!apic_x2apic_mode()' check to fix that.
++0    write(4, ..., 10000) = 10000
++0    > P. 1:10001(10000) ack 1
 
-This fixes CVE-2023-5090
+// inject sack
++.1    < . 1:1(0) ack 1 win 257 <sack 1001:10001,nop,nop>
++0    > . 1:1001(1000) ack 1
 
-Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
-Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Tested-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20230928173354.217464-2-mlevitsk@redhat.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+// inject sack reneging
++.1    < . 1:1(0) ack 1001 win 257 <sack 9001:10001,nop,nop>
+
+// we expect rto fired in 1/2*srtt (50ms)
++.05    > . 1001:2001(1000) ack 1
+
+This fix remove the FLAG_SET_XMIT_TIMER from ack_flag when
+tcp_check_sack_reneging() set RTO timer with 1/2*srtt to avoid
+being overwrited later.
+
+Fixes: 62d9f1a6945b ("tcp: fix TLP timer not set when CA_STATE changes from DISORDER to OPEN")
+Signed-off-by: Fred Chen <fred.chenchen03@gmail.com>
+Reviewed-by: Neal Cardwell <ncardwell@google.com>
+Tested-by: Neal Cardwell <ncardwell@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv4/tcp_input.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -822,8 +822,7 @@ void svm_set_x2apic_msr_interception(str
- 	if (intercept == svm->x2avic_msrs_intercepted)
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 3f2b6a3adf6a9..0c935904ced82 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2185,16 +2185,17 @@ void tcp_enter_loss(struct sock *sk)
+  * restore sanity to the SACK scoreboard. If the apparent reneging
+  * persists until this RTO then we'll clear the SACK scoreboard.
+  */
+-static bool tcp_check_sack_reneging(struct sock *sk, int flag)
++static bool tcp_check_sack_reneging(struct sock *sk, int *ack_flag)
+ {
+-	if (flag & FLAG_SACK_RENEGING &&
+-	    flag & FLAG_SND_UNA_ADVANCED) {
++	if (*ack_flag & FLAG_SACK_RENEGING &&
++	    *ack_flag & FLAG_SND_UNA_ADVANCED) {
+ 		struct tcp_sock *tp = tcp_sk(sk);
+ 		unsigned long delay = max(usecs_to_jiffies(tp->srtt_us >> 4),
+ 					  msecs_to_jiffies(10));
+ 
+ 		inet_csk_reset_xmit_timer(sk, ICSK_TIME_RETRANS,
+ 					  delay, TCP_RTO_MAX);
++		*ack_flag &= ~FLAG_SET_XMIT_TIMER;
+ 		return true;
+ 	}
+ 	return false;
+@@ -2950,7 +2951,7 @@ static void tcp_fastretrans_alert(struct sock *sk, const u32 prior_snd_una,
+ 		tp->prior_ssthresh = 0;
+ 
+ 	/* B. In all the states check for reneging SACKs. */
+-	if (tcp_check_sack_reneging(sk, flag))
++	if (tcp_check_sack_reneging(sk, ack_flag))
  		return;
  
--	if (avic_mode != AVIC_MODE_X2 ||
--	    !apic_x2apic_mode(svm->vcpu.arch.apic))
-+	if (avic_mode != AVIC_MODE_X2)
- 		return;
- 
- 	for (i = 0; i < MAX_DIRECT_ACCESS_MSRS; i++) {
+ 	/* C. Check consistency of the current state. */
+-- 
+2.42.0
+
 
 
