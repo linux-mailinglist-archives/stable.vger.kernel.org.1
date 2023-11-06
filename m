@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D02847E30B7
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 00:07:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1279B7E30BA
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 00:08:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233510AbjKFXHz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 18:07:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55562 "EHLO
+        id S233485AbjKFXIC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 18:08:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233512AbjKFXHc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 18:07:32 -0500
+        with ESMTP id S233533AbjKFXHh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 18:07:37 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4342210F3;
-        Mon,  6 Nov 2023 15:07:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADB8C433C7;
-        Mon,  6 Nov 2023 23:07:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D32971703;
+        Mon,  6 Nov 2023 15:07:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB6CC433C7;
+        Mon,  6 Nov 2023 23:07:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699312048;
-        bh=N6GHA1pxyKC1p46ueFgQb+Ovp4j2adx/8SQF407SWt0=;
+        s=k20201202; t=1699312052;
+        bh=md3aXzGLS4KCiMpHUZ/uZtMIj/5YQPVs/Nh62VwgmFs=;
         h=From:To:Cc:Subject:Date:From;
-        b=l/4YXCVUV5BSaA5Wa7s+89WtCB8L9nUbR996FBU3iZQIEeUfkVqDIsj+7auI9oXGF
-         BfGZXxE/wVO0DeGBupiaDm82n4BCLHTYIfLFTuEzJ8K9Sbzd4Q/ZsK3s96b2WdCMpl
-         apmdYmkqRmko8iHO20/88BXj6nN7LYFHCj7lWxXB/7TGp/w/bZjHnlHbCeoWfk33iU
-         LdxJ11n/7YRMmb8uSdvy5mofxfpxQ4c7hr4ZlUm5MsUj0Aq/RWCgQxWnKy4erZgQHr
-         k86D3IR6YJXnKQuTKs5pUEJR8+dLwXeDf3FVVX6LTs/78rM3kgpL40EuSi0Hl37ipN
-         07PYEI4a2TL6Q==
+        b=LXtX3WosRNuQ0jADLol+qQIXVaRakLQaDwzvbjbDsqLhiYTosifWpaQTci1GTBkNP
+         xEHzlDRIpsa5mj2u1zOD9kpD/V+u7GI5s1bryXSFfvZG9sOSwYnyPEVxx9epSJOSrV
+         p370ph26O7+FJamB8WfqZMCJ6x7am+jJFUMhyaRS6SppnZAnvbpY5k3V0Xy928iM7F
+         FhnJp4yiKD4jiLsEGpYXxexhEHoP55ZZdjOXE9+TFUlpczKNE+PEBh4zCo5XtCxJfS
+         YSZzgS+Z0ZwIOaH/yafggs7S0VuMB8V4ZTCytizzzGOw4EyoIRAru1zgP6Hsna0hC3
+         VTC6Rr74LY7dQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     John Stultz <jstultz@google.com>, Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>, peterz@infradead.org,
         mingo@redhat.com, will@kernel.org
-Subject: [PATCH AUTOSEL 4.19] locking/ww_mutex/test: Fix potential workqueue corruption
-Date:   Mon,  6 Nov 2023 18:07:25 -0500
-Message-ID: <20231106230726.3734650-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14] locking/ww_mutex/test: Fix potential workqueue corruption
+Date:   Mon,  6 Nov 2023 18:07:29 -0500
+Message-ID: <20231106230729.3734685-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.297
+X-stable-base: Linux 4.14.328
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -88,7 +88,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 12 insertions(+), 8 deletions(-)
 
 diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index 65a3b7e55b9fc..4fd05d9d5d6d1 100644
+index 654977862b06b..8489a01f943e8 100644
 --- a/kernel/locking/test-ww_mutex.c
 +++ b/kernel/locking/test-ww_mutex.c
 @@ -439,7 +439,6 @@ static void stress_inorder_work(struct work_struct *work)
