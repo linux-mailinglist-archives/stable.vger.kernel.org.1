@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BD0A7E2422
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF1607E23CD
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:14:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231937AbjKFNSj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:18:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37106 "EHLO
+        id S232107AbjKFNOt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:14:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231960AbjKFNSe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:34 -0500
+        with ESMTP id S232099AbjKFNOt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:14:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3464112
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CAB1C433C8;
-        Mon,  6 Nov 2023 13:18:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A126A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:14:46 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0CA2C433C9;
+        Mon,  6 Nov 2023 13:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276711;
-        bh=d4i9vUS+7Y9lmAK3aDrmYLgUB7WrZFabfG0XyYOcfWY=;
+        s=korg; t=1699276486;
+        bh=PJ/l7atXbNfx7W7xWubztAFabZx92P6apni08R+pxAo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cqHZSWdH/33fAr+sNaPeEw9zRn9dfDzrC+P7l7qk+/PQ06dihIIu+gL00DFUgC8Cz
-         S+OBuxuiEAi/TTsZcbLb04xhpGzU+xFFEqYBJQ2pLtB+h66FNjwiWaAar5MMaXmvtw
-         prSzyzJjGjrzU+wts8+OqUOjW1fz1PlQnddyPx58=
+        b=QYN8CVxMQK62U1hQmRpg5annGll4Hkn1RzY07xQRQ31gA7g7Dn477LbBi96MfIOdh
+         UMZpx4zAmFoXoBi8VQ3D/7S6/9OE0hd/skQNvNi+9ElcCaA+AGv7qRQsSqwAioGviH
+         EsbJHUhbya/yBAgOpdQEKuHfJB6stGNNcQVTb6M0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Badhri Jagan Sridharan <badhri@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.5 70/88] usb: typec: tcpm: Add additional checks for contaminant
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 6.1 58/62] tty: 8250: Add support for Intashield IX cards
 Date:   Mon,  6 Nov 2023 14:04:04 +0100
-Message-ID: <20231106130308.326386206@linuxfoundation.org>
+Message-ID: <20231106130303.835401419@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,71 +48,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit 1a4a2df07c1f087704c24282cebe882268e38146 upstream.
+commit 62d2ec2ded278c7512d91ca7bf8eb9bac46baf90 upstream.
 
-When transitioning from SNK_DEBOUNCED to unattached, its worthwhile to
-check for contaminant to mitigate wakeups.
-
-```
-[81334.219571] Start toggling
-[81334.228220] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.305147] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.305162] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.305187] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81334.475515] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81334.486480] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81334.486495] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81334.486515] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81334.506621] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81334.506640] Start toggling
-[81334.516972] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.592759] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.592773] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.592792] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81334.762940] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81334.773557] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81334.773570] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81334.773588] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81334.793672] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81334.793681] Start toggling
-[81334.801840] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.878655] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.878672] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.878696] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81335.048968] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81335.060684] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81335.060754] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81335.060775] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81335.080884] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81335.080900] Start toggling
-```
+Add support for the IX-100, IX-200 and IX-400 serial cards.
 
 Cc: stable@vger.kernel.org
-Fixes: 599f008c257d ("usb: typec: tcpm: Add callbacks to mitigate wakeups due to contaminant")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231015053108.2349570-1-badhri@google.com
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB7899614E5837E82A03272A4BC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/serial/8250/8250_pci.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3970,6 +3970,8 @@ static void run_state_machine(struct tcp
- 		port->potential_contaminant = ((port->enter_state == SRC_ATTACH_WAIT &&
- 						port->state == SRC_UNATTACHED) ||
- 					       (port->enter_state == SNK_ATTACH_WAIT &&
-+						port->state == SNK_UNATTACHED) ||
-+					       (port->enter_state == SNK_DEBOUNCED &&
- 						port->state == SNK_UNATTACHED));
- 
- 	port->enter_state = port->state;
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -4949,6 +4949,27 @@ static const struct pci_device_id serial
+ 	{	PCI_VENDOR_ID_INTASHIELD, PCI_DEVICE_ID_INTASHIELD_IS400,
+ 		PCI_ANY_ID, PCI_ANY_ID, 0, 0,    /* 135a.0dc0 */
+ 		pbn_b2_4_115200 },
++	/*
++	 * IntaShield IX-100
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4027,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
++	/*
++	 * IntaShield IX-200
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4028,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_2_15625000 },
++	/*
++	 * IntaShield IX-400
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4029,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_4_15625000 },
+ 	/* Brainboxes Devices */
+ 	/*
+ 	* Brainboxes UC-101
 
 
