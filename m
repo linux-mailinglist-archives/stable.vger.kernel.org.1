@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2434B7E230A
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DDC07E2401
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231918AbjKFNIL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:08:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60682 "EHLO
+        id S231961AbjKFNRE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:17:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231755AbjKFNIK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:10 -0500
+        with ESMTP id S232258AbjKFNRD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49A0FBF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B56EC433C8;
-        Mon,  6 Nov 2023 13:08:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98B5EBD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F0FC433CB;
+        Mon,  6 Nov 2023 13:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276086;
-        bh=CEAJR28lGuJn4Ms7WsTN29GW2G5m+kdlO7JDR0G10zo=;
+        s=korg; t=1699276621;
+        bh=zagDqoIZkaSU+uk32m9Wre90FFQYOjH6YOAMgkIeUoI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MGdWDsADLuaUZqmqXKlWLfGQUE+ybj61EWvhLflJ6sNcKJ4X+3FEI07E4JRATzvWP
-         xAzEVHS7hs8OOM9YX0pyqJ3phpFLs/FwcPvcfpNACJ876LG8k3x0etnEN9aM+aNy6t
-         hvOM9pc5DV/eOx96xTuOFppTaDOp09h4iNOnpMfQ=
+        b=Q04Jd/DZ7moi7znOXRqC1DYd64fs+34i/Jbc2GsIqfk1VZr4NeiTPVSOOcA7lxB3N
+         8kLrRI5pNZUjC5BJSvfQPZPtKlqBUeor4npzpTcL4BUFhmBrHwvmpM3XbIf9zUgBjK
+         YO5G1erg12gMId9aYgYHDRja6YhgzbWmMxw0I6N0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Daniel Starke <daniel.starke@siemens.com>
-Subject: [PATCH 6.6 16/30] tty: n_gsm: fix race condition in status line change on dead connections
-Date:   Mon,  6 Nov 2023 14:03:34 +0100
-Message-ID: <20231106130258.514617627@linuxfoundation.org>
+        patches@lists.linux.dev, Jorge Maidana <jorgem.linux@gmail.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 41/88] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
+Date:   Mon,  6 Nov 2023 14:03:35 +0100
+Message-ID: <20231106130307.346351735@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +49,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Starke <daniel.starke@siemens.com>
+From: Jorge Maidana <jorgem.linux@gmail.com>
 
-commit 3a75b205de43365f80a33b98ec9289785da56243 upstream.
+[ Upstream commit 1022e7e2f40574c74ed32c3811b03d26b0b81daf ]
 
-gsm_cleanup_mux() cleans up the gsm by closing all DLCIs, stopping all
-timers, removing the virtual tty devices and clearing the data queues.
-This procedure, however, may cause subsequent changes of the virtual modem
-status lines of a DLCI. More data is being added the outgoing data queue
-and the deleted kick timer is restarted to handle this. At this point many
-resources have already been removed by the cleanup procedure. Thus, a
-kernel panic occurs.
+Delete the v86d netlink only after all the VBE tasks have been
+completed.
 
-Fix this by proving in gsm_modem_update() that the cleanup procedure has
-not been started and the mux is still alive.
+Fixes initial state restore on module unload:
+uvesafb: VBE state restore call failed (eax=0x4f04, err=-19)
 
-Note that writing to a virtual tty is already protected by checks against
-the DLCI specific connection state.
-
-Fixes: c568f7086c6e ("tty: n_gsm: fix missing timer to handle stalled links")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20231026055844.3127-1-daniel.starke@siemens.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jorge Maidana <jorgem.linux@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/uvesafb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -4108,6 +4108,8 @@ static int gsm_modem_upd_via_msc(struct
+diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
+index 78d85dae8ec80..c4559768f00f6 100644
+--- a/drivers/video/fbdev/uvesafb.c
++++ b/drivers/video/fbdev/uvesafb.c
+@@ -1931,10 +1931,10 @@ static void uvesafb_exit(void)
+ 		}
+ 	}
  
- static int gsm_modem_update(struct gsm_dlci *dlci, u8 brk)
- {
-+	if (dlci->gsm->dead)
-+		return -EL2HLT;
- 	if (dlci->adaption == 2) {
- 		/* Send convergence layer type 2 empty data frame. */
- 		gsm_modem_upd_via_data(dlci, brk);
+-	cn_del_callback(&uvesafb_cn_id);
+ 	driver_remove_file(&uvesafb_driver.driver, &driver_attr_v86d);
+ 	platform_device_unregister(uvesafb_device);
+ 	platform_driver_unregister(&uvesafb_driver);
++	cn_del_callback(&uvesafb_cn_id);
+ }
+ 
+ module_exit(uvesafb_exit);
+-- 
+2.42.0
+
 
 
