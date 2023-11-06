@@ -2,46 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 535F87E2524
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:28:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11BFC7E25B1
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:34:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232628AbjKFN2h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:28:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39240 "EHLO
+        id S232833AbjKFNeQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:34:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232661AbjKFN2g (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:28:36 -0500
+        with ESMTP id S232842AbjKFNeO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:34:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D87107;
-        Mon,  6 Nov 2023 05:28:33 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC529C433C8;
-        Mon,  6 Nov 2023 13:28:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4727EF1
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:34:11 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F5AC433CC;
+        Mon,  6 Nov 2023 13:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277313;
-        bh=gD3nrT77EDN+SE6o+ELuhn8JxT8+1R359eaKWQLB7wY=;
+        s=korg; t=1699277650;
+        bh=ERIPijGz1RziISdf9VfMeKTqN2r5ZwoLR8m8m55NtRs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mk5fTPnRAtORGOfCiqpOZQIyGa52Q4NUI7PuB50Hn9eyqJ7v4KOmAVUDVQwKADumk
-         PuZlNJmlOnq98nxBnCE2OnHdR5P8nPsY4bXUh5pkwSdFRboXi9YgnC/UgHBbq9YEf7
-         aJSrOZcTadtAzxmPM9jYBmiVOJNeBj7gAmQacvwk=
+        b=tBWC6F+rPGWFDDrvdhZoAe4HnX6LMKK0dshlCyth0M88PJypyrRBHi2IJq1VmtLFD
+         EJyqA3EZELKfy3MX06O2jDeobjBw2Ix8HBuuFZtyVBD/jhv7IWMhi8IdibDFI6fUYZ
+         WAcywlOeuFCsAvtkVMGGRudh1yLUR33FLkR3SrjY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "linux-can@vger.kernel.org, lukas.magel@posteo.net,
-        patches@lists.linux.dev, maxime.jayat@mobile-devices.fr,
-        mkl@pengutronix.de, michal.sojka@cvut.cz, Oliver Hartkopp" 
-        <socketcan@hartkopp.net>,
-        Maxime Jayat <maxime.jayat@mobile-devices.fr>,
-        Lukas Magel <lukas.magel@posteo.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Sasha Levin <sashal@kernel.org>,
-        Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [PATCH 5.15 110/128] can: isotp: isotp_sendmsg(): fix TX state detection and wait behavior
+        patches@lists.linux.dev, Dmitry Dunaev <dunaev@tecon.ru>,
+        Anup Patel <apatel@ventanamicro.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 62/95] irqchip/riscv-intc: Mark all INTC nodes as initialized
 Date:   Mon,  6 Nov 2023 14:04:30 +0100
-Message-ID: <20231106130314.174525847@linuxfoundation.org>
+Message-ID: <20231106130306.972422092@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,79 +50,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Anup Patel <apatel@ventanamicro.com>
 
-From: Lukas Magel <lukas.magel@posteo.net>
+[ Upstream commit e13cd66bd821be417c498a34928652db4ac6b436 ]
 
-[ Upstream commit d9c2ba65e651467de739324d978b04ed8729f483 ]
+The RISC-V INTC local interrupts are per-HART (or per-CPU) so we
+create INTC IRQ domain only for the INTC node belonging to the boot
+HART. This means only the boot HART INTC node will be marked as
+initialized and other INTC nodes won't be marked which results
+downstream interrupt controllers (such as PLIC, IMSIC and APLIC
+direct-mode) not being probed due to missing device suppliers.
 
-With patch [1], isotp_poll was updated to also queue the poller in the
-so->wait queue, which is used for send state changes. Since the queue
-now also contains polling tasks that are not interested in sending, the
-queue fill state can no longer be used as an indication of send
-readiness. As a consequence, nonblocking writes can lead to a race and
-lock-up of the socket if there is a second task polling the socket in
-parallel.
+To address this issue, we mark all INTC node for which we don't
+create IRQ domain as initialized.
 
-With this patch, isotp_sendmsg does not consult wq_has_sleepers but
-instead tries to atomically set so->tx.state and waits on so->wait if it
-is unable to do so. This behavior is in alignment with isotp_poll, which
-also checks so->tx.state to determine send readiness.
-
-V2:
-- Revert direct exit to goto err_event_drop
-
-[1] https://lore.kernel.org/all/20230331125511.372783-1-michal.sojka@cvut.cz
-
-Reported-by: Maxime Jayat <maxime.jayat@mobile-devices.fr>
-Closes: https://lore.kernel.org/linux-can/11328958-453f-447f-9af8-3b5824dfb041@munic.io/
-Signed-off-by: Lukas Magel <lukas.magel@posteo.net>
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Fixes: 79e19fa79cb5 ("can: isotp: isotp_ops: fix poll() to not report false EPOLLOUT events")
-Link: https://github.com/pylessard/python-udsoncan/issues/178#issuecomment-1743786590
-Link: https://lore.kernel.org/all/20230827092205.7908-1-lukas.magel@posteo.net
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Reported-by: Dmitry Dunaev <dunaev@tecon.ru>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20230926102801.1591126-1-dunaev@tecon.ru
+Link: https://lore.kernel.org/r/20231003044403.1974628-4-apatel@ventanamicro.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/isotp.c |   19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ drivers/irqchip/irq-riscv-intc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -925,21 +925,18 @@ static int isotp_sendmsg(struct socket *
- 	if (!so->bound || so->tx.state == ISOTP_SHUTDOWN)
- 		return -EADDRNOTAVAIL;
+diff --git a/drivers/irqchip/irq-riscv-intc.c b/drivers/irqchip/irq-riscv-intc.c
+index 8017f6d32d52b..54c99441c1b54 100644
+--- a/drivers/irqchip/irq-riscv-intc.c
++++ b/drivers/irqchip/irq-riscv-intc.c
+@@ -109,8 +109,16 @@ static int __init riscv_intc_init(struct device_node *node,
+ 	 * for each INTC DT node. We only need to do INTC initialization
+ 	 * for the INTC DT node belonging to boot CPU (or boot HART).
+ 	 */
+-	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id())
++	if (riscv_hartid_to_cpuid(hartid) != smp_processor_id()) {
++		/*
++		 * The INTC nodes of each CPU are suppliers for downstream
++		 * interrupt controllers (such as PLIC, IMSIC and APLIC
++		 * direct-mode) so we should mark an INTC node as initialized
++		 * if we are not creating IRQ domain for it.
++		 */
++		fwnode_dev_initialized(of_fwnode_handle(node), true);
+ 		return 0;
++	}
  
--wait_free_buffer:
--	/* we do not support multiple buffers - for now */
--	if (wq_has_sleeper(&so->wait) && (msg->msg_flags & MSG_DONTWAIT))
--		return -EAGAIN;
-+	while (cmpxchg(&so->tx.state, ISOTP_IDLE, ISOTP_SENDING) != ISOTP_IDLE) {
-+		/* we do not support multiple buffers - for now */
-+		if (msg->msg_flags & MSG_DONTWAIT)
-+			return -EAGAIN;
- 
--	/* wait for complete transmission of current pdu */
--	err = wait_event_interruptible(so->wait, so->tx.state == ISOTP_IDLE);
--	if (err)
--		goto err_event_drop;
--
--	if (cmpxchg(&so->tx.state, ISOTP_IDLE, ISOTP_SENDING) != ISOTP_IDLE) {
- 		if (so->tx.state == ISOTP_SHUTDOWN)
- 			return -EADDRNOTAVAIL;
- 
--		goto wait_free_buffer;
-+		/* wait for complete transmission of current pdu */
-+		err = wait_event_interruptible(so->wait, so->tx.state == ISOTP_IDLE);
-+		if (err)
-+			goto err_event_drop;
- 	}
- 
- 	if (!size || size > MAX_MSG_LENGTH) {
+ 	intc_domain = irq_domain_add_linear(node, BITS_PER_LONG,
+ 					    &riscv_intc_domain_ops, NULL);
+-- 
+2.42.0
+
 
 
