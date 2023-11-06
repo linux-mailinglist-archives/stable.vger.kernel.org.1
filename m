@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AB347E23B6
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 494A97E22FE
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:07:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232186AbjKFNNz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:13:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58462 "EHLO
+        id S232000AbjKFNHi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:07:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232222AbjKFNNx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:53 -0500
+        with ESMTP id S231978AbjKFNHi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:07:38 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 248EBA9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:50 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27636C433CA;
-        Mon,  6 Nov 2023 13:13:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7588891
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:07:35 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35DAC433C7;
+        Mon,  6 Nov 2023 13:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276429;
-        bh=yTAyA4EEDpf3qz66PUWAShn8mQwJuvXAOl8sjlEWHMM=;
+        s=korg; t=1699276055;
+        bh=qh/FNtdf7VKu39F81kSTbL//xuC3GgWmGce69AYfVQA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q/t96ANbcKjuAK+P4L6/176hO8c/6L8YROdkY1TqOk5GV4o2E/KewtV0HeHqT7I+H
-         Cj4tdAU2PX3aiSBLymy8srohJYdLaGCBedqDF3WvH9Y7t2d6NBTNIsE3HY1DZTAt25
-         hJfEOKcBbiXLdjj6kLze412ZBfJsYVG8/bDvAFog=
+        b=GXgUcaiE0wpcz5uP5wQ+AY4pqVJaS8mg2EADEZrr+Hbzc2dWik7ZXNVsCE15stu1v
+         6peX0rTJyjUYRGZKdAFvwKAv5EwbXc79vPlr1YX4644vL/H46s7C0eNZUEXdyuiRXk
+         9Z0KeUOxZcNliJTA4GvRdQwcS2VDuqTT0HRqeSvU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, lee@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 11/62] fs/ntfs3: Add ckeck in ni_update_parent()
+        patches@lists.linux.dev, Chris Lew <quic_clew@quicinc.com>,
+        Bjorn Andersson <quic_bjorande@quicinc.com>,
+        Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 4.14 26/48] rpmsg: glink: Release driver_override
 Date:   Mon,  6 Nov 2023 14:03:17 +0100
-Message-ID: <20231106130302.231828886@linuxfoundation.org>
+Message-ID: <20231106130258.752604319@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit 87d1888aa40f25773fa0b948bcb2545f97e2cb15 ]
+commit fb80ef67e8ff6a00d3faad4cb348dafdb8eccfd8 upstream.
 
-Check simple case when parent inode equals current inode.
+Upon termination of the rpmsg_device, driver_override needs to be freed
+to avoid leaking the potentially assigned string.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 42cd402b8fd4 ("rpmsg: Fix kfree() of static memory on setting driver_override")
+Fixes: 39e47767ec9b ("rpmsg: Add driver_override device attribute for rpmsg_device")
+Reviewed-by: Chris Lew <quic_clew@quicinc.com>
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230109223931.1706429-1-quic_bjorande@quicinc.com
+(cherry picked from commit fb80ef67e8ff6a00d3faad4cb348dafdb8eccfd8)
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/frecord.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/rpmsg/qcom_glink_native.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index dda13e1f1b330..166c3c49530ec 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -3198,6 +3198,12 @@ static bool ni_update_parent(struct ntfs_inode *ni, struct NTFS_DUP_INFO *dup,
- 		if (!fname || !memcmp(&fname->dup, dup, sizeof(fname->dup)))
- 			continue;
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1354,6 +1354,7 @@ static void qcom_glink_rpdev_release(str
+ 	struct glink_channel *channel = to_glink_channel(rpdev->ept);
  
-+		/* Check simple case when parent inode equals current inode. */
-+		if (ino_get(&fname->home) == ni->vfs_inode.i_ino) {
-+			ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
-+			continue;
-+		}
-+
- 		/* ntfs_iget5 may sleep. */
- 		dir = ntfs_iget5(sb, &fname->home, NULL);
- 		if (IS_ERR(dir)) {
--- 
-2.42.0
-
+ 	channel->rpdev = NULL;
++	kfree(rpdev->driver_override);
+ 	kfree(rpdev);
+ }
+ 
 
 
