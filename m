@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 112457E23F3
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:16:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F3667E2355
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232249AbjKFNQe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:16:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36828 "EHLO
+        id S231705AbjKFNLL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:11:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232265AbjKFNQc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:16:32 -0500
+        with ESMTP id S231898AbjKFNLK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F76310A
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:16:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BBFC433C8;
-        Mon,  6 Nov 2023 13:16:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECB5991
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA86CC433CB;
+        Mon,  6 Nov 2023 13:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276589;
-        bh=v89wM95YP14nzNH4XWDNDh8EtSOBM9joSOosKj4OUSs=;
+        s=korg; t=1699276267;
+        bh=tY7lU17o8LM8E5R9a7cpy3wQnJjogzp/yGAii/VzZ60=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MtsRBLmNWztdb6a9ORLwPdegd6eHedFMcxDvNAlBAz3vmW5TDZ/AjmvxsVL4ScaO7
-         Faou8p9/udrdkzhY2/rROd+x/nxMEuvMa4w9rWJD6Zi8+yoHeVBzcotHdyExfUL0n2
-         uH5UxJO9SoZo3+rzZxe9IyYOrnicel2iRIZHaHOA=
+        b=Ja4LOGJo81blqcda9anUMXK7EzacHZlk6SDqm4xDjPsDzi1krWmwnhFESOEblqKUe
+         Wi+L8RueOBGSG23vPLYnrd/9BjJjzcmYAhTVCvpbh9kZ1PU6DCotfioM8ySN5FbhXy
+         cAo8eTXx9YkAmOu6esm8S3YUjCGKb/FOBN2Vczr4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 31/88] ASoC: soc-dapm: Add helper for comparing widget name
+        patches@lists.linux.dev, Tom Talpey <tom@talpey.com>,
+        Long Li <longli@microsoft.com>,
+        Steve French <stfrench@microsoft.com>,
+        Anastasia Belova <abelova@astralinux.ru>
+Subject: [PATCH 4.19 29/61] smbdirect: missing rc checks while waiting for rdma events
 Date:   Mon,  6 Nov 2023 14:03:25 +0100
-Message-ID: <20231106130306.929278086@linuxfoundation.org>
+Message-ID: <20231106130300.616378237@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,78 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 76aca10ccb7c23a7b7a0d56e0bfde2c8cdddfe24 ]
+commit 0555b221528e9cb11f5766dcdee19c809187e42e upstream.
 
-Some drivers use one event callback for multiple widgets but still need
-to perform a bit different actions based on actual widget.  This is done
-by comparing widget name, however drivers tend to miss possible name
-prefix.  Add a helper to solve common mistakes.
+There were two places where we weren't checking for error
+(e.g. ERESTARTSYS) while waiting for rdma resolution.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231003155710.821315-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Addresses-Coverity: 1462165 ("Unchecked return value")
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/sound/soc-dapm.h  |  1 +
- sound/soc/soc-component.c |  1 +
- sound/soc/soc-dapm.c      | 12 ++++++++++++
- 3 files changed, 14 insertions(+)
+ fs/cifs/smbdirect.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/include/sound/soc-dapm.h b/include/sound/soc-dapm.h
-index 87f8e1793af15..295d63437e4d8 100644
---- a/include/sound/soc-dapm.h
-+++ b/include/sound/soc-dapm.h
-@@ -423,6 +423,7 @@ void snd_soc_dapm_connect_dai_link_widgets(struct snd_soc_card *card);
- 
- int snd_soc_dapm_update_dai(struct snd_pcm_substream *substream,
- 			    struct snd_pcm_hw_params *params, struct snd_soc_dai *dai);
-+int snd_soc_dapm_widget_name_cmp(struct snd_soc_dapm_widget *widget, const char *s);
- 
- /* dapm path setup */
- int snd_soc_dapm_new_widgets(struct snd_soc_card *card);
-diff --git a/sound/soc/soc-component.c b/sound/soc/soc-component.c
-index 4356cc320fea0..10b5fe5a3af85 100644
---- a/sound/soc/soc-component.c
-+++ b/sound/soc/soc-component.c
-@@ -242,6 +242,7 @@ int snd_soc_component_notify_control(struct snd_soc_component *component,
- 	char name[SNDRV_CTL_ELEM_ID_NAME_MAXLEN];
- 	struct snd_kcontrol *kctl;
- 
-+	/* When updating, change also snd_soc_dapm_widget_name_cmp() */
- 	if (component->name_prefix)
- 		snprintf(name, ARRAY_SIZE(name), "%s %s", component->name_prefix, ctl);
- 	else
-diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
-index 3091e8160bad7..5fd32185fe63d 100644
---- a/sound/soc/soc-dapm.c
-+++ b/sound/soc/soc-dapm.c
-@@ -2726,6 +2726,18 @@ int snd_soc_dapm_update_dai(struct snd_pcm_substream *substream,
- }
- EXPORT_SYMBOL_GPL(snd_soc_dapm_update_dai);
- 
-+int snd_soc_dapm_widget_name_cmp(struct snd_soc_dapm_widget *widget, const char *s)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(widget->dapm);
-+	const char *wname = widget->name;
-+
-+	if (component->name_prefix)
-+		wname += strlen(component->name_prefix) + 1; /* plus space */
-+
-+	return strcmp(wname, s);
-+}
-+EXPORT_SYMBOL_GPL(snd_soc_dapm_widget_name_cmp);
-+
- /*
-  * dapm_update_widget_flags() - Re-compute widget sink and source flags
-  * @w: The widget for which to update the flags
--- 
-2.42.0
-
+--- a/fs/cifs/smbdirect.c
++++ b/fs/cifs/smbdirect.c
+@@ -706,8 +706,13 @@ static struct rdma_cm_id *smbd_create_id
+ 		log_rdma_event(ERR, "rdma_resolve_addr() failed %i\n", rc);
+ 		goto out;
+ 	}
+-	wait_for_completion_interruptible_timeout(
++	rc = wait_for_completion_interruptible_timeout(
+ 		&info->ri_done, msecs_to_jiffies(RDMA_RESOLVE_TIMEOUT));
++	/* e.g. if interrupted returns -ERESTARTSYS */
++	if (rc < 0) {
++		log_rdma_event(ERR, "rdma_resolve_addr timeout rc: %i\n", rc);
++		goto out;
++	}
+ 	rc = info->ri_rc;
+ 	if (rc) {
+ 		log_rdma_event(ERR, "rdma_resolve_addr() completed %i\n", rc);
+@@ -720,8 +725,13 @@ static struct rdma_cm_id *smbd_create_id
+ 		log_rdma_event(ERR, "rdma_resolve_route() failed %i\n", rc);
+ 		goto out;
+ 	}
+-	wait_for_completion_interruptible_timeout(
++	rc = wait_for_completion_interruptible_timeout(
+ 		&info->ri_done, msecs_to_jiffies(RDMA_RESOLVE_TIMEOUT));
++	/* e.g. if interrupted returns -ERESTARTSYS */
++	if (rc < 0)  {
++		log_rdma_event(ERR, "rdma_resolve_addr timeout rc: %i\n", rc);
++		goto out;
++	}
+ 	rc = info->ri_rc;
+ 	if (rc) {
+ 		log_rdma_event(ERR, "rdma_resolve_route() completed %i\n", rc);
 
 
