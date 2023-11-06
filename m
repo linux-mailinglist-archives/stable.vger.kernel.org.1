@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 69FD37E24F6
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 887EE7E240F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232405AbjKFN1F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:27:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42006 "EHLO
+        id S232268AbjKFNRk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:17:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232601AbjKFN1C (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:02 -0500
+        with ESMTP id S232253AbjKFNRj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49194D75
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8377CC433C9;
-        Mon,  6 Nov 2023 13:26:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D24BA9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10D1C433C7;
+        Mon,  6 Nov 2023 13:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277216;
-        bh=d6/FvLc5okqEnf0b/KTxRMqC4lmacV//kf7L86MXQvY=;
+        s=korg; t=1699276656;
+        bh=9dQobiRNNlkXgz2XtENz8/mHVy6rRKVfrhl333bUvhM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qr3CkSANJem8ZfnwjNlaB8AsIc2ISv97+HPH+rliN34XMVeU77MdxNNX44MkbzCzV
-         CVYRWvu/v15LjTH3/7MjW3BarfpUidywTWvgVXe1twmHDGwJlvJcj3fmSHIhSuaJ5B
-         HCzPNNaPZ3fFuVrbbC71sNlex0cYjAg0ZF5WLtpE=
+        b=LbYDCxFS8o6GA3e5i8IrC4/spPlCMzJgcuv8H12iv64zQrb/vweyXpcvfqBnrBKlz
+         yR+HovRZQU7hUySA3TGKHzOFP2l7mbRXSma7NcYPC+ybTzJub75bM4C/CahG6cf9DW
+         ZxW5QBII5RpBp1W71D+hTcaAdjAX6w1K2/Cf6GSU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Catherine Sullivan <csully@google.com>,
-        David Awogbemila <awogbemila@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Tiezhu Yang <yangtiezhu@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/128] gve: Fix GFP flags when allocing pages
+Subject: [PATCH 6.5 46/88] LoongArch: Use SYM_CODE_* to annotate exception handlers
 Date:   Mon,  6 Nov 2023 14:03:40 +0100
-Message-ID: <20231106130311.816390951@linuxfoundation.org>
+Message-ID: <20231106130307.552417293@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +50,239 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shailend Chand <shailend@google.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit a92f7a6feeb3884c69c1c7c1f13bccecb2228ad0 ]
+[ Upstream commit 00c2ca84c680f64b79b5e10a482ca435fd7d98ce ]
 
-Use GFP_ATOMIC when allocating pages out of the hotpath,
-continue to use GFP_KERNEL when allocating pages during setup.
+As described in include/linux/linkage.h,
 
-GFP_KERNEL will allow blocking which allows it to succeed
-more often in a low memory enviornment but in the hotpath we do
-not want to allow the allocation to block.
+  FUNC -- C-like functions (proper stack frame etc.)
+  CODE -- non-C code (e.g. irq handlers with different, special stack etc.)
 
-Fixes: f5cedc84a30d2 ("gve: Add transmit and receive support")
-Signed-off-by: Catherine Sullivan <csully@google.com>
-Signed-off-by: David Awogbemila <awogbemila@google.com>
-Link: https://lore.kernel.org/r/20220126003843.3584521-1-awogbemila@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  SYM_FUNC_{START, END} -- use for global functions
+  SYM_CODE_{START, END} -- use for non-C (special) functions
+
+So use SYM_CODE_* to annotate exception handlers.
+
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_rx_dqo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/linkage.h |  8 +++++++
+ arch/loongarch/kernel/entry.S        |  4 ++--
+ arch/loongarch/kernel/genex.S        | 16 ++++++-------
+ arch/loongarch/mm/tlbex.S            | 36 ++++++++++++++--------------
+ 4 files changed, 36 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-index 7b18b4fd9e548..d947c2c334128 100644
---- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
-@@ -157,7 +157,7 @@ static int gve_alloc_page_dqo(struct gve_priv *priv,
- 	int err;
+diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
+index 81b0c4cfbf4f2..e2eca1a25b4ef 100644
+--- a/arch/loongarch/include/asm/linkage.h
++++ b/arch/loongarch/include/asm/linkage.h
+@@ -33,4 +33,12 @@
+ 	.cfi_endproc;					\
+ 	SYM_END(name, SYM_T_FUNC)
  
- 	err = gve_alloc_page(priv, &priv->pdev->dev, &buf_state->page_info.page,
--			     &buf_state->addr, DMA_FROM_DEVICE, GFP_KERNEL);
-+			     &buf_state->addr, DMA_FROM_DEVICE, GFP_ATOMIC);
- 	if (err)
- 		return err;
++#define SYM_CODE_START(name)				\
++	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)	\
++	.cfi_startproc;
++
++#define SYM_CODE_END(name)				\
++	.cfi_endproc;					\
++	SYM_END(name, SYM_T_NONE)
++
+ #endif
+diff --git a/arch/loongarch/kernel/entry.S b/arch/loongarch/kernel/entry.S
+index d737e3cf42d3f..1781c6a5befa2 100644
+--- a/arch/loongarch/kernel/entry.S
++++ b/arch/loongarch/kernel/entry.S
+@@ -18,7 +18,7 @@
+ 	.text
+ 	.cfi_sections	.debug_frame
+ 	.align	5
+-SYM_FUNC_START(handle_syscall)
++SYM_CODE_START(handle_syscall)
+ 	csrrd		t0, PERCPU_BASE_KS
+ 	la.pcrel	t1, kernelsp
+ 	add.d		t1, t1, t0
+@@ -66,7 +66,7 @@ SYM_FUNC_START(handle_syscall)
+ 	bl		do_syscall
  
+ 	RESTORE_ALL_AND_RET
+-SYM_FUNC_END(handle_syscall)
++SYM_CODE_END(handle_syscall)
+ _ASM_NOKPROBE(handle_syscall)
+ 
+ SYM_CODE_START(ret_from_fork)
+diff --git a/arch/loongarch/kernel/genex.S b/arch/loongarch/kernel/genex.S
+index 78f0663846575..2bb3aa2dcfcb2 100644
+--- a/arch/loongarch/kernel/genex.S
++++ b/arch/loongarch/kernel/genex.S
+@@ -31,7 +31,7 @@ SYM_FUNC_START(__arch_cpu_idle)
+ 1:	jr	ra
+ SYM_FUNC_END(__arch_cpu_idle)
+ 
+-SYM_FUNC_START(handle_vint)
++SYM_CODE_START(handle_vint)
+ 	BACKUP_T0T1
+ 	SAVE_ALL
+ 	la_abs	t1, __arch_cpu_idle
+@@ -46,11 +46,11 @@ SYM_FUNC_START(handle_vint)
+ 	la_abs	t0, do_vint
+ 	jirl	ra, t0, 0
+ 	RESTORE_ALL_AND_RET
+-SYM_FUNC_END(handle_vint)
++SYM_CODE_END(handle_vint)
+ 
+-SYM_FUNC_START(except_vec_cex)
++SYM_CODE_START(except_vec_cex)
+ 	b	cache_parity_error
+-SYM_FUNC_END(except_vec_cex)
++SYM_CODE_END(except_vec_cex)
+ 
+ 	.macro	build_prep_badv
+ 	csrrd	t0, LOONGARCH_CSR_BADV
+@@ -66,7 +66,7 @@ SYM_FUNC_END(except_vec_cex)
+ 
+ 	.macro	BUILD_HANDLER exception handler prep
+ 	.align	5
+-	SYM_FUNC_START(handle_\exception)
++	SYM_CODE_START(handle_\exception)
+ 	666:
+ 	BACKUP_T0T1
+ 	SAVE_ALL
+@@ -76,7 +76,7 @@ SYM_FUNC_END(except_vec_cex)
+ 	jirl	ra, t0, 0
+ 	668:
+ 	RESTORE_ALL_AND_RET
+-	SYM_FUNC_END(handle_\exception)
++	SYM_CODE_END(handle_\exception)
+ 	SYM_DATA(unwind_hint_\exception, .word 668b - 666b)
+ 	.endm
+ 
+@@ -93,7 +93,7 @@ SYM_FUNC_END(except_vec_cex)
+ 	BUILD_HANDLER watch watch none
+ 	BUILD_HANDLER reserved reserved none	/* others */
+ 
+-SYM_FUNC_START(handle_sys)
++SYM_CODE_START(handle_sys)
+ 	la_abs	t0, handle_syscall
+ 	jr	t0
+-SYM_FUNC_END(handle_sys)
++SYM_CODE_END(handle_sys)
+diff --git a/arch/loongarch/mm/tlbex.S b/arch/loongarch/mm/tlbex.S
+index ca17dd3a19153..d5d682f3d29f3 100644
+--- a/arch/loongarch/mm/tlbex.S
++++ b/arch/loongarch/mm/tlbex.S
+@@ -17,7 +17,7 @@
+ #define PTRS_PER_PTE_BITS	(PAGE_SHIFT - 3)
+ 
+ 	.macro tlb_do_page_fault, write
+-	SYM_FUNC_START(tlb_do_page_fault_\write)
++	SYM_CODE_START(tlb_do_page_fault_\write)
+ 	SAVE_ALL
+ 	csrrd		a2, LOONGARCH_CSR_BADV
+ 	move		a0, sp
+@@ -25,13 +25,13 @@
+ 	li.w		a1, \write
+ 	bl		do_page_fault
+ 	RESTORE_ALL_AND_RET
+-	SYM_FUNC_END(tlb_do_page_fault_\write)
++	SYM_CODE_END(tlb_do_page_fault_\write)
+ 	.endm
+ 
+ 	tlb_do_page_fault 0
+ 	tlb_do_page_fault 1
+ 
+-SYM_FUNC_START(handle_tlb_protect)
++SYM_CODE_START(handle_tlb_protect)
+ 	BACKUP_T0T1
+ 	SAVE_ALL
+ 	move		a0, sp
+@@ -41,9 +41,9 @@ SYM_FUNC_START(handle_tlb_protect)
+ 	la_abs		t0, do_page_fault
+ 	jirl		ra, t0, 0
+ 	RESTORE_ALL_AND_RET
+-SYM_FUNC_END(handle_tlb_protect)
++SYM_CODE_END(handle_tlb_protect)
+ 
+-SYM_FUNC_START(handle_tlb_load)
++SYM_CODE_START(handle_tlb_load)
+ 	csrwr		t0, EXCEPTION_KS0
+ 	csrwr		t1, EXCEPTION_KS1
+ 	csrwr		ra, EXCEPTION_KS2
+@@ -187,16 +187,16 @@ nopage_tlb_load:
+ 	csrrd		ra, EXCEPTION_KS2
+ 	la_abs		t0, tlb_do_page_fault_0
+ 	jr		t0
+-SYM_FUNC_END(handle_tlb_load)
++SYM_CODE_END(handle_tlb_load)
+ 
+-SYM_FUNC_START(handle_tlb_load_ptw)
++SYM_CODE_START(handle_tlb_load_ptw)
+ 	csrwr		t0, LOONGARCH_CSR_KS0
+ 	csrwr		t1, LOONGARCH_CSR_KS1
+ 	la_abs		t0, tlb_do_page_fault_0
+ 	jr		t0
+-SYM_FUNC_END(handle_tlb_load_ptw)
++SYM_CODE_END(handle_tlb_load_ptw)
+ 
+-SYM_FUNC_START(handle_tlb_store)
++SYM_CODE_START(handle_tlb_store)
+ 	csrwr		t0, EXCEPTION_KS0
+ 	csrwr		t1, EXCEPTION_KS1
+ 	csrwr		ra, EXCEPTION_KS2
+@@ -343,16 +343,16 @@ nopage_tlb_store:
+ 	csrrd		ra, EXCEPTION_KS2
+ 	la_abs		t0, tlb_do_page_fault_1
+ 	jr		t0
+-SYM_FUNC_END(handle_tlb_store)
++SYM_CODE_END(handle_tlb_store)
+ 
+-SYM_FUNC_START(handle_tlb_store_ptw)
++SYM_CODE_START(handle_tlb_store_ptw)
+ 	csrwr		t0, LOONGARCH_CSR_KS0
+ 	csrwr		t1, LOONGARCH_CSR_KS1
+ 	la_abs		t0, tlb_do_page_fault_1
+ 	jr		t0
+-SYM_FUNC_END(handle_tlb_store_ptw)
++SYM_CODE_END(handle_tlb_store_ptw)
+ 
+-SYM_FUNC_START(handle_tlb_modify)
++SYM_CODE_START(handle_tlb_modify)
+ 	csrwr		t0, EXCEPTION_KS0
+ 	csrwr		t1, EXCEPTION_KS1
+ 	csrwr		ra, EXCEPTION_KS2
+@@ -497,16 +497,16 @@ nopage_tlb_modify:
+ 	csrrd		ra, EXCEPTION_KS2
+ 	la_abs		t0, tlb_do_page_fault_1
+ 	jr		t0
+-SYM_FUNC_END(handle_tlb_modify)
++SYM_CODE_END(handle_tlb_modify)
+ 
+-SYM_FUNC_START(handle_tlb_modify_ptw)
++SYM_CODE_START(handle_tlb_modify_ptw)
+ 	csrwr		t0, LOONGARCH_CSR_KS0
+ 	csrwr		t1, LOONGARCH_CSR_KS1
+ 	la_abs		t0, tlb_do_page_fault_1
+ 	jr		t0
+-SYM_FUNC_END(handle_tlb_modify_ptw)
++SYM_CODE_END(handle_tlb_modify_ptw)
+ 
+-SYM_FUNC_START(handle_tlb_refill)
++SYM_CODE_START(handle_tlb_refill)
+ 	csrwr		t0, LOONGARCH_CSR_TLBRSAVE
+ 	csrrd		t0, LOONGARCH_CSR_PGD
+ 	lddir		t0, t0, 3
+@@ -521,4 +521,4 @@ SYM_FUNC_START(handle_tlb_refill)
+ 	tlbfill
+ 	csrrd		t0, LOONGARCH_CSR_TLBRSAVE
+ 	ertn
+-SYM_FUNC_END(handle_tlb_refill)
++SYM_CODE_END(handle_tlb_refill)
 -- 
 2.42.0
 
