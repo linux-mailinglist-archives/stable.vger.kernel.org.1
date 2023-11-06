@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AAC27E2384
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 051647E22D0
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:05:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229934AbjKFNM0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:12:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38012 "EHLO
+        id S231890AbjKFNFt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:05:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjKFNMZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:25 -0500
+        with ESMTP id S231916AbjKFNFt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:05:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C983125
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C014DC433C8;
-        Mon,  6 Nov 2023 13:12:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25238100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:05:46 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 667D6C433C8;
+        Mon,  6 Nov 2023 13:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276342;
-        bh=8PV/5/SRWlxR1xQA83hFuYLvGyRRLaZH2JzhM2Gm59o=;
+        s=korg; t=1699275945;
+        bh=MJrbKStsnbV385cTdSvn5fw0jW7qqWEjNM1fQfQqvCo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zTcVbQ7WiZycxm+VqthCJI3jOuawOovtOakP7ReU3Gd36wmXHLl4LWD0DvDSagMvk
-         k1eNtmLV3fRgtkSmq1g/EiiePRLhQmX9EssVFzhpSvhVNsscX9cOYpwjxLmNSz4Vrz
-         WgbdT5/O+ztho/FtDBVAIaKQ+Xf++ZblKZgesUIQ=
+        b=FKk5k51ncHqlAqmEikIu+1oyElWWtOTOvtqc+qhaRyiqbPQmIQauYfg4vV8UTUXpR
+         Qgy/Utr79/T51LJyZDfxFbudiKmrlSIKkAvi0aRfM0BOTthzhygn5VbGgXBZ42GVUt
+         q72UNO+MtDpL8NkyfecrrbfjBvJDDnCZk6zlhxss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mike Leach <mike.leach@linaro.org>,
-        James Clark <james.clark@arm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 02/62] coresight: tmc-etr: Disable warnings for allocation failures
+        patches@lists.linux.dev, Wang Hai <wanghai38@huawei.com>,
+        Oleksandr Tymoshenko <ovt@google.com>
+Subject: [PATCH 4.14 17/48] kobject: Fix slab-out-of-bounds in fill_kobj_path()
 Date:   Mon,  6 Nov 2023 14:03:08 +0100
-Message-ID: <20231106130301.893382283@linuxfoundation.org>
+Message-ID: <20231106130258.445487114@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,86 +49,147 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit e5028011885a85032aa3c1b7e3e493bcdacb4a0a ]
+commit 3bb2a01caa813d3a1845d378bbe4169ef280d394 upstream.
 
-Running the following command on Juno triggers the warning:
+In kobject_get_path(), if kobj->name is changed between calls
+get_kobj_path_length() and fill_kobj_path() and the length becomes
+longer, then fill_kobj_path() will have an out-of-bounds bug.
 
- $ perf record -e cs_etm// -m ,128M ...
+The actual current problem occurs when the ixgbe probe.
 
- ------------[ cut here ]------------
- WARNING: CPU: 1 PID: 412 at mm/page_alloc.c:4453 __alloc_pages+0x334/0x1420
- CPU: 1 PID: 412 Comm: perf Not tainted 6.5.0-rc3+ #181
- Hardware name: ARM LTD ARM Juno Development Platform/ARM Juno Development Platform, BIOS EDK II Feb  1 2019
- pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __alloc_pages+0x334/0x1420
- lr : dma_common_alloc_pages+0x108/0x138
- sp : ffffffc087fb7440
- x29: ffffffc087fb7440 x28: 0000000000000000 x27: ffffffc07e48fba0
- x26: 0000000000000001 x25: 000000000000000f x24: ffffffc081f24880
- x23: 0000000000000cc0 x22: ffffff88012b6f08 x21: 0000000008000000
- x20: ffffff8801433000 x19: 0000000000000000 x18: 0000000000000000
- x17: ffffffc080316e5c x16: ffffffc07e46406c x15: ffffffc0803af580
- x14: ffffffc08036b460 x13: ffffffc080025cbc x12: ffffffb8108c3fc4
- x11: 1ffffff8108c3fc3 x10: 1ffffff810ff6eac x9 : 00000000f204f204
- x8 : 000000000000f204 x7 : 00000000f2f2f2f2 x6 : 00000000f3f3f3f3
- x5 : 0000000000000001 x4 : 0000000000000000 x3 : 0000000000000000
- x2 : 0000000000000cc0 x1 : 0000000000000000 x0 : ffffffc085333000
- Call trace:
-  __alloc_pages+0x334/0x1420
-  dma_common_alloc_pages+0x108/0x138
-  __dma_alloc_pages+0xf4/0x108
-  dma_alloc_pages+0x18/0x30
-  tmc_etr_alloc_flat_buf+0xa0/0x190 [coresight_tmc]
-  tmc_alloc_etr_buf.constprop.0+0x124/0x298 [coresight_tmc]
-  alloc_etr_buf.constprop.0.isra.0+0x88/0xc8 [coresight_tmc]
-  tmc_alloc_etr_buffer+0x164/0x2f0 [coresight_tmc]
-  etm_setup_aux+0x32c/0x520 [coresight]
-  rb_alloc_aux+0x29c/0x3f8
-  perf_mmap+0x59c/0xce0
-  mmap_region+0x340/0x10e0
-  do_mmap+0x48c/0x580
-  vm_mmap_pgoff+0x160/0x248
-  ksys_mmap_pgoff+0x1e8/0x278
-  __arm64_sys_mmap+0x8c/0xb8
+In ixgbe_mii_bus_init(), if the length of netdev->dev.kobj.name
+length becomes longer, out-of-bounds will occur.
 
-With the flat mode, we only attempt to allocate large memory if there is an IOMMU
-connected to the ETR. If the allocation fails, we always have a fallback path
-and return an error if nothing else worked. So, suppress the warning for flat
-mode allocations.
+cpu0                                         cpu1
+ixgbe_probe
+ register_netdev(netdev)
+  netdev_register_kobject
+   device_add
+    kobject_uevent // Sending ADD events
+                                             systemd-udevd // rename netdev
+                                              dev_change_name
+                                               device_rename
+                                                kobject_rename
+ ixgbe_mii_bus_init                             |
+  mdiobus_register                              |
+   __mdiobus_register                           |
+    device_register                             |
+     device_add                                 |
+      kobject_uevent                            |
+       kobject_get_path                         |
+        len = get_kobj_path_length // old name  |
+        path = kzalloc(len, gfp_mask);          |
+                                                kobj->name = name;
+                                                /* name length becomes
+                                                 * longer
+                                                 */
+        fill_kobj_path /* kobj path length is
+                        * longer than path,
+                        * resulting in out of
+                        * bounds when filling path
+                        */
 
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: James Clark <james.clark@arm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Reviewed-by: James Clark <james.clark@arm.com>
-Link: https://lore.kernel.org/r/20230817161951.658534-1-suzuki.poulose@arm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is the kasan report:
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in fill_kobj_path+0x50/0xc0
+Write of size 7 at addr ff1100090573d1fd by task kworker/28:1/673
+
+ Workqueue: events work_for_cpu_fn
+ Call Trace:
+ <TASK>
+ dump_stack_lvl+0x34/0x48
+ print_address_description.constprop.0+0x86/0x1e7
+ print_report+0x36/0x4f
+ kasan_report+0xad/0x130
+ kasan_check_range+0x35/0x1c0
+ memcpy+0x39/0x60
+ fill_kobj_path+0x50/0xc0
+ kobject_get_path+0x5a/0xc0
+ kobject_uevent_env+0x140/0x460
+ device_add+0x5c7/0x910
+ __mdiobus_register+0x14e/0x490
+ ixgbe_probe.cold+0x441/0x574 [ixgbe]
+ local_pci_probe+0x78/0xc0
+ work_for_cpu_fn+0x26/0x40
+ process_one_work+0x3b6/0x6a0
+ worker_thread+0x368/0x520
+ kthread+0x165/0x1a0
+ ret_from_fork+0x1f/0x30
+
+This reproducer triggers that bug:
+
+while:
+do
+    rmmod ixgbe
+    sleep 0.5
+    modprobe ixgbe
+    sleep 0.5
+
+When calling fill_kobj_path() to fill path, if the name length of
+kobj becomes longer, return failure and retry. This fixes the problem.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Link: https://lore.kernel.org/r/20221220012143.52141-1-wanghai38@huawei.com
+Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/coresight/coresight-tmc-etr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/kobject.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-tmc-etr.c b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-index 1be0e5e0e80b2..c88a6afb29512 100644
---- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
-+++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
-@@ -610,7 +610,8 @@ static int tmc_etr_alloc_flat_buf(struct tmc_drvdata *drvdata,
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -118,7 +118,7 @@ static int get_kobj_path_length(struct k
+ 	return length;
+ }
  
- 	flat_buf->vaddr = dma_alloc_noncoherent(real_dev, etr_buf->size,
- 						&flat_buf->daddr,
--						DMA_FROM_DEVICE, GFP_KERNEL);
-+						DMA_FROM_DEVICE,
-+						GFP_KERNEL | __GFP_NOWARN);
- 	if (!flat_buf->vaddr) {
- 		kfree(flat_buf);
- 		return -ENOMEM;
--- 
-2.42.0
-
+-static void fill_kobj_path(struct kobject *kobj, char *path, int length)
++static int fill_kobj_path(struct kobject *kobj, char *path, int length)
+ {
+ 	struct kobject *parent;
+ 
+@@ -127,12 +127,16 @@ static void fill_kobj_path(struct kobjec
+ 		int cur = strlen(kobject_name(parent));
+ 		/* back up enough to print this name with '/' */
+ 		length -= cur;
++		if (length <= 0)
++			return -EINVAL;
+ 		memcpy(path + length, kobject_name(parent), cur);
+ 		*(path + --length) = '/';
+ 	}
+ 
+ 	pr_debug("kobject: '%s' (%p): %s: path = '%s'\n", kobject_name(kobj),
+ 		 kobj, __func__, path);
++
++	return 0;
+ }
+ 
+ /**
+@@ -148,13 +152,17 @@ char *kobject_get_path(struct kobject *k
+ 	char *path;
+ 	int len;
+ 
++retry:
+ 	len = get_kobj_path_length(kobj);
+ 	if (len == 0)
+ 		return NULL;
+ 	path = kzalloc(len, gfp_mask);
+ 	if (!path)
+ 		return NULL;
+-	fill_kobj_path(kobj, path, len);
++	if (fill_kobj_path(kobj, path, len)) {
++		kfree(path);
++		goto retry;
++	}
+ 
+ 	return path;
+ }
 
 
