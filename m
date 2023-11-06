@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1A527E22E1
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3817F7E230F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231926AbjKFNGb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:06:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45088 "EHLO
+        id S232022AbjKFNI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:08:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231920AbjKFNG0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:26 -0500
+        with ESMTP id S231949AbjKFNIY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:24 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E5A091
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:24 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B115DC433C7;
-        Mon,  6 Nov 2023 13:06:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 263EEA9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D574C433C7;
+        Mon,  6 Nov 2023 13:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699275984;
-        bh=izPoIJ3Mq56Y++sRIDw1f3aVIXYyFJC+6jg0M+GEG5E=;
+        s=korg; t=1699276101;
+        bh=V19mlyLnlUIHZi7AI4Dzoz9ktoduZBbyR+5cfkTWsLI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oTTeNeitw3uH8JWuBcmq7lCxNtdnxFXjXZ9E1wSiMwVz8FaUFSh/TK/lGq2PN1u+R
-         o2q82H9HajMZV/dEJv6600LC69CPMluA+T+B4+pd0wLbOhGCFbIUGUJNgQ4YUAXLXv
-         LVPsjsg77g7hjOEutLt3HHXR6L16ZOH3BvZ0TMJw=
+        b=TOw8T+mpIJglLLpTvUSV31LZ46FcBfq+0LkNMzprkhVf52K4hJwqdimwrgfSoVeHD
+         hbxYHg89fdU0t0NJ8lhe6fgITRRU2dVzK0Bs5kJgAjIEiXdJuT7ThosnOzQ8+GEtnW
+         wOX+KiF22tl3xNbKtyAdSfFoUODAan8p2HaEE5PE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 30/48] irqchip/stm32-exti: add missing DT IRQ flag translation
+        patches@lists.linux.dev, Stephane Eranian <eranian@google.com>,
+        Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Yang Jihong <yangjihong1@huawei.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 03/30] perf evlist: Avoid frequency mode for the dummy event
 Date:   Mon,  6 Nov 2023 14:03:21 +0100
-Message-ID: <20231106130258.892251894@linuxfoundation.org>
+Message-ID: <20231106130258.025945192@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +54,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 8554cba1d6dbd3c74e0549e28ddbaccbb1d6b30a ]
+[ Upstream commit f9cdeb58a9cf46c09b56f5f661ea8da24b6458c3 ]
 
-The STM32F4/7 EXTI driver was missing the xlate callback, so IRQ trigger
-flags specified in the device tree were being ignored. This was
-preventing the RTC alarm interrupt from working, because it must be set
-to trigger on the rising edge to function correctly.
+Dummy events are created with an attribute where the period and freq
+are zero. evsel__config will then see the uninitialized values and
+initialize them in evsel__default_freq_period. As fequency mode is
+used by default the dummy event would be set to use frequency
+mode. However, this has no effect on the dummy event but does cause
+unnecessary timers/interrupts. Avoid this overhead by setting the
+period to 1 for dummy events.
 
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20231003162003.1649967-1-ben.wolsieffer@hefring.com
+evlist__add_aux_dummy calls evlist__add_dummy then sets freq=0 and
+period=1. This isn't necessary after this change and so the setting is
+removed.
+
+>From Stephane:
+
+The dummy event is not counting anything. It is used to collect mmap
+records and avoid a race condition during the synthesize mmap phase of
+perf record. As such, it should not cause any overhead during active
+profiling. Yet, it did. Because of a bug the dummy event was
+programmed as a sampling event in frequency mode. Events in that mode
+incur more kernel overheads because on timer tick, the kernel has to
+look at the number of samples for each event and potentially adjust
+the sampling period to achieve the desired frequency. The dummy event
+was therefore adding a frequency event to task and ctx contexts we may
+otherwise not have any, e.g.,
+
+  perf record -a -e cpu/event=0x3c,period=10000000/.
+
+On each timer tick the perf_adjust_freq_unthr_context() is invoked and
+if ctx->nr_freq is non-zero, then the kernel will loop over ALL the
+events of the context looking for frequency mode ones. In doing, so it
+locks the context, and enable/disable the PMU of each hw event. If all
+the events of the context are in period mode, the kernel will have to
+traverse the list for nothing incurring overhead. The overhead is
+multiplied by a very large factor when this happens in a guest kernel.
+There is no need for the dummy event to be in frequency mode, it does
+not count anything and therefore should not cause extra overhead for
+no reason.
+
+Fixes: 5bae0250237f ("perf evlist: Introduce perf_evlist__new_dummy constructor")
+Reported-by: Stephane Eranian <eranian@google.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lore.kernel.org/r/20230916035640.1074422-1-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-stm32-exti.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/evlist.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-stm32-exti.c b/drivers/irqchip/irq-stm32-exti.c
-index 45363ff8d06f0..1b55199ea1b4a 100644
---- a/drivers/irqchip/irq-stm32-exti.c
-+++ b/drivers/irqchip/irq-stm32-exti.c
-@@ -127,6 +127,7 @@ struct irq_domain_ops irq_exti_domain_ops = {
- 	.xlate	= irq_domain_xlate_onetwocell,
- 	.alloc  = stm32_exti_alloc,
- 	.free	= stm32_exti_free,
-+	.xlate	= irq_domain_xlate_twocell,
- };
+diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
+index 7ef43f72098e0..c779b9f2e6220 100644
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -251,6 +251,9 @@ static struct evsel *evlist__dummy_event(struct evlist *evlist)
+ 		.type	= PERF_TYPE_SOFTWARE,
+ 		.config = PERF_COUNT_SW_DUMMY,
+ 		.size	= sizeof(attr), /* to capture ABI version */
++		/* Avoid frequency mode for dummy events to avoid associated timers. */
++		.freq = 0,
++		.sample_period = 1,
+ 	};
  
- static int __init stm32_exti_init(struct device_node *node,
+ 	return evsel__new_idx(&attr, evlist->core.nr_entries);
+@@ -277,8 +280,6 @@ struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide)
+ 	evsel->core.attr.exclude_kernel = 1;
+ 	evsel->core.attr.exclude_guest = 1;
+ 	evsel->core.attr.exclude_hv = 1;
+-	evsel->core.attr.freq = 0;
+-	evsel->core.attr.sample_period = 1;
+ 	evsel->core.system_wide = system_wide;
+ 	evsel->no_aux_samples = true;
+ 	evsel->name = strdup("dummy:u");
 -- 
 2.42.0
 
