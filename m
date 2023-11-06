@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BA6B7E22EA
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3377E236F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231953AbjKFNGp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:06:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33084 "EHLO
+        id S232080AbjKFNL4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:11:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231951AbjKFNGo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:44 -0500
+        with ESMTP id S232084AbjKFNLz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:55 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC10B125
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:41 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3DDC433C8;
-        Mon,  6 Nov 2023 13:06:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5DB1136
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D9AC433C7;
+        Mon,  6 Nov 2023 13:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276001;
-        bh=8H7xu6cZeYDQl+KYaF8vjs73VhUjxJ8wse8oKv11SAY=;
+        s=korg; t=1699276311;
+        bh=BEEAZth+iIa3X788LPRUXM+dF446SeHyHmrGnmSkZVw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ViMGIgSIjnK3ab/lKQYwghk3kvleK9YKjBH2z3MROUBygR71jShiY3KjcGMcJ5KgN
-         QxjNosDjPTVaNxuOLzpkh8o3by3lIvlJwpZ4uOVIM8liHWLC8gI7B+E56G3LxzVOxl
-         Y4v07Q8IXBfZcUiUtkJ+pJawD4YVouPIcONHJAFQ=
+        b=vuwMtZKi7ibqBhZnqK5qUMzpEI5y+1r8waqYeg/v7OpIWRaiwChtYklOTZSnjHATZ
+         7tZTCWmIv7eJvSftesvxCzgrgTZLoVDxed8jOFzUxh7tEz6EWdjDygw1I69wEY0uah
+         3GZ2TEMftkgm7+zBaaPnw0Sv3E29xU/oNkmHc29A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jorge Maidana <jorgem.linux@gmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 36/48] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
-Date:   Mon,  6 Nov 2023 14:03:27 +0100
-Message-ID: <20231106130259.090620885@linuxfoundation.org>
+        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@suse.de>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 4.19 32/61] x86/mm: Simplify RESERVE_BRK()
+Date:   Mon,  6 Nov 2023 14:03:28 +0100
+Message-ID: <20231106130300.716243343@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +51,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Maidana <jorgem.linux@gmail.com>
+From: Josh Poimboeuf <jpoimboe@redhat.com>
 
-[ Upstream commit 1022e7e2f40574c74ed32c3811b03d26b0b81daf ]
+commit a1e2c031ec3949b8c039b739c0b5bf9c30007b00 upstream.
 
-Delete the v86d netlink only after all the VBE tasks have been
-completed.
+RESERVE_BRK() reserves data in the .brk_reservation section.  The data
+is initialized to zero, like BSS, so the macro specifies 'nobits' to
+prevent the data from taking up space in the vmlinux binary.  The only
+way to get the compiler to do that (without putting the variable in .bss
+proper) is to use inline asm.
 
-Fixes initial state restore on module unload:
-uvesafb: VBE state restore call failed (eax=0x4f04, err=-19)
+The macro also has a hack which encloses the inline asm in a discarded
+function, which allows the size to be passed (global inline asm doesn't
+allow inputs).
 
-Signed-off-by: Jorge Maidana <jorgem.linux@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the need for the discarded function hack by just stringifying the
+size rather than supplying it as an input to the inline asm.
+
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220506121631.133110232@infradead.org
+[nathan: Fix conflict due to lack of 2b6ff7dea670 and 33def8498fdd]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/uvesafb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/setup.h |   30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
-index ee86c62e36728..72255715bbee0 100644
---- a/drivers/video/fbdev/uvesafb.c
-+++ b/drivers/video/fbdev/uvesafb.c
-@@ -1931,10 +1931,10 @@ static void uvesafb_exit(void)
- 		}
- 	}
+--- a/arch/x86/include/asm/setup.h
++++ b/arch/x86/include/asm/setup.h
+@@ -91,27 +91,19 @@ extern unsigned long _brk_end;
+ void *extend_brk(size_t size, size_t align);
  
--	cn_del_callback(&uvesafb_cn_id);
- 	driver_remove_file(&uvesafb_driver.driver, &driver_attr_v86d);
- 	platform_device_unregister(uvesafb_device);
- 	platform_driver_unregister(&uvesafb_driver);
-+	cn_del_callback(&uvesafb_cn_id);
- }
+ /*
+- * Reserve space in the brk section.  The name must be unique within
+- * the file, and somewhat descriptive.  The size is in bytes.  Must be
+- * used at file scope.
++ * Reserve space in the brk section.  The name must be unique within the file,
++ * and somewhat descriptive.  The size is in bytes.
+  *
+- * (This uses a temp function to wrap the asm so we can pass it the
+- * size parameter; otherwise we wouldn't be able to.  We can't use a
+- * "section" attribute on a normal variable because it always ends up
+- * being @progbits, which ends up allocating space in the vmlinux
+- * executable.)
++ * The allocation is done using inline asm (rather than using a section
++ * attribute on a normal variable) in order to allow the use of @nobits, so
++ * that it doesn't take up any space in the vmlinux file.
+  */
+-#define RESERVE_BRK(name,sz)						\
+-	static void __section(.discard.text) __used notrace		\
+-	__brk_reservation_fn_##name##__(void) {				\
+-		asm volatile (						\
+-			".pushsection .brk_reservation,\"aw\",@nobits;" \
+-			".brk." #name ":"				\
+-			" 1:.skip %c0;"					\
+-			" .size .brk." #name ", . - 1b;"		\
+-			" .popsection"					\
+-			: : "i" (sz));					\
+-	}
++#define RESERVE_BRK(name, size)						\
++	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
++	    ".brk." #name ":\n\t"					\
++	    ".skip " __stringify(size) "\n\t"				\
++	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
++	    ".popsection\n\t")
  
- module_exit(uvesafb_exit);
--- 
-2.42.0
-
+ /* Helper for reserving space for arrays of things */
+ #define RESERVE_BRK_ARRAY(type, name, entries)		\
 
 
