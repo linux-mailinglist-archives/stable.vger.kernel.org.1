@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5125A7E2555
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 304587E23A9
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232638AbjKFNa6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:30:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60368 "EHLO
+        id S230155AbjKFNNc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:13:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232721AbjKFNa5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:57 -0500
+        with ESMTP id S231920AbjKFNNX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AAB9A9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:54 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30DBC433C8;
-        Mon,  6 Nov 2023 13:30:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB907BF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBD0C433C8;
+        Mon,  6 Nov 2023 13:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277454;
-        bh=GN2yaOJ252AZllo9ZyRLBQq4SWBYypjvnuO70ZZuGOM=;
+        s=korg; t=1699276400;
+        bh=NLfr0Z24RYpRYf49x9WP4bcTYxhN0XGCEh41C8lAmc0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TvnjUW3u9GWZV0KuM1FS4KRJAf4Vm2GzPHpeTI5vPDSVOUVFqWPw69jxwfRUFyAvQ
-         4bOhpor4jVmhME8aCFBcMq+1Po60G0HOvEAHdQKcm4OiZySIyCuUmOlNDwXT7Bj1g8
-         FQZWTLll0t05J3MWOzSOYugJAOygdo6mEi18d6Xc=
+        b=f2xv7H+VOstro7O75HXMdsowOV1J8erMb5y7WGwC/IA12DXBKAHH0lo8glICSbO/q
+         7bPKhapqsWhLcYV0tbso0Pb3t9Ibu/P68dX+I6CVXPJrY+OU15Ve/unv9iuz5e+9Lq
+         0XUneYS4nS3xtK/am4IMFKgpiAGNPkGX1utbcJAI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH 5.10 07/95] mmc: renesas_sdhi: use custom mask for TMIO_MASK_ALL
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        Tianrui Zhao <zhaotianrui@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 29/62] LoongArch: Export symbol invalid_pud_table for modules building
 Date:   Mon,  6 Nov 2023 14:03:35 +0100
-Message-ID: <20231106130304.963166478@linuxfoundation.org>
+Message-ID: <20231106130302.865274219@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,61 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 9f12cac1bb88e3296990e760d867a98308d6b0ac upstream.
+[ Upstream commit 449c2756c2323c9e32b2a2fa9c8b59ce91b5819d ]
 
-Populate the new member for custom mask values to make sure this value
-is applied whenever needed. Also, rename the define holding the value
-because this is not only about initialization anymore.
+Export symbol invalid_pud_table for modules building (such as the KVM
+module) if 4-level page tables enabled. Otherwise we get:
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://lore.kernel.org/r/20210304092903.8534-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[geert: Backport to v5.10.199]
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ERROR: modpost: "invalid_pud_table" [arch/loongarch/kvm/kvm.ko] undefined!
+
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Tianrui Zhao <zhaotianrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/renesas_sdhi_core.c |    3 ++-
- drivers/mmc/host/tmio_mmc.h          |    2 +-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/loongarch/mm/init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -571,7 +571,7 @@ static void renesas_sdhi_reset(struct tm
- 
- 	if (host->pdata->flags & TMIO_MMC_MIN_RCAR2)
- 		sd_ctrl_write32_as_16_and_16(host, CTL_IRQ_MASK,
--					     TMIO_MASK_INIT_RCAR2);
-+					     TMIO_MASK_ALL_RCAR2);
- }
- 
- #define SH_MOBILE_SDHI_MIN_TAP_ROW 3
-@@ -1012,6 +1012,7 @@ int renesas_sdhi_probe(struct platform_d
- 		host->ops.start_signal_voltage_switch =
- 			renesas_sdhi_start_signal_voltage_switch;
- 		host->sdcard_irq_setbit_mask = TMIO_STAT_ALWAYS_SET_27;
-+		host->sdcard_irq_mask_all = TMIO_MASK_ALL_RCAR2;
- 		host->reset = renesas_sdhi_reset;
- 	} else {
- 		host->sdcard_irq_mask_all = TMIO_MASK_ALL;
---- a/drivers/mmc/host/tmio_mmc.h
-+++ b/drivers/mmc/host/tmio_mmc.h
-@@ -97,8 +97,8 @@
- 
- /* Define some IRQ masks */
- /* This is the mask used at reset by the chip */
--#define TMIO_MASK_INIT_RCAR2	0x8b7f031d /* Initial value for R-Car Gen2+ */
- #define TMIO_MASK_ALL           0x837f031d
-+#define TMIO_MASK_ALL_RCAR2	0x8b7f031d
- #define TMIO_MASK_READOP  (TMIO_STAT_RXRDY | TMIO_STAT_DATAEND)
- #define TMIO_MASK_WRITEOP (TMIO_STAT_TXRQ | TMIO_STAT_DATAEND)
- #define TMIO_MASK_CMD     (TMIO_STAT_CMDRESPEND | TMIO_STAT_CMDTIMEOUT | \
+diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
+index c7e9c96719fa3..c74da7770e39e 100644
+--- a/arch/loongarch/mm/init.c
++++ b/arch/loongarch/mm/init.c
+@@ -228,6 +228,7 @@ pgd_t swapper_pg_dir[_PTRS_PER_PGD] __section(".bss..swapper_pg_dir");
+ pgd_t invalid_pg_dir[_PTRS_PER_PGD] __page_aligned_bss;
+ #ifndef __PAGETABLE_PUD_FOLDED
+ pud_t invalid_pud_table[PTRS_PER_PUD] __page_aligned_bss;
++EXPORT_SYMBOL(invalid_pud_table);
+ #endif
+ #ifndef __PAGETABLE_PMD_FOLDED
+ pmd_t invalid_pmd_table[PTRS_PER_PMD] __page_aligned_bss;
+-- 
+2.42.0
+
 
 
