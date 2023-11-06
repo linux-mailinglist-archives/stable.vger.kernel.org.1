@@ -2,146 +2,236 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B01017E28B8
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 16:31:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A9497E28DE
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 16:39:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229839AbjKFPb1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 10:31:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37450 "EHLO
+        id S232073AbjKFPjo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 10:39:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232083AbjKFPbZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 10:31:25 -0500
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40677100
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 07:30:48 -0800 (PST)
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-41cc0e9d92aso29544321cf.3
-        for <stable@vger.kernel.org>; Mon, 06 Nov 2023 07:30:48 -0800 (PST)
+        with ESMTP id S231755AbjKFPjn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 10:39:43 -0500
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35186100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 07:39:40 -0800 (PST)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6b44befac59so4287607b3a.0
+        for <stable@vger.kernel.org>; Mon, 06 Nov 2023 07:39:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699285179; x=1699889979; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=R6YvuRJhSGfR5nO0iMyFw7o13UY7dYdKjGy/duKz59k=;
+        b=WtOTNW64J+t7s5KxfblYPCwJuhdgu07KqojuahhoSoxnmJBIsdU1Njeoi/a3ftzaJa
+         U7GSzR/moUYMgoFnqiSwk5wDYaSkNruiCNWlUvKx2LFsY34lr5xZP2Ug0BxZKHlY+Dbw
+         VgUw072PHckGeR0CZUNO6xGMmXUM2VRbxgPpOJaNNBL77/3lVbM5cn138NmYpCw/YSMp
+         qaHha9NFfOUUdG2CkwzQKSkhoy8eyXJ63DlDkhnSyjVDPOo228VDOQFm+CaI9stRWces
+         Wy/MJG97nmDLqDucNGIWoePvg+2KPw2PxjW8SkQCrxjeX0xpcKyJIgOcMxG/FTW/oXY8
+         Yq9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699284647; x=1699889447;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hrjYpFY8E2oiY2xxYzQ2GUG1YMJAJZ45VGuFmmeRh4c=;
-        b=s1J6S8lHe/JtaILPyntsVTcsCM50qAEwPpIdlyOO9cm26BsOY5H3vNeb66YSQoOC9t
-         Y77YenO1DZMYeThKgVSomEV5jVui9jVFX5gS+pfY50RB3+Fziab1cJUt8nramK/5bRFT
-         YYhDJg3r40DzU8jg5in5pubGtG0uObhwhAfH7gribzv1jaqngxjxrsFLaUAy9s0sFROk
-         mmunom73MjkZ71ml4ztNiCGCoPHXN3DPvVqs/P5aK2LZBD9Mo8EtlvJ7zgTsMD28dbTW
-         tjN8O7BMEiNfEy6ngQNUs7dOsxsnKNVaQRGch3UoikJlBULDdlw+SgdzvgTYapOefMpH
-         efSw==
-X-Gm-Message-State: AOJu0YzVUmFboUTlXsdm+3lAc0mkwO70TudJWBoz2pU/UqzJgmcBFJGs
-        bcBkC3gnb6pvRvbP3DLMzoEp
-X-Google-Smtp-Source: AGHT+IEM/+zw76Fcxpj1WquMbJygUaMozC9Wk7yN5zbxmT5CSz4J9onVl5IQCkCNvJJhkdQNmfPFUA==
-X-Received: by 2002:ac8:7d50:0:b0:41c:bbf3:b24b with SMTP id h16-20020ac87d50000000b0041cbbf3b24bmr35421169qtb.27.1699284647197;
-        Mon, 06 Nov 2023 07:30:47 -0800 (PST)
-Received: from localhost (pool-68-160-141-91.bstnma.fios.verizon.net. [68.160.141.91])
-        by smtp.gmail.com with ESMTPSA id bb29-20020a05622a1b1d00b00418122186ccsm3481815qtb.12.2023.11.06.07.30.46
+        d=1e100.net; s=20230601; t=1699285179; x=1699889979;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R6YvuRJhSGfR5nO0iMyFw7o13UY7dYdKjGy/duKz59k=;
+        b=mQFtP0oYGQv/xIDQ+OBvemJ6/zirbcIoeMM+COCeXAY+nfIesbwfOXSIS3jcn+2f+p
+         UlMJvExt5PN9vuTM4YJw8OcvOurp7d4GT8tKpzyVR2sOgVOBguRHd3ilerysW3bNeIto
+         We5kQUfJhic7H3uOIbD7IVyZKhd44FLrT/GViRXbh1MYaUuYbmL+3gltQ4BtuvXjRXiA
+         i3Q/Yp4qNL0LiL+w7AABNGf1trRPgyK3qYsDBTPg1y46EWoJKNU3ASVlGObfHpKLDmpG
+         oeILgo1aYqwAHCO7iNi4Hyx+NDzxzAjvFpEn9lIEej4xsNwUSGmMjhR8oAXmYdUO99Q0
+         lMKg==
+X-Gm-Message-State: AOJu0YxtZTcdibRw5RNRNkwoVccgytiDwxilTiEM7tuKOEZmTBdW3OHq
+        YlLDKc3FDdSphUQqjvGDcdviJQhsk9fY8OKEgYNr9A==
+X-Google-Smtp-Source: AGHT+IHyyfoqRdefrQKasyZmZSioyr056AWNSIoddD5g6/kkjhwbXU9hMaD1Lhobp+4iV0LaEeEAyA==
+X-Received: by 2002:a05:6a21:3290:b0:17b:2c56:70bc with SMTP id yt16-20020a056a21329000b0017b2c5670bcmr14537288pzb.10.1699285179186;
+        Mon, 06 Nov 2023 07:39:39 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id t62-20020a628141000000b0068fe39e6a46sm6040245pfd.112.2023.11.06.07.39.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Nov 2023 07:30:46 -0800 (PST)
-Date:   Mon, 6 Nov 2023 10:30:45 -0500
-From:   Mike Snitzer <snitzer@kernel.org>
-To:     Keith Busch <kbusch@kernel.org>
-Cc:     Mikulas Patocka <mpatocka@redhat.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        xen-devel@lists.xenproject.org, iommu@lists.linux.dev,
-        Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>,
-        Jens Axboe <axboe@fb.com>, Sagi Grimberg <sagi@grimberg.me>,
-        Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        dm-devel@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: swiotlb-xen: provide the "max_mapping_size" method
-Message-ID: <ZUkGpblDX637QV9y@redhat.com>
-References: <3cb4133c-b6db-9187-a678-11ed8c9456e@redhat.com>
- <ZUUctamEFtAlSnSV@mail-itl>
- <ZUUlqJoS6_1IznzT@kbusch-mbp.dhcp.thefacebook.com>
- <ZUVYT1Xp4+hFT27W@mail-itl>
- <ZUV3TApYYoh_oiRR@kbusch-mbp.dhcp.thefacebook.com>
- <11a9886d-316c-edcd-d6da-24ad0b9a2b4@redhat.com>
- <ZUZOKitOAqqKiJ4n@kbusch-mbp.dhcp.thefacebook.com>
- <20231106071008.GB17022@lst.de>
- <928b5df7-fada-cf2f-6f6a-257a84547c3@redhat.com>
- <ZUkDUXDF6g4P86F3@kbusch-mbp.dhcp.thefacebook.com>
+        Mon, 06 Nov 2023 07:39:38 -0800 (PST)
+Message-ID: <654908ba.620a0220.e821d.df04@mx.google.com>
+Date:   Mon, 06 Nov 2023 07:39:38 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZUkDUXDF6g4P86F3@kbusch-mbp.dhcp.thefacebook.com>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.15.137-129-gec134bfabca01
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.137-129-gec134bfabca01)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 06 2023 at 10:16P -0500,
-Keith Busch <kbusch@kernel.org> wrote:
+stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
+5.15.137-129-gec134bfabca01)
 
-> On Mon, Nov 06, 2023 at 03:59:40PM +0100, Mikulas Patocka wrote:
-> > There's a bug that when using the XEN hypervisor with dm-crypt on NVMe, 
-> > the kernel deadlocks [1].
-> > 
-> > The deadlocks are caused by inability to map a large bio vector -
-> > dma_map_sgtable always returns an error, this gets propagated to the block
-> > layer as BLK_STS_RESOURCE and the block layer retries the request
-> > indefinitely.
-> > 
-> > XEN uses the swiotlb framework to map discontiguous pages into contiguous
-> > runs that are submitted to the PCIe device. The swiotlb framework has a
-> > limitation on the length of a mapping - this needs to be announced with
-> > the max_mapping_size method to make sure that the hardware drivers do not
-> > create larger mappings.
-> > 
-> > Without max_mapping_size, the NVMe block driver would create large
-> > mappings that overrun the maximum mapping size.
-> > 
-> > [1] https://lore.kernel.org/stable/ZTNH0qtmint%2FzLJZ@mail-itl/
-> 
-> This should be a "Link:" tag.
-> 
-> > Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> > Reported-by: Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>
-> > Tested-by: Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>
-> > Suggested-by: Keith Busch <kbusch@kernel.org>
-> 
-> I was about to send the same thing. I did a little more than suggest
-> this: it's is the very patch I wrote for testing, minus the redundant
-> nvme bits! But since you already have a commit message for it...
-> 
-> Acked-by: Keith Busch <kbusch@kernel.org>
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.137-129-gec134bfabca01/
 
-No, this patch should be attributed to you Keith.
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.137-129-gec134bfabca01
+Git Commit: ec134bfabca018727b246a05cbd7d2da66864974
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Mikulas, I like that you ran with getting a fix prepared but please
-update the patch so Keith is the author and use Link: as suggested for
-the v2. Note: you'll still use your Signed-off-by since you had a role
-in getting this patch together (but please move yours to the end of
-the header).
+Warnings Detected:
 
-Mike
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
 
 
-> 
-> > Suggested-by: Christoph Hellwig <hch@lst.de>
-> > Cc: stable@vger.kernel.org
-> > 
-> > ---
-> >  drivers/xen/swiotlb-xen.c |    1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > Index: linux-stable/drivers/xen/swiotlb-xen.c
-> > ===================================================================
-> > --- linux-stable.orig/drivers/xen/swiotlb-xen.c	2023-11-03 17:57:18.000000000 +0100
-> > +++ linux-stable/drivers/xen/swiotlb-xen.c	2023-11-06 15:30:59.000000000 +0100
-> > @@ -405,4 +405,5 @@ const struct dma_map_ops xen_swiotlb_dma
-> >  	.get_sgtable = dma_common_get_sgtable,
-> >  	.alloc_pages = dma_common_alloc_pages,
-> >  	.free_pages = dma_common_free_pages,
-> > +	.max_mapping_size = swiotlb_max_mapping_size,
-> >  };
-> 
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---
+For more info write to <info@kernelci.org>
