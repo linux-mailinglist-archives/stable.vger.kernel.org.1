@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DCCBC7E256E
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B41D57E2531
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232727AbjKFNbx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:31:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60666 "EHLO
+        id S232601AbjKFN3N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:29:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232589AbjKFNbx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:53 -0500
+        with ESMTP id S232609AbjKFN3L (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 548D6107
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:50 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9008AC433C7;
-        Mon,  6 Nov 2023 13:31:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6573B92
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA39EC433C8;
+        Mon,  6 Nov 2023 13:29:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277509;
-        bh=v96qhwkdrs9uktEeqKrY3jKKlKI+1fRx1S/6EW9XKU4=;
+        s=korg; t=1699277349;
+        bh=YdRG7m5bUXM/6HbR2Ps5kjvKFsFJll/GA+BfAQQp8Ng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QGE1I9nprQxqtC3TyQJPHuTv/F1ybRzS4Qo8N0d3aAYw1wSaktxQ4UKVNK4AmBQMV
-         u4s7JwI8RtloVlJ/YTMgxtNivK0ibfkzSi1c6oCl4dV1s0ekRD9/kWnMY7J7tDh+lC
-         vQfWCgmbec9JhUHGEgy4yBsniyxUvTqG/WsokmyI=
+        b=OogNv5RBd9jBkq0uyxiKOS811K1eL5FnDQagQro7cH7VQtDMIpWoYBU7hRVoyLptS
+         +prx0C4ofa3coq6tze6DjSpmAfazcLUmn1nsHfVfOYwbJnkX/STjFLFF6otVQYPo48
+         clanMUuegXf46tXpMtUVLJ8/GqLFe3p5mFyVYYE0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Talpey <tom@talpey.com>,
-        Long Li <longli@microsoft.com>,
-        Steve French <stfrench@microsoft.com>,
-        Anastasia Belova <abelova@astralinux.ru>
-Subject: [PATCH 5.10 46/95] smbdirect: missing rc checks while waiting for rdma events
+        patches@lists.linux.dev, Jorge Maidana <jorgem.linux@gmail.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 094/128] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
 Date:   Mon,  6 Nov 2023 14:04:14 +0100
-Message-ID: <20231106130306.386960970@linuxfoundation.org>
+Message-ID: <20231106130313.430941848@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +49,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Jorge Maidana <jorgem.linux@gmail.com>
 
-commit 0555b221528e9cb11f5766dcdee19c809187e42e upstream.
+[ Upstream commit 1022e7e2f40574c74ed32c3811b03d26b0b81daf ]
 
-There were two places where we weren't checking for error
-(e.g. ERESTARTSYS) while waiting for rdma resolution.
+Delete the v86d netlink only after all the VBE tasks have been
+completed.
 
-Addresses-Coverity: 1462165 ("Unchecked return value")
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes initial state restore on module unload:
+uvesafb: VBE state restore call failed (eax=0x4f04, err=-19)
+
+Signed-off-by: Jorge Maidana <jorgem.linux@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smbdirect.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/uvesafb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/cifs/smbdirect.c
-+++ b/fs/cifs/smbdirect.c
-@@ -571,8 +571,13 @@ static struct rdma_cm_id *smbd_create_id
- 		log_rdma_event(ERR, "rdma_resolve_addr() failed %i\n", rc);
- 		goto out;
+diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
+index 1f3b7e013568c..3a285af76f7ed 100644
+--- a/drivers/video/fbdev/uvesafb.c
++++ b/drivers/video/fbdev/uvesafb.c
+@@ -1935,10 +1935,10 @@ static void uvesafb_exit(void)
+ 		}
  	}
--	wait_for_completion_interruptible_timeout(
-+	rc = wait_for_completion_interruptible_timeout(
- 		&info->ri_done, msecs_to_jiffies(RDMA_RESOLVE_TIMEOUT));
-+	/* e.g. if interrupted returns -ERESTARTSYS */
-+	if (rc < 0) {
-+		log_rdma_event(ERR, "rdma_resolve_addr timeout rc: %i\n", rc);
-+		goto out;
-+	}
- 	rc = info->ri_rc;
- 	if (rc) {
- 		log_rdma_event(ERR, "rdma_resolve_addr() completed %i\n", rc);
-@@ -585,8 +590,13 @@ static struct rdma_cm_id *smbd_create_id
- 		log_rdma_event(ERR, "rdma_resolve_route() failed %i\n", rc);
- 		goto out;
- 	}
--	wait_for_completion_interruptible_timeout(
-+	rc = wait_for_completion_interruptible_timeout(
- 		&info->ri_done, msecs_to_jiffies(RDMA_RESOLVE_TIMEOUT));
-+	/* e.g. if interrupted returns -ERESTARTSYS */
-+	if (rc < 0)  {
-+		log_rdma_event(ERR, "rdma_resolve_addr timeout rc: %i\n", rc);
-+		goto out;
-+	}
- 	rc = info->ri_rc;
- 	if (rc) {
- 		log_rdma_event(ERR, "rdma_resolve_route() completed %i\n", rc);
+ 
+-	cn_del_callback(&uvesafb_cn_id);
+ 	driver_remove_file(&uvesafb_driver.driver, &driver_attr_v86d);
+ 	platform_device_unregister(uvesafb_device);
+ 	platform_driver_unregister(&uvesafb_driver);
++	cn_del_callback(&uvesafb_cn_id);
+ }
+ 
+ module_exit(uvesafb_exit);
+-- 
+2.42.0
+
 
 
