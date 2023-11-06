@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A55817E24BE
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B2CD7E24A1
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232498AbjKFNYs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:24:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44326 "EHLO
+        id S232478AbjKFNXo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:23:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232504AbjKFNYr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:24:47 -0500
+        with ESMTP id S232506AbjKFNXn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B74EA
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:44 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C122C433C7;
-        Mon,  6 Nov 2023 13:24:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41E90D42
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:37 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553A3C433C8;
+        Mon,  6 Nov 2023 13:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277083;
-        bh=DFglAVx3ZB+KZV9Gpij1noqRd9cyRHikYZex2/04SUM=;
+        s=korg; t=1699277016;
+        bh=YbrSkASyqoppVuQmBY/wNWEGtxi3Hx5WlFi4+sRNlKM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KIVrcno0HorM+cOayanlkZW9JZMYl9h3SaY1zrv5czI+6nUkWi1qCrSzRcjbCBeoV
-         vQWOptTGIAzaSEbFKGObwVKnFzadXDNGEc4GwB0jtpyDSOpfkjqJZNGWonifNADoz1
-         KPjxMdhBz3pTjm9fctfXbPMoViQI6iOcIPbZzass=
+        b=rLPdbj9BuowuTQS9qO4M/V3I7IwGVvo3dbj+KXUlv6pBS93LdRxWQUXOWJe47Z53q
+         N3JZekk4FUrEWD3IDAbBCkcQ/vHN4gP3qwbEH9yuGrIvKfzCCo3A7cJQivY3XpQNHO
+         gZf8uoBWecrIoKcj0wWz3cNY9PX95i4vludFAudY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gavin Shan <gshan@redhat.com>,
-        Zhenyu Zhang <zhenyzha@redhat.com>,
+        patches@lists.linux.dev, Maximilian Heyne <mheyne@amazon.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
         "Michael S. Tsirkin" <mst@redhat.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH 5.15 009/128] virtio_balloon: Fix endless deflation and inflation on arm64
-Date:   Mon,  6 Nov 2023 14:02:49 +0100
-Message-ID: <20231106130309.555218752@linuxfoundation.org>
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 5.15 010/128] virtio-mmio: fix memory leak of vm_dev
+Date:   Mon,  6 Nov 2023 14:02:50 +0100
+Message-ID: <20231106130309.602588318@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
 References: <20231106130309.112650042@linuxfoundation.org>
@@ -55,97 +56,86 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Gavin Shan <gshan@redhat.com>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-commit 07622bd415639e9709579f400afd19e7e9866e5e upstream.
+commit fab7f259227b8f70aa6d54e1de1a1f5f4729041c upstream.
 
-The deflation request to the target, which isn't unaligned to the
-guest page size causes endless deflation and inflation actions. For
-example, we receive the flooding QMP events for the changes on memory
-balloon's size after a deflation request to the unaligned target is
-sent for the ARM64 guest, where we have 64KB base page size.
+With the recent removal of vm_dev from devres its memory is only freed
+via the callback virtio_mmio_release_dev. However, this only takes
+effect after device_add is called by register_virtio_device. Until then
+it's an unmanaged resource and must be explicitly freed on error exit.
 
-  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
-  -accel kvm -machine virt,gic-version=host -cpu host          \
-  -smp maxcpus=8,cpus=8,sockets=2,clusters=2,cores=2,threads=1 \
-  -m 1024M,slots=16,maxmem=64G                                 \
-  -object memory-backend-ram,id=mem0,size=512M                 \
-  -object memory-backend-ram,id=mem1,size=512M                 \
-  -numa node,nodeid=0,memdev=mem0,cpus=0-3                     \
-  -numa node,nodeid=1,memdev=mem1,cpus=4-7                     \
-    :                                                          \
-  -device virtio-balloon-pci,id=balloon0,bus=pcie.10
-
-  { "execute" : "balloon", "arguments": { "value" : 1073672192 } }
-  {"return": {}}
-  {"timestamp": {"seconds": 1693272173, "microseconds": 88667},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272174, "microseconds": 89704},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272175, "microseconds": 90819},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272176, "microseconds": 91961},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272177, "microseconds": 93040},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272178, "microseconds": 94117},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272179, "microseconds": 95337},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272180, "microseconds": 96615},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272181, "microseconds": 97626},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272182, "microseconds": 98693},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272183, "microseconds": 99698},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272184, "microseconds": 100727},  \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272185, "microseconds": 90430},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272186, "microseconds": 102999},  \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-     :
-  <The similar QMP events repeat>
-
-Fix it by aligning the target up to the guest page size, 64KB in this
-specific case. With this applied, no flooding QMP events are observed
-and the memory balloon's size can be stablizied to 0x3ffe0000 soon
-after the deflation request is sent.
-
-  { "execute" : "balloon", "arguments": { "value" : 1073672192 } }
-  {"return": {}}
-  {"timestamp": {"seconds": 1693273328, "microseconds": 793075},  \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  { "execute" : "query-balloon" }
-  {"return": {"actual": 1073610752}}
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
-Message-Id: <20230831011007.1032822-1-gshan@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/virtio/virtio_balloon.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -402,7 +402,11 @@ static inline s64 towards_target(struct
- 	virtio_cread_le(vb->vdev, struct virtio_balloon_config, num_pages,
- 			&num_pages);
+Message-Id: <20230911090328.40538-1-mheyne@amazon.de>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+ drivers/virtio/virtio_mmio.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -596,14 +596,17 @@ static int virtio_mmio_probe(struct plat
+ 	spin_lock_init(&vm_dev->lock);
  
--	target = num_pages;
-+	/*
-+	 * Aligned up to guest page size to avoid inflating and deflating
-+	 * balloon endlessly.
-+	 */
-+	target = ALIGN(num_pages, VIRTIO_BALLOON_PAGES_PER_PAGE);
- 	return target - vb->num_pages;
+ 	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(vm_dev->base))
+-		return PTR_ERR(vm_dev->base);
++	if (IS_ERR(vm_dev->base)) {
++		rc = PTR_ERR(vm_dev->base);
++		goto free_vm_dev;
++	}
+ 
+ 	/* Check magic value */
+ 	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
+ 	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
+ 		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
+-		return -ENODEV;
++		rc = -ENODEV;
++		goto free_vm_dev;
+ 	}
+ 
+ 	/* Check device version */
+@@ -611,7 +614,8 @@ static int virtio_mmio_probe(struct plat
+ 	if (vm_dev->version < 1 || vm_dev->version > 2) {
+ 		dev_err(&pdev->dev, "Version %ld not supported!\n",
+ 				vm_dev->version);
+-		return -ENXIO;
++		rc = -ENXIO;
++		goto free_vm_dev;
+ 	}
+ 
+ 	vm_dev->vdev.id.device = readl(vm_dev->base + VIRTIO_MMIO_DEVICE_ID);
+@@ -620,7 +624,8 @@ static int virtio_mmio_probe(struct plat
+ 		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
+ 		 * with no function. End probing now with no error reported.
+ 		 */
+-		return -ENODEV;
++		rc = -ENODEV;
++		goto free_vm_dev;
+ 	}
+ 	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
+ 
+@@ -650,6 +655,10 @@ static int virtio_mmio_probe(struct plat
+ 		put_device(&vm_dev->vdev.dev);
+ 
+ 	return rc;
++
++free_vm_dev:
++	kfree(vm_dev);
++	return rc;
  }
  
+ static int virtio_mmio_remove(struct platform_device *pdev)
 
 
