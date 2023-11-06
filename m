@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D7587E22CC
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:05:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AAD87E24B6
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:24:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231918AbjKFNFk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:05:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51242 "EHLO
+        id S232489AbjKFNY3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:24:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231898AbjKFNFj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:05:39 -0500
+        with ESMTP id S232449AbjKFNY0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:24:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBE2291
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:05:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A63DC433C8;
-        Mon,  6 Nov 2023 13:05:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5C2BD8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F43C433C8;
+        Mon,  6 Nov 2023 13:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699275936;
-        bh=lTYl4UpV7UeoT4zk6S6kRV2/gHlGjvR0s6VbmPvfAro=;
+        s=korg; t=1699277063;
+        bh=AlzcfrXAvi3vBH3aRbil/mErkdkOFw38EHUJusIGioU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LAe7lTsR4sVfX9n3/WTVqd6aCVMVOfKvahplcoKBZcg7qCAMIULH7zOvC6hqsdEfL
-         Mnn4eL10ADlLCxq7OaXFYz2GCnTnyrVwIrRNZFMLMfRZUTlgh1dEq4osKrIV+8worr
-         BhLQOoTDwOw7Idh05W85BQb4pcxYON4xCFnFCwns=
+        b=deiT9zBsXz0XdF2VNM3MDURTFhHfbRKOIf9ZEMAl9Ev+8Oy2HW9awCyU5h+X8/err
+         iOWxeaGdZJAVSoRpOn8FBDG384nhS3gHwv7s6zDrBr2h0BHGNXsEv4SLDom13mbTMJ
+         ygmO5Q8e4Ffdi5uqDnEZjudG78ucpxM8erXeI8hw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        patches@lists.linux.dev, Kunwu Chan <chentao@kylinos.cn>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 14/48] NFS: Dont call generic_error_remove_page() while holding locks
+Subject: [PATCH 5.15 025/128] treewide: Spelling fix in comment
 Date:   Mon,  6 Nov 2023 14:03:05 +0100
-Message-ID: <20231106130258.339876168@linuxfoundation.org>
+Message-ID: <20231106130310.263465389@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trondmy@gmail.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 22876f540bdf19af9e4fca893ce02ba7ee65ebcc ]
+[ Upstream commit fb71ba0ed8be9534493c80ba00142a64d9972a72 ]
 
-The NFS read code can trigger writeback while holding the page lock.
-If an error then triggers a call to nfs_write_error_remove_page(),
-we can deadlock.
+reques -> request
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Fixes: 09dde54c6a69 ("PS3: gelic: Add wireless support for PS3")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/write.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/toshiba/ps3_gelic_wireless.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index 010733c8bdcd3..1b5791d5537a3 100644
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -587,9 +587,8 @@ nfs_lock_and_join_requests(struct page *page)
+diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
+index dc14a66583ff3..44488c153ea25 100644
+--- a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
++++ b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
+@@ -1217,7 +1217,7 @@ static int gelic_wl_set_encodeext(struct net_device *netdev,
+ 		key_index = wl->current_key;
  
- static void nfs_write_error_remove_page(struct nfs_page *req)
- {
-+	SetPageError(req->wb_page);
- 	nfs_end_page_writeback(req);
--	generic_error_remove_page(page_file_mapping(req->wb_page),
--				  req->wb_page);
- 	nfs_release_request(req);
- }
- 
+ 	if (!enc->length && (ext->ext_flags & IW_ENCODE_EXT_SET_TX_KEY)) {
+-		/* reques to change default key index */
++		/* request to change default key index */
+ 		pr_debug("%s: request to change default key to %d\n",
+ 			 __func__, key_index);
+ 		wl->current_key = key_index;
 -- 
 2.42.0
 
