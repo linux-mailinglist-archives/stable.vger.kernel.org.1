@@ -2,34 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42DA97E25BA
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:34:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10AAA7E25BB
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:34:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231795AbjKFNec (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:34:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34180 "EHLO
+        id S232841AbjKFNef (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:34:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232818AbjKFNeb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:34:31 -0500
+        with ESMTP id S232818AbjKFNee (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:34:34 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8B15F1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:34:28 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CBDC433CB;
-        Mon,  6 Nov 2023 13:34:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94947191
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:34:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2634C433C8;
+        Mon,  6 Nov 2023 13:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277668;
-        bh=enOi76hTuc0oCjrwy/pPCYa8AB2oONFh04VxAtQYMuI=;
+        s=korg; t=1699277671;
+        bh=MtQIZ6qInaite2wtdS9H4YCva29OMfZaewS9ex0bbMQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DVDpfquNDM/qRDNxFrz6ZGKiza+Noe3UGb/JTUxUpHyQfZ8z9G9dc3r0NveSO3fgE
-         60/PJHgG8m5Y+ZYt0EZywuByZiiZKCee1ViuZFepkdXwCW1VkSv42P+iX0TewLv6Be
-         TMLGR732YfW3/MZ8lY+tQVUMbg22SzbWiXzG7acg=
+        b=OtfyZoAMqZoWC0Vk0X9PFCUZdk28SQeMleCQa1D4UhK9uo0uH37/hZX0gHDwh3dpC
+         a6oL6HS2zcxAzTbzvAW+mSqSHiQmfj2W8wAtmiiiEXTkXYiXpioDnRwGBhN619Abaw
+         iMgUJIullyWFSvBYXRo/Q856Yvj3mMzqG0tpXK74=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liha Sikanen <lihasika@gmail.com>
-Subject: [PATCH 5.10 89/95] usb: storage: set 1.50 as the lower bcdDevice for older "Super Top" compatibility
-Date:   Mon,  6 Nov 2023 14:04:57 +0100
-Message-ID: <20231106130307.948105612@linuxfoundation.org>
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Andrey Konovalov <andreyknvl@gmail.com>
+Subject: [PATCH 5.10 90/95] usb: raw-gadget: properly handle interrupted requests
+Date:   Mon,  6 Nov 2023 14:04:58 +0100
+Message-ID: <20231106130307.977914613@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
 References: <20231106130304.678610325@linuxfoundation.org>
@@ -52,32 +53,108 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: LihaSika <lihasika@gmail.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-commit 0e3139e6543b241b3e65956a55c712333bef48ac upstream.
+commit e8033bde451eddfb9b1bbd6e2d848c1b5c277222 upstream.
 
-Change lower bcdDevice value for "Super Top USB 2.0  SATA BRIDGE" to match
-1.50. I have such an older device with bcdDevice=1.50 and it will not work
-otherwise.
+Currently, if a USB request that was queued by Raw Gadget is interrupted
+(via a signal), wait_for_completion_interruptible returns -ERESTARTSYS.
+Raw Gadget then attempts to propagate this value to userspace as a return
+value from its ioctls. However, when -ERESTARTSYS is returned by a syscall
+handler, the kernel internally restarts the syscall.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Liha Sikanen <lihasika@gmail.com>
-Link: https://lore.kernel.org/r/ccf7d12a-8362-4916-b3e0-f4150f54affd@gmail.com
+This doesn't allow userspace applications to interrupt requests queued by
+Raw Gadget (which is required when the emulated device is asked to switch
+altsettings). It also violates the implied interface of Raw Gadget that a
+single ioctl must only queue a single USB request.
+
+Instead, make Raw Gadget do what GadgetFS does: check whether the request
+was interrupted (dequeued with status == -ECONNRESET) and report -EINTR to
+userspace.
+
+Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://lore.kernel.org/r/0db45b1d7cc466e3d4d1ab353f61d63c977fbbc5.1698350424.git.andreyknvl@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_cypress.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/legacy/raw_gadget.c |   26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/storage/unusual_cypress.h
-+++ b/drivers/usb/storage/unusual_cypress.h
-@@ -19,7 +19,7 @@ UNUSUAL_DEV(  0x04b4, 0x6831, 0x0000, 0x
- 		"Cypress ISD-300LP",
- 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -662,12 +662,12 @@ static int raw_process_ep0_io(struct raw
+ 	if (WARN_ON(in && dev->ep0_out_pending)) {
+ 		ret = -ENODEV;
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_unlock;
+ 	}
+ 	if (WARN_ON(!in && dev->ep0_in_pending)) {
+ 		ret = -ENODEV;
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_unlock;
+ 	}
  
--UNUSUAL_DEV( 0x14cd, 0x6116, 0x0160, 0x0160,
-+UNUSUAL_DEV( 0x14cd, 0x6116, 0x0150, 0x0160,
- 		"Super Top",
- 		"USB 2.0  SATA BRIDGE",
- 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
+ 	dev->req->buf = data;
+@@ -682,7 +682,7 @@ static int raw_process_ep0_io(struct raw
+ 				"fail, usb_ep_queue returned %d\n", ret);
+ 		spin_lock_irqsave(&dev->lock, flags);
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_queue_failed;
+ 	}
+ 
+ 	ret = wait_for_completion_interruptible(&dev->ep0_done);
+@@ -691,13 +691,16 @@ static int raw_process_ep0_io(struct raw
+ 		usb_ep_dequeue(dev->gadget->ep0, dev->req);
+ 		wait_for_completion(&dev->ep0_done);
+ 		spin_lock_irqsave(&dev->lock, flags);
+-		goto out_done;
++		if (dev->ep0_status == -ECONNRESET)
++			dev->ep0_status = -EINTR;
++		goto out_interrupted;
+ 	}
+ 
+ 	spin_lock_irqsave(&dev->lock, flags);
+-	ret = dev->ep0_status;
+ 
+-out_done:
++out_interrupted:
++	ret = dev->ep0_status;
++out_queue_failed:
+ 	dev->ep0_urb_queued = false;
+ out_unlock:
+ 	spin_unlock_irqrestore(&dev->lock, flags);
+@@ -1059,7 +1062,7 @@ static int raw_process_ep_io(struct raw_
+ 				"fail, usb_ep_queue returned %d\n", ret);
+ 		spin_lock_irqsave(&dev->lock, flags);
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_queue_failed;
+ 	}
+ 
+ 	ret = wait_for_completion_interruptible(&done);
+@@ -1068,13 +1071,16 @@ static int raw_process_ep_io(struct raw_
+ 		usb_ep_dequeue(ep->ep, ep->req);
+ 		wait_for_completion(&done);
+ 		spin_lock_irqsave(&dev->lock, flags);
+-		goto out_done;
++		if (ep->status == -ECONNRESET)
++			ep->status = -EINTR;
++		goto out_interrupted;
+ 	}
+ 
+ 	spin_lock_irqsave(&dev->lock, flags);
+-	ret = ep->status;
+ 
+-out_done:
++out_interrupted:
++	ret = ep->status;
++out_queue_failed:
+ 	ep->urb_queued = false;
+ out_unlock:
+ 	spin_unlock_irqrestore(&dev->lock, flags);
 
 
