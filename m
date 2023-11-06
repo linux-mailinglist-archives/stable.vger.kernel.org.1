@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33AAA7E253E
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 120D17E25A0
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:34:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232683AbjKFN34 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:29:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44028 "EHLO
+        id S232796AbjKFNdv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:33:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232684AbjKFN34 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:56 -0500
+        with ESMTP id S232813AbjKFNdt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:33:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B8592
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:53 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553ACC433C7;
-        Mon,  6 Nov 2023 13:29:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17099D69
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:33:41 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9442C433C9;
+        Mon,  6 Nov 2023 13:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277392;
-        bh=txBK/I0A82ynbQOLJsjxULmkFlFliPmp7YJgdT93ngM=;
+        s=korg; t=1699277621;
+        bh=J3ngFomkvBuGJltBkHnUUoF6HOAGqfvn+1+4pxy/Plg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2lBfwTFZTjT545KYqRgx/NfRv++/+wUvcR7rUQNh8FNzL1DOp+ZTStDF8zrZswhqq
-         LOCMww66BON41Nq4/XF/OBNGFkSkpE//AYeUUBkQVRQcbhw5FChIB9HlG9fA6gl7yR
-         eahKghO/+C5SI/LkRzB1GgxmiZomUunJeV4c1Bzk=
+        b=kr/Xmnm6lxGxrsfENdarBcy0nCiMgJzPpS/7tnu9jqLKLh79lgZr+DlO3/j27QAx1
+         C5tfviYPHbb7wrdQQAJpxDzU1k5s+GOxDe6n6TIf4ofh9s7SxfBAwiymhtojm6baVP
+         TUFclvaEzLAF4P6NHCb8PwlbTX4Y4O6aov6t63Ps=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mark Hasemeyer <markhas@chromium.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 128/128] ALSA: hda: intel-dsp-config: Fix JSL Chromebook quirk detection
+        patches@lists.linux.dev, Patrick Menschel <menschel.p@posteo.de>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Oliver Hartkopp <socketcan@hartkopp.net>
+Subject: [PATCH 5.10 80/95] can: isotp: Add error message if txqueuelen is too small
 Date:   Mon,  6 Nov 2023 14:04:48 +0100
-Message-ID: <20231106130314.984945524@linuxfoundation.org>
+Message-ID: <20231106130307.633135023@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Hasemeyer <markhas@chromium.org>
+From: Patrick Menschel <menschel.p@posteo.de>
 
-commit 7c05b44e1a50d9cbfc4f731dddc436a24ddc129a upstream.
+commit c69d190f7bb9a03cf5237d45a457993730d01605 upstream
 
-Some Jasperlake Chromebooks overwrite the system vendor DMI value to the
-name of the OEM that manufactured the device. This breaks Chromebook
-quirk detection as it expects the system vendor to be "Google".
+This patch adds an additional error message in case that txqueuelen is
+set too small and advices the user to increase txqueuelen.
 
-Add another quirk detection entry that looks for "Google" in the BIOS
-version.
+This is likely to happen even with small transfers if txqueuelen is at
+default value 10 frames.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20231018235944.1860717-1-markhas@chromium.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20210427052150.2308-4-menschel.p@posteo.de
+Signed-off-by: Patrick Menschel <menschel.p@posteo.de>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/intel-dsp-config.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/can/isotp.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/sound/hda/intel-dsp-config.c
-+++ b/sound/hda/intel-dsp-config.c
-@@ -330,6 +330,12 @@ static const struct config_entry config_
- 					DMI_MATCH(DMI_SYS_VENDOR, "Google"),
- 				}
- 			},
-+			{
-+				.ident = "Google firmware",
-+				.matches = {
-+					DMI_MATCH(DMI_BIOS_VERSION, "Google"),
-+				}
-+			},
- 			{}
- 		}
- 	},
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -813,10 +813,12 @@ isotp_tx_burst:
+ 		can_skb_set_owner(skb, sk);
+ 
+ 		can_send_ret = can_send(skb, 1);
+-		if (can_send_ret)
++		if (can_send_ret) {
+ 			pr_notice_once("can-isotp: %s: can_send_ret %pe\n",
+ 				       __func__, ERR_PTR(can_send_ret));
+-
++			if (can_send_ret == -ENOBUFS)
++				pr_notice_once("can-isotp: tx queue is full, increasing txqueuelen may prevent this error\n");
++		}
+ 		if (so->tx.idx >= so->tx.len) {
+ 			/* we are done */
+ 			so->tx.state = ISOTP_IDLE;
 
 
