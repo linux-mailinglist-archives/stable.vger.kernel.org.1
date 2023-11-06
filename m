@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68BC97E2389
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 478517E22ED
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232132AbjKFNMh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:12:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34010 "EHLO
+        id S231894AbjKFNGy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:06:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjKFNMg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:36 -0500
+        with ESMTP id S231951AbjKFNGx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:53 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A29691
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD0CC433C7;
-        Mon,  6 Nov 2023 13:12:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0CF123
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C22DC433C7;
+        Mon,  6 Nov 2023 13:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276353;
-        bh=eJ0T2/nIZKrNVRfuTb++GVgLRNKFRYCIexibKYKeUEk=;
+        s=korg; t=1699276010;
+        bh=pkoH3EDZmq83zqC/93i9WQdW9Nuwq3jKoifn61uRNRQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d8BwAq2IOYth/LaeIrlYHwo/HdiSR9NpfQg0x0Csm0WpbcN7xZ4IIEYIhWTyek2wB
-         hsIpSHxCUSpAr8ZhyG/tUgVgETWNXHGNKiXuU/4s0iH5ZfJunTESQog2PfzxiaUttI
-         bCc1WN0FdUBrhPgDtYJCPZ74/Jh3Hplj/XD7KW58=
+        b=WwNVjo81QXjmHHx63kUb1MEXJOsTa+QtK6FSmomIIvYP5il44kqNTm8G18hlQnDwq
+         2TgSkPAeQfYFhzgiWctr7QjXmdvkb11pWC8urUaRUqB0/tH/H0hBmo8bUzDJDCt0I6
+         Wj4ryjytBOT9Yef+Ic5D+36Lj9h8vVr6fd+nd7no=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/62] irqchip/stm32-exti: add missing DT IRQ flag translation
+        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@redhat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Borislav Petkov <bp@suse.de>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 4.14 21/48] x86/mm: Simplify RESERVE_BRK()
 Date:   Mon,  6 Nov 2023 14:03:12 +0100
-Message-ID: <20231106130302.043915670@linuxfoundation.org>
+Message-ID: <20231106130258.599336089@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+From: Josh Poimboeuf <jpoimboe@redhat.com>
 
-[ Upstream commit 8554cba1d6dbd3c74e0549e28ddbaccbb1d6b30a ]
+commit a1e2c031ec3949b8c039b739c0b5bf9c30007b00 upstream.
 
-The STM32F4/7 EXTI driver was missing the xlate callback, so IRQ trigger
-flags specified in the device tree were being ignored. This was
-preventing the RTC alarm interrupt from working, because it must be set
-to trigger on the rising edge to function correctly.
+RESERVE_BRK() reserves data in the .brk_reservation section.  The data
+is initialized to zero, like BSS, so the macro specifies 'nobits' to
+prevent the data from taking up space in the vmlinux binary.  The only
+way to get the compiler to do that (without putting the variable in .bss
+proper) is to use inline asm.
 
-Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20231003162003.1649967-1-ben.wolsieffer@hefring.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The macro also has a hack which encloses the inline asm in a discarded
+function, which allows the size to be passed (global inline asm doesn't
+allow inputs).
+
+Remove the need for the discarded function hack by just stringifying the
+size rather than supplying it as an input to the inline asm.
+
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Borislav Petkov <bp@suse.de>
+Link: https://lore.kernel.org/r/20220506121631.133110232@infradead.org
+[nathan: Fix conflict due to lack of 2b6ff7dea670 and 33def8498fdd]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-stm32-exti.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/setup.h |   30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/irqchip/irq-stm32-exti.c b/drivers/irqchip/irq-stm32-exti.c
-index 8bbb2b114636c..dc6f67decb022 100644
---- a/drivers/irqchip/irq-stm32-exti.c
-+++ b/drivers/irqchip/irq-stm32-exti.c
-@@ -458,6 +458,7 @@ static const struct irq_domain_ops irq_exti_domain_ops = {
- 	.map	= irq_map_generic_chip,
- 	.alloc  = stm32_exti_alloc,
- 	.free	= stm32_exti_free,
-+	.xlate	= irq_domain_xlate_twocell,
- };
+--- a/arch/x86/include/asm/setup.h
++++ b/arch/x86/include/asm/setup.h
+@@ -91,27 +91,19 @@ extern unsigned long _brk_end;
+ void *extend_brk(size_t size, size_t align);
  
- static void stm32_irq_ack(struct irq_data *d)
--- 
-2.42.0
-
+ /*
+- * Reserve space in the brk section.  The name must be unique within
+- * the file, and somewhat descriptive.  The size is in bytes.  Must be
+- * used at file scope.
++ * Reserve space in the brk section.  The name must be unique within the file,
++ * and somewhat descriptive.  The size is in bytes.
+  *
+- * (This uses a temp function to wrap the asm so we can pass it the
+- * size parameter; otherwise we wouldn't be able to.  We can't use a
+- * "section" attribute on a normal variable because it always ends up
+- * being @progbits, which ends up allocating space in the vmlinux
+- * executable.)
++ * The allocation is done using inline asm (rather than using a section
++ * attribute on a normal variable) in order to allow the use of @nobits, so
++ * that it doesn't take up any space in the vmlinux file.
+  */
+-#define RESERVE_BRK(name,sz)						\
+-	static void __section(.discard.text) __used notrace		\
+-	__brk_reservation_fn_##name##__(void) {				\
+-		asm volatile (						\
+-			".pushsection .brk_reservation,\"aw\",@nobits;" \
+-			".brk." #name ":"				\
+-			" 1:.skip %c0;"					\
+-			" .size .brk." #name ", . - 1b;"		\
+-			" .popsection"					\
+-			: : "i" (sz));					\
+-	}
++#define RESERVE_BRK(name, size)						\
++	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
++	    ".brk." #name ":\n\t"					\
++	    ".skip " __stringify(size) "\n\t"				\
++	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
++	    ".popsection\n\t")
+ 
+ /* Helper for reserving space for arrays of things */
+ #define RESERVE_BRK_ARRAY(type, name, entries)		\
 
 
