@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 878047E23E1
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B523C7E24A9
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:24:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232196AbjKFNPq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:15:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35186 "EHLO
+        id S232477AbjKFNYE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:24:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232100AbjKFNPp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:15:45 -0500
+        with ESMTP id S232501AbjKFNYD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:24:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C60BD
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:15:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDE2C433C8;
-        Mon,  6 Nov 2023 13:15:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54DFCBF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ADC3C433C9;
+        Mon,  6 Nov 2023 13:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276542;
-        bh=loUCKoprdXJsVQ7uZdkiLCZRNqKziYvbeus94tHOuBQ=;
+        s=korg; t=1699277039;
+        bh=dOJ6oXmzZnnJqFPxAFjNIalyeo0Dq5mw77Bt3SFpdfE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ki0I5bLd15PDwfNatbUyQNpCTALgF9wdOk8WAPGNpZsPIbEVZFxfktyvZPTg97sWX
-         0W8lmi7DptwatWlBuArhwE2aVO3cE+1ulwBBkiDEHCgaq1PiTfKLX2N9hKxX+zCNbc
-         H3bFno3D4ne5KysgpU3OJBAtJ2nqrytlfsCz/b0E=
+        b=UO8IEUPMiSf7fGj2YlSnPmSBhDrolXNEnSuNSE4WHmthOR4R36MviC8sIfPMW78x0
+         /4wO+PT7n1gDvkeTcJ6M0/xJEFZEpCF/vKsU41wIgMJwcDYmacuKbWotwf0uOvQkZW
+         heo67nS/DIr0M52+5NohSYRq43PjV3hihoUVrBR8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev,
+        Alexandru Matei <alexandru.matei@uipath.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 04/88] ASoC: fsl-asoc-card: use integer type for fll_id and pll_id
+Subject: [PATCH 5.15 018/128] vsock/virtio: initialize the_virtio_vsock before using VQs
 Date:   Mon,  6 Nov 2023 14:02:58 +0100
-Message-ID: <20231106130305.929590204@linuxfoundation.org>
+Message-ID: <20231106130309.953109207@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,77 +52,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Alexandru Matei <alexandru.matei@uipath.com>
 
-[ Upstream commit 2b21207afd06714986a3d22442ed4860ba4f9ced ]
+[ Upstream commit 53b08c4985158430fd6d035fb49443bada535210 ]
 
-As the pll_id and pll_id can be zero (WM8960_SYSCLK_AUTO)
-with the commit 2bbc2df46e67 ("ASoC: wm8960: Make automatic the
-default clocking mode")
+Once VQs are filled with empty buffers and we kick the host, it can send
+connection requests. If the_virtio_vsock is not initialized before,
+replies are silently dropped and do not reach the host.
 
-Then the machine driver will skip to call set_sysclk() and set_pll()
-for codec, when the sysclk rate is different with what wm8960 read
-at probe, the output sound frequency is wrong.
+virtio_transport_send_pkt() can queue packets once the_virtio_vsock is
+set, but they won't be processed until vsock->tx_run is set to true. We
+queue vsock->send_pkt_work when initialization finishes to send those
+packets queued earlier.
 
-So change the fll_id and pll_id initial value, still keep machine
-driver's behavior same as before.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://lore.kernel.org/r/1695202992-24864-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0deab087b16a ("vsock/virtio: use RCU to avoid use-after-free on the_virtio_vsock")
+Signed-off-by: Alexandru Matei <alexandru.matei@uipath.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20231024191742.14259-1-alexandru.matei@uipath.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl-asoc-card.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/vmw_vsock/virtio_transport.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
-index 76b5bfc288fde..bab7d34cf585b 100644
---- a/sound/soc/fsl/fsl-asoc-card.c
-+++ b/sound/soc/fsl/fsl-asoc-card.c
-@@ -52,8 +52,8 @@ struct codec_priv {
- 	unsigned long mclk_freq;
- 	unsigned long free_freq;
- 	u32 mclk_id;
--	u32 fll_id;
--	u32 pll_id;
-+	int fll_id;
-+	int pll_id;
- };
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index f6fa26228e5cf..0b41028ed544a 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -590,6 +590,11 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
  
- /**
-@@ -206,7 +206,7 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
- 	}
+ 	virtio_device_ready(vdev);
  
- 	/* Specific configuration for PLL */
--	if (codec_priv->pll_id && codec_priv->fll_id) {
-+	if (codec_priv->pll_id >= 0 && codec_priv->fll_id >= 0) {
- 		if (priv->sample_format == SNDRV_PCM_FORMAT_S24_LE)
- 			pll_out = priv->sample_rate * 384;
- 		else
-@@ -248,7 +248,7 @@ static int fsl_asoc_card_hw_free(struct snd_pcm_substream *substream)
- 
- 	priv->streams &= ~BIT(substream->stream);
- 
--	if (!priv->streams && codec_priv->pll_id && codec_priv->fll_id) {
-+	if (!priv->streams && codec_priv->pll_id >= 0 && codec_priv->fll_id >= 0) {
- 		/* Force freq to be free_freq to avoid error message in codec */
- 		ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(rtd, 0),
- 					     codec_priv->mclk_id,
-@@ -621,6 +621,10 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
- 	priv->card.dapm_routes = audio_map;
- 	priv->card.num_dapm_routes = ARRAY_SIZE(audio_map);
- 	priv->card.driver_name = DRIVER_NAME;
++	return 0;
++}
 +
-+	priv->codec_priv.fll_id = -1;
-+	priv->codec_priv.pll_id = -1;
-+
- 	/* Diversify the card configurations */
- 	if (of_device_is_compatible(np, "fsl,imx-audio-cs42888")) {
- 		codec_dai_name = "cs42888";
++static void virtio_vsock_vqs_start(struct virtio_vsock *vsock)
++{
+ 	mutex_lock(&vsock->tx_lock);
+ 	vsock->tx_run = true;
+ 	mutex_unlock(&vsock->tx_lock);
+@@ -604,7 +609,16 @@ static int virtio_vsock_vqs_init(struct virtio_vsock *vsock)
+ 	vsock->event_run = true;
+ 	mutex_unlock(&vsock->event_lock);
+ 
+-	return 0;
++	/* virtio_transport_send_pkt() can queue packets once
++	 * the_virtio_vsock is set, but they won't be processed until
++	 * vsock->tx_run is set to true. We queue vsock->send_pkt_work
++	 * when initialization finishes to send those packets queued
++	 * earlier.
++	 * We don't need to queue the other workers (rx, event) because
++	 * as long as we don't fill the queues with empty buffers, the
++	 * host can't send us any notification.
++	 */
++	queue_work(virtio_vsock_workqueue, &vsock->send_pkt_work);
+ }
+ 
+ static void virtio_vsock_vqs_del(struct virtio_vsock *vsock)
+@@ -707,6 +721,7 @@ static int virtio_vsock_probe(struct virtio_device *vdev)
+ 		goto out;
+ 
+ 	rcu_assign_pointer(the_virtio_vsock, vsock);
++	virtio_vsock_vqs_start(vsock);
+ 
+ 	mutex_unlock(&the_virtio_vsock_mutex);
+ 
+@@ -779,6 +794,7 @@ static int virtio_vsock_restore(struct virtio_device *vdev)
+ 		goto out;
+ 
+ 	rcu_assign_pointer(the_virtio_vsock, vsock);
++	virtio_vsock_vqs_start(vsock);
+ 
+ out:
+ 	mutex_unlock(&the_virtio_vsock_mutex);
 -- 
 2.42.0
 
