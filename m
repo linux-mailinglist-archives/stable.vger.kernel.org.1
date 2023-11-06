@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 462DE7E24C7
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC5D67E233C
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232529AbjKFNZL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:25:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52552 "EHLO
+        id S231966AbjKFNKM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:10:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232528AbjKFNZK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:10 -0500
+        with ESMTP id S231472AbjKFNKM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:12 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 512AEEA
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:25:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969FBC433C9;
-        Mon,  6 Nov 2023 13:25:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CED6A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFBDC433C7;
+        Mon,  6 Nov 2023 13:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277107;
-        bh=sj7CLzrpy3RzBSGqcQCFxjqlsBrCWQGgQSlHFIGW9O4=;
+        s=korg; t=1699276209;
+        bh=Ds3c6NND1Ao/RsVoVjlKse0X/kO+QAiOZ0zj21nLpr0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wF9EwJbwL4So3QxX9YK/b7dYAGYivMQC7yNKqAx1/QFv+sIufrYiz4LhWScKz8e8t
-         8h3zvy8UVtA0qNY0Iqo/letcORaLO901V+ob+/gWBUysMqcynqJyOxoPCFCay6iGrH
-         XFGswTH4bug2jtiDQ+VeR2dxy7z5Wvw60/xRKQL8=
+        b=XJu5lGMRK0ZhFsa3bV3eST0XdPbZgRx7CfJNdf85C7kEOov+c+oE77JoupgWsjED4
+         8W4qyM+2rWmWb2CgR8awSK7DtgHbXjF4TUkTB1QIIoV5CIRH+MODb2gob3fp6IdeC2
+         CbZmAZwPSmMW3G/YXoA5S1kS49xeuIlfxKRkQns8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Robert Hancock <robert.hancock@calian.com>,
-        "OGriofa, Conall" <conall.ogriofa@amd.com>, Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        O'Griofa@vger.kernel.org
-Subject: [PATCH 5.15 041/128] iio: adc: xilinx-xadc: Dont clobber preset voltage/temperature thresholds
-Date:   Mon,  6 Nov 2023 14:03:21 +0100
-Message-ID: <20231106130311.008974234@linuxfoundation.org>
+        patches@lists.linux.dev, Lukasz Majczak <lma@semihalf.com>,
+        Radoslaw Biernacki <rad@chromium.org>,
+        Manasi Navare <navaremanasi@chromium.org>
+Subject: [PATCH 4.19 26/61] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+Date:   Mon,  6 Nov 2023 14:03:22 +0100
+Message-ID: <20231106130300.517495744@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,72 +50,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Hancock <robert.hancock@calian.com>
+From: Lukasz Majczak <lma@semihalf.com>
 
-commit 8d6b3ea4d9eaca80982442b68a292ce50ce0a135 upstream.
+commit 3d887d512494d678b17c57b835c32f4e48d34f26 upstream.
 
-In the probe function, the driver was reading out the thresholds already
-set in the core, which can be configured by the user in the Vivado tools
-when the FPGA image is built. However, it later clobbered those values
-with zero or maximum values. In particular, the overtemperature shutdown
-threshold register was overwritten with the max value, which effectively
-prevents the FPGA from shutting down when the desired threshold was
-eached, potentially risking hardware damage in that case.
+As drm_dp_get_mst_branch_device_by_guid() is called from
+drm_dp_get_mst_branch_device_by_guid(), mstb parameter has to be checked,
+otherwise NULL dereference may occur in the call to
+the memcpy() and cause following:
 
-Remove this code to leave the preconfigured default threshold values
-intact.
+[12579.365869] BUG: kernel NULL pointer dereference, address: 0000000000000049
+[12579.365878] #PF: supervisor read access in kernel mode
+[12579.365880] #PF: error_code(0x0000) - not-present page
+[12579.365882] PGD 0 P4D 0
+[12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
+...
+[12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
+[12579.365899] RIP: 0010:memcmp+0xb/0x29
+[12579.365921] Call Trace:
+[12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
+[12579.365930] drm_dp_mst_up_req_work+0x137/0x416
+[12579.365933] process_one_work+0x1d0/0x419
+[12579.365935] worker_thread+0x11a/0x289
+[12579.365938] kthread+0x13e/0x14f
+[12579.365941] ? process_one_work+0x419/0x419
+[12579.365943] ? kthread_blkcg+0x31/0x31
+[12579.365946] ret_from_fork+0x1f/0x30
 
-The code was also disabling all alarms regardless of what enable state
-they were left in by the FPGA image, including the overtemperature
-shutdown feature. Leave these bits in their original state so they are
-not unconditionally disabled.
+As get_mst_branch_device_by_guid_helper() is recursive, moving condition
+to the first line allow to remove a similar one for step over of NULL elements
+inside a loop.
 
-Fixes: bdc8cda1d010 ("iio:adc: Add Xilinx XADC driver")
-Signed-off-by: Robert Hancock <robert.hancock@calian.com>
-Acked-by: O'Griofa, Conall <conall.ogriofa@amd.com>
-Tested-by: O'Griofa, Conall <conall.ogriofa@amd.com>
-Link: https://lore.kernel.org/r/20230915001019.2862964-2-robert.hancock@calian.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to only mst branch")
+Cc: <stable@vger.kernel.org> # 4.14+
+Signed-off-by: Lukasz Majczak <lma@semihalf.com>
+Reviewed-by: Radoslaw Biernacki <rad@chromium.org>
+Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230922063410.23626-1-lma@semihalf.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/xilinx-xadc-core.c |   22 ----------------------
- 1 file changed, 22 deletions(-)
+ drivers/gpu/drm/drm_dp_mst_topology.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -1434,28 +1434,6 @@ static int xadc_probe(struct platform_de
- 	if (ret)
- 		return ret;
+--- a/drivers/gpu/drm/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/drm_dp_mst_topology.c
+@@ -1308,14 +1308,14 @@ static struct drm_dp_mst_branch *get_mst
+ 	struct drm_dp_mst_branch *found_mstb;
+ 	struct drm_dp_mst_port *port;
  
--	/* Disable all alarms */
--	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_ALARM_MASK,
--				  XADC_CONF1_ALARM_MASK);
--	if (ret)
--		return ret;
--
--	/* Set thresholds to min/max */
--	for (i = 0; i < 16; i++) {
--		/*
--		 * Set max voltage threshold and both temperature thresholds to
--		 * 0xffff, min voltage threshold to 0.
--		 */
--		if (i % 8 < 4 || i == 7)
--			xadc->threshold[i] = 0xffff;
--		else
--			xadc->threshold[i] = 0;
--		ret = xadc_write_adc_reg(xadc, XADC_REG_THRESHOLD(i),
--			xadc->threshold[i]);
--		if (ret)
--			return ret;
--	}
--
- 	/* Go to non-buffered mode */
- 	xadc_postdisable(indio_dev);
++	if (!mstb)
++		return NULL;
++
+ 	if (memcmp(mstb->guid, guid, 16) == 0)
+ 		return mstb;
  
+ 
+ 	list_for_each_entry(port, &mstb->ports, next) {
+-		if (!port->mstb)
+-			continue;
+-
+ 		found_mstb = get_mst_branch_device_by_guid_helper(port->mstb, guid);
+ 
+ 		if (found_mstb)
 
 
