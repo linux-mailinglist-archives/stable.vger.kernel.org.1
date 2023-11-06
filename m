@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F134D7E24E3
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 561407E2333
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232482AbjKFN0U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:26:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36510 "EHLO
+        id S231240AbjKFNJq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:09:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232593AbjKFN0S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:18 -0500
+        with ESMTP id S231653AbjKFNJq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 006C7136
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:14 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 248C4C433C7;
-        Mon,  6 Nov 2023 13:26:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA97F3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2021C433C8;
+        Mon,  6 Nov 2023 13:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277174;
-        bh=oneisGARuRI+kcrrOLZZg6sLGpK+LivVPrV+BJDdcHQ=;
+        s=korg; t=1699276183;
+        bh=wLl3/OVIFqOj3pxpHmL0xUk4bYDcWOoNUSttQGq2KmY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zJJV4x64A2kbyagJxLUWVY59HbfxmLwBU+g8tEFE27SnyWh+Hg+5Zj2ikmvNXT9CK
-         VPo/BNfw4ttrMbgx9MgwXqyPa9Tx7u2/QJOxHdi1Tw4eerNAbFg3EA6EC7ZvPfCgRt
-         Isv0WbTEyY2tatfaXFHeCbYN8un96Z972KtQT+4s=
+        b=XtCa0PD6UXP4r3BMT7ArvQ/1dGLKf0TH0jehwkjoHmmqoaugHiJeaH0toKDBqY8vu
+         prqBwrtL/wTuik0YrAVl8avjDawk/sSTiCSJL9otE/1v1oLVU5LH7jKKzrHR5JqIKU
+         dUTH16w0GOaHGkIxoV2Q6FXUBQdzvftGFy6hl40A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Grant Grundler <grundler@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/128] r8152: Release firmware if we have an error in probe
+        patches@lists.linux.dev, Alain Volmat <alain.volmat@foss.st.com>,
+        Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 4.19 18/61] i2c: stm32f7: Fix PEC handling in case of SMBUS transfers
 Date:   Mon,  6 Nov 2023 14:03:14 +0100
-Message-ID: <20231106130310.670026583@linuxfoundation.org>
+Message-ID: <20231106130300.217368480@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +51,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit b8d35024d4059ca550cba11ac9ab23a6c238d929 ]
+commit c896ff2dd8f30a6b0a922c83a96f6d43f05f0e92 upstream.
 
-The error handling in rtl8152_probe() is missing a call to release
-firmware. Add it in to match what's in the cleanup code in
-rtl8152_disconnect().
+In case of SMBUS byte read with PEC enabled, the whole transfer
+is split into two commands.  A first write command, followed by
+a read command.  The write command does not have any PEC byte
+and a PEC byte is appended at the end of the read command.
+(cf Read byte protocol with PEC in SMBUS specification)
 
-Fixes: 9370f2d05a2a ("r8152: support request_firmware for RTL8153")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Within the STM32 I2C controller, handling (either sending
+or receiving) of the PEC byte is done via the PECBYTE bit in
+register CR2.
+
+Currently, the PECBYTE is set at the beginning of a transfer,
+which lead to sending a PEC byte at the end of the write command
+(hence losing the real last byte), and also does not check the
+PEC byte received during the read command.
+
+This patch corrects the function stm32f7_i2c_smbus_xfer_msg
+in order to only set the PECBYTE during the read command.
+
+Fixes: 9e48155f6bfe ("i2c: i2c-stm32f7: Add initial SMBus protocols support")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Reviewed-by: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/r8152.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-stm32f7.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index baa3c57d16427..f6d5fbb9dee07 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9802,6 +9802,7 @@ static int rtl8152_probe(struct usb_interface *intf,
- 	cancel_delayed_work_sync(&tp->hw_phy_work);
- 	if (tp->rtl_ops.unload)
- 		tp->rtl_ops.unload(tp);
-+	rtl8152_release_firmware(tp);
- 	usb_set_intfdata(intf, NULL);
- out:
- 	free_netdev(netdev);
--- 
-2.42.0
-
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -959,9 +959,10 @@ static int stm32f7_i2c_smbus_xfer_msg(st
+ 	/* Configure PEC */
+ 	if ((flags & I2C_CLIENT_PEC) && f7_msg->size != I2C_SMBUS_QUICK) {
+ 		cr1 |= STM32F7_I2C_CR1_PECEN;
+-		cr2 |= STM32F7_I2C_CR2_PECBYTE;
+-		if (!f7_msg->read_write)
++		if (!f7_msg->read_write) {
++			cr2 |= STM32F7_I2C_CR2_PECBYTE;
+ 			f7_msg->count++;
++		}
+ 	} else {
+ 		cr1 &= ~STM32F7_I2C_CR1_PECEN;
+ 		cr2 &= ~STM32F7_I2C_CR2_PECBYTE;
+@@ -1049,8 +1050,10 @@ static void stm32f7_i2c_smbus_rep_start(
+ 	f7_msg->stop = true;
+ 
+ 	/* Add one byte for PEC if needed */
+-	if (cr1 & STM32F7_I2C_CR1_PECEN)
++	if (cr1 & STM32F7_I2C_CR1_PECEN) {
++		cr2 |= STM32F7_I2C_CR2_PECBYTE;
+ 		f7_msg->count++;
++	}
+ 
+ 	/* Set number of bytes to be transferred */
+ 	cr2 &= ~(STM32F7_I2C_CR2_NBYTES_MASK);
 
 
