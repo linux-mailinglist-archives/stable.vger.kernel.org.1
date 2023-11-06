@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43A337E2421
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B80A7E246C
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232312AbjKFNSc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:18:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36992 "EHLO
+        id S232409AbjKFNVs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:21:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231960AbjKFNSb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:31 -0500
+        with ESMTP id S232420AbjKFNVm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:42 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0402F94
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4225EC433C8;
-        Mon,  6 Nov 2023 13:18:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4B6BA9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7684C433C7;
+        Mon,  6 Nov 2023 13:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276708;
-        bh=1IL1McjqZuilCUufqSrIob+34QK7KAE68OLvAdUORA8=;
+        s=korg; t=1699276899;
+        bh=W5u1JOehT8eWx7Xk1nhAt/FjRBHQjV7FjpVBpuwXE4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P3IYEZzRV7YdhENMBYITR3ZoqL4MGA59FPf9+qWawNcyW4o6WePjzvW4+7kSAS8Vc
-         iu7cZQAtazCmjbcV2mhJfmYqCssKybrt71gX1oFECHENFMbOMOmYg4hdTalWGnsnTl
-         6Y/x5wR2VMUoMXoZE4C1a9RD4qXAx/n5LviIOOJg=
+        b=gsaVBWLPQFNzrAFkeh30s1R9M42GTMEsZyM2xBULh/nUmqYoCJAGPXLlYetcUrAj1
+         vSSc3TqD36pdA/wyLdHvc6RyAQnFCCiGozzoo5YHPii5LGFA7COE5JG4X2xZHHcaRT
+         PQRUm0GhE6loTaQ4xoIF9SBYHsgxMbsdQSavPs3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, lee@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liha Sikanen <lihasika@gmail.com>
-Subject: [PATCH 6.5 69/88] usb: storage: set 1.50 as the lower bcdDevice for older "Super Top" compatibility
-Date:   Mon,  6 Nov 2023 14:04:03 +0100
-Message-ID: <20231106130308.297212351@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5.4 44/74] driver: platform: Add helper for safer setting of driver_override
+Date:   Mon,  6 Nov 2023 14:04:04 +0100
+Message-ID: <20231106130303.259100533@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,36 +50,205 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LihaSika <lihasika@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 0e3139e6543b241b3e65956a55c712333bef48ac upstream.
+commit 6c2f421174273de8f83cde4286d1c076d43a2d35 upstream.
 
-Change lower bcdDevice value for "Super Top USB 2.0  SATA BRIDGE" to match
-1.50. I have such an older device with bcdDevice=1.50 and it will not work
-otherwise.
+Several core drivers and buses expect that driver_override is a
+dynamically allocated memory thus later they can kfree() it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Liha Sikanen <lihasika@gmail.com>
-Link: https://lore.kernel.org/r/ccf7d12a-8362-4916-b3e0-f4150f54affd@gmail.com
+However such assumption is not documented, there were in the past and
+there are already users setting it to a string literal. This leads to
+kfree() of static memory during device release (e.g. in error paths or
+during unbind):
+
+    kernel BUG at ../mm/slub.c:3960!
+    Internal error: Oops - BUG: 0 [#1] PREEMPT SMP ARM
+    ...
+    (kfree) from [<c058da50>] (platform_device_release+0x88/0xb4)
+    (platform_device_release) from [<c0585be0>] (device_release+0x2c/0x90)
+    (device_release) from [<c0a69050>] (kobject_put+0xec/0x20c)
+    (kobject_put) from [<c0f2f120>] (exynos5_clk_probe+0x154/0x18c)
+    (exynos5_clk_probe) from [<c058de70>] (platform_drv_probe+0x6c/0xa4)
+    (platform_drv_probe) from [<c058b7ac>] (really_probe+0x280/0x414)
+    (really_probe) from [<c058baf4>] (driver_probe_device+0x78/0x1c4)
+    (driver_probe_device) from [<c0589854>] (bus_for_each_drv+0x74/0xb8)
+    (bus_for_each_drv) from [<c058b48c>] (__device_attach+0xd4/0x16c)
+    (__device_attach) from [<c058a638>] (bus_probe_device+0x88/0x90)
+    (bus_probe_device) from [<c05871fc>] (device_add+0x3dc/0x62c)
+    (device_add) from [<c075ff10>] (of_platform_device_create_pdata+0x94/0xbc)
+    (of_platform_device_create_pdata) from [<c07600ec>] (of_platform_bus_create+0x1a8/0x4fc)
+    (of_platform_bus_create) from [<c0760150>] (of_platform_bus_create+0x20c/0x4fc)
+    (of_platform_bus_create) from [<c07605f0>] (of_platform_populate+0x84/0x118)
+    (of_platform_populate) from [<c0f3c964>] (of_platform_default_populate_init+0xa0/0xb8)
+    (of_platform_default_populate_init) from [<c01031f8>] (do_one_initcall+0x8c/0x404)
+
+Provide a helper which clearly documents the usage of driver_override.
+This will allow later to reuse the helper and reduce the amount of
+duplicated code.
+
+Convert the platform driver to use a new helper and make the
+driver_override field const char (it is not modified by the core).
+
+Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20220419113435.246203-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_cypress.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/driver.c           |   69 ++++++++++++++++++++++++++++++++++++++++
+ drivers/base/platform.c         |   28 ++--------------
+ include/linux/device.h          |    2 +
+ include/linux/platform_device.h |    6 ++-
+ 4 files changed, 80 insertions(+), 25 deletions(-)
 
---- a/drivers/usb/storage/unusual_cypress.h
-+++ b/drivers/usb/storage/unusual_cypress.h
-@@ -19,7 +19,7 @@ UNUSUAL_DEV(  0x04b4, 0x6831, 0x0000, 0x
- 		"Cypress ISD-300LP",
- 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -30,6 +30,75 @@ static struct device *next_device(struct
+ }
  
--UNUSUAL_DEV( 0x14cd, 0x6116, 0x0160, 0x0160,
-+UNUSUAL_DEV( 0x14cd, 0x6116, 0x0150, 0x0160,
- 		"Super Top",
- 		"USB 2.0  SATA BRIDGE",
- 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
+ /**
++ * driver_set_override() - Helper to set or clear driver override.
++ * @dev: Device to change
++ * @override: Address of string to change (e.g. &device->driver_override);
++ *            The contents will be freed and hold newly allocated override.
++ * @s: NUL-terminated string, new driver name to force a match, pass empty
++ *     string to clear it ("" or "\n", where the latter is only for sysfs
++ *     interface).
++ * @len: length of @s
++ *
++ * Helper to set or clear driver override in a device, intended for the cases
++ * when the driver_override field is allocated by driver/bus code.
++ *
++ * Returns: 0 on success or a negative error code on failure.
++ */
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len)
++{
++	const char *new, *old;
++	char *cp;
++
++	if (!override || !s)
++		return -EINVAL;
++
++	/*
++	 * The stored value will be used in sysfs show callback (sysfs_emit()),
++	 * which has a length limit of PAGE_SIZE and adds a trailing newline.
++	 * Thus we can store one character less to avoid truncation during sysfs
++	 * show.
++	 */
++	if (len >= (PAGE_SIZE - 1))
++		return -EINVAL;
++
++	if (!len) {
++		/* Empty string passed - clear override */
++		device_lock(dev);
++		old = *override;
++		*override = NULL;
++		device_unlock(dev);
++		kfree(old);
++
++		return 0;
++	}
++
++	cp = strnchr(s, len, '\n');
++	if (cp)
++		len = cp - s;
++
++	new = kstrndup(s, len, GFP_KERNEL);
++	if (!new)
++		return -ENOMEM;
++
++	device_lock(dev);
++	old = *override;
++	if (cp != s) {
++		*override = new;
++	} else {
++		/* "\n" passed - clear override */
++		kfree(new);
++		*override = NULL;
++	}
++	device_unlock(dev);
++
++	kfree(old);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(driver_set_override);
++
++/**
+  * driver_for_each_device - Iterator for devices bound to a driver.
+  * @drv: Driver we're iterating.
+  * @start: Device to begin with
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -973,31 +973,11 @@ static ssize_t driver_override_store(str
+ 				     const char *buf, size_t count)
+ {
+ 	struct platform_device *pdev = to_platform_device(dev);
+-	char *driver_override, *old, *cp;
++	int ret;
+ 
+-	/* We need to keep extra room for a newline */
+-	if (count >= (PAGE_SIZE - 1))
+-		return -EINVAL;
+-
+-	driver_override = kstrndup(buf, count, GFP_KERNEL);
+-	if (!driver_override)
+-		return -ENOMEM;
+-
+-	cp = strchr(driver_override, '\n');
+-	if (cp)
+-		*cp = '\0';
+-
+-	device_lock(dev);
+-	old = pdev->driver_override;
+-	if (strlen(driver_override)) {
+-		pdev->driver_override = driver_override;
+-	} else {
+-		kfree(driver_override);
+-		pdev->driver_override = NULL;
+-	}
+-	device_unlock(dev);
+-
+-	kfree(old);
++	ret = driver_set_override(dev, &pdev->driver_override, buf, count);
++	if (ret)
++		return ret;
+ 
+ 	return count;
+ }
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -422,6 +422,8 @@ extern int __must_check driver_create_fi
+ extern void driver_remove_file(struct device_driver *driver,
+ 			       const struct driver_attribute *attr);
+ 
++int driver_set_override(struct device *dev, const char **override,
++			const char *s, size_t len);
+ extern int __must_check driver_for_each_device(struct device_driver *drv,
+ 					       struct device *start,
+ 					       void *data,
+--- a/include/linux/platform_device.h
++++ b/include/linux/platform_device.h
+@@ -29,7 +29,11 @@ struct platform_device {
+ 	struct resource	*resource;
+ 
+ 	const struct platform_device_id	*id_entry;
+-	char *driver_override; /* Driver name to force a match */
++	/*
++	 * Driver name to force a match.  Do not set directly, because core
++	 * frees it.  Use driver_set_override() to set or clear it.
++	 */
++	const char *driver_override;
+ 
+ 	/* MFD cell pointer */
+ 	struct mfd_cell *mfd_cell;
 
 
