@@ -2,37 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E75A47E237D
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 169DB7E2417
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232126AbjKFNMP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:12:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42550 "EHLO
+        id S232280AbjKFNSD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:18:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56666 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjKFNMN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:13 -0500
+        with ESMTP id S232253AbjKFNSC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0582291
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B10AC433CB;
-        Mon,  6 Nov 2023 13:12:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52EB094
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC95C433C8;
+        Mon,  6 Nov 2023 13:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276330;
-        bh=bpn/K2gYyCHAfEz9IMcVZPlR3ieBMFMmdoZsJhbbyAc=;
+        s=korg; t=1699276680;
+        bh=SwIQ+PrAzSby/JfwdX/vsGU+WwH0SMfTNaKVuGp7RH8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lojMkFF5hqldxwiBQ0VjBIkrwEOX1pVRhDg5xwU42DRQ4J8f2vtb/fWHlAdzrUwc9
-         lHbazIYHNm9iuubHVDECljyStvM10pZyB69idcR/hzXRSAvdV9Sc7LKboVWViQzLpZ
-         yyI7xsiPnitinfi1JM2F/VbL0PkARMDkvTi3+sY4=
+        b=hI7nhO9C9l6Yeo/SNDtZ+dTqs9WIYJEEbsNt26yByik8ONDgHgHv9c0fcEpzXjNsg
+         /m6hFoJtixwKZMDz8lfhjkh9l+pfU+o93JvdeplbHvxEGaeRcexytk/cNFi3P4nkWL
+         Yxi7KH/oCHGD/qARxECSP/65tsWL/pCfR266WmYI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 4.19 60/61] tty: 8250: Add support for Brainboxes UP cards
+        patches@lists.linux.dev, Benno Lossin <benno.lossin@proton.me>,
+        Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>,
+        Andreas Hindborg <a.hindborg@samsung.com>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 62/88] rust: types: make `Opaque` be `!Unpin`
 Date:   Mon,  6 Nov 2023 14:03:56 +0100
-Message-ID: <20231106130301.642535481@linuxfoundation.org>
+Message-ID: <20231106130308.070678539@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,93 +52,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Benno Lossin <benno.lossin@proton.me>
 
-commit 2c6fec1e1532f15350be7e14ba6b88a39d289fe4 upstream.
+[ Upstream commit 0b4e3b6f6b79b1add04008a6ceaaf661107e8902 ]
 
-Add support for the Brainboxes UP (powered PCI) range of
-cards, namely UP-189, UP-200, UP-869 and UP-880.
+Adds a `PhantomPinned` field to `Opaque<T>`. This removes the last Rust
+guarantee: the assumption that the type `T` can be freely moved. This is
+not the case for many types from the C side (e.g. if they contain a
+`struct list_head`). This change removes the need to add a
+`PhantomPinned` field manually to Rust structs that contain C structs
+which must not be moved.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DU0PR02MB7899B5B59FF3D8587E88C117C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Andreas Hindborg <a.hindborg@samsung.com>
+Link: https://lore.kernel.org/r/20230630150216.109789-1-benno.lossin@proton.me
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   60 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ rust/kernel/types.rs | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -4941,6 +4941,66 @@ static const struct pci_device_id serial
- 		0, 0,
- 		pbn_b2_4_115200 },
- 	/*
-+	 * Brainboxes UP-189
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC1,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC2,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC3,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	/*
-+	 * Brainboxes UP-200
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0B21,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0B22,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0B23,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	/*
-+	 * Brainboxes UP-869
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C01,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C02,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C03,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	/*
-+	 * Brainboxes UP-880
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C21,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C22,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C23,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	/*
- 	 * Perle PCI-RAS cards
- 	 */
- 	{       PCI_VENDOR_ID_PLX, PCI_DEVICE_ID_PLX_9030,
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index c0b8bb1a75393..50cbd767ea9dd 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -6,7 +6,7 @@
+ use alloc::boxed::Box;
+ use core::{
+     cell::UnsafeCell,
+-    marker::PhantomData,
++    marker::{PhantomData, PhantomPinned},
+     mem::MaybeUninit,
+     ops::{Deref, DerefMut},
+     ptr::NonNull,
+@@ -206,17 +206,26 @@ fn drop(&mut self) {
+ ///
+ /// This is meant to be used with FFI objects that are never interpreted by Rust code.
+ #[repr(transparent)]
+-pub struct Opaque<T>(UnsafeCell<MaybeUninit<T>>);
++pub struct Opaque<T> {
++    value: UnsafeCell<MaybeUninit<T>>,
++    _pin: PhantomPinned,
++}
+ 
+ impl<T> Opaque<T> {
+     /// Creates a new opaque value.
+     pub const fn new(value: T) -> Self {
+-        Self(UnsafeCell::new(MaybeUninit::new(value)))
++        Self {
++            value: UnsafeCell::new(MaybeUninit::new(value)),
++            _pin: PhantomPinned,
++        }
+     }
+ 
+     /// Creates an uninitialised value.
+     pub const fn uninit() -> Self {
+-        Self(UnsafeCell::new(MaybeUninit::uninit()))
++        Self {
++            value: UnsafeCell::new(MaybeUninit::uninit()),
++            _pin: PhantomPinned,
++        }
+     }
+ 
+     /// Creates a pin-initializer from the given initializer closure.
+@@ -240,7 +249,7 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> impl PinInit<Self> {
+ 
+     /// Returns a raw pointer to the opaque data.
+     pub fn get(&self) -> *mut T {
+-        UnsafeCell::get(&self.0).cast::<T>()
++        UnsafeCell::get(&self.value).cast::<T>()
+     }
+ 
+     /// Gets the value behind `this`.
+-- 
+2.42.0
+
 
 
