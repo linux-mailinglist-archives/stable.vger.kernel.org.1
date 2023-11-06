@@ -2,172 +2,152 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77FF37E2959
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 17:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27B037E298F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 17:17:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231493AbjKFQEH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 11:04:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48484 "EHLO
+        id S232350AbjKFQRe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 11:17:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229518AbjKFQEG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 11:04:06 -0500
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F7A613E;
-        Mon,  6 Nov 2023 08:04:03 -0800 (PST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6FeF2u017483;
-        Mon, 6 Nov 2023 16:04:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
- mime-version : subject : from : to : cc : references : in-reply-to :
- content-type : content-transfer-encoding; s=pp1;
- bh=MGbbZNP/mdzm3S/5Ztp69aF9Y4qswVAtQclS9ietJKA=;
- b=BDy1w+uFOknc7t5DYyGqJGcHUTt6dv3FKCK/HR3bGpWQrSCuZ8jKax3vcPrMruTzgHmy
- acAzgCUG97l4NIjYh9M1Bh+oErIOOL+sA96962qwVqEfEaK9vHFqZ5AfwQxn33dQXl/w
- 0WkKJLEa0XwSPG9Io+U0x6hN5B+c+9zil1adB8w5dnDTdnu6TBd1ca/2rQuEdP5VaqLT
- M8rgKTqAEeY/5GapWj9HtEvI6fsfThbauiDb7ttsb/j5xKoFmL8eulBokAaqEHIa3sz/
- wu5hvlpjRYWrgdkjTxzztOt8RJA776v0cqy6L53LinzHQWIzkPwTO//en9Etyag87oXe dA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7302rvg6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Nov 2023 16:04:00 +0000
-Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A6FeiEY020142;
-        Mon, 6 Nov 2023 16:03:53 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u7302rvax-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Nov 2023 16:03:53 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-        by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6FZvQk012848;
-        Mon, 6 Nov 2023 16:03:41 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-        by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u609sjpge-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 06 Nov 2023 16:03:41 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-        by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A6G3e2615008032
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 6 Nov 2023 16:03:41 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D48A158063;
-        Mon,  6 Nov 2023 16:03:40 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id CB9EC58053;
-        Mon,  6 Nov 2023 16:03:39 +0000 (GMT)
-Received: from [9.61.121.140] (unknown [9.61.121.140])
-        by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Mon,  6 Nov 2023 16:03:39 +0000 (GMT)
-Message-ID: <cff6c61d-71a9-4dcc-a12a-5160b67d9ae4@linux.ibm.com>
-Date:   Mon, 6 Nov 2023 11:03:39 -0500
+        with ESMTP id S232094AbjKFQRd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 11:17:33 -0500
+Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60A00D69
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 08:17:30 -0800 (PST)
+Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-6bd0e1b1890so3464171b3a.3
+        for <stable@vger.kernel.org>; Mon, 06 Nov 2023 08:17:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699287449; x=1699892249; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Qzt0OhYPyZEqYyh3QN7LnZgF8IH2HQLhGgR8wGuIic0=;
+        b=w9LnU0W2LVOxtrBN4vPWM1ihK87BYTPLmh+94r/eBUqSv0a1k7x1ei2tjFuZ53WU3r
+         bo6AcVgmmWaM1oaxJJgw8f2fnvtNqUABrRaZkgy100tKduAaJ55yllMUq/D2wb5idvC7
+         7CX2F/OXcQ9kYq2KFz3MdxO07peQ6KwIKZ/DBAv70RuAUHfavhhbOVhJhYmSKYMfBvVQ
+         yjosgPoynQSxOgRjkGKfo4lnEJEjG9gWKuWxJxiMMDGvYYZpCDnOJl1xlpurlkP4NNka
+         hv3oA6ruuQs/CGVReYnatR79jqJcz/3DvRZdUU+yixix5Avp3WgmwX17eYFIzqBr/Thd
+         X+2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699287449; x=1699892249;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Qzt0OhYPyZEqYyh3QN7LnZgF8IH2HQLhGgR8wGuIic0=;
+        b=Rj0y0/mWrLTUwKr8Ngx4H+INWJ/gXn8jTFGzgtlvytwssaRHSJ1czcwfsb4t3joJEJ
+         K6AhqZPpmkA79A4DRImwYZFyJhmPlpdEOWJqj3/C1dY8cW/bXJmPiy43MbTQx+MFONy8
+         JAQ4t0wkxixwtqwekUn0k65SJTaImpUkpate/83dumQXQLphyG+Pm5rVPdLWEZ2GV5pn
+         p673nFWqa0onOaXuhmtwBp1b6sOW3fsuD9ggFOroIPoGY3/DKWUxP7lkfxLWyYgzQCDx
+         RxvhrJ/j8FxWX/AvimijdepBAfn2FViV1m3fMbULBZtw76l0ToBIChsHNqAhmE9wuh7N
+         ozyA==
+X-Gm-Message-State: AOJu0YzptzKjNlIYoDATsJSQuxf0YQFqosPwVXn59bFkfpeEbnyW0+vS
+        ikfMCiLjBrX0Nygnt5QbQXcq6RRgBdcskHmZ6ryE+Q==
+X-Google-Smtp-Source: AGHT+IE8vR1f1sotEbd6lsBzP+sWxm99F+PTz/1goejYmf5rUM8ccL/D3ZZf2LGWUbTf2MobtjVsvQ==
+X-Received: by 2002:a05:6a21:3607:b0:161:76a4:4f79 with SMTP id yg7-20020a056a21360700b0016176a44f79mr17917981pzb.23.1699287449324;
+        Mon, 06 Nov 2023 08:17:29 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id u8-20020a627908000000b006baa1cf561dsm6087126pfc.0.2023.11.06.08.17.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Nov 2023 08:17:28 -0800 (PST)
+Message-ID: <65491198.620a0220.87f62.daea@mx.google.com>
+Date:   Mon, 06 Nov 2023 08:17:28 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] s390/vfio-ap: fix sysfs status attribute for AP queue
- devices
-Content-Language: en-US
-From:   Tony Krowiak <akrowiak@linux.ibm.com>
-To:     linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc:     jjherne@linux.ibm.com, pasic@linux.ibm.com,
-        borntraeger@linux.ibm.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, david@redhat.com, stable@vger.kernel.org
-References: <20231020204838.409521-1-akrowiak@linux.ibm.com>
-Organization: IBM
-In-Reply-To: <20231020204838.409521-1-akrowiak@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: dsx9XxmwV9OrZfFiJB7AK9_H2MfZQJl8
-X-Proofpoint-GUID: v-z6IauqZ0fi2RxW9WwV0zFaK3ZLHkdN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-06_12,2023-11-02_03,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 impostorscore=0 suspectscore=0 mlxscore=0 bulkscore=0
- lowpriorityscore=0 adultscore=0 clxscore=1015 mlxlogscore=999 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2310240000 definitions=main-2311060129
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v4.19.297-56-gaed5d9c51d2ca
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-4.19.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-4.19.y baseline: 135 runs,
+ 1 regressions (v4.19.297-56-gaed5d9c51d2ca)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-PING
-This patch is pretty straight forward, does anyone see a reason why this 
-shouldn't be integrated?
+stable-rc/linux-4.19.y baseline: 135 runs, 1 regressions (v4.19.297-56-gaed=
+5d9c51d2ca)
 
-On 10/20/23 16:48, Tony Krowiak wrote:
-> The 'status' attribute for AP queue devices bound to the vfio_ap device
-> driver displays incorrect status when the mediated device is attached to a
-> guest, but the queue device is not passed through. In the current
-> implementation, the status displayed is 'in_use' which is not correct; it
-> should be 'assigned'. This can happen if one of the queue devices
-> associated with a given adapter is not bound to the vfio_ap device driver.
-> For example:
-> 
-> Queues listed in /sys/bus/ap/drivers/vfio_ap:
-> 14.0005
-> 14.0006
-> 14.000d
-> 16.0006
-> 16.000d
-> 
-> Queues listed in /sys/devices/vfio_ap/matrix/$UUID/matrix
-> 14.0005
-> 14.0006
-> 14.000d
-> 16.0005
-> 16.0006
-> 16.000d
-> 
-> Queues listed in /sys/devices/vfio_ap/matrix/$UUID/guest_matrix
-> 14.0005
-> 14.0006
-> 14.000d
-> 
-> The reason no queues for adapter 0x16 are listed in the guest_matrix is
-> because queue 16.0005 is not bound to the vfio_ap device driver, so no
-> queue associated with the adapter is passed through to the guest;
-> therefore, each queue device for adapter 0x16 should display 'assigned'
-> instead of 'in_use', because those queues are not in use by a guest, but
-> only assigned to the mediated device.
-> 
-> Let's check the AP configuration for the guest to determine whether a
-> queue device is passed through before displaying a status of 'in_use'.
-> 
-> Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
-> Fixes: f139862b92cf ("s390/vfio-ap: add status attribute to AP queue device's sysfs dir")
-> Cc: stable@vger.kernel.org
-> ---
->   drivers/s390/crypto/vfio_ap_ops.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-> index 4db538a55192..871c14a6921f 100644
-> --- a/drivers/s390/crypto/vfio_ap_ops.c
-> +++ b/drivers/s390/crypto/vfio_ap_ops.c
-> @@ -1976,6 +1976,7 @@ static ssize_t status_show(struct device *dev,
->   {
->   	ssize_t nchars = 0;
->   	struct vfio_ap_queue *q;
-> +	unsigned long apid, apqi;
->   	struct ap_matrix_mdev *matrix_mdev;
->   	struct ap_device *apdev = to_ap_dev(dev);
->   
-> @@ -1984,7 +1985,11 @@ static ssize_t status_show(struct device *dev,
->   	matrix_mdev = vfio_ap_mdev_for_queue(q);
->   
->   	if (matrix_mdev) {
-> -		if (matrix_mdev->kvm)
-> +		apid = AP_QID_CARD(q->apqn);
-> +		apqi = AP_QID_QUEUE(q->apqn);
-> +		if (matrix_mdev->kvm &&
-> +		    test_bit_inv(apid, matrix_mdev->shadow_apcb.apm) &&
-> +		    test_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm))
->   			nchars = scnprintf(buf, PAGE_SIZE, "%s\n",
->   					   AP_QUEUE_IN_USE);
->   		else
+Regressions Summary
+-------------------
+
+platform       | arch  | lab          | compiler | defconfig | regressions
+---------------+-------+--------------+----------+-----------+------------
+meson-gxm-q200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
+
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-4.19.y/ker=
+nel/v4.19.297-56-gaed5d9c51d2ca/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-4.19.y
+  Describe: v4.19.297-56-gaed5d9c51d2ca
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      aed5d9c51d2ca39b889e7a6be9191a6c9f45792f =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform       | arch  | lab          | compiler | defconfig | regressions
+---------------+-------+--------------+----------+-----------+------------
+meson-gxm-q200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6548e01a21b2b3963eefcf1b
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.2=
+97-56-gaed5d9c51d2ca/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm=
+-q200.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-4.19.y/v4.19.2=
+97-56-gaed5d9c51d2ca/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm=
+-q200.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.dmesg.emerg: https://kernelci.org/test/case/id/6548e01a21b2b39=
+63eefcf1e
+        failing since 21 days (last pass: v4.19.288, first fail: v4.19.296-=
+42-gb3c2ae79aa73)
+        1 lines
+
+    2023-11-06T12:46:04.793461  <4>[   46.201261] ------------[ cut here ]-=
+-----------
+    2023-11-06T12:46:04.793954  <4>[   46.201351] WARNING: CPU: 0 PID: 0 at=
+ drivers/mmc/host/meson-gx-mmc.c:1040 meson_mmc_irq+0x1c8/0x1dc
+    2023-11-06T12:46:04.796802  <4>[   46.209819] Modules linked in: ipv6 d=
+wmac_generic realtek meson_gxl meson_dw_hdmi meson_drm dw_hdmi drm_kms_help=
+er drm adc_keys crc32_ce meson_ir rc_core meson_rng rng_core dwmac_meson8b =
+stmmac_platform crct10dif_ce stmmac pwm_meson meson_gxbb_wdt drm_panel_orie=
+ntation_quirks input_polldev nvmem_meson_efuse
+    2023-11-06T12:46:04.836711  <4>[   46.237079] CPU: 0 PID: 0 Comm: swapp=
+er/0 Tainted: G        W         4.19.298-rc1 #1
+    2023-11-06T12:46:04.836922  <4>[   46.245094] Hardware name: Amlogic Me=
+son GXM (S912) Q200 Development Board (DT)
+    2023-11-06T12:46:04.837117  <4>[   46.252600] pstate: 60000085 (nZCv da=
+If -PAN -UAO)
+    2023-11-06T12:46:04.837304  <4>[   46.257606] pc : meson_mmc_irq+0x1c8/=
+0x1dc
+    2023-11-06T12:46:04.837490  <8>[   46.258562] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Demerg RESULT=3Dfail UNITS=3Dlines MEASUREMENT=3D1>
+    2023-11-06T12:46:04.837676  <4>[   46.261913] lr : meson_mmc_irq+0x1c8/=
+0x1dc   =
+
+ =20
