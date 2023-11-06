@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D48117E202C
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 12:40:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D3447E202D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 12:40:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231458AbjKFLkW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 06:40:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58534 "EHLO
+        id S231472AbjKFLkZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 06:40:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230155AbjKFLkW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 06:40:22 -0500
+        with ESMTP id S230155AbjKFLkZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 06:40:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C58090
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 03:40:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61687C433C7;
-        Mon,  6 Nov 2023 11:40:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD5090
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 03:40:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59571C433C8;
+        Mon,  6 Nov 2023 11:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699270818;
-        bh=kIzsEalwbDTBtpBbZmcHPVkmI0euKG+HoT6jq7i7CPc=;
+        s=korg; t=1699270821;
+        bh=nd4qhLI61cq63p3QnfbQRi2d3BCJFcalsJUI7wRGOjU=;
         h=Subject:To:Cc:From:Date:From;
-        b=JFUp2TQtNjewN+HviPBdIyVIuBJpmy8tvs7zsZs1ifRPIC5rEOiy3oYqi6IS53uAV
-         wvuIyBICzyDSwh1PJqLL67yzU4CJLuoU+VL19H2IvomhA5u9uBoXKXGZ0PTAlRsmaz
-         wAsv9jNfOfmKvDgM40EMERklLsQ+s5MHF9DjZQM8=
-Subject: FAILED: patch "[PATCH] tracing: Have trace_event_file have ref counters" failed to apply to 5.10-stable tree
+        b=dJErW1e0VYfkpI2XjujidLWiqtu/f89A5UNlisAFVAwtCm6x8kU8Npl2TxEe4qr2X
+         MJ+nZeryj2hrL9kfC0FXbJgSsaPbsvLT9twgWXLGFUXYbtycS8XBMmJGOeaaVyuDXz
+         emPSWuKqHJzNWVlI//msaqoBkPZK2nf53I81C0i0=
+Subject: FAILED: patch "[PATCH] tracing: Have trace_event_file have ref counters" failed to apply to 5.4-stable tree
 To:     rostedt@goodmis.org, beaub@linux.microsoft.com,
         mark.rutland@arm.com, mhiramat@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 06 Nov 2023 12:40:12 +0100
-Message-ID: <2023110612-tribute-salvage-1b7f@gregkh>
+Date:   Mon, 06 Nov 2023 12:40:14 +0100
+Message-ID: <2023110614-natural-tweak-9ee4@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x bb32500fb9b78215e4ef6ee8b4345c5f5d7eafb4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023110612-tribute-salvage-1b7f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023110614-natural-tweak-9ee4@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
