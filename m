@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 460857E2448
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:20:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB1F67E230D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232369AbjKFNUQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:20:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36744 "EHLO
+        id S232025AbjKFNIU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:08:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjKFNUQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:20:16 -0500
+        with ESMTP id S232022AbjKFNIT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6909AD8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC34DC433C9;
-        Mon,  6 Nov 2023 13:20:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36465EA
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791ADC433C9;
+        Mon,  6 Nov 2023 13:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276813;
-        bh=AAfjoUCq/7u3WA2VjfGa5jrFTtJmbzRvxqB4T81b8as=;
+        s=korg; t=1699276095;
+        bh=bxOp4pQshE6Io7RI1ggpXnlE1hsFlu0j4FBK43D5amY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vEt0tVY1N1qZgAmYQePLORdmJOnUzupweGtKgyiVWuUsph9nAJO0Yl8lz3E0QUS91
-         uR5JCrS4HRDpoqEYzqmvatVlHXVsn6SZHZjrksLaCJhEqmKKFCZUywJd0NVLIxqxe8
-         mKDHZflYTJ8KJEnbfzYZ/+j3Lof53Xg7aUoWW+O8=
+        b=eMhSg0Wc7h8jqmSUCTKpZtkzxRKxtFqGNLwCy5x0CDrXjviuemc4UXOgFAKMObMKP
+         fjlz938E0XHnhvWDlb26CVfz8IIswjHGoR0XpBJ8ZBzhorHxMgKr09wJZEbu3Uu8Zd
+         5KwZ0Tsvqs/2VhTHPfcPSUw92GcVbCf4g4NHa0kU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Grant Grundler <grundler@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 16/74] r8152: Cancel hw_phy_work if we have an error in probe
-Date:   Mon,  6 Nov 2023 14:03:36 +0100
-Message-ID: <20231106130302.271981192@linuxfoundation.org>
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 6.6 19/30] tty: 8250: Add support for Brainboxes UP cards
+Date:   Mon,  6 Nov 2023 14:03:37 +0100
+Message-ID: <20231106130258.607651900@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +48,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit bb8adff9123e492598162ac1baad01a53891aef6 ]
+commit 2c6fec1e1532f15350be7e14ba6b88a39d289fe4 upstream.
 
-The error handling in rtl8152_probe() is missing a call to cancel the
-hw_phy_work. Add it in to match what's in the cleanup code in
-rtl8152_disconnect().
+Add support for the Brainboxes UP (powered PCI) range of
+cards, namely UP-189, UP-200, UP-869 and UP-880.
 
-Fixes: a028a9e003f2 ("r8152: move the settings of PHY to a work queue")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB7899B5B59FF3D8587E88C117C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/r8152.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/8250/8250_pci.c |   60 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 8f8ad48ffb011..472b02bcfcbf4 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -5779,6 +5779,7 @@ static int rtl8152_probe(struct usb_interface *intf,
- 
- out1:
- 	tasklet_kill(&tp->tx_tl);
-+	cancel_delayed_work_sync(&tp->hw_phy_work);
- 	if (tp->rtl_ops.unload)
- 		tp->rtl_ops.unload(tp);
- 	usb_set_intfdata(intf, NULL);
--- 
-2.42.0
-
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5083,6 +5083,66 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_b2_4_115200 },
+ 	/*
++	 * Brainboxes UP-189
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC1,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC2,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC3,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	/*
++	 * Brainboxes UP-200
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0B21,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0B22,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0B23,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	/*
++	 * Brainboxes UP-869
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C01,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C02,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C03,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	/*
++	 * Brainboxes UP-880
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C21,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C22,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C23,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	/*
+ 	 * Brainboxes PX-101
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x4005,
 
 
