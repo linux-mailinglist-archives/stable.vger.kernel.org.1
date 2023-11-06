@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 674777E2413
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAB087E2366
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232279AbjKFNRv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:17:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60840 "EHLO
+        id S231980AbjKFNLm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:11:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232253AbjKFNRu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:50 -0500
+        with ESMTP id S232080AbjKFNLl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24B77EA
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 664ABC433C8;
-        Mon,  6 Nov 2023 13:17:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24FB0112
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:37 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC42C433C8;
+        Mon,  6 Nov 2023 13:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276667;
-        bh=qHgNHazaUOV2R57faz3YEsp7nJvsdx8WlCtREc2ciPY=;
+        s=korg; t=1699276296;
+        bh=8V5a0MBtvVtesxBddaRJwvCYy4fdl6JmgKdbZ61Czzc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KSas4EEl+yThB/eTOsS4w9rnoy/UCSh+pAETShO9W7zEnr10PjUthNr2TLel8HhsA
-         qXskAQ7dlktkyM3fvB1VaM6fUA8zOnDds7k92akWFBTPzrx1u7Fc8E95u0wAme4gUF
-         GhidFxh74QJk0h+/cgjbM+z+SJsgRD8otFX+KBhM=
+        b=SVes2xDTEiIEk9Rf92uvxQ5FM96UfXYxaeuULNDsWDjtkgPGwyS1JJvCsvMBLt87R
+         LyubxRuBbI0PkKBVVLmXe8lt+i3GMv5E+QBzW3y0wjXtyzDe8Qmd8UPo6MlNduQwju
+         udGkykDHc/O0sWJEKIAn3O9S50NjU7K8uZYSNUKw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
-        Jens Axboe <axboe@kernel.dk>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 58/88] io_uring: kiocb_done() should *not* trust ->ki_pos if ->{read,write}_iter() failed
+        patches@lists.linux.dev, Vicki Pfau <vi@endrift.com>,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 4.19 56/61] PCI: Prevent xHCI driver from claiming AMD VanGogh USB3 DRD device
 Date:   Mon,  6 Nov 2023 14:03:52 +0100
-Message-ID: <20231106130307.947870664@linuxfoundation.org>
+Message-ID: <20231106130301.508142999@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,45 +49,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit 1939316bf988f3e49a07d9c4dd6f660bf4daa53d ]
+commit 7e6f3b6d2c352b5fde37ce3fed83bdf6172eebd4 upstream.
 
-->ki_pos value is unreliable in such cases.  For an obvious example,
-consider O_DSYNC write - we feed the data to page cache and start IO,
-then we make sure it's completed.  Update of ->ki_pos is dealt with
-by the first part; failure in the second ends up with negative value
-returned _and_ ->ki_pos left advanced as if sync had been successful.
-In the same situation write(2) does not advance the file position
-at all.
+The AMD VanGogh SoC contains a DesignWare USB3 Dual-Role Device that can be
+operated as either a USB Host or a USB Device, similar to on the AMD Nolan
+platform.
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+be6646bfbaec ("PCI: Prevent xHCI driver from claiming AMD Nolan USB3 DRD
+device") added a quirk to let the dwc3 driver claim the Nolan device since
+it provides more specific support.
+
+Extend that quirk to include the VanGogh SoC USB3 device.
+
+Link: https://lore.kernel.org/r/20230927202212.2388216-1-vi@endrift.com
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+[bhelgaas: include be6646bfbaec reference, add stable tag]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org	# v3.19+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/rw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/quirks.c    |    8 +++++---
+ include/linux/pci_ids.h |    1 +
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index 1bce2208b65c4..d61620e080d10 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -332,7 +332,7 @@ static int kiocb_done(struct io_kiocb *req, ssize_t ret,
- 	struct io_rw *rw = io_kiocb_to_cmd(req, struct io_rw);
- 	unsigned final_ret = io_fixup_rw_res(req, ret);
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -599,7 +599,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
+ /*
+  * In the AMD NL platform, this device ([1022:7912]) has a class code of
+  * PCI_CLASS_SERIAL_USB_XHCI (0x0c0330), which means the xhci driver will
+- * claim it.
++ * claim it. The same applies on the VanGogh platform device ([1022:163a]).
+  *
+  * But the dwc3 driver is a more specific driver for this device, and we'd
+  * prefer to use it instead of xhci. To prevent xhci from claiming the
+@@ -607,7 +607,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
+  * defines as "USB device (not host controller)". The dwc3 driver can then
+  * claim it based on its Vendor and Device ID.
+  */
+-static void quirk_amd_nl_class(struct pci_dev *pdev)
++static void quirk_amd_dwc_class(struct pci_dev *pdev)
+ {
+ 	u32 class = pdev->class;
  
--	if (req->flags & REQ_F_CUR_POS)
-+	if (ret >= 0 && req->flags & REQ_F_CUR_POS)
- 		req->file->f_pos = rw->kiocb.ki_pos;
- 	if (ret >= 0 && (rw->kiocb.ki_complete == io_complete_rw)) {
- 		if (!__io_complete_rw_common(req, ret)) {
--- 
-2.42.0
-
+@@ -617,7 +617,9 @@ static void quirk_amd_nl_class(struct pc
+ 		 class, pdev->class);
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
+-		quirk_amd_nl_class);
++		quirk_amd_dwc_class);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_VANGOGH_USB,
++		quirk_amd_dwc_class);
+ 
+ /*
+  * Let's make the southbridge information explicit instead of having to
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -553,6 +553,7 @@
+ #define PCI_DEVICE_ID_AMD_17H_M10H_DF_F3 0x15eb
+ #define PCI_DEVICE_ID_AMD_17H_M30H_DF_F3 0x1493
+ #define PCI_DEVICE_ID_AMD_17H_M70H_DF_F3 0x1443
++#define PCI_DEVICE_ID_AMD_VANGOGH_USB	0x163a
+ #define PCI_DEVICE_ID_AMD_19H_DF_F3	0x1653
+ #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
+ #define PCI_DEVICE_ID_AMD_LANCE		0x2000
 
 
