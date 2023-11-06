@@ -2,46 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3765C7E1FFB
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 12:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A1257E2005
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 12:30:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230192AbjKFL2f (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 06:28:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42764 "EHLO
+        id S230018AbjKFLaQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 06:30:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbjKFL2e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 06:28:34 -0500
+        with ESMTP id S229583AbjKFLaQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 06:30:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6F998F;
-        Mon,  6 Nov 2023 03:28:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DC8C433CC;
-        Mon,  6 Nov 2023 11:28:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF975BB
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 03:30:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22329C433C7;
+        Mon,  6 Nov 2023 11:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699270111;
-        bh=KHYMSuYzfCZFn7iKlZaFmc8xH2hKsNURN3exYOYIYF4=;
+        s=korg; t=1699270213;
+        bh=Mx6qhRdw/Aw2a2q4h2EM1H0s17mIdJfguU6q2EsYv2U=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Uax+WBUGC+X1enzmvLmjGabeE12V0LXoYD77+J300r07tfDIRIziiqnd99eIcc2xe
-         4WBQZoJPBW/Tw3TswVDR6L5ZKf3bXfKbPHf+cpL8YlhGv0hKXLed8EYJxBi6OzKfPL
-         PKVUyjH1W4qz5PvcblJoPRSRhpNDG2rlwbmaLTo4=
-Date:   Mon, 6 Nov 2023 12:28:28 +0100
+        b=oTB9PGoEnTaINwX23UUdSAFsRTwwv9o6gmMij6qrnNGUuKNgvRag3MGZNX5MlP6t7
+         RkQVm63CTbnpkklrtKps38BrAFxTKMGVBc18cKzi2CaKv0KkCLgcpt6vpoK4aJXIY7
+         OTUCsB70w4gFK4C2xKI+83sQ/OokobwF3E4X2suU=
+Date:   Mon, 6 Nov 2023 12:30:10 +0100
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Cc:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        Faiz Abbas <faiz_abbas@ti.com>,
-        =?iso-8859-1?Q?Beno=EEt?= Cousson <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@ew.tq-group.com
-Subject: Re: [PATCH 5.4] Revert "ARM: dts: Move am33xx and am43xx mmc nodes
- to sdhci-omap driver"
-Message-ID: <2023110613-fringe-ended-5390@gregkh>
-References: <20231106095048.8396-1-matthias.schiffer@ew.tq-group.com>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     stable@vger.kernel.org, Evan Quan <evan.quan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: Re: [PATCH 5.15 v2 1/2] drm/amd: Move helper for dynamic speed
+ switch check out of smu13
+Message-ID: <2023110658-wrangle-pancreas-de47@gregkh>
+References: <20231031160451.5429-1-mario.limonciello@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231106095048.8396-1-matthias.schiffer@ew.tq-group.com>
+In-Reply-To: <20231031160451.5429-1-mario.limonciello@amd.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -52,37 +46,23 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 06, 2023 at 10:50:48AM +0100, Matthias Schiffer wrote:
-> This reverts commit d0c69c722ff16ce2481a5e0932c6d5b172109f21.
+On Tue, Oct 31, 2023 at 11:04:50AM -0500, Mario Limonciello wrote:
+> This helper is used for checking if the connected host supports
+> the feature, it can be moved into generic code to be used by other
+> smu implementations as well.
 > 
-> The reverted commit completely breaks MMC on the AM33xx/AM437x for
-> multiple reasons:
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Reviewed-by: Evan Quan <evan.quan@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> (cherry picked from commit 188623076d0f1a500583d392b6187056bf7cc71a)
 > 
-> - The changed compatible strings ti,am335-sdhci and ti,am437-sdhci
->   aren't supported on Linux 5.4 at all, so no driver is found
-> - Even when additionally backporting the support for these compatible
->   strings in the sdhci-omap driver, I could not the the MMC interfaces
->   to work on our TQMa335x SoM - the interface would time out during card
->   initialization for both an eMMC and an SD card.
+> The original problematic dGPU is not supported in 5.15.
 > 
-> I did not investigate the cause of the timeouts further, and instead
-> just reverted the commit - switching to a different MMC driver in a stable
-> kernel seems like a rather risky change unless it's thoroughly tested,
-> which has obviously not happened in this case.
+> Just introduce new function for 5.15 as a dependency for fixing
+> unrelated dGPU that uses this symbol as well.
 > 
-> The reverted commit is also given as a Stable-dep-of commit 2eb502f496f7
-> ("ARM: dts: am33xx: Fix MMCHS0 dma properties"), however the conflict
-> resulting when only the one commit is reverted is trivial to resolve,
-> which leads to working MMC controllers again.
-> 
-> Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-> ---
-> 
-> I have not checked if other stable kernels exhibit the same breakage; it
-> might be a good idea to revert the change for all stable branches unless
-> it is proven that the sdhci-omap driver actually works.
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-This was only backported to 5.4.y, thanks for catching this, now queued
-up.
+Both now queued up, thanks.
 
 greg k-h
