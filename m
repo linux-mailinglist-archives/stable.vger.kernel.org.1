@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EDA07E243B
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:19:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C89FB7E249D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232363AbjKFNTp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:19:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59264 "EHLO
+        id S232488AbjKFNXe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:23:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232354AbjKFNTn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:19:43 -0500
+        with ESMTP id S232489AbjKFNXd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:33 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 149EBD8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:19:41 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57746C433C8;
-        Mon,  6 Nov 2023 13:19:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A122BF3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EDBEC433AD;
+        Mon,  6 Nov 2023 13:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276780;
-        bh=c3Y9HgGGCCvuYU35AHJejZUzRx1PDvMBgswDBiHCQ20=;
+        s=korg; t=1699277008;
+        bh=vKDoHWimSiCFQt2CIDckF1wPApeRPhHVGhfxxx4zurs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lffGOK7RsvKNBvoLq6GGMUQQb/RpWrEkQ6n3ZKmt8Nkte7a8vKF4w0rvHI0jAICOM
-         hiSnv8lwiuol5Ooj+6X+qHI3U2k5rrwtDd6UBgRVxvNOfT2i0eRPaxuDXqBAGCW4eP
-         zUmv5wK6qcjEp09HZ8toTpSka/H0xjgme6a7c3oc=
+        b=qCl+CpkRcU5R26yS2Ui/K8BGtIG/kCsBUyToi+P5CjCm/Q1oZ6za6bO4BgsKpRfzO
+         F4iCxUpFTuJvP2MHlmHu197/jA13dNqxNPMeRiap+ZD4CO+/oaiHLY0NsX3Xdvhupr
+         cMWXzE9V3729f+3nDkUIydTKfvPJbbDUHGguHpKY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 6.5 83/88] tty: 8250: Add Brainboxes Oxford Semiconductor-based quirks
-Date:   Mon,  6 Nov 2023 14:04:17 +0100
-Message-ID: <20231106130308.838822103@linuxfoundation.org>
+        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 58/74] ASoC: rt5650: fix the wrong result of key button
+Date:   Mon,  6 Nov 2023 14:04:18 +0100
+Message-ID: <20231106130303.717538440@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,188 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Shuming Fan <shumingf@realtek.com>
 
-commit e4876dacaca46a1b09f9b417480924ab12019a5b upstream.
+[ Upstream commit f88dfbf333b3661faff996bb03af2024d907b76a ]
 
-Some of the later revisions of the Brainboxes PX cards are based
-on the Oxford Semiconductor chipset. Due to the chip's unique setup
-these cards need to be initialised.
-Previously these were tested against a reference card with the same broken
-baudrate on another PC, cancelling out the effect. With this patch they
-work and can transfer/receive find against an FTDI-based device.
+The RT5650 should enable a power setting for button detection to avoid the wrong result.
 
-Add all of the cards which require this setup to the quirks table.
-Thanks to Maciej W. Rozycki for clarification on this chip.
-
-Fixes: ef5a03a26c87 ("tty: 8250: Add support for Brainboxes PX cards.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DU0PR02MB7899D222A4AB2A4E8C57108FC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://lore.kernel.org/r/20231013094525.715518-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |  147 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 147 insertions(+)
+ sound/soc/codecs/rt5645.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -2427,6 +2427,153 @@ static struct pci_serial_quirk pci_seria
- 		.init			= pci_oxsemi_tornado_init,
- 		.setup		= pci_oxsemi_tornado_setup,
- 	},
-+	/*
-+	 * Brainboxes devices - all Oxsemi based
-+	 */
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4027,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4028,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4029,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4019,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4016,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4015,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400A,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400E,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400C,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400B,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400F,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4010,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4011,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x401D,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x401E,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4013,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4017,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4018,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
- 	{
- 		.vendor         = PCI_VENDOR_ID_INTEL,
- 		.device         = 0x8811,
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index a66e93a3af745..9fda0e5548dc6 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -3241,6 +3241,8 @@ int rt5645_set_jack_detect(struct snd_soc_component *component,
+ 				RT5645_GP1_PIN_IRQ, RT5645_GP1_PIN_IRQ);
+ 		regmap_update_bits(rt5645->regmap, RT5645_GEN_CTRL1,
+ 				RT5645_DIG_GATE_CTRL, RT5645_DIG_GATE_CTRL);
++		regmap_update_bits(rt5645->regmap, RT5645_DEPOP_M1,
++				RT5645_HP_CB_MASK, RT5645_HP_CB_PU);
+ 	}
+ 	rt5645_irq(0, rt5645);
+ 
+-- 
+2.42.0
+
 
 
