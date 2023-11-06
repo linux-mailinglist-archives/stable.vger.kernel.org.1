@@ -2,105 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 793527E2BCA
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 19:21:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C86C7E2BEA
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 19:28:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231911AbjKFSVO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 13:21:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42168 "EHLO
+        id S232146AbjKFS2r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 13:28:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232128AbjKFSVN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 13:21:13 -0500
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47430D4D;
-        Mon,  6 Nov 2023 10:21:10 -0800 (PST)
-Received: by mail-qt1-x82c.google.com with SMTP id d75a77b69052e-42033328ad0so3764941cf.0;
-        Mon, 06 Nov 2023 10:21:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699294869; x=1699899669; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SQrzTgI4HfQNrka2FNCvIJjf2ADMLYsvYWHL3HxoBJw=;
-        b=QUuvRMMTqsqH6Gr970kY6W0HsC4JY7KNk6+p8aUQCTuN1AAX+0T8nZka3i7SByM/p5
-         s3KJ8XnUhJdZshCdSjXW9PpI+VMsG39ONTe3uIYC5suhIL2X5GBgCYDFXb3/fDl10XKN
-         nWRBjka37syCwoP8GYlvTm/emoS5sO7NZrZFJUXt5S2ko0Ol4XiSpVZdg9zEfonqY37p
-         AbhHIrXZifR8Ylgi5gcTnqakzvcL5hgjutT+gZms+kLHQQoaNswPbFOfIV8fg3qiMTi8
-         JOOsIuLXsnniGEJIRxAR4MvUhpQCHcc5YCYX3rgwumfIuw6hXxsS4w5jlNG/JkTvAqn/
-         PEug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699294869; x=1699899669;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SQrzTgI4HfQNrka2FNCvIJjf2ADMLYsvYWHL3HxoBJw=;
-        b=MSPPrj9VQpgWGy/0vIRHVXcgWLJqcgRIsZbtxTns5U31NkUmKpOjU04qYUZS2bmQ9S
-         J8Ooe3PIx9MRhHAh4PCGaVFks7YHdqQDUj2D5NMY8wMpVNQOK7Ps1hP4xOfokdoO/kvW
-         UMIbytOpBYtThR2xfx8XAeD4A32A9btkD/BPiY+0ztumB5Yphe7eBV8x/PQwGscLL210
-         TvwzVSrLnUSuU8CrOqNGdkYakPUTfeupFy3s/brkopgKAOckiicC2/lMG7FtT4WYhopW
-         oIp8z69Uh+GJG8Z6W7tHM+5gLDmU9LBzfL+WEC/oHaREPPxYYAAHb6UsARqek9aTBAF/
-         NMMQ==
-X-Gm-Message-State: AOJu0YyZVzPIAmC2Q59cx1jqs8LFZ5CqnNu4wnbiqf0Fw6w4wC8hZAKu
-        Vh6pZWW0mg0+Zt8NA8oO0DLJFhyJIdk=
-X-Google-Smtp-Source: AGHT+IG45+mtC2eYMDM6QW7spOj49kaUMAWYaUWRTi1PQTc5vrEi17GCFup6TQj0zomNY52VNMB7Fw==
-X-Received: by 2002:a05:622a:1447:b0:417:9646:8e2 with SMTP id v7-20020a05622a144700b00417964608e2mr37140262qtx.17.1699294869280;
-        Mon, 06 Nov 2023 10:21:09 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id z9-20020ac86b89000000b0041cb8947ed2sm3595786qts.26.2023.11.06.10.21.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Nov 2023 10:21:08 -0800 (PST)
-Message-ID: <2d007bae-c958-4693-9467-ad0f20f68bb2@gmail.com>
-Date:   Mon, 6 Nov 2023 10:21:05 -0800
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/30] 6.6.1-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20231106130257.903265688@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231773AbjKFS2q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 13:28:46 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DA2AD47;
+        Mon,  6 Nov 2023 10:28:44 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F4AC433C8;
+        Mon,  6 Nov 2023 18:28:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1699295323;
+        bh=cfLKtmPTASsY/mXd3KyqzMORK9r2N0qAhcYDQEPAbGY=;
+        h=Date:To:From:Subject:From;
+        b=U4tdbuyNCC0Q1Djfzq6vrIDtxl85IwplXHVapwIhIXfG/x/EL8gZbaETayZbdeTcc
+         Mi4vixzCN8HAlry7IocJ8ueo1sCCSs4K72h9Hr2BOWsToQPELdvHdmP2D8+qigialO
+         DBvqokhAkOHVKm+3ZfCLIkjmPHJQH0KP70m7Tn34=
+Date:   Mon, 06 Nov 2023 10:28:43 -0800
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        riel@surriel.com, hannes@cmpxchg.org, shr@devkernel.io,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-fix-for-negative-counter-nr_file_hugepages.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231106182843.A9F4AC433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/6/23 05:03, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.1 release.
-> There are 30 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.1-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+The patch titled
+     Subject: mm: fix for negative counter: nr_file_hugepages
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-fix-for-negative-counter-nr_file_hugepages.patch
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-fix-for-negative-counter-nr_file_hugepages.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Stefan Roesch <shr@devkernel.io>
+Subject: mm: fix for negative counter: nr_file_hugepages
+Date: Mon, 6 Nov 2023 10:19:18 -0800
+
+While qualifiying the 6.4 release, the following warning was detected in
+messages:
+
+vmstat_refresh: nr_file_hugepages -15664
+
+The warning is caused by the incorrect updating of the NR_FILE_THPS
+counter in the function split_huge_page_to_list.  The if case is checking
+for folio_test_swapbacked, but the else case is missing the check for
+folio_test_pmd_mappable.  The other functions that manipulate the counter
+like __filemap_add_folio and filemap_unaccount_folio have the
+corresponding check.
+
+I have a test case, which reproduces the problem. It can be found here:
+  https://github.com/sroeschus/testcase/blob/main/vmstat_refresh/madv.c
+
+The test case reproduces on an XFS filesystem. Running the same test
+case on a BTRFS filesystem does not reproduce the problem.
+
+AFAIK version 6.1 until 6.6 are affected by this problem.
+
+Link: https://lkml.kernel.org/r/20231106181918.1091043-1-shr@devkernel.io
+Signed-off-by: Stefan Roesch <shr@devkernel.io>
+Co-debugged-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/huge_memory.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/mm/huge_memory.c~mm-fix-for-negative-counter-nr_file_hugepages
++++ a/mm/huge_memory.c
+@@ -2772,7 +2772,8 @@ int split_huge_page_to_list(struct page
+ 			if (folio_test_swapbacked(folio)) {
+ 				__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS,
+ 							-nr);
+-			} else {
++			} else if (folio_test_pmd_mappable(folio)) {
++
+ 				__lruvec_stat_mod_folio(folio, NR_FILE_THPS,
+ 							-nr);
+ 				filemap_nr_thps_dec(mapping);
+_
+
+Patches currently in -mm which might be from shr@devkernel.io are
+
+mm-fix-for-negative-counter-nr_file_hugepages.patch
 
