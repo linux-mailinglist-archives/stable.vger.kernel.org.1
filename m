@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 841727E23B9
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62E717E2338
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232174AbjKFNN5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:13:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58626 "EHLO
+        id S231626AbjKFNKC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:10:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232207AbjKFNN4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:56 -0500
+        with ESMTP id S231887AbjKFNKB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7572100
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB99C433C8;
-        Mon,  6 Nov 2023 13:13:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF95110A
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6B0C433C9;
+        Mon,  6 Nov 2023 13:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276432;
-        bh=VjMR2W0hr/3qYMG6WlwNLeUpMrUj6GlUKHs/I6Jjy8E=;
+        s=korg; t=1699276197;
+        bh=8K1qWSY6UR/Z6LjUfk7eOi3542OXn5geXW4wFlAcX2w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2mfEPyGc7Xe/AKDehsBIC1K7/I8kRmj76a4YRKloteqN7T3bGVxchOYLe0qm4xsBm
-         9ay6gIw6JElfF/2HAN6lllWf7etJ2qjWM1vlDzYwkNnBWpBqPPvh0K+L5Inmr54bMR
-         CehJp/dxrRFM+lOzN41k23aWrXcXgVSF4PLvgico=
+        b=hVNZJDozgIDuKHq8eRpbFFmfgiTGOBLaCS/Iud+q08Dr7DOX6JgIWAjolGHo2Exp1
+         mdmSRnreGwnc+/6HXnUR2jvB6STild3iwCqDOtV5QdmM7b+mcouyCxY1gRGbVCjen0
+         h/To0VGkwYOZvTcfpdcInJdUFO6Hnk+vLc/GS1zM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Stable@vger.kernel.org,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 12/62] fs/ntfs3: Write immediately updated ntfs state
+Subject: [PATCH 4.19 22/61] iio: exynos-adc: request second interupt only when touchscreen mode is used
 Date:   Mon,  6 Nov 2023 14:03:18 +0100
-Message-ID: <20231106130302.270309184@linuxfoundation.org>
+Message-ID: <20231106130300.373907316@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +52,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 06ccfb00645990a9fcc14249e6d1c25921ecb836 ]
+[ Upstream commit 865b080e3229102f160889328ce2e8e97aa65ea0 ]
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Second interrupt is needed only when touchscreen mode is used, so don't
+request it unconditionally. This removes the following annoying warning
+during boot:
+
+exynos-adc 14d10000.adc: error -ENXIO: IRQ index 1 not found
+
+Fixes: 2bb8ad9b44c5 ("iio: exynos-adc: add experimental touchscreen support")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20231009101412.916922-1-m.szyprowski@samsung.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/fsntfs.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/iio/adc/exynos_adc.c | 24 ++++++++++++++----------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
-index 9c0fc3a29d0c9..873b1434a9989 100644
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -953,18 +953,11 @@ int ntfs_set_state(struct ntfs_sb_info *sbi, enum NTFS_DIRTY_FLAGS dirty)
- 	if (err)
- 		return err;
+diff --git a/drivers/iio/adc/exynos_adc.c b/drivers/iio/adc/exynos_adc.c
+index 1ca2c4d39f878..7c5ea4ed5332f 100644
+--- a/drivers/iio/adc/exynos_adc.c
++++ b/drivers/iio/adc/exynos_adc.c
+@@ -817,6 +817,12 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 		}
+ 	}
  
--	mark_inode_dirty(&ni->vfs_inode);
-+	mark_inode_dirty_sync(&ni->vfs_inode);
- 	/* verify(!ntfs_update_mftmirr()); */
++	/* leave out any TS related code if unreachable */
++	if (IS_REACHABLE(CONFIG_INPUT)) {
++		has_ts = of_property_read_bool(pdev->dev.of_node,
++					       "has-touchscreen") || pdata;
++	}
++
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		dev_err(&pdev->dev, "no irq resource?\n");
+@@ -824,11 +830,15 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 	}
+ 	info->irq = irq;
  
--	/*
--	 * If we used wait=1, sync_inode_metadata waits for the io for the
--	 * inode to finish. It hangs when media is removed.
--	 * So wait=0 is sent down to sync_inode_metadata
--	 * and filemap_fdatawrite is used for the data blocks.
--	 */
--	err = sync_inode_metadata(&ni->vfs_inode, 0);
--	if (!err)
--		err = filemap_fdatawrite(ni->vfs_inode.i_mapping);
-+	/* write mft record on disk. */
-+	err = _ni_write_inode(&ni->vfs_inode, 1);
+-	irq = platform_get_irq(pdev, 1);
+-	if (irq == -EPROBE_DEFER)
+-		return irq;
++	if (has_ts) {
++		irq = platform_get_irq(pdev, 1);
++		if (irq == -EPROBE_DEFER)
++			return irq;
  
- 	return err;
- }
+-	info->tsirq = irq;
++		info->tsirq = irq;
++	} else {
++		info->tsirq = -1;
++	}
+ 
+ 	info->dev = &pdev->dev;
+ 
+@@ -895,12 +905,6 @@ static int exynos_adc_probe(struct platform_device *pdev)
+ 	if (info->data->init_hw)
+ 		info->data->init_hw(info);
+ 
+-	/* leave out any TS related code if unreachable */
+-	if (IS_REACHABLE(CONFIG_INPUT)) {
+-		has_ts = of_property_read_bool(pdev->dev.of_node,
+-					       "has-touchscreen") || pdata;
+-	}
+-
+ 	if (pdata)
+ 		info->delay = pdata->delay;
+ 	else
 -- 
 2.42.0
 
