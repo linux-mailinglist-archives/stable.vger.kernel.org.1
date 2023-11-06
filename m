@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A307E24CC
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E74357E232D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232530AbjKFNZ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:25:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56030 "EHLO
+        id S231590AbjKFNJ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:09:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232542AbjKFNZZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:25 -0500
+        with ESMTP id S231872AbjKFNJ2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA64D10B
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:25:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3013CC433C8;
-        Mon,  6 Nov 2023 13:25:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11ED091
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:26 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49099C433C7;
+        Mon,  6 Nov 2023 13:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277121;
-        bh=+pBGrb50CLJYs/M2ImAtZcf3trmYGyMBRSQoIRwa9t8=;
+        s=korg; t=1699276165;
+        bh=t91FtmvjkprEn8lATo8hHEh51PqFtMhWuO7JeM7wQwE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SPbrGnPoqydJ088CclIkMhJE+2KzvLxFI1ZnoMZtAOOB3B5LtKNuvuuB/Me7r+ncP
-         eQFtb4uoC493ox8n2Dy/foMJCknE3y557ZXceWwhKTleopodKsDU3kT/uI3tApQm8R
-         L9xKZGC8qZP46O0jWBI7Ucj5V8c4Yfi5y5qFLD4o=
+        b=D6lFDdsUyKpvCV/tg9ouyoZ5tGP/oFRzVZVMIfLDnUGW62KrzSSr9MEneZC3uYrxk
+         V51KKjlQ+fimiEsy5w7AN5L51BOw3fvY981jnV7eq9CXgzZhBc+gTxRRwllXuHOKLX
+         KlLPGqdwAFG53L7DXzpEyn9W/u8h3wM+0K1W0xwA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dima Ruinskiy <dima.ruinskiy@intel.com>,
-        Vitaly Lifshits <vitaly.lifshits@intel.com>,
-        Sasha Neftin <sasha.neftin@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
+        patches@lists.linux.dev,
+        Wojciech Drewek <wojciech.drewek@intel.com>,
+        Mateusz Palczewski <mateusz.palczewski@intel.com>,
         Jacob Keller <jacob.e.keller@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/128] igc: Fix ambiguity in the ethtool advertising
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>,
+        Arpana Arland <arpanax.arland@intel.com>
+Subject: [PATCH 4.19 12/61] igb: Fix potential memory leak in igb_add_ethtool_nfc_entry
 Date:   Mon,  6 Nov 2023 14:03:08 +0100
-Message-ID: <20231106130310.413362602@linuxfoundation.org>
+Message-ID: <20231106130259.983051542@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,88 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Neftin <sasha.neftin@intel.com>
+From: Mateusz Palczewski <mateusz.palczewski@intel.com>
 
-[ Upstream commit e7684d29efdf37304c62bb337ea55b3428ca118e ]
+[ Upstream commit 8c0b48e01daba5ca58f939a8425855d3f4f2ed14 ]
 
-The 'ethtool_convert_link_mode_to_legacy_u32' method does not allow us to
-advertise 2500M speed support and TP (twisted pair) properly. Convert to
-'ethtool_link_ksettings_test_link_mode' to advertise supported speed and
-eliminate ambiguity.
+Add check for return of igb_update_ethtool_nfc_entry so that in case
+of any potential errors the memory alocated for input will be freed.
 
-Fixes: 8c5ad0dae93c ("igc: Add ethtool support")
-Suggested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Suggested-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Fixes: 0e71def25281 ("igb: add support of RX network flow classification")
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20231019203641.3661960-1-jacob.e.keller@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ethtool.c | 35 ++++++++++++++------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_ethtool.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-index 17cb4c13d0020..3bffd2729a439 100644
---- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-@@ -1810,7 +1810,7 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
- 	struct igc_adapter *adapter = netdev_priv(netdev);
- 	struct net_device *dev = adapter->netdev;
- 	struct igc_hw *hw = &adapter->hw;
--	u32 advertising;
-+	u16 advertised = 0;
+diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+index e19fbdf2ff304..f714c85c36c50 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
++++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
+@@ -2994,11 +2994,15 @@ static int igb_add_ethtool_nfc_entry(struct igb_adapter *adapter,
+ 	if (err)
+ 		goto err_out_w_lock;
  
- 	/* When adapter in resetting mode, autoneg/speed/duplex
- 	 * cannot be changed
-@@ -1835,18 +1835,33 @@ igc_ethtool_set_link_ksettings(struct net_device *netdev,
- 	while (test_and_set_bit(__IGC_RESETTING, &adapter->state))
- 		usleep_range(1000, 2000);
+-	igb_update_ethtool_nfc_entry(adapter, input, input->sw_idx);
++	err = igb_update_ethtool_nfc_entry(adapter, input, input->sw_idx);
++	if (err)
++		goto err_out_input_filter;
  
--	ethtool_convert_link_mode_to_legacy_u32(&advertising,
--						cmd->link_modes.advertising);
--	/* Converting to legacy u32 drops ETHTOOL_LINK_MODE_2500baseT_Full_BIT.
--	 * We have to check this and convert it to ADVERTISE_2500_FULL
--	 * (aka ETHTOOL_LINK_MODE_2500baseX_Full_BIT) explicitly.
--	 */
--	if (ethtool_link_ksettings_test_link_mode(cmd, advertising, 2500baseT_Full))
--		advertising |= ADVERTISE_2500_FULL;
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  2500baseT_Full))
-+		advertised |= ADVERTISE_2500_FULL;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  1000baseT_Full))
-+		advertised |= ADVERTISE_1000_FULL;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  100baseT_Full))
-+		advertised |= ADVERTISE_100_FULL;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  100baseT_Half))
-+		advertised |= ADVERTISE_100_HALF;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  10baseT_Full))
-+		advertised |= ADVERTISE_10_FULL;
-+
-+	if (ethtool_link_ksettings_test_link_mode(cmd, advertising,
-+						  10baseT_Half))
-+		advertised |= ADVERTISE_10_HALF;
+ 	spin_unlock(&adapter->nfc_lock);
+ 	return 0;
  
- 	if (cmd->base.autoneg == AUTONEG_ENABLE) {
- 		hw->mac.autoneg = 1;
--		hw->phy.autoneg_advertised = advertising;
-+		hw->phy.autoneg_advertised = advertised;
- 		if (adapter->fc_autoneg)
- 			hw->fc.requested_mode = igc_fc_default;
- 	} else {
++err_out_input_filter:
++	igb_erase_filter(adapter, input);
+ err_out_w_lock:
+ 	spin_unlock(&adapter->nfc_lock);
+ err_out:
 -- 
 2.42.0
 
