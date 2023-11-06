@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 643F57E2324
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDE667E23BA
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232051AbjKFNJO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:09:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50508 "EHLO
+        id S232239AbjKFNOA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:14:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231911AbjKFNJO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:14 -0500
+        with ESMTP id S231929AbjKFNN7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A009BD
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB29C433C7;
-        Mon,  6 Nov 2023 13:09:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F225136
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E0DC433C8;
+        Mon,  6 Nov 2023 13:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276151;
-        bh=uYgzN7rnCE5cfvQ3nqE5W7LjkUHQfalbsYUBonJvzU4=;
+        s=korg; t=1699276435;
+        bh=Z4EHhs+tx/kw6ay0G16+ddHK1tf/g1EcA3PUjtsUbAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q6DzIONT0aVi21qeyvH/IJlb+BosdpzrtW2BX8Ah5C049WAwk8gdzw9kFQPFz6O8L
-         WfqLr9cG85Ho9YPyy4Y4JUZMFotdEEZG5QgRFjYOQF2QqP1QJmhmEjlBi1Ex/Yes4k
-         +OdTFk10zur8OlQopiEgo2jppS3mtF+j46PLNLlE=
+        b=j003dZVWMhgR3rhVq/vAEJ21RLQdRAlyo+IPJHBzq+XZMOboeyvrdEVvxKwb07g35
+         2UKbiAj2APlk2RCH34yr8DLsEDojG4bHz7zVofIKoIaBKdjORnNitqjucdATQEDYEg
+         y10rTTlAgC8EdPu9fRP25I2W6dSAVInnb0GtEs/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aric Cyr <aric.cyr@amd.com>,
-        Tom Chung <chiahsuan.chung@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 01/30] drm/amd/display: Dont use fsleep for PSR exit waits
+Subject: [PATCH 6.1 13/62] fs/ntfs3: Use kvmalloc instead of kmalloc(... __GFP_NOWARN)
 Date:   Mon,  6 Nov 2023 14:03:19 +0100
-Message-ID: <20231106130257.961606006@linuxfoundation.org>
+Message-ID: <20231106130302.305391117@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,60 +50,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 79df45dc4bfb13d9bd3a75338b9d9dab948be3d6 ]
+[ Upstream commit fc471e39e38fea6677017cbdd6d928088a59fc67 ]
 
-[Why]
-These functions can be called from high IRQ levels and the OS will hang
-if it tries to use a usleep_highres or a msleep.
-
-[How]
-Replace the fsleep with a udelay.
-
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_dmcu.c | 3 ++-
- drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ fs/ntfs3/attrlist.c | 15 +++++++++++++--
+ fs/ntfs3/bitmap.c   |  3 ++-
+ fs/ntfs3/super.c    |  2 +-
+ 3 files changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_dmcu.c b/drivers/gpu/drm/amd/display/dc/dce/dce_dmcu.c
-index b87bfecb7755a..a8e79104b684e 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_dmcu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_dmcu.c
-@@ -586,7 +586,8 @@ static void dcn10_dmcu_set_psr_enable(struct dmcu *dmcu, bool enable, bool wait)
- 				if (state == PSR_STATE0)
- 					break;
- 			}
--			fsleep(500);
-+			/* must *not* be fsleep - this can be called from high irq levels */
-+			udelay(500);
- 		}
+diff --git a/fs/ntfs3/attrlist.c b/fs/ntfs3/attrlist.c
+index 81c22df27c725..0c6a68e71e7d4 100644
+--- a/fs/ntfs3/attrlist.c
++++ b/fs/ntfs3/attrlist.c
+@@ -52,7 +52,8 @@ int ntfs_load_attr_list(struct ntfs_inode *ni, struct ATTRIB *attr)
  
- 		/* assert if max retry hit */
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-index 0f24b6fbd2201..4704c9c85ee6f 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
-@@ -216,7 +216,8 @@ static void dmub_psr_enable(struct dmub_psr *dmub, bool enable, bool wait, uint8
- 					break;
- 			}
+ 	if (!attr->non_res) {
+ 		lsize = le32_to_cpu(attr->res.data_size);
+-		le = kmalloc(al_aligned(lsize), GFP_NOFS | __GFP_NOWARN);
++		/* attr is resident: lsize < record_size (1K or 4K) */
++		le = kvmalloc(al_aligned(lsize), GFP_KERNEL);
+ 		if (!le) {
+ 			err = -ENOMEM;
+ 			goto out;
+@@ -80,7 +81,17 @@ int ntfs_load_attr_list(struct ntfs_inode *ni, struct ATTRIB *attr)
+ 		if (err < 0)
+ 			goto out;
  
--			fsleep(500);
-+			/* must *not* be fsleep - this can be called from high irq levels */
-+			udelay(500);
- 		}
+-		le = kmalloc(al_aligned(lsize), GFP_NOFS | __GFP_NOWARN);
++		/* attr is nonresident.
++		 * The worst case:
++		 * 1T (2^40) extremely fragmented file.
++		 * cluster = 4K (2^12) => 2^28 fragments
++		 * 2^9 fragments per one record => 2^19 records
++		 * 2^5 bytes of ATTR_LIST_ENTRY per one record => 2^24 bytes.
++		 *
++		 * the result is 16M bytes per attribute list.
++		 * Use kvmalloc to allocate in range [several Kbytes - dozen Mbytes]
++		 */
++		le = kvmalloc(al_aligned(lsize), GFP_KERNEL);
+ 		if (!le) {
+ 			err = -ENOMEM;
+ 			goto out;
+diff --git a/fs/ntfs3/bitmap.c b/fs/ntfs3/bitmap.c
+index e0cdc91d88a85..c055bbdfe0f7c 100644
+--- a/fs/ntfs3/bitmap.c
++++ b/fs/ntfs3/bitmap.c
+@@ -662,7 +662,8 @@ int wnd_init(struct wnd_bitmap *wnd, struct super_block *sb, size_t nbits)
+ 		wnd->bits_last = wbits;
  
- 		/* assert if max retry hit */
+ 	wnd->free_bits =
+-		kcalloc(wnd->nwnd, sizeof(u16), GFP_NOFS | __GFP_NOWARN);
++		kvmalloc_array(wnd->nwnd, sizeof(u16), GFP_KERNEL | __GFP_ZERO);
++
+ 	if (!wnd->free_bits)
+ 		return -ENOMEM;
+ 
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index 8e2fe0f69203b..6066eea3f61cb 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -1141,7 +1141,7 @@ static int ntfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		goto put_inode_out;
+ 	}
+ 	bytes = inode->i_size;
+-	sbi->def_table = t = kmalloc(bytes, GFP_NOFS | __GFP_NOWARN);
++	sbi->def_table = t = kvmalloc(bytes, GFP_KERNEL);
+ 	if (!t) {
+ 		err = -ENOMEM;
+ 		goto put_inode_out;
 -- 
 2.42.0
 
