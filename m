@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA0427E22D9
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 878047E23E1
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:15:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231935AbjKFNGI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:06:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48972 "EHLO
+        id S232196AbjKFNPq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:15:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231898AbjKFNGH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:07 -0500
+        with ESMTP id S232100AbjKFNPp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:15:45 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C44FBF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403C2C433C9;
-        Mon,  6 Nov 2023 13:06:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C60BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:15:42 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDE2C433C8;
+        Mon,  6 Nov 2023 13:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699275963;
-        bh=GS4zEiYZY0q/mPfcmmDh/XIlAFSO+T2dAgPXvwCGMbo=;
+        s=korg; t=1699276542;
+        bh=loUCKoprdXJsVQ7uZdkiLCZRNqKziYvbeus94tHOuBQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=s8kGIi3itoDfgGoXF/74zUfni2EY6kkgLcBUXL/X9nrs1QBV01Uh6pzOrnOi3TbcJ
-         fxABWbqHbjNKAJ7QiymiANMXMEMJ7UQZGCitWlZAs42W3RGahZNNNnWq5u/C3QZEYX
-         hicfgHTL2G2O+nTukVb1qwkNbUF6KbRyiCaUujIM=
+        b=Ki0I5bLd15PDwfNatbUyQNpCTALgF9wdOk8WAPGNpZsPIbEVZFxfktyvZPTg97sWX
+         0W8lmi7DptwatWlBuArhwE2aVO3cE+1ulwBBkiDEHCgaq1PiTfKLX2N9hKxX+zCNbc
+         H3bFno3D4ne5KysgpU3OJBAtJ2nqrytlfsCz/b0E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Grant Grundler <grundler@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 06/48] r8152: Increase USB control msg timeout to 5000ms as per spec
-Date:   Mon,  6 Nov 2023 14:02:57 +0100
-Message-ID: <20231106130258.080163490@linuxfoundation.org>
+Subject: [PATCH 6.5 04/88] ASoC: fsl-asoc-card: use integer type for fll_id and pll_id
+Date:   Mon,  6 Nov 2023 14:02:58 +0100
+Message-ID: <20231106130305.929590204@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,79 +50,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit a5feba71ec9c14a54c3babdc732c5b6866d8ee43 ]
+[ Upstream commit 2b21207afd06714986a3d22442ed4860ba4f9ced ]
 
-According to the comment next to USB_CTRL_GET_TIMEOUT and
-USB_CTRL_SET_TIMEOUT, although sending/receiving control messages is
-usually quite fast, the spec allows them to take up to 5 seconds.
-Let's increase the timeout in the Realtek driver from 500ms to 5000ms
-(using the #defines) to account for this.
+As the pll_id and pll_id can be zero (WM8960_SYSCLK_AUTO)
+with the commit 2bbc2df46e67 ("ASoC: wm8960: Make automatic the
+default clocking mode")
 
-This is not just a theoretical change. The need for the longer timeout
-was seen in testing. Specifically, if you drop a sc7180-trogdor based
-Chromebook into the kdb debugger and then "go" again after sitting in
-the debugger for a while, the next USB control message takes a long
-time. Out of ~40 tests the slowest USB control message was 4.5
-seconds.
+Then the machine driver will skip to call set_sysclk() and set_pll()
+for codec, when the sysclk rate is different with what wm8960 read
+at probe, the output sound frequency is wrong.
 
-While dropping into kdb is not exactly an end-user scenario, the above
-is similar to what could happen due to an temporary interrupt storm,
-what could happen if there was a host controller (HW or SW) issue, or
-what could happen if the Realtek device got into a confused state and
-needed time to recover.
+So change the fll_id and pll_id initial value, still keep machine
+driver's behavior same as before.
 
-This change is fairly critical since the r8152 driver in Linux doesn't
-expect register reads/writes (which are backed by USB control
-messages) to fail.
-
-Fixes: ac718b69301c ("net/usb: new driver for RTL8152")
-Suggested-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://lore.kernel.org/r/1695202992-24864-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/fsl/fsl-asoc-card.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index d17d125a34540..a0b40bdbdd84f 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -786,7 +786,7 @@ int get_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 76b5bfc288fde..bab7d34cf585b 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -52,8 +52,8 @@ struct codec_priv {
+ 	unsigned long mclk_freq;
+ 	unsigned long free_freq;
+ 	u32 mclk_id;
+-	u32 fll_id;
+-	u32 pll_id;
++	int fll_id;
++	int pll_id;
+ };
  
- 	ret = usb_control_msg(tp->udev, usb_rcvctrlpipe(tp->udev, 0),
- 			      RTL8152_REQ_GET_REGS, RTL8152_REQT_READ,
--			      value, index, tmp, size, 500);
-+			      value, index, tmp, size, USB_CTRL_GET_TIMEOUT);
- 	if (ret < 0)
- 		memset(data, 0xff, size);
- 	else
-@@ -809,7 +809,7 @@ int set_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
+ /**
+@@ -206,7 +206,7 @@ static int fsl_asoc_card_hw_params(struct snd_pcm_substream *substream,
+ 	}
  
- 	ret = usb_control_msg(tp->udev, usb_sndctrlpipe(tp->udev, 0),
- 			      RTL8152_REQ_SET_REGS, RTL8152_REQT_WRITE,
--			      value, index, tmp, size, 500);
-+			      value, index, tmp, size, USB_CTRL_SET_TIMEOUT);
+ 	/* Specific configuration for PLL */
+-	if (codec_priv->pll_id && codec_priv->fll_id) {
++	if (codec_priv->pll_id >= 0 && codec_priv->fll_id >= 0) {
+ 		if (priv->sample_format == SNDRV_PCM_FORMAT_S24_LE)
+ 			pll_out = priv->sample_rate * 384;
+ 		else
+@@ -248,7 +248,7 @@ static int fsl_asoc_card_hw_free(struct snd_pcm_substream *substream)
  
- 	kfree(tmp);
+ 	priv->streams &= ~BIT(substream->stream);
  
-@@ -5084,7 +5084,8 @@ static u8 rtl_get_version(struct usb_interface *intf)
- 
- 	ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
- 			      RTL8152_REQ_GET_REGS, RTL8152_REQT_READ,
--			      PLA_TCR0, MCU_TYPE_PLA, tmp, sizeof(*tmp), 500);
-+			      PLA_TCR0, MCU_TYPE_PLA, tmp, sizeof(*tmp),
-+			      USB_CTRL_GET_TIMEOUT);
- 	if (ret > 0)
- 		ocp_data = (__le32_to_cpu(*tmp) >> 16) & VERSION_MASK;
- 
+-	if (!priv->streams && codec_priv->pll_id && codec_priv->fll_id) {
++	if (!priv->streams && codec_priv->pll_id >= 0 && codec_priv->fll_id >= 0) {
+ 		/* Force freq to be free_freq to avoid error message in codec */
+ 		ret = snd_soc_dai_set_sysclk(asoc_rtd_to_codec(rtd, 0),
+ 					     codec_priv->mclk_id,
+@@ -621,6 +621,10 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	priv->card.dapm_routes = audio_map;
+ 	priv->card.num_dapm_routes = ARRAY_SIZE(audio_map);
+ 	priv->card.driver_name = DRIVER_NAME;
++
++	priv->codec_priv.fll_id = -1;
++	priv->codec_priv.pll_id = -1;
++
+ 	/* Diversify the card configurations */
+ 	if (of_device_is_compatible(np, "fsl,imx-audio-cs42888")) {
+ 		codec_dai_name = "cs42888";
 -- 
 2.42.0
 
