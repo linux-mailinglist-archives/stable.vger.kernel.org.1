@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 745D67E2309
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4F17E23A2
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231886AbjKFNIH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:08:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49954 "EHLO
+        id S231921AbjKFNNS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:13:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38496 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232027AbjKFNIH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:07 -0500
+        with ESMTP id S232143AbjKFNNR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:17 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69FE5136
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA395C433C7;
-        Mon,  6 Nov 2023 13:08:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDF37BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2095BC433CD;
+        Mon,  6 Nov 2023 13:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276084;
-        bh=bCAjgCcCxEGfn1X5iFYgnPa0zlY6aZ3DcN9ES6e5os0=;
+        s=korg; t=1699276394;
+        bh=E4r5sPYoO2DFTD6GktDqJEi0wn0p60m/7H0ZZfpDB9U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O4U46ImJZFFIVm3OMv9RugKKhxtZX2N8etOhOZmkEfqWFgzKtdTshxlUqh5qPJscp
-         ovArkvHojyKUgfAoItiJAVdxtHjo3Xez7DlBR1hLyWbHiVYTyZa8uFFB5/hm4LEWVd
-         nZlf3og+dwj0P3eENG3KvBXbtYZgspxW1596Q07U=
+        b=k903lbhvux3BX/RLwIZM/U4lo5oMet4z2uQre4Le+csMUwMNWqHW/hXH/zoewR5e1
+         q3D+yi3Yr6ClGaSMF0Rxnk2cWizM6si02TMQuslRB3j0zGx6Gj5FuKqYBFmIiQQXHa
+         2j5Ed1bEmt9I4UJGM1CMj3RwyrT6cTJMl7HCUhtI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Janne Grunau <j@jannau.net>,
-        Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.6 15/30] Bluetooth: hci_bcm4377: Mark bcm4378/bcm4387 as BROKEN_LE_CODED
+        patches@lists.linux.dev, Alex Deucher <Alexander.Deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 27/62] drm/amdgpu: Unset context priority is now invalid
 Date:   Mon,  6 Nov 2023 14:03:33 +0100
-Message-ID: <20231106130258.473362027@linuxfoundation.org>
+Message-ID: <20231106130302.801144501@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -50,66 +52,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Luben Tuikov <luben.tuikov@amd.com>
 
-commit 41e9cdea9c4ab6606ca462ff4ec901a82d022c05 upstream.
+[ Upstream commit eab0261967aeab528db4d0a51806df8209aec179 ]
 
-bcm4378 and bcm4387 claim to support LE Coded PHY but fail to pair
-(reliably) with BLE devices if it is enabled.
-On bcm4378 pairing usually succeeds after 2-3 tries. On bcm4387
-pairing appears to be completely broken.
+A context priority value of AMD_CTX_PRIORITY_UNSET is now invalid--instead of
+carrying it around and passing it to the Direct Rendering Manager--and it
+becomes AMD_CTX_PRIORITY_NORMAL in amdgpu_ctx_ioctl(), the gateway to context
+creation.
 
-Cc: stable@vger.kernel.org # 6.4.y+
-Link: https://discussion.fedoraproject.org/t/mx-master-3-bluetooth-mouse-doesnt-connect/87072/33
-Link: https://github.com/AsahiLinux/linux/issues/177
-Fixes: 288c90224eec ("Bluetooth: Enable all supported LE PHY by default")
-Signed-off-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Eric Curtin <ecurtin@redhat.com>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alex Deucher <Alexander.Deucher@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
+Acked-by: Alex Deucher <Alexander.Deucher@amd.com>
+Link: https://lore.kernel.org/r/20231017035656.8211-1-luben.tuikov@amd.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_bcm4377.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bluetooth/hci_bcm4377.c
-+++ b/drivers/bluetooth/hci_bcm4377.c
-@@ -512,6 +512,7 @@ struct bcm4377_hw {
- 	unsigned long disable_aspm : 1;
- 	unsigned long broken_ext_scan : 1;
- 	unsigned long broken_mws_transport_config : 1;
-+	unsigned long broken_le_coded : 1;
- 
- 	int (*send_calibration)(struct bcm4377_data *bcm4377);
- 	int (*send_ptb)(struct bcm4377_data *bcm4377,
-@@ -2372,6 +2373,8 @@ static int bcm4377_probe(struct pci_dev
- 		set_bit(HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG, &hdev->quirks);
- 	if (bcm4377->hw->broken_ext_scan)
- 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
-+	if (bcm4377->hw->broken_le_coded)
-+		set_bit(HCI_QUIRK_BROKEN_LE_CODED, &hdev->quirks);
- 
- 	pci_set_drvdata(pdev, bcm4377);
- 	hci_set_drvdata(hdev, bcm4377);
-@@ -2461,6 +2464,7 @@ static const struct bcm4377_hw bcm4377_h
- 		.bar0_core2_window2 = 0x18107000,
- 		.has_bar0_core2_window2 = true,
- 		.broken_mws_transport_config = true,
-+		.broken_le_coded = true,
- 		.send_calibration = bcm4378_send_calibration,
- 		.send_ptb = bcm4378_send_ptb,
- 	},
-@@ -2474,6 +2478,7 @@ static const struct bcm4377_hw bcm4377_h
- 		.has_bar0_core2_window2 = true,
- 		.clear_pciecfg_subsystem_ctrl_bit19 = true,
- 		.broken_mws_transport_config = true,
-+		.broken_le_coded = true,
- 		.send_calibration = bcm4387_send_calibration,
- 		.send_ptb = bcm4378_send_ptb,
- 	},
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
+index d2139ac121595..fdbeafda4e80a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
+@@ -47,7 +47,6 @@ const unsigned int amdgpu_ctx_num_entities[AMDGPU_HW_IP_NUM] = {
+ bool amdgpu_ctx_priority_is_valid(int32_t ctx_prio)
+ {
+ 	switch (ctx_prio) {
+-	case AMDGPU_CTX_PRIORITY_UNSET:
+ 	case AMDGPU_CTX_PRIORITY_VERY_LOW:
+ 	case AMDGPU_CTX_PRIORITY_LOW:
+ 	case AMDGPU_CTX_PRIORITY_NORMAL:
+@@ -55,6 +54,7 @@ bool amdgpu_ctx_priority_is_valid(int32_t ctx_prio)
+ 	case AMDGPU_CTX_PRIORITY_VERY_HIGH:
+ 		return true;
+ 	default:
++	case AMDGPU_CTX_PRIORITY_UNSET:
+ 		return false;
+ 	}
+ }
+-- 
+2.42.0
+
 
 
