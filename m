@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A7F57E2367
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF70D7E244F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:20:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231618AbjKFNLn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:11:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58216 "EHLO
+        id S229583AbjKFNUf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:20:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53470 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232059AbjKFNLn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:43 -0500
+        with ESMTP id S232394AbjKFNUb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:20:31 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04BF2BD
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C841C433C8;
-        Mon,  6 Nov 2023 13:11:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B8DBF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1C3C433C9;
+        Mon,  6 Nov 2023 13:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276299;
-        bh=5isV+wN3MjE/m2Z9cSFpolaSIZwO8Seeigsd2SwBX78=;
+        s=korg; t=1699276827;
+        bh=MLFczeqOZOKtZK0CftOqaETjFy3ZxCluxtKaYaZt+uI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LPGPId/dju3nzTKZQr6SLjRd1eMx25jEKECx7FYRSGSK9xdjD4dnvoyMjjig8Tgmv
-         cbbG6FSydp1j8LB3RF4Vx/40HFMmKBLDve0w10dN8eYRsv0WVpVIpkojnH3BC2IE4O
-         w942tpbgcnf++xoiECdjLI5/3c9f5pq4+Wq8+r9I=
+        b=NxAMNA6oYdppfTePdPMJHH7z1kYYl5Oltm5Usmpqtw2iOU46D4jBaoQO2kmh1vCNX
+         HbUnoLNlWSDr2AcO6xkxuJRTkgmD3n6/d7834spDtidv3u8AZFQ0MBzuq9vPSIcU0M
+         4k5p4XiTlI5Uh/RixLPINagtPPT0YmRPywhIQlsU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wenqing Liu <wenqingliu0120@gmail.com>,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
-        Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
-Subject: [PATCH 4.19 30/61] f2fs: fix to do sanity check on inode type during garbage collection
+        patches@lists.linux.dev, Maximilian Heyne <mheyne@amazon.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 5.4 06/74] virtio-mmio: fix memory leak of vm_dev
 Date:   Mon,  6 Nov 2023 14:03:26 +0100
-Message-ID: <20231106130300.652595991@linuxfoundation.org>
+Message-ID: <20231106130301.912550787@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,70 +52,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-commit 9056d6489f5a41cfbb67f719d2c0ce61ead72d9f upstream.
+commit fab7f259227b8f70aa6d54e1de1a1f5f4729041c upstream.
 
-As report by Wenqing Liu in bugzilla:
+With the recent removal of vm_dev from devres its memory is only freed
+via the callback virtio_mmio_release_dev. However, this only takes
+effect after device_add is called by register_virtio_device. Until then
+it's an unmanaged resource and must be explicitly freed on error exit.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=215231
-
-- Overview
-kernel NULL pointer dereference triggered  in folio_mark_dirty() when mount and operate on a crafted f2fs image
-
-- Reproduce
-tested on kernel 5.16-rc3, 5.15.X under root
-
-1. mkdir mnt
-2. mount -t f2fs tmp1.img mnt
-3. touch tmp
-4. cp tmp mnt
-
-F2FS-fs (loop0): sanity_check_inode: inode (ino=49) extent info [5942, 4294180864, 4] is incorrect, run fsck to fix
-F2FS-fs (loop0): f2fs_check_nid_range: out-of-range nid=31340049, run fsck to fix.
-BUG: kernel NULL pointer dereference, address: 0000000000000000
- folio_mark_dirty+0x33/0x50
- move_data_page+0x2dd/0x460 [f2fs]
- do_garbage_collect+0xc18/0x16a0 [f2fs]
- f2fs_gc+0x1d3/0xd90 [f2fs]
- f2fs_balance_fs+0x13a/0x570 [f2fs]
- f2fs_create+0x285/0x840 [f2fs]
- path_openat+0xe6d/0x1040
- do_filp_open+0xc5/0x140
- do_sys_openat2+0x23a/0x310
- do_sys_open+0x57/0x80
-
-The root cause is for special file: e.g. character, block, fifo or socket file,
-f2fs doesn't assign address space operations pointer array for mapping->a_ops field,
-so, in a fuzzed image, SSA table indicates a data block belong to special file, when
-f2fs tries to migrate that block, it causes NULL pointer access once move_data_page()
-calls a_ops->set_dirty_page().
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
 Cc: stable@vger.kernel.org
-Reported-by: Wenqing Liu <wenqingliu0120@gmail.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/f2fs/gc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -958,7 +958,8 @@ next_step:
+Message-Id: <20230911090328.40538-1-mheyne@amazon.de>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+---
+ drivers/virtio/virtio_mmio.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -567,14 +567,17 @@ static int virtio_mmio_probe(struct plat
+ 	spin_lock_init(&vm_dev->lock);
  
- 		if (phase == 3) {
- 			inode = f2fs_iget(sb, dni.ino);
--			if (IS_ERR(inode) || is_bad_inode(inode))
-+			if (IS_ERR(inode) || is_bad_inode(inode) ||
-+					special_file(inode->i_mode))
- 				continue;
+ 	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(vm_dev->base))
+-		return PTR_ERR(vm_dev->base);
++	if (IS_ERR(vm_dev->base)) {
++		rc = PTR_ERR(vm_dev->base);
++		goto free_vm_dev;
++	}
  
- 			if (!down_write_trylock(
+ 	/* Check magic value */
+ 	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
+ 	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
+ 		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
+-		return -ENODEV;
++		rc = -ENODEV;
++		goto free_vm_dev;
+ 	}
+ 
+ 	/* Check device version */
+@@ -582,7 +585,8 @@ static int virtio_mmio_probe(struct plat
+ 	if (vm_dev->version < 1 || vm_dev->version > 2) {
+ 		dev_err(&pdev->dev, "Version %ld not supported!\n",
+ 				vm_dev->version);
+-		return -ENXIO;
++		rc = -ENXIO;
++		goto free_vm_dev;
+ 	}
+ 
+ 	vm_dev->vdev.id.device = readl(vm_dev->base + VIRTIO_MMIO_DEVICE_ID);
+@@ -591,7 +595,8 @@ static int virtio_mmio_probe(struct plat
+ 		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
+ 		 * with no function. End probing now with no error reported.
+ 		 */
+-		return -ENODEV;
++		rc = -ENODEV;
++		goto free_vm_dev;
+ 	}
+ 	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
+ 
+@@ -621,6 +626,10 @@ static int virtio_mmio_probe(struct plat
+ 		put_device(&vm_dev->vdev.dev);
+ 
+ 	return rc;
++
++free_vm_dev:
++	kfree(vm_dev);
++	return rc;
+ }
+ 
+ static int virtio_mmio_remove(struct platform_device *pdev)
 
 
