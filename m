@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11F377E2470
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CEE37E2424
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232429AbjKFNVy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:21:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49470 "EHLO
+        id S232180AbjKFNSo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:18:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232426AbjKFNVy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:54 -0500
+        with ESMTP id S231867AbjKFNSn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5859094
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86358C433C7;
-        Mon,  6 Nov 2023 13:21:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9944D8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:40 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EC6C433C8;
+        Mon,  6 Nov 2023 13:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276910;
-        bh=C+qJ9XWi8Ym8Y8JUyYPGYelZetpllTF9VzGtqJh5BA8=;
+        s=korg; t=1699276720;
+        bh=f8N8EXvota+AP8vYYgsjIJGfN4j2MArr88ST27ERHi0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DcSOVQ89YHZ9Hy7MtlfMaBDn4ifL1GeqNXH8A6xrL6mDXIrPkyBc29kjXsDSfDfCt
-         zXjKMGwgbY9dyCR/1brJmTUbJukxkWDWYe+Fu4V/9OQp/pJuHe0BPqL0Cky/+F8p2L
-         ZTTDRcwI1DpwLx3ZCY7rzd94jON4rCsNbnGpoUN4=
+        b=0e2e509q32Nfn+NYvj49O4vwZU9tyAocK2l6+ZTAYGZKI23USoIWqJ5cq2HooREWP
+         r7XcOOnwthEAxU6uFZHLEfabzXYmEO5QlrSCKjB2JrdcAbULoUZqXGD7XfZ9sE+xAa
+         75jKZowmjcO3sq+kLr1hdvZcUoU9vRuzLep4ejdk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org, lee@kernel.org
+To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH 5.4 47/74] rpmsg: Fix calling device_lock() on non-initialized device
+        patches@lists.linux.dev, Janne Grunau <j@jannau.net>,
+        Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.5 73/88] Bluetooth: hci_bcm4377: Mark bcm4378/bcm4387 as BROKEN_LE_CODED
 Date:   Mon,  6 Nov 2023 14:04:07 +0100
-Message-ID: <20231106130303.355573522@linuxfoundation.org>
+Message-ID: <20231106130308.434179636@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,158 +50,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Janne Grunau <j@jannau.net>
 
-commit bb17d110cbf270d5247a6e261c5ad50e362d1675 upstream.
+commit 41e9cdea9c4ab6606ca462ff4ec901a82d022c05 upstream.
 
-driver_set_override() helper uses device_lock() so it should not be
-called before rpmsg_register_device() (which calls device_register()).
-Effect can be seen with CONFIG_DEBUG_MUTEXES:
+bcm4378 and bcm4387 claim to support LE Coded PHY but fail to pair
+(reliably) with BLE devices if it is enabled.
+On bcm4378 pairing usually succeeds after 2-3 tries. On bcm4387
+pairing appears to be completely broken.
 
-  DEBUG_LOCKS_WARN_ON(lock->magic != lock)
-  WARNING: CPU: 3 PID: 57 at kernel/locking/mutex.c:582 __mutex_lock+0x1ec/0x430
-  ...
-  Call trace:
-   __mutex_lock+0x1ec/0x430
-   mutex_lock_nested+0x44/0x50
-   driver_set_override+0x124/0x150
-   qcom_glink_native_probe+0x30c/0x3b0
-   glink_rpm_probe+0x274/0x350
-   platform_probe+0x6c/0xe0
-   really_probe+0x17c/0x3d0
-   __driver_probe_device+0x114/0x190
-   driver_probe_device+0x3c/0xf0
-   ...
-
-Refactor the rpmsg_register_device() function to use two-step device
-registering (initialization + add) and call driver_set_override() in
-proper moment.
-
-This moves the code around, so while at it also NULL-ify the
-rpdev->driver_override in error path to be sure it won't be kfree()
-second time.
-
-Fixes: 42cd402b8fd4 ("rpmsg: Fix kfree() of static memory on setting driver_override")
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20220429195946.1061725-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Lee Jones <lee@kernel.org>
+Cc: stable@vger.kernel.org # 6.4.y+
+Link: https://discussion.fedoraproject.org/t/mx-master-3-bluetooth-mouse-doesnt-connect/87072/33
+Link: https://github.com/AsahiLinux/linux/issues/177
+Fixes: 288c90224eec ("Bluetooth: Enable all supported LE PHY by default")
+Signed-off-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Eric Curtin <ecurtin@redhat.com>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rpmsg/rpmsg_core.c     |   33 ++++++++++++++++++++++++++++++---
- drivers/rpmsg/rpmsg_internal.h |   14 +-------------
- include/linux/rpmsg.h          |    8 ++++++++
- 3 files changed, 39 insertions(+), 16 deletions(-)
+ drivers/bluetooth/hci_bcm4377.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/rpmsg/rpmsg_core.c
-+++ b/drivers/rpmsg/rpmsg_core.c
-@@ -526,24 +526,51 @@ static struct bus_type rpmsg_bus = {
- 	.remove		= rpmsg_dev_remove,
- };
+diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4377.c
+index 19ad0e788646..a61757835695 100644
+--- a/drivers/bluetooth/hci_bcm4377.c
++++ b/drivers/bluetooth/hci_bcm4377.c
+@@ -512,6 +512,7 @@ struct bcm4377_hw {
+ 	unsigned long disable_aspm : 1;
+ 	unsigned long broken_ext_scan : 1;
+ 	unsigned long broken_mws_transport_config : 1;
++	unsigned long broken_le_coded : 1;
  
--int rpmsg_register_device(struct rpmsg_device *rpdev)
-+/*
-+ * A helper for registering rpmsg device with driver override and name.
-+ * Drivers should not be using it, but instead rpmsg_register_device().
-+ */
-+int rpmsg_register_device_override(struct rpmsg_device *rpdev,
-+				   const char *driver_override)
- {
- 	struct device *dev = &rpdev->dev;
- 	int ret;
+ 	int (*send_calibration)(struct bcm4377_data *bcm4377);
+ 	int (*send_ptb)(struct bcm4377_data *bcm4377,
+@@ -2372,6 +2373,8 @@ static int bcm4377_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		set_bit(HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG, &hdev->quirks);
+ 	if (bcm4377->hw->broken_ext_scan)
+ 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
++	if (bcm4377->hw->broken_le_coded)
++		set_bit(HCI_QUIRK_BROKEN_LE_CODED, &hdev->quirks);
  
-+	if (driver_override)
-+		strcpy(rpdev->id.name, driver_override);
-+
- 	dev_set_name(&rpdev->dev, "%s.%s.%d.%d", dev_name(dev->parent),
- 		     rpdev->id.name, rpdev->src, rpdev->dst);
- 
- 	rpdev->dev.bus = &rpmsg_bus;
- 
--	ret = device_register(&rpdev->dev);
-+	device_initialize(dev);
-+	if (driver_override) {
-+		ret = driver_set_override(dev, &rpdev->driver_override,
-+					  driver_override,
-+					  strlen(driver_override));
-+		if (ret) {
-+			dev_err(dev, "device_set_override failed: %d\n", ret);
-+			return ret;
-+		}
-+	}
-+
-+	ret = device_add(dev);
- 	if (ret) {
--		dev_err(dev, "device_register failed: %d\n", ret);
-+		dev_err(dev, "device_add failed: %d\n", ret);
-+		kfree(rpdev->driver_override);
-+		rpdev->driver_override = NULL;
- 		put_device(&rpdev->dev);
- 	}
- 
- 	return ret;
- }
-+EXPORT_SYMBOL(rpmsg_register_device_override);
-+
-+int rpmsg_register_device(struct rpmsg_device *rpdev)
-+{
-+	return rpmsg_register_device_override(rpdev, NULL);
-+}
- EXPORT_SYMBOL(rpmsg_register_device);
- 
- /*
---- a/drivers/rpmsg/rpmsg_internal.h
-+++ b/drivers/rpmsg/rpmsg_internal.h
-@@ -84,19 +84,7 @@ struct device *rpmsg_find_device(struct
-  */
- static inline int rpmsg_chrdev_register_device(struct rpmsg_device *rpdev)
- {
--	int ret;
--
--	strcpy(rpdev->id.name, "rpmsg_chrdev");
--	ret = driver_set_override(&rpdev->dev, &rpdev->driver_override,
--				  rpdev->id.name, strlen(rpdev->id.name));
--	if (ret)
--		return ret;
--
--	ret = rpmsg_register_device(rpdev);
--	if (ret)
--		kfree(rpdev->driver_override);
--
--	return ret;
-+	return rpmsg_register_device_override(rpdev, "rpmsg_ctrl");
- }
- 
- #endif
---- a/include/linux/rpmsg.h
-+++ b/include/linux/rpmsg.h
-@@ -115,6 +115,8 @@ struct rpmsg_driver {
- 
- #if IS_ENABLED(CONFIG_RPMSG)
- 
-+int rpmsg_register_device_override(struct rpmsg_device *rpdev,
-+				   const char *driver_override);
- int register_rpmsg_device(struct rpmsg_device *dev);
- void unregister_rpmsg_device(struct rpmsg_device *dev);
- int __register_rpmsg_driver(struct rpmsg_driver *drv, struct module *owner);
-@@ -139,6 +141,12 @@ __poll_t rpmsg_poll(struct rpmsg_endpoin
- 
- #else
- 
-+static inline int rpmsg_register_device_override(struct rpmsg_device *rpdev,
-+						 const char *driver_override)
-+{
-+	return -ENXIO;
-+}
-+
- static inline int register_rpmsg_device(struct rpmsg_device *dev)
- {
- 	return -ENXIO;
+ 	pci_set_drvdata(pdev, bcm4377);
+ 	hci_set_drvdata(hdev, bcm4377);
+@@ -2461,6 +2464,7 @@ static const struct bcm4377_hw bcm4377_hw_variants[] = {
+ 		.bar0_core2_window2 = 0x18107000,
+ 		.has_bar0_core2_window2 = true,
+ 		.broken_mws_transport_config = true,
++		.broken_le_coded = true,
+ 		.send_calibration = bcm4378_send_calibration,
+ 		.send_ptb = bcm4378_send_ptb,
+ 	},
+@@ -2474,6 +2478,7 @@ static const struct bcm4377_hw bcm4377_hw_variants[] = {
+ 		.has_bar0_core2_window2 = true,
+ 		.clear_pciecfg_subsystem_ctrl_bit19 = true,
+ 		.broken_mws_transport_config = true,
++		.broken_le_coded = true,
+ 		.send_calibration = bcm4387_send_calibration,
+ 		.send_ptb = bcm4378_send_ptb,
+ 	},
+-- 
+2.42.0
+
 
 
