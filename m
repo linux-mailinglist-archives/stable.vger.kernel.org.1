@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B70E37E245A
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C04DB7E2410
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232444AbjKFNVB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:21:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
+        id S232241AbjKFNRm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:17:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232427AbjKFNU6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:20:58 -0500
+        with ESMTP id S232142AbjKFNRl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E04ED47
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:51 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF868C433C9;
-        Mon,  6 Nov 2023 13:20:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 660EFBD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F61C433C7;
+        Mon,  6 Nov 2023 13:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276851;
-        bh=kMvcXWoUvYglUzsMulqvqZSkIDhAzugx3HwxsKDPZow=;
+        s=korg; t=1699276659;
+        bh=FfroDORkiUXKtko8Z7NgrGikda1qwy5M1YGJAIWAYoA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zutbimqrUv0j1E5oxzofOJk/2LezRaoEvCoSMvY//qxe5ynTbszS68TEtKLn8Lrm1
-         H71BixjcrotX4Heus7qHOcAaBuG/Jjs/+GgJPKtM4cPxZObekiiv5KKUyPaHC8Z3SJ
-         O0TS7aOIza+sr7vTNFvAOc0yyl0fFh5+3O/YNJtc=
+        b=JxH2Fa5k6+d9pqV4qBS+hFKpF+oY43bX0cY+75XzG5+FhnTQ5QPwWPCAD1l/AHw1N
+         JGiAVbHBOTImKwyTdxsMu5a8jRxs056j9xBb2YF6uHmsIWts/x1UJQqOzg71AnLqEy
+         Ahe3BnNElOMXfjFE/y0Eq3bkaVHxoFpRy2N60dJE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 5.4 29/74] perf/core: Fix potential NULL deref
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Grant Grundler <grundler@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 55/88] r8152: Check for unplug in rtl_phy_patch_request()
 Date:   Mon,  6 Nov 2023 14:03:49 +0100
-Message-ID: <20231106130302.726944825@linuxfoundation.org>
+Message-ID: <20231106130307.848388005@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,36 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit a71ef31485bb51b846e8db8b3a35e432cc15afb5 upstream.
+[ Upstream commit dc90ba37a8c37042407fa6970b9830890cfe6047 ]
 
-Smatch is awesome.
+If the adapter is unplugged while we're looping in
+rtl_phy_patch_request() we could end up looping for 10 seconds (2 ms *
+5000 loops). Add code similar to what's done in other places in the
+driver to check for unplug and bail.
 
-Fixes: 32671e3799ca ("perf: Disallow mis-matched inherited group reads")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromium.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/usb/r8152.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -12015,7 +12015,8 @@ static int inherit_group(struct perf_eve
- 		    !perf_get_aux_event(child_ctr, leader))
- 			return -EINVAL;
- 	}
--	leader->group_generation = parent_event->group_generation;
-+	if (leader)
-+		leader->group_generation = parent_event->group_generation;
- 	return 0;
- }
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 14497e5558bf9..1a016eafaf126 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -4059,6 +4059,9 @@ static int rtl_phy_patch_request(struct r8152 *tp, bool request, bool wait)
+ 	for (i = 0; wait && i < 5000; i++) {
+ 		u32 ocp_data;
  
++		if (test_bit(RTL8152_UNPLUG, &tp->flags))
++			break;
++
+ 		usleep_range(1000, 2000);
+ 		ocp_data = ocp_reg_read(tp, OCP_PHY_PATCH_STAT);
+ 		if ((ocp_data & PATCH_READY) ^ check)
+-- 
+2.42.0
+
 
 
