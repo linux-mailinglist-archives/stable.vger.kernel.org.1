@@ -2,98 +2,309 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A3057E2C90
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 20:01:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A677E2C92
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 20:02:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232838AbjKFTBW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 14:01:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48264 "EHLO
+        id S232020AbjKFTCl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 14:02:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232041AbjKFTBV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 14:01:21 -0500
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EFF1183;
-        Mon,  6 Nov 2023 11:01:18 -0800 (PST)
-Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-5b9390d6bd3so4608023a12.0;
-        Mon, 06 Nov 2023 11:01:18 -0800 (PST)
+        with ESMTP id S232005AbjKFTCk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 14:02:40 -0500
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81982A2
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 11:02:37 -0800 (PST)
+Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-280cc5f3fdcso4558835a91.1
+        for <stable@vger.kernel.org>; Mon, 06 Nov 2023 11:02:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699297278; x=1699902078; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=OnqhWQVVoM13n/6TUxEaGzq6E1f+94dxT1yUPj1Hc6A=;
-        b=dkNkb3W3kjrgw3PB4yO8ycuwbRo0WTtmEC/4LK1twBRNzU1+CuL7Cz5n83EIHF66Y8
-         s7SLoX25/R6esjQwnBhmsVbl5hOSdy3KaFIIjklRlfWCNvj1JGuJKU4IrNdVVjAHs/vN
-         F+uSrXtW/BSjtyU2d9WlEkuxcbLEnLgt13US1XEA+Z2kaZUwySI9gIRE11KCkm+FJbSO
-         ZF/Qs9He0R9pjY+Pm8BzGJW/EZaPFK4OkYS9/NyrwW3bIhRKmGxMA6h4RU+rqFpNiDba
-         xVT9gC/WIsv4x4BpFpwjmBlnm5w/Iy/idlQKkXTqn08ifjoQ6Y2tjX4r/InkJ1nWBdEZ
-         MA9A==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699297356; x=1699902156; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=E5uCwD7Jm22T45YfRZiUiJRWsygbnKGB3tdLNCqhMnI=;
+        b=gvIqs8jX1HJ6NTuZLvs9Opr9L4paI4JH15E1oRMvQK8/ol9JCvXMdyD8oYxnheuYA2
+         4ilAU31xY8Mgrex+Tfpo4r+O/5KAr/lncCE5oJ8dtJUgw+ZAKZ+ZF64+hMKEcqDuNRhQ
+         OD711ItElxw5Thqj5aIpw/j01O39542gUDByK0z9OQyfAEegIyul9GkHdyH4OCNCECRX
+         IUvmHagiEhAUCXFWR6T5bGSenLsQZpjvSFj3OrtT1IEejEXVB4F76+yr0C/zOZ7VKrBd
+         9CXFRKsHE4VFfSsmOgNbmcwQQVOLR2v8ZI2YaYSC7vsFIIBefWH2Zr1Qo9lSYipa+q13
+         qCSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699297278; x=1699902078;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1699297356; x=1699902156;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OnqhWQVVoM13n/6TUxEaGzq6E1f+94dxT1yUPj1Hc6A=;
-        b=YDLCam7+3woBQRxUybbHKyoe+Aq7R42sw2zVL2nWykc52sBEu4F9a5tJg8vtp0TLS2
-         qKqbHn2KtoZI4NkZ8VkgDfJbJQ2aLllve+PJzQDkLOqmTLuLeYaQdPN5Q8qtL5hPMPIN
-         +/How09xCYvMNHCQtjBIaI0kW4KQM7YgHBYafsWl1QK41xDjdKqzLpHNmuv3K3R1zrc3
-         srXDIClnwyVXsVbdW2oQbYSvRdv1A6TG2WiHMiyIgG7TF95JYifwzprEb63X6aYgbB0K
-         x+fXbtw505PVwviTGmj1Q8cD+K4GH6oHCHM4YyuXPhMN7Y0QWTfnmA282rmKNTUcJvem
-         +Xaw==
-X-Gm-Message-State: AOJu0Yy5x8hQ58AAxA1k2VaXjjTOJbyuA6XDZZqGPUH6SB9/oz+S0Nyv
-        BLmY7sV9e2eW/Uusvo2lFk6B/ZE+QzgL4NVah9A=
-X-Google-Smtp-Source: AGHT+IHOMzZhwZUzQo3gVEguGmnOtkoq11bSZEx+5KCfLgJQeTbR+2oEYbr1d2ZSVvImy9vDPVQ1PLhH9xiUGNVdTaw=
-X-Received: by 2002:a17:90a:d913:b0:280:735:bece with SMTP id
- c19-20020a17090ad91300b002800735becemr521126pjv.16.1699297277791; Mon, 06 Nov
- 2023 11:01:17 -0800 (PST)
+        bh=E5uCwD7Jm22T45YfRZiUiJRWsygbnKGB3tdLNCqhMnI=;
+        b=imtgj0TYNv9XR/SqxrgdV212chEAy68r2hBHy6Oroj//5A04HSkS0rPRIOmA+uEYsl
+         aUPtBmN6spTOcg3F7IHaE/rbsMYX4XrHkOT8Qia22AGiQnTLEpz4uSoT4bwSzfx5hjhl
+         +hWkhyJ0lfNGz16OeY0m99Mp44QxT1kkHlRuzCg4uQiIBh/7UsDiqppt2oMAaMGuj5Ru
+         bD3SSoJ/0+21qSf4hi5BoNBXLaqtYS5gREXSoosow1n1A2jhm5+xfWTOxF9ELJkL1eqX
+         VWahdoDb4BjZvZWg2bUs7hIrmHcDyDyIYPv44GJC1iLADj/lcHFgFmNhqNNB9gHlSjpx
+         se7A==
+X-Gm-Message-State: AOJu0YydOlPdIBn5Wp/Wy4A64UVcWXD/XFfw8zIcRmeN4RKlz6WKoHze
+        M9Zn//c2JTLzfKNpGSC+EnrCBDC2op9BFfX6+gzYdA==
+X-Google-Smtp-Source: AGHT+IEmDU2g6WgGd6Cv5R+ehDn+WcswUExVwSGpalffP12EehE5RZzAMFITbrWwZopPPDlaR5/Haw==
+X-Received: by 2002:a17:90a:fd8a:b0:27d:ba33:6990 with SMTP id cx10-20020a17090afd8a00b0027dba336990mr22914157pjb.10.1699297356467;
+        Mon, 06 Nov 2023 11:02:36 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id c34-20020a17090a492500b0027768cd88d7sm8870842pjh.1.2023.11.06.11.02.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Nov 2023 11:02:35 -0800 (PST)
+Message-ID: <6549384b.170a0220.9cccc.81ed@mx.google.com>
+Date:   Mon, 06 Nov 2023 11:02:35 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20231106130257.903265688@linuxfoundation.org>
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-From:   Allen Pais <stable.kernel.dev@gmail.com>
-Date:   Mon, 6 Nov 2023 11:01:06 -0800
-Message-ID: <CAJq+SaB81+eq01-NGH_LqMCKAew7m-WE_05=qQ11RZT7fSD67Q@mail.gmail.com>
-Subject: Re: [PATCH 6.6 00/30] 6.6.1-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.10.199-96-gfed6441dbe524
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-5.10.y build: 22 builds: 6 failed, 16 passed, 6 errors,
+ 9 warnings (v5.10.199-96-gfed6441dbe524)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-> This is the start of the stable review cycle for the 6.6.1 release.
-> There are 30 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.1-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+stable-rc/linux-5.10.y build: 22 builds: 6 failed, 16 passed, 6 errors, 9 w=
+arnings (v5.10.199-96-gfed6441dbe524)
 
-Compiled and booted on my x86_64 and ARM64 test systems. No errors or
-regressions.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.199-96-gfed6441dbe524/
 
-Tested-by: Allen Pais <apais@linux.microsoft.com>
+Tree: stable-rc
+Branch: linux-5.10.y
+Git Describe: v5.10.199-96-gfed6441dbe524
+Git Commit: fed6441dbe524de2cf3a6a40d5d65c369bf583a0
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Thanks,
-Allen
+Build Failures Detected:
+
+riscv:
+    allnoconfig: (gcc-10) FAIL
+    defconfig: (gcc-10) FAIL
+    nommu_k210_defconfig: (gcc-10) FAIL
+    nommu_virt_defconfig: (gcc-10) FAIL
+    rv32_defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
+
+Errors and Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    allnoconfig (gcc-10): 1 error, 1 warning
+    defconfig (gcc-10): 1 error, 1 warning
+    nommu_k210_defconfig (gcc-10): 1 error, 1 warning
+    nommu_virt_defconfig (gcc-10): 1 error, 1 warning
+    rv32_defconfig (gcc-10): 1 error, 3 warnings
+    tinyconfig (gcc-10): 1 error, 1 warning
+
+x86_64:
+
+Errors summary:
+
+    6    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaratio=
+n of function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=
+=98zone_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+
+Warnings summary:
+
+    6    cc1: some warnings being treated as errors
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+    1    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    1    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section m=
+ismatches
+
+Errors:
+    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
+function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
+ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mis=
+matches
+
+Errors:
+    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
+function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
+ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 =
+section mismatches
+
+Errors:
+    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
+function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
+ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+nommu_virt_defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 =
+section mismatches
+
+Errors:
+    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
+function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
+ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 3 warnings, 0 secti=
+on mismatches
+
+Errors:
+    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
+function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
+ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section mi=
+smatches
+
+Errors:
+    drivers/irqchip/irq-riscv-intc.c:119:3: error: implicit declaration of =
+function =E2=80=98fwnode_dev_initialized=E2=80=99; did you mean =E2=80=98zo=
+ne_is_initialized=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
