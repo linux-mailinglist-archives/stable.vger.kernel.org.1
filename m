@@ -2,84 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62AAF7E2F51
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 22:56:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 47DB27E2FBB
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 23:21:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233129AbjKFV4T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 16:56:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60198 "EHLO
+        id S232686AbjKFWVG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 17:21:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232686AbjKFV4S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 16:56:18 -0500
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A00E10C0;
-        Mon,  6 Nov 2023 13:56:13 -0800 (PST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 300571C0070; Mon,  6 Nov 2023 22:56:12 +0100 (CET)
-Date:   Mon, 6 Nov 2023 22:56:11 +0100
-From:   Pavel Machek <pavel@denx.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 4.19 00/61] 4.19.298-rc1 review
-Message-ID: <ZUlg+zd26I6F1oWD@duo.ucw.cz>
-References: <20231106130259.573843228@linuxfoundation.org>
+        with ESMTP id S232005AbjKFWVF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 17:21:05 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7815D183;
+        Mon,  6 Nov 2023 14:21:02 -0800 (PST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6MBAbJ002837;
+        Mon, 6 Nov 2023 22:21:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=mA552N5htsafit5Cwefei0xjOIrV3dSC6J30CUekmnc=;
+ b=ptQzSEA2EQLxHCdT1h39b7ceIIebtU992z9oEfxHd7gm/kJsqE4oAQ9uej5WpebOR5vQ
+ 0YKgFkhGMPXucnnc0Um68t1TXzA5b2ZohDPz4aoZoFoj6EiBa9gByz4Yqe8EHud7fvnb
+ NZG78vFhGve7Ka6Juf2zZNxM58tn7Qa1FvCddUxjIQwNNuEK/lAaY4eXjgU688SKuhMy
+ chC7m130Xu59JjA+4uHytCnGkuiOETMvJKDRQ4UnaZ7uD/P6oAc/BCM44G+m+jtLPnRs
+ sIi2Q21m80o+7cbvA0L547aK1pGBCYoB+laBnwyZ04ELP9J3ZwYwTvot/vKQOBlwZzO+ Vw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u78q3r7jn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Nov 2023 22:21:01 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A6MFHUu013517;
+        Mon, 6 Nov 2023 22:21:00 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u78q3r7jc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Nov 2023 22:21:00 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A6M35C0025671;
+        Mon, 6 Nov 2023 22:21:00 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+        by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u619nce82-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Nov 2023 22:21:00 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+        by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A6MKvbL17433250
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 6 Nov 2023 22:20:57 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 081DA2004B;
+        Mon,  6 Nov 2023 22:20:57 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5B47520040;
+        Mon,  6 Nov 2023 22:20:56 +0000 (GMT)
+Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.171.62.82])
+        by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
+        Mon,  6 Nov 2023 22:20:56 +0000 (GMT)
+Date:   Mon, 6 Nov 2023 23:20:54 +0100
+From:   Halil Pasic <pasic@linux.ibm.com>
+To:     Tony Krowiak <akrowiak@linux.ibm.com>
+Cc:     linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, jjherne@linux.ibm.com,
+        borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, david@redhat.com, stable@vger.kernel.org,
+        Halil Pasic <pasic@linux.ibm.com>
+Subject: Re: [PATCH] s390/vfio-ap: fix sysfs status attribute for AP queue
+ devices
+Message-ID: <20231106232054.059b1d0a.pasic@linux.ibm.com>
+In-Reply-To: <20231020204838.409521-1-akrowiak@linux.ibm.com>
+References: <20231020204838.409521-1-akrowiak@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="qq+6ykEKXxcqiiOA"
-Content-Disposition: inline
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: MtbJDBAnTwKkfBZWg5dE6U7jpycJDm1T
+X-Proofpoint-ORIG-GUID: IzzDEXocsv2P6GwOTOLF0oxeBlqt1mp0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-06_15,2023-11-02_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ suspectscore=0 spamscore=0 mlxlogscore=999 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 adultscore=0 bulkscore=0 priorityscore=1501
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2310240000 definitions=main-2311060183
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Fri, 20 Oct 2023 16:48:35 -0400
+Tony Krowiak <akrowiak@linux.ibm.com> wrote:
 
---qq+6ykEKXxcqiiOA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> The 'status' attribute for AP queue devices bound to the vfio_ap device
+> driver displays incorrect status when the mediated device is attached to a
+> guest, but the queue device is not passed through. In the current
+> implementation, the status displayed is 'in_use' which is not correct; it
+> should be 'assigned'. This can happen if one of the queue devices
+> associated with a given adapter is not bound to the vfio_ap device driver.
+> For example:
+> 
+> Queues listed in /sys/bus/ap/drivers/vfio_ap:
+> 14.0005
+> 14.0006
+> 14.000d
+> 16.0006
+> 16.000d
+> 
+> Queues listed in /sys/devices/vfio_ap/matrix/$UUID/matrix
+> 14.0005
+> 14.0006
+> 14.000d
+> 16.0005
+> 16.0006
+> 16.000d
+> 
+> Queues listed in /sys/devices/vfio_ap/matrix/$UUID/guest_matrix
+> 14.0005
+> 14.0006
+> 14.000d
+> 
+> The reason no queues for adapter 0x16 are listed in the guest_matrix is
+> because queue 16.0005 is not bound to the vfio_ap device driver, so no
+> queue associated with the adapter is passed through to the guest;
+> therefore, each queue device for adapter 0x16 should display 'assigned'
+> instead of 'in_use', because those queues are not in use by a guest, but
+> only assigned to the mediated device.
+> 
+> Let's check the AP configuration for the guest to determine whether a
+> queue device is passed through before displaying a status of 'in_use'.
+> 
+> Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+> Fixes: f139862b92cf ("s390/vfio-ap: add status attribute to AP queue device's sysfs dir")
 
-Hi!
+Acked-by: Halil Pasic <pasic@linux.ibm.com>
 
-> This is the start of the stable review cycle for the 4.19.298 release.
-> There are 61 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+I'm not sure if there is documentation. I assume there is
+no additional documentation except for the code and the
+commit messages on what those actually mean. So there
+is no way to cross-check and no need to update it.
 
-There's something wrong here.
+I personally don't feel like having clarity on these states. In
+use does not actually mean that the guest is actually using
+it: the guest can happily ignore the queue. The unassigned
+is pretty clear. What "assigned" vs "in use" is supposed
+to express, not so much to me.
 
-|d17debc75 a5feba o: 4.14| r8152: Increase USB control msg timeout to 5000m=
-s as per spec
-|78fca56b7 d2a0fc o: 4.14| tcp: fix wrong RTO timeout when received SACK re=
-neging
-|8152892c6 adc8df .: 4.14| gtp: uapi: fix GTPA_MAX
+I don't think this fix qualifies for the stable process,
+but it has been a while since I've looked at the corresponding
+process documentation.
 
-These three patches are in 4.14-stable, but not in 4.19-stable.
-
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---qq+6ykEKXxcqiiOA
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZUlg+wAKCRAw5/Bqldv6
-8lcjAJ9LpOT4RCd0AbLeFyEnFcw7Py5dtgCfQjqVvmOobfn/u86XhOiM5g5Dx0Y=
-=zm+s
------END PGP SIGNATURE-----
-
---qq+6ykEKXxcqiiOA--
+> Cc: stable@vger.kernel.org
