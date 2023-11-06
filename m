@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C1627E245C
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 966C07E24EE
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:26:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232111AbjKFNVE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:21:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40924 "EHLO
+        id S232568AbjKFN0k (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:26:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232429AbjKFNVB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:01 -0500
+        with ESMTP id S232564AbjKFN0j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:39 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6247A191
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8B0C433C8;
-        Mon,  6 Nov 2023 13:20:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E7A1F3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:36 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE459C433C7;
+        Mon,  6 Nov 2023 13:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276856;
-        bh=fzowBInAC3GCXaR9RmzOJbJ90xWDlN96rQnBrZ5QTRc=;
+        s=korg; t=1699277196;
+        bh=HfqYyPEGrfVjcY5KIIN9YbOgyBciMkGLIIaIJk3657s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fhQrDghUdhvj6AdHefrQsQ1TeMVsXNc3ibrmNj84mGxy3g/hy4D/xxoInTW38BwaA
-         Y54G+G3DQ2a1wdVjiSJqhxGQyyZ3rBDJnhC286sNqv1LdH/P681ltooEuij6WHsdd0
-         +Uzfi8lWCHphcVfV0GLZ+Hy25Sv12KOrs9brABB0=
+        b=ZG+D1OrjWf4AAb4Qnki3mkGETVOVfNIkH+4Uutt1xSzKWJsHwAcI8vFcSJVzXjFS6
+         o1ACVu63nRKv8CZe927M8KaIBNfCOYEW83DEFiP0w6Y5v2RJcY482zBOCkeHc7Dib+
+         hOgJftngrqxW46ERixrpQxu7CjtLaOUwdEwsoEa4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, lee@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.4 31/74] i40e: Fix wrong check for I40E_TXR_FLAGS_WB_ON_ITR
+        patches@lists.linux.dev,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5.15 071/128] rpmsg: Fix calling device_lock() on non-initialized device
 Date:   Mon,  6 Nov 2023 14:03:51 +0100
-Message-ID: <20231106130302.810316556@linuxfoundation.org>
+Message-ID: <20231106130312.352377662@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +50,175 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 77a8c982ff0d4c3a14022c6fe9e3dbfb327552ec ]
+commit bb17d110cbf270d5247a6e261c5ad50e362d1675 upstream.
 
-The I40E_TXR_FLAGS_WB_ON_ITR is i40e_ring flag and not i40e_pf one.
+driver_set_override() helper uses device_lock() so it should not be
+called before rpmsg_register_device() (which calls device_register()).
+Effect can be seen with CONFIG_DEBUG_MUTEXES:
 
-Fixes: 8e0764b4d6be42 ("i40e/i40evf: Add support for writeback on ITR feature for X722")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20231023212714.178032-1-jacob.e.keller@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+  WARNING: CPU: 3 PID: 57 at kernel/locking/mutex.c:582 __mutex_lock+0x1ec/0x430
+  ...
+  Call trace:
+   __mutex_lock+0x1ec/0x430
+   mutex_lock_nested+0x44/0x50
+   driver_set_override+0x124/0x150
+   qcom_glink_native_probe+0x30c/0x3b0
+   glink_rpm_probe+0x274/0x350
+   platform_probe+0x6c/0xe0
+   really_probe+0x17c/0x3d0
+   __driver_probe_device+0x114/0x190
+   driver_probe_device+0x3c/0xf0
+   ...
+
+Refactor the rpmsg_register_device() function to use two-step device
+registering (initialization + add) and call driver_set_override() in
+proper moment.
+
+This moves the code around, so while at it also NULL-ify the
+rpdev->driver_override in error path to be sure it won't be kfree()
+second time.
+
+Fixes: 42cd402b8fd4 ("rpmsg: Fix kfree() of static memory on setting driver_override")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20220429195946.1061725-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/rpmsg/rpmsg_core.c     |   33 ++++++++++++++++++++++++++++++---
+ drivers/rpmsg/rpmsg_internal.h |   14 +-------------
+ drivers/rpmsg/rpmsg_ns.c       |    4 +---
+ include/linux/rpmsg.h          |    8 ++++++++
+ 4 files changed, 40 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index 06987913837aa..6067c88668341 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -2669,7 +2669,7 @@ int i40e_napi_poll(struct napi_struct *napi, int budget)
- 		return budget;
+--- a/drivers/rpmsg/rpmsg_core.c
++++ b/drivers/rpmsg/rpmsg_core.c
+@@ -569,24 +569,51 @@ static struct bus_type rpmsg_bus = {
+ 	.remove		= rpmsg_dev_remove,
+ };
+ 
+-int rpmsg_register_device(struct rpmsg_device *rpdev)
++/*
++ * A helper for registering rpmsg device with driver override and name.
++ * Drivers should not be using it, but instead rpmsg_register_device().
++ */
++int rpmsg_register_device_override(struct rpmsg_device *rpdev,
++				   const char *driver_override)
+ {
+ 	struct device *dev = &rpdev->dev;
+ 	int ret;
+ 
++	if (driver_override)
++		strcpy(rpdev->id.name, driver_override);
++
+ 	dev_set_name(&rpdev->dev, "%s.%s.%d.%d", dev_name(dev->parent),
+ 		     rpdev->id.name, rpdev->src, rpdev->dst);
+ 
+ 	rpdev->dev.bus = &rpmsg_bus;
+ 
+-	ret = device_register(&rpdev->dev);
++	device_initialize(dev);
++	if (driver_override) {
++		ret = driver_set_override(dev, &rpdev->driver_override,
++					  driver_override,
++					  strlen(driver_override));
++		if (ret) {
++			dev_err(dev, "device_set_override failed: %d\n", ret);
++			return ret;
++		}
++	}
++
++	ret = device_add(dev);
+ 	if (ret) {
+-		dev_err(dev, "device_register failed: %d\n", ret);
++		dev_err(dev, "device_add failed: %d\n", ret);
++		kfree(rpdev->driver_override);
++		rpdev->driver_override = NULL;
+ 		put_device(&rpdev->dev);
  	}
  
--	if (vsi->back->flags & I40E_TXR_FLAGS_WB_ON_ITR)
-+	if (q_vector->tx.ring[0].flags & I40E_TXR_FLAGS_WB_ON_ITR)
- 		q_vector->arm_wb_state = false;
+ 	return ret;
+ }
++EXPORT_SYMBOL(rpmsg_register_device_override);
++
++int rpmsg_register_device(struct rpmsg_device *rpdev)
++{
++	return rpmsg_register_device_override(rpdev, NULL);
++}
+ EXPORT_SYMBOL(rpmsg_register_device);
  
- 	/* Exit the polling mode, but don't re-enable interrupts if stack might
--- 
-2.42.0
-
+ /*
+--- a/drivers/rpmsg/rpmsg_internal.h
++++ b/drivers/rpmsg/rpmsg_internal.h
+@@ -90,19 +90,7 @@ int rpmsg_release_channel(struct rpmsg_d
+  */
+ static inline int rpmsg_chrdev_register_device(struct rpmsg_device *rpdev)
+ {
+-	int ret;
+-
+-	strcpy(rpdev->id.name, "rpmsg_chrdev");
+-	ret = driver_set_override(&rpdev->dev, &rpdev->driver_override,
+-				  rpdev->id.name, strlen(rpdev->id.name));
+-	if (ret)
+-		return ret;
+-
+-	ret = rpmsg_register_device(rpdev);
+-	if (ret)
+-		kfree(rpdev->driver_override);
+-
+-	return ret;
++	return rpmsg_register_device_override(rpdev, "rpmsg_ctrl");
+ }
+ 
+ #endif
+--- a/drivers/rpmsg/rpmsg_ns.c
++++ b/drivers/rpmsg/rpmsg_ns.c
+@@ -20,12 +20,10 @@
+  */
+ int rpmsg_ns_register_device(struct rpmsg_device *rpdev)
+ {
+-	strcpy(rpdev->id.name, "rpmsg_ns");
+-	rpdev->driver_override = "rpmsg_ns";
+ 	rpdev->src = RPMSG_NS_ADDR;
+ 	rpdev->dst = RPMSG_NS_ADDR;
+ 
+-	return rpmsg_register_device(rpdev);
++	return rpmsg_register_device_override(rpdev, "rpmsg_ns");
+ }
+ EXPORT_SYMBOL(rpmsg_ns_register_device);
+ 
+--- a/include/linux/rpmsg.h
++++ b/include/linux/rpmsg.h
+@@ -165,6 +165,8 @@ static inline __rpmsg64 cpu_to_rpmsg64(s
+ 
+ #if IS_ENABLED(CONFIG_RPMSG)
+ 
++int rpmsg_register_device_override(struct rpmsg_device *rpdev,
++				   const char *driver_override);
+ int rpmsg_register_device(struct rpmsg_device *rpdev);
+ int rpmsg_unregister_device(struct device *parent,
+ 			    struct rpmsg_channel_info *chinfo);
+@@ -190,6 +192,12 @@ __poll_t rpmsg_poll(struct rpmsg_endpoin
+ 
+ #else
+ 
++static inline int rpmsg_register_device_override(struct rpmsg_device *rpdev,
++						 const char *driver_override)
++{
++	return -ENXIO;
++}
++
+ static inline int rpmsg_register_device(struct rpmsg_device *rpdev)
+ {
+ 	return -ENXIO;
 
 
