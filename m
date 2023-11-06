@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DE757E254B
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4F4F7E2325
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232692AbjKFNaa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:30:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59196 "EHLO
+        id S231994AbjKFNJR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:09:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232711AbjKFNaa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:30 -0500
+        with ESMTP id S231911AbjKFNJQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00B6CD8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:27 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42B92C433C8;
-        Mon,  6 Nov 2023 13:30:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7863791
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20C6C433C8;
+        Mon,  6 Nov 2023 13:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277427;
-        bh=S/yinC2dY9YQ7sqfH2Oqf4K4iMs1CvvJQCQOE3yyJnk=;
+        s=korg; t=1699276154;
+        bh=TjbzbevQ5e4lVQmHt6pnKS0pXzAyxgRfxQewyZqpp+I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z8JLK5ae1UbW0aRNCnS24Pjhh4YVWHFiFIs+rkBbcApVEg+SWNBSmDwYwKKfir2Q7
-         eYiYPfbyTW/SkrlSpI/kpW9wPnbKlUI9R8u6L0qxfwY8d+mXsIYpzAZcMu1hhdEjhp
-         4dRkKNEqSGrdzjX0WtwXtEYe1hal+3rus0XhCGqQ=
+        b=mLVXknMGtB9yFJqMlsDd0Ib6gbFDdF7vw/iRxnU8WtcEa0pRoCXk2tzV+jICFjWew
+         n6OxYO+tUD15po+ZKWTopkNZvNWqGpskXXJs58LcPuHmsh4VpKZWDVhvp015DrCUM+
+         N4cW7g2jHGRKDdp4m4JOFmI5qzMu6jAYFOknQPs4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Grant Grundler <grundler@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 19/95] r8152: Cancel hw_phy_work if we have an error in probe
-Date:   Mon,  6 Nov 2023 14:03:47 +0100
-Message-ID: <20231106130305.429457600@linuxfoundation.org>
+        patches@lists.linux.dev, Mark Hasemeyer <markhas@chromium.org>,
+        Curtis Malainey <cujomalainey@chromium.org>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 30/30] ASoC: SOF: sof-pci-dev: Fix community key quirk detection
+Date:   Mon,  6 Nov 2023 14:03:48 +0100
+Message-ID: <20231106130258.936216794@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Mark Hasemeyer <markhas@chromium.org>
 
-[ Upstream commit bb8adff9123e492598162ac1baad01a53891aef6 ]
+commit 7dd692217b861a8292ff8ac2c9d4458538fd6b96 upstream.
 
-The error handling in rtl8152_probe() is missing a call to cancel the
-hw_phy_work. Add it in to match what's in the cleanup code in
-rtl8152_disconnect().
+Some Chromebooks do not populate the product family DMI value resulting
+in firmware load failures.
 
-Fixes: a028a9e003f2 ("r8152: move the settings of PHY to a work queue")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add another quirk detection entry that looks for "Google" in the BIOS
+version. Theoretically, PRODUCT_FAMILY could be replaced with
+BIOS_VERSION, but it is left as a quirk to be conservative.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
+Acked-by: Curtis Malainey <cujomalainey@chromium.org>
+Link: https://lore.kernel.org/r/20231020145953.v1.1.Iaf5702dc3f8af0fd2f81a22ba2da1a5e15b3604c@changeid
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/r8152.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/sof/sof-pci-dev.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 517334aab278a..beb1fb6f72735 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -6825,6 +6825,7 @@ static int rtl8152_probe(struct usb_interface *intf,
+--- a/sound/soc/sof/sof-pci-dev.c
++++ b/sound/soc/sof/sof-pci-dev.c
+@@ -145,6 +145,13 @@ static const struct dmi_system_id commun
+ 			DMI_MATCH(DMI_PRODUCT_FAMILY, "Google"),
+ 		}
+ 	},
++	{
++		.ident = "Google firmware",
++		.callback = chromebook_use_community_key,
++		.matches = {
++			DMI_MATCH(DMI_BIOS_VERSION, "Google"),
++		}
++	},
+ 	{},
+ };
  
- out1:
- 	tasklet_kill(&tp->tx_tl);
-+	cancel_delayed_work_sync(&tp->hw_phy_work);
- 	if (tp->rtl_ops.unload)
- 		tp->rtl_ops.unload(tp);
- 	usb_set_intfdata(intf, NULL);
--- 
-2.42.0
-
 
 
