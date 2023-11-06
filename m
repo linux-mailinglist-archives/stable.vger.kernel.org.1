@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9CD7A7E2465
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18CB67E257C
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232414AbjKFNV0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:21:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35022 "EHLO
+        id S231994AbjKFNco (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:32:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232420AbjKFNVY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:24 -0500
+        with ESMTP id S232752AbjKFNcn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:43 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A52FF1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6B3C433C7;
-        Mon,  6 Nov 2023 13:21:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C89A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:32:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15441C433C7;
+        Mon,  6 Nov 2023 13:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276881;
-        bh=6eL/wWhwYDf60bvO6C2V3Gt6pMgW5afTlpNA3UFsES0=;
+        s=korg; t=1699277559;
+        bh=S3AeahdDLQfRxN3cMamVPj53esaq4I5SMyjMIAx0X3U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BatBmH4cbRaZ1gFM5ycxwXKQweMVFp5fa8Yw4Wid8qs+mKnpwhING+n2TPFeUccRj
-         8W8cvY/TqfG4GxlZ+V30GSMz3rEuECwSFCbwKta71tSXhFAcz8886GpOZq6TfJGSMG
-         w+8D0FO+XSFVCnQe2o1Q2A9zVET/8mbQpYqEyXio=
+        b=o/HTYjvbK1qPpfT3KTCXG7TNt05hUchZ1MFHrzP9QBD20XAVk0vXrK4tBz02NEvrx
+         b6y8oo9GHxzmIupdOaWP7V93nqLD4QxDC/lFcw1m7LZjecCOrZOvSC3IjHlwc1lNpJ
+         obBkgYdZc1NkdX6vOPzIXhJQBvA9z8V+fFZU3aio=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 5.4 38/74] nfsd: lock_rename() needs both directories to live on the same fs
+        patches@lists.linux.dev, Alain Volmat <alain.volmat@foss.st.com>,
+        Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 5.10 30/95] i2c: stm32f7: Fix PEC handling in case of SMBUS transfers
 Date:   Mon,  6 Nov 2023 14:03:58 +0100
-Message-ID: <20231106130303.069272091@linuxfoundation.org>
+Message-ID: <20231106130305.813361003@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +51,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-commit 1aee9158bc978f91701c5992e395efbc6da2de3c upstream.
+commit c896ff2dd8f30a6b0a922c83a96f6d43f05f0e92 upstream.
 
-... checking that after lock_rename() is too late.  Incidentally,
-NFSv2 had no nfserr_xdev...
+In case of SMBUS byte read with PEC enabled, the whole transfer
+is split into two commands.  A first write command, followed by
+a read command.  The write command does not have any PEC byte
+and a PEC byte is appended at the end of the read command.
+(cf Read byte protocol with PEC in SMBUS specification)
 
-Fixes: aa387d6ce153 "nfsd: fix EXDEV checking in rename"
-Cc: stable@vger.kernel.org # v3.9+
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Within the STM32 I2C controller, handling (either sending
+or receiving) of the PEC byte is done via the PECBYTE bit in
+register CR2.
+
+Currently, the PECBYTE is set at the beginning of a transfer,
+which lead to sending a PEC byte at the end of the write command
+(hence losing the real last byte), and also does not check the
+PEC byte received during the read command.
+
+This patch corrects the function stm32f7_i2c_smbus_xfer_msg
+in order to only set the PECBYTE during the read command.
+
+Fixes: 9e48155f6bfe ("i2c: i2c-stm32f7: Add initial SMBus protocols support")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Reviewed-by: Pierre-Yves MORDRET <pierre-yves.mordret@foss.st.com>
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/vfs.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/i2c/busses/i2c-stm32f7.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1689,6 +1689,12 @@ nfsd_rename(struct svc_rqst *rqstp, stru
- 	if (!flen || isdotent(fname, flen) || !tlen || isdotent(tname, tlen))
- 		goto out;
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -1042,9 +1042,10 @@ static int stm32f7_i2c_smbus_xfer_msg(st
+ 	/* Configure PEC */
+ 	if ((flags & I2C_CLIENT_PEC) && f7_msg->size != I2C_SMBUS_QUICK) {
+ 		cr1 |= STM32F7_I2C_CR1_PECEN;
+-		cr2 |= STM32F7_I2C_CR2_PECBYTE;
+-		if (!f7_msg->read_write)
++		if (!f7_msg->read_write) {
++			cr2 |= STM32F7_I2C_CR2_PECBYTE;
+ 			f7_msg->count++;
++		}
+ 	} else {
+ 		cr1 &= ~STM32F7_I2C_CR1_PECEN;
+ 		cr2 &= ~STM32F7_I2C_CR2_PECBYTE;
+@@ -1132,8 +1133,10 @@ static void stm32f7_i2c_smbus_rep_start(
+ 	f7_msg->stop = true;
  
-+	err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
-+	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
-+		goto out;
-+	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
-+		goto out;
-+
- retry:
- 	host_err = fh_want_write(ffhp);
- 	if (host_err) {
-@@ -1723,12 +1729,6 @@ retry:
- 	if (ndentry == trap)
- 		goto out_dput_new;
+ 	/* Add one byte for PEC if needed */
+-	if (cr1 & STM32F7_I2C_CR1_PECEN)
++	if (cr1 & STM32F7_I2C_CR1_PECEN) {
++		cr2 |= STM32F7_I2C_CR2_PECBYTE;
+ 		f7_msg->count++;
++	}
  
--	host_err = -EXDEV;
--	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
--		goto out_dput_new;
--	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
--		goto out_dput_new;
--
- 	if (nfsd_has_cached_files(ndentry)) {
- 		has_cached = true;
- 		goto out_dput_old;
+ 	/* Set number of bytes to be transferred */
+ 	cr2 &= ~(STM32F7_I2C_CR2_NBYTES_MASK);
 
 
