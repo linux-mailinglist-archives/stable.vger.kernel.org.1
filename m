@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C2DA7E235E
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10CDD7E254D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231555AbjKFNL3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:11:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38240 "EHLO
+        id S232640AbjKFNah (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:30:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231759AbjKFNL2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:28 -0500
+        with ESMTP id S232707AbjKFNag (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EFE4BF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F44C433C7;
-        Mon,  6 Nov 2023 13:11:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE5D8A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4F5C433C8;
+        Mon,  6 Nov 2023 13:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276285;
-        bh=owAc/+F6Bh6fwxsGY14iZD2y7ssvfssdpYGzyupnP3c=;
+        s=korg; t=1699277433;
+        bh=hsqzr/bvrRh/fWtq5Wy+WbwT3VS4WeWPZMkFjWfHuR4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JAFFbUcB/7yX7UlEdlMijZzPLKMiM4Rw5/fdczdNw/fbSuatB9TgUk+lRqrThvWE/
-         IUovFbq5VoMtDx6bAx87pwcG3D+FBiiF38RUfP96B/VSXEvLvutbKk39c4yF5gr5R+
-         n4lLhAXls5pOa9V+rAFF3rJSwkUB2WOvtX+LnX2A=
+        b=Ed1cchQyA57JCSm2JCSP3nFRB3hkS3k2INHtmiCrCo+l5hfkjAVw8cN3RGA1H3ZJd
+         ZiMlkpfAg6USv/qWD2kcnsSKv6ON63VNi+vbIVjolLs5mRd3kg6VnwPxaOqxDjYLok
+         JqPDx4N5hDAgppcq4DYXEzShw+8+ncIRkSIiyEqc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, James John <me@donjajo.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Grant Grundler <grundler@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 52/61] platform/x86: asus-wmi: Change ASUS_WMI_BRN_DOWN code from 0x20 to 0x2e
+Subject: [PATCH 5.10 20/95] r8152: Release firmware if we have an error in probe
 Date:   Mon,  6 Nov 2023 14:03:48 +0100
-Message-ID: <20231106130301.380201361@linuxfoundation.org>
+Message-ID: <20231106130305.460178974@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,73 +51,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit f37cc2fc277b371fc491890afb7d8a26e36bb3a1 ]
+[ Upstream commit b8d35024d4059ca550cba11ac9ab23a6c238d929 ]
 
-Older Asus laptops change the backlight level themselves and then send
-WMI events with different codes for different backlight levels.
+The error handling in rtl8152_probe() is missing a call to release
+firmware. Add it in to match what's in the cleanup code in
+rtl8152_disconnect().
 
-The asus-wmi.c code maps the entire range of codes reported on
-brightness down keypresses to an internal ASUS_WMI_BRN_DOWN code:
-
-define NOTIFY_BRNUP_MIN                0x11
-define NOTIFY_BRNUP_MAX                0x1f
-define NOTIFY_BRNDOWN_MIN              0x20
-define NOTIFY_BRNDOWN_MAX              0x2e
-
-        if (code >= NOTIFY_BRNUP_MIN && code <= NOTIFY_BRNUP_MAX)
-                code = ASUS_WMI_BRN_UP;
-        else if (code >= NOTIFY_BRNDOWN_MIN && code <= NOTIFY_BRNDOWN_MAX)
-                code = ASUS_WMI_BRN_DOWN;
-
-Before this commit all the NOTIFY_BRNDOWN_MIN - NOTIFY_BRNDOWN_MAX
-aka 0x20 - 0x2e events were mapped to 0x20.
-
-This mapping is causing issues on new laptop models which actually
-send 0x2b events for printscreen presses and 0x2c events for
-capslock presses, which get translated into spurious brightness-down
-presses.
-
-The plan is disable the 0x11-0x2e special mapping on laptops
-where asus-wmi does not register a backlight-device to avoid
-the spurious brightness-down keypresses. New laptops always send
-0x2e for brightness-down presses, change the special internal
-ASUS_WMI_BRN_DOWN value from 0x20 to 0x2e to match this in
-preparation for fixing the spurious brightness-down presses.
-
-This change does not have any functional impact since all
-of 0x20 - 0x2e is mapped to ASUS_WMI_BRN_DOWN first and only
-then checked against the keymap code and the new 0x2e
-value is still in the 0x20 - 0x2e range.
-
-Reported-by: James John <me@donjajo.com>
-Closes: https://lore.kernel.org/platform-driver-x86/a2c441fe-457e-44cf-a146-0ecd86b037cf@donjajo.com/
-Closes: https://bbs.archlinux.org/viewtopic.php?pid=2123716
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231017090725.38163-2-hdegoede@redhat.com
+Fixes: 9370f2d05a2a ("r8152: support request_firmware for RTL8153")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromium.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/r8152.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/asus-wmi.h b/drivers/platform/x86/asus-wmi.h
-index 57a79bddb2861..95612878a841f 100644
---- a/drivers/platform/x86/asus-wmi.h
-+++ b/drivers/platform/x86/asus-wmi.h
-@@ -31,7 +31,7 @@
- #include <linux/i8042.h>
- 
- #define ASUS_WMI_KEY_IGNORE (-1)
--#define ASUS_WMI_BRN_DOWN	0x20
-+#define ASUS_WMI_BRN_DOWN	0x2e
- #define ASUS_WMI_BRN_UP		0x2f
- 
- struct module;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index beb1fb6f72735..0d6f10c9bb139 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -6828,6 +6828,7 @@ static int rtl8152_probe(struct usb_interface *intf,
+ 	cancel_delayed_work_sync(&tp->hw_phy_work);
+ 	if (tp->rtl_ops.unload)
+ 		tp->rtl_ops.unload(tp);
++	rtl8152_release_firmware(tp);
+ 	usb_set_intfdata(intf, NULL);
+ out:
+ 	free_netdev(netdev);
 -- 
 2.42.0
 
