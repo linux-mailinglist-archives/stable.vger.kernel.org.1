@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20ED37E2446
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC93E7E24D7
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231976AbjKFNUM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:20:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36612 "EHLO
+        id S232543AbjKFNZw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:25:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232386AbjKFNUL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:20:11 -0500
+        with ESMTP id S232573AbjKFNZu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFDE910B
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4777C433C7;
-        Mon,  6 Nov 2023 13:20:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A9E210B
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:25:48 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD04C433C8;
+        Mon,  6 Nov 2023 13:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276807;
-        bh=XnUjxltdUrFt3KhkBej9xPO7jWXqf6hsjNHnCE2OmkI=;
+        s=korg; t=1699277147;
+        bh=1Xhr71Usd8A9Ft6F4XsSQsoUD5gGInBFZyZDOsS4Q1Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qEiaSx0cM/6DpeVjnbfgBDqcRFiENOVuWHuoTe/1WErlhx8f/nsO67ZbBJ9LIqW66
-         YIuwbbqL45r2lRCnuh762HM4Z2FtX4QQqAciCYWgaByWe/sBu50X4RMHa7SoUCTM7a
-         hzJNo2KD/d0fHgWK0y7XQRzp91snQ+z/HmbhmlWI=
+        b=SNACBt6UGtHKGtpvbnbGYNDNolvKEDmB2n1iaDQP72niQWoLvtR4Dp969bp23Yq+g
+         0oMn12+QxL3D1ev9+ZetE3md6reTN5uIEXZCTQQl3/u/kmfl6DuXWXmq35HBd/Ngkj
+         Ra5TEaKYgsrvDWMyIWMLIG0548HEDd91LlJUTfCo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hayes Wang <hayeswang@realtek.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Grant Grundler <grundler@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 14/74] r8152: Increase USB control msg timeout to 5000ms as per spec
+        patches@lists.linux.dev, Sam Ravnborg <sam@ravnborg.org>,
+        Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 5.15 054/128] sparc32: fix a braino in fault handling in csum_and_copy_..._user()
 Date:   Mon,  6 Nov 2023 14:03:34 +0100
-Message-ID: <20231106130302.201634649@linuxfoundation.org>
+Message-ID: <20231106130311.564857204@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,81 +49,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit a5feba71ec9c14a54c3babdc732c5b6866d8ee43 ]
+commit 1f36cd05e0081f2c75769a551d584c4ffb2a5660 upstream.
 
-According to the comment next to USB_CTRL_GET_TIMEOUT and
-USB_CTRL_SET_TIMEOUT, although sending/receiving control messages is
-usually quite fast, the spec allows them to take up to 5 seconds.
-Let's increase the timeout in the Realtek driver from 500ms to 5000ms
-(using the #defines) to account for this.
+Fault handler used to make non-trivial calls, so it needed
+to set a stack frame up.  Used to be
+	save ... - grab a stack frame, old %o... become %i...
+	....
+	ret	- go back to address originally in %o7, currently %i7
+	 restore - switch to previous stack frame, in delay slot
+Non-trivial calls had been gone since ab5e8b331244 and that code should
+have become
+	retl	- go back to address in %o7
+	 clr %o0 - have return value set to 0
+What it had become instead was
+	ret	- go back to address in %i7 - return address of *caller*
+	 clr %o0 - have return value set to 0
+which is not good, to put it mildly - we forcibly return 0 from
+csum_and_copy_{from,to}_iter() (which is what the call of that
+thing had been inlined into) and do that without dropping the
+stack frame of said csum_and_copy_..._iter().  Confuses the
+hell out of the caller of csum_and_copy_..._iter(), obviously...
 
-This is not just a theoretical change. The need for the longer timeout
-was seen in testing. Specifically, if you drop a sc7180-trogdor based
-Chromebook into the kdb debugger and then "go" again after sitting in
-the debugger for a while, the next USB control message takes a long
-time. Out of ~40 tests the slowest USB control message was 4.5
-seconds.
-
-While dropping into kdb is not exactly an end-user scenario, the above
-is similar to what could happen due to an temporary interrupt storm,
-what could happen if there was a host controller (HW or SW) issue, or
-what could happen if the Realtek device got into a confused state and
-needed time to recover.
-
-This change is fairly critical since the r8152 driver in Linux doesn't
-expect register reads/writes (which are backed by USB control
-messages) to fail.
-
-Fixes: ac718b69301c ("net/usb: new driver for RTL8152")
-Suggested-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: ab5e8b331244 "sparc32: propagate the calling conventions change down to __csum_partial_copy_sparc_generic()"
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/r8152.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/sparc/lib/checksum_32.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index a19f0431e6f99..fa13a19e844c1 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -850,7 +850,7 @@ int get_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
+--- a/arch/sparc/lib/checksum_32.S
++++ b/arch/sparc/lib/checksum_32.S
+@@ -453,5 +453,5 @@ ccslow:	cmp	%g1, 0
+  * we only bother with faults on loads... */
  
- 	ret = usb_control_msg(tp->udev, usb_rcvctrlpipe(tp->udev, 0),
- 			      RTL8152_REQ_GET_REGS, RTL8152_REQT_READ,
--			      value, index, tmp, size, 500);
-+			      value, index, tmp, size, USB_CTRL_GET_TIMEOUT);
- 	if (ret < 0)
- 		memset(data, 0xff, size);
- 	else
-@@ -873,7 +873,7 @@ int set_registers(struct r8152 *tp, u16 value, u16 index, u16 size, void *data)
- 
- 	ret = usb_control_msg(tp->udev, usb_sndctrlpipe(tp->udev, 0),
- 			      RTL8152_REQ_SET_REGS, RTL8152_REQT_WRITE,
--			      value, index, tmp, size, 500);
-+			      value, index, tmp, size, USB_CTRL_SET_TIMEOUT);
- 
- 	kfree(tmp);
- 
-@@ -5584,7 +5584,8 @@ static u8 rtl_get_version(struct usb_interface *intf)
- 
- 	ret = usb_control_msg(udev, usb_rcvctrlpipe(udev, 0),
- 			      RTL8152_REQ_GET_REGS, RTL8152_REQT_READ,
--			      PLA_TCR0, MCU_TYPE_PLA, tmp, sizeof(*tmp), 500);
-+			      PLA_TCR0, MCU_TYPE_PLA, tmp, sizeof(*tmp),
-+			      USB_CTRL_GET_TIMEOUT);
- 	if (ret > 0)
- 		ocp_data = (__le32_to_cpu(*tmp) >> 16) & VERSION_MASK;
- 
--- 
-2.42.0
-
+ cc_fault:
+-	ret
++	retl
+ 	 clr	%o0
 
 
