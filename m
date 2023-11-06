@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 609A27E2485
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:22:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FD2D7E251C
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:28:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232445AbjKFNWq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:22:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57992 "EHLO
+        id S232636AbjKFN2W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:28:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37688 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232452AbjKFNWo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:22:44 -0500
+        with ESMTP id S232638AbjKFN2V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:28:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A13E94
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:22:41 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA01AC433C8;
-        Mon,  6 Nov 2023 13:22:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBD00D8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:28:18 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3923EC433C8;
+        Mon,  6 Nov 2023 13:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276961;
-        bh=osJ3JxPDuH6ZmMH+EhRqi400+POPxpUeCk64nWkyJew=;
+        s=korg; t=1699277298;
+        bh=2o00mggr6XSzYFuYU5lN46XZTkV+4LrrbkTGhxs3jD0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fq+kVGtQjUtkhX6atwKPhejYP4tPSc9jaV2Bq4gd7vxN7sHf+YPxAIw0fUcixZo/4
-         z7vvSOGxuJFuxCfd3UEymj5gJpqWSC7TQi/Esz8A0k1yv6oVOulOB+kzPmWGwx5Hqv
-         oHmxlTK7srmyifPYRphbN7kq1DGnK+5jEtrhspwk=
+        b=CulUN+qyPt0JBStz+/Q5ns1Z9LaWrGxAr+ySl317bKFmFy6zCzIJgycbPUZ3Gguv9
+         1QOPqUb9O8wbgloUeRQyNJWdHkdT0vvCfPeFJAv5uWIp5BAxEMHeaNYCp8VSYwMtxg
+         EWdqhl9yq+ogszcL0pdrGXU9HhZpqFo0ExJZf2KM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sagi Grimberg <sagi@grimberg.me>,
-        Christoph Hellwig <hch@lst.de>,
-        Dragos-Marian Panait <dragos.panait@windriver.com>
-Subject: [PATCH 5.4 66/74] nvmet-tcp: move send/recv error handling in the send/recv methods instead of call-sites
+        patches@lists.linux.dev,
+        syzbot+5aed6c3aaba661f5b917@syzkaller.appspotmail.com,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 106/128] can: isotp: check CAN address family in isotp_bind()
 Date:   Mon,  6 Nov 2023 14:04:26 +0100
-Message-ID: <20231106130303.963062589@linuxfoundation.org>
+Message-ID: <20231106130313.982678739@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,110 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-commit 0236d3437909ff888e5c79228e2d5a851651c4c6 upstream.
+commit c6adf659a8ba85913e16a571d5a9bcd17d3d1234 upstream
 
-Have routines handle errors and just bail out of the poll loop.
-This simplifies the code and will help as we may enhance the poll
-loop logic and these are somewhat in the way.
+Add missing check to block non-AF_CAN binds.
 
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Dragos-Marian Panait <dragos.panait@windriver.com>
+Syzbot created some code which matched the right sockaddr struct size
+but used AF_XDP (0x2C) instead of AF_CAN (0x1D) in the address family
+field:
+
+bind$xdp(r2, &(0x7f0000000540)={0x2c, 0x0, r4, 0x0, r2}, 0x10)
+                                ^^^^
+This has no funtional impact but the userspace should be notified about
+the wrong address family field content.
+
+Link: https://syzkaller.appspot.com/text?tag=CrashLog&x=11ff9d8c480000
+Reported-by: syzbot+5aed6c3aaba661f5b917@syzkaller.appspotmail.com
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://lore.kernel.org/all/20230104201844.13168-1-socketcan@hartkopp.net
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c |   43 ++++++++++++++++++++++++-------------------
- 1 file changed, 24 insertions(+), 19 deletions(-)
+ net/can/isotp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -321,6 +321,14 @@ static void nvmet_tcp_fatal_error(struct
- 		kernel_sock_shutdown(queue->sock, SHUT_RDWR);
- }
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -1129,6 +1129,9 @@ static int isotp_bind(struct socket *soc
+ 	if (len < ISOTP_MIN_NAMELEN)
+ 		return -EINVAL;
  
-+static void nvmet_tcp_socket_error(struct nvmet_tcp_queue *queue, int status)
-+{
-+	if (status == -EPIPE || status == -ECONNRESET)
-+		kernel_sock_shutdown(queue->sock, SHUT_RDWR);
-+	else
-+		nvmet_tcp_fatal_error(queue);
-+}
++	if (addr->can_family != AF_CAN)
++		return -EINVAL;
 +
- static int nvmet_tcp_map_data(struct nvmet_tcp_cmd *cmd)
- {
- 	struct nvme_sgl_desc *sgl = &cmd->req.cmd->common.dptr.sgl;
-@@ -714,11 +722,15 @@ static int nvmet_tcp_try_send(struct nvm
- 
- 	for (i = 0; i < budget; i++) {
- 		ret = nvmet_tcp_try_send_one(queue, i == budget - 1);
--		if (ret <= 0)
-+		if (unlikely(ret < 0)) {
-+			nvmet_tcp_socket_error(queue, ret);
-+			goto done;
-+		} else if (ret == 0) {
- 			break;
-+		}
- 		(*sends)++;
- 	}
--
-+done:
- 	return ret;
- }
- 
-@@ -1167,11 +1179,15 @@ static int nvmet_tcp_try_recv(struct nvm
- 
- 	for (i = 0; i < budget; i++) {
- 		ret = nvmet_tcp_try_recv_one(queue);
--		if (ret <= 0)
-+		if (unlikely(ret < 0)) {
-+			nvmet_tcp_socket_error(queue, ret);
-+			goto done;
-+		} else if (ret == 0) {
- 			break;
-+		}
- 		(*recvs)++;
- 	}
--
-+done:
- 	return ret;
- }
- 
-@@ -1196,27 +1212,16 @@ static void nvmet_tcp_io_work(struct wor
- 		pending = false;
- 
- 		ret = nvmet_tcp_try_recv(queue, NVMET_TCP_RECV_BUDGET, &ops);
--		if (ret > 0) {
-+		if (ret > 0)
- 			pending = true;
--		} else if (ret < 0) {
--			if (ret == -EPIPE || ret == -ECONNRESET)
--				kernel_sock_shutdown(queue->sock, SHUT_RDWR);
--			else
--				nvmet_tcp_fatal_error(queue);
-+		else if (ret < 0)
- 			return;
--		}
- 
- 		ret = nvmet_tcp_try_send(queue, NVMET_TCP_SEND_BUDGET, &ops);
--		if (ret > 0) {
--			/* transmitted message/data */
-+		if (ret > 0)
- 			pending = true;
--		} else if (ret < 0) {
--			if (ret == -EPIPE || ret == -ECONNRESET)
--				kernel_sock_shutdown(queue->sock, SHUT_RDWR);
--			else
--				nvmet_tcp_fatal_error(queue);
-+		else if (ret < 0)
- 			return;
--		}
- 
- 	} while (pending && ops < NVMET_TCP_IO_WORK_BUDGET);
- 
+ 	/* sanitize tx/rx CAN identifiers */
+ 	tx_id = addr->can_addr.tp.tx_id;
+ 	if (tx_id & CAN_EFF_FLAG)
 
 
