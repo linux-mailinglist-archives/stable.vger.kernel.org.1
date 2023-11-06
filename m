@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9C317E235C
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 59D6B7E2510
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231898AbjKFNLW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:11:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52976 "EHLO
+        id S232629AbjKFN1x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:27:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231710AbjKFNLW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:22 -0500
+        with ESMTP id S232628AbjKFN1w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F7EF91
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:11:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C593BC433CB;
-        Mon,  6 Nov 2023 13:11:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3692F3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10510C433C8;
+        Mon,  6 Nov 2023 13:27:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276279;
-        bh=h+PPPqpEBdYwm48chqVFXpUi1Fksu06rfMQS1C+K8Ok=;
+        s=korg; t=1699277269;
+        bh=JZWWk2dGqjbr6v9bIUZ0HT4tJAbO00zIThuaUyedKDI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CjgYf9KTCROR63zG75EvU8qQS19ofE/uqEdMtNvRs21C+6H5RLvmZwaZnA21adW/+
-         gqrMvG01d2gjDulFBYXl52ZV8kfBG+OufOinia81yO2lLjnvC3Lrlzh54KNKAcb+bQ
-         JYMvGzelty/ak11hJjV84BS5OASdoKOGcAiXxeKk=
+        b=jm59DjY3tiRSa2Ac46cMQzt0akAGJi6iPM3wmYlb5CVK+AZkvtlGJvTlm3bDMheeD
+         sJJove04Uug9swwAC35DLvNs537CANsv5u0hSLd0AlTV0T2pUkLc36dcarQwD6hzpc
+         FpkB+XiByghtEo4ptKej4cR6u7mrO1Oca+TsbVNk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jorge Maidana <jorgem.linux@gmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 50/61] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 066/128] ext4: avoid overlapping preallocations due to overflow
 Date:   Mon,  6 Nov 2023 14:03:46 +0100
-Message-ID: <20231106130301.310873690@linuxfoundation.org>
+Message-ID: <20231106130312.100886875@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +50,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Maidana <jorgem.linux@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 1022e7e2f40574c74ed32c3811b03d26b0b81daf ]
+commit bedc5d34632c21b5adb8ca7143d4c1f794507e4c upstream.
 
-Delete the v86d netlink only after all the VBE tasks have been
-completed.
+Let's say we want to allocate 2 blocks starting from 4294966386, after
+predicting the file size, start is aligned to 4294965248, len is changed
+to 2048, then end = start + size = 0x100000000. Since end is of
+type ext4_lblk_t, i.e. uint, end is truncated to 0.
 
-Fixes initial state restore on module unload:
-uvesafb: VBE state restore call failed (eax=0x4f04, err=-19)
+This causes (pa->pa_lstart >= end) to always hold when checking if the
+current extent to be allocated crosses already preallocated blocks, so the
+resulting ac_g_ex may cross already preallocated blocks. Hence we convert
+the end type to loff_t and use pa_logical_end() to avoid overflow.
 
-Signed-off-by: Jorge Maidana <jorgem.linux@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230724121059.11834-4-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/uvesafb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/mballoc.c |   13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
-index f6ebca8839127..1ded93f106f07 100644
---- a/drivers/video/fbdev/uvesafb.c
-+++ b/drivers/video/fbdev/uvesafb.c
-@@ -1932,10 +1932,10 @@ static void uvesafb_exit(void)
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4049,8 +4049,7 @@ ext4_mb_normalize_request(struct ext4_al
+ 	struct ext4_sb_info *sbi = EXT4_SB(ac->ac_sb);
+ 	struct ext4_super_block *es = sbi->s_es;
+ 	int bsbits, max;
+-	ext4_lblk_t end;
+-	loff_t size, start_off;
++	loff_t size, start_off, end;
+ 	loff_t orig_size __maybe_unused;
+ 	ext4_lblk_t start;
+ 	struct ext4_inode_info *ei = EXT4_I(ac->ac_inode);
+@@ -4158,7 +4157,7 @@ ext4_mb_normalize_request(struct ext4_al
+ 	/* check we don't cross already preallocated blocks */
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(pa, &ei->i_prealloc_list, pa_inode_list) {
+-		ext4_lblk_t pa_end;
++		loff_t pa_end;
+ 
+ 		if (pa->pa_deleted)
+ 			continue;
+@@ -4168,8 +4167,7 @@ ext4_mb_normalize_request(struct ext4_al
+ 			continue;
  		}
- 	}
  
--	cn_del_callback(&uvesafb_cn_id);
- 	driver_remove_file(&uvesafb_driver.driver, &driver_attr_v86d);
- 	platform_device_unregister(uvesafb_device);
- 	platform_driver_unregister(&uvesafb_driver);
-+	cn_del_callback(&uvesafb_cn_id);
- }
+-		pa_end = pa->pa_lstart + EXT4_C2B(EXT4_SB(ac->ac_sb),
+-						  pa->pa_len);
++		pa_end = pa_logical_end(EXT4_SB(ac->ac_sb), pa);
  
- module_exit(uvesafb_exit);
--- 
-2.42.0
-
+ 		/* PA must not overlap original request */
+ 		BUG_ON(!(ac->ac_o_ex.fe_logical >= pa_end ||
+@@ -4198,12 +4196,11 @@ ext4_mb_normalize_request(struct ext4_al
+ 	/* XXX: extra loop to check we really don't overlap preallocations */
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(pa, &ei->i_prealloc_list, pa_inode_list) {
+-		ext4_lblk_t pa_end;
++		loff_t pa_end;
+ 
+ 		spin_lock(&pa->pa_lock);
+ 		if (pa->pa_deleted == 0) {
+-			pa_end = pa->pa_lstart + EXT4_C2B(EXT4_SB(ac->ac_sb),
+-							  pa->pa_len);
++			pa_end = pa_logical_end(EXT4_SB(ac->ac_sb), pa);
+ 			BUG_ON(!(start >= pa_end || end <= pa->pa_lstart));
+ 		}
+ 		spin_unlock(&pa->pa_lock);
 
 
