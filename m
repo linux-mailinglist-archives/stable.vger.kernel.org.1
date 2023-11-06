@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C86F7E24B0
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:24:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 164977E22C7
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:05:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232494AbjKFNYS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:24:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45498 "EHLO
+        id S229689AbjKFNFc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:05:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232448AbjKFNYR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:24:17 -0500
+        with ESMTP id S231909AbjKFNFa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:05:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E46D8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F35DC433C9;
-        Mon,  6 Nov 2023 13:24:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A356F3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:05:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C389C433B7;
+        Mon,  6 Nov 2023 13:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277054;
-        bh=wgb3y7ZdMJtdQnjnALGiiT335GNuxxvh/YYl4efWOSQ=;
+        s=korg; t=1699275927;
+        bh=84OuQ/P5g7gmIqsoSHLPyvosR9beepmDu/Toa6fVX1Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GE2RG1h6Z4lKVVvsK9HH9nhU5YBv4DITRDpyth3uZmR6zxRoV5JTy3RO+OLMfuKho
-         fh8WD2bFZk+VqXxrdvkZFCAg8VD+Co+Xj/rxx3y1IN7N26WVIhL2is+xwYl4fXs2a2
-         ZTCKaW9Gmsbg5fce3RzNR9VtAJeYGL18eT8qzp8E=
+        b=E371+bgJls+75S//yr2kNZzZMzWznyGTE0sbi3LcVyh1DkxSAlz+4o3VjY7+ZWY9N
+         r4HoF1aWHzCVPmV1lTiMUPFMh9prHpQwYFMpFJQ+VEXp+7gCLCj3a8/5qvPRNjJNez
+         qSpzraRyw+hr/LMRxHO+gmQZnaoZ1Dk8Ngihz8H0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        nic_swsd@realtek.com, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Marco Elver <elver@google.com>, netdev@vger.kernel.org,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 022/128] r8169: fix the KCSAN reported data-race in rtl_tx while reading TxDescArray[entry].opts1
+        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
+        Peter Rosin <peda@axentia.se>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 4.14 11/48] i2c: muxes: i2c-mux-gpmux: Use of_get_i2c_adapter_by_node()
 Date:   Mon,  6 Nov 2023 14:03:02 +0100
-Message-ID: <20231106130310.131436380@linuxfoundation.org>
+Message-ID: <20231106130258.238048496@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,136 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit dcf75a0f6bc136de94e88178ae5f51b7f879abc9 ]
+commit 3dc0ec46f6e7511fc4fdf6b6cda439382bc957f1 upstream.
 
-KCSAN reported the following data-race:
+i2c-mux-gpmux uses the pair of_find_i2c_adapter_by_node() /
+i2c_put_adapter(). These pair alone is not correct to properly lock the
+I2C parent adapter.
 
-==================================================================
-BUG: KCSAN: data-race in rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
+Indeed, i2c_put_adapter() decrements the module refcount while
+of_find_i2c_adapter_by_node() does not increment it. This leads to an
+underflow of the parent module refcount.
 
-race at unknown origin, with read to 0xffff888140d37570 of 4 bytes by interrupt on cpu 21:
-rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
-__napi_poll (net/core/dev.c:6527)
-net_rx_action (net/core/dev.c:6596 net/core/dev.c:6727)
-__do_softirq (kernel/softirq.c:553)
-__irq_exit_rcu (kernel/softirq.c:427 kernel/softirq.c:632)
-irq_exit_rcu (kernel/softirq.c:647)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1074 (discriminator 14))
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:645)
-cpuidle_enter_state (drivers/cpuidle/cpuidle.c:291)
-cpuidle_enter (drivers/cpuidle/cpuidle.c:390)
-call_cpuidle (kernel/sched/idle.c:135)
-do_idle (kernel/sched/idle.c:219 kernel/sched/idle.c:282)
-cpu_startup_entry (kernel/sched/idle.c:378 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:210 arch/x86/kernel/smpboot.c:294)
-secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
+Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
+correctly the module refcount.
 
-value changed: 0xb0000042 -> 0x00000000
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 21 PID: 0 Comm: swapper/21 Tainted: G             L     6.6.0-rc2-kcsan-00143-gb5cbe7c00aa0 #41
-Hardware name: ASRock X670E PG Lightning/X670E PG Lightning, BIOS 1.21 04/26/2023
-==================================================================
-
-The read side is in
-
-drivers/net/ethernet/realtek/r8169_main.c
-=========================================
-   4355 static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
-   4356                    int budget)
-   4357 {
-   4358         unsigned int dirty_tx, bytes_compl = 0, pkts_compl = 0;
-   4359         struct sk_buff *skb;
-   4360
-   4361         dirty_tx = tp->dirty_tx;
-   4362
-   4363         while (READ_ONCE(tp->cur_tx) != dirty_tx) {
-   4364                 unsigned int entry = dirty_tx % NUM_TX_DESC;
-   4365                 u32 status;
-   4366
- → 4367                 status = le32_to_cpu(tp->TxDescArray[entry].opts1);
-   4368                 if (status & DescOwn)
-   4369                         break;
-   4370
-   4371                 skb = tp->tx_skb[entry].skb;
-   4372                 rtl8169_unmap_tx_skb(tp, entry);
-   4373
-   4374                 if (skb) {
-   4375                         pkts_compl++;
-   4376                         bytes_compl += skb->len;
-   4377                         napi_consume_skb(skb, budget);
-   4378                 }
-   4379                 dirty_tx++;
-   4380         }
-   4381
-   4382         if (tp->dirty_tx != dirty_tx) {
-   4383                 dev_sw_netstats_tx_add(dev, pkts_compl, bytes_compl);
-   4384                 WRITE_ONCE(tp->dirty_tx, dirty_tx);
-   4385
-   4386                 netif_subqueue_completed_wake(dev, 0, pkts_compl, bytes_compl,
-   4387                                               rtl_tx_slots_avail(tp),
-   4388                                               R8169_TX_START_THRS);
-   4389                 /*
-   4390                  * 8168 hack: TxPoll requests are lost when the Tx packets are
-   4391                  * too close. Let's kick an extra TxPoll request when a burst
-   4392                  * of start_xmit activity is detected (if it is not detected,
-   4393                  * it is slow enough). -- FR
-   4394                  * If skb is NULL then we come here again once a tx irq is
-   4395                  * triggered after the last fragment is marked transmitted.
-   4396                  */
-   4397                 if (READ_ONCE(tp->cur_tx) != dirty_tx && skb)
-   4398                         rtl8169_doorbell(tp);
-   4399         }
-   4400 }
-
-tp->TxDescArray[entry].opts1 is reported to have a data-race and READ_ONCE() fixes
-this KCSAN warning.
-
-   4366
- → 4367                 status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
-   4368                 if (status & DescOwn)
-   4369                         break;
-   4370
-
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: nic_swsd@realtek.com
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Marco Elver <elver@google.com>
-Cc: netdev@vger.kernel.org
-Link: https://lore.kernel.org/lkml/dc7fc8fa-4ea4-e9a9-30a6-7c83e6b53188@alu.unizg.hr/
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Marco Elver <elver@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ac8498f0ce53 ("i2c: i2c-mux-gpmux: new driver")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Cc: stable@vger.kernel.org
+Acked-by: Peter Rosin <peda@axentia.se>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 2 +-
+ drivers/i2c/muxes/i2c-mux-gpmux.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 2ecfff54339ac..d5a52fcd57cd0 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4443,7 +4443,7 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
- 		unsigned int entry = dirty_tx % NUM_TX_DESC;
- 		u32 status;
- 
--		status = le32_to_cpu(tp->TxDescArray[entry].opts1);
-+		status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
- 		if (status & DescOwn)
- 			break;
- 
--- 
-2.42.0
-
+--- a/drivers/i2c/muxes/i2c-mux-gpmux.c
++++ b/drivers/i2c/muxes/i2c-mux-gpmux.c
+@@ -55,7 +55,7 @@ static struct i2c_adapter *mux_parent_ad
+ 		dev_err(dev, "Cannot parse i2c-parent\n");
+ 		return ERR_PTR(-ENODEV);
+ 	}
+-	parent = of_find_i2c_adapter_by_node(parent_np);
++	parent = of_get_i2c_adapter_by_node(parent_np);
+ 	of_node_put(parent_np);
+ 	if (!parent)
+ 		return ERR_PTR(-EPROBE_DEFER);
 
 
