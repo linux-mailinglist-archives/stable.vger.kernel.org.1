@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0CF7E2575
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A23B07E2614
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:51:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232747AbjKFNcO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:32:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33446 "EHLO
+        id S231485AbjKFNvx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:51:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232723AbjKFNcN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:13 -0500
+        with ESMTP id S232611AbjKFN0t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:49 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E46A792
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:32:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A9FC433C8;
-        Mon,  6 Nov 2023 13:32:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4DB4D69
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:45 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B2AC433C8;
+        Mon,  6 Nov 2023 13:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277530;
-        bh=jWTr7HyOUDf52k2gToZa3A1zjESKYqWJenVWmiJhnQQ=;
+        s=korg; t=1699277205;
+        bh=GhAnEdNI0nO9sWqCsj5RqjDcte+/tajXuJJoSsEJRiQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=u/E2wCMZW8ZNeooDeI8+WdX63BgAFYf+681dNkod07sInMVJpKIzeKQyTml33j6Ca
-         YYyk+BIRQpGGrh3O3a0StnVVxX/wgE7Fav8bjKSyh3t0FAuqXnjLuLfT49gW7DOSBX
-         MuNGh12FSapzLtdZnhspzqh45vxal4ewon8YiPu8=
+        b=fYNu7LstoYaQh4tjKxmJvS4AXGYCHhbxy81iwzuClZAKg+DJcdlbD5l5u6zTExcVX
+         dEqihe4/DhJ4gld+m+aKbE4Fd13rzLrLXkz5i0krqCAJwaRkBIhKkij22jaRe8+KvR
+         Anss/X106EVlXu/I33423E6YVLOk3UWsZOpf2hXc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 26/95] iio: exynos-adc: request second interupt only when touchscreen mode is used
+        patches@lists.linux.dev, Juergen Gross <jgross@suse.com>,
+        Borislav Petkov <bp@suse.de>,
+        Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 5.15 074/128] x86: Fix .brk attribute in linker script
 Date:   Mon,  6 Nov 2023 14:03:54 +0100
-Message-ID: <20231106130305.682040640@linuxfoundation.org>
+Message-ID: <20231106130312.494938158@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,76 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit 865b080e3229102f160889328ce2e8e97aa65ea0 upstream.
+commit 7e09ac27f43b382f5fe9bb7c7f4c465ece1f8a23 upstream.
 
-Second interrupt is needed only when touchscreen mode is used, so don't
-request it unconditionally. This removes the following annoying warning
-during boot:
+Commit in Fixes added the "NOLOAD" attribute to the .brk section as a
+"failsafe" measure.
 
-exynos-adc 14d10000.adc: error -ENXIO: IRQ index 1 not found
+Unfortunately, this leads to the linker no longer covering the .brk
+section in a program header, resulting in the kernel loader not knowing
+that the memory for the .brk section must be reserved.
 
-Fixes: 2bb8ad9b44c5 ("iio: exynos-adc: add experimental touchscreen support")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20231009101412.916922-1-m.szyprowski@samsung.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This has led to crashes when loading the kernel as PV dom0 under Xen,
+but other scenarios could be hit by the same problem (e.g. in case an
+uncompressed kernel is used and the initrd is placed directly behind
+it).
+
+So drop the "NOLOAD" attribute. This has been verified to correctly
+cover the .brk section by a program header of the resulting ELF file.
+
+Fixes: e32683c6f7d2 ("x86/mm: Fix RESERVE_BRK() for older binutils")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Borislav Petkov <bp@suse.de>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20220630071441.28576-4-jgross@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/exynos_adc.c |   26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -821,16 +821,26 @@ static int exynos_adc_probe(struct platf
- 		}
- 	}
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -411,7 +411,7 @@ SECTIONS
+ 	__end_of_kernel_reserve = .;
  
-+	/* leave out any TS related code if unreachable */
-+	if (IS_REACHABLE(CONFIG_INPUT)) {
-+		has_ts = of_property_read_bool(pdev->dev.of_node,
-+					       "has-touchscreen") || pdata;
-+	}
-+
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		return irq;
- 	info->irq = irq;
- 
--	irq = platform_get_irq(pdev, 1);
--	if (irq == -EPROBE_DEFER)
--		return irq;
--
--	info->tsirq = irq;
-+	if (has_ts) {
-+		irq = platform_get_irq(pdev, 1);
-+		if (irq == -EPROBE_DEFER)
-+			return irq;
-+
-+		info->tsirq = irq;
-+	} else {
-+		info->tsirq = -1;
-+	}
- 
- 	info->dev = &pdev->dev;
- 
-@@ -895,12 +905,6 @@ static int exynos_adc_probe(struct platf
- 	if (info->data->init_hw)
- 		info->data->init_hw(info);
- 
--	/* leave out any TS related code if unreachable */
--	if (IS_REACHABLE(CONFIG_INPUT)) {
--		has_ts = of_property_read_bool(pdev->dev.of_node,
--					       "has-touchscreen") || pdata;
--	}
--
- 	if (pdata)
- 		info->delay = pdata->delay;
- 	else
+ 	. = ALIGN(PAGE_SIZE);
+-	.brk (NOLOAD) : AT(ADDR(.brk) - LOAD_OFFSET) {
++	.brk : AT(ADDR(.brk) - LOAD_OFFSET) {
+ 		__brk_base = .;
+ 		. += 64 * 1024;		/* 64k alignment slop space */
+ 		*(.bss..brk)		/* areas brk users have reserved */
 
 
