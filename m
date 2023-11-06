@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B2707E23D3
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:15:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE1177E254A
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232099AbjKFNPE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:15:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50744 "EHLO
+        id S232035AbjKFNa2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:30:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231953AbjKFNPD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:15:03 -0500
+        with ESMTP id S232692AbjKFNa2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E92DC94
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:15:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3657FC433C8;
-        Mon,  6 Nov 2023 13:15:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 163A592
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B948C433C9;
+        Mon,  6 Nov 2023 13:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276500;
-        bh=axEDK5O55io1zjgoyJkO3wYFHvu0kWRfGUn1ENXepYQ=;
+        s=korg; t=1699277424;
+        bh=GMGocPZlTT3V1qSon/YTDIJelOdclIqiVUs8Mblc3Xw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z0Pl2z69GompLPubFf+So5knnz6nf3Tq6NnMA4S4SCwxe/1k3M2tq/thr4HbtmTp0
-         NoZoQp1VjLU9AktLlS1pdbz59r++pG5JoyofwQfrx/1P4C1ivIH+BY+mO+EJQY48Qe
-         GrY0U8aQYBffeiDHUsGnZBaG3rKjc6SVDEc1ZqnI=
+        b=tETuw/lwvAKATmxuGumkqjrz2FvEm3PmvnWIgnq5DpmFp0I/jIQgDjwKSBLpyCQ6t
+         ahjUO3ln+5zMYOZzNjkjUzNKklWAuwCPsB3JIUPUXJxhpdTPdtITDLvmO+cAtU0kVy
+         j2rm9iA1k8RO8g/pHA+4FtgInSvDnV0dg3C3MXKU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeff Layton <jlayton@kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
+        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
+        Grant Grundler <grundler@chromium.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 39/62] ceph_wait_on_conflict_unlink(): grab reference before dropping ->d_lock
-Date:   Mon,  6 Nov 2023 14:03:45 +0100
-Message-ID: <20231106130303.230455325@linuxfoundation.org>
+Subject: [PATCH 5.10 18/95] r8152: Run the unload routine if we have errors during probe
+Date:   Mon,  6 Nov 2023 14:03:46 +0100
+Message-ID: <20231106130305.397753024@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit dc32464a5fe4946fe1a4d8f8e29961dc411933c5 ]
+[ Upstream commit 5dd17689526971c5ae12bc8398f34bd68cd0499e ]
 
-Use of dget() after we'd dropped ->d_lock is too late - dentry might
-be gone by that point.
+The rtl8152_probe() function lacks a call to the chip-specific
+unload() routine when it sees an error in probe. Add it in to match
+the cleanup code in rtl8152_disconnect().
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: ac718b69301c ("net/usb: new driver for RTL8152")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromium.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/mds_client.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/usb/r8152.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-index f6a7fd47efd7a..82874be945248 100644
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -709,8 +709,8 @@ int ceph_wait_on_conflict_unlink(struct dentry *dentry)
- 		if (!d_same_name(udentry, pdentry, &dname))
- 			goto next;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index d0ab761dad189..517334aab278a 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -6825,6 +6825,8 @@ static int rtl8152_probe(struct usb_interface *intf,
  
-+		found = dget_dlock(udentry);
- 		spin_unlock(&udentry->d_lock);
--		found = dget(udentry);
- 		break;
- next:
- 		spin_unlock(&udentry->d_lock);
+ out1:
+ 	tasklet_kill(&tp->tx_tl);
++	if (tp->rtl_ops.unload)
++		tp->rtl_ops.unload(tp);
+ 	usb_set_intfdata(intf, NULL);
+ out:
+ 	free_netdev(netdev);
 -- 
 2.42.0
 
