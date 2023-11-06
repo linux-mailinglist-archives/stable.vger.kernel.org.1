@@ -2,39 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E717E245E
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 361D77E256A
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232377AbjKFNVH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:21:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
+        id S231945AbjKFNbm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:31:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232395AbjKFNVG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:06 -0500
+        with ESMTP id S232745AbjKFNbl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 317A2112
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C869C433C7;
-        Mon,  6 Nov 2023 13:21:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA05092
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2493C433C7;
+        Mon,  6 Nov 2023 13:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276862;
-        bh=JVb64qR6iBziCKYdz7WDSD9S+Yjv6Uncg5X+pHvT5Ck=;
+        s=korg; t=1699277498;
+        bh=UvbDOUmBBd0yILHq3MqRmA7MsVf21PuVzw+8gkJPgPI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SXOCzrafaU+wfFq/g3QfRXHsTsDOtbNqi7gmlGkLNRqPsz7Sbk47KbRPbYQPIYEbf
-         4fCyPsSKSN3dRWx2Ax2PZfsiMqWiWsNYDzzApXrkr2vHHoL5fYl5VGr3/WKl9JVR9K
-         wiBN4Q8hPqNWCsi/FH2CmIxwyRuLfcidpi3M9hmk=
+        b=KsQBPmhw9ksWv6+/3ZdCidc1H+TexaljZLsuINER1KIQ+QShwyhJjDj7yJpA+7UQb
+         zO/MvDw4Vae1EPKBNfLaLc1rDj7p5AVbiQk2dfLnMiIwWpEI8iJBB/SZZ5usYDsytw
+         5y5o815wxCT7o/kZ27yGWc2WGLjtFhsu2lcBbE1M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukasz Majczak <lma@semihalf.com>,
-        Radoslaw Biernacki <rad@chromium.org>,
-        Manasi Navare <navaremanasi@chromium.org>
-Subject: [PATCH 5.4 33/74] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+        patches@lists.linux.dev, Haibo Li <haibo.li@mediatek.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 25/95] kasan: print the original fault addr when access invalid shadow
 Date:   Mon,  6 Nov 2023 14:03:53 +0100
-Message-ID: <20231106130302.899297439@linuxfoundation.org>
+Message-ID: <20231106130305.642351349@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,71 +59,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Majczak <lma@semihalf.com>
+From: Haibo Li <haibo.li@mediatek.com>
 
-commit 3d887d512494d678b17c57b835c32f4e48d34f26 upstream.
+commit babddbfb7d7d70ae7f10fedd75a45d8ad75fdddf upstream.
 
-As drm_dp_get_mst_branch_device_by_guid() is called from
-drm_dp_get_mst_branch_device_by_guid(), mstb parameter has to be checked,
-otherwise NULL dereference may occur in the call to
-the memcpy() and cause following:
+when the checked address is illegal,the corresponding shadow address from
+kasan_mem_to_shadow may have no mapping in mmu table.  Access such shadow
+address causes kernel oops.  Here is a sample about oops on arm64(VA
+39bit) with KASAN_SW_TAGS and KASAN_OUTLINE on:
 
-[12579.365869] BUG: kernel NULL pointer dereference, address: 0000000000000049
-[12579.365878] #PF: supervisor read access in kernel mode
-[12579.365880] #PF: error_code(0x0000) - not-present page
-[12579.365882] PGD 0 P4D 0
-[12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
-...
-[12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
-[12579.365899] RIP: 0010:memcmp+0xb/0x29
-[12579.365921] Call Trace:
-[12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
-[12579.365930] drm_dp_mst_up_req_work+0x137/0x416
-[12579.365933] process_one_work+0x1d0/0x419
-[12579.365935] worker_thread+0x11a/0x289
-[12579.365938] kthread+0x13e/0x14f
-[12579.365941] ? process_one_work+0x419/0x419
-[12579.365943] ? kthread_blkcg+0x31/0x31
-[12579.365946] ret_from_fork+0x1f/0x30
+[ffffffb80aaaaaaa] pgd=000000005d3ce003, p4d=000000005d3ce003,
+    pud=000000005d3ce003, pmd=0000000000000000
+Internal error: Oops: 0000000096000006 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 3 PID: 100 Comm: sh Not tainted 6.6.0-rc1-dirty #43
+Hardware name: linux,dummy-virt (DT)
+pstate: 80000005 (Nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __hwasan_load8_noabort+0x5c/0x90
+lr : do_ib_ob+0xf4/0x110
+ffffffb80aaaaaaa is the shadow address for efffff80aaaaaaaa.
+The problem is reading invalid shadow in kasan_check_range.
 
-As get_mst_branch_device_by_guid_helper() is recursive, moving condition
-to the first line allow to remove a similar one for step over of NULL elements
-inside a loop.
+The generic kasan also has similar oops.
 
-Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to only mst branch")
-Cc: <stable@vger.kernel.org> # 4.14+
-Signed-off-by: Lukasz Majczak <lma@semihalf.com>
-Reviewed-by: Radoslaw Biernacki <rad@chromium.org>
-Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230922063410.23626-1-lma@semihalf.com
+It only reports the shadow address which causes oops but not
+the original address.
+
+Commit 2f004eea0fc8("x86/kasan: Print original address on #GP")
+introduce to kasan_non_canonical_hook but limit it to KASAN_INLINE.
+
+This patch extends it to KASAN_OUTLINE mode.
+
+Link: https://lkml.kernel.org/r/20231009073748.159228-1-haibo.li@mediatek.com
+Fixes: 2f004eea0fc8("x86/kasan: Print original address on #GP")
+Signed-off-by: Haibo Li <haibo.li@mediatek.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Haibo Li <haibo.li@mediatek.com>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_dp_mst_topology.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/kasan.h |    6 +++---
+ mm/kasan/report.c     |    4 +---
+ 2 files changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/drm_dp_mst_topology.c
-+++ b/drivers/gpu/drm/drm_dp_mst_topology.c
-@@ -1806,14 +1806,14 @@ static struct drm_dp_mst_branch *get_mst
- 	struct drm_dp_mst_branch *found_mstb;
- 	struct drm_dp_mst_port *port;
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -234,10 +234,10 @@ static inline void kasan_release_vmalloc
+ 					 unsigned long free_region_end) {}
+ #endif
  
-+	if (!mstb)
-+		return NULL;
-+
- 	if (memcmp(mstb->guid, guid, 16) == 0)
- 		return mstb;
+-#ifdef CONFIG_KASAN_INLINE
++#ifdef CONFIG_KASAN
+ void kasan_non_canonical_hook(unsigned long addr);
+-#else /* CONFIG_KASAN_INLINE */
++#else /* CONFIG_KASAN */
+ static inline void kasan_non_canonical_hook(unsigned long addr) { }
+-#endif /* CONFIG_KASAN_INLINE */
++#endif /* CONFIG_KASAN */
  
+ #endif /* LINUX_KASAN_H */
+--- a/mm/kasan/report.c
++++ b/mm/kasan/report.c
+@@ -560,9 +560,8 @@ bool kasan_report(unsigned long addr, si
+ 	return ret;
+ }
  
- 	list_for_each_entry(port, &mstb->ports, next) {
--		if (!port->mstb)
--			continue;
--
- 		found_mstb = get_mst_branch_device_by_guid_helper(port->mstb, guid);
- 
- 		if (found_mstb)
+-#ifdef CONFIG_KASAN_INLINE
+ /*
+- * With CONFIG_KASAN_INLINE, accesses to bogus pointers (outside the high
++ * With CONFIG_KASAN, accesses to bogus pointers (outside the high
+  * canonical half of the address space) cause out-of-bounds shadow memory reads
+  * before the actual access. For addresses in the low canonical half of the
+  * address space, as well as most non-canonical addresses, that out-of-bounds
+@@ -598,4 +597,3 @@ void kasan_non_canonical_hook(unsigned l
+ 	pr_alert("KASAN: %s in range [0x%016lx-0x%016lx]\n", bug_type,
+ 		 orig_addr, orig_addr + KASAN_SHADOW_MASK);
+ }
+-#endif
 
 
