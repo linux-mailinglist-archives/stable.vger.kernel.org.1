@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E4047E24C6
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63DA87E23EE
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:16:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232527AbjKFNZI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:25:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41520 "EHLO
+        id S231462AbjKFNQY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:16:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232526AbjKFNZH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:07 -0500
+        with ESMTP id S232258AbjKFNQU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:16:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74927F1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:25:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B52C433C7;
-        Mon,  6 Nov 2023 13:25:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE90210C9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:16:14 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26EE2C433C8;
+        Mon,  6 Nov 2023 13:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277104;
-        bh=jaLyKziv7nzuXorxdZUWN+Ky6Bwov6E0aNZWASNt510=;
+        s=korg; t=1699276574;
+        bh=HC+ANh3qHcmDIO27z0J7hvNZwU2T6jI3/E5NASJO8XA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CBk8wD5++SLlvT2uECamDctbHu2N8Sncuf9esmkUgfpDJXT57yYhZ/FUsagl5/MMS
-         3vxW8gyaEDf26H5IvBv2JMn0xQjy8N5PaxH93IiTcq1Baft4uKzyg0axQF8k3Bdr21
-         4MvDk913lRUt9B8SGUjTiXnZcbHcPNi6IauvHp3E=
+        b=HlSU/5wYB8ppOerqv/Xokfc5w3Bm/w3ySR6hHRlSC3zlUsmmeKZ+RL6ELSueen8PL
+         0onTllaoy7QeB8x5yAYDtoBCqDXP97+Tx7e3qMm2/sSUIcSzwXpPCjVReWXhK27z2Z
+         z1pk7131v+X+M82FHiMybDpjg7aBYsYYROkTItaM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 040/128] iio: exynos-adc: request second interupt only when touchscreen mode is used
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 26/88] fs/ntfs3: Fix possible NULL-ptr-deref in ni_readpage_cmpr()
 Date:   Mon,  6 Nov 2023 14:03:20 +0100
-Message-ID: <20231106130310.960074128@linuxfoundation.org>
+Message-ID: <20231106130306.743850173@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,76 +50,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 865b080e3229102f160889328ce2e8e97aa65ea0 upstream.
+[ Upstream commit 32e9212256b88f35466642f9c939bb40cfb2c2de ]
 
-Second interrupt is needed only when touchscreen mode is used, so don't
-request it unconditionally. This removes the following annoying warning
-during boot:
-
-exynos-adc 14d10000.adc: error -ENXIO: IRQ index 1 not found
-
-Fixes: 2bb8ad9b44c5 ("iio: exynos-adc: add experimental touchscreen support")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20231009101412.916922-1-m.szyprowski@samsung.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/exynos_adc.c |   26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ fs/ntfs3/frecord.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iio/adc/exynos_adc.c
-+++ b/drivers/iio/adc/exynos_adc.c
-@@ -826,16 +826,26 @@ static int exynos_adc_probe(struct platf
- 		}
- 	}
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 8f34d6472ddbd..05fb3dbe39076 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -2148,7 +2148,7 @@ int ni_readpage_cmpr(struct ntfs_inode *ni, struct page *page)
  
-+	/* leave out any TS related code if unreachable */
-+	if (IS_REACHABLE(CONFIG_INPUT)) {
-+		has_ts = of_property_read_bool(pdev->dev.of_node,
-+					       "has-touchscreen") || pdata;
-+	}
-+
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0)
- 		return irq;
- 	info->irq = irq;
- 
--	irq = platform_get_irq(pdev, 1);
--	if (irq == -EPROBE_DEFER)
--		return irq;
--
--	info->tsirq = irq;
-+	if (has_ts) {
-+		irq = platform_get_irq(pdev, 1);
-+		if (irq == -EPROBE_DEFER)
-+			return irq;
-+
-+		info->tsirq = irq;
-+	} else {
-+		info->tsirq = -1;
-+	}
- 
- 	info->dev = &pdev->dev;
- 
-@@ -900,12 +910,6 @@ static int exynos_adc_probe(struct platf
- 	if (info->data->init_hw)
- 		info->data->init_hw(info);
- 
--	/* leave out any TS related code if unreachable */
--	if (IS_REACHABLE(CONFIG_INPUT)) {
--		has_ts = of_property_read_bool(pdev->dev.of_node,
--					       "has-touchscreen") || pdata;
--	}
--
- 	if (pdata)
- 		info->delay = pdata->delay;
- 	else
+ 	for (i = 0; i < pages_per_frame; i++) {
+ 		pg = pages[i];
+-		if (i == idx)
++		if (i == idx || !pg)
+ 			continue;
+ 		unlock_page(pg);
+ 		put_page(pg);
+-- 
+2.42.0
+
 
 
