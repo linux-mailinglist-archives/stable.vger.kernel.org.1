@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 479277E25B4
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:34:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C2FC17E2490
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232809AbjKFNeV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:34:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48424 "EHLO
+        id S232461AbjKFNXI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:23:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38984 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232815AbjKFNeU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:34:20 -0500
+        with ESMTP id S232462AbjKFNXH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2041125
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:34:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3743FC433C9;
-        Mon,  6 Nov 2023 13:34:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E711CF1
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:04 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33CC2C433C9;
+        Mon,  6 Nov 2023 13:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277656;
-        bh=d634zwoFkTNHjx9wFbvKC+rUEuco5+c8cVtY0ZJZfa8=;
+        s=korg; t=1699276984;
+        bh=0omnNeCbJsm96omzs3CTnl8wdAnNaHX2QZoFEIZnnRY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X/AzDMVcGmDS2q+z/rMZg1DFTZ6lZHNdyVcOVn91gITy+1lz3Le2Z+2Q2KqR6DQ1t
-         rOYP4kTItPsja5GtzN5aOA0OxIHNVRuALQZV2jCEjme8MxxnboBzuMiKCEb/1l2P2L
-         Wf0J0HeRz/V8gy5k/opi8qtnbH+tdNZ9QFywkm7s=
+        b=x7EVc/4MHwEAkEudbEgMMbLLKZ1ZBDOglr7Ys/K31COIaJImEWeU8vp97WgY2/Hi/
+         B1zfAg7qhXbNzG9ctqZSAhv5dx9s393P2a79MSddFkKQ9p1cU8Dga0gZJoj6u7V4h0
+         2/sCi+qtMw85tJLLYZ4XXRlR+IsYD7iJQ8oPiSCE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 64/95] dmaengine: ste_dma40: Fix PM disable depth imbalance in d40_probe
-Date:   Mon,  6 Nov 2023 14:04:32 +0100
-Message-ID: <20231106130307.051183257@linuxfoundation.org>
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 5.4 73/74] tty: 8250: Add support for Brainboxes UP cards
+Date:   Mon,  6 Nov 2023 14:04:33 +0100
+Message-ID: <20231106130304.196556823@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +48,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit 0618c077a8c20e8c81e367988f70f7e32bb5a717 ]
+commit 2c6fec1e1532f15350be7e14ba6b88a39d289fe4 upstream.
 
-The pm_runtime_enable will increase power disable depth. Thus
-a pairing decrement is needed on the error handling path to
-keep it balanced according to context.
-We fix it by calling pm_runtime_disable when error returns.
+Add support for the Brainboxes UP (powered PCI) range of
+cards, namely UP-189, UP-200, UP-869 and UP-880.
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/tencent_DD2D371DB5925B4B602B1E1D0A5FA88F1208@qq.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB7899B5B59FF3D8587E88C117C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ste_dma40.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/8250/8250_pci.c |   60 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 60 insertions(+)
 
-diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
-index d99fec8215083..4c306dd13e865 100644
---- a/drivers/dma/ste_dma40.c
-+++ b/drivers/dma/ste_dma40.c
-@@ -3698,6 +3698,7 @@ static int __init d40_probe(struct platform_device *pdev)
- 		regulator_disable(base->lcpa_regulator);
- 		regulator_put(base->lcpa_regulator);
- 	}
-+	pm_runtime_disable(base->dev);
- 
- 	kfree(base->lcla_pool.alloc_map);
- 	kfree(base->lookup_log_chans);
--- 
-2.42.0
-
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5154,6 +5154,66 @@ static const struct pci_device_id serial
+ 		PCI_CLASS_COMMUNICATION_MULTISERIAL << 8, 0xffff00,
+ 		pbn_b2_4_115200 },
+ 	/*
++	 * Brainboxes UP-189
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC1,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC2,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC3,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	/*
++	 * Brainboxes UP-200
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0B21,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0B22,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0B23,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	/*
++	 * Brainboxes UP-869
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C01,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C02,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C03,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	/*
++	 * Brainboxes UP-880
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C21,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C22,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0C23,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_2_115200 },
++	/*
+ 	 * Brainboxes UC-268
+ 	 */
+ 	{       PCI_VENDOR_ID_INTASHIELD, 0x0841,
 
 
