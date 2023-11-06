@@ -2,49 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0C1A7E2450
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:20:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99ADA7E23F6
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:16:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232387AbjKFNUg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:20:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53474 "EHLO
+        id S232076AbjKFNQm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:16:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232401AbjKFNUe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:20:34 -0500
+        with ESMTP id S232086AbjKFNQl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:16:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E90BC191
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:31 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C154C433C9;
-        Mon,  6 Nov 2023 13:20:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DE0EF3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:16:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABDAC433C7;
+        Mon,  6 Nov 2023 13:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276830;
-        bh=CUElVMVLJVRdTR2DbEu+QURR/3AQt31D+zHeIckhn30=;
+        s=korg; t=1699276598;
+        bh=Fq6DtAkth+1duKIYRtXzPe1IbfuDLwCn/3k1EzDrzsY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UhDAduR8grcZVAnFZKymIkZm7ipvh0qHdM2qwQB7dLUGkM9LE/B4W3G7BHCKAX1Lm
-         frWGJBGHZLkzWEnGAxJS7AuxuLa1kK3H6zIj3coyRj6W7f+h155vnirOHGBnLkDMF1
-         o1ERSCLWVVYgpavd8H15dZ+xltfkFCSiktM7AwO4=
+        b=gjvMERDjCh0LtK/gO0qsLM40G3sKd4tEcuoqD/6jMx14XT7D38iv6p7WJTYfAjpNl
+         oqo4DHIEIu4Ww6MQpNORL0TggKI59RECE+9mdetxguC4sLnAF8yvo1kOM7dSru0M5x
+         SFvti26zeU5KLMYybvnT2hO02v7XbulFLHpeFTuQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        nic_swsd@realtek.com, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Marco Elver <elver@google.com>, netdev@vger.kernel.org,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        patches@lists.linux.dev, Vlad Buslov <vladbu@nvidia.com>,
+        Jianbo Liu <jianbol@nvidia.com>,
+        Saeed Mahameed <saeedm@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 07/74] r8169: fix the KCSAN reported data-race in rtl_tx while reading TxDescArray[entry].opts1
+Subject: [PATCH 6.5 33/88] net/mlx5: Bridge, fix peer entry ageing in LAG mode
 Date:   Mon,  6 Nov 2023 14:03:27 +0100
-Message-ID: <20231106130301.951515372@linuxfoundation.org>
+Message-ID: <20231106130307.007507734@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,134 +51,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit dcf75a0f6bc136de94e88178ae5f51b7f879abc9 ]
+[ Upstream commit 7a3ce8074878a68a75ceacec93d9ae05906eec86 ]
 
-KCSAN reported the following data-race:
+With current implementation in single FDB LAG mode all packets are
+processed by eswitch 0 rules. As such, 'peer' FDB entries receive the
+packets for rules of other eswitches and are responsible for updating the
+main entry by sending SWITCHDEV_FDB_ADD_TO_BRIDGE notification from their
+background update wq task. However, this introduces a race condition when
+non-zero eswitch instance decides to delete a FDB entry, sends
+SWITCHDEV_FDB_DEL_TO_BRIDGE notification, but another eswitch's update task
+refreshes the same entry concurrently while its async delete work is still
+pending on the workque. In such case another SWITCHDEV_FDB_ADD_TO_BRIDGE
+event may be generated and entry will remain stuck in FDB marked as
+'offloaded' since no more SWITCHDEV_FDB_DEL_TO_BRIDGE notifications are
+sent for deleting the peer entries.
 
-==================================================================
-BUG: KCSAN: data-race in rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
+Fix the issue by synchronously marking deleted entries with
+MLX5_ESW_BRIDGE_FLAG_DELETED flag and skipping them in background update
+job.
 
-race at unknown origin, with read to 0xffff888140d37570 of 4 bytes by interrupt on cpu 21:
-rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
-__napi_poll (net/core/dev.c:6527)
-net_rx_action (net/core/dev.c:6596 net/core/dev.c:6727)
-__do_softirq (kernel/softirq.c:553)
-__irq_exit_rcu (kernel/softirq.c:427 kernel/softirq.c:632)
-irq_exit_rcu (kernel/softirq.c:647)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1074 (discriminator 14))
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:645)
-cpuidle_enter_state (drivers/cpuidle/cpuidle.c:291)
-cpuidle_enter (drivers/cpuidle/cpuidle.c:390)
-call_cpuidle (kernel/sched/idle.c:135)
-do_idle (kernel/sched/idle.c:219 kernel/sched/idle.c:282)
-cpu_startup_entry (kernel/sched/idle.c:378 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:210 arch/x86/kernel/smpboot.c:294)
-secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
-
-value changed: 0xb0000042 -> 0x00000000
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 21 PID: 0 Comm: swapper/21 Tainted: G             L     6.6.0-rc2-kcsan-00143-gb5cbe7c00aa0 #41
-Hardware name: ASRock X670E PG Lightning/X670E PG Lightning, BIOS 1.21 04/26/2023
-==================================================================
-
-The read side is in
-
-drivers/net/ethernet/realtek/r8169_main.c
-=========================================
-   4355 static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
-   4356                    int budget)
-   4357 {
-   4358         unsigned int dirty_tx, bytes_compl = 0, pkts_compl = 0;
-   4359         struct sk_buff *skb;
-   4360
-   4361         dirty_tx = tp->dirty_tx;
-   4362
-   4363         while (READ_ONCE(tp->cur_tx) != dirty_tx) {
-   4364                 unsigned int entry = dirty_tx % NUM_TX_DESC;
-   4365                 u32 status;
-   4366
- → 4367                 status = le32_to_cpu(tp->TxDescArray[entry].opts1);
-   4368                 if (status & DescOwn)
-   4369                         break;
-   4370
-   4371                 skb = tp->tx_skb[entry].skb;
-   4372                 rtl8169_unmap_tx_skb(tp, entry);
-   4373
-   4374                 if (skb) {
-   4375                         pkts_compl++;
-   4376                         bytes_compl += skb->len;
-   4377                         napi_consume_skb(skb, budget);
-   4378                 }
-   4379                 dirty_tx++;
-   4380         }
-   4381
-   4382         if (tp->dirty_tx != dirty_tx) {
-   4383                 dev_sw_netstats_tx_add(dev, pkts_compl, bytes_compl);
-   4384                 WRITE_ONCE(tp->dirty_tx, dirty_tx);
-   4385
-   4386                 netif_subqueue_completed_wake(dev, 0, pkts_compl, bytes_compl,
-   4387                                               rtl_tx_slots_avail(tp),
-   4388                                               R8169_TX_START_THRS);
-   4389                 /*
-   4390                  * 8168 hack: TxPoll requests are lost when the Tx packets are
-   4391                  * too close. Let's kick an extra TxPoll request when a burst
-   4392                  * of start_xmit activity is detected (if it is not detected,
-   4393                  * it is slow enough). -- FR
-   4394                  * If skb is NULL then we come here again once a tx irq is
-   4395                  * triggered after the last fragment is marked transmitted.
-   4396                  */
-   4397                 if (READ_ONCE(tp->cur_tx) != dirty_tx && skb)
-   4398                         rtl8169_doorbell(tp);
-   4399         }
-   4400 }
-
-tp->TxDescArray[entry].opts1 is reported to have a data-race and READ_ONCE() fixes
-this KCSAN warning.
-
-   4366
- → 4367                 status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
-   4368                 if (status & DescOwn)
-   4369                         break;
-   4370
-
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: nic_swsd@realtek.com
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Marco Elver <elver@google.com>
-Cc: netdev@vger.kernel.org
-Link: https://lore.kernel.org/lkml/dc7fc8fa-4ea4-e9a9-30a6-7c83e6b53188@alu.unizg.hr/
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Marco Elver <elver@google.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../mellanox/mlx5/core/en/rep/bridge.c        | 11 ++++++++
+ .../ethernet/mellanox/mlx5/core/esw/bridge.c  | 25 ++++++++++++++++++-
+ .../ethernet/mellanox/mlx5/core/esw/bridge.h  |  3 +++
+ .../mellanox/mlx5/core/esw/bridge_priv.h      |  1 +
+ 4 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 8d2b184ff5758..b973198da96c3 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -6031,7 +6031,7 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
- 		struct ring_info *tx_skb = tp->tx_skb + entry;
- 		u32 status;
- 
--		status = le32_to_cpu(tp->TxDescArray[entry].opts1);
-+		status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
- 		if (status & DescOwn)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
+index 5608002465734..285c13edc09f0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/rep/bridge.c
+@@ -463,6 +463,17 @@ static int mlx5_esw_bridge_switchdev_event(struct notifier_block *nb,
+ 		/* only handle the event on peers */
+ 		if (mlx5_esw_bridge_is_local(dev, rep, esw))
  			break;
++
++		fdb_info = container_of(info,
++					struct switchdev_notifier_fdb_info,
++					info);
++		/* Mark for deletion to prevent the update wq task from
++		 * spuriously refreshing the entry which would mark it again as
++		 * offloaded in SW bridge. After this fallthrough to regular
++		 * async delete code.
++		 */
++		mlx5_esw_bridge_fdb_mark_deleted(dev, vport_num, esw_owner_vhca_id, br_offloads,
++						 fdb_info);
+ 		fallthrough;
+ 	case SWITCHDEV_FDB_ADD_TO_DEVICE:
+ 	case SWITCHDEV_FDB_DEL_TO_DEVICE:
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
+index f4fe1daa4afd5..de1ed59239da8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.c
+@@ -1748,6 +1748,28 @@ void mlx5_esw_bridge_fdb_update_used(struct net_device *dev, u16 vport_num, u16
+ 	entry->lastuse = jiffies;
+ }
  
++void mlx5_esw_bridge_fdb_mark_deleted(struct net_device *dev, u16 vport_num, u16 esw_owner_vhca_id,
++				      struct mlx5_esw_bridge_offloads *br_offloads,
++				      struct switchdev_notifier_fdb_info *fdb_info)
++{
++	struct mlx5_esw_bridge_fdb_entry *entry;
++	struct mlx5_esw_bridge *bridge;
++
++	bridge = mlx5_esw_bridge_from_port_lookup(vport_num, esw_owner_vhca_id, br_offloads);
++	if (!bridge)
++		return;
++
++	entry = mlx5_esw_bridge_fdb_lookup(bridge, fdb_info->addr, fdb_info->vid);
++	if (!entry) {
++		esw_debug(br_offloads->esw->dev,
++			  "FDB mark deleted entry with specified key not found (MAC=%pM,vid=%u,vport=%u)\n",
++			  fdb_info->addr, fdb_info->vid, vport_num);
++		return;
++	}
++
++	entry->flags |= MLX5_ESW_BRIDGE_FLAG_DELETED;
++}
++
+ void mlx5_esw_bridge_fdb_create(struct net_device *dev, u16 vport_num, u16 esw_owner_vhca_id,
+ 				struct mlx5_esw_bridge_offloads *br_offloads,
+ 				struct switchdev_notifier_fdb_info *fdb_info)
+@@ -1810,7 +1832,8 @@ void mlx5_esw_bridge_update(struct mlx5_esw_bridge_offloads *br_offloads)
+ 			unsigned long lastuse =
+ 				(unsigned long)mlx5_fc_query_lastuse(entry->ingress_counter);
+ 
+-			if (entry->flags & MLX5_ESW_BRIDGE_FLAG_ADDED_BY_USER)
++			if (entry->flags & (MLX5_ESW_BRIDGE_FLAG_ADDED_BY_USER |
++					    MLX5_ESW_BRIDGE_FLAG_DELETED))
+ 				continue;
+ 
+ 			if (time_after(lastuse, entry->lastuse))
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.h b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.h
+index c2c7c70d99eb7..d6f5391619930 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge.h
+@@ -62,6 +62,9 @@ int mlx5_esw_bridge_vport_peer_unlink(struct net_device *br_netdev, u16 vport_nu
+ void mlx5_esw_bridge_fdb_update_used(struct net_device *dev, u16 vport_num, u16 esw_owner_vhca_id,
+ 				     struct mlx5_esw_bridge_offloads *br_offloads,
+ 				     struct switchdev_notifier_fdb_info *fdb_info);
++void mlx5_esw_bridge_fdb_mark_deleted(struct net_device *dev, u16 vport_num, u16 esw_owner_vhca_id,
++				      struct mlx5_esw_bridge_offloads *br_offloads,
++				      struct switchdev_notifier_fdb_info *fdb_info);
+ void mlx5_esw_bridge_fdb_create(struct net_device *dev, u16 vport_num, u16 esw_owner_vhca_id,
+ 				struct mlx5_esw_bridge_offloads *br_offloads,
+ 				struct switchdev_notifier_fdb_info *fdb_info);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_priv.h b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_priv.h
+index 4911cc32161b4..7c251af566c6f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_priv.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_priv.h
+@@ -133,6 +133,7 @@ struct mlx5_esw_bridge_mdb_key {
+ enum {
+ 	MLX5_ESW_BRIDGE_FLAG_ADDED_BY_USER = BIT(0),
+ 	MLX5_ESW_BRIDGE_FLAG_PEER = BIT(1),
++	MLX5_ESW_BRIDGE_FLAG_DELETED = BIT(2),
+ };
+ 
+ enum {
 -- 
 2.42.0
 
