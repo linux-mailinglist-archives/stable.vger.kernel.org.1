@@ -2,30 +2,30 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 138537E2D12
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 20:40:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 239F77E2D2D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 20:48:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232981AbjKFTkE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 14:40:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54914 "EHLO
+        id S232585AbjKFTsh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 14:48:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232868AbjKFTjv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 14:39:51 -0500
+        with ESMTP id S232920AbjKFTsf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 14:48:35 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93AA510D0
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 11:38:20 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E5CC433C8;
-        Mon,  6 Nov 2023 19:38:19 +0000 (UTC)
-Date:   Mon, 6 Nov 2023 14:38:21 -0500
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E08F3D49
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 11:48:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6E4C433C8;
+        Mon,  6 Nov 2023 19:48:30 +0000 (UTC)
+Date:   Mon, 6 Nov 2023 14:48:32 -0500
 From:   Steven Rostedt <rostedt@goodmis.org>
 To:     <gregkh@linuxfoundation.org>
 Cc:     beaub@linux.microsoft.com, mark.rutland@arm.com,
         mhiramat@kernel.org, <stable@vger.kernel.org>
 Subject: Re: FAILED: patch "[PATCH] tracing: Have trace_event_file have ref
- counters" failed to apply to 5.15-stable tree
-Message-ID: <20231106143821.21637ad1@gandalf.local.home>
-In-Reply-To: <2023110609-mulled-exes-50b1@gregkh>
-References: <2023110609-mulled-exes-50b1@gregkh>
+ counters" failed to apply to 5.4-stable tree
+Message-ID: <20231106144832.37bc9d16@gandalf.local.home>
+In-Reply-To: <2023110614-natural-tweak-9ee4@gregkh>
+References: <2023110614-natural-tweak-9ee4@gregkh>
 X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -40,7 +40,7 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-[ Should work for both 5.15 and 5.10 ]
+[ This should work for v5.4 ]
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 Subject: [PATCH] tracing: Have trace_event_file have ref counters
@@ -105,26 +105,26 @@ Tested-by: Beau Belgrave <beaub@linux.microsoft.com>
 Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- include/linux/trace_events.h       |  4 +++
- kernel/trace/trace.c               | 15 +++++++++++
- kernel/trace/trace.h               |  3 +++
- kernel/trace/trace_events.c        | 42 ++++++++++++++++++++----------
- kernel/trace/trace_events_filter.c |  3 +++
- 5 files changed, 53 insertions(+), 14 deletions(-)
+ include/linux/trace_events.h       |    4 +++
+ kernel/trace/trace.c               |   15 ++++++++++++++
+ kernel/trace/trace.h               |    3 ++
+ kernel/trace/trace_events.c        |   38 +++++++++++++++++++++++++------------
+ kernel/trace/trace_events_filter.c |    3 ++
+ 5 files changed, 51 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 9c91c3531d83..d3cbe4bf4fab 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -468,6 +468,7 @@ enum {
+Index: linux-trace.git/include/linux/trace_events.h
+===================================================================
+--- linux-trace.git.orig/include/linux/trace_events.h	2023-11-06 14:32:00.422220804 -0500
++++ linux-trace.git/include/linux/trace_events.h	2023-11-06 14:32:23.130563435 -0500
+@@ -341,6 +341,7 @@ enum {
  	EVENT_FILE_FL_TRIGGER_COND_BIT,
  	EVENT_FILE_FL_PID_FILTER_BIT,
  	EVENT_FILE_FL_WAS_ENABLED_BIT,
 +	EVENT_FILE_FL_FREED_BIT,
  };
  
- extern struct trace_event_file *trace_get_event_file(const char *instance,
-@@ -606,6 +607,7 @@ extern int __kprobe_event_add_fields(struct dynevent_cmd *cmd, ...);
+ /*
+@@ -357,6 +358,7 @@ enum {
   *  TRIGGER_COND  - When set, one or more triggers has an associated filter
   *  PID_FILTER    - When set, the event is filtered based on pid
   *  WAS_ENABLED   - Set when enabled to know to clear trace on module removal
@@ -132,7 +132,7 @@ index 9c91c3531d83..d3cbe4bf4fab 100644
   */
  enum {
  	EVENT_FILE_FL_ENABLED		= (1 << EVENT_FILE_FL_ENABLED_BIT),
-@@ -619,6 +621,7 @@ enum {
+@@ -370,6 +372,7 @@ enum {
  	EVENT_FILE_FL_TRIGGER_COND	= (1 << EVENT_FILE_FL_TRIGGER_COND_BIT),
  	EVENT_FILE_FL_PID_FILTER	= (1 << EVENT_FILE_FL_PID_FILTER_BIT),
  	EVENT_FILE_FL_WAS_ENABLED	= (1 << EVENT_FILE_FL_WAS_ENABLED_BIT),
@@ -140,7 +140,7 @@ index 9c91c3531d83..d3cbe4bf4fab 100644
  };
  
  struct trace_event_file {
-@@ -647,6 +650,7 @@ struct trace_event_file {
+@@ -398,6 +401,7 @@ struct trace_event_file {
  	 * caching and such. Which is mostly OK ;-)
  	 */
  	unsigned long		flags;
@@ -148,11 +148,11 @@ index 9c91c3531d83..d3cbe4bf4fab 100644
  	atomic_t		sm_ref;	/* soft-mode reference counter */
  	atomic_t		tm_ref;	/* trigger-mode reference counter */
  };
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 7453840c77be..c35c805e4ab1 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4900,6 +4900,20 @@ int tracing_open_file_tr(struct inode *inode, struct file *filp)
+Index: linux-trace.git/kernel/trace/trace.c
+===================================================================
+--- linux-trace.git.orig/kernel/trace/trace.c	2023-11-06 14:32:00.422220804 -0500
++++ linux-trace.git/kernel/trace/trace.c	2023-11-06 14:32:00.410220623 -0500
+@@ -4257,6 +4257,20 @@ int tracing_open_file_tr(struct inode *i
  	if (ret)
  		return ret;
  
@@ -173,7 +173,7 @@ index 7453840c77be..c35c805e4ab1 100644
  	filp->private_data = inode->i_private;
  
  	return 0;
-@@ -4910,6 +4924,7 @@ int tracing_release_file_tr(struct inode *inode, struct file *filp)
+@@ -4267,6 +4281,7 @@ int tracing_release_file_tr(struct inode
  	struct trace_event_file *file = inode->i_private;
  
  	trace_array_put(file->tr);
@@ -181,11 +181,11 @@ index 7453840c77be..c35c805e4ab1 100644
  
  	return 0;
  }
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index a4a90bd3373b..c6eb116dc279 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -1620,6 +1620,9 @@ extern int register_event_command(struct event_command *cmd);
+Index: linux-trace.git/kernel/trace/trace.h
+===================================================================
+--- linux-trace.git.orig/kernel/trace/trace.h	2023-11-06 14:32:00.422220804 -0500
++++ linux-trace.git/kernel/trace/trace.h	2023-11-06 14:32:00.414220683 -0500
+@@ -1696,6 +1696,9 @@ extern int register_event_command(struct
  extern int unregister_event_command(struct event_command *cmd);
  extern int register_trigger_hist_enable_disable_cmds(void);
  
@@ -195,11 +195,11 @@ index a4a90bd3373b..c6eb116dc279 100644
  /**
   * struct event_trigger_ops - callbacks for trace event triggers
   *
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index f8af4a15c3a8..6001cb6989cd 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -969,26 +969,39 @@ static void remove_subsystem(struct trace_subsystem_dir *dir)
+Index: linux-trace.git/kernel/trace/trace_events.c
+===================================================================
+--- linux-trace.git.orig/kernel/trace/trace_events.c	2023-11-06 14:32:00.422220804 -0500
++++ linux-trace.git/kernel/trace/trace_events.c	2023-11-06 14:39:32.657041546 -0500
+@@ -698,21 +698,34 @@ static void remove_subsystem(struct trac
  	}
  }
  
@@ -237,20 +237,13 @@ index f8af4a15c3a8..6001cb6989cd 100644
 -		}
 -		spin_unlock(&dir->d_lock);
 -
--		tracefs_remove(dir);
++	if (dir)
+ 		tracefs_remove_recursive(dir);
 -	}
-+	tracefs_remove(dir);
  
  	list_del(&file->list);
  	remove_subsystem(file->system);
- 	free_event_filter(file->filter);
--	kmem_cache_free(file_cachep, file);
-+	file->flags |= EVENT_FILE_FL_FREED;
-+	event_file_put(file);
- }
- 
- /*
-@@ -1361,7 +1374,7 @@ event_enable_read(struct file *filp, char __user *ubuf, size_t cnt,
+@@ -1033,7 +1046,7 @@ event_enable_read(struct file *filp, cha
  		flags = file->flags;
  	mutex_unlock(&event_mutex);
  
@@ -259,7 +252,7 @@ index f8af4a15c3a8..6001cb6989cd 100644
  		return -ENODEV;
  
  	if (flags & EVENT_FILE_FL_ENABLED &&
-@@ -1399,7 +1412,7 @@ event_enable_write(struct file *filp, const char __user *ubuf, size_t cnt,
+@@ -1071,7 +1084,7 @@ event_enable_write(struct file *filp, co
  		ret = -ENODEV;
  		mutex_lock(&event_mutex);
  		file = event_file_data(filp);
@@ -268,7 +261,7 @@ index f8af4a15c3a8..6001cb6989cd 100644
  			ret = ftrace_event_enable_disable(file, val);
  		mutex_unlock(&event_mutex);
  		break;
-@@ -1668,7 +1681,7 @@ event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
+@@ -1340,7 +1353,7 @@ event_filter_read(struct file *filp, cha
  
  	mutex_lock(&event_mutex);
  	file = event_file_data(filp);
@@ -277,7 +270,7 @@ index f8af4a15c3a8..6001cb6989cd 100644
  		print_event_filter(file, s);
  	mutex_unlock(&event_mutex);
  
-@@ -2784,6 +2797,7 @@ trace_create_new_event(struct trace_event_call *call,
+@@ -2264,6 +2277,7 @@ trace_create_new_event(struct trace_even
  	atomic_set(&file->tm_ref, 0);
  	INIT_LIST_HEAD(&file->triggers);
  	list_add(&file->list, &tr->events);
@@ -285,11 +278,11 @@ index f8af4a15c3a8..6001cb6989cd 100644
  
  	return file;
  }
-diff --git a/kernel/trace/trace_events_filter.c b/kernel/trace/trace_events_filter.c
-index 06d6318ee537..60c34fc44a63 100644
---- a/kernel/trace/trace_events_filter.c
-+++ b/kernel/trace/trace_events_filter.c
-@@ -1872,6 +1872,9 @@ int apply_event_filter(struct trace_event_file *file, char *filter_string)
+Index: linux-trace.git/kernel/trace/trace_events_filter.c
+===================================================================
+--- linux-trace.git.orig/kernel/trace/trace_events_filter.c	2023-11-06 14:32:00.422220804 -0500
++++ linux-trace.git/kernel/trace/trace_events_filter.c	2023-11-06 14:32:00.414220683 -0500
+@@ -1800,6 +1800,9 @@ int apply_event_filter(struct trace_even
  	struct event_filter *filter = NULL;
  	int err;
  
@@ -299,6 +292,3 @@ index 06d6318ee537..60c34fc44a63 100644
  	if (!strcmp(strstrip(filter_string), "0")) {
  		filter_disable(file);
  		filter = event_filter(file);
--- 
-2.42.0
-
