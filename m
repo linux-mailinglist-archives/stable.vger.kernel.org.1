@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94DA57E23E9
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:16:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4985B7E22D2
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:05:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232256AbjKFNQG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:16:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41694 "EHLO
+        id S231862AbjKFNFw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:05:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232243AbjKFNQF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:16:05 -0500
+        with ESMTP id S231920AbjKFNFv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:05:51 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25DBED8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:16:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6465FC433C8;
-        Mon,  6 Nov 2023 13:16:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FB7FBD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:05:49 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5084BC433C7;
+        Mon,  6 Nov 2023 13:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276562;
-        bh=5P2xTagrHak8loe2MCy7J8A3FLnxolTd8zb+9zL4ewY=;
+        s=korg; t=1699275948;
+        bh=lLF8yrNgqdTi4FZewL3KF6P0KxEU4o+ADoHh81odH88=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y4dwKZOHWqiTkldNDkHxscsL1aP2e/+lJzXOM5LfmoxQGLfOxBL5JDg9pyOpPUAa2
-         4NQRGAZBY6CmD2MgmT6MfY5qMoK40HrPH1q6hSwHHiif3L45SpzeRmI47uwyLoTfSH
-         1pekIDhoZCDq2R+ThA063jFYpomLqCwATM3fGPsE=
+        b=WauIyqEcgYfWi8oPnDpI9FmMxG8THK/XZkG2s/nDpoQJ88IkwaEfox42uDIIzDTd4
+         1FbxIpw+rlaN92DLoOEjOBebjh6s4oTv8+xEwdCI3srxCv8z7Uga80qJ7y3+/zzY05
+         /DXkkZWYq8rBHMGdrV+7ht/eZgWBCQroTnQyA/3Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ondrej Zary <linux@zary.sk>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 14/88] ata: pata_parport: fit3: implement IDE command set registers
-Date:   Mon,  6 Nov 2023 14:03:08 +0100
-Message-ID: <20231106130306.321619580@linuxfoundation.org>
+        patches@lists.linux.dev, Wenqing Liu <wenqingliu0120@gmail.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Subject: [PATCH 4.14 18/48] f2fs: fix to do sanity check on inode type during garbage collection
+Date:   Mon,  6 Nov 2023 14:03:09 +0100
+Message-ID: <20231106130258.476492305@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +50,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Zary <linux@zary.sk>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 0c1e81d0b5ebd5813536dd5fcf5966ad043f37dc ]
+commit 9056d6489f5a41cfbb67f719d2c0ce61ead72d9f upstream.
 
-fit3 protocol driver does not support accessing IDE control registers
-(device control/altstatus). The DOS driver does not use these registers
-either (as observed from DOSEMU trace). But the HW seems to be capable
-of accessing these registers - I simply tried bit 3 and it works!
+As report by Wenqing Liu in bugzilla:
 
-The control register is required to properly reset ATAPI devices or
-they will be detected only once (after a power cycle).
+https://bugzilla.kernel.org/show_bug.cgi?id=215231
 
-Tested with EXP Computer CD-865 with MC-1285B EPP cable and
-TransDisk 3000.
+- Overview
+kernel NULL pointer dereference triggered  in folio_mark_dirty() when mount and operate on a crafted f2fs image
 
-Signed-off-by: Ondrej Zary <linux@zary.sk>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Reproduce
+tested on kernel 5.16-rc3, 5.15.X under root
+
+1. mkdir mnt
+2. mount -t f2fs tmp1.img mnt
+3. touch tmp
+4. cp tmp mnt
+
+F2FS-fs (loop0): sanity_check_inode: inode (ino=49) extent info [5942, 4294180864, 4] is incorrect, run fsck to fix
+F2FS-fs (loop0): f2fs_check_nid_range: out-of-range nid=31340049, run fsck to fix.
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+ folio_mark_dirty+0x33/0x50
+ move_data_page+0x2dd/0x460 [f2fs]
+ do_garbage_collect+0xc18/0x16a0 [f2fs]
+ f2fs_gc+0x1d3/0xd90 [f2fs]
+ f2fs_balance_fs+0x13a/0x570 [f2fs]
+ f2fs_create+0x285/0x840 [f2fs]
+ path_openat+0xe6d/0x1040
+ do_filp_open+0xc5/0x140
+ do_sys_openat2+0x23a/0x310
+ do_sys_open+0x57/0x80
+
+The root cause is for special file: e.g. character, block, fifo or socket file,
+f2fs doesn't assign address space operations pointer array for mapping->a_ops field,
+so, in a fuzzed image, SSA table indicates a data block belong to special file, when
+f2fs tries to migrate that block, it causes NULL pointer access once move_data_page()
+calls a_ops->set_dirty_page().
+
+Cc: stable@vger.kernel.org
+Reported-by: Wenqing Liu <wenqingliu0120@gmail.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Kazunori Kobayashi <kazunori.kobayashi@miraclelinux.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_parport/fit3.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ fs/f2fs/gc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ata/pata_parport/fit3.c b/drivers/ata/pata_parport/fit3.c
-index bad7aa920cdca..d2b81cf2e16d2 100644
---- a/drivers/ata/pata_parport/fit3.c
-+++ b/drivers/ata/pata_parport/fit3.c
-@@ -9,11 +9,6 @@
-  *
-  * The TD-2000 and certain older devices use a different protocol.
-  * Try the fit2 protocol module with them.
-- *
-- * NB:  The FIT adapters do not appear to support the control
-- * registers.  So, we map ALT_STATUS to STATUS and NO-OP writes
-- * to the device control register - this means that IDE reset
-- * will not work on these devices.
-  */
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -841,7 +841,8 @@ next_step:
  
- #include <linux/module.h>
-@@ -37,8 +32,7 @@
+ 		if (phase == 3) {
+ 			inode = f2fs_iget(sb, dni.ino);
+-			if (IS_ERR(inode) || is_bad_inode(inode))
++			if (IS_ERR(inode) || is_bad_inode(inode) ||
++					special_file(inode->i_mode))
+ 				continue;
  
- static void fit3_write_regr(struct pi_adapter *pi, int cont, int regr, int val)
- {
--	if (cont == 1)
--		return;
-+	regr += cont << 3;
- 
- 	switch (pi->mode) {
- 	case 0:
-@@ -59,11 +53,7 @@ static int fit3_read_regr(struct pi_adapter *pi, int cont, int regr)
- {
- 	int  a, b;
- 
--	if (cont) {
--		if (regr != 6)
--			return 0xff;
--		regr = 7;
--	}
-+	regr += cont << 3;
- 
- 	switch (pi->mode) {
- 	case 0:
--- 
-2.42.0
-
+ 			/* if encrypted inode, let's go phase 3 */
 
 
