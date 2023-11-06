@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3BFB7E24B2
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC5CF7E2341
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232480AbjKFNYV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:24:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45538 "EHLO
+        id S231667AbjKFNK0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:10:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232448AbjKFNYU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:24:20 -0500
+        with ESMTP id S231727AbjKFNK0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 018F8D8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:17 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F13CC433C8;
-        Mon,  6 Nov 2023 13:24:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA02091
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1ADC433C8;
+        Mon,  6 Nov 2023 13:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277057;
-        bh=AiLhRP4CeKXfgERB9gCgrpC/YzF6uZ1Zy9xZGi6Qf6o=;
+        s=korg; t=1699276223;
+        bh=hC0Qa+Ic2OoIZTQBsv/x1ikLFhCjbopL8MzZRf+1RbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iC1BYu57eye9N4uaf/yGnaF/WKGRIYri45e2OZqRgpomnUjm9ZPPXrykboubjdDqs
-         06lW1JheP4heia0Nqt5zM/GPUgMCfk9LyoCC3SCw60Z15ZHbllvtZGpW7F8J2/xQvm
-         swd9srVE4g9qkCHxv55R8VZzkYe1te+TakxYrN9Q=
+        b=vc9VFf5sRi11t/GaLoNIho8s/nBHrfqHGa3CMu1OoK/HQwNtjpPXgQ3QvM3gseZGZ
+         oCkAxBVHwmzo4Pi7xEWgWETdtCF22QweJX7j1sbBoiwUQHbseLIp0YIPZuU97KqbuQ
+         uz2sHLvSPGf3TSYDgKWpy53D1zqSNJZB0jvyUap8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marco Elver <elver@google.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/128] r8169: fix the KCSAN reported data race in rtl_rx while reading desc->opts1
+        patches@lists.linux.dev, Maximilian Heyne <mheyne@amazon.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 4.19 07/61] virtio-mmio: fix memory leak of vm_dev
 Date:   Mon,  6 Nov 2023 14:03:03 +0100
-Message-ID: <20231106130310.173921711@linuxfoundation.org>
+Message-ID: <20231106130259.817335570@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,105 +52,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Maximilian Heyne <mheyne@amazon.de>
 
-[ Upstream commit f97eee484e71890131f9c563c5cc6d5a69e4308d ]
+commit fab7f259227b8f70aa6d54e1de1a1f5f4729041c upstream.
 
-KCSAN reported the following data-race bug:
+With the recent removal of vm_dev from devres its memory is only freed
+via the callback virtio_mmio_release_dev. However, this only takes
+effect after device_add is called by register_virtio_device. Until then
+it's an unmanaged resource and must be explicitly freed on error exit.
 
-==================================================================
-BUG: KCSAN: data-race in rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4430 drivers/net/ethernet/realtek/r8169_main.c:4583) r8169
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-race at unknown origin, with read to 0xffff888117e43510 of 4 bytes by interrupt on cpu 21:
-rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4430 drivers/net/ethernet/realtek/r8169_main.c:4583) r8169
-__napi_poll (net/core/dev.c:6527)
-net_rx_action (net/core/dev.c:6596 net/core/dev.c:6727)
-__do_softirq (kernel/softirq.c:553)
-__irq_exit_rcu (kernel/softirq.c:427 kernel/softirq.c:632)
-irq_exit_rcu (kernel/softirq.c:647)
-sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1074 (discriminator 14))
-asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:645)
-cpuidle_enter_state (drivers/cpuidle/cpuidle.c:291)
-cpuidle_enter (drivers/cpuidle/cpuidle.c:390)
-call_cpuidle (kernel/sched/idle.c:135)
-do_idle (kernel/sched/idle.c:219 kernel/sched/idle.c:282)
-cpu_startup_entry (kernel/sched/idle.c:378 (discriminator 1))
-start_secondary (arch/x86/kernel/smpboot.c:210 arch/x86/kernel/smpboot.c:294)
-secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
+Cc: stable@vger.kernel.org
+Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-value changed: 0x80003fff -> 0x3402805f
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 21 PID: 0 Comm: swapper/21 Tainted: G             L     6.6.0-rc2-kcsan-00143-gb5cbe7c00aa0 #41
-Hardware name: ASRock X670E PG Lightning/X670E PG Lightning, BIOS 1.21 04/26/2023
-==================================================================
-
-drivers/net/ethernet/realtek/r8169_main.c:
-==========================================
-   4429
- → 4430                 status = le32_to_cpu(desc->opts1);
-   4431                 if (status & DescOwn)
-   4432                         break;
-   4433
-   4434                 /* This barrier is needed to keep us from reading
-   4435                  * any other fields out of the Rx descriptor until
-   4436                  * we know the status of DescOwn
-   4437                  */
-   4438                 dma_rmb();
-   4439
-   4440                 if (unlikely(status & RxRES)) {
-   4441                         if (net_ratelimit())
-   4442                                 netdev_warn(dev, "Rx ERROR. status = %08x\n",
-
-Marco Elver explained that dma_rmb() doesn't prevent the compiler to tear up the access to
-desc->opts1 which can be written to concurrently. READ_ONCE() should prevent that from
-happening:
-
-   4429
- → 4430                 status = le32_to_cpu(READ_ONCE(desc->opts1));
-   4431                 if (status & DescOwn)
-   4432                         break;
-   4433
-
-As the consequence of this fix, this KCSAN warning was eliminated.
-
-Fixes: 6202806e7c03a ("r8169: drop member opts1_mask from struct rtl8169_private")
-Suggested-by: Marco Elver <elver@google.com>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: nic_swsd@realtek.com
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Link: https://lore.kernel.org/lkml/dc7fc8fa-4ea4-e9a9-30a6-7c83e6b53188@alu.unizg.hr/
-Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Marco Elver <elver@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Message-Id: <20230911090328.40538-1-mheyne@amazon.de>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/virtio/virtio_mmio.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index d5a52fcd57cd0..1cd0928472c0c 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4513,7 +4513,7 @@ static int rtl_rx(struct net_device *dev, struct rtl8169_private *tp, int budget
- 		dma_addr_t addr;
- 		u32 status;
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -561,14 +561,17 @@ static int virtio_mmio_probe(struct plat
+ 	spin_lock_init(&vm_dev->lock);
  
--		status = le32_to_cpu(desc->opts1);
-+		status = le32_to_cpu(READ_ONCE(desc->opts1));
- 		if (status & DescOwn)
- 			break;
+ 	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(vm_dev->base))
+-		return PTR_ERR(vm_dev->base);
++	if (IS_ERR(vm_dev->base)) {
++		rc = PTR_ERR(vm_dev->base);
++		goto free_vm_dev;
++	}
  
--- 
-2.42.0
-
+ 	/* Check magic value */
+ 	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
+ 	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
+ 		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
+-		return -ENODEV;
++		rc = -ENODEV;
++		goto free_vm_dev;
+ 	}
+ 
+ 	/* Check device version */
+@@ -576,7 +579,8 @@ static int virtio_mmio_probe(struct plat
+ 	if (vm_dev->version < 1 || vm_dev->version > 2) {
+ 		dev_err(&pdev->dev, "Version %ld not supported!\n",
+ 				vm_dev->version);
+-		return -ENXIO;
++		rc = -ENXIO;
++		goto free_vm_dev;
+ 	}
+ 
+ 	vm_dev->vdev.id.device = readl(vm_dev->base + VIRTIO_MMIO_DEVICE_ID);
+@@ -585,7 +589,8 @@ static int virtio_mmio_probe(struct plat
+ 		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
+ 		 * with no function. End probing now with no error reported.
+ 		 */
+-		return -ENODEV;
++		rc = -ENODEV;
++		goto free_vm_dev;
+ 	}
+ 	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
+ 
+@@ -615,6 +620,10 @@ static int virtio_mmio_probe(struct plat
+ 		put_device(&vm_dev->vdev.dev);
+ 
+ 	return rc;
++
++free_vm_dev:
++	kfree(vm_dev);
++	return rc;
+ }
+ 
+ static int virtio_mmio_remove(struct platform_device *pdev)
 
 
