@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FC677E2306
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 50FBC7E22EE
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232034AbjKFNIC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:08:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49684 "EHLO
+        id S231951AbjKFNG5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:06:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232041AbjKFNIA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:00 -0500
+        with ESMTP id S231952AbjKFNG4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:56 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B920D4C
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:07:55 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA954C433BB;
-        Mon,  6 Nov 2023 13:07:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3096BF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:53 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BFCC433CA;
+        Mon,  6 Nov 2023 13:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276075;
-        bh=322LPzALC+xry8M7gytLV4RGLKpDANTYWPEDgeuQCkY=;
+        s=korg; t=1699276013;
+        bh=bCDL0ydR2reZld0XYEJvcu1lC1GDh36dzykxdCvZc1c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g6vRpykfKqAaYDNk09rziccy9zVxTA9/roQ23t1UaVvnvnQiIH2QYatt3/MxUjk9A
-         OIfbDeU3u/r3HOMmLaz8R+6FKLwk2RRg5GyHHcGHiKmiluo13ve9oRTqQKEOsBtJC0
-         kPLxtZAO9l6b5Ul6AL4/kvvMgqFcf90tVrMlM/Kk=
+        b=dCApBTdDJb6bM/fex3x2p5op2RjyZ5ibaMPUxbCrOh4aukBltMzhY4vBn5Sk5EpmP
+         1gLGD2tEpOeLO7PrubhQByIzqUsfB9OS4qm9H1lRSpq9DQM7EGeIwVi9+LBZJ5xIsJ
+         Y81a6Prpt57+W2OgaN9riLjJkwIEkG5lsMP0UBoQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Badhri Jagan Sridharan <badhri@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.6 12/30] usb: typec: tcpm: Add additional checks for contaminant
+        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 39/48] net: chelsio: cxgb4: add an error code check in t4_load_phy_fw
 Date:   Mon,  6 Nov 2023 14:03:30 +0100
-Message-ID: <20231106130258.374805912@linuxfoundation.org>
+Message-ID: <20231106130259.203011682@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,71 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 1a4a2df07c1f087704c24282cebe882268e38146 upstream.
+[ Upstream commit 9f771493da935299c6393ad3563b581255d01a37 ]
 
-When transitioning from SNK_DEBOUNCED to unattached, its worthwhile to
-check for contaminant to mitigate wakeups.
+t4_set_params_timeout() can return -EINVAL if failed, add check
+for this.
 
-```
-[81334.219571] Start toggling
-[81334.228220] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.305147] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.305162] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.305187] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81334.475515] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81334.486480] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81334.486495] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81334.486515] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81334.506621] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81334.506640] Start toggling
-[81334.516972] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.592759] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.592773] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.592792] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81334.762940] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81334.773557] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81334.773570] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81334.773588] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81334.793672] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81334.793681] Start toggling
-[81334.801840] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[81334.878655] CC1: 0 -> 0, CC2: 0 -> 3 [state TOGGLING, polarity 0, connected]
-[81334.878672] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[81334.878696] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[81335.048968] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[81335.060684] CC1: 0 -> 0, CC2: 3 -> 0 [state SNK_DEBOUNCED, polarity 0, disconnected]
-[81335.060754] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[81335.060775] pending state change SNK_DEBOUNCED -> SNK_UNATTACHED @ 20 ms [rev3 NONE_AMS]
-[81335.080884] state change SNK_DEBOUNCED -> SNK_UNATTACHED [delayed 20 ms]
-[81335.080900] Start toggling
-```
-
-Cc: stable@vger.kernel.org
-Fixes: 599f008c257d ("usb: typec: tcpm: Add callbacks to mitigate wakeups due to contaminant")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231015053108.2349570-1-badhri@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    2 ++
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c | 2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -3903,6 +3903,8 @@ static void run_state_machine(struct tcp
- 		port->potential_contaminant = ((port->enter_state == SRC_ATTACH_WAIT &&
- 						port->state == SRC_UNATTACHED) ||
- 					       (port->enter_state == SNK_ATTACH_WAIT &&
-+						port->state == SNK_UNATTACHED) ||
-+					       (port->enter_state == SNK_DEBOUNCED &&
- 						port->state == SNK_UNATTACHED));
+diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+index ecb8ef4a756fc..6ffd5f3dcf059 100644
+--- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
+@@ -3710,6 +3710,8 @@ int t4_load_phy_fw(struct adapter *adap,
+ 		 FW_PARAMS_PARAM_Z_V(FW_PARAMS_PARAM_DEV_PHYFW_DOWNLOAD));
+ 	ret = t4_set_params_timeout(adap, adap->mbox, adap->pf, 0, 1,
+ 				    &param, &val, 30000);
++	if (ret)
++		return ret;
  
- 	port->enter_state = port->state;
+ 	/* If we have version number support, then check to see that the new
+ 	 * firmware got loaded properly.
+-- 
+2.42.0
+
 
 
