@@ -2,411 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 017017E1D74
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 10:51:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DAA0E7E1D83
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 10:52:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230086AbjKFJvn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 04:51:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39408 "EHLO
+        id S229487AbjKFJw3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 04:52:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229478AbjKFJvm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 04:51:42 -0500
-Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D09BDB;
-        Mon,  6 Nov 2023 01:51:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1699264298; x=1730800298;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gjF0M2PpCgYk+/ZTgC61t7QmzFXN08axmI0slI2iSbQ=;
-  b=g51Jn2ilBU3yN4iPZ/b0FSeeW5cjRBsk6NlDxCVJNqTkiDGZ6F/0224A
-   trB8UUUz4r0BcqOgSy7yRLlYp/AgZRarfQ2JsXXrzLW9mFT76q7cNXATR
-   Xq1L/tlxY5GRsx5w5VfE0OsjtfcR59dLapGAFovIcSUib/juKwG/+dCRB
-   N76A+eqSLVz6A/3+Cl94G17uWfCES8nBubw3BF+lERZ10WYTwnBgCcXdB
-   cM5Q9/NS10pFnOcpKFa665Z7qCaj0366dtIjGx57W+TFoONgUl5u884nR
-   L7HhY4xm4WCBLevloY1e8Db+erOzo4pkuiCe0qV2WzT+kSxRfzJAAnm0e
-   Q==;
-X-IronPort-AV: E=Sophos;i="6.03,281,1694728800"; 
-   d="scan'208";a="33823082"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 06 Nov 2023 10:51:35 +0100
-Received: from localhost.localdomain (SCHIFFERM-M2.tq-net.de [10.121.49.20])
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 1C8DB28007F;
-        Mon,  6 Nov 2023 10:51:35 +0100 (CET)
-From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc:     Faiz Abbas <faiz_abbas@ti.com>,
-        =?UTF-8?q?Beno=C3=AEt=20Cousson?= <bcousson@baylibre.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-omap@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@ew.tq-group.com,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Subject: [PATCH 5.4] Revert "ARM: dts: Move am33xx and am43xx mmc nodes to sdhci-omap driver"
-Date:   Mon,  6 Nov 2023 10:50:48 +0100
-Message-ID: <20231106095048.8396-1-matthias.schiffer@ew.tq-group.com>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S229478AbjKFJw2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 04:52:28 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D601DB;
+        Mon,  6 Nov 2023 01:52:26 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9165C433C8;
+        Mon,  6 Nov 2023 09:52:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699264345;
+        bh=E4/L+LlFjPb2WwOsFdRog7Iics6lqBe9DHzObFZjQaQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T1m8kRbWZJn7jsk5RLHokR9jTw6xjTC7WAG3HzgnbzkI4rIjkbPbBe1xbsxTjC9ZG
+         bQD/OVdd2XWQfDScwPip752ciLnUAU9sTG4Nag+Il9hHmCU9wx92SirzX93CcAldqe
+         Q19vK4kZHziaINx+dpu1dRcaB6bAsL0Wdf4KQjiwM5zUMYDkShQatGQ5LnsMqpHI7E
+         666nsBMFCYw/naCOjZzJQbS2kPc6WDZs+la98bV6LFiUl6gf63uKDyxU8LB7HPsm8C
+         sG78jW0v8g6Kqw8NETlTVsiq0OCadkK47lKKpiQX3RgqkfhO4TpWxYkYUsiKenry3/
+         M0sR8hlOWTbGA==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qzwIA-0007JB-2C;
+        Mon, 06 Nov 2023 10:53:10 +0100
+Date:   Mon, 6 Nov 2023 10:53:10 +0100
+From:   Johan Hovold <johan@kernel.org>
+To:     Stanley =?utf-8?B?Q2hhbmdb5piM6IKy5b63XQ==?= 
+        <stanley_chang@realtek.com>
+Cc:     Stefan Eichenberger <eichest@gmail.com>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Mathias Nyman <mathias.nyman@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Maxime Ripard <mripard@kernel.org>
+Subject: Re: [PATCH] USB: xhci-plat: fix legacy PHY double inity
+Message-ID: <ZUi3hrDbseJbIsWZ@hovoldconsulting.com>
+References: <20231103164323.14294-1-johan+linaro@kernel.org>
+ <ZUY8cGrofUtPOMV8@eichest-laptop>
+ <5a493e6fedb449bc93f83f31a682e5b9@realtek.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <5a493e6fedb449bc93f83f31a682e5b9@realtek.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This reverts commit d0c69c722ff16ce2481a5e0932c6d5b172109f21.
+On Mon, Nov 06, 2023 at 06:53:23AM +0000, Stanley Chang[昌育德] wrote:
+> > > On Fri, Nov 03, 2023 at 05:43:23PM +0100, Johan Hovold wrote:
+> > > > Commits 7b8ef22ea547 ("usb: xhci: plat: Add USB phy support") and
+> > > > 9134c1fd0503 ("usb: xhci: plat: Add USB 3.0 phy support") added
+> > > > support for looking up legacy PHYs from the sysdev devicetree node
+> > > > and initialising them.
+> > > >
+> > > > This broke drivers such as dwc3 which manages PHYs themself as the
+> > > > PHYs would now be initialised twice, something which specifically
+> > > > can lead to resources being left enabled during suspend (e.g. with
+> > > > the usb_phy_generic PHY driver).
+> > > >
+> > > > As the dwc3 driver uses driver-name matching for the xhci platform
+> > > > device, fix this by only looking up and initialising PHYs for
+> > > > devices that have been matched using OF.
 
-The reverted commit completely breaks MMC on the AM33xx/AM437x for
-multiple reasons:
+> > Tested-by: Stanley Chang <stanley_chang@realtek.com>
 
-- The changed compatible strings ti,am335-sdhci and ti,am437-sdhci
-  aren't supported on Linux 5.4 at all, so no driver is found
-- Even when additionally backporting the support for these compatible
-  strings in the sdhci-omap driver, I could not the the MMC interfaces
-  to work on our TQMa335x SoM - the interface would time out during card
-  initialization for both an eMMC and an SD card.
+> I am sorry to notify you this patch is tested fail.
 
-I did not investigate the cause of the timeouts further, and instead
-just reverted the commit - switching to a different MMC driver in a stable
-kernel seems like a rather risky change unless it's thoroughly tested,
-which has obviously not happened in this case.
+Hmm. Thanks for testing.
 
-The reverted commit is also given as a Stable-dep-of commit 2eb502f496f7
-("ARM: dts: am33xx: Fix MMCHS0 dma properties"), however the conflict
-resulting when only the one commit is reverted is trivial to resolve,
-which leads to working MMC controllers again.
+> I test the Realtek phy driver at drivers/phy/Realtek/phy-rtk-usb2.c again.
+> But I can't get the phy in xhci.
 
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
----
+> It is a dwc3 generic phy driver, and it is also a usb phy driver. 
 
-I have not checked if other stable kernels exhibit the same breakage; it
-might be a good idea to revert the change for all stable branches unless
-it is proven that the sdhci-omap driver actually works.
+That sounds broken (i.e. to be relying on both frameworks), but indeed
+that seems to be the current state of the generic and legacy USB PHY
+implementations.
 
+What a mess.
 
- arch/arm/boot/dts/am335x-baltos.dtsi              | 2 +-
- arch/arm/boot/dts/am335x-boneblack-common.dtsi    | 1 -
- arch/arm/boot/dts/am335x-boneblack-wireless.dts   | 1 +
- arch/arm/boot/dts/am335x-boneblue.dts             | 1 +
- arch/arm/boot/dts/am335x-bonegreen-wireless.dts   | 1 +
- arch/arm/boot/dts/am335x-evm.dts                  | 3 ++-
- arch/arm/boot/dts/am335x-evmsk.dts                | 2 +-
- arch/arm/boot/dts/am335x-lxm.dts                  | 2 +-
- arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi | 2 +-
- arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts    | 2 +-
- arch/arm/boot/dts/am335x-pepper.dts               | 4 ++--
- arch/arm/boot/dts/am335x-phycore-som.dtsi         | 2 +-
- arch/arm/boot/dts/am33xx-l4.dtsi                  | 6 ++++--
- arch/arm/boot/dts/am33xx.dtsi                     | 3 +--
- arch/arm/boot/dts/am4372.dtsi                     | 3 +--
- arch/arm/boot/dts/am437x-cm-t43.dts               | 2 +-
- arch/arm/boot/dts/am437x-gp-evm.dts               | 4 ++--
- arch/arm/boot/dts/am437x-l4.dtsi                  | 5 +++--
- arch/arm/boot/dts/am437x-sk-evm.dts               | 2 +-
- 19 files changed, 26 insertions(+), 22 deletions(-)
+> Base on you modified, I can't run on callback 
+> rtk_phy->phy.notify_port_status = rtk_phy_notify_port_status;
 
-diff --git a/arch/arm/boot/dts/am335x-baltos.dtsi b/arch/arm/boot/dts/am335x-baltos.dtsi
-index ee84155844adb..ed235f263e293 100644
---- a/arch/arm/boot/dts/am335x-baltos.dtsi
-+++ b/arch/arm/boot/dts/am335x-baltos.dtsi
-@@ -381,7 +381,7 @@
- &mmc2 {
- 	status = "okay";
- 	vmmc-supply = <&wl12xx_vmmc>;
--	non-removable;
-+	ti,non-removable;
- 	bus-width = <4>;
- 	cap-power-off-card;
- 	pinctrl-names = "default";
-diff --git a/arch/arm/boot/dts/am335x-boneblack-common.dtsi b/arch/arm/boot/dts/am335x-boneblack-common.dtsi
-index dd932220a8bf7..91f93bc89716d 100644
---- a/arch/arm/boot/dts/am335x-boneblack-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-boneblack-common.dtsi
-@@ -22,7 +22,6 @@
- 	pinctrl-0 = <&emmc_pins>;
- 	bus-width = <8>;
- 	status = "okay";
--	non-removable;
- };
- 
- &am33xx_pinmux {
-diff --git a/arch/arm/boot/dts/am335x-boneblack-wireless.dts b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
-index e07dd79795868..3124d94c0b3cc 100644
---- a/arch/arm/boot/dts/am335x-boneblack-wireless.dts
-+++ b/arch/arm/boot/dts/am335x-boneblack-wireless.dts
-@@ -75,6 +75,7 @@
- 	bus-width = <4>;
- 	non-removable;
- 	cap-power-off-card;
-+	ti,needs-special-hs-handling;
- 	keep-power-in-suspend;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&mmc3_pins &wl18xx_pins>;
-diff --git a/arch/arm/boot/dts/am335x-boneblue.dts b/arch/arm/boot/dts/am335x-boneblue.dts
-index 30b62de86b5b1..2f6652ef9a157 100644
---- a/arch/arm/boot/dts/am335x-boneblue.dts
-+++ b/arch/arm/boot/dts/am335x-boneblue.dts
-@@ -389,6 +389,7 @@
- 	bus-width = <4>;
- 	non-removable;
- 	cap-power-off-card;
-+	ti,needs-special-hs-handling;
- 	keep-power-in-suspend;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&mmc3_pins &wl18xx_pins>;
-diff --git a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
-index 609c8db687ec6..4092cd193b8a6 100644
---- a/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
-+++ b/arch/arm/boot/dts/am335x-bonegreen-wireless.dts
-@@ -75,6 +75,7 @@
- 	bus-width = <4>;
- 	non-removable;
- 	cap-power-off-card;
-+	ti,needs-special-hs-handling;
- 	keep-power-in-suspend;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&mmc3_pins &wl18xx_pins>;
-diff --git a/arch/arm/boot/dts/am335x-evm.dts b/arch/arm/boot/dts/am335x-evm.dts
-index af25b42e85f4d..a00145705c9be 100644
---- a/arch/arm/boot/dts/am335x-evm.dts
-+++ b/arch/arm/boot/dts/am335x-evm.dts
-@@ -782,7 +782,8 @@
- 	bus-width = <4>;
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&mmc3_pins &wlan_pins>;
--	non-removable;
-+	ti,non-removable;
-+	ti,needs-special-hs-handling;
- 	cap-power-off-card;
- 	keep-power-in-suspend;
- 
-diff --git a/arch/arm/boot/dts/am335x-evmsk.dts b/arch/arm/boot/dts/am335x-evmsk.dts
-index 7805b0618a4fb..e28a5b82fdf30 100644
---- a/arch/arm/boot/dts/am335x-evmsk.dts
-+++ b/arch/arm/boot/dts/am335x-evmsk.dts
-@@ -700,7 +700,7 @@
- &mmc2 {
- 	status = "okay";
- 	vmmc-supply = <&wl12xx_vmmc>;
--	non-removable;
-+	ti,non-removable;
- 	bus-width = <4>;
- 	cap-power-off-card;
- 	keep-power-in-suspend;
-diff --git a/arch/arm/boot/dts/am335x-lxm.dts b/arch/arm/boot/dts/am335x-lxm.dts
-index c3bfd8ed5f884..a8005e975ea24 100644
---- a/arch/arm/boot/dts/am335x-lxm.dts
-+++ b/arch/arm/boot/dts/am335x-lxm.dts
-@@ -361,7 +361,7 @@
- 	pinctrl-0 = <&emmc_pins>;
- 	vmmc-supply = <&vmmcsd_fixed>;
- 	bus-width = <8>;
--	non-removable;
-+	ti,non-removable;
- 	status = "okay";
- };
- 
-diff --git a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
-index 7749122dad71d..671d4a5da9c43 100644
---- a/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-moxa-uc-2100-common.dtsi
-@@ -176,7 +176,7 @@
- 	vmmc-supply = <&vmmcsd_fixed>;
- 	bus-width = <8>;
- 	pinctrl-0 = <&mmc1_pins_default>;
--	non-removable;
-+	ti,non-removable;
- 	status = "okay";
- };
- 
-diff --git a/arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts b/arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts
-index 66a5c09ff388a..783d411f2cefe 100644
---- a/arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts
-+++ b/arch/arm/boot/dts/am335x-moxa-uc-8100-me-t.dts
-@@ -473,7 +473,7 @@
- 	vmmc-supply = <&vmmcsd_fixed>;
- 	bus-width = <8>;
- 	pinctrl-0 = <&mmc2_pins_default>;
--	non-removable;
-+	ti,non-removable;
- 	status = "okay";
- };
- 
-diff --git a/arch/arm/boot/dts/am335x-pepper.dts b/arch/arm/boot/dts/am335x-pepper.dts
-index 03852eff2b3ce..e7764ecdf65f8 100644
---- a/arch/arm/boot/dts/am335x-pepper.dts
-+++ b/arch/arm/boot/dts/am335x-pepper.dts
-@@ -341,7 +341,7 @@
- 	pinctrl-0 = <&emmc_pins>;
- 	vmmc-supply = <&ldo3_reg>;
- 	bus-width = <8>;
--	non-removable;
-+	ti,non-removable;
- };
- 
- &mmc3 {
-@@ -351,7 +351,7 @@
- 	pinctrl-0 = <&wireless_pins>;
- 	vmmmc-supply = <&v3v3c_reg>;
- 	bus-width = <4>;
--	non-removable;
-+	ti,non-removable;
- 	dmas = <&edma_xbar 12 0 1
- 		&edma_xbar 13 0 2>;
- 	dma-names = "tx", "rx";
-diff --git a/arch/arm/boot/dts/am335x-phycore-som.dtsi b/arch/arm/boot/dts/am335x-phycore-som.dtsi
-index 7e46b4c027094..3d0672b53d779 100644
---- a/arch/arm/boot/dts/am335x-phycore-som.dtsi
-+++ b/arch/arm/boot/dts/am335x-phycore-som.dtsi
-@@ -69,7 +69,7 @@
- 	pinctrl-0 = <&emmc_pins>;
- 	vmmc-supply = <&vmmc_reg>;
- 	bus-width = <8>;
--	non-removable;
-+	ti,non-removable;
- 	status = "disabled";
- };
- 
-diff --git a/arch/arm/boot/dts/am33xx-l4.dtsi b/arch/arm/boot/dts/am33xx-l4.dtsi
-index cacd564b4d28b..8ec6c4500fd59 100644
---- a/arch/arm/boot/dts/am33xx-l4.dtsi
-+++ b/arch/arm/boot/dts/am33xx-l4.dtsi
-@@ -1333,8 +1333,10 @@
- 			ranges = <0x0 0x60000 0x1000>;
- 
- 			mmc1: mmc@0 {
--				compatible = "ti,am335-sdhci";
-+				compatible = "ti,omap4-hsmmc";
-+				ti,dual-volt;
- 				ti,needs-special-reset;
-+				ti,needs-special-hs-handling;
- 				dmas = <&edma 24 0>, <&edma 25 0>;
- 				dma-names = "tx", "rx";
- 				interrupts = <64>;
-@@ -1824,7 +1826,7 @@
- 			ranges = <0x0 0xd8000 0x1000>;
- 
- 			mmc2: mmc@0 {
--				compatible = "ti,am335-sdhci";
-+				compatible = "ti,omap4-hsmmc";
- 				ti,needs-special-reset;
- 				dmas = <&edma 2 0
- 					&edma 3 0>;
-diff --git a/arch/arm/boot/dts/am33xx.dtsi b/arch/arm/boot/dts/am33xx.dtsi
-index efe36f395bdd0..77fa7c0f21046 100644
---- a/arch/arm/boot/dts/am33xx.dtsi
-+++ b/arch/arm/boot/dts/am33xx.dtsi
-@@ -259,11 +259,10 @@
- 			ranges = <0x0 0x47810000 0x1000>;
- 
- 			mmc3: mmc@0 {
--				compatible = "ti,am335-sdhci";
-+				compatible = "ti,omap4-hsmmc";
- 				ti,needs-special-reset;
- 				interrupts = <29>;
- 				reg = <0x0 0x1000>;
--				status = "disabled";
- 			};
- 		};
- 
-diff --git a/arch/arm/boot/dts/am4372.dtsi b/arch/arm/boot/dts/am4372.dtsi
-index c5b67993743d6..14bbc438055fd 100644
---- a/arch/arm/boot/dts/am4372.dtsi
-+++ b/arch/arm/boot/dts/am4372.dtsi
-@@ -250,11 +250,10 @@
- 			ranges = <0x0 0x47810000 0x1000>;
- 
- 			mmc3: mmc@0 {
--				compatible = "ti,am437-sdhci";
-+				compatible = "ti,omap4-hsmmc";
- 				ti,needs-special-reset;
- 				interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
- 				reg = <0x0 0x1000>;
--				status = "disabled";
- 			};
- 		};
- 
-diff --git a/arch/arm/boot/dts/am437x-cm-t43.dts b/arch/arm/boot/dts/am437x-cm-t43.dts
-index a6b4fca8626ac..063113a5da2d4 100644
---- a/arch/arm/boot/dts/am437x-cm-t43.dts
-+++ b/arch/arm/boot/dts/am437x-cm-t43.dts
-@@ -291,7 +291,7 @@
- 	pinctrl-0 = <&emmc_pins>;
- 	vmmc-supply = <&vmmc_3v3>;
- 	bus-width = <8>;
--	non-removable;
-+	ti,non-removable;
- };
- 
- &spi0 {
-diff --git a/arch/arm/boot/dts/am437x-gp-evm.dts b/arch/arm/boot/dts/am437x-gp-evm.dts
-index 448853701d3d1..126965a34841e 100644
---- a/arch/arm/boot/dts/am437x-gp-evm.dts
-+++ b/arch/arm/boot/dts/am437x-gp-evm.dts
-@@ -872,7 +872,7 @@
- 	pinctrl-names = "default", "sleep";
- 	pinctrl-0 = <&emmc_pins_default>;
- 	pinctrl-1 = <&emmc_pins_sleep>;
--	non-removable;
-+	ti,non-removable;
- };
- 
- &mmc3 {
-@@ -889,7 +889,7 @@
- 	pinctrl-1 = <&mmc3_pins_sleep>;
- 	cap-power-off-card;
- 	keep-power-in-suspend;
--	non-removable;
-+	ti,non-removable;
- 
- 	#address-cells = <1>;
- 	#size-cells = <0>;
-diff --git a/arch/arm/boot/dts/am437x-l4.dtsi b/arch/arm/boot/dts/am437x-l4.dtsi
-index 8c9e7e723fc97..64fdd5079d49b 100644
---- a/arch/arm/boot/dts/am437x-l4.dtsi
-+++ b/arch/arm/boot/dts/am437x-l4.dtsi
-@@ -1104,8 +1104,9 @@
- 			ranges = <0x0 0x60000 0x1000>;
- 
- 			mmc1: mmc@0 {
--				compatible = "ti,am437-sdhci";
-+				compatible = "ti,omap4-hsmmc";
- 				reg = <0x0 0x1000>;
-+				ti,dual-volt;
- 				ti,needs-special-reset;
- 				dmas = <&edma 24 0>,
- 					<&edma 25 0>;
-@@ -1640,7 +1641,7 @@
- 			ranges = <0x0 0xd8000 0x1000>;
- 
- 			mmc2: mmc@0 {
--				compatible = "ti,am437-sdhci";
-+				compatible = "ti,omap4-hsmmc";
- 				reg = <0x0 0x1000>;
- 				ti,needs-special-reset;
- 				dmas = <&edma 2 0>,
-diff --git a/arch/arm/boot/dts/am437x-sk-evm.dts b/arch/arm/boot/dts/am437x-sk-evm.dts
-index 292153c6cb5d3..74eaa6a3b258c 100644
---- a/arch/arm/boot/dts/am437x-sk-evm.dts
-+++ b/arch/arm/boot/dts/am437x-sk-evm.dts
-@@ -694,7 +694,7 @@
- 	pinctrl-1 = <&mmc3_pins_sleep>;
- 	cap-power-off-card;
- 	keep-power-in-suspend;
--	non-removable;
-+	ti,non-removable;
- 
- 	#address-cells = <1>;
- 	#size-cells = <0>;
--- 
-TQ-Systems GmbH | Mühlstraße 2, Gut Delling | 82229 Seefeld, Germany
-Amtsgericht München, HRB 105018
-Geschäftsführer: Detlef Schneider, Rüdiger Stahl, Stefan Schneider
-https://www.tq-group.com/
+Which dwc3 driver are you using? Unless I'm missing something this would
+not be an issue unless you are doing something crazy like describing the
+same PHY twice in the devicetree (i.e. both as a generic and legacy
+PHY).
 
+Apparently, there are no in-tree users of this particular realtek PHY so
+I can't check the devicetree, but we do have other instances of such
+abuse since at least a decade:
+
+	6747caa76cab ("usb: phy: twl4030: use the new generic PHY framework")
+
+And, yes, then this is sort of expected. The dwc3 driver has always
+managed its own PHYs, but functionality has now been bolted on top so
+that people may have started relying on it being managed *also* by xhci,
+well at least for notifications like the one you just added:
+
+	a08799cf17c2 ("usb: phy: add usb phy notify port status API")
+
+Johan
