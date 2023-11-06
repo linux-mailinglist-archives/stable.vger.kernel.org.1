@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5B397E238E
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0BA57E24CA
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232118AbjKFNMt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:12:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52142 "EHLO
+        id S232531AbjKFNZU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:25:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232139AbjKFNMs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:48 -0500
+        with ESMTP id S232530AbjKFNZT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4250F3
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30EEFC433C8;
-        Mon,  6 Nov 2023 13:12:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FAEB10A
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:25:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42ACBC433C7;
+        Mon,  6 Nov 2023 13:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276365;
-        bh=2hQ4u5JY4NG+a2mImosyDGu/FnNoymbz8kDqIzU/nmI=;
+        s=korg; t=1699277115;
+        bh=HIMqgLGZNcCQfbSNbD2PpCgrknutmxTeA/qlRE2QSP0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lxA5fStPplWrI1ox2wShuEEzUihGMsqpOVYnm6/GX6fItzb+HvVFbuTvONukrO8YS
-         jPeoOhGMnXDhA5C3zJIIAgqxwUVW1+xwqnRPzu5NEcnZgo7d5rDu/8zuESCF27HHwU
-         BHi05/PJr3gtFCWT5XROd5rLiupCVZrDKQBYNrW8=
+        b=o98G+U6vh64TrY9Dd39ORy+KFCIQgfxQKaZqUYZX01Cv1HuxYlzXNbx3WyB/gicWd
+         zhGoMkbDx2HcneE/h/yRLRqURTHGAZFKorm3win1A9TFms1/ZKGJ+bC1lnOYpV/k5e
+         By5Syc0dW71RuqXDWE6u7wtkuveail4CVvZDm0tI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "William A. Kennington III" <william@wkennington.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/62] spi: npcm-fiu: Fix UMA reads when dummy.nbytes == 0
+        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
+        Peter Rosin <peda@axentia.se>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 5.15 044/128] i2c: muxes: i2c-mux-gpmux: Use of_get_i2c_adapter_by_node()
 Date:   Mon,  6 Nov 2023 14:03:24 +0100
-Message-ID: <20231106130302.474024499@linuxfoundation.org>
+Message-ID: <20231106130311.133312647@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William A. Kennington III <william@wkennington.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit 2ec8b010979036c2fe79a64adb6ecc0bd11e91d1 ]
+commit 3dc0ec46f6e7511fc4fdf6b6cda439382bc957f1 upstream.
 
-We don't want to use the value of ilog2(0) as dummy.buswidth is 0 when
-dummy.nbytes is 0. Since we have no dummy bytes, we don't need to
-configure the dummy byte bits per clock register value anyway.
+i2c-mux-gpmux uses the pair of_find_i2c_adapter_by_node() /
+i2c_put_adapter(). These pair alone is not correct to properly lock the
+I2C parent adapter.
 
-Signed-off-by: "William A. Kennington III" <william@wkennington.com>
-Link: https://lore.kernel.org/r/20230922182812.2728066-1-william@wkennington.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Indeed, i2c_put_adapter() decrements the module refcount while
+of_find_i2c_adapter_by_node() does not increment it. This leads to an
+underflow of the parent module refcount.
+
+Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
+correctly the module refcount.
+
+Fixes: ac8498f0ce53 ("i2c: i2c-mux-gpmux: new driver")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Cc: stable@vger.kernel.org
+Acked-by: Peter Rosin <peda@axentia.se>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-npcm-fiu.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/i2c/muxes/i2c-mux-gpmux.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
-index 49f6424e35af0..0624f52880705 100644
---- a/drivers/spi/spi-npcm-fiu.c
-+++ b/drivers/spi/spi-npcm-fiu.c
-@@ -353,8 +353,9 @@ static int npcm_fiu_uma_read(struct spi_mem *mem,
- 		uma_cfg |= ilog2(op->cmd.buswidth);
- 		uma_cfg |= ilog2(op->addr.buswidth)
- 			<< NPCM_FIU_UMA_CFG_ADBPCK_SHIFT;
--		uma_cfg |= ilog2(op->dummy.buswidth)
--			<< NPCM_FIU_UMA_CFG_DBPCK_SHIFT;
-+		if (op->dummy.nbytes)
-+			uma_cfg |= ilog2(op->dummy.buswidth)
-+				<< NPCM_FIU_UMA_CFG_DBPCK_SHIFT;
- 		uma_cfg |= ilog2(op->data.buswidth)
- 			<< NPCM_FIU_UMA_CFG_RDBPCK_SHIFT;
- 		uma_cfg |= op->dummy.nbytes << NPCM_FIU_UMA_CFG_DBSIZ_SHIFT;
--- 
-2.42.0
-
+--- a/drivers/i2c/muxes/i2c-mux-gpmux.c
++++ b/drivers/i2c/muxes/i2c-mux-gpmux.c
+@@ -52,7 +52,7 @@ static struct i2c_adapter *mux_parent_ad
+ 		dev_err(dev, "Cannot parse i2c-parent\n");
+ 		return ERR_PTR(-ENODEV);
+ 	}
+-	parent = of_find_i2c_adapter_by_node(parent_np);
++	parent = of_get_i2c_adapter_by_node(parent_np);
+ 	of_node_put(parent_np);
+ 	if (!parent)
+ 		return ERR_PTR(-EPROBE_DEFER);
 
 
