@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C6327E2569
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E76F47E2537
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232744AbjKFNbk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:31:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35278 "EHLO
+        id S231946AbjKFN3e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:29:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38246 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232760AbjKFNbj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:39 -0500
+        with ESMTP id S232678AbjKFN3e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:34 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D214913E
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8456C433CC;
-        Mon,  6 Nov 2023 13:31:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E8FED8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607A8C433C8;
+        Mon,  6 Nov 2023 13:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277495;
-        bh=ptXE/2f5sEwoMNNzB9DMbCdAXQRp76Js5DLiNykhwYs=;
+        s=korg; t=1699277371;
+        bh=8PUnEN1zEiDU4RKukng19K5iRa75Nn10TZ4ZNZxfZ4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AnNi6f2JIagwJF2YUHWd1HupXYavKvObs/dc9yumkPGJLVrCdWsQRIuMkYIdTPtX5
-         uTvyhJy4giY3I49h2bbiXUUzBMzKxHFwLXPuQjoNlX+x5za11bYp5bGi1knzc1ysZv
-         50MnWH1RXRDKh8jteUtum9ZGtRSr1x0zywSMCje4=
+        b=DvjG9kZtcGZYuT+zDDwXrFHTO5/tYSmF/DjB9L5xskT3h5zXbeYowJzhHHJ0To9Wk
+         dlyNsnk9QcWbwhcr/TEHtOxvv/EqxMty4FPf+jJasznb0CpYUr8xFcqcxiQTlBzFmB
+         G7NgUnYorW+pFl010K6MqRokODavZO5xa7PHviEc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Anand Ashok Dumbre <anandash@xilinx.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        "William A. Kennington III" <william@wkennington.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 42/95] iio: adc: xilinx: use more devres helpers and remove remove()
+Subject: [PATCH 5.15 090/128] spi: npcm-fiu: Fix UMA reads when dummy.nbytes == 0
 Date:   Mon,  6 Nov 2023 14:04:10 +0100
-Message-ID: <20231106130306.245557597@linuxfoundation.org>
+Message-ID: <20231106130313.234358905@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,268 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+From: William A. Kennington III <william@wkennington.com>
 
-[ Upstream commit 2a9685d1a3b7644ca08d8355fc238b43faef7c3e ]
+[ Upstream commit 2ec8b010979036c2fe79a64adb6ecc0bd11e91d1 ]
 
-In order to simplify resource management and error paths in probe() and
-entirely drop the remove() callback - use devres helpers wherever
-possible. Define devm actions for cancelling the delayed work and
-disabling the clock.
+We don't want to use the value of ilog2(0) as dummy.buswidth is 0 when
+dummy.nbytes is 0. Since we have no dummy bytes, we don't need to
+configure the dummy byte bits per clock register value anyway.
 
-Signed-off-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Tested-by: Anand Ashok Dumbre <anandash@xilinx.com>
-Reviewed-by: Anand Ashok Dumbre <anandash@xilinx.com>
-Link: https://lore.kernel.org/r/20201130142759.28216-4-brgl@bgdev.pl
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 8d6b3ea4d9ea ("iio: adc: xilinx-xadc: Don't clobber preset voltage/temperature thresholds")
+Signed-off-by: "William A. Kennington III" <william@wkennington.com>
+Link: https://lore.kernel.org/r/20230922182812.2728066-1-william@wkennington.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/xilinx-xadc-core.c | 133 ++++++++++++-----------------
- 1 file changed, 55 insertions(+), 78 deletions(-)
+ drivers/spi/spi-npcm-fiu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/xilinx-xadc-core.c b/drivers/iio/adc/xilinx-xadc-core.c
-index 6f89a97bb127b..fec266682e91d 100644
---- a/drivers/iio/adc/xilinx-xadc-core.c
-+++ b/drivers/iio/adc/xilinx-xadc-core.c
-@@ -713,11 +713,12 @@ static const struct iio_trigger_ops xadc_trigger_ops = {
- static struct iio_trigger *xadc_alloc_trigger(struct iio_dev *indio_dev,
- 	const char *name)
- {
-+	struct device *dev = indio_dev->dev.parent;
- 	struct iio_trigger *trig;
- 	int ret;
- 
--	trig = iio_trigger_alloc("%s%d-%s", indio_dev->name,
--				indio_dev->id, name);
-+	trig = devm_iio_trigger_alloc(dev, "%s%d-%s", indio_dev->name,
-+				      indio_dev->id, name);
- 	if (trig == NULL)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -725,15 +726,11 @@ static struct iio_trigger *xadc_alloc_trigger(struct iio_dev *indio_dev,
- 	trig->ops = &xadc_trigger_ops;
- 	iio_trigger_set_drvdata(trig, iio_priv(indio_dev));
- 
--	ret = iio_trigger_register(trig);
-+	ret = devm_iio_trigger_register(dev, trig);
- 	if (ret)
--		goto error_free_trig;
-+		return ERR_PTR(ret);
- 
- 	return trig;
--
--error_free_trig:
--	iio_trigger_free(trig);
--	return ERR_PTR(ret);
- }
- 
- static int xadc_power_adc_b(struct xadc *xadc, unsigned int seq_mode)
-@@ -1192,6 +1189,20 @@ static int xadc_parse_dt(struct iio_dev *indio_dev, struct device_node *np,
- 	return 0;
- }
- 
-+static void xadc_clk_disable_unprepare(void *data)
-+{
-+	struct clk *clk = data;
-+
-+	clk_disable_unprepare(clk);
-+}
-+
-+static void xadc_cancel_delayed_work(void *data)
-+{
-+	struct delayed_work *work = data;
-+
-+	cancel_delayed_work_sync(work);
-+}
-+
- static int xadc_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -1240,34 +1251,35 @@ static int xadc_probe(struct platform_device *pdev)
- 		return ret;
- 
- 	if (xadc->ops->flags & XADC_FLAGS_BUFFERED) {
--		ret = iio_triggered_buffer_setup(indio_dev,
--			&iio_pollfunc_store_time, &xadc_trigger_handler,
--			&xadc_buffer_ops);
-+		ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+						      &iio_pollfunc_store_time,
-+						      &xadc_trigger_handler,
-+						      &xadc_buffer_ops);
- 		if (ret)
- 			return ret;
- 
- 		xadc->convst_trigger = xadc_alloc_trigger(indio_dev, "convst");
--		if (IS_ERR(xadc->convst_trigger)) {
--			ret = PTR_ERR(xadc->convst_trigger);
--			goto err_triggered_buffer_cleanup;
--		}
-+		if (IS_ERR(xadc->convst_trigger))
-+			return PTR_ERR(xadc->convst_trigger);
-+
- 		xadc->samplerate_trigger = xadc_alloc_trigger(indio_dev,
- 			"samplerate");
--		if (IS_ERR(xadc->samplerate_trigger)) {
--			ret = PTR_ERR(xadc->samplerate_trigger);
--			goto err_free_convst_trigger;
--		}
-+		if (IS_ERR(xadc->samplerate_trigger))
-+			return PTR_ERR(xadc->samplerate_trigger);
- 	}
- 
- 	xadc->clk = devm_clk_get(dev, NULL);
--	if (IS_ERR(xadc->clk)) {
--		ret = PTR_ERR(xadc->clk);
--		goto err_free_samplerate_trigger;
--	}
-+	if (IS_ERR(xadc->clk))
-+		return PTR_ERR(xadc->clk);
- 
- 	ret = clk_prepare_enable(xadc->clk);
- 	if (ret)
--		goto err_free_samplerate_trigger;
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev,
-+				       xadc_clk_disable_unprepare, xadc->clk);
-+	if (ret)
-+		return ret;
- 
- 	/*
- 	 * Make sure not to exceed the maximum samplerate since otherwise the
-@@ -1276,22 +1288,28 @@ static int xadc_probe(struct platform_device *pdev)
- 	if (xadc->ops->flags & XADC_FLAGS_BUFFERED) {
- 		ret = xadc_read_samplerate(xadc);
- 		if (ret < 0)
--			goto err_free_samplerate_trigger;
-+			return ret;
-+
- 		if (ret > XADC_MAX_SAMPLERATE) {
- 			ret = xadc_write_samplerate(xadc, XADC_MAX_SAMPLERATE);
- 			if (ret < 0)
--				goto err_free_samplerate_trigger;
-+				return ret;
- 		}
- 	}
- 
--	ret = request_irq(xadc->irq, xadc->ops->interrupt_handler, 0,
--			  dev_name(dev), indio_dev);
-+	ret = devm_request_irq(dev, xadc->irq, xadc->ops->interrupt_handler, 0,
-+			       dev_name(dev), indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_add_action_or_reset(dev, xadc_cancel_delayed_work,
-+				       &xadc->zynq_unmask_work);
- 	if (ret)
--		goto err_clk_disable_unprepare;
-+		return ret;
- 
- 	ret = xadc->ops->setup(pdev, indio_dev, xadc->irq);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
- 
- 	for (i = 0; i < 16; i++)
- 		xadc_read_adc_reg(xadc, XADC_REG_THRESHOLD(i),
-@@ -1299,7 +1317,7 @@ static int xadc_probe(struct platform_device *pdev)
- 
- 	ret = xadc_write_adc_reg(xadc, XADC_REG_CONF0, conf0);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
- 
- 	bipolar_mask = 0;
- 	for (i = 0; i < indio_dev->num_channels; i++) {
-@@ -1309,17 +1327,18 @@ static int xadc_probe(struct platform_device *pdev)
- 
- 	ret = xadc_write_adc_reg(xadc, XADC_REG_INPUT_MODE(0), bipolar_mask);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
-+
- 	ret = xadc_write_adc_reg(xadc, XADC_REG_INPUT_MODE(1),
- 		bipolar_mask >> 16);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
- 
- 	/* Disable all alarms */
- 	ret = xadc_update_adc_reg(xadc, XADC_REG_CONF1, XADC_CONF1_ALARM_MASK,
- 				  XADC_CONF1_ALARM_MASK);
- 	if (ret)
--		goto err_free_irq;
-+		return ret;
- 
- 	/* Set thresholds to min/max */
- 	for (i = 0; i < 16; i++) {
-@@ -1334,59 +1353,17 @@ static int xadc_probe(struct platform_device *pdev)
- 		ret = xadc_write_adc_reg(xadc, XADC_REG_THRESHOLD(i),
- 			xadc->threshold[i]);
- 		if (ret)
--			goto err_free_irq;
-+			return ret;
- 	}
- 
- 	/* Go to non-buffered mode */
- 	xadc_postdisable(indio_dev);
- 
--	ret = iio_device_register(indio_dev);
--	if (ret)
--		goto err_free_irq;
--
--	platform_set_drvdata(pdev, indio_dev);
--
--	return 0;
--
--err_free_irq:
--	free_irq(xadc->irq, indio_dev);
--	cancel_delayed_work_sync(&xadc->zynq_unmask_work);
--err_clk_disable_unprepare:
--	clk_disable_unprepare(xadc->clk);
--err_free_samplerate_trigger:
--	if (xadc->ops->flags & XADC_FLAGS_BUFFERED)
--		iio_trigger_free(xadc->samplerate_trigger);
--err_free_convst_trigger:
--	if (xadc->ops->flags & XADC_FLAGS_BUFFERED)
--		iio_trigger_free(xadc->convst_trigger);
--err_triggered_buffer_cleanup:
--	if (xadc->ops->flags & XADC_FLAGS_BUFFERED)
--		iio_triggered_buffer_cleanup(indio_dev);
--
--	return ret;
--}
--
--static int xadc_remove(struct platform_device *pdev)
--{
--	struct iio_dev *indio_dev = platform_get_drvdata(pdev);
--	struct xadc *xadc = iio_priv(indio_dev);
--
--	iio_device_unregister(indio_dev);
--	if (xadc->ops->flags & XADC_FLAGS_BUFFERED) {
--		iio_trigger_free(xadc->samplerate_trigger);
--		iio_trigger_free(xadc->convst_trigger);
--		iio_triggered_buffer_cleanup(indio_dev);
--	}
--	free_irq(xadc->irq, indio_dev);
--	cancel_delayed_work_sync(&xadc->zynq_unmask_work);
--	clk_disable_unprepare(xadc->clk);
--
--	return 0;
-+	return devm_iio_device_register(dev, indio_dev);
- }
- 
- static struct platform_driver xadc_driver = {
- 	.probe = xadc_probe,
--	.remove = xadc_remove,
- 	.driver = {
- 		.name = "xadc",
- 		.of_match_table = xadc_of_match_table,
+diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
+index b62471ab6d7f2..1edaf22e265bf 100644
+--- a/drivers/spi/spi-npcm-fiu.c
++++ b/drivers/spi/spi-npcm-fiu.c
+@@ -334,8 +334,9 @@ static int npcm_fiu_uma_read(struct spi_mem *mem,
+ 		uma_cfg |= ilog2(op->cmd.buswidth);
+ 		uma_cfg |= ilog2(op->addr.buswidth)
+ 			<< NPCM_FIU_UMA_CFG_ADBPCK_SHIFT;
+-		uma_cfg |= ilog2(op->dummy.buswidth)
+-			<< NPCM_FIU_UMA_CFG_DBPCK_SHIFT;
++		if (op->dummy.nbytes)
++			uma_cfg |= ilog2(op->dummy.buswidth)
++				<< NPCM_FIU_UMA_CFG_DBPCK_SHIFT;
+ 		uma_cfg |= ilog2(op->data.buswidth)
+ 			<< NPCM_FIU_UMA_CFG_RDBPCK_SHIFT;
+ 		uma_cfg |= op->dummy.nbytes << NPCM_FIU_UMA_CFG_DBSIZ_SHIFT;
 -- 
 2.42.0
 
