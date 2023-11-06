@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 487797E2551
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AEF27E24D5
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:25:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232658AbjKFNat (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:30:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60180 "EHLO
+        id S232533AbjKFNZq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:25:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232713AbjKFNas (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:48 -0500
+        with ESMTP id S232541AbjKFNZp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:25:45 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E0B310B
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA751C433C7;
-        Mon,  6 Nov 2023 13:30:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3148E125
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:25:42 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E59EC433C8;
+        Mon,  6 Nov 2023 13:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277445;
-        bh=DsVYBDJot6QqOgGSq1PDEApQ4Ny2EFr+8JKVO1SCtYk=;
+        s=korg; t=1699277141;
+        bh=YXcY2HOyoNXk3In9DWtBED7+tjXxcFWf6oVwdNkW38k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I/EL0qhBS+3g9dxD6wjJicmx5hXrrwDR62uCPJ492+8oo63PlGNSwVYLKkHyBcHPR
-         OtOWyY9i1s8GIHnrfFFQgSqfGkKWBDA2vK5K+TlMxT2YTfWrQIK2PQPrLFOi6RW72x
-         Npvg1eNCXQyv7rtGoC6amD2AvElZg1cq7VXb61ko=
+        b=HBm+iQ0RXjVT3/9V+mAfw6L2sVIUSsQJX5GnaaXgcSjhLk3oFTS59ph9JmK0P/09l
+         wnHdWtZmWjiADnQGyOVe6nxQZ/6nYD0FUFnGVTuhQg+t0KRVNnprZ1bWG15baZyN/N
+         eP1tGTddXLkbvqIGYsgp92Kl3xQelnhRv/hVP+88=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gavin Shan <gshan@redhat.com>,
-        Zhenyu Zhang <zhenyzha@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH 5.10 04/95] virtio_balloon: Fix endless deflation and inflation on arm64
+        patches@lists.linux.dev, Stable@vger.kernel.org,
+        Peng Fan <peng.fan@nxp.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.15 052/128] nvmem: imx: correct nregs for i.MX6UL
 Date:   Mon,  6 Nov 2023 14:03:32 +0100
-Message-ID: <20231106130304.837434044@linuxfoundation.org>
+Message-ID: <20231106130311.469059269@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,101 +50,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Shan <gshan@redhat.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 07622bd415639e9709579f400afd19e7e9866e5e upstream.
+commit 7d6e10f5d254681983b53d979422c8de3fadbefb upstream.
 
-The deflation request to the target, which isn't unaligned to the
-guest page size causes endless deflation and inflation actions. For
-example, we receive the flooding QMP events for the changes on memory
-balloon's size after a deflation request to the unaligned target is
-sent for the ARM64 guest, where we have 64KB base page size.
+The nregs for i.MX6UL should be 144 per fuse map, correct it.
 
-  /home/gavin/sandbox/qemu.main/build/qemu-system-aarch64      \
-  -accel kvm -machine virt,gic-version=host -cpu host          \
-  -smp maxcpus=8,cpus=8,sockets=2,clusters=2,cores=2,threads=1 \
-  -m 1024M,slots=16,maxmem=64G                                 \
-  -object memory-backend-ram,id=mem0,size=512M                 \
-  -object memory-backend-ram,id=mem1,size=512M                 \
-  -numa node,nodeid=0,memdev=mem0,cpus=0-3                     \
-  -numa node,nodeid=1,memdev=mem1,cpus=4-7                     \
-    :                                                          \
-  -device virtio-balloon-pci,id=balloon0,bus=pcie.10
-
-  { "execute" : "balloon", "arguments": { "value" : 1073672192 } }
-  {"return": {}}
-  {"timestamp": {"seconds": 1693272173, "microseconds": 88667},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272174, "microseconds": 89704},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272175, "microseconds": 90819},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272176, "microseconds": 91961},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272177, "microseconds": 93040},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272178, "microseconds": 94117},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272179, "microseconds": 95337},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272180, "microseconds": 96615},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272181, "microseconds": 97626},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272182, "microseconds": 98693},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-  {"timestamp": {"seconds": 1693272183, "microseconds": 99698},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272184, "microseconds": 100727},  \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272185, "microseconds": 90430},   \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  {"timestamp": {"seconds": 1693272186, "microseconds": 102999},  \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073676288}}
-     :
-  <The similar QMP events repeat>
-
-Fix it by aligning the target up to the guest page size, 64KB in this
-specific case. With this applied, no flooding QMP events are observed
-and the memory balloon's size can be stablizied to 0x3ffe0000 soon
-after the deflation request is sent.
-
-  { "execute" : "balloon", "arguments": { "value" : 1073672192 } }
-  {"return": {}}
-  {"timestamp": {"seconds": 1693273328, "microseconds": 793075},  \
-   "event": "BALLOON_CHANGE", "data": {"actual": 1073610752}}
-  { "execute" : "query-balloon" }
-  {"return": {"actual": 1073610752}}
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Gavin Shan <gshan@redhat.com>
-Tested-by: Zhenyu Zhang <zhenyzha@redhat.com>
-Message-Id: <20230831011007.1032822-1-gshan@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Fixes: 4aa2b4802046 ("nvmem: octop: Add support for imx6ul")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20231013124904.175782-3-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/virtio/virtio_balloon.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/nvmem/imx-ocotp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -402,7 +402,11 @@ static inline s64 towards_target(struct
- 	virtio_cread_le(vb->vdev, struct virtio_balloon_config, num_pages,
- 			&num_pages);
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -499,7 +499,7 @@ static const struct ocotp_params imx6sx_
+ };
  
--	target = num_pages;
-+	/*
-+	 * Aligned up to guest page size to avoid inflating and deflating
-+	 * balloon endlessly.
-+	 */
-+	target = ALIGN(num_pages, VIRTIO_BALLOON_PAGES_PER_PAGE);
- 	return target - vb->num_pages;
- }
- 
+ static const struct ocotp_params imx6ul_params = {
+-	.nregs = 128,
++	.nregs = 144,
+ 	.bank_address_words = 0,
+ 	.set_timing = imx_ocotp_set_imx6_timing,
+ 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
 
 
