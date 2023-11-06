@@ -2,82 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D10407E258F
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:33:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 523D07E2605
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:49:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232779AbjKFNd3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:33:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39286 "EHLO
+        id S232700AbjKFNtC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:49:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232068AbjKFNd3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:33:29 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 542DC125;
-        Mon,  6 Nov 2023 05:33:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1699277600; x=1699882400; i=rwarsow@gmx.de;
-        bh=e39j+u5nhKmUY6Y/YYmY9yLI0830P/dNBLtVUkw7q2M=;
-        h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-        b=CzFDp9BI8tS2evaEUDIWo8HybGad3XEzKBk5cO2ttysJDG3LR/CRj5io1y/S+VF6
-         QZsBTvx0qWp5pJVWq1afFRm1kcywISMjWRTI1+mI2d0Fnc1f2bPyI9C41k2jqjRxb
-         6RE0UmKO/cb9oM5g9ArHDdwS8fQpIz1BP9On85tI5+LBfsbFAe/jKMT1cFPgYlzRT
-         dUrib8+pQY6sQgtKzBYN0Rqbm5qpNId9LPOx5DYwDgLxCZVTbv7oOV+W11KZdszQb
-         WypZzZjQUo8be0+MUnhxONpJRamAnz1dMuKN81zYLqyx4WJXcRkw+7vNkpGQybJRX
-         MTEqlo1+OBdgahXwxw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.35.115]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1M42nY-1qzzjE0oPg-0003xQ; Mon, 06
- Nov 2023 14:33:20 +0100
-Message-ID: <fb4a1dea-241e-4c1c-907b-ffeae64d47c4@gmx.de>
-Date:   Mon, 6 Nov 2023 14:33:19 +0100
+        with ESMTP id S232856AbjKFNtB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:49:01 -0500
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 068FDDB;
+        Mon,  6 Nov 2023 05:48:57 -0800 (PST)
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.17.1.22/8.17.1.22) with ESMTP id 3A6C4JCu000561;
+        Mon, 6 Nov 2023 14:48:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+        from:to:cc:subject:date:message-id:mime-version
+        :content-transfer-encoding:content-type; s=selector1; bh=Vexw1pM
+        NsxV4L+zqMyWZmWeII8r5bD8hhKoly+cx7vg=; b=Zl0xJ/1qDPheRcpJFz2E5Fh
+        Ap7nez2oMUGyn2tQI9ehrgGUmIdE3OUSVmH+Mmk+PkYTEsGaPfzZH4vz36iZ+7nd
+        aPS/tE0i53cfR19ptmB0hq626zuQKbJlsTIv0Y89zS9aOwQ1rwEeuOSXW2RHXwZ7
+        lQLD54brzL9Hq3ZaUje3Z8Fda6GT7NgKy9kOtS/YMq70ZpDWlhabA/YyIAkaiQtV
+        VdfwjhQpfrPKMDTSsqOwEARwKjWBFuIxAFfNPtuM4b3sKoLAdLQCiIFkK7ObTKId
+        CCOPGUaliYtco1laBSXkpkeo7zMinru45+ZWCx2rHyUIbOQ3RT+DAIUlA4OvQlA=
+        =
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3u5ej0q7kg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 06 Nov 2023 14:48:35 +0100 (CET)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id ABAEF100059;
+        Mon,  6 Nov 2023 14:48:33 +0100 (CET)
+Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
+        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 822AD24B890;
+        Mon,  6 Nov 2023 14:48:33 +0100 (CET)
+Received: from localhost (10.201.20.208) by SHFDAG1NODE3.st.com (10.75.129.71)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Mon, 6 Nov
+ 2023 14:48:33 +0100
+From:   Amelie Delaunay <amelie.delaunay@foss.st.com>
+To:     Vinod Koul <vkoul@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Amelie Delaunay <amelie.delaunay@foss.st.com>,
+        Pierre Yves MORDRET <pierre-yves.mordret@st.com>,
+        M'boumba Cedric Madianga <cedric.madianga@gmail.com>
+CC:     Arnd Bergmann <arnd@arndb.de>, <stable@vger.kernel.org>,
+        kernel test robot <lkp@intel.com>,
+        <dmaengine@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] dmaengine: stm32-dma: avoid bitfield overflow assertion
+Date:   Mon, 6 Nov 2023 14:48:32 +0100
+Message-ID: <20231106134832.1470305-1-amelie.delaunay@foss.st.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.6 00/30] 6.6.1-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:b9kUwxS7uLdrAxzLx7xooVQjFDVvE5X4gPvw6wCIX/ftvUldvky
- XtGsUTKs9jZW/13QTKEnUBYRr+zcIau2Fu6Ow9MtjUxbx1iSnU9wHJLBReQ9pTUvf0kiMYO
- 6un1rnJtXiny8OxFH8oN2FWRFK5cf7K7WvqxL0bJCnSsmgwEBlEXYLQd1o/oB5Gj0cx0UQg
- 6FMeWlcGCDizRWMEMSfPg==
-UI-OutboundReport: notjunk:1;M01:P0:efJ8v4b2BPo=;fBugDu8HHtzxdfbooJecWChUQC+
- 9fBTNqLZmxxymotMV/4N48Vd2RHNFjEBcX+XR4FU5sHJsoQ49KaqeupZluLoSF4SJyF8dwWHz
- bRxMrrQiLSoNxhTPekR0Np6iTR6vgbNaclX7D+pPcQgYH/WVVzLJwENPLz7HnwUdVO7vEvHon
- 6oOmwfAnnmbRhzUOoapOF168cVWK2+536mvGhUNDd8vt1zyhQELVI6y5mEPDb+mMXItVSBIg1
- 6Ek7oRpo9vjFdjX+Q15XIFreKJagmxJfJGWDaYgUDRDiJgSZBWlqVoJ7jd7Ie9bWOURAKNfhR
- Y4s2hiT0tGx4YZVnj02c3zQOACgdSs7+c2qOFmKKwGFQsCml/TxifnrHf059ZTLumj3TQZXJu
- LeC7gtFvUZM5ndYJMAX9jm1yeQJCitoI5iolmOvBGU7pteOXZGnh1Y6xEUSmDFZsJRA4+GvlL
- 7aVTa2LcOaV+ugEXocR6B8lpJYSkUIpAOn1UKmAN0Bs6LyC6qeP2NYPtixPp0DmAdVGwuhI6r
- 2454H1qgtE1utuSpY90iN7SV8h2xmeIU61npzwmg/yk4wnWMn/TMHgA0PgZkXVj5IAlI8uxVq
- maJKRiC8PMtR7Q2UNCNsgkgLtO9E5WlZRJ6ZsmktwUYwQLny5fiVWitBC2YCTHr56qwyOqtNc
- bji/wXFFDttoWNaKMsLb2PMuEr47LGDguOvH5CFnmQzxZNj3HytIPs6VhnvX7jN6eDbSt4cty
- 5WqY/H2ZXZGs5RgnuVba2xrR/bMimc/tvzExBIqlMRLH0lbUVK34Cb1fBKD28cTOa5tIckImb
- Y2ag4Ft2ma5j3pvP4JqU8iv+TeQlAGSdbP9Asluzfw1Ty50xkhsunZy3NdsnVsNMA2/dPpMqp
- xkuptfz9WRNPqbeng8ekqxxS+hBPRCvkME2mfET6lMnEZaLmF2X+jRhd/yxj3PvgDkrHgZUlN
- mEl0Wg==
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.201.20.208]
+X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE3.st.com
+ (10.75.129.71)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-06_12,2023-11-02_03,2023-05-22_02
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+stm32_dma_get_burst() returns a negative error for invalid input, which
+gets turned into a large u32 value in stm32_dma_prep_dma_memcpy() that
+in turn triggers an assertion because it does not fit into a two-bit field:
+drivers/dma/stm32-dma.c: In function 'stm32_dma_prep_dma_memcpy':
+include/linux/compiler_types.h:354:38: error: call to '__compiletime_assert_282' declared with attribute error: FIELD_PREP: value too large for the field
+     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+                                         ^
+   include/linux/compiler_types.h:335:4: note: in definition of macro '__compiletime_assert'
+       prefix ## suffix();    \
+       ^~~~~~
+   include/linux/compiler_types.h:354:2: note: in expansion of macro '_compiletime_assert'
+     _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+     ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+    #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+                                        ^~~~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:68:3: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+      BUILD_BUG_ON_MSG(__builtin_constant_p(_val) ?  \
+      ^~~~~~~~~~~~~~~~
+   include/linux/bitfield.h:114:3: note: in expansion of macro '__BF_FIELD_CHECK'
+      __BF_FIELD_CHECK(_mask, 0ULL, _val, "FIELD_PREP: "); \
+      ^~~~~~~~~~~~~~~~
+   drivers/dma/stm32-dma.c:1237:4: note: in expansion of macro 'FIELD_PREP'
+       FIELD_PREP(STM32_DMA_SCR_PBURST_MASK, dma_burst) |
+       ^~~~~~~~~~
 
-6.6.1-rc1
+As an easy workaround, assume the error can happen, so try to handle this
+by failing stm32_dma_prep_dma_memcpy() before the assertion. It replicates
+what is done in stm32_dma_set_xfer_param() where stm32_dma_get_burst() is
+also used.
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake, i5-11400)
+Fixes: 1c32d6c37cc2 ("dmaengine: stm32-dma: use bitfield helpers")
+Fixes: a2b6103b7a8a ("dmaengine: stm32-dma: Improve memory burst management")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311060135.Q9eMnpCL-lkp@intel.com/
+---
+Updated from v1: https://lore.kernel.org/lkml/20230214103222.1193307-1-arnd@kernel.org/T/
+- change dma_burst from u32 to int, and check for negative value, as done
+in stm32_dma_set_xfer_param()
+- Add 'Cc:', 'Reported-by:' and 'Closes:' tags
+---
+ drivers/dma/stm32-dma.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-Thanks
-
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+diff --git a/drivers/dma/stm32-dma.c b/drivers/dma/stm32-dma.c
+index 0b30151fb45c..9840594a6aaa 100644
+--- a/drivers/dma/stm32-dma.c
++++ b/drivers/dma/stm32-dma.c
+@@ -1249,8 +1249,8 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_dma_memcpy(
+ 	enum dma_slave_buswidth max_width;
+ 	struct stm32_dma_desc *desc;
+ 	size_t xfer_count, offset;
+-	u32 num_sgs, best_burst, dma_burst, threshold;
+-	int i;
++	u32 num_sgs, best_burst, threshold;
++	int dma_burst, i;
+ 
+ 	num_sgs = DIV_ROUND_UP(len, STM32_DMA_ALIGNED_MAX_DATA_ITEMS);
+ 	desc = kzalloc(struct_size(desc, sg_req, num_sgs), GFP_NOWAIT);
+@@ -1268,6 +1268,10 @@ static struct dma_async_tx_descriptor *stm32_dma_prep_dma_memcpy(
+ 		best_burst = stm32_dma_get_best_burst(len, STM32_DMA_MAX_BURST,
+ 						      threshold, max_width);
+ 		dma_burst = stm32_dma_get_burst(chan, best_burst);
++		if (dma_burst < 0) {
++			kfree(desc);
++			return NULL;
++		}
+ 
+ 		stm32_dma_clear_reg(&desc->sg_req[i].chan_reg);
+ 		desc->sg_req[i].chan_reg.dma_scr =
+-- 
+2.25.1
 
