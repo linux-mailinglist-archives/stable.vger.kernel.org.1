@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E01BB7E23F5
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:16:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C8AAB7E2386
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231866AbjKFNQi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:16:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56174 "EHLO
+        id S232129AbjKFNM3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:12:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232086AbjKFNQi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:16:38 -0500
+        with ESMTP id S232115AbjKFNM2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80D50D8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:16:35 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D49C433C9;
-        Mon,  6 Nov 2023 13:16:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C33F1
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E9BC433C8;
+        Mon,  6 Nov 2023 13:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276595;
-        bh=waLjVfGSw0pNTIMuZTdiC9OXZMz6FJWTeq2XjYIpYEw=;
+        s=korg; t=1699276345;
+        bh=6/YnSjy7eoYajlxcSkCHsXYdcX4MFKTAaNUB15+ZmwE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LECpReb+Y/Esu3XY35cjGewdXFv0/jxzCwWUdn+DvAlHkT3eNoPHyntISBIfW3gR+
-         Kgt2C1GPRXxzXBjXosMNafbTDPCM1b2nZl5OoNXTjhTHbbdvecQSoSMBcqI/HdYRHd
-         W9zXnt1ODUUIYJLKEzmLoANIwEoWUrRE/1gz6zwQ=
+        b=bBotzK5zLKOdWrW62RG1e+yO2szcEm96G5woW+BMueS+yUHHND9bIFUD+Y6evyBhb
+         QGu+zJ6tpXWN1BXumy29wHePrVYF0YJqs9lU7Ry+FrLIw/0/FB8Xbv3wuj3IjOkfvD
+         gt9YJ2IrEIqXnw+iNg0JrYhluH0p60SvM9IXG6M4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Antoine Gennart <gennartan@disroot.org>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 15/88] powerpc/85xx: Fix math emulation exception
+Subject: [PATCH 6.1 03/62] ASoC: tlv320adc3xxx: BUG: Correct micbias setting
 Date:   Mon,  6 Nov 2023 14:03:09 +0100
-Message-ID: <20231106130306.356745582@linuxfoundation.org>
+Message-ID: <20231106130301.931524283@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Antoine Gennart <gennartan@disroot.org>
 
-[ Upstream commit 8e8a12ecbc86700b5e1a3596ce2b3c43dafad336 ]
+[ Upstream commit e930bea4124b8a4a47ba4092d99da30099b9242d ]
 
-Booting mpc85xx_defconfig kernel on QEMU leads to:
+The micbias setting for tlv320adc can also have the value '3' which
+means that the micbias ouput pin is connected to the input pin AVDD.
 
-Bad trap at PC: fe9bab0, SR: 2d000, vector=800
-awk[82]: unhandled trap (5) at 0 nip fe9bab0 lr fe9e01c code 5 in libc-2.27.so[fe5a000+17a000]
-awk[82]: code: 3aa00000 3a800010 4bffe03c 9421fff0 7ca62b78 38a00000 93c10008 83c10008
-awk[82]: code: 38210010 4bffdec8 9421ffc0 7c0802a6 <fc00048e> d8010008 4815190d 93810030
-Trace/breakpoint trap
-WARNING: no useful console
-
-This is because allthough CONFIG_MATH_EMULATION is selected,
-Exception 800 calls unknown_exception().
-
-Call emulation_assist_interrupt() instead.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/066caa6d9480365da9b8ed83692d7101e10ac5f8.1695657339.git.christophe.leroy@csgroup.eu
+Signed-off-by: Antoine Gennart <gennartan@disroot.org>
+Link: https://lore.kernel.org/r/20230929130117.77661-1-gennartan@disroot.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/head_85xx.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/tlv320adc3xxx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kernel/head_85xx.S b/arch/powerpc/kernel/head_85xx.S
-index fdbee1093e2ba..f9634111e82ed 100644
---- a/arch/powerpc/kernel/head_85xx.S
-+++ b/arch/powerpc/kernel/head_85xx.S
-@@ -396,7 +396,7 @@ interrupt_base:
- #ifdef CONFIG_PPC_FPU
- 	FP_UNAVAILABLE_EXCEPTION
- #else
--	EXCEPTION(0x0800, FP_UNAVAIL, FloatingPointUnavailable, unknown_exception)
-+	EXCEPTION(0x0800, FP_UNAVAIL, FloatingPointUnavailable, emulation_assist_interrupt)
- #endif
+diff --git a/sound/soc/codecs/tlv320adc3xxx.c b/sound/soc/codecs/tlv320adc3xxx.c
+index 52bb557247244..6bd6da01aafac 100644
+--- a/sound/soc/codecs/tlv320adc3xxx.c
++++ b/sound/soc/codecs/tlv320adc3xxx.c
+@@ -293,7 +293,7 @@
+ #define ADC3XXX_BYPASS_RPGA		0x80
  
- 	/* System Call Interrupt */
+ /* MICBIAS control bits */
+-#define ADC3XXX_MICBIAS_MASK		0x2
++#define ADC3XXX_MICBIAS_MASK		0x3
+ #define ADC3XXX_MICBIAS1_SHIFT		5
+ #define ADC3XXX_MICBIAS2_SHIFT		3
+ 
+@@ -1099,7 +1099,7 @@ static int adc3xxx_parse_dt_micbias(struct adc3xxx *adc3xxx,
+ 	unsigned int val;
+ 
+ 	if (!of_property_read_u32(np, propname, &val)) {
+-		if (val >= ADC3XXX_MICBIAS_AVDD) {
++		if (val > ADC3XXX_MICBIAS_AVDD) {
+ 			dev_err(dev, "Invalid property value for '%s'\n", propname);
+ 			return -EINVAL;
+ 		}
 -- 
 2.42.0
 
