@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 362977E2533
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0ED87E249B
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232029AbjKFN3S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:29:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43348 "EHLO
+        id S232484AbjKFNX2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:23:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231946AbjKFN3R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:17 -0500
+        with ESMTP id S232475AbjKFNX2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 358EAA9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:15 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785FEC433C7;
-        Mon,  6 Nov 2023 13:29:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B0E1100
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6FE8C433C9;
+        Mon,  6 Nov 2023 13:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277354;
-        bh=x1p3x4DYjMThK0X1jQu5vc6ZogdJiSAugci61pV96rA=;
+        s=korg; t=1699277002;
+        bh=u95qJ8ePzO4ixpfQ3W/QMAOcIA4jES15Cti1DbOjErc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MKxo9fhDGpq7AQvX+IfsMPvY1/ePM5/9l49GnRDgwmBx1FV1HShnABDf0BDVQtHEO
-         ipDqT7ZEEjGPlTamY5+oCyXFurl1YbDnz3O9boJb/O5PPdYjKvrPODZdkXAxC00Oy9
-         8xbXZ63JAq9ypd7mI5PY0Ezz2yMZhu8SvOwJFq60=
+        b=0lYzirMk0KGhTm49camBStmBsSP5bDm4x8/N8I/IHMjQRUPqhzBY9s8fG5m6xoMhA
+         PIVeocz419xlgnllTZNMykVOkjtMAeM5qlKDzNCjMtJUsYCwSYWaPJNKrkNirUZZs4
+         +vrnXwzoBRFjAwiEomgWszwuzqi4TRj3WL54jCEY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liming Sun <limings@nvidia.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev,
+        "William A. Kennington III" <william@wkennington.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/128] platform/mellanox: mlxbf-tmfifo: Fix a warning message
+Subject: [PATCH 5.4 56/74] spi: npcm-fiu: Fix UMA reads when dummy.nbytes == 0
 Date:   Mon,  6 Nov 2023 14:04:16 +0100
-Message-ID: <20231106130313.523127719@linuxfoundation.org>
+Message-ID: <20231106130303.658944833@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,67 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liming Sun <limings@nvidia.com>
+From: William A. Kennington III <william@wkennington.com>
 
-[ Upstream commit 99c09c985e5973c8f0ad976ebae069548dd86f12 ]
+[ Upstream commit 2ec8b010979036c2fe79a64adb6ecc0bd11e91d1 ]
 
-This commit fixes the smatch static checker warning in function
-mlxbf_tmfifo_rxtx_word() which complains data not initialized at
-line 634 when IS_VRING_DROP() is TRUE.
+We don't want to use the value of ilog2(0) as dummy.buswidth is 0 when
+dummy.nbytes is 0. Since we have no dummy bytes, we don't need to
+configure the dummy byte bits per clock register value anyway.
 
-Signed-off-by: Liming Sun <limings@nvidia.com>
-Link: https://lore.kernel.org/r/20231012230235.219861-1-limings@nvidia.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: "William A. Kennington III" <william@wkennington.com>
+Link: https://lore.kernel.org/r/20230922182812.2728066-1-william@wkennington.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/mlxbf-tmfifo.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/spi/spi-npcm-fiu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/mellanox/mlxbf-tmfifo.c b/drivers/platform/mellanox/mlxbf-tmfifo.c
-index 194f3205e5597..767f4406e55f1 100644
---- a/drivers/platform/mellanox/mlxbf-tmfifo.c
-+++ b/drivers/platform/mellanox/mlxbf-tmfifo.c
-@@ -588,24 +588,25 @@ static void mlxbf_tmfifo_rxtx_word(struct mlxbf_tmfifo_vring *vring,
- 
- 	if (vring->cur_len + sizeof(u64) <= len) {
- 		/* The whole word. */
--		if (!IS_VRING_DROP(vring)) {
--			if (is_rx)
-+		if (is_rx) {
-+			if (!IS_VRING_DROP(vring))
- 				memcpy(addr + vring->cur_len, &data,
- 				       sizeof(u64));
--			else
--				memcpy(&data, addr + vring->cur_len,
--				       sizeof(u64));
-+		} else {
-+			memcpy(&data, addr + vring->cur_len,
-+			       sizeof(u64));
- 		}
- 		vring->cur_len += sizeof(u64);
- 	} else {
- 		/* Leftover bytes. */
--		if (!IS_VRING_DROP(vring)) {
--			if (is_rx)
-+		if (is_rx) {
-+			if (!IS_VRING_DROP(vring))
- 				memcpy(addr + vring->cur_len, &data,
- 				       len - vring->cur_len);
--			else
--				memcpy(&data, addr + vring->cur_len,
--				       len - vring->cur_len);
-+		} else {
-+			data = 0;
-+			memcpy(&data, addr + vring->cur_len,
-+			       len - vring->cur_len);
- 		}
- 		vring->cur_len = len;
- 	}
+diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
+index 1e770d6739050..cc4e29cd86dab 100644
+--- a/drivers/spi/spi-npcm-fiu.c
++++ b/drivers/spi/spi-npcm-fiu.c
+@@ -334,8 +334,9 @@ static int npcm_fiu_uma_read(struct spi_mem *mem,
+ 		uma_cfg |= ilog2(op->cmd.buswidth);
+ 		uma_cfg |= ilog2(op->addr.buswidth)
+ 			<< NPCM_FIU_UMA_CFG_ADBPCK_SHIFT;
+-		uma_cfg |= ilog2(op->dummy.buswidth)
+-			<< NPCM_FIU_UMA_CFG_DBPCK_SHIFT;
++		if (op->dummy.nbytes)
++			uma_cfg |= ilog2(op->dummy.buswidth)
++				<< NPCM_FIU_UMA_CFG_DBPCK_SHIFT;
+ 		uma_cfg |= ilog2(op->data.buswidth)
+ 			<< NPCM_FIU_UMA_CFG_RDBPCK_SHIFT;
+ 		uma_cfg |= op->dummy.nbytes << NPCM_FIU_UMA_CFG_DBSIZ_SHIFT;
 -- 
 2.42.0
 
