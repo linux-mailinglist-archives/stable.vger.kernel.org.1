@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1279B7E30BA
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 00:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75F217E30CE
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 00:14:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233485AbjKFXIC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 18:08:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35232 "EHLO
+        id S232790AbjKFXOm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 18:14:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233533AbjKFXHh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 18:07:37 -0500
+        with ESMTP id S233228AbjKFXOl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 18:14:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D32971703;
-        Mon,  6 Nov 2023 15:07:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB6CC433C7;
-        Mon,  6 Nov 2023 23:07:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDBA192;
+        Mon,  6 Nov 2023 15:14:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495B1C433C8;
+        Mon,  6 Nov 2023 23:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699312052;
-        bh=md3aXzGLS4KCiMpHUZ/uZtMIj/5YQPVs/Nh62VwgmFs=;
+        s=k20201202; t=1699312478;
+        bh=S5iI93LrgOnxgW5bYAeqTVil3rGK7sg8MXiLV7EkTa4=;
         h=From:To:Cc:Subject:Date:From;
-        b=LXtX3WosRNuQ0jADLol+qQIXVaRakLQaDwzvbjbDsqLhiYTosifWpaQTci1GTBkNP
-         xEHzlDRIpsa5mj2u1zOD9kpD/V+u7GI5s1bryXSFfvZG9sOSwYnyPEVxx9epSJOSrV
-         p370ph26O7+FJamB8WfqZMCJ6x7am+jJFUMhyaRS6SppnZAnvbpY5k3V0Xy928iM7F
-         FhnJp4yiKD4jiLsEGpYXxexhEHoP55ZZdjOXE9+TFUlpczKNE+PEBh4zCo5XtCxJfS
-         YSZzgS+Z0ZwIOaH/yafggs7S0VuMB8V4ZTCytizzzGOw4EyoIRAru1zgP6Hsna0hC3
-         VTC6Rr74LY7dQ==
+        b=pX7NwklTMSEvfvGWQLwRRPmAZjfnBTotfToM7cvbAY/T3szHX8sySOtjJ8tG1VIes
+         Gaqt2qV0K24eR3IAvq0+QaDqKMAKKnAoPnQHIH+mnknQ6COwdhdViznHovy1DIaU1x
+         Tr4MKat+pB1hXvbWXm0BR0WSyoaDZXpapCt1jKWWoy7VlB378Dcr1bKA3VWScHQysD
+         2QgMxPoVQh4ERB0FNlxD+TyN+m1kLQRqH6Q4jVnFcXU24VUtIsf+CG6sxbz+57ipfP
+         DOxGiRTjqgA2VEKqbHEXOFHfKTefuV+YrfnJ3TNP/QhAC0SVxx5kZegbxrN4eEyJUx
+         4Ac3jjs+wwMYg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     John Stultz <jstultz@google.com>, Ingo Molnar <mingo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, peterz@infradead.org,
-        mingo@redhat.com, will@kernel.org
-Subject: [PATCH AUTOSEL 4.14] locking/ww_mutex/test: Fix potential workqueue corruption
-Date:   Mon,  6 Nov 2023 18:07:29 -0500
-Message-ID: <20231106230729.3734685-1-sashal@kernel.org>
+Cc:     Shuai Xue <xueshuai@linux.alibaba.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, mingo@redhat.com,
+        acme@kernel.org, linux-perf-users@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/13] perf/core: Bail out early if the request AUX area is out of bound
+Date:   Mon,  6 Nov 2023 18:14:14 -0500
+Message-ID: <20231106231435.3734790-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.328
+X-stable-base: Linux 6.6
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,117 +52,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: John Stultz <jstultz@google.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit bccdd808902f8c677317cec47c306e42b93b849e ]
+[ Upstream commit 54aee5f15b83437f23b2b2469bcf21bdd9823916 ]
 
-In some cases running with the test-ww_mutex code, I was seeing
-odd behavior where sometimes it seemed flush_workqueue was
-returning before all the work threads were finished.
+When perf-record with a large AUX area, e.g 4GB, it fails with:
 
-Often this would cause strange crashes as the mutexes would be
-freed while they were being used.
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
 
-Looking at the code, there is a lifetime problem as the
-controlling thread that spawns the work allocates the
-"struct stress" structures that are passed to the workqueue
-threads. Then when the workqueue threads are finished,
-they free the stress struct that was passed to them.
+and it reveals a WARNING with __alloc_pages():
 
-Unfortunately the workqueue work_struct node is in the stress
-struct. Which means the work_struct is freed before the work
-thread returns and while flush_workqueue is waiting.
+	------------[ cut here ]------------
+	WARNING: CPU: 44 PID: 17573 at mm/page_alloc.c:5568 __alloc_pages+0x1ec/0x248
+	Call trace:
+	 __alloc_pages+0x1ec/0x248
+	 __kmalloc_large_node+0xc0/0x1f8
+	 __kmalloc_node+0x134/0x1e8
+	 rb_alloc_aux+0xe0/0x298
+	 perf_mmap+0x440/0x660
+	 mmap_region+0x308/0x8a8
+	 do_mmap+0x3c0/0x528
+	 vm_mmap_pgoff+0xf4/0x1b8
+	 ksys_mmap_pgoff+0x18c/0x218
+	 __arm64_sys_mmap+0x38/0x58
+	 invoke_syscall+0x50/0x128
+	 el0_svc_common.constprop.0+0x58/0x188
+	 do_el0_svc+0x34/0x50
+	 el0_svc+0x34/0x108
+	 el0t_64_sync_handler+0xb8/0xc0
+	 el0t_64_sync+0x1a4/0x1a8
 
-It seems like a better idea to have the controlling thread
-both allocate and free the stress structures, so that we can
-be sure we don't corrupt the workqueue by freeing the structure
-prematurely.
+'rb->aux_pages' allocated by kcalloc() is a pointer array which is used to
+maintains AUX trace pages. The allocated page for this array is physically
+contiguous (and virtually contiguous) with an order of 0..MAX_ORDER. If the
+size of pointer array crosses the limitation set by MAX_ORDER, it reveals a
+WARNING.
 
-So this patch reworks the test to do so, and with this change
-I no longer see the early flush_workqueue returns.
+So bail out early with -ENOMEM if the request AUX area is out of bound,
+e.g.:
 
-Signed-off-by: John Stultz <jstultz@google.com>
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230922043616.19282-3-jstultz@google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/test-ww_mutex.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ kernel/events/ring_buffer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index 654977862b06b..8489a01f943e8 100644
---- a/kernel/locking/test-ww_mutex.c
-+++ b/kernel/locking/test-ww_mutex.c
-@@ -439,7 +439,6 @@ static void stress_inorder_work(struct work_struct *work)
- 	} while (!time_after(jiffies, stress->timeout));
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index fb1e180b5f0af..e8d82c2f07d0e 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -700,6 +700,12 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
+ 		watermark = 0;
+ 	}
  
- 	kfree(order);
--	kfree(stress);
- }
- 
- struct reorder_lock {
-@@ -504,7 +503,6 @@ static void stress_reorder_work(struct work_struct *work)
- 	list_for_each_entry_safe(ll, ln, &locks, link)
- 		kfree(ll);
- 	kfree(order);
--	kfree(stress);
- }
- 
- static void stress_one_work(struct work_struct *work)
-@@ -525,8 +523,6 @@ static void stress_one_work(struct work_struct *work)
- 			break;
- 		}
- 	} while (!time_after(jiffies, stress->timeout));
--
--	kfree(stress);
- }
- 
- #define STRESS_INORDER BIT(0)
-@@ -537,15 +533,24 @@ static void stress_one_work(struct work_struct *work)
- static int stress(int nlocks, int nthreads, unsigned int flags)
- {
- 	struct ww_mutex *locks;
--	int n;
-+	struct stress *stress_array;
-+	int n, count;
- 
- 	locks = kmalloc_array(nlocks, sizeof(*locks), GFP_KERNEL);
- 	if (!locks)
- 		return -ENOMEM;
- 
-+	stress_array = kmalloc_array(nthreads, sizeof(*stress_array),
-+				     GFP_KERNEL);
-+	if (!stress_array) {
-+		kfree(locks);
++	/*
++	 * kcalloc_node() is unable to allocate buffer if the size is larger
++	 * than: PAGE_SIZE << MAX_ORDER; directly bail out in this case.
++	 */
++	if (get_order((unsigned long)nr_pages * sizeof(void *)) > MAX_ORDER)
 +		return -ENOMEM;
-+	}
-+
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_init(&locks[n], &ww_class);
- 
-+	count = 0;
- 	for (n = 0; nthreads; n++) {
- 		struct stress *stress;
- 		void (*fn)(struct work_struct *work);
-@@ -569,9 +574,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 		if (!fn)
- 			continue;
- 
--		stress = kmalloc(sizeof(*stress), GFP_KERNEL);
--		if (!stress)
--			break;
-+		stress = &stress_array[count++];
- 
- 		INIT_WORK(&stress->work, fn);
- 		stress->locks = locks;
-@@ -586,6 +589,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_destroy(&locks[n]);
-+	kfree(stress_array);
- 	kfree(locks);
- 
- 	return 0;
+ 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
+ 				     node);
+ 	if (!rb->aux_pages)
 -- 
 2.42.0
 
