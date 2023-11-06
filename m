@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D067E2502
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B0737E2561
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232632AbjKFN1T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:27:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43658 "EHLO
+        id S232741AbjKFNbX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:31:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232620AbjKFN1R (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:17 -0500
+        with ESMTP id S232716AbjKFNbU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:20 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88CB1EA
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:14 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF0DC433C8;
-        Mon,  6 Nov 2023 13:27:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2495BD6A
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:15 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53076C433CC;
+        Mon,  6 Nov 2023 13:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277234;
-        bh=h7lmvppCMkgdziu38ydHLTIsaXEoUD2N4PCrqfo2S0I=;
+        s=korg; t=1699277474;
+        bh=DPapVJsOD/oSPi8kdV9YBsAvK+oZGubwyU6WgfWGKvY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P7rKh8TPrJS0D+GEI1jDzqGqvCF0x199/EP3TIRApyZVRH8xhNPe8il+mjcIRCCVQ
-         nsA253cFuFRF7OfaQQp8ipdpCLN1Qb9E5Jejt0LyKFtZDlJK6g4V2s58HNt/ssnMfg
-         PEV9QqqVXg/iJGOvN16YJQgbHxNZz3CUCi4eJfkQ=
+        b=m6dkkI/j/eUpiXYrMPCEvOGQ8bcZjSPo3h66r1CQpJWDljGoynv6TKSIGn3ZzSTiB
+         TcDgNO1cd4Vz0PMlCzHIz2Imy4mBHGJw6WeH7hgsntB6yVNE+zUNXmO29asrVUmN1/
+         6GBVnOtHlErgC1nVVewEASBiKbRCPqL3oCAl7xLU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 083/128] fs/ntfs3: Add ckeck in ni_update_parent()
+        patches@lists.linux.dev, Stable@vger.kernel.org,
+        Peng Fan <peng.fan@nxp.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 5.10 35/95] nvmem: imx: correct nregs for i.MX6SLL
 Date:   Mon,  6 Nov 2023 14:04:03 +0100
-Message-ID: <20231106130312.912213026@linuxfoundation.org>
+Message-ID: <20231106130306.005924516@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +50,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 87d1888aa40f25773fa0b948bcb2545f97e2cb15 ]
+commit 414a98abbefd82d591f4e2d1efd2917bcd3b6f6d upstream.
 
-Check simple case when parent inode equals current inode.
+The nregs for i.MX6SLL should be 80 per fuse map, correct it.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6da27821a6f5 ("nvmem: imx-ocotp: add support for imx6sll")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20231013124904.175782-2-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/frecord.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/nvmem/imx-ocotp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index 9a1744955d1cf..73a56d7ac84b7 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -3144,6 +3144,12 @@ static bool ni_update_parent(struct ntfs_inode *ni, struct NTFS_DUP_INFO *dup,
- 		if (!fname || !memcmp(&fname->dup, dup, sizeof(fname->dup)))
- 			continue;
+--- a/drivers/nvmem/imx-ocotp.c
++++ b/drivers/nvmem/imx-ocotp.c
+@@ -467,7 +467,7 @@ static const struct ocotp_params imx6sl_
+ };
  
-+		/* Check simple case when parent inode equals current inode. */
-+		if (ino_get(&fname->home) == ni->vfs_inode.i_ino) {
-+			ntfs_set_state(sbi, NTFS_DIRTY_ERROR);
-+			continue;
-+		}
-+
- 		/* ntfs_iget5 may sleep. */
- 		dir = ntfs_iget5(sb, &fname->home, NULL);
- 		if (IS_ERR(dir)) {
--- 
-2.42.0
-
+ static const struct ocotp_params imx6sll_params = {
+-	.nregs = 128,
++	.nregs = 80,
+ 	.bank_address_words = 0,
+ 	.set_timing = imx_ocotp_set_imx6_timing,
+ 	.ctrl = IMX_OCOTP_BM_CTRL_DEFAULT,
 
 
