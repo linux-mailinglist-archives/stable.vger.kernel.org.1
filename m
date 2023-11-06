@@ -2,128 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 920177E2AC0
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 18:13:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE3C87E2AE2
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 18:23:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229974AbjKFRNU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 12:13:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60524 "EHLO
+        id S231522AbjKFRXP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 12:23:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbjKFRNT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 12:13:19 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADF0C125
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 09:12:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1699290754;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=xtsXGyrCZBmUJfCxzrPKMMdVxxHur1sL8JecsuLgwa0=;
-        b=MjyQwaT6a3cTSI3RiDIca8cG8RAfMpf7JF8iskBIFkxXRO3tV2jqixAbJq6PiFgfnpuozu
-        dFtDo3YUysqq6LMjjTSR2Ho4Lis21izpLicOtX39Q17YL0wzC50tJERtjZsV8rFAXO3vRW
-        KywBHrtL/rSy6xqEuJkQWLKYa3SyLdo=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-_45CrAGuNjOuxKLbB7FT_Q-1; Mon,
- 06 Nov 2023 12:12:31 -0500
-X-MC-Unique: _45CrAGuNjOuxKLbB7FT_Q-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 674ED3821568;
-        Mon,  6 Nov 2023 17:12:30 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 47C5D1121308;
-        Mon,  6 Nov 2023 17:12:30 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-        id 3227530C72A7; Mon,  6 Nov 2023 17:12:30 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-        by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 2E33F3FD16;
-        Mon,  6 Nov 2023 18:12:30 +0100 (CET)
-Date:   Mon, 6 Nov 2023 18:12:30 +0100 (CET)
-From:   Mikulas Patocka <mpatocka@redhat.com>
-To:     Mike Snitzer <snitzer@kernel.org>
-cc:     Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        xen-devel@lists.xenproject.org, iommu@lists.linux.dev,
-        Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>,
-        Jens Axboe <axboe@fb.com>, Sagi Grimberg <sagi@grimberg.me>,
-        Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        dm-devel@lists.linux.dev, linux-mm@kvack.org
-Subject: [PATCH v2] swiotlb-xen: provide the "max_mapping_size" method
-In-Reply-To: <ZUkGpblDX637QV9y@redhat.com>
-Message-ID: <151bef41-e817-aea9-675-a35fdac4ed@redhat.com>
-References: <3cb4133c-b6db-9187-a678-11ed8c9456e@redhat.com> <ZUUctamEFtAlSnSV@mail-itl> <ZUUlqJoS6_1IznzT@kbusch-mbp.dhcp.thefacebook.com> <ZUVYT1Xp4+hFT27W@mail-itl> <ZUV3TApYYoh_oiRR@kbusch-mbp.dhcp.thefacebook.com> <11a9886d-316c-edcd-d6da-24ad0b9a2b4@redhat.com>
- <ZUZOKitOAqqKiJ4n@kbusch-mbp.dhcp.thefacebook.com> <20231106071008.GB17022@lst.de> <928b5df7-fada-cf2f-6f6a-257a84547c3@redhat.com> <ZUkDUXDF6g4P86F3@kbusch-mbp.dhcp.thefacebook.com> <ZUkGpblDX637QV9y@redhat.com>
+        with ESMTP id S229755AbjKFRXP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 12:23:15 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DE22134;
+        Mon,  6 Nov 2023 09:23:12 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4419C433C8;
+        Mon,  6 Nov 2023 17:23:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699291392;
+        bh=ijIIl76mfSyZJEaXX4AApfOx/nna6VpZIW5RcMMk+U0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=TYd67ldJQeDK9HAoYfRvW0DFIzUne2FHB0hO5kCS/gcjMe93dVKGJtzpU0t2+0CKD
+         2XZu/7MHYaMRvbOfTFo+0WrkGdc75iN0o1cpYmx5X+a6Qtov5hwStmvs9s68OL2+jV
+         1sAqycp1rHVEIlOo0Wkld14VR0pjzPDbM5OfjcK8U0DCS81uRvYsQ+DrsetQRwUOU+
+         ETv0AYl3RWBClck2kB0WutwCidMzH6Z3lmAFqIcDZhbZ8UBDFF7C/NK3hhpUY6tzqW
+         BbU7sQPh97aGCAC0IU/9c7aT38hGnziwiTEFvu5PumRpzXhb2WYxIXawKWOs3JMhUo
+         UAwZ0H+apfPCQ==
+From:   SeongJae Park <sj@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, damon@lists.linux.dev,
+        SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 5.15 000/128] 5.15.138-rc1 review
+Date:   Mon,  6 Nov 2023 17:23:08 +0000
+Message-Id: <20231106172309.48303-1-sj@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: 
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="185210117-1837111149-1699290694=:1497320"
-Content-ID: <478c056-3a19-eb50-34da-911cf13fc558@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hello,
 
---185210117-1837111149-1699290694=:1497320
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Content-ID: <4468b751-727c-3ffb-15cc-683422283a27@redhat.com>
+On Mon, 6 Nov 2023 14:02:40 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-From: Keith Busch <kbusch@kernel.org>
+> This is the start of the stable review cycle for the 5.15.138 release.
+> There are 128 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.138-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 
-There's a bug that when using the XEN hypervisor with bios with large
-multi-page bio vectors on NVMe, the kernel deadlocks [1].
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
 
-The deadlocks are caused by inability to map a large bio vector -
-dma_map_sgtable always returns an error, this gets propagated to the block
-layer as BLK_STS_RESOURCE and the block layer retries the request
-indefinitely.
+Tested-by: SeongJae Park <sj@kernel.org>
 
-XEN uses the swiotlb framework to map discontiguous pages into contiguous
-runs that are submitted to the PCIe device. The swiotlb framework has a
-limitation on the length of a mapping - this needs to be announced with
-the max_mapping_size method to make sure that the hardware drivers do not
-create larger mappings.
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] ec134bfabca0 ("Linux 5.15.138-rc1")
 
-Without max_mapping_size, the NVMe block driver would create large
-mappings that overrun the maximum mapping size.
+Thanks,
+SJ
 
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Link: https://lore.kernel.org/stable/ZTNH0qtmint%2FzLJZ@mail-itl/ [1]
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+[...]
 
 ---
- drivers/xen/swiotlb-xen.c |    1 +
- 1 file changed, 1 insertion(+)
 
-Index: linux-stable/drivers/xen/swiotlb-xen.c
-===================================================================
---- linux-stable.orig/drivers/xen/swiotlb-xen.c	2023-11-03 17:57:18.000000000 +0100
-+++ linux-stable/drivers/xen/swiotlb-xen.c	2023-11-06 15:30:59.000000000 +0100
-@@ -405,4 +405,5 @@ const struct dma_map_ops xen_swiotlb_dma
- 	.get_sgtable = dma_common_get_sgtable,
- 	.alloc_pages = dma_common_alloc_pages,
- 	.free_pages = dma_common_free_pages,
-+	.max_mapping_size = swiotlb_max_mapping_size,
- };
---185210117-1837111149-1699290694=:1497320--
-
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_i386_idle_flag.sh
+ok 13 selftests: damon-tests: build_i386_highpte.sh
+ok 14 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
