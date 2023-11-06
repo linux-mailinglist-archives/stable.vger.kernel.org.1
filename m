@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 593577E2321
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 308BC7E2395
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231862AbjKFNJH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:09:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37664 "EHLO
+        id S231759AbjKFNMz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:12:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232066AbjKFNJF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:05 -0500
+        with ESMTP id S232168AbjKFNMy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4CFE100
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:02 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177CCC433C9;
-        Mon,  6 Nov 2023 13:09:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0DEC125
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E59AC433C8;
+        Mon,  6 Nov 2023 13:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276142;
-        bh=fpKJIAemHMnVurcYwhsyAB6B0QlhESpQIRZiJ8bNs9A=;
+        s=korg; t=1699276371;
+        bh=JbOhGG0L+nOujUWVMF9FT48n5SkBbTxOktCeoHIIITM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=us/M8d4sVOGnbJ8gQppdjLKNcyvBymuVYL6RhmnJZmpbUbpG2Q8yFsDF6TI7HmH+v
-         wZR0LbiuDld3ZCjJMed3pqD/vtEbjewb/LvqIOOUt0ROvw8tMeUmNO+UhhF5K4gqLY
-         IjvrqvsZHgiGLQSydwFJceHqi0SF6qFSnaCVtdnA=
+        b=q9LKSYtDz6CJqBYbiXFCU+Rq9TmNpg2BkKxzit0/CgqZPTJvHG6T0KMcqzx7oWAVU
+         YJ5opTxtvotCopm1RlDQMkHkMPok5P1FUVtEuJcFXvIj/WwhFtXESk0RIsUzEqLCxs
+         NSQOgQqtfHzXJiocyUq5FLq/Qq4ojx2gKovZMqEE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 08/30] eventfs: Use simple_recursive_removal() to clean up dentries
+        patches@lists.linux.dev, Kuan-Wei Chiu <visitorckw@gmail.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 20/62] efi: fix memory leak in krealloc failure handling
 Date:   Mon,  6 Nov 2023 14:03:26 +0100
-Message-ID: <20231106130258.225254857@linuxfoundation.org>
+Message-ID: <20231106130302.548256565@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,197 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-commit 407c6726ca71b33330d2d6345d9ea7ebc02575e9 upstream
+[ Upstream commit 0d3ad1917996839a5042d18f04e41915cfa1b74a ]
 
-Looking at how dentry is removed via the tracefs system, I found that
-eventfs does not do everything that it did under tracefs. The tracefs
-removal of a dentry calls simple_recursive_removal() that does a lot more
-than a simple d_invalidate().
+In the previous code, there was a memory leak issue where the
+previously allocated memory was not freed upon a failed krealloc
+operation. This patch addresses the problem by releasing the old memory
+before setting the pointer to NULL in case of a krealloc failure. This
+ensures that memory is properly managed and avoids potential memory
+leaks.
 
-As it should be a requirement that any eventfs_inode that has a dentry, so
-does its parent. When removing a eventfs_inode, if it has a dentry, a call
-to simple_recursive_removal() on that dentry should clean up all the
-dentries underneath it.
-
-Add WARN_ON_ONCE() to check for the parent having a dentry if any children
-do.
-
-Link: https://lore.kernel.org/all/20231101022553.GE1957730@ZenIV/
-Link: https://lkml.kernel.org/r/20231101172650.552471568@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Fixes: 5bdcd5f5331a2 ("eventfs: Implement removal of meta data from eventfs")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c |   71 +++++++++++++++++++++--------------------------
- 1 file changed, 33 insertions(+), 38 deletions(-)
+ drivers/firmware/efi/efi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -54,12 +54,10 @@ struct eventfs_file {
- 	/*
- 	 * Union - used for deletion
- 	 * @llist:	for calling dput() if needed after RCU
--	 * @del_list:	list of eventfs_file to delete
- 	 * @rcu:	eventfs_file to delete in RCU
- 	 */
- 	union {
- 		struct llist_node	llist;
--		struct list_head	del_list;
- 		struct rcu_head		rcu;
- 	};
- 	void				*data;
-@@ -276,7 +274,6 @@ static void free_ef(struct eventfs_file
-  */
- void eventfs_set_ef_status_free(struct tracefs_inode *ti, struct dentry *dentry)
- {
--	struct tracefs_inode *ti_parent;
- 	struct eventfs_inode *ei;
- 	struct eventfs_file *ef;
- 
-@@ -297,10 +294,6 @@ void eventfs_set_ef_status_free(struct t
- 
- 	mutex_lock(&eventfs_mutex);
- 
--	ti_parent = get_tracefs(dentry->d_parent->d_inode);
--	if (!ti_parent || !(ti_parent->flags & TRACEFS_EVENT_INODE))
--		goto out;
--
- 	ef = dentry->d_fsdata;
- 	if (!ef)
- 		goto out;
-@@ -873,30 +866,29 @@ static void unhook_dentry(struct dentry
- {
- 	if (!dentry)
- 		return;
--
--	/* Keep the dentry from being freed yet (see eventfs_workfn()) */
-+	/*
-+	 * Need to add a reference to the dentry that is expected by
-+	 * simple_recursive_removal(), which will include a dput().
-+	 */
- 	dget(dentry);
- 
--	dentry->d_fsdata = NULL;
--	d_invalidate(dentry);
--	mutex_lock(&eventfs_mutex);
--	/* dentry should now have at least a single reference */
--	WARN_ONCE((int)d_count(dentry) < 1,
--		  "dentry %px (%s) less than one reference (%d) after invalidate\n",
--		  dentry, dentry->d_name.name, d_count(dentry));
--	mutex_unlock(&eventfs_mutex);
-+	/*
-+	 * Also add a reference for the dput() in eventfs_workfn().
-+	 * That is required as that dput() will free the ei after
-+	 * the SRCU grace period is over.
-+	 */
-+	dget(dentry);
- }
- 
- /**
-  * eventfs_remove_rec - remove eventfs dir or file from list
-  * @ef: eventfs_file to be removed.
-- * @head: to create list of eventfs_file to be deleted
-  * @level: to check recursion depth
-  *
-  * The helper function eventfs_remove_rec() is used to clean up and free the
-  * associated data from eventfs for both of the added functions.
-  */
--static void eventfs_remove_rec(struct eventfs_file *ef, struct list_head *head, int level)
-+static void eventfs_remove_rec(struct eventfs_file *ef, int level)
- {
- 	struct eventfs_file *ef_child;
- 
-@@ -916,14 +908,16 @@ static void eventfs_remove_rec(struct ev
- 		/* search for nested folders or files */
- 		list_for_each_entry_srcu(ef_child, &ef->ei->e_top_files, list,
- 					 lockdep_is_held(&eventfs_mutex)) {
--			eventfs_remove_rec(ef_child, head, level + 1);
-+			eventfs_remove_rec(ef_child, level + 1);
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index b43e5e6ddaf6e..b7c0e8cc0764f 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -245,9 +245,13 @@ static __init int efivar_ssdt_load(void)
+ 		if (status == EFI_NOT_FOUND) {
+ 			break;
+ 		} else if (status == EFI_BUFFER_TOO_SMALL) {
+-			name = krealloc(name, name_size, GFP_KERNEL);
+-			if (!name)
++			efi_char16_t *name_tmp =
++				krealloc(name, name_size, GFP_KERNEL);
++			if (!name_tmp) {
++				kfree(name);
+ 				return -ENOMEM;
++			}
++			name = name_tmp;
+ 			continue;
  		}
- 	}
  
- 	ef->is_freed = 1;
- 
-+	unhook_dentry(ef->dentry);
-+
- 	list_del_rcu(&ef->list);
--	list_add_tail(&ef->del_list, head);
-+	call_srcu(&eventfs_srcu, &ef->rcu, free_rcu_ef);
- }
- 
- /**
-@@ -934,28 +928,22 @@ static void eventfs_remove_rec(struct ev
-  */
- void eventfs_remove(struct eventfs_file *ef)
- {
--	struct eventfs_file *tmp;
--	LIST_HEAD(ef_del_list);
-+	struct dentry *dentry;
- 
- 	if (!ef)
- 		return;
- 
--	/*
--	 * Move the deleted eventfs_inodes onto the ei_del_list
--	 * which will also set the is_freed value. Note, this has to be
--	 * done under the eventfs_mutex, but the deletions of
--	 * the dentries must be done outside the eventfs_mutex.
--	 * Hence moving them to this temporary list.
--	 */
- 	mutex_lock(&eventfs_mutex);
--	eventfs_remove_rec(ef, &ef_del_list, 0);
-+	dentry = ef->dentry;
-+	eventfs_remove_rec(ef, 0);
- 	mutex_unlock(&eventfs_mutex);
- 
--	list_for_each_entry_safe(ef, tmp, &ef_del_list, del_list) {
--		unhook_dentry(ef->dentry);
--		list_del(&ef->del_list);
--		call_srcu(&eventfs_srcu, &ef->rcu, free_rcu_ef);
--	}
-+	/*
-+	 * If any of the ei children has a dentry, then the ei itself
-+	 * must have a dentry.
-+	 */
-+	if (dentry)
-+		simple_recursive_removal(dentry, NULL);
- }
- 
- /**
-@@ -966,6 +954,8 @@ void eventfs_remove(struct eventfs_file
-  */
- void eventfs_remove_events_dir(struct dentry *dentry)
- {
-+	struct eventfs_file *ef_child;
-+	struct eventfs_inode *ei;
- 	struct tracefs_inode *ti;
- 
- 	if (!dentry || !dentry->d_inode)
-@@ -975,6 +965,11 @@ void eventfs_remove_events_dir(struct de
- 	if (!ti || !(ti->flags & TRACEFS_EVENT_INODE))
- 		return;
- 
--	d_invalidate(dentry);
--	dput(dentry);
-+	mutex_lock(&eventfs_mutex);
-+	ei = ti->private;
-+	list_for_each_entry_srcu(ef_child, &ei->e_top_files, list,
-+				 lockdep_is_held(&eventfs_mutex)) {
-+		eventfs_remove_rec(ef_child, 0);
-+	}
-+	mutex_unlock(&eventfs_mutex);
- }
+-- 
+2.42.0
+
 
 
