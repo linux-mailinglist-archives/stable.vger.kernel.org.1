@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 180747E24C0
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:24:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C03A37E240E
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232523AbjKFNYx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:24:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44442 "EHLO
+        id S232265AbjKFNRg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:17:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232504AbjKFNYw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:24:52 -0500
+        with ESMTP id S232253AbjKFNRf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:35 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E83FEA9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369D9C433C7;
-        Mon,  6 Nov 2023 13:24:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C8F94
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0FEC433C8;
+        Mon,  6 Nov 2023 13:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277089;
-        bh=p+Trgp7iJnqlNBGiievg5nrZvbV+v63UQ3b0qKUrtm0=;
+        s=korg; t=1699276653;
+        bh=PZy0gEs3mIsN/v45teV5woRNZ4SiU2qjPQBBYreA7ek=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cRVdMwN4QyBLOAvQOl8MsqVu4MP+gI8/2VvSKS92LBfhKaH9+Csht4ys53c+SSo0R
-         cdMIpgx2w4BWhgB5ah0rlAlmfsBHxAC45gYJMrZdXVEygPjsLg+EPgHIKmA6mUkU0Z
-         PAApvWZgHXG6QQkPm0b5HRwBCLIQMzZ7WLbyCwoQ=
+        b=hUpu2xMdRnaUtEW+dOMmMWuI77n4gJ+pB6HxEP+VIGS1cgppS7wqL8zuNouUcfhUU
+         1sn432bg0wUdxG75jZGxfmRELeVu/wn4EFC0tHCzAsflV5eQhJZ/Te1RL3i/fNo15e
+         oeC7O1UGVdsomOa5WDJvS0oVkQybrWTqwqG6rNlM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Ondrej Zary <linux@zary.sk>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Damien Le Moal <dlemoal@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 027/128] neighbour: fix various data-races
+Subject: [PATCH 6.5 13/88] ata: pata_parport: add custom version of wait_after_reset
 Date:   Mon,  6 Nov 2023 14:03:07 +0100
-Message-ID: <20231106130310.363340085@linuxfoundation.org>
+Message-ID: <20231106130306.290956056@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,178 +51,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ondrej Zary <linux@zary.sk>
 
-[ Upstream commit a9beb7e81bcb876615e1fbb3c07f3f9dba69831f ]
+[ Upstream commit f343e578fef99a69b3322aca38b94a6d8ded2ce7 ]
 
-1) tbl->gc_thresh1, tbl->gc_thresh2, tbl->gc_thresh3 and tbl->gc_interval
-   can be written from sysfs.
+Some parallel adapters (e.g. EXP Computer MC-1285B EPP Cable) return
+bogus values when there's no master device present. This can cause
+reset to fail, preventing the lone slave device (such as EXP Computer
+CD-865) from working.
 
-2) tbl->last_flush is read locklessly from neigh_alloc()
+Add custom version of wait_after_reset that ignores master failure when
+a slave device is present. The custom version is also needed because
+the generic ata_sff_wait_after_reset uses direct port I/O for slave
+device detection.
 
-3) tbl->proxy_queue.qlen is read locklessly from neightbl_fill_info()
-
-4) neightbl_fill_info() reads cpu stats that can be changed concurrently.
-
-Fixes: c7fb64db001f ("[NETLINK]: Neighbour table configuration and statistics via rtnetlink")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231019122104.1448310-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ondrej Zary <linux@zary.sk>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 67 +++++++++++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 32 deletions(-)
+ drivers/ata/pata_parport/pata_parport.c | 68 ++++++++++++++++++++++++-
+ 1 file changed, 67 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index a385086091fd3..927c4db2703ff 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -223,7 +223,8 @@ bool neigh_remove_one(struct neighbour *ndel, struct neigh_table *tbl)
+diff --git a/drivers/ata/pata_parport/pata_parport.c b/drivers/ata/pata_parport/pata_parport.c
+index cf87bbb52f1ff..a7adfdcb5e27c 100644
+--- a/drivers/ata/pata_parport/pata_parport.c
++++ b/drivers/ata/pata_parport/pata_parport.c
+@@ -80,6 +80,72 @@ static bool pata_parport_devchk(struct ata_port *ap, unsigned int device)
+ 	return (nsect == 0x55) && (lbal == 0xaa);
+ }
  
- static int neigh_forced_gc(struct neigh_table *tbl)
- {
--	int max_clean = atomic_read(&tbl->gc_entries) - tbl->gc_thresh2;
-+	int max_clean = atomic_read(&tbl->gc_entries) -
-+			READ_ONCE(tbl->gc_thresh2);
- 	unsigned long tref = jiffies - 5 * HZ;
- 	struct neighbour *n, *tmp;
- 	int shrunk = 0;
-@@ -252,7 +253,7 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- 		}
- 	}
- 
--	tbl->last_flush = jiffies;
-+	WRITE_ONCE(tbl->last_flush, jiffies);
- 
- 	write_unlock_bh(&tbl->lock);
- 
-@@ -408,17 +409,17 @@ static struct neighbour *neigh_alloc(struct neigh_table *tbl,
- {
- 	struct neighbour *n = NULL;
- 	unsigned long now = jiffies;
--	int entries;
-+	int entries, gc_thresh3;
- 
- 	if (exempt_from_gc)
- 		goto do_alloc;
- 
- 	entries = atomic_inc_return(&tbl->gc_entries) - 1;
--	if (entries >= tbl->gc_thresh3 ||
--	    (entries >= tbl->gc_thresh2 &&
--	     time_after(now, tbl->last_flush + 5 * HZ))) {
--		if (!neigh_forced_gc(tbl) &&
--		    entries >= tbl->gc_thresh3) {
-+	gc_thresh3 = READ_ONCE(tbl->gc_thresh3);
-+	if (entries >= gc_thresh3 ||
-+	    (entries >= READ_ONCE(tbl->gc_thresh2) &&
-+	     time_after(now, READ_ONCE(tbl->last_flush) + 5 * HZ))) {
-+		if (!neigh_forced_gc(tbl) && entries >= gc_thresh3) {
- 			net_info_ratelimited("%s: neighbor table overflow!\n",
- 					     tbl->id);
- 			NEIGH_CACHE_STAT_INC(tbl, table_fulls);
-@@ -897,13 +898,14 @@ static void neigh_periodic_work(struct work_struct *work)
- 
- 	if (time_after(jiffies, tbl->last_rand + 300 * HZ)) {
- 		struct neigh_parms *p;
--		tbl->last_rand = jiffies;
++static int pata_parport_wait_after_reset(struct ata_link *link,
++					 unsigned int devmask,
++					 unsigned long deadline)
++{
++	struct ata_port *ap = link->ap;
++	struct pi_adapter *pi = ap->host->private_data;
++	unsigned int dev0 = devmask & (1 << 0);
++	unsigned int dev1 = devmask & (1 << 1);
++	int rc, ret = 0;
 +
-+		WRITE_ONCE(tbl->last_rand, jiffies);
- 		list_for_each_entry(p, &tbl->parms_list, list)
- 			p->reachable_time =
- 				neigh_rand_reach_time(NEIGH_VAR(p, BASE_REACHABLE_TIME));
- 	}
++	ata_msleep(ap, ATA_WAIT_AFTER_RESET);
++
++	/* always check readiness of the master device */
++	rc = ata_sff_wait_ready(link, deadline);
++	if (rc) {
++		/*
++		 * some adapters return bogus values if master device is not
++		 * present, so don't abort now if a slave device is present
++		 */
++		if (!dev1)
++			return rc;
++		ret = -ENODEV;
++	}
++
++	/*
++	 * if device 1 was found in ata_devchk, wait for register
++	 * access briefly, then wait for BSY to clear.
++	 */
++	if (dev1) {
++		int i;
++
++		pata_parport_dev_select(ap, 1);
++
++		/*
++		 * Wait for register access.  Some ATAPI devices fail
++		 * to set nsect/lbal after reset, so don't waste too
++		 * much time on it.  We're gonna wait for !BSY anyway.
++		 */
++		for (i = 0; i < 2; i++) {
++			u8 nsect, lbal;
++
++			nsect = pi->proto->read_regr(pi, 0, ATA_REG_NSECT);
++			lbal = pi->proto->read_regr(pi, 0, ATA_REG_LBAL);
++			if (nsect == 1 && lbal == 1)
++				break;
++			/* give drive a breather */
++			ata_msleep(ap, 50);
++		}
++
++		rc = ata_sff_wait_ready(link, deadline);
++		if (rc) {
++			if (rc != -ENODEV)
++				return rc;
++			ret = rc;
++		}
++	}
++
++	pata_parport_dev_select(ap, 0);
++	if (dev1)
++		pata_parport_dev_select(ap, 1);
++	if (dev0)
++		pata_parport_dev_select(ap, 0);
++
++	return ret;
++}
++
+ static int pata_parport_bus_softreset(struct ata_port *ap, unsigned int devmask,
+ 				      unsigned long deadline)
+ {
+@@ -94,7 +160,7 @@ static int pata_parport_bus_softreset(struct ata_port *ap, unsigned int devmask,
+ 	ap->last_ctl = ap->ctl;
  
--	if (atomic_read(&tbl->entries) < tbl->gc_thresh1)
-+	if (atomic_read(&tbl->entries) < READ_ONCE(tbl->gc_thresh1))
- 		goto out;
+ 	/* wait the port to become ready */
+-	return ata_sff_wait_after_reset(&ap->link, devmask, deadline);
++	return pata_parport_wait_after_reset(&ap->link, devmask, deadline);
+ }
  
- 	for (i = 0 ; i < (1 << nht->hash_shift); i++) {
-@@ -2047,15 +2049,16 @@ static int neightbl_fill_info(struct sk_buff *skb, struct neigh_table *tbl,
- 	ndtmsg->ndtm_pad2   = 0;
- 
- 	if (nla_put_string(skb, NDTA_NAME, tbl->id) ||
--	    nla_put_msecs(skb, NDTA_GC_INTERVAL, tbl->gc_interval, NDTA_PAD) ||
--	    nla_put_u32(skb, NDTA_THRESH1, tbl->gc_thresh1) ||
--	    nla_put_u32(skb, NDTA_THRESH2, tbl->gc_thresh2) ||
--	    nla_put_u32(skb, NDTA_THRESH3, tbl->gc_thresh3))
-+	    nla_put_msecs(skb, NDTA_GC_INTERVAL, READ_ONCE(tbl->gc_interval),
-+			  NDTA_PAD) ||
-+	    nla_put_u32(skb, NDTA_THRESH1, READ_ONCE(tbl->gc_thresh1)) ||
-+	    nla_put_u32(skb, NDTA_THRESH2, READ_ONCE(tbl->gc_thresh2)) ||
-+	    nla_put_u32(skb, NDTA_THRESH3, READ_ONCE(tbl->gc_thresh3)))
- 		goto nla_put_failure;
- 	{
- 		unsigned long now = jiffies;
--		long flush_delta = now - tbl->last_flush;
--		long rand_delta = now - tbl->last_rand;
-+		long flush_delta = now - READ_ONCE(tbl->last_flush);
-+		long rand_delta = now - READ_ONCE(tbl->last_rand);
- 		struct neigh_hash_table *nht;
- 		struct ndt_config ndc = {
- 			.ndtc_key_len		= tbl->key_len,
-@@ -2063,7 +2066,7 @@ static int neightbl_fill_info(struct sk_buff *skb, struct neigh_table *tbl,
- 			.ndtc_entries		= atomic_read(&tbl->entries),
- 			.ndtc_last_flush	= jiffies_to_msecs(flush_delta),
- 			.ndtc_last_rand		= jiffies_to_msecs(rand_delta),
--			.ndtc_proxy_qlen	= tbl->proxy_queue.qlen,
-+			.ndtc_proxy_qlen	= READ_ONCE(tbl->proxy_queue.qlen),
- 		};
- 
- 		rcu_read_lock_bh();
-@@ -2086,17 +2089,17 @@ static int neightbl_fill_info(struct sk_buff *skb, struct neigh_table *tbl,
- 			struct neigh_statistics	*st;
- 
- 			st = per_cpu_ptr(tbl->stats, cpu);
--			ndst.ndts_allocs		+= st->allocs;
--			ndst.ndts_destroys		+= st->destroys;
--			ndst.ndts_hash_grows		+= st->hash_grows;
--			ndst.ndts_res_failed		+= st->res_failed;
--			ndst.ndts_lookups		+= st->lookups;
--			ndst.ndts_hits			+= st->hits;
--			ndst.ndts_rcv_probes_mcast	+= st->rcv_probes_mcast;
--			ndst.ndts_rcv_probes_ucast	+= st->rcv_probes_ucast;
--			ndst.ndts_periodic_gc_runs	+= st->periodic_gc_runs;
--			ndst.ndts_forced_gc_runs	+= st->forced_gc_runs;
--			ndst.ndts_table_fulls		+= st->table_fulls;
-+			ndst.ndts_allocs		+= READ_ONCE(st->allocs);
-+			ndst.ndts_destroys		+= READ_ONCE(st->destroys);
-+			ndst.ndts_hash_grows		+= READ_ONCE(st->hash_grows);
-+			ndst.ndts_res_failed		+= READ_ONCE(st->res_failed);
-+			ndst.ndts_lookups		+= READ_ONCE(st->lookups);
-+			ndst.ndts_hits			+= READ_ONCE(st->hits);
-+			ndst.ndts_rcv_probes_mcast	+= READ_ONCE(st->rcv_probes_mcast);
-+			ndst.ndts_rcv_probes_ucast	+= READ_ONCE(st->rcv_probes_ucast);
-+			ndst.ndts_periodic_gc_runs	+= READ_ONCE(st->periodic_gc_runs);
-+			ndst.ndts_forced_gc_runs	+= READ_ONCE(st->forced_gc_runs);
-+			ndst.ndts_table_fulls		+= READ_ONCE(st->table_fulls);
- 		}
- 
- 		if (nla_put_64bit(skb, NDTA_STATS, sizeof(ndst), &ndst,
-@@ -2320,16 +2323,16 @@ static int neightbl_set(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		goto errout_tbl_lock;
- 
- 	if (tb[NDTA_THRESH1])
--		tbl->gc_thresh1 = nla_get_u32(tb[NDTA_THRESH1]);
-+		WRITE_ONCE(tbl->gc_thresh1, nla_get_u32(tb[NDTA_THRESH1]));
- 
- 	if (tb[NDTA_THRESH2])
--		tbl->gc_thresh2 = nla_get_u32(tb[NDTA_THRESH2]);
-+		WRITE_ONCE(tbl->gc_thresh2, nla_get_u32(tb[NDTA_THRESH2]));
- 
- 	if (tb[NDTA_THRESH3])
--		tbl->gc_thresh3 = nla_get_u32(tb[NDTA_THRESH3]);
-+		WRITE_ONCE(tbl->gc_thresh3, nla_get_u32(tb[NDTA_THRESH3]));
- 
- 	if (tb[NDTA_GC_INTERVAL])
--		tbl->gc_interval = nla_get_msecs(tb[NDTA_GC_INTERVAL]);
-+		WRITE_ONCE(tbl->gc_interval, nla_get_msecs(tb[NDTA_GC_INTERVAL]));
- 
- 	err = 0;
- 
+ static int pata_parport_softreset(struct ata_link *link, unsigned int *classes,
 -- 
 2.42.0
 
