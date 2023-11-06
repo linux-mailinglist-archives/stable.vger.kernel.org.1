@@ -2,39 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 339707E2428
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 911E67E2358
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231960AbjKFNS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:18:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52872 "EHLO
+        id S232031AbjKFNLS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:11:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232363AbjKFNSz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:55 -0500
+        with ESMTP id S232077AbjKFNLO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AB1FF1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B976CC433C8;
-        Mon,  6 Nov 2023 13:18:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE65112;
+        Mon,  6 Nov 2023 05:11:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB238C433C7;
+        Mon,  6 Nov 2023 13:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276732;
-        bh=HHU2gHIc2Im3T0Pvhb/KPaVncmLAcn2s25zMUJ/2mSE=;
+        s=korg; t=1699276270;
+        bh=leY8eLaFM/5INJzbeFxEGUT4tiMRF+8GfXU/heY0qng=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d851uvgImBRvdCLFz7G8/SkTuRdlpF+mAkN0JcmQDfz3fZvtenjEK+zo8d9BZlEo+
-         ocwIvrwqSHS+peGIW6iXUJJaPjcJgcOI773BQzYQBK5421hrJQBbQMyYILq54IYTVB
-         UfnYT/aowTNuC3YWNFblJQ4NBEowSCfhNBK9gpMQ=
+        b=Kr3CFCiSVk9PNyAVpwXexQEw5PQthUjSVGCsE92QpNnfzT9E/aOZGU/0lmxHr/rV7
+         zfZhX16pwZ2M2q8+xuDCWsa1gLdCuXEiO3AGUbWuOQUoqd1AW5wTG2HrLpq9+m6vSP
+         fs9u5jyrP18Lodrdtj/b8NB8ix+nRChIcLrq7xlM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Icenowy Zheng <uwu@icenowy.me>,
-        Huacai Chen <chenhuacai@loongson.cn>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Baoquan He <bhe@redhat.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 49/88] LoongArch: Disable WUC for pgprot_writecombine() like ioremap_wc()
+Subject: [PATCH 4.19 47/61] fbdev: atyfb: only use ioremap_uc() on i386 and ia64
 Date:   Mon,  6 Nov 2023 14:03:43 +0100
-Message-ID: <20231106130307.656842716@linuxfoundation.org>
+Message-ID: <20231106130301.221719418@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,101 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Icenowy Zheng <uwu@icenowy.me>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 278be83601dd1725d4732241f066d528e160a39d ]
+[ Upstream commit c1a8d1d0edb71dec15c9649cb56866c71c1ecd9e ]
 
-Currently the code disables WUC only disables it for ioremap_wc(), which
-is only used when mapping writecombine pages like ioremap() (mapped to
-the kernel space). But for VRAM mapped in TTM/GEM, it is mapped with a
-crafted pgprot by the pgprot_writecombine() function, in which case WUC
-isn't disabled now.
+ioremap_uc() is only meaningful on old x86-32 systems with the PAT
+extension, and on ia64 with its slightly unconventional ioremap()
+behavior, everywhere else this is the same as ioremap() anyway.
 
-Disable WUC for pgprot_writecombine() (fallback to SUC) if needed, like
-ioremap_wc().
+Change the only driver that still references ioremap_uc() to only do so
+on x86-32/ia64 in order to allow removing that interface at some
+point in the future for the other architectures.
 
-This improves the AMDGPU driver's stability (solves some misrendering)
-on Loongson-3A5000/3A6000 machines.
+On some architectures, ioremap_uc() just returns NULL, changing
+the driver to call ioremap() means that they now have a chance
+of working correctly.
 
-Signed-off-by: Icenowy Zheng <uwu@icenowy.me>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/io.h           |  5 ++---
- arch/loongarch/include/asm/pgtable-bits.h |  4 +++-
- arch/loongarch/kernel/setup.c             | 10 +++++-----
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/video/fbdev/aty/atyfb_base.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/loongarch/include/asm/io.h b/arch/loongarch/include/asm/io.h
-index 1c94102200407..0355b64e90ed0 100644
---- a/arch/loongarch/include/asm/io.h
-+++ b/arch/loongarch/include/asm/io.h
-@@ -54,10 +54,9 @@ static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
-  * @offset:    bus address of the memory
-  * @size:      size of the resource to map
-  */
--extern pgprot_t pgprot_wc;
--
- #define ioremap_wc(offset, size)	\
--	ioremap_prot((offset), (size), pgprot_val(pgprot_wc))
-+	ioremap_prot((offset), (size),	\
-+		pgprot_val(wc_enabled ? PAGE_KERNEL_WUC : PAGE_KERNEL_SUC))
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index 05111e90f1681..5ef008e9c61c3 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -3435,11 +3435,15 @@ static int atyfb_setup_generic(struct pci_dev *pdev, struct fb_info *info,
+ 	}
  
- #define ioremap_cache(offset, size)	\
- 	ioremap_prot((offset), (size), pgprot_val(PAGE_KERNEL))
-diff --git a/arch/loongarch/include/asm/pgtable-bits.h b/arch/loongarch/include/asm/pgtable-bits.h
-index de46a6b1e9f11..7b9ac012cd090 100644
---- a/arch/loongarch/include/asm/pgtable-bits.h
-+++ b/arch/loongarch/include/asm/pgtable-bits.h
-@@ -105,13 +105,15 @@ static inline pgprot_t pgprot_noncached(pgprot_t _prot)
- 	return __pgprot(prot);
- }
- 
-+extern bool wc_enabled;
-+
- #define pgprot_writecombine pgprot_writecombine
- 
- static inline pgprot_t pgprot_writecombine(pgprot_t _prot)
- {
- 	unsigned long prot = pgprot_val(_prot);
- 
--	prot = (prot & ~_CACHE_MASK) | _CACHE_WUC;
-+	prot = (prot & ~_CACHE_MASK) | (wc_enabled ? _CACHE_WUC : _CACHE_SUC);
- 
- 	return __pgprot(prot);
- }
-diff --git a/arch/loongarch/kernel/setup.c b/arch/loongarch/kernel/setup.c
-index 9d830ab4e3025..1351614042d4e 100644
---- a/arch/loongarch/kernel/setup.c
-+++ b/arch/loongarch/kernel/setup.c
-@@ -161,19 +161,19 @@ static void __init smbios_parse(void)
- }
- 
- #ifdef CONFIG_ARCH_WRITECOMBINE
--pgprot_t pgprot_wc = PAGE_KERNEL_WUC;
-+bool wc_enabled = true;
- #else
--pgprot_t pgprot_wc = PAGE_KERNEL_SUC;
-+bool wc_enabled = false;
- #endif
- 
--EXPORT_SYMBOL(pgprot_wc);
-+EXPORT_SYMBOL(wc_enabled);
- 
- static int __init setup_writecombine(char *p)
- {
- 	if (!strcmp(p, "on"))
--		pgprot_wc = PAGE_KERNEL_WUC;
-+		wc_enabled = true;
- 	else if (!strcmp(p, "off"))
--		pgprot_wc = PAGE_KERNEL_SUC;
-+		wc_enabled = false;
- 	else
- 		pr_warn("Unknown writecombine setting \"%s\".\n", p);
+ 	info->fix.mmio_start = raddr;
++#if defined(__i386__) || defined(__ia64__)
+ 	/*
+ 	 * By using strong UC we force the MTRR to never have an
+ 	 * effect on the MMIO region on both non-PAT and PAT systems.
+ 	 */
+ 	par->ati_regbase = ioremap_uc(info->fix.mmio_start, 0x1000);
++#else
++	par->ati_regbase = ioremap(info->fix.mmio_start, 0x1000);
++#endif
+ 	if (par->ati_regbase == NULL)
+ 		return -ENOMEM;
  
 -- 
 2.42.0
