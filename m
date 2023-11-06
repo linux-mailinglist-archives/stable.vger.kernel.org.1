@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCDB17E2430
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CB9E7E2436
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:19:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232319AbjKFNTR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:19:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57984 "EHLO
+        id S232366AbjKFNT3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:19:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232298AbjKFNTR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:19:17 -0500
+        with ESMTP id S232358AbjKFNT2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:19:28 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D7E1BF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:19:14 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3298C433C8;
-        Mon,  6 Nov 2023 13:19:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BA9CD8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:19:26 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81321C433C7;
+        Mon,  6 Nov 2023 13:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276754;
-        bh=ZgByRvMLe4rzYLR8UF1Ce/ehtnmoa3DFrOcQMqnM1rE=;
+        s=korg; t=1699276765;
+        bh=ObJ4HbAYiFjaWga3emww3BKlbbqMbtG9e+gMOtHlzno=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zy1XdTgUwLXcRvISdqvt2tI95jTuDc8L8CAgrSbQCsMXXrmU2PGzLQ+2UNp4nKxHP
-         gPa6TeSuBNziYuFtKRvDMF9+ywP1VQILt5mVnT0bTlLS/KOx1u4o6wNZRUcwiBajMa
-         GuKRL/+43S0ScZH0oY3hiJkh9kGWxVj2aVorTwyI=
+        b=gnSwdW9v508/AHQ/Ot6sSSmjcTZBGDX2BcCXVU1maDwIFEd6huzfvv3Uz9+9tDmQh
+         SA7wrSqFOHl3F+nBdD1oX9M6hJya3ylc+OhDcPV+P4uWHbri23LmZ1NbxubRLsWeYU
+         poWKiJ7aT8p4GYu2bW0UYwHeDtOZeuOehmVgc4ng=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 6.5 77/88] tty: 8250: Add support for Brainboxes UP cards
-Date:   Mon,  6 Nov 2023 14:04:11 +0100
-Message-ID: <20231106130308.574008140@linuxfoundation.org>
+Subject: [PATCH 6.5 78/88] tty: 8250: Add support for Intashield IS-100
+Date:   Mon,  6 Nov 2023 14:04:12 +0100
+Message-ID: <20231106130308.617959240@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
 References: <20231106130305.772449722@linuxfoundation.org>
@@ -54,87 +54,32 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Cameron Williams <cang1@live.co.uk>
 
-commit 2c6fec1e1532f15350be7e14ba6b88a39d289fe4 upstream.
+commit 4d994e3cf1b541ff32dfb03fbbc60eea68f9645b upstream.
 
-Add support for the Brainboxes UP (powered PCI) range of
-cards, namely UP-189, UP-200, UP-869 and UP-880.
+Add support for the Intashield IS-100 1 port serial card.
 
 Cc: stable@vger.kernel.org
 Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DU0PR02MB7899B5B59FF3D8587E88C117C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
+Link: https://lore.kernel.org/r/DU0PR02MB7899A0E0CDAA505AF5A874CDC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   60 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ drivers/tty/serial/8250/8250_pci.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
 --- a/drivers/tty/serial/8250/8250_pci.c
 +++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -5081,6 +5081,66 @@ static const struct pci_device_id serial
- 		0, 0,
- 		pbn_b2_4_115200 },
+@@ -4912,6 +4912,12 @@ static const struct pci_device_id serial
+ 		pbn_b1_bt_1_115200 },
+ 
  	/*
-+	 * Brainboxes UP-189
++	 * IntaShield IS-100
 +	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC1,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC2,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0AC3,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0D60,
++		PCI_ANY_ID, PCI_ANY_ID, 0, 0,
++		pbn_b2_1_115200 },
 +	/*
-+	 * Brainboxes UP-200
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0B21,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0B22,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0B23,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	/*
-+	 * Brainboxes UP-869
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C01,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C02,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C03,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	/*
-+	 * Brainboxes UP-880
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C21,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C22,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0C23,
-+		PCI_ANY_ID, PCI_ANY_ID,
-+		0, 0,
-+		pbn_b2_2_115200 },
-+	/*
- 	 * Brainboxes PX-101
+ 	 * IntaShield IS-200
  	 */
- 	{	PCI_VENDOR_ID_INTASHIELD, 0x4005,
+ 	{	PCI_VENDOR_ID_INTASHIELD, PCI_DEVICE_ID_INTASHIELD_IS200,
 
 
