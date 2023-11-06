@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84D7A7E2426
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 221947E2316
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231958AbjKFNSt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:18:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52746 "EHLO
+        id S232036AbjKFNIh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:08:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231960AbjKFNSs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:48 -0500
+        with ESMTP id S232032AbjKFNIg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:36 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97DEFF1
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:46 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD886C433C7;
-        Mon,  6 Nov 2023 13:18:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3117BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:33 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFBE1C433C8;
+        Mon,  6 Nov 2023 13:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276726;
-        bh=6Y2SBe5+MO2isqZnfvRlCFLhihD9grEYjYWOBF0O7cY=;
+        s=korg; t=1699276113;
+        bh=naQfqQc9JFiMbR+/tDmG/ZV5v3g7hg8emsdpfVhnBsc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KHRIkEUyls5gJo9aLs+2lbIuxLNRon0FpCphVrNnkxq6ubK8Qeo2LB3jo0+ttv3GK
-         UwlRvZUfwERrAZGzEeNwNDdWKpgpf52PBA/kOj5QnNq80cN+p8Vj0VraPZMjecksbz
-         qVULcyBkGHzhNakjM2FgA1TfpEhRf1rJ2P1kUct4=
+        b=OAZjn2VNtcYqUi6+5DgpJXHAPnfU14k3KW8bOjbejIl8LiJIKLSGZqKeFAM/2exmS
+         QR1LB7SR/3Q+iJ+6Bi9oRPMsQQdLShR4U9u/t3mKJj5zerMTpKFgkVQZmOxeefaSrX
+         mfUOUMGNJ2giC5w25r06V2ZgyK+Z0SoH+PyRC74s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Deepak R Varma <drv@mailo.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 48/88] LoongArch: Replace kmap_atomic() with kmap_local_page() in copy_user_highpage()
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 6.6 24/30] tty: 8250: Add support for Intashield IX cards
 Date:   Mon,  6 Nov 2023 14:03:42 +0100
-Message-ID: <20231106130307.621590964@linuxfoundation.org>
+Message-ID: <20231106130258.761049519@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +48,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit 477a0ebec101359f49d92796e3b609857d564b52 ]
+commit 62d2ec2ded278c7512d91ca7bf8eb9bac46baf90 upstream.
 
-Replace kmap_atomic()/kunmap_atomic() calls with kmap_local_page()/
-kunmap_local() in copy_user_highpage() which can be invoked from both
-preemptible and atomic context [1].
+Add support for the IX-100, IX-200 and IX-400 serial cards.
 
-[1] https://lore.kernel.org/all/20201029222652.302358281@linutronix.de/
-
-Suggested-by: Deepak R Varma <drv@mailo.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB7899614E5837E82A03272A4BC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/init.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-index 51c9a6c90a169..d967d881c3fef 100644
---- a/arch/loongarch/mm/init.c
-+++ b/arch/loongarch/mm/init.c
-@@ -68,11 +68,11 @@ void copy_user_highpage(struct page *to, struct page *from,
- {
- 	void *vfrom, *vto;
- 
--	vto = kmap_atomic(to);
--	vfrom = kmap_atomic(from);
-+	vfrom = kmap_local_page(from);
-+	vto = kmap_local_page(to);
- 	copy_page(vto, vfrom);
--	kunmap_atomic(vfrom);
--	kunmap_atomic(vto);
-+	kunmap_local(vfrom);
-+	kunmap_local(vto);
- 	/* Make sure this page is cleared on other CPU's too before using it */
- 	smp_wmb();
- }
--- 
-2.42.0
-
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -4931,6 +4931,27 @@ static const struct pci_device_id serial
+ 	{	PCI_VENDOR_ID_INTASHIELD, PCI_DEVICE_ID_INTASHIELD_IS400,
+ 		PCI_ANY_ID, PCI_ANY_ID, 0, 0,    /* 135a.0dc0 */
+ 		pbn_b2_4_115200 },
++	/*
++	 * IntaShield IX-100
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4027,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
++	/*
++	 * IntaShield IX-200
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4028,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_2_15625000 },
++	/*
++	 * IntaShield IX-400
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4029,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_4_15625000 },
+ 	/* Brainboxes Devices */
+ 	/*
+ 	* Brainboxes UC-101
 
 
