@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D46247E2416
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1E2D7E23C3
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:14:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231952AbjKFNR7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:17:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56658 "EHLO
+        id S231947AbjKFNOT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:14:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50966 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232253AbjKFNR7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:59 -0500
+        with ESMTP id S232213AbjKFNOT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:14:19 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C8BA9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:56 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 298ABC433C7;
-        Mon,  6 Nov 2023 13:17:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A21BF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:14:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B6CC433C7;
+        Mon,  6 Nov 2023 13:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276676;
-        bh=ouQ81jf53pzZ/8j8aUQKo7eMhB9ldbVs9GGjkb13kng=;
+        s=korg; t=1699276455;
+        bh=DygAq5cxPsjrG4N7KtUtKxbUzGITEkdsqhxows6mOsU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t1IkWI6SfCcnubNCEJjd/tG2Jp2QR0YAzKo6aK1YNr+IRhWp642XIEQZ7JfqdJKcx
-         XJ3OdYIuj+baAq4z70nu3K3nXngjYYQrPjuCD7LNOfREtSU7T96wah0h4DXCoTm+1g
-         PeaK3E56cCngSZsu7os6nJaOYqn2ycSLfGs/6t3o=
+        b=vPzi6hFHn2il2knMe/l9B3ralq9M/BMPTTS+XP8T2B2iQnqZ+9eM+Zw0PDGrVUpzX
+         F2v/Z09bH1DfRJCodcsYYgNkd3MfO/uCpp5j8DF9rtcAw3B4Yz6F+oLF4H9iVCO9nd
+         LO3pyfUjuANXiAUS1fqORFnf8YkNH4r1FdYixdBU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alice Ryhl <aliceryhl@google.com>,
-        Benno Lossin <benno.lossin@proton.me>,
-        Gary Guo <gary@garyguo.net>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 61/88] rust: make `UnsafeCell` the outer type in `Opaque`
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Andrey Konovalov <andreyknvl@gmail.com>
+Subject: [PATCH 6.1 49/62] usb: raw-gadget: properly handle interrupted requests
 Date:   Mon,  6 Nov 2023 14:03:55 +0100
-Message-ID: <20231106130308.041864552@linuxfoundation.org>
+Message-ID: <20231106130303.537447530@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,81 +49,112 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-[ Upstream commit 35cad617df2eeef8440a38e82bb2d81ae32ca50d ]
+commit e8033bde451eddfb9b1bbd6e2d848c1b5c277222 upstream.
 
-When combining `UnsafeCell` with `MaybeUninit`, it is idiomatic to use
-`UnsafeCell` as the outer type. Intuitively, this is because a
-`MaybeUninit<T>` might not contain a `T`, but we always want the effect
-of the `UnsafeCell`, even if the inner value is uninitialized.
+Currently, if a USB request that was queued by Raw Gadget is interrupted
+(via a signal), wait_for_completion_interruptible returns -ERESTARTSYS.
+Raw Gadget then attempts to propagate this value to userspace as a return
+value from its ioctls. However, when -ERESTARTSYS is returned by a syscall
+handler, the kernel internally restarts the syscall.
 
-Now, strictly speaking, this doesn't really make a difference. The
-compiler will always apply the `UnsafeCell` effect even if the inner
-value is uninitialized. But I think we should follow the convention
-here.
+This doesn't allow userspace applications to interrupt requests queued by
+Raw Gadget (which is required when the emulated device is asked to switch
+altsettings). It also violates the implied interface of Raw Gadget that a
+single ioctl must only queue a single USB request.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Link: https://lore.kernel.org/r/20230614115328.2825961-1-aliceryhl@google.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: 0b4e3b6f6b79 ("rust: types: make `Opaque` be `!Unpin`")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Instead, make Raw Gadget do what GadgetFS does: check whether the request
+was interrupted (dequeued with status == -ECONNRESET) and report -EINTR to
+userspace.
+
+Fixes: f2c2e717642c ("usb: gadget: add raw-gadget interface")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://lore.kernel.org/r/0db45b1d7cc466e3d4d1ab353f61d63c977fbbc5.1698350424.git.andreyknvl@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/types.rs | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/gadget/legacy/raw_gadget.c |   26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index d479f8da8f381..c0b8bb1a75393 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -206,17 +206,17 @@ fn drop(&mut self) {
- ///
- /// This is meant to be used with FFI objects that are never interpreted by Rust code.
- #[repr(transparent)]
--pub struct Opaque<T>(MaybeUninit<UnsafeCell<T>>);
-+pub struct Opaque<T>(UnsafeCell<MaybeUninit<T>>);
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -663,12 +663,12 @@ static int raw_process_ep0_io(struct raw
+ 	if (WARN_ON(in && dev->ep0_out_pending)) {
+ 		ret = -ENODEV;
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_unlock;
+ 	}
+ 	if (WARN_ON(!in && dev->ep0_in_pending)) {
+ 		ret = -ENODEV;
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_unlock;
+ 	}
  
- impl<T> Opaque<T> {
-     /// Creates a new opaque value.
-     pub const fn new(value: T) -> Self {
--        Self(MaybeUninit::new(UnsafeCell::new(value)))
-+        Self(UnsafeCell::new(MaybeUninit::new(value)))
-     }
+ 	dev->req->buf = data;
+@@ -683,7 +683,7 @@ static int raw_process_ep0_io(struct raw
+ 				"fail, usb_ep_queue returned %d\n", ret);
+ 		spin_lock_irqsave(&dev->lock, flags);
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_queue_failed;
+ 	}
  
-     /// Creates an uninitialised value.
-     pub const fn uninit() -> Self {
--        Self(MaybeUninit::uninit())
-+        Self(UnsafeCell::new(MaybeUninit::uninit()))
-     }
+ 	ret = wait_for_completion_interruptible(&dev->ep0_done);
+@@ -692,13 +692,16 @@ static int raw_process_ep0_io(struct raw
+ 		usb_ep_dequeue(dev->gadget->ep0, dev->req);
+ 		wait_for_completion(&dev->ep0_done);
+ 		spin_lock_irqsave(&dev->lock, flags);
+-		goto out_done;
++		if (dev->ep0_status == -ECONNRESET)
++			dev->ep0_status = -EINTR;
++		goto out_interrupted;
+ 	}
  
-     /// Creates a pin-initializer from the given initializer closure.
-@@ -240,7 +240,7 @@ pub fn ffi_init(init_func: impl FnOnce(*mut T)) -> impl PinInit<Self> {
+ 	spin_lock_irqsave(&dev->lock, flags);
+-	ret = dev->ep0_status;
  
-     /// Returns a raw pointer to the opaque data.
-     pub fn get(&self) -> *mut T {
--        UnsafeCell::raw_get(self.0.as_ptr())
-+        UnsafeCell::get(&self.0).cast::<T>()
-     }
+-out_done:
++out_interrupted:
++	ret = dev->ep0_status;
++out_queue_failed:
+ 	dev->ep0_urb_queued = false;
+ out_unlock:
+ 	spin_unlock_irqrestore(&dev->lock, flags);
+@@ -1067,7 +1070,7 @@ static int raw_process_ep_io(struct raw_
+ 				"fail, usb_ep_queue returned %d\n", ret);
+ 		spin_lock_irqsave(&dev->lock, flags);
+ 		dev->state = STATE_DEV_FAILED;
+-		goto out_done;
++		goto out_queue_failed;
+ 	}
  
-     /// Gets the value behind `this`.
-@@ -248,7 +248,7 @@ pub fn get(&self) -> *mut T {
-     /// This function is useful to get access to the value without creating intermediate
-     /// references.
-     pub const fn raw_get(this: *const Self) -> *mut T {
--        UnsafeCell::raw_get(this.cast::<UnsafeCell<T>>())
-+        UnsafeCell::raw_get(this.cast::<UnsafeCell<MaybeUninit<T>>>()).cast::<T>()
-     }
- }
+ 	ret = wait_for_completion_interruptible(&done);
+@@ -1076,13 +1079,16 @@ static int raw_process_ep_io(struct raw_
+ 		usb_ep_dequeue(ep->ep, ep->req);
+ 		wait_for_completion(&done);
+ 		spin_lock_irqsave(&dev->lock, flags);
+-		goto out_done;
++		if (ep->status == -ECONNRESET)
++			ep->status = -EINTR;
++		goto out_interrupted;
+ 	}
  
--- 
-2.42.0
-
+ 	spin_lock_irqsave(&dev->lock, flags);
+-	ret = ep->status;
+ 
+-out_done:
++out_interrupted:
++	ret = ep->status;
++out_queue_failed:
+ 	ep->urb_queued = false;
+ out_unlock:
+ 	spin_unlock_irqrestore(&dev->lock, flags);
 
 
