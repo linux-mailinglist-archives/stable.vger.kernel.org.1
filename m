@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E1EB7E23A8
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 37C3A7E2404
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232185AbjKFNNb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:13:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53014 "EHLO
+        id S232143AbjKFNRO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:17:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232106AbjKFNN3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:29 -0500
+        with ESMTP id S232261AbjKFNRN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD9E4D49
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E21C433C7;
-        Mon,  6 Nov 2023 13:13:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F1A4F3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90718C433C8;
+        Mon,  6 Nov 2023 13:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276406;
-        bh=Lfr2QbsWs2VPjRmn7QNSBeWgP6fGdJveDAEf4195HZw=;
+        s=korg; t=1699276630;
+        bh=e/HEEpzhW+FAaao3+F4a4a0uUpNTZm+kyemaTM3TF9g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SAZNYA50gTKs8N6ilVrKsYrqzoRBWD34jCUXSTarN/36tadvOwvpvmNJOQmdv15fr
-         tWDXFQtFjzCkvUriObOGBbVjEnFr9CLMeoZNcYyConlD+9kGWsdV30CzbzebnqPOEV
-         l6dlfT70gFyvsviWkdKCIkdxJW1483Cye57/j1/0=
+        b=mGq7f+v53LaF4t8GyTxrXrzRIAdpXHgKYzqZ/sT6qltG2FVFY8Wr0UFsQc6R1mDRh
+         MUjdbIFDrXfFYwem90ZYm3b4MIRRxw5NRtLp6eLLTMAjc4QVhOnNxe2EiiiO5v1rVb
+         VT5+1r3FnI1xp9Q/Wx95jkcy/kZjaGIQlTihL7VQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Phil Sutter <phil@nwl.cc>,
-        Richard Guy Briggs <rgb@redhat.com>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.1 31/62] netfilter: nf_tables: audit log object reset once per table
+        patches@lists.linux.dev,
+        David Rau <David.Rau.opensource@dm.renesas.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 43/88] ASoC: da7219: Correct the process of setting up Gnd switch in AAD
 Date:   Mon,  6 Nov 2023 14:03:37 +0100
-Message-ID: <20231106130302.951136024@linuxfoundation.org>
+Message-ID: <20231106130307.425644837@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,200 +51,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: David Rau <David.Rau.opensource@dm.renesas.com>
 
-[ Upstream commit 1baf0152f7707c6c7e4ea815dcc1f431c0e603f9 ]
+[ Upstream commit e8ecffd9962fe051d53a0761921b26d653b3df6b ]
 
-When resetting multiple objects at once (via dump request), emit a log
-message per table (or filled skb) and resurrect the 'entries' parameter
-to contain the number of objects being logged for.
+Enable Gnd switch to improve stability when Jack insert event
+occurs, and then disable Gnd switch after Jack type detection
+is finished.
 
-To test the skb exhaustion path, perform some bulk counter and quota
-adds in the kselftest.
-
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Reviewed-by: Richard Guy Briggs <rgb@redhat.com>
-Acked-by: Paul Moore <paul@paul-moore.com> (Audit)
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: David Rau <David.Rau.opensource@dm.renesas.com>
+Link: https://lore.kernel.org/r/20231017021258.5929-1-David.Rau.opensource@dm.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c                 | 50 +++++++++++--------
- .../testing/selftests/netfilter/nft_audit.sh  | 46 +++++++++++++++++
- 2 files changed, 74 insertions(+), 22 deletions(-)
+ sound/soc/codecs/da7219-aad.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 5e3dbe2652dbd..5c783199b4999 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7324,6 +7324,16 @@ static int nf_tables_fill_obj_info(struct sk_buff *skb, struct net *net,
- 	return -1;
- }
+diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
+index 581b334a6631d..3bbe850916493 100644
+--- a/sound/soc/codecs/da7219-aad.c
++++ b/sound/soc/codecs/da7219-aad.c
+@@ -59,9 +59,6 @@ static void da7219_aad_btn_det_work(struct work_struct *work)
+ 	bool micbias_up = false;
+ 	int retries = 0;
  
-+static void audit_log_obj_reset(const struct nft_table *table,
-+				unsigned int base_seq, unsigned int nentries)
-+{
-+	char *buf = kasprintf(GFP_ATOMIC, "%s:%u", table->name, base_seq);
-+
-+	audit_log_nfcfg(buf, table->family, nentries,
-+			AUDIT_NFT_OP_OBJ_RESET, GFP_ATOMIC);
-+	kfree(buf);
-+}
-+
- struct nft_obj_filter {
- 	char		*table;
- 	u32		type;
-@@ -7338,8 +7348,10 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- 	struct net *net = sock_net(skb->sk);
- 	int family = nfmsg->nfgen_family;
- 	struct nftables_pernet *nft_net;
-+	unsigned int entries = 0;
- 	struct nft_object *obj;
- 	bool reset = false;
-+	int rc = 0;
- 
- 	if (NFNL_MSG_TYPE(cb->nlh->nlmsg_type) == NFT_MSG_GETOBJ_RESET)
- 		reset = true;
-@@ -7352,6 +7364,7 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- 		if (family != NFPROTO_UNSPEC && family != table->family)
- 			continue;
- 
-+		entries = 0;
- 		list_for_each_entry_rcu(obj, &table->objects, list) {
- 			if (!nft_is_active(net, obj))
- 				goto cont;
-@@ -7367,34 +7380,27 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- 			    filter->type != NFT_OBJECT_UNSPEC &&
- 			    obj->ops->type->type != filter->type)
- 				goto cont;
--			if (reset) {
--				char *buf = kasprintf(GFP_ATOMIC,
--						      "%s:%u",
--						      table->name,
--						      nft_net->base_seq);
+-	/* Disable ground switch */
+-	snd_soc_component_update_bits(component, 0xFB, 0x01, 0x00);
 -
--				audit_log_nfcfg(buf,
--						family,
--						obj->handle,
--						AUDIT_NFT_OP_OBJ_RESET,
--						GFP_ATOMIC);
--				kfree(buf);
--			}
- 
--			if (nf_tables_fill_obj_info(skb, net, NETLINK_CB(cb->skb).portid,
--						    cb->nlh->nlmsg_seq,
--						    NFT_MSG_NEWOBJ,
--						    NLM_F_MULTI | NLM_F_APPEND,
--						    table->family, table,
--						    obj, reset) < 0)
--				goto done;
-+			rc = nf_tables_fill_obj_info(skb, net,
-+						     NETLINK_CB(cb->skb).portid,
-+						     cb->nlh->nlmsg_seq,
-+						     NFT_MSG_NEWOBJ,
-+						     NLM_F_MULTI | NLM_F_APPEND,
-+						     table->family, table,
-+						     obj, reset);
-+			if (rc < 0)
-+				break;
- 
-+			entries++;
- 			nl_dump_check_consistent(cb, nlmsg_hdr(skb));
- cont:
- 			idx++;
- 		}
-+		if (reset && entries)
-+			audit_log_obj_reset(table, nft_net->base_seq, entries);
-+		if (rc < 0)
-+			break;
+ 	/* Drive headphones/lineout */
+ 	snd_soc_component_update_bits(component, DA7219_HP_L_CTRL,
+ 			    DA7219_HP_L_AMP_OE_MASK,
+@@ -155,9 +152,6 @@ static void da7219_aad_hptest_work(struct work_struct *work)
+ 		tonegen_freq_hptest = cpu_to_le16(DA7219_AAD_HPTEST_RAMP_FREQ_INT_OSC);
  	}
--done:
- 	rcu_read_unlock();
  
- 	cb->args[0] = idx;
-@@ -7499,7 +7505,7 @@ static int nf_tables_getobj(struct sk_buff *skb, const struct nfnl_info *info,
- 
- 		audit_log_nfcfg(buf,
- 				family,
--				obj->handle,
-+				1,
- 				AUDIT_NFT_OP_OBJ_RESET,
- 				GFP_ATOMIC);
- 		kfree(buf);
-diff --git a/tools/testing/selftests/netfilter/nft_audit.sh b/tools/testing/selftests/netfilter/nft_audit.sh
-index 5267c88496d51..99ed5bd6e8402 100755
---- a/tools/testing/selftests/netfilter/nft_audit.sh
-+++ b/tools/testing/selftests/netfilter/nft_audit.sh
-@@ -99,6 +99,12 @@ do_test 'nft add counter t1 c1' \
- do_test 'nft add counter t2 c1; add counter t2 c2' \
- 'table=t2 family=2 entries=2 op=nft_register_obj'
- 
-+for ((i = 3; i <= 500; i++)); do
-+	echo "add counter t2 c$i"
-+done >$rulefile
-+do_test "nft -f $rulefile" \
-+'table=t2 family=2 entries=498 op=nft_register_obj'
+-	/* Disable ground switch */
+-	snd_soc_component_update_bits(component, 0xFB, 0x01, 0x00);
+-
+ 	/* Ensure gain ramping at fastest rate */
+ 	gain_ramp_ctrl = snd_soc_component_read(component, DA7219_GAIN_RAMP_CTRL);
+ 	snd_soc_component_write(component, DA7219_GAIN_RAMP_CTRL, DA7219_GAIN_RAMP_RATE_X8);
+@@ -421,6 +415,11 @@ static irqreturn_t da7219_aad_irq_thread(int irq, void *data)
+ 			 * handle a removal, and we can check at the end of
+ 			 * hptest if we have a valid result or not.
+ 			 */
 +
- # adding/updating quotas
- 
- do_test 'nft add quota t1 q1 { 10 bytes }' \
-@@ -107,6 +113,12 @@ do_test 'nft add quota t1 q1 { 10 bytes }' \
- do_test 'nft add quota t2 q1 { 10 bytes }; add quota t2 q2 { 10 bytes }' \
- 'table=t2 family=2 entries=2 op=nft_register_obj'
- 
-+for ((i = 3; i <= 500; i++)); do
-+	echo "add quota t2 q$i { 10 bytes }"
-+done >$rulefile
-+do_test "nft -f $rulefile" \
-+'table=t2 family=2 entries=498 op=nft_register_obj'
++			cancel_delayed_work_sync(&da7219_aad->jack_det_work);
++			/* Disable ground switch */
++			snd_soc_component_update_bits(component, 0xFB, 0x01, 0x00);
 +
- # changing the quota value triggers obj update path
- do_test 'nft add quota t1 q1 { 20 bytes }' \
- 'table=t1 family=2 entries=1 op=nft_register_obj'
-@@ -156,6 +168,40 @@ done
- do_test 'nft reset set t1 s' \
- 'table=t1 family=2 entries=3 op=nft_reset_setelem'
- 
-+# resetting counters
-+
-+do_test 'nft reset counter t1 c1' \
-+'table=t1 family=2 entries=1 op=nft_reset_obj'
-+
-+do_test 'nft reset counters t1' \
-+'table=t1 family=2 entries=1 op=nft_reset_obj'
-+
-+do_test 'nft reset counters t2' \
-+'table=t2 family=2 entries=342 op=nft_reset_obj
-+table=t2 family=2 entries=158 op=nft_reset_obj'
-+
-+do_test 'nft reset counters' \
-+'table=t1 family=2 entries=1 op=nft_reset_obj
-+table=t2 family=2 entries=341 op=nft_reset_obj
-+table=t2 family=2 entries=159 op=nft_reset_obj'
-+
-+# resetting quotas
-+
-+do_test 'nft reset quota t1 q1' \
-+'table=t1 family=2 entries=1 op=nft_reset_obj'
-+
-+do_test 'nft reset quotas t1' \
-+'table=t1 family=2 entries=1 op=nft_reset_obj'
-+
-+do_test 'nft reset quotas t2' \
-+'table=t2 family=2 entries=315 op=nft_reset_obj
-+table=t2 family=2 entries=185 op=nft_reset_obj'
-+
-+do_test 'nft reset quotas' \
-+'table=t1 family=2 entries=1 op=nft_reset_obj
-+table=t2 family=2 entries=314 op=nft_reset_obj
-+table=t2 family=2 entries=186 op=nft_reset_obj'
-+
- # deleting rules
- 
- readarray -t handles < <(nft -a list chain t1 c1 | \
+ 			if (statusa & DA7219_JACK_TYPE_STS_MASK) {
+ 				report |= SND_JACK_HEADSET;
+ 				mask |=	SND_JACK_HEADSET | SND_JACK_LINEOUT;
 -- 
 2.42.0
 
