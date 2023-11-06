@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 171297E24A4
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 194617E22D3
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:05:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232499AbjKFNXu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:23:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48342 "EHLO
+        id S231911AbjKFNFz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:05:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232505AbjKFNXs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:48 -0500
+        with ESMTP id S231898AbjKFNFy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:05:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1BD8D8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:45 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B72C433C9;
-        Mon,  6 Nov 2023 13:23:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00D04F1
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:05:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FBCC433C8;
+        Mon,  6 Nov 2023 13:05:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277025;
-        bh=qJg1MumQCNi/sxcbLwIAfx8XAaTEfEywnCfF/kgM+OE=;
+        s=korg; t=1699275951;
+        bh=j1JQLVOI4LZMbwxxwzwtAuCuR/VqgYM7MbiMBHA1MqQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gJjgoF1ygvQRR5c8DkwIVMyJGet49co+tpNJWWcqhktAh9d88y19xeheJ+9aXuiYQ
-         gicdZ9gG7qIpriJuUj7xcKnTxm5LGGvMhczZ4kSVNvfjzKcuNobISDD8gJ/Ub/WefW
-         9LxHKsIY6eCD3mneh+hut9kZGLyFj/DB3tvk+jfU=
+        b=F+kHQXyZbPCK0/OP805X8iUTqHeXOZoyWt5KmAb7FEbWwNdIrqRvOu3sCnzmDeO7E
+         nU/wuhK2yG2RsUFpNBOIYP7Idmkw60Jb1czpvX/puR+9Lery4miVw+LQs6Ani4TNxk
+         YHQB7RyFRyDzDSHqLrPgG7mlcJDeZb9lZZfw3dLs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Gregory Price <gregory.price@memverge.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 013/128] mm/migrate: fix do_pages_move for compat pointers
+        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+        Javier Rodriguez <josejavier.rodriguez@duagon.com>,
+        Johannes Thumshirn <jth@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 02/48] mcb-lpc: Reallocate memory region to avoid memory overlapping
 Date:   Mon,  6 Nov 2023 14:02:53 +0100
-Message-ID: <20231106130309.730801784@linuxfoundation.org>
+Message-ID: <20231106130257.947449226@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,78 +53,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Price <gourry.memverge@gmail.com>
+From: Rodríguez Barbarin, José Javier <JoseJavier.Rodriguez@duagon.com>
 
-commit 229e2253766c7cdfe024f1fe280020cc4711087c upstream.
+[ Upstream commit 2025b2ca8004c04861903d076c67a73a0ec6dfca ]
 
-do_pages_move does not handle compat pointers for the page list.
-correctly.  Add in_compat_syscall check and appropriate get_user fetch
-when iterating the page list.
+mcb-lpc requests a fixed-size memory region to parse the chameleon
+table, however, if the chameleon table is smaller that the allocated
+region, it could overlap with the IP Cores' memory regions.
 
-It makes the syscall in compat mode (32-bit userspace, 64-bit kernel)
-work the same way as the native 32-bit syscall again, restoring the
-behavior before my broken commit 5b1b561ba73c ("mm: simplify
-compat_sys_move_pages").
+After parsing the chameleon table, drop/reallocate the memory region
+with the actual chameleon table size.
 
-More specifically, my patch moved the parsing of the 'pages' array from
-the main entry point into do_pages_stat(), which left the syscall
-working correctly for the 'stat' operation (nodes = NULL), while the
-'move' operation (nodes != NULL) is now missing the conversion and
-interprets 'pages' as an array of 64-bit pointers instead of the
-intended 32-bit userspace pointers.
-
-It is possible that nobody noticed this bug because the few
-applications that actually call move_pages are unlikely to run in
-compat mode because of their large memory requirements, but this
-clearly fixes a user-visible regression and should have been caught by
-ltp.
-
-Link: https://lkml.kernel.org/r/20231003144857.752952-1-gregory.price@memverge.com
-Fixes: 5b1b561ba73c ("mm: simplify compat_sys_move_pages")
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Reported-by: Arnd Bergmann <arnd@arndb.de>
-Co-developed-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Co-developed-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Javier Rodriguez <josejavier.rodriguez@duagon.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Link: https://lore.kernel.org/r/20230411083329.4506-4-jth@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/mcb/mcb-lpc.c | 35 +++++++++++++++++++++++++++++++----
+ 1 file changed, 31 insertions(+), 4 deletions(-)
 
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1788,6 +1788,7 @@ static int do_pages_move(struct mm_struc
- 			 const int __user *nodes,
- 			 int __user *status, int flags)
+diff --git a/drivers/mcb/mcb-lpc.c b/drivers/mcb/mcb-lpc.c
+index 945091a883546..7d292acbba539 100644
+--- a/drivers/mcb/mcb-lpc.c
++++ b/drivers/mcb/mcb-lpc.c
+@@ -26,7 +26,7 @@ static int mcb_lpc_probe(struct platform_device *pdev)
  {
-+	compat_uptr_t __user *compat_pages = (void __user *)pages;
- 	int current_node = NUMA_NO_NODE;
- 	LIST_HEAD(pagelist);
- 	int start, i;
-@@ -1801,8 +1802,17 @@ static int do_pages_move(struct mm_struc
- 		int node;
+ 	struct resource *res;
+ 	struct priv *priv;
+-	int ret = 0;
++	int ret = 0, table_size;
  
- 		err = -EFAULT;
--		if (get_user(p, pages + i))
--			goto out_flush;
-+		if (in_compat_syscall()) {
-+			compat_uptr_t cp;
+ 	priv = devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+@@ -61,16 +61,43 @@ static int mcb_lpc_probe(struct platform_device *pdev)
+ 
+ 	ret = chameleon_parse_cells(priv->bus, priv->mem->start, priv->base);
+ 	if (ret < 0) {
+-		mcb_release_bus(priv->bus);
+-		return ret;
++		goto out_mcb_bus;
+ 	}
+ 
+-	dev_dbg(&pdev->dev, "Found %d cells\n", ret);
++	table_size = ret;
 +
-+			if (get_user(cp, compat_pages + i))
-+				goto out_flush;
++	if (table_size < CHAM_HEADER_SIZE) {
++		/* Release the previous resources */
++		devm_iounmap(&pdev->dev, priv->base);
++		devm_release_mem_region(&pdev->dev, priv->mem->start, resource_size(priv->mem));
 +
-+			p = compat_ptr(cp);
-+		} else {
-+			if (get_user(p, pages + i))
-+				goto out_flush;
++		/* Then, allocate it again with the actual chameleon table size */
++		res = devm_request_mem_region(&pdev->dev, priv->mem->start,
++					      table_size,
++					      KBUILD_MODNAME);
++		if (!res) {
++			dev_err(&pdev->dev, "Failed to request PCI memory\n");
++			ret = -EBUSY;
++			goto out_mcb_bus;
 +		}
- 		if (get_user(node, nodes + i))
- 			goto out_flush;
- 		addr = (unsigned long)untagged_addr(p);
++
++		priv->base = devm_ioremap(&pdev->dev, priv->mem->start, table_size);
++		if (!priv->base) {
++			dev_err(&pdev->dev, "Cannot ioremap\n");
++			ret = -ENOMEM;
++			goto out_mcb_bus;
++		}
++
++		platform_set_drvdata(pdev, priv);
++	}
+ 
+ 	mcb_bus_add_devices(priv->bus);
+ 
+ 	return 0;
+ 
++out_mcb_bus:
++	mcb_release_bus(priv->bus);
++	return ret;
+ }
+ 
+ static int mcb_lpc_remove(struct platform_device *pdev)
+-- 
+2.42.0
+
 
 
