@@ -2,38 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5187E7E2420
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3ABE7E24FF
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232306AbjKFNSa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:18:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36910 "EHLO
+        id S232607AbjKFN1P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:27:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232304AbjKFNS2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:28 -0500
+        with ESMTP id S232605AbjKFN1O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 135C310B
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C54C433C7;
-        Mon,  6 Nov 2023 13:18:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B058C10B;
+        Mon,  6 Nov 2023 05:27:11 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3ECCC433C8;
+        Mon,  6 Nov 2023 13:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276705;
-        bh=PLBXTrN0QkhrCSilkS1ZEciLz0arqn97sSTVzn0WmkU=;
+        s=korg; t=1699277231;
+        bh=tgbDnK4ghuOPjs63JXQXulNk6xQr3SPdrwYN41NPIRA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RUk0Zsx6WPJXgJCI/sCbjNAgmUaRKbuPW1sV5TZMUemudHBm+zxNqoe2G4az/nDKA
-         YFA9crg7a7lx5IST03UUcn9VjCKWY4lhX7s81Lxvf998msIvIXGPXIHGWCYLaG39VO
-         /6agOqmeojx+DRHSuPuQHieg2rR7W2s5HFE7vlOk=
+        b=e2E80zwfDj+P7wSb+eCw734Bz9pGEEmgNaPG/7G659q+DwG9OT05TP8BX0YoxFc/Q
+         jbFgwK6TVeH5L6hT9ohyvu7XyQwGtn8looEKfIfzl44StT1Nl8Zs2aaqOBr7TKtLPi
+         N/Y2eh08b2EIKbuqFghC27QPs0LLnFVBxwECmy6g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vicki Pfau <vi@endrift.com>,
-        Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.5 68/88] PCI: Prevent xHCI driver from claiming AMD VanGogh USB3 DRD device
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Baoquan He <bhe@redhat.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 082/128] fbdev: atyfb: only use ioremap_uc() on i386 and ia64
 Date:   Mon,  6 Nov 2023 14:04:02 +0100
-Message-ID: <20231106130308.263085222@linuxfoundation.org>
+Message-ID: <20231106130312.878518033@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,75 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 7e6f3b6d2c352b5fde37ce3fed83bdf6172eebd4 upstream.
+[ Upstream commit c1a8d1d0edb71dec15c9649cb56866c71c1ecd9e ]
 
-The AMD VanGogh SoC contains a DesignWare USB3 Dual-Role Device that can be
-operated as either a USB Host or a USB Device, similar to on the AMD Nolan
-platform.
+ioremap_uc() is only meaningful on old x86-32 systems with the PAT
+extension, and on ia64 with its slightly unconventional ioremap()
+behavior, everywhere else this is the same as ioremap() anyway.
 
-be6646bfbaec ("PCI: Prevent xHCI driver from claiming AMD Nolan USB3 DRD
-device") added a quirk to let the dwc3 driver claim the Nolan device since
-it provides more specific support.
+Change the only driver that still references ioremap_uc() to only do so
+on x86-32/ia64 in order to allow removing that interface at some
+point in the future for the other architectures.
 
-Extend that quirk to include the VanGogh SoC USB3 device.
+On some architectures, ioremap_uc() just returns NULL, changing
+the driver to call ioremap() means that they now have a chance
+of working correctly.
 
-Link: https://lore.kernel.org/r/20230927202212.2388216-1-vi@endrift.com
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-[bhelgaas: include be6646bfbaec reference, add stable tag]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org	# v3.19+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-fbdev@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c    |    8 +++++---
- include/linux/pci_ids.h |    1 +
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/aty/atyfb_base.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -688,7 +688,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
- /*
-  * In the AMD NL platform, this device ([1022:7912]) has a class code of
-  * PCI_CLASS_SERIAL_USB_XHCI (0x0c0330), which means the xhci driver will
-- * claim it.
-+ * claim it. The same applies on the VanGogh platform device ([1022:163a]).
-  *
-  * But the dwc3 driver is a more specific driver for this device, and we'd
-  * prefer to use it instead of xhci. To prevent xhci from claiming the
-@@ -696,7 +696,7 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
-  * defines as "USB device (not host controller)". The dwc3 driver can then
-  * claim it based on its Vendor and Device ID.
-  */
--static void quirk_amd_nl_class(struct pci_dev *pdev)
-+static void quirk_amd_dwc_class(struct pci_dev *pdev)
- {
- 	u32 class = pdev->class;
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index 1aef3d6ebd880..246bf67b32ea0 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -3447,11 +3447,15 @@ static int atyfb_setup_generic(struct pci_dev *pdev, struct fb_info *info,
+ 	}
  
-@@ -706,7 +706,9 @@ static void quirk_amd_nl_class(struct pc
- 		 class, pdev->class);
- }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
--		quirk_amd_nl_class);
-+		quirk_amd_dwc_class);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_VANGOGH_USB,
-+		quirk_amd_dwc_class);
+ 	info->fix.mmio_start = raddr;
++#if defined(__i386__) || defined(__ia64__)
+ 	/*
+ 	 * By using strong UC we force the MTRR to never have an
+ 	 * effect on the MMIO region on both non-PAT and PAT systems.
+ 	 */
+ 	par->ati_regbase = ioremap_uc(info->fix.mmio_start, 0x1000);
++#else
++	par->ati_regbase = ioremap(info->fix.mmio_start, 0x1000);
++#endif
+ 	if (par->ati_regbase == NULL)
+ 		return -ENOMEM;
  
- /*
-  * Synopsys USB 3.x host HAPS platform has a class code of
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -579,6 +579,7 @@
- #define PCI_DEVICE_ID_AMD_1AH_M00H_DF_F3 0x12c3
- #define PCI_DEVICE_ID_AMD_1AH_M20H_DF_F3 0x16fb
- #define PCI_DEVICE_ID_AMD_MI200_DF_F3	0x14d3
-+#define PCI_DEVICE_ID_AMD_VANGOGH_USB	0x163a
- #define PCI_DEVICE_ID_AMD_CNB17H_F3	0x1703
- #define PCI_DEVICE_ID_AMD_LANCE		0x2000
- #define PCI_DEVICE_ID_AMD_LANCE_HOME	0x2001
+-- 
+2.42.0
+
 
 
