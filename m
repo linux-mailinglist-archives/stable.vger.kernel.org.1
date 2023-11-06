@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD157E22F8
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:07:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69FD37E24F6
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231968AbjKFNHY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:07:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37990 "EHLO
+        id S232405AbjKFN1F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:27:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231993AbjKFNHX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:07:23 -0500
+        with ESMTP id S232601AbjKFN1C (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 095D7112
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:07:21 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46554C433C9;
-        Mon,  6 Nov 2023 13:07:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49194D75
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:57 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8377CC433C9;
+        Mon,  6 Nov 2023 13:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276040;
-        bh=Eo0FeG3/kHBbitnO4XesJheIqC9iVdCqcrkkigdgwFs=;
+        s=korg; t=1699277216;
+        bh=d6/FvLc5okqEnf0b/KTxRMqC4lmacV//kf7L86MXQvY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xr73a+9WTX5T/vQRibJh9g6NyTIEQrNu3l8Ks3aVRCnVG186x5kk8Sus5VQoi0trK
-         TwAn8Y6UGDiBfbFunqvf3gQogUJsdJ3JrNRkHmt0HMsURAyPARMwYUFMMIgbawMm4G
-         t/2Zv7GG6hHW0IdxcrUn2Ckx3r34RiKGlnDM64kU=
+        b=Qr3CkSANJem8ZfnwjNlaB8AsIc2ISv97+HPH+rliN34XMVeU77MdxNNX44MkbzCzV
+         CVYRWvu/v15LjTH3/7MjW3BarfpUidywTWvgVXe1twmHDGwJlvJcj3fmSHIhSuaJ5B
+         HCzPNNaPZ3fFuVrbbC71sNlex0cYjAg0ZF5WLtpE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 4.14 48/48] tty: 8250: Add support for Intashield IS-100
-Date:   Mon,  6 Nov 2023 14:03:39 +0100
-Message-ID: <20231106130259.472723860@linuxfoundation.org>
+        patches@lists.linux.dev, Catherine Sullivan <csully@google.com>,
+        David Awogbemila <awogbemila@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 060/128] gve: Fix GFP flags when allocing pages
+Date:   Mon,  6 Nov 2023 14:03:40 +0100
+Message-ID: <20231106130311.816390951@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,38 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Shailend Chand <shailend@google.com>
 
-commit 4d994e3cf1b541ff32dfb03fbbc60eea68f9645b upstream.
+[ Upstream commit a92f7a6feeb3884c69c1c7c1f13bccecb2228ad0 ]
 
-Add support for the Intashield IS-100 1 port serial card.
+Use GFP_ATOMIC when allocating pages out of the hotpath,
+continue to use GFP_KERNEL when allocating pages during setup.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DU0PR02MB7899A0E0CDAA505AF5A874CDC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+GFP_KERNEL will allow blocking which allows it to succeed
+more often in a low memory enviornment but in the hotpath we do
+not want to allow the allocation to block.
+
+Fixes: f5cedc84a30d2 ("gve: Add transmit and receive support")
+Signed-off-by: Catherine Sullivan <csully@google.com>
+Signed-off-by: David Awogbemila <awogbemila@google.com>
+Link: https://lore.kernel.org/r/20220126003843.3584521-1-awogbemila@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/google/gve/gve_rx_dqo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -4783,6 +4783,12 @@ static const struct pci_device_id serial
- 		pbn_b1_bt_1_115200 },
+diff --git a/drivers/net/ethernet/google/gve/gve_rx_dqo.c b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+index 7b18b4fd9e548..d947c2c334128 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_rx_dqo.c
+@@ -157,7 +157,7 @@ static int gve_alloc_page_dqo(struct gve_priv *priv,
+ 	int err;
  
- 	/*
-+	 * IntaShield IS-100
-+	 */
-+	{	PCI_VENDOR_ID_INTASHIELD, 0x0D60,
-+		PCI_ANY_ID, PCI_ANY_ID, 0, 0,
-+		pbn_b2_1_115200 },
-+	/*
- 	 * IntaShield IS-200
- 	 */
- 	{	PCI_VENDOR_ID_INTASHIELD, PCI_DEVICE_ID_INTASHIELD_IS200,
+ 	err = gve_alloc_page(priv, &priv->pdev->dev, &buf_state->page_info.page,
+-			     &buf_state->addr, DMA_FROM_DEVICE, GFP_KERNEL);
++			     &buf_state->addr, DMA_FROM_DEVICE, GFP_ATOMIC);
+ 	if (err)
+ 		return err;
+ 
+-- 
+2.42.0
+
 
 
