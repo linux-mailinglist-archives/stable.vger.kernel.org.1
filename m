@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10C077E2540
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D918C7E239C
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232684AbjKFNaC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:30:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56588 "EHLO
+        id S232173AbjKFNNL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:13:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232680AbjKFNaB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:01 -0500
+        with ESMTP id S232180AbjKFNNH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:07 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8241D8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:58 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BE5C433C7;
-        Mon,  6 Nov 2023 13:29:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD60D7A
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C006C433C8;
+        Mon,  6 Nov 2023 13:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277398;
-        bh=ESRIR/D5Nm/X0heYTaXBfIZTTGnDzvWsij4xpJoCj6s=;
+        s=korg; t=1699276383;
+        bh=NTcA/PVcbRYVKnQRa0pAZDWfwpl0DtchYkQ9rJyCMAM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tmvFdHbHwvYHU/0jd1oW8qbwYpC+pDSs897jOmR9I3IwRjMotjYJmI/Izi6NC7ONm
-         q63rTnaKTQloVtrzcvOpEFy1jViNp9BUCgwVxk/l1SlXHCMyAWU/zcli3AxNXa0v8O
-         MulSslzg/n+8erWtvjBNoiR00QMYhI5io4dGCVc4=
+        b=kSVsUp+HXHkJ7aZGYTJJfyGTGJQXb7b7FnRVGsl4H1NkyfGv1OADcmGDIrDCIbkKd
+         nvKTnpv3SuZGTvQIz63VXQZeqf98yGNRdTtwK4UH9/f85MkgCj99RGRN6wslSu74tG
+         pU3PiOV8pQSuMALerNbzfJ0j6w7GWGxr5QSRvtN4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Francis Laniel <flaniel@linux.microsoft.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 01/95] selftests/ftrace: Add new test case which checks non unique symbol
-Date:   Mon,  6 Nov 2023 14:03:29 +0100
-Message-ID: <20231106130304.732549434@linuxfoundation.org>
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 24/62] fbdev: omapfb: fix some error codes
+Date:   Mon,  6 Nov 2023 14:03:30 +0100
+Message-ID: <20231106130302.682667207@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +49,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francis Laniel <flaniel@linux.microsoft.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 03b80ff8023adae6780e491f66e932df8165e3a0 ]
+[ Upstream commit dc608db793731426938baa2f0e75a4a3cce5f5cf ]
 
-If name_show() is non unique, this test will try to install a kprobe on this
-function which should fail returning EADDRNOTAVAIL.
-On kernel where name_show() is not unique, this test is skipped.
+Return negative -ENXIO instead of positive ENXIO.
 
-Link: https://lore.kernel.org/all/20231020104250.9537-3-flaniel@linux.microsoft.com/
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc  | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
- create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+ drivers/video/fbdev/omap/omapfb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-new file mode 100644
-index 0000000000000..bc9514428dbaf
---- /dev/null
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-@@ -0,0 +1,13 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+# description: Test failure of registering kprobe on non unique symbol
-+# requires: kprobe_events
-+
-+SYMBOL='name_show'
-+
-+# We skip this test on kernel where SYMBOL is unique or does not exist.
-+if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
-+	exit_unsupported
-+fi
-+
-+! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
+diff --git a/drivers/video/fbdev/omap/omapfb_main.c b/drivers/video/fbdev/omap/omapfb_main.c
+index 17cda57656838..5ea7c52baa5a8 100644
+--- a/drivers/video/fbdev/omap/omapfb_main.c
++++ b/drivers/video/fbdev/omap/omapfb_main.c
+@@ -1643,13 +1643,13 @@ static int omapfb_do_probe(struct platform_device *pdev,
+ 	}
+ 	fbdev->int_irq = platform_get_irq(pdev, 0);
+ 	if (fbdev->int_irq < 0) {
+-		r = ENXIO;
++		r = -ENXIO;
+ 		goto cleanup;
+ 	}
+ 
+ 	fbdev->ext_irq = platform_get_irq(pdev, 1);
+ 	if (fbdev->ext_irq < 0) {
+-		r = ENXIO;
++		r = -ENXIO;
+ 		goto cleanup;
+ 	}
+ 
 -- 
 2.42.0
 
