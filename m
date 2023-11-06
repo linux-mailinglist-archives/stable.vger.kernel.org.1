@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6383F7E2493
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E1F37E256D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232463AbjKFNXW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:23:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57486 "EHLO
+        id S232745AbjKFNbw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:31:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232465AbjKFNXQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:16 -0500
+        with ESMTP id S232752AbjKFNbu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:50 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7B7510B
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD4CC433C8;
-        Mon,  6 Nov 2023 13:23:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6101410B
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:47 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBB9C433C7;
+        Mon,  6 Nov 2023 13:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276993;
-        bh=5vspVQh9289/zAt2JcwdRduHtWRltcEMeWbIUw8pDDM=;
+        s=korg; t=1699277507;
+        bh=8p1CkrSZeLvSRv0X2xUrolrJuk1j+4iJAsvgRk73iSg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SXE17PUp/JNybxfiJ4ZGf932zaRooe5M/YT5W0xhDUFIsCmQVSScz1UuJA/hM7v/J
-         1HG2xeYdGjl3JDIOwphBe/nXExxUOf/+1oBXfyAAt02XuJEb9/PC5H/WFgVvZoQuOS
-         qtDFe0H6qcOfEgpq8ZX/F4tVcAXuD2PyXQE/HUgs=
+        b=jA7LTskJdqrYLr+qWXCfZF/MIdTyxC1H6Bgpq0cEi1IyKW6FMe6eeHVvrHXCCXCxD
+         PLZHdWTGUVeVh1w6vSKSmwg+rlQYGJylbQJznzEf9MtSR1jLgL9w1XwXXc5k4PS4NX
+         jDydOYP0POARWIr4bStBd84M63dsfJmYilieqqXY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 53/74] dmaengine: ste_dma40: Fix PM disable depth imbalance in d40_probe
+        patches@lists.linux.dev, Wang Hai <wanghai38@huawei.com>,
+        Oleksandr Tymoshenko <ovt@google.com>
+Subject: [PATCH 5.10 45/95] kobject: Fix slab-out-of-bounds in fill_kobj_path()
 Date:   Mon,  6 Nov 2023 14:04:13 +0100
-Message-ID: <20231106130303.556021099@linuxfoundation.org>
+Message-ID: <20231106130306.347126660@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +49,147 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-[ Upstream commit 0618c077a8c20e8c81e367988f70f7e32bb5a717 ]
+commit 3bb2a01caa813d3a1845d378bbe4169ef280d394 upstream.
 
-The pm_runtime_enable will increase power disable depth. Thus
-a pairing decrement is needed on the error handling path to
-keep it balanced according to context.
-We fix it by calling pm_runtime_disable when error returns.
+In kobject_get_path(), if kobj->name is changed between calls
+get_kobj_path_length() and fill_kobj_path() and the length becomes
+longer, then fill_kobj_path() will have an out-of-bounds bug.
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/tencent_DD2D371DB5925B4B602B1E1D0A5FA88F1208@qq.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The actual current problem occurs when the ixgbe probe.
+
+In ixgbe_mii_bus_init(), if the length of netdev->dev.kobj.name
+length becomes longer, out-of-bounds will occur.
+
+cpu0                                         cpu1
+ixgbe_probe
+ register_netdev(netdev)
+  netdev_register_kobject
+   device_add
+    kobject_uevent // Sending ADD events
+                                             systemd-udevd // rename netdev
+                                              dev_change_name
+                                               device_rename
+                                                kobject_rename
+ ixgbe_mii_bus_init                             |
+  mdiobus_register                              |
+   __mdiobus_register                           |
+    device_register                             |
+     device_add                                 |
+      kobject_uevent                            |
+       kobject_get_path                         |
+        len = get_kobj_path_length // old name  |
+        path = kzalloc(len, gfp_mask);          |
+                                                kobj->name = name;
+                                                /* name length becomes
+                                                 * longer
+                                                 */
+        fill_kobj_path /* kobj path length is
+                        * longer than path,
+                        * resulting in out of
+                        * bounds when filling path
+                        */
+
+This is the kasan report:
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in fill_kobj_path+0x50/0xc0
+Write of size 7 at addr ff1100090573d1fd by task kworker/28:1/673
+
+ Workqueue: events work_for_cpu_fn
+ Call Trace:
+ <TASK>
+ dump_stack_lvl+0x34/0x48
+ print_address_description.constprop.0+0x86/0x1e7
+ print_report+0x36/0x4f
+ kasan_report+0xad/0x130
+ kasan_check_range+0x35/0x1c0
+ memcpy+0x39/0x60
+ fill_kobj_path+0x50/0xc0
+ kobject_get_path+0x5a/0xc0
+ kobject_uevent_env+0x140/0x460
+ device_add+0x5c7/0x910
+ __mdiobus_register+0x14e/0x490
+ ixgbe_probe.cold+0x441/0x574 [ixgbe]
+ local_pci_probe+0x78/0xc0
+ work_for_cpu_fn+0x26/0x40
+ process_one_work+0x3b6/0x6a0
+ worker_thread+0x368/0x520
+ kthread+0x165/0x1a0
+ ret_from_fork+0x1f/0x30
+
+This reproducer triggers that bug:
+
+while:
+do
+    rmmod ixgbe
+    sleep 0.5
+    modprobe ixgbe
+    sleep 0.5
+
+When calling fill_kobj_path() to fill path, if the name length of
+kobj becomes longer, return failure and retry. This fixes the problem.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Link: https://lore.kernel.org/r/20221220012143.52141-1-wanghai38@huawei.com
+Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ste_dma40.c | 1 +
- 1 file changed, 1 insertion(+)
+ lib/kobject.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
-index 96a808b487cbe..fa0ad8581edcc 100644
---- a/drivers/dma/ste_dma40.c
-+++ b/drivers/dma/ste_dma40.c
-@@ -3700,6 +3700,7 @@ static int __init d40_probe(struct platform_device *pdev)
- 		regulator_disable(base->lcpa_regulator);
- 		regulator_put(base->lcpa_regulator);
- 	}
-+	pm_runtime_disable(base->dev);
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -144,7 +144,7 @@ static int get_kobj_path_length(struct k
+ 	return length;
+ }
  
- 	kfree(base->lcla_pool.alloc_map);
- 	kfree(base->lookup_log_chans);
--- 
-2.42.0
-
+-static void fill_kobj_path(struct kobject *kobj, char *path, int length)
++static int fill_kobj_path(struct kobject *kobj, char *path, int length)
+ {
+ 	struct kobject *parent;
+ 
+@@ -153,12 +153,16 @@ static void fill_kobj_path(struct kobjec
+ 		int cur = strlen(kobject_name(parent));
+ 		/* back up enough to print this name with '/' */
+ 		length -= cur;
++		if (length <= 0)
++			return -EINVAL;
+ 		memcpy(path + length, kobject_name(parent), cur);
+ 		*(path + --length) = '/';
+ 	}
+ 
+ 	pr_debug("kobject: '%s' (%p): %s: path = '%s'\n", kobject_name(kobj),
+ 		 kobj, __func__, path);
++
++	return 0;
+ }
+ 
+ /**
+@@ -173,13 +177,17 @@ char *kobject_get_path(struct kobject *k
+ 	char *path;
+ 	int len;
+ 
++retry:
+ 	len = get_kobj_path_length(kobj);
+ 	if (len == 0)
+ 		return NULL;
+ 	path = kzalloc(len, gfp_mask);
+ 	if (!path)
+ 		return NULL;
+-	fill_kobj_path(kobj, path, len);
++	if (fill_kobj_path(kobj, path, len)) {
++		kfree(path);
++		goto retry;
++	}
+ 
+ 	return path;
+ }
 
 
