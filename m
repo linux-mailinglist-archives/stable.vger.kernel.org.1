@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EF817E24E2
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A00D7E22F9
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:07:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232553AbjKFN0T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:26:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36568 "EHLO
+        id S231981AbjKFNH1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:07:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232588AbjKFN0Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:16 -0500
+        with ESMTP id S231977AbjKFNH0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:07:26 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C71E4D75
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BE2C433C8;
-        Mon,  6 Nov 2023 13:26:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB5F3A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:07:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C248C433C8;
+        Mon,  6 Nov 2023 13:07:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277171;
-        bh=yvjVTrPLkNpQMbAou42sj8SGRW2akxQkYN6B8zWocyI=;
+        s=korg; t=1699276043;
+        bh=dKjWPrNa677s9+92TLFYw8evr+LUbgmQLK7cTOljkII=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DmtswjUFRnPGLUZJWJW23pKju1tf9paTCI0rc9kuDlAC5dckrrekHaHRI/FlO0OF4
-         K22YAElQ3D1z327EWZysEHHSF7yq3qc3tzk+3/pIvYkgahOZvPRy5dt6rUiza7/nd/
-         y7W7iX4tKjwgjtCoUbs7pOu70JFJxyfSZxANkYDg=
+        b=dBZ6p5UCy2S3Ilz1Y/T3pYnx3HtXnJsElYsBACIUyehWHn6g1/Xr/ravDXQ7iVj3t
+         JDNQtgn7I+v8Un3MgYzGCY4lgMp0hO2trW3nW4jtgmer91Yqxvz3uVE7KRV0cdgizW
+         /gtreY0ta7rVy7jg3iZiaDlGU2Z7nReIGrFfYpqs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Douglas Anderson <dianders@chromium.org>,
-        Grant Grundler <grundler@chromium.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 033/128] r8152: Cancel hw_phy_work if we have an error in probe
+        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
+        Byungchul Park <byungchul.park@lge.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 4.14 22/48] x86/mm: Fix RESERVE_BRK() for older binutils
 Date:   Mon,  6 Nov 2023 14:03:13 +0100
-Message-ID: <20231106130310.622219610@linuxfoundation.org>
+Message-ID: <20231106130258.631970448@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +52,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit bb8adff9123e492598162ac1baad01a53891aef6 ]
+commit e32683c6f7d22ba624e0bfc58b02cf3348bdca63 upstream.
 
-The error handling in rtl8152_probe() is missing a call to cancel the
-hw_phy_work. Add it in to match what's in the cleanup code in
-rtl8152_disconnect().
+With binutils 2.26, RESERVE_BRK() causes a build failure:
 
-Fixes: a028a9e003f2 ("r8152: move the settings of PHY to a work queue")
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  /tmp/ccnGOKZ5.s: Assembler messages:
+  /tmp/ccnGOKZ5.s:98: Error: missing ')'
+  /tmp/ccnGOKZ5.s:98: Error: missing ')'
+  /tmp/ccnGOKZ5.s:98: Error: missing ')'
+  /tmp/ccnGOKZ5.s:98: Error: junk at end of line, first unrecognized
+  character is `U'
+
+The problem is this line:
+
+  RESERVE_BRK(early_pgt_alloc, INIT_PGT_BUF_SIZE)
+
+Specifically, the INIT_PGT_BUF_SIZE macro which (via PAGE_SIZE's use
+_AC()) has a "1UL", which makes older versions of the assembler unhappy.
+Unfortunately the _AC() macro doesn't work for inline asm.
+
+Inline asm was only needed here to convince the toolchain to add the
+STT_NOBITS flag.  However, if a C variable is placed in a section whose
+name is prefixed with ".bss", GCC and Clang automatically set
+STT_NOBITS.  In fact, ".bss..page_aligned" already relies on this trick.
+
+So fix the build failure (and simplify the macro) by allocating the
+variable in C.
+
+Also, add NOLOAD to the ".brk" output section clause in the linker
+script.  This is a failsafe in case the ".bss" prefix magic trick ever
+stops working somehow.  If there's a section type mismatch, the GNU
+linker will force the ".brk" output section to be STT_NOBITS.  The LLVM
+linker will fail with a "section type mismatch" error.
+
+Note this also changes the name of the variable from .brk.##name to
+__brk_##name.  The variable names aren't actually used anywhere, so it's
+harmless.
+
+Fixes: a1e2c031ec39 ("x86/mm: Simplify RESERVE_BRK()")
+Reported-by: Joe Damato <jdamato@fastly.com>
+Reported-by: Byungchul Park <byungchul.park@lge.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Joe Damato <jdamato@fastly.com>
+Link: https://lore.kernel.org/r/22d07a44c80d8e8e1e82b9a806ddc8c6bbb2606e.1654759036.git.jpoimboe@kernel.org
+[nathan: Fix conflict due to lack of 360db4ace311 and resolve silent
+         conflict with 360db4ace3117]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/r8152.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/setup.h  |   38 +++++++++++++++++++++-----------------
+ arch/x86/kernel/vmlinux.lds.S |    4 ++--
+ 2 files changed, 23 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 52056b296b9f7..baa3c57d16427 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9799,6 +9799,7 @@ static int rtl8152_probe(struct usb_interface *intf,
+--- a/arch/x86/include/asm/setup.h
++++ b/arch/x86/include/asm/setup.h
+@@ -91,19 +91,16 @@ extern unsigned long _brk_end;
+ void *extend_brk(size_t size, size_t align);
  
- out1:
- 	tasklet_kill(&tp->tx_tl);
-+	cancel_delayed_work_sync(&tp->hw_phy_work);
- 	if (tp->rtl_ops.unload)
- 		tp->rtl_ops.unload(tp);
- 	usb_set_intfdata(intf, NULL);
--- 
-2.42.0
-
+ /*
+- * Reserve space in the brk section.  The name must be unique within the file,
+- * and somewhat descriptive.  The size is in bytes.
++ * Reserve space in the .brk section, which is a block of memory from which the
++ * caller is allowed to allocate very early (before even memblock is available)
++ * by calling extend_brk().  All allocated memory will be eventually converted
++ * to memblock.  Any leftover unallocated memory will be freed.
+  *
+- * The allocation is done using inline asm (rather than using a section
+- * attribute on a normal variable) in order to allow the use of @nobits, so
+- * that it doesn't take up any space in the vmlinux file.
++ * The size is in bytes.
+  */
+-#define RESERVE_BRK(name, size)						\
+-	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
+-	    ".brk." #name ":\n\t"					\
+-	    ".skip " __stringify(size) "\n\t"				\
+-	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
+-	    ".popsection\n\t")
++#define RESERVE_BRK(name, size)					\
++	__section(.bss..brk) __aligned(1) __used	\
++	static char __brk_##name[size]
+ 
+ /* Helper for reserving space for arrays of things */
+ #define RESERVE_BRK_ARRAY(type, name, entries)		\
+@@ -121,12 +118,19 @@ asmlinkage void __init x86_64_start_rese
+ 
+ #endif /* __i386__ */
+ #endif /* _SETUP */
+-#else
+-#define RESERVE_BRK(name,sz)				\
+-	.pushsection .brk_reservation,"aw",@nobits;	\
+-.brk.name:						\
+-1:	.skip sz;					\
+-	.size .brk.name,.-1b;				\
++
++#else  /* __ASSEMBLY */
++
++.macro __RESERVE_BRK name, size
++	.pushsection .bss..brk, "aw"
++GLOBAL(__brk_\name)
++	.skip \size
++END(__brk_\name)
+ 	.popsection
++.endm
++
++#define RESERVE_BRK(name, size) __RESERVE_BRK name, size
++
+ #endif /* __ASSEMBLY__ */
++
+ #endif /* _ASM_X86_SETUP_H */
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -359,10 +359,10 @@ SECTIONS
+ 	}
+ 
+ 	. = ALIGN(PAGE_SIZE);
+-	.brk : AT(ADDR(.brk) - LOAD_OFFSET) {
++	.brk (NOLOAD) : AT(ADDR(.brk) - LOAD_OFFSET) {
+ 		__brk_base = .;
+ 		. += 64 * 1024;		/* 64k alignment slop space */
+-		*(.brk_reservation)	/* areas brk users have reserved */
++		*(.bss..brk)		/* areas brk users have reserved */
+ 		__brk_limit = .;
+ 	}
+ 
 
 
