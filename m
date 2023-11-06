@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A1257E2005
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 12:30:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 234107E2008
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 12:31:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230018AbjKFLaQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 06:30:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57890 "EHLO
+        id S229583AbjKFLbP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 06:31:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229583AbjKFLaQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 06:30:16 -0500
+        with ESMTP id S231462AbjKFLbO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 06:31:14 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF975BB
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 03:30:13 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22329C433C7;
-        Mon,  6 Nov 2023 11:30:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F3E7DB
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 03:31:12 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47DBFC433C8;
+        Mon,  6 Nov 2023 11:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699270213;
-        bh=Mx6qhRdw/Aw2a2q4h2EM1H0s17mIdJfguU6q2EsYv2U=;
+        s=korg; t=1699270271;
+        bh=GXQmqRN/QrxJMm2jYTiQM4g8A6ZtMYJbhA1VqcY0maw=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=oTB9PGoEnTaINwX23UUdSAFsRTwwv9o6gmMij6qrnNGUuKNgvRag3MGZNX5MlP6t7
-         RkQVm63CTbnpkklrtKps38BrAFxTKMGVBc18cKzi2CaKv0KkCLgcpt6vpoK4aJXIY7
-         OTUCsB70w4gFK4C2xKI+83sQ/OokobwF3E4X2suU=
-Date:   Mon, 6 Nov 2023 12:30:10 +0100
+        b=or3IHmR/CJTrjHcYO+HqE4/ojuS0V7s6rQwLXBkcUUhfw0yDjPGyl0pgalWFqLuGh
+         uP3BQccvBAmaR9ehPuWeBIFDgxW6Aw1mflwpYwqzm/TUryXtDwYJD77xupC3UpQbsy
+         Vo1isMpmNpuyD9ce6wXMLJfyj3IZthSEtJXx6HqY=
+Date:   Mon, 6 Nov 2023 12:31:08 +0100
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     stable@vger.kernel.org, Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: Re: [PATCH 5.15 v2 1/2] drm/amd: Move helper for dynamic speed
- switch check out of smu13
-Message-ID: <2023110658-wrangle-pancreas-de47@gregkh>
-References: <20231031160451.5429-1-mario.limonciello@amd.com>
+To:     SeongJae Park <sj@kernel.org>
+Cc:     stable@vger.kernel.org, Maxim Levitsky <mlevitsk@redhat.com>,
+        Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Paolo Bonzini <pbonzini@redhat.com>
+Subject: Re: [PATCH 6.1.y] x86: KVM: SVM: always update the x2avic msr
+ interception
+Message-ID: <2023110600-tightwad-campfire-6a66@gregkh>
+References: <2023102017-human-marine-7125@gregkh>
+ <20231102175815.128993-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231031160451.5429-1-mario.limonciello@amd.com>
+In-Reply-To: <20231102175815.128993-1-sj@kernel.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -46,23 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Oct 31, 2023 at 11:04:50AM -0500, Mario Limonciello wrote:
-> This helper is used for checking if the connected host supports
-> the feature, it can be moved into generic code to be used by other
-> smu implementations as well.
+On Thu, Nov 02, 2023 at 05:58:15PM +0000, SeongJae Park wrote:
+> From: Maxim Levitsky <mlevitsk@redhat.com>
 > 
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> Reviewed-by: Evan Quan <evan.quan@amd.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> (cherry picked from commit 188623076d0f1a500583d392b6187056bf7cc71a)
+> The following problem exists since x2avic was enabled in the KVM:
 > 
-> The original problematic dGPU is not supported in 5.15.
+> svm_set_x2apic_msr_interception is called to enable the interception of
+> the x2apic msrs.
 > 
-> Just introduce new function for 5.15 as a dependency for fixing
-> unrelated dGPU that uses this symbol as well.
+> In particular it is called at the moment the guest resets its apic.
 > 
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> Assuming that the guest's apic was in x2apic mode, the reset will bring
+> it back to the xapic mode.
+> 
+> The svm_set_x2apic_msr_interception however has an erroneous check for
+> '!apic_x2apic_mode()' which prevents it from doing anything in this case.
+> 
+> As a result of this, all x2apic msrs are left unintercepted, and that
+> exposes the bare metal x2apic (if enabled) to the guest.
+> Oops.
+> 
+> Remove the erroneous '!apic_x2apic_mode()' check to fix that.
+> 
+> This fixes CVE-2023-5090
+> 
+> Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Maxim Levitsky <mlevitsk@redhat.com>
+> Reviewed-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> Tested-by: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+> Reviewed-by: Sean Christopherson <seanjc@google.com>
+> Message-Id: <20230928173354.217464-2-mlevitsk@redhat.com>
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> (cherry picked from commit b65235f6e102354ccafda601eaa1c5bef5284d21)
+> Signed-off-by: SeongJae Park <sj@kernel.org>
 
-Both now queued up, thanks.
+Now queued up, thanks.
 
 greg k-h
