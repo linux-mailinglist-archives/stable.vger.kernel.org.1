@@ -2,107 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58B137E2791
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 15:49:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 071B47E279C
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 15:49:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbjKFOtI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 09:49:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42676 "EHLO
+        id S231942AbjKFOtw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 09:49:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231764AbjKFOtG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 09:49:06 -0500
-Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.219])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3250EEA;
-        Mon,  6 Nov 2023 06:49:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-        s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=omdBI
-        C+e1jVadRkJ0QsCI7L9wKGBA2OoP3PF04hqiWI=; b=icMCVQ56bJbR9Qbyx5nf8
-        0K8Qsm3F0mVQpUaeIG9VWBB+uvDnib0yQlDhY6wUINDGKYU317uWmk0ttZf7EoVy
-        6kaDmtMy3pWOzXfqtTVI5dKzpWYc5pUSFlCZSOIS346pbgYo1UqwxXe/9M+sKjuu
-        7a9qCM/qUzF6yGpD5ntDXE=
-Received: from leanderwang-LC4.localdomain (unknown [111.206.145.21])
-        by zwqz-smtp-mta-g2-2 (Coremail) with SMTP id _____wAXH5Gu_Ehl9FmbBw--.1952S5;
-        Mon, 06 Nov 2023 22:48:21 +0800 (CST)
-From:   Zheng Wang <zyytlz.wz@163.com>
-To:     dmitry.osipenko@collabora.com
-Cc:     Kyrie.Wu@mediatek.com, bin.liu@mediatek.com, mchehab@kernel.org,
-        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, Irui.Wang@mediatek.com,
-        security@kernel.org, hackerzheng666@gmail.com,
-        amergnat@baylibre.com, wenst@chromium.org, stable@vger.kernel.org,
-        Zheng Wang <zyytlz.wz@163.com>
-Subject: [RESEND PATCH v2 3/3] media: mtk-jpeg: Fix timeout schedule error in mtk_jpegdec_worker.
-Date:   Mon,  6 Nov 2023 22:48:11 +0800
-Message-Id: <20231106144811.868127-4-zyytlz.wz@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20231106144811.868127-1-zyytlz.wz@163.com>
-References: <20231106144811.868127-1-zyytlz.wz@163.com>
+        with ESMTP id S232120AbjKFOtg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 09:49:36 -0500
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3415B134
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 06:49:30 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r00uj-0006Dr-Tw; Mon, 06 Nov 2023 15:49:17 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r00uj-00749e-6d; Mon, 06 Nov 2023 15:49:17 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1r00ui-00DkAu-TY; Mon, 06 Nov 2023 15:49:16 +0100
+Date:   Mon, 6 Nov 2023 15:49:14 +0100
+From:   Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To:     Florian Eckert <fe@dev.tdt.de>
+Cc:     Eckert.Florian@googlemail.com, pavel@ucw.cz, lee@kernel.org,
+        kabel@kernel.org, gregkh@linuxfoundation.org,
+        linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [Patch v2] leds: ledtrig-tty: free allocated ttyname buffer on
+ deactivate
+Message-ID: <20231106144914.bflq2jxejdxs6zjb@pengutronix.de>
+References: <20231106141205.3376954-1-fe@dev.tdt.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: _____wAXH5Gu_Ehl9FmbBw--.1952S5
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Ar15uF1rKrW5Gr4xtw4Dtwb_yoW8ZF1rpF
-        WfK3yqkrWUWrZ8tF4UA3W7ZFy5G34Fgr47Ww43Xwn5A343XF47tryjya4xtFWIyFy2ka4F
-        yF4vg34xJFsFyFJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UF1v3UUUUU=
-X-Originating-IP: [111.206.145.21]
-X-CM-SenderInfo: h2113zf2oz6qqrwthudrp/xtbBmwsgU1etjJUTHQAAsO
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cuxqxbsy7asbpnbl"
+Content-Disposition: inline
+In-Reply-To: <20231106141205.3376954-1-fe@dev.tdt.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In mtk_jpegdec_worker, if error occurs in mtk_jpeg_set_dec_dst, it
-will start the timeout worker and invoke v4l2_m2m_job_finish at
-the same time. This will break the logic of design for there should
-be only one function to call v4l2_m2m_job_finish. But now the timeout
-handler and mtk_jpegdec_worker will both invoke it.
 
-Fix it by start the worker only if mtk_jpeg_set_dec_dst successfully
-finished.
+--cuxqxbsy7asbpnbl
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: da4ede4b7fd6 ("media: mtk-jpeg: move data/code inside CONFIG_OF blocks")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: stable@vger.kernel.org
----
-v2:
-- put the patches into a single series suggested by Dmitry
----
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On Mon, Nov 06, 2023 at 03:12:05PM +0100, Florian Eckert wrote:
+> The ttyname buffer for the ledtrig_tty_data struct is allocated in the
+> sysfs ttyname_store() function. This buffer must be released on trigger
+> deactivation. This was missing and is thus a memory leak.
+>=20
+> While we are at it, the tty handler in the ledtrig_tty_data struct should
+> also be returned in case of the trigger deactivation call.
+>=20
+> Cc: stable@vger.kernel.org
+> Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
+> Signed-off-by: Florian Eckert <fe@dev.tdt.de>
 
-diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-index a39acde2724a..c3456c700c07 100644
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1749,9 +1749,6 @@ static void mtk_jpegdec_worker(struct work_struct *work)
- 	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
- 	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
- 
--	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
--			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
--
- 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
- 	if (mtk_jpeg_set_dec_dst(ctx,
- 				 &jpeg_src_buf->dec_param,
-@@ -1761,6 +1758,9 @@ static void mtk_jpegdec_worker(struct work_struct *work)
- 		goto setdst_end;
- 	}
- 
-+	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
-+			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
-+
- 	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
- 	ctx->total_frame_num++;
- 	mtk_jpeg_dec_reset(comp_jpeg[hw_id]->reg_base);
--- 
-2.25.1
+I already provided that to v1, but my reply and the v2 crossed, so I'm
+forwarding my tag to this v2:
 
+Reviewed-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--cuxqxbsy7asbpnbl
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVI/OkACgkQj4D7WH0S
+/k4dugf/d+mVIkYj3WhRH5DuFSBGNO7Oni01gKNpAmSw1/lhYmVAd5l39RU1n6qR
+L4AKALqT+nNBFdeZcSGfPcNMMxZKNE56Np45S/4KwBk71D6l/CsYqqgk/wJhMfhP
+Tfu3gBrTlSjyWvtWO8llhJHRuEZf1LpfCNA1hMjtzyZuv4LHlugp3C4/fb3QvE6j
+MqyK4LudbsPFaqod7+IhW9S0+mKHwDTwCgPHsTc8IUUFSpq/XR0sAe5Jp16BXm7g
+V4JSyz5MzddPiPRVjFFlTb9NfmNVfaAcBJ8l1Lx45dQpmkqrOUedd+68luvewdYY
+Y/8+E4Ilcqp6JfHbi00jO9jsH95paQ==
+=Oo3i
+-----END PGP SIGNATURE-----
+
+--cuxqxbsy7asbpnbl--
