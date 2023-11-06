@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C03A37E240E
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C05147E232C
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232265AbjKFNRg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:17:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57096 "EHLO
+        id S232072AbjKFNJ0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:09:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232253AbjKFNRf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:35 -0500
+        with ESMTP id S232073AbjKFNJZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88C8F94
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:33 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0FEC433C8;
-        Mon,  6 Nov 2023 13:17:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 173B7F3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:23 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFFAC433C8;
+        Mon,  6 Nov 2023 13:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276653;
-        bh=PZy0gEs3mIsN/v45teV5woRNZ4SiU2qjPQBBYreA7ek=;
+        s=korg; t=1699276162;
+        bh=lYGIlLvTBKw9AdwgX15uOPuNVCDLAkS4gx4KeF0mq0g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hUpu2xMdRnaUtEW+dOMmMWuI77n4gJ+pB6HxEP+VIGS1cgppS7wqL8zuNouUcfhUU
-         1sn432bg0wUdxG75jZGxfmRELeVu/wn4EFC0tHCzAsflV5eQhJZ/Te1RL3i/fNo15e
-         oeC7O1UGVdsomOa5WDJvS0oVkQybrWTqwqG6rNlM=
+        b=YaqJ3p4FvguKJsmgAYmh3V1kBKTufvcXm5RvfUnBGCvG3sCD4CTKIQetXZQ9bt4S4
+         ycSQ1XexVBJO65Fgbf3CkaX45OPXtpmdzZL4bnCoi2S0fZEIItelVuKyKIoKNmLshC
+         gf1p4aBKmCHFvWEKSRsSYU3YuKAZFfeKTtGZDBhs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ondrej Zary <linux@zary.sk>,
-        Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Damien Le Moal <dlemoal@kernel.org>,
+        patches@lists.linux.dev, Kunwu Chan <chentao@kylinos.cn>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 13/88] ata: pata_parport: add custom version of wait_after_reset
+Subject: [PATCH 4.19 11/61] treewide: Spelling fix in comment
 Date:   Mon,  6 Nov 2023 14:03:07 +0100
-Message-ID: <20231106130306.290956056@linuxfoundation.org>
+Message-ID: <20231106130259.953131793@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,118 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Zary <linux@zary.sk>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit f343e578fef99a69b3322aca38b94a6d8ded2ce7 ]
+[ Upstream commit fb71ba0ed8be9534493c80ba00142a64d9972a72 ]
 
-Some parallel adapters (e.g. EXP Computer MC-1285B EPP Cable) return
-bogus values when there's no master device present. This can cause
-reset to fail, preventing the lone slave device (such as EXP Computer
-CD-865) from working.
+reques -> request
 
-Add custom version of wait_after_reset that ignores master failure when
-a slave device is present. The custom version is also needed because
-the generic ata_sff_wait_after_reset uses direct port I/O for slave
-device detection.
-
-Signed-off-by: Ondrej Zary <linux@zary.sk>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: 09dde54c6a69 ("PS3: gelic: Add wireless support for PS3")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_parport/pata_parport.c | 68 ++++++++++++++++++++++++-
- 1 file changed, 67 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/toshiba/ps3_gelic_wireless.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/pata_parport/pata_parport.c b/drivers/ata/pata_parport/pata_parport.c
-index cf87bbb52f1ff..a7adfdcb5e27c 100644
---- a/drivers/ata/pata_parport/pata_parport.c
-+++ b/drivers/ata/pata_parport/pata_parport.c
-@@ -80,6 +80,72 @@ static bool pata_parport_devchk(struct ata_port *ap, unsigned int device)
- 	return (nsect == 0x55) && (lbal == 0xaa);
- }
+diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
+index 302079e22b06c..186f35b2b182b 100644
+--- a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
++++ b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
+@@ -1232,7 +1232,7 @@ static int gelic_wl_set_encodeext(struct net_device *netdev,
+ 		key_index = wl->current_key;
  
-+static int pata_parport_wait_after_reset(struct ata_link *link,
-+					 unsigned int devmask,
-+					 unsigned long deadline)
-+{
-+	struct ata_port *ap = link->ap;
-+	struct pi_adapter *pi = ap->host->private_data;
-+	unsigned int dev0 = devmask & (1 << 0);
-+	unsigned int dev1 = devmask & (1 << 1);
-+	int rc, ret = 0;
-+
-+	ata_msleep(ap, ATA_WAIT_AFTER_RESET);
-+
-+	/* always check readiness of the master device */
-+	rc = ata_sff_wait_ready(link, deadline);
-+	if (rc) {
-+		/*
-+		 * some adapters return bogus values if master device is not
-+		 * present, so don't abort now if a slave device is present
-+		 */
-+		if (!dev1)
-+			return rc;
-+		ret = -ENODEV;
-+	}
-+
-+	/*
-+	 * if device 1 was found in ata_devchk, wait for register
-+	 * access briefly, then wait for BSY to clear.
-+	 */
-+	if (dev1) {
-+		int i;
-+
-+		pata_parport_dev_select(ap, 1);
-+
-+		/*
-+		 * Wait for register access.  Some ATAPI devices fail
-+		 * to set nsect/lbal after reset, so don't waste too
-+		 * much time on it.  We're gonna wait for !BSY anyway.
-+		 */
-+		for (i = 0; i < 2; i++) {
-+			u8 nsect, lbal;
-+
-+			nsect = pi->proto->read_regr(pi, 0, ATA_REG_NSECT);
-+			lbal = pi->proto->read_regr(pi, 0, ATA_REG_LBAL);
-+			if (nsect == 1 && lbal == 1)
-+				break;
-+			/* give drive a breather */
-+			ata_msleep(ap, 50);
-+		}
-+
-+		rc = ata_sff_wait_ready(link, deadline);
-+		if (rc) {
-+			if (rc != -ENODEV)
-+				return rc;
-+			ret = rc;
-+		}
-+	}
-+
-+	pata_parport_dev_select(ap, 0);
-+	if (dev1)
-+		pata_parport_dev_select(ap, 1);
-+	if (dev0)
-+		pata_parport_dev_select(ap, 0);
-+
-+	return ret;
-+}
-+
- static int pata_parport_bus_softreset(struct ata_port *ap, unsigned int devmask,
- 				      unsigned long deadline)
- {
-@@ -94,7 +160,7 @@ static int pata_parport_bus_softreset(struct ata_port *ap, unsigned int devmask,
- 	ap->last_ctl = ap->ctl;
- 
- 	/* wait the port to become ready */
--	return ata_sff_wait_after_reset(&ap->link, devmask, deadline);
-+	return pata_parport_wait_after_reset(&ap->link, devmask, deadline);
- }
- 
- static int pata_parport_softreset(struct ata_link *link, unsigned int *classes,
+ 	if (!enc->length && (ext->ext_flags & IW_ENCODE_EXT_SET_TX_KEY)) {
+-		/* reques to change default key index */
++		/* request to change default key index */
+ 		pr_debug("%s: request to change default key to %d\n",
+ 			 __func__, key_index);
+ 		wl->current_key = key_index;
 -- 
 2.42.0
 
