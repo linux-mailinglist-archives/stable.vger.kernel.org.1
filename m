@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CEE37E2424
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74DE77E2508
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232180AbjKFNSo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:18:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55964 "EHLO
+        id S232552AbjKFN1g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:27:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231867AbjKFNSn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:43 -0500
+        with ESMTP id S232627AbjKFN1f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:35 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9944D8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:40 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EC6C433C8;
-        Mon,  6 Nov 2023 13:18:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49A91EA
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:32 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F39C433C8;
+        Mon,  6 Nov 2023 13:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276720;
-        bh=f8N8EXvota+AP8vYYgsjIJGfN4j2MArr88ST27ERHi0=;
+        s=korg; t=1699277251;
+        bh=DGHfhCN/6hUA3SsNVqWjGv+ZeyvKgtkqbKGTbGts7Ls=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0e2e509q32Nfn+NYvj49O4vwZU9tyAocK2l6+ZTAYGZKI23USoIWqJ5cq2HooREWP
-         r7XcOOnwthEAxU6uFZHLEfabzXYmEO5QlrSCKjB2JrdcAbULoUZqXGD7XfZ9sE+xAa
-         75jKZowmjcO3sq+kLr1hdvZcUoU9vRuzLep4ejdk=
+        b=0eRyGAX4b64VisMVfhrzzjnp9c6ZEUCM2HlrwR9QsSkZov4Ipnpz2FJ01O0T7pZSX
+         nRcEpiy8iYYNH06Lou1X5xgT+ym8F85mLA+AC8cY5yJWbO/2IWD/ecuyP/pfngstHs
+         wfmlUEIp9kvDMUQUCZTplvPxKtMA8hlcIHPCdXVg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Janne Grunau <j@jannau.net>,
-        Eric Curtin <ecurtin@redhat.com>, Neal Gompa <neal@gompa.dev>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.5 73/88] Bluetooth: hci_bcm4377: Mark bcm4378/bcm4387 as BROKEN_LE_CODED
-Date:   Mon,  6 Nov 2023 14:04:07 +0100
-Message-ID: <20231106130308.434179636@linuxfoundation.org>
+        patches@lists.linux.dev, Gabriel Marcano <gabemarcano@yahoo.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 088/128] fs/ntfs3: Fix directory element type detection
+Date:   Mon,  6 Nov 2023 14:04:08 +0100
+Message-ID: <20231106130313.138500921@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,69 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Gabriel Marcano <gabemarcano@yahoo.com>
 
-commit 41e9cdea9c4ab6606ca462ff4ec901a82d022c05 upstream.
+[ Upstream commit 85a4780dc96ed9dd643bbadf236552b3320fae26 ]
 
-bcm4378 and bcm4387 claim to support LE Coded PHY but fail to pair
-(reliably) with BLE devices if it is enabled.
-On bcm4378 pairing usually succeeds after 2-3 tries. On bcm4387
-pairing appears to be completely broken.
+Calling stat() from userspace correctly identified junctions in an NTFS
+partition as symlinks, but using readdir() and iterating through the
+directory containing the same junction did not identify the junction
+as a symlink.
 
-Cc: stable@vger.kernel.org # 6.4.y+
-Link: https://discussion.fedoraproject.org/t/mx-master-3-bluetooth-mouse-doesnt-connect/87072/33
-Link: https://github.com/AsahiLinux/linux/issues/177
-Fixes: 288c90224eec ("Bluetooth: Enable all supported LE PHY by default")
-Signed-off-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Eric Curtin <ecurtin@redhat.com>
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When emitting directory contents, check FILE_ATTRIBUTE_REPARSE_POINT
+attribute to detect junctions and report them as links.
+
+Signed-off-by: Gabriel Marcano <gabemarcano@yahoo.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_bcm4377.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ntfs3/dir.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/hci_bcm4377.c b/drivers/bluetooth/hci_bcm4377.c
-index 19ad0e788646..a61757835695 100644
---- a/drivers/bluetooth/hci_bcm4377.c
-+++ b/drivers/bluetooth/hci_bcm4377.c
-@@ -512,6 +512,7 @@ struct bcm4377_hw {
- 	unsigned long disable_aspm : 1;
- 	unsigned long broken_ext_scan : 1;
- 	unsigned long broken_mws_transport_config : 1;
-+	unsigned long broken_le_coded : 1;
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index fb438d6040409..d4d9f4ffb6d9a 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -309,7 +309,11 @@ static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
+ 		return 0;
+ 	}
  
- 	int (*send_calibration)(struct bcm4377_data *bcm4377);
- 	int (*send_ptb)(struct bcm4377_data *bcm4377,
-@@ -2372,6 +2373,8 @@ static int bcm4377_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		set_bit(HCI_QUIRK_BROKEN_MWS_TRANSPORT_CONFIG, &hdev->quirks);
- 	if (bcm4377->hw->broken_ext_scan)
- 		set_bit(HCI_QUIRK_BROKEN_EXT_SCAN, &hdev->quirks);
-+	if (bcm4377->hw->broken_le_coded)
-+		set_bit(HCI_QUIRK_BROKEN_LE_CODED, &hdev->quirks);
+-	dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
++	/* NTFS: symlinks are "dir + reparse" or "file + reparse" */
++	if (fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT)
++		dt_type = DT_LNK;
++	else
++		dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
  
- 	pci_set_drvdata(pdev, bcm4377);
- 	hci_set_drvdata(hdev, bcm4377);
-@@ -2461,6 +2464,7 @@ static const struct bcm4377_hw bcm4377_hw_variants[] = {
- 		.bar0_core2_window2 = 0x18107000,
- 		.has_bar0_core2_window2 = true,
- 		.broken_mws_transport_config = true,
-+		.broken_le_coded = true,
- 		.send_calibration = bcm4378_send_calibration,
- 		.send_ptb = bcm4378_send_ptb,
- 	},
-@@ -2474,6 +2478,7 @@ static const struct bcm4377_hw bcm4377_hw_variants[] = {
- 		.has_bar0_core2_window2 = true,
- 		.clear_pciecfg_subsystem_ctrl_bit19 = true,
- 		.broken_mws_transport_config = true,
-+		.broken_le_coded = true,
- 		.send_calibration = bcm4387_send_calibration,
- 		.send_ptb = bcm4378_send_ptb,
- 	},
+ 	return !dir_emit(ctx, (s8 *)name, name_len, ino, dt_type);
+ }
 -- 
 2.42.0
 
