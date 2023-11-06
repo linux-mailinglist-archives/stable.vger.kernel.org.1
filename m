@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 774E97E23C4
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:14:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89F577E2461
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232203AbjKFNOW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:14:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51032 "EHLO
+        id S232430AbjKFNVU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:21:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232176AbjKFNOV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:14:21 -0500
+        with ESMTP id S232420AbjKFNVQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:16 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F0494
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:14:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEFAC433C8;
-        Mon,  6 Nov 2023 13:14:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE27F136
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:13 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80CCC433C8;
+        Mon,  6 Nov 2023 13:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276458;
-        bh=LgvoSewN0xOw9bKzhZtdzFomeWGOBHpSQ8x216m0PG4=;
+        s=korg; t=1699276873;
+        bh=7TR3gK9+BKBI1wb//KaNVc2QJLNKZ0WbrH8P1MhPnoU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g/D2F69tb4nEcFoAQh0WzSJGLhP6BElRex3dPk6/5203jOKocaN3OuuZlMQ14rjZZ
-         4WbB2b4E4HQU/R9EiI64TJZrD462JUIw5fio2CEhb4y51IuTTIcaA0EgwiFvea68RW
-         AV09fir/enVtIHQn5CAchN3fM/JzWRm7zqgQivII=
+        b=RSanQGHWKPN+J9cHflC3ACub5UbO0HNbaSuy91x6m8VzeL8sSw49NAUv7azkuDjXd
+         GTbXqHce3Cqd7y7RpAMjYeAXLn1gkhREmond+LYQ5URfWTF39xmidAgoCe8fGceTEB
+         m1hj0jqkISXjeoJ60GfLQl8hBzh+7ZxOE5pZZLwY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Daniel Starke <daniel.starke@siemens.com>
-Subject: [PATCH 6.1 50/62] tty: n_gsm: fix race condition in status line change on dead connections
+        patches@lists.linux.dev, Tom Talpey <tom@talpey.com>,
+        Long Li <longli@microsoft.com>,
+        Steve French <stfrench@microsoft.com>,
+        Anastasia Belova <abelova@astralinux.ru>
+Subject: [PATCH 5.4 36/74] smbdirect: missing rc checks while waiting for rdma events
 Date:   Mon,  6 Nov 2023 14:03:56 +0100
-Message-ID: <20231106130303.568518652@linuxfoundation.org>
+Message-ID: <20231106130302.997183890@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,47 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Starke <daniel.starke@siemens.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 3a75b205de43365f80a33b98ec9289785da56243 upstream.
+commit 0555b221528e9cb11f5766dcdee19c809187e42e upstream.
 
-gsm_cleanup_mux() cleans up the gsm by closing all DLCIs, stopping all
-timers, removing the virtual tty devices and clearing the data queues.
-This procedure, however, may cause subsequent changes of the virtual modem
-status lines of a DLCI. More data is being added the outgoing data queue
-and the deleted kick timer is restarted to handle this. At this point many
-resources have already been removed by the cleanup procedure. Thus, a
-kernel panic occurs.
+There were two places where we weren't checking for error
+(e.g. ERESTARTSYS) while waiting for rdma resolution.
 
-Fix this by proving in gsm_modem_update() that the cleanup procedure has
-not been started and the mux is still alive.
-
-Note that writing to a virtual tty is already protected by checks against
-the DLCI specific connection state.
-
-Fixes: c568f7086c6e ("tty: n_gsm: fix missing timer to handle stalled links")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
-Link: https://lore.kernel.org/r/20231026055844.3127-1-daniel.starke@siemens.com
+Addresses-Coverity: 1462165 ("Unchecked return value")
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/n_gsm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/cifs/smbdirect.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -3404,6 +3404,8 @@ static int gsm_modem_upd_via_msc(struct
- 
- static int gsm_modem_update(struct gsm_dlci *dlci, u8 brk)
- {
-+	if (dlci->gsm->dead)
-+		return -EL2HLT;
- 	if (dlci->adaption == 2) {
- 		/* Send convergence layer type 2 empty data frame. */
- 		gsm_modem_upd_via_data(dlci, brk);
+--- a/fs/cifs/smbdirect.c
++++ b/fs/cifs/smbdirect.c
+@@ -607,8 +607,13 @@ static struct rdma_cm_id *smbd_create_id
+ 		log_rdma_event(ERR, "rdma_resolve_addr() failed %i\n", rc);
+ 		goto out;
+ 	}
+-	wait_for_completion_interruptible_timeout(
++	rc = wait_for_completion_interruptible_timeout(
+ 		&info->ri_done, msecs_to_jiffies(RDMA_RESOLVE_TIMEOUT));
++	/* e.g. if interrupted returns -ERESTARTSYS */
++	if (rc < 0) {
++		log_rdma_event(ERR, "rdma_resolve_addr timeout rc: %i\n", rc);
++		goto out;
++	}
+ 	rc = info->ri_rc;
+ 	if (rc) {
+ 		log_rdma_event(ERR, "rdma_resolve_addr() completed %i\n", rc);
+@@ -621,8 +626,13 @@ static struct rdma_cm_id *smbd_create_id
+ 		log_rdma_event(ERR, "rdma_resolve_route() failed %i\n", rc);
+ 		goto out;
+ 	}
+-	wait_for_completion_interruptible_timeout(
++	rc = wait_for_completion_interruptible_timeout(
+ 		&info->ri_done, msecs_to_jiffies(RDMA_RESOLVE_TIMEOUT));
++	/* e.g. if interrupted returns -ERESTARTSYS */
++	if (rc < 0)  {
++		log_rdma_event(ERR, "rdma_resolve_addr timeout rc: %i\n", rc);
++		goto out;
++	}
+ 	rc = info->ri_rc;
+ 	if (rc) {
+ 		log_rdma_event(ERR, "rdma_resolve_route() completed %i\n", rc);
 
 
