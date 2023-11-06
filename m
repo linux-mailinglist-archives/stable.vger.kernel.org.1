@@ -2,45 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 638187E24DD
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:26:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F337E255A
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:31:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232548AbjKFN0J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:26:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36478 "EHLO
+        id S232728AbjKFNbI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:31:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232560AbjKFN0H (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:07 -0500
+        with ESMTP id S232726AbjKFNbD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:31:03 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F50AD76
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:00 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34220C433C9;
-        Mon,  6 Nov 2023 13:25:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36E7FD8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:31:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0D8C433CA;
+        Mon,  6 Nov 2023 13:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277159;
-        bh=2SAde7Il/1nH+W8/edV8CYxCW49PtlGJKY5q8F5biSY=;
+        s=korg; t=1699277459;
+        bh=CiUcfjAe5ELa2nPtt3P/C5uWPuSKhYODGIUCgmCLO9w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MtrmELyw22HC7lyGpPF+nGz2F9bXxdIR00/BhRD2Uw9Kk29KwZiMl0TrKOBgWWthG
-         +igQDHFO9nv+a25uC8CxGiRbdWZI/bXwBKQoNIPY3/8l+cwH6ahW7eL3vcKPoTV8Vi
-         Rzry/iILu5b2YABQ9q9NVDBoWiV9QeH3ngXASqMI=
+        b=FHAo4JYkHmmOa4viRuhm/MEp8Bz4++LgnDiXSevzdyT8/6xMYyW8Qdx9Bz/XzN8mR
+         sUimoGhQbVJMxJ8Ld+NS5+BEeSM8ooedTfh2KmS9pe2hRNvxE1iBl2apdA+ncsUOW0
+         9Or9t23sazWXmhtiYZliByMtgVK1IeFMhhwomoa8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liam Beguin <liambeguin@gmail.com>,
-        Peter Rosin <peda@axentia.se>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        nic_swsd@realtek.com, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Marco Elver <elver@google.com>, netdev@vger.kernel.org,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 057/128] iio: afe: rescale: expose scale processing function
+Subject: [PATCH 5.10 09/95] r8169: fix the KCSAN reported data-race in rtl_tx while reading TxDescArray[entry].opts1
 Date:   Mon,  6 Nov 2023 14:03:37 +0100
-Message-ID: <20231106130311.686071710@linuxfoundation.org>
+Message-ID: <20231106130305.047794271@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,161 +56,134 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam Beguin <liambeguin@gmail.com>
+From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit bc437f7515f5e14aec9f2801412d9ea48116a97d ]
+[ Upstream commit dcf75a0f6bc136de94e88178ae5f51b7f879abc9 ]
 
-In preparation for the addition of kunit tests, expose the logic
-responsible for combining channel scales.
+KCSAN reported the following data-race:
 
-Signed-off-by: Liam Beguin <liambeguin@gmail.com>
-Reviewed-by: Peter Rosin <peda@axentia.se>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20220213025739.2561834-2-liambeguin@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: bee448390e51 ("iio: afe: rescale: Accept only offset channels")
+==================================================================
+BUG: KCSAN: data-race in rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
+
+race at unknown origin, with read to 0xffff888140d37570 of 4 bytes by interrupt on cpu 21:
+rtl8169_poll (drivers/net/ethernet/realtek/r8169_main.c:4368 drivers/net/ethernet/realtek/r8169_main.c:4581) r8169
+__napi_poll (net/core/dev.c:6527)
+net_rx_action (net/core/dev.c:6596 net/core/dev.c:6727)
+__do_softirq (kernel/softirq.c:553)
+__irq_exit_rcu (kernel/softirq.c:427 kernel/softirq.c:632)
+irq_exit_rcu (kernel/softirq.c:647)
+sysvec_apic_timer_interrupt (arch/x86/kernel/apic/apic.c:1074 (discriminator 14))
+asm_sysvec_apic_timer_interrupt (./arch/x86/include/asm/idtentry.h:645)
+cpuidle_enter_state (drivers/cpuidle/cpuidle.c:291)
+cpuidle_enter (drivers/cpuidle/cpuidle.c:390)
+call_cpuidle (kernel/sched/idle.c:135)
+do_idle (kernel/sched/idle.c:219 kernel/sched/idle.c:282)
+cpu_startup_entry (kernel/sched/idle.c:378 (discriminator 1))
+start_secondary (arch/x86/kernel/smpboot.c:210 arch/x86/kernel/smpboot.c:294)
+secondary_startup_64_no_verify (arch/x86/kernel/head_64.S:433)
+
+value changed: 0xb0000042 -> 0x00000000
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 21 PID: 0 Comm: swapper/21 Tainted: G             L     6.6.0-rc2-kcsan-00143-gb5cbe7c00aa0 #41
+Hardware name: ASRock X670E PG Lightning/X670E PG Lightning, BIOS 1.21 04/26/2023
+==================================================================
+
+The read side is in
+
+drivers/net/ethernet/realtek/r8169_main.c
+=========================================
+   4355 static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
+   4356                    int budget)
+   4357 {
+   4358         unsigned int dirty_tx, bytes_compl = 0, pkts_compl = 0;
+   4359         struct sk_buff *skb;
+   4360
+   4361         dirty_tx = tp->dirty_tx;
+   4362
+   4363         while (READ_ONCE(tp->cur_tx) != dirty_tx) {
+   4364                 unsigned int entry = dirty_tx % NUM_TX_DESC;
+   4365                 u32 status;
+   4366
+ → 4367                 status = le32_to_cpu(tp->TxDescArray[entry].opts1);
+   4368                 if (status & DescOwn)
+   4369                         break;
+   4370
+   4371                 skb = tp->tx_skb[entry].skb;
+   4372                 rtl8169_unmap_tx_skb(tp, entry);
+   4373
+   4374                 if (skb) {
+   4375                         pkts_compl++;
+   4376                         bytes_compl += skb->len;
+   4377                         napi_consume_skb(skb, budget);
+   4378                 }
+   4379                 dirty_tx++;
+   4380         }
+   4381
+   4382         if (tp->dirty_tx != dirty_tx) {
+   4383                 dev_sw_netstats_tx_add(dev, pkts_compl, bytes_compl);
+   4384                 WRITE_ONCE(tp->dirty_tx, dirty_tx);
+   4385
+   4386                 netif_subqueue_completed_wake(dev, 0, pkts_compl, bytes_compl,
+   4387                                               rtl_tx_slots_avail(tp),
+   4388                                               R8169_TX_START_THRS);
+   4389                 /*
+   4390                  * 8168 hack: TxPoll requests are lost when the Tx packets are
+   4391                  * too close. Let's kick an extra TxPoll request when a burst
+   4392                  * of start_xmit activity is detected (if it is not detected,
+   4393                  * it is slow enough). -- FR
+   4394                  * If skb is NULL then we come here again once a tx irq is
+   4395                  * triggered after the last fragment is marked transmitted.
+   4396                  */
+   4397                 if (READ_ONCE(tp->cur_tx) != dirty_tx && skb)
+   4398                         rtl8169_doorbell(tp);
+   4399         }
+   4400 }
+
+tp->TxDescArray[entry].opts1 is reported to have a data-race and READ_ONCE() fixes
+this KCSAN warning.
+
+   4366
+ → 4367                 status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
+   4368                 if (status & DescOwn)
+   4369                         break;
+   4370
+
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: nic_swsd@realtek.com
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Marco Elver <elver@google.com>
+Cc: netdev@vger.kernel.org
+Link: https://lore.kernel.org/lkml/dc7fc8fa-4ea4-e9a9-30a6-7c83e6b53188@alu.unizg.hr/
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Acked-by: Marco Elver <elver@google.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/afe/iio-rescale.c   | 65 ++++++++++++++-------------------
- include/linux/iio/afe/rescale.h | 32 ++++++++++++++++
- 2 files changed, 60 insertions(+), 37 deletions(-)
- create mode 100644 include/linux/iio/afe/rescale.h
+ drivers/net/ethernet/realtek/r8169_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/afe/iio-rescale.c b/drivers/iio/afe/iio-rescale.c
-index b0934f85a4a04..6cc453ab9c685 100644
---- a/drivers/iio/afe/iio-rescale.c
-+++ b/drivers/iio/afe/iio-rescale.c
-@@ -15,32 +15,43 @@
- #include <linux/platform_device.h>
- #include <linux/property.h>
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index c025dadcce289..d47adc7725ad5 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4470,7 +4470,7 @@ static void rtl_tx(struct net_device *dev, struct rtl8169_private *tp,
+ 		struct sk_buff *skb = tp->tx_skb[entry].skb;
+ 		u32 status;
  
-+#include <linux/iio/afe/rescale.h>
- #include <linux/iio/consumer.h>
- #include <linux/iio/iio.h>
+-		status = le32_to_cpu(tp->TxDescArray[entry].opts1);
++		status = le32_to_cpu(READ_ONCE(tp->TxDescArray[entry].opts1));
+ 		if (status & DescOwn)
+ 			break;
  
--struct rescale;
--
--struct rescale_cfg {
--	enum iio_chan_type type;
--	int (*props)(struct device *dev, struct rescale *rescale);
--};
-+int rescale_process_scale(struct rescale *rescale, int scale_type,
-+			  int *val, int *val2)
-+{
-+	s64 tmp;
- 
--struct rescale {
--	const struct rescale_cfg *cfg;
--	struct iio_channel *source;
--	struct iio_chan_spec chan;
--	struct iio_chan_spec_ext_info *ext_info;
--	bool chan_processed;
--	s32 numerator;
--	s32 denominator;
--};
-+	switch (scale_type) {
-+	case IIO_VAL_FRACTIONAL:
-+		*val *= rescale->numerator;
-+		*val2 *= rescale->denominator;
-+		return scale_type;
-+	case IIO_VAL_INT:
-+		*val *= rescale->numerator;
-+		if (rescale->denominator == 1)
-+			return scale_type;
-+		*val2 = rescale->denominator;
-+		return IIO_VAL_FRACTIONAL;
-+	case IIO_VAL_FRACTIONAL_LOG2:
-+		tmp = (s64)*val * 1000000000LL;
-+		tmp = div_s64(tmp, rescale->denominator);
-+		tmp *= rescale->numerator;
-+		tmp = div_s64(tmp, 1000000000LL);
-+		*val = tmp;
-+		return scale_type;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
- 
- static int rescale_read_raw(struct iio_dev *indio_dev,
- 			    struct iio_chan_spec const *chan,
- 			    int *val, int *val2, long mask)
- {
- 	struct rescale *rescale = iio_priv(indio_dev);
--	s64 tmp;
- 	int ret;
- 
- 	switch (mask) {
-@@ -66,27 +77,7 @@ static int rescale_read_raw(struct iio_dev *indio_dev,
- 		} else {
- 			ret = iio_read_channel_scale(rescale->source, val, val2);
- 		}
--		switch (ret) {
--		case IIO_VAL_FRACTIONAL:
--			*val *= rescale->numerator;
--			*val2 *= rescale->denominator;
--			return ret;
--		case IIO_VAL_INT:
--			*val *= rescale->numerator;
--			if (rescale->denominator == 1)
--				return ret;
--			*val2 = rescale->denominator;
--			return IIO_VAL_FRACTIONAL;
--		case IIO_VAL_FRACTIONAL_LOG2:
--			tmp = (s64)*val * 1000000000LL;
--			tmp = div_s64(tmp, rescale->denominator);
--			tmp *= rescale->numerator;
--			tmp = div_s64(tmp, 1000000000LL);
--			*val = tmp;
--			return ret;
--		default:
--			return -EOPNOTSUPP;
--		}
-+		return rescale_process_scale(rescale, ret, val, val2);
- 	default:
- 		return -EINVAL;
- 	}
-diff --git a/include/linux/iio/afe/rescale.h b/include/linux/iio/afe/rescale.h
-new file mode 100644
-index 0000000000000..8a2eb34af3271
---- /dev/null
-+++ b/include/linux/iio/afe/rescale.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Copyright (C) 2018 Axentia Technologies AB
-+ */
-+
-+#ifndef __IIO_RESCALE_H__
-+#define __IIO_RESCALE_H__
-+
-+#include <linux/types.h>
-+#include <linux/iio/iio.h>
-+
-+struct device;
-+struct rescale;
-+
-+struct rescale_cfg {
-+	enum iio_chan_type type;
-+	int (*props)(struct device *dev, struct rescale *rescale);
-+};
-+
-+struct rescale {
-+	const struct rescale_cfg *cfg;
-+	struct iio_channel *source;
-+	struct iio_chan_spec chan;
-+	struct iio_chan_spec_ext_info *ext_info;
-+	bool chan_processed;
-+	s32 numerator;
-+	s32 denominator;
-+};
-+
-+int rescale_process_scale(struct rescale *rescale, int scale_type,
-+			  int *val, int *val2);
-+#endif /* __IIO_RESCALE_H__ */
 -- 
 2.42.0
 
