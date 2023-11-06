@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B41D57E2531
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 03A657E2494
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232601AbjKFN3N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:29:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52910 "EHLO
+        id S232465AbjKFNXX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:23:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232609AbjKFN3L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:11 -0500
+        with ESMTP id S232482AbjKFNXV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:21 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6573B92
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:09 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA39EC433C8;
-        Mon,  6 Nov 2023 13:29:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A60BAD42
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D23C433C7;
+        Mon,  6 Nov 2023 13:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277349;
-        bh=YdRG7m5bUXM/6HbR2Ps5kjvKFsFJll/GA+BfAQQp8Ng=;
+        s=korg; t=1699276996;
+        bh=OpZSLtXGdEFkT6lsyrGRJZDhHK7GipF/vmSqgU301K0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OogNv5RBd9jBkq0uyxiKOS811K1eL5FnDQagQro7cH7VQtDMIpWoYBU7hRVoyLptS
-         +prx0C4ofa3coq6tze6DjSpmAfazcLUmn1nsHfVfOYwbJnkX/STjFLFF6otVQYPo48
-         clanMUuegXf46tXpMtUVLJ8/GqLFe3p5mFyVYYE0=
+        b=n92jH32OGk0MLG7DCzK6Rx5FmHAHweymf+KKshkJdIPotxtfLtkltMDMrydskPa4G
+         C5gxIfEDbkBnGYuYLSLoH25lV5bo1rF9Hq815LijZD0rKM1bHVZHlQNu7QwOYsm/n3
+         sNWZGfEW6s7/i/Ie+FaW4sdbr/efpB/4hAvpwWd4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jorge Maidana <jorgem.linux@gmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/128] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
+        patches@lists.linux.dev, Jeffery Miller <jefferymiller@google.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 54/74] Input: synaptics-rmi4 - handle reset delay when using SMBus trsnsport
 Date:   Mon,  6 Nov 2023 14:04:14 +0100
-Message-ID: <20231106130313.430941848@linuxfoundation.org>
+Message-ID: <20231106130303.594488327@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +50,137 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Maidana <jorgem.linux@gmail.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 1022e7e2f40574c74ed32c3811b03d26b0b81daf ]
+[ Upstream commit 5030b2fe6aab37fe42d14f31842ea38be7c55c57 ]
 
-Delete the v86d netlink only after all the VBE tasks have been
-completed.
+Touch controllers need some time after receiving reset command for the
+firmware to finish re-initializing and be ready to respond to commands
+from the host. The driver already had handling for the post-reset delay
+for I2C and SPI transports, this change adds the handling to
+SMBus-connected devices.
 
-Fixes initial state restore on module unload:
-uvesafb: VBE state restore call failed (eax=0x4f04, err=-19)
+SMBus devices are peculiar because they implement legacy PS/2
+compatibility mode, so reset is actually issued by psmouse driver on the
+associated serio port, after which the control is passed to the RMI4
+driver with SMBus companion device.
 
-Signed-off-by: Jorge Maidana <jorgem.linux@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Note that originally the delay was added to psmouse driver in
+92e24e0e57f7 ("Input: psmouse - add delay when deactivating for SMBus
+mode"), but that resulted in an unwanted delay in "fast" reconnect
+handler for the serio port, so it was decided to revert the patch and
+have the delay being handled in the RMI4 driver, similar to the other
+transports.
+
+Tested-by: Jeffery Miller <jefferymiller@google.com>
+Link: https://lore.kernel.org/r/ZR1yUFJ8a9Zt606N@penguin
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/uvesafb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/mouse/synaptics.c |  1 +
+ drivers/input/rmi4/rmi_smbus.c  | 50 ++++++++++++++++++---------------
+ 2 files changed, 29 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
-index 1f3b7e013568c..3a285af76f7ed 100644
---- a/drivers/video/fbdev/uvesafb.c
-+++ b/drivers/video/fbdev/uvesafb.c
-@@ -1935,10 +1935,10 @@ static void uvesafb_exit(void)
- 		}
- 	}
+diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
+index f2383c91113c3..9cfd2c1d4e3af 100644
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -1747,6 +1747,7 @@ static int synaptics_create_intertouch(struct psmouse *psmouse,
+ 		psmouse_matches_pnp_id(psmouse, topbuttonpad_pnp_ids) &&
+ 		!SYN_CAP_EXT_BUTTONS_STICK(info->ext_cap_10);
+ 	const struct rmi_device_platform_data pdata = {
++		.reset_delay_ms = 30,
+ 		.sensor_pdata = {
+ 			.sensor_type = rmi_sensor_touchpad,
+ 			.axis_align.flip_y = true,
+diff --git a/drivers/input/rmi4/rmi_smbus.c b/drivers/input/rmi4/rmi_smbus.c
+index 2407ea43de59b..f38bf9a5f599d 100644
+--- a/drivers/input/rmi4/rmi_smbus.c
++++ b/drivers/input/rmi4/rmi_smbus.c
+@@ -235,12 +235,29 @@ static void rmi_smb_clear_state(struct rmi_smb_xport *rmi_smb)
  
--	cn_del_callback(&uvesafb_cn_id);
- 	driver_remove_file(&uvesafb_driver.driver, &driver_attr_v86d);
- 	platform_device_unregister(uvesafb_device);
- 	platform_driver_unregister(&uvesafb_driver);
-+	cn_del_callback(&uvesafb_cn_id);
+ static int rmi_smb_enable_smbus_mode(struct rmi_smb_xport *rmi_smb)
+ {
+-	int retval;
++	struct i2c_client *client = rmi_smb->client;
++	int smbus_version;
++
++	/*
++	 * psmouse driver resets the controller, we only need to wait
++	 * to give the firmware chance to fully reinitialize.
++	 */
++	if (rmi_smb->xport.pdata.reset_delay_ms)
++		msleep(rmi_smb->xport.pdata.reset_delay_ms);
+ 
+ 	/* we need to get the smbus version to activate the touchpad */
+-	retval = rmi_smb_get_version(rmi_smb);
+-	if (retval < 0)
+-		return retval;
++	smbus_version = rmi_smb_get_version(rmi_smb);
++	if (smbus_version < 0)
++		return smbus_version;
++
++	rmi_dbg(RMI_DEBUG_XPORT, &client->dev, "Smbus version is %d",
++		smbus_version);
++
++	if (smbus_version != 2 && smbus_version != 3) {
++		dev_err(&client->dev, "Unrecognized SMB version %d\n",
++				smbus_version);
++		return -ENODEV;
++	}
+ 
+ 	return 0;
  }
+@@ -253,11 +270,10 @@ static int rmi_smb_reset(struct rmi_transport_dev *xport, u16 reset_addr)
+ 	rmi_smb_clear_state(rmi_smb);
  
- module_exit(uvesafb_exit);
+ 	/*
+-	 * we do not call the actual reset command, it has to be handled in
+-	 * PS/2 or there will be races between PS/2 and SMBus.
+-	 * PS/2 should ensure that a psmouse_reset is called before
+-	 * intializing the device and after it has been removed to be in a known
+-	 * state.
++	 * We do not call the actual reset command, it has to be handled in
++	 * PS/2 or there will be races between PS/2 and SMBus. PS/2 should
++	 * ensure that a psmouse_reset is called before initializing the
++	 * device and after it has been removed to be in a known state.
+ 	 */
+ 	return rmi_smb_enable_smbus_mode(rmi_smb);
+ }
+@@ -273,7 +289,6 @@ static int rmi_smb_probe(struct i2c_client *client,
+ {
+ 	struct rmi_device_platform_data *pdata = dev_get_platdata(&client->dev);
+ 	struct rmi_smb_xport *rmi_smb;
+-	int smbus_version;
+ 	int error;
+ 
+ 	if (!pdata) {
+@@ -312,18 +327,9 @@ static int rmi_smb_probe(struct i2c_client *client,
+ 	rmi_smb->xport.proto_name = "smb";
+ 	rmi_smb->xport.ops = &rmi_smb_ops;
+ 
+-	smbus_version = rmi_smb_get_version(rmi_smb);
+-	if (smbus_version < 0)
+-		return smbus_version;
+-
+-	rmi_dbg(RMI_DEBUG_XPORT, &client->dev, "Smbus version is %d",
+-		smbus_version);
+-
+-	if (smbus_version != 2 && smbus_version != 3) {
+-		dev_err(&client->dev, "Unrecognized SMB version %d\n",
+-				smbus_version);
+-		return -ENODEV;
+-	}
++	error = rmi_smb_enable_smbus_mode(rmi_smb);
++	if (error)
++		return error;
+ 
+ 	i2c_set_clientdata(client, rmi_smb);
+ 
 -- 
 2.42.0
 
