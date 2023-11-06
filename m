@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 478517E22ED
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE8DC7E2331
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231894AbjKFNGy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:06:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43776 "EHLO
+        id S231871AbjKFNJk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:09:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231951AbjKFNGx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:53 -0500
+        with ESMTP id S231669AbjKFNJk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:40 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC0CF123
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:50 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C22DC433C7;
-        Mon,  6 Nov 2023 13:06:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DC3EA
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:37 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42A7C433C7;
+        Mon,  6 Nov 2023 13:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276010;
-        bh=pkoH3EDZmq83zqC/93i9WQdW9Nuwq3jKoifn61uRNRQ=;
+        s=korg; t=1699276177;
+        bh=y45diDur1vdDqvE+ZKomK/s3Cpn9hKTihbesGTmch1U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WwNVjo81QXjmHHx63kUb1MEXJOsTa+QtK6FSmomIIvYP5il44kqNTm8G18hlQnDwq
-         2TgSkPAeQfYFhzgiWctr7QjXmdvkb11pWC8urUaRUqB0/tH/H0hBmo8bUzDJDCt0I6
-         Wj4ryjytBOT9Yef+Ic5D+36Lj9h8vVr6fd+nd7no=
+        b=qW+cK49ggZOM/oeaFyuEIz7WMce2hBueSyNGcOZ84wNvxZ0ytLYnlBH5TSqGgVUXz
+         kOkHYoyzbfOyxP5ktGPtdRkfNnRAv3gF15IBqEI5z6TxznEPNdKLU7XgxEw0qpejDW
+         Ow8PFlcelFBbPtizZzXxKKqQt0obRieK0kQLSC7A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 4.14 21/48] x86/mm: Simplify RESERVE_BRK()
+        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
+        Peter Rosin <peda@axentia.se>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 4.19 16/61] i2c: muxes: i2c-mux-gpmux: Use of_get_i2c_adapter_by_node()
 Date:   Mon,  6 Nov 2023 14:03:12 +0100
-Message-ID: <20231106130258.599336089@linuxfoundation.org>
+Message-ID: <20231106130300.145646225@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +51,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@redhat.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit a1e2c031ec3949b8c039b739c0b5bf9c30007b00 upstream.
+commit 3dc0ec46f6e7511fc4fdf6b6cda439382bc957f1 upstream.
 
-RESERVE_BRK() reserves data in the .brk_reservation section.  The data
-is initialized to zero, like BSS, so the macro specifies 'nobits' to
-prevent the data from taking up space in the vmlinux binary.  The only
-way to get the compiler to do that (without putting the variable in .bss
-proper) is to use inline asm.
+i2c-mux-gpmux uses the pair of_find_i2c_adapter_by_node() /
+i2c_put_adapter(). These pair alone is not correct to properly lock the
+I2C parent adapter.
 
-The macro also has a hack which encloses the inline asm in a discarded
-function, which allows the size to be passed (global inline asm doesn't
-allow inputs).
+Indeed, i2c_put_adapter() decrements the module refcount while
+of_find_i2c_adapter_by_node() does not increment it. This leads to an
+underflow of the parent module refcount.
 
-Remove the need for the discarded function hack by just stringifying the
-size rather than supplying it as an input to the inline asm.
+Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
+correctly the module refcount.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220506121631.133110232@infradead.org
-[nathan: Fix conflict due to lack of 2b6ff7dea670 and 33def8498fdd]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: ac8498f0ce53 ("i2c: i2c-mux-gpmux: new driver")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Cc: stable@vger.kernel.org
+Acked-by: Peter Rosin <peda@axentia.se>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/setup.h |   30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
+ drivers/i2c/muxes/i2c-mux-gpmux.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -91,27 +91,19 @@ extern unsigned long _brk_end;
- void *extend_brk(size_t size, size_t align);
- 
- /*
-- * Reserve space in the brk section.  The name must be unique within
-- * the file, and somewhat descriptive.  The size is in bytes.  Must be
-- * used at file scope.
-+ * Reserve space in the brk section.  The name must be unique within the file,
-+ * and somewhat descriptive.  The size is in bytes.
-  *
-- * (This uses a temp function to wrap the asm so we can pass it the
-- * size parameter; otherwise we wouldn't be able to.  We can't use a
-- * "section" attribute on a normal variable because it always ends up
-- * being @progbits, which ends up allocating space in the vmlinux
-- * executable.)
-+ * The allocation is done using inline asm (rather than using a section
-+ * attribute on a normal variable) in order to allow the use of @nobits, so
-+ * that it doesn't take up any space in the vmlinux file.
-  */
--#define RESERVE_BRK(name,sz)						\
--	static void __section(.discard.text) __used notrace		\
--	__brk_reservation_fn_##name##__(void) {				\
--		asm volatile (						\
--			".pushsection .brk_reservation,\"aw\",@nobits;" \
--			".brk." #name ":"				\
--			" 1:.skip %c0;"					\
--			" .size .brk." #name ", . - 1b;"		\
--			" .popsection"					\
--			: : "i" (sz));					\
--	}
-+#define RESERVE_BRK(name, size)						\
-+	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
-+	    ".brk." #name ":\n\t"					\
-+	    ".skip " __stringify(size) "\n\t"				\
-+	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
-+	    ".popsection\n\t")
- 
- /* Helper for reserving space for arrays of things */
- #define RESERVE_BRK_ARRAY(type, name, entries)		\
+--- a/drivers/i2c/muxes/i2c-mux-gpmux.c
++++ b/drivers/i2c/muxes/i2c-mux-gpmux.c
+@@ -55,7 +55,7 @@ static struct i2c_adapter *mux_parent_ad
+ 		dev_err(dev, "Cannot parse i2c-parent\n");
+ 		return ERR_PTR(-ENODEV);
+ 	}
+-	parent = of_find_i2c_adapter_by_node(parent_np);
++	parent = of_get_i2c_adapter_by_node(parent_np);
+ 	of_node_put(parent_np);
+ 	if (!parent)
+ 		return ERR_PTR(-EPROBE_DEFER);
 
 
