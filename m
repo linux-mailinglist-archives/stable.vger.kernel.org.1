@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 792DB7E252D
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9D677E2589
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:33:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232672AbjKFN3C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:29:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42054 "EHLO
+        id S232764AbjKFNdM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:33:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232676AbjKFN3A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:00 -0500
+        with ESMTP id S232767AbjKFNdL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:33:11 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFEE9A9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:28:57 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF512C433C7;
-        Mon,  6 Nov 2023 13:28:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B3C5BF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:33:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B34EC433C8;
+        Mon,  6 Nov 2023 13:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277337;
-        bh=hy41+aMFPBKdiWZhopFkOLR2oLCrU1UnLAAQqUPyiwo=;
+        s=korg; t=1699277588;
+        bh=Q6jtXr1ZE6pBzWOXR1gQchMq9uGk4hxznxgkU38FCpo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oLWUm83G2Ft/V1vA+0Fv0SWCXegZKD6KEClk0gNqE2pRdwNv4P9alk7clBGMDS5/i
-         GrXhTmNitcBIAqC6fLsh63sfFun4VaPAAabuvodYH9XIzEbV+N1ozFCB86ltYhnlGt
-         qeffFRZ/T/vSZTAYUw3YWXhep/AG5yE5oZRtHNXA=
+        b=g3LOH+4qrbjOVkVOFXMBCtU95VRhGzaHMGejm20JbrsyU8PeBdyqp2Ip8L5OIWwqV
+         mV/mW51LyWBojQWxFMZk2eIwmNJZzKJOo8MKi22R9R9wdcHsYmiRm220irs/Cbsp63
+         JjhQE4sdteTf1C0cUSeSNL0PPGALDgOL/OMrDy2g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 5.15 118/128] tty: 8250: Remove UC-257 and UC-431
+        patches@lists.linux.dev, Jorge Maidana <jorgem.linux@gmail.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 70/95] fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
 Date:   Mon,  6 Nov 2023 14:04:38 +0100
-Message-ID: <20231106130314.537119211@linuxfoundation.org>
+Message-ID: <20231106130307.275974471@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,54 +49,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Jorge Maidana <jorgem.linux@gmail.com>
 
-commit 33092fb3af51deb80849e90a17bada44bbcde6b3 upstream.
+[ Upstream commit 1022e7e2f40574c74ed32c3811b03d26b0b81daf ]
 
-The UC-257 is a serial + LPT card, so remove it from this driver.
-A patch has been submitted to add it to parport_serial instead.
+Delete the v86d netlink only after all the VBE tasks have been
+completed.
 
-Additionaly, the UC-431 does not use this card ID, only the UC-420
-does. The 431 is a 3-port card and there is no generic 3-port configuration
-available, so remove reference to it from this driver.
+Fixes initial state restore on module unload:
+uvesafb: VBE state restore call failed (eax=0x4f04, err=-19)
 
-Fixes: 152d1afa834c ("tty: Add support for Brainboxes UC cards.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DU0PR02MB78995ADF7394C74AD4CF3357C4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jorge Maidana <jorgem.linux@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |    9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/video/fbdev/uvesafb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -5368,13 +5368,6 @@ static const struct pci_device_id serial
- 		0, 0,
- 		pbn_b2_1_115200 },
- 	/*
--	 * Brainboxes UC-257
--	 */
--	{	PCI_VENDOR_ID_INTASHIELD, 0x0861,
--		PCI_ANY_ID, PCI_ANY_ID,
--		0, 0,
--		pbn_b2_2_115200 },
--	/*
- 	 * Brainboxes UC-260/271/701/756
- 	 */
- 	{	PCI_VENDOR_ID_INTASHIELD, 0x0D21,
-@@ -5453,7 +5446,7 @@ static const struct pci_device_id serial
- 		0, 0,
- 		pbn_b2_4_115200 },
- 	/*
--	 * Brainboxes UC-420/431
-+	 * Brainboxes UC-420
- 	 */
- 	{       PCI_VENDOR_ID_INTASHIELD, 0x0921,
- 		PCI_ANY_ID, PCI_ANY_ID,
+diff --git a/drivers/video/fbdev/uvesafb.c b/drivers/video/fbdev/uvesafb.c
+index 661f12742e4f0..d999a7cdb5409 100644
+--- a/drivers/video/fbdev/uvesafb.c
++++ b/drivers/video/fbdev/uvesafb.c
+@@ -1933,10 +1933,10 @@ static void uvesafb_exit(void)
+ 		}
+ 	}
+ 
+-	cn_del_callback(&uvesafb_cn_id);
+ 	driver_remove_file(&uvesafb_driver.driver, &driver_attr_v86d);
+ 	platform_device_unregister(uvesafb_device);
+ 	platform_driver_unregister(&uvesafb_driver);
++	cn_del_callback(&uvesafb_cn_id);
+ }
+ 
+ module_exit(uvesafb_exit);
+-- 
+2.42.0
+
 
 
