@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0FAA7E2552
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BEEA7E2349
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:10:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232052AbjKFNaw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:30:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60240 "EHLO
+        id S231935AbjKFNKn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:10:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232713AbjKFNav (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:51 -0500
+        with ESMTP id S231865AbjKFNKl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:41 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 809EF134
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32BDC433C8;
-        Mon,  6 Nov 2023 13:30:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86C64BD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:38 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6101C433C7;
+        Mon,  6 Nov 2023 13:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277448;
-        bh=Ad6cbSrFK3E3XGx3DXToc4riZwP7JYRYbj28HW++euQ=;
+        s=korg; t=1699276238;
+        bh=hizxA7lDKYu6N4BfCzcr08Ba/2a1Hq6ZfoyYCarpMEI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YzWB6gai+R6QJY0j9VtjFvjBi9dGp69DZ6YjwoLNCXYBoY5wgjq+gcEV0cEW74MIw
-         ybHMXBCJSoFuJKTxWN2TfVyhBMW4EdYwOKFStlxM4UED8qwOVnDP5whW4L6IV8KL2w
-         9iNMEmbSTOpiAyngW7QHpAMqE7ql7A6TdSdO/azc=
+        b=2f22YbLGFaCUjtj0Rxia6TkMAC2hx74hbAnn/t4dS+I+DdRqwpL0jjc5h6QjEu9s5
+         oGI3jjcHbzDl/+C3Nnq9feB9F1V82h99OPhck5PE7tlPNhcWmkJznIWMFsgot4bSbu
+         /ZszlPdN/gTGxyG+eghOgm+s7TWAsVqbDqW0j1Go=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, lee@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maximilian Heyne <mheyne@amazon.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 5.10 05/95] virtio-mmio: fix memory leak of vm_dev
+        patches@lists.linux.dev,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 4.19 37/61] rpmsg: Fix calling device_lock() on non-initialized device
 Date:   Mon,  6 Nov 2023 14:03:33 +0100
-Message-ID: <20231106130304.877703760@linuxfoundation.org>
+Message-ID: <20231106130300.891913654@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,90 +50,158 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Heyne <mheyne@amazon.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit fab7f259227b8f70aa6d54e1de1a1f5f4729041c upstream.
+commit bb17d110cbf270d5247a6e261c5ad50e362d1675 upstream.
 
-With the recent removal of vm_dev from devres its memory is only freed
-via the callback virtio_mmio_release_dev. However, this only takes
-effect after device_add is called by register_virtio_device. Until then
-it's an unmanaged resource and must be explicitly freed on error exit.
+driver_set_override() helper uses device_lock() so it should not be
+called before rpmsg_register_device() (which calls device_register()).
+Effect can be seen with CONFIG_DEBUG_MUTEXES:
 
-This bug was discovered and resolved using Coverity Static Analysis
-Security Testing (SAST) by Synopsys, Inc.
+  DEBUG_LOCKS_WARN_ON(lock->magic != lock)
+  WARNING: CPU: 3 PID: 57 at kernel/locking/mutex.c:582 __mutex_lock+0x1ec/0x430
+  ...
+  Call trace:
+   __mutex_lock+0x1ec/0x430
+   mutex_lock_nested+0x44/0x50
+   driver_set_override+0x124/0x150
+   qcom_glink_native_probe+0x30c/0x3b0
+   glink_rpm_probe+0x274/0x350
+   platform_probe+0x6c/0xe0
+   really_probe+0x17c/0x3d0
+   __driver_probe_device+0x114/0x190
+   driver_probe_device+0x3c/0xf0
+   ...
 
-Cc: stable@vger.kernel.org
-Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Tested-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Refactor the rpmsg_register_device() function to use two-step device
+registering (initialization + add) and call driver_set_override() in
+proper moment.
+
+This moves the code around, so while at it also NULL-ify the
+rpdev->driver_override in error path to be sure it won't be kfree()
+second time.
+
+Fixes: 42cd402b8fd4 ("rpmsg: Fix kfree() of static memory on setting driver_override")
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Link: https://lore.kernel.org/r/20220429195946.1061725-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-Message-Id: <20230911090328.40538-1-mheyne@amazon.de>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/virtio/virtio_mmio.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/rpmsg/rpmsg_core.c     |   33 ++++++++++++++++++++++++++++++---
+ drivers/rpmsg/rpmsg_internal.h |   14 +-------------
+ include/linux/rpmsg.h          |    8 ++++++++
+ 3 files changed, 39 insertions(+), 16 deletions(-)
 
---- a/drivers/virtio/virtio_mmio.c
-+++ b/drivers/virtio/virtio_mmio.c
-@@ -596,14 +596,17 @@ static int virtio_mmio_probe(struct plat
- 	spin_lock_init(&vm_dev->lock);
+--- a/drivers/rpmsg/rpmsg_core.c
++++ b/drivers/rpmsg/rpmsg_core.c
+@@ -525,24 +525,51 @@ static struct bus_type rpmsg_bus = {
+ 	.remove		= rpmsg_dev_remove,
+ };
  
- 	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(vm_dev->base))
--		return PTR_ERR(vm_dev->base);
-+	if (IS_ERR(vm_dev->base)) {
-+		rc = PTR_ERR(vm_dev->base);
-+		goto free_vm_dev;
-+	}
+-int rpmsg_register_device(struct rpmsg_device *rpdev)
++/*
++ * A helper for registering rpmsg device with driver override and name.
++ * Drivers should not be using it, but instead rpmsg_register_device().
++ */
++int rpmsg_register_device_override(struct rpmsg_device *rpdev,
++				   const char *driver_override)
+ {
+ 	struct device *dev = &rpdev->dev;
+ 	int ret;
  
- 	/* Check magic value */
- 	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
- 	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
- 		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
--		return -ENODEV;
-+		rc = -ENODEV;
-+		goto free_vm_dev;
- 	}
- 
- 	/* Check device version */
-@@ -611,7 +614,8 @@ static int virtio_mmio_probe(struct plat
- 	if (vm_dev->version < 1 || vm_dev->version > 2) {
- 		dev_err(&pdev->dev, "Version %ld not supported!\n",
- 				vm_dev->version);
--		return -ENXIO;
-+		rc = -ENXIO;
-+		goto free_vm_dev;
- 	}
- 
- 	vm_dev->vdev.id.device = readl(vm_dev->base + VIRTIO_MMIO_DEVICE_ID);
-@@ -620,7 +624,8 @@ static int virtio_mmio_probe(struct plat
- 		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
- 		 * with no function. End probing now with no error reported.
- 		 */
--		return -ENODEV;
-+		rc = -ENODEV;
-+		goto free_vm_dev;
- 	}
- 	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
- 
-@@ -650,6 +655,10 @@ static int virtio_mmio_probe(struct plat
- 		put_device(&vm_dev->vdev.dev);
- 
- 	return rc;
++	if (driver_override)
++		strcpy(rpdev->id.name, driver_override);
 +
-+free_vm_dev:
-+	kfree(vm_dev);
-+	return rc;
+ 	dev_set_name(&rpdev->dev, "%s.%s.%d.%d", dev_name(dev->parent),
+ 		     rpdev->id.name, rpdev->src, rpdev->dst);
+ 
+ 	rpdev->dev.bus = &rpmsg_bus;
+ 
+-	ret = device_register(&rpdev->dev);
++	device_initialize(dev);
++	if (driver_override) {
++		ret = driver_set_override(dev, &rpdev->driver_override,
++					  driver_override,
++					  strlen(driver_override));
++		if (ret) {
++			dev_err(dev, "device_set_override failed: %d\n", ret);
++			return ret;
++		}
++	}
++
++	ret = device_add(dev);
+ 	if (ret) {
+-		dev_err(dev, "device_register failed: %d\n", ret);
++		dev_err(dev, "device_add failed: %d\n", ret);
++		kfree(rpdev->driver_override);
++		rpdev->driver_override = NULL;
+ 		put_device(&rpdev->dev);
+ 	}
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL(rpmsg_register_device_override);
++
++int rpmsg_register_device(struct rpmsg_device *rpdev)
++{
++	return rpmsg_register_device_override(rpdev, NULL);
++}
+ EXPORT_SYMBOL(rpmsg_register_device);
+ 
+ /*
+--- a/drivers/rpmsg/rpmsg_internal.h
++++ b/drivers/rpmsg/rpmsg_internal.h
+@@ -83,19 +83,7 @@ struct device *rpmsg_find_device(struct
+  */
+ static inline int rpmsg_chrdev_register_device(struct rpmsg_device *rpdev)
+ {
+-	int ret;
+-
+-	strcpy(rpdev->id.name, "rpmsg_chrdev");
+-	ret = driver_set_override(&rpdev->dev, &rpdev->driver_override,
+-				  rpdev->id.name, strlen(rpdev->id.name));
+-	if (ret)
+-		return ret;
+-
+-	ret = rpmsg_register_device(rpdev);
+-	if (ret)
+-		kfree(rpdev->driver_override);
+-
+-	return ret;
++	return rpmsg_register_device_override(rpdev, "rpmsg_ctrl");
  }
  
- static int virtio_mmio_remove(struct platform_device *pdev)
+ #endif
+--- a/include/linux/rpmsg.h
++++ b/include/linux/rpmsg.h
+@@ -115,6 +115,8 @@ struct rpmsg_driver {
+ 
+ #if IS_ENABLED(CONFIG_RPMSG)
+ 
++int rpmsg_register_device_override(struct rpmsg_device *rpdev,
++				   const char *driver_override);
+ int register_rpmsg_device(struct rpmsg_device *dev);
+ void unregister_rpmsg_device(struct rpmsg_device *dev);
+ int __register_rpmsg_driver(struct rpmsg_driver *drv, struct module *owner);
+@@ -139,6 +141,12 @@ __poll_t rpmsg_poll(struct rpmsg_endpoin
+ 
+ #else
+ 
++static inline int rpmsg_register_device_override(struct rpmsg_device *rpdev,
++						 const char *driver_override)
++{
++	return -ENXIO;
++}
++
+ static inline int register_rpmsg_device(struct rpmsg_device *dev)
+ {
+ 	return -ENXIO;
 
 
