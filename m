@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05E927E2481
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:22:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A81C97E2580
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232440AbjKFNWf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:22:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49544 "EHLO
+        id S232754AbjKFNcz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:32:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232400AbjKFNWf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:22:35 -0500
+        with ESMTP id S232755AbjKFNcy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:54 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A17DF94
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:22:32 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B69C433C8;
-        Mon,  6 Nov 2023 13:22:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A07A0125
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:32:51 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E399EC433C9;
+        Mon,  6 Nov 2023 13:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276952;
-        bh=km4eaG7zydQVS1smH8RZWpclWwWWc4yJ/tv62gJUSxk=;
+        s=korg; t=1699277571;
+        bh=XJA37UATytYhuqz0GmWoprC4Athg8ZhxmWCc+EdLzRs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IO+/TvVd1DL0OzA0nZIIAcUVvDfddzXVWTWBAMLt0G1gSihWpr+MzWIx9amSjOp/3
-         OhOjpJkwrqy3+69HmbGhsNFtZJzu3jhTo7ZmYgv5GN7r3nSzAtAiZ7r/38vEd4GE0W
-         Z39/O+Mpp+H8orH1iyhrW01TP7F50N2g5w1H/dRY=
+        b=Xq0DB06JcjhD0/GO7CtW1NRzF/WWWBOW0xNvE3U+r6rl6OUatzqCB1TVKBP7E2kZw
+         neJej45woYMFj24b2TjW4SUxxtr/rIwBcN28gF+gq0kOlQUGOMLnABhvCJHv3GbdMd
+         DelUtt23WrbGW6vA6BtXlwJ9xFYdXDEqTuvF7Lq8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
+To:     stable@vger.kernel.org, lee@kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 63/74] net: chelsio: cxgb4: add an error code check in t4_load_phy_fw
-Date:   Mon,  6 Nov 2023 14:04:23 +0100
-Message-ID: <20231106130303.868158229@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 5.10 56/95] rpmsg: Fix kfree() of static memory on setting driver_override
+Date:   Mon,  6 Nov 2023 14:04:24 +0100
+Message-ID: <20231106130306.736393046@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,39 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 9f771493da935299c6393ad3563b581255d01a37 ]
+commit 42cd402b8fd4672b692400fe5f9eecd55d2794ac upstream.
 
-t4_set_params_timeout() can return -EINVAL if failed, add check
-for this.
+The driver_override field from platform driver should not be initialized
+from static memory (string literal) because the core later kfree() it,
+for example when driver_override is set via sysfs.
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use dedicated helper to set driver_override properly.
+
+Fixes: 950a7388f02b ("rpmsg: Turn name service into a stand alone driver")
+Fixes: c0cdc19f84a4 ("rpmsg: Driver for user space endpoint interface")
+Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20220419113435.246203-13-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/t4_hw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/rpmsg/rpmsg_internal.h |   13 +++++++++++--
+ include/linux/rpmsg.h          |    6 ++++--
+ 2 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-index 42374859b9d35..cb3f515559c27 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/t4_hw.c
-@@ -3850,6 +3850,8 @@ int t4_load_phy_fw(struct adapter *adap,
- 		 FW_PARAMS_PARAM_Z_V(FW_PARAMS_PARAM_DEV_PHYFW_DOWNLOAD));
- 	ret = t4_set_params_timeout(adap, adap->mbox, adap->pf, 0, 1,
- 				    &param, &val, 30000);
+--- a/drivers/rpmsg/rpmsg_internal.h
++++ b/drivers/rpmsg/rpmsg_internal.h
+@@ -84,10 +84,19 @@ struct device *rpmsg_find_device(struct
+  */
+ static inline int rpmsg_chrdev_register_device(struct rpmsg_device *rpdev)
+ {
++	int ret;
++
+ 	strcpy(rpdev->id.name, "rpmsg_chrdev");
+-	rpdev->driver_override = "rpmsg_chrdev";
++	ret = driver_set_override(&rpdev->dev, &rpdev->driver_override,
++				  rpdev->id.name, strlen(rpdev->id.name));
 +	if (ret)
 +		return ret;
++
++	ret = rpmsg_register_device(rpdev);
++	if (ret)
++		kfree(rpdev->driver_override);
  
- 	/* If we have version number support, then check to see that the new
- 	 * firmware got loaded properly.
--- 
-2.42.0
-
+-	return rpmsg_register_device(rpdev);
++	return ret;
+ }
+ 
+ #endif
+--- a/include/linux/rpmsg.h
++++ b/include/linux/rpmsg.h
+@@ -41,7 +41,9 @@ struct rpmsg_channel_info {
+  * rpmsg_device - device that belong to the rpmsg bus
+  * @dev: the device struct
+  * @id: device id (used to match between rpmsg drivers and devices)
+- * @driver_override: driver name to force a match
++ * @driver_override: driver name to force a match; do not set directly,
++ *                   because core frees it; use driver_set_override() to
++ *                   set or clear it.
+  * @src: local address
+  * @dst: destination address
+  * @ept: the rpmsg endpoint of this channel
+@@ -50,7 +52,7 @@ struct rpmsg_channel_info {
+ struct rpmsg_device {
+ 	struct device dev;
+ 	struct rpmsg_device_id id;
+-	char *driver_override;
++	const char *driver_override;
+ 	u32 src;
+ 	u32 dst;
+ 	struct rpmsg_endpoint *ept;
 
 
