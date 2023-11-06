@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 928587E22DC
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:06:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40D837E24AD
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:24:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231909AbjKFNGQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:06:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49686 "EHLO
+        id S231993AbjKFNYN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:24:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231549AbjKFNGP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:06:15 -0500
+        with ESMTP id S232480AbjKFNYM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:24:12 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D855091
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:06:12 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2485EC433C8;
-        Mon,  6 Nov 2023 13:06:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20E9510A
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:09 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFCDC433C8;
+        Mon,  6 Nov 2023 13:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699275972;
-        bh=iRSgre419D5U/BaTGC8fJmZ/xNl0eCxKi+uVXpBBbZg=;
+        s=korg; t=1699277048;
+        bh=u7syam+qpQeENowZwLcMD8WWmojEIjl8sy5DbJ57s3k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TsSus7ROsgosTHZhtszHFnMkNqSqJZnEZ/1SP48lJZmnKXpNH8VEyCzZB7rV4b8fq
-         EYIk+CFB+4UuTGKOWUq83WdFA1akYfCirQjyeZPePopGyADlsgKhp+A/8onaD+cdHX
-         da/m1nkY2u2jceG9vq9VD5+7+b7Gb6a0M6tz6qHE=
+        b=MzAO8cC2iM5ma8FLP6XoNP4sKHynB5L1VLF/4OjMaA2E8ZDKSU+O0c6RsMraxOipN
+         Qe69NcFBfiW8S/jb5qI/BKblkBng/nnJ9GW/MfWnEKimWxvnB5LrDsrKQZlbSFKnTA
+         X5y9QPH9HXDlpjhuiKFYqneIcpYs5YQk1VaZICZs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 4.14 09/48] i40e: Fix wrong check for I40E_TXR_FLAGS_WB_ON_ITR
+        patches@lists.linux.dev, Hao Ge <gehao@kylinos.cn>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 020/128] firmware/imx-dsp: Fix use_after_free in imx_dsp_setup_channels()
 Date:   Mon,  6 Nov 2023 14:03:00 +0100
-Message-ID: <20231106130258.169048153@linuxfoundation.org>
+Message-ID: <20231106130310.051086146@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
-References: <20231106130257.862199836@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,40 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Hao Ge <gehao@kylinos.cn>
 
-[ Upstream commit 77a8c982ff0d4c3a14022c6fe9e3dbfb327552ec ]
+[ Upstream commit 1558b1a8dd388f5fcc3abc1e24de854a295044c3 ]
 
-The I40E_TXR_FLAGS_WB_ON_ITR is i40e_ring flag and not i40e_pf one.
+dsp_chan->name and chan_name points to same block of memory,
+because dev_err still needs to be used it,so we need free
+it's memory after use to avoid use_after_free.
 
-Fixes: 8e0764b4d6be42 ("i40e/i40evf: Add support for writeback on ITR feature for X722")
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20231023212714.178032-1-jacob.e.keller@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e527adfb9b7d ("firmware: imx-dsp: Fix an error handling path in imx_dsp_setup_channels()")
+Signed-off-by: Hao Ge <gehao@kylinos.cn>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_txrx.c | 2 +-
+ drivers/firmware/imx/imx-dsp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index d79a2c8175c4c..02871e0e20249 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -2401,7 +2401,7 @@ int i40e_napi_poll(struct napi_struct *napi, int budget)
- 		return budget;
- 	}
+diff --git a/drivers/firmware/imx/imx-dsp.c b/drivers/firmware/imx/imx-dsp.c
+index 1f410809d3ee4..0f656e4191d5c 100644
+--- a/drivers/firmware/imx/imx-dsp.c
++++ b/drivers/firmware/imx/imx-dsp.c
+@@ -115,11 +115,11 @@ static int imx_dsp_setup_channels(struct imx_dsp_ipc *dsp_ipc)
+ 		dsp_chan->idx = i % 2;
+ 		dsp_chan->ch = mbox_request_channel_byname(cl, chan_name);
+ 		if (IS_ERR(dsp_chan->ch)) {
+-			kfree(dsp_chan->name);
+ 			ret = PTR_ERR(dsp_chan->ch);
+ 			if (ret != -EPROBE_DEFER)
+ 				dev_err(dev, "Failed to request mbox chan %s ret %d\n",
+ 					chan_name, ret);
++			kfree(dsp_chan->name);
+ 			goto out;
+ 		}
  
--	if (vsi->back->flags & I40E_TXR_FLAGS_WB_ON_ITR)
-+	if (q_vector->tx.ring[0].flags & I40E_TXR_FLAGS_WB_ON_ITR)
- 		q_vector->arm_wb_state = false;
- 
- 	/* Work is done so exit the polling mode and re-enable the interrupt */
 -- 
 2.42.0
 
