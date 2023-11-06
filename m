@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7568A7E2449
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABE177E23F0
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:16:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232354AbjKFNUT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:20:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59464 "EHLO
+        id S231967AbjKFNQ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:16:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjKFNUT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:20:19 -0500
+        with ESMTP id S232262AbjKFNQX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:16:23 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66481BF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:20:16 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A72F1C433C7;
-        Mon,  6 Nov 2023 13:20:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCA3FD49
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:16:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 088B8C433C9;
+        Mon,  6 Nov 2023 13:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276816;
-        bh=Cw666+Zz1kRhmUFdXpzXKS/Qp6V/+5zS711lcuZ+3Cs=;
+        s=korg; t=1699276580;
+        bh=EzlUzI/8ybzHBJIHwDgfgoH7NySXzRxfTdSJh+z98O0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Enf3DNnpKqIrokQ4wj7cNqfmsi+A6ZfaALkPsBXDvYAIIGsAWe9L98kh2rYzl+kvP
-         9qNPv1iR03reixHbiB2c6JPydakyjOmCfnkxhdgpPGR3EO2UErlU7nkE01THKAVTpE
-         ep53EH5rKZJHyrqVFJSVMF1aYPbgmLR0LttzisJQ=
+        b=zwdyoeoBwhWLlA5bvWwh4jBti84ddTZMSR18vLlcXJwA+ppw/lwuEAcwAQ2O5NAMI
+         aOCzboX6jru89WnNg7mWW0XphyVNb+WOkGVndRNJnO+S5O1+rWiCuhvQP4J5fVSB+b
+         n8wdN3ZOk9J3TgmAdDZb54Wnmx7H0NaWfQejNMDE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Francis Laniel <flaniel@linux.microsoft.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        patches@lists.linux.dev, Gabriel Marcano <gabemarcano@yahoo.com>,
+        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 02/74] selftests/ftrace: Add new test case which checks non unique symbol
+Subject: [PATCH 6.5 28/88] fs/ntfs3: Fix directory element type detection
 Date:   Mon,  6 Nov 2023 14:03:22 +0100
-Message-ID: <20231106130301.764249973@linuxfoundation.org>
+Message-ID: <20231106130306.827495564@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francis Laniel <flaniel@linux.microsoft.com>
+From: Gabriel Marcano <gabemarcano@yahoo.com>
 
-[ Upstream commit 03b80ff8023adae6780e491f66e932df8165e3a0 ]
+[ Upstream commit 85a4780dc96ed9dd643bbadf236552b3320fae26 ]
 
-If name_show() is non unique, this test will try to install a kprobe on this
-function which should fail returning EADDRNOTAVAIL.
-On kernel where name_show() is not unique, this test is skipped.
+Calling stat() from userspace correctly identified junctions in an NTFS
+partition as symlinks, but using readdir() and iterating through the
+directory containing the same junction did not identify the junction
+as a symlink.
 
-Link: https://lore.kernel.org/all/20231020104250.9537-3-flaniel@linux.microsoft.com/
+When emitting directory contents, check FILE_ATTRIBUTE_REPARSE_POINT
+attribute to detect junctions and report them as links.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Gabriel Marcano <gabemarcano@yahoo.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc  | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
- create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+ fs/ntfs3/dir.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-new file mode 100644
-index 0000000000000..bc9514428dbaf
---- /dev/null
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
-@@ -0,0 +1,13 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+# description: Test failure of registering kprobe on non unique symbol
-+# requires: kprobe_events
-+
-+SYMBOL='name_show'
-+
-+# We skip this test on kernel where SYMBOL is unique or does not exist.
-+if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
-+	exit_unsupported
-+fi
-+
-+! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
+diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
+index 063a6654199bc..ec0566b322d5d 100644
+--- a/fs/ntfs3/dir.c
++++ b/fs/ntfs3/dir.c
+@@ -309,7 +309,11 @@ static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
+ 		return 0;
+ 	}
+ 
+-	dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
++	/* NTFS: symlinks are "dir + reparse" or "file + reparse" */
++	if (fname->dup.fa & FILE_ATTRIBUTE_REPARSE_POINT)
++		dt_type = DT_LNK;
++	else
++		dt_type = (fname->dup.fa & FILE_ATTRIBUTE_DIRECTORY) ? DT_DIR : DT_REG;
+ 
+ 	return !dir_emit(ctx, (s8 *)name, name_len, ino, dt_type);
+ }
 -- 
 2.42.0
 
