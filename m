@@ -2,37 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D3447E202D
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 12:40:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE837E2030
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 12:41:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231472AbjKFLkZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 06:40:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58544 "EHLO
+        id S230284AbjKFLlA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 06:41:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230155AbjKFLkZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 06:40:25 -0500
+        with ESMTP id S229583AbjKFLk6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 06:40:58 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DD5090
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 03:40:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59571C433C8;
-        Mon,  6 Nov 2023 11:40:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFB9C90;
+        Mon,  6 Nov 2023 03:40:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2812EC433C7;
+        Mon,  6 Nov 2023 11:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699270821;
-        bh=nd4qhLI61cq63p3QnfbQRi2d3BCJFcalsJUI7wRGOjU=;
-        h=Subject:To:Cc:From:Date:From;
-        b=dJErW1e0VYfkpI2XjujidLWiqtu/f89A5UNlisAFVAwtCm6x8kU8Npl2TxEe4qr2X
-         MJ+nZeryj2hrL9kfC0FXbJgSsaPbsvLT9twgWXLGFUXYbtycS8XBMmJGOeaaVyuDXz
-         emPSWuKqHJzNWVlI//msaqoBkPZK2nf53I81C0i0=
-Subject: FAILED: patch "[PATCH] tracing: Have trace_event_file have ref counters" failed to apply to 5.4-stable tree
-To:     rostedt@goodmis.org, beaub@linux.microsoft.com,
-        mark.rutland@arm.com, mhiramat@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Mon, 06 Nov 2023 12:40:14 +0100
-Message-ID: <2023110614-natural-tweak-9ee4@gregkh>
+        s=korg; t=1699270855;
+        bh=+YlEmHVb4VpY2xPIie+34II2npAZ3LMtsvIAKKGYxd4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=2MXlT2GRZgvi6DZI7EXG+rCMLklpcnDzp4AQzE3BZ2XXPSruQKJFNUjbUinZEefSf
+         TzhsZd0pDfUOR+2KDNxc5XIlFDRU7s7li74l7VOz9sFj2OsAkiTE5J2J6w8LDAZzuI
+         NL+rn0yckNDKWE3L4F2m4ciiLKzocVl0jSKoSolo=
+Date:   Mon, 6 Nov 2023 12:40:52 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [v6.6][PATCH 0/5] tracing: Backport of eventfs fixes for v6.6
+Message-ID: <2023110620-wildcard-chrome-0d72@gregkh>
+References: <20231105155630.925114107@goodmis.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231105155630.925114107@goodmis.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -43,265 +47,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, Nov 05, 2023 at 10:56:30AM -0500, Steven Rostedt wrote:
+> 
+> Greg,
+> 
+> Friday before the merge window opened, I received a bug report
+> for the eventfs code that was in linux-next. I spent the next
+> 5 days debugging it and not only fixing it, but it led to finding
+> other bugs in the code. Several of these other bugs happen to
+> also affect the 6.6 kernel.
+> 
+> The eventfs code was written in two parts to lower the complexity.
+> The first part added just the dynamic creation of the eventfs
+> file system and that was added to 6.6.
+> 
+> The second part went further and removed the one-to-one mapping between
+> dentry/inode and meta data, as all events have the same files. It replaced
+> the meta data for each file with callbacks, which caused quite a bit of
+> code churn.
+> 
+> As the merge window was already open, when I finished all the fixes
+> I just sent those fixes on top of the linux-next changes along with
+> my pull request. That means, there are 5 commits that are marked
+> stable (or should be marked for stable) that need to be applied to
+> 6.6 but require a bit of tweaking or even a new way of implementing the fix!
+> 
+> After sending the pull request, I then checked out 6.6 an took those
+> 5 changes and fixed them up on top of it. I ran them through all my
+> tests that I use to send to Linus.
+> 
+> So these should be as good as the versions of the patches in Linus's tree.
+> I waited until Linus pulled in those changes to send this series out.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x bb32500fb9b78215e4ef6ee8b4345c5f5d7eafb4
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023110614-natural-tweak-9ee4@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
+All now queued up.  Note, patch 1/6 needs to go to older kernels as
+well, according to your Fixes: tag, so if you could provide backports
+for them as well that would be great.
 
 thanks,
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From bb32500fb9b78215e4ef6ee8b4345c5f5d7eafb4 Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Date: Tue, 31 Oct 2023 12:24:53 -0400
-Subject: [PATCH] tracing: Have trace_event_file have ref counters
-
-The following can crash the kernel:
-
- # cd /sys/kernel/tracing
- # echo 'p:sched schedule' > kprobe_events
- # exec 5>>events/kprobes/sched/enable
- # > kprobe_events
- # exec 5>&-
-
-The above commands:
-
- 1. Change directory to the tracefs directory
- 2. Create a kprobe event (doesn't matter what one)
- 3. Open bash file descriptor 5 on the enable file of the kprobe event
- 4. Delete the kprobe event (removes the files too)
- 5. Close the bash file descriptor 5
-
-The above causes a crash!
-
- BUG: kernel NULL pointer dereference, address: 0000000000000028
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 0 P4D 0
- Oops: 0000 [#1] PREEMPT SMP PTI
- CPU: 6 PID: 877 Comm: bash Not tainted 6.5.0-rc4-test-00008-g2c6b6b1029d4-dirty #186
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
- RIP: 0010:tracing_release_file_tr+0xc/0x50
-
-What happens here is that the kprobe event creates a trace_event_file
-"file" descriptor that represents the file in tracefs to the event. It
-maintains state of the event (is it enabled for the given instance?).
-Opening the "enable" file gets a reference to the event "file" descriptor
-via the open file descriptor. When the kprobe event is deleted, the file is
-also deleted from the tracefs system which also frees the event "file"
-descriptor.
-
-But as the tracefs file is still opened by user space, it will not be
-totally removed until the final dput() is called on it. But this is not
-true with the event "file" descriptor that is already freed. If the user
-does a write to or simply closes the file descriptor it will reference the
-event "file" descriptor that was just freed, causing a use-after-free bug.
-
-To solve this, add a ref count to the event "file" descriptor as well as a
-new flag called "FREED". The "file" will not be freed until the last
-reference is released. But the FREE flag will be set when the event is
-removed to prevent any more modifications to that event from happening,
-even if there's still a reference to the event "file" descriptor.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231031000031.1e705592@gandalf.local.home/
-Link: https://lore.kernel.org/linux-trace-kernel/20231031122453.7a48b923@gandalf.local.home
-
-Cc: stable@vger.kernel.org
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: f5ca233e2e66d ("tracing: Increase trace array ref count on enable and filter files")
-Reported-by: Beau Belgrave <beaub@linux.microsoft.com>
-Tested-by: Beau Belgrave <beaub@linux.microsoft.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index 12207dc6722d..696f8dc4aa53 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -492,6 +492,7 @@ enum {
- 	EVENT_FILE_FL_TRIGGER_COND_BIT,
- 	EVENT_FILE_FL_PID_FILTER_BIT,
- 	EVENT_FILE_FL_WAS_ENABLED_BIT,
-+	EVENT_FILE_FL_FREED_BIT,
- };
- 
- extern struct trace_event_file *trace_get_event_file(const char *instance,
-@@ -630,6 +631,7 @@ extern int __kprobe_event_add_fields(struct dynevent_cmd *cmd, ...);
-  *  TRIGGER_COND  - When set, one or more triggers has an associated filter
-  *  PID_FILTER    - When set, the event is filtered based on pid
-  *  WAS_ENABLED   - Set when enabled to know to clear trace on module removal
-+ *  FREED         - File descriptor is freed, all fields should be considered invalid
-  */
- enum {
- 	EVENT_FILE_FL_ENABLED		= (1 << EVENT_FILE_FL_ENABLED_BIT),
-@@ -643,6 +645,7 @@ enum {
- 	EVENT_FILE_FL_TRIGGER_COND	= (1 << EVENT_FILE_FL_TRIGGER_COND_BIT),
- 	EVENT_FILE_FL_PID_FILTER	= (1 << EVENT_FILE_FL_PID_FILTER_BIT),
- 	EVENT_FILE_FL_WAS_ENABLED	= (1 << EVENT_FILE_FL_WAS_ENABLED_BIT),
-+	EVENT_FILE_FL_FREED		= (1 << EVENT_FILE_FL_FREED_BIT),
- };
- 
- struct trace_event_file {
-@@ -671,6 +674,7 @@ struct trace_event_file {
- 	 * caching and such. Which is mostly OK ;-)
- 	 */
- 	unsigned long		flags;
-+	atomic_t		ref;	/* ref count for opened files */
- 	atomic_t		sm_ref;	/* soft-mode reference counter */
- 	atomic_t		tm_ref;	/* trigger-mode reference counter */
- };
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 2539cfc20a97..9aebf904ff97 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4978,6 +4978,20 @@ int tracing_open_file_tr(struct inode *inode, struct file *filp)
- 	if (ret)
- 		return ret;
- 
-+	mutex_lock(&event_mutex);
-+
-+	/* Fail if the file is marked for removal */
-+	if (file->flags & EVENT_FILE_FL_FREED) {
-+		trace_array_put(file->tr);
-+		ret = -ENODEV;
-+	} else {
-+		event_file_get(file);
-+	}
-+
-+	mutex_unlock(&event_mutex);
-+	if (ret)
-+		return ret;
-+
- 	filp->private_data = inode->i_private;
- 
- 	return 0;
-@@ -4988,6 +5002,7 @@ int tracing_release_file_tr(struct inode *inode, struct file *filp)
- 	struct trace_event_file *file = inode->i_private;
- 
- 	trace_array_put(file->tr);
-+	event_file_put(file);
- 
- 	return 0;
- }
-diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
-index 0e1405abf4f7..b7f4ea25a194 100644
---- a/kernel/trace/trace.h
-+++ b/kernel/trace/trace.h
-@@ -1669,6 +1669,9 @@ extern void event_trigger_unregister(struct event_command *cmd_ops,
- 				     char *glob,
- 				     struct event_trigger_data *trigger_data);
- 
-+extern void event_file_get(struct trace_event_file *file);
-+extern void event_file_put(struct trace_event_file *file);
-+
- /**
-  * struct event_trigger_ops - callbacks for trace event triggers
-  *
-diff --git a/kernel/trace/trace_events.c b/kernel/trace/trace_events.c
-index f9e3e24d8796..f29e815ca5b2 100644
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -990,13 +990,35 @@ static void remove_subsystem(struct trace_subsystem_dir *dir)
- 	}
- }
- 
-+void event_file_get(struct trace_event_file *file)
-+{
-+	atomic_inc(&file->ref);
-+}
-+
-+void event_file_put(struct trace_event_file *file)
-+{
-+	if (WARN_ON_ONCE(!atomic_read(&file->ref))) {
-+		if (file->flags & EVENT_FILE_FL_FREED)
-+			kmem_cache_free(file_cachep, file);
-+		return;
-+	}
-+
-+	if (atomic_dec_and_test(&file->ref)) {
-+		/* Count should only go to zero when it is freed */
-+		if (WARN_ON_ONCE(!(file->flags & EVENT_FILE_FL_FREED)))
-+			return;
-+		kmem_cache_free(file_cachep, file);
-+	}
-+}
-+
- static void remove_event_file_dir(struct trace_event_file *file)
- {
- 	eventfs_remove_dir(file->ei);
- 	list_del(&file->list);
- 	remove_subsystem(file->system);
- 	free_event_filter(file->filter);
--	kmem_cache_free(file_cachep, file);
-+	file->flags |= EVENT_FILE_FL_FREED;
-+	event_file_put(file);
- }
- 
- /*
-@@ -1369,7 +1391,7 @@ event_enable_read(struct file *filp, char __user *ubuf, size_t cnt,
- 		flags = file->flags;
- 	mutex_unlock(&event_mutex);
- 
--	if (!file)
-+	if (!file || flags & EVENT_FILE_FL_FREED)
- 		return -ENODEV;
- 
- 	if (flags & EVENT_FILE_FL_ENABLED &&
-@@ -1403,7 +1425,7 @@ event_enable_write(struct file *filp, const char __user *ubuf, size_t cnt,
- 		ret = -ENODEV;
- 		mutex_lock(&event_mutex);
- 		file = event_file_data(filp);
--		if (likely(file)) {
-+		if (likely(file && !(file->flags & EVENT_FILE_FL_FREED))) {
- 			ret = tracing_update_buffers(file->tr);
- 			if (ret < 0) {
- 				mutex_unlock(&event_mutex);
-@@ -1683,7 +1705,7 @@ event_filter_read(struct file *filp, char __user *ubuf, size_t cnt,
- 
- 	mutex_lock(&event_mutex);
- 	file = event_file_data(filp);
--	if (file)
-+	if (file && !(file->flags & EVENT_FILE_FL_FREED))
- 		print_event_filter(file, s);
- 	mutex_unlock(&event_mutex);
- 
-@@ -2902,6 +2924,7 @@ trace_create_new_event(struct trace_event_call *call,
- 	atomic_set(&file->tm_ref, 0);
- 	INIT_LIST_HEAD(&file->triggers);
- 	list_add(&file->list, &tr->events);
-+	event_file_get(file);
- 
- 	return file;
- }
-diff --git a/kernel/trace/trace_events_filter.c b/kernel/trace/trace_events_filter.c
-index 33264e510d16..0c611b281a5b 100644
---- a/kernel/trace/trace_events_filter.c
-+++ b/kernel/trace/trace_events_filter.c
-@@ -2349,6 +2349,9 @@ int apply_event_filter(struct trace_event_file *file, char *filter_string)
- 	struct event_filter *filter = NULL;
- 	int err;
- 
-+	if (file->flags & EVENT_FILE_FL_FREED)
-+		return -ENODEV;
-+
- 	if (!strcmp(strstrip(filter_string), "0")) {
- 		filter_disable(file);
- 		filter = event_filter(file);
-
