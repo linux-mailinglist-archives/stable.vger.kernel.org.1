@@ -2,119 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 559037E2879
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 16:16:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EA897E28BB
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 16:32:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232088AbjKFPQr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 10:16:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38650 "EHLO
+        id S231516AbjKFPcS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 10:32:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232083AbjKFPQl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 10:16:41 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41FB0D71
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 07:16:37 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97714C433BC;
-        Mon,  6 Nov 2023 15:16:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699283796;
-        bh=/HAwmovzMZdoeZvZsHcdokGslREftSrFRuxNINmZTNE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=p1efQTYvGf8rVFkUIm2klEwzrW2mtKPa5EF8rwprtr9zH5WwvnNajfJl+shtHJF50
-         /ZnBBtxAYwFDXG51JGihfmCzTaX4OxyMbmJEk3SUsAA17/dTb9U9/QQvh52VD84FTM
-         VfEN6nj25Eenlmdmzjt6BJwNVvI+dgDFpIybQyLD9c+5Ee4exOLb3CTy9naiQDXXhU
-         Cw/TfswQygCrntLmNHPTMdYdv3g15hW+NIhMfAYqmc2HfwvR4gsKunhB1q+pSmO1C1
-         Pz32FeIJO3uX+B6Vw1z/QG9JVxwaQX4FzOdrrkHTjHSL4DFDV5YjUDxfCNKfOStlS5
-         LYvEnkgAbPC1A==
-Date:   Mon, 6 Nov 2023 08:16:33 -0700
-From:   Keith Busch <kbusch@kernel.org>
-To:     Mikulas Patocka <mpatocka@redhat.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        xen-devel@lists.xenproject.org, iommu@lists.linux.dev,
-        Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>,
-        Jens Axboe <axboe@fb.com>, Sagi Grimberg <sagi@grimberg.me>,
-        Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>, dm-devel@lists.linux.dev,
-        linux-mm@kvack.org
-Subject: Re: [PATCH] swiotlb-xen: provide the "max_mapping_size" method
-Message-ID: <ZUkDUXDF6g4P86F3@kbusch-mbp.dhcp.thefacebook.com>
-References: <ZUOL8kXVTF1OngeN@mail-itl>
- <3cb4133c-b6db-9187-a678-11ed8c9456e@redhat.com>
- <ZUUctamEFtAlSnSV@mail-itl>
- <ZUUlqJoS6_1IznzT@kbusch-mbp.dhcp.thefacebook.com>
- <ZUVYT1Xp4+hFT27W@mail-itl>
- <ZUV3TApYYoh_oiRR@kbusch-mbp.dhcp.thefacebook.com>
- <11a9886d-316c-edcd-d6da-24ad0b9a2b4@redhat.com>
- <ZUZOKitOAqqKiJ4n@kbusch-mbp.dhcp.thefacebook.com>
- <20231106071008.GB17022@lst.de>
- <928b5df7-fada-cf2f-6f6a-257a84547c3@redhat.com>
+        with ESMTP id S231277AbjKFPcR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 10:32:17 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39BF1DB
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 07:32:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699284735; x=1730820735;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=0bFeBd+noHuXD+FYfWx5LwfjAAxeiAFNpAGVqCVP93E=;
+  b=Qa+d6Nmyuw255yhTbDpxLPi01zZ51110gwF8B5n6QUktjamuj71LCk1y
+   J+oXC2S0Nn+WH27IFruJkHYDl9ajnoFcvANM6TJBJ264ILSzl+witnvg/
+   1VZ2PcOlbkPS3Lr0xpfqi0DCc6wUG3v8aLSBXw4Z5pROJYT4ny3ZfwOF4
+   Wli7Egb5AQHvGvYnPROi2BisqI2Z6DObfiQA2aKvcjjHb/0d+M4X8ESr3
+   YUxI+8qIhH//mYs88FvNeRJr7Juhv4m8Lp/m0KtQE55S4G2EPCJOBeeRS
+   q0p4thkoHZQdSY++QE8ddsuiBjWfDz6J+jAAXzha0wnwKW3KpfM6Jng+j
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10886"; a="379691050"
+X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
+   d="scan'208";a="379691050"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 07:32:14 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10886"; a="828252795"
+X-IronPort-AV: E=Sophos;i="6.03,281,1694761200"; 
+   d="scan'208";a="828252795"
+Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 06 Nov 2023 07:32:13 -0800
+Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1r01aE-0006Vk-2b;
+        Mon, 06 Nov 2023 15:32:10 +0000
+Date:   Mon, 6 Nov 2023 23:30:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Zheng Wang <zyytlz.wz@163.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [RESEND PATCH v2 1/3] media: mtk-jpeg: Remove cancel worker in
+ mtk_jpeg_remove to  avoid the crash of multi-core JPEG devices
+Message-ID: <ZUkGiBa3FksnBHvi@dccdf558eea4>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <928b5df7-fada-cf2f-6f6a-257a84547c3@redhat.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20231106144811.868127-2-zyytlz.wz@163.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Nov 06, 2023 at 03:59:40PM +0100, Mikulas Patocka wrote:
-> There's a bug that when using the XEN hypervisor with dm-crypt on NVMe, 
-> the kernel deadlocks [1].
-> 
-> The deadlocks are caused by inability to map a large bio vector -
-> dma_map_sgtable always returns an error, this gets propagated to the block
-> layer as BLK_STS_RESOURCE and the block layer retries the request
-> indefinitely.
-> 
-> XEN uses the swiotlb framework to map discontiguous pages into contiguous
-> runs that are submitted to the PCIe device. The swiotlb framework has a
-> limitation on the length of a mapping - this needs to be announced with
-> the max_mapping_size method to make sure that the hardware drivers do not
-> create larger mappings.
-> 
-> Without max_mapping_size, the NVMe block driver would create large
-> mappings that overrun the maximum mapping size.
-> 
-> [1] https://lore.kernel.org/stable/ZTNH0qtmint%2FzLJZ@mail-itl/
+Hi,
 
-This should be a "Link:" tag.
+Thanks for your patch.
 
-> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-> Reported-by: Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>
-> Tested-by: Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>
-> Suggested-by: Keith Busch <kbusch@kernel.org>
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-I was about to send the same thing. I did a little more than suggest
-this: it's is the very patch I wrote for testing, minus the redundant
-nvme bits! But since you already have a commit message for it...
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Acked-by: Keith Busch <kbusch@kernel.org>
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [RESEND PATCH v2 1/3] media: mtk-jpeg: Remove cancel worker in mtk_jpeg_remove to  avoid the crash of multi-core JPEG devices
+Link: https://lore.kernel.org/stable/20231106144811.868127-2-zyytlz.wz%40163.com
 
-> Suggested-by: Christoph Hellwig <hch@lst.de>
-> Cc: stable@vger.kernel.org
-> 
-> ---
->  drivers/xen/swiotlb-xen.c |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> Index: linux-stable/drivers/xen/swiotlb-xen.c
-> ===================================================================
-> --- linux-stable.orig/drivers/xen/swiotlb-xen.c	2023-11-03 17:57:18.000000000 +0100
-> +++ linux-stable/drivers/xen/swiotlb-xen.c	2023-11-06 15:30:59.000000000 +0100
-> @@ -405,4 +405,5 @@ const struct dma_map_ops xen_swiotlb_dma
->  	.get_sgtable = dma_common_get_sgtable,
->  	.alloc_pages = dma_common_alloc_pages,
->  	.free_pages = dma_common_free_pages,
-> +	.max_mapping_size = swiotlb_max_mapping_size,
->  };
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
