@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A47257E24DE
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B7767E232F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232525AbjKFN0N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:26:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36464 "EHLO
+        id S231745AbjKFNJf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:09:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232560AbjKFN0L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:26:11 -0500
+        with ESMTP id S231876AbjKFNJe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:34 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B6FBD7F
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:26:03 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48790C433C7;
-        Mon,  6 Nov 2023 13:26:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C42EAF3
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:31 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E238C433C7;
+        Mon,  6 Nov 2023 13:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277162;
-        bh=CsOgxSurSfocJM1Yyn5fNW6S7VOxvKb/Bqraa7ANh9M=;
+        s=korg; t=1699276171;
+        bh=FTY3KEOBY3+YkGzYm2QSqp9TNS66ZABMIK4IT+A+h1E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g53KUr+z2FBqUkjeukZbma1np/L1H6Fgj2oHexRXdIhHQRTI7DBYnMGpuywtdJYXU
-         GRd3cYu927oUNgpkbKiNXqTfn0DWidSJpyh8tv9fLhN65pVzqNy869YazWVSFtgxUg
-         gdBqoWgXhCbfQFm8tkx0U6dDJec6fWQscjuu0E90=
+        b=jP46lhkz3kzPcHc2JwTqDI9V+R+2o6RcT3hi+lWJ180xL8ponlKSLXpn5DOce7oA9
+         O/3ObTKODuC2L3Btmzf6sOs1DENMTucWDRV4q3FbI4I9HhbXwHw9Zhj7a+/sY6QrE2
+         EzExBt+F0qN2lpepoIWHvFz/FSB2tym/9gwdgm0w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+c74c24b43c9ae534f0e0@syzkaller.appspotmail.com,
-        syzbot+2c97a98a5ba9ea9c23bd@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 030/128] net: usb: smsc95xx: Fix uninit-value access in smsc95xx_read_reg
+        patches@lists.linux.dev, Ivan Vecera <ivecera@redhat.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 4.19 14/61] i40e: Fix wrong check for I40E_TXR_FLAGS_WB_ON_ITR
 Date:   Mon,  6 Nov 2023 14:03:10 +0100
-Message-ID: <20231106130310.484105314@linuxfoundation.org>
+Message-ID: <20231106130300.064237519@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,107 +51,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit 51a32e828109b4a209efde44505baa356b37a4ce ]
+commit 77a8c982ff0d4c3a14022c6fe9e3dbfb327552ec upstream.
 
-syzbot reported the following uninit-value access issue [1]:
+The I40E_TXR_FLAGS_WB_ON_ITR is i40e_ring flag and not i40e_pf one.
 
-smsc95xx 1-1:0.0 (unnamed net_device) (uninitialized): Failed to read reg index 0x00000030: -32
-smsc95xx 1-1:0.0 (unnamed net_device) (uninitialized): Error reading E2P_CMD
-=====================================================
-BUG: KMSAN: uninit-value in smsc95xx_reset+0x409/0x25f0 drivers/net/usb/smsc95xx.c:896
- smsc95xx_reset+0x409/0x25f0 drivers/net/usb/smsc95xx.c:896
- smsc95xx_bind+0x9bc/0x22e0 drivers/net/usb/smsc95xx.c:1131
- usbnet_probe+0x100b/0x4060 drivers/net/usb/usbnet.c:1750
- usb_probe_interface+0xc75/0x1210 drivers/usb/core/driver.c:396
- really_probe+0x506/0xf40 drivers/base/dd.c:658
- __driver_probe_device+0x2a7/0x5d0 drivers/base/dd.c:800
- driver_probe_device+0x72/0x7b0 drivers/base/dd.c:830
- __device_attach_driver+0x55a/0x8f0 drivers/base/dd.c:958
- bus_for_each_drv+0x3ff/0x620 drivers/base/bus.c:457
- __device_attach+0x3bd/0x640 drivers/base/dd.c:1030
- device_initial_probe+0x32/0x40 drivers/base/dd.c:1079
- bus_probe_device+0x3d8/0x5a0 drivers/base/bus.c:532
- device_add+0x16ae/0x1f20 drivers/base/core.c:3622
- usb_set_configuration+0x31c9/0x38c0 drivers/usb/core/message.c:2207
- usb_generic_driver_probe+0x109/0x2a0 drivers/usb/core/generic.c:238
- usb_probe_device+0x290/0x4a0 drivers/usb/core/driver.c:293
- really_probe+0x506/0xf40 drivers/base/dd.c:658
- __driver_probe_device+0x2a7/0x5d0 drivers/base/dd.c:800
- driver_probe_device+0x72/0x7b0 drivers/base/dd.c:830
- __device_attach_driver+0x55a/0x8f0 drivers/base/dd.c:958
- bus_for_each_drv+0x3ff/0x620 drivers/base/bus.c:457
- __device_attach+0x3bd/0x640 drivers/base/dd.c:1030
- device_initial_probe+0x32/0x40 drivers/base/dd.c:1079
- bus_probe_device+0x3d8/0x5a0 drivers/base/bus.c:532
- device_add+0x16ae/0x1f20 drivers/base/core.c:3622
- usb_new_device+0x15f6/0x22f0 drivers/usb/core/hub.c:2589
- hub_port_connect drivers/usb/core/hub.c:5440 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5580 [inline]
- port_event drivers/usb/core/hub.c:5740 [inline]
- hub_event+0x53bc/0x7290 drivers/usb/core/hub.c:5822
- process_one_work kernel/workqueue.c:2630 [inline]
- process_scheduled_works+0x104e/0x1e70 kernel/workqueue.c:2703
- worker_thread+0xf45/0x1490 kernel/workqueue.c:2784
- kthread+0x3e8/0x540 kernel/kthread.c:388
- ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
-
-Local variable buf.i225 created at:
- smsc95xx_read_reg drivers/net/usb/smsc95xx.c:90 [inline]
- smsc95xx_reset+0x203/0x25f0 drivers/net/usb/smsc95xx.c:892
- smsc95xx_bind+0x9bc/0x22e0 drivers/net/usb/smsc95xx.c:1131
-
-CPU: 1 PID: 773 Comm: kworker/1:2 Not tainted 6.6.0-rc1-syzkaller-00125-ge42bebf6db29 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
-Workqueue: usb_hub_wq hub_event
-=====================================================
-
-Similar to e9c65989920f ("net: usb: smsc75xx: Fix uninit-value access in
-__smsc75xx_read_reg"), this issue is caused because usbnet_read_cmd() reads
-less bytes than requested (zero byte in the reproducer). In this case,
-'buf' is not properly filled.
-
-This patch fixes the issue by returning -ENODATA if usbnet_read_cmd() reads
-less bytes than requested.
-
-sysbot reported similar uninit-value access issue [2]. The root cause is
-the same as mentioned above, and this patch addresses it as well.
-
-Fixes: 2f7ca802bdae ("net: Add SMSC LAN9500 USB2.0 10/100 ethernet adapter driver")
-Reported-and-tested-by: syzbot+c74c24b43c9ae534f0e0@syzkaller.appspotmail.com
-Reported-and-tested-by: syzbot+2c97a98a5ba9ea9c23bd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c74c24b43c9ae534f0e0 [1]
-Closes: https://syzkaller.appspot.com/bug?extid=2c97a98a5ba9ea9c23bd [2]
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8e0764b4d6be42 ("i40e/i40evf: Add support for writeback on ITR feature for X722")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20231023212714.178032-1-jacob.e.keller@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/smsc95xx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 16a6cdf025151..5f962f58ff496 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -84,7 +84,9 @@ static int __must_check __smsc95xx_read_reg(struct usbnet *dev, u32 index,
- 	ret = fn(dev, USB_VENDOR_REQUEST_READ_REGISTER, USB_DIR_IN
- 		 | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
- 		 0, index, &buf, 4);
--	if (ret < 0) {
-+	if (ret < 4) {
-+		ret = ret < 0 ? ret : -ENODATA;
-+
- 		if (ret != -ENODEV)
- 			netdev_warn(dev->net, "Failed to read reg index 0x%08x: %d\n",
- 				    index, ret);
--- 
-2.42.0
-
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -2642,7 +2642,7 @@ tx_only:
+ 		return budget;
+ 	}
+ 
+-	if (vsi->back->flags & I40E_TXR_FLAGS_WB_ON_ITR)
++	if (q_vector->tx.ring[0].flags & I40E_TXR_FLAGS_WB_ON_ITR)
+ 		q_vector->arm_wb_state = false;
+ 
+ 	/* Work is done so exit the polling mode and re-enable the interrupt */
 
 
