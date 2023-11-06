@@ -2,43 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47B5E7E241E
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3A217E2468
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232246AbjKFNSW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:18:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58616 "EHLO
+        id S232000AbjKFNVb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:21:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232304AbjKFNSV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:21 -0500
+        with ESMTP id S232408AbjKFNVa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:30 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10609D8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0BEC433C9;
-        Mon,  6 Nov 2023 13:18:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EF95A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE59C433C8;
+        Mon,  6 Nov 2023 13:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276698;
-        bh=UHxqPPiBvrxHmcPF2x7+IwnZz8ESQphsX7JxQ3awo0A=;
+        s=korg; t=1699276887;
+        bh=gWknMLYQNuNlyyrg+66hlxGZE9IUr2S2RU1Vo0Oepkg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CI8Bmm5xZdmGl11GqndefQEOZTpjxXknahZtjMApqvtZg/mPC56x417Qcpl2YlUBs
-         rlnOzQH+dvDRZskIOf0iv4C0CICIJn4i3nKhn88PI/e+3YqCFaEg7GJPCJ7oxAbFnz
-         IdWnEiJXJMrAzvmGYyNNOuNVw5pfW9lfjoAUW83I=
+        b=zGs0nBiTUzspFlFZbR7Q4ZFXaIHT193WRi7H/Omg2C6BL8Mfg+nGuCy43nURucuMr
+         KctHRRBKYVhbgPm1kl2fUyfp/asbDPIJsmP/lo/ESqpETp10QcnjFJvJ/f9nPICHOz
+         AbavqgIBveOPd+7SbQ49JvllIZDPzBozCSQhwgYg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 66/88] mmap: fix error paths with dup_anon_vma()
+        patches@lists.linux.dev, Joe Damato <jdamato@fastly.com>,
+        Byungchul Park <byungchul.park@lge.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.4 40/74] x86/mm: Fix RESERVE_BRK() for older binutils
 Date:   Mon,  6 Nov 2023 14:04:00 +0100
-Message-ID: <20231106130308.189613370@linuxfoundation.org>
+Message-ID: <20231106130303.136739845@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,154 +52,135 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit 824135c46b00df7fb369ec7f1f8607427bbebeb0 upstream.
+commit e32683c6f7d22ba624e0bfc58b02cf3348bdca63 upstream.
 
-When the calling function fails after the dup_anon_vma(), the
-duplication of the anon_vma is not being undone.  Add the necessary
-unlink_anon_vma() call to the error paths that are missing them.
+With binutils 2.26, RESERVE_BRK() causes a build failure:
 
-This issue showed up during inspection of the error path in vma_merge()
-for an unrelated vma iterator issue.
+  /tmp/ccnGOKZ5.s: Assembler messages:
+  /tmp/ccnGOKZ5.s:98: Error: missing ')'
+  /tmp/ccnGOKZ5.s:98: Error: missing ')'
+  /tmp/ccnGOKZ5.s:98: Error: missing ')'
+  /tmp/ccnGOKZ5.s:98: Error: junk at end of line, first unrecognized
+  character is `U'
 
-Users may experience increased memory usage, which may be problematic as
-the failure would likely be caused by a low memory situation.
+The problem is this line:
 
-Link: https://lkml.kernel.org/r/20230929183041.2835469-3-Liam.Howlett@oracle.com
-Fixes: d4af56c5c7c6 ("mm: start tracking VMAs with maple tree")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: Jann Horn <jannh@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+  RESERVE_BRK(early_pgt_alloc, INIT_PGT_BUF_SIZE)
+
+Specifically, the INIT_PGT_BUF_SIZE macro which (via PAGE_SIZE's use
+_AC()) has a "1UL", which makes older versions of the assembler unhappy.
+Unfortunately the _AC() macro doesn't work for inline asm.
+
+Inline asm was only needed here to convince the toolchain to add the
+STT_NOBITS flag.  However, if a C variable is placed in a section whose
+name is prefixed with ".bss", GCC and Clang automatically set
+STT_NOBITS.  In fact, ".bss..page_aligned" already relies on this trick.
+
+So fix the build failure (and simplify the macro) by allocating the
+variable in C.
+
+Also, add NOLOAD to the ".brk" output section clause in the linker
+script.  This is a failsafe in case the ".bss" prefix magic trick ever
+stops working somehow.  If there's a section type mismatch, the GNU
+linker will force the ".brk" output section to be STT_NOBITS.  The LLVM
+linker will fail with a "section type mismatch" error.
+
+Note this also changes the name of the variable from .brk.##name to
+__brk_##name.  The variable names aren't actually used anywhere, so it's
+harmless.
+
+Fixes: a1e2c031ec39 ("x86/mm: Simplify RESERVE_BRK()")
+Reported-by: Joe Damato <jdamato@fastly.com>
+Reported-by: Byungchul Park <byungchul.park@lge.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Joe Damato <jdamato@fastly.com>
+Link: https://lore.kernel.org/r/22d07a44c80d8e8e1e82b9a806ddc8c6bbb2606e.1654759036.git.jpoimboe@kernel.org
+[nathan: Fix conflict due to lack of 360db4ace311 and resolve silent
+         conflict with 360db4ace3117]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mmap.c |   30 ++++++++++++++++++++++--------
- 1 file changed, 22 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/setup.h  |   38 +++++++++++++++++++++-----------------
+ arch/x86/kernel/vmlinux.lds.S |    4 ++--
+ 2 files changed, 23 insertions(+), 19 deletions(-)
 
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -603,11 +603,12 @@ again:
-  * dup_anon_vma() - Helper function to duplicate anon_vma
-  * @dst: The destination VMA
-  * @src: The source VMA
-+ * @dup: Pointer to the destination VMA when successful.
+--- a/arch/x86/include/asm/setup.h
++++ b/arch/x86/include/asm/setup.h
+@@ -94,19 +94,16 @@ extern unsigned long _brk_end;
+ void *extend_brk(size_t size, size_t align);
+ 
+ /*
+- * Reserve space in the brk section.  The name must be unique within the file,
+- * and somewhat descriptive.  The size is in bytes.
++ * Reserve space in the .brk section, which is a block of memory from which the
++ * caller is allowed to allocate very early (before even memblock is available)
++ * by calling extend_brk().  All allocated memory will be eventually converted
++ * to memblock.  Any leftover unallocated memory will be freed.
   *
-  * Returns: 0 on success.
+- * The allocation is done using inline asm (rather than using a section
+- * attribute on a normal variable) in order to allow the use of @nobits, so
+- * that it doesn't take up any space in the vmlinux file.
++ * The size is in bytes.
   */
- static inline int dup_anon_vma(struct vm_area_struct *dst,
--			       struct vm_area_struct *src)
-+		struct vm_area_struct *src, struct vm_area_struct **dup)
- {
- 	/*
- 	 * Easily overlooked: when mprotect shifts the boundary, make sure the
-@@ -615,9 +616,15 @@ static inline int dup_anon_vma(struct vm
- 	 * anon pages imported.
- 	 */
- 	if (src->anon_vma && !dst->anon_vma) {
-+		int ret;
+-#define RESERVE_BRK(name, size)						\
+-	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
+-	    ".brk." #name ":\n\t"					\
+-	    ".skip " __stringify(size) "\n\t"				\
+-	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
+-	    ".popsection\n\t")
++#define RESERVE_BRK(name, size)					\
++	__section(.bss..brk) __aligned(1) __used	\
++	static char __brk_##name[size]
+ 
+ /* Helper for reserving space for arrays of things */
+ #define RESERVE_BRK_ARRAY(type, name, entries)		\
+@@ -124,12 +121,19 @@ asmlinkage void __init x86_64_start_rese
+ 
+ #endif /* __i386__ */
+ #endif /* _SETUP */
+-#else
+-#define RESERVE_BRK(name,sz)				\
+-	.pushsection .brk_reservation,"aw",@nobits;	\
+-.brk.name:						\
+-1:	.skip sz;					\
+-	.size .brk.name,.-1b;				\
 +
- 		vma_start_write(dst);
- 		dst->anon_vma = src->anon_vma;
--		return anon_vma_clone(dst, src);
-+		ret = anon_vma_clone(dst, src);
-+		if (ret)
-+			return ret;
++#else  /* __ASSEMBLY */
 +
-+		*dup = dst;
++.macro __RESERVE_BRK name, size
++	.pushsection .bss..brk, "aw"
++SYM_DATA_START(__brk_\name)
++	.skip \size
++SYM_DATA_END(__brk_\name)
+ 	.popsection
++.endm
++
++#define RESERVE_BRK(name, size) __RESERVE_BRK name, size
++
+ #endif /* __ASSEMBLY__ */
++
+ #endif /* _ASM_X86_SETUP_H */
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -380,10 +380,10 @@ SECTIONS
+ 	__end_of_kernel_reserve = .;
+ 
+ 	. = ALIGN(PAGE_SIZE);
+-	.brk : AT(ADDR(.brk) - LOAD_OFFSET) {
++	.brk (NOLOAD) : AT(ADDR(.brk) - LOAD_OFFSET) {
+ 		__brk_base = .;
+ 		. += 64 * 1024;		/* 64k alignment slop space */
+-		*(.brk_reservation)	/* areas brk users have reserved */
++		*(.bss..brk)		/* areas brk users have reserved */
+ 		__brk_limit = .;
  	}
  
- 	return 0;
-@@ -644,6 +651,7 @@ int vma_expand(struct vma_iterator *vmi,
- 	       unsigned long start, unsigned long end, pgoff_t pgoff,
- 	       struct vm_area_struct *next)
- {
-+	struct vm_area_struct *anon_dup = NULL;
- 	bool remove_next = false;
- 	struct vma_prepare vp;
- 
-@@ -651,7 +659,7 @@ int vma_expand(struct vma_iterator *vmi,
- 		int ret;
- 
- 		remove_next = true;
--		ret = dup_anon_vma(vma, next);
-+		ret = dup_anon_vma(vma, next, &anon_dup);
- 		if (ret)
- 			return ret;
- 	}
-@@ -683,6 +691,8 @@ int vma_expand(struct vma_iterator *vmi,
- 	return 0;
- 
- nomem:
-+	if (anon_dup)
-+		unlink_anon_vmas(anon_dup);
- 	return -ENOMEM;
- }
- 
-@@ -881,6 +891,7 @@ struct vm_area_struct *vma_merge(struct
- {
- 	struct vm_area_struct *curr, *next, *res;
- 	struct vm_area_struct *vma, *adjust, *remove, *remove2;
-+	struct vm_area_struct *anon_dup = NULL;
- 	struct vma_prepare vp;
- 	pgoff_t vma_pgoff;
- 	int err = 0;
-@@ -945,16 +956,16 @@ struct vm_area_struct *vma_merge(struct
- 	    is_mergeable_anon_vma(prev->anon_vma, next->anon_vma, NULL)) {
- 		remove = next;				/* case 1 */
- 		vma_end = next->vm_end;
--		err = dup_anon_vma(prev, next);
-+		err = dup_anon_vma(prev, next, &anon_dup);
- 		if (curr) {				/* case 6 */
- 			remove = curr;
- 			remove2 = next;
- 			if (!next->anon_vma)
--				err = dup_anon_vma(prev, curr);
-+				err = dup_anon_vma(prev, curr, &anon_dup);
- 		}
- 	} else if (merge_prev) {			/* case 2 */
- 		if (curr) {
--			err = dup_anon_vma(prev, curr);
-+			err = dup_anon_vma(prev, curr, &anon_dup);
- 			if (end == curr->vm_end) {	/* case 7 */
- 				remove = curr;
- 			} else {			/* case 5 */
-@@ -968,7 +979,7 @@ struct vm_area_struct *vma_merge(struct
- 			vma_end = addr;
- 			adjust = next;
- 			adj_start = -(prev->vm_end - addr);
--			err = dup_anon_vma(next, prev);
-+			err = dup_anon_vma(next, prev, &anon_dup);
- 		} else {
- 			/*
- 			 * Note that cases 3 and 8 are the ONLY ones where prev
-@@ -981,7 +992,7 @@ struct vm_area_struct *vma_merge(struct
- 			if (curr) {			/* case 8 */
- 				vma_pgoff = curr->vm_pgoff;
- 				remove = curr;
--				err = dup_anon_vma(next, curr);
-+				err = dup_anon_vma(next, curr, &anon_dup);
- 			}
- 		}
- 	}
-@@ -1026,6 +1037,9 @@ struct vm_area_struct *vma_merge(struct
- 	return res;
- 
- prealloc_fail:
-+	if (anon_dup)
-+		unlink_anon_vmas(anon_dup);
-+
- anon_vma_fail:
- 	vma_iter_set(vmi, addr);
- 	vma_iter_load(vmi);
 
 
