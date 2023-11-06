@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 263587E24A3
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:23:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB7EE7E22C1
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:05:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232502AbjKFNXt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:23:49 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48354 "EHLO
+        id S231759AbjKFNF0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:05:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232477AbjKFNXr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:23:47 -0500
+        with ESMTP id S231549AbjKFNFZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:05:25 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2EE9BF
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:23:42 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2626BC433C7;
-        Mon,  6 Nov 2023 13:23:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42CE791
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:05:22 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A27DC433CB;
+        Mon,  6 Nov 2023 13:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277022;
-        bh=+lg7vQr83VPYVdmNoET5vssqC7/uVqNuAorPi5cAxVU=;
+        s=korg; t=1699275921;
+        bh=PpNaas+eAotocG0eQBHCnyCpvad7ica505wlIUoiS+c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wtlFUzXAER5S48mV9h6t2PAO3d28hh8I0k6kokdpvifZrDlg/vg7vkofR5a2eDZ4V
-         oLrYIPrhuOFRO9juv15N70MF1tn8ScBkyYZ4/RWrxENmogf6xm4buz4GZ76q942HzI
-         ityOMODbClI6+AogD8lntHTc4DhhAs+G8dIVYL1k=
+        b=w1mR/DpqXXxpVirlIHrF7jMZ02j768e094SOuKPKrZlE0q4mr3kG+at2DcAF+nEBO
+         cagJeXeJ9SMFpRwNyDZAv8OvI2IELeyKeCX/evcjFsMd91NdAmEyLSZV7fgJAPOdGy
+         VgSgq78Jv0idldqR8/ad0wfA1V9R+l2ZheMB+f/A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
-        Naoya Horiguchi <naoya.horiguchi@nec.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 012/128] mm/page_alloc: correct start page when guard page debug is enabled
+        patches@lists.linux.dev,
+        Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+        Javier Rodriguez <josejavier.rodriguez@duagon.com>,
+        Johannes Thumshirn <jth@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 01/48] mcb: Return actual parsed size when reading chameleon table
 Date:   Mon,  6 Nov 2023 14:02:52 +0100
-Message-ID: <20231106130309.682245996@linuxfoundation.org>
+Message-ID: <20231106130257.908450610@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
+References: <20231106130257.862199836@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,67 +53,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Rodríguez Barbarin, José Javier <JoseJavier.Rodriguez@duagon.com>
 
-commit 61e21cf2d2c3cc5e60e8d0a62a77e250fccda62c upstream.
+[ Upstream commit a889c276d33d333ae96697510f33533f6e9d9591 ]
 
-When guard page debug is enabled and set_page_guard returns success, we
-miss to forward page to point to start of next split range and we will do
-split unexpectedly in page range without target page.  Move start page
-update before set_page_guard to fix this.
+The function chameleon_parse_cells() returns the number of cells
+parsed which has an undetermined size. This return value is only
+used for error checking but the number of cells is never used.
 
-As we split to wrong target page, then splited pages are not able to merge
-back to original order when target page is put back and splited pages
-except target page is not usable.  To be specific:
+Change return value to be number of bytes parsed to allow for
+memory management improvements.
 
-Consider target page is the third page in buddy page with order 2.
-| buddy-2 | Page | Target | Page |
-
-After break down to target page, we will only set first page to Guard
-because of bug.
-| Guard   | Page | Target | Page |
-
-When we try put_page_back_buddy with target page, the buddy page of target
-if neither guard nor buddy, Then it's not able to construct original page
-with order 2
-| Guard | Page | buddy-0 | Page |
-
-All pages except target page is not in free list and is not usable.
-
-Link: https://lkml.kernel.org/r/20230927094401.68205-1-shikemeng@huaweicloud.com
-Fixes: 06be6ff3d2ec ("mm,hwpoison: rework soft offline for free pages")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Co-developed-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Signed-off-by: Javier Rodriguez <josejavier.rodriguez@duagon.com>
+Signed-off-by: Johannes Thumshirn <jth@kernel.org>
+Link: https://lore.kernel.org/r/20230411083329.4506-2-jth@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mcb/mcb-parse.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -9481,6 +9481,7 @@ static void break_down_buddy_pages(struc
- 			next_page = page;
- 			current_buddy = page + size;
- 		}
-+		page = next_page;
- 
- 		if (set_page_guard(zone, current_buddy, high, migratetype))
- 			continue;
-@@ -9488,7 +9489,6 @@ static void break_down_buddy_pages(struc
- 		if (current_buddy != target) {
- 			add_to_free_list(current_buddy, zone, high, migratetype);
- 			set_buddy_order(current_buddy, high);
--			page = next_page;
- 		}
+diff --git a/drivers/mcb/mcb-parse.c b/drivers/mcb/mcb-parse.c
+index 08a85e43ef885..b7354232221e6 100644
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -127,7 +127,7 @@ static void chameleon_parse_bar(void __iomem *base,
  	}
  }
+ 
+-static int chameleon_get_bar(char __iomem **base, phys_addr_t mapbase,
++static int chameleon_get_bar(void __iomem **base, phys_addr_t mapbase,
+ 			     struct chameleon_bar **cb)
+ {
+ 	struct chameleon_bar *c;
+@@ -176,12 +176,13 @@ int chameleon_parse_cells(struct mcb_bus *bus, phys_addr_t mapbase,
+ {
+ 	struct chameleon_fpga_header *header;
+ 	struct chameleon_bar *cb;
+-	char __iomem *p = base;
++	void __iomem *p = base;
+ 	int num_cells = 0;
+ 	uint32_t dtype;
+ 	int bar_count;
+ 	int ret;
+ 	u32 hsize;
++	u32 table_size;
+ 
+ 	hsize = sizeof(struct chameleon_fpga_header);
+ 
+@@ -236,12 +237,16 @@ int chameleon_parse_cells(struct mcb_bus *bus, phys_addr_t mapbase,
+ 		num_cells++;
+ 	}
+ 
+-	if (num_cells == 0)
+-		num_cells = -EINVAL;
++	if (num_cells == 0) {
++		ret = -EINVAL;
++		goto free_bar;
++	}
+ 
++	table_size = p - base;
++	pr_debug("%d cell(s) found. Chameleon table size: 0x%04x bytes\n", num_cells, table_size);
+ 	kfree(cb);
+ 	kfree(header);
+-	return num_cells;
++	return table_size;
+ 
+ free_bar:
+ 	kfree(cb);
+-- 
+2.42.0
+
 
 
