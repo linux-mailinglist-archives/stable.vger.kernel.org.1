@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A3CD7E2507
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 687697E2314
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232631AbjKFN1d (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:27:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56406 "EHLO
+        id S232042AbjKFNIe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:08:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232623AbjKFN1c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:32 -0500
+        with ESMTP id S232036AbjKFNId (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:33 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DFE1112
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0D7C433C7;
-        Mon,  6 Nov 2023 13:27:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B43C591
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:30 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01144C433C9;
+        Mon,  6 Nov 2023 13:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277249;
-        bh=DxS0NwQMuyasrl3oUC8HQ/rwCfPD8BGvUzL/QSN4qJo=;
+        s=korg; t=1699276110;
+        bh=BylbfRvTq8kGXzu4mFQe3zepnwmE+qkiJ9iqz8u5u6I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1GVyvjkeab7QSNT1JNHm943D7TW7d2ioKaQS051lTS+G2XMenD74RGAlXe/tEwH5U
-         bgDXxGoJE4thR/Zw+ylWRsAbtQvuuVxqtUdJihbfX9kG6a1kqz4kgDO1oCacG5Xlcb
-         FxTzKxfAT3DsiV5Ju3C+T+/nVrhiJDb3NC0Au8Ww=
+        b=lzHpVaB3Hiu7Xj/N1AztbPj133y5lu8JqGCGMf2qtVJ50jfRTT2LNzSNdgPXw+VvB
+         T4ktFZWA94IcB9qh6ivx7CCmQXpKTSllqPC1Aqs6+EyeM/SAAFceQUA4GXc933fK29
+         9vGAu5bUFXtC+w0qe37Ise44JZ+mSmQ1/XWdUAQo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Lazar <dlazar@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 5.15 061/128] x86/i8259: Skip probing when ACPI/MADT advertises PCAT compatibility
+        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
+Subject: [PATCH 6.6 23/30] tty: 8250: Add support for additional Brainboxes PX cards
 Date:   Mon,  6 Nov 2023 14:03:41 +0100
-Message-ID: <20231106130311.864169684@linuxfoundation.org>
+Message-ID: <20231106130258.732227971@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
-References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,146 +48,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Cameron Williams <cang1@live.co.uk>
 
-commit 128b0c9781c9f2651bea163cb85e52a6c7be0f9e upstream.
+commit 9604884e592cd04ead024c9737c67a77f175cab9 upstream.
 
-David and a few others reported that on certain newer systems some legacy
-interrupts fail to work correctly.
+Add support for some more of the Brainboxes PX (PCIe) range
+of serial cards, namely
+PX-275/PX-279, PX-475 (serial port, not LPT), PX-820,
+PX-803/PX-857 (additional ID).
 
-Debugging revealed that the BIOS of these systems leaves the legacy PIC in
-uninitialized state which makes the PIC detection fail and the kernel
-switches to a dummy implementation.
-
-Unfortunately this fallback causes quite some code to fail as it depends on
-checks for the number of legacy PIC interrupts or the availability of the
-real PIC.
-
-In theory there is no reason to use the PIC on any modern system when
-IO/APIC is available, but the dependencies on the related checks cannot be
-resolved trivially and on short notice. This needs lots of analysis and
-rework.
-
-The PIC detection has been added to avoid quirky checks and force selection
-of the dummy implementation all over the place, especially in VM guest
-scenarios. So it's not an option to revert the relevant commit as that
-would break a lot of other scenarios.
-
-One solution would be to try to initialize the PIC on detection fail and
-retry the detection, but that puts the burden on everything which does not
-have a PIC.
-
-Fortunately the ACPI/MADT table header has a flag field, which advertises
-in bit 0 that the system is PCAT compatible, which means it has a legacy
-8259 PIC.
-
-Evaluate that bit and if set avoid the detection routine and keep the real
-PIC installed, which then gets initialized (for nothing) and makes the rest
-of the code with all the dependencies work again.
-
-Fixes: e179f6914152 ("x86, irq, pic: Probe for legacy PIC and set legacy_pic appropriately")
-Reported-by: David Lazar <dlazar@gmail.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: David Lazar <dlazar@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
 Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218003
-Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Link: https://lore.kernel.org/r/DU0PR02MB78996BEC353FB346FC35444BC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/i8259.h |    2 ++
- arch/x86/kernel/acpi/boot.c  |    3 +++
- arch/x86/kernel/i8259.c      |   38 ++++++++++++++++++++++++++++++--------
- 3 files changed, 35 insertions(+), 8 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c |   29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
---- a/arch/x86/include/asm/i8259.h
-+++ b/arch/x86/include/asm/i8259.h
-@@ -69,6 +69,8 @@ struct legacy_pic {
- 	void (*make_irq)(unsigned int irq);
- };
- 
-+void legacy_pic_pcat_compat(void);
-+
- extern struct legacy_pic *legacy_pic;
- extern struct legacy_pic null_legacy_pic;
- 
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -139,6 +139,9 @@ static int __init acpi_parse_madt(struct
- 		pr_debug("Local APIC address 0x%08x\n", madt->address);
- 	}
- 
-+	if (madt->flags & ACPI_MADT_PCAT_COMPAT)
-+		legacy_pic_pcat_compat();
-+
- 	default_acpi_madt_oem_check(madt->header.oem_id,
- 				    madt->header.oem_table_id);
- 
---- a/arch/x86/kernel/i8259.c
-+++ b/arch/x86/kernel/i8259.c
-@@ -32,6 +32,7 @@
-  */
- static void init_8259A(int auto_eoi);
- 
-+static bool pcat_compat __ro_after_init;
- static int i8259A_auto_eoi;
- DEFINE_RAW_SPINLOCK(i8259A_lock);
- 
-@@ -301,15 +302,32 @@ static void unmask_8259A(void)
- 
- static int probe_8259A(void)
- {
-+	unsigned char new_val, probe_val = ~(1 << PIC_CASCADE_IR);
- 	unsigned long flags;
--	unsigned char probe_val = ~(1 << PIC_CASCADE_IR);
--	unsigned char new_val;
-+
-+	/*
-+	 * If MADT has the PCAT_COMPAT flag set, then do not bother probing
-+	 * for the PIC. Some BIOSes leave the PIC uninitialized and probing
-+	 * fails.
-+	 *
-+	 * Right now this causes problems as quite some code depends on
-+	 * nr_legacy_irqs() > 0 or has_legacy_pic() == true. This is silly
-+	 * when the system has an IO/APIC because then PIC is not required
-+	 * at all, except for really old machines where the timer interrupt
-+	 * must be routed through the PIC. So just pretend that the PIC is
-+	 * there and let legacy_pic->init() initialize it for nothing.
-+	 *
-+	 * Alternatively this could just try to initialize the PIC and
-+	 * repeat the probe, but for cases where there is no PIC that's
-+	 * just pointless.
-+	 */
-+	if (pcat_compat)
-+		return nr_legacy_irqs();
-+
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -5189,6 +5189,13 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_oxsemi_4_15625000 },
  	/*
--	 * Check to see if we have a PIC.
--	 * Mask all except the cascade and read
--	 * back the value we just wrote. If we don't
--	 * have a PIC, we will read 0xff as opposed to the
--	 * value we wrote.
-+	 * Check to see if we have a PIC.  Mask all except the cascade and
-+	 * read back the value we just wrote. If we don't have a PIC, we
-+	 * will read 0xff as opposed to the value we wrote.
++	 * Brainboxes PX-275/279
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x0E41,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b2_8_115200 },
++	/*
+ 	 * Brainboxes PX-310
  	 */
- 	raw_spin_lock_irqsave(&i8259A_lock, flags);
- 
-@@ -431,5 +449,9 @@ static int __init i8259A_init_ops(void)
- 
- 	return 0;
- }
--
- device_initcall(i8259A_init_ops);
-+
-+void __init legacy_pic_pcat_compat(void)
-+{
-+	pcat_compat = true;
-+}
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x400E,
+@@ -5235,17 +5242,39 @@ static const struct pci_device_id serial
+ 		0, 0,
+ 		pbn_oxsemi_4_15625000 },
+ 	/*
++	 * Brainboxes PX-475
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x401D,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_1_15625000 },
++	/*
+ 	 * Brainboxes PX-803/PX-857
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x4009,
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_b0_2_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4018,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_2_15625000 },
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x401E,
+ 		PCI_ANY_ID, PCI_ANY_ID,
+ 		0, 0,
+ 		pbn_oxsemi_2_15625000 },
+ 	/*
++	 * Brainboxes PX-820
++	 */
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4002,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_b0_4_115200 },
++	{	PCI_VENDOR_ID_INTASHIELD, 0x4013,
++		PCI_ANY_ID, PCI_ANY_ID,
++		0, 0,
++		pbn_oxsemi_4_15625000 },
++	/*
+ 	 * Brainboxes PX-846
+ 	 */
+ 	{	PCI_VENDOR_ID_INTASHIELD, 0x4008,
 
 
