@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C88BA7E2317
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF3E27E2547
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232048AbjKFNIk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:08:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55518 "EHLO
+        id S232695AbjKFNaT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:30:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232049AbjKFNIj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:39 -0500
+        with ESMTP id S232692AbjKFNaS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A793E1B2
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCEEC433C8;
-        Mon,  6 Nov 2023 13:08:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA2492
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E32AC433C8;
+        Mon,  6 Nov 2023 13:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276116;
-        bh=j6HUKa5hhNAtfjg39yQwnwgwfr4z9+1P29v4hxr0x3k=;
+        s=korg; t=1699277415;
+        bh=EhUQweKDQjPvvAM02n+FvbpDYTWfkozkCrkbUJ+GJ38=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PJSOqRue6umx7Wdc21ixbhR+3qIs1L8Ky5eoiCPHr27wAvDmvTcZIXsY0qk7xpMJf
-         wtsBLTgsNZn21V8etkmnGOQ2hKGYdFU7Kl0lvkTHFI6HggbscatujlpOKG9W9+7JDy
-         zt3toZlLqReiC39pXPZetQJCOEoWWwi8EtA11t+Y=
+        b=pQTH+Lwmh1p8ZGjzdGO7IqB+A7HPJzAiYqIPnFnjzOLpdtR3qY/oO55cvY0s5c9sd
+         rYJ7nbrk43TzD5uqCoe+bsSLLA9bOL6kAkiBgwmvn+4kYAde2XXK+Qxs5YGSLtE0bE
+         cI26nPjnrCyzBhsYUgUaA4rXa/sxbDgsaeuhplzM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cameron Williams <cang1@live.co.uk>
-Subject: [PATCH 6.6 25/30] tty: 8250: Add Brainboxes Oxford Semiconductor-based quirks
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 15/95] net: ieee802154: adf7242: Fix some potential buffer overflow in adf7242_stats_show()
 Date:   Mon,  6 Nov 2023 14:03:43 +0100
-Message-ID: <20231106130258.790483281@linuxfoundation.org>
+Message-ID: <20231106130305.289775615@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,188 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit e4876dacaca46a1b09f9b417480924ab12019a5b upstream.
+[ Upstream commit ca082f019d8fbb983f03080487946da714154bae ]
 
-Some of the later revisions of the Brainboxes PX cards are based
-on the Oxford Semiconductor chipset. Due to the chip's unique setup
-these cards need to be initialised.
-Previously these were tested against a reference card with the same broken
-baudrate on another PC, cancelling out the effect. With this patch they
-work and can transfer/receive find against an FTDI-based device.
+strncat() usage in adf7242_debugfs_init() is wrong.
+The size given to strncat() is the maximum number of bytes that can be
+written, excluding the trailing NULL.
 
-Add all of the cards which require this setup to the quirks table.
-Thanks to Maciej W. Rozycki for clarification on this chip.
+Here, the size that is passed, DNAME_INLINE_LEN, does not take into account
+the size of "adf7242-" that is already in the array.
 
-Fixes: ef5a03a26c87 ("tty: 8250: Add support for Brainboxes PX cards.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Link: https://lore.kernel.org/r/DU0PR02MB7899D222A4AB2A4E8C57108FC4DBA@DU0PR02MB7899.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In order to fix it, use snprintf() instead.
+
+Fixes: 7302b9d90117 ("ieee802154/adf7242: Driver for ADF7242 MAC IEEE802154")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |  147 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 147 insertions(+)
+ drivers/net/ieee802154/adf7242.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -2429,6 +2429,153 @@ static struct pci_serial_quirk pci_seria
- 		.init			= pci_oxsemi_tornado_init,
- 		.setup		= pci_oxsemi_tornado_setup,
- 	},
-+	/*
-+	 * Brainboxes devices - all Oxsemi based
-+	 */
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4027,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4028,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4029,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4019,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4016,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4015,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400A,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400E,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400C,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400B,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x400F,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4010,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4011,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x401D,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x401E,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4013,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4017,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
-+	{
-+		.vendor		= PCI_VENDOR_ID_INTASHIELD,
-+		.device		= 0x4018,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_oxsemi_tornado_init,
-+		.setup		= pci_oxsemi_tornado_setup,
-+	},
- 	{
- 		.vendor         = PCI_VENDOR_ID_INTEL,
- 		.device         = 0x8811,
+diff --git a/drivers/net/ieee802154/adf7242.c b/drivers/net/ieee802154/adf7242.c
+index 07adbeec19787..14cf8b0dfad90 100644
+--- a/drivers/net/ieee802154/adf7242.c
++++ b/drivers/net/ieee802154/adf7242.c
+@@ -1162,9 +1162,10 @@ static int adf7242_stats_show(struct seq_file *file, void *offset)
+ 
+ static void adf7242_debugfs_init(struct adf7242_local *lp)
+ {
+-	char debugfs_dir_name[DNAME_INLINE_LEN + 1] = "adf7242-";
++	char debugfs_dir_name[DNAME_INLINE_LEN + 1];
+ 
+-	strncat(debugfs_dir_name, dev_name(&lp->spi->dev), DNAME_INLINE_LEN);
++	snprintf(debugfs_dir_name, sizeof(debugfs_dir_name),
++		 "adf7242-%s", dev_name(&lp->spi->dev));
+ 
+ 	lp->debugfs_root = debugfs_create_dir(debugfs_dir_name, NULL);
+ 
+-- 
+2.42.0
+
 
 
