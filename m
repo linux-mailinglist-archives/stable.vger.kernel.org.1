@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74FD77E242E
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:19:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76D837E2350
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232290AbjKFNTO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:19:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
+        id S232096AbjKFNLC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:11:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232319AbjKFNTO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:19:14 -0500
+        with ESMTP id S231865AbjKFNK6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:10:58 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6B3A94
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:19:11 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB117C433C8;
-        Mon,  6 Nov 2023 13:19:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB378D47
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:55 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32E13C433C8;
+        Mon,  6 Nov 2023 13:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276751;
-        bh=jgKj2kprXlTeP6SoeBfzj2pQbNl6ueV2POXkNn6JAJM=;
+        s=korg; t=1699276255;
+        bh=LF2+fYP8pypIzZfyG1aocnHK7u8qVu2NWyzzvzIDLpk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sv0a8nqsUO8LpGDRindV8iw/9fT0rBijEAH09ZWYjl2fe5Lcgz7V5f46hVAaUCKDK
-         MPGj0CBsn1nD2oOtukAqGuZaeilAxsbT5mJpv/B5WrL5FGEHETYAQl2M5Kxik1p3Il
-         O2hEqcx8zPqqa7SFWLFR1cAyHFevo5iYq+TVqV/c=
+        b=fAJ76Qd6HfDKHqlGE9pJtiaJSIvk4NvayuFZn8c8iX8NpmeLQczsiWiKln/09iuhq
+         X7a5eDRkiNQvgCmrt8sqXRqUZTDRdpVmEKVnRXbmKRw7c0+0dMvGj7Z7lb5S8W9w/a
+         nLYk09pdrjVH+x/O7mNj1vVq3f8ueJ5ZC+DDLjmk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Deucher <Alexander.Deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Luben Tuikov <luben.tuikov@amd.com>,
+        patches@lists.linux.dev, Szilard Fabian <szfabian@bluemarch.art>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 45/88] gpu/drm: Eliminate DRM_SCHED_PRIORITY_UNSET
+Subject: [PATCH 4.19 43/61] Input: i8042 - add Fujitsu Lifebook E5411 to i8042 quirk table
 Date:   Mon,  6 Nov 2023 14:03:39 +0100
-Message-ID: <20231106130307.503752025@linuxfoundation.org>
+Message-ID: <20231106130301.100137506@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,58 +50,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luben Tuikov <luben.tuikov@amd.com>
+From: Szilard Fabian <szfabian@bluemarch.art>
 
-[ Upstream commit fa8391ad68c16716e2c06ada397e99ceed2fb647 ]
+[ Upstream commit 80f39e1c27ba9e5a1ea7e68e21c569c9d8e46062 ]
 
-Eliminate DRM_SCHED_PRIORITY_UNSET, value of -2, whose only user was
-amdgpu. Furthermore, eliminate an index bug, in that when amdgpu boots, it
-calls drm_sched_entity_init() with DRM_SCHED_PRIORITY_UNSET, which uses it to
-index sched->sched_rq[].
+In the initial boot stage the integrated keyboard of Fujitsu Lifebook E5411
+refuses to work and it's not possible to type for example a dm-crypt
+passphrase without the help of an external keyboard.
 
-Cc: Alex Deucher <Alexander.Deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
-Acked-by: Alex Deucher <Alexander.Deucher@amd.com>
-Link: https://lore.kernel.org/r/20231017035656.8211-2-luben.tuikov@amd.com
+i8042.nomux kernel parameter resolves this issue but using that a PS/2
+mouse is detected. This input device is unused even when the i2c-hid-acpi
+kernel module is blacklisted making the integrated ELAN touchpad
+(04F3:308A) not working at all.
+
+Since the integrated touchpad is managed by the i2c_designware input
+driver in the Linux kernel and you can't find a PS/2 mouse port on the
+computer I think it's safe to not use the PS/2 mouse port at all.
+
+Signed-off-by: Szilard Fabian <szfabian@bluemarch.art>
+Link: https://lore.kernel.org/r/20231004011749.101789-1-szfabian@bluemarch.art
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c | 3 ++-
- include/drm/gpu_scheduler.h             | 3 +--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/input/serio/i8042-x86ia64io.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
-index 092962b93064f..aac52d9754e6d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
-@@ -64,7 +64,8 @@ amdgpu_ctx_to_drm_sched_prio(int32_t ctx_prio)
- {
- 	switch (ctx_prio) {
- 	case AMDGPU_CTX_PRIORITY_UNSET:
--		return DRM_SCHED_PRIORITY_UNSET;
-+		pr_warn_once("AMD-->DRM context priority value UNSET-->NORMAL");
-+		return DRM_SCHED_PRIORITY_NORMAL;
- 
- 	case AMDGPU_CTX_PRIORITY_VERY_LOW:
- 		return DRM_SCHED_PRIORITY_MIN;
-diff --git a/include/drm/gpu_scheduler.h b/include/drm/gpu_scheduler.h
-index f9544d9b670d3..ac65f0626cfc9 100644
---- a/include/drm/gpu_scheduler.h
-+++ b/include/drm/gpu_scheduler.h
-@@ -68,8 +68,7 @@ enum drm_sched_priority {
- 	DRM_SCHED_PRIORITY_HIGH,
- 	DRM_SCHED_PRIORITY_KERNEL,
- 
--	DRM_SCHED_PRIORITY_COUNT,
--	DRM_SCHED_PRIORITY_UNSET = -2
-+	DRM_SCHED_PRIORITY_COUNT
- };
- 
- /* Used to chose between FIFO and RR jobs scheduling */
+diff --git a/drivers/input/serio/i8042-x86ia64io.h b/drivers/input/serio/i8042-x86ia64io.h
+index 0cf9a37873261..2d4df82d65afe 100644
+--- a/drivers/input/serio/i8042-x86ia64io.h
++++ b/drivers/input/serio/i8042-x86ia64io.h
+@@ -613,6 +613,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
+ 	},
++	{
++		/* Fujitsu Lifebook E5411 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU CLIENT COMPUTING LIMITED"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E5411"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
++	},
+ 	{
+ 		/* Gigabyte M912 */
+ 		.matches = {
 -- 
 2.42.0
 
