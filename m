@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9F7B7E2403
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46C497E2387
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:12:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232017AbjKFNRL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:17:11 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39148 "EHLO
+        id S232120AbjKFNMc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:12:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232268AbjKFNRK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:10 -0500
+        with ESMTP id S232111AbjKFNMb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:12:31 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A999F3
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:07 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF237C433C8;
-        Mon,  6 Nov 2023 13:17:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E970A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:12:28 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3EC2C433C7;
+        Mon,  6 Nov 2023 13:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276627;
-        bh=kwnoC+uNfRjt289lGFuKfSbvenq4alxN0/3u2ck4dx4=;
+        s=korg; t=1699276348;
+        bh=oUJ2OOD9jMGJ90wA55m7Pzp9AAELFNYgAkgQoL3yW7E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vu+gfPaQ8iXt6kypUxkl47hr29IiZHhEOxRx9Eax5RhhJxtTvHdqGc1ihGCFdg+0W
-         6ebjnw75Oaywg07/TINXz+9KTAcM598ZG8NljbiS+c1wxrWsSXGBEJuYX7xo8hudxs
-         N+pEjZM6b7ajp+tItQHpOrcffKkmbTCzJ0GY+juo=
+        b=a+11tXMMgSDVIV048c+ea5ltCOhmu5LB2cgj9++xdSFO/8PnrjzOs2uFfI4as/OeA
+         4QMgJrwqG7ylzyfyBWAVpJ43VNN/H6JLn9G0uD+Te0pCO617pV/NBX4RM736k1NBF1
+         VdzIYWvKIy23sbFNWtQxPhi6UyoGgSLCxidHIsgY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ondrej Jirman <megi@xff.cz>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Alejandro Colomar <alx@kernel.org>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 16/88] media: i2c: ov8858: Dont set fwnode in the driver
+Subject: [PATCH 6.1 04/62] net: sched: cls_u32: Fix allocation size in u32_init()
 Date:   Mon,  6 Nov 2023 14:03:10 +0100
-Message-ID: <20231106130306.394206308@linuxfoundation.org>
+Message-ID: <20231106130301.982143996@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,89 +52,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Jirman <megi@xff.cz>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit c46f16f156ac58afcf4addc850bb5dfbca77b9fc ]
+[ Upstream commit c4d49196ceec80e30e8d981410d73331b49b7850 ]
 
-This makes the driver work with the new check in
-v4l2_async_register_subdev() that was introduced recently in 6.6-rc1.
-Without this change, probe fails with:
+commit d61491a51f7e ("net/sched: cls_u32: Replace one-element array
+with flexible-array member") incorrecly replaced an instance of
+`sizeof(*tp_c)` with `struct_size(tp_c, hlist->ht, 1)`. This results
+in a an over-allocation of 8 bytes.
 
-ov8858 1-0036: Detected OV8858 sensor, revision 0xb2
-ov8858 1-0036: sub-device fwnode is an endpoint!
-ov8858 1-0036: v4l2 async register subdev failed
-ov8858: probe of 1-0036 failed with error -22
+This change is wrong because `hlist` in `struct tc_u_common` is a
+pointer:
 
-This also simplifies the driver a bit.
+net/sched/cls_u32.c:
+struct tc_u_common {
+        struct tc_u_hnode __rcu *hlist;
+        void                    *ptr;
+        int                     refcnt;
+        struct idr              handle_idr;
+        struct hlist_node       hnode;
+        long                    knodes;
+};
 
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+So, the use of `struct_size()` makes no sense: we don't need to allocate
+any extra space for a flexible-array member. `sizeof(*tp_c)` is just fine.
+
+So, `struct_size(tp_c, hlist->ht, 1)` translates to:
+
+sizeof(*tp_c) + sizeof(tp_c->hlist->ht) ==
+sizeof(struct tc_u_common) + sizeof(struct tc_u_knode *) ==
+						144 + 8  == 0x98 (byes)
+						     ^^^
+						      |
+						unnecessary extra
+						allocation size
+
+$ pahole -C tc_u_common net/sched/cls_u32.o
+struct tc_u_common {
+	struct tc_u_hnode *        hlist;                /*     0     8 */
+	void *                     ptr;                  /*     8     8 */
+	int                        refcnt;               /*    16     4 */
+
+	/* XXX 4 bytes hole, try to pack */
+
+	struct idr                 handle_idr;           /*    24    96 */
+	/* --- cacheline 1 boundary (64 bytes) was 56 bytes ago --- */
+	struct hlist_node          hnode;                /*   120    16 */
+	/* --- cacheline 2 boundary (128 bytes) was 8 bytes ago --- */
+	long int                   knodes;               /*   136     8 */
+
+	/* size: 144, cachelines: 3, members: 6 */
+	/* sum members: 140, holes: 1, sum holes: 4 */
+	/* last cacheline: 16 bytes */
+};
+
+And with `sizeof(*tp_c)`, we have:
+
+	sizeof(*tp_c) == sizeof(struct tc_u_common) == 144 == 0x90 (bytes)
+
+which is the correct and original allocation size.
+
+Fix this issue by replacing `struct_size(tp_c, hlist->ht, 1)` with
+`sizeof(*tp_c)`, and avoid allocating 8 too many bytes.
+
+The following difference in binary output is expected and reflects the
+desired change:
+
+| net/sched/cls_u32.o
+| @@ -6148,7 +6148,7 @@
+| include/linux/slab.h:599
+|     2cf5:      mov    0x0(%rip),%rdi        # 2cfc <u32_init+0xfc>
+|                        2cf8: R_X86_64_PC32     kmalloc_caches+0xc
+|-    2cfc:      mov    $0x98,%edx
+|+    2cfc:      mov    $0x90,%edx
+
+Reported-by: Alejandro Colomar <alx@kernel.org>
+Closes: https://lore.kernel.org/lkml/09b4a2ce-da74-3a19-6961-67883f634d98@kernel.org/
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov8858.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ net/sched/cls_u32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ov8858.c b/drivers/media/i2c/ov8858.c
-index 3af6125a2eee8..4d9fd76e2f60f 100644
---- a/drivers/media/i2c/ov8858.c
-+++ b/drivers/media/i2c/ov8858.c
-@@ -1850,9 +1850,9 @@ static int ov8858_parse_of(struct ov8858 *ov8858)
- 	}
+diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+index ba93e2a6bdbb4..04448bfb4d3db 100644
+--- a/net/sched/cls_u32.c
++++ b/net/sched/cls_u32.c
+@@ -364,7 +364,7 @@ static int u32_init(struct tcf_proto *tp)
+ 	idr_init(&root_ht->handle_idr);
  
- 	ret = v4l2_fwnode_endpoint_parse(endpoint, &vep);
-+	fwnode_handle_put(endpoint);
- 	if (ret) {
- 		dev_err(dev, "Failed to parse endpoint: %d\n", ret);
--		fwnode_handle_put(endpoint);
- 		return ret;
- 	}
- 
-@@ -1864,12 +1864,9 @@ static int ov8858_parse_of(struct ov8858 *ov8858)
- 	default:
- 		dev_err(dev, "Unsupported number of data lanes %u\n",
- 			ov8858->num_lanes);
--		fwnode_handle_put(endpoint);
- 		return -EINVAL;
- 	}
- 
--	ov8858->subdev.fwnode = endpoint;
--
- 	return 0;
- }
- 
-@@ -1913,7 +1910,7 @@ static int ov8858_probe(struct i2c_client *client)
- 
- 	ret = ov8858_init_ctrls(ov8858);
- 	if (ret)
--		goto err_put_fwnode;
-+		return ret;
- 
- 	sd = &ov8858->subdev;
- 	sd->flags |= V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
-@@ -1964,8 +1961,6 @@ static int ov8858_probe(struct i2c_client *client)
- 	media_entity_cleanup(&sd->entity);
- err_free_handler:
- 	v4l2_ctrl_handler_free(&ov8858->ctrl_handler);
--err_put_fwnode:
--	fwnode_handle_put(ov8858->subdev.fwnode);
- 
- 	return ret;
- }
-@@ -1978,7 +1973,6 @@ static void ov8858_remove(struct i2c_client *client)
- 	v4l2_async_unregister_subdev(sd);
- 	media_entity_cleanup(&sd->entity);
- 	v4l2_ctrl_handler_free(&ov8858->ctrl_handler);
--	fwnode_handle_put(ov8858->subdev.fwnode);
- 
- 	pm_runtime_disable(&client->dev);
- 	if (!pm_runtime_status_suspended(&client->dev))
+ 	if (tp_c == NULL) {
+-		tp_c = kzalloc(struct_size(tp_c, hlist->ht, 1), GFP_KERNEL);
++		tp_c = kzalloc(sizeof(*tp_c), GFP_KERNEL);
+ 		if (tp_c == NULL) {
+ 			kfree(root_ht);
+ 			return -ENOBUFS;
 -- 
 2.42.0
 
