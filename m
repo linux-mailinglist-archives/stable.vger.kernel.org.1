@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E81E97E2335
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8134F7E24AB
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:24:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231669AbjKFNJw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:09:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55246 "EHLO
+        id S232514AbjKFNYI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:24:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231876AbjKFNJv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:51 -0500
+        with ESMTP id S232498AbjKFNYF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:24:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ADF210B
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:49 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2C0C433C7;
-        Mon,  6 Nov 2023 13:09:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33C0CEA
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:24:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77463C433C9;
+        Mon,  6 Nov 2023 13:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276188;
-        bh=6szEX9qgj06joVwolLlQTKlXJOqq8OLWsTOsQPw17sw=;
+        s=korg; t=1699277042;
+        bh=B24K2oF8uAXS5j/RYIiryPmr0dxiobaVc+UjJxVGYaQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AfFPNHflIY+QJ3WSXP+AJ75noI5N0vUy9vvZBaNeIVdrYmkMa0BreRumcyoSvIokC
-         UaP++cW7uSmhr11Igzc84qUlyVtHk4Y6dqRcBZtjhMCWRHRKn0jYzpQx3V3lv877/8
-         1e/3HKFA2FLTuWq1boMKgcYsWvZNtVaz63+xjUFM=
+        b=19AcFtU/ncdfEGY0SViigcYbbxSz+3ad/WsCwlHCbssHLxiOC02YLfmpmUDl9OeAy
+         au0GLTtsolEjEuU7QPmKkKnB2iUaaNHTPybftgSoZSaZCZACoJqfBcv2uNY7iNBwxl
+         wIxdGtDwiii+FDD9LErXVTtHC8XeO0RBgL4kLtug=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Haibo Chen <haibo.chen@nxp.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, Lukasz Majczak <lma@semihalf.com>,
+        Radoslaw Biernacki <rad@chromium.org>,
+        Manasi Navare <navaremanasi@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 02/61] mmc: core: sdio: hold retuning if sdio in 1-bit mode
-Date:   Mon,  6 Nov 2023 14:02:58 +0100
-Message-ID: <20231106130259.649377155@linuxfoundation.org>
+Subject: [PATCH 5.15 019/128] drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+Date:   Mon,  6 Nov 2023 14:02:59 +0100
+Message-ID: <20231106130310.001708155@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +51,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Lukasz Majczak <lma@semihalf.com>
 
-[ Upstream commit 32a9cdb8869dc111a0c96cf8e1762be9684af15b ]
+[ Upstream commit 3d887d512494d678b17c57b835c32f4e48d34f26 ]
 
-tuning only support in 4-bit mode or 8 bit mode, so in 1-bit mode,
-need to hold retuning.
+As drm_dp_get_mst_branch_device_by_guid() is called from
+drm_dp_get_mst_branch_device_by_guid(), mstb parameter has to be checked,
+otherwise NULL dereference may occur in the call to
+the memcpy() and cause following:
 
-Find this issue when use manual tuning method on imx93. When system
-resume back, SDIO WIFI try to switch back to 4 bit mode, first will
-trigger retuning, and all tuning command failed.
+[12579.365869] BUG: kernel NULL pointer dereference, address: 0000000000000049
+[12579.365878] #PF: supervisor read access in kernel mode
+[12579.365880] #PF: error_code(0x0000) - not-present page
+[12579.365882] PGD 0 P4D 0
+[12579.365887] Oops: 0000 [#1] PREEMPT SMP NOPTI
+...
+[12579.365895] Workqueue: events_long drm_dp_mst_up_req_work
+[12579.365899] RIP: 0010:memcmp+0xb/0x29
+[12579.365921] Call Trace:
+[12579.365927] get_mst_branch_device_by_guid_helper+0x22/0x64
+[12579.365930] drm_dp_mst_up_req_work+0x137/0x416
+[12579.365933] process_one_work+0x1d0/0x419
+[12579.365935] worker_thread+0x11a/0x289
+[12579.365938] kthread+0x13e/0x14f
+[12579.365941] ? process_one_work+0x419/0x419
+[12579.365943] ? kthread_blkcg+0x31/0x31
+[12579.365946] ret_from_fork+0x1f/0x30
 
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Fixes: dfa13ebbe334 ("mmc: host: Add facility to support re-tuning")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230830093922.3095850-1-haibo.chen@nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+As get_mst_branch_device_by_guid_helper() is recursive, moving condition
+to the first line allow to remove a similar one for step over of NULL elements
+inside a loop.
+
+Fixes: 5e93b8208d3c ("drm/dp/mst: move GUID storage from mgr, port to only mst branch")
+Cc: <stable@vger.kernel.org> # 4.14+
+Signed-off-by: Lukasz Majczak <lma@semihalf.com>
+Reviewed-by: Radoslaw Biernacki <rad@chromium.org>
+Signed-off-by: Manasi Navare <navaremanasi@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230922063410.23626-1-lma@semihalf.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/sdio.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_dp_mst_topology.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/core/sdio.c b/drivers/mmc/core/sdio.c
-index 5f6865717c9b4..4fdb5dd9748fa 100644
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -983,8 +983,14 @@ static int mmc_sdio_resume(struct mmc_host *host)
- 		}
- 		err = mmc_sdio_reinit_card(host, 0);
- 	} else if (mmc_card_wake_sdio_irq(host)) {
--		/* We may have switched to 1-bit mode during suspend */
-+		/*
-+		 * We may have switched to 1-bit mode during suspend,
-+		 * need to hold retuning, because tuning only supprt
-+		 * 4-bit mode or 8 bit mode.
-+		 */
-+		mmc_retune_hold_now(host);
- 		err = sdio_enable_4bit_bus(host->card);
-+		mmc_retune_release(host);
- 	}
+diff --git a/drivers/gpu/drm/drm_dp_mst_topology.c b/drivers/gpu/drm/drm_dp_mst_topology.c
+index d02e323a4ecde..865c7f39143ec 100644
+--- a/drivers/gpu/drm/drm_dp_mst_topology.c
++++ b/drivers/gpu/drm/drm_dp_mst_topology.c
+@@ -2615,14 +2615,14 @@ static struct drm_dp_mst_branch *get_mst_branch_device_by_guid_helper(
+ 	struct drm_dp_mst_branch *found_mstb;
+ 	struct drm_dp_mst_port *port;
  
- 	if (err)
++	if (!mstb)
++		return NULL;
++
+ 	if (memcmp(mstb->guid, guid, 16) == 0)
+ 		return mstb;
+ 
+ 
+ 	list_for_each_entry(port, &mstb->ports, next) {
+-		if (!port->mstb)
+-			continue;
+-
+ 		found_mstb = get_mst_branch_device_by_guid_helper(port->mstb, guid);
+ 
+ 		if (found_mstb)
 -- 
 2.42.0
 
