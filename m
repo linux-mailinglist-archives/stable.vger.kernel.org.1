@@ -2,40 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B57D97E2466
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E46567E241D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:18:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232018AbjKFNVa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:21:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50784 "EHLO
+        id S232311AbjKFNSW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:18:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232409AbjKFNV2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:28 -0500
+        with ESMTP id S232287AbjKFNSS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:18:18 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29BBB10A
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C564C433C8;
-        Mon,  6 Nov 2023 13:21:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 234EEA9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:18:16 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687ABC433C7;
+        Mon,  6 Nov 2023 13:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276884;
-        bh=fNwbiagm2xBsHSQpSzcTrd5kTJ1yBBXm5ETQIRQClhA=;
+        s=korg; t=1699276695;
+        bh=nm3CqJEaP1s2wufYoKlx7pqxfmwQW4cCFJtTCvzhUe0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BMcInj8yoIw2mXkU6bP5Uvexb1vhFvHoLnnfUNprGHNmpxz2nTt4k8NdrAV2Jfpk8
-         zZKwbUzj7fV2dsKdnF6HaMkJEO/M0qUW9B+IsFqdNn8DjttMyOkDAbMxIEyeBAYBth
-         SARxbUtUim9JeAr7gOS5dke/gFs0OT33UCdzSQd8=
+        b=NA2WOkWqD0+5W1a4Fr3FsOJCrJLY8TrYXoCdeaZ4H5imMVtQ+yxpqTqyrsHN0B4MH
+         szVtGpy/y57yUp1+9YMOxDKyVFcw897pe2A8MGPycHVSVP8CuTDywlQIXo7cy8EPnL
+         /k/S7j3sZyzYYbt+JIghutYhpXRsiRMv5SaGqaGs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>,
-        Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 39/74] x86/mm: Simplify RESERVE_BRK()
+        patches@lists.linux.dev,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Jann Horn <jannh@google.com>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 65/88] mmap: fix vma_iterator in error path of vma_merge()
 Date:   Mon,  6 Nov 2023 14:03:59 +0100
-Message-ID: <20231106130303.100839888@linuxfoundation.org>
+Message-ID: <20231106130308.159944719@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Poimboeuf <jpoimboe@redhat.com>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-commit a1e2c031ec3949b8c039b739c0b5bf9c30007b00 upstream.
+commit 1419430c8abb5a00590169068590dd54d86590ba upstream.
 
-RESERVE_BRK() reserves data in the .brk_reservation section.  The data
-is initialized to zero, like BSS, so the macro specifies 'nobits' to
-prevent the data from taking up space in the vmlinux binary.  The only
-way to get the compiler to do that (without putting the variable in .bss
-proper) is to use inline asm.
+During the error path, the vma iterator may not be correctly positioned or
+set to the correct range.  Undo the vma_prev() call by resetting to the
+passed in address.  Re-walking to the same range will fix the range to the
+area previously passed in.
 
-The macro also has a hack which encloses the inline asm in a discarded
-function, which allows the size to be passed (global inline asm doesn't
-allow inputs).
+Users would notice increased cycles as vma_merge() would be called an
+extra time with vma == prev, and thus would fail to merge and return.
 
-Remove the need for the discarded function hack by just stringifying the
-size rather than supplying it as an input to the inline asm.
-
-Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Borislav Petkov <bp@suse.de>
-Link: https://lore.kernel.org/r/20220506121631.133110232@infradead.org
-[nathan: Fix conflict due to lack of 2b6ff7dea670 and 33def8498fdd]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/linux-mm/CAG48ez12VN1JAOtTNMY+Y2YnsU45yL5giS-Qn=ejtiHpgJAbdQ@mail.gmail.com/
+Link: https://lkml.kernel.org/r/20230929183041.2835469-2-Liam.Howlett@oracle.com
+Fixes: 18b098af2890 ("vma_merge: set vma iterator to correct position.")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reported-by: Jann Horn <jannh@google.com>
+Closes: https://lore.kernel.org/linux-mm/CAG48ez12VN1JAOtTNMY+Y2YnsU45yL5giS-Qn=ejtiHpgJAbdQ@mail.gmail.com/
+Reviewed-by: Lorenzo Stoakes <lstoakes@gmail.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/setup.h |   30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
+ mm/mmap.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/arch/x86/include/asm/setup.h
-+++ b/arch/x86/include/asm/setup.h
-@@ -94,27 +94,19 @@ extern unsigned long _brk_end;
- void *extend_brk(size_t size, size_t align);
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -988,10 +988,10 @@ struct vm_area_struct *vma_merge(struct
+ 
+ 	/* Error in anon_vma clone. */
+ 	if (err)
+-		return NULL;
++		goto anon_vma_fail;
+ 
+ 	if (vma_iter_prealloc(vmi))
+-		return NULL;
++		goto prealloc_fail;
+ 
+ 	init_multi_vma_prep(&vp, vma, adjust, remove, remove2);
+ 	VM_WARN_ON(vp.anon_vma && adjust && adjust->anon_vma &&
+@@ -1024,6 +1024,12 @@ struct vm_area_struct *vma_merge(struct
+ 	khugepaged_enter_vma(res, vm_flags);
+ 
+ 	return res;
++
++prealloc_fail:
++anon_vma_fail:
++	vma_iter_set(vmi, addr);
++	vma_iter_load(vmi);
++	return NULL;
+ }
  
  /*
-- * Reserve space in the brk section.  The name must be unique within
-- * the file, and somewhat descriptive.  The size is in bytes.  Must be
-- * used at file scope.
-+ * Reserve space in the brk section.  The name must be unique within the file,
-+ * and somewhat descriptive.  The size is in bytes.
-  *
-- * (This uses a temp function to wrap the asm so we can pass it the
-- * size parameter; otherwise we wouldn't be able to.  We can't use a
-- * "section" attribute on a normal variable because it always ends up
-- * being @progbits, which ends up allocating space in the vmlinux
-- * executable.)
-+ * The allocation is done using inline asm (rather than using a section
-+ * attribute on a normal variable) in order to allow the use of @nobits, so
-+ * that it doesn't take up any space in the vmlinux file.
-  */
--#define RESERVE_BRK(name,sz)						\
--	static void __section(.discard.text) __used notrace		\
--	__brk_reservation_fn_##name##__(void) {				\
--		asm volatile (						\
--			".pushsection .brk_reservation,\"aw\",@nobits;" \
--			".brk." #name ":"				\
--			" 1:.skip %c0;"					\
--			" .size .brk." #name ", . - 1b;"		\
--			" .popsection"					\
--			: : "i" (sz));					\
--	}
-+#define RESERVE_BRK(name, size)						\
-+	asm(".pushsection .brk_reservation,\"aw\",@nobits\n\t"		\
-+	    ".brk." #name ":\n\t"					\
-+	    ".skip " __stringify(size) "\n\t"				\
-+	    ".size .brk." #name ", " __stringify(size) "\n\t"		\
-+	    ".popsection\n\t")
- 
- /* Helper for reserving space for arrays of things */
- #define RESERVE_BRK_ARRAY(type, name, entries)		\
 
 
