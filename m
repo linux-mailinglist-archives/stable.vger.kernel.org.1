@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 887EE7E240F
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:17:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C53E67E2351
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:11:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232268AbjKFNRk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:17:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33004 "EHLO
+        id S231865AbjKFNLE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:11:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232253AbjKFNRj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:17:39 -0500
+        with ESMTP id S232090AbjKFNLC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:11:02 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D24BA9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:17:36 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10D1C433C7;
-        Mon,  6 Nov 2023 13:17:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D23D8D6F
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:10:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14669C433C8;
+        Mon,  6 Nov 2023 13:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276656;
-        bh=9dQobiRNNlkXgz2XtENz8/mHVy6rRKVfrhl333bUvhM=;
+        s=korg; t=1699276258;
+        bh=KFmato783XCmEyrVCzI/D9/4w6UwoZa+sy+gDyXndw4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LbYDCxFS8o6GA3e5i8IrC4/spPlCMzJgcuv8H12iv64zQrb/vweyXpcvfqBnrBKlz
-         yR+HovRZQU7hUySA3TGKHzOFP2l7mbRXSma7NcYPC+ybTzJub75bM4C/CahG6cf9DW
-         ZxW5QBII5RpBp1W71D+hTcaAdjAX6w1K2/Cf6GSU=
+        b=j1bnF3YTj9Nma32U4DIneNmb3KcJSIwx8dEYDKYMOVKwG0bzYw/UrNR6E/vV/YXub
+         msW2uHJ4ENsPRopOtjsIDsVVK4lWCp3D9KUpL0vAKNIB/SCd8/xQlV3WA1QHBGBd+r
+         jSJ8JlFGw3t7F84JnMsSRC8XjVoJo5D1RszX63ho=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tiezhu Yang <yangtiezhu@loongson.cn>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 46/88] LoongArch: Use SYM_CODE_* to annotate exception handlers
+        patches@lists.linux.dev,
+        Ben Wolsieffer <ben.wolsieffer@hefring.com>,
+        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 44/61] irqchip/stm32-exti: add missing DT IRQ flag translation
 Date:   Mon,  6 Nov 2023 14:03:40 +0100
-Message-ID: <20231106130307.552417293@linuxfoundation.org>
+Message-ID: <20231106130301.129848456@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,239 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Ben Wolsieffer <ben.wolsieffer@hefring.com>
 
-[ Upstream commit 00c2ca84c680f64b79b5e10a482ca435fd7d98ce ]
+[ Upstream commit 8554cba1d6dbd3c74e0549e28ddbaccbb1d6b30a ]
 
-As described in include/linux/linkage.h,
+The STM32F4/7 EXTI driver was missing the xlate callback, so IRQ trigger
+flags specified in the device tree were being ignored. This was
+preventing the RTC alarm interrupt from working, because it must be set
+to trigger on the rising edge to function correctly.
 
-  FUNC -- C-like functions (proper stack frame etc.)
-  CODE -- non-C code (e.g. irq handlers with different, special stack etc.)
-
-  SYM_FUNC_{START, END} -- use for global functions
-  SYM_CODE_{START, END} -- use for non-C (special) functions
-
-So use SYM_CODE_* to annotate exception handlers.
-
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Ben Wolsieffer <ben.wolsieffer@hefring.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20231003162003.1649967-1-ben.wolsieffer@hefring.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/linkage.h |  8 +++++++
- arch/loongarch/kernel/entry.S        |  4 ++--
- arch/loongarch/kernel/genex.S        | 16 ++++++-------
- arch/loongarch/mm/tlbex.S            | 36 ++++++++++++++--------------
- 4 files changed, 36 insertions(+), 28 deletions(-)
+ drivers/irqchip/irq-stm32-exti.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/loongarch/include/asm/linkage.h b/arch/loongarch/include/asm/linkage.h
-index 81b0c4cfbf4f2..e2eca1a25b4ef 100644
---- a/arch/loongarch/include/asm/linkage.h
-+++ b/arch/loongarch/include/asm/linkage.h
-@@ -33,4 +33,12 @@
- 	.cfi_endproc;					\
- 	SYM_END(name, SYM_T_FUNC)
+diff --git a/drivers/irqchip/irq-stm32-exti.c b/drivers/irqchip/irq-stm32-exti.c
+index f605470855f19..ed7346fb687bf 100644
+--- a/drivers/irqchip/irq-stm32-exti.c
++++ b/drivers/irqchip/irq-stm32-exti.c
+@@ -365,6 +365,7 @@ static const struct irq_domain_ops irq_exti_domain_ops = {
+ 	.map	= irq_map_generic_chip,
+ 	.alloc  = stm32_exti_alloc,
+ 	.free	= stm32_exti_free,
++	.xlate	= irq_domain_xlate_twocell,
+ };
  
-+#define SYM_CODE_START(name)				\
-+	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)	\
-+	.cfi_startproc;
-+
-+#define SYM_CODE_END(name)				\
-+	.cfi_endproc;					\
-+	SYM_END(name, SYM_T_NONE)
-+
- #endif
-diff --git a/arch/loongarch/kernel/entry.S b/arch/loongarch/kernel/entry.S
-index d737e3cf42d3f..1781c6a5befa2 100644
---- a/arch/loongarch/kernel/entry.S
-+++ b/arch/loongarch/kernel/entry.S
-@@ -18,7 +18,7 @@
- 	.text
- 	.cfi_sections	.debug_frame
- 	.align	5
--SYM_FUNC_START(handle_syscall)
-+SYM_CODE_START(handle_syscall)
- 	csrrd		t0, PERCPU_BASE_KS
- 	la.pcrel	t1, kernelsp
- 	add.d		t1, t1, t0
-@@ -66,7 +66,7 @@ SYM_FUNC_START(handle_syscall)
- 	bl		do_syscall
- 
- 	RESTORE_ALL_AND_RET
--SYM_FUNC_END(handle_syscall)
-+SYM_CODE_END(handle_syscall)
- _ASM_NOKPROBE(handle_syscall)
- 
- SYM_CODE_START(ret_from_fork)
-diff --git a/arch/loongarch/kernel/genex.S b/arch/loongarch/kernel/genex.S
-index 78f0663846575..2bb3aa2dcfcb2 100644
---- a/arch/loongarch/kernel/genex.S
-+++ b/arch/loongarch/kernel/genex.S
-@@ -31,7 +31,7 @@ SYM_FUNC_START(__arch_cpu_idle)
- 1:	jr	ra
- SYM_FUNC_END(__arch_cpu_idle)
- 
--SYM_FUNC_START(handle_vint)
-+SYM_CODE_START(handle_vint)
- 	BACKUP_T0T1
- 	SAVE_ALL
- 	la_abs	t1, __arch_cpu_idle
-@@ -46,11 +46,11 @@ SYM_FUNC_START(handle_vint)
- 	la_abs	t0, do_vint
- 	jirl	ra, t0, 0
- 	RESTORE_ALL_AND_RET
--SYM_FUNC_END(handle_vint)
-+SYM_CODE_END(handle_vint)
- 
--SYM_FUNC_START(except_vec_cex)
-+SYM_CODE_START(except_vec_cex)
- 	b	cache_parity_error
--SYM_FUNC_END(except_vec_cex)
-+SYM_CODE_END(except_vec_cex)
- 
- 	.macro	build_prep_badv
- 	csrrd	t0, LOONGARCH_CSR_BADV
-@@ -66,7 +66,7 @@ SYM_FUNC_END(except_vec_cex)
- 
- 	.macro	BUILD_HANDLER exception handler prep
- 	.align	5
--	SYM_FUNC_START(handle_\exception)
-+	SYM_CODE_START(handle_\exception)
- 	666:
- 	BACKUP_T0T1
- 	SAVE_ALL
-@@ -76,7 +76,7 @@ SYM_FUNC_END(except_vec_cex)
- 	jirl	ra, t0, 0
- 	668:
- 	RESTORE_ALL_AND_RET
--	SYM_FUNC_END(handle_\exception)
-+	SYM_CODE_END(handle_\exception)
- 	SYM_DATA(unwind_hint_\exception, .word 668b - 666b)
- 	.endm
- 
-@@ -93,7 +93,7 @@ SYM_FUNC_END(except_vec_cex)
- 	BUILD_HANDLER watch watch none
- 	BUILD_HANDLER reserved reserved none	/* others */
- 
--SYM_FUNC_START(handle_sys)
-+SYM_CODE_START(handle_sys)
- 	la_abs	t0, handle_syscall
- 	jr	t0
--SYM_FUNC_END(handle_sys)
-+SYM_CODE_END(handle_sys)
-diff --git a/arch/loongarch/mm/tlbex.S b/arch/loongarch/mm/tlbex.S
-index ca17dd3a19153..d5d682f3d29f3 100644
---- a/arch/loongarch/mm/tlbex.S
-+++ b/arch/loongarch/mm/tlbex.S
-@@ -17,7 +17,7 @@
- #define PTRS_PER_PTE_BITS	(PAGE_SHIFT - 3)
- 
- 	.macro tlb_do_page_fault, write
--	SYM_FUNC_START(tlb_do_page_fault_\write)
-+	SYM_CODE_START(tlb_do_page_fault_\write)
- 	SAVE_ALL
- 	csrrd		a2, LOONGARCH_CSR_BADV
- 	move		a0, sp
-@@ -25,13 +25,13 @@
- 	li.w		a1, \write
- 	bl		do_page_fault
- 	RESTORE_ALL_AND_RET
--	SYM_FUNC_END(tlb_do_page_fault_\write)
-+	SYM_CODE_END(tlb_do_page_fault_\write)
- 	.endm
- 
- 	tlb_do_page_fault 0
- 	tlb_do_page_fault 1
- 
--SYM_FUNC_START(handle_tlb_protect)
-+SYM_CODE_START(handle_tlb_protect)
- 	BACKUP_T0T1
- 	SAVE_ALL
- 	move		a0, sp
-@@ -41,9 +41,9 @@ SYM_FUNC_START(handle_tlb_protect)
- 	la_abs		t0, do_page_fault
- 	jirl		ra, t0, 0
- 	RESTORE_ALL_AND_RET
--SYM_FUNC_END(handle_tlb_protect)
-+SYM_CODE_END(handle_tlb_protect)
- 
--SYM_FUNC_START(handle_tlb_load)
-+SYM_CODE_START(handle_tlb_load)
- 	csrwr		t0, EXCEPTION_KS0
- 	csrwr		t1, EXCEPTION_KS1
- 	csrwr		ra, EXCEPTION_KS2
-@@ -187,16 +187,16 @@ nopage_tlb_load:
- 	csrrd		ra, EXCEPTION_KS2
- 	la_abs		t0, tlb_do_page_fault_0
- 	jr		t0
--SYM_FUNC_END(handle_tlb_load)
-+SYM_CODE_END(handle_tlb_load)
- 
--SYM_FUNC_START(handle_tlb_load_ptw)
-+SYM_CODE_START(handle_tlb_load_ptw)
- 	csrwr		t0, LOONGARCH_CSR_KS0
- 	csrwr		t1, LOONGARCH_CSR_KS1
- 	la_abs		t0, tlb_do_page_fault_0
- 	jr		t0
--SYM_FUNC_END(handle_tlb_load_ptw)
-+SYM_CODE_END(handle_tlb_load_ptw)
- 
--SYM_FUNC_START(handle_tlb_store)
-+SYM_CODE_START(handle_tlb_store)
- 	csrwr		t0, EXCEPTION_KS0
- 	csrwr		t1, EXCEPTION_KS1
- 	csrwr		ra, EXCEPTION_KS2
-@@ -343,16 +343,16 @@ nopage_tlb_store:
- 	csrrd		ra, EXCEPTION_KS2
- 	la_abs		t0, tlb_do_page_fault_1
- 	jr		t0
--SYM_FUNC_END(handle_tlb_store)
-+SYM_CODE_END(handle_tlb_store)
- 
--SYM_FUNC_START(handle_tlb_store_ptw)
-+SYM_CODE_START(handle_tlb_store_ptw)
- 	csrwr		t0, LOONGARCH_CSR_KS0
- 	csrwr		t1, LOONGARCH_CSR_KS1
- 	la_abs		t0, tlb_do_page_fault_1
- 	jr		t0
--SYM_FUNC_END(handle_tlb_store_ptw)
-+SYM_CODE_END(handle_tlb_store_ptw)
- 
--SYM_FUNC_START(handle_tlb_modify)
-+SYM_CODE_START(handle_tlb_modify)
- 	csrwr		t0, EXCEPTION_KS0
- 	csrwr		t1, EXCEPTION_KS1
- 	csrwr		ra, EXCEPTION_KS2
-@@ -497,16 +497,16 @@ nopage_tlb_modify:
- 	csrrd		ra, EXCEPTION_KS2
- 	la_abs		t0, tlb_do_page_fault_1
- 	jr		t0
--SYM_FUNC_END(handle_tlb_modify)
-+SYM_CODE_END(handle_tlb_modify)
- 
--SYM_FUNC_START(handle_tlb_modify_ptw)
-+SYM_CODE_START(handle_tlb_modify_ptw)
- 	csrwr		t0, LOONGARCH_CSR_KS0
- 	csrwr		t1, LOONGARCH_CSR_KS1
- 	la_abs		t0, tlb_do_page_fault_1
- 	jr		t0
--SYM_FUNC_END(handle_tlb_modify_ptw)
-+SYM_CODE_END(handle_tlb_modify_ptw)
- 
--SYM_FUNC_START(handle_tlb_refill)
-+SYM_CODE_START(handle_tlb_refill)
- 	csrwr		t0, LOONGARCH_CSR_TLBRSAVE
- 	csrrd		t0, LOONGARCH_CSR_PGD
- 	lddir		t0, t0, 3
-@@ -521,4 +521,4 @@ SYM_FUNC_START(handle_tlb_refill)
- 	tlbfill
- 	csrrd		t0, LOONGARCH_CSR_TLBRSAVE
- 	ertn
--SYM_FUNC_END(handle_tlb_refill)
-+SYM_CODE_END(handle_tlb_refill)
+ static void stm32_irq_ack(struct irq_data *d)
 -- 
 2.42.0
 
