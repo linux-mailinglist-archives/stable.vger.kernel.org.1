@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3817F7E230F
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 093AF7E2440
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:19:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232022AbjKFNI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:08:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48682 "EHLO
+        id S232152AbjKFNT5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:19:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231949AbjKFNIY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:24 -0500
+        with ESMTP id S232396AbjKFNTz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:19:55 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 263EEA9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:22 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D574C433C7;
-        Mon,  6 Nov 2023 13:08:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC3A0D8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:19:52 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E473C433C7;
+        Mon,  6 Nov 2023 13:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276101;
-        bh=V19mlyLnlUIHZi7AI4Dzoz9ktoduZBbyR+5cfkTWsLI=;
+        s=korg; t=1699276792;
+        bh=pMaKvlHyUWEWEYZtP8QcPModizmmkC9hptUqUJiInz4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TOw8T+mpIJglLLpTvUSV31LZ46FcBfq+0LkNMzprkhVf52K4hJwqdimwrgfSoVeHD
-         hbxYHg89fdU0t0NJ8lhe6fgITRRU2dVzK0Bs5kJgAjIEiXdJuT7ThosnOzQ8+GEtnW
-         wOX+KiF22tl3xNbKtyAdSfFoUODAan8p2HaEE5PE=
+        b=kzymFdPUXgDigA/j9BjsNr/gWbl1PdN0V0SwZoLU6wo9LhmIca/bX7S2EymEPZXzN
+         V5rZd0gzpzLmZzCjdwBu+HPsVNPV3hep3OlybnCODnsTLk2rsXBqIgvYYkCchJ+9Xl
+         0aSSQ10NThoFo83guPtrSmsnxjS7nMIlMlgAlotw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephane Eranian <eranian@google.com>,
-        Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Yang Jihong <yangjihong1@huawei.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Namhyung Kim <namhyung@kernel.org>,
+        patches@lists.linux.dev, Aviram Dali <aviramd@marvell.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Ravi Chandra Minnikanti <rminnikanti@marvell.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 03/30] perf evlist: Avoid frequency mode for the dummy event
+Subject: [PATCH 5.4 01/74] mtd: rawnand: marvell: Ensure program page operations are successful
 Date:   Mon,  6 Nov 2023 14:03:21 +0100
-Message-ID: <20231106130258.025945192@linuxfoundation.org>
+Message-ID: <20231106130301.733850297@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,88 +51,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit f9cdeb58a9cf46c09b56f5f661ea8da24b6458c3 ]
+[ Upstream commit 3e01d5254698ea3d18e09d96b974c762328352cd ]
 
-Dummy events are created with an attribute where the period and freq
-are zero. evsel__config will then see the uninitialized values and
-initialize them in evsel__default_freq_period. As fequency mode is
-used by default the dummy event would be set to use frequency
-mode. However, this has no effect on the dummy event but does cause
-unnecessary timers/interrupts. Avoid this overhead by setting the
-period to 1 for dummy events.
+The NAND core complies with the ONFI specification, which itself
+mentions that after any program or erase operation, a status check
+should be performed to see whether the operation was finished *and*
+successful.
 
-evlist__add_aux_dummy calls evlist__add_dummy then sets freq=0 and
-period=1. This isn't necessary after this change and so the setting is
-removed.
+The NAND core offers helpers to finish a page write (sending the
+"PAGE PROG" command, waiting for the NAND chip to be ready again, and
+checking the operation status). But in some cases, advanced controller
+drivers might want to optimize this and craft their own page write
+helper to leverage additional hardware capabilities, thus not always
+using the core facilities.
 
->From Stephane:
+Some drivers, like this one, do not use the core helper to finish a page
+write because the final cycles are automatically managed by the
+hardware. In this case, the additional care must be taken to manually
+perform the final status check.
 
-The dummy event is not counting anything. It is used to collect mmap
-records and avoid a race condition during the synthesize mmap phase of
-perf record. As such, it should not cause any overhead during active
-profiling. Yet, it did. Because of a bug the dummy event was
-programmed as a sampling event in frequency mode. Events in that mode
-incur more kernel overheads because on timer tick, the kernel has to
-look at the number of samples for each event and potentially adjust
-the sampling period to achieve the desired frequency. The dummy event
-was therefore adding a frequency event to task and ctx contexts we may
-otherwise not have any, e.g.,
+Let's read the NAND chip status at the end of the page write helper and
+return -EIO upon error.
 
-  perf record -a -e cpu/event=0x3c,period=10000000/.
-
-On each timer tick the perf_adjust_freq_unthr_context() is invoked and
-if ctx->nr_freq is non-zero, then the kernel will loop over ALL the
-events of the context looking for frequency mode ones. In doing, so it
-locks the context, and enable/disable the PMU of each hw event. If all
-the events of the context are in period mode, the kernel will have to
-traverse the list for nothing incurring overhead. The overhead is
-multiplied by a very large factor when this happens in a guest kernel.
-There is no need for the dummy event to be in frequency mode, it does
-not count anything and therefore should not cause extra overhead for
-no reason.
-
-Fixes: 5bae0250237f ("perf evlist: Introduce perf_evlist__new_dummy constructor")
-Reported-by: Stephane Eranian <eranian@google.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Link: https://lore.kernel.org/r/20230916035640.1074422-1-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 02f26ecf8c77 ("mtd: nand: add reworked Marvell NAND controller driver")
+Reported-by: Aviram Dali <aviramd@marvell.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Tested-by: Ravi Chandra Minnikanti <rminnikanti@marvell.com>
+Link: https://lore.kernel.org/linux-mtd/20230717194221.229778-1-miquel.raynal@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evlist.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/marvell_nand.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index 7ef43f72098e0..c779b9f2e6220 100644
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -251,6 +251,9 @@ static struct evsel *evlist__dummy_event(struct evlist *evlist)
- 		.type	= PERF_TYPE_SOFTWARE,
- 		.config = PERF_COUNT_SW_DUMMY,
- 		.size	= sizeof(attr), /* to capture ABI version */
-+		/* Avoid frequency mode for dummy events to avoid associated timers. */
-+		.freq = 0,
-+		.sample_period = 1,
+diff --git a/drivers/mtd/nand/raw/marvell_nand.c b/drivers/mtd/nand/raw/marvell_nand.c
+index c49a3e105b427..9a119688c0a63 100644
+--- a/drivers/mtd/nand/raw/marvell_nand.c
++++ b/drivers/mtd/nand/raw/marvell_nand.c
+@@ -1109,6 +1109,7 @@ static int marvell_nfc_hw_ecc_hmg_do_write_page(struct nand_chip *chip,
+ 		.ndcb[2] = NDCB2_ADDR5_PAGE(page),
  	};
+ 	unsigned int oob_bytes = lt->spare_bytes + (raw ? lt->ecc_bytes : 0);
++	u8 status;
+ 	int ret;
  
- 	return evsel__new_idx(&attr, evlist->core.nr_entries);
-@@ -277,8 +280,6 @@ struct evsel *evlist__add_aux_dummy(struct evlist *evlist, bool system_wide)
- 	evsel->core.attr.exclude_kernel = 1;
- 	evsel->core.attr.exclude_guest = 1;
- 	evsel->core.attr.exclude_hv = 1;
--	evsel->core.attr.freq = 0;
--	evsel->core.attr.sample_period = 1;
- 	evsel->core.system_wide = system_wide;
- 	evsel->no_aux_samples = true;
- 	evsel->name = strdup("dummy:u");
+ 	/* NFCv2 needs more information about the operation being executed */
+@@ -1142,7 +1143,18 @@ static int marvell_nfc_hw_ecc_hmg_do_write_page(struct nand_chip *chip,
+ 
+ 	ret = marvell_nfc_wait_op(chip,
+ 				  PSEC_TO_MSEC(chip->data_interface.timings.sdr.tPROG_max));
+-	return ret;
++	if (ret)
++		return ret;
++
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
++	return 0;
+ }
+ 
+ static int marvell_nfc_hw_ecc_hmg_write_page_raw(struct nand_chip *chip,
+@@ -1570,6 +1582,7 @@ static int marvell_nfc_hw_ecc_bch_write_page(struct nand_chip *chip,
+ 	int data_len = lt->data_bytes;
+ 	int spare_len = lt->spare_bytes;
+ 	int chunk, ret;
++	u8 status;
+ 
+ 	marvell_nfc_select_target(chip, chip->cur_cs);
+ 
+@@ -1607,6 +1620,14 @@ static int marvell_nfc_hw_ecc_bch_write_page(struct nand_chip *chip,
+ 	if (ret)
+ 		return ret;
+ 
++	/* Check write status on the chip side */
++	ret = nand_status_op(chip, &status);
++	if (ret)
++		return ret;
++
++	if (status & NAND_STATUS_FAIL)
++		return -EIO;
++
+ 	return 0;
+ }
+ 
 -- 
 2.42.0
 
