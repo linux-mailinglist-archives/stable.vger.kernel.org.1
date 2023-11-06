@@ -2,81 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D33347E1712
-	for <lists+stable@lfdr.de>; Sun,  5 Nov 2023 23:00:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E0ABF7E193F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 04:48:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjKEWAE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 5 Nov 2023 17:00:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54512 "EHLO
+        id S230260AbjKFDsz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 5 Nov 2023 22:48:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229865AbjKEWAB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 5 Nov 2023 17:00:01 -0500
-X-Greylist: delayed 5151 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Nov 2023 13:59:57 PST
-Received: from SMTP-HCRC-200.brggroup.vn (mail.hcrc.vn [42.112.212.144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1CD9BF;
-        Sun,  5 Nov 2023 13:59:57 -0800 (PST)
-Received: from SMTP-HCRC-200.brggroup.vn (localhost [127.0.0.1])
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTP id C2C801999F;
-        Mon,  6 Nov 2023 01:58:22 +0700 (+07)
-Received: from zimbra.hcrc.vn (unknown [192.168.200.66])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTPS id BC5EC1999E;
-        Mon,  6 Nov 2023 01:58:22 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id 588731B82534;
-        Mon,  6 Nov 2023 01:58:24 +0700 (+07)
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id BwZX5eEYVgkV; Mon,  6 Nov 2023 01:58:24 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.hcrc.vn (Postfix) with ESMTP id 26D3A1B8252B;
-        Mon,  6 Nov 2023 01:58:24 +0700 (+07)
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.hcrc.vn 26D3A1B8252B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hcrc.vn;
-        s=64D43D38-C7D6-11ED-8EFE-0027945F1BFA; t=1699210704;
-        bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=Af6xqmg2suMtsb+SOkP+eks+uA3sUx/Xn4DNbjx/vG5eG0iQDRGKqc+r8Rj3YvCx9
-         WaFeEH1YiwJYZtvfwqr/vXCQa/DhNPtS15fifALDSrvFDD7SdJ7eyHjlwZKykHPvly
-         gCE1YjcX4OB3TLroiPvHXDK9HTiuho0wYDqxI+0D5CcoATYgmvNeSlfsknEUuF19U6
-         IxI+vZiUCIKHboOJKGDu+NKaBf5glSyjWU5NSWdNdhBvwy43zaApmoGqvcP64Bx61P
-         D/pvC8jboVfNnRGC2K/8L5od2NrT3gPadm/xZrEMXCfW12T6Vph074ch/PnLYr8A9o
-         /Qt48LmVsy13Q==
-X-Virus-Scanned: amavisd-new at hcrc.vn
-Received: from zimbra.hcrc.vn ([127.0.0.1])
-        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id QzOs__H2endx; Mon,  6 Nov 2023 01:58:24 +0700 (+07)
-Received: from [192.168.1.152] (unknown [51.179.100.52])
-        by zimbra.hcrc.vn (Postfix) with ESMTPSA id DD62B1B82538;
-        Mon,  6 Nov 2023 01:58:17 +0700 (+07)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230243AbjKFDsy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 5 Nov 2023 22:48:54 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3745B8;
+        Sun,  5 Nov 2023 19:48:51 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3A63mb2xB3229165, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3A63mb2xB3229165
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 6 Nov 2023 11:48:37 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.32; Mon, 6 Nov 2023 11:48:38 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.34; Mon, 6 Nov 2023 11:48:38 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
+ 15.01.2375.007; Mon, 6 Nov 2023 11:48:37 +0800
+From:   =?big5?B?U3RhbmxleSBDaGFuZ1up96h8vHdd?= <stanley_chang@realtek.com>
+To:     Stefan Eichenberger <eichest@gmail.com>,
+        Johan Hovold <johan+linaro@kernel.org>
+CC:     Mathias Nyman <mathias.nyman@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Maxime Ripard <mripard@kernel.org>
+Subject: RE: [PATCH] USB: xhci-plat: fix legacy PHY double inity
+Thread-Topic: [PATCH] USB: xhci-plat: fix legacy PHY double inity
+Thread-Index: AQHaDxyJZpnjRAISQ06Vkn+OQSkmobBsqcjg
+Date:   Mon, 6 Nov 2023 03:48:37 +0000
+Message-ID: <848aad6777f54fa88ebd4277642853aa@realtek.com>
+References: <20231103164323.14294-1-johan+linaro@kernel.org>
+ <ZUY8cGrofUtPOMV8@eichest-laptop>
+In-Reply-To: <ZUY8cGrofUtPOMV8@eichest-laptop>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+x-originating-ip: [172.21.190.159]
+x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
+x-kse-antivirus-attachment-filter-interceptor-info: license violation
+Content-Type: text/plain; charset="big5"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
-To:     Recipients <ch.31hamnghi@hcrc.vn>
-From:   ch.31hamnghi@hcrc.vn
-Date:   Sun, 05 Nov 2023 19:58:07 +0100
-Reply-To: joliushk@gmail.com
-Message-Id: <20231105185817.DD62B1B82538@zimbra.hcrc.vn>
-X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Goededag,
-Ik ben mevrouw Joanna Liu en een medewerker van Citi Bank Hong Kong.
-Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
-
-
-Ik wacht op jullie reacties
-Met vriendelijke groeten
-mevrouw Joanna Liu
-
+DQo+IE9uIEZyaSwgTm92IDAzLCAyMDIzIGF0IDA1OjQzOjIzUE0gKzAxMDAsIEpvaGFuIEhvdm9s
+ZCB3cm90ZToNCj4gPiBDb21taXRzIDdiOGVmMjJlYTU0NyAoInVzYjogeGhjaTogcGxhdDogQWRk
+IFVTQiBwaHkgc3VwcG9ydCIpIGFuZA0KPiA+IDkxMzRjMWZkMDUwMyAoInVzYjogeGhjaTogcGxh
+dDogQWRkIFVTQiAzLjAgcGh5IHN1cHBvcnQiKSBhZGRlZA0KPiA+IHN1cHBvcnQgZm9yIGxvb2tp
+bmcgdXAgbGVnYWN5IFBIWXMgZnJvbSB0aGUgc3lzZGV2IGRldmljZXRyZWUgbm9kZSBhbmQNCj4g
+PiBpbml0aWFsaXNpbmcgdGhlbS4NCj4gPg0KPiA+IFRoaXMgYnJva2UgZHJpdmVycyBzdWNoIGFz
+IGR3YzMgd2hpY2ggbWFuYWdlcyBQSFlzIHRoZW1zZWxmIGFzIHRoZQ0KPiA+IFBIWXMgd291bGQg
+bm93IGJlIGluaXRpYWxpc2VkIHR3aWNlLCBzb21ldGhpbmcgd2hpY2ggc3BlY2lmaWNhbGx5IGNh
+bg0KPiA+IGxlYWQgdG8gcmVzb3VyY2VzIGJlaW5nIGxlZnQgZW5hYmxlZCBkdXJpbmcgc3VzcGVu
+ZCAoZS5nLiB3aXRoIHRoZQ0KPiA+IHVzYl9waHlfZ2VuZXJpYyBQSFkgZHJpdmVyKS4NCj4gPg0K
+PiA+IEFzIHRoZSBkd2MzIGRyaXZlciB1c2VzIGRyaXZlci1uYW1lIG1hdGNoaW5nIGZvciB0aGUg
+eGhjaSBwbGF0Zm9ybQ0KPiA+IGRldmljZSwgZml4IHRoaXMgYnkgb25seSBsb29raW5nIHVwIGFu
+ZCBpbml0aWFsaXNpbmcgUEhZcyBmb3IgZGV2aWNlcw0KPiA+IHRoYXQgaGF2ZSBiZWVuIG1hdGNo
+ZWQgdXNpbmcgT0YuDQo+ID4NCj4gPiBOb3RlIHRoYXQgY2hlY2tpbmcgdGhhdCB0aGUgcGxhdGZv
+cm0gZGV2aWNlIGhhcyBhIGRldmljZXRyZWUgbm9kZQ0KPiA+IHdvdWxkIGN1cnJlbnRseSBiZSBz
+dWZmaWNpZW50LCBidXQgdGhhdCBjb3VsZCBsZWFkIHRvIHN1YnRsZSBicmVha2FnZXMNCj4gPiBp
+biBjYXNlIGFueW9uZSBldmVyIHRyaWVzIHRvIHJldXNlIGFuIGFuY2VzdG9yJ3Mgbm9kZS4NCj4g
+Pg0KPiA+IEZpeGVzOiA3YjhlZjIyZWE1NDcgKCJ1c2I6IHhoY2k6IHBsYXQ6IEFkZCBVU0IgcGh5
+IHN1cHBvcnQiKQ0KPiA+IEZpeGVzOiA5MTM0YzFmZDA1MDMgKCJ1c2I6IHhoY2k6IHBsYXQ6IEFk
+ZCBVU0IgMy4wIHBoeSBzdXBwb3J0IikNCj4gPiBDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZyAg
+ICAgICMgNC4xDQo+ID4gQ2M6IE1heGltZSBSaXBhcmQgPG1yaXBhcmRAa2VybmVsLm9yZz4NCj4g
+PiBDYzogU3RhbmxleSBDaGFuZyA8c3RhbmxleV9jaGFuZ0ByZWFsdGVrLmNvbT4NCj4gPiBTaWdu
+ZWQtb2ZmLWJ5OiBKb2hhbiBIb3ZvbGQgPGpvaGFuK2xpbmFyb0BrZXJuZWwub3JnPg0KPiANCj4g
+VGVzdGVkLWJ5OiBTdGVmYW4gRWljaGVuYmVyZ2VyIDxzdGVmYW4uZWljaGVuYmVyZ2VyQHRvcmFk
+ZXguY29tPg0KDQpUZXN0ZWQtYnk6IFN0YW5sZXkgQ2hhbmcgPHN0YW5sZXlfY2hhbmdAcmVhbHRl
+ay5jb20+DQoNCg0K
