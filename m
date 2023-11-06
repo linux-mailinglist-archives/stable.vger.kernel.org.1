@@ -2,37 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D8727E2305
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10C077E2540
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232052AbjKFNIA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:08:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52656 "EHLO
+        id S232684AbjKFNaC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:30:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231700AbjKFNHz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:07:55 -0500
+        with ESMTP id S232680AbjKFNaB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA4CBEA
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:07:52 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5C9C433C7;
-        Mon,  6 Nov 2023 13:07:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8241D8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BE5C433C7;
+        Mon,  6 Nov 2023 13:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276072;
-        bh=U28YDzSEwZOYHUEMNDtYnqmnPtbZt0vRHeQRpGZlVew=;
+        s=korg; t=1699277398;
+        bh=ESRIR/D5Nm/X0heYTaXBfIZTTGnDzvWsij4xpJoCj6s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wMa070xMkdPBHh9vaSvrayxaTfm1+NTxaOu/j0J+9VWP2AaQjPfSSyglKgrV+IHD4
-         RGIG+0XKhT6ZUNtobrwpwBqzfuqttX9julW5v5ZXtIcg88XiiAUAlLDx1z7qDcmYYC
-         0oc/MunUrHwCR/x99I45E3jEgJemUJKCod2ufmdo=
+        b=tmvFdHbHwvYHU/0jd1oW8qbwYpC+pDSs897jOmR9I3IwRjMotjYJmI/Izi6NC7ONm
+         q63rTnaKTQloVtrzcvOpEFy1jViNp9BUCgwVxk/l1SlXHCMyAWU/zcli3AxNXa0v8O
+         MulSslzg/n+8erWtvjBNoiR00QMYhI5io4dGCVc4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liha Sikanen <lihasika@gmail.com>
-Subject: [PATCH 6.6 11/30] usb: storage: set 1.50 as the lower bcdDevice for older "Super Top" compatibility
+        patches@lists.linux.dev,
+        Francis Laniel <flaniel@linux.microsoft.com>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 01/95] selftests/ftrace: Add new test case which checks non unique symbol
 Date:   Mon,  6 Nov 2023 14:03:29 +0100
-Message-ID: <20231106130258.340172276@linuxfoundation.org>
+Message-ID: <20231106130304.732549434@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-References: <20231106130257.903265688@linuxfoundation.org>
+In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
+References: <20231106130304.678610325@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,36 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LihaSika <lihasika@gmail.com>
+From: Francis Laniel <flaniel@linux.microsoft.com>
 
-commit 0e3139e6543b241b3e65956a55c712333bef48ac upstream.
+[ Upstream commit 03b80ff8023adae6780e491f66e932df8165e3a0 ]
 
-Change lower bcdDevice value for "Super Top USB 2.0  SATA BRIDGE" to match
-1.50. I have such an older device with bcdDevice=1.50 and it will not work
-otherwise.
+If name_show() is non unique, this test will try to install a kprobe on this
+function which should fail returning EADDRNOTAVAIL.
+On kernel where name_show() is not unique, this test is skipped.
+
+Link: https://lore.kernel.org/all/20231020104250.9537-3-flaniel@linux.microsoft.com/
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Liha Sikanen <lihasika@gmail.com>
-Link: https://lore.kernel.org/r/ccf7d12a-8362-4916-b3e0-f4150f54affd@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_cypress.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc  | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+ create mode 100644 tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
 
---- a/drivers/usb/storage/unusual_cypress.h
-+++ b/drivers/usb/storage/unusual_cypress.h
-@@ -19,7 +19,7 @@ UNUSUAL_DEV(  0x04b4, 0x6831, 0x0000, 0x
- 		"Cypress ISD-300LP",
- 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
- 
--UNUSUAL_DEV( 0x14cd, 0x6116, 0x0160, 0x0160,
-+UNUSUAL_DEV( 0x14cd, 0x6116, 0x0150, 0x0160,
- 		"Super Top",
- 		"USB 2.0  SATA BRIDGE",
- 		USB_SC_CYP_ATACB, USB_PR_DEVICE, NULL, 0),
+diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+new file mode 100644
+index 0000000000000..bc9514428dbaf
+--- /dev/null
++++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_non_uniq_symbol.tc
+@@ -0,0 +1,13 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0
++# description: Test failure of registering kprobe on non unique symbol
++# requires: kprobe_events
++
++SYMBOL='name_show'
++
++# We skip this test on kernel where SYMBOL is unique or does not exist.
++if [ "$(grep -c -E "[[:alnum:]]+ t ${SYMBOL}" /proc/kallsyms)" -le '1' ]; then
++	exit_unsupported
++fi
++
++! echo "p:test_non_unique ${SYMBOL}" > kprobe_events
+-- 
+2.42.0
+
 
 
