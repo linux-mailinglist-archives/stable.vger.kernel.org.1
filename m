@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41F8B7E2579
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:32:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D66EB7E245F
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:21:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232760AbjKFNcd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:32:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44256 "EHLO
+        id S232395AbjKFNVO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:21:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232756AbjKFNcc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:32:32 -0500
+        with ESMTP id S232000AbjKFNVN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:21:13 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E10AA9
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:32:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EDC9C433C8;
-        Mon,  6 Nov 2023 13:32:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7BB1F1
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:21:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1B4C433C8;
+        Mon,  6 Nov 2023 13:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277549;
-        bh=0HV+SLqkJtsfIrOMII8k6fwnQ1V2KelzhExFNV3l3u8=;
+        s=korg; t=1699276870;
+        bh=eFlO74JEjF4dbg2IQMEW1WPCOekJaxCKF2LUkewQMtc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sD7C6ZducatUDksoSySiBjYP1E+AtsZJYnD4iEQQORn3khXEkLl31QmpyOc34hOEc
-         mhkMyqVQJkQ1HGjnSqcoKsDRjucUrzj453k4yhyr6KKBKu/oCQ7jFyf4+Q0opqVXxE
-         m5m/uYefXQI/ONJsO7WtU0auf8uu/7/IiqBOwJXY=
+        b=wL0uA2iQNvUygopbuyheDK9Gspb93ey3px72THCYXCLzBOsHWRHBnIQnGFUoUCptH
+         wiN3yPFKTlZWsA/iTIKRvuGlgB4k7oCdVEUoM7gYkHx9r9s3j5v7SiOCHyuzmop3KF
+         P3DTjYK3IJH2vcFZxEF62K5CIY1hskha/SH8eM64=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        Peter Rosin <peda@axentia.se>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.10 27/95] i2c: muxes: i2c-mux-pinctrl: Use of_get_i2c_adapter_by_node()
+        patches@lists.linux.dev, Wang Hai <wanghai38@huawei.com>,
+        Oleksandr Tymoshenko <ovt@google.com>
+Subject: [PATCH 5.4 35/74] kobject: Fix slab-out-of-bounds in fill_kobj_path()
 Date:   Mon,  6 Nov 2023 14:03:55 +0100
-Message-ID: <20231106130305.712011348@linuxfoundation.org>
+Message-ID: <20231106130302.962058247@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+References: <20231106130301.687882731@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,46 +49,147 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Wang Hai <wanghai38@huawei.com>
 
-commit 3171d37b58a76e1febbf3f4af2d06234a98cf88b upstream.
+commit 3bb2a01caa813d3a1845d378bbe4169ef280d394 upstream.
 
-i2c-mux-pinctrl uses the pair of_find_i2c_adapter_by_node() /
-i2c_put_adapter(). These pair alone is not correct to properly lock the
-I2C parent adapter.
+In kobject_get_path(), if kobj->name is changed between calls
+get_kobj_path_length() and fill_kobj_path() and the length becomes
+longer, then fill_kobj_path() will have an out-of-bounds bug.
 
-Indeed, i2c_put_adapter() decrements the module refcount while
-of_find_i2c_adapter_by_node() does not increment it. This leads to an
-underflow of the parent module refcount.
+The actual current problem occurs when the ixgbe probe.
 
-Use the dedicated function, of_get_i2c_adapter_by_node(), to handle
-correctly the module refcount.
+In ixgbe_mii_bus_init(), if the length of netdev->dev.kobj.name
+length becomes longer, out-of-bounds will occur.
 
-Fixes: c4aee3e1b0de ("i2c: mux: pinctrl: remove platform_data")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Cc: stable@vger.kernel.org
-Acked-by: Peter Rosin <peda@axentia.se>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+cpu0                                         cpu1
+ixgbe_probe
+ register_netdev(netdev)
+  netdev_register_kobject
+   device_add
+    kobject_uevent // Sending ADD events
+                                             systemd-udevd // rename netdev
+                                              dev_change_name
+                                               device_rename
+                                                kobject_rename
+ ixgbe_mii_bus_init                             |
+  mdiobus_register                              |
+   __mdiobus_register                           |
+    device_register                             |
+     device_add                                 |
+      kobject_uevent                            |
+       kobject_get_path                         |
+        len = get_kobj_path_length // old name  |
+        path = kzalloc(len, gfp_mask);          |
+                                                kobj->name = name;
+                                                /* name length becomes
+                                                 * longer
+                                                 */
+        fill_kobj_path /* kobj path length is
+                        * longer than path,
+                        * resulting in out of
+                        * bounds when filling path
+                        */
+
+This is the kasan report:
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in fill_kobj_path+0x50/0xc0
+Write of size 7 at addr ff1100090573d1fd by task kworker/28:1/673
+
+ Workqueue: events work_for_cpu_fn
+ Call Trace:
+ <TASK>
+ dump_stack_lvl+0x34/0x48
+ print_address_description.constprop.0+0x86/0x1e7
+ print_report+0x36/0x4f
+ kasan_report+0xad/0x130
+ kasan_check_range+0x35/0x1c0
+ memcpy+0x39/0x60
+ fill_kobj_path+0x50/0xc0
+ kobject_get_path+0x5a/0xc0
+ kobject_uevent_env+0x140/0x460
+ device_add+0x5c7/0x910
+ __mdiobus_register+0x14e/0x490
+ ixgbe_probe.cold+0x441/0x574 [ixgbe]
+ local_pci_probe+0x78/0xc0
+ work_for_cpu_fn+0x26/0x40
+ process_one_work+0x3b6/0x6a0
+ worker_thread+0x368/0x520
+ kthread+0x165/0x1a0
+ ret_from_fork+0x1f/0x30
+
+This reproducer triggers that bug:
+
+while:
+do
+    rmmod ixgbe
+    sleep 0.5
+    modprobe ixgbe
+    sleep 0.5
+
+When calling fill_kobj_path() to fill path, if the name length of
+kobj becomes longer, return failure and retry. This fixes the problem.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Hai <wanghai38@huawei.com>
+Link: https://lore.kernel.org/r/20221220012143.52141-1-wanghai38@huawei.com
+Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/muxes/i2c-mux-pinctrl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/kobject.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/muxes/i2c-mux-pinctrl.c
-+++ b/drivers/i2c/muxes/i2c-mux-pinctrl.c
-@@ -62,7 +62,7 @@ static struct i2c_adapter *i2c_mux_pinct
- 		dev_err(dev, "Cannot parse i2c-parent\n");
- 		return ERR_PTR(-ENODEV);
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -144,7 +144,7 @@ static int get_kobj_path_length(struct k
+ 	return length;
+ }
+ 
+-static void fill_kobj_path(struct kobject *kobj, char *path, int length)
++static int fill_kobj_path(struct kobject *kobj, char *path, int length)
+ {
+ 	struct kobject *parent;
+ 
+@@ -153,12 +153,16 @@ static void fill_kobj_path(struct kobjec
+ 		int cur = strlen(kobject_name(parent));
+ 		/* back up enough to print this name with '/' */
+ 		length -= cur;
++		if (length <= 0)
++			return -EINVAL;
+ 		memcpy(path + length, kobject_name(parent), cur);
+ 		*(path + --length) = '/';
  	}
--	parent = of_find_i2c_adapter_by_node(parent_np);
-+	parent = of_get_i2c_adapter_by_node(parent_np);
- 	of_node_put(parent_np);
- 	if (!parent)
- 		return ERR_PTR(-EPROBE_DEFER);
+ 
+ 	pr_debug("kobject: '%s' (%p): %s: path = '%s'\n", kobject_name(kobj),
+ 		 kobj, __func__, path);
++
++	return 0;
+ }
+ 
+ /**
+@@ -173,13 +177,17 @@ char *kobject_get_path(struct kobject *k
+ 	char *path;
+ 	int len;
+ 
++retry:
+ 	len = get_kobj_path_length(kobj);
+ 	if (len == 0)
+ 		return NULL;
+ 	path = kzalloc(len, gfp_mask);
+ 	if (!path)
+ 		return NULL;
+-	fill_kobj_path(kobj, path, len);
++	if (fill_kobj_path(kobj, path, len)) {
++		kfree(path);
++		goto retry;
++	}
+ 
+ 	return path;
+ }
 
 
