@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E74357E232D
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:09:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94DA57E23E9
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:16:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231590AbjKFNJ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:09:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39834 "EHLO
+        id S232256AbjKFNQG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:16:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231872AbjKFNJ2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:09:28 -0500
+        with ESMTP id S232243AbjKFNQF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:16:05 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11ED091
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:09:26 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49099C433C7;
-        Mon,  6 Nov 2023 13:09:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25DBED8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:16:03 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6465FC433C8;
+        Mon,  6 Nov 2023 13:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276165;
-        bh=t91FtmvjkprEn8lATo8hHEh51PqFtMhWuO7JeM7wQwE=;
+        s=korg; t=1699276562;
+        bh=5P2xTagrHak8loe2MCy7J8A3FLnxolTd8zb+9zL4ewY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D6lFDdsUyKpvCV/tg9ouyoZ5tGP/oFRzVZVMIfLDnUGW62KrzSSr9MEneZC3uYrxk
-         V51KKjlQ+fimiEsy5w7AN5L51BOw3fvY981jnV7eq9CXgzZhBc+gTxRRwllXuHOKLX
-         KlLPGqdwAFG53L7DXzpEyn9W/u8h3wM+0K1W0xwA=
+        b=y4dwKZOHWqiTkldNDkHxscsL1aP2e/+lJzXOM5LfmoxQGLfOxBL5JDg9pyOpPUAa2
+         4NQRGAZBY6CmD2MgmT6MfY5qMoK40HrPH1q6hSwHHiif3L45SpzeRmI47uwyLoTfSH
+         1pekIDhoZCDq2R+ThA063jFYpomLqCwATM3fGPsE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Wojciech Drewek <wojciech.drewek@intel.com>,
-        Mateusz Palczewski <mateusz.palczewski@intel.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        Arpana Arland <arpanax.arland@intel.com>
-Subject: [PATCH 4.19 12/61] igb: Fix potential memory leak in igb_add_ethtool_nfc_entry
+        patches@lists.linux.dev, Ondrej Zary <linux@zary.sk>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Damien Le Moal <dlemoal@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 14/88] ata: pata_parport: fit3: implement IDE command set registers
 Date:   Mon,  6 Nov 2023 14:03:08 +0100
-Message-ID: <20231106130259.983051542@linuxfoundation.org>
+Message-ID: <20231106130306.321619580@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
-References: <20231106130259.573843228@linuxfoundation.org>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+References: <20231106130305.772449722@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +51,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Palczewski <mateusz.palczewski@intel.com>
+From: Ondrej Zary <linux@zary.sk>
 
-[ Upstream commit 8c0b48e01daba5ca58f939a8425855d3f4f2ed14 ]
+[ Upstream commit 0c1e81d0b5ebd5813536dd5fcf5966ad043f37dc ]
 
-Add check for return of igb_update_ethtool_nfc_entry so that in case
-of any potential errors the memory alocated for input will be freed.
+fit3 protocol driver does not support accessing IDE control registers
+(device control/altstatus). The DOS driver does not use these registers
+either (as observed from DOSEMU trace). But the HW seems to be capable
+of accessing these registers - I simply tried bit 3 and it works!
 
-Fixes: 0e71def25281 ("igb: add support of RX network flow classification")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The control register is required to properly reset ATAPI devices or
+they will be detected only once (after a power cycle).
+
+Tested with EXP Computer CD-865 with MC-1285B EPP cable and
+TransDisk 3000.
+
+Signed-off-by: Ondrej Zary <linux@zary.sk>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ethtool.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/ata/pata_parport/fit3.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ethtool.c b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-index e19fbdf2ff304..f714c85c36c50 100644
---- a/drivers/net/ethernet/intel/igb/igb_ethtool.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ethtool.c
-@@ -2994,11 +2994,15 @@ static int igb_add_ethtool_nfc_entry(struct igb_adapter *adapter,
- 	if (err)
- 		goto err_out_w_lock;
+diff --git a/drivers/ata/pata_parport/fit3.c b/drivers/ata/pata_parport/fit3.c
+index bad7aa920cdca..d2b81cf2e16d2 100644
+--- a/drivers/ata/pata_parport/fit3.c
++++ b/drivers/ata/pata_parport/fit3.c
+@@ -9,11 +9,6 @@
+  *
+  * The TD-2000 and certain older devices use a different protocol.
+  * Try the fit2 protocol module with them.
+- *
+- * NB:  The FIT adapters do not appear to support the control
+- * registers.  So, we map ALT_STATUS to STATUS and NO-OP writes
+- * to the device control register - this means that IDE reset
+- * will not work on these devices.
+  */
  
--	igb_update_ethtool_nfc_entry(adapter, input, input->sw_idx);
-+	err = igb_update_ethtool_nfc_entry(adapter, input, input->sw_idx);
-+	if (err)
-+		goto err_out_input_filter;
+ #include <linux/module.h>
+@@ -37,8 +32,7 @@
  
- 	spin_unlock(&adapter->nfc_lock);
- 	return 0;
+ static void fit3_write_regr(struct pi_adapter *pi, int cont, int regr, int val)
+ {
+-	if (cont == 1)
+-		return;
++	regr += cont << 3;
  
-+err_out_input_filter:
-+	igb_erase_filter(adapter, input);
- err_out_w_lock:
- 	spin_unlock(&adapter->nfc_lock);
- err_out:
+ 	switch (pi->mode) {
+ 	case 0:
+@@ -59,11 +53,7 @@ static int fit3_read_regr(struct pi_adapter *pi, int cont, int regr)
+ {
+ 	int  a, b;
+ 
+-	if (cont) {
+-		if (regr != 6)
+-			return 0xff;
+-		regr = 7;
+-	}
++	regr += cont << 3;
+ 
+ 	switch (pi->mode) {
+ 	case 0:
 -- 
 2.42.0
 
