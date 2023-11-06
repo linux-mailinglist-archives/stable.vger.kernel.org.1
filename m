@@ -2,77 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 409517E2B98
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 19:04:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89F737E2BA8
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 19:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230146AbjKFSEy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 13:04:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54714 "EHLO
+        id S231860AbjKFSJt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 13:09:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229567AbjKFSEy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 13:04:54 -0500
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81634D47;
-        Mon,  6 Nov 2023 10:04:51 -0800 (PST)
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6c3363a2b93so4265175b3a.3;
-        Mon, 06 Nov 2023 10:04:51 -0800 (PST)
+        with ESMTP id S231567AbjKFSJt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 13:09:49 -0500
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D444C6;
+        Mon,  6 Nov 2023 10:09:46 -0800 (PST)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-692c02adeefso4064382b3a.3;
+        Mon, 06 Nov 2023 10:09:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699294186; x=1699898986; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=neBbBkCbikRraB0nQmFPavVUC9R8TAdKlPMHdSdzNw0=;
+        b=Eqcxm1wPSyzDTWB2zBUhMjlOSFyOfC9EQaBSnc1XAMSiHcKRh2oDi/XUOy+xqcAx/y
+         AD8HZJlgGiX6RB+5fcoLnYqFIwzsADRSlRGfucVbn63F7nxiwzFzg6LU5RPVDpDEglFQ
+         8FaEgDa3uhKvkUDmS7pWVF2RuEYig4J+MQyEDHrvnNY4jR+kdb4mU85CAs3E3eeN7PQK
+         TNXDDbfvlia41U2n+ePioFahDbqsk7CwqRGiXxB8Rc6A2iaSSBHrKvvtybmyEnFej0yX
+         aJHlFJkP48E1XqsNTWCc6DN2Ve3Jb3OfwhwRksTYtRH63b4AI20fYLXvtwfgwz5cwlDf
+         myDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699293891; x=1699898691;
+        d=1e100.net; s=20230601; t=1699294186; x=1699898986;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6Hd8uhGvTzF9AgKLCd+Lbl7J9eRzvxUH/L+jeg+epcU=;
-        b=nQsKFyjM7u2xbNggHOlmL3fjwP7ECxIyNhJShyZwF0wx3U3jacvp3qv3DhfrGp6fhU
-         Ki8i3Fs9WBWxDfq2puk0RbE8ruSJHxbUshLOeAK8l8Mh0ZVhHmMMkmj0NZck7jMZQYck
-         6aZdW8koIvm3tCnu/i7k3+ZHW4A+SVu11vId2e/QbIAmYe7EfP9dQ/k48N7LQQyc4+rC
-         YbY2kwdIKnQovonADzmizjhWgxdbpLfmiMmZCTaqY54tbiNPNqa+jQa1GrQ5GFQn5KRR
-         sophQmWnRb1XV7/0SjeKZ7KzX54SQhPQYCKH7wKAAQ6g3l+XJcutE4UPkKoKqrbwdsGQ
-         /lLA==
-X-Gm-Message-State: AOJu0YwOX4kf2f1yglbvkHT3ebPzCEuHRlOzQ7DMlKi4RTNDkG99Xfca
-        QyKOW+coNw4gId0CrsWHfoU=
-X-Google-Smtp-Source: AGHT+IG67a2JGponoHPmNCrlxe2OH3T4lJvGgK8UtvTUsThCl+UbtrEA9Chm1YEYKJhc0HFBHSl80A==
-X-Received: by 2002:a05:6a20:8427:b0:16c:b95c:6d35 with SMTP id c39-20020a056a20842700b0016cb95c6d35mr39820960pzd.50.1699293890807;
-        Mon, 06 Nov 2023 10:04:50 -0800 (PST)
-Received: from ?IPV6:2620:0:1000:8411:ac50:9303:758b:edb9? ([2620:0:1000:8411:ac50:9303:758b:edb9])
-        by smtp.gmail.com with ESMTPSA id z19-20020a63e113000000b005b7e3eddb87sm74212pgh.61.2023.11.06.10.04.45
+        bh=neBbBkCbikRraB0nQmFPavVUC9R8TAdKlPMHdSdzNw0=;
+        b=VLkYdWXTYImvbnruh8W83n7gH3y19E45648/ajJw0woV/q02IJy7FGlx64NKV/1wOt
+         JRlKyE2LFQCn4SCJKzU1BSCVcbffTliXnciYbRLgufzgywuLeJUYPSy77rkgGkHJgOu+
+         Dnw4AkBvcZHeJlwpWS29MzIrUhEaiL9GC05Irvs9MeTsLdD0PiJYegfTQf6gHZa+cduc
+         QHcBxggzm++ks+nY10OcrDf6P6Xm8LDNKrplTPmopXNGagJxYHl4S2XIEG9EQEnUlHyi
+         WgqS5PVap7YJ3C6/ncALTqTVm5M9SLyX1o9b49e6n9VNG1sspeEhbKCbjKxTm+PkdMIp
+         +I1g==
+X-Gm-Message-State: AOJu0Ywse4Y7PiWck+xgKj34ACX4fol7YbdzexeDcHJkplRzU424IBnZ
+        ZfVvZRvzOuGqIIz+M3WEvcE=
+X-Google-Smtp-Source: AGHT+IH3ttiaL+UUmdWm09Np2ElUm26SZPhFEDb3REd7EVTtMMkwUQYDp2QiWdEBTKh1EUnnDWq4rA==
+X-Received: by 2002:a05:6a21:a58d:b0:16e:ab42:9837 with SMTP id gd13-20020a056a21a58d00b0016eab429837mr32603706pzc.29.1699294185720;
+        Mon, 06 Nov 2023 10:09:45 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id f5-20020a056a00238500b006926e3dc2besm5868722pfc.108.2023.11.06.10.09.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Nov 2023 10:04:47 -0800 (PST)
-Message-ID: <c5f9e06f-a098-49d0-9255-7cfc4dd3db10@acm.org>
-Date:   Mon, 6 Nov 2023 10:04:45 -0800
+        Mon, 06 Nov 2023 10:09:44 -0800 (PST)
+Message-ID: <eee1e8a6-ed8d-4667-a2a9-18fb2a636a90@gmail.com>
+Date:   Mon, 6 Nov 2023 10:09:42 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] ufs: core: fix racing issue between ufshcd_mcq_abort
- and ISR
+Subject: Re: [PATCH 6.5 00/88] 6.5.11-rc1 review
 Content-Language: en-US
-To:     peter.wang@mediatek.com, stanley.chu@mediatek.com,
-        linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
-        avri.altman@wdc.com, alim.akhtar@samsung.com, jejb@linux.ibm.com
-Cc:     wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
-        chun-hung.wu@mediatek.com, alice.chao@mediatek.com,
-        cc.chou@mediatek.com, chaotian.jing@mediatek.com,
-        jiajie.hao@mediatek.com, powen.kao@mediatek.com,
-        qilin.tan@mediatek.com, lin.gui@mediatek.com,
-        tun-yu.yu@mediatek.com, eddie.huang@mediatek.com,
-        naomi.chu@mediatek.com, stable@vger.kernel.org
-References: <20231106075117.8995-1-peter.wang@mediatek.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20231106075117.8995-1-peter.wang@mediatek.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20231106130305.772449722@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/5/23 23:51, peter.wang@mediatek.com wrote:
-> If command timeout happen and cq complete irq raise at the same time,
-> ufshcd_mcq_abort null the lprb->cmd and NULL poiner KE in ISR.
-> Below is error log.
+On 11/6/23 05:02, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.11 release.
+> There are 88 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.11-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
+
