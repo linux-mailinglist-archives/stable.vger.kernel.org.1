@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42FF77E259B
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:33:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 840167E253D
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:29:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232804AbjKFNdn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:33:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46456 "EHLO
+        id S232592AbjKFN3x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:29:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232797AbjKFNdm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:33:42 -0500
+        with ESMTP id S232684AbjKFN3w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:29:52 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C737A134
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:33:38 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12227C433C7;
-        Mon,  6 Nov 2023 13:33:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ECFCD8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:29:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34703C433C7;
+        Mon,  6 Nov 2023 13:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277618;
-        bh=+u4AQJUqYfi+6Z/IwIf+Go3jbgnIJsbnMp+9T3DXicc=;
+        s=korg; t=1699277389;
+        bh=1AMQ5NbTl5KrkCX4ZhcwbVzyaKYcBMu5zIQHEWmDIik=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tZegRrhYhLb9KV7LowB73Y4Sdai2JeXmG2DME+h8fyzlmArKe94jyLJifeX2cAS5Z
-         gens56mKUb48LAn0pxKy0gnpQXPk8qEx5m4KUYgPMUSdloM3vfCDYdi/PVHRoAYBdP
-         SLz+zddmYEwxyoZmWtSfGg+0Gqo6vQmtvWHv6gSQ=
+        b=JFekewr0GtJ5NxsEhfnzzgtW4Z4ahVbCd2sdr9ZDI8CE3PXfMegBjGaOkn6Qyf3jn
+         Io80xBhAKGMUl92ySRHKUAK1kDePtG579NCOLyRLjhQ9PDKOewiFLrTXliT//ypPnR
+         Cthh+42xuNKeank80yAZiwM1cNa5UBdt/fRBg81U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Patrick Menschel <menschel.p@posteo.de>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: [PATCH 5.10 79/95] can: isotp: add symbolic error message to isotp_module_init()
+        patches@lists.linux.dev, Siddharth Vadapalli <s-vadapalli@ti.com>,
+        stable <stable@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 5.15 127/128] misc: pci_endpoint_test: Add deviceID for J721S2 PCIe EP device support
 Date:   Mon,  6 Nov 2023 14:04:47 +0100
-Message-ID: <20231106130307.602848917@linuxfoundation.org>
+Message-ID: <20231106130314.943405697@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,36 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrick Menschel <menschel.p@posteo.de>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit 6a5ddae578842652719fb926b22f1d510fe50bee upstream
+commit 8293703a492ae97c86af27c75b76e6239ec86483 upstream.
 
-This patch adds the value of err with format %pe to the already
-existing error message.
+Add DEVICE_ID for J721S2 and enable support for endpoints configured
+with this DEVICE_ID in the pci_endpoint_test driver.
 
-Link: https://lore.kernel.org/r/20210427052150.2308-3-menschel.p@posteo.de
-Signed-off-by: Patrick Menschel <menschel.p@posteo.de>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231020120248.3168406-1-s-vadapalli@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/isotp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/pci_endpoint_test.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -1550,7 +1550,7 @@ static __init int isotp_module_init(void
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -71,6 +71,7 @@
+ #define PCI_DEVICE_ID_TI_AM654			0xb00c
+ #define PCI_DEVICE_ID_TI_J7200			0xb00f
+ #define PCI_DEVICE_ID_TI_AM64			0xb010
++#define PCI_DEVICE_ID_TI_J721S2		0xb013
+ #define PCI_DEVICE_ID_LS1088A			0x80c0
  
- 	err = can_proto_register(&isotp_can_proto);
- 	if (err < 0)
--		pr_err("can: registration of isotp protocol failed\n");
-+		pr_err("can: registration of isotp protocol failed %pe\n", ERR_PTR(err));
- 	else
- 		register_netdevice_notifier(&canisotp_notifier);
- 
+ #define is_am654_pci_dev(pdev)		\
+@@ -1004,6 +1005,9 @@ static const struct pci_device_id pci_en
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM64),
+ 	  .driver_data = (kernel_ulong_t)&j721e_data,
+ 	},
++	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721S2),
++	  .driver_data = (kernel_ulong_t)&j721e_data,
++	},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(pci, pci_endpoint_test_tbl);
 
 
