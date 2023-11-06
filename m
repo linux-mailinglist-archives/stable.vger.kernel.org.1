@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 680C47E2545
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A3CD7E2507
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232690AbjKFNaO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:30:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50628 "EHLO
+        id S232631AbjKFN1d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:27:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232686AbjKFNaN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:13 -0500
+        with ESMTP id S232623AbjKFN1c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:32 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 666BA92
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC215C433C8;
-        Mon,  6 Nov 2023 13:30:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DFE1112
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:29 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0D7C433C7;
+        Mon,  6 Nov 2023 13:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277410;
-        bh=1hS7jEiam26d5O/oFif5t8ZOeUEgiAbbEgeewhNN8tA=;
+        s=korg; t=1699277249;
+        bh=DxS0NwQMuyasrl3oUC8HQ/rwCfPD8BGvUzL/QSN4qJo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ly5VKgGmvY9iI6CwVRp3+HMC8xA3navGWEk0GAhDI5NxIFfr/JZejRqNFXlz4Phdi
-         Giqyp1dZ6+epfG7qj1G4T8rgEEQpca4yrxpVATQKC03EeA/MMhipw+V+KwFMPHt5pX
-         ULr3cECo5CROnKhB1EVB8AQoKv0byz96iY2eNNdI=
+        b=1GVyvjkeab7QSNT1JNHm943D7TW7d2ioKaQS051lTS+G2XMenD74RGAlXe/tEwH5U
+         bgDXxGoJE4thR/Zw+ylWRsAbtQvuuVxqtUdJihbfX9kG6a1kqz4kgDO1oCacG5Xlcb
+         FxTzKxfAT3DsiV5Ju3C+T+/nVrhiJDb3NC0Au8Ww=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 13/95] neighbour: fix various data-races
+        patches@lists.linux.dev, David Lazar <dlazar@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 5.15 061/128] x86/i8259: Skip probing when ACPI/MADT advertises PCAT compatibility
 Date:   Mon,  6 Nov 2023 14:03:41 +0100
-Message-ID: <20231106130305.210556004@linuxfoundation.org>
+Message-ID: <20231106130311.864169684@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,180 +51,146 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit a9beb7e81bcb876615e1fbb3c07f3f9dba69831f ]
+commit 128b0c9781c9f2651bea163cb85e52a6c7be0f9e upstream.
 
-1) tbl->gc_thresh1, tbl->gc_thresh2, tbl->gc_thresh3 and tbl->gc_interval
-   can be written from sysfs.
+David and a few others reported that on certain newer systems some legacy
+interrupts fail to work correctly.
 
-2) tbl->last_flush is read locklessly from neigh_alloc()
+Debugging revealed that the BIOS of these systems leaves the legacy PIC in
+uninitialized state which makes the PIC detection fail and the kernel
+switches to a dummy implementation.
 
-3) tbl->proxy_queue.qlen is read locklessly from neightbl_fill_info()
+Unfortunately this fallback causes quite some code to fail as it depends on
+checks for the number of legacy PIC interrupts or the availability of the
+real PIC.
 
-4) neightbl_fill_info() reads cpu stats that can be changed concurrently.
+In theory there is no reason to use the PIC on any modern system when
+IO/APIC is available, but the dependencies on the related checks cannot be
+resolved trivially and on short notice. This needs lots of analysis and
+rework.
 
-Fixes: c7fb64db001f ("[NETLINK]: Neighbour table configuration and statistics via rtnetlink")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231019122104.1448310-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The PIC detection has been added to avoid quirky checks and force selection
+of the dummy implementation all over the place, especially in VM guest
+scenarios. So it's not an option to revert the relevant commit as that
+would break a lot of other scenarios.
+
+One solution would be to try to initialize the PIC on detection fail and
+retry the detection, but that puts the burden on everything which does not
+have a PIC.
+
+Fortunately the ACPI/MADT table header has a flag field, which advertises
+in bit 0 that the system is PCAT compatible, which means it has a legacy
+8259 PIC.
+
+Evaluate that bit and if set avoid the detection routine and keep the real
+PIC installed, which then gets initialized (for nothing) and makes the rest
+of the code with all the dependencies work again.
+
+Fixes: e179f6914152 ("x86, irq, pic: Probe for legacy PIC and set legacy_pic appropriately")
+Reported-by: David Lazar <dlazar@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: David Lazar <dlazar@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218003
+Link: https://lore.kernel.org/r/875y2u5s8g.ffs@tglx
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/neighbour.c | 67 +++++++++++++++++++++++---------------------
- 1 file changed, 35 insertions(+), 32 deletions(-)
+ arch/x86/include/asm/i8259.h |    2 ++
+ arch/x86/kernel/acpi/boot.c  |    3 +++
+ arch/x86/kernel/i8259.c      |   38 ++++++++++++++++++++++++++++++--------
+ 3 files changed, 35 insertions(+), 8 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 15267428c4f83..4c43183a8d93a 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -224,7 +224,8 @@ bool neigh_remove_one(struct neighbour *ndel, struct neigh_table *tbl)
+--- a/arch/x86/include/asm/i8259.h
++++ b/arch/x86/include/asm/i8259.h
+@@ -69,6 +69,8 @@ struct legacy_pic {
+ 	void (*make_irq)(unsigned int irq);
+ };
  
- static int neigh_forced_gc(struct neigh_table *tbl)
- {
--	int max_clean = atomic_read(&tbl->gc_entries) - tbl->gc_thresh2;
-+	int max_clean = atomic_read(&tbl->gc_entries) -
-+			READ_ONCE(tbl->gc_thresh2);
- 	unsigned long tref = jiffies - 5 * HZ;
- 	struct neighbour *n, *tmp;
- 	int shrunk = 0;
-@@ -253,7 +254,7 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- 		}
- 	}
- 
--	tbl->last_flush = jiffies;
-+	WRITE_ONCE(tbl->last_flush, jiffies);
- 
- 	write_unlock_bh(&tbl->lock);
- 
-@@ -409,17 +410,17 @@ static struct neighbour *neigh_alloc(struct neigh_table *tbl,
- {
- 	struct neighbour *n = NULL;
- 	unsigned long now = jiffies;
--	int entries;
-+	int entries, gc_thresh3;
- 
- 	if (exempt_from_gc)
- 		goto do_alloc;
- 
- 	entries = atomic_inc_return(&tbl->gc_entries) - 1;
--	if (entries >= tbl->gc_thresh3 ||
--	    (entries >= tbl->gc_thresh2 &&
--	     time_after(now, tbl->last_flush + 5 * HZ))) {
--		if (!neigh_forced_gc(tbl) &&
--		    entries >= tbl->gc_thresh3) {
-+	gc_thresh3 = READ_ONCE(tbl->gc_thresh3);
-+	if (entries >= gc_thresh3 ||
-+	    (entries >= READ_ONCE(tbl->gc_thresh2) &&
-+	     time_after(now, READ_ONCE(tbl->last_flush) + 5 * HZ))) {
-+		if (!neigh_forced_gc(tbl) && entries >= gc_thresh3) {
- 			net_info_ratelimited("%s: neighbor table overflow!\n",
- 					     tbl->id);
- 			NEIGH_CACHE_STAT_INC(tbl, table_fulls);
-@@ -902,13 +903,14 @@ static void neigh_periodic_work(struct work_struct *work)
- 
- 	if (time_after(jiffies, tbl->last_rand + 300 * HZ)) {
- 		struct neigh_parms *p;
--		tbl->last_rand = jiffies;
++void legacy_pic_pcat_compat(void);
 +
-+		WRITE_ONCE(tbl->last_rand, jiffies);
- 		list_for_each_entry(p, &tbl->parms_list, list)
- 			p->reachable_time =
- 				neigh_rand_reach_time(NEIGH_VAR(p, BASE_REACHABLE_TIME));
+ extern struct legacy_pic *legacy_pic;
+ extern struct legacy_pic null_legacy_pic;
+ 
+--- a/arch/x86/kernel/acpi/boot.c
++++ b/arch/x86/kernel/acpi/boot.c
+@@ -139,6 +139,9 @@ static int __init acpi_parse_madt(struct
+ 		pr_debug("Local APIC address 0x%08x\n", madt->address);
  	}
  
--	if (atomic_read(&tbl->entries) < tbl->gc_thresh1)
-+	if (atomic_read(&tbl->entries) < READ_ONCE(tbl->gc_thresh1))
- 		goto out;
++	if (madt->flags & ACPI_MADT_PCAT_COMPAT)
++		legacy_pic_pcat_compat();
++
+ 	default_acpi_madt_oem_check(madt->header.oem_id,
+ 				    madt->header.oem_table_id);
  
- 	for (i = 0 ; i < (1 << nht->hash_shift); i++) {
-@@ -2055,15 +2057,16 @@ static int neightbl_fill_info(struct sk_buff *skb, struct neigh_table *tbl,
- 	ndtmsg->ndtm_pad2   = 0;
+--- a/arch/x86/kernel/i8259.c
++++ b/arch/x86/kernel/i8259.c
+@@ -32,6 +32,7 @@
+  */
+ static void init_8259A(int auto_eoi);
  
- 	if (nla_put_string(skb, NDTA_NAME, tbl->id) ||
--	    nla_put_msecs(skb, NDTA_GC_INTERVAL, tbl->gc_interval, NDTA_PAD) ||
--	    nla_put_u32(skb, NDTA_THRESH1, tbl->gc_thresh1) ||
--	    nla_put_u32(skb, NDTA_THRESH2, tbl->gc_thresh2) ||
--	    nla_put_u32(skb, NDTA_THRESH3, tbl->gc_thresh3))
-+	    nla_put_msecs(skb, NDTA_GC_INTERVAL, READ_ONCE(tbl->gc_interval),
-+			  NDTA_PAD) ||
-+	    nla_put_u32(skb, NDTA_THRESH1, READ_ONCE(tbl->gc_thresh1)) ||
-+	    nla_put_u32(skb, NDTA_THRESH2, READ_ONCE(tbl->gc_thresh2)) ||
-+	    nla_put_u32(skb, NDTA_THRESH3, READ_ONCE(tbl->gc_thresh3)))
- 		goto nla_put_failure;
- 	{
- 		unsigned long now = jiffies;
--		long flush_delta = now - tbl->last_flush;
--		long rand_delta = now - tbl->last_rand;
-+		long flush_delta = now - READ_ONCE(tbl->last_flush);
-+		long rand_delta = now - READ_ONCE(tbl->last_rand);
- 		struct neigh_hash_table *nht;
- 		struct ndt_config ndc = {
- 			.ndtc_key_len		= tbl->key_len,
-@@ -2071,7 +2074,7 @@ static int neightbl_fill_info(struct sk_buff *skb, struct neigh_table *tbl,
- 			.ndtc_entries		= atomic_read(&tbl->entries),
- 			.ndtc_last_flush	= jiffies_to_msecs(flush_delta),
- 			.ndtc_last_rand		= jiffies_to_msecs(rand_delta),
--			.ndtc_proxy_qlen	= tbl->proxy_queue.qlen,
-+			.ndtc_proxy_qlen	= READ_ONCE(tbl->proxy_queue.qlen),
- 		};
++static bool pcat_compat __ro_after_init;
+ static int i8259A_auto_eoi;
+ DEFINE_RAW_SPINLOCK(i8259A_lock);
  
- 		rcu_read_lock_bh();
-@@ -2094,17 +2097,17 @@ static int neightbl_fill_info(struct sk_buff *skb, struct neigh_table *tbl,
- 			struct neigh_statistics	*st;
+@@ -301,15 +302,32 @@ static void unmask_8259A(void)
  
- 			st = per_cpu_ptr(tbl->stats, cpu);
--			ndst.ndts_allocs		+= st->allocs;
--			ndst.ndts_destroys		+= st->destroys;
--			ndst.ndts_hash_grows		+= st->hash_grows;
--			ndst.ndts_res_failed		+= st->res_failed;
--			ndst.ndts_lookups		+= st->lookups;
--			ndst.ndts_hits			+= st->hits;
--			ndst.ndts_rcv_probes_mcast	+= st->rcv_probes_mcast;
--			ndst.ndts_rcv_probes_ucast	+= st->rcv_probes_ucast;
--			ndst.ndts_periodic_gc_runs	+= st->periodic_gc_runs;
--			ndst.ndts_forced_gc_runs	+= st->forced_gc_runs;
--			ndst.ndts_table_fulls		+= st->table_fulls;
-+			ndst.ndts_allocs		+= READ_ONCE(st->allocs);
-+			ndst.ndts_destroys		+= READ_ONCE(st->destroys);
-+			ndst.ndts_hash_grows		+= READ_ONCE(st->hash_grows);
-+			ndst.ndts_res_failed		+= READ_ONCE(st->res_failed);
-+			ndst.ndts_lookups		+= READ_ONCE(st->lookups);
-+			ndst.ndts_hits			+= READ_ONCE(st->hits);
-+			ndst.ndts_rcv_probes_mcast	+= READ_ONCE(st->rcv_probes_mcast);
-+			ndst.ndts_rcv_probes_ucast	+= READ_ONCE(st->rcv_probes_ucast);
-+			ndst.ndts_periodic_gc_runs	+= READ_ONCE(st->periodic_gc_runs);
-+			ndst.ndts_forced_gc_runs	+= READ_ONCE(st->forced_gc_runs);
-+			ndst.ndts_table_fulls		+= READ_ONCE(st->table_fulls);
- 		}
+ static int probe_8259A(void)
+ {
++	unsigned char new_val, probe_val = ~(1 << PIC_CASCADE_IR);
+ 	unsigned long flags;
+-	unsigned char probe_val = ~(1 << PIC_CASCADE_IR);
+-	unsigned char new_val;
++
++	/*
++	 * If MADT has the PCAT_COMPAT flag set, then do not bother probing
++	 * for the PIC. Some BIOSes leave the PIC uninitialized and probing
++	 * fails.
++	 *
++	 * Right now this causes problems as quite some code depends on
++	 * nr_legacy_irqs() > 0 or has_legacy_pic() == true. This is silly
++	 * when the system has an IO/APIC because then PIC is not required
++	 * at all, except for really old machines where the timer interrupt
++	 * must be routed through the PIC. So just pretend that the PIC is
++	 * there and let legacy_pic->init() initialize it for nothing.
++	 *
++	 * Alternatively this could just try to initialize the PIC and
++	 * repeat the probe, but for cases where there is no PIC that's
++	 * just pointless.
++	 */
++	if (pcat_compat)
++		return nr_legacy_irqs();
++
+ 	/*
+-	 * Check to see if we have a PIC.
+-	 * Mask all except the cascade and read
+-	 * back the value we just wrote. If we don't
+-	 * have a PIC, we will read 0xff as opposed to the
+-	 * value we wrote.
++	 * Check to see if we have a PIC.  Mask all except the cascade and
++	 * read back the value we just wrote. If we don't have a PIC, we
++	 * will read 0xff as opposed to the value we wrote.
+ 	 */
+ 	raw_spin_lock_irqsave(&i8259A_lock, flags);
  
- 		if (nla_put_64bit(skb, NDTA_STATS, sizeof(ndst), &ndst,
-@@ -2328,16 +2331,16 @@ static int neightbl_set(struct sk_buff *skb, struct nlmsghdr *nlh,
- 		goto errout_tbl_lock;
+@@ -431,5 +449,9 @@ static int __init i8259A_init_ops(void)
  
- 	if (tb[NDTA_THRESH1])
--		tbl->gc_thresh1 = nla_get_u32(tb[NDTA_THRESH1]);
-+		WRITE_ONCE(tbl->gc_thresh1, nla_get_u32(tb[NDTA_THRESH1]));
- 
- 	if (tb[NDTA_THRESH2])
--		tbl->gc_thresh2 = nla_get_u32(tb[NDTA_THRESH2]);
-+		WRITE_ONCE(tbl->gc_thresh2, nla_get_u32(tb[NDTA_THRESH2]));
- 
- 	if (tb[NDTA_THRESH3])
--		tbl->gc_thresh3 = nla_get_u32(tb[NDTA_THRESH3]);
-+		WRITE_ONCE(tbl->gc_thresh3, nla_get_u32(tb[NDTA_THRESH3]));
- 
- 	if (tb[NDTA_GC_INTERVAL])
--		tbl->gc_interval = nla_get_msecs(tb[NDTA_GC_INTERVAL]);
-+		WRITE_ONCE(tbl->gc_interval, nla_get_msecs(tb[NDTA_GC_INTERVAL]));
- 
- 	err = 0;
- 
--- 
-2.42.0
-
+ 	return 0;
+ }
+-
+ device_initcall(i8259A_init_ops);
++
++void __init legacy_pic_pcat_compat(void)
++{
++	pcat_compat = true;
++}
 
 
