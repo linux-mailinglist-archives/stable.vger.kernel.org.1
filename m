@@ -2,45 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A997E23A5
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:13:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2434B7E230A
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:08:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232119AbjKFNNV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:13:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55212 "EHLO
+        id S231918AbjKFNIL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:08:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232143AbjKFNNU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:13:20 -0500
+        with ESMTP id S231755AbjKFNIK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:08:10 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12905BD
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:13:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B16C433C7;
-        Mon,  6 Nov 2023 13:13:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49A0FBF
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:08:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B56EC433C8;
+        Mon,  6 Nov 2023 13:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276397;
-        bh=JPPBXpuMUTHBKNmF8y51W47G8EiCRq+uPiHpHM7gmiw=;
+        s=korg; t=1699276086;
+        bh=CEAJR28lGuJn4Ms7WsTN29GW2G5m+kdlO7JDR0G10zo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YUNQ/7atD4vvKTbCZqTo09mVhwjNOYqqKD9hjAaPxvgnhh2bXYCgslMaE85DPD586
-         KlqjldB30bw7dy9SBrbbBAVX+WVEmsMXSZgQEtGAyVgYZz8UNMG8fhU7Y6le/GkjnC
-         Q5XXrf6VT8cTAu8flR5U2fmiJkTu3CuF3o/F0TLo=
+        b=MGdWDsADLuaUZqmqXKlWLfGQUE+ybj61EWvhLflJ6sNcKJ4X+3FEI07E4JRATzvWP
+         xAzEVHS7hs8OOM9YX0pyqJ3phpFLs/FwcPvcfpNACJ876LG8k3x0etnEN9aM+aNy6t
+         hvOM9pc5DV/eOx96xTuOFppTaDOp09h4iNOnpMfQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Deucher <Alexander.Deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Luben Tuikov <luben.tuikov@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 28/62] gpu/drm: Eliminate DRM_SCHED_PRIORITY_UNSET
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Daniel Starke <daniel.starke@siemens.com>
+Subject: [PATCH 6.6 16/30] tty: n_gsm: fix race condition in status line change on dead connections
 Date:   Mon,  6 Nov 2023 14:03:34 +0100
-Message-ID: <20231106130302.835019973@linuxfoundation.org>
+Message-ID: <20231106130258.514617627@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
-References: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -52,60 +49,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luben Tuikov <luben.tuikov@amd.com>
+From: Daniel Starke <daniel.starke@siemens.com>
 
-[ Upstream commit fa8391ad68c16716e2c06ada397e99ceed2fb647 ]
+commit 3a75b205de43365f80a33b98ec9289785da56243 upstream.
 
-Eliminate DRM_SCHED_PRIORITY_UNSET, value of -2, whose only user was
-amdgpu. Furthermore, eliminate an index bug, in that when amdgpu boots, it
-calls drm_sched_entity_init() with DRM_SCHED_PRIORITY_UNSET, which uses it to
-index sched->sched_rq[].
+gsm_cleanup_mux() cleans up the gsm by closing all DLCIs, stopping all
+timers, removing the virtual tty devices and clearing the data queues.
+This procedure, however, may cause subsequent changes of the virtual modem
+status lines of a DLCI. More data is being added the outgoing data queue
+and the deleted kick timer is restarted to handle this. At this point many
+resources have already been removed by the cleanup procedure. Thus, a
+kernel panic occurs.
 
-Cc: Alex Deucher <Alexander.Deucher@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Signed-off-by: Luben Tuikov <luben.tuikov@amd.com>
-Acked-by: Alex Deucher <Alexander.Deucher@amd.com>
-Link: https://lore.kernel.org/r/20231017035656.8211-2-luben.tuikov@amd.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by proving in gsm_modem_update() that the cleanup procedure has
+not been started and the mux is still alive.
+
+Note that writing to a virtual tty is already protected by checks against
+the DLCI specific connection state.
+
+Fixes: c568f7086c6e ("tty: n_gsm: fix missing timer to handle stalled links")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Daniel Starke <daniel.starke@siemens.com>
+Link: https://lore.kernel.org/r/20231026055844.3127-1-daniel.starke@siemens.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c | 3 ++-
- include/drm/gpu_scheduler.h             | 3 +--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/n_gsm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
-index fdbeafda4e80a..1ed2142a6e7bf 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
-@@ -64,7 +64,8 @@ amdgpu_ctx_to_drm_sched_prio(int32_t ctx_prio)
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -4108,6 +4108,8 @@ static int gsm_modem_upd_via_msc(struct
+ 
+ static int gsm_modem_update(struct gsm_dlci *dlci, u8 brk)
  {
- 	switch (ctx_prio) {
- 	case AMDGPU_CTX_PRIORITY_UNSET:
--		return DRM_SCHED_PRIORITY_UNSET;
-+		pr_warn_once("AMD-->DRM context priority value UNSET-->NORMAL");
-+		return DRM_SCHED_PRIORITY_NORMAL;
- 
- 	case AMDGPU_CTX_PRIORITY_VERY_LOW:
- 		return DRM_SCHED_PRIORITY_MIN;
-diff --git a/include/drm/gpu_scheduler.h b/include/drm/gpu_scheduler.h
-index 2ae4fd62e01c4..17e7e3145a058 100644
---- a/include/drm/gpu_scheduler.h
-+++ b/include/drm/gpu_scheduler.h
-@@ -55,8 +55,7 @@ enum drm_sched_priority {
- 	DRM_SCHED_PRIORITY_HIGH,
- 	DRM_SCHED_PRIORITY_KERNEL,
- 
--	DRM_SCHED_PRIORITY_COUNT,
--	DRM_SCHED_PRIORITY_UNSET = -2
-+	DRM_SCHED_PRIORITY_COUNT
- };
- 
- /**
--- 
-2.42.0
-
++	if (dlci->gsm->dead)
++		return -EL2HLT;
+ 	if (dlci->adaption == 2) {
+ 		/* Send convergence layer type 2 empty data frame. */
+ 		gsm_modem_upd_via_data(dlci, brk);
 
 
