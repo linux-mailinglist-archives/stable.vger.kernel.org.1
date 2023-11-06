@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B584B7E2548
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:30:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF897E250E
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:27:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232697AbjKFNaX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:30:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40454 "EHLO
+        id S232626AbjKFN1r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:27:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232035AbjKFNaW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:30:22 -0500
+        with ESMTP id S232628AbjKFN1q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:27:46 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37625D8
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:30:19 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76658C433C8;
-        Mon,  6 Nov 2023 13:30:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE4AFD8
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:27:43 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F144C433C7;
+        Mon,  6 Nov 2023 13:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699277418;
-        bh=lqrHdQfQqa5vSGxH53KgvflLLjtGg5y/UjPuiO1Ru5w=;
+        s=korg; t=1699277263;
+        bh=2Kvl9NCzCFudjfr91Z2b2H/YwcsThy08fi6K6yTyeMY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nahXkh5+CqlGrYT7zKxYFPXzHsFHH5ruUwvg7i6C6fdTSkpSvcbNs6eLPVGYn17yY
-         zO/79gUP607r1lHOwBbR0z31kv946j1Mkh+v9Vyt2RVoH8WiTyD8DyzIr3IDty7Sft
-         0S1pYuLQoujYfDnMALcIv2nZO8emKHRiOIF8+h/0=
+        b=Tndw2fLK3iwMYL8zw7WRUGr6zVnaw0ezzy9GPcFQXSXhYvnlCTBgQx2JA8uoeizM1
+         roKOLymVzCFAhisVXY0FsmPDQMgmFAeVSp7JzhbHxmwG5ja+MYL0Y4A5FzkJJfsFJm
+         rih92JOzRI+TkY8asek1v4MIGXOmw5UTuNjVKEZc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shigeru Yoshida <syoshida@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>,
-        syzbot+c74c24b43c9ae534f0e0@syzkaller.appspotmail.com,
-        syzbot+2c97a98a5ba9ea9c23bd@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 16/95] net: usb: smsc95xx: Fix uninit-value access in smsc95xx_read_reg
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 064/128] ext4: add two helper functions extent_logical_end() and pa_logical_end()
 Date:   Mon,  6 Nov 2023 14:03:44 +0100
-Message-ID: <20231106130305.325151516@linuxfoundation.org>
+Message-ID: <20231106130312.009272711@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+References: <20231106130309.112650042@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,107 +50,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 51a32e828109b4a209efde44505baa356b37a4ce ]
+commit 43bbddc067883d94de7a43d5756a295439fbe37d upstream.
 
-syzbot reported the following uninit-value access issue [1]:
+When we use lstart + len to calculate the end of free extent or prealloc
+space, it may exceed the maximum value of 4294967295(0xffffffff) supported
+by ext4_lblk_t and cause overflow, which may lead to various problems.
 
-smsc95xx 1-1:0.0 (unnamed net_device) (uninitialized): Failed to read reg index 0x00000030: -32
-smsc95xx 1-1:0.0 (unnamed net_device) (uninitialized): Error reading E2P_CMD
-=====================================================
-BUG: KMSAN: uninit-value in smsc95xx_reset+0x409/0x25f0 drivers/net/usb/smsc95xx.c:896
- smsc95xx_reset+0x409/0x25f0 drivers/net/usb/smsc95xx.c:896
- smsc95xx_bind+0x9bc/0x22e0 drivers/net/usb/smsc95xx.c:1131
- usbnet_probe+0x100b/0x4060 drivers/net/usb/usbnet.c:1750
- usb_probe_interface+0xc75/0x1210 drivers/usb/core/driver.c:396
- really_probe+0x506/0xf40 drivers/base/dd.c:658
- __driver_probe_device+0x2a7/0x5d0 drivers/base/dd.c:800
- driver_probe_device+0x72/0x7b0 drivers/base/dd.c:830
- __device_attach_driver+0x55a/0x8f0 drivers/base/dd.c:958
- bus_for_each_drv+0x3ff/0x620 drivers/base/bus.c:457
- __device_attach+0x3bd/0x640 drivers/base/dd.c:1030
- device_initial_probe+0x32/0x40 drivers/base/dd.c:1079
- bus_probe_device+0x3d8/0x5a0 drivers/base/bus.c:532
- device_add+0x16ae/0x1f20 drivers/base/core.c:3622
- usb_set_configuration+0x31c9/0x38c0 drivers/usb/core/message.c:2207
- usb_generic_driver_probe+0x109/0x2a0 drivers/usb/core/generic.c:238
- usb_probe_device+0x290/0x4a0 drivers/usb/core/driver.c:293
- really_probe+0x506/0xf40 drivers/base/dd.c:658
- __driver_probe_device+0x2a7/0x5d0 drivers/base/dd.c:800
- driver_probe_device+0x72/0x7b0 drivers/base/dd.c:830
- __device_attach_driver+0x55a/0x8f0 drivers/base/dd.c:958
- bus_for_each_drv+0x3ff/0x620 drivers/base/bus.c:457
- __device_attach+0x3bd/0x640 drivers/base/dd.c:1030
- device_initial_probe+0x32/0x40 drivers/base/dd.c:1079
- bus_probe_device+0x3d8/0x5a0 drivers/base/bus.c:532
- device_add+0x16ae/0x1f20 drivers/base/core.c:3622
- usb_new_device+0x15f6/0x22f0 drivers/usb/core/hub.c:2589
- hub_port_connect drivers/usb/core/hub.c:5440 [inline]
- hub_port_connect_change drivers/usb/core/hub.c:5580 [inline]
- port_event drivers/usb/core/hub.c:5740 [inline]
- hub_event+0x53bc/0x7290 drivers/usb/core/hub.c:5822
- process_one_work kernel/workqueue.c:2630 [inline]
- process_scheduled_works+0x104e/0x1e70 kernel/workqueue.c:2703
- worker_thread+0xf45/0x1490 kernel/workqueue.c:2784
- kthread+0x3e8/0x540 kernel/kthread.c:388
- ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:304
+Therefore, we add two helper functions, extent_logical_end() and
+pa_logical_end(), to limit the type of end to loff_t, and also convert
+lstart to loff_t for calculation to avoid overflow.
 
-Local variable buf.i225 created at:
- smsc95xx_read_reg drivers/net/usb/smsc95xx.c:90 [inline]
- smsc95xx_reset+0x203/0x25f0 drivers/net/usb/smsc95xx.c:892
- smsc95xx_bind+0x9bc/0x22e0 drivers/net/usb/smsc95xx.c:1131
-
-CPU: 1 PID: 773 Comm: kworker/1:2 Not tainted 6.6.0-rc1-syzkaller-00125-ge42bebf6db29 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
-Workqueue: usb_hub_wq hub_event
-=====================================================
-
-Similar to e9c65989920f ("net: usb: smsc75xx: Fix uninit-value access in
-__smsc75xx_read_reg"), this issue is caused because usbnet_read_cmd() reads
-less bytes than requested (zero byte in the reproducer). In this case,
-'buf' is not properly filled.
-
-This patch fixes the issue by returning -ENODATA if usbnet_read_cmd() reads
-less bytes than requested.
-
-sysbot reported similar uninit-value access issue [2]. The root cause is
-the same as mentioned above, and this patch addresses it as well.
-
-Fixes: 2f7ca802bdae ("net: Add SMSC LAN9500 USB2.0 10/100 ethernet adapter driver")
-Reported-and-tested-by: syzbot+c74c24b43c9ae534f0e0@syzkaller.appspotmail.com
-Reported-and-tested-by: syzbot+2c97a98a5ba9ea9c23bd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c74c24b43c9ae534f0e0 [1]
-Closes: https://syzkaller.appspot.com/bug?extid=2c97a98a5ba9ea9c23bd [2]
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Link: https://lore.kernel.org/r/20230724121059.11834-2-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/smsc95xx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/ext4/mballoc.c |    7 +++----
+ fs/ext4/mballoc.h |   14 ++++++++++++++
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 9297f2078fd2c..569be01700aa1 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -86,7 +86,9 @@ static int __must_check __smsc95xx_read_reg(struct usbnet *dev, u32 index,
- 	ret = fn(dev, USB_VENDOR_REQUEST_READ_REGISTER, USB_DIR_IN
- 		 | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
- 		 0, index, &buf, 4);
--	if (ret < 0) {
-+	if (ret < 4) {
-+		ret = ret < 0 ? ret : -ENODATA;
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -4079,7 +4079,7 @@ ext4_mb_normalize_request(struct ext4_al
+ 
+ 	/* first, let's learn actual file size
+ 	 * given current request is allocated */
+-	size = ac->ac_o_ex.fe_logical + EXT4_C2B(sbi, ac->ac_o_ex.fe_len);
++	size = extent_logical_end(sbi, &ac->ac_o_ex);
+ 	size = size << bsbits;
+ 	if (size < i_size_read(ac->ac_inode))
+ 		size = i_size_read(ac->ac_inode);
+@@ -4419,8 +4419,7 @@ ext4_mb_use_preallocated(struct ext4_all
+ 		/* all fields in this condition don't change,
+ 		 * so we can skip locking for them */
+ 		if (ac->ac_o_ex.fe_logical < pa->pa_lstart ||
+-		    ac->ac_o_ex.fe_logical >= (pa->pa_lstart +
+-					       EXT4_C2B(sbi, pa->pa_len)))
++		    ac->ac_o_ex.fe_logical >= pa_logical_end(sbi, pa))
+ 			continue;
+ 
+ 		/* non-extent files can't have physical blocks past 2^32 */
+@@ -5241,7 +5240,7 @@ static void ext4_mb_group_or_file(struct
+ 
+ 	group_pa_eligible = sbi->s_mb_group_prealloc > 0;
+ 	inode_pa_eligible = true;
+-	size = ac->ac_o_ex.fe_logical + EXT4_C2B(sbi, ac->ac_o_ex.fe_len);
++	size = extent_logical_end(sbi, &ac->ac_o_ex);
+ 	isize = (i_size_read(ac->ac_inode) + ac->ac_sb->s_blocksize - 1)
+ 		>> bsbits;
+ 
+--- a/fs/ext4/mballoc.h
++++ b/fs/ext4/mballoc.h
+@@ -219,6 +219,20 @@ static inline ext4_fsblk_t ext4_grp_offs
+ 		(fex->fe_start << EXT4_SB(sb)->s_cluster_bits);
+ }
+ 
++static inline loff_t extent_logical_end(struct ext4_sb_info *sbi,
++					struct ext4_free_extent *fex)
++{
++	/* Use loff_t to avoid end exceeding ext4_lblk_t max. */
++	return (loff_t)fex->fe_logical + EXT4_C2B(sbi, fex->fe_len);
++}
 +
- 		if (ret != -ENODEV)
- 			netdev_warn(dev->net, "Failed to read reg index 0x%08x: %d\n",
- 				    index, ret);
--- 
-2.42.0
-
++static inline loff_t pa_logical_end(struct ext4_sb_info *sbi,
++				    struct ext4_prealloc_space *pa)
++{
++	/* Use loff_t to avoid end exceeding ext4_lblk_t max. */
++	return (loff_t)pa->pa_lstart + EXT4_C2B(sbi, pa->pa_len);
++}
++
+ typedef int (*ext4_mballoc_query_range_fn)(
+ 	struct super_block		*sb,
+ 	ext4_group_t			agno,
 
 
