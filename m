@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56FE67E242C
-	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73B3B7E23D5
+	for <lists+stable@lfdr.de>; Mon,  6 Nov 2023 14:15:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231970AbjKFNTH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 08:19:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59844 "EHLO
+        id S232224AbjKFNPK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 08:15:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232319AbjKFNTG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:19:06 -0500
+        with ESMTP id S232050AbjKFNPJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 08:15:09 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 240FAEA
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:19:04 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64B3CC433C8;
-        Mon,  6 Nov 2023 13:19:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0D21A9
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 05:15:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01374C433C7;
+        Mon,  6 Nov 2023 13:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1699276743;
-        bh=/15aIqyeJFNo0X5tCUafy/N2Q6N/4tVXWv24UiPCeWA=;
+        s=korg; t=1699276506;
+        bh=AG6wSL99LncfQM4JWiLnJ+Zdd5kYkGSmmqq4wuvybII=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U6MxwVDbK49EF8+eEsnZ5q2/hViaO/3m56G6/jPFANpj/jFqmNhVTExMHUYnYojcA
-         RZ6aLkrTvnHh8jtt7rY4oTriQUThVxV3+2jlxufvOrZTToi9ZWx/hssNtN52I4cJYJ
-         oUxv7ZQZgF2BwsIfwRPxvBbAwvTeyPhtbRSSMnBY=
+        b=ivYbZ+Az/fkXXsx6RC3j9BW10/elkuTt8b8+NJLAuU/vQHlATukr2mlx624vz0Gm/
+         AjQkmvMEM5z5mmasMVg3iXkvAYe3TUP4VOeNDemg2TMYPL/f7zpFCwtclO+J+krN4N
+         7nxHVM63NVzyKlvNrgnf3wU8Bqp6+HlGqkvnvdGU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jisheng Zhang <jszhang@kernel.org>,
-        Drew Fustini <dfustini@baylibre.com>,
-        Guo Ren <guoren@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        patches@lists.linux.dev, Stephane Eranian <eranian@google.com>,
+        Ian Rogers <irogers@google.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Yang Jihong <yangjihong1@huawei.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Namhyung Kim <namhyung@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 53/88] riscv: dts: thead: set dma-noncoherent to soc bus
+Subject: [PATCH 6.1 41/62] perf evlist: Avoid frequency mode for the dummy event
 Date:   Mon,  6 Nov 2023 14:03:47 +0100
-Message-ID: <20231106130307.779341093@linuxfoundation.org>
+Message-ID: <20231106130303.289386319@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
-References: <20231106130305.772449722@linuxfoundation.org>
+In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+References: <20231106130301.807965064@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +54,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 759426c758c7053a941a4c06c7571461439fcff6 ]
+[ Upstream commit f9cdeb58a9cf46c09b56f5f661ea8da24b6458c3 ]
 
-riscv select ARCH_DMA_DEFAULT_COHERENT by default, and th1520 isn't
-dma coherent, so set dma-noncoherent to reflect this fact.
+Dummy events are created with an attribute where the period and freq
+are zero. evsel__config will then see the uninitialized values and
+initialize them in evsel__default_freq_period. As fequency mode is
+used by default the dummy event would be set to use frequency
+mode. However, this has no effect on the dummy event but does cause
+unnecessary timers/interrupts. Avoid this overhead by setting the
+period to 1 for dummy events.
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Tested-by: Drew Fustini <dfustini@baylibre.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+evlist__add_aux_dummy calls evlist__add_dummy then sets freq=0 and
+period=1. This isn't necessary after this change and so the setting is
+removed.
+
+>From Stephane:
+
+The dummy event is not counting anything. It is used to collect mmap
+records and avoid a race condition during the synthesize mmap phase of
+perf record. As such, it should not cause any overhead during active
+profiling. Yet, it did. Because of a bug the dummy event was
+programmed as a sampling event in frequency mode. Events in that mode
+incur more kernel overheads because on timer tick, the kernel has to
+look at the number of samples for each event and potentially adjust
+the sampling period to achieve the desired frequency. The dummy event
+was therefore adding a frequency event to task and ctx contexts we may
+otherwise not have any, e.g.,
+
+  perf record -a -e cpu/event=0x3c,period=10000000/.
+
+On each timer tick the perf_adjust_freq_unthr_context() is invoked and
+if ctx->nr_freq is non-zero, then the kernel will loop over ALL the
+events of the context looking for frequency mode ones. In doing, so it
+locks the context, and enable/disable the PMU of each hw event. If all
+the events of the context are in period mode, the kernel will have to
+traverse the list for nothing incurring overhead. The overhead is
+multiplied by a very large factor when this happens in a guest kernel.
+There is no need for the dummy event to be in frequency mode, it does
+not count anything and therefore should not cause extra overhead for
+no reason.
+
+Fixes: 5bae0250237f ("perf evlist: Introduce perf_evlist__new_dummy constructor")
+Reported-by: Stephane Eranian <eranian@google.com>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Yang Jihong <yangjihong1@huawei.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Link: https://lore.kernel.org/r/20230916035640.1074422-1-irogers@google.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/boot/dts/thead/th1520.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ tools/perf/util/evlist.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/boot/dts/thead/th1520.dtsi b/arch/riscv/boot/dts/thead/th1520.dtsi
-index 56a73134b49e6..58108f0eb3fdc 100644
---- a/arch/riscv/boot/dts/thead/th1520.dtsi
-+++ b/arch/riscv/boot/dts/thead/th1520.dtsi
-@@ -139,6 +139,7 @@
- 		interrupt-parent = <&plic>;
- 		#address-cells = <2>;
- 		#size-cells = <2>;
-+		dma-noncoherent;
- 		ranges;
+--- a/tools/perf/util/evlist.c
++++ b/tools/perf/util/evlist.c
+@@ -252,6 +252,9 @@ static struct evsel *evlist__dummy_event
+ 		.type	= PERF_TYPE_SOFTWARE,
+ 		.config = PERF_COUNT_SW_DUMMY,
+ 		.size	= sizeof(attr), /* to capture ABI version */
++		/* Avoid frequency mode for dummy events to avoid associated timers. */
++		.freq = 0,
++		.sample_period = 1,
+ 	};
  
- 		plic: interrupt-controller@ffd8000000 {
--- 
-2.42.0
-
+ 	return evsel__new_idx(&attr, evlist->core.nr_entries);
+@@ -278,8 +281,6 @@ struct evsel *evlist__add_aux_dummy(stru
+ 	evsel->core.attr.exclude_kernel = 1;
+ 	evsel->core.attr.exclude_guest = 1;
+ 	evsel->core.attr.exclude_hv = 1;
+-	evsel->core.attr.freq = 0;
+-	evsel->core.attr.sample_period = 1;
+ 	evsel->core.system_wide = system_wide;
+ 	evsel->no_aux_samples = true;
+ 	evsel->name = strdup("dummy:u");
 
 
