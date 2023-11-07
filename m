@@ -2,113 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC88F7E4893
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:47:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0001E7E48BC
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:51:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230204AbjKGSrE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 13:47:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49364 "EHLO
+        id S234981AbjKGSvJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Tue, 7 Nov 2023 13:51:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229664AbjKGSrD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:47:03 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C49116;
-        Tue,  7 Nov 2023 10:47:01 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B57CC433C7;
-        Tue,  7 Nov 2023 18:47:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1699382821;
-        bh=X6MiCrmaQSffaeWkUqmapfxGtVb0LGtIk+OXqYrUql0=;
-        h=Date:To:From:Subject:From;
-        b=fPz16O+668XKhD4gP95YVaWJzWirh8Lge0gTFGeQtBO/OoyJmFXH7jIuVSwayKBYJ
-         3VBNvO5IB95MbtnUXWYnCaR5BP4DaskBSVQM4Zdf16MyKKGpm0PVjGLO6KZQdPDVQ5
-         o49hrv32w7P4BXnCzy9mCbAtI1he9jzGHcn0Zd6s=
-Date:   Tue, 07 Nov 2023 10:47:00 -0800
-To:     mm-commits@vger.kernel.org, willy@infradead.org,
-        stable@vger.kernel.org, shakeelb@google.com, cl@linux.com,
-        roman.gushchin@linux.dev, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231107184701.4B57CC433C7@smtp.kernel.org>
+        with ESMTP id S234969AbjKGSvI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:51:08 -0500
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC64299;
+        Tue,  7 Nov 2023 10:51:06 -0800 (PST)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5a82f176860so72250917b3.1;
+        Tue, 07 Nov 2023 10:51:06 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699383065; x=1699987865;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Zo2CIx1raepgvOnpR/3U87T9vjTq67Lepg+WhUeVktg=;
+        b=c3jv4BMD3eFCmXRUCFuQR4wOfOGUhg2C0gNCMYWPIoWhqYi1N3IrAcOTSJmh4MOTEM
+         aJvIpXMXfTI+7aN4oQsjDS1teevGTd1cL4Om4qyKIu90gaZn1RTlh1nsriYKZ0awTPr/
+         CvSpTlYTpRm59knEX/m8p1A4hrpbvHb/DuDDPlMIVvHKxvW07lrlTyD/MAc3kB3ZCfwL
+         ViQdDRX3LWMLItkOMlvwxSHD19bpNMb7ylqIPoX7H/JIVSbuuu5wuPZeOuOBwakia/c0
+         /Y4r8574ff7yZXyRzp0TMMbkmP69VSqT6H3RoBBCfn+0c+7XlCRkXTUMjIAsTHuuri0U
+         horw==
+X-Gm-Message-State: AOJu0YySRk4OJ56OrUfOv9iW78aHri8fr1AqSR9PXf5hGWNSwgnnzQKc
+        Co+FcH5Y0JO9bw09GKJaRyUjN7BQKjZiMw==
+X-Google-Smtp-Source: AGHT+IEa3m70HLSR2443dJmQvoFAF6d3QbBgIpVtG1/pi5KU/4OOblVJ5w3bxxmVUjhnsb3n93cpkg==
+X-Received: by 2002:a0d:ea43:0:b0:595:e1b:b978 with SMTP id t64-20020a0dea43000000b005950e1bb978mr14304338ywe.21.1699383065677;
+        Tue, 07 Nov 2023 10:51:05 -0800 (PST)
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
+        by smtp.gmail.com with ESMTPSA id v202-20020a8148d3000000b005a7bbd713ddsm5860358ywa.108.2023.11.07.10.51.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Nov 2023 10:51:05 -0800 (PST)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-5a81ab75f21so72211987b3.2;
+        Tue, 07 Nov 2023 10:51:05 -0800 (PST)
+X-Received: by 2002:a0d:ebc5:0:b0:5a7:aa54:42b1 with SMTP id
+ u188-20020a0debc5000000b005a7aa5442b1mr14354385ywe.28.1699383064754; Tue, 07
+ Nov 2023 10:51:04 -0800 (PST)
+MIME-Version: 1.0
+References: <20231107121837.3759358-1-sashal@kernel.org> <20231107121837.3759358-34-sashal@kernel.org>
+In-Reply-To: <20231107121837.3759358-34-sashal@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 7 Nov 2023 19:50:52 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXWBzM41KjWCVRTmncJa=e2degFqXpRG0M7jE+s-Rkysw@mail.gmail.com>
+Message-ID: <CAMuHMdXWBzM41KjWCVRTmncJa=e2degFqXpRG0M7jE+s-Rkysw@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.6 34/40] arm64: dts: renesas: r8a779f0: spider:
+ Enable PCIe Host ch0
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        magnus.damm@gmail.com, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Hi Sasha,
 
-The patch titled
-     Subject: mm: kmem: drop __GFP_NOFAIL when allocating objcg vectors
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail.patch
+On Tue, Nov 7, 2023 at 1:21 PM Sasha Levin <sashal@kernel.org> wrote:
+> From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+>
+> [ Upstream commit c588e1c9846b32182fd5a0ceb637b983810e7100 ]
+>
+> Enable PCIe Host controller channel 0 on R-Car S4-8 Spider board.
+>
+> Since this board has an Oculink connector, CLKREQ# pin of PFC for PCIe
+> should not be used. So, using a GPIO is used to output the clock instead.
+> Otherwise the controller cannot detect a PCIe device.
+>
+> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Link: https://lore.kernel.org/r/20230905012404.2915246-3-yoshihiro.shimoda.uh@renesas.com
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail.patch
+Thanks for your patch!
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> --- a/arch/arm64/boot/dts/renesas/r8a779f0-spider-cpu.dtsi
+> +++ b/arch/arm64/boot/dts/renesas/r8a779f0-spider-cpu.dtsi
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+> @@ -145,6 +157,18 @@ &mmc0 {
+>         status = "okay";
+>  };
+>
+> +&pcie0_clkref {
+> +       compatible = "gpio-gate-clock";
+> +       clocks = <&rc21012_pci>;
+> +       enable-gpios = <&gpio2 15 GPIO_ACTIVE_LOW>;
+> +       /delete-property/ clock-frequency;
+> +};
+> +
+> +&pciec0 {
+> +       reset-gpio = <&gpio_exp_20 0 GPIO_ACTIVE_LOW>;
+> +       status = "okay";
+> +};
+> +
+>  &pfc {
+>         pinctrl-0 = <&scif_clk_pins>;
+>         pinctrl-names = "default";
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+These references have a hard dependency on commit 183a709d3719e5c9
+("arm64: dts: renesas: r8a779f0: Add PCIe Host and Endpoint nodes")
+in v6.6+ (i.e. v6.7-rc1 soon).
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+To actually work, this has a soft (runtime) dependency on commit
+0d0c551011df4519 ("PCI: rcar-gen4: Add R-Car Gen4 PCIe controller
+support for host mode") in v6.6+.
 
-------------------------------------------------------
-From: Roman Gushchin <roman.gushchin@linux.dev>
-Subject: mm: kmem: drop __GFP_NOFAIL when allocating objcg vectors
-Date: Tue, 7 Nov 2023 09:18:02 -0800
+Gr{oetje,eeting}s,
 
-Objcg vectors attached to slab pages to store slab object ownership
-information are allocated using gfp flags for the original slab
-allocation.  Depending on slab page order and the size of slab objects,
-objcg vector can take several pages.
+                        Geert
 
-If the original allocation was done with the __GFP_NOFAIL flag, it
-triggered a warning in the page allocation code.  Indeed, order > 1 pages
-should not been allocated with the __GFP_NOFAIL flag.
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-Fix this by simply dropping the __GFP_NOFAIL flag when allocating the
-objcg vector.  It effectively allows to skip the accounting of a single
-slab object under a heavy memory pressure.
-
-An alternative would be to implement the mechanism to fallback to order-0
-allocations for accounting metadata, which is also not perfect because it
-will increase performance penalty and memory footprint of the kernel
-memory accounting under memory pressure.
-
-Link: https://lkml.kernel.org/r/ZUp8ZFGxwmCx4ZFr@P9FQF9L96D.corp.robot.car
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Reported-by: Christoph Lameter <cl@linux.com>
-Closes: https://lkml.kernel.org/r/6b42243e-f197-600a-5d22-56bd728a5ad8@gentwo.org
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memcontrol.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/mm/memcontrol.c~cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail
-+++ a/mm/memcontrol.c
-@@ -2936,7 +2936,8 @@ void mem_cgroup_commit_charge(struct fol
-  * Moreover, it should not come from DMA buffer and is not readily
-  * reclaimable. So those GFP bits should be masked off.
-  */
--#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | __GFP_ACCOUNT)
-+#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | \
-+				 __GFP_ACCOUNT | __GFP_NOFAIL)
- 
- /*
-  * mod_objcg_mlstate() may be called with irq enabled, so
-_
-
-Patches currently in -mm which might be from roman.gushchin@linux.dev are
-
-cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail.patch
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
