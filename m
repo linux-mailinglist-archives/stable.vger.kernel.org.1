@@ -2,79 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A6B77E4996
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 21:08:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 596CA7E49C0
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 21:21:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235024AbjKGUIJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 15:08:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52320 "EHLO
+        id S235495AbjKGUVv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 15:21:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235145AbjKGUII (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 15:08:08 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A49FFD7E;
-        Tue,  7 Nov 2023 12:08:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=u01JIqVzaSf8TF8G4BYOMmURcC23GrYXwrlghebzjfQ=; b=CI7nr3Mdn1TfJDk6UKyDLm5nec
-        het5KZgVo64urTH2eiMoc6tK4DwIIR9kc+R78QDpAdMOOU2qxnNiyJ/DegmZFq+O1bQfZoYFpaHr6
-        Hhfx+QIq8PGImFUefq6+UPK4PQ2yAfZP5xT8UVGRG0dDAHAmAkhoDKSl9K+8WkWNTSXKmKVHje1qw
-        Rt4DzJEoBRBUmqK0rt/gPohq1y709lkgz021U0mCSOZrPQgPY2OMnKklxAK0wwLCSPYleAy8jMtBW
-        JJcS4ywoBxVvM/EkHeCuQ/s/Z2bPLHWdxbyC0l02vHMzI8ar/OaM9RNGrWgqIm2m0AJjtxR4IsPh/
-        O4KeMOTg==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1r0SMh-00EHv8-LH; Tue, 07 Nov 2023 20:07:59 +0000
-Date:   Tue, 7 Nov 2023 20:07:59 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Johannes Weiner <hannes@cmpxchg.org>
+        with ESMTP id S235502AbjKGUV3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 15:21:29 -0500
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AB471727
+        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 12:20:59 -0800 (PST)
+Received: by mail-qk1-x735.google.com with SMTP id af79cd13be357-778a47bc09aso404305985a.3
+        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 12:20:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1699388458; x=1699993258; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=hSdfUIdEj0JA4xAkLjr8iNFR7V/inKgzjZ3p1JC+wVI=;
+        b=wbTGB4vXh45h82huHIt/7BpA/ApT3oOCzdgFWO0nJsdiffpoag2wBNSp+bjLqGo7aO
+         uznIXl5OzHlQd9s9F/XawbHziOP5ivXaHQugrXXGG69ypLt7ug+B0o9Okyvsa6078/pF
+         KKIma+wLrPZGeDiGaYou882zt625KPE/kgdwLbpMJJ1iZIbgxWr+ApURdRfFc1jMj0sY
+         dM2AP4Ie1pdnj5UdkMez2tCx75oOic72fdWapsOhjUPZRpNCBCHv75fI76NmWBt9ZSco
+         ow2h8RobhB2PfSl1kQxO0MmiS9OaI7Md59Nff3NHuAvnJzaJ9j8gRFz4WKhQHtAnmNyS
+         1IFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699388458; x=1699993258;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hSdfUIdEj0JA4xAkLjr8iNFR7V/inKgzjZ3p1JC+wVI=;
+        b=SdrxKDMeGjzBk5kU1RQ+RdQJohw/Kij+CAsxLZuiActR6ibFfuuYD/gpDb1GuGJTjJ
+         nL5+KGy34Cc5/Do4FDSdaTW+UT7UuJhTDpD4gHTD9cpPUrcfLeqF2iPmZssEbBur0LFH
+         gMGeY4Q+9EpvDCROColTUKBtSRJV6FqZm0moFIhYxVIqCzEnmUpnw58N7H2Wyt38UoRT
+         K4KVL93EOwWyJAGz5wyejNjy3gJYjLmmn5bmVY/+7uKtw8GfwRqaJKa+nFKhq+Y3Dzg6
+         dJWlVsVD+K7L0hrFmJmspdUTcIAdMctpxeEx5gO9vOq5EfeoJm+JlUOFDHi9UwiEFaDE
+         GBEg==
+X-Gm-Message-State: AOJu0YxK8E1mMBUALvAK8K9tO35VkJWs8pcS6UNdJfTFBXAdOaOkbBso
+        ++KlGi6+yX+HxOFHz5k3YGSR+A==
+X-Google-Smtp-Source: AGHT+IGAqZDGsu4Irs+7ieqmt9vQpahnugUEkyICW5wIB+nND391lD3smddVlqQSiC/XBVJyLF9xcA==
+X-Received: by 2002:a05:620a:459f:b0:772:64cb:bc64 with SMTP id bp31-20020a05620a459f00b0077264cbbc64mr36515549qkb.12.1699388458324;
+        Tue, 07 Nov 2023 12:20:58 -0800 (PST)
+Received: from localhost ([2620:10d:c091:400::5:86b7])
+        by smtp.gmail.com with ESMTPSA id o4-20020a05620a228400b007678973eaa1sm245681qkh.127.2023.11.07.12.20.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Nov 2023 12:20:58 -0800 (PST)
+Date:   Tue, 7 Nov 2023 15:20:57 -0500
+From:   Johannes Weiner <hannes@cmpxchg.org>
+To:     Matthew Wilcox <willy@infradead.org>
 Cc:     Stefan Roesch <shr@devkernel.io>, kernel-team@fb.com,
         akpm@linux-foundation.org, riel@surriel.com,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         stable@vger.kernel.org
 Subject: Re: [PATCH v2] mm: Fix for negative counter: nr_file_hugepages
-Message-ID: <ZUqZH2jUgrYeCY3z@casper.infradead.org>
+Message-ID: <20231107202057.GA3798394@cmpxchg.org>
 References: <20231107181805.4188397-1-shr@devkernel.io>
  <ZUqRia1Ww0+wNfKr@casper.infradead.org>
  <20231107200616.GA3797353@cmpxchg.org>
+ <ZUqZH2jUgrYeCY3z@casper.infradead.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231107200616.GA3797353@cmpxchg.org>
+In-Reply-To: <ZUqZH2jUgrYeCY3z@casper.infradead.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Nov 07, 2023 at 03:06:16PM -0500, Johannes Weiner wrote:
-> On Tue, Nov 07, 2023 at 07:35:37PM +0000, Matthew Wilcox wrote:
-> > On Tue, Nov 07, 2023 at 10:18:05AM -0800, Stefan Roesch wrote:
-> > > +++ b/mm/huge_memory.c
-> > > @@ -2740,7 +2740,7 @@ int split_huge_page_to_list(struct page *page, struct list_head *list)
-> > >  			if (folio_test_swapbacked(folio)) {
-> > >  				__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS,
-> > >  							-nr);
-> > > -			} else {
-> > > +			} else if (folio_test_pmd_mappable(folio)) {
-> > >  				__lruvec_stat_mod_folio(folio, NR_FILE_THPS,
-> > >  							-nr);
-> > >  				filemap_nr_thps_dec(mapping);
+On Tue, Nov 07, 2023 at 08:07:59PM +0000, Matthew Wilcox wrote:
+> On Tue, Nov 07, 2023 at 03:06:16PM -0500, Johannes Weiner wrote:
+> > On Tue, Nov 07, 2023 at 07:35:37PM +0000, Matthew Wilcox wrote:
+> > > On Tue, Nov 07, 2023 at 10:18:05AM -0800, Stefan Roesch wrote:
+> > > > +++ b/mm/huge_memory.c
+> > > > @@ -2740,7 +2740,7 @@ int split_huge_page_to_list(struct page *page, struct list_head *list)
+> > > >  			if (folio_test_swapbacked(folio)) {
+> > > >  				__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS,
+> > > >  							-nr);
+> > > > -			} else {
+> > > > +			} else if (folio_test_pmd_mappable(folio)) {
+> > > >  				__lruvec_stat_mod_folio(folio, NR_FILE_THPS,
+> > > >  							-nr);
+> > > >  				filemap_nr_thps_dec(mapping);
+> > > 
+> > > As I said, we also need the folio_test_pmd_mappable() for swapbacked.
+> > > Not because there's currently a problem, but because we don't leave
+> > > landmines for other people to trip over in future!
 > > 
-> > As I said, we also need the folio_test_pmd_mappable() for swapbacked.
-> > Not because there's currently a problem, but because we don't leave
-> > landmines for other people to trip over in future!
+> > Do we need to fix filemap_unaccount_folio() as well?
 > 
-> Do we need to fix filemap_unaccount_folio() as well?
+> Looks to me like it is already correct?
+> 
+>         __lruvec_stat_mod_folio(folio, NR_FILE_PAGES, -nr);
+>         if (folio_test_swapbacked(folio)) {
+>                 __lruvec_stat_mod_folio(folio, NR_SHMEM, -nr);
+>                 if (folio_test_pmd_mappable(folio))
+>                         __lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, -nr);
+>         } else if (folio_test_pmd_mappable(folio)) {
+>                 __lruvec_stat_mod_folio(folio, NR_FILE_THPS, -nr);
+>                 filemap_nr_thps_dec(mapping);
+>         }
 
-Looks to me like it is already correct?
-
-        __lruvec_stat_mod_folio(folio, NR_FILE_PAGES, -nr);
-        if (folio_test_swapbacked(folio)) {
-                __lruvec_stat_mod_folio(folio, NR_SHMEM, -nr);
-                if (folio_test_pmd_mappable(folio))
-                        __lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, -nr);
-        } else if (folio_test_pmd_mappable(folio)) {
-                __lruvec_stat_mod_folio(folio, NR_FILE_THPS, -nr);
-                filemap_nr_thps_dec(mapping);
-        }
-
+Argh, I overlooked it because it's nested further in due to that
+NR_SHMEM update. Sorry about the noise.
