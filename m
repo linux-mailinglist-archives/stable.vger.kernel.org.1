@@ -2,132 +2,82 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01D887E31D0
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 01:00:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35A807E31E2
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 01:02:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233417AbjKGAAi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 19:00:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56094 "EHLO
+        id S232702AbjKGACp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 19:02:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233242AbjKGAAg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 19:00:36 -0500
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E494BB
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 16:00:33 -0800 (PST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6bd32d1a040so5396491b3a.3
-        for <stable@vger.kernel.org>; Mon, 06 Nov 2023 16:00:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1699315233; x=1699920033; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9SxHcJHXQ0Dgu/1LSV/bZ2Cmouuh15UgwvxxZf23/GE=;
-        b=Fg8IxiPHgClq5gddwW56nUKr9WjyiaYICR5LmF59h+UY9CE4YKZLzeKY4R3YEanS1Z
-         LFdMQYhr4KSfgtU94qHpT22ifIwiASpsaUiOM5+zYMP0f9ornSz60hZvebXEGqsWlwIm
-         NwTfSQTQ1QidMmMjuj8FfhACy4mqLeCacxpzA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699315233; x=1699920033;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9SxHcJHXQ0Dgu/1LSV/bZ2Cmouuh15UgwvxxZf23/GE=;
-        b=WnQxYjHK6wltCqbEEQNiMg2RE2TixmPaJXfronaU7nOYE64+GfZAyimxvx37p2kxoN
-         ehUaSPVSPM1jRQAEkajIooFEFmJNfblfAGWnTZ9BjNj8MhAf/Y5CFKzaUWlZwmUFiBfl
-         V87dmocDVc1y5qcM90OOJ7PEMKcqXtVa+QpOPIbwucCLwcMjfKsM9bPfp8cslSkNsc+t
-         LuuHUTGmrQ6c6SVbnWvIdUevZp44jk+BAkA7xikBdnJVnf6PeJY5/gxDW5Oz/nrdgd+x
-         rrH1r1Oly34l5LyxlhsArB+m5dOcTrofS3O2kdjtT8YQjZCZi3GpKyn4LidgBFUJz5wg
-         bwYg==
-X-Gm-Message-State: AOJu0YwRNCP1YiIZM8RASVOrYcvnK8kwjUbEwoBUbGH1zywkAKb8+b2G
-        LLJ1WfBEnvIKvMQ63F04Wfu9qw==
-X-Google-Smtp-Source: AGHT+IFvlKS7Uvykt7O+bbNdoVgvYg4+eR6RPh+t8uzDcjfXFvTO0Lwdmdsd5sV2bYvJc17zl3Giyg==
-X-Received: by 2002:a05:6a21:790b:b0:181:125:e85c with SMTP id bg11-20020a056a21790b00b001810125e85cmr23690070pzc.53.1699315232986;
-        Mon, 06 Nov 2023 16:00:32 -0800 (PST)
-Received: from hsinyi.sjc.corp.google.com ([2620:15c:9d:2:586c:80a1:e007:beb9])
-        by smtp.gmail.com with ESMTPSA id fw11-20020a17090b128b00b00268b439a0cbsm5852866pjb.23.2023.11.06.16.00.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Nov 2023 16:00:32 -0800 (PST)
-From:   Hsin-Yi Wang <hsinyi@chromium.org>
-To:     Douglas Anderson <dianders@chromium.org>
-Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH v5 4/4] drm/panel-edp: Avoid adding multiple preferred modes
-Date:   Mon,  6 Nov 2023 15:51:35 -0800
-Message-ID: <20231107000023.2928195-5-hsinyi@chromium.org>
-X-Mailer: git-send-email 2.42.0.869.gea05f2083d-goog
-In-Reply-To: <20231107000023.2928195-1-hsinyi@chromium.org>
-References: <20231107000023.2928195-1-hsinyi@chromium.org>
+        with ESMTP id S233065AbjKGACp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 19:02:45 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF15BBD
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 16:02:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699315362; x=1730851362;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=gp5r3p/XTnH6qbBi+PCSpiyOPORNXNSYNdbb/idgBt4=;
+  b=oKW52hfszmvM22Mtm7dh+OZJBe1ftUB5F4b/jAmGxhLkDGoAefi2jwzO
+   4yO/OdXuXoYmoVfIyRokNaFT0eoh8zfp7eJLKrIwmZO+Cco5gxID8Pett
+   dHgIojwC5xVlPGOCgen3hn8V04EYWO3WiZc7fk0ZE3SeeiX8iiPNpM6nI
+   LcXnzlb+FaG4BCd7cmNmBCuoam7+fUqxMREsWqZubz1R8sw07mSlME3rM
+   pLK/PwUU5bs5Mi0Xu41+9k46VUQ5FgucgeRnLRz5YQ9ppQR6pFQ1ANdGE
+   US9zBznRK5nG1iQkv/BcKxrWXt5l84RFOMbol8k40EMOvur9LtjtXs5d/
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10886"; a="10937574"
+X-IronPort-AV: E=Sophos;i="6.03,282,1694761200"; 
+   d="scan'208";a="10937574"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2023 16:02:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10886"; a="1009691221"
+X-IronPort-AV: E=Sophos;i="6.03,282,1694761200"; 
+   d="scan'208";a="1009691221"
+Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
+  by fmsmga006.fm.intel.com with ESMTP; 06 Nov 2023 16:02:41 -0800
+Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1r09YF-0006pX-0H;
+        Tue, 07 Nov 2023 00:02:39 +0000
+Date:   Tue, 7 Nov 2023 08:02:04 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Hsin-Yi Wang <hsinyi@chromium.org>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v5 4/4] drm/panel-edp: Avoid adding multiple preferred
+ modes
+Message-ID: <ZUl+fCE187+bU4E2@dccdf558eea4>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231107000023.2928195-5-hsinyi@chromium.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-If a non generic edp-panel is under aux-bus, the mode read from edid would
-still be selected as preferred and results in multiple preferred modes,
-which is ambiguous.
+Hi,
 
-If both hard-coded mode and edid exists, only add mode from hard-coded.
+Thanks for your patch.
 
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
----
-v4->v5: remove inapplicable comments.
----
- drivers/gpu/drm/panel/panel-edp.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index c0c24d94c3a0..006939cc3fee 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -589,6 +589,7 @@ static int panel_edp_get_modes(struct drm_panel *panel,
- {
- 	struct panel_edp *p = to_panel_edp(panel);
- 	int num = 0;
-+	bool has_hard_coded_modes = p->desc->num_timings || p->desc->num_modes;
- 	bool has_override_edid_mode = p->detected_panel &&
- 				      p->detected_panel != ERR_PTR(-EINVAL) &&
- 				      p->detected_panel->override_edid_mode;
-@@ -599,7 +600,11 @@ static int panel_edp_get_modes(struct drm_panel *panel,
- 
- 		if (!p->edid)
- 			p->edid = drm_get_edid(connector, p->ddc);
--		if (p->edid) {
-+		/*
-+		 * If both edid and hard-coded modes exists, skip edid modes to
-+		 * avoid multiple preferred modes.
-+		 */
-+		if (p->edid && !has_hard_coded_modes) {
- 			if (has_override_edid_mode) {
- 				/*
- 				 * override_edid_mode is specified. Use
-@@ -616,12 +621,7 @@ static int panel_edp_get_modes(struct drm_panel *panel,
- 		pm_runtime_put_autosuspend(panel->dev);
- 	}
- 
--	/*
--	 * Add hard-coded panel modes. Don't call this if there are no timings
--	 * and no modes (the generic edp-panel case) because it will clobber
--	 * the display_info that was already set by drm_add_edid_modes().
--	 */
--	if (p->desc->num_timings || p->desc->num_modes)
-+	if (has_hard_coded_modes)
- 		num += panel_edp_get_non_edid_modes(p, connector);
- 	else if (!num)
- 		dev_warn(p->base.dev, "No display modes\n");
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v5 4/4] drm/panel-edp: Avoid adding multiple preferred modes
+Link: https://lore.kernel.org/stable/20231107000023.2928195-5-hsinyi%40chromium.org
+
 -- 
-2.42.0.869.gea05f2083d-goog
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
