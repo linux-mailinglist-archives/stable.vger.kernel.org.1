@@ -2,97 +2,164 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0BE57E4643
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 17:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 992467E44FB
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 17:00:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234940AbjKGQlD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 11:41:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44252 "EHLO
+        id S229506AbjKGQAR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 11:00:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235089AbjKGQk6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 11:40:58 -0500
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6A1B19AF
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 07:51:34 -0800 (PST)
-Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-7a9447c828aso3374639f.1
-        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 07:51:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1699372294; x=1699977094; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LAzxkP10OQDM9YOWOWaJJRML05AHefjemOIWQGzk+qI=;
-        b=NXD+GXMygJbxokOI9+pUGnO4C9RUv1da8ZVPhePattmiJrKqbAeCt0sCuGtXKEJ8E1
-         n2Prvim4rXxGJuhqPhucPB9eesKfuYVzePKIo6ifTMn0L4fmq3x723ChpW1dXwQyigt8
-         qqjyYn93pZt4YxNGkrOKSCPRWAYaewDscE70M=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699372294; x=1699977094;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LAzxkP10OQDM9YOWOWaJJRML05AHefjemOIWQGzk+qI=;
-        b=jMxUZVuk6iADJ+Qfj2rP0AJTHQCKfczhPtnbKSA+BMMcFgza7EvSs7E9GI688eGElu
-         Tz9FlBFujA+w2e1cJ+d4LgSrWnCWbIL3hyuc/0Yn4xE+NOLtVWJwRamuMjDFZx4xtaWh
-         ToCcIAH57pcpjPTATtgDNaWszvzqrfjCwuPPh33/3KkVjuSicyPkukMqn4Wi5Go4vnQb
-         tUHFFsi4B3IWkKkZisBLemXPIc4bVC9BBrNuvwV/uEbb1ua6b4weM2ItzA0OtlVjdZqH
-         qU9gH00dkpdQHMgUa+NQw+kOn5NW7Z0rV6hHWeRUDK5vWUYkzHCiR8eSy3xczsDPEsVM
-         oogA==
-X-Gm-Message-State: AOJu0YwP9axgPXMygA7DPAXrzfhfArRKcAZOkqu2B/wBqKbvSH1BXkgN
-        0jZdLA3Gpa1i/RHVHIoWIvCQ+A==
-X-Google-Smtp-Source: AGHT+IGv36r+ShQUykCndJzyqw+Ib+370gxiK90Ut8FZCZBzlh3wm4c/To1ndWM2b46rlfXQKkxINA==
-X-Received: by 2002:a5e:a80c:0:b0:792:8011:22f with SMTP id c12-20020a5ea80c000000b007928011022fmr36342555ioa.0.1699372294206;
-        Tue, 07 Nov 2023 07:51:34 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id m8-20020a6b7f48000000b007a278f16881sm2899101ioq.42.2023.11.07.07.51.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Nov 2023 07:51:33 -0800 (PST)
-Message-ID: <ae5bf8c4-23b8-43cc-b6bb-ce89076fef4c@linuxfoundation.org>
-Date:   Tue, 7 Nov 2023 08:51:32 -0700
+        with ESMTP id S1344824AbjKGP7n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 10:59:43 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C97B7EF3;
+        Tue,  7 Nov 2023 07:52:53 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA14C433C8;
+        Tue,  7 Nov 2023 15:52:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699372373;
+        bh=L1B1zDFGVSaiCHf6gca5X0oMN9K/Qx4nc9jrzS+4t2A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=IKMJwYC/+492ktq5jXnhJSh8qF/R4yyRj1ezvOzKESN4oAuEH+1Yzo86CvIMsbphV
+         Vam1nknPECC7yXu9Yep0DoJqLczRioHRUGzfwG9QHqloDS4+WEBr+xxsgULmzizRG3
+         +9VAijXqBznPyuf9g9TUrREgB543hEa+x4Ty5ORdPBgUjD7+TchX8f7srSeuD/7V/U
+         qY7jxCGDxx8FDeFDw51mjUj4mMoMSCszm6sHmF+8CMCys9ydMS8LpRGmF1Dv0qT6n5
+         P5vdPsnYWWuo5pXVtyebUnMmifwuny8sgB8ZbxZNewPQSEJkEDAD46uY6btlxA8RhT
+         4pG626ZYEWoQQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, lgirdwood@gmail.com,
+        perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 01/16] ASoC: soc-card: Add storage for PCI SSID
+Date:   Tue,  7 Nov 2023 10:52:20 -0500
+Message-ID: <20231107155249.3768098-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 00/74] 5.4.260-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <20231106130301.687882731@linuxfoundation.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.10.199
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/6/23 06:03, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.260 release.
-> There are 74 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.260-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-Compiled and booted on my test system. No dmesg regressions.
+[ Upstream commit 47f56e38a199bd45514b8e0142399cba4feeaf1a ]
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+Add members to struct snd_soc_card to store the PCI subsystem ID (SSID)
+of the soundcard.
 
-thanks,
--- Shuah
+The PCI specification provides two registers to store a vendor-specific
+SSID that can be read by drivers to uniquely identify a particular
+"soundcard". This is defined in the PCI specification to distinguish
+products that use the same silicon (and therefore have the same silicon
+ID) so that product-specific differences can be applied.
+
+PCI only defines 0xFFFF as an invalid value. 0x0000 is not defined as
+invalid. So the usual pattern of zero-filling the struct and then
+assuming a zero value unset will not work. A flag is included to
+indicate when the SSID information has been filled in.
+
+Unlike DMI information, which has a free-format entirely up to the vendor,
+the PCI SSID has a strictly defined format and a registry of vendor IDs.
+
+It is usual in Windows drivers that the SSID is used as the sole identifier
+of the specific end-product and the Windows driver contains tables mapping
+that to information about the hardware setup, rather than using ACPI
+properties.
+
+This SSID is important information for ASoC components that need to apply
+hardware-specific configuration on PCI-based systems.
+
+As the SSID is a generic part of the PCI specification and is treated as
+identifying the "soundcard", it is reasonable to include this information
+in struct snd_soc_card, instead of components inventing their own custom
+ways to pass this information around.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230912163207.3498161-2-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/sound/soc-card.h | 37 +++++++++++++++++++++++++++++++++++++
+ include/sound/soc.h      | 11 +++++++++++
+ 2 files changed, 48 insertions(+)
+
+diff --git a/include/sound/soc-card.h b/include/sound/soc-card.h
+index 4f2cc4fb56b7f..9a5429260ece5 100644
+--- a/include/sound/soc-card.h
++++ b/include/sound/soc-card.h
+@@ -40,6 +40,43 @@ int snd_soc_card_add_dai_link(struct snd_soc_card *card,
+ void snd_soc_card_remove_dai_link(struct snd_soc_card *card,
+ 				  struct snd_soc_dai_link *dai_link);
+ 
++#ifdef CONFIG_PCI
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++	card->pci_subsystem_vendor = vendor;
++	card->pci_subsystem_device = device;
++	card->pci_subsystem_set = true;
++}
++
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	if (!card->pci_subsystem_set)
++		return -ENOENT;
++
++	*vendor = card->pci_subsystem_vendor;
++	*device = card->pci_subsystem_device;
++
++	return 0;
++}
++#else /* !CONFIG_PCI */
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++}
++
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	return -ENOENT;
++}
++#endif /* CONFIG_PCI */
++
+ /* device driver data */
+ static inline void snd_soc_card_set_drvdata(struct snd_soc_card *card,
+ 					    void *data)
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index 3b038c563ae14..e973044143bc9 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -977,6 +977,17 @@ struct snd_soc_card {
+ #ifdef CONFIG_DMI
+ 	char dmi_longname[80];
+ #endif /* CONFIG_DMI */
++
++#ifdef CONFIG_PCI
++	/*
++	 * PCI does not define 0 as invalid, so pci_subsystem_set indicates
++	 * whether a value has been written to these fields.
++	 */
++	unsigned short pci_subsystem_vendor;
++	unsigned short pci_subsystem_device;
++	bool pci_subsystem_set;
++#endif /* CONFIG_PCI */
++
+ 	char topology_shortname[32];
+ 
+ 	struct device *dev;
+-- 
+2.42.0
+
