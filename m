@@ -2,115 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94DF97E3289
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 02:16:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DA447E32D2
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 03:12:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233290AbjKGBQc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 20:16:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49352 "EHLO
+        id S231975AbjKGCMU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 21:12:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233331AbjKGBQa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 20:16:30 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB7151BF;
-        Mon,  6 Nov 2023 17:16:23 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3A71G49V03823446, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3A71G49V03823446
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 7 Nov 2023 09:16:04 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Tue, 7 Nov 2023 09:16:04 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Tue, 7 Nov 2023 09:16:03 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Tue, 7 Nov 2023 09:16:03 +0800
-From:   =?utf-8?B?U3RhbmxleSBDaGFuZ1vmmIzogrLlvrdd?= 
-        <stanley_chang@realtek.com>
-To:     Johan Hovold <johan@kernel.org>
-CC:     Stefan Eichenberger <eichest@gmail.com>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Mathias Nyman <mathias.nyman@intel.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Maxime Ripard <mripard@kernel.org>
-Subject: RE: [PATCH] USB: xhci-plat: fix legacy PHY double inity
-Thread-Topic: [PATCH] USB: xhci-plat: fix legacy PHY double inity
-Thread-Index: AQHaDxyJZpnjRAISQ06Vkn+OQSkmobBsqcjggAAuZtD//7GWAIAAhs6A//+ARgCAAIargP//gAIAAC8ZbZA=
-Date:   Tue, 7 Nov 2023 01:16:03 +0000
-Message-ID: <c85c1f7512524cdf9b452c2c023dc640@realtek.com>
-References: <20231103164323.14294-1-johan+linaro@kernel.org>
- <ZUY8cGrofUtPOMV8@eichest-laptop>
- <5a493e6fedb449bc93f83f31a682e5b9@realtek.com>
- <ZUi3hrDbseJbIsWZ@hovoldconsulting.com>
- <b2f3db01ad7d43dbbb8ee11cfd1346ea@realtek.com>
- <ZUi9dgnvBT5f6wzo@hovoldconsulting.com>
- <bafbd60ac8134a0782a7ee27c01971ea@realtek.com>
- <ZUjDEC9M7zTsXIRp@hovoldconsulting.com>
-In-Reply-To: <ZUjDEC9M7zTsXIRp@hovoldconsulting.com>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-x-originating-ip: [172.21.190.159]
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        with ESMTP id S230208AbjKGCMT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 21:12:19 -0500
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5FD2115
+        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 18:12:14 -0800 (PST)
+Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-5aa481d53e5so3477346a12.1
+        for <stable@vger.kernel.org>; Mon, 06 Nov 2023 18:12:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=heitbaum.com; s=google; t=1699323134; x=1699927934; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yl+i+/Zm12KSu2JEDO2OvhxPRMv4CU9Hn46hRXkuPys=;
+        b=koN5DtF5NedRqabFprBecBiWQi8a3HCtB6MO5TQ7VjpU8KID8c78jUg1fl+tgNCUmL
+         /kNmRuPdzXWkbYYuQTA3tY9uHmX3+NUWNSxLTpDXlfvpjglOmR+y61Q1ZKUIo0sL8LWh
+         +mbP5pPs0qWrR1wE88WvnuH7xXApEQxSpXWlA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699323134; x=1699927934;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yl+i+/Zm12KSu2JEDO2OvhxPRMv4CU9Hn46hRXkuPys=;
+        b=aidDGquQLfHdk9sfwFxFSHphiMwiMtFEKu2Wq0MQt+E+XMLBftg4fWR73RTs37NPXM
+         Ghb/uUcZRZS60/B+R1I55xMePA1/P53ZCiZ4gvoyiw7muxAkYESo03i21vDk4o/S/TJV
+         tGKizfLzJgH7wzZ7O8KMIz3nb4g6D5Qha3xr+Hoz52/fdgASWEbRkfziazNhKxfJxx7Y
+         6Rv0TZGyJd9nsYVZjj14wN0a+5CmHeZ1b8B3VQ+ZMCgxEf5QwAegV531NRFpvSO22tc2
+         JUvhfWqPK4t2SevoYIhS6SinPo3XSSpgICSzSRujNfJUbNUzLpPmWCKVB92He8dbU5i8
+         /oWA==
+X-Gm-Message-State: AOJu0YypkEb3MUYAl6P2ZXqonYBVvcxBXyH5Fzj2tZ5fnMXCwgAChAEZ
+        bovdemsz2JaypRNS4dp94QWh5A==
+X-Google-Smtp-Source: AGHT+IEdmPnG/wOAxpAHwbWAT0HofcxKZAgNSheVQUDbL7y4zHPyjkjZVLx/p0kiTC3AAF8uElMg3A==
+X-Received: by 2002:a05:6a20:1595:b0:17b:3822:e5ea with SMTP id h21-20020a056a20159500b0017b3822e5eamr31125121pzj.19.1699323134100;
+        Mon, 06 Nov 2023 18:12:14 -0800 (PST)
+Received: from 8a2541e20aa7 ([122.199.31.3])
+        by smtp.gmail.com with ESMTPSA id u22-20020a056a00159600b00687fcb1e609sm6123026pfk.116.2023.11.06.18.12.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Nov 2023 18:12:13 -0800 (PST)
+Date:   Tue, 7 Nov 2023 02:12:05 +0000
+From:   Rudi Heitbaum <rudi@heitbaum.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.6 00/30] 6.6.1-rc1 review
+Message-ID: <ZUmc9RaUwJhBXI+y@8a2541e20aa7>
+References: <20231106130257.903265688@linuxfoundation.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-SGkgSm9oYW4sDQoNCj4gDQo+IE9uIE1vbiwgTm92IDA2LCAyMDIzIGF0IDEwOjM3OjA2QU0gKzAw
-MDAsIFN0YW5sZXkgQ2hhbmdb5piM6IKy5b63XSB3cm90ZToNCj4gDQo+ID4gPiA+IEkgdXNlIGRy
-aXZlcnMvdXNiL2R3YzMvY29yZS5jIGFuZCBkcml2ZXJzL3VzYi9kd2MzL2R3YzMtcnRrLmMgSQ0K
-PiA+ID4gPiBkZXNjcmliZSB0aGUgUEhZIGFzIGdlbmVyaWMgYW5kIGxlZ2FjeSBQSFkgaW4gZGV2
-aWNlIHRyZWUuDQo+ID4gPg0KPiA+ID4gVGhhdCdzIG5vdCByaWdodC4gWW91IHNob3VsZCBqdXN0
-IHVzZSB0aGUgZ2VuZXJpYyBQSFkgYmluZGluZyBmb3IgbmV3DQo+IHBsYXRmb3Jtcy4NCj4gPiA+
-DQo+ID4gPiA+IE91ciBkcml2ZXIgbmVlZHMgdGhlIEFQSSBiYXNlIG9uIGEwODc5OWNmMTdjMiAo
-InVzYjogcGh5OiBhZGQgdXNiDQo+ID4gPiA+IHBoeQ0KPiA+ID4gbm90aWZ5IHBvcnQgc3RhdHVz
-IEFQSSIpLg0KPiA+ID4gPiBCdXQgZ2VuZXJpYyBQSFkgZHJpdmVyIGlzIG5vdCBzdXBwb3J0IHRo
-aXMuDQo+ID4gPg0KPiA+ID4gWWVzLCBidXQgeW91IGFkZGVkIHRoYXQgaW50ZXJmYWNlIHlvdXJz
-ZWxmLCBhbmQgdGhhdCBJIHRoaW5rIG1lcmdpbmcNCj4gPiA+IHRoYXQgd2FzIGEgbWlzdGFrZS4N
-Cj4gPiA+DQo+ID4gPiBXZSBzaG91bGQgbm90IGJlIGJ1aWxkaW5nIGZ1bmN0aW9uYWxpdHkgb24g
-dG9wIG9mIHRoZSBsZWdhY3kgVVNCIFBIWQ0KPiA+ID4gaW1wbGVtZW50YXRpb24gd2hpY2ggaXMg
-c3R1Y2sgaW4gc29tZSB0cmFuc2l0aW9uYWwgbGltYm8uDQo+ID4gPg0KPiA+ID4gQXBwYXJlbnRs
-eSwgeW91ciBQSFkgZHJpdmVycyB3aGljaCB3ZXJlIG1lcmdlZCBmb3IgNi42IGFyZSB0aGUgb25s
-eQ0KPiA+ID4gdXNlcnMgb2YgdGhpcyBpbnRlcmZhY2UsIGFuZCB0aGVyZSBhcmUgbm8gdXBzdHJl
-YW0gZGV2aWNldHJlZXMgdGhhdCB1c2UNCj4gdGhlc2UgUEhZcy4NCj4gPiA+DQo+ID4gPiBJIHRo
-aW5rIHdlIHNob3VsZCByZXZlcnQgdGhpcyBtZXNzIGJlZm9yZSB3ZSBkaWcgb3Vyc2VsdmVzIGlu
-dG8gYW4NCj4gPiA+IGV2ZW4gZGVlcGVyIGhvbGUuDQo+ID4NCj4gPiBUaGlzIGlzIGFuIGludGVy
-aW0gbWV0aG9kLCBhcyB0aGUgY3VycmVudCBnZW5lcmljIFBIWSBmcmFtZXdvcmsgZG9lcw0KPiA+
-IG5vdCBzdXBwb3J0IHNwZWNpYWwgb3BlcmF0aW9ucyBvbiBVU0IgUEhZLg0KPiANCj4gVGhlbiB5
-b3UgbmVlZCB0byBhZGQgdGhhdC4NCj4gDQo+IFlvdSBjYW4ndCBhZGQgYSBuZXcgaW50ZXJmYWNl
-IHdoaWNoIGlzIGJyb2tlbiBieSBkZXNpZ24gYW5kIGNhbid0IGJlIHVzZWQNCj4gdW5sZXNzIHlv
-dSBhYnVzZSB0aGUgZGV2aWNldHJlZSBhbmQgZGVzY3JpYmUgeW91ciBQSFlzIHVzaW5nICpib3Ro
-KiB0aGUNCj4gZ2VuZXJpYyAncGh5JyBwcm9wZXJ0eSBhbmQgdGhlICpkZXByZWNhdGVkKiAndXNi
-LXBoeScgcHJvcGVydHkuDQo+IA0KPiBUaGF0J3MganVzdCBicm9rZW4uDQoNCkkgd2lsbCBtb2Rp
-ZnkgdGhlIFJlYWx0ZWsgcGh5IHRvIHNvbHZlIHRoaXMgcHJvYmxlbSBhbmQganVzdCB1c2UgdGhl
-IGdlbmVyaWMgUEhZLg0KSSBkb24ndCB0aGluayB0aGlzIHBhdGNoIG9uIGEwODc5OWNmMTdjMiAo
-InVzYjpwaHk6IE5ldyB1c2IgcGh5IG5vdGlmaWNhdGlvbiBwb3J0IHN0YXR1cyBBUEkiKSBuZWVk
-cyB0byBiZSByZXZlcnRlZC4NCkkgd2lsbCBzdWJtaXQgZml4ZXMgYmFzZWQgb24gdGhlc2UgcGF0
-Y2hlcy4NCg0KVGhhbmtzLA0KU3RhbmxleQ0KDQo+ID4gTm93IHRoZSBnZW5lcmljIFBIWSBjYW4n
-dCBpbnN0ZWFkIFVTQiBQSFkgaW4gdGhpcyBzdGFnZS4NCj4gPiBGb3IgZXhhbXBsZSwNCj4gPiBk
-cml2ZXJzL3BoeS90aS9waHktdHdsNDAzMC11c2IuYw0KPiA+IGRyaXZlcnMvcGh5L3F1YWxjb21t
-L3BoeS1xY29tLWlwcTgwNngtdXNiLmMNCj4gPiBkcml2ZXJzL3BoeS90aS9waHktb21hcC11c2Iy
-LmMNCj4gDQo+IFRoZXNlIHNob3VsZCBiZSBmaXhlZCBhcyB3ZWxsIGV2ZW50dWFsbHkuDQo+IA0K
-PiBKb2hhbg0K
+On Mon, Nov 06, 2023 at 02:03:18PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.1 release.
+> There are 30 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
+> Anything received after that time might be too late.
+
+Hi Greg,
+
+6.6.1-rc1 tested.
+
+Run tested on:
+- Allwinner H6 (Tanix TX6)
+- Intel Alder Lake x86_64 (nuc12 i7-1260P)
+
+In addition - build tested for:
+- Allwinner A64
+- Allwinner H3
+- Allwinner H5
+- NXP iMX6
+- NXP iMX8
+- Qualcomm Dragonboard
+- Rockchip RK3288
+- Rockchip RK3328
+- Rockchip RK3399pro
+- Samsung Exynos
+
+Tested-by: Rudi Heitbaum <rudi@heitbaum.com>
+--
+Rudi
