@@ -2,75 +2,227 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 088307E481C
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:20:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 801277E483B
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:26:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235110AbjKGSUP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 13:20:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44924 "EHLO
+        id S230505AbjKGS0u (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 13:26:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232362AbjKGSUP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:20:15 -0500
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15ACBB3
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 10:20:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1699381213; x=1730917213;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=cqreSqJ2Fe43ZhNmJCLMVLlQQ5hJTL/XWdNJSbHvhIE=;
-  b=PmzyjtK1gMYH9KF2ZQuojOuYkv8TuZjJrTPoFBdJj2MHfmbICD/n94r0
-   BPZlRdEVXDGP+vTF+ZeY0oXoXMJWqZDHbbiO7Dux+xl8xQrinW3St3EaK
-   49pRSYRfPART/81dfFjSeJqDIMtCOGMh2v/BWoHo+LJAWFno/tHCxP6TD
-   nEhwzZnRZWZR4lfA9f+TP/ktlpr6m/CMDrMAp192PRf6Es9JGn3p+o5cr
-   QIkVNevaLajSREcFg5hz1gT6BhbfLSYvbCnPTZ/16qWP4i95rvbJy84fZ
-   Kj8ej7Gl+KU/ReZNJgfoFGsyl2c7uVuv2XMrpsVwOhE9vpJLBClPVsv6o
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="420686478"
-X-IronPort-AV: E=Sophos;i="6.03,284,1694761200"; 
-   d="scan'208";a="420686478"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2023 10:20:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="906501356"
-X-IronPort-AV: E=Sophos;i="6.03,284,1694761200"; 
-   d="scan'208";a="906501356"
-Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 07 Nov 2023 10:20:11 -0800
-Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1r0QgL-0007Iy-0c;
-        Tue, 07 Nov 2023 18:20:09 +0000
-Date:   Wed, 8 Nov 2023 02:19:45 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Stefan Roesch <shr@devkernel.io>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] mm: Fix for negative counter: nr_file_hugepages
-Message-ID: <ZUp/wYecMvCKQeAg@b4d6968193cf>
+        with ESMTP id S235142AbjKGS0t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:26:49 -0500
+Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D171D43
+        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 10:26:47 -0800 (PST)
+Received: by mail-vk1-xa35.google.com with SMTP id 71dfb90a1353d-49369d29be3so2631525e0c.3
+        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 10:26:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1699381606; x=1699986406; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7KXV1p3zsKYtWAQQYSZiCkScz7P33fi2+JtuHXVpT4Y=;
+        b=H/9qxjeMYFN9R+I1MxkxneVs7TvmzBvcJ+Pln6kQWis22TxqFzDehCEfUJgT/bnUS5
+         noKK3CAVk/UN8euIjofmm5WLB2xoS3nWShvUJXlK9MFEuDUxeE2lhLiPD8OnPmQHBzYy
+         Zj+ORhdcB1Swtp5QCPyeYx4ov3fWzHVIr6BS8iXq2DTdaQPyssMA01TsgShzgTdX1IM2
+         KCcsuts7S8ylmqDyDHmS9Fcvoyz226qUg83CDb3ZcuzlIL3PgfGXgwZtnLiGXIMCfFBf
+         hNpzj//1XAIH3zuAxIyRK4IbJ5uL0gP1IgblKipVEaX2zo6gpRW6uEZrGqFfs2LR5JqI
+         98yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699381606; x=1699986406;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7KXV1p3zsKYtWAQQYSZiCkScz7P33fi2+JtuHXVpT4Y=;
+        b=rCJNHk3ujkPh2gOagXoG3zoWKo5lYWRjfj6FLtq4Sf/2+opIAcfWCyT1t+WNXv4fPF
+         huuaNfgdFYiyY4yMX0TdEUeHrUWt8cfXy5GpPt7Ku9n9vzQHqGBqLGReB3fMFn2Qk+ES
+         A2a5ICpgYYp+cqrsk3xivyJbZGwRLSnom/i6iQOuU8aptJijx+GRWNHaJypaZ2aguH6M
+         6ejRdxl0CPDKpNvY9ASiuvo8R/O3WnCeJpO8tJu69tRHqut99pBdsS/at2Z1rACu4ePL
+         o0yGih1UhCiB3hM+JH++vOI6Kc1rHFLAJfYuMdwjV8VnDMNx7CUuJiQcKKyj1EdzwRex
+         DJ9A==
+X-Gm-Message-State: AOJu0YwcTsEJUT0gG4Iyumst3PazT8sBL3sCdUQmCKGNutVdyvqZiXbM
+        hE5nNMlLOpbrNRTM6Fbi+Ql018XRR8SIFL1yPEKLvg==
+X-Google-Smtp-Source: AGHT+IHvAWUWkPDxuN5004b/0EeB57kSIgWAUM6P92bqaZVZjRDrF30NX/Wqmm0/cwN6Q8YZyNieb7M2NmxBn9Xgc9c=
+X-Received: by 2002:a05:6102:5a:b0:45e:f983:7072 with SMTP id
+ k26-20020a056102005a00b0045ef9837072mr8072949vsp.31.1699381606390; Tue, 07
+ Nov 2023 10:26:46 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231107181805.4188397-1-shr@devkernel.io>
+References: <20231106130301.687882731@linuxfoundation.org>
+In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 7 Nov 2023 23:56:35 +0530
+Message-ID: <CA+G9fYueD6h+sijhY-tP2DDhTtkjF53cYpypFpeBpHr=fhnRXw@mail.gmail.com>
+Subject: Re: [PATCH 5.4 00/74] 5.4.260-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Mon, 6 Nov 2023 at 18:50, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.4.260 release.
+> There are 74 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.4.260-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Thanks for your patch.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+## Build
+* kernel: 5.4.260-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.4.y
+* git commit: ca21f12ba7d859ae3203525ac055a1882383b1b9
+* git describe: v5.4.259-75-gca21f12ba7d8
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
+59-75-gca21f12ba7d8
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2] mm: Fix for negative counter: nr_file_hugepages
-Link: https://lore.kernel.org/stable/20231107181805.4188397-1-shr%40devkernel.io
+## Test Regressions (compared to v5.4.259)
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+## Metric Regressions (compared to v5.4.259)
 
+## Test Fixes (compared to v5.4.259)
 
+## Metric Fixes (compared to v5.4.259)
 
+## Test result summary
+total: 88180, pass: 69717, fail: 2382, skip: 16037, xfail: 44
+
+## Build Summary
+* arc: 4 total, 4 passed, 0 failed
+* arm: 147 total, 147 passed, 0 failed
+* arm64: 45 total, 43 passed, 2 failed
+* i386: 29 total, 23 passed, 6 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 32 total, 32 passed, 0 failed
+* riscv: 14 total, 14 passed, 0 failed
+* s390: 8 total, 8 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 41 total, 41 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
