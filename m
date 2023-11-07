@@ -2,188 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 661E37E4202
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 15:45:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 583FE7E4363
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 16:27:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234344AbjKGOpR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 09:45:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59342 "EHLO
+        id S234541AbjKGP1V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 10:27:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234499AbjKGOpP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 09:45:15 -0500
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0492126
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 06:45:11 -0800 (PST)
-Received: by mail-ua1-x931.google.com with SMTP id a1e0cc1a2514c-7ba12f0856aso4304376241.0
-        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 06:45:11 -0800 (PST)
+        with ESMTP id S234168AbjKGP1U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 10:27:20 -0500
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 094E79E
+        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 07:27:18 -0800 (PST)
+Received: by mail-il1-x12a.google.com with SMTP id e9e14a558f8ab-35950819c97so3861605ab.0
+        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 07:27:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699368311; x=1699973111; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wyN2qeNAfzq8T3+c7zpkeHbe0JGvUl4QQakn3ilisA8=;
-        b=WO2FruOS+35EeokZGi3+p8AOKgGFYvA2aODoy4OuFhgECOK9oG6fBf53WnxJ+D9cns
-         qzQ+igZhuW3ExWxZSZ4TlDOB1yBGfXiL5ibaaqAs8F4DO+npv1wXHxC8rSxjmUknBCXw
-         m0az9UntG32K2E765UHwXhMBjmlsCwTK0ZljmclPMyF+f9ul1Y/iaVlcCvVvWG7OA6jo
-         v/2iCC8RmSIOFa4YII5iLGcA+FBZglhFCruksYCCVTWOyfVIKsutuXke0f+4fE2YIstS
-         exYlEe+3VSd8UaxGST7PP42p+JfdWvrzUrl+ZXv6FBCLCs6JOLgqhfE1oBp9tZG+AarI
-         purg==
+        d=linuxfoundation.org; s=google; t=1699370837; x=1699975637; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9r1p0ZSiR1SW3Vp37rjwojqo5nEaTZFOuzEKg6WqO2c=;
+        b=YB/v4xqp2ZcD4XEuK/+4erxGK+P3TMrktnPUhlpX3Df6sUomoZEtV8RQcUtsi71aZN
+         EY4LtS6sctjOmTdIKzuXnMfyplZjdkQQMNy+JzxGguGXKVxSIqq/hQn2HUbuczm4cnAv
+         tz7u6pJX9jcgD4v3tGQ/9U+zMwEBkHr7bjVWo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699368311; x=1699973111;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wyN2qeNAfzq8T3+c7zpkeHbe0JGvUl4QQakn3ilisA8=;
-        b=nLj0cQQRW7SoaBJX6LSWv4Viy/msbiToDAJpS2aLIiOAQbpMzyM2Y+p0CWS1p0FR2l
-         dzWlJi3i1TB4XD6rCSG2kMtYrMyJtscN069LOWMSypblEWccfAN1O0Ftw0Z+NQjuSZDq
-         f/WnUvo+sQ2BsmzIQxyhi9cLBrbP9bnZxHkYYiVNv3fG57Ll5XrUJAyDM413TyS3dSyE
-         7IUINna1jI/9zXmT0im2JF8x05KleJ7AOmCA6EtJkVMj3T+hLLfH09zKJ80IukqKfenW
-         d1+2KZIE/R3dHKj0SoDx2yETA+5hHCo8ysx3bqzLbuzCe13ekHSPK5pNp+XKAU6cFmur
-         oWlw==
-X-Gm-Message-State: AOJu0YxXlOcAhWJ/TjwpqXp/EDTSES/xFfi+ix6A2ZPllDaC6wBLVGpT
-        D9ZsC/iC8xp28m8aY3D/AQoF8RiEJ6FxG+mzKxJxYQ==
-X-Google-Smtp-Source: AGHT+IFEKYNQ1IZRyacc+TbJB29Eep3DcxhfqJjpGlrvXPJYZx9aeEnU8QXk3++wPel+Ov/4o7VWGAN3Q3SDq1/ZiFI=
-X-Received: by 2002:a05:6102:2d01:b0:457:c953:bc39 with SMTP id
- ih1-20020a0561022d0100b00457c953bc39mr1586305vsb.1.1699368310737; Tue, 07 Nov
- 2023 06:45:10 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699370837; x=1699975637;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9r1p0ZSiR1SW3Vp37rjwojqo5nEaTZFOuzEKg6WqO2c=;
+        b=hidQkNneitcVZ/86EAkWHA/ne229IGVOWQ/hMxAbURuxluQZdC95FTRUDOXDPFyH6v
+         jRk9yIV+YECmFjaEcyaL2vJa2bzfRljNHCKEh07/yQss8d2lr2vo1aJzSj2f8hig9JD/
+         ERDi11di86xLlZGOXLVceALXMfQUMPkEJ10mVuyhFL7njfp30+8fk3IfwBCSn5ywbhLP
+         ngAxGVXwzUhoF3czJF/r/lw98ofJgyk0zCIcNW6ece9kBytAxQSaLvCcX/2WlHO1GQsP
+         nPe/kANGfPiHQiSy12IyGiLBj5JiMHIb69kJ95f1bFl6GixFqJ5ZqzlELmtAOWUVIFjX
+         JPpw==
+X-Gm-Message-State: AOJu0Yy05KVRSsoUK1w6yfpa4RZ9gOC6sn25ymxedyzHhDv9hIAzrw5M
+        b/G+GgIj2r9HWEzbIFMbHsKatQ==
+X-Google-Smtp-Source: AGHT+IE7B0QzN4WoPG0EXWrCKJMWbwGhjT4CgwjteIj3zoF0tGikYBcllHZfBik4artp7ggwYfKjuA==
+X-Received: by 2002:a05:6e02:168c:b0:359:4db7:102a with SMTP id f12-20020a056e02168c00b003594db7102amr24948172ila.0.1699370837192;
+        Tue, 07 Nov 2023 07:27:17 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id db8-20020a056e023d0800b003596056a051sm3201829ilb.71.2023.11.07.07.27.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Nov 2023 07:27:16 -0800 (PST)
+Message-ID: <2b536b87-33fa-4e84-8c0c-d96fabcec723@linuxfoundation.org>
+Date:   Tue, 7 Nov 2023 08:27:15 -0700
 MIME-Version: 1.0
-References: <CA+G9fYsrLTbFkz-LJmAY9efDyEr-8bHcxivBDPToPjBxjStoDg@mail.gmail.com>
- <ZUpH0FNTYAl9Z+L6@finisterre.sirena.org.uk>
-In-Reply-To: <ZUpH0FNTYAl9Z+L6@finisterre.sirena.org.uk>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 7 Nov 2023 20:14:59 +0530
-Message-ID: <CA+G9fYta5cUpFArGfON3R+HUGxJRyEsc9zdTwwk5Un+wHqLN8g@mail.gmail.com>
-Subject: Re: selftests: arm64: fp-stress: Unable to handle kernel paging
- request at virtual address
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-stable <stable@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        lkft-triage@lists.linaro.org,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 00/30] 6.6.1-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20231106130257.903265688@linuxfoundation.org>
+Content-Language: en-US
+From:   Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 7 Nov 2023 at 19:51, Mark Brown <broonie@kernel.org> wrote:
->
-> On Tue, Nov 07, 2023 at 06:43:25PM +0530, Naresh Kamboju wrote:
->
-> > # # SVE-VL-64-0: Expected
-> > [3904000039044000390480003904c0003904000139044001390480013904c0013904000239044002390480023904c0023904000339044003390480033904c003]
-> > <>
->
-> You've elided *lots* of error reports from the actual test which suggest
-> that there is substantial memory corruption, it looks like tearing part
-> way through loading or saving the values - the start of the vectors
-> looks fine but at some point they get what looks like a related process'
-> data, eg:
->
-> # # SVE-VL-64-0:        Expected [3904000039044000390480003904c0003904000139044001390480013904c0013904000239044002390480023904c0023904000339044003390480033904c003]
-> # # SVE-VL-64-0:        Got      [3904000039044000390480003904c000390480003904c00039040001390440013904000139044001390480013904c001390480013904c0013904000239044002]
->
-> This only appears to affect SVE and SME, I didn't spot any FPSIMD
-> corruption but then that is the smallest case (and I didn't notice any
-> VL 16 cases either).  It looks like the corruption is on the first thing
-> we check each time (either register 0 or the highest ZA.H vector for
-> ZA), all the values do look lke they were plausibly generated by
-> fp-stress test programs.
->
-> Then we get what looks like memory corruption:
->
-> > # # SVE-VL-256-<1>[   88.160313] Unable to handle kernel paging
-> > request at virtual address 00550f0344550f02
->
-> > <4>[   88.195706] Call trace:
-> > <4>[ 88.196098] percpu_ref_get_many
-> > (include/linux/percpu-refcount.h:174 (discriminator 2)
-> > include/linux/percpu-refcount.h:204 (discriminator 2))
-> > <4>[ 88.196815] refill_obj_stock (mm/memcontrol.c:3339 (discriminator 2))
-> > <4>[ 88.197367] obj_cgroup_uncharge (mm/memcontrol.c:3406)
-> > <4>[ 88.197835] kmem_cache_free (include/linux/mm.h:1630
-> > include/linux/mm.h:1849 include/linux/mm.h:1859 mm/slab.h:208
-> > mm/slab.h:572 mm/slub.c:3804 mm/slub.c:3831)
-> > <4>[ 88.198407] put_pid.part.0 (kernel/pid.c:118)
-> > <4>[ 88.198870] delayed_put_pid (kernel/pid.c:127)
-> > <4>[ 88.200527] rcu_core (arch/arm64/include/asm/preempt.h:13
-> > (discriminator 1) kernel/rcu/tree.c:2146 (discriminator 1)
-> > kernel/rcu/tree.c:2403 (discriminator 1))
->
-> This all seems very surprising, especially given that AFAICT there are
-> no changes in stable-6.6-rc for arch/arm64.
+On 11/6/23 06:03, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.1 release.
+> There are 30 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.1-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-We do not see on the mainline and next.
-Is this reported problems on stable-rc 6.6 and 6.5 are due to running
-latest kselftest on older kernels ?
+Compiled and booted on my test system. No dmesg regressions.
 
---
-# # SSVE-VL-32-1: Mismatch: PID=641, iteration=0, reg=0
-# # SSVE-VL-128-1: Got         [<junk>]
-# # SSVE-VL-256-1: Got       [<junk>]
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Unable to handle kernel paging request at virtual address 00740f0322740f02
-0<1>[   89.400173] Mem abort info:
-<1>[   89.400844]   ESR = 0x0000000096000004
-<1>[   89.401974]   EC = 0x25: DABT (current EL), IL = 32 bits
-<1>[   89.403399]   SET = 0, FnV = 0
-<1>[   89.404421]   EA = 0, S1PTW = 0
-<1>[   89.405317]   FSC = 0x04: level 0 translation fault
-<1>[   89.406545] Data abort info:
-<1>[   89.407493]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-<1>[   89.408785]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-<1>[   89.410001]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-<1>[   89.411485] [00740f0322740f02] address between user and kernel
-address ranges
-<0>[   89.413851] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-<4>[   89.415573] Modules linked in: crct10dif_ce sm3_ce sm3 sha3_ce
-sha512_ce sha512_arm64 fuse drm dm_mod ip_tables x_tables
-<4>[   89.419561] CPU: 1 PID: 22 Comm: ksoftirqd/1 Not tainted 6.5.11-rc1 #1
-<4>[   89.420795] Hardware name: linux,dummy-virt (DT)
-<4>[   89.422676] pstate: 624000c9 (nZCv daIF +PAN -UAO +TCO -DIT
--SSBS BTYPE=--)
-<4>[   89.424344] pc : refill_obj_stock+0x6c/0x250
-<4>[   89.426324] lr : refill_obj_stock+0x6c/0x250
-<trim>
-<4>[   89.447170] Call trace:
-<4>[   89.447756]  refill_obj_stock+0x6c/0x250
-<4>[   89.449033]  obj_cgroup_uncharge+0x20/0x38
-<4>[   89.450457]  kmem_cache_free+0xf8/0x500
-<4>[   89.451066]  delayed_put_pid+0x50/0xb0
-<4>[   89.452401]  rcu_core+0x3cc/0x950
-<4>[   89.453369]  rcu_core_si+0x1c/0x30
-<4>[   89.454465]  __do_softirq+0x118/0x438
-<4>[   89.455738]  run_ksoftirqd+0x40/0xf8
-<4>[   89.456893]  smpboot_thread_fn+0x1d0/0x248
-<4>[   89.457969]  kthread+0xfc/0x1a0
-<4>[   89.459171]  ret_from_fork+0x10/0x20
-<0>[   89.460445] Code: aa1603e0 97fffef8 aa0003f4 97f6cbf6 (f9400269)
-<4>[   89.462028] ---[ end trace 0000000000000000 ]---
-<0>[   89.463494] Kernel panic - not syncing: Oops: Fatal exception in interrupt
-<2>[   89.465046] SMP: stopping secondary CPUs
-<0>[   89.466327] Kernel Offset: 0x2dabffa00000 from 0xffff800080000000
-<0>[   89.467385] PHYS_OFFSET: 0x40000000
-<0>[   89.468131] CPU features: 0x00000000,68f167a1,cce6773f
-<0>[   89.469850] Memory Limit: none
-<0>[   89.470836] ---[ end Kernel panic - not syncing: Oops: Fatal
-exception in interrupt ]---
-
-
-
-Links:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.10-89-g73d52afec3ab/testrun/20963504/suite/log-parser-test/tests/
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.10-89-g73d52afec3ab/testrun/20963709/suite/log-parser-test/tests/
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.10-89-g73d52afec3ab/testrun/20963709/suite/log-parser-test/test/check-kernel-oops/log
-
-- Naresh
+thanks,
+-- Shuah
