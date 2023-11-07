@@ -2,98 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32EE07E43A8
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 16:41:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D9E7E43B0
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 16:47:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343996AbjKGPlK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 10:41:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40850 "EHLO
+        id S235056AbjKGPrB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 10:47:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343999AbjKGPlE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 10:41:04 -0500
+        with ESMTP id S234695AbjKGPrA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 10:47:00 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4831EA2;
-        Tue,  7 Nov 2023 07:41:02 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D70BCC433C7;
-        Tue,  7 Nov 2023 15:41:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1699371661;
-        bh=fdUe7B8gsCWDUYAo9zOcyCcSHvRvuIJMrvjXYNl3fwo=;
-        h=Date:To:From:Subject:From;
-        b=W+INBAgt2N0LdzPAEKPtDm+KDgD6jK+9bPhejxejfuL9lLRHXTFud+psqe8wdeyGx
-         o5GrVJfckj/UwLCYB+rbe9gn2jlv1vERYYHQTzFtdxhZgpfptL+bxXfqBFZiOXq/y3
-         rPLT5L+sTOrBW8KHB10xbNLPnUEKVGc+xWQMxXaE=
-Date:   Tue, 07 Nov 2023 07:41:01 -0800
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-schemes-handle-tried-region-directory-allocation-failure.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231107154101.D70BCC433C7@smtp.kernel.org>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70ED49B;
+        Tue,  7 Nov 2023 07:46:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4E4C433C8;
+        Tue,  7 Nov 2023 15:46:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699372018;
+        bh=CUfW7KfbPMiWgaZuojZ6e6K86KBlzeDqmgsgw0rcE9w=;
+        h=From:To:Cc:Subject:Date:From;
+        b=t6MMXpGnAjZ2qABWYTkbXLpSkJ8moA5JQmayG3yPQXxpIZErM+EGTpEvXx6pfqrIS
+         5OT1FoQ8VGRL9pZRbiNiThV1276rjFejhGAYP2pDE1cET8QhyCnz09T4+jKVGeifV0
+         40rk0JF3o8CJlmzF2/PbZbN3KKc8j/zt88bhJrt4nMSCevRgcudqiNA2+xUivFHKBk
+         j0aMyeCy2Uvwf2G1tMVOtP5URewnKEhwzDsicZu5UaRldzmN1PdjbtAMbu7sr0y5L7
+         l3pg7IHBIx0/7YmATVu1k+GWgH0qxkC3ufr3M5KOr7ubruaG98AvzPR+MOxHdbtcYw
+         Z99u21cHSWf5g==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Trevor Wu <trevor.wu@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, lgirdwood@gmail.com,
+        perex@perex.cz, tiwai@suse.com, matthias.bgg@gmail.com,
+        amergnat@baylibre.com, kuninori.morimoto.gx@renesas.com,
+        xiazhengqiao@huaqin.corp-partner.google.com,
+        dan.carpenter@linaro.org, linux-sound@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 01/36] ASoC: mediatek: mt8188-mt6359: support dynamic pinctrl
+Date:   Tue,  7 Nov 2023 10:45:43 -0500
+Message-ID: <20231107154654.3765336-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Trevor Wu <trevor.wu@mediatek.com>
 
-The patch titled
-     Subject: mm/damon/sysfs-schemes: handle tried region directory allocation failure
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-sysfs-schemes-handle-tried-region-directory-allocation-failure.patch
+[ Upstream commit d601bb78f06b9e3cbb52e6b87b88add9920a11b6 ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-schemes-handle-tried-region-directory-allocation-failure.patch
+To avoid power leakage, it is recommended to replace the default pinctrl
+state with dynamic pinctrl since certain audio pinmux functions can
+remain in a HIGH state even when audio is disabled. Linking pinctrl with
+DAPM using SND_SOC_DAPM_PINCTRL will ensure that audio pins remain in
+GPIO mode by default and only switch to an audio function when necessary.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs-schemes: handle tried region directory allocation failure
-Date: Mon, 6 Nov 2023 23:34:08 +0000
-
-DAMON sysfs interface's before_damos_apply callback
-(damon_sysfs_before_damos_apply()), which creates the DAMOS tried regions
-for each DAMOS action applied region, is not handling the allocation
-failure for the sysfs directory data.  As a result, NULL pointer
-derefeence is possible.  Fix it by handling the case.
-
-Link: https://lkml.kernel.org/r/20231106233408.51159-4-sj@kernel.org
-Fixes: f1d13cacabe1 ("mm/damon/sysfs: implement DAMOS tried regions update command")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.2+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Trevor Wu <trevor.wu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230825024935.10878-2-trevor.wu@mediatek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ sound/soc/mediatek/mt8188/mt8188-mt6359.c | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
- mm/damon/sysfs-schemes.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/mm/damon/sysfs-schemes.c~mm-damon-sysfs-schemes-handle-tried-region-directory-allocation-failure
-+++ a/mm/damon/sysfs-schemes.c
-@@ -1826,6 +1826,8 @@ static int damon_sysfs_before_damos_appl
- 		return 0;
+diff --git a/sound/soc/mediatek/mt8188/mt8188-mt6359.c b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
+index 9017f48b6272b..f7e22abb75846 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-mt6359.c
++++ b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
+@@ -246,6 +246,11 @@ static const struct snd_soc_dapm_widget mt8188_mt6359_widgets[] = {
+ 	SND_SOC_DAPM_MIC("Headset Mic", NULL),
+ 	SND_SOC_DAPM_SINK("HDMI"),
+ 	SND_SOC_DAPM_SINK("DP"),
++
++	/* dynamic pinctrl */
++	SND_SOC_DAPM_PINCTRL("ETDM_SPK_PIN", "aud_etdm_spk_on", "aud_etdm_spk_off"),
++	SND_SOC_DAPM_PINCTRL("ETDM_HP_PIN", "aud_etdm_hp_on", "aud_etdm_hp_off"),
++	SND_SOC_DAPM_PINCTRL("MTKAIF_PIN", "aud_mtkaif_on", "aud_mtkaif_off"),
+ };
  
- 	region = damon_sysfs_scheme_region_alloc(r);
-+	if (!region)
-+		return 0;
- 	list_add_tail(&region->list, &sysfs_regions->regions_list);
- 	sysfs_regions->nr_regions++;
- 	if (kobject_init_and_add(&region->kobj,
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-sysfs-check-error-from-damon_sysfs_update_target.patch
-mm-damon-sysfs-schemes-handle-tried-regions-sysfs-directory-allocation-failure.patch
-mm-damon-sysfs-schemes-handle-tried-region-directory-allocation-failure.patch
+ static const struct snd_kcontrol_new mt8188_mt6359_controls[] = {
+@@ -267,6 +272,7 @@ static int mt8188_mt6359_mtkaif_calibration(struct snd_soc_pcm_runtime *rtd)
+ 		snd_soc_rtdcom_lookup(rtd, AFE_PCM_NAME);
+ 	struct snd_soc_component *cmpnt_codec =
+ 		asoc_rtd_to_codec(rtd, 0)->component;
++	struct snd_soc_dapm_widget *pin_w = NULL, *w;
+ 	struct mtk_base_afe *afe;
+ 	struct mt8188_afe_private *afe_priv;
+ 	struct mtkaif_param *param;
+@@ -306,6 +312,18 @@ static int mt8188_mt6359_mtkaif_calibration(struct snd_soc_pcm_runtime *rtd)
+ 		return 0;
+ 	}
+ 
++	for_each_card_widgets(rtd->card, w) {
++		if (!strcmp(w->name, "MTKAIF_PIN")) {
++			pin_w = w;
++			break;
++		}
++	}
++
++	if (pin_w)
++		dapm_pinctrl_event(pin_w, NULL, SND_SOC_DAPM_PRE_PMU);
++	else
++		dev_dbg(afe->dev, "%s(), no pinmux widget, please check if default on\n", __func__);
++
+ 	pm_runtime_get_sync(afe->dev);
+ 	mt6359_mtkaif_calibration_enable(cmpnt_codec);
+ 
+@@ -403,6 +421,9 @@ static int mt8188_mt6359_mtkaif_calibration(struct snd_soc_pcm_runtime *rtd)
+ 	for (i = 0; i < MT8188_MTKAIF_MISO_NUM; i++)
+ 		param->mtkaif_phase_cycle[i] = mtkaif_phase_cycle[i];
+ 
++	if (pin_w)
++		dapm_pinctrl_event(pin_w, NULL, SND_SOC_DAPM_POST_PMD);
++
+ 	dev_dbg(afe->dev, "%s(), end, calibration ok %d\n",
+ 		__func__, param->mtkaif_calibration_ok);
+ 
+-- 
+2.42.0
 
