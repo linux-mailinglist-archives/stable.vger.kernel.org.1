@@ -2,98 +2,235 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E4D47E47AF
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 18:58:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B64CA7E47B3
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 18:58:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233414AbjKGR6O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 12:58:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57092 "EHLO
+        id S232829AbjKGR64 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 12:58:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233464AbjKGR6N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 12:58:13 -0500
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A5EAC6
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 09:58:09 -0800 (PST)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-9db6cf8309cso883818866b.0
-        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 09:58:09 -0800 (PST)
+        with ESMTP id S232233AbjKGR6z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 12:58:55 -0500
+Received: from mail-vk1-xa2b.google.com (mail-vk1-xa2b.google.com [IPv6:2607:f8b0:4864:20::a2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F91894
+        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 09:58:53 -0800 (PST)
+Received: by mail-vk1-xa2b.google.com with SMTP id 71dfb90a1353d-4ac28cab4efso1313434e0c.0
+        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 09:58:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1699379885; x=1699984685; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1699379932; x=1699984732; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VGXr30B7ae9S2k+FMAtadT8oxyML17udu5CvmGuW3q4=;
-        b=aTdk1Y4kT+szYNQ4jfd1n7qzWbf/BYLqwbm31essGfJs2WtzaG0d5MtWStYPXnHgMm
-         5YF3chh9ZtqLVDBJUyHR2ZoJ50c2gArnI6c9DbWfNVQUEKPc0WXh2GDvuDdVlhq9Z7Xt
-         caVrVFMbzzNGzdInGnxsyEQe/GuYGmma2NCo8=
+        bh=5wKYIjRk9u20OhZbZz7Pq1pTPus6RUsjTNPft428Eb0=;
+        b=BjIULtE92E2zIWLRx7l8aR9tHneiwhC7ZwQ6Hiw4z+fUmxI+sOoSyPcYUxX9sDEWPk
+         hoCZsKdkpEjs30MdgH+bVF6GcD/HJ6dhlwEspeg1xQN0b7bzE7XkV9Vp6D39KE7h0MKn
+         WK4kjVsRY8bcAq1IWjfDffGMuQHjOq4x7HriChIczj9z1XrqNgWMNQ5i52hsZh9+syvt
+         oGopRNckdzwmBhEtYsBYjJXosOE9Nnkvu08Dv35nh+zhyKukDXrDgA0b5gXC5ZpqJ+mf
+         CyoUmXU8rxTVu36XeSqcT0ViFI6PyIjDTa5Ryv+Z8fePr1qD/dnUXEgILfBMCs+jFMEn
+         z+dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699379885; x=1699984685;
+        d=1e100.net; s=20230601; t=1699379932; x=1699984732;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VGXr30B7ae9S2k+FMAtadT8oxyML17udu5CvmGuW3q4=;
-        b=gT5soS6tTqwpdpsp96nxUkyFPtMlDCxeYHZ46oQtQylxiENzEmdRIN6swzqBHWHCwI
-         wN/jlYw2yB40n/RpHm4wy1ajYYRMC3CkXqXAFgAERp1OZltsf9RUC6KdJubUEPxHFBFv
-         GXozwJGXZv0jULkT0qioeqXnhQieOr+qgP9lGSFwPcYfAtpCL8Yln3yNjYon6vPd4e9u
-         +bYfJV7btFsliPPvHiysD08f3XbKl1FP2eTMDiMoniN2XuRwtN97mZaygXrkLHw+HOuJ
-         IzuBhV+YdkCxlyinZXxC5xZHSgbjcVf8gbqx1OU7Kh2nfOIgovw+RIxdxCIX6MeiVDk5
-         +rAw==
-X-Gm-Message-State: AOJu0YyvuJjrZO9kjkMX5og8PcHzkAyys2q13flT0KLx3NlnZ90JdGwS
-        pDZHHkcgsg+le9BsxPXSpXj1Bl2BH5LJtm/uRz7cWNL/
-X-Google-Smtp-Source: AGHT+IGg/Rb0aPMi8sBH415gYu1TH0P4G/rSPJeN574J68219BdnrvSkU7WljHS7V+nLx0EWHIKN7w==
-X-Received: by 2002:a17:907:36c5:b0:9d2:bf19:88aa with SMTP id bj5-20020a17090736c500b009d2bf1988aamr17171839ejc.59.1699379885215;
-        Tue, 07 Nov 2023 09:58:05 -0800 (PST)
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com. [209.85.208.51])
-        by smtp.gmail.com with ESMTPSA id f16-20020a170906561000b009dd678d7d3fsm1293845ejq.211.2023.11.07.09.58.04
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Nov 2023 09:58:04 -0800 (PST)
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-53eeb28e8e5so366a12.1
-        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 09:58:04 -0800 (PST)
-X-Received: by 2002:a05:6402:5410:b0:545:2e6:cf63 with SMTP id
- ev16-20020a056402541000b0054502e6cf63mr60142edb.6.1699379884098; Tue, 07 Nov
- 2023 09:58:04 -0800 (PST)
+        bh=5wKYIjRk9u20OhZbZz7Pq1pTPus6RUsjTNPft428Eb0=;
+        b=DcvCUCXgZ6E9UqgcQyROxCd9E/KjuTptuufIXTqo13/efuIoUFsjSjBNeWHhGpop2t
+         R14Hi3+PW5jdGxgzFZUcxzicEPXH/QQpjVsgBC87AmfM32x1VF/gfK7atpBsJsdBrOWX
+         WBPR01lVe2Ps/ySgWw22RFccVfxt6fsqR/zn0PWjob27K8o1wSRNnCccFz1Cm/x0vZIs
+         5wCJfLQGVXv+iLKk8UHcys5zAyTf2hzfmsohlhPmEnwBNKay5FJ48hauvF786y/8J/z8
+         2FiU6p1p1gj4BVk2MLhTkFtk61bA+jIbYQPo0CZgdhxKtJH08PS7/EWNgD42B1Rfrkhu
+         rHmw==
+X-Gm-Message-State: AOJu0YyknvIvnBAZZS8aO65fV96iJrtxruTQ6oSiQc9SwLeOKP7sl4Zk
+        PEwKfmBpnd1Lcf2s7YsWCRptcvcwAjXNcBj+24tSLQ==
+X-Google-Smtp-Source: AGHT+IG5z26zY9vVz1AkbSL2orZlMYhnkYNGVSG4XHuqY9aiXHOzIeMDrxyV8LUdJIIQzoww6sJgQ71i7mUkiFxgGZQ=
+X-Received: by 2002:a1f:2f57:0:b0:49b:289a:cc3f with SMTP id
+ v84-20020a1f2f57000000b0049b289acc3fmr29050940vkv.3.1699379932606; Tue, 07
+ Nov 2023 09:58:52 -0800 (PST)
 MIME-Version: 1.0
-References: <20231107000023.2928195-1-hsinyi@chromium.org> <20231107000023.2928195-5-hsinyi@chromium.org>
-In-Reply-To: <20231107000023.2928195-5-hsinyi@chromium.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Tue, 7 Nov 2023 09:57:52 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=WpZt0MsQ3Yi01+hMmBgL7Z-S_+sjUipopM6qTQkgOY8g@mail.gmail.com>
-Message-ID: <CAD=FV=WpZt0MsQ3Yi01+hMmBgL7Z-S_+sjUipopM6qTQkgOY8g@mail.gmail.com>
-Subject: Re: [PATCH v5 4/4] drm/panel-edp: Avoid adding multiple preferred modes
-To:     Hsin-Yi Wang <hsinyi@chromium.org>
-Cc:     Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <mripard@kernel.org>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
+References: <20231106130309.112650042@linuxfoundation.org>
+In-Reply-To: <20231106130309.112650042@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 7 Nov 2023 23:28:41 +0530
+Message-ID: <CA+G9fYtp3fh-jrU3pta_PeVRTrLODdbWDtJE5ppxUZu+Ek6fDA@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/128] 5.15.138-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On Mon, 6 Nov 2023 at 18:54, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.138 release.
+> There are 128 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.138-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-On Mon, Nov 6, 2023 at 4:00=E2=80=AFPM Hsin-Yi Wang <hsinyi@chromium.org> w=
-rote:
->
-> If a non generic edp-panel is under aux-bus, the mode read from edid woul=
-d
-> still be selected as preferred and results in multiple preferred modes,
-> which is ambiguous.
->
-> If both hard-coded mode and edid exists, only add mode from hard-coded.
->
-> Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-> ---
-> v4->v5: remove inapplicable comments.
-> ---
->  drivers/gpu/drm/panel/panel-edp.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
 
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 5.15.138-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: ec134bfabca018727b246a05cbd7d2da66864974
+* git describe: v5.15.137-129-gec134bfabca0
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.137-129-gec134bfabca0
+
+## Test Regressions (compared to v5.15.137)
+
+## Metric Regressions (compared to v5.15.137)
+
+## Test Fixes (compared to v5.15.137)
+
+## Metric Fixes (compared to v5.15.137)
+
+## Test result summary
+total: 90364, pass: 72614, fail: 2502, skip: 15189, xfail: 59
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 111 total, 111 passed, 0 failed
+* arm64: 43 total, 43 passed, 0 failed
+* i386: 34 total, 34 passed, 0 failed
+* mips: 23 total, 23 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 25 total, 25 passed, 0 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 11 total, 11 passed, 0 failed
+* sh: 9 total, 9 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 37 total, 37 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
