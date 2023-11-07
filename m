@@ -2,73 +2,66 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E61C7E372A
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 10:08:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 234E77E372F
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 10:08:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233784AbjKGJID (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 04:08:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59600 "EHLO
+        id S233808AbjKGJIT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 04:08:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233779AbjKGJIC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 04:08:02 -0500
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3980125
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 01:07:59 -0800 (PST)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-da0ccfc4fc8so6536418276.2
-        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 01:07:59 -0800 (PST)
+        with ESMTP id S233823AbjKGJIN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 04:08:13 -0500
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67E4AD57
+        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 01:08:08 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5afa071d100so110228497b3.1
+        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 01:08:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1699348079; x=1699952879; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1699348087; x=1699952887; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=q790Yzm/LOg58iq7Db8FbD2kRXLwrY5Ed6jpsrOc3Vs=;
-        b=FET8fC0gvojSXEnqbtCsH0uOPrL9C6vUQssMnS/4bsFb4U4xBERYnno4Ml2ZuNMMQH
-         ffxSheCWySBRxRD40r88sFRfnk2DF2jI3knTMdm2Hpbp9qQrIn+dmg1AN4IWBhucProF
-         ggV8xne0feHMglxqVLggWCXlCgXsDh6kELw8ksJE+GwtwXV1Fp/27crRjdNM2beOXhn4
-         Ze4Cmnc8n+vX8q8c1fDeaFoNv4IB1Aw2E50eJUXUc1p+/eA0oNLKsUbe22QTX7lCymxY
-         TeE1O2I+jTqMpMv6RwqhQb735IDXG0RwxPrJU5Rbdu66Sh7XZSTX1hTZt9Fp34k8w7tY
-         9Xqg==
+        bh=C0xSdaRDzh/HWjDSjU83VJSZR2dGM+ZjfBD2HxHt7ZI=;
+        b=BbNkTzxZWz0YduPK4IftJRKjr2zYeAxzsyTF9qKkG3/LYecbzvK+NKMdfVqkRSQ/09
+         BtCsFQPw1AnhkvHNe3CAKvMi/6CuYfVGpWwo0++py3n1CP9S6f+0Gy+YzudqTFGMVMNY
+         kuyBBvWMVAZFEzw8SQOZ43E/nyyZWckG5dvLU+BGCPowDLYVeorMCu1mDqZSBHKopA3B
+         6g9DYj3ZRSA021JMeMjbEyRJ8VcE7BUh7VaDYfA/QB0Oqt17RtQXQ87by/A+lxQTeM8c
+         cazAVQ/vR9I2ta6AnwABeADTT5sWYaZaaoxMbJo7TqnWnM9k39Y0+vGA9AFPMK0MJ5Ic
+         4Kyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699348079; x=1699952879;
+        d=1e100.net; s=20230601; t=1699348087; x=1699952887;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=q790Yzm/LOg58iq7Db8FbD2kRXLwrY5Ed6jpsrOc3Vs=;
-        b=nFaDIFLoVfjNr9s1lhHXQ0MmIm6f0fs+W6uBaDv2JyPHXzvuhaIJ9ixhacy6NlsmgF
-         UZZUsgTVbWqDRlO58txKH+Q2FvWcEfVDgmZ3hwFHYQ+IBRCFxRxPMUPlBNFQ0kBQSHPL
-         vouiQmq8mDVKIQ0FlVf4BFo9DqcWHiuGZ3NAdxey0upf1WqywBcjoEt0Aizm1C6qo9qy
-         3YTxa1pNowQmXzS4fkJD89s51X8Ioy2cEp3SpmLEUSfweJ/7dwZB08yT+Gtva+J5WmrV
-         jAlPNBebxV8U8A7ju8+Cv0SqvlPh3n+bw5HwFPfcCJzgF+9Qu2kopMIKpRlBslEFKCfp
-         TLgg==
-X-Gm-Message-State: AOJu0Yz+3n3tApACDLFsLV0PQccOZkKdGurBmmBMx1/b+iNfGiPIwDsz
-        EVnhPMCoWpof6VUYKEdYHWKJ2aSbIegCge8=
-X-Google-Smtp-Source: AGHT+IGz0mDj6T1euvZTWiXeAoqw05hiXvl8br7LMII0HAUGwC7OmXVCv6BqCbTYEijhSUeSSq2m08bV5R3WG+4=
+        bh=C0xSdaRDzh/HWjDSjU83VJSZR2dGM+ZjfBD2HxHt7ZI=;
+        b=awWxTZ1E2NfK9zt+6/oj5J2Zfjyxv+X60QftuzGZObUzNOJpeCH6DP4kFEzwxFR2ok
+         Yam4oVd/yUAOZ7u3Fb+o53j4OVznxcu0nMI7aWDLQwrbL2XSFnix0N8HSnpm6hM73Jj5
+         VxZF8q9OR23J0G1FTkNG+UWN/JKXiksbad87nHIpEAuK7y5ai59IJ+tX5m9DXM1XakmX
+         YF3ixp43qwWcklvvqSeHk8JdneHIJejJUT5dt1ePBTHRY4oiOLzDfFS70hKN02aReMYl
+         9TcG0Cb3x5ykdcztrZuztEimJnb5N1xGKkCx1cw9XyZfXBv4TYsRI8zYNx45ib2QGebu
+         +5Bw==
+X-Gm-Message-State: AOJu0Yx8V39qLybr0yjGrF6JqlYeMVuvFYI/JRl1Uyx+iVdr+5Tn8iFJ
+        iBRsJKsbILko82AYpi3FLipV+P2Tp5Blzsw=
+X-Google-Smtp-Source: AGHT+IHXKXnhXPv/Q69NZBg+Vkn6rXOrn4LecOP4SXQYcWiZ72hlMV4lR6teAz3b+xL5tls4wqeSNLiqkEwHA2g=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a25:e082:0:b0:d9a:ec95:9687 with SMTP id
- x124-20020a25e082000000b00d9aec959687mr608285ybg.11.1699348078929; Tue, 07
- Nov 2023 01:07:58 -0800 (PST)
-Date:   Tue,  7 Nov 2023 09:07:56 +0000
-In-Reply-To: <20231102185934.773885-3-cmllamas@google.com>
+ (user=aliceryhl job=sendgmr) by 2002:a25:6907:0:b0:d9a:cbf9:1c8d with SMTP id
+ e7-20020a256907000000b00d9acbf91c8dmr570322ybc.12.1699348087479; Tue, 07 Nov
+ 2023 01:08:07 -0800 (PST)
+Date:   Tue,  7 Nov 2023 09:08:05 +0000
+In-Reply-To: <20231102185934.773885-6-cmllamas@google.com>
 Mime-Version: 1.0
-References: <20231102185934.773885-3-cmllamas@google.com>
+References: <20231102185934.773885-6-cmllamas@google.com>
 X-Mailer: git-send-email 2.42.0.869.gea05f2083d-goog
-Message-ID: <20231107090756.256039-1-aliceryhl@google.com>
-Subject: Re: [PATCH 02/21] binder: fix use-after-free in shinker's callback
+Message-ID: <20231107090805.257105-1-aliceryhl@google.com>
+Subject: Re: [PATCH 05/21] binder: fix trivial typo of binder_free_buf_locked()
 From:   Alice Ryhl <aliceryhl@google.com>
 To:     Carlos Llamas <cmllamas@google.com>
-Cc:     "Liam R . Howlett" <liam.howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
+Cc:     "=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>,
         Christian Brauner <brauner@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Joel Fernandes <joel@joelfernandes.org>,
-        "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
         Martijn Coenen <maco@android.com>,
-        Michal Hocko <mhocko@kernel.org>,
-        Minchan Kim <minchan@kernel.org>,
         Suren Baghdasaryan <surenb@google.com>,
-        Todd Kjos <tkjos@android.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Matthew Wilcox <willy@infradead.org>,
-        linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Todd Kjos <tkjos@android.com>, Todd Kjos <tkjos@google.com>,
+        kernel-team@android.com, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
@@ -82,31 +75,18 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 Carlos Llamas <cmllamas@google.com> writes:
-> The mmap read lock is used during the shrinker's callback, which means
-> that using alloc->vma pointer isn't safe as it can race with munmap().
-> As of commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
-> munmap") the mmap lock is downgraded after the vma has been isolated.
+> Fix minor misspelling of the function in the comment section.
 > 
-> I was able to reproduce this issue by manually adding some delays and
-> triggering page reclaiming through the shrinker's debug sysfs. The
-> following KASAN report confirms the UAF:
+> No functional changes in this patch.
 > 
->   [...snip...]
-> 
-> Fix this issue by performing instead a vma_lookup() which will fail to
-> find the vma that was isolated before the mmap lock downgrade. Note that
-> this option has better performance than upgrading to a mmap write lock
-> which would increase contention. Plus, mmap_write_trylock() has been
-> recently removed anyway.
-> 
-> Fixes: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in munmap")
 > Cc: stable@vger.kernel.org
-> Cc: Liam Howlett <liam.howlett@oracle.com>
-> Cc: Minchan Kim <minchan@kernel.org>
+> Fixes: 0f966cba95c7 ("binder: add flag to clear buffer on txn complete")
 > Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
-This change makes sense to me, and I agree that the code still needs to
-run when the vma is null.
+It's a bit confusing that the pair of methods binder_alloc_free_buf and
+binder_free_buf_locked are inconsistent in whether they user the alloc_
+prefix. It might be worth it to change them to be consistent?
+
+Either way, this change LGTM.
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
