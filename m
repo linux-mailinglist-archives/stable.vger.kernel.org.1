@@ -2,79 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C07D17E4874
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:41:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 088307E481C
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:20:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235061AbjKGSln (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 13:41:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40418 "EHLO
+        id S235110AbjKGSUP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 13:20:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235254AbjKGSlg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:41:36 -0500
-X-Greylist: delayed 1382 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Nov 2023 10:41:26 PST
-Received: from 66-220-144-178.mail-mxout.facebook.com (66-220-144-178.mail-mxout.facebook.com [66.220.144.178])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAA981705
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 10:41:26 -0800 (PST)
-Received: by devbig1114.prn1.facebook.com (Postfix, from userid 425415)
-        id 51DF9EF0641B; Tue,  7 Nov 2023 10:18:12 -0800 (PST)
-From:   Stefan Roesch <shr@devkernel.io>
-To:     kernel-team@fb.com
-Cc:     shr@devkernel.io, akpm@linux-foundation.org, hannes@cmpxchg.org,
-        riel@surriel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Subject: [PATCH v2] mm: Fix for negative counter: nr_file_hugepages
-Date:   Tue,  7 Nov 2023 10:18:05 -0800
-Message-Id: <20231107181805.4188397-1-shr@devkernel.io>
-X-Mailer: git-send-email 2.39.3
+        with ESMTP id S232362AbjKGSUP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:20:15 -0500
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15ACBB3
+        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 10:20:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1699381213; x=1730917213;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=cqreSqJ2Fe43ZhNmJCLMVLlQQ5hJTL/XWdNJSbHvhIE=;
+  b=PmzyjtK1gMYH9KF2ZQuojOuYkv8TuZjJrTPoFBdJj2MHfmbICD/n94r0
+   BPZlRdEVXDGP+vTF+ZeY0oXoXMJWqZDHbbiO7Dux+xl8xQrinW3St3EaK
+   49pRSYRfPART/81dfFjSeJqDIMtCOGMh2v/BWoHo+LJAWFno/tHCxP6TD
+   nEhwzZnRZWZR4lfA9f+TP/ktlpr6m/CMDrMAp192PRf6Es9JGn3p+o5cr
+   QIkVNevaLajSREcFg5hz1gT6BhbfLSYvbCnPTZ/16qWP4i95rvbJy84fZ
+   Kj8ej7Gl+KU/ReZNJgfoFGsyl2c7uVuv2XMrpsVwOhE9vpJLBClPVsv6o
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="420686478"
+X-IronPort-AV: E=Sophos;i="6.03,284,1694761200"; 
+   d="scan'208";a="420686478"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2023 10:20:12 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10887"; a="906501356"
+X-IronPort-AV: E=Sophos;i="6.03,284,1694761200"; 
+   d="scan'208";a="906501356"
+Received: from lkp-server01.sh.intel.com (HELO 17d9e85e5079) ([10.239.97.150])
+  by fmsmga001.fm.intel.com with ESMTP; 07 Nov 2023 10:20:11 -0800
+Received: from kbuild by 17d9e85e5079 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1r0QgL-0007Iy-0c;
+        Tue, 07 Nov 2023 18:20:09 +0000
+Date:   Wed, 8 Nov 2023 02:19:45 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Stefan Roesch <shr@devkernel.io>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2] mm: Fix for negative counter: nr_file_hugepages
+Message-ID: <ZUp/wYecMvCKQeAg@b4d6968193cf>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231107181805.4188397-1-shr@devkernel.io>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-While qualifiying the 6.4 release, the following warning was detected in
-messages:
+Hi,
 
-vmstat_refresh: nr_file_hugepages -15664
+Thanks for your patch.
 
-The warning is caused by the incorrect updating of the NR_FILE_THPS
-counter in the function split_huge_page_to_list. The if case is checking
-for folio_test_swapbacked, but the else case is missing the check for
-folio_test_pmd_mappable. The other functions that manipulate the counter
-like __filemap_add_folio and filemap_unaccount_folio have the
-corresponding check.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-I have a test case, which reproduces the problem. It can be found here:
-  https://github.com/sroeschus/testcase/blob/main/vmstat_refresh/madv.c
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-The test case reproduces on an XFS filesystem. Running the same test
-case on a BTRFS filesystem does not reproduce the problem.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2] mm: Fix for negative counter: nr_file_hugepages
+Link: https://lore.kernel.org/stable/20231107181805.4188397-1-shr%40devkernel.io
 
-AFAIK version 6.1 until 6.6 are affected by this problem.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
-Signed-off-by: Stefan Roesch <shr@devkernel.io>
-Co-debugged-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
----
- mm/huge_memory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 064fbd90822b4..9dbd5ef5a3902 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2740,7 +2740,7 @@ int split_huge_page_to_list(struct page *page, stru=
-ct list_head *list)
- 			if (folio_test_swapbacked(folio)) {
- 				__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS,
- 							-nr);
--			} else {
-+			} else if (folio_test_pmd_mappable(folio)) {
- 				__lruvec_stat_mod_folio(folio, NR_FILE_THPS,
- 							-nr);
- 				filemap_nr_thps_dec(mapping);
-
-base-commit: ffc253263a1375a65fa6c9f62a893e9767fbebfa
---=20
-2.39.3
 
