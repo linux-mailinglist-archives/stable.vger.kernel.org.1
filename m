@@ -2,99 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A7317E4AD0
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 22:38:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 201D57E4B2A
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 22:52:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234014AbjKGViN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 16:38:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56568 "EHLO
+        id S1344128AbjKGVwi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 16:52:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235509AbjKGVh6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 16:37:58 -0500
-Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3996C199E;
-        Tue,  7 Nov 2023 13:37:52 -0800 (PST)
-Received: by mail-ua1-x931.google.com with SMTP id a1e0cc1a2514c-7ba6a0bada9so2114289241.2;
-        Tue, 07 Nov 2023 13:37:52 -0800 (PST)
+        with ESMTP id S234954AbjKGVwh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 16:52:37 -0500
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6199010D0
+        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 13:52:35 -0800 (PST)
+Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-6ce2de8da87so3952812a34.1
+        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 13:52:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699393071; x=1699997871; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7OscIyj4i8GIO/pAULmGru3eamggIkLaqaKY2i8guPY=;
-        b=UaURblc6RnKS5x9yn0XiM6GoVZzavMd5OhQ6FfR5YL/vkLqBA8E38mYm549VVGJzy1
-         EUZrYRB/8TGYIZ+a0/GSWsVupwyaEnXGBnTfo2WrZyNGFAT1ZXE8Ga6zn+d4P86+Ebxr
-         LEi8S3wQpYx253pjGdrC4XoXhKbHdfOOoi4IeR0jrDi3sRfOTezruvdkR6uh3YCVREDc
-         NZXMmAwq1iU64CbueJw2b3wtTeeZDteTDu36KX3QllRRIYcuI6eUABNSs13DudFwWqXU
-         oRlM8TOED4ti2mrTDFkJ2alYwT/zKPY6s5jp3s3YyYQ6PcP3/Lz5u6/9svT4QiWKAzhW
-         Iv+g==
+        d=chromium.org; s=google; t=1699393954; x=1699998754; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hr6OJPuRPVCp0RXxF4a/PiIEDPuvoDXkbrySHNg/Fqs=;
+        b=hNBB6Oh5W8ZmqZz8Sgm6mDA2SFueIXnArQke0wAHRA3cKzPvRGcNE3TtlgAA0iNNpQ
+         CdyfZT2vaTJHyMd1HuC2indTXWY2zyVzU7MJJE7g5spfwcPpDYnJmuKGXEajbJeLE1kI
+         uGFWzVV2T5vHpD0zessEYcr5CXunKna4JVxG8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699393071; x=1699997871;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7OscIyj4i8GIO/pAULmGru3eamggIkLaqaKY2i8guPY=;
-        b=Bi5PWWSn+y86QTrqCLWSGP1JuhmkHRXkFOHlhw2qIF9yyoa+vQhBUaByl8T3KF+fGp
-         TtGDUzd2stDsOC3Mlzzef1PYdmtKIRAZW8XFPVLyMjRk0dCWDFALgYyoJH6pys0IJc75
-         5DvuacOLLpWRS2ySpM8ILxq1EaVuF5lqWufBy/xtLmttCRvG/9BVtIb612QbWWUNK5uu
-         kTM+cfFg+fWFu9AFbSWxOqFxOtByAye0Y3gU5xvaKgpfuSPOBkbc5TGJDV+C1Y4aMQou
-         ZykBZOyY5OlmVRtpF2MHjUCoBnHGZmXxlOrnGHCUUox6hZB/6Us8kwxfSHYA2e70OciI
-         1x5w==
-X-Gm-Message-State: AOJu0YwdsLfU8DbThYd8+O1cuEbMdkjNbl65TCzLCPIiEBIw7D0JjLVg
-        AG6kYRAZ3/s5kGvq+Q22ZYhmDL7ns6c=
-X-Google-Smtp-Source: AGHT+IHfZKOcyiczSG9qjN0nBFczJGgManA+OefTDO1U0lQ0hQGCnFWFwCaqa7arjNdcdrWC42MwAQ==
-X-Received: by 2002:a67:e041:0:b0:45f:1349:fec4 with SMTP id n1-20020a67e041000000b0045f1349fec4mr7488767vsl.20.1699393071294;
-        Tue, 07 Nov 2023 13:37:51 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id c21-20020a05622a025500b00419b5274381sm88621qtx.94.2023.11.07.13.37.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Nov 2023 13:37:50 -0800 (PST)
-Message-ID: <7406cc46-15e6-439f-a8a1-3e44cc2ef4f4@gmail.com>
-Date:   Tue, 7 Nov 2023 13:37:47 -0800
+        d=1e100.net; s=20230601; t=1699393954; x=1699998754;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hr6OJPuRPVCp0RXxF4a/PiIEDPuvoDXkbrySHNg/Fqs=;
+        b=jtWRHvD7n7htBPTc48Bs1G+lNJV/lhrJS+KQCPyTOVg51gWXvc8ktO44fDkc+cf3Ee
+         m03/L92X8v66fWVBqpNQE7booe0ALiUH24m1kF6GJ398JPsTBOAED+cNjqu696+jd1/N
+         84pIIWq0rPcW7IrHSlaI28PpYQGSGqEqJyc0iigX4lA4TpbtjBfXzupnIKCTGBW1ahw8
+         R9SQvyiCp22eTJKKHAn8a4U1lvRl05KctiFWWrCASTO4TahIgv3uW2YxYx1zDvcIKsg/
+         1AbCcqUrNH7ubVLMWcJdj0YRSYimm+tVz/1d7Vh4cBj6DSaSQsSdX8+DATSRxAqx0zui
+         xzTg==
+X-Gm-Message-State: AOJu0Yzj733+o0dqGNkpEWqU/9iczo8bJmqS/hHBfvnNMje3+C/2r2yz
+        deqDN0sM9T1Zgm3SKO8Rd8XvLEMFGDqvTATpZD6H9w==
+X-Google-Smtp-Source: AGHT+IHWdfR3bifkBdaoItNqZgulqc9J+gktiX1J+gjiJGeRkyvmNQ2VXl6l87uKMgSgtxr3xR3fX2EtFYyzpaToq3g=
+X-Received: by 2002:a9d:7e91:0:b0:6d2:e1fd:9f5e with SMTP id
+ m17-20020a9d7e91000000b006d2e1fd9f5emr127321otp.6.1699393954786; Tue, 07 Nov
+ 2023 13:52:34 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/125] 5.15.138-rc2 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+References: <20231107204611.3082200-1-hsinyi@chromium.org> <20231107204611.3082200-4-hsinyi@chromium.org>
+ <2023110739-parmesan-exposure-8225@gregkh>
+In-Reply-To: <2023110739-parmesan-exposure-8225@gregkh>
+From:   Hsin-Yi Wang <hsinyi@chromium.org>
+Date:   Tue, 7 Nov 2023 13:52:08 -0800
+Message-ID: <CAJMQK-g-hSN_dY5EjhuvAU4sAL0dMR7s=3murQm8E_GubS1+pw@mail.gmail.com>
+Subject: Re: [PATCH v6 3/5] drm/panel-edp: drm/panel-edp: Add several generic
+ edp panels
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Douglas Anderson <dianders@chromium.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20231107202324.434534294@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20231107202324.434534294@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/7/23 12:24, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.138 release.
-> There are 125 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 09 Nov 2023 20:22:58 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.138-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, Nov 7, 2023 at 12:57=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Tue, Nov 07, 2023 at 12:41:53PM -0800, Hsin-Yi Wang wrote:
+> > Add a few generic edp panels used by mt8186 chromebooks.
+> >
+> > Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
+> > Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> > ---
+> > no change.
+> > ---
+> >  drivers/gpu/drm/panel/panel-edp.c | 51 +++++++++++++++++++++++++++++++
+> >  1 file changed, 51 insertions(+)
+>
+> <formletter>
+>
+> This is not the correct way to submit patches for inclusion in the
+> stable kernel tree.  Please read:
+>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.ht=
+ml
+> for how to do this properly.
+>
+Sorry for confusion, only patch 1 & 2 need to be picked to stable. 3~5 don'=
+t.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
-
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
-
+> </formletter>
