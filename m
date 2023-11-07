@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 531957E3C79
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 13:16:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEB047E3C7B
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 13:16:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234646AbjKGMQc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 07:16:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40164 "EHLO
+        id S234386AbjKGMQz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 07:16:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234584AbjKGMPm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 07:15:42 -0500
+        with ESMTP id S234451AbjKGMQB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 07:16:01 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFB832D43;
-        Tue,  7 Nov 2023 04:11:48 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C653C433BA;
-        Tue,  7 Nov 2023 12:11:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1EC4690;
+        Tue,  7 Nov 2023 04:12:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E0FC433C8;
+        Tue,  7 Nov 2023 12:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699359108;
-        bh=50XWSrO2j1ZmUj0alw7A6c6O/ZecdZAsHmNeeD3ql14=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tI5GbfevW1iM6rKvxGqJmwscl0ldpfLbXN+eeuNK6H4NIi9eaoR19M9M+z52IhsSP
-         gOP36BR+KrpfjPAZTqTD0CENI31p/gjq40VzJY8NC/UjP2+PcNmFGkGnD2TDlUIOfs
-         3Ei1b83nJEaNTEY4HsXu5kPISeN+i07BXt3S/n5Nndk2NX/dmqJQX0KzPRbTH0dxQx
-         7i14EKVm4wOVlA7UU+ClxldMeDQ4RavV4ATJgljdxuerRQs2eNlq6iE2q0u0uZoz7H
-         eCkpmFmw3oQNnHoo3KqLrhFn1QpqwvbVUAO0liJ+69QhrYehfmff0AjZoNuc7ODs2E
-         j5v9JAgEnjDAg==
+        s=k20201202; t=1699359121;
+        bh=a5xTmTte55BLX/KeU3zs7sriM95ERsh4KDFPaTDi4Tk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=UWhkGSJglJsOvCQP1nEixyj7h74vCPwlcZa5ejdi0GzD/w8kRCZJKMlAmeNteG8+p
+         yTeNN4wsaJ84WBD5eR1H8CiDMi0PDeTZkxHv2G/bQbdU3NFTj9+k6IWy1jaql0cDRW
+         VAgDlqddwvmmlR3/Wi5LV5DHrLlJDmKjs4Cv2E6UlSOZw4zLycmX6nSltHBRQ0Dpp2
+         TvNDdC3BNPJGDf9hctGsPfdqlflpLUzD5mRwGR/LsxAV8m8CWPo2ASZlpR2ncpN20W
+         UBHiWD21Y2bif/vHuYVueUzUxhA6DEhvwRM3qNzFySsYk7lS1i8J3M5fb+uA3rMeFv
+         C4dVWPrj/aLjw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Olli Asikainen <olli.asikainen@gmail.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Sasha Levin <sashal@kernel.org>, hmh@hmh.eng.br,
-        hdegoede@redhat.com, markgross@kernel.org,
-        ibm-acpi-devel@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 18/18] platform/x86: thinkpad_acpi: Add battery quirk for Thinkpad X120e
-Date:   Tue,  7 Nov 2023 07:10:48 -0500
-Message-ID: <20231107121104.3757943-18-sashal@kernel.org>
+Cc:     Dmitry Antipov <dmantipov@yandex.ru>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
+        nathan@kernel.org, ndesaulniers@google.com,
+        linux-wireless@vger.kernel.org, llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 01/12] wifi: mac80211_hwsim: fix clang-specific fortify warning
+Date:   Tue,  7 Nov 2023 07:11:38 -0500
+Message-ID: <20231107121158.3758348-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231107121104.3757943-1-sashal@kernel.org>
-References: <20231107121104.3757943-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.61
+X-stable-base: Linux 5.15.137
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,33 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Olli Asikainen <olli.asikainen@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 916646758aea81a143ce89103910f715ed923346 ]
+[ Upstream commit cbaccdc42483c65016f1bae89128c08dc17cfb2a ]
 
-Thinkpad X120e also needs this battery quirk.
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
 
-Signed-off-by: Olli Asikainen <olli.asikainen@gmail.com>
-Link: https://lore.kernel.org/r/20231024190922.2742-1-olli.asikainen@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+In file included from drivers/net/wireless/virtual/mac80211_hwsim.c:18:
+In file included from ./include/linux/slab.h:16:
+In file included from ./include/linux/gfp.h:7:
+In file included from ./include/linux/mmzone.h:8:
+In file included from ./include/linux/spinlock.h:56:
+In file included from ./include/linux/preempt.h:79:
+In file included from ./arch/x86/include/asm/preempt.h:9:
+In file included from ./include/linux/thread_info.h:60:
+In file included from ./arch/x86/include/asm/thread_info.h:53:
+In file included from ./arch/x86/include/asm/cpufeature.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
+
+The compiler actually complains on 'mac80211_hwsim_get_et_strings()' where
+fortification logic inteprets call to 'memcpy()' as an attempt to copy the
+whole 'mac80211_hwsim_gstrings_stats' array from its first member and so
+issues an overread warning. This warning may be silenced by passing
+an address of the whole array and not the first member to 'memcpy()'.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://lore.kernel.org/r/20230829094140.234636-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/thinkpad_acpi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mac80211_hwsim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
-index e7ece2738de94..c7a0921844dc8 100644
---- a/drivers/platform/x86/thinkpad_acpi.c
-+++ b/drivers/platform/x86/thinkpad_acpi.c
-@@ -9946,6 +9946,7 @@ static const struct tpacpi_quirk battery_quirk_table[] __initconst = {
- 	 * Individual addressing is broken on models that expose the
- 	 * primary battery as BAT1.
- 	 */
-+	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
- 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
- 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
- 	TPACPI_Q_LNV3('R', '0', 'B', true), /* Thinkpad 11e gen 3 */
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index 6eb3c845640bd..7d73502586839 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -2615,7 +2615,7 @@ static void mac80211_hwsim_get_et_strings(struct ieee80211_hw *hw,
+ 					  u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *mac80211_hwsim_gstrings_stats,
++		memcpy(data, mac80211_hwsim_gstrings_stats,
+ 		       sizeof(mac80211_hwsim_gstrings_stats));
+ }
+ 
 -- 
 2.42.0
 
