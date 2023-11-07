@@ -2,227 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 801277E483B
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:26:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC88F7E4893
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:47:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230505AbjKGS0u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 13:26:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51134 "EHLO
+        id S230204AbjKGSrE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 13:47:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235142AbjKGS0t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:26:49 -0500
-Received: from mail-vk1-xa35.google.com (mail-vk1-xa35.google.com [IPv6:2607:f8b0:4864:20::a35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D171D43
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 10:26:47 -0800 (PST)
-Received: by mail-vk1-xa35.google.com with SMTP id 71dfb90a1353d-49369d29be3so2631525e0c.3
-        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 10:26:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699381606; x=1699986406; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7KXV1p3zsKYtWAQQYSZiCkScz7P33fi2+JtuHXVpT4Y=;
-        b=H/9qxjeMYFN9R+I1MxkxneVs7TvmzBvcJ+Pln6kQWis22TxqFzDehCEfUJgT/bnUS5
-         noKK3CAVk/UN8euIjofmm5WLB2xoS3nWShvUJXlK9MFEuDUxeE2lhLiPD8OnPmQHBzYy
-         Zj+ORhdcB1Swtp5QCPyeYx4ov3fWzHVIr6BS8iXq2DTdaQPyssMA01TsgShzgTdX1IM2
-         KCcsuts7S8ylmqDyDHmS9Fcvoyz226qUg83CDb3ZcuzlIL3PgfGXgwZtnLiGXIMCfFBf
-         hNpzj//1XAIH3zuAxIyRK4IbJ5uL0gP1IgblKipVEaX2zo6gpRW6uEZrGqFfs2LR5JqI
-         98yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699381606; x=1699986406;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7KXV1p3zsKYtWAQQYSZiCkScz7P33fi2+JtuHXVpT4Y=;
-        b=rCJNHk3ujkPh2gOagXoG3zoWKo5lYWRjfj6FLtq4Sf/2+opIAcfWCyT1t+WNXv4fPF
-         huuaNfgdFYiyY4yMX0TdEUeHrUWt8cfXy5GpPt7Ku9n9vzQHqGBqLGReB3fMFn2Qk+ES
-         A2a5ICpgYYp+cqrsk3xivyJbZGwRLSnom/i6iQOuU8aptJijx+GRWNHaJypaZ2aguH6M
-         6ejRdxl0CPDKpNvY9ASiuvo8R/O3WnCeJpO8tJu69tRHqut99pBdsS/at2Z1rACu4ePL
-         o0yGih1UhCiB3hM+JH++vOI6Kc1rHFLAJfYuMdwjV8VnDMNx7CUuJiQcKKyj1EdzwRex
-         DJ9A==
-X-Gm-Message-State: AOJu0YwcTsEJUT0gG4Iyumst3PazT8sBL3sCdUQmCKGNutVdyvqZiXbM
-        hE5nNMlLOpbrNRTM6Fbi+Ql018XRR8SIFL1yPEKLvg==
-X-Google-Smtp-Source: AGHT+IHvAWUWkPDxuN5004b/0EeB57kSIgWAUM6P92bqaZVZjRDrF30NX/Wqmm0/cwN6Q8YZyNieb7M2NmxBn9Xgc9c=
-X-Received: by 2002:a05:6102:5a:b0:45e:f983:7072 with SMTP id
- k26-20020a056102005a00b0045ef9837072mr8072949vsp.31.1699381606390; Tue, 07
- Nov 2023 10:26:46 -0800 (PST)
-MIME-Version: 1.0
-References: <20231106130301.687882731@linuxfoundation.org>
-In-Reply-To: <20231106130301.687882731@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 7 Nov 2023 23:56:35 +0530
-Message-ID: <CA+G9fYueD6h+sijhY-tP2DDhTtkjF53cYpypFpeBpHr=fhnRXw@mail.gmail.com>
-Subject: Re: [PATCH 5.4 00/74] 5.4.260-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229664AbjKGSrD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:47:03 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1C49116;
+        Tue,  7 Nov 2023 10:47:01 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B57CC433C7;
+        Tue,  7 Nov 2023 18:47:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1699382821;
+        bh=X6MiCrmaQSffaeWkUqmapfxGtVb0LGtIk+OXqYrUql0=;
+        h=Date:To:From:Subject:From;
+        b=fPz16O+668XKhD4gP95YVaWJzWirh8Lge0gTFGeQtBO/OoyJmFXH7jIuVSwayKBYJ
+         3VBNvO5IB95MbtnUXWYnCaR5BP4DaskBSVQM4Zdf16MyKKGpm0PVjGLO6KZQdPDVQ5
+         o49hrv32w7P4BXnCzy9mCbAtI1he9jzGHcn0Zd6s=
+Date:   Tue, 07 Nov 2023 10:47:00 -0800
+To:     mm-commits@vger.kernel.org, willy@infradead.org,
+        stable@vger.kernel.org, shakeelb@google.com, cl@linux.com,
+        roman.gushchin@linux.dev, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231107184701.4B57CC433C7@smtp.kernel.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 6 Nov 2023 at 18:50, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.4.260 release.
-> There are 74 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.4.260-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+The patch titled
+     Subject: mm: kmem: drop __GFP_NOFAIL when allocating objcg vectors
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail.patch
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail.patch
 
-## Build
-* kernel: 5.4.260-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.4.y
-* git commit: ca21f12ba7d859ae3203525ac055a1882383b1b9
-* git describe: v5.4.259-75-gca21f12ba7d8
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.4.y/build/v5.4.2=
-59-75-gca21f12ba7d8
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-## Test Regressions (compared to v5.4.259)
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-## Metric Regressions (compared to v5.4.259)
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-## Test Fixes (compared to v5.4.259)
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-## Metric Fixes (compared to v5.4.259)
+------------------------------------------------------
+From: Roman Gushchin <roman.gushchin@linux.dev>
+Subject: mm: kmem: drop __GFP_NOFAIL when allocating objcg vectors
+Date: Tue, 7 Nov 2023 09:18:02 -0800
 
-## Test result summary
-total: 88180, pass: 69717, fail: 2382, skip: 16037, xfail: 44
+Objcg vectors attached to slab pages to store slab object ownership
+information are allocated using gfp flags for the original slab
+allocation.  Depending on slab page order and the size of slab objects,
+objcg vector can take several pages.
 
-## Build Summary
-* arc: 4 total, 4 passed, 0 failed
-* arm: 147 total, 147 passed, 0 failed
-* arm64: 45 total, 43 passed, 2 failed
-* i386: 29 total, 23 passed, 6 failed
-* mips: 26 total, 26 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 32 total, 32 passed, 0 failed
-* riscv: 14 total, 14 passed, 0 failed
-* s390: 8 total, 8 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 41 total, 41 passed, 0 failed
+If the original allocation was done with the __GFP_NOFAIL flag, it
+triggered a warning in the page allocation code.  Indeed, order > 1 pages
+should not been allocated with the __GFP_NOFAIL flag.
 
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
+Fix this by simply dropping the __GFP_NOFAIL flag when allocating the
+objcg vector.  It effectively allows to skip the accounting of a single
+slab object under a heavy memory pressure.
 
---
-Linaro LKFT
-https://lkft.linaro.org
+An alternative would be to implement the mechanism to fallback to order-0
+allocations for accounting metadata, which is also not perfect because it
+will increase performance penalty and memory footprint of the kernel
+memory accounting under memory pressure.
+
+Link: https://lkml.kernel.org/r/ZUp8ZFGxwmCx4ZFr@P9FQF9L96D.corp.robot.car
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reported-by: Christoph Lameter <cl@linux.com>
+Closes: https://lkml.kernel.org/r/6b42243e-f197-600a-5d22-56bd728a5ad8@gentwo.org
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memcontrol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+--- a/mm/memcontrol.c~cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail
++++ a/mm/memcontrol.c
+@@ -2936,7 +2936,8 @@ void mem_cgroup_commit_charge(struct fol
+  * Moreover, it should not come from DMA buffer and is not readily
+  * reclaimable. So those GFP bits should be masked off.
+  */
+-#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | __GFP_ACCOUNT)
++#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | \
++				 __GFP_ACCOUNT | __GFP_NOFAIL)
+ 
+ /*
+  * mod_objcg_mlstate() may be called with irq enabled, so
+_
+
+Patches currently in -mm which might be from roman.gushchin@linux.dev are
+
+cgroups-warning-for-metadata-allocation-with-gfp_nofail-was-re-folio_alloc_buffers-doing-allocations-order-1-with-gfp_nofail.patch
+
