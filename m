@@ -2,76 +2,92 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66CEE7E4593
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 17:13:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 405677E459D
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 17:15:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235506AbjKGQNY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 11:13:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46154 "EHLO
+        id S235559AbjKGQPp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 11:15:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235516AbjKGQNI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 11:13:08 -0500
+        with ESMTP id S235561AbjKGQPb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 11:15:31 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E9F448D;
-        Tue,  7 Nov 2023 08:04:29 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5610CC433CB;
-        Tue,  7 Nov 2023 16:04:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D13CDA25F;
+        Tue,  7 Nov 2023 08:07:06 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFA0C433C8;
+        Tue,  7 Nov 2023 16:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699373069;
-        bh=Aff5Hic831y3AENLJQGjNlNZ1P6a6eEtwnYuHgIQuwM=;
+        s=k20201202; t=1699373226;
+        bh=qt8mBKKeBYKkff8R7gCnVYHBMt8O03gHumJCiEar4VU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HHe46jxJDzVpMN/xenU0Dm7I13f8wKvStRzYQEZpFHu+BbqOZsdYbAc19JO+yFuSQ
-         j4scsPAnr7IQe+nc/XSfV1leLhmyMVYACQkvMRtQn5+VLTu+ZCx8ka88bVZv8L1mHl
-         2sBojvbX5lYB0X8ZdfauTCcnSH1wGUW+SavMz6/tLmPG2DJUrUSMTaE+7QqyS9S6PG
-         T8weEiedtQ3XCCLMSc1lk8/Dz2gTNVv812F4d8GQ883tE7evjAdT3SC3GGQ7TG7TQe
-         e838tqFLA8Bs79o7bAJqHMC/1/VXjCqZQytkr8nZYz4GNKVT1FHLKDRxo40lybfaBx
-         pC7hxbG+r2XKg==
-Date:   Tue, 7 Nov 2023 16:04:23 +0000
-From:   Conor Dooley <conor@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de
-Subject: Re: [PATCH 6.1 00/62] 6.1.62-rc1 review
-Message-ID: <20231107-gallantly-predator-8f064854a6a6@spud>
-References: <20231106130301.807965064@linuxfoundation.org>
+        b=c5+9Mi1WpPk9vBDdZunajdAtfdVEfLxRikmymj4bCsI5dv6lslMEP42pnzP06Q6cL
+         9nWXDA2OHE0eNej2TNI7pYwn4qiPa0MIm1ckVpVqv5im2wuudZpkseWuB6kmCYxTza
+         BMNR8UP3JNELDTCAOVO5wHR8iU/of9BRu8ID0coJzuU/GR/i9htQl43S9xUhQ8cPYk
+         pVw6k2qNC27CMQ72FsdOsHtiruV3WP0tVbNoHVP1FpNQkHZyGvqSGcZd7VydjujmZE
+         M8YBi9hn7TZ+7/DMxD4A3ZACxP0tBhxsnJPsCR1AZdOIqHQwov988O0y3v5mJAp0MF
+         eww2jzm0o6/BA==
+Date:   Tue, 7 Nov 2023 16:05:59 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     linux-stable <stable@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        lkft-triage@lists.linaro.org,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>
+Subject: Re: selftests: arm64: fp-stress: Unable to handle kernel paging
+ request at virtual address
+Message-ID: <ZUpgZ65SYqKVeQoo@finisterre.sirena.org.uk>
+References: <CA+G9fYsrLTbFkz-LJmAY9efDyEr-8bHcxivBDPToPjBxjStoDg@mail.gmail.com>
+ <ZUpH0FNTYAl9Z+L6@finisterre.sirena.org.uk>
+ <CA+G9fYta5cUpFArGfON3R+HUGxJRyEsc9zdTwwk5Un+wHqLN8g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="3518Ha5xSTlk2KDA"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="95C7jDeNt3c0BqKs"
 Content-Disposition: inline
-In-Reply-To: <20231106130301.807965064@linuxfoundation.org>
+In-Reply-To: <CA+G9fYta5cUpFArGfON3R+HUGxJRyEsc9zdTwwk5Un+wHqLN8g@mail.gmail.com>
+X-Cookie: Slow day.  Practice crawling.
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---3518Ha5xSTlk2KDA
+--95C7jDeNt3c0BqKs
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Mon, Nov 06, 2023 at 02:03:06PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.62 release.
-> There are 62 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Nov 07, 2023 at 08:14:59PM +0530, Naresh Kamboju wrote:
+> On Tue, 7 Nov 2023 at 19:51, Mark Brown <broonie@kernel.org> wrote:
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+> > This all seems very surprising, especially given that AFAICT there are
+> > no changes in stable-6.6-rc for arch/arm64.
 
-Thanks,
-Conor.
+> We do not see on the mainline and next.
+> Is this reported problems on stable-rc 6.6 and 6.5 are due to running
+> latest kselftest on older kernels ?
 
---3518Ha5xSTlk2KDA
+There's also no backports I can see in the selftests (at all, never mind
+just arm64).  There were a small number of selftest changes for arm64
+went in during the merge window but nothing that looks super relevant.
+
+--95C7jDeNt3c0BqKs
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZUpgBwAKCRB4tDGHoIJi
-0qzfAQCMfc+ctKjDuDkmhBfxYE4HSYdwO0znHpDFS/JGLR4ysQEAn3TWTmrZlvU6
-o0QOd5HOaRDtmlALgynOZRUY7DKC5ws=
-=5nI8
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVKYGYACgkQJNaLcl1U
+h9DdWwf+MMu97uld9xtcDaED2X7a2u2theIQch48gWqnprnJIlfclOC9DRVv49DT
+bEVDRXQl2reUikWIJFZLXsNRAq3CC+OTQBOBAzvQ/NGh9Cq83t99c14wpnZg9fO6
+raSV5rJEwTieCAhzdmdW5WeE/LD6LcAc7aZlMH6rc/llF50gUa9I5yLc3dpXx/Uo
+HZwZRpfGLLEMAJljuT1xbwgV2mL3j2QNoIMPTrSw0XdpXaW25r+SxaDKBUxufN6Y
+Hjh2XLdNE02R/r9gDj+5gF1RWz7hcF1k4tAUOnwUGWrtoPTzK81/E1WDRJz1VFih
+G7HgptmbZHud3B5PPHJ10BKoB2DbCA==
+=Rr33
 -----END PGP SIGNATURE-----
 
---3518Ha5xSTlk2KDA--
+--95C7jDeNt3c0BqKs--
