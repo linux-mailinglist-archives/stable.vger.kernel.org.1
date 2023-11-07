@@ -2,30 +2,30 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05A967E3EDD
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 13:43:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 530C97E3EDE
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 13:43:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234962AbjKGMnc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 07:43:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43972 "EHLO
+        id S1343697AbjKGMne (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 07:43:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235355AbjKGMnG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 07:43:06 -0500
+        with ESMTP id S235280AbjKGMnI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 07:43:08 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B417A33D87;
-        Tue,  7 Nov 2023 04:30:25 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F231C433C7;
-        Tue,  7 Nov 2023 12:30:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12BA433DA0;
+        Tue,  7 Nov 2023 04:30:27 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C71C433CA;
+        Tue,  7 Nov 2023 12:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699360224;
-        bh=SVFAmaxVAKpmkmwbZ/KzKgNcJKhakvwFy9xtqRoAh1w=;
+        s=k20201202; t=1699360226;
+        bh=LHx0a0WlPZb3j8jizZed3N+JMptFlxPvM8e7WBd3j94=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JX4uiWfoOWV65OKqE52HHS74EQYILwzjPxVNgd7l5oCRyrbZ5HJ0y6u/tqUQLzbsq
-         BLei1PJotiNvALXB72fSgok71g//HGSn3Iw/9FI2jMr6y4c38XNgVdrdkcQuxxgRua
-         Y+Wqmo5bX0sdheOwv49VkdcE2F00dwwz5raUnw0rjCqjqGGBUSvuQAnFlhTa9SygnO
-         5PFY1HUuxXZ3uigfc1VNslFo7DQIDejxdMeAutzpIFTf4ELlTtwEmBjejYJWwsC0NB
-         lz/kNJnyvidFOGQH5hEGmaJPmVBmZhAKBUk/ZJJX/PR/FsUHlpOhZRU2nec/1VKylC
-         S7xId+DxGJHLg==
+        b=UYBZSAQEHvvUXJwoNUdevvyosBX+pEvbIjWLfxdU0uLOmQJZcQSBEgJZ/j0hO/r19
+         Oly5ucPbp5tOU3L4T0iJ6WeT4MxutiJ16MlOYowdT1bbMlGwV6xmqACuPkn11lArBV
+         oS49pVIeVLbKuYP6fnLtDBUxdZGfsAcSegDKPX6LzKk5GykRndO2R3q6R8x823RnLq
+         Zq0If8YApCEv2maZy2aYDWuIPHng0t7ybS9siLt0l8MGkUpIb3UU3qXfVGLPhOtAuV
+         y+r0gFGzlXR8TvwU3jPNe9mBn51QNx803ruSALznQ4IEgDYkgHCck3yb8AU+jFCjBR
+         JF9Cvh+bav5Qg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Ma Ke <make_ruc2021@163.com>,
@@ -34,9 +34,9 @@ Cc:     Ma Ke <make_ruc2021@163.com>,
         maarten.lankhorst@linux.intel.com, mripard@kernel.org,
         tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
         dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 13/20] drm/panel: fix a possible null pointer dereference
-Date:   Tue,  7 Nov 2023 07:29:07 -0500
-Message-ID: <20231107122940.3762228-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 14/20] drm/panel/panel-tpo-tpg110: fix a possible null pointer dereference
+Date:   Tue,  7 Nov 2023 07:29:08 -0500
+Message-ID: <20231107122940.3762228-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231107122940.3762228-1-sashal@kernel.org>
 References: <20231107122940.3762228-1-sashal@kernel.org>
@@ -57,30 +57,30 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Ma Ke <make_ruc2021@163.com>
 
-[ Upstream commit 924e5814d1f84e6fa5cb19c6eceb69f066225229 ]
+[ Upstream commit f22def5970c423ea7f87d5247bd0ef91416b0658 ]
 
-In versatile_panel_get_modes(), the return value of drm_mode_duplicate()
-is assigned to mode, which will lead to a NULL pointer dereference
-on failure of drm_mode_duplicate(). Add a check to avoid npd.
+In tpg110_get_modes(), the return value of drm_mode_duplicate() is
+assigned to mode, which will lead to a NULL pointer dereference on
+failure of drm_mode_duplicate(). Add a check to avoid npd.
 
 Signed-off-by: Ma Ke <make_ruc2021@163.com>
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231007033105.3997998-1-make_ruc2021@163.com
+Link: https://lore.kernel.org/r/20231009090446.4043798-1-make_ruc2021@163.com
 Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231007033105.3997998-1-make_ruc2021@163.com
+Link: https://patchwork.freedesktop.org/patch/msgid/20231009090446.4043798-1-make_ruc2021@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-arm-versatile.c | 2 ++
+ drivers/gpu/drm/panel/panel-tpo-tpg110.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-arm-versatile.c b/drivers/gpu/drm/panel/panel-arm-versatile.c
-index abb0788843c60..503ecea72c5ea 100644
---- a/drivers/gpu/drm/panel/panel-arm-versatile.c
-+++ b/drivers/gpu/drm/panel/panel-arm-versatile.c
-@@ -267,6 +267,8 @@ static int versatile_panel_get_modes(struct drm_panel *panel,
- 	connector->display_info.bus_flags = vpanel->panel_type->bus_flags;
+diff --git a/drivers/gpu/drm/panel/panel-tpo-tpg110.c b/drivers/gpu/drm/panel/panel-tpo-tpg110.c
+index e3791dad6830c..3360e7ccb0a7d 100644
+--- a/drivers/gpu/drm/panel/panel-tpo-tpg110.c
++++ b/drivers/gpu/drm/panel/panel-tpo-tpg110.c
+@@ -379,6 +379,8 @@ static int tpg110_get_modes(struct drm_panel *panel,
+ 	connector->display_info.bus_flags = tpg->panel_mode->bus_flags;
  
- 	mode = drm_mode_duplicate(connector->dev, &vpanel->panel_type->mode);
+ 	mode = drm_mode_duplicate(connector->dev, &tpg->panel_mode->mode);
 +	if (!mode)
 +		return -ENOMEM;
  	drm_mode_set_name(mode);
