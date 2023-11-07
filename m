@@ -2,127 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0001E7E48BC
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FDCA7E48C2
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 19:53:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234981AbjKGSvJ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Tue, 7 Nov 2023 13:51:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53726 "EHLO
+        id S234577AbjKGSw7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 13:52:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234969AbjKGSvI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:51:08 -0500
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC64299;
-        Tue,  7 Nov 2023 10:51:06 -0800 (PST)
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-5a82f176860so72250917b3.1;
-        Tue, 07 Nov 2023 10:51:06 -0800 (PST)
+        with ESMTP id S229948AbjKGSw6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 13:52:58 -0500
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6D10119;
+        Tue,  7 Nov 2023 10:52:56 -0800 (PST)
+Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-280109daaaaso4516841a91.3;
+        Tue, 07 Nov 2023 10:52:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699383176; x=1699987976; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2Q9inq432z5oHT34bxyt1VbDMPDDlVXPXNahD98Qs5U=;
+        b=KQ2hGWnu4usE226rTjsrEoOtcjx1sxos90QzhnToQjpmbaQT6nCsTzMaIpDEK2uYLR
+         NhgCipTozwV1Nv8VEUWOyZNxuSndGPOEfIB4v+JzbLxI37ZEtS0Dhx/8lZRMdi0aDD33
+         Cmd4AkedvH3OfGHgjqkZznKRXsm12rQmDa9oOR4pMjfaq8COLuPBW9WdiU03t7rPtn1b
+         wtfF0ODCbjaGDiHb+lqTFG5mW9BBMyM6AVZO+VHXWpU/y/SR8HVmzPGlrpV5iu8yITls
+         RaVnogxwCJQYygWU15rwVzL/OkdlmURsG9pdfvTqtHzb2xoxKO2brz44H+ZrRbLzbue9
+         sKVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699383065; x=1699987865;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1699383176; x=1699987976;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Zo2CIx1raepgvOnpR/3U87T9vjTq67Lepg+WhUeVktg=;
-        b=c3jv4BMD3eFCmXRUCFuQR4wOfOGUhg2C0gNCMYWPIoWhqYi1N3IrAcOTSJmh4MOTEM
-         aJvIpXMXfTI+7aN4oQsjDS1teevGTd1cL4Om4qyKIu90gaZn1RTlh1nsriYKZ0awTPr/
-         CvSpTlYTpRm59knEX/m8p1A4hrpbvHb/DuDDPlMIVvHKxvW07lrlTyD/MAc3kB3ZCfwL
-         ViQdDRX3LWMLItkOMlvwxSHD19bpNMb7ylqIPoX7H/JIVSbuuu5wuPZeOuOBwakia/c0
-         /Y4r8574ff7yZXyRzp0TMMbkmP69VSqT6H3RoBBCfn+0c+7XlCRkXTUMjIAsTHuuri0U
-         horw==
-X-Gm-Message-State: AOJu0YySRk4OJ56OrUfOv9iW78aHri8fr1AqSR9PXf5hGWNSwgnnzQKc
-        Co+FcH5Y0JO9bw09GKJaRyUjN7BQKjZiMw==
-X-Google-Smtp-Source: AGHT+IEa3m70HLSR2443dJmQvoFAF6d3QbBgIpVtG1/pi5KU/4OOblVJ5w3bxxmVUjhnsb3n93cpkg==
-X-Received: by 2002:a0d:ea43:0:b0:595:e1b:b978 with SMTP id t64-20020a0dea43000000b005950e1bb978mr14304338ywe.21.1699383065677;
-        Tue, 07 Nov 2023 10:51:05 -0800 (PST)
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com. [209.85.128.172])
-        by smtp.gmail.com with ESMTPSA id v202-20020a8148d3000000b005a7bbd713ddsm5860358ywa.108.2023.11.07.10.51.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Nov 2023 10:51:05 -0800 (PST)
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-5a81ab75f21so72211987b3.2;
-        Tue, 07 Nov 2023 10:51:05 -0800 (PST)
-X-Received: by 2002:a0d:ebc5:0:b0:5a7:aa54:42b1 with SMTP id
- u188-20020a0debc5000000b005a7aa5442b1mr14354385ywe.28.1699383064754; Tue, 07
- Nov 2023 10:51:04 -0800 (PST)
+        bh=2Q9inq432z5oHT34bxyt1VbDMPDDlVXPXNahD98Qs5U=;
+        b=AtcWxCukhp/yiAGUPtzy1UPHx5zpR0Dcp+7O3KAYVfTr9rG5zgHdqOF0GhXemtNhAD
+         3eHI+otsEJfVcxDjBEAuZcV4Dx/C9DcdCLgwFb6ilL6rt9g6Y4tMJhgR33O7IfV2SLrC
+         nBk3OsHEvhYWW4wr2dhsNs5eT0jAZP/SF0Xlg1h5xRUrztNQ3ig5FLYsgoEm6VyQPRYD
+         K0Fg5sf4qPyPfMyKXp4fvB3hvK8RWgvi+BcTg6yh9SV/flO8VQaVUhrdn1kJYGxTVQbU
+         GjcmgeWRfNnVVlHyvmDjJEaEhbR6HLMf2fpKWSTuR5MLQSm7KSrP46SHFjKfwbH5J633
+         LSiA==
+X-Gm-Message-State: AOJu0YzyzQn39fqEthoEFc7fI8ipG0fR8px3MKyCIrdSO1NsW/Mej+Zu
+        Y1qJwW3lwPq+O8QzRwqbZNU=
+X-Google-Smtp-Source: AGHT+IHMutGErqmrSjLk4urZUIoQ/J7YGHYvEJ+VyeukMn/gyM9fYHXc07S3NGbPmRSlIqORI2Re+w==
+X-Received: by 2002:a17:90a:c90f:b0:280:256c:abae with SMTP id v15-20020a17090ac90f00b00280256cabaemr21310466pjt.40.1699383176083;
+        Tue, 07 Nov 2023 10:52:56 -0800 (PST)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id w7-20020a17090aad4700b00280fcbbe774sm152993pjv.10.2023.11.07.10.52.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Nov 2023 10:52:55 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Tue, 7 Nov 2023 10:52:54 -0800
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 4.14 00/48] 4.14.329-rc1 review
+Message-ID: <3b7a2cda-412b-4875-9331-74112119e0af@roeck-us.net>
+References: <20231106130257.862199836@linuxfoundation.org>
 MIME-Version: 1.0
-References: <20231107121837.3759358-1-sashal@kernel.org> <20231107121837.3759358-34-sashal@kernel.org>
-In-Reply-To: <20231107121837.3759358-34-sashal@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 7 Nov 2023 19:50:52 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXWBzM41KjWCVRTmncJa=e2degFqXpRG0M7jE+s-Rkysw@mail.gmail.com>
-Message-ID: <CAMuHMdXWBzM41KjWCVRTmncJa=e2degFqXpRG0M7jE+s-Rkysw@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.6 34/40] arm64: dts: renesas: r8a779f0: spider:
- Enable PCIe Host ch0
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        magnus.damm@gmail.com, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-renesas-soc@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231106130257.862199836@linuxfoundation.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Sasha,
+On Mon, Nov 06, 2023 at 02:02:51PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.14.329 release.
+> There are 48 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
+> Anything received after that time might be too late.
+> 
 
-On Tue, Nov 7, 2023 at 1:21 PM Sasha Levin <sashal@kernel.org> wrote:
-> From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
->
-> [ Upstream commit c588e1c9846b32182fd5a0ceb637b983810e7100 ]
->
-> Enable PCIe Host controller channel 0 on R-Car S4-8 Spider board.
->
-> Since this board has an Oculink connector, CLKREQ# pin of PFC for PCIe
-> should not be used. So, using a GPIO is used to output the clock instead.
-> Otherwise the controller cannot detect a PCIe device.
->
-> Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Link: https://lore.kernel.org/r/20230905012404.2915246-3-yoshihiro.shimoda.uh@renesas.com
-> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Build results:
+	total: 139 pass: 139 fail: 0
+Qemu test results:
+	total: 440 pass: 440 fail: 0
 
-Thanks for your patch!
+Tested-by: Guenter Roeck <linux@roeck-us.net>
 
-> --- a/arch/arm64/boot/dts/renesas/r8a779f0-spider-cpu.dtsi
-> +++ b/arch/arm64/boot/dts/renesas/r8a779f0-spider-cpu.dtsi
-
-> @@ -145,6 +157,18 @@ &mmc0 {
->         status = "okay";
->  };
->
-> +&pcie0_clkref {
-> +       compatible = "gpio-gate-clock";
-> +       clocks = <&rc21012_pci>;
-> +       enable-gpios = <&gpio2 15 GPIO_ACTIVE_LOW>;
-> +       /delete-property/ clock-frequency;
-> +};
-> +
-> +&pciec0 {
-> +       reset-gpio = <&gpio_exp_20 0 GPIO_ACTIVE_LOW>;
-> +       status = "okay";
-> +};
-> +
->  &pfc {
->         pinctrl-0 = <&scif_clk_pins>;
->         pinctrl-names = "default";
-
-These references have a hard dependency on commit 183a709d3719e5c9
-("arm64: dts: renesas: r8a779f0: Add PCIe Host and Endpoint nodes")
-in v6.6+ (i.e. v6.7-rc1 soon).
-
-To actually work, this has a soft (runtime) dependency on commit
-0d0c551011df4519 ("PCI: rcar-gen4: Add R-Car Gen4 PCIe controller
-support for host mode") in v6.6+.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Guenter
