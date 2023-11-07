@@ -2,88 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B8077E455D
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 17:04:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AF4EA7E4555
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 17:04:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344483AbjKGQEx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 11:04:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33306 "EHLO
+        id S234857AbjKGQEf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 11:04:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344636AbjKGQEP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 11:04:15 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C54D468C;
-        Tue,  7 Nov 2023 07:55:34 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F41C433CA;
-        Tue,  7 Nov 2023 15:55:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699372534;
-        bh=5nn9rQ9rkS9+XG5bPxfRyTGYrqtetJox/GOm5Mv7JFE=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fo/HzkIryFoD2pNW+MsZl52fEXOy8dfO5icBKfbqiixCJ5PxnAMI2QtzuAhixjK+e
-         rWr51XUcPzPB8MQuy3IqjujXTAr1BOmIdG4mLYEOckPN0aaHqxq2nMvaMDyLDMZlly
-         M9MwyXKZ50Y8gfNZhqY0YgS0wTjbndAyRPgaaDJcRZBg4KVjHSGIzbLTPjEVnGJfQG
-         nl97f+2Ks3QbinkBDzSY5QcaYZoDTMKBjmB6umrpOOSP1uUpOWQ06BanFbLYrfF/1Z
-         i8r8y6en5jxZUvHNqnB0Kht2kaRVyYGts2zzL4OHVcYjyRys+ZLYoTN/y8MAKva3vG
-         C7cktmH8q/SIA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Wenchao Hao <haowenchao2@huawei.com>,
-        Simon Horman <horms@kernel.org>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, hare@suse.de,
-        jejb@linux.ibm.com, richardcochran@gmail.com,
-        linux-scsi@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 9/9] scsi: libfc: Fix potential NULL pointer dereference in fc_lport_ptp_setup()
-Date:   Tue,  7 Nov 2023 10:54:59 -0500
-Message-ID: <20231107155509.3769038-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231107155509.3769038-1-sashal@kernel.org>
-References: <20231107155509.3769038-1-sashal@kernel.org>
+        with ESMTP id S1344607AbjKGQEL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 11:04:11 -0500
+Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2243E44BB
+        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 07:55:31 -0800 (PST)
+Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-35904093540so7915415ab.1
+        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 07:55:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1699372530; x=1699977330; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Ov71WMP8hq2Oe42YqNoTQzgfuyyeCyevcpAmAeyvKjo=;
+        b=WmR7gCmIRMtw5DVr8PHsm5GV7MBORhBQadGaJ2m+22va5C3nXDPMqwjXLS+gBp6t4W
+         ZrRQ5AfgnJYuooOw3WP2Uz6ZBk8srjxv9B9IEaOkkEaBjxKFwpKde/jN6S3q3XL0nwwp
+         dheFl1vkA+txbSOgCYpZNxUY07td5vYJ+9Ay4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699372530; x=1699977330;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ov71WMP8hq2Oe42YqNoTQzgfuyyeCyevcpAmAeyvKjo=;
+        b=wVN3iy4EGvMmRorIkayWxF6g5lyS32BMOgWPIUW/VSeeUV/7D0xjvbs0q2jJR0T5yG
+         3YwJ2x+ZVeyp5uWnTp4IvLENtU5Bgg+p7s26agnwicA6ZATJsKTJzNhScZ8qw7iDAWoP
+         ONKmQLc/lmifeFmWkvEBRyBr/z+uwe4lQ12qP0qsKeeJUs2qQYpnpVbc1izBCr9C+DwK
+         xxEOjSFR4d3usK4fcVre0LMs7blUsdWj7y6PKEcmRXo39VyhyRPnkm6mtq0A1uqkqJn5
+         o7XrVjfDtu1PFqNCHAeoJo4wm7AXS3Oc9vh4QKx1y4WFg88MmmCx8NaYe8DM+5m+Gpav
+         lZxg==
+X-Gm-Message-State: AOJu0YxyfyLQBOouX2Ea5Aw8p3UlENg2e/KwhziZW6eX0aDEgW5uydQN
+        0LCtpylWfwXsize8NrSj8BCImA==
+X-Google-Smtp-Source: AGHT+IHpUt6IWE2JUKMRqzmXV+OPPfruQ0l5K8LHQVnDjzc1ZoluSa72ODUxvOteKGchzpn9GQWOpA==
+X-Received: by 2002:a05:6e02:330b:b0:359:a1d7:4e2f with SMTP id bm11-20020a056e02330b00b00359a1d74e2fmr9113913ilb.3.1699372530445;
+        Tue, 07 Nov 2023 07:55:30 -0800 (PST)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id m15-20020a056638224f00b004500f7a5903sm2789264jas.102.2023.11.07.07.55.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Nov 2023 07:55:30 -0800 (PST)
+Message-ID: <efea3d00-0b3f-4f69-a3c0-94c4837c7644@linuxfoundation.org>
+Date:   Tue, 7 Nov 2023 08:55:29 -0700
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.328
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4.19 00/61] 4.19.298-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20231106130259.573843228@linuxfoundation.org>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20231106130259.573843228@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Wenchao Hao <haowenchao2@huawei.com>
+On 11/6/23 06:02, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.19.298 release.
+> There are 61 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.298-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-[ Upstream commit 4df105f0ce9f6f30cda4e99f577150d23f0c9c5f ]
+Compiled and booted on my test system. No dmesg regressions.
 
-fc_lport_ptp_setup() did not check the return value of fc_rport_create()
-which can return NULL and would cause a NULL pointer dereference. Address
-this issue by checking return value of fc_rport_create() and log error
-message on fc_rport_create() failed.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
-Link: https://lore.kernel.org/r/20231011130350.819571-1-haowenchao2@huawei.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/scsi/libfc/fc_lport.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/scsi/libfc/fc_lport.c b/drivers/scsi/libfc/fc_lport.c
-index 5c0aa2c5fd558..cb22c7afa3cdc 100644
---- a/drivers/scsi/libfc/fc_lport.c
-+++ b/drivers/scsi/libfc/fc_lport.c
-@@ -251,6 +251,12 @@ static void fc_lport_ptp_setup(struct fc_lport *lport,
- 	}
- 	mutex_lock(&lport->disc.disc_mutex);
- 	lport->ptp_rdata = fc_rport_create(lport, remote_fid);
-+	if (!lport->ptp_rdata) {
-+		printk(KERN_WARNING "libfc: Failed to setup lport 0x%x\n",
-+			lport->port_id);
-+		mutex_unlock(&lport->disc.disc_mutex);
-+		return;
-+	}
- 	kref_get(&lport->ptp_rdata->kref);
- 	lport->ptp_rdata->ids.port_name = remote_wwpn;
- 	lport->ptp_rdata->ids.node_name = remote_wwnn;
--- 
-2.42.0
+thanks,
+-- Shuah
 
