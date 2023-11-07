@@ -2,119 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1FD37E4020
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 14:38:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E607E41B5
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 15:21:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232523AbjKGNiU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 08:38:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46742 "EHLO
+        id S234495AbjKGOVL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 09:21:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55644 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229580AbjKGNiU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 08:38:20 -0500
-Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5555FA3;
-        Tue,  7 Nov 2023 05:38:16 -0800 (PST)
-Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1ef9f1640a5so3299965fac.3;
-        Tue, 07 Nov 2023 05:38:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699364295; x=1699969095; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=u/JzXXKi9EWZmEKt0kuoOZHJPpAwEzdC1EaLt8yqMl0=;
-        b=SvZwRFwNtsK0nRIEZ6lMg77JvtUpgkfCRvkRhtOHKX6VcpCDY/xIBDmlunRAekadn1
-         4dxDDd/xihwhSRaIpQW4kmo3IoQKhqoq5EvwDuoXNhsBdM0yRrL/xfaT/o9tlx/6Eh6k
-         yTbxelendmcpv8EOn2I1CG2hv35DfGbKjXOty0+CdebM2gvAwCbKSvxjqWW1MQ07HyKT
-         O+bTUKLa3sBbKyTPGFJUwJaJMJJxv/sJymXmtP6LNpPMlVnL3ahzAequUDedqLiabqZT
-         7mm6dsbCeqmOsb/kJJfcCWtuvbDX9hDCOWGOvzeZ3Iu1dsPqZU4U2O867vuLdzGZYxcP
-         Sakw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699364295; x=1699969095;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u/JzXXKi9EWZmEKt0kuoOZHJPpAwEzdC1EaLt8yqMl0=;
-        b=kQD8z3ppxKg5IiyQe5rNuctgrfKRr3q82D9CtrjDJL5RSzL8zTszF3tHtaqRZ9qQJ1
-         5+ppxVAt2SFfa6vwiyk/1J+lS2uPGK16DQp3s9a6rBKolfUDIOSAzy0TCpL+t6ojWJjq
-         Qg06VWWnicWqntbdbwOwTwjHINq+Y7lRUYDlcc/NeG0xWOwuKyt52ZPgKtfyTTn5R0tm
-         0VlwcTP7I5xIRAW02iJLGq8lVua3yHpjLj5LVR6IathXJnClAoalvTfAWita81Ljd4p3
-         bUjw3hCGLo9MWbhbZjsiSEOW4FsBfLUi6PTdozAO8KhmZnJkYsWZuP6PbCost7c/Ijuq
-         jHkQ==
-X-Gm-Message-State: AOJu0Ywq4pwA/IJLmpOXxxVm8QWB3oMZvRibXVmGMhtHF43TPdDAdj6j
-        fvaxJR2US1sRhJclJc3E7Jlqu5yri95ijqNe8AU=
-X-Google-Smtp-Source: AGHT+IHNBTVDKA0fR0kDClpaT8pql9m1AEsUIvWGKaOkV7HGpxLEMW93vsgGqKhwvt+ff8/n4Uq7GyTt1WdlZHsmbo0=
-X-Received: by 2002:a05:6871:af8c:b0:1e9:b9e6:98e1 with SMTP id
- zx12-20020a056871af8c00b001e9b9e698e1mr2251960oab.1.1699364295339; Tue, 07
- Nov 2023 05:38:15 -0800 (PST)
+        with ESMTP id S229643AbjKGOVK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 09:21:10 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52925B7;
+        Tue,  7 Nov 2023 06:21:07 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F933C433C7;
+        Tue,  7 Nov 2023 14:21:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699366866;
+        bh=oL93HJzpAT5M6ibMccnDW34R4kx/Q/0Z2ASQPR81UGo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=RmpbhgvsWefzf51B9DDxwQKN9U/TNApUnAAHDRZ1yAUaDae4gtLu1JrQpX3Yjudep
+         So0E0IeedKaPD4owcK1Wb3a3UxVv/LpB+cHTCGo2OyJed1HOlT1yUMfLC4Zyry7BcF
+         1BpdHY8dEApXz1nRreh8O3YAMQLOW2i6kwr9UTqvEjarCyHbPF+Z5wu8bXZ9VgmDrv
+         AL6Tjjb4BQ+rixW0FEyk5nBKvVTTW4Ksi0HD9gTxBBYp3fg70jS+2OgvJcYiVhn8nC
+         ywWpnNOu4FPHlu8NL/KgQVgS3h50PX3SiIbyUkmqQs7JT3SydR6IyA635+rlsXb2lt
+         N6NrIzobCPwCQ==
+Date:   Tue, 7 Nov 2023 14:21:04 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     linux-stable <stable@vger.kernel.org>,
+        open list <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        lkft-triage@lists.linaro.org,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>
+Subject: Re: selftests: arm64: fp-stress: Unable to handle kernel paging
+ request at virtual address
+Message-ID: <ZUpH0FNTYAl9Z+L6@finisterre.sirena.org.uk>
+References: <CA+G9fYsrLTbFkz-LJmAY9efDyEr-8bHcxivBDPToPjBxjStoDg@mail.gmail.com>
 MIME-Version: 1.0
-References: <20231107121837.3759358-1-sashal@kernel.org> <20231107121837.3759358-21-sashal@kernel.org>
-In-Reply-To: <20231107121837.3759358-21-sashal@kernel.org>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Tue, 7 Nov 2023 08:38:03 -0500
-Message-ID: <CADnq5_PzxAMvY7FKDuBT-7RwGhXusoKioF8zXwKR9oWvdp9foQ@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.6 21/40] drm/radeon: Fix UBSAN
- array-index-out-of-bounds for Radeon HD 5430
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Felix Held <felix.held@amd.com>,
-        dri-devel@lists.freedesktop.org, Xinhui.Pan@amd.com,
-        amd-gfx@lists.freedesktop.org,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        christian.koenig@amd.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="fLQGTjRKWSVU8dDo"
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYsrLTbFkz-LJmAY9efDyEr-8bHcxivBDPToPjBxjStoDg@mail.gmail.com>
+X-Cookie: Slow day.  Practice crawling.
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Nov 7, 2023 at 7:20=E2=80=AFAM Sasha Levin <sashal@kernel.org> wrot=
-e:
->
-> From: Mario Limonciello <mario.limonciello@amd.com>
->
-> [ Upstream commit c63079c61177ba1b17fa05c6875699a36924fe39 ]
->
-> For pptable structs that use flexible array sizes, use flexible arrays.
->
-> Suggested-by: Felix Held <felix.held@amd.com>
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2894
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> Acked-by: Alex Deucher <alexander.deucher@amd.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-FWIW, I don't think any of these UBSAN variable sized array changes
-are really stable material.  They are not really fixing an actual
-issue just making UBSAN happy.
+--fLQGTjRKWSVU8dDo
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Alex
+On Tue, Nov 07, 2023 at 06:43:25PM +0530, Naresh Kamboju wrote:
 
+> # # SVE-VL-64-0: Expected
+> [3904000039044000390480003904c0003904000139044001390480013904c0013904000239044002390480023904c0023904000339044003390480033904c003]
+> <>
 
-> ---
->  drivers/gpu/drm/radeon/pptable.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/radeon/pptable.h b/drivers/gpu/drm/radeon/pp=
-table.h
-> index 4c2eec49dadc9..94947229888ba 100644
-> --- a/drivers/gpu/drm/radeon/pptable.h
-> +++ b/drivers/gpu/drm/radeon/pptable.h
-> @@ -74,7 +74,7 @@ typedef struct _ATOM_PPLIB_THERMALCONTROLLER
->  typedef struct _ATOM_PPLIB_STATE
->  {
->      UCHAR ucNonClockStateIndex;
-> -    UCHAR ucClockStateIndices[1]; // variable-sized
-> +    UCHAR ucClockStateIndices[]; // variable-sized
->  } ATOM_PPLIB_STATE;
->
->
-> --
-> 2.42.0
->
+You've elided *lots* of error reports from the actual test which suggest
+that there is substantial memory corruption, it looks like tearing part
+way through loading or saving the values - the start of the vectors
+looks fine but at some point they get what looks like a related process'
+data, eg:
+
+# # SVE-VL-64-0: 	Expected [3904000039044000390480003904c0003904000139044001390480013904c0013904000239044002390480023904c0023904000339044003390480033904c003]
+# # SVE-VL-64-0: 	Got      [3904000039044000390480003904c000390480003904c00039040001390440013904000139044001390480013904c001390480013904c0013904000239044002]
+
+This only appears to affect SVE and SME, I didn't spot any FPSIMD
+corruption but then that is the smallest case (and I didn't notice any
+VL 16 cases either).  It looks like the corruption is on the first thing
+we check each time (either register 0 or the highest ZA.H vector for
+ZA), all the values do look lke they were plausibly generated by
+fp-stress test programs.
+
+Then we get what looks like memory corruption:
+
+> # # SVE-VL-256-<1>[   88.160313] Unable to handle kernel paging
+> request at virtual address 00550f0344550f02
+
+> <4>[   88.195706] Call trace:
+> <4>[ 88.196098] percpu_ref_get_many
+> (include/linux/percpu-refcount.h:174 (discriminator 2)
+> include/linux/percpu-refcount.h:204 (discriminator 2))
+> <4>[ 88.196815] refill_obj_stock (mm/memcontrol.c:3339 (discriminator 2))
+> <4>[ 88.197367] obj_cgroup_uncharge (mm/memcontrol.c:3406)
+> <4>[ 88.197835] kmem_cache_free (include/linux/mm.h:1630
+> include/linux/mm.h:1849 include/linux/mm.h:1859 mm/slab.h:208
+> mm/slab.h:572 mm/slub.c:3804 mm/slub.c:3831)
+> <4>[ 88.198407] put_pid.part.0 (kernel/pid.c:118)
+> <4>[ 88.198870] delayed_put_pid (kernel/pid.c:127)
+> <4>[ 88.200527] rcu_core (arch/arm64/include/asm/preempt.h:13
+> (discriminator 1) kernel/rcu/tree.c:2146 (discriminator 1)
+> kernel/rcu/tree.c:2403 (discriminator 1))
+
+This all seems very surprising, especially given that AFAICT there are
+no changes in stable-6.6-rc for arch/arm64.
+
+--fLQGTjRKWSVU8dDo
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVKR88ACgkQJNaLcl1U
+h9BNwQf/RZc+/koVFJe4V6Im9MpkZRwMTrrLKvXMX/e0ddQK8TUhhdLYg+sdxcsh
+6LaknBCRYCvvpPvPK3qvh4bcak+WuoUSzYe3gXvtNT/zDMvMPSFjqqIhB3XKG8nQ
+skzAdnXEBDi+BZdrc2CGCF8+jpnK8tDhwUneEAL0Y9csAc/wAtM0CeBnnFrotxxI
+DMFKe+GMi3fGHqSFYMCHjJP1yE9xRVD7mmN5V3cMgO4RWlJPDOaqdrAVyE5Ts7+y
+y07DZET2Gec7S/rGV62LSv60jQgPE9zrxFzS1NlQ+27y+hekZx/ACNotUKB4MvLA
+t/QZDDp31um63zx1Padboe0IxB1mTg==
+=y8Tl
+-----END PGP SIGNATURE-----
+
+--fLQGTjRKWSVU8dDo--
