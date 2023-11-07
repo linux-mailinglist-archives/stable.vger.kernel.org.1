@@ -2,59 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF6227E3477
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 05:18:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 613327E3489
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 05:34:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233368AbjKGESm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 6 Nov 2023 23:18:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45606 "EHLO
+        id S233438AbjKGEeT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 6 Nov 2023 23:34:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233472AbjKGESl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 23:18:41 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E5E7FC
-        for <stable@vger.kernel.org>; Mon,  6 Nov 2023 20:18:39 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD399C433C7;
-        Tue,  7 Nov 2023 04:18:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699330718;
-        bh=5PvihFHBU7SqgdRwrtVBo1+6I/pEiB/RH5ISX/VMPpA=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=Bp79TRjy24dSDD/qE6n8ck8XIFc1iINY8FONEu+yGlfyIKf7sAGTIkE76bM888oZi
-         t/diEaICWenT4mb89FLqqlQdr/kMR8ohF/pvt10vL2t3MlUQZ7W5Ej0iBA4Ey2oOkN
-         piKy8MQFGWSR8jbtWOGfriFcQA+cCu5jAMkoeQ0AKDSBphqAXqQgoJX2EBGq7AUs9m
-         ioOn9opMSHLLz4obHlrt6gDID/c0CNS2W8XpnuwKZL3U7uIcedn3ZGSugjsSZyBJeb
-         8rD6UJHi0B64OlMSCYXWFRgCRWeUB583TG1QBgNuSaaCB5p2ZG8ANgU7du4WCoaekW
-         pOdtrknRPGb8A==
-Date:   Mon, 6 Nov 2023 20:18:31 -0800 (PST)
-From:   Stefano Stabellini <sstabellini@kernel.org>
-X-X-Sender: sstabellini@ubuntu-linux-20-04-desktop
-To:     Mikulas Patocka <mpatocka@redhat.com>
-cc:     Mike Snitzer <snitzer@kernel.org>, Keith Busch <kbusch@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        xen-devel@lists.xenproject.org, iommu@lists.linux.dev,
-        Marek Marczykowski-G'orecki <marmarek@invisiblethingslab.com>,
-        Jens Axboe <axboe@fb.com>, Sagi Grimberg <sagi@grimberg.me>,
-        Jan Kara <jack@suse.cz>, Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michal Hocko <mhocko@suse.com>, stable@vger.kernel.org,
-        regressions@lists.linux.dev, Alasdair Kergon <agk@redhat.com>,
-        dm-devel@lists.linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH v2] swiotlb-xen: provide the "max_mapping_size" method
-In-Reply-To: <151bef41-e817-aea9-675-a35fdac4ed@redhat.com>
-Message-ID: <alpine.DEB.2.22.394.2311061211080.3478774@ubuntu-linux-20-04-desktop>
-References: <3cb4133c-b6db-9187-a678-11ed8c9456e@redhat.com> <ZUUctamEFtAlSnSV@mail-itl> <ZUUlqJoS6_1IznzT@kbusch-mbp.dhcp.thefacebook.com> <ZUVYT1Xp4+hFT27W@mail-itl> <ZUV3TApYYoh_oiRR@kbusch-mbp.dhcp.thefacebook.com> <11a9886d-316c-edcd-d6da-24ad0b9a2b4@redhat.com>
- <ZUZOKitOAqqKiJ4n@kbusch-mbp.dhcp.thefacebook.com> <20231106071008.GB17022@lst.de> <928b5df7-fada-cf2f-6f6a-257a84547c3@redhat.com> <ZUkDUXDF6g4P86F3@kbusch-mbp.dhcp.thefacebook.com> <ZUkGpblDX637QV9y@redhat.com>
- <151bef41-e817-aea9-675-a35fdac4ed@redhat.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        with ESMTP id S233360AbjKGEeT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 6 Nov 2023 23:34:19 -0500
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 556E3FD;
+        Mon,  6 Nov 2023 20:34:16 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6b87c1edfd5so3965353b3a.1;
+        Mon, 06 Nov 2023 20:34:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699331656; x=1699936456; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5v+xl/QC//ZLXXcIvchI1qCynqxscf2nvU++0XNR+5I=;
+        b=PLpo7bnIMx3nP3aRfT/ucl6rjQTYKcpBb+IdKWy4KG+lKgOcKxsU1dbS9uujZWlHT7
+         oWXfHkenGPIZAFnzwlujfFk6/846gP2TvrNFTHN3ToEtLWXgd9xq4z9EXB7BNaLdOgqT
+         DOgvvIwk8U+yM4ERsJavpvHxl+q8zQxgvMy2mhwzYRFLNyNAYCtJ7q48W86dK+fNJc40
+         LuOgosMtXVnpZUdJuWYTjIxZUtQSQTBNrtlYjkiNtRGSqSRB7hLB0n5uwhWcANfZxzAp
+         2QrSbfP4O3AYJKIMPkGvZdqQZ5+viRXmppHSs+VCGqyJpRMoQEFbv46wsdYCt8cDQXnr
+         npEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699331656; x=1699936456;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5v+xl/QC//ZLXXcIvchI1qCynqxscf2nvU++0XNR+5I=;
+        b=uIqYiW0IU4ClUE2NJNVHmUHcr3ulppGRLZCNtatVYvXJZlJJ5moUxbs7rb1bkOoy7Q
+         2qitA2pALRXtDgO//klqZ93ECht61zrg+sAgEDnEI89TpIkc4jRSVlo3wEH4+Nz1vP/s
+         raAoZgeLWTMI+COYha9znFexvcZLQ+U0sNnib1Motxvd8f0tXfDLMXSaJL/gSKiKYgPe
+         NHFKMKypSolOk7fkl2fVwFJ1pazV0YSJKIezFjgZrFYLLwJ/NJeGkOajva9aI30fASoH
+         kuHKW7e0A1H2+wIjbT6MrvnufKwrw70UH5a4ef63r8NAH60sRWmgn9ahs47VnfVdTXsY
+         I7ZA==
+X-Gm-Message-State: AOJu0YxSSRCASCfuZip7brVkgLuYRu9qmbX+t+iLVLcTnffDk5sPZCvI
+        EivHe3wLR7GFuftjR479Oxw=
+X-Google-Smtp-Source: AGHT+IEwICaZQxiKeFyoKwec6zvfZKlIIRbttwjmkWelZjZ+lCzAKASY3Jn6baxUKlpZ5E4prH4YBw==
+X-Received: by 2002:a05:6a21:4881:b0:180:eef7:b3d9 with SMTP id av1-20020a056a21488100b00180eef7b3d9mr18747589pzc.57.1699331655723;
+        Mon, 06 Nov 2023 20:34:15 -0800 (PST)
+Received: from debian.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id 11-20020a17090a19cb00b0028089fdce19sm6766313pjj.52.2023.11.06.20.34.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Nov 2023 20:34:14 -0800 (PST)
+Received: by debian.me (Postfix, from userid 1000)
+        id F033D812C340; Tue,  7 Nov 2023 11:34:10 +0700 (WIB)
+Date:   Tue, 7 Nov 2023 11:34:10 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.5 00/88] 6.5.11-rc1 review
+Message-ID: <ZUm-QnC4f1UMABXf@debian.me>
+References: <20231106130305.772449722@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-46487316-1699301481=:3478774"
-Content-ID: <alpine.DEB.2.22.394.2311062018170.3478774@ubuntu-linux-20-04-desktop>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ibMRfCjAH3gXg/1B"
+Content-Disposition: inline
+In-Reply-To: <20231106130305.772449722@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -63,57 +78,36 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
 
---8323329-46487316-1699301481=:3478774
-Content-Type: text/plain; CHARSET=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-ID: <alpine.DEB.2.22.394.2311062018171.3478774@ubuntu-linux-20-04-desktop>
+--ibMRfCjAH3gXg/1B
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 6 Nov 2023, Mikulas Patocka wrote:
-> From: Keith Busch <kbusch@kernel.org>
-> 
-> There's a bug that when using the XEN hypervisor with bios with large
-> multi-page bio vectors on NVMe, the kernel deadlocks [1].
-> 
-> The deadlocks are caused by inability to map a large bio vector -
-> dma_map_sgtable always returns an error, this gets propagated to the block
-> layer as BLK_STS_RESOURCE and the block layer retries the request
-> indefinitely.
-> 
-> XEN uses the swiotlb framework to map discontiguous pages into contiguous
-> runs that are submitted to the PCIe device. The swiotlb framework has a
-> limitation on the length of a mapping - this needs to be announced with
-> the max_mapping_size method to make sure that the hardware drivers do not
-> create larger mappings.
-> 
-> Without max_mapping_size, the NVMe block driver would create large
-> mappings that overrun the maximum mapping size.
-> 
-> Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-> Link: https://lore.kernel.org/stable/ZTNH0qtmint%2FzLJZ@mail-itl/ [1]
-> Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-> Suggested-by: Christoph Hellwig <hch@lst.de>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Keith Busch <kbusch@kernel.org>
-> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+On Mon, Nov 06, 2023 at 02:02:54PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.11 release.
+> There are 88 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+Successfully compiled and installed bindeb-pkgs on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-> ---
->  drivers/xen/swiotlb-xen.c |    1 +
->  1 file changed, 1 insertion(+)
-> 
-> Index: linux-stable/drivers/xen/swiotlb-xen.c
-> ===================================================================
-> --- linux-stable.orig/drivers/xen/swiotlb-xen.c	2023-11-03 17:57:18.000000000 +0100
-> +++ linux-stable/drivers/xen/swiotlb-xen.c	2023-11-06 15:30:59.000000000 +0100
-> @@ -405,4 +405,5 @@ const struct dma_map_ops xen_swiotlb_dma
->  	.get_sgtable = dma_common_get_sgtable,
->  	.alloc_pages = dma_common_alloc_pages,
->  	.free_pages = dma_common_free_pages,
-> +	.max_mapping_size = swiotlb_max_mapping_size,
->  };
---8323329-46487316-1699301481=:3478774--
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--ibMRfCjAH3gXg/1B
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZUm+PQAKCRD2uYlJVVFO
+o+O3AP93TAdIfltAG1Zmn9ePXLdsRoUFdlwuagy9P9xVHJSd+wEA485XLpco1j3F
+wo2v/aTJZ51o+wPqdOTmZTTVNb0pwQw=
+=cnMU
+-----END PGP SIGNATURE-----
+
+--ibMRfCjAH3gXg/1B--
