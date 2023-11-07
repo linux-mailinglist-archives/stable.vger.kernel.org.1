@@ -2,97 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 89C627E43A3
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 16:40:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 559927E43A5
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 16:41:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235313AbjKGPk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 10:40:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40766 "EHLO
+        id S1343988AbjKGPlB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 10:41:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234830AbjKGPk6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 10:40:58 -0500
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFE0099
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 07:40:55 -0800 (PST)
-Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-35950819c97so3880015ab.0
-        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 07:40:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1699371655; x=1699976455; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Tz/3EAWv61f6wEBvRr3aAF3KcbwKrMc//gR1rrcsb8w=;
-        b=ZG4OKm6zMrrXdkvuZ0QCVXeRczq2fmT8EB5BUSJjdpR7g0V4HOyYn5B4YhWUutTqeQ
-         5Lslwl8VRDivK96GSmAt0R/e5ulKT8d+jzUUOofS3t1gSDkv0JXYje3H8e6ULAx3B6hR
-         5nBWCAviP8VK3dbcO6O64OHhXWd/k8KCVBI8w=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699371655; x=1699976455;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Tz/3EAWv61f6wEBvRr3aAF3KcbwKrMc//gR1rrcsb8w=;
-        b=gmiru2U0u2Muggco7W0p7oNjzp7HBLO77MFLFTTZCq+DszY/AGl6HnHoV4SyRa+t4E
-         I9DRjEblu+PNfLtYMwetlnumrZuEJOueDgKQ1+bBMOmcY2UXPmvmzZBEkWXNABGb6+3O
-         HbpSq0UJEUXF6/Jkj1DbK0d4SX9WTFJ93B16YCZ2iwy+nbHgxNl0DruwwN4Jw4jPfBA8
-         jFeETRdssHSSHUdiqqGA79qi9dDh3bqqDJIwlX38HSntjGK6sKEU2YSKat0jXSwCvj4Q
-         idbuhxGw9FzxvuOusPC//kJUCnbVMpYUcUpjFI8xV4VcJo4/Iu0xam++KvAsMLycQUe2
-         sRrg==
-X-Gm-Message-State: AOJu0Yx2lZK7bWhaTAlskZ2HURAdzKc1B8IL+dUxXHkOPOXxSaIDKXR9
-        99lE5VzfgZGi1FYuidMpb7E7Dw==
-X-Google-Smtp-Source: AGHT+IGQAWYgGlHvzGOchOtYfwGf4w5IoTPD/+kKzlZTcA7bY03Zr+sGBRvCeJPucCtA1SCy16Gjew==
-X-Received: by 2002:a05:6e02:168c:b0:359:4db7:102a with SMTP id f12-20020a056e02168c00b003594db7102amr25003454ila.0.1699371655252;
-        Tue, 07 Nov 2023 07:40:55 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id f8-20020a056e0204c800b00357fc1e2ffesm766889ils.23.2023.11.07.07.40.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Nov 2023 07:40:54 -0800 (PST)
-Message-ID: <48432650-09c9-4cf6-8ec7-9c4577c18e38@linuxfoundation.org>
-Date:   Tue, 7 Nov 2023 08:40:54 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 00/95] 5.10.200-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <20231106130304.678610325@linuxfoundation.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        with ESMTP id S1343981AbjKGPlB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 10:41:01 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D56F39B;
+        Tue,  7 Nov 2023 07:40:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6404AC433C7;
+        Tue,  7 Nov 2023 15:40:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1699371658;
+        bh=5rnFSukwJIRJ3cAd95vUfvTVhOhAj4lx7vQh6OM6pAA=;
+        h=Date:To:From:Subject:From;
+        b=RWCuafvksmqeffuMHMAd91bUnYxxxl+rVGr15rmcItx71m2HkFgmz5cKSFXbGQMgp
+         eiosOA4xmYs44DWExWT60u3p90bXT11ZnejOuNcJVVVVVZ0/C1ekv3Caso9KL//AcF
+         RulO3gapmmCyHl5sHEX5iJmTizH92ir7Oz/uWBIU=
+Date:   Tue, 07 Nov 2023 07:40:57 -0800
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org, sj@kernel.org,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-damon-sysfs-check-error-from-damon_sysfs_update_target.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231107154058.6404AC433C7@smtp.kernel.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 11/6/23 06:03, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.200 release.
-> There are 95 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.200-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
 
-Compiled and booted on my test system. No dmesg regressions.
+The patch titled
+     Subject: mm/damon/sysfs: check error from damon_sysfs_update_target()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-damon-sysfs-check-error-from-damon_sysfs_update_target.patch
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-check-error-from-damon_sysfs_update_target.patch
 
-thanks,
--- Shuah
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: SeongJae Park <sj@kernel.org>
+Subject: mm/damon/sysfs: check error from damon_sysfs_update_target()
+Date: Mon, 6 Nov 2023 23:34:06 +0000
+
+Patch series "mm/damon/sysfs: fix unhandled return values".
+
+Some of DAMON sysfs interface code is not handling return values from some
+functions.  As a result, confusing user input handling or NULL-dereference
+is possible.  Check those properly.
+
+
+This patch (of 3):
+
+damon_sysfs_update_target() returns error code for failures, but its
+caller, damon_sysfs_set_targets() is ignoring that.  The update function
+seems making no critical change in case of such failures, but the behavior
+will look like DAMON sysfs is silently ignoring or only partially
+accepting the user input.  Fix it.
+
+Link: https://lkml.kernel.org/r/20231106233408.51159-1-sj@kernel.org
+Link: https://lkml.kernel.org/r/20231106233408.51159-2-sj@kernel.org
+Fixes: 19467a950b49 ("mm/damon/sysfs: remove requested targets when online-commit inputs")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.19+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/damon/sysfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+--- a/mm/damon/sysfs.c~mm-damon-sysfs-check-error-from-damon_sysfs_update_target
++++ a/mm/damon/sysfs.c
+@@ -1203,8 +1203,10 @@ static int damon_sysfs_set_targets(struc
+ 
+ 	damon_for_each_target_safe(t, next, ctx) {
+ 		if (i < sysfs_targets->nr) {
+-			damon_sysfs_update_target(t, ctx,
++			err = damon_sysfs_update_target(t, ctx,
+ 					sysfs_targets->targets_arr[i]);
++			if (err)
++				return err;
+ 		} else {
+ 			if (damon_target_has_pid(ctx))
+ 				put_pid(t->pid);
+_
+
+Patches currently in -mm which might be from sj@kernel.org are
+
+mm-damon-sysfs-check-error-from-damon_sysfs_update_target.patch
+mm-damon-sysfs-schemes-handle-tried-regions-sysfs-directory-allocation-failure.patch
+mm-damon-sysfs-schemes-handle-tried-region-directory-allocation-failure.patch
+
