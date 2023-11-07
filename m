@@ -2,120 +2,131 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70B637E373A
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 10:09:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 071A27E3894
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 11:14:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233857AbjKGJJX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 04:09:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34664 "EHLO
+        id S229559AbjKGKOn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 05:14:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233844AbjKGJI5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 04:08:57 -0500
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BC0510D3;
-        Tue,  7 Nov 2023 01:08:34 -0800 (PST)
-Received: by nautica.notk.org (Postfix, from userid 108)
-        id DB844C01C; Tue,  7 Nov 2023 10:08:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-        t=1699348112; bh=p1hhTlkHRNBwSalgO0gLVkqAEwk8nZAf/XeSXUwldc4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YkpmTlyydJsYin0D/3qcpmebBI8LuSeqZoqDOqEwCN2Yr7gfjjWsu/OU9ADQqpx4Y
-         q5ZzBmnZALYGfKQcOEMa5s2+IQt/FjgLA1iOEU4HyTF3rS7tqEdwL8TgmQze0OOGLn
-         hGdUZx5KsL64DZoqQUOCqdQiA0oU7b0XE+w9o3refghJkiqKM2XMjKfPsXJB2e1mTP
-         ddTeofP0fOc1qHAcuMlKMOfVE2jiU2/GpfQVR4MTX24Ro06N0AMMTOiDhJT3HYNyUc
-         /seudTX1Rc2q4lcAtrgC28pS6pu8QN3yPwB0SHEh9RtCCeNXg1ezlxET08qnDDMAI4
-         r+sjyLMXqE2aQ==
+        with ESMTP id S229543AbjKGKOm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 05:14:42 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5920BD;
+        Tue,  7 Nov 2023 02:14:39 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FA0C433C7;
+        Tue,  7 Nov 2023 10:14:35 +0000 (UTC)
+Message-ID: <b5f9d751-5425-4281-8a21-99e92bd447b7@xs4all.nl>
+Date:   Tue, 7 Nov 2023 11:14:34 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH v2 0/3] Fix use-after-free bug in
+ mtk_jpeg_dec_device_run and fix schedule error in mtk_jpegdec_worker
+Content-Language: en-US, nl
+To:     Zheng Wang <zyytlz.wz@163.com>, dmitry.osipenko@collabora.com
+Cc:     Kyrie.Wu@mediatek.com, bin.liu@mediatek.com, mchehab@kernel.org,
+        matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, Irui.Wang@mediatek.com,
+        security@kernel.org, hackerzheng666@gmail.com,
+        amergnat@baylibre.com, wenst@chromium.org, stable@vger.kernel.org
+References: <20231106144811.868127-1-zyytlz.wz@163.com>
+From:   Hans Verkuil <hverkuil@xs4all.nl>
+Autocrypt: addr=hverkuil@xs4all.nl; keydata=
+ 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
+In-Reply-To: <20231106144811.868127-1-zyytlz.wz@163.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
-Received: from gaia (localhost [127.0.0.1])
-        by nautica.notk.org (Postfix) with ESMTPS id A42C7C009;
-        Tue,  7 Nov 2023 10:08:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-        t=1699348110; bh=p1hhTlkHRNBwSalgO0gLVkqAEwk8nZAf/XeSXUwldc4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=H7w52jMqsQ1Gb6vTLqkBSTcJA9YesVDgf6iZYUj8JCd843h1mAd8YAw01jF4Ez5bR
-         0U5oPwYahyMn/82rK7oTSIXYdqASB05N1L3W0sZD+s6ESCPwvWunuuKB1jiziYKjGy
-         bjdE2yR/cybHUasnrdxrWJGEb1NjCqQE4oZQWqxODMriWHcYQv6CjBy1KRjXfMiz8f
-         +aglC5EAZzJl/d8uXfVLJWb7u1zwZhX8CRhimFa/3W+Yw85BMbj3VP2LmlUQGxhJav
-         gt6aBGKnuT+UZ3E9Nk2dz7XY0b7mK2DcNIMFEIoe0xLs/BrjzkHWAIzhokJaCEci/o
-         DNUPPrUdMIukA==
-Received: from localhost (gaia [local])
-        by gaia (OpenSMTPD) with ESMTPA id 25f2b5b1;
-        Tue, 7 Nov 2023 09:08:22 +0000 (UTC)
-Date:   Tue, 7 Nov 2023 18:08:07 +0900
-From:   Dominique Martinet <asmadeus@codewreck.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 5.10 00/95] 5.10.200-rc1 review
-Message-ID: <ZUn-d-s7J8cmS-em@codewreck.org>
-References: <20231106130304.678610325@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20231106130304.678610325@linuxfoundation.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Greg Kroah-Hartman wrote on Mon, Nov 06, 2023 at 02:03:28PM +0100:
-> This is the start of the stable review cycle for the 5.10.200 release.
-> There are 95 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 06/11/2023 15:48, Zheng Wang wrote:
+> Hello,
 > 
-> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
-> Anything received after that time might be too late.
+> This v2 series fixes the use-after-free bug in mtk_jpeg_dec_device_run.
+> This patch fixes the security bug in chrome-os.
+> It inclues reverting the incomplete fix before and make the right fix.
+> Also,it fixes the error of timeout-worker-schedule in multiple-core
+> devices.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.200-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
+> 1. Remove cancel worker in mtk_jpeg_remove for the worker is only
+> registered in single-core device but we try to cacnel it in both
+> single-core and multiple-core devices.
+> 
+> 2. Fix use-after-free bug by delay the schedule_delayed_work only if
+> mtk_jpeg_set_dec_dst runs successfully.
+> 
+> 3. Delay the schedule_delayed_work in mtk_jpegdec_worker as it has same
+> code logic in mtk_jpeg_dec_device_run.
+> 
+> version 2 changes
+> 
+> -put the patches into on series suggested by Dmitry
+> 
+> Zheng Wang (3):
+>   media: mtk-jpeg: Remove cancel worker in mtk_jpeg_remove to avoid the
+>     crash of multi-core JPEG devices
+>   media: mtk-jpeg: Fix use after free bug due to error path handling
+>     in mtk_jpeg_dec_device_run
+>   media: mtk-jpeg: Fix timeout schedule error in mtk_jpegdec_worker.
+> 
+>  .../media/platform/mediatek/jpeg/mtk_jpeg_core.c    | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
+> 
 
-Tested on:
-- arm i.MX6ULL (Armadillo 640)
-- arm64 i.MX8MP (Armadillo G4)
+Please don't resend. If it is in patchwork.linuxtv.org then it is good.
+Fixes (unless they fix something really nasty) can take several weeks before
+they are picked up. I usually schedule 2 or 3 rounds per kernel cycle where
+I go through all the pending patches with fixes.
 
-No obvious regression in dmesg or basic tests:
-Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Regards,
 
-
-By the way, I wanted to start semi-automatize this (for 5.10
-specifically since that's the kernel we're based on) and started
-watching the linux-stable-rc.git's linux-5.10.y branch, specifically the
-rev in this command:
-
-  git ls-remote git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git refs/heads/linux-5.10.y
-
-And there were two different "Linux 5.10.200-rc1" commits on the 1st,
-3rd before the final rev on the 6th (this mail) as I assume you were
-preparing this branch (and it's perfectly fine!)
-Is there anything appropriate to watch instead, or should I setup mail
-filters to see the announce mail instead of trying to second-guess the
-git repo?
-
-
-While I'm asking questions, I'm also comparing the dmesg output from one
-version to the next by hand (as ordering etc changes a bit from one run
-to the next it's a bit hard to automate reliably), if you're aware of a
-fuzzy-diff for dmesg outputs or should I just kludge that in a corner?
-(Should have noticed the MMC quirk regression[1] in 5.10.199 if I had been
-doing that properly last time... It's too easy to miss when a line just
-disappears and there's no error
-[1] https://lore.kernel.org/all/20231103004220.1666641-1-asmadeus@codewreck.org/
-(not yet in master))
-
-
--- 
-Dominique Martinet | Asmadeus
+	Hans
