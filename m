@@ -2,97 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D13817E46A4
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 18:16:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1141C7E4756
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 18:44:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234750AbjKGRQE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 12:16:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50388 "EHLO
+        id S235124AbjKGRoz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 12:44:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235089AbjKGRQB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 12:16:01 -0500
-Received: from mail-oa1-x2d.google.com (mail-oa1-x2d.google.com [IPv6:2001:4860:4864:20::2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A9B9184;
-        Tue,  7 Nov 2023 09:15:58 -0800 (PST)
-Received: by mail-oa1-x2d.google.com with SMTP id 586e51a60fabf-1ea98ad294cso2483424fac.3;
-        Tue, 07 Nov 2023 09:15:58 -0800 (PST)
+        with ESMTP id S235168AbjKGRou (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 12:44:50 -0500
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDC0212B;
+        Tue,  7 Nov 2023 09:44:47 -0800 (PST)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2c59a4dd14cso79964541fa.2;
+        Tue, 07 Nov 2023 09:44:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699379086; x=1699983886; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vBopQGClenfXGmuKg6C+Z7OAKKWkOzVf06T/O52p9BM=;
+        b=IDnOxzN8be9/3C0yRG6b3cVbDW6izav8Ou1cZXUZ6TZZY7PNskf8qsY/b+M4EggUjj
+         hmdguXa7GYvkMM6yOMYteKvO6NwZcYsWq2BQUz7Aku/wnP6M24ipqRjBh12+qZamas4X
+         eQ/3N0wQfr2UCnDA6faOVvsKysD5r7e0NPLoIFt5kvtkAeyJXIrW18X02ffE2t2ShZUn
+         cG8vkL5S1sNHjKemmZF0EYTCbSzDA0/7ASEokDfxgMVtG5NYSP9z2Nw33+NdG/7+OXOW
+         3F70Ej/cAd/Lxiu3cqPTBAX/pwKi2Sczi7PBPG2X1SURJxrinILO5YPDeRjr1Mb/nR5N
+         jk6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699377356; x=1699982156;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=o3JkKLwAwJdKQeiiREsn2ZXGc82r7DnIspAVxlaKU+0=;
-        b=oDR/6Tr5gqzEpA/5OFLbvMHQpyzKlx5BUj0l/rQvt2clNFEMlw01RSVhXsUOe2Vavk
-         DhTzY8AEyAifATcU2PUaaZT47xrC78i/qhI4Q5KGIZLJFUnxFPYeZcRSK2ZN+yUmMwC2
-         eQhbBPSsZx5n9llaHwzfIw86bncHEI0o4LvQ+yJX4ypEasmvzxsQIC5i0GubgxcqFZAB
-         u4+B3Fdq0OdkfULZynVQ84VUC6w3JoB0RROKqQXvuLcE5prIpxAbC5hLjh9M0QxnrneO
-         zlA0zftEzjNPeA4RT03DXwIiiXmvYYxbbJtLSMi2jHCvHGNyOHAlJTRXVmZQrnOnjHKo
-         Vcpw==
-X-Gm-Message-State: AOJu0YydUZWghmSSlkTwinfJGHyTS8tMQ/kcwQVaPri6GZrNhcqfuEr8
-        1uzOoPIWsPfTXpSFRl9UIBw=
-X-Google-Smtp-Source: AGHT+IGao4fOJShZIACLhtD6KQuHOGX5J+O2BcDsJBuMTHdUquuPkkev4d2UT0d5FsxOhAmLASQi/A==
-X-Received: by 2002:a05:6870:32cc:b0:1e9:8a35:8635 with SMTP id r12-20020a05687032cc00b001e98a358635mr3597086oac.21.1699377356597;
-        Tue, 07 Nov 2023 09:15:56 -0800 (PST)
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id v17-20020a259111000000b00d7b8a1074d4sm5179434ybl.57.2023.11.07.09.15.55
+        d=1e100.net; s=20230601; t=1699379086; x=1699983886;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vBopQGClenfXGmuKg6C+Z7OAKKWkOzVf06T/O52p9BM=;
+        b=PAh3agm7IKoAnUUSPU9WhhsGRX0pi68JAjAttHDmfvLSbM6cMZUsmalRXa5D4tiLGy
+         MsSbCY6oY5B8YtP0eDBD2tz4hOm+jztwYtEX2CWssJ/z9TtcVsso8Yvba+BV299cJ7Ns
+         dxHhhnF0bd/QSIjOiQpWj3/R5rbPniLlJGNg0H5AmDYSK45aVpoOkSOa6r+07pDUtreL
+         Ym11DmTGMhPFxnwFfZgeD+9kD7GPC2bY+yvuwkoprzcUwR8tX3ik2J1CWY/xycppsMOM
+         5G5FczZAz8BVM2BoORHINugGUUtT9W1kOHe7GD/bOM9e+Wqee1UNUkQoD64hc8h4Kx5t
+         3a2g==
+X-Gm-Message-State: AOJu0YyxhQCqjjXfGDM9sqhsveRdy2o4bAlcdvwOSG4916hOku+Ivrmo
+        YAKRn046AKtnpqVAmJYc4Zc=
+X-Google-Smtp-Source: AGHT+IES7S2vBMwfwLLo9czOMjftZI+gMSNLau9BawVxeuoCFGFSKElKL3PI8QD0OoVy9aSJy/6QEQ==
+X-Received: by 2002:a2e:a417:0:b0:2bd:102c:4161 with SMTP id p23-20020a2ea417000000b002bd102c4161mr28844292ljn.43.1699379085812;
+        Tue, 07 Nov 2023 09:44:45 -0800 (PST)
+Received: from mars.. ([2a02:168:6806:0:ed9a:eb86:e191:6603])
+        by smtp.gmail.com with ESMTPSA id bh7-20020a05600c3d0700b00401b242e2e6sm16608744wmb.47.2023.11.07.09.44.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Nov 2023 09:15:56 -0800 (PST)
-Date:   Tue, 7 Nov 2023 14:15:57 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-        s=2023; t=1699377354;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=o3JkKLwAwJdKQeiiREsn2ZXGc82r7DnIspAVxlaKU+0=;
-        b=DEx/dWaxQ8ccwrSDPzBixw8L5Txa0uRanlzCRi3maelhkr8nqd6Y2/S8kyabm9NWrAa4hp
-        C5oQnyxNNzXZMuoZ3PTMkTp53n7tiwj+jtKsO3lIL3CCRqb/dmPmlDEkeJqvUNK8pbmF+a
-        7+vkgGBanhoVjJ7m6pt9FxVcmp1359LlVtcpA4I5K/WHwWI0ZjUJCSApQ73hsHKMDbo9xN
-        P39ciTvHVMMC1cIWBPaVWaEm9a3q3ZiDwWipru6FriaAMIBikJWyF63srq+KZTHFf/G/jn
-        xsytGVvSl8EJfpdx5YhjhcdlHnxOKdkHEX044m3D0YUQ5tHoYmsjpOVMLMrLbQ==
-Authentication-Results: ORIGINATING;
-        auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-From:   "Ricardo B. Marliere" <ricardo@marliere.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.6 00/30] 6.6.1-rc1 review
-Message-ID: <2ju7wq3iidsei6szpvxahrjd7ii46ojmtiwrycdstlql3l4y66@k6scuz6argwd>
-References: <20231106130257.903265688@linuxfoundation.org>
+        Tue, 07 Nov 2023 09:44:45 -0800 (PST)
+From:   Klaus Kudielka <klaus.kudielka@gmail.com>
+To:     Russell King <rmk+kernel@armlinux.org.uk>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Heiner Kallweit <hkallweit1@gmail.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Klaus Kudielka <klaus.kudielka@gmail.com>,
+        stable@vger.kernel.org
+Subject: [PATCH net v2] net: phylink: initialize carrier state at creation
+Date:   Tue,  7 Nov 2023 18:44:02 +0100
+Message-ID: <20231107174402.3590-1-klaus.kudielka@gmail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 23/11/06 02:03PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.1 release.
-> There are 30 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.1-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Background: Turris Omnia (Armada 385); eth2 (mvneta) connected to SFP bus;
+SFP module is present, but no fiber connected, so definitely no carrier.
 
-No regressions on my system.
+After booting, eth2 is down, but netdev LED trigger surprisingly reports
+link active. Then, after "ip link set eth2 up", the link indicator goes
+away - as I would have expected it from the beginning.
 
-Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
+It turns out, that the default carrier state after netdev creation is
+"carrier ok". Some ethernet drivers explicitly call netif_carrier_off
+during probing, others (like mvneta) don't - which explains the current
+behaviour: only when the device is brought up, phylink_start calls
+netif_carrier_off.
 
-Thank you.
+Fix this for all drivers using phylink, by calling netif_carrier_off in
+phylink_create.
+
+Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
+Cc: stable@vger.kernel.org
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+---
+v2: clarified fixed drivers; added fixes tag & cc stable
+
+ drivers/net/phy/phylink.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 6712883498..a28da80bde 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1616,6 +1616,7 @@ struct phylink *phylink_create(struct phylink_config *config,
+ 	pl->config = config;
+ 	if (config->type == PHYLINK_NETDEV) {
+ 		pl->netdev = to_net_dev(config->dev);
++		netif_carrier_off(pl->netdev);
+ 	} else if (config->type == PHYLINK_DEV) {
+ 		pl->dev = config->dev;
+ 	} else {
+-- 
+2.42.0
 
