@@ -2,87 +2,164 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C27997E44EA
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 16:59:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BD2E7E44EE
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 17:00:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235244AbjKGP77 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 10:59:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35258 "EHLO
+        id S1343735AbjKGQAB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 11:00:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344052AbjKGP61 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 10:58:27 -0500
+        with ESMTP id S1344417AbjKGP67 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 10:58:59 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB3566A65;
-        Tue,  7 Nov 2023 07:51:30 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82586C433C8;
-        Tue,  7 Nov 2023 15:51:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30F2719BE;
+        Tue,  7 Nov 2023 07:51:50 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD092C433C8;
+        Tue,  7 Nov 2023 15:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699372290;
-        bh=DO4fpqc4U5U4PKy2Hakqr/6aYN5jt0n5NWZpwDLc8GU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nok9b4sTRP1/La1ZvPqShAARq+zsIUP/odeUHQUKdmjth2o7vTKtTLnTjLysSv2WT
-         1MwrCRYrMUxYg5VTlN/ojoZxVG3z7kHrHiWsSF0VpKSSSJm1B3oJ8BE3owHaQyc5fm
-         oZOHfFYnn+M6r31GberOee5wUvppk2UN46LSDBV4Xrx6JOfhJOnNJJmAtrV0d3tYUk
-         aCVxFMVXMNv5N2kGFg4mJb2T/5upwNC0VW54PT2ig/MWlonYK5xeIoL1lnnsr1GxEw
-         0xKcvMaRv1/X6YXtitifkiKkNo5GqzFM8pwe61f/J9ENij5jV5/X6BmADA2jjR2NDk
-         sizlyValGtcuw==
+        s=k20201202; t=1699372309;
+        bh=HUOqiqgzeVydpLtci+jTckqJxzO/mCgFr/7a1OhQ/pY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Os/zD56zafYeKBrX+6RGddAyK+S3keBc6tP0nt8oCSGUXEFRjM/IdzWJR0d752KZ4
+         mh623U6oJC4AOq+w/PfsgszstuB3aJs+GIySoAKhkrSuMj5YoIfdfD4e2oDYAh9RaL
+         DW8vjsb2s/bCoYfXGdXhNpekEMyxYO1/XkzFYiLtOvCOqUPWxzahUgUmWaGLFc3Odv
+         NlhgnPS2aH0HZb7buf11FuIb26ABOL8Ya9v5hygA+R8gEblMhOgLa1h1ODQRCHgpo4
+         9J+rkpb9H6K+Qy5ZfAaWdL+oJbbGrt0byor9NHhQ4gGxvrTNKlAtrXQw8qiHCdgy9m
+         8FtooyM91+2Fw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.1 30/30] mfd: intel-lpss: Add Intel Lunar Lake-M PCI IDs
-Date:   Tue,  7 Nov 2023 10:50:04 -0500
-Message-ID: <20231107155024.3766950-30-sashal@kernel.org>
+Cc:     Richard Fitzgerald <rf@opensource.cirrus.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, lgirdwood@gmail.com,
+        perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 01/22] ASoC: soc-card: Add storage for PCI SSID
+Date:   Tue,  7 Nov 2023 10:51:10 -0500
+Message-ID: <20231107155146.3767610-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231107155024.3766950-1-sashal@kernel.org>
-References: <20231107155024.3766950-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.61
+X-stable-base: Linux 5.15.137
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit e53b22b10c6e0de0cf2a03a92b18fdad70f266c7 ]
+[ Upstream commit 47f56e38a199bd45514b8e0142399cba4feeaf1a ]
 
-Add Intel Lunar Lake-M SoC PCI IDs.
+Add members to struct snd_soc_card to store the PCI subsystem ID (SSID)
+of the soundcard.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20231002083344.75611-1-jarkko.nikula@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+The PCI specification provides two registers to store a vendor-specific
+SSID that can be read by drivers to uniquely identify a particular
+"soundcard". This is defined in the PCI specification to distinguish
+products that use the same silicon (and therefore have the same silicon
+ID) so that product-specific differences can be applied.
+
+PCI only defines 0xFFFF as an invalid value. 0x0000 is not defined as
+invalid. So the usual pattern of zero-filling the struct and then
+assuming a zero value unset will not work. A flag is included to
+indicate when the SSID information has been filled in.
+
+Unlike DMI information, which has a free-format entirely up to the vendor,
+the PCI SSID has a strictly defined format and a registry of vendor IDs.
+
+It is usual in Windows drivers that the SSID is used as the sole identifier
+of the specific end-product and the Windows driver contains tables mapping
+that to information about the hardware setup, rather than using ACPI
+properties.
+
+This SSID is important information for ASoC components that need to apply
+hardware-specific configuration on PCI-based systems.
+
+As the SSID is a generic part of the PCI specification and is treated as
+identifying the "soundcard", it is reasonable to include this information
+in struct snd_soc_card, instead of components inventing their own custom
+ways to pass this information around.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230912163207.3498161-2-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel-lpss-pci.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ include/sound/soc-card.h | 37 +++++++++++++++++++++++++++++++++++++
+ include/sound/soc.h      | 11 +++++++++++
+ 2 files changed, 48 insertions(+)
 
-diff --git a/drivers/mfd/intel-lpss-pci.c b/drivers/mfd/intel-lpss-pci.c
-index 699f44ffff0e4..ae5759200622c 100644
---- a/drivers/mfd/intel-lpss-pci.c
-+++ b/drivers/mfd/intel-lpss-pci.c
-@@ -561,6 +561,19 @@ static const struct pci_device_id intel_lpss_pci_ids[] = {
- 	{ PCI_VDEVICE(INTEL, 0xa3e2), (kernel_ulong_t)&spt_i2c_info },
- 	{ PCI_VDEVICE(INTEL, 0xa3e3), (kernel_ulong_t)&spt_i2c_info },
- 	{ PCI_VDEVICE(INTEL, 0xa3e6), (kernel_ulong_t)&spt_uart_info },
-+	/* LNL-M */
-+	{ PCI_VDEVICE(INTEL, 0xa825), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0xa826), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0xa827), (kernel_ulong_t)&tgl_info },
-+	{ PCI_VDEVICE(INTEL, 0xa830), (kernel_ulong_t)&tgl_info },
-+	{ PCI_VDEVICE(INTEL, 0xa846), (kernel_ulong_t)&tgl_info },
-+	{ PCI_VDEVICE(INTEL, 0xa850), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xa851), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xa852), (kernel_ulong_t)&bxt_uart_info },
-+	{ PCI_VDEVICE(INTEL, 0xa878), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xa879), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xa87a), (kernel_ulong_t)&ehl_i2c_info },
-+	{ PCI_VDEVICE(INTEL, 0xa87b), (kernel_ulong_t)&ehl_i2c_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(pci, intel_lpss_pci_ids);
+diff --git a/include/sound/soc-card.h b/include/sound/soc-card.h
+index 4f2cc4fb56b7f..9a5429260ece5 100644
+--- a/include/sound/soc-card.h
++++ b/include/sound/soc-card.h
+@@ -40,6 +40,43 @@ int snd_soc_card_add_dai_link(struct snd_soc_card *card,
+ void snd_soc_card_remove_dai_link(struct snd_soc_card *card,
+ 				  struct snd_soc_dai_link *dai_link);
+ 
++#ifdef CONFIG_PCI
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++	card->pci_subsystem_vendor = vendor;
++	card->pci_subsystem_device = device;
++	card->pci_subsystem_set = true;
++}
++
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	if (!card->pci_subsystem_set)
++		return -ENOENT;
++
++	*vendor = card->pci_subsystem_vendor;
++	*device = card->pci_subsystem_device;
++
++	return 0;
++}
++#else /* !CONFIG_PCI */
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++}
++
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	return -ENOENT;
++}
++#endif /* CONFIG_PCI */
++
+ /* device driver data */
+ static inline void snd_soc_card_set_drvdata(struct snd_soc_card *card,
+ 					    void *data)
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index 5872a8864f3b6..3f0369aae2faf 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -880,6 +880,17 @@ struct snd_soc_card {
+ #ifdef CONFIG_DMI
+ 	char dmi_longname[80];
+ #endif /* CONFIG_DMI */
++
++#ifdef CONFIG_PCI
++	/*
++	 * PCI does not define 0 as invalid, so pci_subsystem_set indicates
++	 * whether a value has been written to these fields.
++	 */
++	unsigned short pci_subsystem_vendor;
++	unsigned short pci_subsystem_device;
++	bool pci_subsystem_set;
++#endif /* CONFIG_PCI */
++
+ 	char topology_shortname[32];
+ 
+ 	struct device *dev;
 -- 
 2.42.0
 
