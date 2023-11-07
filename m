@@ -2,69 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7CE17E3AB1
-	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 12:03:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53F987E3ADA
+	for <lists+stable@lfdr.de>; Tue,  7 Nov 2023 12:15:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233968AbjKGLDI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 06:03:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60874 "EHLO
+        id S233959AbjKGLPt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 06:15:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232141AbjKGLDH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 06:03:07 -0500
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6634BED
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 03:03:03 -0800 (PST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6c431ca7826so563749b3a.0
-        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 03:03:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1699354983; x=1699959783; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PC3d6wWHpqdfS4D388YBQ7NgpKv2etiMwEuLXnGK4bI=;
-        b=1ZC0uft+ctRU6rM3EHXA8X3K6UnHES1uG6TrkJLr5kBltU9yIpq7fwPAGSnra5CjHm
-         va3aSQ7prfnxDA8tnQ+Qf/1xRCzOEQTaiSBLRH4QdlyXH9d30s4WiVtuCwwvPR72bqib
-         exbh70n3fT8TB5Ov5V2v5UFXFjY+aJmJJETTapSBGvBOaM1vaYCgi/31gr6NdaKz/5v+
-         XB1MKWIVdolRXMmdbtQ8G/qAMwJm+gXgpReGT6WiHLAJJg9sKOF020OxvpfnmyUj1WCR
-         eE8FQYfvv348Es8JEDE+k7FTCeRWYOdPLq2s72Cg3gH4C6bIV1hSVeqkpqNepchaQInS
-         GiSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699354983; x=1699959783;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PC3d6wWHpqdfS4D388YBQ7NgpKv2etiMwEuLXnGK4bI=;
-        b=f8OrMVqOGUQgOMLLN/4hpz1z04h59nbHsiUyTWxXYSZXLjJq77gBpoIE21lYIblKgL
-         vyI9VFI3tpCqC1VtMs7r287YXobRVFb4zOUYZ9NdqBdvxAqFyafPe5YaEL8AnPTeLRjv
-         AjE5HNvm9SeQjqhKkkMpGsgenupeHzf7qtvR/SF8607qQ1TrqmG0DHJZyGpcJRIcipuZ
-         kSrqw2E5ePwj4h+pzDVkXZnaOm0dJM8i0oRLloPXlMezPYftf3dTHUg/RoHQLrmGSJuM
-         lOapd4I2WgmYteZkLwU5iCNUO97nXVZFd+3u4nAvS8mhX+qmKHDDIfr4tSthgjuP3A5U
-         f75w==
-X-Gm-Message-State: AOJu0YxENkuuIadXeztqIdCJSOTvW83Ir04w53QI60FFmjAXzt0/0uGL
-        5fpARc/6o2j8NnlOeJ6CR4f3HZ0KKCBVgLdsrECwXg==
-X-Google-Smtp-Source: AGHT+IE7iI43DIi/hwt3+oaAr9mreCpy5srt9xD5cwQpQTRLmMVPxEuYq0iKgOPV3XgIuhu7aw/nsI9WwKAbjdKwRrg=
-X-Received: by 2002:a05:6a21:7742:b0:181:3dde:deeb with SMTP id
- bc2-20020a056a21774200b001813ddedeebmr18127765pzc.33.1699354982747; Tue, 07
- Nov 2023 03:03:02 -0800 (PST)
+        with ESMTP id S229541AbjKGLPs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 06:15:48 -0500
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E0EDEA;
+        Tue,  7 Nov 2023 03:15:45 -0800 (PST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 944465C0162;
+        Tue,  7 Nov 2023 06:15:44 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Tue, 07 Nov 2023 06:15:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+        cc:cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:message-id:mime-version:reply-to
+        :sender:subject:subject:to:to; s=fm1; t=1699355744; x=
+        1699442144; bh=QLGn+pJ6jA1OBsO+n6clp14ghLq+Aqned+goXZG8HJw=; b=B
+        J2ivxoayFi0lVMufasb7MEhgFhQk8uG+cDL1xLMNF0p71SJXUtD6PiL5u8aWKO+I
+        ms9vLiyf7OiWaiu4UcNT7b4vB/tr7wNNiO0S+U5qculPLjTEeGbbpQ/r+psNfu/H
+        pHKCzb8gZSA0umleoRuLWCs3xj/OXN/o0EPBi/8cOFjMNoIkj6zrArGOS9pwXW4S
+        6I0AlZpph/RSheLdZEhTaTGcl5oSO9LTfugu2xokICD4EsU8Lnwi8BbTCVcJtUpb
+        WKUXNw29eizskiX/6EPetdCyGcweZnxrtnoNy8raybeKog17bsbJJ8zlqt64qNnX
+        CTgScMRjrFTtCdADjnRKw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:message-id:mime-version:reply-to:sender
+        :subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
+        :x-me-sender:x-sasl-enc; s=fm3; t=1699355744; x=1699442144; bh=Q
+        LGn+pJ6jA1OBsO+n6clp14ghLq+Aqned+goXZG8HJw=; b=FPqpaumdoThd/Hs6U
+        cgNytyy0SYkVRUMHRxq1kgcyj7RxLB543N89s7nvOhZptD+bzZd4sJvcMiTr6sj/
+        //wA97Jr0OjNCn7CI0crVJHb8l4L0NnumKhqAJwmg63D4V1Ogr5wjI+9qfuuHnNn
+        kraB/56eB27xdoSXdpuj9YyDfH4R/xbf6msi6TrCki4hix8b3bHeYUc8VNLn+eQg
+        bQjszUHOyB1K0IlYvP7l2VePdsCHiv8WTH9p1mRZg0oYT0+K5AMoBHMBakk63Kdl
+        PkrTqUEiEu7qNSvC2efCAFtPybg4PYRLX/3FfrE4O1cWg3TR40L+k/6C9Ra+KVMN
+        GS2Vg==
+X-ME-Sender: <xms:XxxKZWhOgt9trhqpH4f0PTcD4GPgNK4eIIr3RrAoLDgqEO4IzOfVlQ>
+    <xme:XxxKZXDuwvwjyZT2ay3DOA38HZiRhiRZacfDjbBCHu7Co_hf3_gahxXFULqrEcgaK
+    7LCcfNbM0iDKn2C2Co>
+X-ME-Received: <xmr:XxxKZeF92KfCNWkuf7ZMoPuiiNbiS62-pDnLjEMneSTuiKnBN0nduzU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudduiedgvdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeflihgrgihu
+    nhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqnecugg
+    ftrfgrthhtvghrnhepgfevffejteegjeeflefgkeetleekhfeugfegvdeuueejkeejteek
+    kedvfffffedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehf
+    lhihghhorghtrdgtohhm
+X-ME-Proxy: <xmx:XxxKZfQqlWaYxhX-AumhfYOgsux6wFakKEQyH9OSxggBKYFkFUrOtg>
+    <xmx:XxxKZTxGTh9Li0weax68f-e2pNV3c5wlJLsq3pqjVk5UKdqv3K9T1w>
+    <xmx:XxxKZd5rpO9TsVCM6zBnCHY6hrz6TCiuXYx5qmD3cs1yNcJ4jJbeaA>
+    <xmx:YBxKZerpapQl9wq0-wUbkqLwVEs4UghzVu0e6o5NFovHxMOuJYNOCA>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 7 Nov 2023 06:15:42 -0500 (EST)
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH fixes v2 0/3] MIPS: Loongson64: Fix some long-term issues
+Date:   Tue, 07 Nov 2023 11:15:17 +0000
+Message-Id: <20231107-loongson64_fixes-v2-0-5c49ceed7950@flygoat.com>
 MIME-Version: 1.0
-References: <20231106130257.903265688@linuxfoundation.org>
-In-Reply-To: <20231106130257.903265688@linuxfoundation.org>
-From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date:   Tue, 7 Nov 2023 20:02:51 +0900
-Message-ID: <CAKL4bV7DhfiRGXDTtMLvHjEKYApXyOmH+6Uvs5y1SWkJN583DA@mail.gmail.com>
-Subject: Re: [PATCH 6.6 00/30] 6.6.1-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEUcSmUC/3WNwQqDMBBEf0X23JRs1NL21P8oUhLdaMBmJZFQk
+ fx7gz33NjOPmdkhUnAU4V7tECi56NgXo04V9JP2Iwk3FA9KqhpRopiZ/RjZX5qXdR+KQmpr0LS
+ yHpCg1JZAByitJ/xUV+LJxZXDdhwlPOD/zYRCCqVVe1W6MVbfHnbeRtbruec3dDnnLwPE9BC5A
+ AAA
+To:     Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc:     Huacai Chen <chenhuacai@kernel.org>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+X-Mailer: b4 0.12.4
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,42 +89,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+Hi all,
 
-On Mon, Nov 6, 2023 at 10:07=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.1 release.
-> There are 30 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 08 Nov 2023 13:02:46 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.1-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+This series fixes some long-term issues in kernel that preventing
+some machine from work properly.
 
-
-6.6.1-rc1 tested.
-
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
-
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+Hopefully that will rescue some system in wild :-)
 
 Thanks
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+Changes in v2:
+- Typo and style fixes
+- Link to v1: https://lore.kernel.org/r/20231101-loongson64_fixes-v1-0-2a2582a4bfa9@flygoat.com
+
+---
+Jiaxun Yang (3):
+      MIPS: Loongson64: Reserve vgabios memory on boot
+      MIPS: Loongson64: Enable DMA noncoherent support
+      MIPS: Loongson64: Handle more memory types passed from firmware
+
+ arch/mips/Kconfig                                  |  2 +
+ arch/mips/include/asm/mach-loongson64/boot_param.h |  9 ++++-
+ arch/mips/loongson64/env.c                         | 10 ++++-
+ arch/mips/loongson64/init.c                        | 47 ++++++++++++++--------
+ 4 files changed, 49 insertions(+), 19 deletions(-)
+---
+base-commit: 9c2d379d63450ae464eeab45462e0cb573cd97d0
+change-id: 20231101-loongson64_fixes-0afb1b503d1e
+
+Best regards,
+-- 
+Jiaxun Yang <jiaxun.yang@flygoat.com>
+
