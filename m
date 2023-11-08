@@ -2,190 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66A287E5A63
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 16:45:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED8E17E5EC8
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 20:40:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234246AbjKHPp3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 10:45:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50690 "EHLO
+        id S229705AbjKHTkT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 14:40:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233778AbjKHPpW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 10:45:22 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89DD1213B;
-        Wed,  8 Nov 2023 07:45:18 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D685EC433C7;
-        Wed,  8 Nov 2023 15:45:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699458318;
-        bh=lBMI4J6F6WP9AJ3sXxQyAKK3/NBzr65lBcvF7WukdOE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RgeosvNMSVgxHz7b+k/Sax/Yl+Bmt2pgB+/qvwD4dwwojX4H1iz84EI37e/ppPb0z
-         SuBe9QnJaiLjBGwd2i/WaBddDCM/xbHa0oNvopQS7g01ihO1Au50eyFnGVvzjDnwaR
-         EeGi6di0wi1+uQ0pN5Hgvi3bXV0QfLfJ0RegVEjybzMqhHuTsGa4qXUe/npBAIJIrO
-         U6mH4mzdC62sqRP19ZMMKbppbJmuZ+nq5kE/NmOPs1sljB3WMufBsoeMI1ovLSiUAb
-         Jkg2D0ydVCUCGkVArHnjt+bb9QrRBptW6nnu2Wv3qA6MIOe9q3tqxiu2adQ/dF5x49
-         6vbV8TtS8ooYg==
-Date:   Wed, 8 Nov 2023 16:45:15 +0100
-From:   Maxime Ripard <mripard@kernel.org>
-To:     Hsin-Yi Wang <hsinyi@chromium.org>
-Cc:     Douglas Anderson <dianders@chromium.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v6 4/5] drm/panel-edp: Add override_edid_mode quirk for
- generic edp
-Message-ID: <xnyf3ul7pwsgrmxgbareh5lhhmpfuvfksj3nyd4zmup7khaer2@fbwgbrq4vywb>
-References: <20231107204611.3082200-1-hsinyi@chromium.org>
- <20231107204611.3082200-5-hsinyi@chromium.org>
+        with ESMTP id S229473AbjKHTkT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 14:40:19 -0500
+X-Greylist: delayed 8924 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 08 Nov 2023 11:40:16 PST
+Received: from smtp.inaport4.co.id (smtp.inaport4.co.id [103.219.76.6])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F62D211D
+        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 11:40:15 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+        by smtp.inaport4.co.id (Postfix) with ESMTP id EDA5582860F3;
+        Wed,  8 Nov 2023 23:48:41 +0800 (WITA)
+Received: from smtp.inaport4.co.id ([127.0.0.1])
+        by localhost (mta-1.inaport4.co.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id HXtdR4_oI9ME; Wed,  8 Nov 2023 23:48:41 +0800 (WITA)
+Received: from localhost (localhost [127.0.0.1])
+        by smtp.inaport4.co.id (Postfix) with ESMTP id 184168286104;
+        Wed,  8 Nov 2023 23:48:40 +0800 (WITA)
+DKIM-Filter: OpenDKIM Filter v2.10.3 smtp.inaport4.co.id 184168286104
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=inaport4.co.id;
+        s=67133E3A-D729-11EC-9A3E-209BEC03DFB2; t=1699458520;
+        bh=xe95vPdfjPC6ObD/kc0mx5ViZOT1geyhmpeP94Caexg=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=bkoggTkKZk2NNmVYL7symnJm4M25AkSRJX8xyAaFTwDIEss2gGMiyHDGGQRojtenw
+         AvpnCIBLBjneGIHVOuq7tQB8mRElZFAUNhILu+OrkNsPyC1ojWACy8mNV2+4AjU2HW
+         cvf4ph43QqN94+pfK7z1UjRiSl9dnH/KaDHFNHkDQoFOFMsuB3S5QBNOzjKD+LUxGd
+         HSo/vegL+jUzKfcTEU/gS6sW3I0UWNKY46Ys6TaFJyp+iHF4smK7q+NJ3kKG1ntdwy
+         rX6uQted/CHsKNM7gRLCNleagkGrLiksnAMRBzPmeYAW1JgVqmaT3YrVaqvSSoHgoj
+         JlSX2ttO+mpRg==
+X-Amavis-Modified: Mail body modified (using disclaimer) -
+        mta-1.inaport4.co.id
+X-Virus-Scanned: amavisd-new at 
+Received: from smtp.inaport4.co.id ([127.0.0.1])
+        by localhost (mta-1.inaport4.co.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 4RaYyULu-GIL; Wed,  8 Nov 2023 23:48:39 +0800 (WITA)
+Received: from mailstore.inaport4.co.id (mailstore.inaport4.co.id [172.10.1.75])
+        by smtp.inaport4.co.id (Postfix) with ESMTP id A317B81C6CB6;
+        Wed,  8 Nov 2023 23:48:34 +0800 (WITA)
+Date:   Wed, 8 Nov 2023 23:48:34 +0800 (WITA)
+From:   =?utf-8?B?0YHQuNGB0YLQtdC80L3QuNC5INCw0LTQvNGW0L3RltGB0YLRgNCw0YLQvtGA?= 
+        <ahmad.rifai@inaport4.co.id>
+Reply-To: sistemassadmins@mail2engineer.com
+Message-ID: <185446474.23984.1699458514632.JavaMail.zimbra@inaport4.co.id>
+Subject: 
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ayx5plwb3tznjjb3"
-Content-Disposition: inline
-In-Reply-To: <20231107204611.3082200-5-hsinyi@chromium.org>
+Content-Type: text/plain; charset=utf-8
+X-Mailer: Zimbra 8.8.8_GA_3025 (zclient/8.8.8_GA_3025)
+Thread-Index: /1pK/0nsTpItwqMGy34SoxctqzpPQg==
+Thread-Topic: 
+Content-Transfer-Encoding: quoted-printable
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+=D1=83=D0=B2=D0=B0=D0=B3=D0=B0;
 
---ayx5plwb3tznjjb3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+=D0=92=D0=B0=D1=88=D0=B0 =D0=B5=D0=BB=D0=B5=D0=BA=D1=82=D1=80=D0=BE=D0=BD=
+=D0=BD=D0=B0 =D0=BF=D0=BE=D1=88=D1=82=D0=B0 =D0=BF=D0=B5=D1=80=D0=B5=D0=B2=
+=D0=B8=D1=89=D0=B8=D0=BB=D0=B0 =D0=BE=D0=B1=D0=BC=D0=B5=D0=B6=D0=B5=D0=BD=
+=D0=BD=D1=8F =D0=BF=D0=B0=D0=BC'=D1=8F=D1=82=D1=96, =D1=8F=D0=BA=D0=B5 =D1=
+=81=D1=82=D0=B0=D0=BD=D0=BE=D0=B2=D0=B8=D1=82=D1=8C 5 =D0=93=D0=91, =D0=B2=
+=D0=B8=D0=B7=D0=BD=D0=B0=D1=87=D0=B5=D0=BD=D0=B5 =D0=B0=D0=B4=D0=BC=D1=96=
+=D0=BD=D1=96=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC, =D1=8F=
+=D0=BA=D0=B5 =D0=B2 =D0=B4=D0=B0=D0=BD=D0=B8=D0=B9 =D1=87=D0=B0=D1=81 =D0=
+=BF=D1=80=D0=B0=D1=86=D1=8E=D1=94 =D0=BD=D0=B0 10,9 =D0=93=D0=91. =D0=92=D0=
+=B8 =D0=BD=D0=B5 =D0=B7=D0=BC=D0=BE=D0=B6=D0=B5=D1=82=D0=B5 =D0=BD=D0=B0=D0=
+=B4=D1=81=D0=B8=D0=BB=D0=B0=D1=82=D0=B8 =D0=B0=D0=B1=D0=BE =D0=BE=D1=82=D1=
+=80=D0=B8=D0=BC=D1=83=D0=B2=D0=B0=D1=82=D0=B8 =D0=BD=D0=BE=D0=B2=D1=83 =D0=
+=BF=D0=BE=D1=88=D1=82=D1=83, =D0=B4=D0=BE=D0=BA=D0=B8 =D0=BD=D0=B5 =D0=BF=
+=D0=B5=D1=80=D0=B5=D0=B2=D1=96=D1=80=D0=B8=D1=82=D0=B5 =D0=BF=D0=BE=D1=88=
+=D1=82=D0=BE=D0=B2=D1=83 =D1=81=D0=BA=D1=80=D0=B8=D0=BD=D1=8C=D0=BA=D1=83=
+ "=D0=92=D1=85=D1=96=D0=B4=D0=BD=D1=96". =D0=A9=D0=BE=D0=B1 =D0=B2=D1=96=D0=
+=B4=D0=BD=D0=BE=D0=B2=D0=B8=D1=82=D0=B8 =D1=81=D0=BF=D1=80=D0=B0=D0=B2=D0=
+=BD=D1=96=D1=81=D1=82=D1=8C =D0=BF=D0=BE=D1=88=D1=82=D0=BE=D0=B2=D0=BE=D1=
+=97 =D1=81=D0=BA=D1=80=D0=B8=D0=BD=D1=8C=D0=BA=D0=B8, =D0=BD=D0=B0=D0=B4=D1=
+=96=D1=88=D0=BB=D1=96=D1=82=D1=8C =D1=82=D0=B0=D0=BA=D1=96 =D0=B2=D1=96=D0=
+=B4=D0=BE=D0=BC=D0=BE=D1=81=D1=82=D1=96
+=D0=BD=D0=B8=D0=B6=D1=87=D0=B5:
 
-On Tue, Nov 07, 2023 at 12:41:54PM -0800, Hsin-Yi Wang wrote:
-> Generic edp gets mode from edid. However, some panels report incorrect
-> mode in this way, resulting in glitches on panel. Introduce a new quirk
-> additional_mode to the generic edid to pick a correct hardcoded mode.
->=20
-> Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> ---
-> no change.
-> ---
->  drivers/gpu/drm/panel/panel-edp.c | 67 ++++++++++++++++++++++++++++---
->  1 file changed, 62 insertions(+), 5 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/pa=
-nel-edp.c
-> index 599a949d74d1..c0c24d94c3a0 100644
-> --- a/drivers/gpu/drm/panel/panel-edp.c
-> +++ b/drivers/gpu/drm/panel/panel-edp.c
-> @@ -203,6 +203,9 @@ struct edp_panel_entry {
-> =20
->  	/** @name: Name of this panel (for printing to logs). */
->  	const char *name;
-> +
-> +	/** @override_edid_mode: Override the mode obtained by edid. */
-> +	const struct drm_display_mode *override_edid_mode;
->  };
-> =20
->  struct panel_edp {
-> @@ -301,6 +304,24 @@ static unsigned int panel_edp_get_display_modes(stru=
-ct panel_edp *panel,
->  	return num;
->  }
-> =20
-> +static int panel_edp_override_edid_mode(struct panel_edp *panel,
-> +					struct drm_connector *connector,
-> +					const struct drm_display_mode *override_mode)
-> +{
-> +	struct drm_display_mode *mode;
-> +
-> +	mode =3D drm_mode_duplicate(connector->dev, override_mode);
-> +	if (!mode) {
-> +		dev_err(panel->base.dev, "failed to add additional mode\n");
-> +		return 0;
-> +	}
-> +
-> +	mode->type |=3D DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
-> +	drm_mode_set_name(mode);
-> +	drm_mode_probed_add(connector, mode);
-> +	return 1;
-> +}
-> +
->  static int panel_edp_get_non_edid_modes(struct panel_edp *panel,
->  					struct drm_connector *connector)
->  {
-> @@ -568,6 +589,9 @@ static int panel_edp_get_modes(struct drm_panel *pane=
-l,
->  {
->  	struct panel_edp *p =3D to_panel_edp(panel);
->  	int num =3D 0;
-> +	bool has_override_edid_mode =3D p->detected_panel &&
-> +				      p->detected_panel !=3D ERR_PTR(-EINVAL) &&
-> +				      p->detected_panel->override_edid_mode;
-> =20
->  	/* probe EDID if a DDC bus is available */
->  	if (p->ddc) {
-> @@ -575,9 +599,18 @@ static int panel_edp_get_modes(struct drm_panel *pan=
-el,
-> =20
->  		if (!p->edid)
->  			p->edid =3D drm_get_edid(connector, p->ddc);
-> -
-> -		if (p->edid)
-> -			num +=3D drm_add_edid_modes(connector, p->edid);
-> +		if (p->edid) {
-> +			if (has_override_edid_mode) {
+=D0=86=D0=BC'=D1=8F:
+=D0=86=D0=BC'=D1=8F =D0=BA=D0=BE=D1=80=D0=B8=D1=81=D1=82=D1=83=D0=B2=D0=B0=
+=D1=87=D0=B0:
+=D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8C:
+=D0=9F=D1=96=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B6=D0=B5=D0=BD=D0=BD=D1=
+=8F =D0=BF=D0=B0=D1=80=D0=BE=D0=BB=D1=8F:
+=D0=90=D0=B4=D1=80=D0=B5=D1=81=D0=B0 =D0=B5=D0=BB=D0=B5=D0=BA=D1=82=D1=80=
+=D0=BE=D0=BD=D0=BD=D0=BE=D1=97 =D0=BF=D0=BE=D1=88=D1=82=D0=B8:
+=D1=82=D0=B5=D0=BB=D0=B5=D1=84=D0=BE=D0=BD:
 
-It's not clear to me why the override mechanism is only there when
-there's a ddc bus?
+=D0=AF=D0=BA=D1=89=D0=BE =D0=BD=D0=B5 =D0=B2=D0=B4=D0=B0=D1=94=D1=82=D1=8C=
+=D1=81=D1=8F =D0=BF=D0=BE=D0=B2=D1=82=D0=BE=D1=80=D0=BD=D0=BE =D0=BF=D0=B5=
+=D1=80=D0=B5=D0=B2=D1=96=D1=80=D0=B8=D1=82=D0=B8 =D0=BF=D0=BE=D0=B2=D1=96=
+=D0=B4=D0=BE=D0=BC=D0=BB=D0=B5=D0=BD=D0=BD=D1=8F, =D0=B2=D0=B0=D1=88=D0=B0=
+ =D0=BF=D0=BE=D1=88=D1=82=D0=BE=D0=B2=D0=B0 =D1=81=D0=BA=D1=80=D0=B8=D0=BD=
+=D1=8C=D0=BA=D0=B0 =D0=B1=D1=83=D0=B4=D0=B5 =D0=92=D0=B8=D0=BC=D0=BA=D0=BD=
+=D1=83=D1=82=D0=BE!
 
-You mentioned before that you were following panel-simple, but that's a
-clear deviation from what I can see. If there's a reason for that
-deviation, that's fine by me, but it should at least be documented in
-the commit log.
+=D0=9F=D1=80=D0=B8=D0=BD=D0=BE=D1=81=D0=B8=D0=BC=D0=BE =D0=B2=D0=B8=D0=B1=
+=D0=B0=D1=87=D0=B5=D0=BD=D0=BD=D1=8F =D0=B7=D0=B0 =D0=BD=D0=B5=D0=B7=D1=80=
+=D1=83=D1=87=D0=BD=D0=BE=D1=81=D1=82=D1=96.
+=D0=9A=D0=BE=D0=B4 =D0=BF=D1=96=D0=B4=D1=82=D0=B2=D0=B5=D1=80=D0=B4=D0=B6=
+=D0=B5=D0=BD=D0=BD=D1=8F:@WEB.ADMIN.UA:@2023.UA.=D0=A1=D0=98=D0=A1=D0=A2=D0=
+=95=D0=9C=D0=9D=D0=98=D0=99 =D0=90=D0=94=D0=9C=D0=86=D0=9D=D0=86=D0=A1=D0=
+=A2=D0=A0=D0=90=D0=A2=D0=9E=D0=A0
+=D0=A2=D0=B5=D1=85=D0=BD=D1=96=D1=87=D0=BD=D0=B0 =D0=BF=D1=96=D0=B4=D1=82=
+=D1=80=D0=B8=D0=BC=D0=BA=D0=B0 =D0=9F=D0=BE=D1=88=D1=82=D0=B8 =D0=A1=D0=B8=
+=D1=81=D1=82=D0=B5=D0=BC=D0=BD=D0=B8=D0=B9 =D0=B0=D0=B4=D0=BC=D1=96=D0=BD=
+=D1=96=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80 @2023
 
-> +				/*
-> +				 * override_edid_mode is specified. Use
-> +				 * override_edid_mode instead of from edid.
-> +				 */
-> +				num +=3D panel_edp_override_edid_mode(p, connector,
-> +						p->detected_panel->override_edid_mode);
-> +			} else {
-> +				num +=3D drm_add_edid_modes(connector, p->edid);
-> +			}
-> +		}
-> =20
->  		pm_runtime_mark_last_busy(panel->dev);
->  		pm_runtime_put_autosuspend(panel->dev);
-> @@ -950,6 +983,19 @@ static const struct panel_desc auo_b101ean01 =3D {
->  	},
->  };
-> =20
-> +static const struct drm_display_mode auo_b116xa3_mode =3D {
-> +	.clock =3D 70589,
-> +	.hdisplay =3D 1366,
-> +	.hsync_start =3D 1366 + 40,
-> +	.hsync_end =3D 1366 + 40 + 40,
-> +	.htotal =3D 1366 + 40 + 40 + 32,
-> +	.vdisplay =3D 768,
-> +	.vsync_start =3D 768 + 10,
-> +	.vsync_end =3D 768 + 10 + 12,
-> +	.vtotal =3D 768 + 10 + 12 + 6,
-> +	.flags =3D DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
-> +};
 
-That should be a separate patch
-
-Maxime
-
---ayx5plwb3tznjjb3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCZUutCwAKCRDj7w1vZxhR
-xS/8AP9oGQObgxgUfVUv9qDrc35Q0duN6Y+yritr19Har0fx/wD+Lh59iZ9Htk/2
-5f7yys9Gu7xDbg5aLOISf3PKNmszrwA=
-=Mmp7
------END PGP SIGNATURE-----
-
---ayx5plwb3tznjjb3--
