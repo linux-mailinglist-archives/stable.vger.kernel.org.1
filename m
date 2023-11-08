@@ -2,197 +2,188 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3F097E4F44
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 04:03:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F0D17E4F58
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 04:12:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234324AbjKHDD2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 22:03:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45016 "EHLO
+        id S229820AbjKHDMM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 22:12:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230126AbjKHDD1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 22:03:27 -0500
-Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D5B510EC;
-        Tue,  7 Nov 2023 19:03:25 -0800 (PST)
-Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-2809fb0027cso4889937a91.2;
-        Tue, 07 Nov 2023 19:03:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699412605; x=1700017405; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Roult3H5GeBy1d+QJ2ELRPfrTfU65zFDOPqiiV5RpBY=;
-        b=XMosQJqhaK9LRLQd6lcmpo+oLUZvBLUtJJdK3iDPnB8+UBt7o5cECH6s0mIY+CIq+5
-         5mTObbwRkW75CrlbkLcOjVAcmimYKvCG8irInw+4rWgBvb36kgPS5qfntoZZoWPjpsLE
-         TTf8M53I3bxo1yB2uCufn17DvjjPyIidxJ5BCuoFrXE/W59GgqWpiDyhc0tWoHLxDKI7
-         Fy071mZg3yg+cewfhNxW4gp4lQEMYE+adVL7zMrV75/YxKunT0ZqtWpALMuggxqIa0ge
-         d9iEZDUToWsE+SaINJYAV9VoIb/F/A5RhE13KChH1tE6AFjEVdn32V5JHrfdcIy0LBVq
-         SUYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699412605; x=1700017405;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Roult3H5GeBy1d+QJ2ELRPfrTfU65zFDOPqiiV5RpBY=;
-        b=nlt1f+KKdhQHCfUOJ3fwFOYDKzuTLvdqbutm4wrLuDS4Xbt2qQA453J3cmkm3csbmj
-         ZJnvdw6D11pXL27iAaVo5asGC4fqKA92UyMMv7OmsK/8SNCBOiaN1ybMsnL2z6viIqqA
-         M1FxOoAbs7x2cih01LzKBp9zMX/5TbZyOlDOLPx3AoBn8nDa7ELLpNtNIEWX1wM40Afg
-         zi1Q3tsz39FjCpmd9M7fFnUi38OKPRGXvEZLNTqrgGjNk+GfgZvo0rhJl+vZgCNToqLE
-         N+x38TX9jeZCWryL2VjbS71LUdbMTUhnSE2lXy4LNpAXhlX+M/9sjcTmowZjvlFdLFwH
-         IWRA==
-X-Gm-Message-State: AOJu0Yx6ncv9Gw8aksNzDJ4X8FqdZae1qseLtF8xzcS/NczrV71SyBQ5
-        H+KNLxxEkqaPVJMiSdqO/rx9ne5ZqaOJOs+j2s0=
-X-Google-Smtp-Source: AGHT+IH7qDbmtE7zwlbS/d/+wacRnaFS6GN+wV6OdZsWqrJ3k9uTLyzwcDfFQmcw4mIBiOc/1pOgoaBC+tNMnehaF0E=
-X-Received: by 2002:a17:90a:2:b0:280:2438:120 with SMTP id 2-20020a17090a000200b0028024380120mr606164pja.45.1699412604862;
- Tue, 07 Nov 2023 19:03:24 -0800 (PST)
+        with ESMTP id S229581AbjKHDMM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 22:12:12 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA5F1B1
+        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 19:12:10 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C1DC433CC
+        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 03:12:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699413129;
+        bh=zWzQI9h3JCmUeFnDwkorPBWuwpKsgMwO9qtOrsDKJtk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=mZ1EyD+rahmxc5oJmN6mow3uP8TFbBfuD+yfl8UJFpuivRX8C4WZR8+qvEDtOOObl
+         F/Y+kvHxpeKjmExv8txKviglCJKIC4/EJsiFMB07hjmFiI8PhiHaIvu0Rx8JvHtVJq
+         PKCOvcjs7xjSAyP/1ii/Y9JpFGKQt55ApuQL8GJVstKPH/T6ufFo2f1ikiYgVEjng1
+         Bdfs93ZzxvJdWNzowXDF60kNUGaZur3lwhEkv3nYefiJ8OdniUTlfJk/0zni0BaBsJ
+         mJr1/ORktAhHJLly+8LVqVxyTxq8PFbJJ1iMllD4kenjVFw1Igm94IwFGoDRtMzhu7
+         A6Cr7kkc8zrtA==
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-543c3756521so10654531a12.2
+        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 19:12:09 -0800 (PST)
+X-Gm-Message-State: AOJu0YxXQ1O1wi7lgQhiiuNFvyw1oYJ+9zCQA0DH9VSi/5IruTn/pPQ8
+        xzH9cjkGji4mGLiqLBJ7KqxveabLjVQH51fd1Vo=
+X-Google-Smtp-Source: AGHT+IHxIANpMSTnCBsjUQot+qYbwXrOYHOuQcH/shPCBn66k9YGTd2uK6Co9Kr0z7LX9MwoBysbR3k/zHMEj32jttE=
+X-Received: by 2002:a17:906:dc95:b0:9be:77cd:4c2c with SMTP id
+ cs21-20020a170906dc9500b009be77cd4c2cmr321928ejc.28.1699413128274; Tue, 07
+ Nov 2023 19:12:08 -0800 (PST)
 MIME-Version: 1.0
-References: <20231106141704.866455-1-zyytlz.wz@163.com> <87o7g7ueom.fsf@kernel.org>
- <CAJedcCytuGmvubqbSZgsU3Db=rg=xM+kSuLZn8BSvA18Yn+9Jw@mail.gmail.com> <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <18ba5520da0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-From:   Zheng Hacker <hackerzheng666@gmail.com>
-Date:   Wed, 8 Nov 2023 11:03:12 +0800
-Message-ID: <CAJedcCxoL+L1QPaZty27k6kqR2JRjxPVY=BV5xn7BSPojbxe=A@mail.gmail.com>
-Subject: Re: [PATCH v5] wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
-To:     Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc:     Kalle Valo <kvalo@kernel.org>, Zheng Wang <zyytlz.wz@163.com>,
-        aspriel@gmail.com, franky.lin@broadcom.com,
-        hante.meuleman@broadcom.com, johannes.berg@intel.com,
-        marcan@marcan.st, linus.walleij@linaro.org,
-        jisoo.jang@yonsei.ac.kr, linuxlovemin@yonsei.ac.kr,
-        wataru.gohda@cypress.com, linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        SHA-cyfmac-dev-list@infineon.com, linux-kernel@vger.kernel.org,
-        security@kernel.org, stable@vger.kernel.org
+References: <20231102-loongarch-always-inline-percpu-ops-v2-1-31c51959a5c0@kernel.org>
+In-Reply-To: <20231102-loongarch-always-inline-percpu-ops-v2-1-31c51959a5c0@kernel.org>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Wed, 8 Nov 2023 11:11:57 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6CuABSAEn8MXssE8yDgSVEsONW7PmaDOiS+xJm=ZbcQA@mail.gmail.com>
+Message-ID: <CAAhV-H6CuABSAEn8MXssE8yDgSVEsONW7PmaDOiS+xJm=ZbcQA@mail.gmail.com>
+Subject: Re: [PATCH v2] LoongArch: Mark __percpu functions as always inline
+To:     Nathan Chancellor <nathan@kernel.org>
+Cc:     kernel@xen0n.name, ndesaulniers@google.com, trix@redhat.com,
+        jiaxun.yang@flygoat.com, loongarch@lists.linux.dev,
+        llvm@lists.linux.dev, patches@lists.linux.dev,
+        stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Arend Van Spriel <arend.vanspriel@broadcom.com> =E4=BA=8E2023=E5=B9=B411=E6=
-=9C=886=E6=97=A5=E5=91=A8=E4=B8=80 23:48=E5=86=99=E9=81=93=EF=BC=9A
->
-> On November 6, 2023 3:44:53 PM Zheng Hacker <hackerzheng666@gmail.com> wr=
-ote:
->
-> > Thanks! I didn't test it for I don't have a device. Very appreciated
-> > if anyone could help with that.
->
-> I would volunteer, but it made me dig deep and not sure if there is a
-> problem to solve here.
->
-> brcmf_cfg80211_detach() calls wl_deinit_priv() -> brcmf_abort_scanning() =
-->
-> brcmf_notify_escan_complete() which does delete the timer.
->
-> What am I missing here?
+Applied to loongarch-next, thanks.
 
-Thanks four your detailed review. I did see the code and not sure if
-brcmf_notify_escan_complete
-would be triggered for sure. So in the first version I want to delete
-the pending timer ahead of time.
-As I'm not very familiar with the logic here. I'm still not sure if we
-should delete the timer_shutdown_sync.
-Looking forward to your reply :)
+Huacai
 
-```cpp
-if (cfg->int_escan_map || cfg->scan_request) {
-    escan->escan_state =3D WL_ESCAN_STATE_IDLE;
-    brcmf_notify_escan_complete(cfg, escan->ifp, true, true);
-  }
-```
-
-Best regards,
-Zheng
-
+On Thu, Nov 2, 2023 at 11:43=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
+g> wrote:
 >
-> Regards,
-> Arend
+> A recent change to the optimization pipeline in LLVM reveals some
+> fragility around the inlining of LoongArch's __percpu functions, which
+> manifests as a BUILD_BUG() failure:
 >
-> >
-> > Kalle Valo <kvalo@kernel.org> =E4=BA=8E2023=E5=B9=B411=E6=9C=886=E6=97=
-=A5=E5=91=A8=E4=B8=80 22:41=E5=86=99=E9=81=93=EF=BC=9A
-> >>
-> >> Zheng Wang <zyytlz.wz@163.com> writes:
-> >>
-> >>> This is the candidate patch of CVE-2023-47233 :
-> >>> https://nvd.nist.gov/vuln/detail/CVE-2023-47233
-> >>>
-> >>> In brcm80211 driver,it starts with the following invoking chain
-> >>> to start init a timeout worker:
-> >>>
-> >>> ->brcmf_usb_probe
-> >>> ->brcmf_usb_probe_cb
-> >>> ->brcmf_attach
-> >>> ->brcmf_bus_started
-> >>>  ->brcmf_cfg80211_attach
-> >>>    ->wl_init_priv
-> >>>      ->brcmf_init_escan
-> >>>        ->INIT_WORK(&cfg->escan_timeout_work,
-> >>>          brcmf_cfg80211_escan_timeout_worker);
-> >>>
-> >>> If we disconnect the USB by hotplug, it will call
-> >>> brcmf_usb_disconnect to make cleanup. The invoking chain is :
-> >>>
-> >>> brcmf_usb_disconnect
-> >>> ->brcmf_usb_disconnect_cb
-> >>> ->brcmf_detach
-> >>> ->brcmf_cfg80211_detach
-> >>>  ->kfree(cfg);
-> >>>
-> >>> While the timeout woker may still be running. This will cause
-> >>> a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
-> >>>
-> >>> Fix it by deleting the timer and canceling the worker in
-> >>> brcmf_cfg80211_detach.
-> >>>
-> >>> Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
-> >>> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-> >>> Cc: stable@vger.kernel.org
-> >>> ---
-> >>> v5:
-> >>> - replace del_timer_sync with timer_shutdown_sync suggested by
-> >>> Arend and Takashi
-> >>> v4:
-> >>> - rename the subject and add CVE number as Ping-Ke Shih suggested
-> >>> v3:
-> >>> - rename the subject as Johannes suggested
-> >>> v2:
-> >>> - fix the error of kernel test bot reported
-> >>> ---
-> >>> drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 ++
-> >>> 1 file changed, 2 insertions(+)
-> >>>
-> >>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg8021=
-1.c
-> >>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> >>> index 667462369a32..a8723a61c9e4 100644
-> >>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> >>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-> >>> @@ -8431,6 +8431,8 @@ void brcmf_cfg80211_detach(struct brcmf_cfg8021=
-1_info
-> >>> *cfg)
-> >>> if (!cfg)
-> >>>        return;
-> >>>
-> >>> +     timer_shutdown_sync(&cfg->escan_timeout);
-> >>> +     cancel_work_sync(&cfg->escan_timeout_work);
-> >>> brcmf_pno_detach(cfg);
-> >>> brcmf_btcoex_detach(cfg);
-> >>> wiphy_unregister(cfg->wiphy);
-> >>
-> >> Has anyone tested this on a real device? As v1 didn't even compile I a=
-m
-> >> very cautious:
-> >>
-> >> https://patchwork.kernel.org/project/linux-wireless/patch/202311040547=
-09.716585-1-zyytlz.wz@163.com/
-> >>
-> >> --
-> >> https://patchwork.kernel.org/project/linux-wireless/list/
-> >>
-> >> https://wireless.wiki.kernel.org/en/developers/documentation/submittin=
-gpatches
+>   In file included from kernel/sched/build_policy.c:17:
+>   In file included from include/linux/sched/cputime.h:5:
+>   In file included from include/linux/sched/signal.h:5:
+>   In file included from include/linux/rculist.h:11:
+>   In file included from include/linux/rcupdate.h:26:
+>   In file included from include/linux/irqflags.h:18:
+>   arch/loongarch/include/asm/percpu.h:97:3: error: call to '__compiletime=
+_assert_51' declared with 'error' attribute: BUILD_BUG failed
+>      97 |                 BUILD_BUG();
+>         |                 ^
+>   include/linux/build_bug.h:59:21: note: expanded from macro 'BUILD_BUG'
+>      59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+>         |                     ^
+>   include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_O=
+N_MSG'
+>      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond),=
+ msg)
+>         |                                     ^
+>   include/linux/compiler_types.h:425:2: note: expanded from macro 'compil=
+etime_assert'
+>     425 |         _compiletime_assert(condition, msg, __compiletime_asser=
+t_, __COUNTER__)
+>         |         ^
+>   include/linux/compiler_types.h:413:2: note: expanded from macro '_compi=
+letime_assert'
+>     413 |         __compiletime_assert(condition, msg, prefix, suffix)
+>         |         ^
+>   include/linux/compiler_types.h:406:4: note: expanded from macro '__comp=
+iletime_assert'
+>     406 |                         prefix ## suffix();                    =
+         \
+>         |                         ^
+>   <scratch space>:86:1: note: expanded from here
+>      86 | __compiletime_assert_51
+>         | ^
+>   1 error generated.
 >
+> If these functions are not inlined (which the compiler is free to do
+> even with functions marked with the standard 'inline' keyword), the
+> BUILD_BUG() in the default case cannot be eliminated since the compiler
+> cannot prove it is never used, resulting in a build failure due to the
+> error attribute.
 >
+> Mark these functions as __always_inline to guarantee inlining so that
+> the BUILD_BUG() only triggers when the default case genuinely cannot be
+> eliminated due to an unexpected size.
+>
+> Cc:  <stable@vger.kernel.org>
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/1955
+> Fixes: 46859ac8af52 ("LoongArch: Add multi-processor (SMP) support")
+> Link: https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c=
+607313a566eebb16e
+> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+> Changes in v2:
+> - Change 'inline' to __always_inline for all functions that contain
+>   BUILD_BUG() (Huacai)
+> - Notate that 'inline' does not guarantee inlining in the commit message
+>   to further clarify the change to __always_inline.
+> - Link to v1: https://lore.kernel.org/r/20231101-loongarch-always-inline-=
+percpu-ops-v1-1-b8f2e9a71729@kernel.org
+> ---
+>  arch/loongarch/include/asm/percpu.h | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include=
+/asm/percpu.h
+> index b9f567e66016..313852fba845 100644
+> --- a/arch/loongarch/include/asm/percpu.h
+> +++ b/arch/loongarch/include/asm/percpu.h
+> @@ -32,7 +32,7 @@ static inline void set_my_cpu_offset(unsigned long off)
+>  #define __my_cpu_offset __my_cpu_offset
+>
+>  #define PERCPU_OP(op, asm_op, c_op)                                    \
+> -static inline unsigned long __percpu_##op(void *ptr,                   \
+> +static __always_inline unsigned long __percpu_##op(void *ptr,          \
+>                         unsigned long val, int size)                    \
+>  {                                                                      \
+>         unsigned long ret;                                              \
+> @@ -63,7 +63,7 @@ PERCPU_OP(and, and, &)
+>  PERCPU_OP(or, or, |)
+>  #undef PERCPU_OP
+>
+> -static inline unsigned long __percpu_read(void *ptr, int size)
+> +static __always_inline unsigned long __percpu_read(void *ptr, int size)
+>  {
+>         unsigned long ret;
+>
+> @@ -100,7 +100,8 @@ static inline unsigned long __percpu_read(void *ptr, =
+int size)
+>         return ret;
+>  }
+>
+> -static inline void __percpu_write(void *ptr, unsigned long val, int size=
+)
+> +static __always_inline void __percpu_write(void *ptr, unsigned long val,
+> +                                          int size)
+>  {
+>         switch (size) {
+>         case 1:
+> @@ -132,8 +133,8 @@ static inline void __percpu_write(void *ptr, unsigned=
+ long val, int size)
+>         }
+>  }
+>
+> -static inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
+> -                                               int size)
+> +static __always_inline unsigned long __percpu_xchg(void *ptr, unsigned l=
+ong val,
+> +                                                  int size)
+>  {
+>         switch (size) {
+>         case 1:
+>
+> ---
+> base-commit: 278be83601dd1725d4732241f066d528e160a39d
+> change-id: 20231101-loongarch-always-inline-percpu-ops-cf77c161871f
+>
+> Best regards,
+> --
+> Nathan Chancellor <nathan@kernel.org>
 >
