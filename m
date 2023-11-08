@@ -2,152 +2,175 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 838E27E5E27
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 20:06:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EFCE97E5D6C
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 19:44:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229635AbjKHTG3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 14:06:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58476 "EHLO
+        id S229907AbjKHSoj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 13:44:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229558AbjKHTG2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 14:06:28 -0500
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2058.outbound.protection.outlook.com [40.107.96.58])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C53E119
-        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 11:06:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gV8scetUumEZk3X/DGPTl+7YbnX2Mq7/snzPH3DYP2ZEh7VQyqhF8JJCmlBbm+RkHnroUAzRZVDN2U9yGA06YzxAJG/ha3jFSUMtK6p/c803k1BsFkeQwMFlMAWpbFajMvRKnDkdMViS/Dn0mvWl8otsLyimsI3VZQDSh5whw1gn8WPx7dODEH4i195zZonGQZ1eROKOSfljW5VCAW9fgQam2AdIEyUAohOeEEWzh1upi7Ck0KuIjAXaKH8WOtgv/r/VHosi7hsFF9I9qtB13WJ6YN8dw44ysYJ8LjoPUXl3FsxzwnamrZTi2SYetGJ4d5Hp3WwRWkIbR8PHVRPzdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=G6JFIAnNcLC/fLzAkIc2H4S0kHQp2KocsL+t129heRI=;
- b=FI3sEqG7bxkUED5eW/NRGbDKvDt4KHrhP97DxRv9QsosOi57g1XiuB6o+gcXjVJJocU0bUiMgxy9fdGkYeh3lujrJQKphpwd7L8sHW9S04CGOaNsy9a1+P793G3pR1si3psZpiwplUaMOe+Ty1CqNRY5/CSLqS21jAWSDQ6XVKgLq4slS3ZTn/prIHAY5siCzUnuz/WPpD5UsoAspCYbqDSULBLAdXFzUePw+LCaiHIzRv8spjAbEXv1oQlvPo9opiwPxjZGFu2RhHkVSqQkj30VavmoP3aXBWB7FErLUigL9obxhwcJddA2u15D3ld4I/FvLkJwtpawzbnPzhXrAg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=G6JFIAnNcLC/fLzAkIc2H4S0kHQp2KocsL+t129heRI=;
- b=JXeTOZEi1z4HnV7Lw+kwTZj2aeQd6EQCx1VymxWNECAAzHiLzEsynP22AXHw91unnnEro/KE42sJDIeadyEGYOMAon0E+r4ObGmK38QrzOoF4F11x1KH7Imf3fFe9/SJkWGIb6y7dxRS24KDp41a+PrFljPxIyRBY2jGfwfRi/8=
-Received: from CH0P223CA0007.NAMP223.PROD.OUTLOOK.COM (2603:10b6:610:116::31)
- by MN2PR12MB4438.namprd12.prod.outlook.com (2603:10b6:208:267::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.29; Wed, 8 Nov
- 2023 19:06:22 +0000
-Received: from DS2PEPF00003441.namprd04.prod.outlook.com
- (2603:10b6:610:116:cafe::7b) by CH0P223CA0007.outlook.office365.com
- (2603:10b6:610:116::31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.18 via Frontend
- Transport; Wed, 8 Nov 2023 19:06:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- DS2PEPF00003441.mail.protection.outlook.com (10.167.17.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.6977.16 via Frontend Transport; Wed, 8 Nov 2023 19:06:22 +0000
-Received: from dev.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Wed, 8 Nov
- 2023 13:05:42 -0600
-From:   Alex Hung <alex.hung@amd.com>
-To:     <amd-gfx@lists.freedesktop.org>
-CC:     <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
-        <Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>,
-        <roman.li@amd.com>, <wayne.lin@amd.com>, <stylon.wang@amd.com>,
-        <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
-        <hersenxs.wu@amd.com>, <jerry.zuo@amd.com>,
-        "Paul Hsieh" <paul.hsieh@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        <stable@vger.kernel.org>, "Anthony Koo" <anthony.koo@amd.com>,
-        Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 08/20] drm/amd/display: Clear dpcd_sink_ext_caps if not set
-Date:   Wed, 8 Nov 2023 11:44:23 -0700
-Message-ID: <20231108185501.45359-9-alex.hung@amd.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231108185501.45359-1-alex.hung@amd.com>
-References: <20231108185501.45359-1-alex.hung@amd.com>
+        with ESMTP id S229460AbjKHSoi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 13:44:38 -0500
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B831210A
+        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 10:44:36 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3A8IiV1r91018390, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3A8IiV1r91018390
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 9 Nov 2023 02:44:31 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.17; Thu, 9 Nov 2023 02:44:32 +0800
+Received: from Test06-PC.realtek.com.tw (172.22.228.55) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.7; Thu, 9 Nov 2023 02:44:31 +0800
+From:   ChunHao Lin <hau@realtek.com>
+To:     <hau@realtek.com>
+CC:     Heiner Kallweit <hkallweit1@gmail.com>, <stable@vger.kernel.org>
+Subject: [PATCH net v2 1/2] r8169: add handling DASH when DASH is disabled
+Date:   Thu, 9 Nov 2023 02:44:25 +0800
+Message-ID: <20231108184426.2871-2-hau@realtek.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231108184426.2871-1-hau@realtek.com>
+References: <20231108184426.2871-1-hau@realtek.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.180.168.240]
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003441:EE_|MN2PR12MB4438:EE_
-X-MS-Office365-Filtering-Correlation-Id: 387cb9ec-2621-4541-bd45-08dbe08dcc64
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Jt/OOTUpFbbcJZBtyhWU4zX8xmXhpJLfa+T91G7ezmBk+VMJfo0SW4nZ8g43cvCtSOVDBqbN9ca64el84s1mP5OQRfJqL1KuLjB7jn+GjRF7EAPHaRxd7Ro/V9FN2rHOKjKnrBT9drfiCH2fWHQjwQnvTxipT0H75TNReJ4hyuDom7ywKmOsGYBPpXaOYFpMbyI9KbXrrQNMg8QDwATJDxi264pzHKwYldaDlwSz4Y6ap2bbiI73ss+5gO0+lGSyG+Z8Ts0q+CFPz5JI8ozNwyVHG3AFODAmBqnPufnX0TZqeuwH9wScMscQWq3ldqakZz056oyy8YcKkhfV7JdLtPXJc9+Yz96nYV6aqZACSf+gENRW26LYavjALapQ7zrBz5/0E7EljRzdLrdQ9jotNnc66IkXYP5+udjwNaI2rClpnnpBr2Re6rlmcUDUZPpjMm9f0CtbWWI6syDF/RERgGg7kgkwcxDQ6lSJRCU7wXVAN5DXYdxgzrzVr8cKeUgv35uWrwQWafyjlYE5RZ/ghSU0Vf8lqKuuzIFG1g894tXVW+4MsxK0KEgNrgTrIKFsQN85Dou26jeYfadn62OyPxTcuNI3wpomoLbmXXOnIR3ZDR5ggziDEe2tJpbaAdBDcPMTnMMAiaV8p+urxRxS5lh8Dzd4RZJyNf65sonfb38hRkyrU2nivP68BjZagxBoOYTwkfAuHul715oPqy3aJqbMft2MmTX3oxHy+ATn9go5RbDvorqeLOpGB8Bt2s50Ino6eNTw9IismMiVzJNGKA==
-X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(39860400002)(136003)(376002)(396003)(230922051799003)(82310400011)(1800799009)(451199024)(186009)(64100799003)(36840700001)(40470700004)(46966006)(2906002)(41300700001)(44832011)(81166007)(356005)(8676002)(4326008)(82740400003)(8936002)(47076005)(1076003)(83380400001)(316002)(336012)(426003)(5660300002)(54906003)(478600001)(70586007)(6916009)(70206006)(40480700001)(6666004)(16526019)(36860700001)(40460700003)(86362001)(7696005)(26005)(2616005)(36756003)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2023 19:06:22.6440
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 387cb9ec-2621-4541-bd45-08dbe08dcc64
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: DS2PEPF00003441.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4438
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [172.22.228.55]
+X-ClientProxiedBy: RTEXH36505.realtek.com.tw (172.21.6.25) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
+X-KSE-AntiSpam-Interceptor-Info: fallback
+X-KSE-Antivirus-Interceptor-Info: fallback
+X-KSE-AntiSpam-Interceptor-Info: fallback
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Paul Hsieh <paul.hsieh@amd.com>
+For devices that support DASH, even DASH is disabled, there may still
+exist a default firmware that will influence device behavior.
+So driver needs to handle DASH for devices that support DASH, no
+matter the DASH status is.
 
-[WHY]
-Some eDP panels' ext caps don't set initial values
-and the value of dpcd_addr (0x317) is random.
-It means that sometimes the eDP can be OLED, miniLED and etc,
-and cause incorrect backlight control interface.
+This patch also prepare for "fix DASH deviceis network lost issue".
 
-[HOW]
-Add remove_sink_ext_caps to remove sink ext caps (HDR, OLED and etc)
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Anthony Koo <anthony.koo@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Paul Hsieh <paul.hsieh@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/dc_types.h            | 1 +
- drivers/gpu/drm/amd/display/dc/link/link_detection.c | 3 +++
- 2 files changed, 4 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c | 35 ++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
-index cea666ea66c6..fcb825e4f1bb 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
-@@ -177,6 +177,7 @@ struct dc_panel_patch {
- 	unsigned int disable_fams;
- 	unsigned int skip_avmute;
- 	unsigned int mst_start_top_delay;
-+	unsigned int remove_sink_ext_caps;
- };
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 0c76c162b8a9..108dc75050ba 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -624,6 +624,7 @@ struct rtl8169_private {
  
- struct dc_edid_caps {
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-index d6f0f857c05a..f2fe523f914f 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
-@@ -1088,6 +1088,9 @@ static bool detect_link_and_local_sink(struct dc_link *link,
- 		if (sink->edid_caps.panel_patch.skip_scdc_overwrite)
- 			link->ctx->dc->debug.hdmi20_disable = true;
+ 	unsigned supports_gmii:1;
+ 	unsigned aspm_manageable:1;
++	unsigned dash_enabled:1;
+ 	dma_addr_t counters_phys_addr;
+ 	struct rtl8169_counters *counters;
+ 	struct rtl8169_tc_offsets tc_offset;
+@@ -1253,14 +1254,26 @@ static bool r8168ep_check_dash(struct rtl8169_private *tp)
+ 	return r8168ep_ocp_read(tp, 0x128) & BIT(0);
+ }
  
-+		if (sink->edid_caps.panel_patch.remove_sink_ext_caps)
-+			link->dpcd_sink_ext_caps.raw = 0;
+-static enum rtl_dash_type rtl_check_dash(struct rtl8169_private *tp)
++static bool rtl_dash_is_enabled(struct rtl8169_private *tp)
++{
++	switch (tp->dash_type) {
++	case RTL_DASH_DP:
++		return r8168dp_check_dash(tp);
++	case RTL_DASH_EP:
++		return r8168ep_check_dash(tp);
++	default:
++		return false;
++	}
++}
 +
- 		if (dc_is_hdmi_signal(link->connector_signal))
- 			read_scdc_caps(link->ddc, link->local_sink);
++static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private *tp)
+ {
+ 	switch (tp->mac_version) {
+ 	case RTL_GIGA_MAC_VER_28:
+ 	case RTL_GIGA_MAC_VER_31:
+-		return r8168dp_check_dash(tp) ? RTL_DASH_DP : RTL_DASH_NONE;
++		return RTL_DASH_DP;
+ 	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_53:
+-		return r8168ep_check_dash(tp) ? RTL_DASH_EP : RTL_DASH_NONE;
++		return RTL_DASH_EP;
+ 	default:
+ 		return RTL_DASH_NONE;
+ 	}
+@@ -1453,7 +1466,7 @@ static void __rtl8169_set_wol(struct rtl8169_private *tp, u32 wolopts)
+ 
+ 	device_set_wakeup_enable(tp_to_dev(tp), wolopts);
+ 
+-	if (tp->dash_type == RTL_DASH_NONE) {
++	if (!tp->dash_enabled) {
+ 		rtl_set_d3_pll_down(tp, !wolopts);
+ 		tp->dev->wol_enabled = wolopts ? 1 : 0;
+ 	}
+@@ -2512,7 +2525,7 @@ static void rtl_wol_enable_rx(struct rtl8169_private *tp)
+ 
+ static void rtl_prepare_power_down(struct rtl8169_private *tp)
+ {
+-	if (tp->dash_type != RTL_DASH_NONE)
++	if (tp->dash_enabled)
+ 		return;
+ 
+ 	if (tp->mac_version == RTL_GIGA_MAC_VER_32 ||
+@@ -4869,7 +4882,7 @@ static int rtl8169_runtime_idle(struct device *device)
+ {
+ 	struct rtl8169_private *tp = dev_get_drvdata(device);
+ 
+-	if (tp->dash_type != RTL_DASH_NONE)
++	if (tp->dash_enabled)
+ 		return -EBUSY;
+ 
+ 	if (!netif_running(tp->dev) || !netif_carrier_ok(tp->dev))
+@@ -4896,7 +4909,7 @@ static void rtl_shutdown(struct pci_dev *pdev)
+ 	rtl_rar_set(tp, tp->dev->perm_addr);
+ 
+ 	if (system_state == SYSTEM_POWER_OFF &&
+-	    tp->dash_type == RTL_DASH_NONE) {
++		!tp->dash_enabled) {
+ 		pci_wake_from_d3(pdev, tp->saved_wolopts);
+ 		pci_set_power_state(pdev, PCI_D3hot);
+ 	}
+@@ -5254,7 +5267,8 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1);
+ 	tp->aspm_manageable = !rc;
+ 
+-	tp->dash_type = rtl_check_dash(tp);
++	tp->dash_type = rtl_get_dash_type(tp);
++	tp->dash_enabled = rtl_dash_is_enabled(tp);
+ 
+ 	tp->cp_cmd = RTL_R16(tp, CPlusCmd) & CPCMD_MASK;
+ 
+@@ -5325,7 +5339,7 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	/* configure chip for default features */
+ 	rtl8169_set_features(dev, dev->features);
+ 
+-	if (tp->dash_type == RTL_DASH_NONE) {
++	if (!tp->dash_enabled) {
+ 		rtl_set_d3_pll_down(tp, true);
+ 	} else {
+ 		rtl_set_d3_pll_down(tp, false);
+@@ -5365,7 +5379,8 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 			    "ok" : "ko");
+ 
+ 	if (tp->dash_type != RTL_DASH_NONE) {
+-		netdev_info(dev, "DASH enabled\n");
++		netdev_info(dev, "DASH %s\n",
++			    tp->dash_enabled ? "enabled" : "disabled");
+ 		rtl8168_driver_start(tp);
+ 	}
  
 -- 
-2.42.0
+2.39.2
 
