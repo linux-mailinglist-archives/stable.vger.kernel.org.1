@@ -2,211 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18B387E5BE6
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 18:02:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 777B87E5BEE
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 18:04:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230283AbjKHRCi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 12:02:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50026 "EHLO
+        id S229581AbjKHRE3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 12:04:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50532 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229720AbjKHRCh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 12:02:37 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3429C1FF9
-        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 09:02:35 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-408425c7c10so52445795e9.0
-        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 09:02:35 -0800 (PST)
+        with ESMTP id S229816AbjKHRE2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 12:04:28 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86CB31FF5
+        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 09:04:26 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-9c41e95efcbso1076890966b.3
+        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 09:04:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=citrix.com; s=google; t=1699462953; x=1700067753; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tQ2+XV4dBu1cq9f+RwORT9M+/7K1LwjMn+kEqhK7XD4=;
-        b=hL46yKXQL6033kRQFAjsQ3SsJCwaPVDRnBuJlLTfjPWYFnPLsOtYpDCOjTZ0Ph+1dF
-         nrn1wwLPRl/S6+MznrXuae17KRuK/r+HFLEi5Yoh9KhCBg6lm9NCQz8CxH2ZoUeoZSO9
-         pIZFZ/CURnl/kLmmVt0DOikOx5pTBK/fSxl/s=
+        d=chromium.org; s=google; t=1699463063; x=1700067863; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LDcupbe+5qAO0hhDSEHW5GSzZCVe/uaRnl7TSsp+HAs=;
+        b=c+mj0HTRDTOZsSPLdBU/bRSzOqDm45aOl/QVkXiYrkZpNsqrJoIkXx+cCCUDUbp92o
+         HNl2oTYR7fJEelj6pAeHxDy+0tnU7KEmMP9PER6RvOYHGavNzmUHZDg/N3KISbeiwclF
+         45jIy3vRKO4pRjtFImsbTDP5NCIWtxAFEBAms=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699462953; x=1700067753;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tQ2+XV4dBu1cq9f+RwORT9M+/7K1LwjMn+kEqhK7XD4=;
-        b=MQMdCvzrq8aRVNUU1nxwzvN9TvH3KwhkZiALeiveXcwHX4vB2pjrIAeE9qtWxpwdft
-         YQ4wNIGEcayBFXoN92Px3U+pFE9AZjQdqRh70mjRiiHE3vBRblw3yU8vQcy0y32eiLtm
-         GL3ZzfbHedCZoCLPCWgFILG5+QG7D+rzYWM1sN5TMwQok9cgUzEuQKCr289yAENdTDXH
-         Vom3G37tEB/M2EqAMVj3qin87/tj/1Z3GwFY1ytV1bg3LaC7JmV+wu/U0UYTU6DXu1eM
-         QUeKTqo4nhCCgsK+7tTeN3fYVh+iw3zg5k5aqL46BsoU9lJxGbMuwD+sSAjpBh6mnEaj
-         ujqQ==
-X-Gm-Message-State: AOJu0YzsBwnKp9QtA3bs71E6XKaVN/InFRSd5SIVhogfoPTxq9I3FkzU
-        KdD8TZmS4JyU4e3osTup8vb4gg==
-X-Google-Smtp-Source: AGHT+IF5jqoBvi3qd1BxebWpXp5A0mscq2ySxXLD1o1w5SUmf63SxVEduVpYLNEyclnDzEn5dh7HMg==
-X-Received: by 2002:a05:600c:314d:b0:409:85d:5a6e with SMTP id h13-20020a05600c314d00b00409085d5a6emr2390628wmo.29.1699462953571;
-        Wed, 08 Nov 2023 09:02:33 -0800 (PST)
-Received: from localhost (default-46-102-197-194.interdsl.co.uk. [46.102.197.194])
-        by smtp.gmail.com with ESMTPSA id z11-20020a05600c0a0b00b00407460234f9sm20298514wmp.21.2023.11.08.09.02.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 09:02:33 -0800 (PST)
-Date:   Wed, 8 Nov 2023 17:02:32 +0000
-From:   Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>
-To:     Jason Andryuk <jandryuk@gmail.com>
-Cc:     Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-        michal.wilczynski@intel.com, stable@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org,
-        xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v4] acpi/processor: sanitize _OSC/_PDC capabilities for
- Xen dom0
-Message-ID: <ZUu-hAiqCie4wIO1@macbook>
-References: <20231101134154.18336-1-jandryuk@gmail.com>
+        d=1e100.net; s=20230601; t=1699463063; x=1700067863;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LDcupbe+5qAO0hhDSEHW5GSzZCVe/uaRnl7TSsp+HAs=;
+        b=bvoSXBvaTt22Z8pab1h6tNjJRZDvS9MqaqYScQD/BgljJfvimb1z1WaJv5jA+eQH32
+         IXmKpcp0UJUkKfTcfptl4oi0rC7ccrTGgkL8JkVoLERJndzMhqKWzAaHHQE6TK7Eb9Cg
+         OCN+aicV94UNslRkQhJ5VZEQuX9ijqL19wxzphHSjQV5ccFU8ZIkg7Gvr70JoRKdlm3M
+         sGM1NGPtGbgRbnKcbacksGL/E4HrDoCaQlps+9CO4edDGvL+LIwPJWfV37MpSJbJUz4I
+         EG1KSH18MNDZypc4CKpi59ro/fmif6XLITsjR2OPaumneIU0TOAjlJwcHyFyBfh/nZE/
+         rdqg==
+X-Gm-Message-State: AOJu0YxScCGtX5bKIpVPnEAgxLWcwkWcQ+kYXYBD2nZcwylSRk7JiNIi
+        /rqTTh/vUj3SGhLLDhPYMJEtI4u/b5eZjprF/8tMNX6z
+X-Google-Smtp-Source: AGHT+IFE+hC8ZXyPXrHNgnNwnl1CuHiqM4L5WJv5XYmZ6lm60iR7pV2Y4ujyuVIbO2OOWm7RvLWWSw==
+X-Received: by 2002:a17:907:9620:b0:9be:ab38:a367 with SMTP id gb32-20020a170907962000b009beab38a367mr2308359ejc.16.1699463063222;
+        Wed, 08 Nov 2023 09:04:23 -0800 (PST)
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com. [209.85.128.54])
+        by smtp.gmail.com with ESMTPSA id q13-20020aa7d44d000000b00542df4a03d0sm6814666edr.16.2023.11.08.09.04.22
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Nov 2023 09:04:23 -0800 (PST)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-40853f2e93eso96425e9.0
+        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 09:04:22 -0800 (PST)
+X-Received: by 2002:a05:600c:3110:b0:405:320a:44f9 with SMTP id
+ g16-20020a05600c311000b00405320a44f9mr219580wmo.5.1699463062323; Wed, 08 Nov
+ 2023 09:04:22 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231101134154.18336-1-jandryuk@gmail.com>
+References: <20231107204611.3082200-1-hsinyi@chromium.org> <20231107204611.3082200-5-hsinyi@chromium.org>
+ <xnyf3ul7pwsgrmxgbareh5lhhmpfuvfksj3nyd4zmup7khaer2@fbwgbrq4vywb>
+In-Reply-To: <xnyf3ul7pwsgrmxgbareh5lhhmpfuvfksj3nyd4zmup7khaer2@fbwgbrq4vywb>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Wed, 8 Nov 2023 09:04:09 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=WuwJGsDraFt=i0NbN-HkocsYgL=kCrZTxqVN+Oo1u8pg@mail.gmail.com>
+Message-ID: <CAD=FV=WuwJGsDraFt=i0NbN-HkocsYgL=kCrZTxqVN+Oo1u8pg@mail.gmail.com>
+Subject: Re: [PATCH v6 4/5] drm/panel-edp: Add override_edid_mode quirk for
+ generic edp
+To:     Maxime Ripard <mripard@kernel.org>
+Cc:     Hsin-Yi Wang <hsinyi@chromium.org>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Jessica Zhang <quic_jesszhan@quicinc.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Nov 01, 2023 at 09:41:52AM -0400, Jason Andryuk wrote:
-> From: Roger Pau Monne <roger.pau@citrix.com>
-> 
-> The Processor capability bits notify ACPI of the OS capabilities, and
-> so ACPI can adjust the return of other Processor methods taking the OS
-> capabilities into account.
-> 
-> When Linux is running as a Xen dom0, the hypervisor is the entity
-> in charge of processor power management, and hence Xen needs to make
-> sure the capabilities reported by _OSC/_PDC match the capabilities of
-> the driver in Xen.
-> 
-> Introduce a small helper to sanitize the buffer when running as Xen
-> dom0.
-> 
-> When Xen supports HWP, this serves as the equivalent of commit
-> a21211672c9a ("ACPI / processor: Request native thermal interrupt
-> handling via _OSC") to avoid SMM crashes.  Xen will set bit
-> ACPI_PROC_CAP_COLLAB_PROC_PERF (bit 12) in the capability bits and the
-> _OSC/_PDC call will apply it.
-> 
-> [ jandryuk: Mention Xen HWP's need.  Support _OSC & _PDC ]
-> Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
-> ---
-> v4:
-> Use xen_santize_proc_cap_bits() name - Michal
-> Rephrase comment - Michal
-> 
-> v3:
-> Move xen_sanitize_pdc() call to arch_acpi_set_proc_cap_bits() to cover
-> _OSC and _PDC.
-> drivers/xen/pcpu.c is CONFIG_DOM0 && CONFIG_X86
-> 
-> v2:
-> Move local variables in acpi_processor_eval_pdc() to reuse in both conditions.
-> ---
->  arch/x86/include/asm/acpi.h           | 14 ++++++++++++++
->  arch/x86/include/asm/xen/hypervisor.h |  9 +++++++++
->  drivers/xen/pcpu.c                    | 21 +++++++++++++++++++++
->  3 files changed, 44 insertions(+)
-> 
-> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-> index c8a7fc23f63c..f896eed4516c 100644
-> --- a/arch/x86/include/asm/acpi.h
-> +++ b/arch/x86/include/asm/acpi.h
-> @@ -16,6 +16,9 @@
->  #include <asm/x86_init.h>
->  #include <asm/cpufeature.h>
->  #include <asm/irq_vectors.h>
-> +#include <asm/xen/hypervisor.h>
-> +
-> +#include <xen/xen.h>
->  
->  #ifdef CONFIG_ACPI_APEI
->  # include <asm/pgtable_types.h>
-> @@ -127,6 +130,17 @@ static inline void arch_acpi_set_proc_cap_bits(u32 *cap)
->  	if (!cpu_has(c, X86_FEATURE_MWAIT) ||
->  	    boot_option_idle_override == IDLE_NOMWAIT)
->  		*cap &= ~(ACPI_PROC_CAP_C_C1_FFH | ACPI_PROC_CAP_C_C2C3_FFH);
-> +
-> +	if (xen_initial_domain()) {
-> +		/*
-> +		 * When Linux is running as Xen dom0, the hypervisor is the
-> +		 * entity in charge of the processor power management, and so
-> +		 * Xen needs to check the OS capabilities reported in the
-> +		 * processor capabilities buffer matches what the hypervisor
-> +		 * driver supports.
-> +		 */
-> +		xen_sanitize_proc_cap_bits(cap);
-> +	}
->  }
->  
->  static inline bool acpi_has_cpu_in_madt(void)
-> diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-> index 7048dfacc04b..a9088250770f 100644
-> --- a/arch/x86/include/asm/xen/hypervisor.h
-> +++ b/arch/x86/include/asm/xen/hypervisor.h
-> @@ -100,4 +100,13 @@ static inline void leave_lazy(enum xen_lazy_mode mode)
->  
->  enum xen_lazy_mode xen_get_lazy_mode(void);
->  
-> +#if defined(CONFIG_XEN_DOM0) && defined(CONFIG_ACPI)
-> +void xen_sanitize_proc_cap_bits(uint32_t *buf);
-> +#else
-> +static inline void xen_sanitize_proc_cap_bits(uint32_t *buf)
-> +{
-> +	BUG();
-> +}
-> +#endif
-> +
->  #endif /* _ASM_X86_XEN_HYPERVISOR_H */
-> diff --git a/drivers/xen/pcpu.c b/drivers/xen/pcpu.c
-> index b3e3d1bb37f3..7000701dff8f 100644
-> --- a/drivers/xen/pcpu.c
-> +++ b/drivers/xen/pcpu.c
-> @@ -47,6 +47,9 @@
->  #include <asm/xen/hypervisor.h>
->  #include <asm/xen/hypercall.h>
->  
-> +#ifdef CONFIG_ACPI
-> +#include <acpi/processor.h>
-> +#endif
->  
->  /*
->   * @cpu_id: Xen physical cpu logic number
-> @@ -400,4 +403,22 @@ bool __init xen_processor_present(uint32_t acpi_id)
->  
->  	return online;
->  }
-> +
-> +void xen_sanitize_proc_cap_bits(uint32_t *cap)
-> +{
-> +	struct xen_platform_op op = {
-> +		.cmd			= XENPF_set_processor_pminfo,
-> +		.u.set_pminfo.id	= -1,
-> +		.u.set_pminfo.type	= XEN_PM_PDC,
-> +	};
-> +	u32 buf[3] = { ACPI_PDC_REVISION_ID, 1, *cap };
-> +	int ret;
-> +
-> +	set_xen_guest_handle(op.u.set_pminfo.pdc, buf);
-> +	ret = HYPERVISOR_platform_op(&op);
-> +	if (ret)
-> +		pr_err("sanitize of _PDC buffer bits from Xen failed: %d\n",
-> +		       ret);
-> +	*cap = buf[2];
+Hi,
 
-FWIW, we might want to only update cap if the hypercall has been
-successful, otherwise there's no guarantee of what's in the buffer, so
-I would recommend to put the updating of cap in an else branch.
+On Wed, Nov 8, 2023 at 7:45=E2=80=AFAM Maxime Ripard <mripard@kernel.org> w=
+rote:
+>
+> > @@ -575,9 +599,18 @@ static int panel_edp_get_modes(struct drm_panel *p=
+anel,
+> >
+> >               if (!p->edid)
+> >                       p->edid =3D drm_get_edid(connector, p->ddc);
+> > -
+> > -             if (p->edid)
+> > -                     num +=3D drm_add_edid_modes(connector, p->edid);
+> > +             if (p->edid) {
+> > +                     if (has_override_edid_mode) {
+>
+> It's not clear to me why the override mechanism is only there when
+> there's a ddc bus?
 
-Anyway, not a strong opinion, as I think in practice even if the
-hypercall fails it wouldn't corrupt the data in the buffer, but seems
-more robust.
+I think you're confusing the two different (but related) issues
+addressed by this series. One is when you're using the generic
+"edp-panel" compatible string. In that case the mode comes from the
+EDID and only the EDID since there's no hardcoded mode. We need a mode
+override there since some EDIDs shipped with a bad mode. That's the
+subject of ${SUBJECT} patch.
 
-Thanks, Roger.
+The second issue is what to do with a hardcoded mode. That's the
+subject of the next patch in the series (patch #5). Previously we
+merged the hardcoded and EDID modes. Now (in the next patch) we use
+only the hardcoded mode. There's no need for a fixup because the mode
+is hardcoded in the kernel.
+
+
+> You mentioned before that you were following panel-simple,
+
+As of the newest version of the patch, it's no longer following
+panel-simple in response to your feedback on previous versions.
+
+> but that's a
+> clear deviation from what I can see. If there's a reason for that
+> deviation, that's fine by me, but it should at least be documented in
+> the commit log.
+
+I think the commit log is OK. I suspect the confusion is only because
+you've reviewed previous versions of the series. Please shout if
+things still look confusing.
+
+
+> > @@ -950,6 +983,19 @@ static const struct panel_desc auo_b101ean01 =3D {
+> >       },
+> >  };
+> >
+> > +static const struct drm_display_mode auo_b116xa3_mode =3D {
+> > +     .clock =3D 70589,
+> > +     .hdisplay =3D 1366,
+> > +     .hsync_start =3D 1366 + 40,
+> > +     .hsync_end =3D 1366 + 40 + 40,
+> > +     .htotal =3D 1366 + 40 + 40 + 32,
+> > +     .vdisplay =3D 768,
+> > +     .vsync_start =3D 768 + 10,
+> > +     .vsync_end =3D 768 + 10 + 12,
+> > +     .vtotal =3D 768 + 10 + 12 + 6,
+> > +     .flags =3D DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
+> > +};
+>
+> That should be a separate patch
+
+That's fair. I didn't think it was a huge deal, but I agree that it's
+slightly cleaner.
+
+-Doug
