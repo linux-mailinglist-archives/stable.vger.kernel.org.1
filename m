@@ -2,151 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 777B87E5BEE
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 18:04:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 863937E5BFD
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 18:10:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229581AbjKHRE3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 12:04:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50532 "EHLO
+        id S231485AbjKHRKV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 12:10:21 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229816AbjKHRE2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 12:04:28 -0500
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86CB31FF5
-        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 09:04:26 -0800 (PST)
-Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-9c41e95efcbso1076890966b.3
-        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 09:04:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1699463063; x=1700067863; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LDcupbe+5qAO0hhDSEHW5GSzZCVe/uaRnl7TSsp+HAs=;
-        b=c+mj0HTRDTOZsSPLdBU/bRSzOqDm45aOl/QVkXiYrkZpNsqrJoIkXx+cCCUDUbp92o
-         HNl2oTYR7fJEelj6pAeHxDy+0tnU7KEmMP9PER6RvOYHGavNzmUHZDg/N3KISbeiwclF
-         45jIy3vRKO4pRjtFImsbTDP5NCIWtxAFEBAms=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699463063; x=1700067863;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LDcupbe+5qAO0hhDSEHW5GSzZCVe/uaRnl7TSsp+HAs=;
-        b=bvoSXBvaTt22Z8pab1h6tNjJRZDvS9MqaqYScQD/BgljJfvimb1z1WaJv5jA+eQH32
-         IXmKpcp0UJUkKfTcfptl4oi0rC7ccrTGgkL8JkVoLERJndzMhqKWzAaHHQE6TK7Eb9Cg
-         OCN+aicV94UNslRkQhJ5VZEQuX9ijqL19wxzphHSjQV5ccFU8ZIkg7Gvr70JoRKdlm3M
-         sGM1NGPtGbgRbnKcbacksGL/E4HrDoCaQlps+9CO4edDGvL+LIwPJWfV37MpSJbJUz4I
-         EG1KSH18MNDZypc4CKpi59ro/fmif6XLITsjR2OPaumneIU0TOAjlJwcHyFyBfh/nZE/
-         rdqg==
-X-Gm-Message-State: AOJu0YxScCGtX5bKIpVPnEAgxLWcwkWcQ+kYXYBD2nZcwylSRk7JiNIi
-        /rqTTh/vUj3SGhLLDhPYMJEtI4u/b5eZjprF/8tMNX6z
-X-Google-Smtp-Source: AGHT+IFE+hC8ZXyPXrHNgnNwnl1CuHiqM4L5WJv5XYmZ6lm60iR7pV2Y4ujyuVIbO2OOWm7RvLWWSw==
-X-Received: by 2002:a17:907:9620:b0:9be:ab38:a367 with SMTP id gb32-20020a170907962000b009beab38a367mr2308359ejc.16.1699463063222;
-        Wed, 08 Nov 2023 09:04:23 -0800 (PST)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com. [209.85.128.54])
-        by smtp.gmail.com with ESMTPSA id q13-20020aa7d44d000000b00542df4a03d0sm6814666edr.16.2023.11.08.09.04.22
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Nov 2023 09:04:23 -0800 (PST)
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-40853f2e93eso96425e9.0
-        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 09:04:22 -0800 (PST)
-X-Received: by 2002:a05:600c:3110:b0:405:320a:44f9 with SMTP id
- g16-20020a05600c311000b00405320a44f9mr219580wmo.5.1699463062323; Wed, 08 Nov
- 2023 09:04:22 -0800 (PST)
-MIME-Version: 1.0
-References: <20231107204611.3082200-1-hsinyi@chromium.org> <20231107204611.3082200-5-hsinyi@chromium.org>
- <xnyf3ul7pwsgrmxgbareh5lhhmpfuvfksj3nyd4zmup7khaer2@fbwgbrq4vywb>
-In-Reply-To: <xnyf3ul7pwsgrmxgbareh5lhhmpfuvfksj3nyd4zmup7khaer2@fbwgbrq4vywb>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Wed, 8 Nov 2023 09:04:09 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=WuwJGsDraFt=i0NbN-HkocsYgL=kCrZTxqVN+Oo1u8pg@mail.gmail.com>
-Message-ID: <CAD=FV=WuwJGsDraFt=i0NbN-HkocsYgL=kCrZTxqVN+Oo1u8pg@mail.gmail.com>
-Subject: Re: [PATCH v6 4/5] drm/panel-edp: Add override_edid_mode quirk for
- generic edp
-To:     Maxime Ripard <mripard@kernel.org>
-Cc:     Hsin-Yi Wang <hsinyi@chromium.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Jessica Zhang <quic_jesszhan@quicinc.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        David Airlie <airlied@gmail.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S232099AbjKHRKU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 12:10:20 -0500
+Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39BEE8;
+        Wed,  8 Nov 2023 09:10:18 -0800 (PST)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.nyi.internal (Postfix) with ESMTP id 273B45C01B6;
+        Wed,  8 Nov 2023 12:10:18 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Wed, 08 Nov 2023 12:10:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=devkernel.io; h=
+        cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1699463418; x=1699549818; bh=5Q
+        6Rk+qzMpMI23pOp3I8TlmgYyCmchkLsFD/CkDi2mw=; b=eUWrxueEssiCj+bvgf
+        Sq643QOe3X6h42kIJc2C4ZR4tm4w3mOdG8mMOOrmOgg0M9yYXlhsfKxDkCNkqCCG
+        BgOwi8kOtWhJvTJkklO6nDjZNnLpGJinks5lcfiGObfANptCTPVE0woOqtneT3uJ
+        9U2DdjeQAOnKqKFIXNDdnFKImsdzIKXrz2xrUxh9Sf0wRj4pqTquFzfj84JdnNrC
+        enHU1i72+MY2mDPjMpLNJt3BloxtRY1Xnwh0859u2X49iID79qpBoQk95E+FWBEO
+        o53Ayv8FbA2H/j19polIQxiFBiw/8ogVIXTrD+e3IrI5e2SzZLXZn1SaqPiqhrpT
+        6MrQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm3; t=1699463418; x=1699549818; bh=5Q6Rk+qzMpMI2
+        3pOp3I8TlmgYyCmchkLsFD/CkDi2mw=; b=NKn3/MIMQ3Rnjm54WfE83DqAwKBK2
+        hplEw1Zsln9YKY/ZWiSFy0CcN0wh9u4YfTXhg7bxgUnyy50JS7YbOxEVCX27W66v
+        2DtcCXXIx/TdFs1ZOnaeUX9v198NlEGUphmLT7rMmetAI1i3kloyh43awROxkFsc
+        nOlpqSo1gyzWl7adDulrFFLP2IuiYIVdFeFvS6bt64abESHd5mAokFox4AXEU7S3
+        mqwJhKdGi0s23L8rILgDQvL3uSHzrq7JtKeVv0UqB6ZCVp062S/uoO4N6UC1kqp0
+        DsH52V3khxQn8DPs9PExDYToZxG8sVdsicOUYEQPmI/j5mmKLiI2ZgDNQ==
+X-ME-Sender: <xms:-cBLZXK7ZfCPlOmysWZ6vvIs8owrujDXy0u-qI72B6TJjrP_LjG08A>
+    <xme:-cBLZbJXx7IiK-z-uQvajKTMEp6y5v3kcHhlKF5e_k4k2wk-i6cTMhY1ukpfOVEAb
+    z1gxec6kFDCjfsNBi8>
+X-ME-Received: <xmr:-cBLZfuaImNAwYFULO8RvuXk9VbIVi7hpm3NjEUGdnXo_HUsgkjqDQ2a>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudduledgleehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpehffgfhvfevufffjgfkgggtsehttd
+    ertddtredtnecuhfhrohhmpefuthgvfhgrnhcutfhovghstghhuceoshhhrhesuggvvhhk
+    vghrnhgvlhdrihhoqeenucggtffrrghtthgvrhhnpeevlefggffhheduiedtheejveehtd
+    fhtedvhfeludetvdegieekgeeggfdugeeutdenucevlhhushhtvghrufhiiigvpedtnecu
+    rfgrrhgrmhepmhgrihhlfhhrohhmpehshhhrseguvghvkhgvrhhnvghlrdhioh
+X-ME-Proxy: <xmx:-cBLZQbrQBspZq4QP7h9HHk-xW-VKFgjaRJY9adYNu_THDJ6sdjKaA>
+    <xmx:-cBLZeY5lwcYRKtD3ztuK1vgHb1d_2LgV5j75AIwVMED8ezJEl1TAw>
+    <xmx:-cBLZUDnVm6i0ocua75e7TQT0qPpBAMG8__vTlbYGdkbOTBVax674w>
+    <xmx:-sBLZTPhYDAUkt2OdMbPG9x44c1cHG_m-vpBWp6HXiUJak7IlNyXkQ>
+Feedback-ID: i84614614:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 8 Nov 2023 12:10:14 -0500 (EST)
+References: <20231107181805.4188397-1-shr@devkernel.io>
+ <ZUqRia1Ww0+wNfKr@casper.infradead.org>
+User-agent: mu4e 1.10.3; emacs 29.1
+From:   Stefan Roesch <shr@devkernel.io>
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     kernel-team@fb.com, akpm@linux-foundation.org, hannes@cmpxchg.org,
+        riel@surriel.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH v2] mm: Fix for negative counter: nr_file_hugepages
+Date:   Wed, 08 Nov 2023 09:09:55 -0800
+In-reply-to: <ZUqRia1Ww0+wNfKr@casper.infradead.org>
+Message-ID: <87leb8npcd.fsf@devkernel.io>
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
 
-On Wed, Nov 8, 2023 at 7:45=E2=80=AFAM Maxime Ripard <mripard@kernel.org> w=
-rote:
+Matthew Wilcox <willy@infradead.org> writes:
+
+> On Tue, Nov 07, 2023 at 10:18:05AM -0800, Stefan Roesch wrote:
+>> +++ b/mm/huge_memory.c
+>> @@ -2740,7 +2740,7 @@ int split_huge_page_to_list(struct page *page, struct list_head *list)
+>>  			if (folio_test_swapbacked(folio)) {
+>>  				__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS,
+>>  							-nr);
+>> -			} else {
+>> +			} else if (folio_test_pmd_mappable(folio)) {
+>>  				__lruvec_stat_mod_folio(folio, NR_FILE_THPS,
+>>  							-nr);
+>>  				filemap_nr_thps_dec(mapping);
 >
-> > @@ -575,9 +599,18 @@ static int panel_edp_get_modes(struct drm_panel *p=
-anel,
-> >
-> >               if (!p->edid)
-> >                       p->edid =3D drm_get_edid(connector, p->ddc);
-> > -
-> > -             if (p->edid)
-> > -                     num +=3D drm_add_edid_modes(connector, p->edid);
-> > +             if (p->edid) {
-> > +                     if (has_override_edid_mode) {
->
-> It's not clear to me why the override mechanism is only there when
-> there's a ddc bus?
+> As I said, we also need the folio_test_pmd_mappable() for swapbacked.
+> Not because there's currently a problem, but because we don't leave
+> landmines for other people to trip over in future!
 
-I think you're confusing the two different (but related) issues
-addressed by this series. One is when you're using the generic
-"edp-panel" compatible string. In that case the mode comes from the
-EDID and only the EDID since there's no hardcoded mode. We need a mode
-override there since some EDIDs shipped with a bad mode. That's the
-subject of ${SUBJECT} patch.
-
-The second issue is what to do with a hardcoded mode. That's the
-subject of the next patch in the series (patch #5). Previously we
-merged the hardcoded and EDID modes. Now (in the next patch) we use
-only the hardcoded mode. There's no need for a fixup because the mode
-is hardcoded in the kernel.
-
-
-> You mentioned before that you were following panel-simple,
-
-As of the newest version of the patch, it's no longer following
-panel-simple in response to your feedback on previous versions.
-
-> but that's a
-> clear deviation from what I can see. If there's a reason for that
-> deviation, that's fine by me, but it should at least be documented in
-> the commit log.
-
-I think the commit log is OK. I suspect the confusion is only because
-you've reviewed previous versions of the series. Please shout if
-things still look confusing.
-
-
-> > @@ -950,6 +983,19 @@ static const struct panel_desc auo_b101ean01 =3D {
-> >       },
-> >  };
-> >
-> > +static const struct drm_display_mode auo_b116xa3_mode =3D {
-> > +     .clock =3D 70589,
-> > +     .hdisplay =3D 1366,
-> > +     .hsync_start =3D 1366 + 40,
-> > +     .hsync_end =3D 1366 + 40 + 40,
-> > +     .htotal =3D 1366 + 40 + 40 + 32,
-> > +     .vdisplay =3D 768,
-> > +     .vsync_start =3D 768 + 10,
-> > +     .vsync_end =3D 768 + 10 + 12,
-> > +     .vtotal =3D 768 + 10 + 12 + 6,
-> > +     .flags =3D DRM_MODE_FLAG_NVSYNC | DRM_MODE_FLAG_NHSYNC,
-> > +};
->
-> That should be a separate patch
-
-That's fair. I didn't think it was a huge deal, but I agree that it's
-slightly cleaner.
-
--Doug
+I'll add it in the next version.
