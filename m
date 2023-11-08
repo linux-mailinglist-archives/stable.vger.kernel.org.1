@@ -2,98 +2,277 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E405A7E54C0
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 12:13:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDC607E54D2
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 12:17:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229579AbjKHLNv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 06:13:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33426 "EHLO
+        id S1344174AbjKHLRv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 06:17:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234092AbjKHLNu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 06:13:50 -0500
-Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EDF21BD4;
-        Wed,  8 Nov 2023 03:13:48 -0800 (PST)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4SQMZ06DZYz9xtn5;
-        Wed,  8 Nov 2023 19:00:24 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.195.35.156])
-        by APP2 (Coremail) with SMTP id GxC2BwDX1V9HbUtlqNFEAA--.11872S2;
-        Wed, 08 Nov 2023 12:13:23 +0100 (CET)
-From:   Petr Tesarik <petrtesarik@huaweicloud.com>
-To:     Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Petr Tesarik <petr.tesarik.ext@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
-        linux-kernel@vger.kernel.org (open list)
-Cc:     Wangkefeng <wangkefeng.wang@huawei.com>,
-        Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        petr@tesarici.cz, Petr Tesarik <petr.tesarik1@huawei-partners.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH 1/1] swiotlb: fix out-of-bounds TLB allocations with CONFIG_SWIOTLB_DYNAMIC
-Date:   Wed,  8 Nov 2023 12:12:49 +0100
-Message-Id: <20231108111249.261-1-petrtesarik@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S1344004AbjKHLRv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 06:17:51 -0500
+Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E422186
+        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 03:17:49 -0800 (PST)
+Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-2800bb246ceso5049180a91.1
+        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 03:17:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699442268; x=1700047068; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=pDz0IF7e3D0cvbMPpvMaPbsN/So+cKk0KizN1lM5Gk4=;
+        b=uGPBz5N3ErT8+NdSqycPjBkDm/YAkcNoFmCxFBdmiImHMZCBosTaA3+jTsJU8ZpjJr
+         eWegNqjDLt386naJCBHcldUwN3Cce0eoccFDmAHtwVShbnsCN42WwF5xF+huMP8wLjyi
+         F0iiHuGhzTzyuOUtYCAfhMjYwi8l74GvWz9dkFeMPTEysVQeHUXdDVjEmSLhEGbfJF0i
+         ZtPnmIvN8LaesejLdJrOnzJSyZpTHgD5SqID1OzNCAAF9LCBkm9YKtH1Cipk0K0cgp8k
+         sGOYoxEHuQPEcVNXynedLeH8zHeam7654i+w6LwG2SWXm7fJkeJIvmGpUUZU10Jo5t5h
+         fkeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699442268; x=1700047068;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pDz0IF7e3D0cvbMPpvMaPbsN/So+cKk0KizN1lM5Gk4=;
+        b=AKmL/DkRSE89D7N70ryykBc5E7V5afoiHRfHtgbTo99WMOYRhea4SzpvKfxtZfaaBm
+         6LPyAQ6kWHgZOeUmOYE2C687P5AuZM9oQ84nV6z9md3k8YKusb9HYO7KRupl/47xLVKy
+         6JOVRJwx2KjO4qbnOQPAn0liZHd13FX1OPJLJt/2I55a/dI5BH9bF5ogwTefvIlRsmxN
+         M/DPTti0AgGqPjn1W8L+18eZp6AUNozN9j95KKVsFzNOfDpohkmq72vIg5zfHIXkW9rB
+         FMLaHUV08JfMvhXdGVY3NzstzTtyXD9PndH9mJchrQRXsh2gNDmVA4ABKq38lMjoTWQT
+         UJPg==
+X-Gm-Message-State: AOJu0YxiElCUeqRKapmXW0+jCssz616g3wN4eA1KmOwEplwHiXbGIj3l
+        sU4gWNjeuzIzKGVWt1xOEn9K3NkfQ8k2OHEf8eIbEw==
+X-Google-Smtp-Source: AGHT+IF+eLeISbhgR7J70NKbF2h6hn5Dpycf+2TjHwFSlGI8GeWCgipjKkYKRpXX1UNIi6uGddbNIA==
+X-Received: by 2002:a17:90b:384b:b0:280:c576:31bb with SMTP id nl11-20020a17090b384b00b00280c57631bbmr1220251pjb.35.1699442268089;
+        Wed, 08 Nov 2023 03:17:48 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id 23-20020a17090a035700b00280976d4ce3sm1471097pjf.37.2023.11.08.03.17.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Nov 2023 03:17:47 -0800 (PST)
+Message-ID: <654b6e5b.170a0220.acabd.43f3@mx.google.com>
+Date:   Wed, 08 Nov 2023 03:17:47 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: GxC2BwDX1V9HbUtlqNFEAA--.11872S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Kw1DWF48Ar4UGw43KFW8Crg_yoW8Gw43pa
-        43Aw45GayjqF18Aw1qk3WUC3W8K3yDZrW7uFZ0q343ZryDWry5WF9a93y5K3s3Xr4v9F4a
-        kryFvr4rKayUZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUBS14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-        6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-        4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-        n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY1x0264kExVAvwVAq07x20xyl42xK82IYc2
-        Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-        6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0x
-        vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-        42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87
-        Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU8c_-DUUUU
-X-CM-SenderInfo: hshw23xhvd2x3n6k3tpzhluzxrxghudrp/
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.4.260
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.4.y
+X-Kernelci-Tree: stable
+Subject: stable/linux-5.4.y build: 16 builds: 0 failed, 16 passed,
+ 26 warnings (v5.4.260)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+stable/linux-5.4.y build: 16 builds: 0 failed, 16 passed, 26 warnings (v5.4=
+.260)
 
-Limit the free list length to the size of the IO TLB. Transient pool can be
-smaller than IO_TLB_SEGSIZE, but the free list is initialized with the
-assumption that the total number of slots is a multiple of IO_TLB_SEGSIZE.
-As a result, swiotlb_area_find_slots() may allocate slots past the end of
-a transient IO TLB buffer.
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.4.y/ke=
+rnel/v5.4.260/
 
-Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-iommu/104a8c8fedffd1ff8a2890983e2ec1c26bff6810.camel@linux.ibm.com/
-Fixes: 79636caad361 ("swiotlb: if swiotlb is full, fall back to a transient memory pool")
-Cc: Halil Pasic <pasic@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+Tree: stable
+Branch: linux-5.4.y
+Git Describe: v5.4.260
+Git Commit: 87e8e7a7aa1f96276252a90373de1d56add31918
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 6 unique architectures
+
+Warnings Detected:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    5    ld: warning: creating DT_TEXTREL in a PIE
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    1    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    1    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
- kernel/dma/swiotlb.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-index 26202274784f..ec82524ba902 100644
---- a/kernel/dma/swiotlb.c
-+++ b/kernel/dma/swiotlb.c
-@@ -283,7 +283,8 @@ static void swiotlb_init_io_tlb_pool(struct io_tlb_pool *mem, phys_addr_t start,
- 	}
- 
- 	for (i = 0; i < mem->nslabs; i++) {
--		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
-+		mem->slots[i].list = min(IO_TLB_SEGSIZE - io_tlb_offset(i),
-+					 mem->nslabs - i);
- 		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
- 		mem->slots[i].alloc_size = 0;
- 	}
--- 
-2.42.1
-
+For more info write to <info@kernelci.org>
