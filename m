@@ -2,142 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C65CD7E5310
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 11:07:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE45A7E536A
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 11:31:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234592AbjKHKH4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 05:07:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58722 "EHLO
+        id S1344278AbjKHKbj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 05:31:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235547AbjKHKHz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 05:07:55 -0500
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2083.outbound.protection.outlook.com [40.107.93.83])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF893172A;
-        Wed,  8 Nov 2023 02:07:52 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=l0nId+ay8kxSE+5rSwYwpsz3GKJVh1JMsq2fClJwuVB9gAE46tf+/BaVQ323HQzx0mddWZRdJ3jE+7dL5e4b9fImpXUqbk8O+Rz1iZHpU9Xb44/pC/YBJljBrbCV8DtOMPhyATRYXUteQrlDZoAd6KQuU4Vvc9y+3LYCZpjr3CzwufVroCnwrMez9C/9aTDPZ2P/khTYfS871DLhDLTMhAwNzxHYkdYppxgiihFZN928cgA7u0ZIASju1BqOvr8ULD5tot43ead/ADdvMWtC66Og5PIh/qSnDh0g13UM4lX1pFZ6EFe81U3AQ0vwK9dNTLAmM5/S5GSkePARuVsqww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9S5auYlqRUJM0uY/rMNInlx4MHmEsx1WigG2/fQ3ivc=;
- b=ma5xWiwoa7CvnEa+QWQYzWIpcht+dbBy5zdPYrkCUFqYr0Hi8d8mo/d9SJcJ+9p8PFmPh7dCe+oo5O0bRr104i9MmMvUBCBO46L5VWezlKBqhCTpYz8Mnl7jgOrKX4xvTAHbEDANvUMc3FsmN5Fk8ePw86p0sdNcmaCb5KEjNrEI4igWTR7eJThkjKACUp921TL3lSApybgqMz7yHwK0zHSTHFwqv6IRXG1h8UpShIY5GVqWJbKuQaiBW4AhoPN0LhDlx003VIfElwaMm8q0LPUXDWCGXBbj2pdc5nUpzNFNn0iQGPTT3hBFxjCLtCzE93ulubNyDhefgNe3Gla77g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9S5auYlqRUJM0uY/rMNInlx4MHmEsx1WigG2/fQ3ivc=;
- b=LKb7fIkzYxCU+MyN59C/pnMyADo5cDWMod7aNsFvKt8CNA1jxYm5kIxDT6wwsm0CHlFEZEyFIQF0ulgBgssXM/WVoKOnVK9JUcnl1SSZyXidOz4YioU4hjmkG3YBm+nKVT1rDJc7UXnAJ6F6e8qu1h+GWgi+2QxFQU6Gp/nCeNSPVolACwKDGW/5GlvQ+9SZR0UJ30trueT9leLVCajvuvR0JE2EI5MgFF9BV4ZubmggFU6hgleIKk3qUSSBP/eVrG5rZBUOILuMpzgX3MtSKRnOLZmzA7Cvwl+cmLClCSJZ4WztTjG4REfSelnvB8nMwcoNcyLl+Bm8A39hjgQI7A==
-Received: from SA1PR05CA0013.namprd05.prod.outlook.com (2603:10b6:806:2d2::19)
- by IA1PR12MB7734.namprd12.prod.outlook.com (2603:10b6:208:422::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Wed, 8 Nov
- 2023 10:07:50 +0000
-Received: from SA2PEPF000015CA.namprd03.prod.outlook.com
- (2603:10b6:806:2d2:cafe::12) by SA1PR05CA0013.outlook.office365.com
- (2603:10b6:806:2d2::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.18 via Frontend
- Transport; Wed, 8 Nov 2023 10:07:50 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SA2PEPF000015CA.mail.protection.outlook.com (10.167.241.200) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6977.16 via Frontend Transport; Wed, 8 Nov 2023 10:07:50 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 8 Nov 2023
- 02:07:31 -0800
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 8 Nov 2023
- 02:07:30 -0800
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Wed, 8 Nov 2023 02:07:30 -0800
-From:   Jon Hunter <jonathanh@nvidia.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>,
-        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 5.10 00/91] 5.10.200-rc2 review
-In-Reply-To: <20231107202447.670990820@linuxfoundation.org>
-References: <20231107202447.670990820@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+        with ESMTP id S1344118AbjKHKbi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 05:31:38 -0500
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4FB1BD5
+        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 02:31:35 -0800 (PST)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c59a4dd14cso89683301fa.2
+        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 02:31:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1699439494; x=1700044294; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZZHOWVitV8fpPpTSt/LEY0mOQlvuP3Z+CJF3ZJjpjr0=;
+        b=vmey2JKfJAgJXu+kERqQxwEh+21Omc1JC8PbHnFipzbzFLGTPTVqOcDVYxWO95MoXd
+         +pZNvu2JmgHeJxPNI9yx7drxwM5w5OTPk7yBHKYMsEJtYUgXnMp3+LKpKS3vBb5vKLRG
+         eH5HbK2licHvxT5Sq6fqEe9IEEeCO/K2SXBvyruHfPeyRMoHMS7rS7x5yDtdL60h/0RA
+         8U36/bdagKghF+T2s14WdwIJIPTNDK72Yt34KeTfM60i2MsadsATim/DPrn7qG3/eMPK
+         Weaq1AaXa/RzwN6Vxv6E3F2DE3WF3P0iLYn6xRDw37H2geR8qH8GvFcp8XLgQggvs4Gy
+         LJMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699439494; x=1700044294;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZZHOWVitV8fpPpTSt/LEY0mOQlvuP3Z+CJF3ZJjpjr0=;
+        b=uYT459VD/AwIuNtQdezcNVbgXeB55wWW+8Fq8q+WCUwT4gqxsePys9jrl3VUstfzkT
+         kOfMYce0eBPtQ+uM9JVggh8grn/exiqBSAIXYdsJZFY+iMo2TGk0fSh3hw5NB5BtAzlk
+         qI7skfnCyFEBVQKUZmpRZwkz3OdFK6ZwNECagoqxVV9pdRq9E5UYBiVss0dX4xjQ7Bue
+         yXbYyH9O/WMQnqwpId+JVK6Sj17OgZ3OQrOgx/2PH6kg4Cnh5xiFphxXJePlEOk2aUBn
+         KCjbmME0lS5egNHgyP22e9cSOnCQkVYY/zxdo+iLnlL5MEI/8u/mFQj/6AXsNYltWx+7
+         vepg==
+X-Gm-Message-State: AOJu0YzTu7QRa6m6ithwRWFzQaWeAGmFuqWTE/c953B8H2207Da9KSTe
+        ho4wVj7zkiiPKjcZC2uDhJe/rQ==
+X-Google-Smtp-Source: AGHT+IFGbhaVKFe4xCjLwT+C8qJk1HX078wZSs2uP1BZS21UHg0qYYDKYp+gYXHQ2/HXV4dQHz545Q==
+X-Received: by 2002:a2e:9682:0:b0:2c5:1809:69ba with SMTP id q2-20020a2e9682000000b002c5180969bamr1256401lji.40.1699439493885;
+        Wed, 08 Nov 2023 02:31:33 -0800 (PST)
+Received: from draszik.lan ([80.111.64.44])
+        by smtp.gmail.com with ESMTPSA id f14-20020a05600c154e00b004097881d7a8sm15887394wmg.0.2023.11.08.02.31.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Nov 2023 02:31:33 -0800 (PST)
+Message-ID: <61be0ebb17ae0f01ea0e88a225cbfa07ff661060.camel@linaro.org>
+Subject: Re: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set
+ the FUSE_INIT_EXT"
+From:   =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+To:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        Miklos Szeredi <mszeredi@redhat.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Paul Lawrence <paullawrence@google.com>,
+        Daniel Rosenberg <drosen@google.com>,
+        Alessio Balsini <balsini@android.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Bernd Schubert <bschubert@ddn.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date:   Wed, 08 Nov 2023 10:31:31 +0000
+In-Reply-To: <7df24b0e-ea98-4dc7-9e1b-dfc29d0fa1b1@leemhuis.info>
+References: <717fd97a-6d14-4dc9-808c-d752d718fb80@ddn.com>
+         <4b0b46f29955956916765d8d615f96849c8ce3f7.camel@linaro.org>
+         <fa3510f3-d3cc-45d2-b38e-e8717e2a9f83@ddn.com>
+         <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
+         <9afc3152-5448-42eb-a7f4-4167fc8bc589@ddn.com>
+         <5cd87a64-c506-46f2-9fed-ac8a74658631@ddn.com>
+         <8ae8ce4d-6323-4160-848a-5e94895ae60e@leemhuis.info>
+         <CAOssrKdvy9qTGSwwPVqYLAYYEk0jbqhGg4Lz=jEff7U58O4Yqw@mail.gmail.com>
+         <2023102731-wobbly-glimpse-97f5@gregkh>
+         <CAOssrKfNkMmHB2oHHO8gWbzDX27vS--e9dZoh_Mjv-17mSUTBw@mail.gmail.com>
+         <2023102740-think-hatless-ab87@gregkh>
+         <CAOssrKd-O1JKEPzvnM1VkQ0-oTpDv0RfY6B5oF5p63AtQ4HoqA@mail.gmail.com>
+         <689f677b84b484636b673b362b17a6501a056968.camel@linaro.org>
+         <CAOssrKfP+t-cy322ujizQofgZkPZsBu1H4+zfbWNEFCmTsXwug@mail.gmail.com>
+         <afe378bf254f6c4ac73bb55be3fa7422f2da3f5f.camel@linaro.org>
+         <CAOssrKeJB7BZ7fA6Uqo6rHohybmgovc6rVwDeHbegvweSyZeeA@mail.gmail.com>
+         <7df24b0e-ea98-4dc7-9e1b-dfc29d0fa1b1@leemhuis.info>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4-1 
 MIME-Version: 1.0
-Message-ID: <ca0f9e27-2081-42c0-a5b7-4a8c15acc5ae@rnnvmail202.nvidia.com>
-Date:   Wed, 8 Nov 2023 02:07:30 -0800
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF000015CA:EE_|IA1PR12MB7734:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10fa531b-5f9b-4bfb-7514-08dbe04290a1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: UP+xn0iuIZrDUd6BeIoqBVyH+RO55ELwFlXJVC/h2ynJUji/SELYLj5p2IamehOvHLPYoJiOYJI2zaIQK15AniQHgrH6H7aB9ji78TtcbsaVEjRvWcq8G0tu4FG1vOnxx3BoS9PAzG66AYctsAYec/lVv0rWcvXwwfquNHEZXbfA8DBjQPAuQPtV5YmjfVuqGOSbQNbXhz/Zx9d6Eb21UIAdJN/VUBi8vJsZ4BSkWtX7/bYsvM2nN4mbQNm/qn4FT8hmYjBljEe8rQO1mGTeqLAKTGhOwYJ6eZ01fEPDKd6d914196X4qsRIHqvsVV0PL6Xfttj23f+LIu0mOjhuGSSaU6JJGEXU2YUnaEQwM0lwNzgKmScou0QjEhWn1wvwFB12esBK3eLIM2P0/iDqeb5TMJ1Ng0Fr2JBHeWdeEVsqFv408SrC4/953p1wv3kBvpgteWL98vptgnsT/HAr/2sbwqoWkxK/6vTpDo5M3PO7ozmFegs2LI+3IioQWkwECEuf8mZ39Bp0ja0Y3q2iE6sd9zZ/wDskQhZkyaoNru9uLDOAAH9E2l/sErLbCCZTP5wpk6aSXayr6jPA3a7vP5iahzj/SwBVSDK5s5MemgKlHPf1nE3PGIKMSb5ebs/4pzXNTvDJgEha7qYOo+PG1Yx9APXac9v+q2KHwy5iJxhkwOK8jK02sprik77t99VGG6WBX6X5OySSLyaqvcmd5YEeNfELsJV3+LHgXR21Fd20SnKN9bwYiz1vHOQgtXw65qBT129HoBTJA7YAiGZhtfxmRcxmsgOz+EQbuEe/Ye4=
-X-Forefront-Antispam-Report: CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(376002)(39860400002)(346002)(396003)(136003)(230922051799003)(1800799009)(451199024)(186009)(82310400011)(64100799003)(46966006)(40470700004)(36840700001)(7636003)(82740400003)(26005)(336012)(40460700003)(70206006)(70586007)(426003)(478600001)(966005)(47076005)(31696002)(2906002)(40480700001)(4326008)(8676002)(41300700001)(8936002)(5660300002)(36860700001)(7416002)(86362001)(54906003)(6916009)(356005)(316002)(31686004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2023 10:07:50.0458
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10fa531b-5f9b-4bfb-7514-08dbe04290a1
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF000015CA.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7734
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 07 Nov 2023 21:24:57 +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.200 release.
-> There are 91 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 09 Nov 2023 20:24:28 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.200-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hi Thorsten,
 
-All tests passing for Tegra ...
+(sorry for the slow reply)
 
-Test results for stable-v5.10:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    68 tests:	68 pass, 0 fail
+On Wed, 2023-11-01 at 13:36 +0100, Linux regression tracking (Thorsten
+Leemhuis) wrote:
+> I'm taken a bit back and forth here and it seems we are stuck again.
+> So
+> let me try again to hopefully clear things up a bit:
+>=20
+> Andr=C3=A9, could you please state
+>=20
+> * What practical use-case actually stopped working?
 
-Linux version:	5.10.200-rc2-gc4863380dfbf
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+It's impossible to use a newer kernel together with an older user space
+which is something that Android had been supporting for a long time.
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+> * What Linux kernel version actually worked for your (because if
+> thing
+> broke when you upgraded from a vendor kernel to a vanilla kernel than
+> this does not qualify as regression IMHO)
 
-Jon
+We are using the Android kernel in all cases and Android applies
+patches on top of Linus' tree, yes (as does everybody else). The
+previous Android kernel worked, the current Android kernel doesn't
+because of the patch in question.
+
+
+I think Greg made some valid points before:
+https://lore.kernel.org/all/2023102731-wobbly-glimpse-97f5@gregkh/
+> I'm talking about a patch where you are changing the existing
+> user/kernel api by filtering out values that you previously accepted.
+> And it was done in a patch saying "this might break userspace", and
+> guess what, it did!
+
+I guess it boils down to an an agreement regarding Greg's previous
+questions/points:
+https://lore.kernel.org/all/2023102757-cornflake-pry-e788@gregkh/
+> So because Android userspace is sending a flag value that is not in
+> the upstream table, this breakage is ok?
+
+and https://lore.kernel.org/all/2023102740-think-hatless-ab87@gregkh/=20
+> now older Android userspace breaks with newer kernels because of this
+> commit, which you all even agreed might happen here!
+>
+> So either you have a policy of "we only care about libfuse use cases
+> for this api", or you don't, which is fine, just say so.  But that's
+> not what the changelog says.
+
+But I agree, it seems we're stuck and I'm not sure how to resolve this
+either, Miklos has his points, Android has a different position.
+
+
+Cheers,
+Andre'
+
