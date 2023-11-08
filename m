@@ -2,188 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F0D17E4F58
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 04:12:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B5F97E4F70
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 04:27:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229820AbjKHDMM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 7 Nov 2023 22:12:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36836 "EHLO
+        id S229769AbjKHD1y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 7 Nov 2023 22:27:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229581AbjKHDMM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 22:12:12 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA5F1B1
-        for <stable@vger.kernel.org>; Tue,  7 Nov 2023 19:12:10 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9C1DC433CC
-        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 03:12:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699413129;
-        bh=zWzQI9h3JCmUeFnDwkorPBWuwpKsgMwO9qtOrsDKJtk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=mZ1EyD+rahmxc5oJmN6mow3uP8TFbBfuD+yfl8UJFpuivRX8C4WZR8+qvEDtOOObl
-         F/Y+kvHxpeKjmExv8txKviglCJKIC4/EJsiFMB07hjmFiI8PhiHaIvu0Rx8JvHtVJq
-         PKCOvcjs7xjSAyP/1ii/Y9JpFGKQt55ApuQL8GJVstKPH/T6ufFo2f1ikiYgVEjng1
-         Bdfs93ZzxvJdWNzowXDF60kNUGaZur3lwhEkv3nYefiJ8OdniUTlfJk/0zni0BaBsJ
-         mJr1/ORktAhHJLly+8LVqVxyTxq8PFbJJ1iMllD4kenjVFw1Igm94IwFGoDRtMzhu7
-         A6Cr7kkc8zrtA==
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-543c3756521so10654531a12.2
-        for <stable@vger.kernel.org>; Tue, 07 Nov 2023 19:12:09 -0800 (PST)
-X-Gm-Message-State: AOJu0YxXQ1O1wi7lgQhiiuNFvyw1oYJ+9zCQA0DH9VSi/5IruTn/pPQ8
-        xzH9cjkGji4mGLiqLBJ7KqxveabLjVQH51fd1Vo=
-X-Google-Smtp-Source: AGHT+IHxIANpMSTnCBsjUQot+qYbwXrOYHOuQcH/shPCBn66k9YGTd2uK6Co9Kr0z7LX9MwoBysbR3k/zHMEj32jttE=
-X-Received: by 2002:a17:906:dc95:b0:9be:77cd:4c2c with SMTP id
- cs21-20020a170906dc9500b009be77cd4c2cmr321928ejc.28.1699413128274; Tue, 07
- Nov 2023 19:12:08 -0800 (PST)
+        with ESMTP id S229581AbjKHD1x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 7 Nov 2023 22:27:53 -0500
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1153A9;
+        Tue,  7 Nov 2023 19:27:51 -0800 (PST)
+Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-280260db156so5878799a91.2;
+        Tue, 07 Nov 2023 19:27:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699414071; x=1700018871; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ytmubGM6iA/R2uJJz2HTFch2ZXC0QBgruER0JS6cWI=;
+        b=H5zYagfrxc3fYmjP3U5dYcg8kFsh1WeQUIf5erAsKn2FNZALE1P3dVS13iRHGz7xcW
+         9mdPkZw1UVCJczZhkIyfYnM2gVFjJ9xayfw3ErJvBmHIBSpIEizWF8RGHPw/mWCIAaU7
+         Zr/YPX1D/vEcK5uG2Jl+UMEsfusMFpk+BWBDBTJmtFGERBbV5OPIxvOxNxSNbiBX6hUu
+         svUQhgrdTKcgUSUyFWIhFZzq9FESiYIEmH+e2oVVV9eBdHlujG5Srxqi1hLjR4KiRNDw
+         8SBUXRPzH7BUGZy/R0KcHm5ct9dC4vr9at1vNBxb7afwkEMUysuDSm1L/IQtoloLBnij
+         Se6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699414071; x=1700018871;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4ytmubGM6iA/R2uJJz2HTFch2ZXC0QBgruER0JS6cWI=;
+        b=svZxuJ2TN633M6Jcmhb9rZjcE/zlnMuMtgNQiuDZESriCYO3ErNq0IOYxmFmiJL+1B
+         ilyssxpceJwrNF70ITM9EgdskPF6yI3iIhKjcUz32WwKOc7KmJPdQ+plkTCdoaIt3n0H
+         iqzrTWnfsSC/wQL3LQWa4suimzW6bPa3yqRsMzystTBDD2HRYAjVlFVImFaXJSRsqoCq
+         7vR+sUFPpEYRudXoP1O4LUvwO3wEa0tfWXFF2xyBumDjwg4OAzmdKWLXmq++G76lWDJJ
+         lYpTgwOkUv05WxjIVs8MwWt7/CzpOl6ohWTWTHV0jKg6HLYlOvRPSucf25lN6NA/870/
+         k9+w==
+X-Gm-Message-State: AOJu0YyE8ZWJJYNhWiiEK3ZokKbNtlADdmJD9SxdXCmG9kuWIVBSLIag
+        FSe57neEfu1Qh3VgOjcHNoUbOEjREDHLiHxlY0U=
+X-Google-Smtp-Source: AGHT+IH0ycX/rFIiW7psOnLdpKmm4wBQ4UWCo+PapZP6FLibO8CLA+H0S1Iy1s833hKLD2acI38/Cj6EHcAVj6yMjzI=
+X-Received: by 2002:a17:90b:1b07:b0:27f:f1fa:b448 with SMTP id
+ nu7-20020a17090b1b0700b0027ff1fab448mr653426pjb.11.1699414071202; Tue, 07 Nov
+ 2023 19:27:51 -0800 (PST)
 MIME-Version: 1.0
-References: <20231102-loongarch-always-inline-percpu-ops-v2-1-31c51959a5c0@kernel.org>
-In-Reply-To: <20231102-loongarch-always-inline-percpu-ops-v2-1-31c51959a5c0@kernel.org>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Wed, 8 Nov 2023 11:11:57 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6CuABSAEn8MXssE8yDgSVEsONW7PmaDOiS+xJm=ZbcQA@mail.gmail.com>
-Message-ID: <CAAhV-H6CuABSAEn8MXssE8yDgSVEsONW7PmaDOiS+xJm=ZbcQA@mail.gmail.com>
-Subject: Re: [PATCH v2] LoongArch: Mark __percpu functions as always inline
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     kernel@xen0n.name, ndesaulniers@google.com, trix@redhat.com,
-        jiaxun.yang@flygoat.com, loongarch@lists.linux.dev,
-        llvm@lists.linux.dev, patches@lists.linux.dev,
-        stable@vger.kernel.org
+References: <20231107202324.434534294@linuxfoundation.org>
+In-Reply-To: <20231107202324.434534294@linuxfoundation.org>
+From:   Allen Pais <stable.kernel.dev@gmail.com>
+Date:   Tue, 7 Nov 2023 19:27:40 -0800
+Message-ID: <CAJq+SaCKgbQYL27m+msagHhsH4eJ9P9aDDA_uaj2of2d=V99HA@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/125] 5.15.138-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Applied to loongarch-next, thanks.
+> This is the start of the stable review cycle for the 5.15.138 release.
+> There are 125 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 09 Nov 2023 20:22:58 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.138-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Huacai
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-On Thu, Nov 2, 2023 at 11:43=E2=80=AFPM Nathan Chancellor <nathan@kernel.or=
-g> wrote:
->
-> A recent change to the optimization pipeline in LLVM reveals some
-> fragility around the inlining of LoongArch's __percpu functions, which
-> manifests as a BUILD_BUG() failure:
->
->   In file included from kernel/sched/build_policy.c:17:
->   In file included from include/linux/sched/cputime.h:5:
->   In file included from include/linux/sched/signal.h:5:
->   In file included from include/linux/rculist.h:11:
->   In file included from include/linux/rcupdate.h:26:
->   In file included from include/linux/irqflags.h:18:
->   arch/loongarch/include/asm/percpu.h:97:3: error: call to '__compiletime=
-_assert_51' declared with 'error' attribute: BUILD_BUG failed
->      97 |                 BUILD_BUG();
->         |                 ^
->   include/linux/build_bug.h:59:21: note: expanded from macro 'BUILD_BUG'
->      59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
->         |                     ^
->   include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_O=
-N_MSG'
->      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond),=
- msg)
->         |                                     ^
->   include/linux/compiler_types.h:425:2: note: expanded from macro 'compil=
-etime_assert'
->     425 |         _compiletime_assert(condition, msg, __compiletime_asser=
-t_, __COUNTER__)
->         |         ^
->   include/linux/compiler_types.h:413:2: note: expanded from macro '_compi=
-letime_assert'
->     413 |         __compiletime_assert(condition, msg, prefix, suffix)
->         |         ^
->   include/linux/compiler_types.h:406:4: note: expanded from macro '__comp=
-iletime_assert'
->     406 |                         prefix ## suffix();                    =
-         \
->         |                         ^
->   <scratch space>:86:1: note: expanded from here
->      86 | __compiletime_assert_51
->         | ^
->   1 error generated.
->
-> If these functions are not inlined (which the compiler is free to do
-> even with functions marked with the standard 'inline' keyword), the
-> BUILD_BUG() in the default case cannot be eliminated since the compiler
-> cannot prove it is never used, resulting in a build failure due to the
-> error attribute.
->
-> Mark these functions as __always_inline to guarantee inlining so that
-> the BUILD_BUG() only triggers when the default case genuinely cannot be
-> eliminated due to an unexpected size.
->
-> Cc:  <stable@vger.kernel.org>
-> Closes: https://github.com/ClangBuiltLinux/linux/issues/1955
-> Fixes: 46859ac8af52 ("LoongArch: Add multi-processor (SMP) support")
-> Link: https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c=
-607313a566eebb16e
-> Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
-> Changes in v2:
-> - Change 'inline' to __always_inline for all functions that contain
->   BUILD_BUG() (Huacai)
-> - Notate that 'inline' does not guarantee inlining in the commit message
->   to further clarify the change to __always_inline.
-> - Link to v1: https://lore.kernel.org/r/20231101-loongarch-always-inline-=
-percpu-ops-v1-1-b8f2e9a71729@kernel.org
-> ---
->  arch/loongarch/include/asm/percpu.h | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/loongarch/include/asm/percpu.h b/arch/loongarch/include=
-/asm/percpu.h
-> index b9f567e66016..313852fba845 100644
-> --- a/arch/loongarch/include/asm/percpu.h
-> +++ b/arch/loongarch/include/asm/percpu.h
-> @@ -32,7 +32,7 @@ static inline void set_my_cpu_offset(unsigned long off)
->  #define __my_cpu_offset __my_cpu_offset
->
->  #define PERCPU_OP(op, asm_op, c_op)                                    \
-> -static inline unsigned long __percpu_##op(void *ptr,                   \
-> +static __always_inline unsigned long __percpu_##op(void *ptr,          \
->                         unsigned long val, int size)                    \
->  {                                                                      \
->         unsigned long ret;                                              \
-> @@ -63,7 +63,7 @@ PERCPU_OP(and, and, &)
->  PERCPU_OP(or, or, |)
->  #undef PERCPU_OP
->
-> -static inline unsigned long __percpu_read(void *ptr, int size)
-> +static __always_inline unsigned long __percpu_read(void *ptr, int size)
->  {
->         unsigned long ret;
->
-> @@ -100,7 +100,8 @@ static inline unsigned long __percpu_read(void *ptr, =
-int size)
->         return ret;
->  }
->
-> -static inline void __percpu_write(void *ptr, unsigned long val, int size=
-)
-> +static __always_inline void __percpu_write(void *ptr, unsigned long val,
-> +                                          int size)
->  {
->         switch (size) {
->         case 1:
-> @@ -132,8 +133,8 @@ static inline void __percpu_write(void *ptr, unsigned=
- long val, int size)
->         }
->  }
->
-> -static inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
-> -                                               int size)
-> +static __always_inline unsigned long __percpu_xchg(void *ptr, unsigned l=
-ong val,
-> +                                                  int size)
->  {
->         switch (size) {
->         case 1:
->
-> ---
-> base-commit: 278be83601dd1725d4732241f066d528e160a39d
-> change-id: 20231101-loongarch-always-inline-percpu-ops-cf77c161871f
->
-> Best regards,
-> --
-> Nathan Chancellor <nathan@kernel.org>
->
+Tested-by: Allen Pais <apais@linux.microsoft.com>
+
+Thanks.
