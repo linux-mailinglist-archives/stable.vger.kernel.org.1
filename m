@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA4C07E5A20
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 16:36:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C4097E5A2B
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 16:36:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232433AbjKHPgD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 10:36:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40462 "EHLO
+        id S233132AbjKHPgc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 10:36:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233651AbjKHPgC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 10:36:02 -0500
+        with ESMTP id S233778AbjKHPg1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 10:36:27 -0500
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2F7A1FD5;
-        Wed,  8 Nov 2023 07:35:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B143C433C8;
-        Wed,  8 Nov 2023 15:35:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F6BB1FD6;
+        Wed,  8 Nov 2023 07:36:25 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D095C433C9;
+        Wed,  8 Nov 2023 15:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699457759;
-        bh=eE6mOmTr1rj6VsFKkbtQZvA22hyfF/rlsdneGdInYVg=;
+        s=k20201202; t=1699457785;
+        bh=ZNwyEHHUEwE32sPJEr2cy/zvLd4Oa0Y44mvEx4uVdC0=;
         h=Date:From:To:Subject:In-Reply-To:References:Cc:From;
-        b=TnawTsGuBBEORxekcBAmA+jjMHWmLN4XWGen0+F+lzTD0iGo8W2tgn4kqlkbO0UPU
-         Yg5DELitXP/3jDF2mJBGoSiOS+uDJJ6MRAC3grJh8N/HyMs6+aDCC42QtUZtNOSeKc
-         DkwygnSAdlfY5aLlamsBqwT2SPz3jalWB08GEuc7MBWDALw4d7xI8QyGAIXKbVKi4R
-         DmQMKcX1uzaTaNg3f8ZUDVJdY7QS2U0GY4ts8ARpJWQFXOuLbRyWyqkR8IVsQHP0ZK
-         l0Wk5oV/4lTqqS8eH1WQd8jRknt1kFge8eGRwNuaMi5JTuZXo/js4EFeJMASXzdhxD
-         wXx1PNMofiEKQ==
-Message-ID: <1b02163780ccd7a4ce1357ab9810bb26.mripard@kernel.org>
-Date:   Wed, 08 Nov 2023 15:35:56 +0000
+        b=N+C+Mm9DOvW41xQlHZ2TVmIysLX42LJ/xl/PTNFiruH2Wu4ATYa4k2Jmpv/MAIV0f
+         JANa/WnumUmKQNSBxLJwIR9sUeFXiRNwMFy/HhmYIK1TQmfxq4MgfutVxD/BrUNpF2
+         gdMutlmGlJ5GqOQ4+Hw72DgbNIdVOTpzsJ/k3wv9PeGVJSsfK9EeHuUEKr6yLBthag
+         TARWGt52CUMc2URaFLJV1QXt8K3WE59YxhNHBAAE6F9EKHGmDggCNU0n9C6bb5PrWY
+         Y0COjbc32pM1Stb6a/svq9+UnG+z+49ttg52dv9b22VQijktsXe7br3iblISUX57po
+         53QHjv6k/7OcA==
+Message-ID: <3fb0760a9066c33947b64ec415d9baea.mripard@kernel.org>
+Date:   Wed, 08 Nov 2023 15:36:22 +0000
 From:   "Maxime Ripard" <mripard@kernel.org>
 To:     "Hsin-Yi Wang" <hsinyi@chromium.org>
-Subject: Re: [PATCH v6 2/5] drm/panel-edp: drm/panel-edp: Fix AUO B116XTN02
- name
-In-Reply-To: <20231107204611.3082200-3-hsinyi@chromium.org>
-References: <20231107204611.3082200-3-hsinyi@chromium.org>
+Subject: Re: [PATCH v6 3/5] drm/panel-edp: drm/panel-edp: Add several
+ generic edp panels
+In-Reply-To: <20231107204611.3082200-4-hsinyi@chromium.org>
+References: <20231107204611.3082200-4-hsinyi@chromium.org>
 Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org, "Daniel Vetter" <daniel@ffwll.ch>,
         "David Airlie" <airlied@gmail.com>,
@@ -44,20 +44,16 @@ Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         "Neil Armstrong" <neil.armstrong@linaro.org>,
         "Sam Ravnborg" <sam@ravnborg.org>,
         "Thomas Zimmermann" <tzimmermann@suse.de>
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 7 Nov 2023 12:41:52 -0800, Hsin-Yi Wang wrote:
-> Rename AUO 0x235c B116XTN02 to B116XTN02.3 according to decoding edid.
->=20
-> Fixes: 3db2420422a5 ("drm/panel-edp: Add AUO B116XTN02, BOE NT116WHM-N21,=
-836X2, NV116WHM-N49 V8.0")
-> Cc: stable@vger.kernel.org
+On Tue, 7 Nov 2023 12:41:53 -0800, Hsin-Yi Wang wrote:
+> Add a few generic edp panels used by mt8186 chromebooks.
+> 
 > Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
->=20
-> [ ... ]
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
 
 Acked-by: Maxime Ripard <mripard@kernel.org>
 
