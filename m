@@ -2,169 +2,140 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A47A7E5D66
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 19:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B82E7E5E17
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 20:03:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229705AbjKHSmB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 13:42:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40420 "EHLO
+        id S233473AbjKHTDr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 14:03:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjKHSmA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 13:42:00 -0500
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B6282105;
-        Wed,  8 Nov 2023 10:41:58 -0800 (PST)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5a7fb84f6ceso206267b3.1;
-        Wed, 08 Nov 2023 10:41:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1699468917; x=1700073717; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=+BbXRbAsp+NPpKrdmZggvoi57cHhfYvlMAtcCMHLnD0=;
-        b=ZEQZIVdPSErSJ624z4fabvUM9v4MeX7t+OI4DodPjBxyZ7fobzWLUTG/IbyNswmOsC
-         OcxwrrAHC7h2PlXmqSgOHTXZGAnFVuBYX402/9V9Z+yBrjAFs476BvoOg8Lv7VQo4YFJ
-         0f6fmi4SCjR5taYaowzT9n83x2PhQRRCX1ilBD6SDgsA6/IuxtfNmdfmNqoUD+oth50B
-         f5Vn8SSvONhm5W8WUupjcz+b4oLZytQvA6oss5M1Tzl7OXN/x34l5NDjBchTx7kU7gdx
-         7JkmTw+H2hskShwvcA3tIz0DVKxxeCLAVzSFb7LlfjRH9Vj0tRuDHiabQ7c8CsP02OR+
-         v4LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699468917; x=1700073717;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+BbXRbAsp+NPpKrdmZggvoi57cHhfYvlMAtcCMHLnD0=;
-        b=kgNnyXUvHHUIReiLsl7xjfP1r8AzAo4R4qnSmOhZcr7bBP/JZg8q7d/0s3wVywZtCF
-         5jRSVIe4d5EIauwhiFhxk3ybBSFp4rwno5g4I5TYJ5dsAlDlgCuVqofoycJqcgNe8/v5
-         df99U1UcgchIkTt1IlkjNJzFMSUx9JQh9H9qHiHFVqLLqJWJoYlgKAduJl2XD+Bvq1/k
-         ObvPJPtPLBzpHOeU3lRn1G1A4g5iUP6m1zUgHKYTVdL84GjPbYDSM5wIDiUt5n/bhx+3
-         G9VwLevcC7++w3tDseuBc4OdhxD4UePtp5nme+KmsQkNse0TiGaFkbY+hCbPA3aSEjS7
-         /I0g==
-X-Gm-Message-State: AOJu0YxwUab6Jbs7rL8p+gTpevOQ9/XkZB6LjPgW8fwiVfggByvMK4TO
-        mffNVFaDzpv3X427osRtxNI=
-X-Google-Smtp-Source: AGHT+IEHkS1jSyto38h4sLFxXm4J55FVf9334ZttR+9wMs+z5iCBgLAtKGiecS9bqiWHMxFU1dkUBQ==
-X-Received: by 2002:a0d:fb07:0:b0:5a2:15bc:b32c with SMTP id l7-20020a0dfb07000000b005a215bcb32cmr2511738ywf.42.1699468917138;
-        Wed, 08 Nov 2023 10:41:57 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id d7-20020a0ddb07000000b005a7bf9749c8sm7212241ywe.4.2023.11.08.10.41.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Nov 2023 10:41:56 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <0b9df102-24c0-4b0d-a341-22891892e708@roeck-us.net>
-Date:   Wed, 8 Nov 2023 10:41:55 -0800
+        with ESMTP id S232602AbjKHTDd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 14:03:33 -0500
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2057.outbound.protection.outlook.com [40.107.243.57])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEE2244A8
+        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 11:01:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FAzR99OwpVH1HwSRbGuf3IfqaPIKs3f3S75M10cnu1M/Hs2SAS3euWSkCdTzMWYJfYctc2lS/9WhPJdbM7pLB+15IqjhCJLp4xLc4poMACAFnInMjnFl14a7AIJMauolsRNU1/LIUzJxWHp9pcBvE/Emd0+l2qB+fSFHjmwANVHHbb/g7PLPc00qZwKe8V42X9vDVC8oduPa068IBKet5d6nEG8OsYwLmUoc7ayiZO9RMMRmwpX7bkKpl5T6SX83eye080Dzh/AD+1JERWGJ3duntqZNBKHN4kkc3c7jYTvr8+mpo3oWUTtJePZ4naZ6o1wdpS81zxUaF9cpzeS1Xw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qy59PEmWCG1q4QU4Oy8n9wSL2gzyn8BWwcxu5KkFOeI=;
+ b=kCA5EVSU/lkY7qfwf07jcDtMcYyADwR/AeTPCV/4F4VAUbuI7Nf7/pe/LNrciBf/OUyvhSCazaewj2GptO95jbzTQp55pTIfQUVQ+VsYTW32bL7U2AVpAxiY0PDNV+9ZW+wdjvvp45gbcByO8zNuR//zz9sff34EZqQngHRJZZN0JGar4v6RJOtib9p0IueR/L60W65Bfh4I6l81EcooNqjPFHVxcwMPxZILPFdgieTeV4MdHS5NQLaduiJfRodT1VQrYEXei7P9H1fiWv8klG5qO/jhzW7mPmXlEE/z3AF2koo0ZOaA4aEYQR9R7NjnqbuZbxAPY6lm930GxAZFbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qy59PEmWCG1q4QU4Oy8n9wSL2gzyn8BWwcxu5KkFOeI=;
+ b=VlF/jxKF5ntSaKWMTMDbP3xopdWxy2KnP6yZzgZSFOm3v6h4B/FneMcwBS9ZHQLxBg5pWhWE8VvG0LL7UDLXs+LGLQlXqg0qJq8Gi5xg8I8lSKC/arOdJHobEvxUkPhm0Q9zgFHeLwKKD2FPDFkKFcYuV7GNPUJLO2Y2gIp9slw=
+Received: from MN2PR01CA0063.prod.exchangelabs.com (2603:10b6:208:23f::32) by
+ SJ2PR12MB8977.namprd12.prod.outlook.com (2603:10b6:a03:539::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6954.28; Wed, 8 Nov
+ 2023 19:01:36 +0000
+Received: from BL6PEPF0001AB53.namprd02.prod.outlook.com
+ (2603:10b6:208:23f:cafe::89) by MN2PR01CA0063.outlook.office365.com
+ (2603:10b6:208:23f::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6977.18 via Frontend
+ Transport; Wed, 8 Nov 2023 19:01:35 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL6PEPF0001AB53.mail.protection.outlook.com (10.167.241.5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6977.16 via Frontend Transport; Wed, 8 Nov 2023 19:01:35 +0000
+Received: from dev.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.32; Wed, 8 Nov
+ 2023 13:01:28 -0600
+From:   Alex Hung <alex.hung@amd.com>
+To:     <amd-gfx@lists.freedesktop.org>
+CC:     <Harry.Wentland@amd.com>, <Sunpeng.Li@amd.com>,
+        <Rodrigo.Siqueira@amd.com>, <Aurabindo.Pillai@amd.com>,
+        <roman.li@amd.com>, <wayne.lin@amd.com>, <stylon.wang@amd.com>,
+        <agustin.gutierrez@amd.com>, <chiahsuan.chung@amd.com>,
+        <hersenxs.wu@amd.com>, <jerry.zuo@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        <stable@vger.kernel.org>, Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 01/20] drm/amd/display: Fix a debugfs null pointer error
+Date:   Wed, 8 Nov 2023 11:44:16 -0700
+Message-ID: <20231108185501.45359-2-alex.hung@amd.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231108185501.45359-1-alex.hung@amd.com>
+References: <20231108185501.45359-1-alex.hung@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] usb: typec: tcpm: Skip hard reset when in error
- recovery
-Content-Language: en-US
-To:     Badhri Jagan Sridharan <badhri@google.com>,
-        gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com
-Cc:     kyletso@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, rdbabiera@google.com,
-        amitsd@google.com, stable@vger.kernel.org
-References: <20231101021909.2962679-1-badhri@google.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20231101021909.2962679-1-badhri@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB53:EE_|SJ2PR12MB8977:EE_
+X-MS-Office365-Filtering-Correlation-Id: 02ea874a-2a06-4f8f-a096-08dbe08d210b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: EREqDUF7JHK5iHpc+REenkBpOA1n83rzYwLZhynU/ysv7ajlsvZHPOSBJsZ9scF5xU5BI1BKe1PWXZ9RKpJIAShFLr+4n/aneDD8XZz7QnTobOfEzzWXYr27TmCKBlFaBpK/HxfqxQStmfCkgW5UrMfl0kFm15yyD+KcC2WZXLHhftJoSPyLWBWglfUH/KDwqQgtykaOUdoUFWb9s+v9ZK4sSa2/0EZp78NTCB2kjefZZQ4iOSLNbHvutCtXHyILuLkK2HVvHkys1VBbLUgD8A5CH+grxwTfO7zFAUWezneV0uMBzHdHRBjGj97fp3H5veFFcXQh3rBbRUgltkIXrmuYu8jfoEyhdZZZd2ZRL4TRGElX+MQdh7JNFB578dB6oN3SqsIkvsDZaIvjsefUVkUcn7qqt3239swHZcqtoPDNyiszi6jqr4H3rtT4kbjuOaNsI2WVyo5D7wngyQAp5IJEMZ3pUOXuIFeitLI42WCBei9KCs5Bap2TH3T/nO/O3HeVNkhoHqVRbKa0FW7WINg37X6rff1dqJO9oNHb16+pjoEcWq+rZQBLIfucwga1++yaC+AZmQiq8qymW4irS283wMtLXRqtTlP6FeOTznvCvlIbkDjA+N8iEz0de6v5aPDV5irEvDbY0/GNtRinQWjtx/q7WUntq4oUWQArRK6Q0p+8bYQ9glUc0RnHahSvMGGwzE37lWgzG69nMPFTzbSOyo76r+ltyRhHz67K2kI5NmRfbENX7pIZN9f4+5tr1a0MBB/vY4c+XnKbAHzMqA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(346002)(396003)(136003)(376002)(230922051799003)(82310400011)(451199024)(1800799009)(64100799003)(186009)(46966006)(36840700001)(40470700004)(1076003)(70586007)(70206006)(2616005)(26005)(83380400001)(336012)(426003)(16526019)(478600001)(7696005)(40480700001)(8936002)(4326008)(8676002)(316002)(54906003)(6916009)(47076005)(6666004)(44832011)(5660300002)(36860700001)(41300700001)(40460700003)(86362001)(82740400003)(81166007)(356005)(2906002)(36756003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2023 19:01:35.2009
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 02ea874a-2a06-4f8f-a096-08dbe08d210b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB53.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8977
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 10/31/23 19:19, Badhri Jagan Sridharan wrote:
-> Hard reset queued prior to error recovery (or) received during
-> error recovery will make TCPM to prematurely exit error recovery
-> sequence. Ignore hard resets received during error recovery (or)
-> port reset sequence.
-> 
-> ```
-> [46505.459688] state change SNK_READY -> ERROR_RECOVERY [rev3 NONE_AMS]
-> [46505.459706] state change ERROR_RECOVERY -> PORT_RESET [rev3 NONE_AMS]
-> [46505.460433] disable vbus discharge ret:0
-> [46505.461226] Setting usb_comm capable false
-> [46505.467244] Setting voltage/current limit 0 mV 0 mA
-> [46505.467262] polarity 0
-> [46505.470695] Requesting mux state 0, usb-role 0, orientation 0
-> [46505.475621] cc:=0
-> [46505.476012] pending state change PORT_RESET -> PORT_RESET_WAIT_OFF @ 100 ms [rev3 NONE_AMS]
-> [46505.476020] Received hard reset
-> [46505.476024] state change PORT_RESET -> HARD_RESET_START [rev3 HARD_RESET]
-> ```
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+[WHY & HOW]
+Check whether get_subvp_en() callback exists before calling it.
 
-> ---
->   drivers/usb/typec/tcpm/tcpm.c | 9 +++++++++
->   1 file changed, 9 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 058d5b853b57..b386102f7a3a 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -5391,6 +5391,15 @@ static void _tcpm_pd_hard_reset(struct tcpm_port *port)
->   	if (port->bist_request == BDO_MODE_TESTDATA && port->tcpc->set_bist_data)
->   		port->tcpc->set_bist_data(port->tcpc, false);
->   
-> +	switch (port->state) {
-> +	case ERROR_RECOVERY:
-> +	case PORT_RESET:
-> +	case PORT_RESET_WAIT_OFF:
-> +		return;
-> +	default:
-> +		break;
-> +	}
-> +
->   	if (port->ams != NONE_AMS)
->   		port->ams = NONE_AMS;
->   	if (port->hard_reset_count < PD_N_HARD_RESET_COUNT)
-> 
-> base-commit: c70793fb7632a153862ee9060e6d48131469a29c
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+index 13a177d34376..45c972f2630d 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -3647,12 +3647,16 @@ static int capabilities_show(struct seq_file *m, void *unused)
+ 	bool mall_supported = dc->caps.mall_size_total;
+ 	bool subvp_supported = dc->caps.subvp_fw_processing_delay_us;
+ 	unsigned int mall_in_use = false;
+-	unsigned int subvp_in_use = dc->cap_funcs.get_subvp_en(dc, dc->current_state);
++	unsigned int subvp_in_use = false;
++
+ 	struct hubbub *hubbub = dc->res_pool->hubbub;
+ 
+ 	if (hubbub->funcs->get_mall_en)
+ 		hubbub->funcs->get_mall_en(hubbub, &mall_in_use);
+ 
++	if (dc->cap_funcs.get_subvp_en)
++		subvp_in_use = dc->cap_funcs.get_subvp_en(dc, dc->current_state);
++
+ 	seq_printf(m, "mall supported: %s, enabled: %s\n",
+ 			   mall_supported ? "yes" : "no", mall_in_use ? "yes" : "no");
+ 	seq_printf(m, "sub-viewport supported: %s, enabled: %s\n",
+-- 
+2.42.0
 
