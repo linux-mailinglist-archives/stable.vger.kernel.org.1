@@ -2,147 +2,265 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE45A7E536A
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 11:31:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30B927E5470
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 11:49:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344278AbjKHKbj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 05:31:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41648 "EHLO
+        id S1344654AbjKHKtO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 05:49:14 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344118AbjKHKbi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 05:31:38 -0500
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4FB1BD5
-        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 02:31:35 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c59a4dd14cso89683301fa.2
-        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 02:31:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699439494; x=1700044294; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZZHOWVitV8fpPpTSt/LEY0mOQlvuP3Z+CJF3ZJjpjr0=;
-        b=vmey2JKfJAgJXu+kERqQxwEh+21Omc1JC8PbHnFipzbzFLGTPTVqOcDVYxWO95MoXd
-         +pZNvu2JmgHeJxPNI9yx7drxwM5w5OTPk7yBHKYMsEJtYUgXnMp3+LKpKS3vBb5vKLRG
-         eH5HbK2licHvxT5Sq6fqEe9IEEeCO/K2SXBvyruHfPeyRMoHMS7rS7x5yDtdL60h/0RA
-         8U36/bdagKghF+T2s14WdwIJIPTNDK72Yt34KeTfM60i2MsadsATim/DPrn7qG3/eMPK
-         Weaq1AaXa/RzwN6Vxv6E3F2DE3WF3P0iLYn6xRDw37H2geR8qH8GvFcp8XLgQggvs4Gy
-         LJMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699439494; x=1700044294;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZZHOWVitV8fpPpTSt/LEY0mOQlvuP3Z+CJF3ZJjpjr0=;
-        b=uYT459VD/AwIuNtQdezcNVbgXeB55wWW+8Fq8q+WCUwT4gqxsePys9jrl3VUstfzkT
-         kOfMYce0eBPtQ+uM9JVggh8grn/exiqBSAIXYdsJZFY+iMo2TGk0fSh3hw5NB5BtAzlk
-         qI7skfnCyFEBVQKUZmpRZwkz3OdFK6ZwNECagoqxVV9pdRq9E5UYBiVss0dX4xjQ7Bue
-         yXbYyH9O/WMQnqwpId+JVK6Sj17OgZ3OQrOgx/2PH6kg4Cnh5xiFphxXJePlEOk2aUBn
-         KCjbmME0lS5egNHgyP22e9cSOnCQkVYY/zxdo+iLnlL5MEI/8u/mFQj/6AXsNYltWx+7
-         vepg==
-X-Gm-Message-State: AOJu0YzTu7QRa6m6ithwRWFzQaWeAGmFuqWTE/c953B8H2207Da9KSTe
-        ho4wVj7zkiiPKjcZC2uDhJe/rQ==
-X-Google-Smtp-Source: AGHT+IFGbhaVKFe4xCjLwT+C8qJk1HX078wZSs2uP1BZS21UHg0qYYDKYp+gYXHQ2/HXV4dQHz545Q==
-X-Received: by 2002:a2e:9682:0:b0:2c5:1809:69ba with SMTP id q2-20020a2e9682000000b002c5180969bamr1256401lji.40.1699439493885;
-        Wed, 08 Nov 2023 02:31:33 -0800 (PST)
-Received: from draszik.lan ([80.111.64.44])
-        by smtp.gmail.com with ESMTPSA id f14-20020a05600c154e00b004097881d7a8sm15887394wmg.0.2023.11.08.02.31.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 02:31:33 -0800 (PST)
-Message-ID: <61be0ebb17ae0f01ea0e88a225cbfa07ff661060.camel@linaro.org>
-Subject: Re: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set
- the FUSE_INIT_EXT"
-From:   =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        Miklos Szeredi <mszeredi@redhat.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Paul Lawrence <paullawrence@google.com>,
-        Daniel Rosenberg <drosen@google.com>,
-        Alessio Balsini <balsini@android.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Bernd Schubert <bschubert@ddn.com>,
+        with ESMTP id S1344771AbjKHKs7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 05:48:59 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADEF73860;
+        Wed,  8 Nov 2023 02:46:00 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CCDC433C7;
+        Wed,  8 Nov 2023 10:45:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1699440359;
+        bh=ycsS5vzKOeyQYbuLymI226e1TlLxb54IQJbiRd1v1bE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=q9zBp864WQVLRNzvBQECYVsZt1F9C7GhH7HALo8+qbEjKK3QEkW3w2I43w5mQ//z5
+         SQcO5/2KCSyQZJ6mE+aCDRefaQwo4deI5QOMRZ7PvbGibRlqtu/WfIoDFI60mp34SD
+         +3/1hhxlWB67hTgctOAzLQL2giLtG1yPca4ozQrU=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org
+Cc:     lwn@lwn.net, jslaby@suse.cz,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Date:   Wed, 08 Nov 2023 10:31:31 +0000
-In-Reply-To: <7df24b0e-ea98-4dc7-9e1b-dfc29d0fa1b1@leemhuis.info>
-References: <717fd97a-6d14-4dc9-808c-d752d718fb80@ddn.com>
-         <4b0b46f29955956916765d8d615f96849c8ce3f7.camel@linaro.org>
-         <fa3510f3-d3cc-45d2-b38e-e8717e2a9f83@ddn.com>
-         <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
-         <9afc3152-5448-42eb-a7f4-4167fc8bc589@ddn.com>
-         <5cd87a64-c506-46f2-9fed-ac8a74658631@ddn.com>
-         <8ae8ce4d-6323-4160-848a-5e94895ae60e@leemhuis.info>
-         <CAOssrKdvy9qTGSwwPVqYLAYYEk0jbqhGg4Lz=jEff7U58O4Yqw@mail.gmail.com>
-         <2023102731-wobbly-glimpse-97f5@gregkh>
-         <CAOssrKfNkMmHB2oHHO8gWbzDX27vS--e9dZoh_Mjv-17mSUTBw@mail.gmail.com>
-         <2023102740-think-hatless-ab87@gregkh>
-         <CAOssrKd-O1JKEPzvnM1VkQ0-oTpDv0RfY6B5oF5p63AtQ4HoqA@mail.gmail.com>
-         <689f677b84b484636b673b362b17a6501a056968.camel@linaro.org>
-         <CAOssrKfP+t-cy322ujizQofgZkPZsBu1H4+zfbWNEFCmTsXwug@mail.gmail.com>
-         <afe378bf254f6c4ac73bb55be3fa7422f2da3f5f.camel@linaro.org>
-         <CAOssrKeJB7BZ7fA6Uqo6rHohybmgovc6rVwDeHbegvweSyZeeA@mail.gmail.com>
-         <7df24b0e-ea98-4dc7-9e1b-dfc29d0fa1b1@leemhuis.info>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4-1 
+Subject: Linux 4.14.329
+Date:   Wed,  8 Nov 2023 11:45:55 +0100
+Message-ID: <2023110855-nebulizer-amuck-3018@gregkh>
+X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Thorsten,
+I'm announcing the release of the 4.14.329 kernel.
 
-(sorry for the slow reply)
+All users of the 4.14 kernel series must upgrade.
 
-On Wed, 2023-11-01 at 13:36 +0100, Linux regression tracking (Thorsten
-Leemhuis) wrote:
-> I'm taken a bit back and forth here and it seems we are stuck again.
-> So
-> let me try again to hopefully clear things up a bit:
->=20
-> Andr=C3=A9, could you please state
->=20
-> * What practical use-case actually stopped working?
+The updated 4.14.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.14.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-It's impossible to use a newer kernel together with an older user space
-which is something that Android had been supporting for a long time.
+thanks,
 
-> * What Linux kernel version actually worked for your (because if
-> thing
-> broke when you upgraded from a vendor kernel to a vanilla kernel than
-> this does not qualify as regression IMHO)
+greg k-h
 
-We are using the Android kernel in all cases and Android applies
-patches on top of Linus' tree, yes (as does everybody else). The
-previous Android kernel worked, the current Android kernel doesn't
-because of the patch in question.
+------------
 
+ Makefile                                          |    2 
+ arch/arm/boot/bootp/init.S                        |    2 
+ arch/arm/boot/compressed/big-endian.S             |    2 
+ arch/arm/boot/compressed/head.S                   |    2 
+ arch/arm/boot/compressed/piggy.S                  |    2 
+ arch/arm/mm/proc-arm1020.S                        |    2 
+ arch/arm/mm/proc-arm1020e.S                       |    2 
+ arch/arm/mm/proc-arm1022.S                        |    2 
+ arch/arm/mm/proc-arm1026.S                        |    2 
+ arch/arm/mm/proc-arm720.S                         |    2 
+ arch/arm/mm/proc-arm740.S                         |    2 
+ arch/arm/mm/proc-arm7tdmi.S                       |    2 
+ arch/arm/mm/proc-arm920.S                         |    2 
+ arch/arm/mm/proc-arm922.S                         |    2 
+ arch/arm/mm/proc-arm925.S                         |    2 
+ arch/arm/mm/proc-arm926.S                         |    2 
+ arch/arm/mm/proc-arm940.S                         |    2 
+ arch/arm/mm/proc-arm946.S                         |    2 
+ arch/arm/mm/proc-arm9tdmi.S                       |    2 
+ arch/arm/mm/proc-fa526.S                          |    2 
+ arch/arm/mm/proc-feroceon.S                       |    2 
+ arch/arm/mm/proc-mohawk.S                         |    2 
+ arch/arm/mm/proc-sa110.S                          |    2 
+ arch/arm/mm/proc-sa1100.S                         |    2 
+ arch/arm/mm/proc-v6.S                             |    2 
+ arch/arm/mm/proc-v7.S                             |    2 
+ arch/arm/mm/proc-v7m.S                            |    4 
+ arch/arm/mm/proc-xsc3.S                           |    2 
+ arch/arm/mm/proc-xscale.S                         |    2 
+ arch/x86/include/asm/i8259.h                      |    2 
+ arch/x86/include/asm/setup.h                      |   46 
+ arch/x86/kernel/acpi/boot.c                       |    3 
+ arch/x86/kernel/i8259.c                           |   38 
+ arch/x86/kernel/vmlinux.lds.S                     |    2 
+ drivers/ata/ahci.h                                |  230 +-
+ drivers/base/driver.c                             |   69 
+ drivers/base/platform.c                           |   28 
+ drivers/block/Kconfig                             |    9 
+ drivers/block/Makefile                            |    2 
+ drivers/block/sx8.c                               | 1746 ----------------------
+ drivers/dma/ste_dma40.c                           |    1 
+ drivers/gpu/drm/drm_dp_mst_topology.c             |    6 
+ drivers/i2c/muxes/i2c-demux-pinctrl.c             |    2 
+ drivers/i2c/muxes/i2c-mux-gpmux.c                 |    2 
+ drivers/i2c/muxes/i2c-mux-pinctrl.c               |    2 
+ drivers/input/mouse/synaptics.c                   |    1 
+ drivers/input/rmi4/rmi_smbus.c                    |   50 
+ drivers/irqchip/irq-stm32-exti.c                  |    1 
+ drivers/mcb/mcb-lpc.c                             |   35 
+ drivers/mcb/mcb-parse.c                           |   15 
+ drivers/net/ethernet/chelsio/cxgb4/t4_hw.c        |    2 
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c       |    2 
+ drivers/net/ethernet/intel/igb/igb_ethtool.c      |    6 
+ drivers/net/ethernet/toshiba/ps3_gelic_wireless.c |    2 
+ drivers/net/usb/r8152.c                           |    7 
+ drivers/pci/quirks.c                              |    9 
+ drivers/platform/x86/asus-wmi.h                   |    2 
+ drivers/rpmsg/qcom_glink_native.c                 |    1 
+ drivers/rpmsg/rpmsg_core.c                        |   34 
+ drivers/rpmsg/rpmsg_internal.h                    |    5 
+ drivers/scsi/mpt3sas/mpt3sas_scsih.c              |    4 
+ drivers/tty/serial/8250/8250_pci.c                |  122 +
+ drivers/tty/vt/vc_screen.c                        |    9 
+ drivers/usb/storage/unusual_cypress.h             |    2 
+ drivers/video/fbdev/aty/atyfb_base.c              |    4 
+ drivers/video/fbdev/uvesafb.c                     |    2 
+ drivers/virtio/virtio_balloon.c                   |    6 
+ fs/f2fs/gc.c                                      |    3 
+ fs/nfs/write.c                                    |    3 
+ fs/nfsd/vfs.c                                     |   12 
+ include/linux/device.h                            |    2 
+ include/linux/pci_ids.h                           |    1 
+ include/linux/platform_device.h                   |    6 
+ include/linux/rpmsg.h                             |   14 
+ include/uapi/linux/gtp.h                          |    2 
+ kernel/events/core.c                              |    3 
+ lib/kobject.c                                     |   12 
+ net/ipv4/tcp_input.c                              |    9 
+ net/netfilter/nfnetlink_log.c                     |    2 
+ sound/soc/codecs/rt5645.c                         |    2 
+ sound/soc/generic/simple-card.c                   |    6 
+ 81 files changed, 599 insertions(+), 2047 deletions(-)
 
-I think Greg made some valid points before:
-https://lore.kernel.org/all/2023102731-wobbly-glimpse-97f5@gregkh/
-> I'm talking about a patch where you are changing the existing
-> user/kernel api by filtering out values that you previously accepted.
-> And it was done in a patch saying "this might break userspace", and
-> guess what, it did!
+Al Viro (1):
+      nfsd: lock_rename() needs both directories to live on the same fs
 
-I guess it boils down to an an agreement regarding Greg's previous
-questions/points:
-https://lore.kernel.org/all/2023102757-cornflake-pry-e788@gregkh/
-> So because Android userspace is sending a flag value that is not in
-> the upstream table, this breakage is ok?
+Arnd Bergmann (2):
+      fbdev: atyfb: only use ioremap_uc() on i386 and ia64
+      ata: ahci: fix enum constants for gcc-13
 
-and https://lore.kernel.org/all/2023102740-think-hatless-ab87@gregkh/=20
-> now older Android userspace breaks with newer kernels because of this
-> commit, which you all even agreed might happen here!
->
-> So either you have a policy of "we only care about libfuse use cases
-> for this api", or you don't, which is fine, just say so.  But that's
-> not what the changelog says.
+Ben Wolsieffer (1):
+      irqchip/stm32-exti: add missing DT IRQ flag translation
 
-But I agree, it seems we're stuck and I'm not sure how to resolve this
-either, Miklos has his points, Android has a different position.
+Bjorn Andersson (1):
+      rpmsg: glink: Release driver_override
 
+Cameron Williams (4):
+      tty: 8250: Remove UC-257 and UC-431
+      tty: 8250: Add support for additional Brainboxes UC cards
+      tty: 8250: Add support for Brainboxes UP cards
+      tty: 8250: Add support for Intashield IS-100
 
-Cheers,
-Andre'
+Chao Yu (1):
+      f2fs: fix to do sanity check on inode type during garbage collection
+
+Christoph Hellwig (1):
+      remove the sx8 block driver
+
+Dmitry Torokhov (1):
+      Input: synaptics-rmi4 - handle reset delay when using SMBus trsnsport
+
+Douglas Anderson (1):
+      r8152: Increase USB control msg timeout to 5000ms as per spec
+
+Florian Westphal (1):
+      netfilter: nfnetlink_log: silence bogus compiler warning
+
+Fred Chen (1):
+      tcp: fix wrong RTO timeout when received SACK reneging
+
+Gavin Shan (1):
+      virtio_balloon: Fix endless deflation and inflation on arm64
+
+George Kennedy (1):
+      vc_screen: move load of struct vc_data pointer in vcs_read() to avoid UAF
+
+Greg Kroah-Hartman (1):
+      Linux 4.14.329
+
+Hangyu Hua (1):
+      rpmsg: Fix possible refcount leak in rpmsg_register_device_override()
+
+Hans de Goede (1):
+      platform/x86: asus-wmi: Change ASUS_WMI_BRN_DOWN code from 0x20 to 0x2e
+
+Herve Codina (3):
+      i2c: muxes: i2c-mux-pinctrl: Use of_get_i2c_adapter_by_node()
+      i2c: muxes: i2c-mux-gpmux: Use of_get_i2c_adapter_by_node()
+      i2c: muxes: i2c-demux-pinctrl: Use of_get_i2c_adapter_by_node()
+
+Ivan Vecera (1):
+      i40e: Fix wrong check for I40E_TXR_FLAGS_WB_ON_ITR
+
+Jorge Maidana (1):
+      fbdev: uvesafb: Call cn_del_callback() at the end of uvesafb_exit()
+
+Josh Poimboeuf (2):
+      x86/mm: Simplify RESERVE_BRK()
+      x86/mm: Fix RESERVE_BRK() for older binutils
+
+Juergen Gross (1):
+      x86: Fix .brk attribute in linker script
+
+Krzysztof Kozlowski (3):
+      driver: platform: Add helper for safer setting of driver_override
+      rpmsg: Fix kfree() of static memory on setting driver_override
+      rpmsg: Fix calling device_lock() on non-initialized device
+
+Kuninori Morimoto (1):
+      ASoC: simple-card: fixup asoc_simple_probe() error handling
+
+Kunwu Chan (1):
+      treewide: Spelling fix in comment
+
+LihaSika (1):
+      usb: storage: set 1.50 as the lower bcdDevice for older "Super Top" compatibility
+
+Lukasz Majczak (1):
+      drm/dp_mst: Fix NULL deref in get_mst_branch_device_by_guid_helper()
+
+Mateusz Palczewski (1):
+      igb: Fix potential memory leak in igb_add_ethtool_nfc_entry
+
+Nick Desaulniers (1):
+      ARM: 8933/1: replace Sun/Solaris style flag on section directive
+
+Pablo Neira Ayuso (1):
+      gtp: uapi: fix GTPA_MAX
+
+Peter Zijlstra (1):
+      perf/core: Fix potential NULL deref
+
+Rodríguez Barbarin, José Javier (2):
+      mcb: Return actual parsed size when reading chameleon table
+      mcb-lpc: Reallocate memory region to avoid memory overlapping
+
+Shuming Fan (1):
+      ASoC: rt5650: fix the wrong result of key button
+
+Su Hui (1):
+      net: chelsio: cxgb4: add an error code check in t4_load_phy_fw
+
+Thomas Gleixner (1):
+      x86/i8259: Skip probing when ACPI/MADT advertises PCAT compatibility
+
+Tomas Henzl (1):
+      scsi: mpt3sas: Fix in error path
+
+Trond Myklebust (1):
+      NFS: Don't call generic_error_remove_page() while holding locks
+
+Vicki Pfau (1):
+      PCI: Prevent xHCI driver from claiming AMD VanGogh USB3 DRD device
+
+Wang Hai (1):
+      kobject: Fix slab-out-of-bounds in fill_kobj_path()
+
+Zhang Shurong (1):
+      dmaengine: ste_dma40: Fix PM disable depth imbalance in d40_probe
 
