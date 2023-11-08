@@ -2,99 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 295747E561A
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 13:19:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6102C7E5620
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 13:21:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230004AbjKHMTq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 07:19:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51476 "EHLO
+        id S229924AbjKHMV3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 07:21:29 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229520AbjKHMTp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 07:19:45 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D333D1BE4
-        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 04:19:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1699445940;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qvMbksH7c6ZcEvPYTegmnIug2dODLV7SHYglfVWxD9g=;
-        b=N9N86adr3BRZpnHTJ4LJEdzuCGtEF8iRX+Zl5RYfOmsbiLRS9kf9WhfuoTh6lpKV5KBlg4
-        94dF7f3uU6UakhR5LZDxb6+14zllHVYZtfwm969EJAk26EvHmYBQUBi4r0xacMXkFKUkzf
-        GgJoiNXnJRsQiv1ogva0+Q4qzfQoQGs=
-Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com
- [209.85.215.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-mTEXcjOrOOGvMAgNNYGq0Q-1; Wed, 08 Nov 2023 07:18:58 -0500
-X-MC-Unique: mTEXcjOrOOGvMAgNNYGq0Q-1
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-5bd11c1e8daso4081496a12.1
-        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 04:18:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699445937; x=1700050737;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qvMbksH7c6ZcEvPYTegmnIug2dODLV7SHYglfVWxD9g=;
-        b=D2r5wbw7Qo7XZ4lD33fP1FRbsQTg6LiQNrkdXrcvlPMTymB5NpTiNoUQ8pRhuXQhDc
-         LCNIxJZMwL6i5biXdr6UTRNxfQa/FAozGcW+KAAiBs93VvpOvdc9n4VtgyVHCKnDLmPj
-         y7xtRDbeLHjBbPhXIAAHqVIl59fhVDfacw7OZ6b1K9fE6whT0SiyTH91LcoVEAkeKzgP
-         p++PRIZnBGyiRxGALPDafIxIjikQjoCyxgRzFqtaldhKXa+vlQL/cxtK99ZqO3G6B1cN
-         mJzclojAq3ZgAajmbInVnB0MLlD5weqMHUFefpr2BwGUYVt3wH4ne382Cg5PJnxHWNNz
-         rY0w==
-X-Gm-Message-State: AOJu0Yzf393cy4Hu7HRNy0H8cNJcHUTJn8zPvg8gom2zkmxkE8B0gFpR
-        PgthQ3J8yI4x5TqqQu1TY+hS9R/4vXgXXiiG09XLmjxgz9skgOUFpFmsp5DHzqV4CFJMxoH4p7G
-        rloastCEFAUYwfNJfudiHLwRf8ufLNjQO
-X-Received: by 2002:a05:6a20:938a:b0:181:90eb:6b24 with SMTP id x10-20020a056a20938a00b0018190eb6b24mr2095539pzh.22.1699445937510;
-        Wed, 08 Nov 2023 04:18:57 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGMbLzr20JSxrzK1NYa1Vhm0XM23Nhag0peMzgZJ1k+N4/hUlCW39pruQ7YMOM5nxoc/XiYAkMlMh4BRGJ1gqM=
-X-Received: by 2002:a05:6a20:938a:b0:181:90eb:6b24 with SMTP id
- x10-20020a056a20938a00b0018190eb6b24mr2095525pzh.22.1699445937280; Wed, 08
- Nov 2023 04:18:57 -0800 (PST)
+        with ESMTP id S229586AbjKHMV2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 07:21:28 -0500
+Received: from bee.tesarici.cz (bee.tesarici.cz [77.93.223.253])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7226B19A5;
+        Wed,  8 Nov 2023 04:21:25 -0800 (PST)
+Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by bee.tesarici.cz (Postfix) with ESMTPSA id CD3F91843CD;
+        Wed,  8 Nov 2023 13:21:21 +0100 (CET)
+Authentication-Results: mail.tesarici.cz; dmarc=fail (p=none dis=none) header.from=tesarici.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tesarici.cz; s=mail;
+        t=1699446082; bh=cXTYXJuCKJSS8YA7h7LVgaTMvx8Dmk0utMJe5g35Yps=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=J7GpROVo6TRRazgizq4HuwI6ns5kp9jtnmPGP0sxz7X8dk5a7PrwiTafGDx7jsGBx
+         uMCGEtEW2iHZJBQBMwqHQVFgYTT3aMu59kKLJHM0jazBsLAaJ7nWERKS/VwX98jgnC
+         WLvdpMH99Y2sZQRPerGk1liuTzAmqnAdXrKDjfum6gfnICwkv/dX8WafTl+XfKDYUa
+         Qf3YneQq4GWKgzpPCDWfeihAGQreZwNxYd9/Lln0t+dPh5y8YezvtbCmVtbFRbUtdE
+         Q5IJIIAsmQuvNYKN85y8eTa+z/70tXT94z3J4QEJyJwNoWax0EUyCcysau0TOhalPk
+         JOe0yjtVZRXGg==
+Date:   Wed, 8 Nov 2023 13:21:20 +0100
+From:   Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
+To:     Petr Tesarik <petrtesarik@huaweicloud.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Petr Tesarik <petr.tesarik.ext@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
+        linux-kernel@vger.kernel.org (open list),
+        Wangkefeng <wangkefeng.wang@huawei.com>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        Petr Tesarik <petr.tesarik1@huawei-partners.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] swiotlb: fix out-of-bounds TLB allocations with
+ CONFIG_SWIOTLB_DYNAMIC
+Message-ID: <20231108132120.0538a778@meshulam.tesarici.cz>
+In-Reply-To: <20231108111249.261-1-petrtesarik@huaweicloud.com>
+References: <20231108111249.261-1-petrtesarik@huaweicloud.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
-References: <717fd97a-6d14-4dc9-808c-d752d718fb80@ddn.com> <4b0b46f29955956916765d8d615f96849c8ce3f7.camel@linaro.org>
- <fa3510f3-d3cc-45d2-b38e-e8717e2a9f83@ddn.com> <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
- <9afc3152-5448-42eb-a7f4-4167fc8bc589@ddn.com> <5cd87a64-c506-46f2-9fed-ac8a74658631@ddn.com>
- <8ae8ce4d-6323-4160-848a-5e94895ae60e@leemhuis.info> <CAOssrKdvy9qTGSwwPVqYLAYYEk0jbqhGg4Lz=jEff7U58O4Yqw@mail.gmail.com>
- <2023102731-wobbly-glimpse-97f5@gregkh> <CAOssrKfNkMmHB2oHHO8gWbzDX27vS--e9dZoh_Mjv-17mSUTBw@mail.gmail.com>
- <2023102740-think-hatless-ab87@gregkh> <CAOssrKd-O1JKEPzvnM1VkQ0-oTpDv0RfY6B5oF5p63AtQ4HoqA@mail.gmail.com>
- <689f677b84b484636b673b362b17a6501a056968.camel@linaro.org>
- <CAOssrKfP+t-cy322ujizQofgZkPZsBu1H4+zfbWNEFCmTsXwug@mail.gmail.com>
- <afe378bf254f6c4ac73bb55be3fa7422f2da3f5f.camel@linaro.org>
- <CAOssrKeJB7BZ7fA6Uqo6rHohybmgovc6rVwDeHbegvweSyZeeA@mail.gmail.com>
- <7df24b0e-ea98-4dc7-9e1b-dfc29d0fa1b1@leemhuis.info> <61be0ebb17ae0f01ea0e88a225cbfa07ff661060.camel@linaro.org>
-In-Reply-To: <61be0ebb17ae0f01ea0e88a225cbfa07ff661060.camel@linaro.org>
-From:   Miklos Szeredi <mszeredi@redhat.com>
-Date:   Wed, 8 Nov 2023 13:18:46 +0100
-Message-ID: <CAOssrKeUbmEUWnT_JoRRAb0asttB3FfMva121D+sXFYEuFTV8w@mail.gmail.com>
-Subject: Re: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set the FUSE_INIT_EXT"
-To:     =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Paul Lawrence <paullawrence@google.com>,
-        Daniel Rosenberg <drosen@google.com>,
-        Alessio Balsini <balsini@android.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Bernd Schubert <bschubert@ddn.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Nov 8, 2023 at 11:31=E2=80=AFAM Andr=C3=A9 Draszik <andre.draszik@l=
-inaro.org> wrote:
+On Wed,  8 Nov 2023 12:12:49 +0100
+Petr Tesarik <petrtesarik@huaweicloud.com> wrote:
 
-> We are using the Android kernel in all cases and Android applies
-> patches on top of Linus' tree, yes (as does everybody else). The
-> previous Android kernel worked, the current Android kernel doesn't
-> because of the patch in question.
+> From: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+> 
+> Limit the free list length to the size of the IO TLB. Transient pool can be
+> smaller than IO_TLB_SEGSIZE, but the free list is initialized with the
+> assumption that the total number of slots is a multiple of IO_TLB_SEGSIZE.
+> As a result, swiotlb_area_find_slots() may allocate slots past the end of
+> a transient IO TLB buffer.
 
-Why don't you revert the patch in question in the Android kernel?
+Just to make it clear, this patch addresses only the memory corruption
+reported by Niklas, without addressing the underlying issues. Where
+corruption happened before, allocations will fail with this patch.
 
-Thanks,
-Miklos
+I am still looking into improving the allocation strategy itself.
+
+Petr T
+
+> Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
+> Closes: https://lore.kernel.org/linux-iommu/104a8c8fedffd1ff8a2890983e2ec1c26bff6810.camel@linux.ibm.com/
+> Fixes: 79636caad361 ("swiotlb: if swiotlb is full, fall back to a transient memory pool")
+> Cc: Halil Pasic <pasic@linux.ibm.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+> ---
+>  kernel/dma/swiotlb.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index 26202274784f..ec82524ba902 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -283,7 +283,8 @@ static void swiotlb_init_io_tlb_pool(struct io_tlb_pool *mem, phys_addr_t start,
+>  	}
+>  
+>  	for (i = 0; i < mem->nslabs; i++) {
+> -		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
+> +		mem->slots[i].list = min(IO_TLB_SEGSIZE - io_tlb_offset(i),
+> +					 mem->nslabs - i);
+>  		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+>  		mem->slots[i].alloc_size = 0;
+>  	}
 
