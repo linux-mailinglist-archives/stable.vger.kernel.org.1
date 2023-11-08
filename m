@@ -2,103 +2,231 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6102C7E5620
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 13:21:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 886C47E562C
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 13:24:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229924AbjKHMV3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 07:21:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50360 "EHLO
+        id S230314AbjKHMYt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 07:24:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229586AbjKHMV2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 07:21:28 -0500
-Received: from bee.tesarici.cz (bee.tesarici.cz [77.93.223.253])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7226B19A5;
-        Wed,  8 Nov 2023 04:21:25 -0800 (PST)
-Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by bee.tesarici.cz (Postfix) with ESMTPSA id CD3F91843CD;
-        Wed,  8 Nov 2023 13:21:21 +0100 (CET)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=none dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tesarici.cz; s=mail;
-        t=1699446082; bh=cXTYXJuCKJSS8YA7h7LVgaTMvx8Dmk0utMJe5g35Yps=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=J7GpROVo6TRRazgizq4HuwI6ns5kp9jtnmPGP0sxz7X8dk5a7PrwiTafGDx7jsGBx
-         uMCGEtEW2iHZJBQBMwqHQVFgYTT3aMu59kKLJHM0jazBsLAaJ7nWERKS/VwX98jgnC
-         WLvdpMH99Y2sZQRPerGk1liuTzAmqnAdXrKDjfum6gfnICwkv/dX8WafTl+XfKDYUa
-         Qf3YneQq4GWKgzpPCDWfeihAGQreZwNxYd9/Lln0t+dPh5y8YezvtbCmVtbFRbUtdE
-         Q5IJIIAsmQuvNYKN85y8eTa+z/70tXT94z3J4QEJyJwNoWax0EUyCcysau0TOhalPk
-         JOe0yjtVZRXGg==
-Date:   Wed, 8 Nov 2023 13:21:20 +0100
-From:   Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-To:     Petr Tesarik <petrtesarik@huaweicloud.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Petr Tesarik <petr.tesarik.ext@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
-        linux-kernel@vger.kernel.org (open list),
-        Wangkefeng <wangkefeng.wang@huawei.com>,
-        Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        Petr Tesarik <petr.tesarik1@huawei-partners.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/1] swiotlb: fix out-of-bounds TLB allocations with
- CONFIG_SWIOTLB_DYNAMIC
-Message-ID: <20231108132120.0538a778@meshulam.tesarici.cz>
-In-Reply-To: <20231108111249.261-1-petrtesarik@huaweicloud.com>
-References: <20231108111249.261-1-petrtesarik@huaweicloud.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-suse-linux-gnu)
+        with ESMTP id S230045AbjKHMYs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 07:24:48 -0500
+Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F651BE4
+        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 04:24:46 -0800 (PST)
+Received: by mail-vs1-xe2e.google.com with SMTP id ada2fe7eead31-45efc08a6f3so1667867137.0
+        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 04:24:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1699446286; x=1700051086; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MiOpIPoDsnfyvPjFEUKPnA5vH0+qMvf/QyeKJ8E4xVM=;
+        b=C6DBwYCUYhOICDmJwwKPPZ7lnR4189dBCGJhmYK0oRZD6hsixAGWX8k2afD4Kg33cr
+         TyfSMH+fXMocQmRqWN8LaubDEQwLCFiet3Z4Ds4ecd9Wzr6XQ7+Dsehy/SHnXsi+Pstl
+         tJmGSpjUmLsNmTFLJi6y9+CI8GQucPTj+8zApAgmST9h4m/t7vRiDyWxUGNtpSRzEIav
+         QMMs4e2KKefdAG4T/XsJFpgYPqkGpNFKxDsQvDJiypydtugV+3QNBSnAROSnMoYTapj3
+         jENE1bbFVf+qaG7QbTUEHHVnQLmZ6/blY390hiKcudhDTwh5erJev8Es74DGrLiGTQ3m
+         7CjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699446286; x=1700051086;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MiOpIPoDsnfyvPjFEUKPnA5vH0+qMvf/QyeKJ8E4xVM=;
+        b=Zc+zKd3lfs6etwoBarD5ym4gowI7Su77daMENSgjjDaopf8FzKL5yTS5Rx7XsieY/j
+         7vYndGgBB4FLCRuOpDOpBSEuXqF2N6xO2fLarDFM2hXP5F10nBd9frNGj/qw70rko2E9
+         RnOGCGYTAZ9zdS+nALgJ7Hqro7JCbCXrk2AtVmWQ3Iz5NIzLWflW4T623yKw73MI6VGo
+         GbSi8iLY902Q0G6UZiaMYZ4SuxbXI6KYU/arcNNxDMaX0HxsxdboXtJW+HPtzzebWP3z
+         JovJuU8RwqGxRmmTj8ccXH0m4gVW2wuHBTNpgxdS6x0Wbf41ooRF4tH2OvxOmMOotggU
+         U5rA==
+X-Gm-Message-State: AOJu0Yz00vV5AYrAF6/XrNwLKjJN0fNeNX9rtMwdxfYbMNFNyfu0dst1
+        0ZP5rt5MGDfAigNabshuHbBfPduwuMeE/b7yTdUBkg==
+X-Google-Smtp-Source: AGHT+IFd7GkvmqFIxpoIQDHg/JnC+ZA7xe9r52CaI9YuKxbc0XQzMnE2FSb0OyceIy1YEqOc/WAa0zrp6rTVMPZ+34g=
+X-Received: by 2002:a67:e09b:0:b0:45f:8b65:28f0 with SMTP id
+ f27-20020a67e09b000000b0045f8b6528f0mr1389594vsl.12.1699446285778; Wed, 08
+ Nov 2023 04:24:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20231107202447.670990820@linuxfoundation.org>
+In-Reply-To: <20231107202447.670990820@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Wed, 8 Nov 2023 17:54:34 +0530
+Message-ID: <CA+G9fYuZj2SVDKszZMsqU9HFqxaHJyTs8B7FCbECa+jNG6=WOA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/91] 5.10.200-rc2 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed,  8 Nov 2023 12:12:49 +0100
-Petr Tesarik <petrtesarik@huaweicloud.com> wrote:
+On Wed, 8 Nov 2023 at 01:55, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.200 release.
+> There are 91 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 09 Nov 2023 20:24:28 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.10.200-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> From: Petr Tesarik <petr.tesarik1@huawei-partners.com>
-> 
-> Limit the free list length to the size of the IO TLB. Transient pool can be
-> smaller than IO_TLB_SEGSIZE, but the free list is initialized with the
-> assumption that the total number of slots is a multiple of IO_TLB_SEGSIZE.
-> As a result, swiotlb_area_find_slots() may allocate slots past the end of
-> a transient IO TLB buffer.
 
-Just to make it clear, this patch addresses only the memory corruption
-reported by Niklas, without addressing the underlying issues. Where
-corruption happened before, allocations will fail with this patch.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-I am still looking into improving the allocation strategy itself.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Petr T
+## Build
+* kernel: 5.10.200-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.10.y
+* git commit: c4863380dfbff55489d2e3ba476730a03f0f2376
+* git describe: v5.10.199-92-gc4863380dfbf
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10=
+.199-92-gc4863380dfbf
 
-> Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> Closes: https://lore.kernel.org/linux-iommu/104a8c8fedffd1ff8a2890983e2ec1c26bff6810.camel@linux.ibm.com/
-> Fixes: 79636caad361 ("swiotlb: if swiotlb is full, fall back to a transient memory pool")
-> Cc: Halil Pasic <pasic@linux.ibm.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
-> ---
->  kernel/dma/swiotlb.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index 26202274784f..ec82524ba902 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -283,7 +283,8 @@ static void swiotlb_init_io_tlb_pool(struct io_tlb_pool *mem, phys_addr_t start,
->  	}
->  
->  	for (i = 0; i < mem->nslabs; i++) {
-> -		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
-> +		mem->slots[i].list = min(IO_TLB_SEGSIZE - io_tlb_offset(i),
-> +					 mem->nslabs - i);
->  		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
->  		mem->slots[i].alloc_size = 0;
->  	}
+## Test Regressions (compared to v5.10.199)
 
+## Metric Regressions (compared to v5.10.199)
+
+## Test Fixes (compared to v5.10.199)
+
+## Metric Fixes (compared to v5.10.199)
+
+## Test result summary
+total: 91328, pass: 72188, fail: 2160, skip: 16922, xfail: 58
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 117 total, 117 passed, 0 failed
+* arm64: 44 total, 44 passed, 0 failed
+* i386: 35 total, 35 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 25 total, 25 passed, 0 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 37 total, 37 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
