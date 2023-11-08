@@ -2,161 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA6B27E5CF0
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 19:11:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 608437E5D30
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 19:28:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229566AbjKHSLs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 13:11:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45166 "EHLO
+        id S229506AbjKHS2d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 13:28:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjKHSLr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 13:11:47 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A9B4171B;
-        Wed,  8 Nov 2023 10:11:45 -0800 (PST)
-Date:   Wed, 08 Nov 2023 18:11:41 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1699467102;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qTZCwBL3ePgB/9fon2+LOAb4X4uCob5TehfJ6KGUEaw=;
-        b=flO7GdrkVu7ni32ohs7YdWtZfoYXzx6BtOwtiHLxIQDgDrQKijvUg6jboC6F2zAd1Itwgl
-        s5u6alisiibmdb+MHBlp5bSSYDglZnjFc+GYVFGkW+7318SdkV2X4WbTi4ttS4sLbCH772
-        vUzCc08rIpsjKqkuWY7flvE7zkjUjhrQjsz4V2k5TbDm/cQzjXeLW/0By6Jru9rPed5hYu
-        Cm0z1q5qJwopB2CNxIOfP7qNmbAvmp5vSMPgVMa3Op5s2TKFWkJGx5GSZAYGHrAqsbMNuo
-        YLiejfPrSsOY3VtSC5RmvoaQJdKwuKFn+srcqzAuBSAhQWEkvfWWL4T/6Zgecw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1699467102;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=qTZCwBL3ePgB/9fon2+LOAb4X4uCob5TehfJ6KGUEaw=;
-        b=EnmaNQwfQKp7CIYAMpq2JPbYtsAz5r9RrQ3QnZuyKNxCD5GkDzYy402K9RwBpnR2q23Dgp
-        IxSenka/aPkap2BA==
-From:   "tip-bot2 for Rick Edgecombe" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/shstk: Delay signal entry SSP write until after
- user accesses
-Cc:     Pengfei Xu <pengfei.xu@intel.com>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
+        with ESMTP id S229460AbjKHS2c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 13:28:32 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA7B72105
+        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 10:28:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        Content-Type:Content-ID:Content-Description;
+        bh=Hh7iR22H/bMBGg1WTep51qz0ES5l/FVjx1m1RYU2PfQ=; b=vbaruzZi/nRV0eD5bIifbhL48M
+        lrsEFUNwWq7APBHxiX/omLWGhaMszAff2PpF8eYHbnXmrIvbDx1WWo5yq0yCn6qTLK0Utd+fLTWax
+        a5Y7SkOOj83Jpdw2Ndn7xGpTVs5z+KNqqpjHV9bChnAavQP9fL/xf9DdIjgWfcgT00+LpWfkImjz1
+        C8jiymDHrQ8luWORDfZL9iisCP3FUwGIeXWi0kJNQjzYEOJ700dDpPNmS+53X/yfm9GfNxM+u1ZeN
+        8vWwmtyUZll+1thVFzvLzBLj7V1bUQtxdpECKQfXJI4VztC/c87t1OGEctUFM/Z4cNQkhCizbO1Ot
+        ImvwbaxQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1r0nHf-002WdI-1E; Wed, 08 Nov 2023 18:28:11 +0000
+From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Naoya Horiguchi <naoya.horiguchi@nec.com>, linux-mm@kvack.org,
+        stable@vger.kernel.org
+Subject: [PATCH 2/6] mm: Convert __do_fault() to use a folio
+Date:   Wed,  8 Nov 2023 18:28:05 +0000
+Message-Id: <20231108182809.602073-3-willy@infradead.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20231108182809.602073-1-willy@infradead.org>
+References: <20231108182809.602073-1-willy@infradead.org>
 MIME-Version: 1.0
-Message-ID: <169946710196.3135.13826556225049872785.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+Convert vmf->page to a folio as soon as we're going to use it.  This fixes
+a bug if the fault handler returns a tail page with hardware poison;
+tail pages have an invalid page->index, so we would fail to unmap the
+page from the page tables.  We actually have to unmap the entire folio (or
+mapping_evict_folio() will fail), so use unmap_mapping_folio() instead.
 
-Commit-ID:     31255e072b2e91f97645d792d25b2db744186dd1
-Gitweb:        https://git.kernel.org/tip/31255e072b2e91f97645d792d25b2db7441=
-86dd1
-Author:        Rick Edgecombe <rick.p.edgecombe@intel.com>
-AuthorDate:    Tue, 07 Nov 2023 10:22:51 -08:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Wed, 08 Nov 2023 08:55:37 -08:00
+This also saves various calls to compound_head() hidden in lock_page(),
+put_page(), etc.
 
-x86/shstk: Delay signal entry SSP write until after user accesses
-
-When a signal is being delivered, the kernel needs to make accesses to
-userspace. These accesses could encounter an access error, in which case
-the signal delivery itself will trigger a segfault. Usually this would
-result in the kernel killing the process. But in the case of a SEGV signal
-handler being configured, the failure of the first signal delivery will
-result in *another* signal getting delivered. The second signal may
-succeed if another thread has resolved the issue that triggered the
-segfault (i.e. a well timed mprotect()/mmap()), or the second signal is
-being delivered to another stack (i.e. an alt stack).
-
-On x86, in the non-shadow stack case, all the accesses to userspace are
-done before changes to the registers (in pt_regs). The operation is
-aborted when an access error occurs, so although there may be writes done
-for the first signal, control flow changes for the signal (regs->ip,
-regs->sp, etc) are not committed until all the accesses have already
-completed successfully. This means that the second signal will be
-delivered as if it happened at the time of the first signal. It will
-effectively replace the first aborted signal, overwriting the half-written
-frame of the aborted signal. So on sigreturn from the second signal,
-control flow will resume happily from the point of control flow where the
-original signal was delivered.
-
-The problem is, when shadow stack is active, the shadow stack SSP
-register/MSR is updated *before* some of the userspace accesses. This
-means if the earlier accesses succeed and the later ones fail, the second
-signal will not be delivered at the same spot on the shadow stack as the
-first one. So on sigreturn from the second signal, the SSP will be
-pointing to the wrong location on the shadow stack (off by a frame).
-
-Pengfei privately reported that while using a shadow stack enabled glibc,
-the =E2=80=9Csignal06=E2=80=9D test in the LTP test-suite hung. It turns out =
-it is
-testing the above described double signal scenario. When this test was
-compiled with shadow stack, the first signal pushed a shadow stack
-sigframe, then the second pushed another. When the second signal was
-handled, the SSP was at the first shadow stack signal frame instead of
-the original location. The test then got stuck as the #CP from the twice
-incremented SSP was incorrect and generated segfaults in a loop.
-
-Fix this by adjusting the SSP register only after any userspace accesses,
-such that there can be no failures after the SSP is adjusted. Do this by
-moving the shadow stack sigframe push logic to happen after all other
-userspace accesses.
-
-Note, sigreturn (as opposed to the signal delivery dealt with in this
-patch) has ordering behavior that could lead to similar failures. The
-ordering issues there extend beyond shadow stack to include the alt stack
-restoration. Fixing that would require cross-arch changes, and the
-ordering today does not cause any known test or apps breakages. So leave
-it as is, for now.
-
-[ dhansen: minor changelog/subject tweak ]
-
-Fixes: 05e36022c054 ("x86/shstk: Handle signals for shadow stack")
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20231107182251.91276-1-rick.p.edgecombe%40i=
-ntel.com
-Link: https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/=
-syscalls/signal/signal06.c
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Cc: stable@vger.kernel.org
 ---
- arch/x86/kernel/signal_64.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/memory.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/signal_64.c b/arch/x86/kernel/signal_64.c
-index cacf2ed..23d8aaf 100644
---- a/arch/x86/kernel/signal_64.c
-+++ b/arch/x86/kernel/signal_64.c
-@@ -175,9 +175,6 @@ int x64_setup_rt_frame(struct ksignal *ksig, struct pt_re=
-gs *regs)
- 	frame =3D get_sigframe(ksig, regs, sizeof(struct rt_sigframe), &fp);
- 	uc_flags =3D frame_uc_flags(regs);
-=20
--	if (setup_signal_shadow_stack(ksig))
--		return -EFAULT;
--
- 	if (!user_access_begin(frame, sizeof(*frame)))
- 		return -EFAULT;
-=20
-@@ -198,6 +195,9 @@ int x64_setup_rt_frame(struct ksignal *ksig, struct pt_re=
-gs *regs)
- 			return -EFAULT;
+diff --git a/mm/memory.c b/mm/memory.c
+index 1f18ed4a5497..c2ee303ba6b3 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4239,6 +4239,7 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+ static vm_fault_t __do_fault(struct vm_fault *vmf)
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
++	struct folio *folio;
+ 	vm_fault_t ret;
+ 
+ 	/*
+@@ -4267,27 +4268,26 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
+ 			    VM_FAULT_DONE_COW)))
+ 		return ret;
+ 
++	folio = page_folio(vmf->page);
+ 	if (unlikely(PageHWPoison(vmf->page))) {
+-		struct page *page = vmf->page;
+ 		vm_fault_t poisonret = VM_FAULT_HWPOISON;
+ 		if (ret & VM_FAULT_LOCKED) {
+-			if (page_mapped(page))
+-				unmap_mapping_pages(page_mapping(page),
+-						    page->index, 1, false);
+-			/* Retry if a clean page was removed from the cache. */
+-			if (invalidate_inode_page(page))
++			if (page_mapped(vmf->page))
++				unmap_mapping_folio(folio);
++			/* Retry if a clean folio was removed from the cache. */
++			if (mapping_evict_folio(folio->mapping, folio))
+ 				poisonret = VM_FAULT_NOPAGE;
+-			unlock_page(page);
++			folio_unlock(folio);
+ 		}
+-		put_page(page);
++		folio_put(folio);
+ 		vmf->page = NULL;
+ 		return poisonret;
  	}
-=20
-+	if (setup_signal_shadow_stack(ksig))
-+		return -EFAULT;
-+
- 	/* Set up registers for signal handler */
- 	regs->di =3D ksig->sig;
- 	/* In case the signal handler was declared without prototypes */
+ 
+ 	if (unlikely(!(ret & VM_FAULT_LOCKED)))
+-		lock_page(vmf->page);
++		folio_lock(folio);
+ 	else
+-		VM_BUG_ON_PAGE(!PageLocked(vmf->page), vmf->page);
++		VM_BUG_ON_PAGE(!folio_test_locked(folio), vmf->page);
+ 
+ 	return ret;
+ }
+-- 
+2.42.0
+
