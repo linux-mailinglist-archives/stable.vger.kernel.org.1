@@ -2,285 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C68907E548D
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 11:53:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E405A7E54C0
+	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 12:13:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235580AbjKHKxV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 05:53:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36578 "EHLO
+        id S229579AbjKHLNv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 06:13:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235571AbjKHKxN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 05:53:13 -0500
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B98BA1BE4
-        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 02:53:10 -0800 (PST)
-Received: by mail-oi1-x233.google.com with SMTP id 5614622812f47-3b512dd7d5bso4564840b6e.1
-        for <stable@vger.kernel.org>; Wed, 08 Nov 2023 02:53:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699440789; x=1700045589; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=W+mi8Vutneox+ujoxnHdFQcU2FLV710H1k0v/P8nZP8=;
-        b=VtDVG0P9Wf4+EbUfSHMYc7pZZz4D+N5iQYJstQNbLS54WZW2LbK14iUr22z47lzv3Z
-         adAe9MH5OmI4co2ptB/Do6JKp5xy6X0GcrUQrduFUl1qFCHedbL0//8tjaJZ02DUcB8g
-         4zX/fFA4ndXzc1gVC6cDm+5Y5VZE9n00GV14VATlevTk6jcpTOEf3R5E11TxS8e1BD9e
-         KSOat1UCyxPAeocBXG3AUH9Q9yeisufyQQt6Szzrp1wVP9tVepa6Q79YahTsY58GXVm5
-         zxkqmwhq4fPT9IKW55UJtKlEBFJtT8LPz1ONYoukgoDDB/N8pBooc3eF5jmyILNz6YE/
-         1ZaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699440789; x=1700045589;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=W+mi8Vutneox+ujoxnHdFQcU2FLV710H1k0v/P8nZP8=;
-        b=chCyYwOb262n04aivmt5UgMdMKaWa404DLL4ijaUafMUzhGOxvoBu6ZBlzvEsDE6dE
-         EKQQWUoMk4bzQMSWS1X8J/i7zgUmaY/8MMMJDQFvu2kLXTyCZe3jBCcPGed+YjDCGolo
-         /MUb4ARnH1FZ2nJVVl/y+oIIsOfzvYxEUeRlDiqlnJ3qL7kI5E/7g1s6PDpmee5xhaeo
-         zmOOMEn31OEszW7nEIznJWUH5SjkZ3sDPPTAa9u/dsncZQGmT3lE2lrciloCcLS/CqSt
-         rIjPlJJPu1por/f/RaEDf1tO2mKPEbP3mLWON1sw7AgHhi2AmLMB40anQFDYFiYzn6Hw
-         DCaA==
-X-Gm-Message-State: AOJu0YxPBbTjlfw98rnoMNU62SNvin0NSdp8VnAzOiD3m4PUTHH+m82w
-        iAnYBq086b3yN/3aUjqLeudTMruI1HN0uNGc0tpELw==
-X-Google-Smtp-Source: AGHT+IE45aRys438S97twqq0Avu5/cL/89wWsno3FKGMxPwChDzoYJuDCgm5rqJKalO8+WvZUjIqzw==
-X-Received: by 2002:a05:6358:c82:b0:16b:858c:1ee5 with SMTP id o2-20020a0563580c8200b0016b858c1ee5mr1017788rwj.25.1699440789422;
-        Wed, 08 Nov 2023 02:53:09 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id k7-20020a654647000000b005b458aa0541sm2532152pgr.15.2023.11.08.02.53.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Nov 2023 02:53:08 -0800 (PST)
-Message-ID: <654b6894.650a0220.f7488.663f@mx.google.com>
-Date:   Wed, 08 Nov 2023 02:53:08 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S234092AbjKHLNu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 06:13:50 -0500
+Received: from frasgout13.his.huawei.com (frasgout13.his.huawei.com [14.137.139.46])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EDF21BD4;
+        Wed,  8 Nov 2023 03:13:48 -0800 (PST)
+Received: from mail02.huawei.com (unknown [172.18.147.227])
+        by frasgout13.his.huawei.com (SkyGuard) with ESMTP id 4SQMZ06DZYz9xtn5;
+        Wed,  8 Nov 2023 19:00:24 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.195.35.156])
+        by APP2 (Coremail) with SMTP id GxC2BwDX1V9HbUtlqNFEAA--.11872S2;
+        Wed, 08 Nov 2023 12:13:23 +0100 (CET)
+From:   Petr Tesarik <petrtesarik@huaweicloud.com>
+To:     Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Petr Tesarik <petr.tesarik.ext@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        iommu@lists.linux.dev (open list:DMA MAPPING HELPERS),
+        linux-kernel@vger.kernel.org (open list)
+Cc:     Wangkefeng <wangkefeng.wang@huawei.com>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        petr@tesarici.cz, Petr Tesarik <petr.tesarik1@huawei-partners.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, stable@vger.kernel.org
+Subject: [PATCH 1/1] swiotlb: fix out-of-bounds TLB allocations with CONFIG_SWIOTLB_DYNAMIC
+Date:   Wed,  8 Nov 2023 12:12:49 +0100
+Message-Id: <20231108111249.261-1-petrtesarik@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v4.19.298
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Tree: stable
-Subject: stable/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
- 20 warnings (v4.19.298)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: GxC2BwDX1V9HbUtlqNFEAA--.11872S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw1DWF48Ar4UGw43KFW8Crg_yoW8Gw43pa
+        43Aw45GayjqF18Aw1qk3WUC3W8K3yDZrW7uFZ0q343ZryDWry5WF9a93y5K3s3Xr4v9F4a
+        kryFvr4rKayUZrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUBS14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+        6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+        4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+        n2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY1x0264kExVAvwVAq07x20xyl42xK82IYc2
+        Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+        6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0x
+        vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+        42xK8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87
+        Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfU8c_-DUUUU
+X-CM-SenderInfo: hshw23xhvd2x3n6k3tpzhluzxrxghudrp/
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 20 warnings (v4.=
-19.298)
+From: Petr Tesarik <petr.tesarik1@huawei-partners.com>
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-4.19.y/k=
-ernel/v4.19.298/
+Limit the free list length to the size of the IO TLB. Transient pool can be
+smaller than IO_TLB_SEGSIZE, but the free list is initialized with the
+assumption that the total number of slots is a multiple of IO_TLB_SEGSIZE.
+As a result, swiotlb_area_find_slots() may allocate slots past the end of
+a transient IO TLB buffer.
 
-Tree: stable
-Branch: linux-4.19.y
-Git Describe: v4.19.298
-Git Commit: aa8663e85da65e4b92ac82208059c173cb42c3bd
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 7 unique architectures
-
-Build Failures Detected:
-
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
-
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-board (gcc-10): 2 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
-nings, 0 section mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Closes: https://lore.kernel.org/linux-iommu/104a8c8fedffd1ff8a2890983e2ec1c26bff6810.camel@linux.ibm.com/
+Fixes: 79636caad361 ("swiotlb: if swiotlb is full, fall back to a transient memory pool")
+Cc: Halil Pasic <pasic@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Petr Tesarik <petr.tesarik1@huawei-partners.com>
 ---
-For more info write to <info@kernelci.org>
+ kernel/dma/swiotlb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+index 26202274784f..ec82524ba902 100644
+--- a/kernel/dma/swiotlb.c
++++ b/kernel/dma/swiotlb.c
+@@ -283,7 +283,8 @@ static void swiotlb_init_io_tlb_pool(struct io_tlb_pool *mem, phys_addr_t start,
+ 	}
+ 
+ 	for (i = 0; i < mem->nslabs; i++) {
+-		mem->slots[i].list = IO_TLB_SEGSIZE - io_tlb_offset(i);
++		mem->slots[i].list = min(IO_TLB_SEGSIZE - io_tlb_offset(i),
++					 mem->nslabs - i);
+ 		mem->slots[i].orig_addr = INVALID_PHYS_ADDR;
+ 		mem->slots[i].alloc_size = 0;
+ 	}
+-- 
+2.42.1
+
