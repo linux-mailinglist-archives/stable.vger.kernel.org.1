@@ -2,119 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4748D7E6E85
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 17:21:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83F387E6E9D
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 17:23:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230296AbjKIQVe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 11:21:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43450 "EHLO
+        id S1343866AbjKIQXa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 11:23:30 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbjKIQVd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 11:21:33 -0500
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C806235AA
-        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 08:21:31 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1cc7077d34aso9131355ad.2
-        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 08:21:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699546891; x=1700151691; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=e89d33Hy46eGm1f8p9NuUhbcACH9Nn4RV7P6pbaJhCY=;
-        b=T5nl5rEJaYHy3rKROakw0A4hP9hhTDeHP6d25vtrIqXytTiB7zYO12kJo0jO3m9fKx
-         a2wnjAdpcGv0zxRtptxUyG/5xbTSCSRt4BDWZAhuiYyXD80chSck6W+1ld4tlEZlaIpa
-         rtMRfe9/Ge3bDNwfVip3BK9VN8lg+Wq5HX7T5BOtJ5vAxTY8khhVymBECKo97SVh09jC
-         A+CF3pCFDiYWL4O1qYoja77oSVq1NC+iGL3dRIQbaPEmQh89b9Y7uyGp9GwadvF2NjDh
-         ltkTVZcAZBaeOADCTelS/0VA+PziUbjDZEev7am9Zz+VRf/2lFd9OtdnuehiYYVIG2kK
-         FwyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699546891; x=1700151691;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e89d33Hy46eGm1f8p9NuUhbcACH9Nn4RV7P6pbaJhCY=;
-        b=fXNfkfsrr+JB/SAPL9FjWt+emz5SRDj8ZqzkumauQdTBjZGnC6QzuqJ4UiD8D/Sl07
-         2TSwDMH2KZvgPTyNFiLc42YuR9GGE/6W6QyvnLVws1MlRBVQ/Mjvo4mB9sJJHgJ/Wacd
-         Ln7vgAUHN7DnunFmYub/1CdkLZcaIDh6wzGrZda6arSQmFu93pB9zKh2Ean1gNJt9y4w
-         dNbKZjHMnFa/UWCbyi5l72vljzN2+7n/XgNzNeW7idfBvfopvzLJrGdRBNf9SX9TaW4Y
-         Czm6zwZyFSBmsjaVmbKEAqfWQeNgcLGQbAl61qXRDcmu7HpCQdFN1A3SeH/5MOJiSb/7
-         fUQQ==
-X-Gm-Message-State: AOJu0YxEldF+DFvyxvEl/fXVsz8/xvrR655eZxXTh5k/Yzxf/tXhvztk
-        HKdw6YRaZe7iw2WxVQ1xL/yiXkzth1RE3whBFBfCKQ==
-X-Google-Smtp-Source: AGHT+IHxZDPpWEr0FLpVDjS9NRS+Acr+QyTT5jgBJ/vHHymCf8zr3auwDeaomTKLRU4M4BggO/CpGA==
-X-Received: by 2002:a17:902:7c0d:b0:1cc:e823:c8cc with SMTP id x13-20020a1709027c0d00b001cce823c8ccmr3661064pll.41.1699546890807;
-        Thu, 09 Nov 2023 08:21:30 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id 13-20020a170902c20d00b001cbf3824360sm3765638pll.95.2023.11.09.08.21.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Nov 2023 08:21:30 -0800 (PST)
-Message-ID: <654d070a.170a0220.bdf7b.bf18@mx.google.com>
-Date:   Thu, 09 Nov 2023 08:21:30 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S1343900AbjKIQX1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 11:23:27 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3616C35B5;
+        Thu,  9 Nov 2023 08:23:24 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A8BC433CA;
+        Thu,  9 Nov 2023 16:23:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699547003;
+        bh=aePtJT7WZA8ttpok02zN1PeRQSCh1RDBZ95u1jYBnzo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Ke+SaWDQtXbP9Tyl3sK4r/Ial5r7s/CKpJsmhLHN3qyYhReR6LOfFBT31k72kXku/
+         swCbvX368DR4M3u5wSWPqx0d3ur3zRrLy+A4nqUINZfmO8B4Dy+BHLCaAYM1EKmo+X
+         kANAktvKSoLk77NTUKuEunuC6dxaJxhOtYgnw/giK82UNqg78m26sH736ZHeM+ACUI
+         DncwowPeCHCBZer+qofUSdp5dVjzc8eCjVj//4lx/tvzSLlaU/ZR6c1z68G0qmb6Jh
+         nk4JG9AVOhwpjmnEv1rrXOeb4AWSiHmB5nNoRsk8H1QFhPxO+rfPONp2P6lFNW7JBf
+         7H9Ns9umIw4ng==
+Date:   Thu, 9 Nov 2023 21:53:10 +0530
+From:   Manivannan Sadhasivam <mani@kernel.org>
+To:     Qiang Yu <quic_qianyu@quicinc.com>
+Cc:     quic_jhugo@quicinc.com, mhi@lists.linux.dev,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        quic_cang@quicinc.com, quic_mrana@quicinc.com,
+        Bhaumik Bhatt <bbhatt@codeaurora.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/4] bus: mhi: host: Add spinlock to protect WP access
+ when queueing TREs
+Message-ID: <20231109162310.GJ3752@thinkpad>
+References: <1699341365-47737-1-git-send-email-quic_qianyu@quicinc.com>
+ <1699341365-47737-2-git-send-email-quic_qianyu@quicinc.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.4.260
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: linux-5.4.y
-X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-5.4.y baseline: 109 runs, 1 regressions (v5.4.260)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1699341365-47737-2-git-send-email-quic_qianyu@quicinc.com>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.4.y baseline: 109 runs, 1 regressions (v5.4.260)
+On Tue, Nov 07, 2023 at 03:16:02PM +0800, Qiang Yu wrote:
+> From: Bhaumik Bhatt <bbhatt@codeaurora.org>
+> 
+> Protect WP accesses such that multiple threads queueing buffers for
+> incoming data do not race.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 189ff97cca53 ("bus: mhi: core: Add support for data transfer")
+> Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+> Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
 
-Regressions Summary
--------------------
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-platform       | arch  | lab          | compiler | defconfig | regressions
----------------+-------+--------------+----------+-----------+------------
-meson-gxm-q200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
+- Mani
 
+> ---
+>  drivers/bus/mhi/host/main.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
+> index 6cf1145..c9415b0 100644
+> --- a/drivers/bus/mhi/host/main.c
+> +++ b/drivers/bus/mhi/host/main.c
+> @@ -1205,6 +1205,9 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
+>  	int eot, eob, chain, bei;
+>  	int ret;
+>  
+> +	/* Protect accesses for reading and incrementing WP */
+> +	write_lock_bh(&mhi_chan->lock);
+> +
+>  	buf_ring = &mhi_chan->buf_ring;
+>  	tre_ring = &mhi_chan->tre_ring;
+>  
+> @@ -1222,8 +1225,10 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
+>  
+>  	if (!info->pre_mapped) {
+>  		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
+> -		if (ret)
+> +		if (ret) {
+> +			write_unlock_bh(&mhi_chan->lock);
+>  			return ret;
+> +		}
+>  	}
+>  
+>  	eob = !!(flags & MHI_EOB);
+> @@ -1240,6 +1245,8 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
+>  	mhi_add_ring_element(mhi_cntrl, tre_ring);
+>  	mhi_add_ring_element(mhi_cntrl, buf_ring);
+>  
+> +	write_unlock_bh(&mhi_chan->lock);
+> +
+>  	return 0;
+>  }
+>  
+> -- 
+> 2.7.4
+> 
+> 
 
-  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.4.y/kern=
-el/v5.4.260/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   linux-5.4.y
-  Describe: v5.4.260
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      87e8e7a7aa1f96276252a90373de1d56add31918 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform       | arch  | lab          | compiler | defconfig | regressions
----------------+-------+--------------+----------+-----------+------------
-meson-gxm-q200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/654cd60ff2c48c3ceeefcf16
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.260=
-/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm-q200.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.260=
-/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm-q200.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/654cd60ff2c48c3ceeefc=
-f17
-        new failure (last pass: v5.4.259-75-gca21f12ba7d85) =
-
- =20
+-- 
+மணிவண்ணன் சதாசிவம்
