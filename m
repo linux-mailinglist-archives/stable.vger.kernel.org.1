@@ -2,134 +2,119 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B29E7E6E82
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 17:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4748D7E6E85
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 17:21:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230185AbjKIQU7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 11:20:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52206 "EHLO
+        id S230296AbjKIQVe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 11:21:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbjKIQU6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 11:20:58 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 868E4173E;
-        Thu,  9 Nov 2023 08:20:54 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3A9GKUKM01668823, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3A9GKUKM01668823
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 10 Nov 2023 00:20:30 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.17; Fri, 10 Nov 2023 00:20:31 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.34; Fri, 10 Nov 2023 00:20:30 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
- RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
- 15.01.2375.007; Fri, 10 Nov 2023 00:20:30 +0800
-From:   Hau <hau@realtek.com>
-To:     Paolo Abeni <pabeni@redhat.com>,
-        "hkallweit1@gmail.com" <hkallweit1@gmail.com>
-CC:     nic_swsd <nic_swsd@realtek.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH net v2 1/2] r8169: add handling DASH when DASH is disabled
-Thread-Topic: [PATCH net v2 1/2] r8169: add handling DASH when DASH is
- disabled
-Thread-Index: AQHaEnRkKWk8jO5fZUKdN+LsLx8Ws7BxWqCAgADQJoA=
-Date:   Thu, 9 Nov 2023 16:20:29 +0000
-Message-ID: <12b7d629d07949eb9cf5472f860413db@realtek.com>
-References: <20231108184849.2925-1-hau@realtek.com>
-         <20231108184849.2925-2-hau@realtek.com>
- <5783a6f8819a741f0f299602ff615e6a03368246.camel@redhat.com>
-In-Reply-To: <5783a6f8819a741f0f299602ff615e6a03368246.camel@redhat.com>
-Accept-Language: zh-TW, en-US
-Content-Language: en-US
-x-originating-ip: [172.22.228.56]
-x-kse-serverinfo: RTEXMBS06.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
+        with ESMTP id S229770AbjKIQVd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 11:21:33 -0500
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C806235AA
+        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 08:21:31 -0800 (PST)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1cc7077d34aso9131355ad.2
+        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 08:21:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699546891; x=1700151691; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=e89d33Hy46eGm1f8p9NuUhbcACH9Nn4RV7P6pbaJhCY=;
+        b=T5nl5rEJaYHy3rKROakw0A4hP9hhTDeHP6d25vtrIqXytTiB7zYO12kJo0jO3m9fKx
+         a2wnjAdpcGv0zxRtptxUyG/5xbTSCSRt4BDWZAhuiYyXD80chSck6W+1ld4tlEZlaIpa
+         rtMRfe9/Ge3bDNwfVip3BK9VN8lg+Wq5HX7T5BOtJ5vAxTY8khhVymBECKo97SVh09jC
+         A+CF3pCFDiYWL4O1qYoja77oSVq1NC+iGL3dRIQbaPEmQh89b9Y7uyGp9GwadvF2NjDh
+         ltkTVZcAZBaeOADCTelS/0VA+PziUbjDZEev7am9Zz+VRf/2lFd9OtdnuehiYYVIG2kK
+         FwyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699546891; x=1700151691;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e89d33Hy46eGm1f8p9NuUhbcACH9Nn4RV7P6pbaJhCY=;
+        b=fXNfkfsrr+JB/SAPL9FjWt+emz5SRDj8ZqzkumauQdTBjZGnC6QzuqJ4UiD8D/Sl07
+         2TSwDMH2KZvgPTyNFiLc42YuR9GGE/6W6QyvnLVws1MlRBVQ/Mjvo4mB9sJJHgJ/Wacd
+         Ln7vgAUHN7DnunFmYub/1CdkLZcaIDh6wzGrZda6arSQmFu93pB9zKh2Ean1gNJt9y4w
+         dNbKZjHMnFa/UWCbyi5l72vljzN2+7n/XgNzNeW7idfBvfopvzLJrGdRBNf9SX9TaW4Y
+         Czm6zwZyFSBmsjaVmbKEAqfWQeNgcLGQbAl61qXRDcmu7HpCQdFN1A3SeH/5MOJiSb/7
+         fUQQ==
+X-Gm-Message-State: AOJu0YxEldF+DFvyxvEl/fXVsz8/xvrR655eZxXTh5k/Yzxf/tXhvztk
+        HKdw6YRaZe7iw2WxVQ1xL/yiXkzth1RE3whBFBfCKQ==
+X-Google-Smtp-Source: AGHT+IHxZDPpWEr0FLpVDjS9NRS+Acr+QyTT5jgBJ/vHHymCf8zr3auwDeaomTKLRU4M4BggO/CpGA==
+X-Received: by 2002:a17:902:7c0d:b0:1cc:e823:c8cc with SMTP id x13-20020a1709027c0d00b001cce823c8ccmr3661064pll.41.1699546890807;
+        Thu, 09 Nov 2023 08:21:30 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id 13-20020a170902c20d00b001cbf3824360sm3765638pll.95.2023.11.09.08.21.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Nov 2023 08:21:30 -0800 (PST)
+Message-ID: <654d070a.170a0220.bdf7b.bf18@mx.google.com>
+Date:   Thu, 09 Nov 2023 08:21:30 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.4.260
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-5.4.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-5.4.y baseline: 109 runs, 1 regressions (v5.4.260)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-PiBZb3Ugc2hvdWxkIGluY2x1ZGUgdGhlIGZpeGVzIHRhZyB5b3UgYWxyZWFkeSBhZGRlZCBpbiB2
-MSBhbmQgeW91ciBTb2Igc2hvdWxkDQo+IGNvbWUgYXMgdGhlIGxhc3QgdGFnDQo+IA0KPiBUaGUg
-c2FtZSBhcHBsaWVzIHRvIHRoZSBuZXh0IHBhdGNoDQo+IA0KSSBmb3JnZXQgdG8gYWRkIEZpeGVz
-IHRhZy4gSSB3aWxsIGFkZCBpdCBiYWNrLg0KDQo+ID4gUmV2aWV3ZWQtYnk6IEhlaW5lciBLYWxs
-d2VpdCA8aGthbGx3ZWl0MUBnbWFpbC5jb20+DQo+IA0KPiBJdCdzIG5vdCBjbGVhciB3aGVyZS93
-aGVuIEhlaW5lciBwcm92aWRlZCB0aGUgYWJvdmUgdGFnIGZvciB0aGlzIHBhdGNoLg0KPiBJIGhv
-cGUgdGhhdCB3YXMgb2ZmLWxpc3QuDQpJIG1heSBtaXN1bmRlcnN0YW5kaW5nIHdoYXQgaGUgbWVh
-bnMuIEkgd2lsbCBub3QgYWRkIHRoaXMgdGFnIGluIG15IG5leHQgcGF0Y2guDQoNCj4gDQo+ID4g
-Q2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gPiAtLS0NCj4gPiAgZHJpdmVycy9uZXQvZXRo
-ZXJuZXQvcmVhbHRlay9yODE2OV9tYWluLmMgfCAzNQ0KPiA+ICsrKysrKysrKysrKysrKystLS0t
-LS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAyNSBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMo
-LSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9yZWFsdGVrL3I4
-MTY5X21haW4uYw0KPiA+IGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvcmVhbHRlay9yODE2OV9tYWlu
-LmMNCj4gPiBpbmRleCAwYzc2YzE2MmI4YTkuLjEwOGRjNzUwNTBiYSAxMDA2NDQNCj4gPiAtLS0g
-YS9kcml2ZXJzL25ldC9ldGhlcm5ldC9yZWFsdGVrL3I4MTY5X21haW4uYw0KPiA+ICsrKyBiL2Ry
-aXZlcnMvbmV0L2V0aGVybmV0L3JlYWx0ZWsvcjgxNjlfbWFpbi5jDQo+ID4gQEAgLTYyNCw2ICs2
-MjQsNyBAQCBzdHJ1Y3QgcnRsODE2OV9wcml2YXRlIHsNCj4gPg0KPiA+ICAgICAgIHVuc2lnbmVk
-IHN1cHBvcnRzX2dtaWk6MTsNCj4gPiAgICAgICB1bnNpZ25lZCBhc3BtX21hbmFnZWFibGU6MTsN
-Cj4gPiArICAgICB1bnNpZ25lZCBkYXNoX2VuYWJsZWQ6MTsNCj4gPiAgICAgICBkbWFfYWRkcl90
-IGNvdW50ZXJzX3BoeXNfYWRkcjsNCj4gPiAgICAgICBzdHJ1Y3QgcnRsODE2OV9jb3VudGVycyAq
-Y291bnRlcnM7DQo+ID4gICAgICAgc3RydWN0IHJ0bDgxNjlfdGNfb2Zmc2V0cyB0Y19vZmZzZXQ7
-IEBAIC0xMjUzLDE0ICsxMjU0LDI2IEBADQo+ID4gc3RhdGljIGJvb2wgcjgxNjhlcF9jaGVja19k
-YXNoKHN0cnVjdCBydGw4MTY5X3ByaXZhdGUgKnRwKQ0KPiA+ICAgICAgIHJldHVybiByODE2OGVw
-X29jcF9yZWFkKHRwLCAweDEyOCkgJiBCSVQoMCk7ICB9DQo+ID4NCj4gPiAtc3RhdGljIGVudW0g
-cnRsX2Rhc2hfdHlwZSBydGxfY2hlY2tfZGFzaChzdHJ1Y3QgcnRsODE2OV9wcml2YXRlICp0cCkN
-Cj4gPiArc3RhdGljIGJvb2wgcnRsX2Rhc2hfaXNfZW5hYmxlZChzdHJ1Y3QgcnRsODE2OV9wcml2
-YXRlICp0cCkgew0KPiA+ICsgICAgIHN3aXRjaCAodHAtPmRhc2hfdHlwZSkgew0KPiA+ICsgICAg
-IGNhc2UgUlRMX0RBU0hfRFA6DQo+ID4gKyAgICAgICAgICAgICByZXR1cm4gcjgxNjhkcF9jaGVj
-a19kYXNoKHRwKTsNCj4gPiArICAgICBjYXNlIFJUTF9EQVNIX0VQOg0KPiA+ICsgICAgICAgICAg
-ICAgcmV0dXJuIHI4MTY4ZXBfY2hlY2tfZGFzaCh0cCk7DQo+ID4gKyAgICAgZGVmYXVsdDoNCj4g
-PiArICAgICAgICAgICAgIHJldHVybiBmYWxzZTsNCj4gPiArICAgICB9DQo+ID4gK30NCj4gPiAr
-DQo+ID4gK3N0YXRpYyBlbnVtIHJ0bF9kYXNoX3R5cGUgcnRsX2dldF9kYXNoX3R5cGUoc3RydWN0
-IHJ0bDgxNjlfcHJpdmF0ZQ0KPiA+ICsqdHApDQo+ID4gIHsNCj4gPiAgICAgICBzd2l0Y2ggKHRw
-LT5tYWNfdmVyc2lvbikgew0KPiA+ICAgICAgIGNhc2UgUlRMX0dJR0FfTUFDX1ZFUl8yODoNCj4g
-PiAgICAgICBjYXNlIFJUTF9HSUdBX01BQ19WRVJfMzE6DQo+ID4gLSAgICAgICAgICAgICByZXR1
-cm4gcjgxNjhkcF9jaGVja19kYXNoKHRwKSA/IFJUTF9EQVNIX0RQIDogUlRMX0RBU0hfTk9ORTsN
-Cj4gPiArICAgICAgICAgICAgIHJldHVybiBSVExfREFTSF9EUDsNCj4gPiAgICAgICBjYXNlIFJU
-TF9HSUdBX01BQ19WRVJfNTEgLi4uIFJUTF9HSUdBX01BQ19WRVJfNTM6DQo+ID4gLSAgICAgICAg
-ICAgICByZXR1cm4gcjgxNjhlcF9jaGVja19kYXNoKHRwKSA/IFJUTF9EQVNIX0VQIDogUlRMX0RB
-U0hfTk9ORTsNCj4gPiArICAgICAgICAgICAgIHJldHVybiBSVExfREFTSF9FUDsNCj4gPiAgICAg
-ICBkZWZhdWx0Og0KPiA+ICAgICAgICAgICAgICAgcmV0dXJuIFJUTF9EQVNIX05PTkU7DQo+ID4g
-ICAgICAgfQ0KPiA+IEBAIC0xNDUzLDcgKzE0NjYsNyBAQCBzdGF0aWMgdm9pZCBfX3J0bDgxNjlf
-c2V0X3dvbChzdHJ1Y3QNCj4gPiBydGw4MTY5X3ByaXZhdGUgKnRwLCB1MzIgd29sb3B0cykNCj4g
-Pg0KPiA+ICAgICAgIGRldmljZV9zZXRfd2FrZXVwX2VuYWJsZSh0cF90b19kZXYodHApLCB3b2xv
-cHRzKTsNCj4gPg0KPiA+IC0gICAgIGlmICh0cC0+ZGFzaF90eXBlID09IFJUTF9EQVNIX05PTkUp
-IHsNCj4gPiArICAgICBpZiAoIXRwLT5kYXNoX2VuYWJsZWQpIHsNCj4gPiAgICAgICAgICAgICAg
-IHJ0bF9zZXRfZDNfcGxsX2Rvd24odHAsICF3b2xvcHRzKTsNCj4gPiAgICAgICAgICAgICAgIHRw
-LT5kZXYtPndvbF9lbmFibGVkID0gd29sb3B0cyA/IDEgOiAwOw0KPiA+ICAgICAgIH0NCj4gPiBA
-QCAtMjUxMiw3ICsyNTI1LDcgQEAgc3RhdGljIHZvaWQgcnRsX3dvbF9lbmFibGVfcngoc3RydWN0
-DQo+ID4gcnRsODE2OV9wcml2YXRlICp0cCkNCj4gPg0KPiA+ICBzdGF0aWMgdm9pZCBydGxfcHJl
-cGFyZV9wb3dlcl9kb3duKHN0cnVjdCBydGw4MTY5X3ByaXZhdGUgKnRwKSAgew0KPiA+IC0gICAg
-IGlmICh0cC0+ZGFzaF90eXBlICE9IFJUTF9EQVNIX05PTkUpDQo+ID4gKyAgICAgaWYgKHRwLT5k
-YXNoX2VuYWJsZWQpDQo+ID4gICAgICAgICAgICAgICByZXR1cm47DQo+ID4NCj4gPiAgICAgICBp
-ZiAodHAtPm1hY192ZXJzaW9uID09IFJUTF9HSUdBX01BQ19WRVJfMzIgfHwgQEAgLTQ4NjksNyAr
-NDg4Miw3DQo+ID4gQEAgc3RhdGljIGludCBydGw4MTY5X3J1bnRpbWVfaWRsZShzdHJ1Y3QgZGV2
-aWNlICpkZXZpY2UpICB7DQo+ID4gICAgICAgc3RydWN0IHJ0bDgxNjlfcHJpdmF0ZSAqdHAgPSBk
-ZXZfZ2V0X2RydmRhdGEoZGV2aWNlKTsNCj4gPg0KPiA+IC0gICAgIGlmICh0cC0+ZGFzaF90eXBl
-ICE9IFJUTF9EQVNIX05PTkUpDQo+ID4gKyAgICAgaWYgKHRwLT5kYXNoX2VuYWJsZWQpDQo+ID4g
-ICAgICAgICAgICAgICByZXR1cm4gLUVCVVNZOw0KPiA+DQo+ID4gICAgICAgaWYgKCFuZXRpZl9y
-dW5uaW5nKHRwLT5kZXYpIHx8ICFuZXRpZl9jYXJyaWVyX29rKHRwLT5kZXYpKSBAQA0KPiA+IC00
-ODk2LDcgKzQ5MDksNyBAQCBzdGF0aWMgdm9pZCBydGxfc2h1dGRvd24oc3RydWN0IHBjaV9kZXYg
-KnBkZXYpDQo+ID4gICAgICAgcnRsX3Jhcl9zZXQodHAsIHRwLT5kZXYtPnBlcm1fYWRkcik7DQo+
-ID4NCj4gPiAgICAgICBpZiAoc3lzdGVtX3N0YXRlID09IFNZU1RFTV9QT1dFUl9PRkYgJiYNCj4g
-PiAtICAgICAgICAgdHAtPmRhc2hfdHlwZSA9PSBSVExfREFTSF9OT05FKSB7DQo+ID4gKyAgICAg
-ICAgICAgICAhdHAtPmRhc2hfZW5hYmxlZCkgew0KPiANCj4gU2luY2UgeW91IGhhdmUgdG8gcmVw
-b3N0LCBwbGVhc2UgbWFpbnRhaW4gdGhlIGNvcnJlY3QgaW5kZW50YXRpb24NCj4gYWJvdmU6DQo+
-IA0KPiAgICAgICAgIGlmIChzeXN0ZW1fc3RhdGUgPT0gU1lTVEVNX1BPV0VSX09GRiAmJg0KPiAg
-ICAgICAgICAgICAhdHAtPmRhc2hfZW5hYmxlZCkgew0KPiANCj4gICAgICAgICBeXl5eDQo+IHNw
-YWNlcyBoZXJlLg0KSSB3aWxsIGNvcnJlY3QgdGhlIGluZGVudGF0aW9uLiBUaGFua3MuDQo=
+stable-rc/linux-5.4.y baseline: 109 runs, 1 regressions (v5.4.260)
+
+Regressions Summary
+-------------------
+
+platform       | arch  | lab          | compiler | defconfig | regressions
+---------------+-------+--------------+----------+-----------+------------
+meson-gxm-q200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
+
+
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.4.y/kern=
+el/v5.4.260/plan/baseline/
+
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.4.y
+  Describe: v5.4.260
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      87e8e7a7aa1f96276252a90373de1d56add31918 =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform       | arch  | lab          | compiler | defconfig | regressions
+---------------+-------+--------------+----------+-----------+------------
+meson-gxm-q200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/654cd60ff2c48c3ceeefcf16
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.260=
+/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm-q200.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.4.y/v5.4.260=
+/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm-q200.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/654cd60ff2c48c3ceeefc=
+f17
+        new failure (last pass: v5.4.259-75-gca21f12ba7d85) =
+
+ =20
