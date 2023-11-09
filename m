@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D8887E646D
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 08:38:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 378ED7E6488
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 08:39:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232625AbjKIHis (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 02:38:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33856 "EHLO
+        id S233101AbjKIHjw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 02:39:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229697AbjKIHir (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 02:38:47 -0500
+        with ESMTP id S233109AbjKIHiz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 02:38:55 -0500
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18E3F173E;
-        Wed,  8 Nov 2023 23:38:45 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48399A4;
+        Wed,  8 Nov 2023 23:38:53 -0800 (PST)
 Received: from [127.0.1.1] (91-158-149-209.elisa-laajakaista.fi [91.158.149.209])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id EFE888CD;
-        Thu,  9 Nov 2023 08:38:19 +0100 (CET)
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id A50561BB1;
+        Thu,  9 Nov 2023 08:38:28 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1699515500;
-        bh=K5DujEbhOcvF8V0vOBipXP97KqHSFEg9HlwVJty2vcQ=;
-        h=From:Subject:Date:To:Cc:From;
-        b=oUXtpzDbina89XTQ0xCyroC7niGhleWtFzrd5nONQFWnXuynFZIk5SMerX7gJd86K
-         vFZnRcQSM8tt7RThRdnmtX/NVyQQW7OdJcpstV65SXQxYXD5i+NQWCQXYAuJCGjOv7
-         la2CHaft0vtsXb+msObjhepskpL6pS9+S1/s+H8E=
+        s=mail; t=1699515509;
+        bh=bQWW0pZKCuRvL4IYy0nb/sJkN3i+ZB5gIxx8kN/IznA=;
+        h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+        b=l0LuD9VGb7eGrWm9XEivrXjRtUJffMyYuUz8AQ6e05CYLu00NmxUHnvlSb+FQgE+y
+         zsRrT1lF6oCv6DOcX/wzDPsJ4CED71YeadhcEuDEd0bPG2ZFIljZSqKT3LjR9ohx/J
+         ins6WciQkLFs+8jHswhDa6gmUT0DT23Oyp+fHJWE=
 From:   Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH v2 00/11] drm/tidss: Probe related fixes and cleanups
-Date:   Thu, 09 Nov 2023 09:37:53 +0200
-Message-Id: <20231109-tidss-probe-v2-0-ac91b5ea35c0@ideasonboard.com>
+Date:   Thu, 09 Nov 2023 09:38:03 +0200
+Subject: [PATCH v2 10/11] drm/tidss: Fix atomic_flush check
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAFGMTGUC/1XMMQ6DMAyF4asgz01lhyBBp94DMQRiiocSFCPUC
- nH3pnTq+D/pfTsoJ2GFW7FD4k1U4pzDXgoYJj8/2EjIDRZtSViiWSWomiXFnk1duZ6wqYfSj5A
- fS+JRXqfWdrkn0TWm94lv9F1/DiH9ORsZNK4i1zCOjaPqLoG9xrmPPoXrEJ/QHcfxAZa/ehitA
- AAA
+Message-Id: <20231109-tidss-probe-v2-10-ac91b5ea35c0@ideasonboard.com>
+References: <20231109-tidss-probe-v2-0-ac91b5ea35c0@ideasonboard.com>
+In-Reply-To: <20231109-tidss-probe-v2-0-ac91b5ea35c0@ideasonboard.com>
 To:     Aradhya Bhatia <a-bhatia1@ti.com>,
         Devarsh Thakkar <devarsht@ti.com>,
         Jyri Sarha <jyri.sarha@iki.fi>,
@@ -49,69 +47,72 @@ Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
         Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
         stable@vger.kernel.org
 X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1683;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1862;
  i=tomi.valkeinen@ideasonboard.com; h=from:subject:message-id;
- bh=K5DujEbhOcvF8V0vOBipXP97KqHSFEg9HlwVJty2vcQ=;
- b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBlTIx5/yLJFpEz95q5saAlhY8HDiWiIQruDALpr
- YxC4SMpCw6JAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZUyMeQAKCRD6PaqMvJYe
- 9Q7tEACvpcHd4FERj8bnkkfGozhkNIkIamq2k8bAlryuvPHV6RGk1sFeeOozCSHncd0CK0CIMRu
- BTMzMyL8JiQyGiPBQyvwaaLJDwEdTvL0+m/sdZvyiDYD6WA46JNJiciJY9JDJrpyVUVrhza8cXQ
- AtFKQF5e4Hh2+TyyM2Q0+snYwJlppHMxqDBf3T/c3sgLVnGbFLDHJp8FCt7ri8ArmkmS8TSwlUR
- 78NMjrShiJLFOa5bzMHlhitgTE9DFatush1tkezO1k1tpC6wPs0OqKbpCwW3hKZR/SXmS4wlLNw
- 2euaNxQrShxJVYzb6tRZy8SaD26Yu802+pGn0kd4H4tkrESLcYlZRD/vVQ2XvmU7z+jxLHqqxwZ
- eE+T7D/NKNoHibh+knmPX+yH4wka+K4AusC1/pMHXZusU9NzuM0tvzfDoV/yErZFFKqKJ/eduqf
- 8saGCcnCSX69EdAE7KEFid+mynxGHOSE03y1X/vn4kfyQT8CKYqtCSUIE1HqA3w7Uv7e05GaqsJ
- 8331ip8Ez0Gcb76na398kO3gDD9xWM8SWV1vq55y2aKO7kYM6Rqpzf8UPkT4FwLr1J4mLAaNTEz
- GBgCOxMjkkDMJ3FKC0Xdws4o6JYsMTIZpHApJeGSuGLpnytKOT/E3sFR7Y3ay+ZPAvslx1jQFY8
- jwjwzxvSeJTaGVw==
+ bh=bQWW0pZKCuRvL4IYy0nb/sJkN3i+ZB5gIxx8kN/IznA=;
+ b=owEBbQKS/ZANAwAIAfo9qoy8lh71AcsmYgBlTIyAJ1HO4rcoZbtH19be+oc3Ci8occSFZkPT1
+ 5g9ExgrbdSJAjMEAAEIAB0WIQTEOAw+ll79gQef86f6PaqMvJYe9QUCZUyMgAAKCRD6PaqMvJYe
+ 9aK4D/9TZFHEorS4CIO2opcLsKveOvHzSNF7GVjMUdyC2+VwtHV9aOK9w/GH+Fg1ulHRhV0who3
+ wzU5oEyy03kPxpgx+6ZqG4/GOCOGCSzZecZsxxWInNhKE+PwhwUuZgZFRWf+TDN4buVb8uuzKkL
+ HPYOUwzGzLeOK4L+6cA9nyCg7xSJf9XpEchNWbPk63ZXTdld0G72d51K6OYL5Awu8L0D0ALwrHo
+ yHYyiv2lqSkY/jtElucHxmYqocQS2rhJ6mSCyJXOrPQkpqYyI/Jg3EtV51w7QjE+c7M3ANBdAk4
+ CBxPZSYB3fwR3lHjYU2XFxF64H+lR+hW9gZq/+49RHo5c3yUNwKjl+reS1jp7BZk3XHm1H7IXiv
+ Sda2sKpeDnduAIjtJLmyxo9ouB7VY4l3G8A/ZJad3w20DhrO0E2by5+fcCg0Q0LImTPkLK/ZbT/
+ hFX6yIQmJE8pAFyJcRnUalWwQ6NfPuGBu5bqlGfjkNoosx76nfD3/2VKn9ehFwaBf2EUhu1Nhaa
+ UAG0If8UvUjSSfwm/YphrmKHrUfK+r24knzPvZ/zloNF7FT77oElqqi5vHopO55ysk5lhlqaOnw
+ a87SxnFzLV1lkW8zg5/rsp7EMO4W0RgTS5bypPky4PnIwafKPwUCqSRhhVdwJ9yMjNEH5i6B9Xm
+ dLMJIvlAcjXrK8w==
 X-Developer-Key: i=tomi.valkeinen@ideasonboard.com; a=openpgp;
  fpr=C4380C3E965EFD81079FF3A7FA3DAA8CBC961EF5
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-While working on the TI BSP kernel, adding bootload splash screen
-support, I noticed some issues with the driver and opportunities for
-cleanups and improvements.
+tidss_crtc_atomic_flush() checks if the crtc is enabled, and if not,
+returns immediately as there's no reason to do any register changes.
 
- Tomi
+However, the code checks for 'crtc->state->enable', which does not
+reflect the actual HW state. We should instead look at the
+'crtc->state->active' flag.
 
+This causes the tidss_crtc_atomic_flush() to proceed with the flush even
+if the active state is false, which then causes us to hit the
+WARN_ON(!crtc->state->event) check.
+
+Fix this by checking the active flag, and while at it, fix the related
+debug print which had "active" and "needs modeset" wrong way.
+
+Cc: stable@vger.kernel.org
+Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
 Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 ---
-Changes in v2:
-- Add missing pm_runtime_dont_use_autosuspend() in error path
-- Add simple manual "reset" for K2G
-- Leave tidss->dispc NULL if dispc_init fails
-- Add Fixes tags
-- Drop "drm/tidss: Add dispc_is_idle()"
-- Add "drm/tidss: Use DRM_PLANE_COMMIT_ACTIVE_ONLY"
-- Link to v1: https://lore.kernel.org/r/20231101-tidss-probe-v1-0-45149e0f9415@ideasonboard.com
+ drivers/gpu/drm/tidss/tidss_crtc.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
----
-Tomi Valkeinen (11):
-      drm/tidss: Use pm_runtime_resume_and_get()
-      drm/tidss: Use PM autosuspend
-      drm/tidss: Drop useless variable init
-      drm/tidss: Move reset to the end of dispc_init()
-      drm/tidss: Return error value from from softreset
-      drm/tidss: Check for K2G in in dispc_softreset()
-      drm/tidss: Add simple K2G manual reset
-      drm/tidss: Fix dss reset
-      drm/tidss: IRQ code cleanup
-      drm/tidss: Fix atomic_flush check
-      drm/tidss: Use DRM_PLANE_COMMIT_ACTIVE_ONLY
+diff --git a/drivers/gpu/drm/tidss/tidss_crtc.c b/drivers/gpu/drm/tidss/tidss_crtc.c
+index 5e5e466f35d1..7c78c074e3a2 100644
+--- a/drivers/gpu/drm/tidss/tidss_crtc.c
++++ b/drivers/gpu/drm/tidss/tidss_crtc.c
+@@ -169,13 +169,13 @@ static void tidss_crtc_atomic_flush(struct drm_crtc *crtc,
+ 	struct tidss_device *tidss = to_tidss(ddev);
+ 	unsigned long flags;
+ 
+-	dev_dbg(ddev->dev,
+-		"%s: %s enabled %d, needs modeset %d, event %p\n", __func__,
+-		crtc->name, drm_atomic_crtc_needs_modeset(crtc->state),
+-		crtc->state->enable, crtc->state->event);
++	dev_dbg(ddev->dev, "%s: %s is %sactive, %s modeset, event %p\n",
++		__func__, crtc->name, crtc->state->active ? "" : "not ",
++		drm_atomic_crtc_needs_modeset(crtc->state) ? "needs" : "doesn't need",
++		crtc->state->event);
+ 
+ 	/* There is nothing to do if CRTC is not going to be enabled. */
+-	if (!crtc->state->enable)
++	if (!crtc->state->active)
+ 		return;
+ 
+ 	/*
 
- drivers/gpu/drm/tidss/tidss_crtc.c  | 12 ++----
- drivers/gpu/drm/tidss/tidss_dispc.c | 79 +++++++++++++++++++++++++++++++++----
- drivers/gpu/drm/tidss/tidss_drv.c   | 15 +++++--
- drivers/gpu/drm/tidss/tidss_irq.c   | 54 ++++---------------------
- drivers/gpu/drm/tidss/tidss_kms.c   |  2 +-
- 5 files changed, 97 insertions(+), 65 deletions(-)
----
-base-commit: 9d7c8c066916f231ca0ed4e4fce6c4b58ca3e451
-change-id: 20231030-tidss-probe-854b1098c3af
-
-Best regards,
 -- 
-Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+2.34.1
 
