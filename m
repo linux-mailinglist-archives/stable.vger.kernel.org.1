@@ -2,96 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 828227E669C
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 10:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 609FE7E66D2
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 10:31:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234340AbjKIJXh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 04:23:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34252 "EHLO
+        id S232046AbjKIJbF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 04:31:05 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234269AbjKIJXf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 04:23:35 -0500
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A687D26B1
-        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 01:23:31 -0800 (PST)
-X-UUID: a20d5a787ee111ee8051498923ad61e6-20231109
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=LwLaIgMGWJSJFkr+2QiUxV9wT496qyWwMkmiQeFkrzA=;
-        b=rERHYmIozZ1rCB1noFAxfJ4LODHp35Rs2ZPtpRppIvWD7+uxVxQHPj1zJw205RVk8RvCv79W7BiKr2g0vMPSGlqfDGMa6Zlp96JJxh4OiFLnSK5xFjC7sIR5wPUfUgpnZIlzna1HczODK0LnrnsOWsknBwM3MtlpQ1lLmN99xSk=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:9bd332f3-fe0f-4f40-8c70-8c5d431f7243,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:-5
-X-CID-META: VersionHash:364b77b,CLOUDID:366256fc-4a48-46e2-b946-12f04f20af8c,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:0,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,
-        DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: a20d5a787ee111ee8051498923ad61e6-20231109
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
-        (envelope-from <stuart.lee@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 61062969; Thu, 09 Nov 2023 17:23:24 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 9 Nov 2023 17:23:23 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 9 Nov 2023 17:23:23 +0800
-From:   Stuart Lee <stuart.lee@mediatek.com>
-To:     Stuart Lee <stuart.lee@mediatek.com>
-CC:     <stable@vger.kernel.org>
-Subject: [PATCH 1/1] drm/mediatek: Fix access violation in mtk_drm_crtc_dma_dev_get
-Date:   Thu, 9 Nov 2023 17:23:17 +0800
-Message-ID: <20231109092317.9046-2-stuart.lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20231109092317.9046-1-stuart.lee@mediatek.com>
-References: <20231109092317.9046-1-stuart.lee@mediatek.com>
+        with ESMTP id S231826AbjKIJbD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 04:31:03 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D092D44;
+        Thu,  9 Nov 2023 01:30:58 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDABC433C8;
+        Thu,  9 Nov 2023 09:30:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699522257;
+        bh=PZQMPnYlGnEWT673t/5m3TU6f1iHCeG8oTv/I5ehW6E=;
+        h=From:To:Cc:Subject:Date:From;
+        b=GisZhfwZ84diDIDf2mIw/gX/FvfZ8/audX+9nlBrRhzVfNzmDtcOqvnUBTEuRM+j1
+         WOREsxZdXozH9LmIYVGU9PekDEJgyKuD+e1HgAA+HiOxxBcbRC0k1OleQeBVe+Q4Bw
+         7nqzTA1P6Lw17xkWMGbgPG8HIBq2vsdGBDIKjPv6KGrZ8cFRfvHdKFmrVyAgXOG6Pc
+         skpnCj4ersGD6W7EDfezauoeHQeK4v24oUKayIjJMLOTbpJ4dcJLELRNiVJY0P3nE+
+         jbM0tjOJ+e4zEoIUrg9pLqhjiZnWnCJ3hjiq8D3h4TU3Ngj9pDV/7sgmC9QT1Vnvx8
+         34v1C4stiuB5Q==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan+linaro@kernel.org>)
+        id 1r11OB-0005CW-1Q;
+        Thu, 09 Nov 2023 10:31:51 +0100
+From:   Johan Hovold <johan+linaro@kernel.org>
+To:     Bjorn Andersson <andersson@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Johan Hovold <johan+linaro@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] soc: qcom: pmic_glink_altmode: fix port sanity check
+Date:   Thu,  9 Nov 2023 10:31:00 +0100
+Message-ID: <20231109093100.19971-1-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK:  N
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Add error handling to check NULL input in
-mtk_drm_crtc_dma_dev_get function.
+The PMIC GLINK altmode driver currently supports at most two ports.
 
-While display path is not configured correctly, none of crtc is
-established. So the caller of mtk_drm_crtc_dma_dev_get may pass
-input parameter *crtc as NULL, Which may cause coredump when
-we try to get the container of NULL pointer.
+Fix the incomplete port sanity check on notifications to avoid
+accessing and corrupting memory beyond the port array if we ever get a
+notification for an unsupported port.
 
-Fixes: cb1d6bcca542 ("drm/mediatek: Add dma dev get function")
-Signed-off-by: Stuart Lee <stuart.lee@mediatek.com>
-Cc: stable@vger.kernel.org
+Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+Cc: stable@vger.kernel.org	# 6.3
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/soc/qcom/pmic_glink_altmode.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-index c277b9fae950..047c9a31d306 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
-@@ -921,7 +921,14 @@ static int mtk_drm_crtc_init_comp_planes(struct drm_device *drm_dev,
+diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+index 974c14d1e0bf..561d6ba005f4 100644
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -285,7 +285,7 @@ static void pmic_glink_altmode_sc8180xp_notify(struct pmic_glink_altmode *altmod
  
- struct device *mtk_drm_crtc_dma_dev_get(struct drm_crtc *crtc)
- {
--	struct mtk_drm_crtc *mtk_crtc = to_mtk_crtc(crtc);
-+	struct mtk_drm_crtc *mtk_crtc = NULL;
-+
-+	if (!crtc)
-+		return NULL;
-+
-+	mtk_crtc = to_mtk_crtc(crtc);
-+	if (!mtk_crtc)
-+		return NULL;
+ 	svid = mux == 2 ? USB_TYPEC_DP_SID : 0;
  
- 	return mtk_crtc->dma_dev;
- }
+-	if (!altmode->ports[port].altmode) {
++	if (port >= ARRAY_SIZE(altmode->ports) || !altmode->ports[port].altmode) {
+ 		dev_dbg(altmode->dev, "notification on undefined port %d\n", port);
+ 		return;
+ 	}
+@@ -328,7 +328,7 @@ static void pmic_glink_altmode_sc8280xp_notify(struct pmic_glink_altmode *altmod
+ 	hpd_state = FIELD_GET(SC8280XP_HPD_STATE_MASK, notify->payload[8]);
+ 	hpd_irq = FIELD_GET(SC8280XP_HPD_IRQ_MASK, notify->payload[8]);
+ 
+-	if (!altmode->ports[port].altmode) {
++	if (port >= ARRAY_SIZE(altmode->ports) || !altmode->ports[port].altmode) {
+ 		dev_dbg(altmode->dev, "notification on undefined port %d\n", port);
+ 		return;
+ 	}
 -- 
-2.18.0
+2.41.0
 
