@@ -2,122 +2,268 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 555097E6A87
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 13:25:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12A077E6A86
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 13:25:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230006AbjKIMZh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 07:25:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52188 "EHLO
+        id S231658AbjKIMZN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 07:25:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229574AbjKIMZg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 07:25:36 -0500
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C94270C;
-        Thu,  9 Nov 2023 04:25:33 -0800 (PST)
-Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A9CIbbI014238;
-        Thu, 9 Nov 2023 12:24:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=r52TuHjOh2ZP6lSZRSvfxTIaePHgLmjlG0173xyI4pY=;
- b=T1yQLinqgtG9qw+j/iNU8Hv78xc9XbuVznPvBNV+gPCxa8/aIsa64TfI9O2ktBW/ZQj/
- rZbc/BzdQLQyaCM3rn3jx30Po4XT5Jl+AnPCF9UJ/XxSkwlx9ljA7/ihs6u8V8MfvtR0
- 2KJDcDCXdaAG1BYXsiyqRGxuvZSM0buclegu5BodLGcNiwsWG8KWDh5OQGW4wEsEoFl9
- gt6RIhEpjHFgfOpGqTqKNXBUoIJsTCfNcRYZpqXU3/+zK+BD1cYe/oM73HNdHPM88bsL
- wDtNl8THNo2bJAIs5Xhfy8fmAuubv7KN2MgDd2ryCZNxL8oTISGSzOGcyLTGOZd5plx5 IA== 
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u8y1x0r93-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Nov 2023 12:24:51 +0000
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A9AgP7x014320;
-        Thu, 9 Nov 2023 12:24:51 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u7w223pwe-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 09 Nov 2023 12:24:50 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-        by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A9COmK517236576
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 9 Nov 2023 12:24:49 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D780720043;
-        Thu,  9 Nov 2023 12:24:48 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A978C20040;
-        Thu,  9 Nov 2023 12:24:48 +0000 (GMT)
-Received: from [9.152.212.236] (unknown [9.152.212.236])
-        by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Thu,  9 Nov 2023 12:24:48 +0000 (GMT)
-Message-ID: <32af4ed531a6cf8e289d4dc9e1dbc5fb14bc1813.camel@linux.ibm.com>
-Subject: Re: [PATCH 1/1] swiotlb: fix out-of-bounds TLB allocations with
- CONFIG_SWIOTLB_DYNAMIC
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-To:     Petr =?UTF-8?Q?Tesa=C5=99=C3=ADk?= <petr@tesarici.cz>,
-        Petr Tesarik <petrtesarik@huaweicloud.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Petr Tesarik <petr.tesarik.ext@huawei.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
-        open list <linux-kernel@vger.kernel.org>,
-        Wangkefeng <wangkefeng.wang@huawei.com>,
-        Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        Petr Tesarik <petr.tesarik1@huawei-partners.com>,
-        Halil Pasic <pasic@linux.ibm.com>, stable@vger.kernel.org
-Date:   Thu, 09 Nov 2023 13:24:48 +0100
-In-Reply-To: <20231108132120.0538a778@meshulam.tesarici.cz>
-References: <20231108111249.261-1-petrtesarik@huaweicloud.com>
-         <20231108132120.0538a778@meshulam.tesarici.cz>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S229574AbjKIMZM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 07:25:12 -0500
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E08B2D55
+        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 04:25:10 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6b44befac59so1540866b3a.0
+        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 04:25:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699532709; x=1700137509; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=SJF0NYgHjRFvy/XYXjDfOttZRgM1l/BQCE2u+Li944Q=;
+        b=Fijeo4A5U8yrC/kzrVkMTsID2wvd+DBl4bCUKM3jgwn5INfqfdAOMw3wS+ThvvlBVS
+         tSPhsEAW5+xZocbpVU0gCI77vS8E//4OK5NSHRMBAO0/LjPvv2gIhjVsV1fic2vb4jN1
+         UjAJjDNU05rksOro0Cax6xICF4DMNt7WkBNs4CdIcrAJ39b8oCztZihtC3fFcJfD2yP3
+         UQ0ZTmmoE3a+/EJrwSqFVwnIjQ9mmxhZSauA83rSALCgb3qbhHrHcJzR7Lv8IxgzbZx4
+         d6ZMuDaZayJry6agXuU0pO7G5pLJOI5QQr+HFZMXA5uFMSIWIAi8E9sh6j3uei7RT77y
+         hTKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699532709; x=1700137509;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SJF0NYgHjRFvy/XYXjDfOttZRgM1l/BQCE2u+Li944Q=;
+        b=ADG2ODzPwtSpfcTWIIND9ZjHispIoahkHs6dJEU50lVCZ/A5MZUDuhM5JeWuOyvvx1
+         PUFv18ae9hIjDANRI5sUzqgUKN4GkTLh8FB2jraOXs8i24jXwEj13pzrLkWNE1aRiOtt
+         CYRNsFSkNo0sjWLyqDOcNmxhDSHDu+kVxZbrMTJRtnfnV7aRqUJNdfjya56KQuf1ALIn
+         6uiuYvJdw1OQaXx7yjXXrXdGjDYjy7H0Povh6DgxkdTEdKWph9ItZWnHAXNX7HefkYIH
+         Ckeh0+TIFUejExjcoOy8pu6Cye7CP2jcNGM4IPPo2xJWzrtMfa0HlAts1czvEm3lgdbe
+         fmhw==
+X-Gm-Message-State: AOJu0Yx5T60OAHw+KBFDs+zi0VpJiylKFAOs5BCLyoP8Aff37bsU/KuL
+        Qveoxt8wqygcey6xmoheUZr3AXv31L4L+7ZmoxfaNg==
+X-Google-Smtp-Source: AGHT+IHImJGlm5wlehI9fl7oTKXH/TWFkM6N0sqVnUiNEXL1AXLYUXV4mQTAUbSVdjC5O3fNTqpofA==
+X-Received: by 2002:a05:6a20:840d:b0:15c:b7ba:1671 with SMTP id c13-20020a056a20840d00b0015cb7ba1671mr7227376pzd.2.1699532709217;
+        Thu, 09 Nov 2023 04:25:09 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id h1-20020a056a00230100b006889511ab14sm10588257pfh.37.2023.11.09.04.25.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Nov 2023 04:25:08 -0800 (PST)
+Message-ID: <654ccfa4.050a0220.e8c9a.a308@mx.google.com>
+Date:   Thu, 09 Nov 2023 04:25:08 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: H8BwPvaDeN7rhk65lV9qf2uhtoVCO0IM
-X-Proofpoint-ORIG-GUID: H8BwPvaDeN7rhk65lV9qf2uhtoVCO0IM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-09_10,2023-11-09_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
- mlxlogscore=843 clxscore=1011 phishscore=0 adultscore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2311090092
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v4.14.329
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-4.14.y build: 16 builds: 2 failed, 14 passed,
+ 19 warnings (v4.14.329)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 2023-11-08 at 13:21 +0100, Petr Tesa=C5=99=C3=ADk wrote:
-> On Wed,  8 Nov 2023 12:12:49 +0100
-> Petr Tesarik <petrtesarik@huaweicloud.com> wrote:
->=20
-> > From: Petr Tesarik <petr.tesarik1@huawei-partners.com>
-> >=20
-> > Limit the free list length to the size of the IO TLB. Transient pool ca=
-n be
-> > smaller than IO_TLB_SEGSIZE, but the free list is initialized with the
-> > assumption that the total number of slots is a multiple of IO_TLB_SEGSI=
-ZE.
-> > As a result, swiotlb_area_find_slots() may allocate slots past the end =
-of
-> > a transient IO TLB buffer.
->=20
-> Just to make it clear, this patch addresses only the memory corruption
-> reported by Niklas, without addressing the underlying issues. Where
-> corruption happened before, allocations will fail with this patch.
->=20
-> I am still looking into improving the allocation strategy itself.
->=20
-> Petr T
+stable-rc/linux-4.14.y build: 16 builds: 2 failed, 14 passed, 19 warnings (=
+v4.14.329)
 
-I know this has already been applied but for what its worth I did
-finally manage to test this with my reproducer and the allocation
-overrun is fixed by this change. I also confirmed that at least my
-ConnectX VF TCP/IP test case seems to handle the DMA error gracefully
-enough.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.329/
 
-Thanks,
-Niklas
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.329
+Git Commit: 3b717ad0e90f88642da05bdea585d5ee98c287cb
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
+
+Build Failures Detected:
+
+arm64:
+    defconfig+arm64-chromebook: (gcc-10) FAIL
+
+x86_64:
+    x86_64_defconfig+x86-board: (gcc-10) FAIL
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    6    ld: warning: creating DT_TEXTREL in a PIE
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    2    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 0 errors, 1 war=
+ning, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+
+---
+For more info write to <info@kernelci.org>
