@@ -2,93 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E79957E6F96
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 17:45:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 717FA7E6FE4
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 18:11:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235181AbjKIQpw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 11:45:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48498 "EHLO
+        id S234627AbjKIRLs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 12:11:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235017AbjKIQpj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 11:45:39 -0500
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D72805BAA;
-        Thu,  9 Nov 2023 08:43:51 -0800 (PST)
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3A9GhXptD1672698, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-        by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3A9GhXptD1672698
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 10 Nov 2023 00:43:33 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.32; Fri, 10 Nov 2023 00:43:34 +0800
-Received: from Test06-PC.realtek.com.tw (172.22.228.55) by
- RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.7; Fri, 10 Nov 2023 00:43:33 +0800
-From:   ChunHao Lin <hau@realtek.com>
-To:     <hkallweit1@gmail.com>
-CC:     <nic_swsd@realtek.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        ChunHao Lin <hau@realtek.com>, <stable@vger.kernel.org>
-Subject: [PATCH net v3 2/2] r8169: fix network lost after resume on DASH systems
-Date:   Fri, 10 Nov 2023 00:43:27 +0800
-Message-ID: <20231109164327.3577-3-hau@realtek.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231109164327.3577-1-hau@realtek.com>
-References: <20231109164327.3577-1-hau@realtek.com>
+        with ESMTP id S232373AbjKIRLr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 12:11:47 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 987AB30D0;
+        Thu,  9 Nov 2023 09:11:45 -0800 (PST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A9HB1We032505;
+        Thu, 9 Nov 2023 17:11:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=nrvFh2fd1vzzeix+pUFKXs76rwQENYotxEwliyOjHjs=;
+ b=mppCgzg83eQqwNqBiPisYmeng6Rd5Ip0c9BpiJKQ6bDZjAhW2W7csW1bNBhltBI17phj
+ oWnpHCyj8sBgsSRaPg+gRg8IFbqIQpK8Dn78npBRy9TpmC+bPIanqNTY29/4uozcrBoI
+ BDSsnoM37UpOIRknqe+pLdBOfCfBSHsWCPGccPej/MuZi4vWPdN7C9ws0zfbmz1LKdqP
+ 6skQv/8nJfqgb2wzjULi77Gz8opQgvH4ZEQro/TRbwv+YO9D5AZmnDmJqThU25eOVWKP
+ VG3EeGXWdUvN1ptUIGifJchIl3KG2WtiKg4uP6C8+u7JpNZlcxofWDijyE3i2uiXXecR Kg== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u93kh00hu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Nov 2023 17:11:44 +0000
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3A9GlaFI003039;
+        Thu, 9 Nov 2023 17:04:21 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u937fgjs1-3
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Nov 2023 17:04:21 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+        by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A9GedSi019261;
+        Thu, 9 Nov 2023 16:44:50 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+        by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3u7w2450s4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Nov 2023 16:44:50 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+        by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A9Gin1O57737590
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 9 Nov 2023 16:44:49 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 707D858056;
+        Thu,  9 Nov 2023 16:44:49 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D7A4C58052;
+        Thu,  9 Nov 2023 16:44:41 +0000 (GMT)
+Received: from li-2c1e724c-2c76-11b2-a85c-ae42eaf3cb3d.ibm.com.com (unknown [9.61.74.193])
+        by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+        Thu,  9 Nov 2023 16:44:41 +0000 (GMT)
+From:   Tony Krowiak <akrowiak@linux.ibm.com>
+To:     linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc:     jjherne@linux.ibm.com, pasic@linux.ibm.com,
+        borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, david@redhat.com,
+        Anthony Krowiak <akrowiak@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>, stable@vger.kernel.org
+Subject: [PATCH v3 1/3] s390/vfio-ap: unpin pages on gisc registration failure
+Date:   Thu,  9 Nov 2023 11:44:20 -0500
+Message-ID: <20231109164427.460493-2-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20231109164427.460493-1-akrowiak@linux.ibm.com>
+References: <20231109164427.460493-1-akrowiak@linux.ibm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [172.22.228.55]
-X-ClientProxiedBy: RTEXH36505.realtek.com.tw (172.21.6.25) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
-X-KSE-ServerInfo: RTEXMBS04.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-ServerInfo: RTEXH36505.realtek.com.tw, 9
-X-KSE-AntiSpam-Interceptor-Info: fallback
-X-KSE-Antivirus-Interceptor-Info: fallback
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OfAmeZntrcJGE9U2PyCJyHushi2tsG0K
+X-Proofpoint-GUID: iZzwxLJnwPbe6dLupgpxAUiVeOrS-imM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-09_14,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 mlxlogscore=999 clxscore=1015 suspectscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 impostorscore=0 malwarescore=0
+ mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311090130
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Device that support DASH may be reseted or powered off during suspend.
-So driver needs to handle DASH during system suspend and resume. Or
-DASH firmware will influence device behavior and causes network lost.
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-Fixes: b646d90053f8 ("r8169: magic.")
-Cc: stable@vger.kernel.org
-Signed-off-by: ChunHao Lin <hau@realtek.com>
+In the vfio_ap_irq_enable function, after the page containing the
+notification indicator byte (NIB) is pinned, the function attempts
+to register the guest ISC. If registration fails, the function sets the
+status response code and returns without unpinning the page containing
+the NIB. In order to avoid a memory leak, the NIB should be unpinned before
+returning from the vfio_ap_irq_enable function.
+
+Co-developed-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Fixes: 783f0a3ccd79 ("s390/vfio-ap: add s390dbf logging to the vfio_ap_irq_enable function")
+Cc: <stable@vger.kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/s390/crypto/vfio_ap_ops.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 4954ff0f72b1..7e90dac2d97d 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4661,10 +4661,16 @@ static void rtl8169_down(struct rtl8169_private *tp)
- 	rtl8169_cleanup(tp);
- 	rtl_disable_exit_l1(tp);
- 	rtl_prepare_power_down(tp);
-+
-+	if (tp->dash_type != RTL_DASH_NONE)
-+		rtl8168_driver_stop(tp);
- }
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index 4db538a55192..9cb28978c186 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -457,6 +457,7 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
+ 		VFIO_AP_DBF_WARN("%s: gisc registration failed: nisc=%d, isc=%d, apqn=%#04x\n",
+ 				 __func__, nisc, isc, q->apqn);
  
- static void rtl8169_up(struct rtl8169_private *tp)
- {
-+	if (tp->dash_type != RTL_DASH_NONE)
-+		rtl8168_driver_start(tp);
-+
- 	pci_set_master(tp->pci_dev);
- 	phy_init_hw(tp->phydev);
- 	phy_resume(tp->phydev);
++		vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
+ 		status.response_code = AP_RESPONSE_INVALID_GISA;
+ 		return status;
+ 	}
 -- 
-2.39.2
+2.41.0
 
