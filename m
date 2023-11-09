@@ -2,83 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD5E97E6C65
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 15:26:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 643E97E6C69
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 15:28:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234359AbjKIO0x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 09:26:53 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48336 "EHLO
+        id S232091AbjKIO2e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 09:28:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234194AbjKIO0w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 09:26:52 -0500
-Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08D3184
-        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 06:26:50 -0800 (PST)
-Received: from kwepemm000007.china.huawei.com (unknown [172.30.72.57])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4SR40V2bx7zMl5r;
-        Thu,  9 Nov 2023 22:22:18 +0800 (CST)
-Received: from DESKTOP-6NKE0BC.china.huawei.com (10.174.185.210) by
- kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.31; Thu, 9 Nov 2023 22:26:47 +0800
-From:   Kunkun Jiang <jiangkunkun@huawei.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>, <stable@vger.kernel.org>
-CC:     Dongli Zhang <dongli.zhang@oracle.com>, <kvmarm@lists.linux.dev>,
-        <wanghaibin.wang@huawei.com>, <yuzenghui@huawei.com>,
-        Kunkun Jiang <jiangkunkun@huawei.com>
-Subject: [stable-4.14 PATCH] scsi: virtio_scsi: limit number of hw queues by nr_cpu_ids
-Date:   Thu, 9 Nov 2023 22:26:36 +0800
-Message-ID: <20231109142636.1529-1-jiangkunkun@huawei.com>
-X-Mailer: git-send-email 2.26.2.windows.1
+        with ESMTP id S231659AbjKIO2d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 09:28:33 -0500
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91825184
+        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 06:28:31 -0800 (PST)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-5a90d6ab962so11106557b3.2
+        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 06:28:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1699540111; x=1700144911; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=OiBm5sPw96SiR0IGoxFNn3RBFbgfNC/bWK202lBgfEU=;
+        b=U3q2Dkg6Pv9Dp5wlJDo0T/7BOsQ48MH+8pfHJXAUPDYAMSaaFT6SFA88V4qHUHAvyW
+         x2/CJ5hhLuj/u5iIJnnqqcQ0VH3Se8UdOOKFZuT7OvAiZ0vMjgvNdwWJswW/5ZFUh/fT
+         i5sxut7hhzsp95y7jkd5OSUD1FPOGvLtj8GF/gh+JPrtMSQ7VZ+70IjPIE1+KgS/5ls6
+         0LtvfzjtJOFNsy+6rtQomS4QQTUJ1FytJEwetTrRliClt057QpTVnt+msCGZ9ICU+rNP
+         9anl0zmT8qFcvqKj/JsY8y/e1SatZlOzgAW6crT+Lu4qmJvmPKfX96firCU6RBse6hER
+         shUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699540111; x=1700144911;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OiBm5sPw96SiR0IGoxFNn3RBFbgfNC/bWK202lBgfEU=;
+        b=vbyeZJhSko+sgPiPyU+apA5PgwEf5eGwZbqaR4p4r8LBuHzDaBhcbBQLF3AdOypmof
+         GOBpwJ0td6jU+7cLDh+rqVCyG/Vpb2pnrkPDTT9b2axSs3iEzEIHuN2eZmXsJKdjPpuz
+         9Q9XUvNfzaYOGMYNldrIvo7/Tud77vKFPLdKWkkr4SDecLQXJq3s/0+bF382LhmWLDrG
+         RRvrfvVnx3LAuVwOm6L32mz6t7io9YqPer2zgO889LBKExJ1KTJQOOyeNHrIjsazXxz1
+         wzlWn8P+WytI8ASk4ONptNfSNbLsiUjTeAaC8muV6Ri0KF+pvscaNWrkF28XRd9ekn6R
+         8N7Q==
+X-Gm-Message-State: AOJu0YzNrEAnHV4ouK/ea0YLV/Wlv8HU60PRmVvXBNzG6m9GVtYX638r
+        hjYV6RP+v5DNWkb0NK96g8zE8fgRKpRzdq+Ic39Jug==
+X-Google-Smtp-Source: AGHT+IHjHrbh0/nqFgWusFIU7pH6Xcx7ZGhZvYC7PoVRBLlGmpMQi61cINEisGMWZuPi4JdaAzan8N4NV0ogrYpHwPw=
+X-Received: by 2002:a81:9242:0:b0:5a1:d398:2e with SMTP id j63-20020a819242000000b005a1d398002emr5540050ywg.37.1699540110602;
+ Thu, 09 Nov 2023 06:28:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.174.185.210]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemm000007.china.huawei.com (7.193.23.189)
-X-CFilter-Loop: Reflected
+References: <20231109093100.19971-1-johan+linaro@kernel.org>
+ <0edf26f9-46c8-4c9b-a68e-a92a78b5684e@linaro.org> <ZUzjFFUc1dOE8C54@hovoldconsulting.com>
+In-Reply-To: <ZUzjFFUc1dOE8C54@hovoldconsulting.com>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Thu, 9 Nov 2023 16:28:19 +0200
+Message-ID: <CAA8EJpoAwFaush7GQgp=LSmd7OyfBLFw+fLRanqY3wD8p8KZKQ@mail.gmail.com>
+Subject: Re: [PATCH] soc: qcom: pmic_glink_altmode: fix port sanity check
+To:     Johan Hovold <johan@kernel.org>
+Cc:     Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+On Thu, 9 Nov 2023 at 15:47, Johan Hovold <johan@kernel.org> wrote:
+>
+> On Thu, Nov 09, 2023 at 02:28:59PM +0100, Konrad Dybcio wrote:
+> > On 11/9/23 10:31, Johan Hovold wrote:
+>
+> > > -   if (!altmode->ports[port].altmode) {
+> > > +   if (port >= ARRAY_SIZE(altmode->ports) || !altmode->ports[port].altmode) {
+>
+> > I'd personally use PMIC_GLINK_MAX_PORTS directly but it's the same
+>
+> That's what I'd generally do as well, but here I followed the style of
+> this driver (and using ARRAY_SIZE() is arguable more safe).
 
-[ Upstream commit 1978f30a87732d4d9072a20abeded9fe17884f1b ]
+I'd prefer ARRAY_SIZE here too.
 
-When tag_set->nr_maps is 1, the block layer limits the number of hw queues
-by nr_cpu_ids. No matter how many hw queues are used by virtio-scsi, as it
-has (tag_set->nr_maps == 1), it can use at most nr_cpu_ids hw queues.
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-In addition, specifically for pci scenario, when the 'num_queues' specified
-by qemu is more than maxcpus, virtio-scsi would not be able to allocate
-more than maxcpus vectors in order to have a vector for each queue. As a
-result, it falls back into MSI-X with one vector for config and one shared
-for queues.
+>
+> > Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+>
+> Thanks for reviewing.
+>
+> Johan
+>
 
-Considering above reasons, this patch limits the number of hw queues used
-by virtio-scsi by nr_cpu_ids.
 
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
----
- drivers/scsi/virtio_scsi.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/scsi/virtio_scsi.c b/drivers/scsi/virtio_scsi.c
-index 2839701ffab5..427bd88c1647 100644
---- a/drivers/scsi/virtio_scsi.c
-+++ b/drivers/scsi/virtio_scsi.c
-@@ -891,6 +891,7 @@ static int virtscsi_probe(struct virtio_device *vdev)
- 
- 	/* We need to know how many queues before we allocate. */
- 	num_queues = virtscsi_config_get(vdev, num_queues) ? : 1;
-+	num_queues = min_t(unsigned int, nr_cpu_ids, num_queues);
- 
- 	num_targets = virtscsi_config_get(vdev, max_target) + 1;
- 
 -- 
-2.33.0
-
+With best wishes
+Dmitry
