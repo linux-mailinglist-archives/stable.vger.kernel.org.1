@@ -2,71 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8913F7E602A
-	for <lists+stable@lfdr.de>; Wed,  8 Nov 2023 22:48:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99FF47E622A
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 03:26:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229551AbjKHVsc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 8 Nov 2023 16:48:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53932 "EHLO
+        id S231514AbjKIC0X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 8 Nov 2023 21:26:23 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229460AbjKHVsb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 16:48:31 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 737D8258D
-        for <stable@vger.kernel.org>; Wed,  8 Nov 2023 13:48:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=b8NLj0A75vECiKuBG76LMuM8DoRoYCbpAFm9PE4OATA=; b=ZZeqBfonCcqvEi+G9NBtIC6djJ
-        Uu3cxaTrNvM3/v1/pvq/oDskntrFwuqw2PJ5dckJXj7ZjUmufYegNKROa4tvivONASNgHFbXoI1or
-        9+skRzWL713TjsD4t4PIpin7WF93ZpZwRnCBYJIR1M+Vp5J245L/Zc/BMl4388GKC3Oq+k2ZBiYBi
-        Ych/mz0n11wF+tB9kfDVqit+jfrcypb0zyRr/VQ3MYpzUU7jL8xKAQmI+88yTpm9dXQmNZ7R+47xQ
-        mgpk2QraMQlO38pCypexOvygSbPDWpDT7k0rayjVqgWiZXDU8vvhZswd7XcQ96ggBxzooqk9Gieav
-        /l/x5xGA==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1r0qPM-003O3N-Al; Wed, 08 Nov 2023 21:48:20 +0000
-Date:   Wed, 8 Nov 2023 21:48:20 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Naoya Horiguchi <naoya.horiguchi@nec.com>, linux-mm@kvack.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH 2/6] mm: Convert __do_fault() to use a folio
-Message-ID: <ZUwCJJy7kqrMPS4M@casper.infradead.org>
-References: <20231108182809.602073-1-willy@infradead.org>
- <20231108182809.602073-3-willy@infradead.org>
- <20231108130751.f515f0f3c5ce5fb5b1d70fb0@linux-foundation.org>
+        with ESMTP id S232088AbjKIC0W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 8 Nov 2023 21:26:22 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 702CA26A5;
+        Wed,  8 Nov 2023 18:26:20 -0800 (PST)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864A7C433C7;
+        Thu,  9 Nov 2023 02:26:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1699496780;
+        bh=bvkrLtnAeHE0QC2OdmfX8Hg2tktQ7eKe6WDZsBHFo1w=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=DUr3DwBIu27FhAKrid+Jirzy8lFaAV0ao2SEx4/SFo6q40YtjpLlneu/slcP93h0F
+         kyXqzDD0cUFDJUG769F23SX5dH6/dYZVF3lKMdEvE+p5zW0yyugCc0H0d3IdAsoLn4
+         iFTD9mdC9sHQwo39naD8w0oqdguPdY+TGnGc5VCwCKoZ4o9djS8ZXxvB8r3sbCCL5M
+         KuhDPO/wZcC9N5bc6CPsN9aRjWfsUOFx4VIJLc0dvyToz1Bla6ayDV8o+G0G62iIhX
+         c1F2YnqyhdnTGMtGdEz4dn7Bkw6wuHup1xZMVLyMaGpR/e6dZ4hzQZOTcbPs5RYDr2
+         m7xb2/QMUYmlQ==
+Date:   Wed, 8 Nov 2023 18:26:18 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Haiyang Zhang <haiyangz@microsoft.com>
+Cc:     linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+        kys@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+        edumazet@google.com, pabeni@redhat.com, davem@davemloft.net,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net,v3, 2/2] hv_netvsc: Fix race of
+ register_netdevice_notifier and VF register
+Message-ID: <20231108182618.09ef4dfe@kernel.org>
+In-Reply-To: <1699391132-30317-3-git-send-email-haiyangz@microsoft.com>
+References: <1699391132-30317-1-git-send-email-haiyangz@microsoft.com>
+        <1699391132-30317-3-git-send-email-haiyangz@microsoft.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231108130751.f515f0f3c5ce5fb5b1d70fb0@linux-foundation.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Nov 08, 2023 at 01:07:51PM -0800, Andrew Morton wrote:
-> On Wed,  8 Nov 2023 18:28:05 +0000 "Matthew Wilcox (Oracle)" <willy@infradead.org> wrote:
-> 
-> > Convert vmf->page to a folio as soon as we're going to use it.  This fixes
-> > a bug if the fault handler returns a tail page with hardware poison;
-> > tail pages have an invalid page->index, so we would fail to unmap the
-> > page from the page tables.  We actually have to unmap the entire folio (or
-> > mapping_evict_folio() will
-> 
-> Would we merely fail to unmap or is there a possibility of unmapping
-> some random innocent other page?
-> 
-> How might this bug manifest in userspace, worst case?
+On Tue,  7 Nov 2023 13:05:32 -0800 Haiyang Zhang wrote:
+> If VF NIC is registered earlier, NETDEV_REGISTER event is replayed,
+> but NETDEV_POST_INIT is not.
 
-I think we might unmap a random other page in this file.  But then the
-next fault on that page will bring it back in, so it's only going to be
-a tiny performance blip.  And we've just found a hwpoisoned page which
-is going to cause all kinds of other excitement, so I doubt it'll be
-noticed in the grand scheme of things.
+But Long Li sent the patch which starts to use POST_INIT against 
+the net-next tree. If we apply this to net and Long Li's patch to
+net-next one release will have half of the fixes.
 
-> As it's cc:stable I'll pluck this patch out of the rest of the series
-> and shall stage it for 6.7-rcX, via mm-hotfixes-unstable ->
-> mm-hotfixes-stable -> Linus.  Unless this bug is a very minor thing?
-
-I think it's minor enough that it can wait for 6.8.  Unless anyone
-disagrees?
+I think that you should add Long Li's patch to this series. That'd
+limit the confusion and git preserves authorship of the changes, so
+neither of you will loose the credit.
