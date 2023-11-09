@@ -2,114 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 999E07E6B22
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 14:20:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB7D57E6B36
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 14:29:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231214AbjKINUD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 08:20:03 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48714 "EHLO
+        id S234053AbjKIN3H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 08:29:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230055AbjKINUB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 08:20:01 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDF7258D;
-        Thu,  9 Nov 2023 05:19:59 -0800 (PST)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5695C433C8;
-        Thu,  9 Nov 2023 13:19:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1699535999;
-        bh=2wotBFo7qvg7akdvTnz8qabiXIviFbO32EETNXcxzCQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VipHGSRgz4RaLJ1IpUaB8f2kjMTcGoNbgjAZxhM+rT7bfourLW2rQnQh8As4qN6rL
-         N9squphTsRbQXLLASZkkXEq/i8ZIZGGr11RV2k9Ey+YqPMdNJ/QdA0JlV4kfhu81Qt
-         H4dlqU5cgxegQyxLCCsPP5XPnpoFlr+PPjXoM5371dhG+1umBuL8/VFBJSUCH/WXIA
-         FonGdWquq/V06Rb37DjglS4xywdLUUOE9ufpSmbWefHWZWf9UPXrHCzk/jNSKQKFDg
-         dN+U52Xwwds3GDdCEfWRl7IvyfEXIub7uxvMX84HE94/pN/2ljmHJIlEzAGeE/9cds
-         KQfFxfYzooLQA==
-Date:   Thu, 9 Nov 2023 21:19:48 +0800
-From:   Peter Chen <peter.chen@kernel.org>
-To:     Pawel Laszczak <pawell@cadence.com>
-Cc:     gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] usb: cdnsp: Fix deadlock issue during using NCM gadget
-Message-ID: <20231109131948.GB48178@nchen-desktop>
-References: <20231108093125.224963-1-pawell@cadence.com>
+        with ESMTP id S230055AbjKIN3G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 08:29:06 -0500
+Received: from mail-wm1-x333.google.com (mail-wm1-x333.google.com [IPv6:2a00:1450:4864:20::333])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5EA430CD
+        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 05:29:04 -0800 (PST)
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-4083cd3917eso6178155e9.3
+        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 05:29:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1699536543; x=1700141343; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=L6lBJj4NeOTlbTzOMMV3Vht/yRGVcOP2vUzfnCr54NA=;
+        b=GZiJpeaLEZKQEBOMuNyM0oa2jRjY54GreheXU8MAGkJO+N3oMg78LLMtKIaDoC/gLL
+         GoF8WOEwbiwypxKji3hkR2T2U6eIt0GebM/ChEbIVH1CBYKq+HAjrN80K0K707B8M8lo
+         LrAO1BeoPW3+4qOMiRqI+tHzFWJ5Q5KTae+zWX7hSfRvEp21n1U7/JE8wFXpaaF5A3Ni
+         HFLHy4i0D6alB1jIFX0E2MPCM+BFmhZcvwObuBYQ+IDO2yRJ1rRIKqfwxz/hPzhTlsKL
+         bJlCqnDGKMgFmcyI8t5ptzsO7ZIQf1gFhYcf0vmwfiPsGWh1JZAlpsI2p4XVdf3p1TSB
+         5aAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699536543; x=1700141343;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=L6lBJj4NeOTlbTzOMMV3Vht/yRGVcOP2vUzfnCr54NA=;
+        b=XXfeN7C5d5150XeR54VNGu+zowxMmVxrdqGRxgoHeqnq4sq0pMXwGFh8nmdSMkPy4A
+         7Wr9y+QBYuMc72JjpHgw/tBFyXZoaQBAPLOPhqPLDu2VHG5EW0aVPa+8mHjPqao0HzEM
+         c7gJCIsY3b6Vy7RY0Y0H8jHwV8ENXyj0tUN/V5K0z0EY7aQp4v30Zite8wpPqCNLUOaq
+         jtOdz7sT2/Zt+tia+yhCmSMX8nvqCjh5Zzjc9VPLxanqlCMB0oIlogbvhxGEn5a1lcTk
+         dYyzFbE2BO2z6W288TuZKQSlAs9oyzvgoJeiYULLaJhoGQ0swkvUx6tnl83NVWKZri9Z
+         k2Xw==
+X-Gm-Message-State: AOJu0Yxq+6F7hI6fF8DSuXZVH/pmFc3qItVfsfQFhcvDaBfiHJCK/+t0
+        WH99low65dQXd1dwCWjAF+BceQ==
+X-Google-Smtp-Source: AGHT+IEz2E5ROHq7FzQOUSdgDqt0dBtEGV3u7QEbT82rj8kDTN+wurB8NdRa7RfMlwzRk8zXZ5MS8g==
+X-Received: by 2002:a05:600c:35d2:b0:406:52e4:cd23 with SMTP id r18-20020a05600c35d200b0040652e4cd23mr4107757wmq.0.1699536543052;
+        Thu, 09 Nov 2023 05:29:03 -0800 (PST)
+Received: from [10.66.66.2] (9.ip-51-91-159.eu. [51.91.159.9])
+        by smtp.gmail.com with ESMTPSA id f23-20020a1c6a17000000b0040648217f4fsm2052596wmc.39.2023.11.09.05.29.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 09 Nov 2023 05:29:02 -0800 (PST)
+Message-ID: <0edf26f9-46c8-4c9b-a68e-a92a78b5684e@linaro.org>
+Date:   Thu, 9 Nov 2023 14:28:59 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231108093125.224963-1-pawell@cadence.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soc: qcom: pmic_glink_altmode: fix port sanity check
+To:     Johan Hovold <johan+linaro@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>
+Cc:     Andy Gross <agross@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20231109093100.19971-1-johan+linaro@kernel.org>
+Content-Language: en-US
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+In-Reply-To: <20231109093100.19971-1-johan+linaro@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 23-11-08 10:31:25, Pawel Laszczak wrote:
-> The interrupt service routine registered for the gadget is a primary
-> handler which mask the interrupt source and a threaded handler which
-> handles the source of the interrupt. Since the threaded handler is
-> voluntary threaded, the IRQ-core does not disable bottom halves before
-> invoke the handler like it does for the forced-threaded handler.
-> 
-> Due to changes in networking it became visible that a network gadget's
-> completions handler may schedule a softirq which remains unprocessed.
-> The gadget's completion handler is usually invoked either in hard-IRQ or
-> soft-IRQ context. In this context it is enough to just raise the softirq
-> because the softirq itself will be handled once that context is left.
-> In the case of the voluntary threaded handler, there is nothing that
-> will process pending softirqs. Which means it remain queued until
-> another random interrupt (on this CPU) fires and handles it on its exit
-> path or another thread locks and unlocks a lock with the bh suffix.
-> Worst case is that the CPU goes idle and the NOHZ complains about
-> unhandled softirqs.
 
-Would you have a diagram to explain how things happen, and when the
-network softirq is scheduled in this case?
 
-Peter
+On 11/9/23 10:31, Johan Hovold wrote:
+> The PMIC GLINK altmode driver currently supports at most two ports.
 > 
-> Disable bottom halves before acquiring the lock (and disabling
-> interrupts) and enable them after dropping the lock. This ensures that
-> any pending softirqs will handled right away.
+> Fix the incomplete port sanity check on notifications to avoid
+> accessing and corrupting memory beyond the port array if we ever get a
+> notification for an unsupported port.
 > 
-> cc: <stable@vger.kernel.org>
-> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+> Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+> Cc: stable@vger.kernel.org	# 6.3
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > ---
->  drivers/usb/cdns3/cdnsp-ring.c | 3 +++
->  1 file changed, 3 insertions(+)
+>   drivers/soc/qcom/pmic_glink_altmode.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
-> index 07f6068342d4..275a6a2fa671 100644
-> --- a/drivers/usb/cdns3/cdnsp-ring.c
-> +++ b/drivers/usb/cdns3/cdnsp-ring.c
-> @@ -1529,6 +1529,7 @@ irqreturn_t cdnsp_thread_irq_handler(int irq, void *data)
->  	unsigned long flags;
->  	int counter = 0;
->  
-> +	local_bh_disable();
->  	spin_lock_irqsave(&pdev->lock, flags);
->  
->  	if (pdev->cdnsp_state & (CDNSP_STATE_HALTED | CDNSP_STATE_DYING)) {
-> @@ -1541,6 +1542,7 @@ irqreturn_t cdnsp_thread_irq_handler(int irq, void *data)
->  			cdnsp_died(pdev);
->  
->  		spin_unlock_irqrestore(&pdev->lock, flags);
-> +		local_bh_enable();
->  		return IRQ_HANDLED;
->  	}
->  
-> @@ -1557,6 +1559,7 @@ irqreturn_t cdnsp_thread_irq_handler(int irq, void *data)
->  	cdnsp_update_erst_dequeue(pdev, event_ring_deq, 1);
->  
->  	spin_unlock_irqrestore(&pdev->lock, flags);
-> +	local_bh_enable();
->  
->  	return IRQ_HANDLED;
->  }
-> -- 
-> 2.37.2
-> 
+> diff --git a/drivers/soc/qcom/pmic_glink_altmode.c b/drivers/soc/qcom/pmic_glink_altmode.c
+> index 974c14d1e0bf..561d6ba005f4 100644
+> --- a/drivers/soc/qcom/pmic_glink_altmode.c
+> +++ b/drivers/soc/qcom/pmic_glink_altmode.c
+> @@ -285,7 +285,7 @@ static void pmic_glink_altmode_sc8180xp_notify(struct pmic_glink_altmode *altmod
+>   
+>   	svid = mux == 2 ? USB_TYPEC_DP_SID : 0;
+>   
+> -	if (!altmode->ports[port].altmode) {
+> +	if (port >= ARRAY_SIZE(altmode->ports) || !altmode->ports[port].altmode) {
+I'd personally use PMIC_GLINK_MAX_PORTS directly but it's the same
 
--- 
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-Thanks,
-Peter Chen
+Konrad
