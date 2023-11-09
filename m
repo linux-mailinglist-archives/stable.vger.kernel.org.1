@@ -2,196 +2,227 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2A9A7E69EB
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 12:50:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C0937E6A55
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 13:07:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233505AbjKILu3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 06:50:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56186 "EHLO
+        id S229574AbjKIMHJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 07:07:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233473AbjKILu2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 06:50:28 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23D8B1FEA
-        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 03:49:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1699530587;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=rRWgktC5dBfBH0y4IlPCeWKy9YBplXDcHKZ7n5koZ7o=;
-        b=Ma1rW2x+amMpShb1Q1Fgo4p/YKQiHGs0IcLXJFGe/1hHlMQEX0LjByFb4+UKWvVGkcnhhN
-        SaxkNsyWpnKvjA+hHDtu5sO37Q9JnkkiRIZzjmx83KbFZ/oWOYKm0Te+RqgHP60xGpvpka
-        UdmDqFrI3PYxpm3p5tc1KVNJrYsbBfw=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-L5U8Gu6gPlWxG0ftzMm98A-1; Thu, 09 Nov 2023 06:49:45 -0500
-X-MC-Unique: L5U8Gu6gPlWxG0ftzMm98A-1
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6755f01ca7dso2036666d6.1
-        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 03:49:45 -0800 (PST)
+        with ESMTP id S229565AbjKIMHJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 07:07:09 -0500
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7E51BDA
+        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 04:07:07 -0800 (PST)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-5bde80aad05so658736a12.2
+        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 04:07:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699531626; x=1700136426; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=+44rslOXFzki1Gd7Wqf+k8jwDNIr8YkqF/tU/Zcmqjk=;
+        b=lbva0VfkJjq3SK9m9MnbV75yQqJRhB9diwj7yt9BLXQoB27qEeajzjIvrmjtl6tNE0
+         wpVRSWi8uwe3kaxs3fUSppsGBt6/tcZguyD95RCTn6BvvdnNRnWkBwqKabzhjGxYLR9n
+         pK+DQA9hAYPd6qdLtUTORYjKN6587/C/lxd/LDmHvS+h9j2HxPdV9SfC784JNYi2WIE8
+         M2jAd75LP0MbQM2gKZHmOJ3jZZd9j4xh2dnpicNAsDGW8LUdjfTw29PiyyIsg3XcazIs
+         IWJiDIVp0eTLMsC8LAO8zDnzKc1eq8Pk3w7lqGCaGWbExhnInHvtoF4jqGjx/ibirOA+
+         iFsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699530585; x=1700135385;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rRWgktC5dBfBH0y4IlPCeWKy9YBplXDcHKZ7n5koZ7o=;
-        b=ep3Ntid4oVHTyWEaTkxHcnt/6PX+BH15sWOWMrh5J6o9jP7xw77bhBw3HH4N0xVmHC
-         VLplGj4bZVlokmQ+Vn/J5ahG+KVQnWLmtpCIXX9KP7Hxd7mUsluWum7yUpfCcR/8eLXE
-         HDVbBrpHiKsHKFJe43GJRSkHfQV+PXsUsZ19eXvkrb/Q5Av25kTKIBIjyCj7wEsfOmSr
-         Szm5BVkMWLcgr4KrRxdMVh04H1SNdTaKQXJKHbEwk7cg13cQIJzuIIGyGh7/DKSe4m7E
-         qRqqBiyDBr/sh15rMzr1OmlYss5VLoXkvcLqylhjrfaDosn3iN+Q+vh8jvHsp8UkpIWZ
-         udJQ==
-X-Gm-Message-State: AOJu0YzHb+NgTHFPNzvFtfjBeE9OWQQN1dPBa/Ku3iwGAwVr7vzPf/aQ
-        1mOnOOgPM+qudqSN4dPe9IYFxjb/D9O4dxB+3sXTng80xgThPeR4XL5fW0nGuD7Z3fiASS2XmEy
-        jBJiEnYpZLCB+0HHw
-X-Received: by 2002:a05:622a:5186:b0:41e:4be2:d3eb with SMTP id ex6-20020a05622a518600b0041e4be2d3ebmr5519121qtb.1.1699530584772;
-        Thu, 09 Nov 2023 03:49:44 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEGUS4SbJ9ssl4USsnfkA9xKEduU/vOY24B+xDTRXOVdGNcq+w7LhBc+XgFeookbhcTcoTQKA==
-X-Received: by 2002:a05:622a:5186:b0:41e:4be2:d3eb with SMTP id ex6-20020a05622a518600b0041e4be2d3ebmr5519110qtb.1.1699530584454;
-        Thu, 09 Nov 2023 03:49:44 -0800 (PST)
-Received: from gerbillo.redhat.com (146-241-228-197.dyn.eolo.it. [146.241.228.197])
-        by smtp.gmail.com with ESMTPSA id kf20-20020a05622a2a9400b0041b83654af9sm1859307qtb.30.2023.11.09.03.49.42
+        d=1e100.net; s=20230601; t=1699531626; x=1700136426;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+44rslOXFzki1Gd7Wqf+k8jwDNIr8YkqF/tU/Zcmqjk=;
+        b=m12FkH7i5dqdImvO7XYXegtBNd7jHiFIO/vqs1URUnJaiV0V4g5uTY4FTxUYEPFQWo
+         QBl2JVBeu8Bd4ImixQobeM3W4S3ue9tpBBh711SX7J1ENqebc3OCDnmBzuYpcW8Ncjwg
+         POVBZFBwsZrrPngBdIAIxzstp9MX5t8Nyi5LaqCp9eM/3Izr5bemBmZFUhYxh08lio0t
+         MbrSItaP0QVQz5BGv78R1ryq5u8k/GR/tWcaycZqtxBVO9sYVxCf/8XLcCdLXFzHfluZ
+         nxSP+e6OjOVIMIMbm5RrZsulsvleKbBtkx0oVG9GIPcK6CkGiF2owx/gXcBi+etR3D9G
+         gb7g==
+X-Gm-Message-State: AOJu0Yxeg67VPXE3EDWO2uDNNiSsfj8QDVzJ/dbPWbDwDQyffYJZXvwu
+        Z0Bm1gwHaCOqy9CbLUiuSEhhfKBEcaYDHT2g/eS6pw==
+X-Google-Smtp-Source: AGHT+IHj1EQzau6cGpdtsqvaSA0TeOm28wR4EsRfZX6Dr+3VBI4tum4dWNeaiddKZ8b4BijyB1/o+Q==
+X-Received: by 2002:a05:6a21:71ca:b0:181:7914:7b34 with SMTP id ay10-20020a056a2171ca00b0018179147b34mr5836040pzc.21.1699531626138;
+        Thu, 09 Nov 2023 04:07:06 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id j8-20020a170903024800b001cc2c7a30f2sm3386404plh.155.2023.11.09.04.07.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Nov 2023 03:49:44 -0800 (PST)
-Message-ID: <5783a6f8819a741f0f299602ff615e6a03368246.camel@redhat.com>
-Subject: Re: [PATCH net v2 1/2] r8169: add handling DASH when DASH is
- disabled
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     ChunHao Lin <hau@realtek.com>, hkallweit1@gmail.com
-Cc:     nic_swsd@realtek.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date:   Thu, 09 Nov 2023 12:49:41 +0100
-In-Reply-To: <20231108184849.2925-2-hau@realtek.com>
-References: <20231108184849.2925-1-hau@realtek.com>
-         <20231108184849.2925-2-hau@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        Thu, 09 Nov 2023 04:07:05 -0800 (PST)
+Message-ID: <654ccb69.170a0220.74f02.9e91@mx.google.com>
+Date:   Thu, 09 Nov 2023 04:07:05 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v6.1.62
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+Subject: stable-rc/linux-6.1.y build: 20 builds: 2 failed, 18 passed,
+ 1 warning (v6.1.62)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 2023-11-09 at 02:48 +0800, ChunHao Lin wrote:
-> For devices that support DASH, even DASH is disabled, there may still
-> exist a default firmware that will influence device behavior.
-> So driver needs to handle DASH for devices that support DASH, no
-> matter the DASH status is.
->=20
-> This patch also prepare for "fix DASH deviceis network lost issue".
->=20
-> Signed-off-by: ChunHao Lin <hau@realtek.com>
+stable-rc/linux-6.1.y build: 20 builds: 2 failed, 18 passed, 1 warning (v6.=
+1.62)
 
-You should include the fixes tag you already added in v1 and your Sob
-should come as the last tag
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.62/
 
-The same applies to the next patch=20
+Tree: stable-rc
+Branch: linux-6.1.y
+Git Describe: v6.1.62
+Git Commit: fb2635ac69abac0060cc2be2873dc4f524f12e66
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-> Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Build Failures Detected:
 
-It's not clear where/when Heiner provided the above tag for this patch.
-I hope that was off-list.
+arm64:
+    defconfig+arm64-chromebook: (gcc-10) FAIL
 
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/net/ethernet/realtek/r8169_main.c | 35 ++++++++++++++++-------
->  1 file changed, 25 insertions(+), 10 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethe=
-rnet/realtek/r8169_main.c
-> index 0c76c162b8a9..108dc75050ba 100644
-> --- a/drivers/net/ethernet/realtek/r8169_main.c
-> +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> @@ -624,6 +624,7 @@ struct rtl8169_private {
-> =20
->  	unsigned supports_gmii:1;
->  	unsigned aspm_manageable:1;
-> +	unsigned dash_enabled:1;
->  	dma_addr_t counters_phys_addr;
->  	struct rtl8169_counters *counters;
->  	struct rtl8169_tc_offsets tc_offset;
-> @@ -1253,14 +1254,26 @@ static bool r8168ep_check_dash(struct rtl8169_pri=
-vate *tp)
->  	return r8168ep_ocp_read(tp, 0x128) & BIT(0);
->  }
-> =20
-> -static enum rtl_dash_type rtl_check_dash(struct rtl8169_private *tp)
-> +static bool rtl_dash_is_enabled(struct rtl8169_private *tp)
-> +{
-> +	switch (tp->dash_type) {
-> +	case RTL_DASH_DP:
-> +		return r8168dp_check_dash(tp);
-> +	case RTL_DASH_EP:
-> +		return r8168ep_check_dash(tp);
-> +	default:
-> +		return false;
-> +	}
-> +}
-> +
-> +static enum rtl_dash_type rtl_get_dash_type(struct rtl8169_private *tp)
->  {
->  	switch (tp->mac_version) {
->  	case RTL_GIGA_MAC_VER_28:
->  	case RTL_GIGA_MAC_VER_31:
-> -		return r8168dp_check_dash(tp) ? RTL_DASH_DP : RTL_DASH_NONE;
-> +		return RTL_DASH_DP;
->  	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_53:
-> -		return r8168ep_check_dash(tp) ? RTL_DASH_EP : RTL_DASH_NONE;
-> +		return RTL_DASH_EP;
->  	default:
->  		return RTL_DASH_NONE;
->  	}
-> @@ -1453,7 +1466,7 @@ static void __rtl8169_set_wol(struct rtl8169_privat=
-e *tp, u32 wolopts)
-> =20
->  	device_set_wakeup_enable(tp_to_dev(tp), wolopts);
-> =20
-> -	if (tp->dash_type =3D=3D RTL_DASH_NONE) {
-> +	if (!tp->dash_enabled) {
->  		rtl_set_d3_pll_down(tp, !wolopts);
->  		tp->dev->wol_enabled =3D wolopts ? 1 : 0;
->  	}
-> @@ -2512,7 +2525,7 @@ static void rtl_wol_enable_rx(struct rtl8169_privat=
-e *tp)
-> =20
->  static void rtl_prepare_power_down(struct rtl8169_private *tp)
->  {
-> -	if (tp->dash_type !=3D RTL_DASH_NONE)
-> +	if (tp->dash_enabled)
->  		return;
-> =20
->  	if (tp->mac_version =3D=3D RTL_GIGA_MAC_VER_32 ||
-> @@ -4869,7 +4882,7 @@ static int rtl8169_runtime_idle(struct device *devi=
-ce)
->  {
->  	struct rtl8169_private *tp =3D dev_get_drvdata(device);
-> =20
-> -	if (tp->dash_type !=3D RTL_DASH_NONE)
-> +	if (tp->dash_enabled)
->  		return -EBUSY;
-> =20
->  	if (!netif_running(tp->dev) || !netif_carrier_ok(tp->dev))
-> @@ -4896,7 +4909,7 @@ static void rtl_shutdown(struct pci_dev *pdev)
->  	rtl_rar_set(tp, tp->dev->perm_addr);
-> =20
->  	if (system_state =3D=3D SYSTEM_POWER_OFF &&
-> -	    tp->dash_type =3D=3D RTL_DASH_NONE) {
-> +		!tp->dash_enabled) {
+x86_64:
+    x86_64_defconfig+x86-board: (gcc-10) FAIL
 
-Since you have to repost, please maintain the correct indentation
-above:
+Warnings Detected:
 
-	if (system_state =3D=3D SYSTEM_POWER_OFF &&
-	    !tp->dash_enabled) {
+arc:
 
-        ^^^^
-spaces here.
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
 
 
-Cheers,
+Warnings summary:
 
-Paolo
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
