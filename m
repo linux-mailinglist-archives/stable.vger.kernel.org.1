@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E1C67E721D
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 20:19:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C2667E723F
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 20:23:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343808AbjKITT2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 14:19:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37104 "EHLO
+        id S232373AbjKITXi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 14:23:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230185AbjKITT1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 14:19:27 -0500
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86C373C11
-        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 11:19:25 -0800 (PST)
-Received: by mail-oi1-x232.google.com with SMTP id 5614622812f47-3b6cb515917so117542b6e.1
-        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 11:19:25 -0800 (PST)
+        with ESMTP id S229560AbjKITXi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 14:23:38 -0500
+Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CC9830F9
+        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 11:23:36 -0800 (PST)
+Received: by mail-oo1-xc2e.google.com with SMTP id 006d021491bc7-586ae6edf77so625671eaf.1
+        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 11:23:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1699557565; x=1700162365; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ydcfllMEeEZX6H39u2ZgHbnzb4EW6sJnHz8YiR+XiJg=;
-        b=lLhuHNBiTyr/0bSv4R4McFpn3VhEO6iS69qgdS3rFu1FWQ1fwRSuOGTVATbbTkXXOm
-         gSKP5aB/LsokgEtr+uiVFGqx2CM+G7PtnvejuB2AH1MHcAcD+k6gqlbjvYBDFVHT9NH3
-         qW6ZBxunwT3BXgL2m8eEPeiIoEVAj1XqjS9fI=
+        d=chromium.org; s=google; t=1699557815; x=1700162615; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=sRAqYuB0dg8aj3hzHIpJepiAoEm2PXVbN9qEZ/M71EI=;
+        b=hbr5jFeZMz7F5npMFQXrn9L5wmB6WDnE9zp06lFKPQxgOWBNv2tBbgqcL1nbq+3SQH
+         6cLEveWTTrVzaW+n1qPrk1A+Qi4I4KYXJzDVuTX7bLbvzRq2e6DHrZB7Do/VCT9Mo7mC
+         A03oV82r769lxEyB2CpY1vzhfUr16D6Sma5Yg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699557565; x=1700162365;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ydcfllMEeEZX6H39u2ZgHbnzb4EW6sJnHz8YiR+XiJg=;
-        b=vv+IfJUTFVQC7HhJfesGTfkKLMihSK5RBJfmG5wWgOQDVkaWEzjAhgVIGZalsyNJrc
-         ansWqb+nol59vpSJ+h5giCWEKrQHAR/0bk0H/zA/z5pXCYLqe2t0zZfCp7hKEu/6pTmZ
-         r8EVoNk44n+5oN9OeecMUchd9wtQA3Rzo80K45yc+6Iv5jJZ1o+rUnEDorrsuWsgyHC5
-         RE1Nugio7hHlcpgNU9+ejeDhvGUhidq4a4+D4SHySssVKk3CQ9i3LbpNNhdA8e9buo5G
-         tKgBzt8bHN+NjkRRHfVyuXDe4/cWCt26aEy2vqCwgueMwWNNBeOWBdFVVOyPDAeMixY5
-         kf/A==
-X-Gm-Message-State: AOJu0Yy3j9/97gtjVTopcMosIRKB2luB3Nogw7YK+OC6D3bQSiiIafyY
-        QPoLSjM0uj3Jsvl73N0QtCoV6JzS1e/OIA1RPps6OQ==
-X-Google-Smtp-Source: AGHT+IE6FBhCU6plmujlP1Eh9ePsZAHoNYSchpX4ZhmLAVcLjEgfUJRSYDpY2XXMcrUnJr2O60Mx/W5En8+Y4MgS7ow=
-X-Received: by 2002:a05:6808:2017:b0:3b6:cadf:be06 with SMTP id
- q23-20020a056808201700b003b6cadfbe06mr768113oiw.23.1699557564771; Thu, 09 Nov
- 2023 11:19:24 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699557815; x=1700162615;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sRAqYuB0dg8aj3hzHIpJepiAoEm2PXVbN9qEZ/M71EI=;
+        b=e2PXUYNs6uNxU8G3KcfUe11uuWd9WkG2CtYD6yx02g380kOMXswNqzcjQvQ/LKpJkt
+         swa63VZeXe+VHKbQYh6IfPWX31LlfJenBUhzgUwNinLpqWJn5LIYYi+R2UWNXn+rhUhY
+         tr4LZQoFUe9ACshWiS15RVxpfVDfZG588Q6q+deBHJIw7nv4gcFFPjGmYplfzkKJj1Mx
+         Js2AP1LE7lW3Hw+DoaxykOGdz3a67R4cQcHp+j21cvv9CsQzp8V7UdpeFuAlxVBozmSK
+         UeT4Lh3aeYlIllYIhvmrhae6kg9gCbK//RI+2kxTfkUbn7IHkKOaRKwvptq4gNC+bNvK
+         LJIw==
+X-Gm-Message-State: AOJu0YwR4iN3AfdeOmSnJAore6VQP9RWkf5zBgFX9kQZ2gLpZSm4k6FU
+        44/tQeY+7+SG77KBDwlW0BZ+gNYyu3Xf0jDQtOE5FA==
+X-Google-Smtp-Source: AGHT+IElWKoMKHdAlMoMtEggmOnAEElUpDh1SA3LH7KO/ccsuakHXzsbTWI4PgviyHpL9Uc/hBfRqd53PH0BSNOKegU=
+X-Received: by 2002:a4a:e1af:0:b0:581:f6b9:30d9 with SMTP id
+ 15-20020a4ae1af000000b00581f6b930d9mr5515579ooy.8.1699557815445; Thu, 09 Nov
+ 2023 11:23:35 -0800 (PST)
 MIME-Version: 1.0
 References: <20231109111934.4172565-1-korneld@chromium.org>
 In-Reply-To: <20231109111934.4172565-1-korneld@chromium.org>
 From:   Sven van Ashbrook <svenva@chromium.org>
-Date:   Thu, 9 Nov 2023 14:19:14 -0500
-Message-ID: <CAG-rBijqw2VO8AQbwBh5Cu47gBbDsOGwPgw-8hSXMWCHXi6GLw@mail.gmail.com>
+Date:   Thu, 9 Nov 2023 14:23:24 -0500
+Message-ID: <CAG-rBijDzoCvNTVMTBP5hwSk6sZ4rZ0QKDzHL-jq-GtP1zr8Eg@mail.gmail.com>
 Subject: Re: [PATCH] mmc: sdhci-pci-gli: Disable LPM during initialization
 To:     =?UTF-8?Q?Kornel_Dul=C4=99ba?= <korneld@chromium.org>
 Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
@@ -60,107 +59,12 @@ Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
         linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
         stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Kornel, see below.
+Copypasta issue, I really meant to write:
 
-On Thu, Nov 9, 2023 at 6:20=E2=80=AFAM Kornel Dul=C4=99ba <korneld@chromium=
-.org> wrote:
->
-> To address IO performance commit f9e5b33934ce
-> ("mmc: host: Improve I/O read/write performance for GL9763E")
-> limited LPM negotiation to runtime suspend state.
-> The problem is that it only flips the switch in the runtime PM
-> resume/suspend logic.
->
-> Disable LPM negotiation in gl9763e_add_host.
-> This helps in two ways:
-> 1. It was found that the LPM switch stays in the same position after
->    warm reboot. Having it set in init helps with consistency.
-> 2. Disabling LPM during the first runtime resume leaves us susceptible
->    to the performance issue in the time window between boot and the
->    first runtime suspend.
->
-> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for G=
-L9763E")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kornel Dul=C4=99ba <korneld@chromium.org>
-> ---
->  drivers/mmc/host/sdhci-pci-gli.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pc=
-i-gli.c
-> index d83261e857a5..ce91d1e63a8e 100644
-> --- a/drivers/mmc/host/sdhci-pci-gli.c
-> +++ b/drivers/mmc/host/sdhci-pci-gli.c
-> @@ -220,6 +220,9 @@
->
->  #define GLI_MAX_TUNING_LOOP 40
->
-> +static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slo=
-t,
-> +                                             bool enable);
-> +
->  /* Genesys Logic chipset */
->  static inline void gl9750_wt_on(struct sdhci_host *host)
->  {
-> @@ -1281,6 +1284,9 @@ static int gl9763e_add_host(struct sdhci_pci_slot *=
-slot)
->         if (ret)
->                 goto cleanup;
->
-> +       /* Disable LPM negotiation to avoid entering L1 state. */
-> +       gl9763e_set_low_power_negotiation(slot, false);
-> +
->         return 0;
-
-What happens if the bridge is not driving the system rootfs? Imagine
-the case where
-the bridge is used to drive an auxiliary eMMC, unused until a few hours
-after boot. After this patch, the bridge may remain active (not-L1)
-for the entire time,
-although it's not being used...
-
-I suspect we want the following:
-1. consistency - LPM register setting and runtime_pm state must agree
-2. power-efficient initial state - bridge must come out of probe
-runtime-suspended
-and LPM must be enabled
-
-I suspect the above will be fulfilled if we do
-
-+ /* Bring to consistent runtime suspended state with LPM negotiation enabl=
-ed */
-+ gl9763e_set_low_power_negotiation(slot, false);
++ /* Bring to consistent runtime suspended state with LPM negotiation enabled */
++ gl9763e_set_low_power_negotiation(slot, true);
 + pm_runtime_set_suspended(dev);
-
-WDYT?
-
->
->  cleanup:
-> @@ -1323,7 +1329,6 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *=
-slot)
->         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
->  }
->
-> -#ifdef CONFIG_PM
->  static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slo=
-t, bool enable)
->  {
->         struct pci_dev *pdev =3D slot->chip->pdev;
-> @@ -1349,6 +1354,7 @@ static void gl9763e_set_low_power_negotiation(struc=
-t sdhci_pci_slot *slot, bool
->         pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
->  }
->
-> +#ifdef CONFIG_PM
->  static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
->  {
->         struct sdhci_pci_slot *slot =3D chip->slots[0];
-> --
-> 2.42.0.869.gea05f2083d-goog
->
