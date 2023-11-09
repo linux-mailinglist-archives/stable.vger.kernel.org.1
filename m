@@ -2,151 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E24C27E6CC6
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 16:00:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEE9E7E6CDA
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 16:05:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234457AbjKIPAu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 10:00:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46812 "EHLO
+        id S232277AbjKIPF0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 10:05:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234073AbjKIPAu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 10:00:50 -0500
-Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03735325B;
-        Thu,  9 Nov 2023 07:00:46 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id 5E9311868B41;
-        Thu,  9 Nov 2023 18:00:44 +0300 (MSK)
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id Twr-pb2i9k6j; Thu,  9 Nov 2023 18:00:44 +0300 (MSK)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id EA2C7186505E;
-        Thu,  9 Nov 2023 18:00:43 +0300 (MSK)
-X-Virus-Scanned: amavisd-new at astralinux.ru
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 6HsWk-nAyshQ; Thu,  9 Nov 2023 18:00:43 +0300 (MSK)
-Received: from rbta-msk-lt-106062.astralinux.ru (unknown [10.177.14.192])
-        by mail.astralinux.ru (Postfix) with ESMTPSA id 6F18D18633F8;
-        Thu,  9 Nov 2023 18:00:42 +0300 (MSK)
-From:   Anastasia Belova <abelova@astralinux.ru>
-To:     stable@vger.kernel.org,
-        "Greg Kroah-Hartman ." <gregkh@linuxfoundation.org>
-Cc:     Anastasia Belova <abelova@astralinux.ru>,
-        lvc-project@linuxtesting.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Tsuchiya Yuto <kitakar@gmail.com>, linux-media@vger.kernel.org,
-        linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10/5.15 1/1] media: atomisp: add error checking to atomisp_create_pipes_stream()
-Date:   Thu,  9 Nov 2023 18:00:01 +0300
-Message-Id: <20231109150001.22891-2-abelova@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20231109150001.22891-1-abelova@astralinux.ru>
-References: <20231109150001.22891-1-abelova@astralinux.ru>
+        with ESMTP id S231835AbjKIPFZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 10:05:25 -0500
+Received: from bee.tesarici.cz (bee.tesarici.cz [IPv6:2a03:3b40:fe:2d4::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9DEE35A1;
+        Thu,  9 Nov 2023 07:05:22 -0800 (PST)
+Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by bee.tesarici.cz (Postfix) with ESMTPSA id BDA6E185566;
+        Thu,  9 Nov 2023 16:05:18 +0100 (CET)
+Authentication-Results: mail.tesarici.cz; dmarc=fail (p=none dis=none) header.from=tesarici.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tesarici.cz; s=mail;
+        t=1699542319; bh=MvMT179DCwTKc122LzpmtozfbprvHehFjajEI1qFjxk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=rSVeiC+bM6MQRJZDlmBfD8oLJHcKPYUONZyx7lOzh6xzzVdIMWQEsLFgfHbgMVRCU
+         4L1vR9TnEyRu/WDoc6G70B9S7uz2ET3zS5/nYdLn3mNkO/EsD259l7UP+Sii6g00uI
+         qs9lO6+2jDSvQ/xyTj3/s0wUeDrBJjZh4SbmRpQspmc+kC7hpEg/tENRFAsVyNiZCB
+         8NE3xqt5uYXlcINMSwmQUVU2zXa1/08aPk7raALNkYWkt2Y3COL188vKUxKaMb8kTD
+         kjQt28geU8zJqospvEqi30iw0zzoYx0Pp9cbXmnz23ee3ZF7hT+TmkyGIuoG6UD7lZ
+         0bTm1dEL76Qfw==
+Date:   Thu, 9 Nov 2023 16:05:17 +0100
+From:   Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+Cc:     Petr Tesarik <petrtesarik@huaweicloud.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Petr Tesarik <petr.tesarik.ext@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+        open list <linux-kernel@vger.kernel.org>,
+        Wangkefeng <wangkefeng.wang@huawei.com>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        Petr Tesarik <petr.tesarik1@huawei-partners.com>,
+        Halil Pasic <pasic@linux.ibm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] swiotlb: fix out-of-bounds TLB allocations with
+ CONFIG_SWIOTLB_DYNAMIC
+Message-ID: <20231109160517.3d1c1e17@meshulam.tesarici.cz>
+In-Reply-To: <32af4ed531a6cf8e289d4dc9e1dbc5fb14bc1813.camel@linux.ibm.com>
+References: <20231108111249.261-1-petrtesarik@huaweicloud.com>
+        <20231108132120.0538a778@meshulam.tesarici.cz>
+        <32af4ed531a6cf8e289d4dc9e1dbc5fb14bc1813.camel@linux.ibm.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-suse-linux-gnu)
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Hans de Goede <hdegoede@redhat.com>
+On Thu, 09 Nov 2023 13:24:48 +0100
+Niklas Schnelle <schnelle@linux.ibm.com> wrote:
 
-commit 798d2ad739da5343122eff386578f259278f2594 upstream.
+> On Wed, 2023-11-08 at 13:21 +0100, Petr Tesa=C5=99=C3=ADk wrote:
+> > On Wed,  8 Nov 2023 12:12:49 +0100
+> > Petr Tesarik <petrtesarik@huaweicloud.com> wrote:
+> >  =20
+> > > From: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+> > >=20
+> > > Limit the free list length to the size of the IO TLB. Transient pool =
+can be
+> > > smaller than IO_TLB_SEGSIZE, but the free list is initialized with the
+> > > assumption that the total number of slots is a multiple of IO_TLB_SEG=
+SIZE.
+> > > As a result, swiotlb_area_find_slots() may allocate slots past the en=
+d of
+> > > a transient IO TLB buffer. =20
+> >=20
+> > Just to make it clear, this patch addresses only the memory corruption
+> > reported by Niklas, without addressing the underlying issues. Where
+> > corruption happened before, allocations will fail with this patch.
+> >=20
+> > I am still looking into improving the allocation strategy itself.
+> >=20
+> > Petr T =20
+>=20
+> I know this has already been applied but for what its worth I did
+> finally manage to test this with my reproducer and the allocation
+> overrun is fixed by this change. I also confirmed that at least my
+> ConnectX VF TCP/IP test case seems to handle the DMA error gracefully
+> enough.
 
-The functions called by atomisp_create_pipes_stream() can fail,
-add error checking for them.
+Thank you for testing!
 
-Link: https://lore.kernel.org/linux-media/20220615205037.16549-35-hdegoed=
-e@redhat.com
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
----
- .../media/atomisp/pci/atomisp_compat.h        |  2 +-
- .../media/atomisp/pci/atomisp_compat_css20.c  | 20 ++++++++++++++++---
- .../staging/media/atomisp/pci/atomisp_ioctl.c | 13 ++++++++++--
- 3 files changed, 29 insertions(+), 6 deletions(-)
+Inded, the failed request is often retried at a later time. For example
+I tested with a SCSI driver, and by the time the SCSI layer retried the
+request, a new standard pool was already available. But this situation
+is not ideal. If nothing else, it incurs an unnecessary delay.
 
-diff --git a/drivers/staging/media/atomisp/pci/atomisp_compat.h b/drivers=
-/staging/media/atomisp/pci/atomisp_compat.h
-index c16eaf3d126f..75c978c4e6f3 100644
---- a/drivers/staging/media/atomisp/pci/atomisp_compat.h
-+++ b/drivers/staging/media/atomisp/pci/atomisp_compat.h
-@@ -242,7 +242,7 @@ int atomisp_css_input_configure_port(struct atomisp_s=
-ub_device *asd,
- 				     unsigned int metadata_width,
- 				     unsigned int metadata_height);
-=20
--void atomisp_create_pipes_stream(struct atomisp_sub_device *asd);
-+int atomisp_create_pipes_stream(struct atomisp_sub_device *asd);
- void atomisp_destroy_pipes_stream_force(struct atomisp_sub_device *asd);
-=20
- void atomisp_css_stop(struct atomisp_sub_device *asd,
-diff --git a/drivers/staging/media/atomisp/pci/atomisp_compat_css20.c b/d=
-rivers/staging/media/atomisp/pci/atomisp_compat_css20.c
-index 99a632f33d2d..f64d73b4c4b7 100644
---- a/drivers/staging/media/atomisp/pci/atomisp_compat_css20.c
-+++ b/drivers/staging/media/atomisp/pci/atomisp_compat_css20.c
-@@ -795,10 +795,24 @@ static int __create_pipes(struct atomisp_sub_device=
- *asd)
- 	return -EINVAL;
- }
-=20
--void atomisp_create_pipes_stream(struct atomisp_sub_device *asd)
-+int atomisp_create_pipes_stream(struct atomisp_sub_device *asd)
- {
--	__create_pipes(asd);
--	__create_streams(asd);
-+	int ret;
-+
-+	ret =3D __create_pipes(asd);
-+	if (ret) {
-+		dev_err(asd->isp->dev, "create pipe failed %d.\n", ret);
-+		return ret;
-+	}
-+
-+	ret =3D __create_streams(asd);
-+	if (ret) {
-+		dev_warn(asd->isp->dev, "create stream failed %d.\n", ret);
-+		__destroy_pipes(asd, true);
-+		return ret;
-+	}
-+
-+	return 0;
- }
-=20
- int atomisp_css_update_stream(struct atomisp_sub_device *asd)
-diff --git a/drivers/staging/media/atomisp/pci/atomisp_ioctl.c b/drivers/=
-staging/media/atomisp/pci/atomisp_ioctl.c
-index b7dda4b96d49..06bb1c87c814 100644
---- a/drivers/staging/media/atomisp/pci/atomisp_ioctl.c
-+++ b/drivers/staging/media/atomisp/pci/atomisp_ioctl.c
-@@ -2243,8 +2243,17 @@ int __atomisp_streamoff(struct file *file, void *f=
-h, enum v4l2_buf_type type)
- 		dev_err(isp->dev, "atomisp_reset");
- 		atomisp_reset(isp);
- 		for (i =3D 0; i < isp->num_of_streams; i++) {
--			if (recreate_streams[i])
--				atomisp_create_pipes_stream(&isp->asd[i]);
-+			if (recreate_streams[i]) {
-+				int ret2;
-+
-+				ret2 =3D atomisp_create_pipes_stream(&isp->asd[i]);
-+				if (ret2) {
-+					dev_err(isp->dev, "%s error re-creating streams: %d\n",
-+						__func__, ret2);
-+					if (!ret)
-+						ret =3D ret2;
-+				}
-+			}
- 		}
- 		isp->isp_timeout =3D false;
- 	}
---=20
-2.30.2
-
+Petr T
