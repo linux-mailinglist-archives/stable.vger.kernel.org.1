@@ -2,239 +2,122 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64B617E6A66
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 13:17:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 555097E6A87
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 13:25:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229574AbjKIMRa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 07:17:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38706 "EHLO
+        id S230006AbjKIMZh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 07:25:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjKIMR3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 07:17:29 -0500
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C74611B1
-        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 04:17:27 -0800 (PST)
-Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-5b980391d7cso637061a12.0
-        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 04:17:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699532247; x=1700137047; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=u3M5UHNuOkNEtQmpJlUmXYnhWJhhDZFDLcP6LOW/WZE=;
-        b=EoewHDwYwH7Wit+cPUytvr8UU84yZipJuxyS2vTT3dhOaDMiHHTM0E2NXJwCREnaUO
-         64fXoB0PFC726sgzqBL2RvSuze/RGU0pYOI64AQBcns+34u+iBXvTX7TfrnPbvJuQBqI
-         kX3Nq20X5OHsHpYCr+AmJEWTIvvWgtYGdSte8itjisl4QnxwUbkiwu1pCfRIfhJByT9V
-         +U3/9M98jGXYSUPoZAewkgJ0ooCEyLcCD5A+wiFb0aNuT8cMZbbUKRLBYBe4fUIIQgLe
-         MJwmZ74S/JX2x2OEKjenZNZTUSPs22hDVaPQ6bSdDnRLkFJacnyO3/uFfTE8uom+hPxY
-         50Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699532247; x=1700137047;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u3M5UHNuOkNEtQmpJlUmXYnhWJhhDZFDLcP6LOW/WZE=;
-        b=vCZAZpWe+TdkIzNEkCxxyfuC1fYgIUs1pU7BOEOdKFRwGUvoS6HTZPmXnZ8c0zecR0
-         lIk+bkj0GhAzNj8P0UyMTZNkutFIr0DVVMuvmEe5a+tbpX4lY3/7SG2jRtInBX3gFlMJ
-         OMzVZ0kFE+xv2O5FSaQ9FeaFF6qctxMqbj5+SQADgOCogFOulEBzs9tMGvOCm44U3Mj2
-         a4jwbV59CglFtd+y/QJQh4sOh/zAQPw9eAI4GI6EoD28sq4K6gVDLHUtMKFRRRw35kyl
-         YPWrjo80QTToVsulkzGRj8cmRYT6uocyq+wUK/4q8/GaFcAT1bKvTzQpX53uYbWctlVh
-         NjGA==
-X-Gm-Message-State: AOJu0Yw2rYUsyH/n4BTa7I1WfdYwuqG2dgAPvEbYHvV4DUcHyOY/7j7z
-        Q3z5YQkTesexI1Fw8pkaocxeUEX+O0L/p4cWZMoFVQ==
-X-Google-Smtp-Source: AGHT+IEuTjcvu12ShG9cs6VqeRlw+IhDcI9gYWkdpnPGwmXoORKenpELBojt9rW96G3TxqRB9wADnQ==
-X-Received: by 2002:a05:6a20:8f29:b0:180:d81b:65e0 with SMTP id b41-20020a056a208f2900b00180d81b65e0mr5466303pzk.3.1699532246787;
-        Thu, 09 Nov 2023 04:17:26 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id g7-20020a63e607000000b005897bfc2ed3sm4578034pgh.93.2023.11.09.04.17.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Nov 2023 04:17:26 -0800 (PST)
-Message-ID: <654ccdd6.630a0220.ff8c9.cbf1@mx.google.com>
-Date:   Thu, 09 Nov 2023 04:17:26 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+        with ESMTP id S229574AbjKIMZg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 07:25:36 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09C94270C;
+        Thu,  9 Nov 2023 04:25:33 -0800 (PST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3A9CIbbI014238;
+        Thu, 9 Nov 2023 12:24:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=r52TuHjOh2ZP6lSZRSvfxTIaePHgLmjlG0173xyI4pY=;
+ b=T1yQLinqgtG9qw+j/iNU8Hv78xc9XbuVznPvBNV+gPCxa8/aIsa64TfI9O2ktBW/ZQj/
+ rZbc/BzdQLQyaCM3rn3jx30Po4XT5Jl+AnPCF9UJ/XxSkwlx9ljA7/ihs6u8V8MfvtR0
+ 2KJDcDCXdaAG1BYXsiyqRGxuvZSM0buclegu5BodLGcNiwsWG8KWDh5OQGW4wEsEoFl9
+ gt6RIhEpjHFgfOpGqTqKNXBUoIJsTCfNcRYZpqXU3/+zK+BD1cYe/oM73HNdHPM88bsL
+ wDtNl8THNo2bJAIs5Xhfy8fmAuubv7KN2MgDd2ryCZNxL8oTISGSzOGcyLTGOZd5plx5 IA== 
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3u8y1x0r93-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Nov 2023 12:24:51 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3A9AgP7x014320;
+        Thu, 9 Nov 2023 12:24:51 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+        by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3u7w223pwe-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 09 Nov 2023 12:24:50 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+        by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3A9COmK517236576
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 9 Nov 2023 12:24:49 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D780720043;
+        Thu,  9 Nov 2023 12:24:48 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A978C20040;
+        Thu,  9 Nov 2023 12:24:48 +0000 (GMT)
+Received: from [9.152.212.236] (unknown [9.152.212.236])
+        by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Thu,  9 Nov 2023 12:24:48 +0000 (GMT)
+Message-ID: <32af4ed531a6cf8e289d4dc9e1dbc5fb14bc1813.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/1] swiotlb: fix out-of-bounds TLB allocations with
+ CONFIG_SWIOTLB_DYNAMIC
+From:   Niklas Schnelle <schnelle@linux.ibm.com>
+To:     Petr =?UTF-8?Q?Tesa=C5=99=C3=ADk?= <petr@tesarici.cz>,
+        Petr Tesarik <petrtesarik@huaweicloud.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Petr Tesarik <petr.tesarik.ext@huawei.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "open list:DMA MAPPING HELPERS" <iommu@lists.linux.dev>,
+        open list <linux-kernel@vger.kernel.org>,
+        Wangkefeng <wangkefeng.wang@huawei.com>,
+        Roberto Sassu <roberto.sassu@huaweicloud.com>,
+        Petr Tesarik <petr.tesarik1@huawei-partners.com>,
+        Halil Pasic <pasic@linux.ibm.com>, stable@vger.kernel.org
+Date:   Thu, 09 Nov 2023 13:24:48 +0100
+In-Reply-To: <20231108132120.0538a778@meshulam.tesarici.cz>
+References: <20231108111249.261-1-petrtesarik@huaweicloud.com>
+         <20231108132120.0538a778@meshulam.tesarici.cz>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Kernel: v5.15.138
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-5.15.y
-X-Kernelci-Tree: stable-rc
-Subject: stable-rc/linux-5.15.y build: 20 builds: 2 failed, 18 passed,
- 3 warnings (v5.15.138)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: H8BwPvaDeN7rhk65lV9qf2uhtoVCO0IM
+X-Proofpoint-ORIG-GUID: H8BwPvaDeN7rhk65lV9qf2uhtoVCO0IM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-09_10,2023-11-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
+ mlxlogscore=843 clxscore=1011 phishscore=0 adultscore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311060000 definitions=main-2311090092
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 2 failed, 18 passed, 3 warnings (v=
-5.15.138)
+On Wed, 2023-11-08 at 13:21 +0100, Petr Tesa=C5=99=C3=ADk wrote:
+> On Wed,  8 Nov 2023 12:12:49 +0100
+> Petr Tesarik <petrtesarik@huaweicloud.com> wrote:
+>=20
+> > From: Petr Tesarik <petr.tesarik1@huawei-partners.com>
+> >=20
+> > Limit the free list length to the size of the IO TLB. Transient pool ca=
+n be
+> > smaller than IO_TLB_SEGSIZE, but the free list is initialized with the
+> > assumption that the total number of slots is a multiple of IO_TLB_SEGSI=
+ZE.
+> > As a result, swiotlb_area_find_slots() may allocate slots past the end =
+of
+> > a transient IO TLB buffer.
+>=20
+> Just to make it clear, this patch addresses only the memory corruption
+> reported by Niklas, without addressing the underlying issues. Where
+> corruption happened before, allocations will fail with this patch.
+>=20
+> I am still looking into improving the allocation strategy itself.
+>=20
+> Petr T
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.138/
+I know this has already been applied but for what its worth I did
+finally manage to test this with my reproducer and the allocation
+overrun is fixed by this change. I also confirmed that at least my
+ConnectX VF TCP/IP test case seems to handle the DMA error gracefully
+enough.
 
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.138
-Git Commit: 80529b4968a8052f894d00021a576d8a2d89aa08
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Build Failures Detected:
-
-arm64:
-    defconfig+arm64-chromebook: (gcc-10) FAIL
-
-x86_64:
-    x86_64_defconfig+x86-board: (gcc-10) FAIL
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-board (gcc-10): 1 warning
-
-
-Warnings summary:
-
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 0 errors, 1 war=
-ning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----
-For more info write to <info@kernelci.org>
+Thanks,
+Niklas
