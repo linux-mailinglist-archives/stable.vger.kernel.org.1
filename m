@@ -2,132 +2,233 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 50B4E7E6972
-	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 12:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C4A57E69B5
+	for <lists+stable@lfdr.de>; Thu,  9 Nov 2023 12:33:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbjKILUZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 9 Nov 2023 06:20:25 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53210 "EHLO
+        id S229565AbjKILdC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 9 Nov 2023 06:33:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231895AbjKILUY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 06:20:24 -0500
-Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39D552D5E
-        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 03:20:22 -0800 (PST)
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-40859c466efso4889255e9.3
-        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 03:20:22 -0800 (PST)
+        with ESMTP id S229554AbjKILdB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 9 Nov 2023 06:33:01 -0500
+Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C72893
+        for <stable@vger.kernel.org>; Thu,  9 Nov 2023 03:32:59 -0800 (PST)
+Received: by mail-pg1-x536.google.com with SMTP id 41be03b00d2f7-5b856d73a12so626590a12.1
+        for <stable@vger.kernel.org>; Thu, 09 Nov 2023 03:32:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1699528820; x=1700133620; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cavHVFQJ8PuwkxFyTFM+8LZM+EGSpdqZcaFZ4JxFv24=;
-        b=VqXCCZpdpLUggHfPfSJ3lpJeiMUPXeDq52DMwPPO6JZL2diU5xdEzJey1pxB8CqV8e
-         Vt504GkPy3OPP1NyO0ccINbWgCA4gzMRm5OQjmc74zshpAIObvRxrRL+MbPBx2xmrGYT
-         BXEUHsm6XperJBlmBH8XfRR4FiIHnjdl8sHyU=
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1699529578; x=1700134378; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=3lp3FqYlKahoV/Meyfmwyrk1aWLCp7V/J9Eh9Zq+H3k=;
+        b=DtvBXEaMROYaKTwv5LXpO5q/fxlQfkI6uP+JeRpyfpECY8iZxli/venoUfDQ1I6O6u
+         maPpwD9VCvsYyaMSp2vwv5/mHTetDJFrE9OuiOLErbVr/zQyUGhuvj9S1G88lme1WiS3
+         449UEncNs093Ff8xmoS9N+cGWfC6vVfQP/L+eULAFgVrppSzTRpt2T0+5gP4s6NN+Z+I
+         CduTYcxMOG3IqUAbxsnRIRbvmykb8gKcCSvFKvqoWQ4U/kADzcaN8AWIMRm/Pd5IHH8l
+         yMraYW/ODwXV9uF+R+VB2c5WkpOxF2x6ZnvVmFgekSgfmy8ivY9thEr5gF4kbO/B2goV
+         yCpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699528820; x=1700133620;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1699529578; x=1700134378;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cavHVFQJ8PuwkxFyTFM+8LZM+EGSpdqZcaFZ4JxFv24=;
-        b=Y1XYgY+xYfR8i3muwJf77YgsqNwVT8DaaJeStI0IkZiMGgTon7+e6D1wrclcChQWjv
-         EslPEBi3h5/AL/D0NGHvuOKmQ42cn4mrUOU5OWNAODUvV7WCPbWsOH3p+2Us9DpiAo4U
-         De6p+OHghLrTgOaARVT2CxWBBcxwmORVMXkz1wBFnNeH6AvYKhJ79eBYrOnn6/7+pT14
-         R2VbTwO/5URLVd5JlposR4z1sIhJGxGRA/3u5VyCzonVO52nKJdLnWKu8xpiXSXGjtUR
-         l1D1NWO+3aB5FWLahX+pmrWsssOCojZ0kQLPIixD1+B1VCk49Ll1uX6zKpajvWAKcyya
-         dZYw==
-X-Gm-Message-State: AOJu0YwQgoLc24VNLQ8Ws+JvDh+qczW8GHmzUXaHJlxRy11GGJ7iW6g9
-        zg4dlduE0yHveIbz/W8WFAM/Hnju9XkJOadob+U=
-X-Google-Smtp-Source: AGHT+IFIoKr4jf0DscVS8+8kKDG9HyfDOFkGaLnalGFWGoyHWVF/fIEqh8WekzQytB0dT3wDRD3ArA==
-X-Received: by 2002:a05:600c:4181:b0:408:39d3:a26b with SMTP id p1-20020a05600c418100b0040839d3a26bmr4133544wmh.40.1699528820536;
-        Thu, 09 Nov 2023 03:20:20 -0800 (PST)
-Received: from orzel1.c.googlers.com.com (110.121.148.146.bc.googleusercontent.com. [146.148.121.110])
-        by smtp.gmail.com with ESMTPSA id f6-20020a05600c44c600b00401d8181f8bsm1755732wmo.25.2023.11.09.03.20.19
+        bh=3lp3FqYlKahoV/Meyfmwyrk1aWLCp7V/J9Eh9Zq+H3k=;
+        b=gKZOiVZKuNzTwza5WJ51v1jTnuwFEAwqFTGZ4SXsW1lEBCYY4hh+5aYId+pK2hpEWa
+         8HuPD14XbqlJ8+iN2c6GKI/UP1MY6nmwOcDPHwWf99XXzFFzSAbVphFF4IP+CrjXCK7E
+         aaNq7wGub3P9hbFtO3ZeFnJvVKM4QQjD02YyPlOpZoRtPsjqAEkTdcJGyq0+mltjiDH2
+         o29c+KSGTHMnjZItAKW7/qJrVH7RfDP+RC+hdo86oV56Gj7v8OAK3jWxEOBEDJOGp/BD
+         ZMeF1Qg6AF9wsJsp1DaR7V2Uz020re71qeoCWWvfW+tVk8o10o7i6rjVrBxPW4UQ+h0M
+         ow6w==
+X-Gm-Message-State: AOJu0YyfXxBM+C4BhE8k2DV8QIU4p9XWw3CbYN+P8JBGgh6dNZuaCoyZ
+        /8qK+6iTNTjOXTQv67Qmt7C4RSb/At0vFsaTAPpPUA==
+X-Google-Smtp-Source: AGHT+IFZrFYWqBEMaiVDdu+gWOs0qh1rFYJZEwtLa6TZDVRegv/aG2J6AUqweItBUQoOfEn2zOMVQw==
+X-Received: by 2002:a05:6a20:8f13:b0:15e:d84:1c5e with SMTP id b19-20020a056a208f1300b0015e0d841c5emr5754818pzk.38.1699529578629;
+        Thu, 09 Nov 2023 03:32:58 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id b12-20020a170902ed0c00b001cc8cf4ad14sm3295407pld.142.2023.11.09.03.32.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Nov 2023 03:20:20 -0800 (PST)
-From:   =?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Sven van Ashbrook <svenva@google.com>,
-        Jason Lai <jasonlai.genesyslogic@gmail.com>
-Cc:     Victor Shih <victor.shih@genesyslogic.com.tw>,
-        Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-        =?UTF-8?q?Stanis=C5=82aw=20Kardach?= <skardach@google.com>,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        stable@vger.kernel.org,
-        =?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>
-Subject: [PATCH] mmc: sdhci-pci-gli: Disable LPM during initialization
-Date:   Thu,  9 Nov 2023 11:19:34 +0000
-Message-ID: <20231109111934.4172565-1-korneld@chromium.org>
-X-Mailer: git-send-email 2.42.0.869.gea05f2083d-goog
+        Thu, 09 Nov 2023 03:32:58 -0800 (PST)
+Message-ID: <654cc36a.170a0220.bc61.985e@mx.google.com>
+Date:   Thu, 09 Nov 2023 03:32:58 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Kernel: v5.10.200
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable
+Subject: stable/linux-5.10.y build: 19 builds: 2 failed, 17 passed,
+ 5 warnings (v5.10.200)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-To address IO performance commit f9e5b33934ce
-("mmc: host: Improve I/O read/write performance for GL9763E")
-limited LPM negotiation to runtime suspend state.
-The problem is that it only flips the switch in the runtime PM
-resume/suspend logic.
+stable/linux-5.10.y build: 19 builds: 2 failed, 17 passed, 5 warnings (v5.1=
+0.200)
 
-Disable LPM negotiation in gl9763e_add_host.
-This helps in two ways:
-1. It was found that the LPM switch stays in the same position after
-   warm reboot. Having it set in init helps with consistency.
-2. Disabling LPM during the first runtime resume leaves us susceptible
-   to the performance issue in the time window between boot and the
-   first runtime suspend.
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.10.y/k=
+ernel/v5.10.200/
 
-Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kornel Dulęba <korneld@chromium.org>
+Tree: stable
+Branch: linux-5.10.y
+Git Describe: v5.10.200
+Git Commit: 3e55583405ac3f8651966dcd23590adb3db1d8c2
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
+
+Build Failures Detected:
+
+arm64:
+    defconfig+arm64-chromebook: (gcc-10) FAIL
+
+x86_64:
+    x86_64_defconfig+x86-board: (gcc-10) FAIL
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 0 errors, 0 war=
+nings, 0 section mismatches
+
 ---
- drivers/mmc/host/sdhci-pci-gli.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
-index d83261e857a5..ce91d1e63a8e 100644
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -220,6 +220,9 @@
- 
- #define GLI_MAX_TUNING_LOOP 40
- 
-+static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot,
-+					      bool enable);
-+
- /* Genesys Logic chipset */
- static inline void gl9750_wt_on(struct sdhci_host *host)
- {
-@@ -1281,6 +1284,9 @@ static int gl9763e_add_host(struct sdhci_pci_slot *slot)
- 	if (ret)
- 		goto cleanup;
- 
-+	/* Disable LPM negotiation to avoid entering L1 state. */
-+	gl9763e_set_low_power_negotiation(slot, false);
-+
- 	return 0;
- 
- cleanup:
-@@ -1323,7 +1329,6 @@ static void gli_set_gl9763e(struct sdhci_pci_slot *slot)
- 	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
- }
- 
--#ifdef CONFIG_PM
- static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
- {
- 	struct pci_dev *pdev = slot->chip->pdev;
-@@ -1349,6 +1354,7 @@ static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool
- 	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
- }
- 
-+#ifdef CONFIG_PM
- static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
- {
- 	struct sdhci_pci_slot *slot = chip->slots[0];
--- 
-2.42.0.869.gea05f2083d-goog
-
+For more info write to <info@kernelci.org>
