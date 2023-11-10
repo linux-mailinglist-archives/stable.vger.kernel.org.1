@@ -2,64 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA8D17E8086
-	for <lists+stable@lfdr.de>; Fri, 10 Nov 2023 19:13:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B82FC7E80BA
+	for <lists+stable@lfdr.de>; Fri, 10 Nov 2023 19:18:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345135AbjKJSNE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 10 Nov 2023 13:13:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49708 "EHLO
+        id S1344747AbjKJSRb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 10 Nov 2023 13:17:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345801AbjKJSL0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 10 Nov 2023 13:11:26 -0500
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F873A21B
-        for <stable@vger.kernel.org>; Fri, 10 Nov 2023 07:03:28 -0800 (PST)
-Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-da3b4b7c6bdso2270542276.2
-        for <stable@vger.kernel.org>; Fri, 10 Nov 2023 07:03:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1699628607; x=1700233407; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LI+FAc5jUx2iUB/tuWRLdQMnq28TFVaG5me1J01BIf8=;
-        b=y9V1NKpKF4d5L3P/DBn4TVIqL66A+IEcNHDf/ocQ9H7cZY8zPVSmvoe8tvcgcNI9iR
-         V4mzFKc7bCNSAiFuMPJGTUH3vz0OUfuJTWqL6WDtjrDUBqo0Ysg6EOQw0TCFhQc1AJSx
-         9SXmEEP8+wXWAxODqQOTD0L6lSMW+5YkNkCGGz5mxX6YgGV66N72Y61Z/hfBQmOTVsBH
-         1SWt95Sr2aSYvszKNB6Vn0MrSmtN/WvBAY2yr/vUHPMVdvht5qU3jK2GM6X9Sr7B1DCq
-         cG7cLDVNHb0iWNtXWhRHSI5FAkCK1LrneCA8rW1Sps4SeXtwhGH56uoV/KRy3BQtfBjl
-         yEjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699628607; x=1700233407;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LI+FAc5jUx2iUB/tuWRLdQMnq28TFVaG5me1J01BIf8=;
-        b=Vm6xYpjlWLitjvkPV2lvAKF5RTBhZI7hzX55mKw+BE7bD13mZocLCIwUI/mKDQoBJ4
-         ITlWrfXO2CmoFMZZGeMj6OrppZtuCnhKBC3x65+HtrdZv1gBHRXIj16bZaOMGtYlcsc/
-         rANrINUznj1DELZMKLSixiCWKy/pgpMC9HCJyGECHsfkx2/b/RWxazlnZmx37PNQ5V+7
-         3yXc+WuMgejBEPTsh3zKpE+hS5+OArr1HvX1H7TU3E/tFE+D3zgBAQcZKos2mSFK78a5
-         U/BcT5DJn4hJ5XIKMWqA0dFJpo2/oE0sq75i/6ASspaPUjORpWf8VfziQxnUOfPXBaTA
-         AGvw==
-X-Gm-Message-State: AOJu0YzZoIft5Yi/6ioITR5X0r1wLljdCa3G7jMcTZ5q7jm1Ota3BwC4
-        wF/5em/JLQgqTpiZL+nsXD0Ap1AIJ4sMsnWFHHsNJw==
-X-Google-Smtp-Source: AGHT+IEQr+nD2hM97g1wEMewiNYcV+P/h9wqI2rtiaJOKCE6z3RIk8Z4M5U5zFWunLk3FdUgIGa/re/G/hYUqKHqlxQ=
-X-Received: by 2002:a25:dccf:0:b0:d81:6151:2031 with SMTP id
- y198-20020a25dccf000000b00d8161512031mr7684797ybe.61.1699628607664; Fri, 10
- Nov 2023 07:03:27 -0800 (PST)
+        with ESMTP id S1346072AbjKJSQe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 10 Nov 2023 13:16:34 -0500
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 908ED4233C;
+        Fri, 10 Nov 2023 08:58:30 -0800 (PST)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4SRlQ95myqz9spj;
+        Fri, 10 Nov 2023 17:58:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=owenh.net; s=MBO0001;
+        t=1699635505;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Xv0RmDooG3JgDJHA2SqaAIpBFKQ0UuIqzPA46XswMys=;
+        b=0NFLEqpKQmJbLf7s0Gu6qlXSi//AhUQ95naoWkj4WMZu2Fq78Lrb32fYcpQCffzlf8RA0O
+        Hc8Zj/uR3VEYWUO52IUz6PEZxdwn7pKAlS4oyVSQODoUo+0e40cwxCe5wXcLS6cFFbZxZP
+        sRsYUfYj8b4g01I8bgO9sO+4pzx3+6W6oCBqwW7AaorjYgDhFRntPTKvKhvPvKveLBAMEf
+        3qEHo/6UMMtETriDJfJfR1488Y2IGRoZGmpc9fviXWw5XaxCxjZLB/EtvYXGw9/X59bO29
+        op1UQfJ+OV+1sNIKwHRbI5a/Y1UFO6bcyJbXhAcCgdpDAnZk1WUtjFLz0/CCeA==
+Message-ID: <d1ac9c1e-f3fe-4d06-ba2e-2c049841d19b@owenh.net>
+Date:   Fri, 10 Nov 2023 10:58:07 -0600
 MIME-Version: 1.0
-References: <20231110093039.190076-1-robert.marko@sartura.hr>
-In-Reply-To: <20231110093039.190076-1-robert.marko@sartura.hr>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 10 Nov 2023 16:03:15 +0100
-Message-ID: <CACRpkdZ3UU=Zo7aqaYqZENHmEmy+hYMDNCFMw5hikMDKG1Skfg@mail.gmail.com>
-Subject: Re: [PATCH] Revert "i2c: pxa: move to generic GPIO recovery"
-To:     Robert Marko <robert.marko@sartura.hr>
-Cc:     andi.shyti@kernel.org, linux-i2c@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux@armlinux.org.uk,
-        wsa@kernel.org, codrin.ciubotariu@microchip.com,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From:   "Owen T. Heisler" <writer@owenh.net>
+Subject: Re: [REGRESSION]: acpi/nouveau: Hardware unavailable upon resume or
+ suspend fails
+To:     Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Hans de Goede <hdegoede@redhat.com>
+Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+        Karol Herbst <kherbst@redhat.com>,
+        Lyude Paul <lyude@redhat.com>,
+        Danilo Krummrich <dakr@redhat.com>,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
+References: <9f36fb06-64c4-4264-aaeb-4e1289e764c4@owenh.net>
+ <CAAd53p7BSesx=a1igTohoSkxrW+Hq8O7ArONFCK7uoDi12-T4A@mail.gmail.com>
+ <a592ce0c-64f0-477d-80fa-8f5a52ba29ea@redhat.com>
+ <CAAd53p608qmC3pvz=F+y2UZ9O39f2aq-pE-1_He1j8PGQmM=tg@mail.gmail.com>
+Content-Language: en-US
+In-Reply-To: <CAAd53p608qmC3pvz=F+y2UZ9O39f2aq-pE-1_He1j8PGQmM=tg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4SRlQ95myqz9spj
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
@@ -70,22 +66,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Nov 10, 2023 at 10:30=E2=80=AFAM Robert Marko <robert.marko@sartura=
-.hr> wrote:
+Hi everyone,
 
-> This reverts commit 0b01392c18b9993a584f36ace1d61118772ad0ca.
->
-> Conversion of PXA to generic I2C recovery, makes the I2C bus completely
-> lock up if recovery pinctrl is present in the DT and I2C recovery is
-> enabled.
->
-> So, until the generic I2C recovery can also work with PXA lets revert
-> to have working I2C and I2C recovery again.
->
-> Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-> Cc: stable@vger.kernel.org # 5.11+
+On 11/10/23 06:52, Kai-Heng Feng wrote:
+> On Fri, Nov 10, 2023 at 2:19 PM Hans de Goede <hdegoede@redhat.com> wrote:
+>> On 11/10/23 07:09, Kai-Heng Feng wrote:
+>>> On Fri, Nov 10, 2023 at 5:55 AM Owen T. Heisler <writer@owenh.net> wrote:
+>>>> #regzbot introduced: 89c290ea758911e660878e26270e084d862c03b0
+>>>> #regzbot link: https://gitlab.freedesktop.org/drm/nouveau/-/issues/273
+>>>> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218124
+>>>
+>>> Thanks for the bug report. Do you prefer to continue the discussion
+>>> here, on gitlab or on bugzilla?
 
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Kai-Heng, you're welcome and thank you too. By email is fine with me.
 
-Yours,
-Linus Walleij
+>> Owen, as Kai-Heng said thank you for reporting this.
+
+Hans, you're welcome, and thanks for your help too.
+
+>>>> ## Reproducing
+>>>>
+>>>> 1. Boot system to framebuffer console.
+>>>> 2. Run `systemctl suspend`. If undocked without secondary display,
+>>>> suspend fails. If docked with secondary display, suspend succeeds.
+>>>> 3. Resume from suspend if applicable.
+>>>> 4. System is now in a broken state.
+>>>
+>>> So I guess we need to put those devices to ACPI D3 for suspend. Let's
+>>> discuss this on your preferred platform.
+>>
+>> Ok, so I was already sort of afraid we might see something like this
+>> happening because of:
+>>
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=89c290ea758911e660878e26270e084d862c03b0
+>>
+>> As I mentioned during the review of that, it might be better to
+>> not touch the video-card ACPI power-state at all and instead
+>> only do acpi_device_fix_up_power() on the child devices.
+> 
+> Or the child devices need to be put to D3 during suspend.
+> 
+>> Owen, attached are 2 patches which implement only
+>> calling acpi_device_fix_up_power() on the child devices,
+>> can you build a v6.6 kernel with these 2 patches added
+>> on top please and see if that fixes things ?
+
+Yes, with those patches v6.6 suspend works normally. That's great, thanks!
+
+I tested with v6.6 with the 2 patches at 
+<https://lore.kernel.org/regressions/a592ce0c-64f0-477d-80fa-8f5a52ba29ea@redhat.com/> 
+using 
+<https://gitlab.freedesktop.org/drm/nouveau/uploads/788d7faf22ba2884dcc09d7be931e813/v6.6-config1>. 
+I tested both docked and un-docked, just in case.
+
+Tested-by: Owen T. Heisler <writer@owenh.net>
+
+>> Kai-Heng can you test that the issue on the HP ZBook Fury 16 G10
+>> is still resolved after applying these patches ?
+> 
+> Yes. Thanks for the patch.
+> 
+> If this patch also fixes Owen's issue, then
+> Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com
+
+Please let me know if anything else is needed from me.
+
+Many thanks,
+Owen
